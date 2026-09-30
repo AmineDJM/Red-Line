@@ -65,10 +65,10 @@ function validTargets(state: EngineState, u: Unit): TargetCand[] {
   return out;
 }
 
-/** Cible de grande valeur (ravitailleur, avion radar) : priorité de tir. */
+/** Cible de grande valeur (ravitailleur, avion radar, radar terrestre) : priorité de tir. */
 export function isHighValue(state: EngineState, o: Unit): boolean {
   const s = sysOf(state, o);
-  return (s.air?.tankerFuelH ?? 0) > 0 || s.sensor?.kind === 'aew';
+  return (s.air?.tankerFuelH ?? 0) > 0 || s.sensor?.kind === 'aew' || s.category === 'radar';
 }
 
 function chooseTarget(state: EngineState, u: Unit, list: TargetCand[]): Unit | null {

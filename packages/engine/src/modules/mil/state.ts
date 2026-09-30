@@ -52,6 +52,8 @@ export interface MissionSt {
   emb: UnitId | null;
   /** Ravitailleur visé pendant une jonction. */
   tk: UnitId | null;
+  /** Version de la veille (patrouille) : invalide les événements de veille programmés. */
+  sv: number;
 }
 
 /** Salve de missiles en vol (unité de rôle 'missile'). */
@@ -173,6 +175,15 @@ export interface StatSt {
 
 export interface MilState {
   seq: number;
+  /** PRNG propre au module (graine dérivée de celle de la partie). */
+  rng: [number, number, number, number] | null;
+  /** Unités fixes créées pour les bâtiments de défense : "province:bâtiment" → unité. */
+  fixed: Record<string, UnitId>;
+  /** Unité fixe → province (ordre de déplacement refusé). */
+  fixedOf: Record<UnitId, ProvinceId>;
+  /** Bunkers et silos : province → niveau. */
+  bunker: Record<ProvinceId, number>;
+  silo: Record<ProvinceId, number>;
   ms: Record<UnitId, MissionSt>;
   msl: Record<UnitId, MissileSt>;
   /** Lanceur → prêt à tirer à partir de. */
@@ -214,6 +225,11 @@ export interface MilState {
 export function emptyMil(): MilState {
   return {
     seq: 0,
+    rng: null,
+    fixed: {},
+    fixedOf: {},
+    bunker: {},
+    silo: {},
     ms: {},
     msl: {},
     reload: {},

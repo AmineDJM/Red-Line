@@ -104,6 +104,26 @@ export const MilitaryBalanceSchema = z.object({
       satelliteSigint: num(1),
       defaultSwathKm: num(300),
       defaultRevisitH: num(12),
+      /**
+       * Portée maximale de la détection continue (paires) : au-delà, un radar ne sert qu'à l'alerte
+       * (missiles balistiques) ou au balayage transhorizon (niveau « détecté », périodique).
+       */
+      maxPairKm: num(800),
+      /** Un radar de veille dont la portée dépasse ce seuil est traité en transhorizon (km). */
+      othMinRangeKm: num(2500),
+      /** Période de balayage d'un radar transhorizon (minutes). */
+      othScanMinutes: num(30),
+    })
+    .default({}),
+  /** Bâtiments de défense (signaux static_defense / radar_station du module eco). */
+  defenses: z
+    .object({
+      /** Protection des unités terrestres qui défendent une province avec bunkers, par niveau. */
+      bunkerArmorPerLevel: num(0.15),
+      /** Protection des lanceurs en silo, par niveau. */
+      siloArmorPerLevel: num(0.3),
+      /** Éléments de l'unité fixe créée par niveau de bâtiment. */
+      unitsPerLevel: num(1),
     })
     .default({}),
   battle: z

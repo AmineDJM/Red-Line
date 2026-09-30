@@ -25,10 +25,42 @@ export function isLauncher(sys: WeaponSystem): boolean {
   return !!sys.missile;
 }
 
-/** Radar au sens large (aveuglable, repérable par un missile antiradar). */
+/** Radar au sens large (aveuglable, repérable par un missile antiradar, cible prioritaire). */
 export function isRadarSensor(sys: WeaponSystem): boolean {
   const k = sys.sensor?.kind;
-  return k === 'radar' || k === 'aew' || k === 'early_warning' || sys.category === 'air_defense';
+  return (
+    k === 'radar' ||
+    k === 'aew' ||
+    k === 'early_warning' ||
+    sys.category === 'air_defense' ||
+    sys.category === 'radar'
+  );
+}
+
+const OTH_ROLES = ['oth', 'over-the-horizon', 'over_the_horizon', 'transhorizon'];
+
+/**
+ * Radar transhorizon : très longue portée, faible précision. Il ne participe pas à la détection
+ * continue ; il balaie périodiquement sa zone et ne donne que le niveau « détecté » (module mil).
+ */
+export function isOthRadar(state: EngineState, sys: WeaponSystem): boolean {
+  const s = sys.sensor;
+  if (!s || s.kind !== 'radar') return false;
+  return (
+    sys.roles.some((r) => OTH_ROLES.includes(r)) ||
+    s.rangeKm >= milBal(state).sensors.othMinRangeKm
+  );
+}
+
+/** Portée brute des capteurs de détection continue (catalogue), plafonnée. */
+function rawDetectKm(state: EngineState, sys: WeaponSystem): number {
+  let r = sys.detectionRangeKm;
+  const s = sys.sensor;
+  if (s && isOthRadar(state, sys)) r = Math.min(r, 150);
+  else if (s && (s.kind === 'radar' || s.kind === 'aew' || s.kind === 'optical')) {
+    r = Math.max(r, s.rangeKm);
+  }
+  return Math.min(r, milBal(state).sensors.maxPairKm);
 }
 
 /** Aéronef à carburant posé (sur une base au sol ou sur un porte-avions). */
@@ -86,11 +118,7 @@ export function detectKm(state: EngineState, u: Unit): number {
   const sys = sysOf(state, u);
   if (sys.category === 'space') return 0;
   if (sys.air && isLanded(state, u)) return 0;
-  let r = sys.detectionRangeKm;
-  const s = sys.sensor;
-  if (s && (s.kind === 'radar' || s.kind === 'aew' || s.kind === 'optical')) {
-    r = Math.max(r, s.rangeKm);
-  }
+  let r = rawDetectKm(state, sys);
   if (isRadarSensor(sys)) {
     r *= modifier(state, u.owner, 'sensors.radarRange');
     if (blinded(state, u.owner)) r *= milBal(state).sensors.blindFactor;
@@ -108,7 +136,7 @@ export function sonarKm(state: EngineState, u: Unit): number {
   const asw = sys.naval?.asw ?? 0;
   if (asw > 0) r = Math.max(r, sys.detectionRangeKm * asw);
   if (r <= 0) return 0;
-  return r * modifier(state, u.owner, 'naval.sonar');
+  return r * modifier(state, u.owner, 'naval.sonar') * unitModifier(state, u, 'naval.sonar');
 }
 
 function stealthDetect(state: EngineState, obs: Unit): number {
@@ -155,11 +183,8 @@ export function zoneKm(state: EngineState, u: Unit): number {
   if (u.off || u.role) return 0;
   const sys = sysOf(state, u);
   if (sys.category === 'space') return 0;
-  let det = sys.detectionRangeKm;
-  const s = sys.sensor;
-  if (s && (s.kind === 'radar' || s.kind === 'aew' || s.kind === 'optical' || s.kind === 'sonar')) {
-    det = Math.max(det, s.rangeKm);
-  }
+  let det = rawDetectKm(state, sys);
+  if (sys.sensor?.kind === 'sonar') det = Math.max(det, sys.sensor.rangeKm);
   const w = isLauncher(sys) ? 0 : sys.weaponRangeKm.max;
   return Math.max(det * ZONE_SLACK, w);
 }
