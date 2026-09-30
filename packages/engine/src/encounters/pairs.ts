@@ -13,7 +13,14 @@ import { addToIndex, removeFromIndex } from '../state/runtime.js';
 import type { EngineState, PairState, Unit } from '../state/types.js';
 import { CAPTURE_RADIUS_KM, wi } from '../state/world.js';
 import { changeSight, detectionLevel, detectionRadii } from './sight.js';
-import { inRange, provSightRangeKm, sightRangeKm, weaponRange, zoneKm } from './profile.js';
+import {
+  inRange,
+  provSightRangeKm,
+  sightRangeKm,
+  weaponRange,
+  withSightMemo,
+  zoneKm,
+} from './profile.js';
 
 /**
  * Rencontres. Chaque paire (unité, unité étrangère) ou (province, unité) proche est surveillée : on
@@ -201,7 +208,10 @@ function candidateKeys(state: EngineState, u: Unit): string[] {
 /** Après un changement de trajet (ou une apparition) : réindexe et recalcule toutes les paires de l'unité. */
 export function refreshUnitPairs(state: EngineState, u: Unit): void {
   registerUnit(state, u);
-  for (const key of candidateKeys(state, u)) evalPair(state, key);
+  const keys = candidateKeys(state, u);
+  withSightMemo(() => {
+    for (const key of keys) evalPair(state, key);
+  });
 }
 
 /* ------------------------------------------------------------------------------------------------ */
@@ -220,7 +230,9 @@ function indexPair(state: EngineState, key: string, a: string, b: string): void 
 
 function evalUnitPair(state: EngineState, key: string): void {
   const existing = state.pairs[key];
-  const [ia, ib] = key.split('|') as [UnitId, UnitId];
+  const h = key.indexOf('|');
+  const ia: UnitId = key.slice(0, h);
+  const ib: UnitId = key.slice(h + 1);
   const A = state.units[ia];
   const B = state.units[ib];
   if (!A || !B || A.owner === B.owner || A.off || B.off) {
@@ -360,7 +372,9 @@ export function removePair(state: EngineState, key: string): void {
     if (state.units[uid]) state.rt.dirtyCombat.add(uid);
     return;
   }
-  const [ia, ib] = key.split('|') as [UnitId, UnitId];
+  const bar = key.indexOf('|');
+  const ia: UnitId = key.slice(0, bar);
+  const ib: UnitId = key.slice(bar + 1);
   removeFromIndex(state.rt.pairsOf, ia, key);
   removeFromIndex(state.rt.pairsOf, ib, key);
   const A = state.units[ia];
@@ -406,6 +420,11 @@ export function pairsOfUnit(state: EngineState, uid: UnitId): { key: string; pai
 }
 
 export function otherOf(key: string, uid: UnitId): string {
-  const [a, b] = key.split('|') as [string, string];
-  return a === uid ? b : a;
+  const h = key.indexOf('|');
+  if (h < 0) {
+    const [a, b] = key.split('|') as [string, string];
+    return a === uid ? b : a;
+  }
+  const a = key.slice(0, h);
+  return a === uid ? key.slice(h + 1) : a;
 }

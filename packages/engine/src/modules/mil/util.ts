@@ -177,8 +177,16 @@ export function nearestProvince(
   return best;
 }
 
-/** Unités sur la carte dans un rayon (index spatial des trajets), triées par identifiant. */
-export function unitsNear(state: EngineState, at: LngLat, rKm: number): Unit[] {
+/**
+ * Unités sur la carte dans un rayon (index spatial des trajets), triées par identifiant. `pre` : filtre
+ * pur (sans effet) appliqué avant le calcul de distance — même résultat que filtrer ensuite.
+ */
+export function unitsNear(
+  state: EngineState,
+  at: LngLat,
+  rKm: number,
+  pre?: (u: Unit) => boolean,
+): Unit[] {
   const cells = new Set<number>();
   coverCap(at, rKm + 1, cells);
   const ids = new Set<string>();
@@ -187,6 +195,7 @@ export function unitsNear(state: EngineState, at: LngLat, rKm: number): Unit[] {
   for (const id of [...ids].sort()) {
     const u = state.units[id];
     if (!u || u.off) continue;
+    if (pre && !pre(u)) continue;
     if (distanceKm(unitPosAt(state, u, state.time), at) <= rKm) out.push(u);
   }
   return out;
