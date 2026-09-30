@@ -86,7 +86,13 @@ export interface PoolEntry {
  */
 export function unitPool(state: EngineState, movingOnly: boolean): PoolEntry[] {
   const out: PoolEntry[] = [];
-  for (const uid of sortedKeys(state.units)) {
+  // Unités en mouvement seulement : filtrées avant le tri (même ordre, tri bien plus court).
+  const ids = movingOnly
+    ? Object.keys(state.units)
+        .filter((uid) => !!state.units[uid]!.move)
+        .sort()
+    : sortedKeys(state.units);
+  for (const uid of ids) {
     const u = state.units[uid]!;
     if (movingOnly && !u.move) continue;
     let x0 = u.pos[0];

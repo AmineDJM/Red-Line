@@ -363,6 +363,21 @@ export async function adminDataRoutes(app: FastifyInstance, ctx: AppContext): Pr
     });
   });
 
+  // Retour à la valeur du dépôt (data/map/nations.json) : la modification du back-office est annulée.
+  app.post('/admin/api/map/nations/:id/reset', balance, async (req) => {
+    const key = p('id')(req);
+    if (!store.repo.nationsById.has(key) && !currentValue('nation', key)) {
+      throw new HttpError(404, 'not_found', 'Nation introuvable');
+    }
+    const body = parseBody(SaveBodySchema.omit({ data: true }), req.body);
+    return write(req, 'nation', key, null, {
+      message: body.message || 'Retour à la valeur du dépôt',
+      scope: body.scope,
+      playerMessage: body.playerMessage,
+      action: 'data.nation.reset',
+    });
+  });
+
   // Avertissements du chargement des données (fichiers ignorés, doublons…).
   app.get('/admin/api/data/status', balance, async () => ({
     rev: store.currentRev,

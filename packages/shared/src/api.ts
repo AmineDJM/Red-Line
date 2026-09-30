@@ -39,6 +39,8 @@ import type { WeaponSystem } from './catalog.js';
  *   POST /admin/api/catalog/import    ImportBody      balance   → { created, updated, errors }
  *   GET  /admin/api/games                             moderator → { games: AdminGame[] }
  *   POST /admin/api/games/:id/pause | /resume         moderator → { ok }
+ *   POST /admin/api/games/:id/players/:nationId/ai    moderator { ai, aiLevel? } → { player }
+ *        (IA imposée à la place du joueur, ou nation rendue au joueur)
  *   GET  /admin/api/metrics                           moderator → Metrics
  */
 
@@ -124,7 +126,18 @@ export interface CatalogChange {
 
 export interface AdminGame {
   game: GameMeta;
-  players: { nationId: NationId; userName: string | null; isAi: boolean }[];
+  players: {
+    nationId: NationId;
+    userName: string | null;
+    isAi: boolean;
+    /** Joueur humain de la nation (null : nation tenue par une IA depuis le début ou partie quittée). */
+    userId?: string | null;
+    /** IA imposée par l'administration (le retour du joueur ne la retire pas). */
+    aiForced?: boolean;
+    /** Joueur connecté à la partie en ce moment. */
+    connected?: boolean;
+    lastActiveAt?: string | null;
+  }[];
   gameTime: number;
   queueSize: number;
   unitCount: number;
@@ -326,6 +339,12 @@ export const WorldEventBodySchema = z.object({
   event: z.enum(['oil_crisis', 'emergency_council', 'market_crash', 'pandemic', 'arms_fair']),
   message: z.string().max(500).optional(),
   params: z.record(z.string(), z.number()).optional(),
+});
+
+/** POST /admin/api/games/:id/players/:nationId/ai : IA imposée (ai: true) ou nation rendue (false). */
+export const AdminSetAiBodySchema = z.object({
+  ai: z.boolean(),
+  aiLevel: z.enum(['easy', 'normal', 'hard']).default('normal'),
 });
 
 /** Fiche d'une nation pour l'écran de sélection (données ORBAT publiques). */

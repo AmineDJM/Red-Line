@@ -1,5 +1,5 @@
 import type { NationId } from '@redline/shared';
-import type { EngineState } from '../state/types.js';
+import type { Contact, EngineState } from '../state/types.js';
 import { nationUnits, sortedKeys } from '../state/access.js';
 import { wi } from '../state/world.js';
 import { board } from '../modules/registry.js';
@@ -36,6 +36,69 @@ export function ownForce(state: EngineState, n: NationId): OwnForce {
   return { value, perProvince: value / provs, avgUnit: count > 0 ? value / count : 1 };
 }
 
+/**
+ * Mémo des forces connues par nation observée, actif pendant une réflexion stratégique
+ * (withForceMemo) et invalidé à chaque ordre donné (invalidateForceMemo) : entre deux ordres, les
+ * contacts de la nation ne changent pas. Un seul parcours trié des contacts cumule toutes les nations
+ * dans le même ordre d'additions que le parcours filtré d'origine : sommes identiques bit à bit.
+ */
+let memoOn = false;
+let memo: { state: EngineState; n: NationId; mine: OwnForce; known: Map<NationId, number> } | null =
+  null;
+
+export function withForceMemo(fn: () => void): void {
+  if (memoOn) {
+    fn();
+    return;
+  }
+  memoOn = true;
+  try {
+    fn();
+  } finally {
+    memoOn = false;
+    memo = null;
+  }
+}
+
+export function invalidateForceMemo(): void {
+  memo = null;
+}
+
+function contactValue(state: EngineState, c: Contact, mine: OwnForce): number {
+  if (c.lvl >= 2 && c.sys) {
+    const sys = state.world.catalog.get(c.sys);
+    const count = c.lvl >= 3 && c.count !== null ? c.count : (sys?.unitSize ?? 1);
+    return elementValue(state, c.sys) * count * (c.hpr ?? 1);
+  }
+  return mine.avgUnit;
+}
+
+function knownForce(state: EngineState, n: NationId, t: NationId, mine: OwnForce): number {
+  const k = state.know[n];
+  if (memoOn) {
+    if (!memo || memo.state !== state || memo.n !== n || memo.mine !== mine) {
+      const known = new Map<NationId, number>();
+      if (k) {
+        for (const id of sortedKeys(k)) {
+          const c = k[id]!;
+          known.set(c.owner, (known.get(c.owner) ?? 0) + contactValue(state, c, mine));
+        }
+      }
+      memo = { state, n, mine, known };
+    }
+    return memo.known.get(t) ?? 0;
+  }
+  let known = 0;
+  if (k) {
+    for (const id of sortedKeys(k)) {
+      const c = k[id]!;
+      if (c.owner !== t) continue;
+      known += contactValue(state, c, mine);
+    }
+  }
+  return known;
+}
+
 /** Force estimée de `t` du point de vue de `n`. */
 export function estimateForce(
   state: EngineState,
@@ -44,21 +107,7 @@ export function estimateForce(
   mine: OwnForce,
   caution: number,
 ): number {
-  let known = 0;
-  const k = state.know[n];
-  if (k) {
-    for (const id of sortedKeys(k)) {
-      const c = k[id]!;
-      if (c.owner !== t) continue;
-      if (c.lvl >= 2 && c.sys) {
-        const sys = state.world.catalog.get(c.sys);
-        const count = c.lvl >= 3 && c.count !== null ? c.count : (sys?.unitSize ?? 1);
-        known += elementValue(state, c.sys) * count * (c.hpr ?? 1);
-      } else {
-        known += mine.avgUnit;
-      }
-    }
-  }
+  const known = knownForce(state, n, t, mine);
   const tn = state.nations[t];
   const mirror = (tn?.provinceCount ?? 0) * mine.perProvince;
   return Math.max(known, mirror) * caution;

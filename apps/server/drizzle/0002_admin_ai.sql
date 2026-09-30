@@ -1,0 +1,1 @@
+ALTER TABLE "game_players" ADD COLUMN "ai_forced" boolean DEFAULT false NOT NULL;

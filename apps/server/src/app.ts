@@ -30,6 +30,7 @@ import { PushService, webPushSender, type PushSender } from './push/push.js';
 import { RankingService } from './rank/rankings.js';
 import { lobbyRoutes } from './multi/lobby.js';
 import { gameExtraRoutes } from './http/games-extra.js';
+import { clientIp, registerSecurity } from './http/security.js';
 
 export interface BuildAppOptions {
   config: Config;
@@ -85,6 +86,7 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
   try {
     const options: RuntimeOptions = {
       authRateLimitPerMin: 20,
+      createRateLimitPerMin: 10,
       wsMessagesPerSecond: 20,
       wsBurst: 40,
       flushIntervalMs: 200,
@@ -92,6 +94,11 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
       chatPerSecond: 0.5,
       chatBurst: 5,
       pushThrottleMs: 10 * 60_000,
+      maxActiveSoloPerUser: 20,
+      maxActiveMultiPerUser: 5,
+      sliceBudgetMs: 40,
+      soloIdlePauseMs: 5 * 60_000,
+      idleUnloadMs: 10 * 60_000,
       ...opts.runtime,
     };
 
@@ -138,6 +145,9 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
         snapshotIntervalS: config.snapshotIntervalS,
         leaseTtlS: config.leaseTtlS,
         keepSnapshots: options.keepSnapshots,
+        sliceBudgetMs: options.sliceBudgetMs,
+        soloIdlePauseMs: options.soloIdlePauseMs,
+        idleUnloadMs: options.idleUnloadMs,
       },
     });
 
@@ -202,8 +212,21 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
     };
 
     await app.register(fastifyCookie, { secret: config.sessionSecret });
-    await app.register(fastifyRateLimit, { global: false });
-    await app.register(fastifyWebsocket, { options: { maxPayload: 64 * 1024 } });
+    registerSecurity(app, config);
+    await app.register(fastifyRateLimit, { global: false, keyGenerator: clientIp });
+    await app.register(fastifyWebsocket, {
+      options: {
+        maxPayload: 64 * 1024,
+        // Compression permessage-deflate des gros messages (vue initiale ~270 Kio → ~25 Kio) ;
+        // sans contexte conservé : pas de mémoire zlib par connexion entre deux messages.
+        perMessageDeflate: {
+          threshold: 2048,
+          serverNoContextTakeover: true,
+          clientNoContextTakeover: true,
+          concurrencyLimit: 4,
+        },
+      },
+    });
 
     app.setErrorHandler((err, req, reply) => {
       if (err instanceof HttpError) {

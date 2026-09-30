@@ -1,3 +1,4 @@
+import { clientIp } from '../http/security.js';
 import { createHash, createHmac } from 'node:crypto';
 import { inArray, sql } from 'drizzle-orm';
 import type { FastifyBaseLogger, FastifyRequest } from 'fastify';
@@ -54,7 +55,7 @@ export class Fingerprints {
 
   /** Enregistre l'empreinte de la requête (asynchrone, jamais bloquant). */
   record(userId: string, req: FastifyRequest, now = Date.now()): void {
-    const ipHash = this.hashIp(req.ip ?? '');
+    const ipHash = this.hashIp(clientIp(req));
     const ua = String(req.headers['user-agent'] ?? '').slice(0, 300);
     const uaHash = this.hashUa(ua);
     const key = `${userId}|${ipHash}|${uaHash}`;

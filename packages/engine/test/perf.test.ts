@@ -5,10 +5,12 @@ import {
   applyOrder,
   buildWorld,
   createGame,
+  deserializeState,
   stateHash,
   viewFor,
   serializeState,
 } from '../src/index.js';
+import { loadRealData } from '../bench/load.js';
 import type { EngineState } from '../src/state/types.js';
 import { BALANCE, CATALOG } from './fixtures.js';
 import { worldScaleMap } from './world-scale.js';
@@ -146,11 +148,73 @@ describe('performance (monde entier)', () => {
       );
       console.log(log.join('\n'));
 
+      // Mesuré après la passe d'optimisation (sous vitest, machine partagée) : jour calme ≈ 150 ms,
+      // jour agité ≈ 1,9 s (IA stratégique et tactique de ~360 nations, 48 guerres), viewFor ≈ 15 ms.
+      // Seuils ×2 à ×3 pour la CI.
       expect(tCalm).toBeLessThan(400);
-      // Avec les modules eco, intel et diplo (IA stratégique de ~360 nations) : ≈ 1,4 s hors charge.
-      // Passe d'optimisation prévue (chemins de l'IA, cellules de mer, paires) ; seuil large pour la CI.
       expect(tBusy).toBeLessThan(4000);
       expect(tView20).toBeLessThan(40);
     },
   );
+});
+
+/**
+ * Vraie partie (carte de 201 nations et 2 567 provinces, 406 systèmes, arbre de recherche, ORBAT 2025
+ * regroupés en ≈ 4 150 piles, scénario « world-today », 1 joueur et 200 IA). Objectifs (machine non
+ * chargée, compilation esbuild comme en production, voir bench/real.ts et `pnpm bench`) :
+ * createGame < 3 s, jour calme < 150 ms (≈ 0,3 s mesuré : IA de 200 nations, économie, renseignement),
+ * viewFor < 30 ms, instantané < 5 Mo. Les seuils ci-dessous laissent une marge ×2 à ×4 pour la CI et
+ * l'exécution sous vitest (transformation à la volée, sans les optimisations du bundle) ; seule la
+ * taille de l'instantané est un seuil ferme (indépendant de la machine). La journée de guerre intense
+ * (≈ 5 s) n'est mesurée que par le banc d'essai (trop longue pour la suite).
+ */
+describe('performance (vraie partie, ORBAT 2025)', () => {
+  it('createGame, jour calme, viewFor, instantané et reprise', { timeout: 300_000 }, () => {
+    const log: string[] = [];
+    const d = loadRealData();
+    let t = performance.now();
+    const world = buildWorld(d.map, d.catalog, d.balance, {
+      research: d.research,
+      orbats: d.orbats,
+    });
+    log.push(`buildWorld : ${(performance.now() - t).toFixed(0)} ms`);
+    t = performance.now();
+    const s = createGame(world, {
+      seed: 2025,
+      players: [{ nationId: 'fra', isAi: false }],
+      aiLevel: 'normal',
+      scenario: d.scenario,
+      speed: 1,
+    }) as EngineState;
+    const tCreate = performance.now() - t;
+    const units = Object.keys(s.units).length;
+    log.push(`createGame : ${tCreate.toFixed(0)} ms, ${units} unités`);
+    expect(units).toBeGreaterThan(3000);
+
+    t = performance.now();
+    advanceTo(s, DAY);
+    const tCalm = performance.now() - t;
+    log.push(`jour calme : ${tCalm.toFixed(0)} ms`);
+
+    const nations = s.nationIds.slice(0, 20);
+    viewFor(s, 'fra');
+    t = performance.now();
+    for (const n of nations) viewFor(s, n);
+    const tView = (performance.now() - t) / nations.length;
+    log.push(`viewFor (moyenne sur 20 nations) : ${tView.toFixed(1)} ms`);
+
+    const bytes = serializeState(s);
+    log.push(`instantané : ${(bytes.length / 1048576).toFixed(2)} Mio`);
+    const back = deserializeState(world, bytes) as EngineState;
+    expect(stateHash(back)).toBe(stateHash(s));
+    advanceTo(s, DAY + 6 * 3_600_000);
+    advanceTo(back, DAY + 6 * 3_600_000);
+    expect(stateHash(back)).toBe(stateHash(s));
+    console.log(log.join('\n'));
+
+    expect(bytes.length).toBeLessThan(5 * 1024 * 1024);
+    expect(tCreate).toBeLessThan(8000);
+    expect(tCalm).toBeLessThan(1500);
+    expect(tView).toBeLessThan(90);
+  });
 });

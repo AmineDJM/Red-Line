@@ -15,6 +15,13 @@
       "when": 1790794420266,
       "tag": "0001_phase5_6",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790805245080,
+      "tag": "0002_admin_ai",
+      "breakpoints": true
     }
   ]
 }

@@ -621,7 +621,7 @@ export function createMockTransport(opts: { role?: Role; latencyMs?: number } = 
     need('balance');
     return { nations: listValues('nation') };
   });
-  resource('nation', '/admin/api/map/nations', ([id]) => id!, false);
+  resource('nation', '/admin/api/map/nations', ([id]) => id!);
   on('GET', '/admin/api/map/provinces', () => {
     need('balance');
     return { provinces: listValues('province') };
@@ -678,6 +678,20 @@ export function createMockTransport(opts: { role?: Role; latencyMs?: number } = 
       log(action === 'pause' ? 'game.pause' : 'game.resume', `game:${id}`);
       return { ok: true };
     });
+  on('POST', '/admin/api/games/:id/players/:nation/ai', ([id, nation], b) => {
+    need('moderator');
+    const g = gameOr(id!);
+    if (g.game.status === 'ended' || g.game.status === 'lobby')
+      throw new ApiError(409, 'Partie introuvable ou hébergée ailleurs', 'game_unavailable');
+    const p = g.players.find((x) => x.nationId === nation);
+    if (!p?.userId)
+      throw new ApiError(404, 'Aucun joueur humain ne tient cette nation', 'no_player');
+    const ai = b.ai === true;
+    p.isAi = ai;
+    p.aiForced = ai;
+    log(ai ? 'game.player_ai' : 'game.player_restore', `game:${id}`, null, { nationId: nation });
+    return { player: { nationId: p.nationId, userId: p.userId, isAi: ai, aiForced: ai } };
+  });
   on('POST', '/admin/api/games/:id/event', ([id], b) => {
     need('moderator');
     const g = gameOr(id!);

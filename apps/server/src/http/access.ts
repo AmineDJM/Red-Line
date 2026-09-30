@@ -1,4 +1,4 @@
-import { and, eq } from 'drizzle-orm';
+import { and, eq, ne, sql } from 'drizzle-orm';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import { hasRole } from '@redline/shared';
@@ -51,4 +51,28 @@ export async function gameAccess(
     started &&
     (hasRole(auth.user.role, 'moderator') || !!member || (row.mode === 'multi' && !row.isPrivate));
   return { row, member: member ?? null, canSpectate };
+}
+
+/** Quota de parties non terminées créées par un joueur (protection de la mémoire et du processeur). */
+export async function assertCreationQuota(
+  ctx: AppContext,
+  auth: AuthState,
+  mode: 'solo' | 'multi',
+): Promise<void> {
+  if (hasRole(auth.user.role, 'moderator')) return;
+  const max =
+    mode === 'solo' ? ctx.options.maxActiveSoloPerUser : ctx.options.maxActiveMultiPerUser;
+  const [r] = await ctx.db
+    .select({ n: sql<number>`count(*)::int` })
+    .from(games)
+    .where(and(eq(games.createdBy, auth.user.id), eq(games.mode, mode), ne(games.status, 'ended')));
+  if ((r?.n ?? 0) >= max) {
+    throw new HttpError(
+      429,
+      'too_many_games',
+      mode === 'solo'
+        ? `Vous avez déjà ${max} parties solo en cours : reprenez-en une avant d'en créer une nouvelle.`
+        : `Vous avez déjà créé ${max} parties multijoueur en cours.`,
+    );
+  }
 }

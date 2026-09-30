@@ -1,5 +1,5 @@
 /** Parties en direct : liste, détail, pause et reprise, joueurs, événements mondiaux. */
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type CSSProperties } from 'react';
 import { DAY, HOUR, MINUTE, WorldEventBodySchema, type AdminGame } from '@redline/shared';
 import { useSession } from '../context';
 import type { WorldEventId } from '../api/types';
@@ -29,6 +29,7 @@ import { href, navigate } from '../lib/router';
 import { matches } from '../lib/search';
 
 const REFRESH_S = 10;
+type AiLevel = 'easy' | 'normal' | 'hard';
 const EVENTS = WorldEventBodySchema.shape.event.options as readonly WorldEventId[];
 
 /** Temps de jeu (ms) → « J3 14:20 ». */
@@ -101,7 +102,7 @@ export function GamesScreen({ id }: { id?: string }) {
       {error && <ErrorBox message={error} onRetry={() => void reload()} />}
       <div
         className={`split-list ${id ? 'has-sel' : ''}`}
-        style={{ gridTemplateColumns: 'minmax(0, 1.25fr) minmax(0, 1fr)' }}
+        style={{ '--split-cols': 'minmax(0, 1.25fr) minmax(0, 1fr)' } as CSSProperties}
       >
         <Win
           title={T.games.title}
@@ -223,6 +224,7 @@ function GameDetail({
   const [event, setEvent] = useState<WorldEventId>('oil_crisis');
   const [message, setMessage] = useState('');
   const [params, setParams] = useState<Record<string, string>>({});
+  const [aiLevel, setAiLevel] = useState<AiLevel>('normal');
 
   const act = async (pause: boolean) => {
     if (
@@ -271,6 +273,41 @@ function GameDetail({
       });
       toast(fmt(T.games.eventSent, { name, game: g.game.name }));
       setMessage('');
+    } catch (e) {
+      toast(errorMessage(e, T.roles.moderator), 'error');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  /** IA imposée à la place d'un joueur, ou nation rendue à son joueur. */
+  const setAi = async (p: AdminGame['players'][number], ai: boolean) => {
+    const nation = nations.get(p.nationId)?.name ?? p.nationId;
+    const player = p.userName ?? '?';
+    if (
+      !(await confirm({
+        title: ai ? T.games.giveAi : T.games.giveBack,
+        message: fmt(ai ? T.games.giveAiConfirm : T.games.giveBackConfirm, {
+          nation,
+          player,
+          level: T.games.aiLevels[aiLevel],
+        }),
+        danger: ai,
+        confirm: ai ? T.games.giveAi : T.games.giveBack,
+      }))
+    )
+      return;
+    setBusy(true);
+    try {
+      await api.setPlayerAi(g.game.id, p.nationId, ai, aiLevel);
+      onChanged({
+        ...g,
+        players: g.players.map((x) =>
+          x.nationId === p.nationId ? { ...x, isAi: ai, aiForced: ai } : x,
+        ),
+      });
+      toast(fmt(ai ? T.games.aiGiven : T.games.givenBack, { nation, player }));
+      reload();
     } catch (e) {
       toast(errorMessage(e, T.roles.moderator), 'error');
     } finally {
@@ -336,6 +373,26 @@ function GameDetail({
           )}
         </dl>
         <SectionTitle n={g.players.length}>{T.games.players}</SectionTitle>
+        {live && g.players.some((p) => p.userId) && (
+          <div className="row-wrap" style={{ marginBottom: 8, alignItems: 'center', gap: 8 }}>
+            <label className="dim small" htmlFor="ai-level">
+              {T.games.aiLevel}
+            </label>
+            <select
+              id="ai-level"
+              className="input"
+              style={{ width: 'auto' }}
+              value={aiLevel}
+              onChange={(e) => setAiLevel(e.target.value as AiLevel)}
+            >
+              {(['easy', 'normal', 'hard'] as const).map((l) => (
+                <option key={l} value={l}>
+                  {T.games.aiLevels[l]}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         <DataTable
           rows={g.players}
           rowKey={(p) => p.nationId}
@@ -357,14 +414,34 @@ function GameDetail({
               key: 'u',
               label: T.users.name,
               sort: (p) => p.userName ?? '',
-              render: (p) => p.userName ?? <span className="dim">—</span>,
+              render: (p) =>
+                p.userName ? (
+                  <span title={p.connected ? T.games.online : T.games.offline}>
+                    <span
+                      aria-hidden
+                      style={{
+                        display: 'inline-block',
+                        width: 7,
+                        height: 7,
+                        borderRadius: 4,
+                        marginRight: 6,
+                        background: p.connected ? 'var(--t-green)' : 'var(--t-dim, #556)',
+                      }}
+                    />
+                    {p.userName}
+                  </span>
+                ) : (
+                  <span className="dim">—</span>
+                ),
             },
             {
               key: 'k',
               label: '',
               align: 'right',
               render: (p) =>
-                p.isAi ? (
+                p.aiForced ? (
+                  <Badge tone="crit">{T.games.aiForced}</Badge>
+                ) : p.isAi ? (
                   <Badge tone={p.userName ? 'violet' : 'off'}>
                     {p.userName ? T.games.aiReplacement : T.games.aiPlayer}
                   </Badge>
@@ -372,10 +449,37 @@ function GameDetail({
                   <Badge tone="ok">{T.games.human}</Badge>
                 ),
             },
+            {
+              key: 'a',
+              label: '',
+              align: 'right',
+              render: (p) =>
+                !live || !p.userId ? null : p.aiForced || p.isAi ? (
+                  <Button
+                    small
+                    disabled={busy}
+                    title={T.games.giveBack}
+                    aria-label={`${T.games.giveBack} (${nations.get(p.nationId)?.name ?? p.nationId})`}
+                    onClick={() => void setAi(p, false)}
+                  >
+                    <Icon name="undo" size={12} /> {T.games.giveBackShort}
+                  </Button>
+                ) : (
+                  <Button
+                    small
+                    disabled={busy}
+                    title={T.games.giveAi}
+                    aria-label={`${T.games.giveAi} (${nations.get(p.nationId)?.name ?? p.nationId})`}
+                    onClick={() => void setAi(p, true)}
+                  >
+                    <Icon name="orbat" size={12} /> {T.games.giveAiShort}
+                  </Button>
+                ),
+            },
           ]}
         />
         <p className="dim tiny" style={{ marginTop: 8 }}>
-          {T.games.noReplaceRoute}
+          {T.games.replaceHint}
         </p>
         <div className="row" style={{ marginTop: 10 }}>
           <a className="btn btn-sm" href={href({ name: 'chat', gameId: g.game.id })}>

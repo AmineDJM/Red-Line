@@ -3,6 +3,7 @@ import { HOUR, MINUTE, distanceKm } from '@redline/shared';
 import { advanceTo, applyOrder, viewFor } from '../src/index.js';
 import { destroyUnit } from '../src/combat/combat.js';
 import { mil } from '../src/modules/mil/state.js';
+import { takeoff } from '../src/modules/mil/air.js';
 import { settle, cleanTop } from '../src/sim/settle.js';
 import { cityOf } from './fixtures.js';
 import { milSandbox, notesOf } from './mil-fixtures.js';
@@ -144,6 +145,18 @@ describe('aviation : patrouille, carburant, retour à la base', () => {
     settle(s);
     cleanTop(s);
     expect(s.units.u2).toBeUndefined();
+  });
+
+  it('catapultage sans trajet : l’appareil est réinscrit dans l’index spatial', () => {
+    const sea: [number, number] = [7.5, 44];
+    const s = milSandbox([
+      { owner: 'aaa', systemId: 'tst.carrier', pos: sea }, // u1
+      { owner: 'aaa', systemId: 'tst.navyjet', pos: sea }, // u2
+    ]);
+    expect(s.rt.reg.has('u2')).toBe(false);
+    takeoff(s, s.units.u2!, mil(s).ms.u2!);
+    expect(s.units.u2!.off).toBe(false);
+    expect(s.rt.reg.has('u2')).toBe(true);
   });
 
   it('rebase vers une autre base aérienne ; déplacement simple vers un terrain ami = changement de base', () => {

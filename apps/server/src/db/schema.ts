@@ -112,7 +112,8 @@ export const catalogChanges = pgTable(
 // ───────────────────────────── Parties ─────────────────────────────
 
 export type GameStatus = 'lobby' | 'running' | 'paused' | 'ended';
-export type PauseReason = 'player' | 'admin' | 'error';
+/** 'idle' : partie solo mise en pause automatiquement en l'absence du joueur (reprise à son retour). */
+export type PauseReason = 'player' | 'admin' | 'error' | 'idle';
 
 export const games = pgTable(
   'games',
@@ -180,6 +181,8 @@ export const gamePlayers = pgTable(
     lastActiveAt: tz('last_active_at'),
     /** Depuis quand une IA remplace le joueur inactif. */
     aiSince: tz('ai_since'),
+    /** IA imposée par l'administration : le retour du joueur ne la retire pas. */
+    aiForced: boolean('ai_forced').notNull().default(false),
   },
   (t) => [
     primaryKey({ columns: [t.gameId, t.slot] }),

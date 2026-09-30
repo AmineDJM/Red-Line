@@ -304,10 +304,14 @@ export function handleOth(state: EngineState, d: { u: string }): void {
   const r =
     (s.sensor?.rangeKm ?? s.detectionRangeKm) * modifier(state, u.owner, 'sensors.radarRange');
   const here = posOf(state, u);
-  for (const o of unitsNear(state, here, r)) {
-    if (o.owner === u.owner || !atWar(state, u.owner, o.owner)) continue;
+  // Filtre pur (camp, milieu) avant le calcul de distance : même liste, bien moins de calculs.
+  const pre = (o: Unit): boolean => {
+    if (o.owner === u.owner || !atWar(state, u.owner, o.owner)) return false;
+    const m = sysOf(state, o).movement;
+    return m === 'air' || m === 'sea';
+  };
+  for (const o of unitsNear(state, here, r, pre)) {
     const os = sysOf(state, o);
-    if (os.movement !== 'air' && os.movement !== 'sea') continue;
     if (isHiddenSub(state, o)) continue;
     if (os.stealth > 0 && roll(state) < os.stealth * (1 - (s.sensor?.stealthDetect ?? 0))) continue;
     snapshot(state, u.owner, o, 1);

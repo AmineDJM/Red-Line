@@ -10,3 +10,5 @@ test-results
 tools/**/.cache
 .pgdata
 .claude/worktrees/
+data/basemap/*.br
+data/basemap/*.gz

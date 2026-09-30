@@ -41,6 +41,14 @@ const EnvSchema = z.object({
   VAPID_SUBJECT: z.string().min(1).optional(),
   /** Dossier des documents légaux (défaut : apps/server/legal). */
   LEGAL_DIR: z.string().optional(),
+  /**
+   * En-tête portant l'IP réelle du client, posé par le proxy de confiance (Render + Cloudflare :
+   * cf-connecting-ip). Absent : adresse de la connexion (X-Forwarded-For de gauche, falsifiable).
+   */
+  CLIENT_IP_HEADER: z
+    .string()
+    .regex(/^[a-zA-Z0-9-]+$/)
+    .optional(),
 });
 
 export interface Config {
@@ -72,6 +80,8 @@ export interface Config {
   vapid: { publicKey: string; privateKey: string } | null;
   vapidSubject: string;
   legalDir: string;
+  /** En-tête (minuscules) de l'IP réelle du client, ou null. */
+  clientIpHeader: string | null;
 }
 
 const DEV_SECRET = 'redline-dev-secret-ne-pas-utiliser-en-production';
@@ -145,5 +155,6 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     vapidSubject:
       e.VAPID_SUBJECT ?? (e.PUBLIC_URL ? e.PUBLIC_URL : 'mailto:noreply@redline.invalid'),
     legalDir: abs(e.LEGAL_DIR ?? join(SERVER_ROOT, 'legal')),
+    clientIpHeader: e.CLIENT_IP_HEADER?.toLowerCase() ?? null,
   };
 }

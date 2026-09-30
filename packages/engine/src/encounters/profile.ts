@@ -187,20 +187,81 @@ function stealthDetect(state: EngineState, obs: Unit): number {
   return Math.min(1, sd * modifier(state, obs.owner, 'sensors.stealthDetect'));
 }
 
+/**
+ * Mémo des grandeurs de détection par unité, actif pendant une série d'évaluations de paires
+ * (refreshUnitPairs) : ces évaluations ne modifient ni l'état militaire, ni les modificateurs, ni les
+ * unités, donc chaque grandeur est constante pendant la série. Mêmes fonctions, mêmes valeurs.
+ */
+interface SightMemo {
+  detect?: number;
+  sonar?: number;
+  sd?: number;
+  hidden?: boolean;
+  emitting?: boolean;
+}
+let sightMemo: Map<string, SightMemo> | null = null;
+
+/** Exécute fn avec le mémo de détection actif (réentrant). */
+export function withSightMemo(fn: () => void): void {
+  if (sightMemo) {
+    fn();
+    return;
+  }
+  sightMemo = new Map();
+  try {
+    fn();
+  } finally {
+    sightMemo = null;
+  }
+}
+
+function memoOf(u: Unit): SightMemo | null {
+  if (!sightMemo) return null;
+  let m = sightMemo.get(u.id);
+  if (!m) sightMemo.set(u.id, (m = {}));
+  return m;
+}
+
+function hiddenM(state: EngineState, u: Unit): boolean {
+  const m = memoOf(u);
+  if (!m) return isHiddenSub(state, u);
+  return (m.hidden ??= isHiddenSub(state, u));
+}
+function sonarM(state: EngineState, u: Unit): number {
+  const m = memoOf(u);
+  if (!m) return sonarKm(state, u);
+  return (m.sonar ??= sonarKm(state, u));
+}
+function detectM(state: EngineState, u: Unit): number {
+  const m = memoOf(u);
+  if (!m) return detectKm(state, u);
+  return (m.detect ??= detectKm(state, u));
+}
+function stealthDetectM(state: EngineState, u: Unit): number {
+  const m = memoOf(u);
+  if (!m) return stealthDetect(state, u);
+  return (m.sd ??= stealthDetect(state, u));
+}
+function emittingM(state: EngineState, u: Unit): boolean {
+  const m = memoOf(u);
+  if (!m) return isEmitting(state, u);
+  return (m.emitting ??= isEmitting(state, u));
+}
+
 /** Portée à laquelle `obs` détecte `tgt` (furtivité, sonar, brouilleur en émission), 0 si jamais. */
 export function sightRangeKm(state: EngineState, obs: Unit, tgt: Unit): number {
   if (tgt.off || obs.off) return 0;
   const ts = sysOf(state, tgt);
-  if (isHiddenSub(state, tgt)) {
-    const r = sonarKm(state, obs);
+  if (hiddenM(state, tgt)) {
+    const r = sonarM(state, obs);
     if (r <= 0) return 0;
-    return r * (1 - ts.stealth * (1 - stealthDetect(state, obs)));
+    return r * (1 - ts.stealth * (1 - stealthDetectM(state, obs)));
   }
-  const d = detectKm(state, obs);
+  const d = detectM(state, obs);
   if (d <= 0) return 0;
-  let r = ts.stealth > 0 ? d * (1 - ts.stealth * (1 - stealthDetect(state, obs))) : d;
+  let r = ts.stealth > 0 ? d * (1 - ts.stealth * (1 - stealthDetectM(state, obs))) : d;
   // Un brouilleur qui émet se trahit : il est repéré par quiconque se trouve dans sa zone d'effet.
-  if (isEmitting(state, tgt)) r = Math.max(r, ts.detectionRangeKm);
+  if (emittingM(state, tgt)) r = Math.max(r, ts.detectionRangeKm);
   return r;
 }
 
@@ -270,7 +331,7 @@ export function noFlyViolation(state: EngineState, u: Unit): string | null {
   const sys = sysOf(state, u);
   if (sys.movement !== 'air' || isLanded(state, u)) return null;
   const nav = wi(state.world).nav;
-  const pid = nav.cellProv.get(nav.cellAt(unitPosAt(state, u, state.time)));
+  const pid = nav.cellProv.get(nav.cellOfPos(unitPosAt(state, u, state.time)));
   if (!pid || !board(state).noFly[pid]) return null;
   const owner = state.provinces[pid]?.owner;
   if (!owner || owner === u.owner) return null;

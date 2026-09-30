@@ -10,6 +10,7 @@ import { HttpError, checkRole } from '../auth/auth.js';
 import { asset, scenarioSummary, type StaticAsset } from '../data/loader.js';
 import { metaOf } from '../host/game-host.js';
 import { parseBody, unavailable } from './util.js';
+import { assertCreationQuota } from './access.js';
 
 /** Réponse JSON pré-calculée, avec ETag, compression gzip et cache. */
 export function sendAsset(req: FastifyRequest, reply: FastifyReply, a: StaticAsset, type: string) {
@@ -37,6 +38,11 @@ export function tilesInfo(ctx: AppContext): { satellite: string; maxzoom: number
   }
   return null;
 }
+
+/** Création de partie : coûteuse (monde complet, ~200 IA), limitée par IP. */
+export const createLimit = (ctx: AppContext) => ({
+  rateLimit: { max: ctx.options.createRateLimitPerMin, timeWindow: '1 minute' },
+});
 
 export async function publicRoutes(app: FastifyInstance, ctx: AppContext): Promise<void> {
   const { db, data, auth, host, worlds } = ctx;
@@ -107,9 +113,11 @@ export async function publicRoutes(app: FastifyInstance, ctx: AppContext): Promi
     scenarios: ctx.store.current().scenarios.map(scenarioSummary),
   }));
 
-  app.post('/api/games', async (req, reply) => {
-    const { user } = await requireUser(req, reply);
+  app.post('/api/games', { config: createLimit(ctx) }, async (req, reply) => {
+    const auth = await requireUser(req, reply);
+    const { user } = auth;
     const body = parseBody(CreateGameBodySchema, req.body);
+    await assertCreationQuota(ctx, auth, 'solo');
     const r = worlds.unavailableReason();
     if (r) throw unavailable(r.code, r.message);
     const cur = ctx.store.current();

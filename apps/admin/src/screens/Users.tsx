@@ -1,5 +1,5 @@
 /** Utilisateurs : recherche, rôles, bannissement, sourdine, empreintes, parties et achats. */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { ROLES, type Role } from '@redline/shared';
 import { useSession } from '../context';
 import type { AdminUser, UserDetail } from '../api/types';
@@ -64,7 +64,7 @@ export function UsersScreen({ id }: { id?: string }) {
       <PageHead title={T.users.title} sub={T.users.sub} />
       <div
         className={`split-list ${id ? 'has-sel' : ''}`}
-        style={{ gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.1fr)' }}
+        style={{ '--split-cols': 'minmax(0, 1fr) minmax(0, 1.1fr)' } as CSSProperties}
       >
         <Win
           title={T.users.title}
