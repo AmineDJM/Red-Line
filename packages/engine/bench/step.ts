@@ -17,6 +17,7 @@ console.log('départ', s.time / HOUR, 'h', stateHash(s));
 const end = s.time + Number(hoursS) * HOUR;
 const step = Number(stepS) * HOUR;
 const t0 = performance.now();
+const c0 = process.cpuUsage();
 while (s.time < end) {
   const t = performance.now();
   const notes = advanceTo(s, Math.min(end, s.time + step));
@@ -26,4 +27,12 @@ while (s.time < end) {
       `${Object.keys(s.pairs).length} paires, ${s.queue.length} événements`,
   );
 }
-console.log('total', (performance.now() - t0).toFixed(0), 'ms', 'empreinte', stateHash(s));
+const cpu = process.cpuUsage(c0);
+console.log(
+  'total',
+  (performance.now() - t0).toFixed(0),
+  'ms (CPU',
+  ((cpu.user + cpu.system) / 1000).toFixed(0),
+  'ms) empreinte',
+  stateHash(s),
+);

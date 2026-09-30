@@ -30,6 +30,12 @@ function lngIndex(band: number, lng: number): number {
   return Math.min(n - 1, Math.floor((x / 360) * n));
 }
 
+/** Case contenant un point. */
+export function pointCell(p: LngLat): number {
+  const b = bandOf(p[1]);
+  return b * 1000 + lngIndex(b, p[0]);
+}
+
 /** Cases couvrant entièrement la calotte de centre `c` et de rayon `rKm` (boîte englobante exacte). */
 export function coverCap(c: LngLat, rKm: number, out: Set<number>): void {
   const r = rKm / EARTH_RADIUS_KM;

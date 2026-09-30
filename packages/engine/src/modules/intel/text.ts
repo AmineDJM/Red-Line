@@ -12,6 +12,7 @@ import {
 } from '@redline/shared';
 import type { EngineState } from '../../state/types.js';
 import { wi } from '../../state/world.js';
+import { nearestCity } from '../../state/cities.js';
 import { pick, roll } from './levels.js';
 
 /**
@@ -95,15 +96,10 @@ export function nearestProvince(
   state: EngineState,
   at: LngLat,
 ): { pid: ProvinceId; name: string; d: number } | null {
-  const w = wi(state.world);
-  let best: { pid: ProvinceId; name: string; d: number } | null = null;
-  for (const pid of w.provIds) {
-    if (!state.provinces[pid]) continue;
-    const def = w.provById.get(pid)!;
-    const d = distanceKm(def.cityPoint, at);
-    if (!best || d < best.d) best = { pid, name: def.name, d };
-  }
-  return best;
+  // Index spatial des villes (même résultat que le parcours de toutes les provinces).
+  const best = nearestCity(state.world, at, (pid) => !!state.provinces[pid]);
+  if (!best) return null;
+  return { pid: best.pid, name: wi(state.world).provById.get(best.pid)!.name, d: best.d };
 }
 
 export function sectorOf(state: EngineState, at: LngLat): string {

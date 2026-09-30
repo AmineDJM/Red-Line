@@ -59,7 +59,8 @@ export function setMovement(
 
 /** Les villes proches de l'unité réévaluent leur capture (arrêt / départ d'un capteur). */
 export function markNearCities(state: EngineState, u: Unit): void {
-  for (const key of sortedSet(state.rt.pairsOf.get(u.id))) {
+  // Ajouts à un ensemble retraité dans l'ordre trié par settle : pas de tri ici.
+  for (const key of state.rt.pairsOf.get(u.id) ?? []) {
     if (!key.includes('#')) continue;
     const pair = state.pairs[key];
     if (!pair || pair.d > Math.max(CAPTURE_RADIUS_KM, state.world.balance.combat.groundContactKm))
@@ -128,15 +129,81 @@ export function handleTerritory(state: EngineState, ev: Extract<GameEvent, { k: 
   if (next) schedule(state, { k: 'terr', t: next.t, u: u.id, v: u.mv, i: ev.i + 1 });
 }
 
+/**
+ * Cache des derniers calculs de passages (clé : contenu exact du départ et des segments). L'IA calcule
+ * le trajet d'une unité pour vérifier qu'il ne viole pas un neutre, puis donne l'ordre : le moteur
+ * recalculait alors exactement les mêmes passages. Résultat identique bit à bit (fonction pure du
+ * monde et des nombres de la clé) ; une copie est rendue (le tableau est rangé dans l'état).
+ */
+const crossCache = new WeakMap<object, Map<string, Crossing[]>>();
+const CROSS_CACHE_MAX = 256;
+
+function crossKey(start: LngLat, legs: Leg[]): string {
+  let k = `${start[0]},${start[1]}`;
+  for (const l of legs) {
+    k += `|${l.from[0]},${l.from[1]},${l.to[0]},${l.to[1]},${l.t0},${l.t1}`;
+  }
+  return k;
+}
+
 /** Passages de frontières de provinces le long d'un trajet (échantillonnage puis dichotomie). */
 export function computeCrossings(state: EngineState, start: LngLat, legs: Leg[]): Crossing[] {
+  const nav = wi(state.world).nav;
+  let cache = crossCache.get(nav);
+  if (!cache) crossCache.set(nav, (cache = new Map()));
+  const key = crossKey(start, legs);
+  let out = cache.get(key);
+  if (!out) {
+    out = crossingsOf(state, start, legs)!;
+    if (cache.size >= CROSS_CACHE_MAX) cache.clear();
+    cache.set(key, out);
+  }
+  return out.map((c) => ({ t: c.t, p: c.p }));
+}
+
+/**
+ * Le trajet entre-t-il dans une province pour laquelle `hit` est vrai ? Mêmes passages que
+ * computeCrossings, mais arrêt au premier passage concerné ; un calcul complet est mis en cache (l'ordre
+ * qui suit souvent cette vérification le réutilise).
+ */
+export function crossingHits(
+  state: EngineState,
+  start: LngLat,
+  legs: Leg[],
+  hit: (p: ProvinceId) => boolean,
+): boolean {
+  const nav = wi(state.world).nav;
+  let cache = crossCache.get(nav);
+  if (!cache) crossCache.set(nav, (cache = new Map()));
+  const key = crossKey(start, legs);
+  const done = cache.get(key);
+  if (done) return done.some((c) => !!c.p && hit(c.p));
+  let found = false;
+  const out = crossingsOf(state, start, legs, (c) => (found = !!c.p && hit(c.p)));
+  if (out) {
+    if (cache.size >= CROSS_CACHE_MAX) cache.clear();
+    cache.set(key, out);
+  }
+  return found;
+}
+
+function crossingsOf(
+  state: EngineState,
+  start: LngLat,
+  legs: Leg[],
+  stop?: (c: Crossing) => boolean,
+): Crossing[] | null {
   const nav = wi(state.world).nav;
   const provAt = (p: LngLat): ProvinceId | '' => nav.cellProv.get(nav.cellAt(p)) ?? '';
   const step = nav.edgeKm * 0.5;
   const out: Crossing[] = [];
+  const push = (c: Crossing): boolean => {
+    out.push(c);
+    return !!stop && stop(c);
+  };
   let prev = provAt(start);
   // Un trajet qui commence en territoire étranger compte comme une entrée (unité posée ou arrêtée là).
-  if (prev && legs.length > 0) out.push({ t: legs[0]!.t0, p: prev });
+  if (prev && legs.length > 0 && push({ t: legs[0]!.t0, p: prev })) return null;
   for (const leg of legs) {
     const d = distanceKm(leg.from, leg.to);
     if (d < 1e-6 || leg.t1 <= leg.t0) continue;
@@ -158,10 +225,10 @@ export function computeCrossings(state: EngineState, start: LngLat, legs: Leg[])
           else hi = mid;
         }
         const ph = provAt(at(hi));
-        out.push({ t: hi, p: ph });
+        if (push({ t: hi, p: ph })) return null;
         prev = ph;
         if (ph !== pk) {
-          out.push({ t: tk, p: pk });
+          if (push({ t: tk, p: pk })) return null;
           prev = pk;
         }
       }

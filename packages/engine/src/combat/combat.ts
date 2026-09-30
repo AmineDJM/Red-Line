@@ -56,8 +56,11 @@ function validTargets(state: EngineState, u: Unit): TargetCand[] {
   if (w.max <= 0) return [];
   if (isEmbarked(state, u, state.time)) return [];
   const sys = sysOf(state, u);
-  const out: TargetCand[] = [];
-  for (const key of sortedSet(state.rt.pairsOf.get(u.id))) {
+  const out: (TargetCand & { key: string })[] = [];
+  const keys = state.rt.pairsOf.get(u.id);
+  if (!keys) return out;
+  // Filtres purs, puis tri des seules paires retenues (même ordre que le parcours trié).
+  for (const key of keys) {
     if (key.includes('#')) continue;
     const pair = state.pairs[key];
     if (!pair) continue;
@@ -68,8 +71,9 @@ function validTargets(state: EngineState, u: Unit): TargetCand[] {
     if (sightLevel(state, u.owner, o.id) === 0) continue;
     if (u.stance === 'hold' && u.target !== o.id) continue;
     if (!hostile(state, u, o)) continue;
-    out.push({ unit: o, d: pair.d });
+    out.push({ unit: o, d: pair.d, key });
   }
+  if (out.length > 1) out.sort((a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0));
   return out;
 }
 
@@ -279,7 +283,8 @@ export function inflict(state: EngineState, by: Unit | null, tgt: Unit, dmg: num
 /** Le défenseur est-il dans une ville de sa nation (≤ groundContactKm du point de ville) ? */
 export function inOwnCity(state: EngineState, u: Unit): boolean {
   const gc = state.world.balance.combat.groundContactKm;
-  for (const key of sortedSet(state.rt.pairsOf.get(u.id))) {
+  // « Existe-t-il… » : l'ordre de parcours est sans effet (pas de tri).
+  for (const key of state.rt.pairsOf.get(u.id) ?? []) {
     const h = key.indexOf('#');
     if (h < 0) continue;
     const pair = state.pairs[key];

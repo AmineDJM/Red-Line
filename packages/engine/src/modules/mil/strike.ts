@@ -13,7 +13,7 @@ import {
 } from '@redline/shared';
 import type { OrderResult, World } from '../../api.js';
 import { destroyUnit, inflict, jammingFor, retireUnit, roundDamage } from '../../combat/combat.js';
-import { refreshUnitPairs, unitPairKey } from '../../encounters/pairs.js';
+import { otherOf, refreshUnitPairs, unitPairKey } from '../../encounters/pairs.js';
 import {
   ceasefire,
   hostile,
@@ -387,7 +387,8 @@ function warnLaunch(state: EngineState, M: Unit, st: MissileSt): void {
   const aud = new Set<NationId>([M.owner]);
   const cls = st.cls;
   if (cls === 'ballistic' || cls === 'hypersonic') {
-    for (const id of sortedKeys(state.units)) {
+    // Construction d'un ensemble (trié ensuite) : l'ordre de parcours est sans effet.
+    for (const id in state.units) {
       const u = state.units[id]!;
       if (u.owner === M.owner || u.role) continue;
       const s = sysOf(state, u);
@@ -490,7 +491,20 @@ export function scheduleInterceptions(state: EngineState, I: Unit): void {
   }
   if (!any) return;
   const w = weaponRange(state, I);
-  for (const mid of Object.keys(m.msl).sort()) {
+  // Seules les salves en paire avec l'intercepteur comptent : on parcourt le plus petit des deux
+  // ensembles, puis on trie (même ordre que le parcours trié de toutes les salves).
+  const pk = state.rt.pairsOf.get(I.id);
+  let mids: string[];
+  if (pk && pk.size < Object.keys(m.msl).length) {
+    mids = [];
+    for (const key of pk) {
+      if (key.includes('#')) continue;
+      const other = otherOf(key, I.id);
+      if (m.msl[other]) mids.push(other);
+    }
+    mids.sort();
+  } else mids = Object.keys(m.msl).sort();
+  for (const mid of mids) {
     const M = state.units[mid];
     if (!M || M.owner === I.owner) continue;
     const pair = state.pairs[unitPairKey(I.id, mid)];

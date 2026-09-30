@@ -34,8 +34,15 @@ export function isAsat(s: WeaponSystem): boolean {
   return s.category === 'space' && (s.roles.includes('asat') || /(^|[.-])asat($|-)/.test(s.id));
 }
 
+const earlyWarning = new WeakMap<WeaponSystem, boolean>();
+
 export function isEarlyWarning(s: WeaponSystem): boolean {
-  return s.sensor?.kind === 'early_warning' || /early-warning/.test(s.id);
+  let v = earlyWarning.get(s);
+  if (v === undefined) {
+    v = s.sensor?.kind === 'early_warning' || /early-warning/.test(s.id);
+    earlyWarning.set(s, v);
+  }
+  return v;
 }
 
 /** Satellite : type de capteur (optique, radar, écoute, alerte avancée). */

@@ -9,6 +9,7 @@ import { planAir, planSurface, type SurfaceSegments } from '../nav/plan.js';
 import { provincesOf, sysOf, unitPosAt } from '../state/access.js';
 import type { EngineState, Unit } from '../state/types.js';
 import { wi } from '../state/world.js';
+import { ownCityWithin } from '../state/cities.js';
 import { airBasePos, airRadiusKm } from '../encounters/profile.js';
 
 export type UnitPlan = { legs: Leg[] } | { error: OrderErrorCode };
@@ -17,7 +18,8 @@ export type UnitPlan = { legs: Leg[] } | { error: OrderErrorCode };
 export function nearestOwnedCityKm(state: EngineState, n: NationId, p: LngLat): number {
   let best = Infinity;
   const w = wi(state.world);
-  for (const pid of provincesOf(state, n)) {
+  // Minimum : l'ordre de parcours est sans effet (pas de tri).
+  for (const pid of state.rt.provsOf.get(n) ?? []) {
     const d = distanceKm(w.provById.get(pid)!.cityPoint, p);
     if (d < best) best = d;
   }
@@ -33,7 +35,7 @@ export function airCanReach(state: EngineState, u: Unit, to: LngLat): boolean {
   if (r === null) return true;
   const base = airBasePos(state, u);
   if (base) return distanceKm(base, to) <= airRadiusKm(state, u);
-  return nearestOwnedCityKm(state, u.owner, to) <= r;
+  return ownCityWithin(state, u.owner, to, r);
 }
 
 /** Calcule le trajet d'une unité vers un point, à partir de sa position à l'instant courant. */
