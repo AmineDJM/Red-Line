@@ -44,6 +44,8 @@ export interface ModuleHooks {
   onUnitSpawned?(state: EngineState, u: Unit): void;
   onProvinceCaptured?(state: EngineState, pid: ProvinceId, from: NationId, to: NationId): void;
   onWarDeclared?(state: EngineState, a: NationId, b: NationId): void;
+  /** Après chaque ordre accepté (activité des joueurs : chef d'alliance inactif…). */
+  onOrder?(state: EngineState, n: NationId, order: Order): void;
   /** Autorisation de produire (recherche, licence, embargo, bâtiment…) : code d'erreur ou null. */
   canProduce?(
     state: EngineState,
@@ -92,6 +94,13 @@ export interface SharedBoard {
   nuclearAuth: Record<NationId, true>;
   /** eco : nations en mobilisation générale. */
   mobilized: Record<NationId, true>;
+  /**
+   * diplo : droits de passage, clé "a>b" (a peut entrer chez b sans déclarer la guerre) → fin (temps de jeu).
+   * Alliances avec droit de passage, retrait après la paix, cessez-le-feu.
+   */
+  passage?: Record<string, number>;
+  /** diplo : conditions de victoire propres à la partie (setup.victory), sinon balance.victory. */
+  victory?: { provinceShare: number; allEnemyCapitals: boolean };
 }
 
 export interface EngineModule {

@@ -149,6 +149,46 @@ export const BalanceSchema = z.object({
       veto: z.boolean().default(true),
       rotatingSeats: z.number().int().min(0).default(3),
       leaderInactiveDays: z.number().positive().default(3),
+      // ——— Réglages fins (optionnels ; valeurs par défaut dans packages/engine/src/modules/diplo/config.ts) ———
+      reputationStart: z.number().min(0).max(100).optional(),
+      /** Délai avant l'entrée en guerre des alliés (défense mutuelle), heures de jeu. */
+      mutualDefenseDelayHours: z.number().min(0).optional(),
+      /** Durée des votes internes d'alliance, heures de jeu. */
+      allianceVoteHours: z.number().positive().optional(),
+      /** Délai de retrait des troupes après la paix (droit de passage temporaire), heures de jeu. */
+      peaceGraceHours: z.number().min(0).optional(),
+      /** Durée d'un cessez-le-feu négocié, jours de jeu. */
+      ceasefireDays: z.number().positive().optional(),
+      ceasefireViolationStability: z.number().min(0).optional(),
+      ceasefireViolationReputation: z.number().min(0).optional(),
+      aggressionReputation: z.number().min(0).optional(),
+      proposalsPerNation: z.number().int().min(1).optional(),
+      /** Durée d'effet des résolutions adoptées, jours de jeu, par type. */
+      resolutionDays: z.record(z.string(), z.number().min(0)).optional(),
+      /** Multiplicateur de revenus commerciaux sous sanctions (board.sanctions). */
+      sanctionsIncomeFactor: z.number().min(0).max(1).optional(),
+      sanctionsStabilityPerDay: z.number().min(0).optional(),
+      condemnationStability: z.number().min(0).optional(),
+      condemnationReputation: z.number().min(0).optional(),
+      /** Unités de casques bleus déployées par province visée. */
+      peacekeepersPerProvince: z.number().int().min(0).optional(),
+      leaveAllianceStability: z.number().min(0).optional(),
+      leaveAllianceReputation: z.number().min(0).optional(),
+      /** Courtiser un neutre : aide de référence = argent du neutre × ce facteur. */
+      courtRefShare: z.number().positive().optional(),
+      /** Inclinaison à partir de laquelle un neutre IA rejoint l'alliance. */
+      courtJoinLeaning: z.number().min(0).max(1).optional(),
+      leaningDecayPerDay: z.number().min(0).optional(),
+      /** Financement de rebelles : montant de référence = argent de la victime × ce facteur. */
+      fundRebelsRefShare: z.number().positive().optional(),
+      fundRebelsUnrestPerRef: z.number().min(0).optional(),
+      /** Coût relatif du financement pour un prétendant d'un territoire disputé (0,5 = moitié prix). */
+      claimantFundingDiscount: z.number().positive().max(1).optional(),
+      mercenaryCostFactor: z.number().positive().optional(),
+      mercenaryDays: z.number().positive().optional(),
+      /** Système utilisé pour les rebelles, mercenaires et casques bleus (défaut : infanterie du catalogue). */
+      irregularSystemId: z.string().optional(),
+      newsKeep: z.number().int().min(10).optional(),
     })
     .optional(),
   stability: z
@@ -156,6 +196,36 @@ export const BalanceSchema = z.object({
       start: z.number().min(0).max(100).default(70),
       coupThreshold: z.number().min(0).max(100).default(15),
       revoltThreshold: z.number().min(0).max(100).default(30),
+      // ——— Réglages fins (optionnels ; valeurs par défaut dans packages/engine/src/modules/diplo/config.ts) ———
+      /** Sous ce seuil, la production et les revenus baissent (jusqu'à lowMinFactor à 0). */
+      lowThreshold: z.number().min(0).max(100).optional(),
+      lowMinFactor: z.number().min(0).max(1).optional(),
+      recoveryPerDay: z.number().min(0).optional(),
+      lossPerUnit: z.number().min(0).optional(),
+      lossCapPerDay: z.number().min(0).optional(),
+      provinceLost: z.number().min(0).optional(),
+      capitalLost: z.number().min(0).optional(),
+      provinceGained: z.number().min(0).optional(),
+      warWearinessPerDay: z.number().min(0).optional(),
+      nuclearVictim: z.number().min(0).optional(),
+      nuclearUser: z.number().min(0).optional(),
+      nuclearWorld: z.number().min(0).optional(),
+      refugeePerDay: z.number().min(0).optional(),
+      refugeeCapPerDay: z.number().min(0).optional(),
+      /** Probabilité de coup d'État par jour à stabilité nulle (proportionnelle sous le seuil). */
+      coupChancePerDay: z.number().min(0).max(1).optional(),
+      coupResetTo: z.number().min(0).max(100).optional(),
+      /** Un coup d'État contre un joueur humain fait passer sa nation à l'IA (sinon : changement de politique). */
+      coupPlayerToAi: z.boolean().optional(),
+      /** Probabilité de révolte par jour (province instable) à stabilité nulle. */
+      revoltChancePerDay: z.number().min(0).max(1).optional(),
+      /** Part des révoltes qui tournent au soulèvement armé (unités rebelles). */
+      armedUprisingChance: z.number().min(0).max(1).optional(),
+      rebelUnits: z.number().int().min(0).optional(),
+      rebelDays: z.number().positive().optional(),
+      disputedCaptureTension: z.number().min(0).optional(),
+      disputedTensionDriftPerDay: z.number().min(0).optional(),
+      unrestDecayPerDay: z.number().min(0).optional(),
     })
     .optional(),
   /** Armée de départ par nation jouable, posée autour de la capitale (repli si pas d'ORBAT). */

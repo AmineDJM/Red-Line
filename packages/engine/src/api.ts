@@ -63,6 +63,14 @@ export interface GameSetup {
   speed?: number;
   /** Conditions de victoire propres à la partie. */
   victory?: { provinceShare: number; allEnemyCapitals: boolean };
+  /** Règles du Conseil de sécurité propres à la partie (sinon balance.diplomacy). */
+  diplomacy?: {
+    majority?: 'simple' | 'two_thirds';
+    veto?: boolean;
+    voteWindowRealHours?: number;
+    councilEveryDays?: number;
+    rotatingSeats?: number;
+  };
 }
 
 /** Commandes système : serveur ou administration, jamais un client. */
