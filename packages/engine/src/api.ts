@@ -4,7 +4,11 @@
  * Les fonctions qui prennent un GameState le modifient en place (le serveur possède l'état).
  */
 import type {
+  AlertLevel,
   Balance,
+  Orbat,
+  ResearchNode,
+  ScenarioFile,
   GameNotification,
   GameTime,
   MapData,
@@ -23,6 +27,16 @@ export interface World {
   readonly balance: Balance;
   /** Index internes précalculés (grille de navigation, provinces par cellule…). Opaque. */
   readonly internal: unknown;
+  // ——— Phases 2+ ———
+  readonly research?: ReadonlyMap<string, ResearchNode>;
+  /** ORBAT par jeu (« 2025 », « 1985 ») puis par nation. */
+  readonly orbats?: ReadonlyMap<string, ReadonlyMap<NationId, Orbat>>;
+}
+
+/** Données supplémentaires de buildWorld (phases 2+). */
+export interface WorldExtras {
+  research?: ResearchNode[];
+  orbats?: Record<string, Orbat[]>;
 }
 
 export interface PlayerSetup {
@@ -42,6 +56,47 @@ export interface GameSetup {
   nationIds?: NationId[];
   /** Unités placées explicitement (bac à sable, tests). Si fourni, remplace l'armée de départ. */
   units?: { owner: NationId; systemId: string; pos: [number, number]; count?: number }[];
+  // ——— Phases 2+ ———
+  /** Scénario (année, jeu d'ORBAT, surcharges d'équilibrage). */
+  scenario?: ScenarioFile;
+  /** Vitesse de la partie (conversion des délais en heures réelles : vote du Conseil). */
+  speed?: number;
+  /** Conditions de victoire propres à la partie. */
+  victory?: { provinceShare: number; allEnemyCapitals: boolean };
+}
+
+/** Commandes système : serveur ou administration, jamais un client. */
+export type SystemCommand =
+  | { kind: 'setAi'; nationId: NationId; isAi: boolean; aiLevel?: 'easy' | 'normal' | 'hard' }
+  | { kind: 'addPlayer'; nationId: NationId }
+  | {
+      kind: 'accelerate';
+      nationId: NationId;
+      target: { type: 'production' | 'research' | 'build' | 'repair'; id: string };
+      hours: number;
+    }
+  | {
+      kind: 'worldEvent';
+      event: 'oil_crisis' | 'emergency_council' | 'market_crash' | 'pandemic' | 'arms_fair';
+      message?: string;
+      params?: Record<string, number>;
+    }
+  | { kind: 'grant'; nationId: NationId; money?: number; resources?: Record<string, number> };
+
+export interface GameStats {
+  nations: Record<
+    NationId,
+    {
+      provincesStart: number;
+      provincesEnd: number;
+      conquered: number;
+      kills: number;
+      losses: number;
+      spentUsd: number;
+      bestUnits: { systemId: string; kills: number }[];
+    }
+  >;
+  alertLevel: AlertLevel;
 }
 
 /** État sérialisable d'une partie. Structure interne au moteur. */
@@ -57,7 +112,12 @@ export interface OrderResult {
   message?: string;
 }
 
-export type BuildWorld = (map: MapData, catalog: WeaponSystem[], balance: Balance) => World;
+export type BuildWorld = (
+  map: MapData,
+  catalog: WeaponSystem[],
+  balance: Balance,
+  extras?: WorldExtras,
+) => World;
 export type CreateGame = (world: World, setup: GameSetup) => GameState;
 /** Applique l'ordre d'une nation à l'instant `state.time` (le serveur appelle advanceTo avant). */
 export type ApplyOrder = (state: GameState, nationId: NationId, order: Order) => OrderResult;
@@ -76,3 +136,11 @@ export type SerializeState = (state: GameState) => Uint8Array;
 export type DeserializeState = (world: World, bytes: Uint8Array) => GameState;
 /** Empreinte déterministe de l'état (tests de rejeu). */
 export type StateHash = (state: GameState) => string;
+
+// ——— Phases 2+ ———
+export type ApplySystem = (state: GameState, cmd: SystemCommand) => OrderResult;
+/** Vue publique (spectateur) : carte, frontières, unités visibles de tous, actualité ; aucun secret. */
+export type PublicView = (state: GameState) => PlayerView;
+/** Propriétaires des provinces (timelapse). */
+export type OwnersFrame = (state: GameState) => Record<string, NationId>;
+export type Stats = (state: GameState) => GameStats;

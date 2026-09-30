@@ -1,0 +1,3045 @@
+{
+  "note": "Liste de référence des identifiants du catalogue. Les agents catalogue et ORBAT utilisent EXACTEMENT ces identifiants ; tout ajout suit la convention doctrine.slug.",
+  "systems": [
+    {
+      "id": "us.f-5e",
+      "name": "F-5E Tiger II",
+      "category": "fighter",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "existing"
+    },
+    {
+      "id": "us.f-16",
+      "name": "F-16 Fighting Falcon",
+      "category": "fighter",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "existing"
+    },
+    {
+      "id": "us.f-15e",
+      "name": "F-15E Strike Eagle",
+      "category": "fighter",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "existing"
+    },
+    {
+      "id": "us.fa-18e",
+      "name": "F/A-18E Super Hornet",
+      "category": "fighter",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "existing"
+    },
+    {
+      "id": "us.f-22",
+      "name": "F-22 Raptor",
+      "category": "fighter",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "existing"
+    },
+    {
+      "id": "us.f-35",
+      "name": "F-35 Lightning II",
+      "category": "fighter",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "existing"
+    },
+    {
+      "id": "ru.mig-21",
+      "name": "MiG-21",
+      "category": "fighter",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "ru.mig-29",
+      "name": "MiG-29",
+      "category": "fighter",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "ru.mig-31",
+      "name": "MiG-31",
+      "category": "fighter",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "ru.su-27",
+      "name": "Su-27",
+      "category": "fighter",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "ru.su-30",
+      "name": "Su-30",
+      "category": "fighter",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "ru.su-35",
+      "name": "Su-35",
+      "category": "fighter",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "ru.su-57",
+      "name": "Su-57",
+      "category": "fighter",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "cn.j-7",
+      "name": "J-7",
+      "category": "fighter",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "existing"
+    },
+    {
+      "id": "cn.j-10",
+      "name": "J-10",
+      "category": "fighter",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "existing"
+    },
+    {
+      "id": "cn.j-11",
+      "name": "J-11",
+      "category": "fighter",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "existing"
+    },
+    {
+      "id": "cn.j-16",
+      "name": "J-16",
+      "category": "fighter",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "existing"
+    },
+    {
+      "id": "cn.j-20",
+      "name": "J-20",
+      "category": "fighter",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "existing"
+    },
+    {
+      "id": "cn.j-35",
+      "name": "J-35",
+      "category": "fighter",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "existing"
+    },
+    {
+      "id": "eu.mirage-2000",
+      "name": "Mirage 2000",
+      "category": "fighter",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "existing"
+    },
+    {
+      "id": "eu.tornado",
+      "name": "Tornado",
+      "category": "fighter",
+      "doctrine": "eu",
+      "origin": "DE",
+      "status": "existing"
+    },
+    {
+      "id": "eu.gripen",
+      "name": "JAS 39 Gripen",
+      "category": "fighter",
+      "doctrine": "eu",
+      "origin": "SE",
+      "status": "existing"
+    },
+    {
+      "id": "eu.typhoon",
+      "name": "Eurofighter Typhoon",
+      "category": "fighter",
+      "doctrine": "eu",
+      "origin": "DE",
+      "status": "existing"
+    },
+    {
+      "id": "eu.rafale",
+      "name": "Rafale",
+      "category": "fighter",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "existing"
+    },
+    {
+      "id": "other.jf-17",
+      "name": "JF-17 Thunder",
+      "category": "fighter",
+      "doctrine": "other",
+      "origin": "PK",
+      "status": "existing"
+    },
+    {
+      "id": "other.kf-21",
+      "name": "KF-21 Boramae",
+      "category": "fighter",
+      "doctrine": "other",
+      "origin": "KR",
+      "status": "existing"
+    },
+    {
+      "id": "other.tejas",
+      "name": "Tejas",
+      "category": "fighter",
+      "doctrine": "other",
+      "origin": "IN",
+      "status": "existing"
+    },
+    {
+      "id": "us.patriot",
+      "name": "MIM-104 Patriot",
+      "category": "air_defense",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "existing"
+    },
+    {
+      "id": "ru.s-400",
+      "name": "S-400 Triumf",
+      "category": "air_defense",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "ru.pantsir-s1",
+      "name": "Pantsir-S1",
+      "category": "air_defense",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "eu.mistral",
+      "name": "Mistral",
+      "category": "air_defense",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "existing"
+    },
+    {
+      "id": "ru.krasukha-4",
+      "name": "Krasukha-4",
+      "category": "air_defense",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "us.m1a2-abrams",
+      "name": "M1A2 Abrams",
+      "category": "tank",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "existing"
+    },
+    {
+      "id": "ru.t-90m",
+      "name": "T-90M",
+      "category": "tank",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "cn.type-99a",
+      "name": "Type 99A",
+      "category": "tank",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "existing"
+    },
+    {
+      "id": "eu.leopard-2a7",
+      "name": "Leopard 2A7",
+      "category": "tank",
+      "doctrine": "eu",
+      "origin": "DE",
+      "status": "existing"
+    },
+    {
+      "id": "eu.leclerc",
+      "name": "Leclerc",
+      "category": "tank",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "existing"
+    },
+    {
+      "id": "us.m2-bradley",
+      "name": "M2 Bradley",
+      "category": "ifv",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "existing"
+    },
+    {
+      "id": "ru.bmp-3",
+      "name": "BMP-3",
+      "category": "ifv",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "us.m109-paladin",
+      "name": "M109 Paladin",
+      "category": "artillery",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "existing"
+    },
+    {
+      "id": "ru.2s19-msta",
+      "name": "2S19 Msta-S",
+      "category": "artillery",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "eu.caesar",
+      "name": "CAESAR",
+      "category": "artillery",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "existing"
+    },
+    {
+      "id": "us.mq-9-reaper",
+      "name": "MQ-9 Reaper",
+      "category": "drone",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "existing"
+    },
+    {
+      "id": "ru.orion",
+      "name": "Orion",
+      "category": "drone",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "other.bayraktar-tb2",
+      "name": "Bayraktar TB2",
+      "category": "drone",
+      "doctrine": "other",
+      "origin": "TR",
+      "status": "existing"
+    },
+    {
+      "id": "us.ah-64-apache",
+      "name": "AH-64 Apache",
+      "category": "helicopter",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "existing"
+    },
+    {
+      "id": "ru.ka-52",
+      "name": "Ka-52 Alligator",
+      "category": "helicopter",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "us.infantry-light",
+      "name": "Infanterie légère (États-Unis)",
+      "category": "infantry",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "existing"
+    },
+    {
+      "id": "us.infantry-mech",
+      "name": "Infanterie mécanisée (États-Unis)",
+      "category": "infantry",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "existing"
+    },
+    {
+      "id": "ru.infantry-light",
+      "name": "Infanterie légère (Russie)",
+      "category": "infantry",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "ru.infantry-mech",
+      "name": "Infanterie mécanisée (Russie)",
+      "category": "infantry",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "existing"
+    },
+    {
+      "id": "cn.infantry-light",
+      "name": "Infanterie légère (Chine)",
+      "category": "infantry",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "existing"
+    },
+    {
+      "id": "cn.infantry-mech",
+      "name": "Infanterie mécanisée (Chine)",
+      "category": "infantry",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "existing"
+    },
+    {
+      "id": "eu.infantry-light",
+      "name": "Infanterie légère (Europe)",
+      "category": "infantry",
+      "doctrine": "eu",
+      "origin": "EU",
+      "status": "existing"
+    },
+    {
+      "id": "eu.infantry-mech",
+      "name": "Infanterie mécanisée (Europe)",
+      "category": "infantry",
+      "doctrine": "eu",
+      "origin": "EU",
+      "status": "existing"
+    },
+    {
+      "id": "other.infantry-light",
+      "name": "Infanterie légère (générique)",
+      "category": "infantry",
+      "doctrine": "other",
+      "origin": "XX",
+      "status": "existing"
+    },
+    {
+      "id": "other.infantry-mech",
+      "name": "Infanterie mécanisée (générique)",
+      "category": "infantry",
+      "doctrine": "other",
+      "origin": "XX",
+      "status": "existing"
+    },
+    {
+      "id": "us.b-52h-stratofortress",
+      "name": "B-52H Stratofortress",
+      "category": "bomber",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.b-1b-lancer",
+      "name": "B-1B Lancer",
+      "category": "bomber",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.b-2-spirit",
+      "name": "B-2 Spirit",
+      "category": "bomber",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.b-21-raider",
+      "name": "B-21 Raider",
+      "category": "bomber",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "ru.tu-95ms",
+      "name": "Tu-95MS",
+      "category": "bomber",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.tu-22m3",
+      "name": "Tu-22M3",
+      "category": "bomber",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.tu-160",
+      "name": "Tu-160",
+      "category": "bomber",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "cn.h-6k",
+      "name": "H-6K",
+      "category": "bomber",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.h-20",
+      "name": "H-20",
+      "category": "bomber",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "us.a-10c-thunderbolt-ii",
+      "name": "A-10C Thunderbolt II",
+      "category": "air_support",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.e-3-sentry",
+      "name": "E-3 Sentry",
+      "category": "air_support",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.e-7-wedgetail",
+      "name": "E-7 Wedgetail",
+      "category": "air_support",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.e-2d-hawkeye",
+      "name": "E-2D Hawkeye",
+      "category": "air_support",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.kc-135-stratotanker",
+      "name": "KC-135 Stratotanker",
+      "category": "air_support",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.kc-46-pegasus",
+      "name": "KC-46 Pegasus",
+      "category": "air_support",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.c-17-globemaster-iii",
+      "name": "C-17 Globemaster III",
+      "category": "air_support",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.c-130-hercules",
+      "name": "C-130 Hercules",
+      "category": "air_support",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.ea-18g-growler",
+      "name": "EA-18G Growler",
+      "category": "air_support",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.p-8-poseidon",
+      "name": "P-8 Poseidon",
+      "category": "air_support",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.av-8b-harrier-ii",
+      "name": "AV-8B Harrier II",
+      "category": "air_support",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.f-4-phantom-ii",
+      "name": "F-4 Phantom II",
+      "category": "air_support",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "ru.su-25",
+      "name": "Su-25",
+      "category": "air_support",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.su-34",
+      "name": "Su-34",
+      "category": "air_support",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.su-24",
+      "name": "Su-24",
+      "category": "air_support",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.su-22",
+      "name": "Su-22",
+      "category": "air_support",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.mig-23",
+      "name": "MiG-23",
+      "category": "air_support",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.a-50",
+      "name": "A-50",
+      "category": "air_support",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.il-78",
+      "name": "Il-78",
+      "category": "air_support",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.il-76",
+      "name": "Il-76",
+      "category": "air_support",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.an-26",
+      "name": "An-26",
+      "category": "air_support",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.yak-130",
+      "name": "Yak-130",
+      "category": "air_support",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "cn.kj-500",
+      "name": "KJ-500",
+      "category": "air_support",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.kj-2000",
+      "name": "KJ-2000",
+      "category": "air_support",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.y-20",
+      "name": "Y-20",
+      "category": "air_support",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.yy-20",
+      "name": "YY-20",
+      "category": "air_support",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.y-9",
+      "name": "Y-9",
+      "category": "air_support",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.k-8-karakorum",
+      "name": "K-8 Karakorum",
+      "category": "air_support",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "eu.a400m-atlas",
+      "name": "A400M Atlas",
+      "category": "air_support",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.a330-mrtt",
+      "name": "A330 MRTT",
+      "category": "air_support",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.globaleye",
+      "name": "GlobalEye",
+      "category": "air_support",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.c-295",
+      "name": "C-295",
+      "category": "air_support",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.mirage-f1",
+      "name": "Mirage F1",
+      "category": "air_support",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.mirage-5",
+      "name": "Mirage 5",
+      "category": "air_support",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.alpha-jet",
+      "name": "Alpha Jet",
+      "category": "air_support",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.hawk",
+      "name": "Hawk",
+      "category": "air_support",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "other.fa-50",
+      "name": "FA-50",
+      "category": "air_support",
+      "doctrine": "other",
+      "origin": "KR",
+      "status": "planned"
+    },
+    {
+      "id": "other.a-29-super-tucano",
+      "name": "A-29 Super Tucano",
+      "category": "air_support",
+      "doctrine": "other",
+      "origin": "BR",
+      "status": "planned"
+    },
+    {
+      "id": "other.l-39-albatros",
+      "name": "L-39 Albatros",
+      "category": "air_support",
+      "doctrine": "other",
+      "origin": "CZ",
+      "status": "planned"
+    },
+    {
+      "id": "other.f-14-tomcat",
+      "name": "F-14 Tomcat",
+      "category": "air_support",
+      "doctrine": "other",
+      "origin": "IR",
+      "status": "planned"
+    },
+    {
+      "id": "us.ah-1z-viper",
+      "name": "AH-1Z Viper",
+      "category": "helicopter",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.ah-1-cobra",
+      "name": "AH-1 Cobra",
+      "category": "helicopter",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.uh-60-black-hawk",
+      "name": "UH-60 Black Hawk",
+      "category": "helicopter",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.ch-47-chinook",
+      "name": "CH-47 Chinook",
+      "category": "helicopter",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.mh-60r-seahawk",
+      "name": "MH-60R Seahawk",
+      "category": "helicopter",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.uh-1-huey",
+      "name": "UH-1 Huey",
+      "category": "helicopter",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "ru.mi-28nm",
+      "name": "Mi-28NM",
+      "category": "helicopter",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.mi-24",
+      "name": "Mi-24",
+      "category": "helicopter",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.mi-8",
+      "name": "Mi-8",
+      "category": "helicopter",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.ka-27",
+      "name": "Ka-27",
+      "category": "helicopter",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.mi-2",
+      "name": "Mi-2",
+      "category": "helicopter",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "cn.z-10",
+      "name": "Z-10",
+      "category": "helicopter",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.z-19",
+      "name": "Z-19",
+      "category": "helicopter",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.z-20",
+      "name": "Z-20",
+      "category": "helicopter",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.z-9",
+      "name": "Z-9",
+      "category": "helicopter",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "eu.tigre",
+      "name": "Tigre",
+      "category": "helicopter",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.nh90",
+      "name": "NH90",
+      "category": "helicopter",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.aw101",
+      "name": "AW101",
+      "category": "helicopter",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.gazelle",
+      "name": "Gazelle",
+      "category": "helicopter",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.sa-330-puma",
+      "name": "SA 330 Puma",
+      "category": "helicopter",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "other.t129-atak",
+      "name": "T129 ATAK",
+      "category": "helicopter",
+      "doctrine": "other",
+      "origin": "TR",
+      "status": "planned"
+    },
+    {
+      "id": "us.rq-4-global-hawk",
+      "name": "RQ-4 Global Hawk",
+      "category": "drone",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.mq-1c-gray-eagle",
+      "name": "MQ-1C Gray Eagle",
+      "category": "drone",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.switchblade-600",
+      "name": "Switchblade 600",
+      "category": "drone",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.scaneagle",
+      "name": "ScanEagle",
+      "category": "drone",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "ru.forpost",
+      "name": "Forpost",
+      "category": "drone",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.s-70-okhotnik",
+      "name": "S-70 Okhotnik",
+      "category": "drone",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.lancet",
+      "name": "Lancet",
+      "category": "drone",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.geran-2",
+      "name": "Geran-2",
+      "category": "drone",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.orlan-10",
+      "name": "Orlan-10",
+      "category": "drone",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "cn.wing-loong-ii",
+      "name": "Wing Loong II",
+      "category": "drone",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.ch-4",
+      "name": "CH-4",
+      "category": "drone",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.ch-5",
+      "name": "CH-5",
+      "category": "drone",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.gj-11",
+      "name": "GJ-11",
+      "category": "drone",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "eu.patroller",
+      "name": "Patroller",
+      "category": "drone",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.eurodrone",
+      "name": "Eurodrone",
+      "category": "drone",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "other.akinci",
+      "name": "Akinci",
+      "category": "drone",
+      "doctrine": "other",
+      "origin": "TR",
+      "status": "planned"
+    },
+    {
+      "id": "other.heron-tp",
+      "name": "Heron TP",
+      "category": "drone",
+      "doctrine": "other",
+      "origin": "IL",
+      "status": "planned"
+    },
+    {
+      "id": "other.harop",
+      "name": "Harop",
+      "category": "drone",
+      "doctrine": "other",
+      "origin": "IL",
+      "status": "planned"
+    },
+    {
+      "id": "other.hermes-900",
+      "name": "Hermes 900",
+      "category": "drone",
+      "doctrine": "other",
+      "origin": "IL",
+      "status": "planned"
+    },
+    {
+      "id": "other.shahed-136",
+      "name": "Shahed-136",
+      "category": "drone",
+      "doctrine": "other",
+      "origin": "IR",
+      "status": "planned"
+    },
+    {
+      "id": "other.mohajer-6",
+      "name": "Mohajer-6",
+      "category": "drone",
+      "doctrine": "other",
+      "origin": "IR",
+      "status": "planned"
+    },
+    {
+      "id": "us.m60-patton",
+      "name": "M60 Patton",
+      "category": "tank",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "ru.t-72b3",
+      "name": "T-72B3",
+      "category": "tank",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.t-80bvm",
+      "name": "T-80BVM",
+      "category": "tank",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.t-14-armata",
+      "name": "T-14 Armata",
+      "category": "tank",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.t-72",
+      "name": "T-72",
+      "category": "tank",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.t-62",
+      "name": "T-62",
+      "category": "tank",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.t-55",
+      "name": "T-55",
+      "category": "tank",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "cn.type-96b",
+      "name": "Type 96B",
+      "category": "tank",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.type-15",
+      "name": "Type 15",
+      "category": "tank",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.vt4",
+      "name": "VT4",
+      "category": "tank",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.type-59",
+      "name": "Type 59",
+      "category": "tank",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "eu.challenger-3",
+      "name": "Challenger 3",
+      "category": "tank",
+      "doctrine": "eu",
+      "origin": "DE",
+      "status": "planned"
+    },
+    {
+      "id": "eu.challenger-2",
+      "name": "Challenger 2",
+      "category": "tank",
+      "doctrine": "eu",
+      "origin": "DE",
+      "status": "planned"
+    },
+    {
+      "id": "eu.ariete",
+      "name": "Ariete",
+      "category": "tank",
+      "doctrine": "eu",
+      "origin": "DE",
+      "status": "planned"
+    },
+    {
+      "id": "eu.leopard-1",
+      "name": "Leopard 1",
+      "category": "tank",
+      "doctrine": "eu",
+      "origin": "DE",
+      "status": "planned"
+    },
+    {
+      "id": "eu.amx-30",
+      "name": "AMX-30",
+      "category": "tank",
+      "doctrine": "eu",
+      "origin": "DE",
+      "status": "planned"
+    },
+    {
+      "id": "other.k2-black-panther",
+      "name": "K2 Black Panther",
+      "category": "tank",
+      "doctrine": "other",
+      "origin": "KR",
+      "status": "planned"
+    },
+    {
+      "id": "other.merkava-iv",
+      "name": "Merkava IV",
+      "category": "tank",
+      "doctrine": "other",
+      "origin": "IL",
+      "status": "planned"
+    },
+    {
+      "id": "other.altay",
+      "name": "Altay",
+      "category": "tank",
+      "doctrine": "other",
+      "origin": "TR",
+      "status": "planned"
+    },
+    {
+      "id": "other.arjun",
+      "name": "Arjun",
+      "category": "tank",
+      "doctrine": "other",
+      "origin": "IN",
+      "status": "planned"
+    },
+    {
+      "id": "other.al-khalid",
+      "name": "Al-Khalid",
+      "category": "tank",
+      "doctrine": "other",
+      "origin": "PK",
+      "status": "planned"
+    },
+    {
+      "id": "other.pt-91-twardy",
+      "name": "PT-91 Twardy",
+      "category": "tank",
+      "doctrine": "other",
+      "origin": "PL",
+      "status": "planned"
+    },
+    {
+      "id": "us.stryker",
+      "name": "Stryker",
+      "category": "ifv",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.ampv",
+      "name": "AMPV",
+      "category": "ifv",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.m113",
+      "name": "M113",
+      "category": "ifv",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "ru.bmp-2",
+      "name": "BMP-2",
+      "category": "ifv",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.bmp-1",
+      "name": "BMP-1",
+      "category": "ifv",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.btr-82a",
+      "name": "BTR-82A",
+      "category": "ifv",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.btr-80",
+      "name": "BTR-80",
+      "category": "ifv",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.brdm-2",
+      "name": "BRDM-2",
+      "category": "ifv",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.mt-lb",
+      "name": "MT-LB",
+      "category": "ifv",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "cn.zbd-04a",
+      "name": "ZBD-04A",
+      "category": "ifv",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.zbl-08",
+      "name": "ZBL-08",
+      "category": "ifv",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.type-63",
+      "name": "Type 63",
+      "category": "ifv",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "eu.cv90",
+      "name": "CV90",
+      "category": "ifv",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.puma",
+      "name": "Puma",
+      "category": "ifv",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.vbci",
+      "name": "VBCI",
+      "category": "ifv",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.boxer",
+      "name": "Boxer",
+      "category": "ifv",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.patria-amv",
+      "name": "Patria AMV",
+      "category": "ifv",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.vab",
+      "name": "VAB",
+      "category": "ifv",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "other.namer",
+      "name": "Namer",
+      "category": "ifv",
+      "doctrine": "other",
+      "origin": "IL",
+      "status": "planned"
+    },
+    {
+      "id": "us.m777",
+      "name": "M777",
+      "category": "artillery",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.m142-himars",
+      "name": "M142 HIMARS",
+      "category": "artillery",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.m270-mlrs",
+      "name": "M270 MLRS",
+      "category": "artillery",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "ru.2s35-koalitsiya",
+      "name": "2S35 Koalitsiya",
+      "category": "artillery",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.2s7-pion",
+      "name": "2S7 Pion",
+      "category": "artillery",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.2s1-gvozdika",
+      "name": "2S1 Gvozdika",
+      "category": "artillery",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.2s3-akatsiya",
+      "name": "2S3 Akatsiya",
+      "category": "artillery",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.d-30",
+      "name": "D-30",
+      "category": "artillery",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.bm-21-grad",
+      "name": "BM-21 Grad",
+      "category": "artillery",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.bm-27-uragan",
+      "name": "BM-27 Uragan",
+      "category": "artillery",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.bm-30-smerch",
+      "name": "BM-30 Smerch",
+      "category": "artillery",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.tornado-s",
+      "name": "Tornado-S",
+      "category": "artillery",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.tos-1a",
+      "name": "TOS-1A",
+      "category": "artillery",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "cn.plz-05",
+      "name": "PLZ-05",
+      "category": "artillery",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.phl-03",
+      "name": "PHL-03",
+      "category": "artillery",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.phl-16",
+      "name": "PHL-16",
+      "category": "artillery",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "eu.pzh-2000",
+      "name": "PzH 2000",
+      "category": "artillery",
+      "doctrine": "eu",
+      "origin": "DE",
+      "status": "planned"
+    },
+    {
+      "id": "eu.archer",
+      "name": "Archer",
+      "category": "artillery",
+      "doctrine": "eu",
+      "origin": "DE",
+      "status": "planned"
+    },
+    {
+      "id": "other.k9-thunder",
+      "name": "K9 Thunder",
+      "category": "artillery",
+      "doctrine": "other",
+      "origin": "KR",
+      "status": "planned"
+    },
+    {
+      "id": "other.k239-chunmoo",
+      "name": "K239 Chunmoo",
+      "category": "artillery",
+      "doctrine": "other",
+      "origin": "KR",
+      "status": "planned"
+    },
+    {
+      "id": "other.pinaka",
+      "name": "Pinaka",
+      "category": "artillery",
+      "doctrine": "other",
+      "origin": "IN",
+      "status": "planned"
+    },
+    {
+      "id": "other.fajr-5",
+      "name": "Fajr-5",
+      "category": "artillery",
+      "doctrine": "other",
+      "origin": "IR",
+      "status": "planned"
+    },
+    {
+      "id": "us.nasams",
+      "name": "NASAMS",
+      "category": "air_defense",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.avenger",
+      "name": "Avenger",
+      "category": "air_defense",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.thaad",
+      "name": "THAAD",
+      "category": "air_defense",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.stinger",
+      "name": "Stinger",
+      "category": "air_defense",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.mim-23-hawk",
+      "name": "MIM-23 Hawk",
+      "category": "air_defense",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.ew-jammer",
+      "name": "EW jammer",
+      "category": "air_defense",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "ru.tor-m2",
+      "name": "Tor-M2",
+      "category": "air_defense",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.buk-m3",
+      "name": "Buk-M3",
+      "category": "air_defense",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.s-300pmu2",
+      "name": "S-300PMU2",
+      "category": "air_defense",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.s-500",
+      "name": "S-500",
+      "category": "air_defense",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.igla",
+      "name": "Igla",
+      "category": "air_defense",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.s-75-dvina",
+      "name": "S-75 Dvina",
+      "category": "air_defense",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.s-125-neva",
+      "name": "S-125 Neva",
+      "category": "air_defense",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.2k12-kub",
+      "name": "2K12 Kub",
+      "category": "air_defense",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.9k33-osa",
+      "name": "9K33 Osa",
+      "category": "air_defense",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.zsu-23-4-shilka",
+      "name": "ZSU-23-4 Shilka",
+      "category": "air_defense",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.strela-10",
+      "name": "Strela-10",
+      "category": "air_defense",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "cn.hq-9b",
+      "name": "HQ-9B",
+      "category": "air_defense",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.hq-16",
+      "name": "HQ-16",
+      "category": "air_defense",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.hq-17",
+      "name": "HQ-17",
+      "category": "air_defense",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.hq-7",
+      "name": "HQ-7",
+      "category": "air_defense",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.ew-jammer",
+      "name": "EW jammer",
+      "category": "air_defense",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "eu.samp-t",
+      "name": "SAMP/T",
+      "category": "air_defense",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.iris-t-slm",
+      "name": "IRIS-T SLM",
+      "category": "air_defense",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.skynex",
+      "name": "Skynex",
+      "category": "air_defense",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.gepard",
+      "name": "Gepard",
+      "category": "air_defense",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.crotale",
+      "name": "Crotale",
+      "category": "air_defense",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "other.iron-dome",
+      "name": "Iron Dome",
+      "category": "air_defense",
+      "doctrine": "other",
+      "origin": "IL",
+      "status": "planned"
+    },
+    {
+      "id": "other.davids-sling",
+      "name": "Davids Sling",
+      "category": "air_defense",
+      "doctrine": "other",
+      "origin": "IL",
+      "status": "planned"
+    },
+    {
+      "id": "other.arrow-3",
+      "name": "Arrow 3",
+      "category": "air_defense",
+      "doctrine": "other",
+      "origin": "IL",
+      "status": "planned"
+    },
+    {
+      "id": "other.bavar-373",
+      "name": "Bavar-373",
+      "category": "air_defense",
+      "doctrine": "other",
+      "origin": "IR",
+      "status": "planned"
+    },
+    {
+      "id": "other.akash",
+      "name": "Akash",
+      "category": "air_defense",
+      "doctrine": "other",
+      "origin": "IN",
+      "status": "planned"
+    },
+    {
+      "id": "us.tomahawk",
+      "name": "Tomahawk",
+      "category": "strike_missile",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.jassm-er",
+      "name": "JASSM-ER",
+      "category": "strike_missile",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.atacms",
+      "name": "ATACMS",
+      "category": "strike_missile",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.prsm",
+      "name": "PrSM",
+      "category": "strike_missile",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.agm-88-harm",
+      "name": "AGM-88 HARM",
+      "category": "strike_missile",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.harpoon",
+      "name": "Harpoon",
+      "category": "strike_missile",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "ru.kalibr",
+      "name": "Kalibr",
+      "category": "strike_missile",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.iskander-m",
+      "name": "Iskander-M",
+      "category": "strike_missile",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.kh-101",
+      "name": "Kh-101",
+      "category": "strike_missile",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.kinzhal",
+      "name": "Kinzhal",
+      "category": "strike_missile",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.zircon",
+      "name": "Zircon",
+      "category": "strike_missile",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.p-800-oniks",
+      "name": "P-800 Oniks",
+      "category": "strike_missile",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.tochka-u",
+      "name": "Tochka-U",
+      "category": "strike_missile",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.scud-b",
+      "name": "Scud-B",
+      "category": "strike_missile",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "cn.cj-10",
+      "name": "CJ-10",
+      "category": "strike_missile",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.df-15",
+      "name": "DF-15",
+      "category": "strike_missile",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.df-17",
+      "name": "DF-17",
+      "category": "strike_missile",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.df-21d",
+      "name": "DF-21D",
+      "category": "strike_missile",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.df-26",
+      "name": "DF-26",
+      "category": "strike_missile",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.yj-18",
+      "name": "YJ-18",
+      "category": "strike_missile",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.c-802",
+      "name": "C-802",
+      "category": "strike_missile",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "eu.scalp-storm-shadow",
+      "name": "SCALP/Storm Shadow",
+      "category": "strike_missile",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.exocet",
+      "name": "Exocet",
+      "category": "strike_missile",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.taurus-kepd-350",
+      "name": "Taurus KEPD 350",
+      "category": "strike_missile",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.nsm",
+      "name": "NSM",
+      "category": "strike_missile",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "other.brahmos",
+      "name": "BrahMos",
+      "category": "strike_missile",
+      "doctrine": "other",
+      "origin": "IN",
+      "status": "planned"
+    },
+    {
+      "id": "other.fateh-110",
+      "name": "Fateh-110",
+      "category": "strike_missile",
+      "doctrine": "other",
+      "origin": "IR",
+      "status": "planned"
+    },
+    {
+      "id": "other.kheibar-shekan",
+      "name": "Kheibar Shekan",
+      "category": "strike_missile",
+      "doctrine": "other",
+      "origin": "IR",
+      "status": "planned"
+    },
+    {
+      "id": "other.shahab-3",
+      "name": "Shahab-3",
+      "category": "strike_missile",
+      "doctrine": "other",
+      "origin": "IR",
+      "status": "planned"
+    },
+    {
+      "id": "other.kn-23",
+      "name": "KN-23",
+      "category": "strike_missile",
+      "doctrine": "other",
+      "origin": "KP",
+      "status": "planned"
+    },
+    {
+      "id": "us.minuteman-iii",
+      "name": "Minuteman III",
+      "category": "nuclear",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.trident-ii-d5",
+      "name": "Trident II D5",
+      "category": "nuclear",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.b61-12",
+      "name": "B61-12",
+      "category": "nuclear",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "ru.yars",
+      "name": "Yars",
+      "category": "nuclear",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.sarmat",
+      "name": "Sarmat",
+      "category": "nuclear",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.bulava",
+      "name": "Bulava",
+      "category": "nuclear",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "cn.df-41",
+      "name": "DF-41",
+      "category": "nuclear",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.jl-3",
+      "name": "JL-3",
+      "category": "nuclear",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "eu.m51",
+      "name": "M51",
+      "category": "nuclear",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.asmp-a",
+      "name": "ASMP-A",
+      "category": "nuclear",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "other.agni-v",
+      "name": "Agni-V",
+      "category": "nuclear",
+      "doctrine": "other",
+      "origin": "IN",
+      "status": "planned"
+    },
+    {
+      "id": "other.shaheen-iii",
+      "name": "Shaheen-III",
+      "category": "nuclear",
+      "doctrine": "other",
+      "origin": "PK",
+      "status": "planned"
+    },
+    {
+      "id": "other.hwasong-17",
+      "name": "Hwasong-17",
+      "category": "nuclear",
+      "doctrine": "other",
+      "origin": "KP",
+      "status": "planned"
+    },
+    {
+      "id": "other.jericho-iii",
+      "name": "Jericho III",
+      "category": "nuclear",
+      "doctrine": "other",
+      "origin": "IL",
+      "status": "planned"
+    },
+    {
+      "id": "us.arleigh-burke",
+      "name": "Arleigh Burke",
+      "category": "surface_ship",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.gerald-r-ford",
+      "name": "Gerald R. Ford",
+      "category": "surface_ship",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.nimitz",
+      "name": "Nimitz",
+      "category": "surface_ship",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.america",
+      "name": "America",
+      "category": "surface_ship",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.ticonderoga",
+      "name": "Ticonderoga",
+      "category": "surface_ship",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.constellation",
+      "name": "Constellation",
+      "category": "surface_ship",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.lcs",
+      "name": "LCS",
+      "category": "surface_ship",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "ru.admiral-kuznetsov",
+      "name": "Admiral Kuznetsov",
+      "category": "surface_ship",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.admiral-gorshkov",
+      "name": "Admiral Gorshkov",
+      "category": "surface_ship",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.karakurt",
+      "name": "Karakurt",
+      "category": "surface_ship",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.kirov",
+      "name": "Kirov",
+      "category": "surface_ship",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.slava",
+      "name": "Slava",
+      "category": "surface_ship",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.udaloy",
+      "name": "Udaloy",
+      "category": "surface_ship",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.steregushchiy",
+      "name": "Steregushchiy",
+      "category": "surface_ship",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.buyan-m",
+      "name": "Buyan-M",
+      "category": "surface_ship",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.gepard-class",
+      "name": "Gepard class",
+      "category": "surface_ship",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "cn.type-055",
+      "name": "Type 055",
+      "category": "surface_ship",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.type-052d",
+      "name": "Type 052D",
+      "category": "surface_ship",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.type-054a",
+      "name": "Type 054A",
+      "category": "surface_ship",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.type-056",
+      "name": "Type 056",
+      "category": "surface_ship",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.type-022",
+      "name": "Type 022",
+      "category": "surface_ship",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.type-003-fujian",
+      "name": "Type 003 Fujian",
+      "category": "surface_ship",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.liaoning",
+      "name": "Liaoning",
+      "category": "surface_ship",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.shandong",
+      "name": "Shandong",
+      "category": "surface_ship",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.type-075",
+      "name": "Type 075",
+      "category": "surface_ship",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "eu.charles-de-gaulle",
+      "name": "Charles de Gaulle",
+      "category": "surface_ship",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.fremm",
+      "name": "FREMM",
+      "category": "surface_ship",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.horizon",
+      "name": "Horizon",
+      "category": "surface_ship",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.type-45",
+      "name": "Type 45",
+      "category": "surface_ship",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.queen-elizabeth",
+      "name": "Queen Elizabeth",
+      "category": "surface_ship",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.mistral-class",
+      "name": "Mistral class",
+      "category": "surface_ship",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.meko-a-200",
+      "name": "MEKO A-200",
+      "category": "surface_ship",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.gowind",
+      "name": "Gowind",
+      "category": "surface_ship",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "other.sejong-the-great",
+      "name": "Sejong the Great",
+      "category": "surface_ship",
+      "doctrine": "other",
+      "origin": "KR",
+      "status": "planned"
+    },
+    {
+      "id": "other.kolkata",
+      "name": "Kolkata",
+      "category": "surface_ship",
+      "doctrine": "other",
+      "origin": "IN",
+      "status": "planned"
+    },
+    {
+      "id": "other.saar-6",
+      "name": "Saar 6",
+      "category": "surface_ship",
+      "doctrine": "other",
+      "origin": "IL",
+      "status": "planned"
+    },
+    {
+      "id": "us.virginia",
+      "name": "Virginia",
+      "category": "submarine",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.ohio",
+      "name": "Ohio",
+      "category": "submarine",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.columbia",
+      "name": "Columbia",
+      "category": "submarine",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.seawolf",
+      "name": "Seawolf",
+      "category": "submarine",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "ru.yasen-m",
+      "name": "Yasen-M",
+      "category": "submarine",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.borei",
+      "name": "Borei",
+      "category": "submarine",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.kilo",
+      "name": "Kilo",
+      "category": "submarine",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.delta-iv",
+      "name": "Delta IV",
+      "category": "submarine",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "cn.type-093",
+      "name": "Type 093",
+      "category": "submarine",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.type-094",
+      "name": "Type 094",
+      "category": "submarine",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.type-039",
+      "name": "Type 039",
+      "category": "submarine",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "eu.suffren",
+      "name": "Suffren",
+      "category": "submarine",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.astute",
+      "name": "Astute",
+      "category": "submarine",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.type-212",
+      "name": "Type 212",
+      "category": "submarine",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.scorpene",
+      "name": "Scorpene",
+      "category": "submarine",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.triomphant",
+      "name": "Triomphant",
+      "category": "submarine",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.type-209",
+      "name": "Type 209",
+      "category": "submarine",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.type-214",
+      "name": "Type 214",
+      "category": "submarine",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.vanguard",
+      "name": "Vanguard",
+      "category": "submarine",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "other.soryu",
+      "name": "Soryu",
+      "category": "submarine",
+      "doctrine": "other",
+      "origin": "JP",
+      "status": "planned"
+    },
+    {
+      "id": "other.dolphin",
+      "name": "Dolphin",
+      "category": "submarine",
+      "doctrine": "other",
+      "origin": "IL",
+      "status": "planned"
+    },
+    {
+      "id": "other.ghadir",
+      "name": "Ghadir",
+      "category": "submarine",
+      "doctrine": "other",
+      "origin": "IR",
+      "status": "planned"
+    },
+    {
+      "id": "us.marines",
+      "name": "Marines",
+      "category": "infantry",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.special-forces",
+      "name": "Special forces",
+      "category": "infantry",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.airborne",
+      "name": "Airborne",
+      "category": "infantry",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "ru.naval-infantry",
+      "name": "Naval infantry",
+      "category": "infantry",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.spetsnaz",
+      "name": "Spetsnaz",
+      "category": "infantry",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.vdv-airborne",
+      "name": "VDV airborne",
+      "category": "infantry",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "cn.marines",
+      "name": "Marines",
+      "category": "infantry",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.special-forces",
+      "name": "Special forces",
+      "category": "infantry",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.airborne",
+      "name": "Airborne",
+      "category": "infantry",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "eu.marines",
+      "name": "Marines",
+      "category": "infantry",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.special-forces",
+      "name": "Special forces",
+      "category": "infantry",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.airborne",
+      "name": "Airborne",
+      "category": "infantry",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "other.marines",
+      "name": "Marines",
+      "category": "infantry",
+      "doctrine": "other",
+      "origin": "XX",
+      "status": "planned"
+    },
+    {
+      "id": "other.special-forces",
+      "name": "Special forces",
+      "category": "infantry",
+      "doctrine": "other",
+      "origin": "XX",
+      "status": "planned"
+    },
+    {
+      "id": "other.airborne",
+      "name": "Airborne",
+      "category": "infantry",
+      "doctrine": "other",
+      "origin": "XX",
+      "status": "planned"
+    },
+    {
+      "id": "us.optical-recon-satellite",
+      "name": "Optical recon satellite",
+      "category": "space",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.radar-satellite",
+      "name": "Radar satellite",
+      "category": "space",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.sigint-satellite",
+      "name": "SIGINT satellite",
+      "category": "space",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.early-warning-satellite",
+      "name": "Early warning satellite",
+      "category": "space",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.asat",
+      "name": "ASAT",
+      "category": "space",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "ru.optical-recon-satellite",
+      "name": "Optical recon satellite",
+      "category": "space",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.radar-satellite",
+      "name": "Radar satellite",
+      "category": "space",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.sigint-satellite",
+      "name": "SIGINT satellite",
+      "category": "space",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.early-warning-satellite",
+      "name": "Early warning satellite",
+      "category": "space",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.asat",
+      "name": "ASAT",
+      "category": "space",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "cn.optical-recon-satellite",
+      "name": "Optical recon satellite",
+      "category": "space",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.radar-satellite",
+      "name": "Radar satellite",
+      "category": "space",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.sigint-satellite",
+      "name": "SIGINT satellite",
+      "category": "space",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.early-warning-satellite",
+      "name": "Early warning satellite",
+      "category": "space",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.asat",
+      "name": "ASAT",
+      "category": "space",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "eu.optical-recon-satellite",
+      "name": "Optical recon satellite",
+      "category": "space",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.radar-satellite",
+      "name": "Radar satellite",
+      "category": "space",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.sigint-satellite",
+      "name": "SIGINT satellite",
+      "category": "space",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "other.optical-recon-satellite",
+      "name": "Optical recon satellite",
+      "category": "space",
+      "doctrine": "other",
+      "origin": "IN",
+      "status": "planned"
+    },
+    {
+      "id": "other.asat",
+      "name": "ASAT",
+      "category": "space",
+      "doctrine": "other",
+      "origin": "IN",
+      "status": "planned"
+    }
+  ]
+}

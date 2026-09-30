@@ -1,3 +1,4 @@
+import { callHook } from '../modules/registry.js';
 import type { NationId } from '@redline/shared';
 import { atWar, nationUnits, provincesOf, warKey } from './access.js';
 import { addToIndex } from './runtime.js';
@@ -18,4 +19,5 @@ export function declareWar(state: EngineState, a: NationId, b: NationId): void {
     for (const uid of nationUnits(state, n)) state.rt.dirtyCombat.add(uid);
     for (const pid of provincesOf(state, n)) state.rt.dirtyCapture.add(pid);
   }
+  callHook('onWarDeclared', state, a, b);
 }

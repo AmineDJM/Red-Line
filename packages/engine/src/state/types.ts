@@ -159,6 +159,8 @@ export interface StateData {
   know: Record<NationId, Record<UnitId, Contact>>;
   pending: PendingNote[];
   winner: NationId | null;
+  /** États des modules (phases 2+), par identifiant de module. Données sérialisables uniquement. */
+  mods: Record<string, unknown>;
 }
 
 export interface EngineState extends GameState, StateData {

@@ -207,6 +207,12 @@ importers:
       '@redline/shared':
         specifier: workspace:*
         version: link:../shared
+      flag-icons:
+        specifier: ^7.5.0
+        version: 7.5.0
+      i18n-iso-countries:
+        specifier: ^7.14.0
+        version: 7.14.0
       react:
         specifier: ^19.3.0
         version: 19.3.0
@@ -1913,6 +1919,9 @@ packages:
   dfa@1.2.0:
     resolution: {integrity: sha512-ED3jP8saaweFTjeGX8HQPjeC1YYyZs98jGNZx6IiBvxW7JG5v492kamAQB3m2wop07CvU/RQmzcKr6bgcC5D/Q==}
 
+  diacritics@1.3.0:
+    resolution: {integrity: sha512-wlwEkqcsaxvPJML+rDh/2iS824jbREk6DUMUKkEaSlxdYHeS43cClJtsWglvw2RfeXGm6ohKDqsXteJ5sP5enA==}
+
   drizzle-kit@0.31.11:
     resolution: {integrity: sha512-YCYqxTLIB2OCqf6w9/Vef13baBVbwQIPcbT4Y56AfO6B9ajZhDhD8Jkveg/hJvT/iuMloKD/IYYkyMMNhr7Kqg==}
     hasBin: true
@@ -2142,6 +2151,9 @@ packages:
     resolution: {integrity: sha512-sJsgZ1sQH2UDuowPuMKg8az7Qc8F0jnj+SKkFWU/+T0xcFlgV5skgXOGUqmQzOdmW6ALA7AhJINWx3qFBkbLHA==}
     engines: {node: '>=20'}
 
+  flag-icons@7.5.0:
+    resolution: {integrity: sha512-kd+MNXviFIg5hijH766tt+3x76ele1AXlo4zDdCxIvqWZhKt4T83bOtxUOOMlTx/EcFdUMH5yvQgYlFh1EqqFg==}
+
   flatbuffers@25.9.23:
     resolution: {integrity: sha512-MI1qs7Lo4Syw0EOzUl0xjs2lsoeqFku44KpngfIduHBYvzm8h2+7K8YMQh1JtVVVrUvhLpNwqVi4DERegUJhPQ==}
 
@@ -2251,6 +2263,10 @@ packages:
 
   hysnappy@1.1.1:
     resolution: {integrity: sha512-/V9XcN2NtRyWjR4LYMfvnvasVVF8jbT/ej0eofBQjZel91E3D813FQ3mQC6gDSMMTCq/FJh28XHeyqr3I/oBRw==}
+
+  i18n-iso-countries@7.14.0:
+    resolution: {integrity: sha512-nXHJZYtNrfsi1UQbyRqm3Gou431elgLjKl//CYlnBGt5aTWdRPH1PiS2T/p/n8Q8LnqYqzQJik3Q7mkwvLokeg==}
+    engines: {node: '>= 12'}
 
   i18next@26.4.2:
     resolution: {integrity: sha512-RX+R0VLg13IbvRuJSxnqykUFS9vQZTl8wYpWPCIUDWVrSGjsQywB5Y+pjzrkboxGAuYfJZVH1InFTdgBdxq6ug==}
@@ -5346,6 +5362,8 @@ snapshots:
 
   dfa@1.2.0: {}
 
+  diacritics@1.3.0: {}
+
   drizzle-kit@0.31.11:
     dependencies:
       '@drizzle-team/brocli': 0.10.2
@@ -5574,6 +5592,8 @@ snapshots:
       fast-querystring: 1.1.2
       safe-regex2: 5.1.1
 
+  flag-icons@7.5.0: {}
+
   flatbuffers@25.9.23: {}
 
   flatbush@4.6.2:
@@ -5712,6 +5732,10 @@ snapshots:
   hyparquet@1.31.2: {}
 
   hysnappy@1.1.1: {}
+
+  i18n-iso-countries@7.14.0:
+    dependencies:
+      diacritics: 1.3.0
 
   i18next@26.4.2(typescript@5.8.3):
     optionalDependencies:

@@ -1,3 +1,4 @@
+import { MODULES, placeStartingForces } from '../modules/registry.js';
 import {
   DAY,
   MINUTE,
@@ -69,6 +70,7 @@ export function createGameImpl(world: World, setup: GameSetup): EngineState {
     know: {},
     pending: [],
     winner: null,
+    mods: {},
   };
   for (const pid of w.provIds) {
     const def = w.provById.get(pid)!;
@@ -103,6 +105,8 @@ export function createGameImpl(world: World, setup: GameSetup): EngineState {
     addToIndex(state.rt.provsOf, state.provinces[pid]!.owner, pid);
   }
 
+  for (const m of MODULES) m.init?.(state, setup);
+
   if (setup.units) {
     for (const spec of setup.units) {
       if (!inGame.has(spec.owner)) throw new Error(`nation absente de la partie : ${spec.owner}`);
@@ -110,7 +114,7 @@ export function createGameImpl(world: World, setup: GameSetup): EngineState {
       spawnUnit(state, spec.owner, spec.systemId, spec.pos, spec.count);
     }
   } else {
-    for (const n of nationIds) placeArmy(state, n);
+    for (const n of nationIds) if (!placeStartingForces(state, n)) placeArmy(state, n);
   }
 
   schedule(state, { k: 'day', t: DAY });

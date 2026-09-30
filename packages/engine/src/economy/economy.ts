@@ -1,3 +1,4 @@
+import { callHook, firstError, modifier } from '../modules/registry.js';
 import {
   DAY,
   HOUR,
@@ -84,6 +85,7 @@ export function handleDailyTick(state: EngineState): void {
     if (Object.keys(k).length === 0) delete state.know[n];
   }
   schedule(state, { k: 'day', t: state.time + DAY });
+  callHook('onDailyTick', state);
 }
 
 export function canAfford(state: EngineState, n: NationId, sys: WeaponSystem): boolean {
@@ -106,6 +108,8 @@ export function startProduction(
   const sys = state.world.catalog.get(systemId);
   if (!sys || !sys.enabled) return 'invalid_target';
   if (sys.movement === 'sea' && !wi(state.world).seaSpawn.get(pid)) return 'not_allowed';
+  const blocked = firstError(state, n, systemId, pid);
+  if (blocked) return blocked;
   if (!canAfford(state, n, sys)) return 'insufficient_funds';
   const ns = state.nations[n]!;
   ns.money -= sys.cost.money;
@@ -116,7 +120,7 @@ export function startProduction(
     provinceId: pid,
     systemId,
     startedAt: state.time,
-    completesAt: state.time + sys.buildTimeH * HOUR,
+    completesAt: state.time + (sys.buildTimeH * HOUR) / modifier(state, n, 'production.speed'),
   };
   ns.production.push(item);
   schedule(state, { k: 'prod', t: item.completesAt, n, id });

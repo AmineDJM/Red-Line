@@ -10,6 +10,7 @@ import { handleDailyTick, handleProductionComplete } from '../economy/economy.js
 import { handleAiThink } from '../ai/ai.js';
 import { cleanTop, isValid, settle } from './settle.js';
 import { setAudience } from '../view/notify.js';
+import { dispatchModEvent } from '../modules/registry.js';
 
 function dispatch(state: EngineState, ev: GameEvent): void {
   switch (ev.k) {
@@ -34,6 +35,8 @@ function dispatch(state: EngineState, ev: GameEvent): void {
       return handleDailyTick(state);
     case 'ai':
       return handleAiThink(state);
+    case 'mod':
+      return dispatchModEvent(state, ev);
   }
 }
 

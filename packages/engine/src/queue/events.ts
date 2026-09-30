@@ -33,7 +33,9 @@ export type GameEvent =
   /** Tick journalier (économie). */
   | (Base & { k: 'day' })
   /** Réflexion des IA. */
-  | (Base & { k: 'ai' });
+  | (Base & { k: 'ai' })
+  /** Événement d'un module (phases 2+) : voir modules/types.ts. */
+  | (Base & { k: 'mod'; m: 'eco' | 'mil' | 'intel' | 'diplo'; e: string; d?: unknown });
 
 export type EventKind = GameEvent['k'];
 
@@ -50,6 +52,7 @@ export const PRIORITY: Record<EventKind, number> = {
   chase: 7,
   day: 8,
   ai: 9,
+  mod: 5,
 };
 
 type DistributiveOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;

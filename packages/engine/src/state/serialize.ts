@@ -1,3 +1,4 @@
+import { MODULES } from '../modules/registry.js';
 import { decode, encode } from '@msgpack/msgpack';
 import type { World } from '../api.js';
 import { addToIndex } from './runtime.js';
@@ -72,6 +73,8 @@ export function rebuildRuntime(state: EngineState): void {
       addToIndex(rt.pairsOf, b, key);
     }
   }
+  state.mods ??= {};
+  for (const m of MODULES) m.rebuild?.(state);
 }
 
 /** FNV-1a 64 bits (en hexadécimal) calculé sur 4 mots de 16 bits. */

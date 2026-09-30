@@ -6,3 +6,7 @@ export * from './view.js';
 export * from './protocol.js';
 export * from './api.js';
 export * from './geo.js';
+export * from './economy.js';
+export * from './military.js';
+export * from './intel.js';
+export * from './diplomacy.js';

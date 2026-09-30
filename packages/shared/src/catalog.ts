@@ -117,6 +117,102 @@ export const WeaponSystemSchema = z.object({
   illustration: z.string().optional(),
   sheet: WeaponSheetSchema,
   enabled: z.boolean().default(true),
+  // ——— Phases 2+ (tous optionnels) ———
+  /** Libellé d'un élément (« appareil », « char », « bataillon », « navire »…). */
+  unitLabel: z.string().optional(),
+  /** Prix unitaire réel estimé en dollars US (cost.money = prix × unitSize, en dollars). */
+  unitPriceUsd: z.number().min(0).optional(),
+  /** Années de service : scénarios historiques (Guerre froide 1985). */
+  era: z.object({ introduced: z.number().int(), retired: z.number().int().optional() }).optional(),
+  /** Bâtiment requis pour produire (sinon déduit de la catégorie). */
+  requiresBuilding: z
+    .enum([
+      'refinery',
+      'power_plant',
+      'port',
+      'air_base',
+      'military_base',
+      'arms_factory',
+      'research_center',
+    ])
+    .optional(),
+  air: z
+    .object({
+      /** Autonomie en heures de vol. */
+      fuelH: z.number().positive(),
+      refuelable: z.boolean().default(false),
+      carrierCapable: z.boolean().default(false),
+      /** Ravitailleur : carburant transférable (heures de vol cumulées). */
+      tankerFuelH: z.number().min(0).optional(),
+    })
+    .optional(),
+  sensor: z
+    .object({
+      kind: z.enum(['radar', 'aew', 'sonar', 'optical', 'sigint', 'satellite', 'early_warning']),
+      rangeKm: z.number().positive(),
+      /** Capacité à voir les unités furtives (0..1). */
+      stealthDetect: z.number().min(0).max(1).default(0),
+    })
+    .optional(),
+  missile: z
+    .object({
+      kind: z.enum([
+        'cruise',
+        'ballistic',
+        'hypersonic',
+        'antiship',
+        'antiradiation',
+        'icbm',
+        'slbm',
+        'bomb',
+      ]),
+      speedKmh: z.number().positive(),
+      warhead: z.enum(['conventional', 'nuclear']),
+      /** Difficulté d'interception (0 = facile, 1 = quasi impossible). */
+      evasion: z.number().min(0).max(1),
+      /** Rayon d'effet à l'impact (km). */
+      blastKm: z.number().min(0).default(0),
+    })
+    .optional(),
+  interceptor: z
+    .object({
+      /** Classes interceptées : missiles de croisière, balistiques, hypersoniques, drones, roquettes. */
+      against: z.array(
+        z.enum(['cruise', 'ballistic', 'hypersonic', 'drone', 'rocket', 'aircraft']),
+      ),
+      /** Probabilité d'interception par engagement (avant modificateurs). */
+      pk: z.number().min(0).max(1),
+      /** Munitions disponibles avant rechargement. */
+      magazine: z.number().int().min(1),
+    })
+    .optional(),
+  naval: z
+    .object({
+      submerged: z.boolean().default(false),
+      /** Capacité de lutte anti-sous-marine (0..1). */
+      asw: z.number().min(0).max(1).default(0),
+      /** Aéronefs embarqués (porte-avions, porte-hélicoptères). */
+      aircraftCapacity: z.number().int().min(0).default(0),
+      /** Lanceurs de missiles (cellules verticales). */
+      launchCells: z.number().int().min(0).default(0),
+    })
+    .optional(),
+  space: z
+    .object({
+      orbit: z.enum(['leo', 'meo', 'geo']),
+      revisitH: z.number().positive(),
+      swathKm: z.number().positive(),
+    })
+    .optional(),
+  /** Photo réelle : fichier sous /art/photos, crédit et licence (affichés dans la fiche). */
+  photo: z
+    .object({
+      file: z.string(),
+      credit: z.string(),
+      license: z.string(),
+      sourceUrl: z.string().url(),
+    })
+    .optional(),
 });
 export type WeaponSystem = z.infer<typeof WeaponSystemSchema>;
 export type WeaponSystemInput = z.input<typeof WeaponSystemSchema>;

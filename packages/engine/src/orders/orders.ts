@@ -9,6 +9,52 @@ import { airCanReach, planUnitMove } from '../movement/plan-unit.js';
 import { clearTarget, setTarget } from '../combat/combat.js';
 import { startProduction } from '../economy/economy.js';
 import { cleanTop, settle } from '../sim/settle.js';
+import { moduleOrder, moduleSystem } from '../modules/registry.js';
+import type { SystemCommand } from '../api.js';
+
+/** Commande système (serveur, administration). */
+export function applySystemImpl(state: EngineState, cmd: SystemCommand): OrderResult {
+  const res =
+    coreSystem(state, cmd) ??
+    moduleSystem(state, cmd) ??
+    fail('unknown', `Commande inconnue : ${cmd.kind}`);
+  settle(state);
+  cleanTop(state);
+  return res;
+}
+
+function coreSystem(state: EngineState, cmd: SystemCommand): OrderResult | null {
+  switch (cmd.kind) {
+    case 'setAi': {
+      const ns = state.nations[cmd.nationId];
+      if (!ns) return fail('invalid_target', 'Nation absente de la partie.');
+      ns.isAi = cmd.isAi;
+      ns.isPlayer = !cmd.isAi;
+      ns.active = true;
+      if (cmd.aiLevel) ns.aiLevel = cmd.aiLevel;
+      return { ok: true };
+    }
+    case 'addPlayer': {
+      const ns = state.nations[cmd.nationId];
+      if (!ns) return fail('invalid_target', 'Nation absente de la partie.');
+      ns.isAi = false;
+      ns.isPlayer = true;
+      ns.active = true;
+      return { ok: true };
+    }
+    case 'grant': {
+      const ns = state.nations[cmd.nationId];
+      if (!ns) return fail('invalid_target', 'Nation absente de la partie.');
+      ns.money += cmd.money ?? 0;
+      for (const [r, v] of Object.entries(cmd.resources ?? {})) {
+        if (r in ns.res) ns.res[r as keyof typeof ns.res] += v;
+      }
+      return { ok: true };
+    }
+    default:
+      return null;
+  }
+}
 
 function fail(error: OrderErrorCode, message?: string): OrderResult {
   return message ? { ok: false, error, message } : { ok: false, error };
@@ -111,6 +157,10 @@ function dispatchOrder(state: EngineState, n: NationId, order: Order): OrderResu
       const err = startProduction(state, n, order.provinceId, order.systemId);
       return err ? fail(err, messageFor(err)) : { ok: true };
     }
+    default:
+      return (
+        moduleOrder(state, n, order) ?? fail('unknown', `Ordre non pris en charge : ${order.kind}`)
+      );
   }
 }
 

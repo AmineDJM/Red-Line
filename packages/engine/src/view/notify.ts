@@ -1,5 +1,6 @@
 import type { GameNotification, NationId } from '@redline/shared';
 import type { EngineState } from '../state/types.js';
+import { moduleAudience } from '../modules/registry.js';
 
 /** Destinataires des notifications produites par le moteur (null = tout le monde). */
 const audience = new WeakMap<GameNotification, NationId[] | null>();
@@ -39,5 +40,7 @@ function fallback(state: EngineState, nation: NationId, n: GameNotification): bo
       return state.units[n.unitId]?.owner === nation;
     case 'unit_detected':
       return !!state.know[nation]?.[n.unitId];
+    default:
+      return moduleAudience(state, nation, n);
   }
 }

@@ -16,3 +16,4 @@ export {
   type WeaponRow,
 } from './components/WeaponCard.js';
 export { Legend, type LegendItem, type LegendProps } from './components/Legend.js';
+export * from './flags.js';

@@ -550,7 +550,8 @@ export class MockGameConnection extends Emitter implements GameConnection {
       });
       return { ok: true };
     }
-    const units = order.unitIds.map((id) => this.view.units[id]);
+    if (!('unitIds' in order)) return { ok: false, error: 'unknown' };
+    const units = order.unitIds.map((id: string) => this.view.units[id]);
     if (units.some((u) => !u)) return { ok: false, error: 'unknown_unit' };
     if (units.some((u) => u!.owner !== me)) return { ok: false, error: 'not_owner' };
     const upsert: UnitView[] = [];

@@ -1,3 +1,4 @@
+import { callHook } from '../modules/registry.js';
 import { MINUTE, type NationId, type ProvinceId } from '@redline/shared';
 import { atWar, isEmbarked, notify, schedule, sortedSet, sysOf } from '../state/access.js';
 import type { EngineState, Unit } from '../state/types.js';
@@ -99,6 +100,7 @@ export function transferProvince(state: EngineState, pid: ProvinceId, to: Nation
     nf.production = [];
     notify(state, { kind: 'nation_defeated', time: t, nationId: from }, null);
   }
+  callHook('onProvinceCaptured', state, pid, from, to);
   state.rt.dirtyCapture.add(pid);
   for (const key of sortedSet(state.rt.pairsOf.get(provEntity(pid)))) {
     state.rt.dirtyCombat.add(key.slice(key.indexOf('#') + 1));

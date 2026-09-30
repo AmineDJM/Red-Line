@@ -210,8 +210,11 @@ export async function wsGateway(app: FastifyInstance, ctx: AppContext): Promise<
             conn.send({ t: 'error', code: 'game_unavailable', message: 'Partie indisponible' });
           } else if (msg.t === 'order') {
             host.handleOrder(game, conn, msg);
-          } else {
+          } else if (msg.t === 'control') {
             host.handleControl(game, conn, msg);
+          } else {
+            // Messagerie (phase 5) : branchée par le module de chat du serveur.
+            conn.send({ t: 'error', code: 'not_implemented', message: 'Messagerie bientôt disponible' });
           }
         } catch (err) {
           log.error({ err, gameId: ident.gameId }, 'erreur de traitement d’un message WS');

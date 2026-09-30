@@ -1,3 +1,4 @@
+import { modulePublicViews, moduleViews } from '../modules/registry.js';
 import {
   HOUR,
   MINUTE,
@@ -173,7 +174,7 @@ export function viewForImpl(state: EngineState, me: NationId): PlayerView {
     incomePerDay: { money: inc.money - inc.upkeep, ...incomeRes },
     production: ns.production.map((it) => ({ ...it })),
   };
-  return {
+  const view: PlayerView = {
     time: state.time,
     me,
     nations,
@@ -186,4 +187,77 @@ export function viewForImpl(state: EngineState, me: NationId): PlayerView {
       winner: state.winner,
     },
   };
+  moduleViews(state, me, view);
+  return view;
+}
+
+/** Vue publique (spectateur) : frontières, nations, unités de tous au niveau « identifiée », sans secret. */
+export function publicViewImpl(state: EngineState): PlayerView {
+  const w = wi(state.world);
+  const nations: Record<NationId, NationView> = {};
+  for (const id of state.nationIds) {
+    const n = state.nations[id]!;
+    const def = w.nationById.get(id)!;
+    nations[id] = {
+      id,
+      name: def.name,
+      color: def.color,
+      isAi: n.isAi,
+      isPlayer: n.isPlayer,
+      alive: n.alive,
+      provinceCount: n.provinceCount,
+    };
+  }
+  const provinces: Record<string, ProvinceView> = {};
+  for (const pid of sortedKeys(state.provinces)) {
+    const P = state.provinces[pid]!;
+    provinces[pid] = {
+      id: pid,
+      owner: P.owner,
+      capture: P.capture
+        ? { by: P.capture.by, startedAt: P.capture.startedAt, completesAt: P.capture.completesAt }
+        : null,
+      buildings: [...(w.provById.get(pid)?.buildings ?? [])],
+    };
+  }
+  const units: Record<string, UnitView> = {};
+  for (const uid of sortedKeys(state.units)) {
+    const u = state.units[uid]!;
+    const v: UnitView = {
+      id: u.id,
+      owner: u.owner,
+      level: 'identified',
+      pos: u.pos,
+      lastSeen: state.time,
+      uncertaintyKm: 0,
+      systemId: u.sys,
+    };
+    if (u.move) v.move = u.move;
+    units[uid] = v;
+  }
+  const resources = {} as Record<Resource, number>;
+  for (const r of RESOURCES) resources[r] = 0;
+  const view: PlayerView = {
+    time: state.time,
+    me: '',
+    nations,
+    provinces,
+    units,
+    economy: { money: 0, resources, incomePerDay: { money: 0 }, production: [] },
+    victory: {
+      provinceShareTarget: state.world.balance.victory.provinceShare,
+      leader: leaderOf(state),
+      winner: state.winner,
+    },
+    spectator: true,
+  };
+  modulePublicViews(state, view);
+  return view;
+}
+
+/** Propriétaires des provinces (timelapse de fin de partie). */
+export function ownersFrameImpl(state: EngineState): Record<string, NationId> {
+  const out: Record<string, NationId> = {};
+  for (const pid of sortedKeys(state.provinces)) out[pid] = state.provinces[pid]!.owner;
+  return out;
 }

@@ -152,5 +152,27 @@ export function describeNotification(
         major: true,
         at: null,
       };
+    case 'generic':
+      return {
+        text: n.title ? `${n.title} : ${n.text}` : n.text,
+        critical: n.severity === 'critical',
+        major: n.severity !== 'info',
+        at: n.at,
+      };
+    case 'missile_launch':
+      return {
+        text: t('game.alerts.kinds.missile_launch', { defaultValue: 'Tir de missile détecté' }),
+        critical: true,
+        major: true,
+        at,
+      };
+    default:
+      // Notifications des phases 2+ : libellé générique en attendant leurs écrans dédiés.
+      return {
+        text: t(`game.alerts.kinds.${n.kind}`, { defaultValue: n.kind }),
+        critical: false,
+        major: false,
+        at,
+      };
   }
 }

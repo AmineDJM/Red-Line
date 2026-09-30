@@ -1,3 +1,4 @@
+import { callHook } from '../modules/registry.js';
 import {
   distanceKm,
   MINUTE,
@@ -63,6 +64,7 @@ export function handleAiThink(state: EngineState): void {
     const ns = state.nations[n]!;
     if (!ns.isAi || !ns.alive || state.winner) continue;
     think(state, n);
+    callHook('aiThink', state, n);
   }
   schedule(state, {
     k: 'ai',

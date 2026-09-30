@@ -1,3 +1,4 @@
+import { callHook, modifier } from '../modules/registry.js';
 import { MINUTE, positionAt, type UnitId } from '@redline/shared';
 import { nextFloat } from '../rng/rng.js';
 import {
@@ -210,6 +211,7 @@ export function roundDamage(state: EngineState, u: Unit, tgt: Unit, varianceRoll
   const vet = veterancyLevel(state, u.xp);
   let dmg =
     sys.damage[ts.targetClass] * u.count * (1 + vet * b.veterancyDamageBonus) * varianceRoll;
+  dmg *= modifier(state, u.owner, 'combat.damage') / modifier(state, tgt.owner, 'combat.armor');
   dmg *= 1 - ts.armor;
   if (inOwnCity(state, tgt)) dmg /= 1 + b.defenderCityBonus;
   const jam = jammingFor(state, tgt);
@@ -226,6 +228,7 @@ function fire(state: EngineState, u: Unit, tgt: Unit): void {
   tgt.hp -= dmg;
   tgt.lastHit = state.time;
   u.xp += dmg;
+  callHook('onDamage', state, u, tgt, dmg);
   if (tgt.hp <= 1e-6) {
     destroyUnit(state, tgt, u);
     return;
@@ -262,6 +265,7 @@ export function jammingFor(state: EngineState, u: Unit): number {
 }
 
 export function destroyUnit(state: EngineState, u: Unit, killer: Unit | null): void {
+  callHook('onUnitDestroyed', state, u, killer);
   const t = state.time;
   const at = unitPosAt(state, u, t);
   const seers: string[] = [];

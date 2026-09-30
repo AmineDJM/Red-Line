@@ -1,3 +1,4 @@
+import { VIEW_SECTIONS } from '@redline/shared';
 import type { PlayerView, UnitView, ViewDiff } from '@redline/shared';
 
 /** Égalité profonde de valeurs JSON (objets, tableaux, primitives). */
@@ -72,13 +73,17 @@ export function diffViewsImpl(prev: PlayerView, next: PlayerView): ViewDiff | nu
     diff.units = { upsert, remove };
     changed = true;
   }
-  if (!deepEqual(prev.economy, next.economy)) {
-    diff.economy = next.economy;
-    changed = true;
-  }
-  if (!deepEqual(prev.victory, next.victory)) {
-    diff.victory = next.victory;
-    changed = true;
+  // Autres sections : envoyées en bloc dès qu'elles changent.
+  const d = diff as unknown as Record<string, unknown>;
+  const p = prev as unknown as Record<string, unknown>;
+  const x = next as unknown as Record<string, unknown>;
+  for (const key of VIEW_SECTIONS) {
+    if (key === 'nations' || key === 'provinces') continue;
+    if (x[key] === undefined && p[key] === undefined) continue;
+    if (!deepEqual(p[key], x[key])) {
+      d[key] = x[key];
+      changed = true;
+    }
   }
   return changed ? diff : null;
 }

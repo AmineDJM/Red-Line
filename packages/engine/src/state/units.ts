@@ -1,3 +1,4 @@
+import { callHook } from '../modules/registry.js';
 import type { LngLat, NationId, UnitId } from '@redline/shared';
 import { refreshUnitPairs } from '../encounters/pairs.js';
 import { addToIndex } from './runtime.js';
@@ -41,5 +42,6 @@ export function spawnUnit(
   addToIndex(state.rt.byNation, owner, id);
   refreshUnitPairs(state, u);
   state.rt.dirtyCombat.add(id);
+  callHook('onUnitSpawned', state, u);
   return u;
 }

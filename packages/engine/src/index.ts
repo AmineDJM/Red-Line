@@ -4,6 +4,11 @@
 export * from './api.js';
 
 import type {
+  ApplySystem,
+  GameStats,
+  OwnersFrame,
+  PublicView,
+  Stats,
   AdvanceTo,
   ApplyOrder,
   BuildWorld,
@@ -19,9 +24,10 @@ import type {
 import type { EngineState } from './state/types.js';
 import { buildWorld as buildWorldImpl } from './state/world.js';
 import { createGameImpl } from './state/create.js';
-import { applyOrderImpl } from './orders/orders.js';
+import { applyOrderImpl, applySystemImpl } from './orders/orders.js';
 import { advanceImpl, nextEventTimeImpl } from './sim/advance.js';
-import { viewForImpl } from './view/view.js';
+import { ownersFrameImpl, publicViewImpl, viewForImpl } from './view/view.js';
+import { moduleStats } from './modules/registry.js';
 import { diffViewsImpl } from './view/diff.js';
 import { notificationsForImpl } from './view/notify.js';
 import { deserializeImpl, serializeImpl, stateHashImpl } from './state/serialize.js';
@@ -42,6 +48,30 @@ export const notificationsFor: NotificationsFor = (state, nationId, items) =>
 export const serializeState: SerializeState = (state) => serializeImpl(S(state));
 export const deserializeState: DeserializeState = (world, bytes) => deserializeImpl(world, bytes);
 export const stateHash: StateHash = (state) => stateHashImpl(S(state));
+
+// ——— Phases 2+ ———
+export const applySystem: ApplySystem = (state, cmd) => applySystemImpl(S(state), cmd);
+export const publicView: PublicView = (state) => publicViewImpl(S(state));
+export const ownersFrame: OwnersFrame = (state) => ownersFrameImpl(S(state));
+export const stats: Stats = (state) => {
+  const st = S(state);
+  const out: GameStats = { nations: {}, alertLevel: 5 };
+  for (const n of st.nationIds) {
+    const ns = st.nations[n]!;
+    out.nations[n] = {
+      provincesStart: 0,
+      provincesEnd: ns.provinceCount,
+      conquered: 0,
+      kills: 0,
+      losses: 0,
+      spentUsd: 0,
+      bestUnits: [],
+    };
+  }
+  moduleStats(st, out);
+  return out;
+};
+export type { EngineModule, ModEvent, ModuleId } from './modules/types.js';
 
 // Utilitaires géométriques exacts (réutilisables par le client et les tests).
 export { legZoneIntervals } from './geo/sphere.js';

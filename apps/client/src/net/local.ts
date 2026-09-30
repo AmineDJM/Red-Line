@@ -171,7 +171,7 @@ export class LocalGameConnection extends Emitter implements GameConnection {
   private issuer(order: Order): NationId {
     if (order.kind === 'produce')
       return this.view.provinces[order.provinceId]?.owner ?? this.opts.observer;
-    const first = order.unitIds[0];
+    const first = 'unitIds' in order ? order.unitIds[0] : undefined;
     return (first && this.view.units[first]?.owner) || this.opts.observer;
   }
 

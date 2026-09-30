@@ -1,7 +1,21 @@
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { DAY, HOUR, MINUTE, type GameTime } from '@redline/shared';
-import fr from './fr.json';
+import frCore from './fr.json';
+// Textes séparés par domaine (évite les conflits entre équipes) : fusion profonde au démarrage.
+import frMap from './fr.map.json';
+import frFeatures from './fr.features.json';
+
+type Tree = { [k: string]: string | Tree };
+function merge(a: Tree, b: Tree): Tree {
+  const out: Tree = { ...a };
+  for (const [k, v] of Object.entries(b)) {
+    const cur = out[k];
+    out[k] = typeof v === 'object' && typeof cur === 'object' ? merge(cur, v) : v;
+  }
+  return out;
+}
+const fr = merge(merge(frCore as Tree, frMap as Tree), frFeatures as Tree);
 
 export const LOCALE = 'fr-FR';
 

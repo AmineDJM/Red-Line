@@ -26,6 +26,7 @@ export function isValid(state: EngineState, ev: GameEvent): boolean {
       return !!state.nations[ev.n]?.production.some((it) => it.id === ev.id);
     case 'day':
     case 'ai':
+    case 'mod':
       return true;
   }
 }
