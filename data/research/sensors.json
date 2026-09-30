@@ -1,0 +1,285 @@
+{
+  "nodes": [
+    {
+      "id": "research.sensors.radar1",
+      "name": "Radars de 1re génération",
+      "description": "Radars de veille et de conduite de tir à impulsions.",
+      "branch": "sensors",
+      "tier": 1,
+      "cost": {
+        "money": 300000000,
+        "resources": {
+          "electronics": 5
+        }
+      },
+      "durationH": 48,
+      "requires": [],
+      "effects": {},
+      "eraYear": 1950
+    },
+    {
+      "id": "research.sensors.ecm",
+      "name": "Contre-mesures électroniques",
+      "description": "Brouilleurs d’autoprotection et leurres.",
+      "branch": "sensors",
+      "tier": 2,
+      "cost": {
+        "money": 500000000,
+        "resources": {
+          "electronics": 10
+        }
+      },
+      "durationH": 72,
+      "requires": ["research.sensors.radar1"],
+      "effects": {
+        "ew.jamming": 1.1
+      },
+      "eraYear": 1965
+    },
+    {
+      "id": "research.sensors.radar2",
+      "name": "Radars Doppler",
+      "description": "Radars à impulsions Doppler et à balayage électronique passif.",
+      "branch": "sensors",
+      "tier": 2,
+      "cost": {
+        "money": 1500000000,
+        "resources": {
+          "electronics": 30
+        }
+      },
+      "durationH": 120,
+      "requires": ["research.sensors.radar1"],
+      "effects": {
+        "sensors.radarRange": 1.05
+      },
+      "eraYear": 1975
+    },
+    {
+      "id": "research.sensors.space1",
+      "name": "Satellites militaires",
+      "description": "Lanceurs et satellites de reconnaissance, d’écoute et d’alerte.",
+      "branch": "sensors",
+      "tier": 2,
+      "cost": {
+        "money": 3000000000,
+        "resources": {
+          "electronics": 60
+        }
+      },
+      "durationH": 240,
+      "requires": ["research.missiles.ballistic1"],
+      "effects": {},
+      "eraYear": 1960
+    },
+    {
+      "id": "research.sensors.eccm",
+      "name": "Contre-contre-mesures",
+      "description": "Agilité de fréquence et traitement anti-brouillage.",
+      "branch": "sensors",
+      "tier": 3,
+      "cost": {
+        "money": 1000000000,
+        "resources": {
+          "electronics": 20
+        }
+      },
+      "durationH": 96,
+      "requires": ["research.sensors.ecm"],
+      "effects": {
+        "ew.jamResistance": 1.1
+      },
+      "eraYear": 1975
+    },
+    {
+      "id": "research.sensors.ground-stations",
+      "name": "Réseau de stations au sol",
+      "description": "Stations de réception mondiales : plus de passages exploités.",
+      "branch": "sensors",
+      "tier": 3,
+      "cost": {
+        "money": 1000000000,
+        "resources": {
+          "electronics": 20
+        }
+      },
+      "durationH": 96,
+      "requires": ["research.sensors.space1"],
+      "effects": {
+        "sensors.satellitePasses": 1.2
+      },
+      "eraYear": 1975
+    },
+    {
+      "id": "research.sensors.over-the-horizon",
+      "name": "Radars transhorizon",
+      "description": "Réflexion ionosphérique : veille au-delà de l’horizon.",
+      "branch": "sensors",
+      "tier": 3,
+      "cost": {
+        "money": 2000000000,
+        "resources": {
+          "electronics": 40
+        }
+      },
+      "durationH": 168,
+      "requires": ["research.sensors.radar2"],
+      "effects": {
+        "sensors.radarRange": 1.15
+      },
+      "eraYear": 1975
+    },
+    {
+      "id": "research.sensors.radar3",
+      "name": "Radars à antenne active",
+      "description": "Radars AESA à semi-conducteurs, multifonctions.",
+      "branch": "sensors",
+      "tier": 3,
+      "cost": {
+        "money": 4000000000,
+        "resources": {
+          "electronics": 80
+        }
+      },
+      "durationH": 240,
+      "requires": ["research.sensors.radar2", "research.industry.l2"],
+      "effects": {
+        "sensors.radarRange": 1.1
+      },
+      "eraYear": 2000
+    },
+    {
+      "id": "research.sensors.space2",
+      "name": "Satellites radar",
+      "description": "Imagerie radar par tous les temps.",
+      "branch": "sensors",
+      "tier": 3,
+      "cost": {
+        "money": 6000000000,
+        "resources": {
+          "electronics": 120
+        }
+      },
+      "durationH": 336,
+      "requires": ["research.sensors.space1", "research.sensors.radar2"],
+      "effects": {
+        "sensors.satellitePasses": 1.2
+      },
+      "eraYear": 1988
+    },
+    {
+      "id": "research.sensors.vhf-radar",
+      "name": "Radars à ondes métriques",
+      "description": "Radars basse fréquence qui repèrent les avions furtifs.",
+      "branch": "sensors",
+      "tier": 3,
+      "cost": {
+        "money": 1500000000,
+        "resources": {
+          "electronics": 30
+        }
+      },
+      "durationH": 120,
+      "requires": ["research.sensors.radar2"],
+      "effects": {
+        "sensors.stealthDetect": 1.25
+      },
+      "eraYear": 1985
+    },
+    {
+      "id": "research.sensors.asat",
+      "name": "Armes antisatellites",
+      "description": "Intercepteurs à ascension directe contre les satellites en orbite basse.",
+      "branch": "sensors",
+      "tier": 4,
+      "cost": {
+        "money": 5000000000,
+        "resources": {
+          "electronics": 100
+        }
+      },
+      "durationH": 264,
+      "requires": ["research.sensors.space1", "research.missiles.ballistic2"],
+      "effects": {},
+      "eraYear": 1978
+    },
+    {
+      "id": "research.sensors.constellations",
+      "name": "Constellations de satellites",
+      "description": "Dizaines de petits satellites : revisites fréquentes.",
+      "branch": "sensors",
+      "tier": 4,
+      "cost": {
+        "money": 4000000000,
+        "resources": {
+          "electronics": 80
+        }
+      },
+      "durationH": 240,
+      "requires": ["research.sensors.space2", "research.industry.l3"],
+      "effects": {
+        "sensors.satellitePasses": 1.5
+      },
+      "eraYear": 2015
+    },
+    {
+      "id": "research.sensors.data-fusion",
+      "name": "Fusion de données",
+      "description": "Situation aérienne unique partagée par tous les capteurs.",
+      "branch": "sensors",
+      "tier": 4,
+      "cost": {
+        "money": 2000000000,
+        "resources": {
+          "electronics": 40
+        }
+      },
+      "durationH": 168,
+      "requires": ["research.sensors.radar3", "research.cyber.l1"],
+      "effects": {
+        "sensors.radarRange": 1.1,
+        "sensors.stealthDetect": 1.05
+      },
+      "eraYear": 2010
+    },
+    {
+      "id": "research.sensors.passive-detection",
+      "name": "Détection passive",
+      "description": "Capteurs infrarouges et localisation passive des émissions.",
+      "branch": "sensors",
+      "tier": 4,
+      "cost": {
+        "money": 2000000000,
+        "resources": {
+          "electronics": 40
+        }
+      },
+      "durationH": 168,
+      "requires": ["research.sensors.vhf-radar", "research.sensors.radar3"],
+      "effects": {
+        "sensors.stealthDetect": 1.15
+      },
+      "eraYear": 2005
+    },
+    {
+      "id": "research.sensors.cognitive-ew",
+      "name": "Guerre électronique cognitive",
+      "description": "Brouillage adaptatif piloté par apprentissage automatique.",
+      "branch": "sensors",
+      "tier": 5,
+      "cost": {
+        "money": 3000000000,
+        "resources": {
+          "electronics": 60
+        }
+      },
+      "durationH": 192,
+      "requires": ["research.sensors.eccm", "research.sensors.radar3", "research.cyber.l2"],
+      "effects": {
+        "ew.jamming": 1.1,
+        "ew.jamResistance": 1.05
+      },
+      "eraYear": 2015
+    }
+  ]
+}
