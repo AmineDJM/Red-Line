@@ -36,8 +36,10 @@ import {
   handleDecoyEnd,
   handleOth,
   handleSatPass,
+  handleJamEnd,
   handleUnblind,
   initOth,
+  jamZone,
   initSatellite,
   orderJam,
   spawnDecoys,
@@ -65,7 +67,7 @@ import {
   scheduleInterceptions,
 } from './strike.js';
 import { milPublicView, milView } from './view.js';
-import { isSatellite, schedule } from './util.js';
+import { isAsat, isSatellite, schedule } from './util.js';
 import { battleReportForImpl } from './battles.js';
 import { destroyUnit, jammingFor } from '../../combat/combat.js';
 import { signal } from '../registry.js';
@@ -104,6 +106,8 @@ function onEvent(state: EngineState, ev: ModEvent): void {
       return handleUnexpose(state, d);
     case 'decoyEnd':
       return handleDecoyEnd(state, d);
+    case 'jamEnd':
+      return handleJamEnd(state, d);
     case 'tick':
       return handleTick(state);
     case 'sites':
@@ -142,7 +146,7 @@ function handleTick(state: EngineState): void {
 function onSpawn(state: EngineState, u: Unit): void {
   if (u.role) return;
   const s = sysOf(state, u);
-  if (isSatellite(s)) {
+  if (isSatellite(s) && !isAsat(s)) {
     initSatellite(state, u);
     return;
   }
@@ -314,6 +318,9 @@ export const milModule: EngineModule = {
           return;
         case 'decoys':
           spawnDecoys(state, data);
+          return;
+        case 'jam':
+          jamZone(state, data);
           return;
         case 'static_defense':
         case 'radar_station':

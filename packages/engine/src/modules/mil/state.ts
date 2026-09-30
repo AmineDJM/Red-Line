@@ -69,6 +69,8 @@ export interface MissileSt {
   impactAt: GameTime;
   nuclear: boolean;
   kind: string;
+  /** Classe d'interception : croisière, balistique, hypersonique, drone (munition rôdeuse). */
+  cls: 'cruise' | 'ballistic' | 'hypersonic' | 'drone';
   /** Bataille (rapport) à laquelle la salve est rattachée. */
   battle: string | null;
   launched: number;
@@ -181,6 +183,8 @@ export interface MilState {
   fixed: Record<string, UnitId>;
   /** Unité fixe → "province:bâtiment" (ordre de déplacement refusé). */
   fixedOf: Record<UnitId, string>;
+  /** Zones de brouillage (signal jam du renseignement) : identifiant → zone. */
+  jz: Record<string, { by: NationId; at: LngLat; r: number; until: GameTime }>;
   /** Unité fixe → portée du site (engagement ou détection, km), fixée par eco selon le niveau. */
   siteRange: Record<UnitId, number>;
   ms: Record<UnitId, MissionSt>;
@@ -228,6 +232,7 @@ export function emptyMil(): MilState {
     fixed: {},
     fixedOf: {},
     siteRange: {},
+    jz: {},
     ms: {},
     msl: {},
     reload: {},

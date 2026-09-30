@@ -26,14 +26,15 @@ import { cityOf } from './util.js';
  *    dégâts antinavires ; portée d'engagement = `rangeKm` ;
  *  - radar_station : `other.radar-station`, sinon le radar de veille (catégorie radar) le plus
  *    répandu chez le propriétaire ou le moins cher ; portée de détection = `rangeKm` ;
- *  - missile_silo : lanceur balistique ou nucléaire le plus répandu chez le propriétaire (frappes par
- *    l'ordre `strike`), durci (military.defenses.siloArmorPerLevel par niveau).
+ *  - missile_silo : pas d'unité (les missiles sont des stocks de munitions posés par l'ORBAT et
+ *    consommés au tir) ; les munitions de la nation stockées dans la province sont durcies
+ *    (military.defenses.siloArmorPerLevel × niveau × santé).
  * Effectif = niveau × military.defenses.unitsPerLevel ; PV = santé du bâtiment. Santé 0 ou niveau 0 :
  * l'unité est retirée. Unité fixe détruite au combat ⇒ signal `building_hit` (dégâts 1) vers eco.
  * Les bunkers restent l'affaire d'eco (crochet unitModifier).
  */
 
-const SITE_TYPES = ['air_defense_site', 'coastal_battery', 'radar_station', 'missile_silo'] as const;
+const SITE_TYPES = ['air_defense_site', 'coastal_battery', 'radar_station'] as const;
 type SiteType = (typeof SITE_TYPES)[number];
 
 export function onSiteSignal(state: EngineState, data: Record<string, unknown>): void {
@@ -58,9 +59,10 @@ export function reconcileSites(state: EngineState): void {
   const m = mil(state);
   for (const k of sortedKeys(sites)) {
     const s = sites[k] as StaticSite;
+    if (!(SITE_TYPES as readonly string[]).includes(s.b)) continue;
     const cur = m.fixed[k] ? state.units[m.fixed[k]!] : undefined;
     if (cur && cur.owner === s.n) continue;
-    syncFixed(state, s.pid, s.b, { n: s.n, level: s.level, h: s.h, rangeKm: s.rangeKm });
+    syncFixed(state, s.pid, s.b as SiteType, { n: s.n, level: s.level, h: s.h, rangeKm: s.rangeKm });
   }
   for (const k of sortedKeys(m.fixed)) {
     if (sites[k]) continue;
@@ -116,7 +118,7 @@ function syncFixed(
   const u = spawnUnit(state, site.n, sys.id, at, count, (x) => {
     x.stance = 'defend';
     m.fixedOf[x.id] = key;
-    if (site.rangeKm > 0 && b !== 'missile_silo') m.siteRange[x.id] = site.rangeKm;
+    if (site.rangeKm > 0) m.siteRange[x.id] = site.rangeKm;
   });
   u.hp = u.maxHp * Math.min(1, site.h);
   m.fixed[key] = u.id;
@@ -154,11 +156,6 @@ function siteSystem(state: EngineState, owner: NationId, b: SiteType): WeaponSys
     } else if (b === 'radar_station') {
       if (s.category === 'radar' && s.sensor?.kind === 'radar') score = mine * 1e12 - s.cost.money;
       else if (s.category === 'air_defense' && !isLauncher(s)) score = -1e15 + s.detectionRangeKm;
-    } else if (b === 'missile_silo') {
-      const k = s.missile?.kind;
-      if (s.missile && (k === 'ballistic' || k === 'icbm')) {
-        score = mine * 1e6 + (s.missile.warhead === 'nuclear' ? 1 : 0) * 1e3 - s.generation;
-      }
     }
     if (score > bestScore) {
       bestScore = score;
@@ -180,10 +177,27 @@ export function fixedDestroyed(state: EngineState, u: Unit, by: NationId | null)
   signal(state, 'building_hit', { pid: key.slice(0, i), building: key.slice(i + 1), damage: 1, by });
 }
 
-/** Crochet unitModifier : durcissement des silos. */
+/** Crochet unitModifier : durcissement des munitions stockées dans une province à silos. */
 export function siloModifier(state: EngineState, u: Unit, key: string): number {
-  if (key !== 'combat.armor') return 1;
-  const k = (state.mods.mil as { fixedOf?: Record<string, string> } | undefined)?.fixedOf?.[u.id];
-  if (!k || !k.endsWith(':missile_silo')) return 1;
-  return 1 + milBal(state).defenses.siloArmorPerLevel * u.count;
+  if (key !== 'combat.armor' || u.role) return 1;
+  const sites = board(state).sites;
+  let any = false;
+  for (const _ in sites) {
+    any = true;
+    break;
+  }
+  if (!any || !sysOf(state, u).missile) return 1;
+  const gc = state.world.balance.combat.groundContactKm * 2;
+  let f = 1;
+  for (const k of sortedSet(state.rt.pairsOf.get(u.id))) {
+    const h = k.indexOf('#');
+    if (h < 0) continue;
+    const pair = state.pairs[k];
+    if (!pair || pair.d > gc) continue;
+    const site = sites[`${k.slice(0, h)}:missile_silo`];
+    if (site && site.n === u.owner && site.h > 0) {
+      f *= 1 + milBal(state).defenses.siloArmorPerLevel * site.level * site.h;
+    }
+  }
+  return f;
 }

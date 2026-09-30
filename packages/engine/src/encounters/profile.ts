@@ -1,4 +1,4 @@
-import type { LngLat, NationId, TargetClass, WeaponSystem } from '@redline/shared';
+import { distanceKm, type LngLat, type NationId, type TargetClass, type WeaponSystem } from '@redline/shared';
 import { modifier, unitModifier } from '../modules/registry.js';
 import { board } from '../modules/kit.js';
 import { milBal, milOpt } from '../modules/mil/state.js';
@@ -20,10 +20,15 @@ export interface Range {
 
 const NO_RANGE: Range = { min: 0, max: 0 };
 
-/** Lanceur de missiles (tire par ordre de frappe, jamais en rounds de combat). */
+/**
+ * Munition (fiche `missile` : missiles de frappe, armes nucléaires, munitions rôdeuses, armes
+ * antisatellites) : une pile de munitions en stock, tirée par l'ordre `strike` et consommée ; jamais
+ * de tir en rounds de combat.
+ */
 export function isLauncher(sys: WeaponSystem): boolean {
   return !!sys.missile;
 }
+export const isMunition = isLauncher;
 
 /** Radar au sens large (aveuglable, repérable par un missile antiradar, cible prioritaire). */
 export function isRadarSensor(sys: WeaponSystem): boolean {
@@ -118,8 +123,10 @@ export function inRange(r: Range, d: number): boolean {
 
 /** Classe de cible effective : missile en vol, aéronef au sol (vulnérable comme une installation). */
 export function targetClassOf(state: EngineState, u: Unit): TargetClass {
-  if (u.role === 'missile') return 'missile';
   const sys = sysOf(state, u);
+  if (u.role === 'missile') return sys.category === 'drone' ? 'drone' : 'missile';
+  // Munitions en stock : vulnérables comme une installation (dépôt).
+  if (sys.missile) return 'building';
   if (sys.air && isLanded(state, u)) return 'building';
   return sys.targetClass;
 }
@@ -136,8 +143,23 @@ export function detectKm(state: EngineState, u: Unit): number {
   if (isRadarSensor(sys)) {
     r *= modifier(state, u.owner, 'sensors.radarRange');
     if (blinded(state, u.owner)) r *= milBal(state).sensors.blindFactor;
+    if (inJamZone(state, u)) r *= 1 - milBal(state).sensors.zoneJamFactor;
   }
   return r;
+}
+
+/** Radar dans une zone de brouillage adverse active (signal `jam` du renseignement). */
+function inJamZone(state: EngineState, u: Unit): boolean {
+  const zones = milOpt(state)?.jz;
+  if (!zones) return false;
+  let here: LngLat | null = null;
+  for (const k in zones) {
+    const z = zones[k]!;
+    if (z.by === u.owner || z.until <= state.time) continue;
+    here ??= unitPosAt(state, u, state.time);
+    if (distanceKm(here, z.at) <= z.r) return true;
+  }
+  return false;
 }
 
 /** Portée sonar / ASM (0 si aucun moyen de lutte anti-sous-marine). */
@@ -148,7 +170,7 @@ export function sonarKm(state: EngineState, u: Unit): number {
   let r = 0;
   if (sys.sensor?.kind === 'sonar') r = sys.sensor.rangeKm;
   const asw = sys.naval?.asw ?? 0;
-  if (asw > 0) r = Math.max(r, sys.detectionRangeKm * asw);
+  if (asw > 0) r = Math.max(r, Math.min(sys.detectionRangeKm * asw, milBal(state).sensors.aswMaxKm));
   if (r <= 0) return 0;
   return r * modifier(state, u.owner, 'naval.sonar') * unitModifier(state, u, 'naval.sonar');
 }

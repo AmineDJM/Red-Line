@@ -110,7 +110,13 @@ const BASE_ORDERS = [
   }),
   z.object({ kind: z.literal('mobilize'), on: z.boolean() }),
   // ——— Phase 3 : combat complet ———
-  z.object({ kind: z.literal('strike'), unitIds, target: strikeTarget }),
+  z.object({
+    kind: z.literal('strike'),
+    unitIds,
+    target: strikeTarget,
+    /** Munitions tirées par pile (missiles, munitions rôdeuses) ; absent = toute la pile. */
+    count: z.number().int().min(1).max(10000).optional(),
+  }),
   z.object({
     kind: z.literal('patrol'),
     unitIds,

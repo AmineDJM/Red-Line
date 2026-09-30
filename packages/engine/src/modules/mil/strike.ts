@@ -132,13 +132,18 @@ export function cellsLeft(state: EngineState, u: Unit): number {
   return v ?? u.count * launchCells(sysOf(state, u));
 }
 
-function launcherSalvo(state: EngineState, u: Unit): number {
+/** Consomme des munitions d'une pile (retirée à zéro, ce n'est pas une perte). */
+export function consume(state: EngineState, u: Unit, n: number): void {
   const s = sysOf(state, u);
-  const per = Math.min(
-    milBal(state).strike.missilesPerLauncherMax,
-    Math.max(1, s.payload.slots || 1),
-  );
-  return Math.max(1, u.count * per);
+  const left = u.count - n;
+  if (left <= 0) {
+    retireUnit(state, u);
+    return;
+  }
+  const ratio = u.hp / u.maxHp;
+  u.count = left;
+  u.maxHp = left * s.hp;
+  u.hp = u.maxHp * ratio;
 }
 
 /** Nation visée par une cible (null : personne, en mer). */
@@ -207,13 +212,12 @@ export function orderStrike(
         return fail('invalid_target', 'Une arme antisatellite ne vise qu’un satellite.');
       }
       if (board(state).alertLevel > 3) return fail('locked', 'Niveau d’alerte trop bas pour une arme antisatellite.');
-      plans.push({ u, kind: 'asat' });
+      plans.push({ u, kind: 'asat', count: 1 });
       continue;
     }
     if (tUnit && isSatellite(sysOf(state, tUnit))) return fail('invalid_target', 'Satellite hors d’atteinte.');
     if (u.off && !m.ms[u.id]?.emb) return fail('not_allowed', 'Unité indisponible.');
     if (isLauncher(s)) {
-      if ((m.reload[u.id] ?? 0) > state.time) return fail('cooldown', 'Lanceur en rechargement.');
       if (distanceKm(posOf(state, u), aim) > strikeRangeKm(s)) {
         return fail('out_of_range', 'Cible hors de portée du missile.');
       }
@@ -228,7 +232,8 @@ export function orderStrike(
       if (s.missile!.kind === 'antiship' && tUnit && sysOf(state, tUnit).movement !== 'sea') {
         return fail('invalid_target', 'Un missile antinavire ne vise que les navires.');
       }
-      plans.push({ u, kind: 'launcher', msys: s, count: launcherSalvo(state, u), nuclear });
+      const salvo = Math.min(u.count, o.count ?? u.count);
+      plans.push({ u, kind: 'launcher', msys: s, count: salvo, nuclear });
       continue;
     }
     if (s.movement === 'sea' && launchCells(s) > 0) {
@@ -244,7 +249,7 @@ export function orderStrike(
         const err = nuclearAllowed(state, n);
         if (err) return err;
       }
-      const salvo = Math.min(left, u.count * milBal(state).strike.cellsSalvoPerElement);
+      const salvo = Math.min(left, o.count ?? u.count * milBal(state).strike.cellsSalvoPerElement);
       plans.push({ u, kind: 'cells', msys, count: salvo, nuclear });
       continue;
     }
@@ -264,6 +269,7 @@ export function orderStrike(
     const u = p.u;
     if (p.kind === 'asat') {
       asatShot(state, u, tUnit!);
+      consume(state, u, 1);
       continue;
     }
     if (p.kind === 'air') {
@@ -278,12 +284,10 @@ export function orderStrike(
       continue;
     }
     const count = p.count!;
-    if (p.kind === 'launcher') {
-      m.reload[u.id] = state.time + milBal(state).strike.launcherReloadH * HOUR;
-    } else {
-      m.cells[u.id] = cellsLeft(state, u) - count;
-    }
+    if (p.kind === 'cells') m.cells[u.id] = cellsLeft(state, u) - count;
     launch(state, u, p.msys!, count, target, aim, victim, !!p.nuclear);
+    // Munitions en stock : consommées au tir.
+    if (p.kind === 'launcher') consume(state, u, count);
   }
   return OK;
 }
@@ -321,6 +325,7 @@ export function launch(
     impactAt: t1,
     nuclear,
     kind: msys.missile!.kind,
+    cls: msys.category === 'drone' ? 'drone' : interceptClass(msys.missile!.kind),
     battle: b?.id ?? null,
     launched: count,
   };
@@ -368,8 +373,8 @@ export function handleUnexpose(state: EngineState, d: { u: string }): void {
  */
 function warnLaunch(state: EngineState, M: Unit, st: MissileSt): void {
   const aud = new Set<NationId>([M.owner]);
-  const cls = interceptClass(st.kind);
-  if (cls !== 'cruise') {
+  const cls = st.cls;
+  if (cls === 'ballistic' || cls === 'hypersonic') {
     for (const id of sortedKeys(state.units)) {
       const u = state.units[id]!;
       if (u.owner === M.owner || u.role) continue;
@@ -464,7 +469,7 @@ export function scheduleInterceptions(state: EngineState, I: Unit): void {
     const M = state.units[a === I.id ? b : a];
     if (!M || M.role !== 'missile') continue;
     const st = m.msl[M.id];
-    if (!st || !prof.against.includes(interceptClass(st.kind))) continue;
+    if (!st || !prof.against.includes(st.cls)) continue;
     if (sightLevel(state, I.owner, M.id) === 0) continue;
     if (!interceptHostile(state, I, M)) continue;
     const k = `${I.id}>${M.id}`;
@@ -486,7 +491,7 @@ export function handleIntercept(state: EngineState, d: { i: string; m: string })
   };
   if (!I || !M || !st || M.role !== 'missile') return drop();
   const prof = interceptorOf(state, I);
-  if (!prof || !prof.against.includes(interceptClass(st.kind))) return drop();
+  if (!prof || !prof.against.includes(st.cls)) return drop();
   const pair = state.pairs[unitPairKey(I.id, M.id)];
   if (!pair || !inRange(weaponRange(state, I), pair.d)) return drop();
   if (sightLevel(state, I.owner, M.id) === 0 || !interceptHostile(state, I, M)) return drop();

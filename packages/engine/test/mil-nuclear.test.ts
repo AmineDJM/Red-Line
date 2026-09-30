@@ -85,7 +85,7 @@ describe('nucléaire et niveau d’alerte mondial', () => {
 
   it('arme antisatellite : seulement à un niveau d’alerte ≤ 3', () => {
     const s = milSandbox([
-      { owner: 'aaa', systemId: 'tst.asat', pos: cityOf('aaa-2') }, // u1
+      { owner: 'aaa', systemId: 'tst.asat', pos: cityOf('aaa-2'), count: 10 }, // u1
       { owner: 'bbb', systemId: 'tst.optsat', pos: cityOf('bbb-2') }, // u2
     ]);
     const shoot = () =>

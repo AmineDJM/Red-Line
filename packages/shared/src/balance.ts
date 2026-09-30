@@ -35,10 +35,6 @@ export const MilitaryBalanceSchema = z.object({
       minBlastKm: num(2),
       /** Autodirecteur : distance maximale de raccrochage d'une cible mobile (km). */
       homingKm: num(40),
-      /** Missiles tirés par élément et par salve pour un lanceur (plafond de payload.slots). */
-      missilesPerLauncherMax: num(4),
-      /** Rechargement d'un lanceur après une salve (heures). */
-      launcherReloadH: num(8),
       /** Missiles tirés par salve et par élément depuis des cellules de lancement (navires). */
       cellsSalvoPerElement: num(8),
       /** Distance à un port ami pour recharger les cellules (km). */
@@ -113,6 +109,10 @@ export const MilitaryBalanceSchema = z.object({
       othMinRangeKm: num(2500),
       /** Période de balayage d'un radar transhorizon (minutes). */
       othScanMinutes: num(30),
+      /** Portée sonar maximale déduite de la capacité ASM (naval.asw × détection), km. */
+      aswMaxKm: num(120),
+      /** Zone de brouillage (signal jam du renseignement) : perte de portée des radars adverses. */
+      zoneJamFactor: num(0.5),
     })
     .default({}),
   /** Sites de défense (board.sites, signaux static_defense / radar_station du module eco). */

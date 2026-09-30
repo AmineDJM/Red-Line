@@ -35,6 +35,8 @@ const AI = {
   salvosPerThink: { easy: 0, normal: 1, hard: 2 },
   airStrikesPerThink: { easy: 0, normal: 1, hard: 2 },
   caps: { easy: 1, normal: 1, hard: 2 },
+  /** Munitions tirées par salve (les stocks sont consommés). */
+  salvoSize: { easy: 2, normal: 4, hard: 8 },
 };
 
 function order(state: EngineState, n: NationId, o: Order): boolean {
@@ -88,13 +90,14 @@ export function combatAi(state: EngineState, n: NationId): void {
     const s = sysOf(state, u);
     const isShip = s.movement === 'sea' && launchCells(s) > 0 && cellsLeft(state, u) > 0;
     if (!isLauncher(s) && !isShip) continue;
-    if (s.missile?.warhead === 'nuclear') continue;
-    if (isLauncher(s) && (mil(state).reload[u.id] ?? 0) > state.time) continue;
+    if (s.missile?.warhead === 'nuclear' || s.category === 'space') continue;
     tries--;
     const range = isLauncher(s) ? strikeRangeKm(s) : 1500;
     const target = pickMissileTarget(state, n, u, range, threats, s.missile?.kind ?? 'cruise');
     if (!target) continue;
-    if (order(state, n, { kind: 'strike', unitIds: [u.id], target })) salvos--;
+    const count = isLauncher(s) ? Math.min(u.count, AI.salvoSize[level]) : undefined;
+    const o: Order = count ? { kind: 'strike', unitIds: [u.id], target, count } : { kind: 'strike', unitIds: [u.id], target };
+    if (order(state, n, o)) salvos--;
   }
   // 3. Frappes aériennes sur les ennemis vus chez soi.
   let strikes = AI.airStrikesPerThink[level];

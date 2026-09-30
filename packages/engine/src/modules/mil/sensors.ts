@@ -91,6 +91,40 @@ function refreshSensors(state: EngineState, n: NationId): void {
   }
 }
 
+/* ——— Zones de brouillage (signal jam du renseignement) ——— */
+
+/**
+ * Signal `jam` { by, at, radiusKm, hours } : pendant `hours`, les radars des autres nations situés dans
+ * la zone perdent military.sensors.zoneJamFactor de leur portée.
+ */
+export function jamZone(state: EngineState, data: Record<string, unknown>): void {
+  const by = data.by as NationId;
+  const at = data.at as LngLat | undefined;
+  const r = Number(data.radiusKm);
+  const hours = Number(data.hours);
+  if (!state.nations[by] || !at || !(r > 0) || !(hours > 0)) return;
+  const m = mil(state);
+  const id = `jz${++m.seq}`;
+  const until = state.time + hours * HOUR;
+  m.jz[id] = { by, at: [at[0], at[1]], r, until };
+  refreshRadarsNear(state, at, r, by);
+  schedule(state, until, 'jamEnd', { id });
+}
+
+export function handleJamEnd(state: EngineState, d: { id: string }): void {
+  const m = mil(state);
+  const z = m.jz[d.id];
+  if (!z) return;
+  delete m.jz[d.id];
+  refreshRadarsNear(state, z.at, z.r, z.by);
+}
+
+function refreshRadarsNear(state: EngineState, at: LngLat, r: number, by: NationId): void {
+  for (const u of unitsNear(state, at, r)) {
+    if (u.owner !== by && isRadarSensor(sysOf(state, u))) refreshUnitPairs(state, u);
+  }
+}
+
 /* ——— Contacts instantanés (satellites, transhorizon) ——— */
 
 /** Contact figé (position et niveau à l'instant), sans observation continue. */
@@ -130,7 +164,7 @@ export function imagery(
   nation: NationId,
   at: LngLat,
   radiusKm: number,
-  kind: 'satellite' | 'drone' | 'aircraft',
+  kind: 'satellite' | 'drone' | 'aircraft' | 'radar',
 ): void {
   const pids = provincesNear(state, at, radiusKm).filter((p) => state.provinces[p]!.owner !== nation);
   signal(state, 'imagery', { nation, at: [at[0], at[1]], radiusKm, kind, pids });
@@ -195,7 +229,7 @@ export function handleSatPass(state: EngineState, d: { u: string; v: number }): 
     if (kind === 'sigint' && !(isRadarSensor(os) || os.ew.jamming > 0 || os.movement === 'sea')) continue;
     if (snapshot(state, u.owner, o, Math.round(lvl))) found++;
   }
-  imagery(state, u.owner, aim, r, 'satellite');
+  imagery(state, u.owner, aim, r, kind === 'radar' ? 'radar' : 'satellite');
   if (found > 0) {
     generic(
       state,

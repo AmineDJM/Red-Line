@@ -47,14 +47,9 @@ describe('missiles : frappe, interception, saturation', () => {
     expect(bh.provinceId).toBe('bbb-4');
     expect(notificationsFor(s, 'bbb', notes).some((n) => n.kind === 'building_hit')).toBe(true);
     expect(signals.some((x) => x.name === 'strike' && x.data.kind === 'missile')).toBe(true);
-    // Lanceur en rechargement.
-    expect(
-      applyOrder(s, 'aaa', {
-        kind: 'strike',
-        unitIds: ['u1'],
-        target: { type: 'building', provinceId: 'bbb-4', building: 'refinery' },
-      }).error,
-    ).toBe('cooldown');
+    // Munitions consommées : la pile a disparu (sans être une perte).
+    expect(s.units.u1).toBeUndefined();
+    expect(notesOf(notes, 'unit_destroyed').some((n) => n.unitId === 'u1')).toBe(false);
     // Rapport de bataille : interceptions et saturation.
     const bid = Object.keys(mil(s).battles)[0]!;
     const report = battleReportFor(s, 'aaa', bid)!;

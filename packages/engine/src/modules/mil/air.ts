@@ -141,7 +141,8 @@ export function canCarry(state: EngineState, carrier: Unit, u: Unit): boolean {
 /** Aéronef créé (production, ORBAT, bac à sable) : base d'attache, au sol ou déjà en vol. */
 export function initAircraft(state: EngineState, u: Unit): void {
   const sys = sysOf(state, u);
-  if (!isFuelAir(sys) || u.role) return;
+  // Munitions (missiles, munitions rôdeuses) : stock tiré par l'ordre strike, pas d'aviation.
+  if (!isFuelAir(sys) || u.role || sys.missile) return;
   const m = newMission(true);
   mil(state).ms[u.id] = m;
   m.fuel = maxFuel(state, u);
@@ -749,7 +750,8 @@ export function interceptMove(
   const special = o.unitIds.some((id) => {
     const u = state.units[id];
     if (!u || u.owner !== n) return false;
-    return !!m.ms[id]?.fa || isSatellite(sysOf(state, u)) || !!m.fixedOf[id];
+    const s = sysOf(state, u);
+    return !!m.ms[id]?.fa || isSatellite(s) || !!m.fixedOf[id] || !!s.missile;
   });
   if (!special) return null;
   const units = resolveOwn(state, n, o.unitIds, true);
@@ -758,6 +760,7 @@ export function interceptMove(
   for (const u of units) {
     const sys = sysOf(state, u);
     if (m.fixedOf[u.id]) return fail('not_allowed', 'Unité fixe (bâtiment de défense).');
+    if (sys.missile) return fail('not_allowed', 'Munitions : utilisez l’ordre de frappe.');
     if (isSatellite(sys)) continue;
     if (m.ms[u.id]?.fa) {
       if (noFlyAt(state, n, o.to)) return fail('locked', 'Zone d’exclusion aérienne.');
