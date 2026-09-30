@@ -5,6 +5,7 @@
  * plausibles et cohérentes avec la carte ; aucune règle de jeu réelle.
  */
 import {
+  BUILDING_TYPES,
   DAY,
   HOUR,
   MINUTE,
@@ -58,6 +59,23 @@ export interface WorldExtras {
 }
 
 /** Portes de recherche maîtrisées au départ (démonstration, niveau technologique moyen-haut). */
+/** Coûts et durées de chantier de démonstration (ordre de grandeur de data/balance). */
+const MOCK_BUILD_COST: Record<string, number> = {
+  refinery: 2e9,
+  power_plant: 3e9,
+  port: 1.5e9,
+  air_base: 1e9,
+  military_base: 5e8,
+  arms_factory: 2.5e9,
+  research_center: 1.5e9,
+  farm: 2e8,
+  mine: 6e8,
+  bunker: 3e8,
+  forward_base: 1e8,
+  fortification: 2e8,
+};
+const MOCK_BUILD_HOURS: Record<string, number> = { fortification: 72, forward_base: 24, farm: 96 };
+
 const DONE = [
   'research.aero.gen2',
   'research.aero.gen3',
@@ -390,6 +408,23 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
       repairUntil: (i + k) % 9 === 4 ? now + 20 * HOUR : null,
       upgradeUntil: p.id === cap?.id && type === 'air_defense_site' ? now + 18 * HOUR : null,
     }));
+    // Devis des chantiers (comme le module eco : coût × 1,6^(N−1), durée × (1 + 0,25 × (N−1))).
+    const quote = (type: string, lvl: number) => ({
+      cost: Math.round((MOCK_BUILD_COST[type] ?? 1e9) * Math.pow(1.6, lvl - 1)),
+      hours: Math.round((MOCK_BUILD_HOURS[type] ?? 72) * (1 + 0.25 * (lvl - 1))),
+    });
+    for (const b of state) {
+      const lvl = b.level ?? 1;
+      b.next = lvl >= 5 ? null : { level: lvl + 1, ...quote(b.type, lvl + 1) };
+    }
+    pv.buildOptions = [
+      ...BUILDING_TYPES.filter((b) => !types.has(b)).map((b) => ({
+        type: b,
+        level: 1,
+        ...quote(b, 1),
+      })),
+      { type: 'fortification' as const, level: 1, ...quote('fortification', 1) },
+    ];
     pv.buildings = [...types];
     pv.buildingState = state;
     if (p.id === ctx.threatened?.id)

@@ -22,6 +22,7 @@ const STEPS: Step[] = [
     target: '[data-testid="order-bar"]',
     done: () => !useUi.getState().pendingOrder,
   },
+  { id: 'province', done: () => !!useUi.getState().selectedProvince },
   {
     id: 'production',
     target: '[data-testid="nav-production"]',
@@ -59,7 +60,7 @@ function useTargetRect(selector: string | undefined) {
   return rect;
 }
 
-/** Tutoriel interactif : dix étapes, qui avancent quand le joueur fait le geste demandé. */
+/** Tutoriel interactif : onze étapes, qui avancent quand le joueur fait le geste demandé. */
 export function Tutorial({ enabled }: { enabled: boolean }) {
   const { t } = useTranslation();
   const step = useUi((s) => s.tutorialStep);

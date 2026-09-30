@@ -2013,7 +2013,7 @@
   letter-spacing: 0;
 }
 .rl-unit {
-  --rl-u: var(--rl-violet);
+  --rl-u: var(--rl-green);
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -2031,17 +2031,19 @@
   padding: 0 4px 0 3px;
   gap: 3px;
 }
+/* Mêmes liserés que les pions de la carte : vert (les siennes), violet (alliés), gris (neutres),
+   rouge (en guerre). */
 .rl-unit--own {
-  --rl-u: var(--rl-violet);
+  --rl-u: var(--rl-green);
 }
 .rl-unit--ally {
-  --rl-u: var(--rl-green);
+  --rl-u: var(--rl-violet);
 }
 .rl-unit--enemy {
   --rl-u: var(--rl-red);
 }
 .rl-unit--neutral {
-  --rl-u: #9aa7b4;
+  --rl-u: #8a96a3;
 }
 .rl-unit--unknown {
   --rl-u: var(--rl-text-faint);

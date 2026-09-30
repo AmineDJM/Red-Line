@@ -28,9 +28,12 @@ export async function preparePage(page: Page, opts: { tutorial?: boolean } = {})
   }, !!opts.tutorial);
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
-  await page.addLocatorHandler(page.getByTestId('legal-accept'), async () => {
-    await page.getByRole('dialog').getByRole('checkbox').check();
-    await page.getByTestId('legal-accept').click();
+  const accept = page.getByTestId('legal-accept');
+  await page.addLocatorHandler(accept, async () => {
+    const box = page.getByRole('dialog').getByRole('checkbox');
+    if (!(await box.isChecked())) await box.check();
+    await accept.click();
+    await accept.waitFor({ state: 'hidden', timeout: 20_000 }).catch(() => undefined);
   });
   return errors;
 }
@@ -106,10 +109,15 @@ export async function selectProvince(page: Page, provinceId: string, zoom = 6) {
 }
 
 /** Nouveau contexte de navigateur (second joueur, spectateur), au format du projet courant. */
-export async function newPlayerPage(browser: Browser, info: TestInfo) {
+export async function newPlayerPage(browser: Browser, info: TestInfo, from: Page) {
+  const u = info.project.use;
   const ctx = await browser.newContext({
-    ...info.project.use,
-    baseURL: info.project.use.baseURL,
+    viewport: u.viewport,
+    deviceScaleFactor: u.deviceScaleFactor,
+    isMobile: u.isMobile,
+    hasTouch: u.hasTouch,
+    locale: 'fr-FR',
+    baseURL: new URL(from.url()).origin,
   });
   return ctx.newPage();
 }

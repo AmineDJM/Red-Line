@@ -1,5 +1,7 @@
 import {
+  cloneElement,
   forwardRef,
+  isValidElement,
   useId,
   type InputHTMLAttributes,
   type ReactNode,
@@ -24,12 +26,21 @@ export function Field({
   className?: string;
   htmlFor?: string;
 }) {
+  // Association automatique étiquette ↔ champ (accessibilité, lecteurs d'écran, tests) : l'enfant
+  // unique reçoit un identifiant s'il n'en a pas.
+  const auto = useId();
+  let id = htmlFor;
+  let content = children;
+  if (!id && isValidElement<{ id?: string }>(children)) {
+    id = children.props.id ?? auto;
+    if (!children.props.id) content = cloneElement(children, { id });
+  }
   return (
     <div className={['rl-field', className ?? ''].join(' ')}>
-      <label className="rl-field__label" htmlFor={htmlFor}>
+      <label className="rl-field__label" htmlFor={id}>
         {label}
       </label>
-      {children}
+      {content}
       {error ? (
         <div className="rl-field__error" role="alert">
           {error}

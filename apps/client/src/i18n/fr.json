@@ -240,7 +240,7 @@
       "title": "Légende",
       "ownForces": "Vos forces",
       "allyForces": "Forces alliées",
-      "enemyForces": "Forces ennemies",
+      "enemyForces": "Forces ennemies (en guerre)",
       "detected": "Contact non identifié",
       "building": "Bâtiment stratégique",
       "ownTerritory": "Votre territoire",
@@ -250,7 +250,8 @@
       "border": "Frontière",
       "disputed": "Territoire disputé",
       "fog": "Zone non couverte",
-      "capture": "Capture en cours"
+      "capture": "Capture en cours",
+      "neutralForces": "Forces neutres"
     },
     "alerts": {
       "title": "Centre d'alertes",
@@ -554,7 +555,7 @@
       },
       "select": {
         "title": "Sélectionnez une unité",
-        "text": "Touchez un de vos pions violets sur la carte : sa fiche, son état et sa portée s'affichent."
+        "text": "Touchez un de vos pions (liseré vert) sur la carte : sa fiche, son état et sa portée s'affichent."
       },
       "order": {
         "title": "Donnez un ordre",
@@ -587,6 +588,10 @@
       "end": {
         "title": "À vous de jouer",
         "text": "Contrôlez 60 % des provinces du monde ou toutes les capitales ennemies. Le tutoriel reste accessible dans les Réglages."
+      },
+      "province": {
+        "title": "Vos provinces",
+        "text": "Touchez une province : bâtiments et niveaux (1 à 5), constructions au coût exact, fortifications. Chez un voisin, lancez une reconnaissance pour révéler ses installations."
       }
     }
   },

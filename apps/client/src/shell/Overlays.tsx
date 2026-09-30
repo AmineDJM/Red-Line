@@ -383,6 +383,7 @@ export function LegendPanel({ fog }: { fog: boolean }) {
   const items: LegendItem[] = [
     { kind: 'unit', label: t('game.legend.ownForces'), pictogram: 'tank', tone: 'own' },
     { kind: 'unit', label: t('game.legend.allyForces'), pictogram: 'fighter', tone: 'ally' },
+    { kind: 'unit', label: t('game.legend.neutralForces'), pictogram: 'ship', tone: 'neutral' },
     { kind: 'unit', label: t('game.legend.enemyForces'), pictogram: 'ifv', tone: 'enemy' },
     { kind: 'unit', label: t('game.legend.detected'), pictogram: 'unknown', tone: 'unknown' },
     {
