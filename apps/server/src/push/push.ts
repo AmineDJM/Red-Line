@@ -1,0 +1,302 @@
+import { eq, inArray } from 'drizzle-orm';
+import type { FastifyBaseLogger, FastifyInstance } from 'fastify';
+import webpush from 'web-push';
+import { z } from 'zod';
+import type { GameNotification, NationId } from '@redline/shared';
+import type { Db } from '../db/client.js';
+import { pushSubscriptions, serverSettings } from '../db/schema.js';
+import type { Engine } from '../engine.js';
+import type { GameHost, HostedGame } from '../host/game-host.js';
+import type { DataStore } from '../data/store.js';
+import type { ProcessMetrics } from '../metrics.js';
+import type { Auth } from '../auth/auth.js';
+import { checkRole } from '../auth/auth.js';
+import { parseBody } from '../http/util.js';
+
+export interface VapidKeys {
+  publicKey: string;
+  privateKey: string;
+}
+
+export interface PushTarget {
+  endpoint: string;
+  keys: { p256dh: string; auth: string };
+}
+
+/** Envoi effectif (web-push en production ; faux émetteur dans les tests). */
+export interface PushSender {
+  send(
+    target: PushTarget,
+    payload: string,
+    vapid: VapidKeys & { subject: string },
+  ): Promise<{ statusCode: number }>;
+}
+
+export const webPushSender: PushSender = {
+  async send(target, payload, vapid) {
+    const r = await webpush.sendNotification(target, payload, {
+      vapidDetails: vapid,
+      TTL: 6 * 3600,
+      urgency: 'high',
+    });
+    return { statusCode: r.statusCode };
+  },
+};
+
+export type PushCategory = 'attack' | 'capture' | 'intel' | 'council' | 'endgame';
+
+export interface PushPayload {
+  title: string;
+  body: string;
+  gameId: string;
+  category: PushCategory;
+  url: string;
+}
+
+const SubscribeSchema = z.object({
+  endpoint: z.string().url().max(1000),
+  keys: z.object({ p256dh: z.string().min(10).max(200), auth: z.string().min(4).max(100) }),
+  expirationTime: z.number().nullable().optional(),
+});
+
+/**
+ * Notifications Web Push (VAPID). Clés générées au premier démarrage et stockées en base
+ * (server_settings), sauf si VAPID_PUBLIC_KEY / VAPID_PRIVATE_KEY sont fournies.
+ * Envoi quand un événement majeur survient pour un joueur NON connecté à la partie :
+ * attaque, capture, flash de renseignement, vote du Conseil, fin de partie.
+ */
+export class PushService {
+  keys: VapidKeys | null = null;
+  private readonly lastSent = new Map<string, number>();
+
+  constructor(
+    private readonly deps: {
+      db: Db;
+      host: GameHost;
+      engine: Engine | null;
+      store: DataStore;
+      log: FastifyBaseLogger;
+      metrics: ProcessMetrics;
+      sender: PushSender;
+      subject: string;
+      envKeys: VapidKeys | null;
+      throttleMs: number;
+    },
+  ) {}
+
+  async init(): Promise<void> {
+    if (this.deps.envKeys) {
+      this.keys = this.deps.envKeys;
+      return;
+    }
+    const read = async () => {
+      const [r] = await this.deps.db
+        .select()
+        .from(serverSettings)
+        .where(eq(serverSettings.key, 'vapid'));
+      return (r?.value as VapidKeys | undefined) ?? null;
+    };
+    let keys = await read();
+    if (!keys) {
+      const gen = webpush.generateVAPIDKeys();
+      // Plusieurs instances au démarrage : la première écriture gagne, les autres la relisent.
+      await this.deps.db
+        .insert(serverSettings)
+        .values({ key: 'vapid', value: gen })
+        .onConflictDoNothing();
+      keys = await read();
+      this.deps.log.info('clés VAPID générées et enregistrées');
+    }
+    this.keys = keys;
+  }
+
+  /** Traduit les notifications brutes en alertes push pour chaque joueur absent. */
+  onNotes(g: HostedGame, notes: GameNotification[]): void {
+    const engine = this.deps.engine;
+    if (!engine || !this.keys) return;
+    const absent = g.players.filter((p) => p.userId && !this.deps.host.isConnected(g, p.userId));
+    if (absent.length === 0) return;
+    const major = notes.filter((n) =>
+      [
+        'war_declared',
+        'province_capture_started',
+        'province_captured',
+        'unit_destroyed',
+        'intel_report',
+        'council',
+        'victory',
+        'nation_defeated',
+      ].includes(n.kind),
+    );
+    if (major.length === 0) return;
+    const data = this.deps.store.current();
+    const nationName = (id: string) => data.nationsById.get(id)?.name ?? id;
+    const provinceName = (id: string) => data.map?.provinces.find((p) => p.id === id)?.name ?? id;
+    let owners: Record<string, NationId> | null = null;
+    const ownerOf = (pid: string) => {
+      if (!engine.ownersFrame) return null;
+      owners ??= engine.ownersFrame(g.state);
+      return owners[pid] ?? null;
+    };
+    for (const p of absent) {
+      const me = p.nationId;
+      let mine: GameNotification[];
+      try {
+        mine = engine.notificationsFor(g.state, me, major);
+      } catch {
+        continue;
+      }
+      for (const n of mine) {
+        let cat: PushCategory | null = null;
+        let body = '';
+        switch (n.kind) {
+          case 'war_declared':
+            if (n.against === me) {
+              cat = 'attack';
+              body = `${nationName(n.by)} vous déclare la guerre.`;
+            }
+            break;
+          case 'province_capture_started':
+            if (n.by !== me && ownerOf(n.provinceId) === me) {
+              cat = 'attack';
+              body = `${nationName(n.by)} attaque ${provinceName(n.provinceId)}.`;
+            }
+            break;
+          case 'unit_destroyed':
+            if (n.owner === me) {
+              cat = 'attack';
+              body = 'Vos forces subissent des pertes.';
+            }
+            break;
+          case 'province_captured':
+            if (n.from === me) {
+              cat = 'capture';
+              body = `${nationName(n.by)} s'est emparé de ${provinceName(n.provinceId)}.`;
+            } else if (n.by === me) {
+              cat = 'capture';
+              body = `Vos troupes ont pris ${provinceName(n.provinceId)}.`;
+            }
+            break;
+          case 'intel_report':
+            if (n.flash) {
+              cat = 'intel';
+              body = 'Flash de renseignement : un rapport urgent vous attend.';
+            }
+            break;
+          case 'council':
+            cat = 'council';
+            body = `Conseil de sécurité : ${n.text}`.slice(0, 180);
+            break;
+          case 'victory':
+            cat = 'endgame';
+            body =
+              n.winner === me
+                ? 'Victoire ! Votre nation l’emporte.'
+                : `${nationName(n.winner)} remporte la partie.`;
+            break;
+          case 'nation_defeated':
+            if (n.nationId === me) {
+              cat = 'endgame';
+              body = 'Votre nation a été vaincue.';
+            }
+            break;
+        }
+        if (!cat) continue;
+        void this.notifyUser(p.userId!, {
+          title: `Red Line — ${g.meta.name}`,
+          body,
+          gameId: g.id,
+          category: cat,
+          url: `/?partie=${g.id}`,
+        });
+      }
+    }
+  }
+
+  /** Envoie une alerte à tous les appareils de l'utilisateur (limitée par catégorie et partie). */
+  async notifyUser(userId: string, payload: PushPayload, now = Date.now()): Promise<number> {
+    if (!this.keys) return 0;
+    const key = `${userId}|${payload.gameId}|${payload.category}`;
+    const last = this.lastSent.get(key);
+    if (last !== undefined && now - last < this.deps.throttleMs) return 0;
+    this.lastSent.set(key, now);
+    if (this.lastSent.size > 50_000) this.lastSent.clear();
+    const subs = await this.deps.db
+      .select()
+      .from(pushSubscriptions)
+      .where(eq(pushSubscriptions.userId, userId));
+    let sent = 0;
+    const gone: number[] = [];
+    const vapid = { ...this.keys, subject: this.deps.subject };
+    await Promise.all(
+      subs.map(async (s) => {
+        try {
+          const r = await this.deps.sender.send(
+            { endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } },
+            JSON.stringify(payload),
+            vapid,
+          );
+          if (r.statusCode >= 200 && r.statusCode < 300) sent++;
+        } catch (err) {
+          const code = (err as { statusCode?: number }).statusCode;
+          if (code === 404 || code === 410) gone.push(s.id);
+          else this.deps.log.debug({ err }, 'notification push en échec');
+        }
+      }),
+    );
+    if (gone.length) {
+      await this.deps.db.delete(pushSubscriptions).where(inArray(pushSubscriptions.id, gone));
+    }
+    if (sent) {
+      this.deps.metrics.count('push', sent);
+      await this.deps.db
+        .update(pushSubscriptions)
+        .set({ lastSentAt: new Date(now) })
+        .where(eq(pushSubscriptions.userId, userId));
+    }
+    return sent;
+  }
+
+  routes(app: FastifyInstance, auth: Auth): void {
+    app.get('/api/push/key', async () => {
+      if (!this.keys) {
+        return { publicKey: null };
+      }
+      return { publicKey: this.keys.publicKey };
+    });
+
+    app.post('/api/push/subscribe', async (req, reply) => {
+      const { user } = checkRole(await auth.authenticate(req, reply), 'player');
+      const body = parseBody(SubscribeSchema, req.body);
+      await this.deps.db
+        .insert(pushSubscriptions)
+        .values({
+          userId: user.id,
+          endpoint: body.endpoint,
+          p256dh: body.keys.p256dh,
+          auth: body.keys.auth,
+        })
+        .onConflictDoUpdate({
+          target: pushSubscriptions.endpoint,
+          set: { userId: user.id, p256dh: body.keys.p256dh, auth: body.keys.auth },
+        });
+      return { ok: true };
+    });
+
+    app.delete('/api/push/subscribe', async (req, reply) => {
+      const { user } = checkRole(await auth.authenticate(req, reply), 'player');
+      const body = parseBody(z.object({ endpoint: z.string().max(1000).optional() }), req.body);
+      const rows = await this.deps.db
+        .select()
+        .from(pushSubscriptions)
+        .where(eq(pushSubscriptions.userId, user.id));
+      const ids = rows
+        .filter((r) => !body.endpoint || r.endpoint === body.endpoint)
+        .map((r) => r.id);
+      if (ids.length) {
+        await this.deps.db.delete(pushSubscriptions).where(inArray(pushSubscriptions.id, ids));
+      }
+      return { ok: true };
+    });
+  }
+}

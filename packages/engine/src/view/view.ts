@@ -96,7 +96,7 @@ function lostUnitView(state: EngineState, id: string, c: Contact): UnitView {
     level: LEVELS[c.lvl] ?? 'detected',
     pos: c.pos,
     lastSeen: c.lastSeen,
-    uncertaintyKm: ageH * state.world.balance.sensors.uncertaintyGrowthKmh,
+    uncertaintyKm: (c.unc ?? 0) + ageH * state.world.balance.sensors.uncertaintyGrowthKmh,
   };
   if (c.lvl >= 2 && c.sys) v.systemId = c.sys;
   if (c.lvl >= 3) {

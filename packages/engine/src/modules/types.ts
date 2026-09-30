@@ -133,6 +133,10 @@ export interface SharedBoard {
    * chaque changement est aussi annoncé par les signaux `static_defense` et `radar_station`.
    */
   sites: Record<string, StaticSite>;
+  /** diplo / IA : guerres planifiées par une nation IA (cibles), lues par intel (intentions). */
+  warPlans?: Record<NationId, NationId[]>;
+  /** diplo : alliances dont la charte prévoit le partage du renseignement (partage automatique). */
+  intelSharing?: Record<string, true>;
 }
 
 export interface StaticSite {

@@ -1,0 +1,378 @@
+{
+  "nodes": [
+    {
+      "id": "research.missiles.ballistic1",
+      "name": "Missiles balistiques tactiques",
+      "description": "Missiles à courte portée à ergols liquides (Scud, Tochka).",
+      "branch": "missiles",
+      "tier": 1,
+      "cost": {
+        "money": 500000000,
+        "resources": {
+          "electronics": 10,
+          "metals": 5
+        }
+      },
+      "durationH": 72,
+      "requires": [],
+      "effects": {},
+      "eraYear": 1955
+    },
+    {
+      "id": "research.missiles.sam1",
+      "name": "Missiles sol-air de 1re génération",
+      "description": "Grands missiles guidés par radar (S-75, Hawk).",
+      "branch": "missiles",
+      "tier": 1,
+      "cost": {
+        "money": 300000000,
+        "resources": {
+          "electronics": 5,
+          "metals": 2
+        }
+      },
+      "durationH": 48,
+      "requires": [],
+      "effects": {},
+      "eraYear": 1957
+    },
+    {
+      "id": "research.missiles.antiship",
+      "name": "Missiles antinavires",
+      "description": "Missiles rasant les flots et missiles supersoniques antinavires.",
+      "branch": "missiles",
+      "tier": 2,
+      "cost": {
+        "money": 1000000000,
+        "resources": {
+          "electronics": 20,
+          "metals": 10
+        }
+      },
+      "durationH": 96,
+      "requires": ["research.naval.gen1"],
+      "effects": {},
+      "eraYear": 1960
+    },
+    {
+      "id": "research.missiles.ballistic2",
+      "name": "Missiles balistiques modernes",
+      "description": "Propergol solide et guidage de précision (Iskander, ATACMS, Fateh).",
+      "branch": "missiles",
+      "tier": 2,
+      "cost": {
+        "money": 2000000000,
+        "resources": {
+          "electronics": 40,
+          "metals": 20
+        }
+      },
+      "durationH": 144,
+      "requires": ["research.missiles.ballistic1"],
+      "effects": {},
+      "eraYear": 1962
+    },
+    {
+      "id": "research.missiles.cruise1",
+      "name": "Missiles de croisière",
+      "description": "Missiles subsoniques à guidage terrain (Tomahawk, Kalibr).",
+      "branch": "missiles",
+      "tier": 2,
+      "cost": {
+        "money": 1000000000,
+        "resources": {
+          "electronics": 20,
+          "metals": 10
+        }
+      },
+      "durationH": 96,
+      "requires": [],
+      "effects": {},
+      "eraYear": 1980
+    },
+    {
+      "id": "research.missiles.sam2",
+      "name": "Missiles sol-air de 2e génération",
+      "description": "Systèmes mobiles à courte et moyenne portée (Kub, Osa, Crotale).",
+      "branch": "missiles",
+      "tier": 2,
+      "cost": {
+        "money": 1000000000,
+        "resources": {
+          "electronics": 20,
+          "metals": 10
+        }
+      },
+      "durationH": 96,
+      "requires": ["research.missiles.sam1"],
+      "effects": {},
+      "eraYear": 1967
+    },
+    {
+      "id": "research.missiles.ballistic3",
+      "name": "Missiles balistiques de moyenne portée",
+      "description": "Missiles de 1 000 à 5 000 km (DF-21, DF-26, Shahab-3).",
+      "branch": "missiles",
+      "tier": 3,
+      "cost": {
+        "money": 5000000000,
+        "resources": {
+          "electronics": 100,
+          "metals": 50
+        }
+      },
+      "durationH": 264,
+      "requires": ["research.missiles.ballistic2"],
+      "effects": {},
+      "eraYear": 1965
+    },
+    {
+      "id": "research.missiles.cruise2",
+      "name": "Missiles de croisière furtifs",
+      "description": "Missiles de croisière à signature réduite et guidage satellite (JASSM, SCALP).",
+      "branch": "missiles",
+      "tier": 3,
+      "cost": {
+        "money": 3000000000,
+        "resources": {
+          "electronics": 60,
+          "metals": 30
+        }
+      },
+      "durationH": 192,
+      "requires": ["research.missiles.cruise1", "research.sensors.space1"],
+      "effects": {},
+      "eraYear": 2000
+    },
+    {
+      "id": "research.missiles.gps-guidance",
+      "name": "Guidage par satellite",
+      "description": "Centrales inertielles recalées par satellite.",
+      "branch": "missiles",
+      "tier": 3,
+      "cost": {
+        "money": 1000000000,
+        "resources": {
+          "electronics": 20,
+          "metals": 10
+        }
+      },
+      "durationH": 96,
+      "requires": ["research.missiles.cruise1", "research.sensors.space1"],
+      "effects": {
+        "missiles.accuracy": 1.15
+      },
+      "eraYear": 1993
+    },
+    {
+      "id": "research.missiles.sam3",
+      "name": "Missiles sol-air de 3e génération",
+      "description": "Radars à balayage électronique, missiles portables modernes (S-300, Stinger).",
+      "branch": "missiles",
+      "tier": 3,
+      "cost": {
+        "money": 2500000000,
+        "resources": {
+          "electronics": 50,
+          "metals": 25
+        }
+      },
+      "durationH": 168,
+      "requires": ["research.missiles.sam2", "research.sensors.radar1"],
+      "effects": {},
+      "eraYear": 1980
+    },
+    {
+      "id": "research.nuclear.weapons",
+      "name": "Armes nucléaires",
+      "description": "Enrichissement, conception et fabrication de têtes nucléaires.",
+      "branch": "missiles",
+      "tier": 3,
+      "cost": {
+        "money": 15000000000,
+        "resources": {
+          "electronics": 200,
+          "metals": 300
+        }
+      },
+      "durationH": 600,
+      "requires": ["research.industry.l1"],
+      "effects": {},
+      "eraYear": 1950
+    },
+    {
+      "id": "research.missiles.hypersonic",
+      "name": "Armes hypersoniques",
+      "description": "Planeurs et missiles manœuvrant au-delà de Mach 5 (Kinzhal, Zircon, DF-17).",
+      "branch": "missiles",
+      "tier": 4,
+      "cost": {
+        "money": 12000000000,
+        "resources": {
+          "electronics": 240,
+          "metals": 120
+        }
+      },
+      "durationH": 480,
+      "requires": ["research.missiles.ballistic3", "research.missiles.cruise2"],
+      "effects": {},
+      "eraYear": 2017
+    },
+    {
+      "id": "research.missiles.imaging-seekers",
+      "name": "Autodirecteurs à imagerie",
+      "description": "Reconnaissance de cible infrarouge et radar terminal.",
+      "branch": "missiles",
+      "tier": 4,
+      "cost": {
+        "money": 2000000000,
+        "resources": {
+          "electronics": 40,
+          "metals": 20
+        }
+      },
+      "durationH": 144,
+      "requires": ["research.missiles.gps-guidance"],
+      "effects": {
+        "missiles.accuracy": 1.1
+      },
+      "eraYear": 2005
+    },
+    {
+      "id": "research.missiles.integrated-air-defense",
+      "name": "Défense aérienne intégrée",
+      "description": "Réseau de commandement reliant radars et batteries.",
+      "branch": "missiles",
+      "tier": 4,
+      "cost": {
+        "money": 2000000000,
+        "resources": {
+          "electronics": 40,
+          "metals": 20
+        }
+      },
+      "durationH": 168,
+      "requires": ["research.missiles.sam3", "research.sensors.radar2"],
+      "effects": {
+        "missiles.interception": 1.1
+      },
+      "eraYear": 1990
+    },
+    {
+      "id": "research.missiles.sam4",
+      "name": "Missiles sol-air de 4e génération",
+      "description": "Défense multicouche contre avions, missiles de croisière et drones (S-400, SAMP/T).",
+      "branch": "missiles",
+      "tier": 4,
+      "cost": {
+        "money": 5000000000,
+        "resources": {
+          "electronics": 100,
+          "metals": 50
+        }
+      },
+      "durationH": 264,
+      "requires": ["research.missiles.sam3", "research.sensors.radar2"],
+      "effects": {},
+      "eraYear": 1995
+    },
+    {
+      "id": "research.nuclear.icbm",
+      "name": "Missiles intercontinentaux",
+      "description": "Missiles balistiques de plus de 5 500 km, en silo ou mobiles.",
+      "branch": "missiles",
+      "tier": 4,
+      "cost": {
+        "money": 10000000000,
+        "resources": {
+          "electronics": 200,
+          "metals": 100
+        }
+      },
+      "durationH": 480,
+      "requires": ["research.nuclear.weapons", "research.missiles.ballistic3"],
+      "effects": {},
+      "eraYear": 1965
+    },
+    {
+      "id": "research.nuclear.slbm",
+      "name": "Missiles mer-sol balistiques stratégiques",
+      "description": "Missiles balistiques lancés depuis un sous-marin.",
+      "branch": "missiles",
+      "tier": 4,
+      "cost": {
+        "money": 8000000000,
+        "resources": {
+          "electronics": 160,
+          "metals": 80
+        }
+      },
+      "durationH": 432,
+      "requires": [
+        "research.nuclear.weapons",
+        "research.missiles.ballistic3",
+        "research.naval.sub1"
+      ],
+      "effects": {},
+      "eraYear": 1965
+    },
+    {
+      "id": "research.missiles.abm",
+      "name": "Défense antimissile balistique",
+      "description": "Interception de missiles balistiques et de planeurs hypersoniques.",
+      "branch": "missiles",
+      "tier": 5,
+      "cost": {
+        "money": 12000000000,
+        "resources": {
+          "electronics": 240,
+          "metals": 120
+        }
+      },
+      "durationH": 480,
+      "requires": ["research.missiles.sam4", "research.sensors.space1"],
+      "effects": {
+        "missiles.interception": 1.05
+      },
+      "eraYear": 2000
+    },
+    {
+      "id": "research.missiles.sam5",
+      "name": "Missiles sol-air de 5e génération",
+      "description": "Interception à très haute altitude et à très longue portée (S-500, THAAD).",
+      "branch": "missiles",
+      "tier": 5,
+      "cost": {
+        "money": 10000000000,
+        "resources": {
+          "electronics": 200,
+          "metals": 100
+        }
+      },
+      "durationH": 432,
+      "requires": ["research.missiles.sam4", "research.sensors.radar3"],
+      "effects": {},
+      "eraYear": 2008
+    },
+    {
+      "id": "research.missiles.hit-to-kill",
+      "name": "Interception par impact direct",
+      "description": "Intercepteurs cinétiques à guidage terminal.",
+      "branch": "missiles",
+      "tier": 6,
+      "cost": {
+        "money": 4000000000,
+        "resources": {
+          "electronics": 80,
+          "metals": 40
+        }
+      },
+      "durationH": 240,
+      "requires": ["research.missiles.abm"],
+      "effects": {
+        "missiles.interception": 1.1
+      },
+      "eraYear": 2008
+    }
+  ]
+}

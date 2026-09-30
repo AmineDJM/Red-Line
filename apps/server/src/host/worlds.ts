@@ -2,14 +2,22 @@ import type { World } from '@redline/engine';
 import type { Balance } from '@redline/shared';
 import type { Db } from '../db/client.js';
 import type { Engine } from '../engine.js';
-import type { GameData } from '../data/loader.js';
 import { hashJson } from '../data/loader.js';
+import type { DataStore } from '../data/store.js';
 import { latestReleaseId, releaseSnapshot } from '../data/catalog-store.js';
 import { HttpError } from '../auth/auth.js';
 
+/** Ce qu'une partie épingle pour reconstruire son monde à l'identique. */
+export interface WorldPin {
+  releaseId: number | null;
+  balance: Balance;
+  /** Révision des données d'administration (carte, recherche, ORBAT). */
+  dataRev: number;
+}
+
 /**
- * Mondes (données statiques du moteur) construits une seule fois par couple
- * (release du catalogue, équilibrage) et partagés entre les parties qui les épinglent.
+ * Mondes (données statiques du moteur) construits une seule fois par triplet
+ * (release du catalogue, équilibrage, révision des données) et partagés entre les parties qui les épinglent.
  */
 export class WorldRegistry {
   private readonly cache = new Map<string, Promise<World>>();
@@ -19,7 +27,7 @@ export class WorldRegistry {
   constructor(
     private readonly db: Db,
     private readonly engine: Engine | null,
-    private readonly data: GameData,
+    private readonly store: DataStore,
   ) {}
 
   async init(): Promise<void> {
@@ -31,13 +39,17 @@ export class WorldRegistry {
     if (!this.engine) {
       return { code: 'engine_unavailable', message: 'Moteur de simulation indisponible' };
     }
-    if (!this.data.map) {
-      return { code: 'data_unavailable', message: this.data.mapError ?? 'Carte indisponible' };
-    }
-    if (!this.data.balance) {
+    const cur = this.store.current();
+    if (!cur.map) {
       return {
         code: 'data_unavailable',
-        message: this.data.balanceError ?? 'Équilibrage indisponible',
+        message: this.store.repo.mapError ?? 'Carte indisponible',
+      };
+    }
+    if (!cur.balance) {
+      return {
+        code: 'data_unavailable',
+        message: this.store.repo.balanceError ?? 'Équilibrage indisponible',
       };
     }
     return null;
@@ -49,19 +61,24 @@ export class WorldRegistry {
     return { engine: this.engine! };
   }
 
-  key(releaseId: number | null, balance: Balance): string {
-    return `${releaseId ?? 0}:${hashJson(balance)}`;
+  key(pin: WorldPin): string {
+    return `${pin.releaseId ?? 0}:${hashJson(pin.balance)}:${pin.dataRev}`;
   }
 
-  get(releaseId: number | null, balance: Balance): Promise<World> {
+  get(pin: WorldPin): Promise<World> {
     const { engine } = this.assertAvailable();
-    const key = this.key(releaseId, balance);
+    const key = this.key(pin);
     let p = this.cache.get(key);
     if (!p) {
       p = (async () => {
         const catalog =
-          releaseId === null ? [] : ((await releaseSnapshot(this.db, releaseId)) ?? []);
-        return engine.buildWorld(this.data.map!, catalog, balance);
+          pin.releaseId === null ? [] : ((await releaseSnapshot(this.db, pin.releaseId)) ?? []);
+        const data = this.store.effective(pin.dataRev);
+        if (!data.map) throw new HttpError(503, 'data_unavailable', 'Carte indisponible');
+        return engine.buildWorld(data.map, catalog, pin.balance, {
+          research: data.research,
+          orbats: data.orbats,
+        });
       })();
       p.catch(() => this.cache.delete(key));
       this.cache.set(key, p);
@@ -69,22 +86,30 @@ export class WorldRegistry {
     return p;
   }
 
-  async forNewGames(): Promise<{ world: World; releaseId: number | null; balance: Balance }> {
+  /** Épingle courante pour une nouvelle partie (équilibrage éventuellement surchargé par le scénario). */
+  currentPin(balance?: Balance): WorldPin {
     this.assertAvailable();
-    const balance = this.data.balance!;
-    const releaseId = this.currentReleaseId;
-    return { world: await this.get(releaseId, balance), releaseId, balance };
+    return {
+      releaseId: this.currentReleaseId,
+      balance: balance ?? this.store.current().balance!,
+      dataRev: this.store.currentRev,
+    };
+  }
+
+  async forNewGames(balance?: Balance): Promise<{ world: World; pin: WorldPin }> {
+    const pin = this.currentPin(balance);
+    return { world: await this.get(pin), pin };
   }
 
   /** Nouvelle release : les nouvelles parties l'utiliseront ; le monde est construit tout de suite. */
   async setCurrentRelease(releaseId: number): Promise<void> {
     this.currentReleaseId = releaseId;
-    if (!this.unavailableReason()) await this.get(releaseId, this.data.balance!);
+    if (!this.unavailableReason()) await this.get(this.currentPin());
   }
 
   /** Oublie les mondes qui ne sont plus utilisés. */
   prune(keep: Set<string>): void {
-    if (this.data.balance) keep.add(this.key(this.currentReleaseId, this.data.balance));
+    if (!this.unavailableReason()) keep.add(this.key(this.currentPin()));
     for (const k of this.cache.keys()) if (!keep.has(k)) this.cache.delete(k);
   }
 }

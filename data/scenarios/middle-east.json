@@ -1,0 +1,42 @@
+{
+  "id": "middle-east",
+  "name": "Moyen-Orient",
+  "description": "Du Nil au golfe Persique : Israël, l'Iran, la Turquie, les monarchies du Golfe et leurs voisins, avec leurs arsenaux de 2025. Missiles balistiques, drones et défenses antimissiles en première ligne.",
+  "playableNations": "all",
+  "nationIds": [
+    "egy",
+    "isr",
+    "pse",
+    "gaza",
+    "lbn",
+    "syr",
+    "jor",
+    "irq",
+    "irn",
+    "sau",
+    "yem",
+    "omn",
+    "are",
+    "qat",
+    "bhr",
+    "kwt",
+    "tur",
+    "cyp",
+    "lby",
+    "sdn",
+    "eri",
+    "dji",
+    "afg",
+    "pak",
+    "aze",
+    "arm",
+    "geo",
+    "tkm"
+  ],
+  "year": 2025,
+  "orbatSet": "2025",
+  "camera": {
+    "center": [45, 29],
+    "zoom": 3.6
+  }
+}

@@ -28,6 +28,8 @@ export const INTEL_OPS = [
   'deploy_decoys',
   'fake_radio_traffic',
   'counterintel_sweep',
+  'recon_economic',
+  'recon_military',
 ] as const;
 
 const lngLat = z.tuple([z.number().min(-180).max(180), z.number().min(-90).max(90)]);

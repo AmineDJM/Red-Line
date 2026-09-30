@@ -1,0 +1,158 @@
+{
+  "nodes": [
+    {
+      "id": "research.cyber.l1",
+      "name": "Cyberdéfense",
+      "description": "Équipes de réponse aux incidents, réseaux militaires cloisonnés.",
+      "branch": "cyber",
+      "tier": 1,
+      "cost": {
+        "money": 500000000,
+        "resources": {
+          "electronics": 10
+        }
+      },
+      "durationH": 72,
+      "requires": [],
+      "effects": {
+        "cyber.defense": 1.1
+      },
+      "eraYear": 1995
+    },
+    {
+      "id": "research.cyber.l2",
+      "name": "Cyberattaque",
+      "description": "Unités offensives capables d’aveugler des radars et de ralentir une industrie.",
+      "branch": "cyber",
+      "tier": 2,
+      "cost": {
+        "money": 2000000000,
+        "resources": {
+          "electronics": 40
+        }
+      },
+      "durationH": 168,
+      "requires": ["research.cyber.l1", "research.industry.l2"],
+      "effects": {
+        "cyber.attack": 1.15
+      },
+      "eraYear": 2005
+    },
+    {
+      "id": "research.cyber.soc",
+      "name": "Centre des opérations de sécurité",
+      "description": "Surveillance permanente des réseaux de défense.",
+      "branch": "cyber",
+      "tier": 2,
+      "cost": {
+        "money": 800000000,
+        "resources": {
+          "electronics": 15
+        }
+      },
+      "durationH": 96,
+      "requires": ["research.cyber.l1"],
+      "effects": {
+        "cyber.defense": 1.2
+      },
+      "eraYear": 2005
+    },
+    {
+      "id": "research.cyber.ics-attack",
+      "name": "Attaque des systèmes industriels",
+      "description": "Charges visant automates et réseaux électriques.",
+      "branch": "cyber",
+      "tier": 3,
+      "cost": {
+        "money": 2000000000,
+        "resources": {
+          "electronics": 40
+        }
+      },
+      "durationH": 144,
+      "requires": ["research.cyber.l2"],
+      "effects": {
+        "cyber.attack": 1.1
+      },
+      "eraYear": 2010
+    },
+    {
+      "id": "research.cyber.l3",
+      "name": "Cyberguerre avancée",
+      "description": "Armes numériques contre les systèmes industriels et de commandement.",
+      "branch": "cyber",
+      "tier": 3,
+      "cost": {
+        "money": 6000000000,
+        "resources": {
+          "electronics": 120
+        }
+      },
+      "durationH": 336,
+      "requires": ["research.cyber.l2", "research.intel.exterior2"],
+      "effects": {
+        "cyber.attack": 1.2,
+        "cyber.defense": 1.1
+      },
+      "eraYear": 2015
+    },
+    {
+      "id": "research.cyber.zero-days",
+      "name": "Arsenal de vulnérabilités",
+      "description": "Failles inédites achetées ou découvertes.",
+      "branch": "cyber",
+      "tier": 3,
+      "cost": {
+        "money": 1500000000,
+        "resources": {
+          "electronics": 30
+        }
+      },
+      "durationH": 120,
+      "requires": ["research.cyber.l2"],
+      "effects": {
+        "cyber.attack": 1.2
+      },
+      "eraYear": 2010
+    },
+    {
+      "id": "research.cyber.ai-defense",
+      "name": "Défense automatisée",
+      "description": "Détection d’intrusion par intelligence artificielle.",
+      "branch": "cyber",
+      "tier": 4,
+      "cost": {
+        "money": 3000000000,
+        "resources": {
+          "electronics": 60
+        }
+      },
+      "durationH": 192,
+      "requires": ["research.cyber.soc", "research.cyber.l3"],
+      "effects": {
+        "cyber.defense": 1.15
+      },
+      "eraYear": 2023
+    },
+    {
+      "id": "research.cyber.hardened-comms",
+      "name": "Communications durcies",
+      "description": "Chiffrement et liaisons résistantes au brouillage.",
+      "branch": "cyber",
+      "tier": 4,
+      "cost": {
+        "money": 2000000000,
+        "resources": {
+          "electronics": 40
+        }
+      },
+      "durationH": 168,
+      "requires": ["research.cyber.l3"],
+      "effects": {
+        "cyber.defense": 1.15,
+        "ew.jamResistance": 1.05
+      },
+      "eraYear": 2020
+    }
+  ]
+}

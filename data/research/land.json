@@ -1,0 +1,232 @@
+{
+  "nodes": [
+    {
+      "id": "research.land.gen1",
+      "name": "Blindés de 1re génération",
+      "description": "Chars et véhicules d’après-guerre (T-55, Type 59).",
+      "branch": "land",
+      "tier": 1,
+      "cost": {
+        "money": 100000000,
+        "resources": {
+          "metals": 5,
+          "oil": 2
+        }
+      },
+      "durationH": 24,
+      "requires": [],
+      "effects": {},
+      "eraYear": 1945
+    },
+    {
+      "id": "research.land.gen2",
+      "name": "Blindés de 2e génération",
+      "description": "Stabilisation du canon, véhicules de combat d’infanterie (T-62, M60, BMP-1).",
+      "branch": "land",
+      "tier": 2,
+      "cost": {
+        "money": 400000000,
+        "resources": {
+          "metals": 10,
+          "oil": 5
+        }
+      },
+      "durationH": 48,
+      "requires": ["research.land.gen1"],
+      "effects": {},
+      "eraYear": 1960
+    },
+    {
+      "id": "research.land.gen3",
+      "name": "Blindés de 3e génération",
+      "description": "Conduites de tir à télémètre laser, chargeurs automatiques (T-72, M2 Bradley).",
+      "branch": "land",
+      "tier": 3,
+      "cost": {
+        "money": 1200000000,
+        "resources": {
+          "metals": 25,
+          "oil": 12
+        }
+      },
+      "durationH": 96,
+      "requires": ["research.land.gen2"],
+      "effects": {},
+      "eraYear": 1970
+    },
+    {
+      "id": "research.land.mlrs",
+      "name": "Lance-roquettes lourds",
+      "description": "Roquettes de 220 à 370 mm et munitions guidées.",
+      "branch": "land",
+      "tier": 3,
+      "cost": {
+        "money": 1000000000,
+        "resources": {
+          "metals": 20,
+          "oil": 10
+        }
+      },
+      "durationH": 96,
+      "requires": ["research.land.gen2"],
+      "effects": {},
+      "eraYear": 1975
+    },
+    {
+      "id": "research.land.mobile-logistics",
+      "name": "Logistique motorisée",
+      "description": "Camions, citernes et dépôts mobiles : allonge du ravitaillement.",
+      "branch": "land",
+      "tier": 3,
+      "cost": {
+        "money": 500000000,
+        "resources": {
+          "metals": 10,
+          "oil": 5
+        }
+      },
+      "durationH": 72,
+      "requires": ["research.land.gen2"],
+      "effects": {
+        "supply.range": 1.15
+      },
+      "eraYear": 1960
+    },
+    {
+      "id": "research.land.night-vision",
+      "name": "Vision nocturne",
+      "description": "Intensificateurs de lumière et caméras thermiques pour toute l’armée de terre.",
+      "branch": "land",
+      "tier": 3,
+      "cost": {
+        "money": 800000000,
+        "resources": {
+          "metals": 15,
+          "oil": 7
+        }
+      },
+      "durationH": 72,
+      "requires": ["research.land.gen2"],
+      "effects": {
+        "combat.damage": 1.03
+      },
+      "eraYear": 1975
+    },
+    {
+      "id": "research.land.composite-armor",
+      "name": "Blindage composite",
+      "description": "Blindages multicouches céramique-acier.",
+      "branch": "land",
+      "tier": 4,
+      "cost": {
+        "money": 1000000000,
+        "resources": {
+          "metals": 20,
+          "oil": 10
+        }
+      },
+      "durationH": 96,
+      "requires": ["research.land.gen3"],
+      "effects": {
+        "combat.armor": 1.04
+      },
+      "eraYear": 1977
+    },
+    {
+      "id": "research.land.ew",
+      "name": "Guerre électronique terrestre",
+      "description": "Brouilleurs de radars, de liaisons et de drones.",
+      "branch": "land",
+      "tier": 4,
+      "cost": {
+        "money": 1500000000,
+        "resources": {
+          "metals": 30,
+          "oil": 15
+        }
+      },
+      "durationH": 120,
+      "requires": ["research.land.gen3", "research.sensors.radar1"],
+      "effects": {
+        "ew.jamming": 1.05
+      },
+      "eraYear": 1975
+    },
+    {
+      "id": "research.land.fire-control",
+      "name": "Conduite de tir numérique",
+      "description": "Calculateurs balistiques, télémètres laser, liaison de données.",
+      "branch": "land",
+      "tier": 4,
+      "cost": {
+        "money": 1500000000,
+        "resources": {
+          "metals": 30,
+          "oil": 15
+        }
+      },
+      "durationH": 120,
+      "requires": ["research.land.gen3"],
+      "effects": {
+        "combat.damage": 1.04
+      },
+      "eraYear": 1985
+    },
+    {
+      "id": "research.land.gen4",
+      "name": "Blindés de 4e génération",
+      "description": "Blindage composite, viseurs thermiques, numérisation (M1A2, Leopard 2A7).",
+      "branch": "land",
+      "tier": 5,
+      "cost": {
+        "money": 3000000000,
+        "resources": {
+          "metals": 60,
+          "oil": 30
+        }
+      },
+      "durationH": 168,
+      "requires": ["research.land.gen3", "research.land.composite-armor"],
+      "effects": {},
+      "eraYear": 1980
+    },
+    {
+      "id": "research.land.active-protection",
+      "name": "Protection active",
+      "description": "Systèmes interceptant roquettes et missiles antichars (Trophy, Afganit).",
+      "branch": "land",
+      "tier": 6,
+      "cost": {
+        "money": 2000000000,
+        "resources": {
+          "metals": 40,
+          "oil": 20
+        }
+      },
+      "durationH": 168,
+      "requires": ["research.land.gen4"],
+      "effects": {
+        "combat.armor": 1.05
+      },
+      "eraYear": 2010
+    },
+    {
+      "id": "research.land.gen5",
+      "name": "Blindés de 5e génération",
+      "description": "Tourelles téléopérées, protection active, réseaux (T-14, Puma).",
+      "branch": "land",
+      "tier": 7,
+      "cost": {
+        "money": 8000000000,
+        "resources": {
+          "metals": 160,
+          "oil": 80
+        }
+      },
+      "durationH": 336,
+      "requires": ["research.land.gen4", "research.land.active-protection", "research.industry.l2"],
+      "effects": {},
+      "eraYear": 2015
+    }
+  ]
+}

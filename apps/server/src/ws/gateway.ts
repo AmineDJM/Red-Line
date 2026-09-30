@@ -13,15 +13,22 @@ import {
 import type { AppContext } from '../context.js';
 import { gamePlayers } from '../db/schema.js';
 import type { Connection, HostedGame } from '../host/game-host.js';
+import { gameAccess } from '../http/access.js';
+import type { ProcessMetrics } from '../metrics.js';
 
-const QuerySchema = z.object({ gameId: z.string().uuid() });
+const QuerySchema = z.object({
+  gameId: z.string().uuid(),
+  spectate: z.enum(['0', '1', 'true', 'false']).optional(),
+});
 const MAX_BUFFERED_BYTES = 8 * 1024 * 1024;
 const PING_INTERVAL_MS = 30_000;
 
 interface WsIdentity {
   userId: string;
+  userName: string;
   nationId: NationId;
   gameId: string;
+  spectator: boolean;
 }
 
 let nextConnId = 1;
@@ -39,7 +46,10 @@ class WsConnection implements Connection {
     readonly socket: WebSocket,
     readonly userId: string,
     readonly nationId: NationId,
+    readonly spectator: boolean,
+    readonly userName: string,
     private readonly rate: { perSecond: number; burst: number },
+    private readonly metrics: ProcessMetrics,
   ) {
     this.tokens = rate.burst;
   }
@@ -51,7 +61,10 @@ class WsConnection implements Connection {
       this.socket.close(1013, 'Client trop lent');
       return;
     }
-    this.socket.send(encodeMessage(msg));
+    const bytes = encodeMessage(msg);
+    this.metrics.count('wsBytesOut', bytes.byteLength);
+    this.metrics.count('wsMessagesOut');
+    this.socket.send(bytes);
   }
 
   close(code: number, reason: string): void {
@@ -145,33 +158,71 @@ export async function wsGateway(app: FastifyInstance, ctx: AppContext): Promise<
         const state = await auth.resolve(req);
         if (!state)
           return reply.code(401).send({ error: 'unauthorized', message: 'Connexion requise' });
-        const [p] = await db
-          .select({ nationId: gamePlayers.nationId })
-          .from(gamePlayers)
-          .where(and(eq(gamePlayers.gameId, q.data.gameId), eq(gamePlayers.userId, state.user.id)))
-          .limit(1);
-        if (!p) {
-          return reply
-            .code(403)
-            .send({ error: 'forbidden', message: 'Vous ne jouez pas dans cette partie' });
+        const spectator = q.data.spectate === '1' || q.data.spectate === 'true';
+        let nationId: NationId = '';
+        if (spectator) {
+          // Spectateur : vue publique (aucun secret), lecture seule.
+          let access;
+          try {
+            access = await gameAccess(ctx, q.data.gameId, state);
+          } catch {
+            return reply.code(404).send({ error: 'not_found', message: 'Partie introuvable' });
+          }
+          if (!access.canSpectate) {
+            return reply
+              .code(403)
+              .send({ error: 'forbidden', message: 'Partie non ouverte aux spectateurs' });
+          }
+          if (!ctx.engine?.publicView) {
+            return reply
+              .code(503)
+              .send({ error: 'spectate_unavailable', message: 'Mode spectateur indisponible' });
+          }
+        } else {
+          const [p] = await db
+            .select({ nationId: gamePlayers.nationId })
+            .from(gamePlayers)
+            .where(
+              and(eq(gamePlayers.gameId, q.data.gameId), eq(gamePlayers.userId, state.user.id)),
+            )
+            .limit(1);
+          if (!p) {
+            return reply
+              .code(403)
+              .send({ error: 'forbidden', message: 'Vous ne jouez pas dans cette partie' });
+          }
+          nationId = p.nationId;
         }
+        ctx.fingerprints.record(state.user.id, req);
         (req as FastifyRequest & { wsIdentity?: WsIdentity }).wsIdentity = {
           userId: state.user.id,
-          nationId: p.nationId,
+          userName: state.user.displayName,
+          nationId,
           gameId: q.data.gameId,
+          spectator,
         };
       },
     },
     (socket, req) => {
       const ident = (req as FastifyRequest & { wsIdentity?: WsIdentity }).wsIdentity!;
-      const conn = new WsConnection(socket, ident.userId, ident.nationId, {
-        perSecond: ctx.options.wsMessagesPerSecond,
-        burst: ctx.options.wsBurst,
-      });
+      const conn = new WsConnection(
+        socket,
+        ident.userId,
+        ident.nationId,
+        ident.spectator,
+        ident.userName,
+        { perSecond: ctx.options.wsMessagesPerSecond, burst: ctx.options.wsBurst },
+        ctx.metrics,
+      );
       sockets.add(conn);
       let game: HostedGame | null = null;
       let closed = false;
       const queue: [RawData, boolean][] = [];
+
+      const fail = (err: unknown) => {
+        log.error({ err, gameId: ident.gameId }, 'erreur de traitement d’un message WS');
+        conn.send({ t: 'error', code: 'internal', message: 'Erreur interne' });
+      };
 
       const handle = (raw: RawData, isBinary: boolean) => {
         if (!conn.take()) return;
@@ -212,17 +263,13 @@ export async function wsGateway(app: FastifyInstance, ctx: AppContext): Promise<
             host.handleOrder(game, conn, msg);
           } else if (msg.t === 'control') {
             host.handleControl(game, conn, msg);
+          } else if (msg.t === 'chat') {
+            ctx.chat.handle(game, conn, msg).catch(fail);
           } else {
-            // Messagerie (phase 5) : branchée par le module de chat du serveur.
-            conn.send({
-              t: 'error',
-              code: 'not_implemented',
-              message: 'Messagerie bientôt disponible',
-            });
+            ctx.chat.markRead(game, conn, msg).catch(fail);
           }
         } catch (err) {
-          log.error({ err, gameId: ident.gameId }, 'erreur de traitement d’un message WS');
-          conn.send({ t: 'error', code: 'internal', message: 'Erreur interne' });
+          fail(err);
         }
       };
 
@@ -259,6 +306,7 @@ export async function wsGateway(app: FastifyInstance, ctx: AppContext): Promise<
             return;
           }
           game = g;
+          if (!conn.spectator) await ctx.chat.sendHistory(g, conn);
           for (const [raw, bin] of queue.splice(0)) handle(raw, bin);
         } catch (err) {
           log.error({ err, gameId: ident.gameId }, 'échec de l’abonnement WS');

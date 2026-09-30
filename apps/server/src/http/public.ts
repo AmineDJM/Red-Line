@@ -3,26 +3,16 @@ import { join } from 'node:path';
 import { and, desc, eq } from 'drizzle-orm';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
-import { CreateGameBodySchema, type GameMeta, type MyGame } from '@redline/shared';
+import { CreateGameBodySchema, type MyGame } from '@redline/shared';
 import type { AppContext } from '../context.js';
 import { gamePlayers, games, weaponSystems } from '../db/schema.js';
 import { HttpError, checkRole } from '../auth/auth.js';
 import { asset, scenarioSummary, type StaticAsset } from '../data/loader.js';
+import { metaOf } from '../host/game-host.js';
 import { parseBody, unavailable } from './util.js';
 
-function metaOf(r: typeof games.$inferSelect): GameMeta {
-  return {
-    id: r.id,
-    name: r.name,
-    mode: r.mode,
-    scenarioId: r.scenarioId,
-    status: r.status,
-    speeds: r.speeds,
-  };
-}
-
 /** Réponse JSON pré-calculée, avec ETag, compression gzip et cache. */
-function sendAsset(req: FastifyRequest, reply: FastifyReply, a: StaticAsset, type: string) {
+export function sendAsset(req: FastifyRequest, reply: FastifyReply, a: StaticAsset, type: string) {
   reply.header('ETag', a.etag);
   reply.header('Cache-Control', 'public, max-age=300, must-revalidate');
   reply.header('Vary', 'Accept-Encoding');
@@ -64,24 +54,33 @@ export async function publicRoutes(app: FastifyInstance, ctx: AppContext): Promi
     return { systems: rows.map((r) => r.data) };
   });
 
+  // Données effectives (dépôt + modifications du back-office), mises en cache par révision.
   const requireMap = () => {
-    if (!data.map) throw unavailable('data_unavailable', data.mapError ?? 'Carte indisponible');
-    return data.map;
+    const cur = ctx.store.current();
+    if (!cur.map) throw unavailable('data_unavailable', data.mapError ?? 'Carte indisponible');
+    return { map: cur.map, rev: cur.rev };
   };
 
-  let nationsAsset: StaticAsset | null = null;
-  let provincesAsset: StaticAsset | null = null;
+  let nationsAsset: { rev: number; a: StaticAsset } | null = null;
+  let provincesAsset: { rev: number; a: StaticAsset } | null = null;
 
   app.get('/api/map/nations', async (req, reply) => {
-    const map = requireMap();
-    nationsAsset ??= asset(Buffer.from(JSON.stringify({ nations: map.nations })));
-    return sendAsset(req, reply, nationsAsset, 'application/json; charset=utf-8');
+    const { map, rev } = requireMap();
+    if (nationsAsset?.rev !== rev) {
+      nationsAsset = { rev, a: asset(Buffer.from(JSON.stringify({ nations: map.nations }))) };
+    }
+    return sendAsset(req, reply, nationsAsset.a, 'application/json; charset=utf-8');
   });
 
   app.get('/api/map/provinces', async (req, reply) => {
-    const map = requireMap();
-    provincesAsset ??= asset(Buffer.from(JSON.stringify({ provinces: map.provinces })));
-    return sendAsset(req, reply, provincesAsset, 'application/json; charset=utf-8');
+    const { map, rev } = requireMap();
+    if (provincesAsset?.rev !== rev) {
+      provincesAsset = {
+        rev,
+        a: asset(Buffer.from(JSON.stringify({ provinces: map.provinces }))),
+      };
+    }
+    return sendAsset(req, reply, provincesAsset.a, 'application/json; charset=utf-8');
   });
 
   app.get('/api/map/provinces.geojson', async (req, reply) => {
@@ -100,16 +99,19 @@ export async function publicRoutes(app: FastifyInstance, ctx: AppContext): Promi
     return info;
   });
 
-  app.get('/api/scenarios', async () => ({ scenarios: data.scenarios.map(scenarioSummary) }));
+  app.get('/api/scenarios', async () => ({
+    scenarios: ctx.store.current().scenarios.map(scenarioSummary),
+  }));
 
   app.post('/api/games', async (req, reply) => {
     const { user } = await requireUser(req, reply);
     const body = parseBody(CreateGameBodySchema, req.body);
     const r = worlds.unavailableReason();
     if (r) throw unavailable(r.code, r.message);
-    const scenario = data.scenarios.find((s) => s.id === body.scenarioId);
+    const cur = ctx.store.current();
+    const scenario = cur.scenarios.find((s) => s.id === body.scenarioId);
     if (!scenario) throw new HttpError(404, 'unknown_scenario', 'Scénario inconnu');
-    if (!data.nationsById.has(body.nationId)) {
+    if (!cur.nationsById.has(body.nationId)) {
       throw new HttpError(400, 'unknown_nation', 'Nation inconnue');
     }
     const playable =
@@ -117,7 +119,7 @@ export async function publicRoutes(app: FastifyInstance, ctx: AppContext): Promi
       (!scenario.nationIds || scenario.nationIds.includes(body.nationId));
     if (!playable)
       throw new HttpError(400, 'nation_not_playable', 'Nation non jouable dans ce scénario');
-    const speeds = [...data.balance!.time.speeds, ...ctx.config.extraSpeeds];
+    const speeds = host.allowedSpeeds();
     if (!speeds.includes(body.speed)) {
       throw new HttpError(400, 'invalid_speed', `Vitesses autorisées : ${speeds.join(', ')}`);
     }

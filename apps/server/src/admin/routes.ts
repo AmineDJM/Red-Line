@@ -28,6 +28,21 @@ const toAdmin = (r: Row): AdminSystem => ({
 
 const DEFAULT_NOTICE = "Le catalogue d'armes a été mis à jour par l'administration.";
 
+/** Métriques étendues (phases 5-6), renvoyées en plus des champs du contrat `Metrics`. */
+export interface MetricsExtra {
+  /** Parties par statut, toutes instances confondues (base). */
+  gamesByStatus: Record<string, number>;
+  /** Spectateurs connectés à cette instance. */
+  spectators: number;
+  /** Taille cumulée des derniers instantanés compressés des parties hébergées ici (octets). */
+  stateBytes: number;
+  /** Octets et messages WebSocket envoyés sur la dernière minute. */
+  wsBytesOutPerMin: number;
+  wsMessagesOutPerMin: number;
+  chatMessagesPerMin: number;
+  pushSentPerMin: number;
+}
+
 function zodMessage(e: z.ZodError): string {
   return e.issues
     .slice(0, 8)
@@ -355,10 +370,20 @@ export async function adminRoutes(app: FastifyInstance, ctx: AppContext): Promis
 
   // ─────────── Métriques ───────────
 
-  app.get('/admin/api/metrics', moderator, async (): Promise<Metrics> => ({
-    ...ctx.metrics.snapshot(),
-    games: host.games.size,
-    connectedPlayers: host.connectedPlayers(),
-    eventsProcessedPerMin: ctx.metrics.eventsPerMinute(),
-  }));
+  app.get('/admin/api/metrics', moderator, async (): Promise<Metrics & MetricsExtra> => {
+    const hs = host.hostStats();
+    return {
+      ...ctx.metrics.snapshot(),
+      games: host.games.size,
+      connectedPlayers: host.connectedPlayers(),
+      eventsProcessedPerMin: ctx.metrics.eventsPerMinute(),
+      gamesByStatus: await host.countByStatus(),
+      spectators: host.spectators(),
+      stateBytes: hs.stateBytes,
+      wsBytesOutPerMin: ctx.metrics.perMinute('wsBytesOut'),
+      wsMessagesOutPerMin: ctx.metrics.perMinute('wsMessagesOut'),
+      chatMessagesPerMin: ctx.metrics.perMinute('chat'),
+      pushSentPerMin: ctx.metrics.perMinute('push'),
+    };
+  });
 }

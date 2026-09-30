@@ -1,0 +1,396 @@
+{
+  "nodes": [
+    {
+      "id": "research.aero.drones1",
+      "name": "Drones tactiques",
+      "description": "Drones de reconnaissance et munitions rôdeuses.",
+      "branch": "aero",
+      "tier": 1,
+      "cost": {
+        "money": 200000000,
+        "resources": {
+          "electronics": 5,
+          "metals": 2
+        }
+      },
+      "durationH": 36,
+      "requires": [],
+      "effects": {},
+      "eraYear": 1980
+    },
+    {
+      "id": "research.aero.gen2",
+      "name": "Chasseurs de 2e génération",
+      "description": "Intercepteurs supersoniques à missiles à courte portée (MiG-21, J-7).",
+      "branch": "aero",
+      "tier": 1,
+      "cost": {
+        "money": 300000000,
+        "resources": {
+          "electronics": 5,
+          "metals": 2
+        }
+      },
+      "durationH": 48,
+      "requires": [],
+      "effects": {},
+      "eraYear": 1955
+    },
+    {
+      "id": "research.aero.helo1",
+      "name": "Hélicoptères de transport",
+      "description": "Hélicoptères à turbine de première génération (UH-1, Mi-8).",
+      "branch": "aero",
+      "tier": 1,
+      "cost": {
+        "money": 200000000,
+        "resources": {
+          "electronics": 5,
+          "metals": 2
+        }
+      },
+      "durationH": 36,
+      "requires": [],
+      "effects": {},
+      "eraYear": 1955
+    },
+    {
+      "id": "research.aero.transport",
+      "name": "Transport aérien stratégique",
+      "description": "Avions de transport militaires.",
+      "branch": "aero",
+      "tier": 1,
+      "cost": {
+        "money": 400000000,
+        "resources": {
+          "electronics": 10,
+          "metals": 5
+        }
+      },
+      "durationH": 48,
+      "requires": [],
+      "effects": {},
+      "eraYear": 1950
+    },
+    {
+      "id": "research.aero.bomber1",
+      "name": "Bombardiers subsoniques",
+      "description": "Bombardiers stratégiques à long rayon d’action (B-52, Tu-95, H-6).",
+      "branch": "aero",
+      "tier": 2,
+      "cost": {
+        "money": 1500000000,
+        "resources": {
+          "electronics": 30,
+          "metals": 15
+        }
+      },
+      "durationH": 120,
+      "requires": ["research.aero.gen2"],
+      "effects": {},
+      "eraYear": 1955
+    },
+    {
+      "id": "research.aero.drones2",
+      "name": "Drones MALE et HALE",
+      "description": "Drones armés de moyenne altitude et drones d’observation à haute altitude.",
+      "branch": "aero",
+      "tier": 2,
+      "cost": {
+        "money": 1500000000,
+        "resources": {
+          "electronics": 30,
+          "metals": 15
+        }
+      },
+      "durationH": 120,
+      "requires": ["research.aero.drones1"],
+      "effects": {},
+      "eraYear": 1995
+    },
+    {
+      "id": "research.aero.gen3",
+      "name": "Chasseurs de 3e génération",
+      "description": "Radars de tir, missiles à moyenne portée, avions d’attaque et d’entraînement.",
+      "branch": "aero",
+      "tier": 2,
+      "cost": {
+        "money": 1000000000,
+        "resources": {
+          "electronics": 20,
+          "metals": 10
+        }
+      },
+      "durationH": 96,
+      "requires": ["research.aero.gen2"],
+      "effects": {},
+      "eraYear": 1965
+    },
+    {
+      "id": "research.aero.helo2",
+      "name": "Hélicoptères d’attaque",
+      "description": "Hélicoptères armés de missiles antichars ; transport moderne (Mi-24, UH-60).",
+      "branch": "aero",
+      "tier": 2,
+      "cost": {
+        "money": 800000000,
+        "resources": {
+          "electronics": 15,
+          "metals": 7
+        }
+      },
+      "durationH": 96,
+      "requires": ["research.aero.helo1"],
+      "effects": {},
+      "eraYear": 1967
+    },
+    {
+      "id": "research.aero.tanker",
+      "name": "Ravitaillement en vol",
+      "description": "Avions ravitailleurs : allonge de toute l’aviation.",
+      "branch": "aero",
+      "tier": 2,
+      "cost": {
+        "money": 600000000,
+        "resources": {
+          "electronics": 10,
+          "metals": 5
+        }
+      },
+      "durationH": 72,
+      "requires": ["research.aero.transport"],
+      "effects": {
+        "air.range": 1.05
+      },
+      "eraYear": 1956
+    },
+    {
+      "id": "research.aero.aew",
+      "name": "Guet aérien embarqué",
+      "description": "Avions radar de détection et de commandement (E-3, A-50, KJ-500).",
+      "branch": "aero",
+      "tier": 3,
+      "cost": {
+        "money": 2000000000,
+        "resources": {
+          "electronics": 40,
+          "metals": 20
+        }
+      },
+      "durationH": 168,
+      "requires": ["research.aero.transport", "research.sensors.radar2"],
+      "effects": {},
+      "eraYear": 1977
+    },
+    {
+      "id": "research.aero.bomber2",
+      "name": "Bombardiers supersoniques",
+      "description": "Bombardiers à géométrie variable (B-1B, Tu-22M3, Tu-160).",
+      "branch": "aero",
+      "tier": 3,
+      "cost": {
+        "money": 5000000000,
+        "resources": {
+          "electronics": 100,
+          "metals": 50
+        }
+      },
+      "durationH": 240,
+      "requires": ["research.aero.bomber1", "research.aero.gen3"],
+      "effects": {},
+      "eraYear": 1970
+    },
+    {
+      "id": "research.aero.engines",
+      "name": "Motorisation à haut rendement",
+      "description": "Turbosoufflantes économes : autonomie et rayon d’action accrus.",
+      "branch": "aero",
+      "tier": 3,
+      "cost": {
+        "money": 1500000000,
+        "resources": {
+          "electronics": 30,
+          "metals": 15
+        }
+      },
+      "durationH": 120,
+      "requires": ["research.aero.gen3"],
+      "effects": {
+        "air.range": 1.1,
+        "air.fuel": 1.1
+      },
+      "eraYear": 1975
+    },
+    {
+      "id": "research.aero.gen4",
+      "name": "Chasseurs de 4e génération",
+      "description": "Commandes de vol électriques, radars Doppler, grande manœuvrabilité (F-16, Su-27).",
+      "branch": "aero",
+      "tier": 3,
+      "cost": {
+        "money": 3000000000,
+        "resources": {
+          "electronics": 60,
+          "metals": 30
+        }
+      },
+      "durationH": 168,
+      "requires": ["research.aero.gen3", "research.sensors.radar1"],
+      "effects": {},
+      "eraYear": 1975
+    },
+    {
+      "id": "research.aero.helo3",
+      "name": "Hélicoptères d’attaque modernes",
+      "description": "Radar de mât, vision nocturne, missiles « tire et oublie » (AH-64E, Ka-52).",
+      "branch": "aero",
+      "tier": 3,
+      "cost": {
+        "money": 2500000000,
+        "resources": {
+          "electronics": 50,
+          "metals": 25
+        }
+      },
+      "durationH": 168,
+      "requires": ["research.aero.helo2", "research.sensors.radar1"],
+      "effects": {},
+      "eraYear": 1986
+    },
+    {
+      "id": "research.aero.gen4plus",
+      "name": "Chasseurs de génération 4+",
+      "description": "Radars à antenne active, missiles au-delà de la portée visuelle, signature réduite.",
+      "branch": "aero",
+      "tier": 4,
+      "cost": {
+        "money": 6000000000,
+        "resources": {
+          "electronics": 120,
+          "metals": 60
+        }
+      },
+      "durationH": 264,
+      "requires": ["research.aero.gen4", "research.sensors.radar2"],
+      "effects": {},
+      "eraYear": 1995
+    },
+    {
+      "id": "research.aero.predictive-maintenance",
+      "name": "Maintenance prédictive",
+      "description": "Suivi numérique des cellules : entretien moins coûteux.",
+      "branch": "aero",
+      "tier": 4,
+      "cost": {
+        "money": 1000000000,
+        "resources": {
+          "electronics": 20,
+          "metals": 10
+        }
+      },
+      "durationH": 120,
+      "requires": ["research.aero.gen4", "research.cyber.l1"],
+      "effects": {
+        "upkeep": 0.96
+      },
+      "eraYear": 2010
+    },
+    {
+      "id": "research.aero.stealth-materials",
+      "name": "Matériaux furtifs",
+      "description": "Formes et revêtements absorbant les ondes radar ; prérequis des furtifs.",
+      "branch": "aero",
+      "tier": 4,
+      "cost": {
+        "money": 4000000000,
+        "resources": {
+          "electronics": 80,
+          "metals": 40
+        }
+      },
+      "durationH": 240,
+      "requires": ["research.aero.gen4"],
+      "effects": {},
+      "eraYear": 1983
+    },
+    {
+      "id": "research.aero.drones3",
+      "name": "Drones de combat furtifs",
+      "description": "Ailes volantes de combat autonomes (S-70, GJ-11).",
+      "branch": "aero",
+      "tier": 5,
+      "cost": {
+        "money": 6000000000,
+        "resources": {
+          "electronics": 120,
+          "metals": 60
+        }
+      },
+      "durationH": 336,
+      "requires": ["research.aero.drones2", "research.aero.stealth-materials"],
+      "effects": {},
+      "eraYear": 2015
+    },
+    {
+      "id": "research.aero.gen5",
+      "name": "Chasseurs de 5e génération",
+      "description": "Furtivité, fusion de données, supercroisière (F-35, Su-57, J-20).",
+      "branch": "aero",
+      "tier": 5,
+      "cost": {
+        "money": 15000000000,
+        "resources": {
+          "electronics": 300,
+          "metals": 150
+        }
+      },
+      "durationH": 480,
+      "requires": [
+        "research.aero.gen4plus",
+        "research.aero.stealth-materials",
+        "research.sensors.radar3"
+      ],
+      "effects": {},
+      "eraYear": 2005
+    },
+    {
+      "id": "research.aero.stealth-bomber",
+      "name": "Bombardiers furtifs",
+      "description": "Ailes volantes furtives de pénétration (B-2, B-21, H-20).",
+      "branch": "aero",
+      "tier": 5,
+      "cost": {
+        "money": 20000000000,
+        "resources": {
+          "electronics": 400,
+          "metals": 200
+        }
+      },
+      "durationH": 600,
+      "requires": ["research.aero.bomber2", "research.aero.stealth-materials"],
+      "effects": {},
+      "eraYear": 1989
+    },
+    {
+      "id": "research.aero.supercruise",
+      "name": "Supercroisière",
+      "description": "Vol supersonique sans postcombustion.",
+      "branch": "aero",
+      "tier": 5,
+      "cost": {
+        "money": 3000000000,
+        "resources": {
+          "electronics": 60,
+          "metals": 30
+        }
+      },
+      "durationH": 192,
+      "requires": ["research.aero.engines", "research.aero.gen4plus"],
+      "effects": {
+        "air.fuel": 1.1,
+        "air.range": 1.05
+      },
+      "eraYear": 2005
+    }
+  ]
+}

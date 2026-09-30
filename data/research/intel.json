@@ -1,0 +1,226 @@
+{
+  "nodes": [
+    {
+      "id": "research.intel.exterior1",
+      "name": "Renseignement extérieur — niveau 1",
+      "description": "Service de renseignement extérieur : premières capacités.",
+      "branch": "intel",
+      "tier": 1,
+      "cost": {
+        "money": 300000000,
+        "resources": {}
+      },
+      "durationH": 72,
+      "requires": [],
+      "effects": {
+        "intel.exterior.level": 1
+      },
+      "eraYear": 1947
+    },
+    {
+      "id": "research.intel.interior1",
+      "name": "Renseignement intérieur — niveau 1",
+      "description": "Service de renseignement intérieur : premières capacités.",
+      "branch": "intel",
+      "tier": 1,
+      "cost": {
+        "money": 300000000,
+        "resources": {}
+      },
+      "durationH": 72,
+      "requires": [],
+      "effects": {
+        "intel.interior.level": 1
+      },
+      "eraYear": 1947
+    },
+    {
+      "id": "research.intel.military1",
+      "name": "Renseignement militaire — niveau 1",
+      "description": "Service de renseignement militaire : premières capacités.",
+      "branch": "intel",
+      "tier": 1,
+      "cost": {
+        "money": 300000000,
+        "resources": {}
+      },
+      "durationH": 72,
+      "requires": [],
+      "effects": {
+        "intel.military.level": 1
+      },
+      "eraYear": 1947
+    },
+    {
+      "id": "research.intel.analysis",
+      "name": "Cellule d’analyse",
+      "description": "Analystes et traducteurs : plus d’opérations simultanées.",
+      "branch": "intel",
+      "tier": 2,
+      "cost": {
+        "money": 500000000,
+        "resources": {}
+      },
+      "durationH": 96,
+      "requires": ["research.intel.exterior1"],
+      "effects": {
+        "intel.capacity": 1.25
+      },
+      "eraYear": 1960
+    },
+    {
+      "id": "research.intel.counterintelligence",
+      "name": "Contre-espionnage renforcé",
+      "description": "Enquêtes de sécurité et chasse aux agents doubles.",
+      "branch": "intel",
+      "tier": 2,
+      "cost": {
+        "money": 600000000,
+        "resources": {}
+      },
+      "durationH": 96,
+      "requires": ["research.intel.interior1"],
+      "effects": {
+        "cyber.defense": 1.05,
+        "stability.recovery": 1.1
+      },
+      "eraYear": 1955
+    },
+    {
+      "id": "research.intel.exterior2",
+      "name": "Renseignement extérieur — niveau 2",
+      "description": "Réseaux étendus et analystes spécialisés (extérieur).",
+      "branch": "intel",
+      "tier": 2,
+      "cost": {
+        "money": 1000000000,
+        "resources": {}
+      },
+      "durationH": 168,
+      "requires": ["research.intel.exterior1"],
+      "effects": {
+        "intel.exterior.level": 1
+      },
+      "eraYear": 1960
+    },
+    {
+      "id": "research.intel.interior2",
+      "name": "Renseignement intérieur — niveau 2",
+      "description": "Réseaux étendus et analystes spécialisés (intérieur).",
+      "branch": "intel",
+      "tier": 2,
+      "cost": {
+        "money": 1000000000,
+        "resources": {}
+      },
+      "durationH": 168,
+      "requires": ["research.intel.interior1"],
+      "effects": {
+        "intel.interior.level": 1
+      },
+      "eraYear": 1960
+    },
+    {
+      "id": "research.intel.military2",
+      "name": "Renseignement militaire — niveau 2",
+      "description": "Réseaux étendus et analystes spécialisés (militaire).",
+      "branch": "intel",
+      "tier": 2,
+      "cost": {
+        "money": 1000000000,
+        "resources": {}
+      },
+      "durationH": 168,
+      "requires": ["research.intel.military1"],
+      "effects": {
+        "intel.military.level": 1
+      },
+      "eraYear": 1960
+    },
+    {
+      "id": "research.intel.strategic-communication",
+      "name": "Communication stratégique",
+      "description": "Riposte à la désinformation, cohésion nationale.",
+      "branch": "intel",
+      "tier": 2,
+      "cost": {
+        "money": 400000000,
+        "resources": {}
+      },
+      "durationH": 72,
+      "requires": ["research.intel.interior1"],
+      "effects": {
+        "stability.recovery": 1.2
+      },
+      "eraYear": 1950
+    },
+    {
+      "id": "research.intel.exterior3",
+      "name": "Renseignement extérieur — niveau 3",
+      "description": "Service de premier rang mondial (extérieur).",
+      "branch": "intel",
+      "tier": 3,
+      "cost": {
+        "money": 3000000000,
+        "resources": {}
+      },
+      "durationH": 336,
+      "requires": ["research.intel.exterior2", "research.sensors.space1"],
+      "effects": {
+        "intel.exterior.level": 1
+      },
+      "eraYear": 1975
+    },
+    {
+      "id": "research.intel.interior3",
+      "name": "Renseignement intérieur — niveau 3",
+      "description": "Service de premier rang mondial (intérieur).",
+      "branch": "intel",
+      "tier": 3,
+      "cost": {
+        "money": 3000000000,
+        "resources": {}
+      },
+      "durationH": 336,
+      "requires": ["research.intel.interior2"],
+      "effects": {
+        "intel.interior.level": 1
+      },
+      "eraYear": 1975
+    },
+    {
+      "id": "research.intel.military3",
+      "name": "Renseignement militaire — niveau 3",
+      "description": "Service de premier rang mondial (militaire).",
+      "branch": "intel",
+      "tier": 3,
+      "cost": {
+        "money": 3000000000,
+        "resources": {}
+      },
+      "durationH": 336,
+      "requires": ["research.intel.military2", "research.sensors.space1"],
+      "effects": {
+        "intel.military.level": 1
+      },
+      "eraYear": 1975
+    },
+    {
+      "id": "research.intel.osint",
+      "name": "Renseignement d’origine source ouverte",
+      "description": "Exploitation des réseaux sociaux et images commerciales.",
+      "branch": "intel",
+      "tier": 3,
+      "cost": {
+        "money": 800000000,
+        "resources": {}
+      },
+      "durationH": 96,
+      "requires": ["research.intel.analysis", "research.cyber.l1"],
+      "effects": {
+        "intel.capacity": 1.2
+      },
+      "eraYear": 2010
+    }
+  ]
+}

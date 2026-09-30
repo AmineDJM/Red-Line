@@ -1,0 +1,2955 @@
+{
+  "category": "air_defense",
+  "systems": [
+    {
+      "id": "us.patriot",
+      "name": "MIM-104 Patriot",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_defense",
+      "roles": ["long_range_sam", "missile_defense"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 1100000000,
+        "resources": {
+          "oil": 130,
+          "metals": 330,
+          "electronics": 595
+        }
+      },
+      "buildTimeH": 48,
+      "upkeepPerDay": 170000,
+      "speedKmh": 40,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 160
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 20,
+        "helicopter": 14,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 18,
+        "building": 0
+      },
+      "hp": 22,
+      "armor": 0.15,
+      "stealth": 0,
+      "detectionRangeKm": 180,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam3"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "air_defense",
+      "illustration": "us.patriot.webp",
+      "sheet": {
+        "engine": "Lanceurs sur semi-remorques",
+        "lengthM": 5.3,
+        "wingspanM": null,
+        "mtowKg": 900,
+        "warheadKg": 90,
+        "speedLabel": "Mach 4 (missile)",
+        "rangeKm": 160
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 1100000000,
+      "era": {
+        "introduced": 1984
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "ballistic"],
+        "pk": 0.75,
+        "magazine": 16
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 180,
+        "stealthDetect": 0.1
+      }
+    },
+    {
+      "id": "ru.s-400",
+      "name": "S-400 Triumf",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["long_range_sam", "missile_defense"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 500000000,
+        "resources": {
+          "oil": 80,
+          "metals": 205,
+          "electronics": 370
+        }
+      },
+      "buildTimeH": 52,
+      "upkeepPerDay": 91000,
+      "speedKmh": 50,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 250
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 22,
+        "helicopter": 14,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 16,
+        "building": 0
+      },
+      "hp": 22,
+      "armor": 0.15,
+      "stealth": 0,
+      "detectionRangeKm": 300,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "illustration": "ru.s-400.webp",
+      "sheet": {
+        "engine": "Lanceurs sur camions 8x8",
+        "lengthM": 7.5,
+        "wingspanM": null,
+        "mtowKg": 1800,
+        "warheadKg": 145,
+        "speedLabel": "Mach 6 (missile)",
+        "rangeKm": 250
+      },
+      "enabled": true,
+      "unitLabel": "division",
+      "unitPriceUsd": 500000000,
+      "era": {
+        "introduced": 2007
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "ballistic"],
+        "pk": 0.75,
+        "magazine": 32
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 300,
+        "stealthDetect": 0.3
+      }
+    },
+    {
+      "id": "ru.pantsir-s1",
+      "name": "Pantsir-S1",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["short_range_sam", "anti_drone"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 14000000,
+        "resources": {
+          "oil": 10,
+          "metals": 25,
+          "electronics": 45
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 2300,
+      "speedKmh": 80,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 20
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 2,
+        "aircraft": 9,
+        "helicopter": 16,
+        "drone": 16,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 10,
+        "building": 0
+      },
+      "hp": 20,
+      "armor": 0.3,
+      "stealth": 0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "illustration": "ru.pantsir-s1.webp",
+      "sheet": {
+        "engine": "Camion 8x8 diesel",
+        "lengthM": 3.2,
+        "wingspanM": null,
+        "mtowKg": 75,
+        "warheadKg": 20,
+        "speedLabel": "Mach 3 (missile)",
+        "rangeKm": 20
+      },
+      "enabled": true,
+      "unitLabel": "véhicule",
+      "unitPriceUsd": 14000000,
+      "era": {
+        "introduced": 2012
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "drone", "rocket"],
+        "pk": 0.65,
+        "magazine": 12
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 40,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "eu.mistral",
+      "name": "Mistral",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "air_defense",
+      "roles": ["short_range_sam", "manpads", "anti_drone"],
+      "generation": 4,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 4500000,
+        "resources": {
+          "oil": 5,
+          "metals": 10,
+          "electronics": 20
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 1700,
+      "speedKmh": 30,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 8,
+        "helicopter": 14,
+        "drone": 12,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 3,
+        "building": 0
+      },
+      "hp": 12,
+      "armor": 0.1,
+      "stealth": 0,
+      "detectionRangeKm": 15,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "illustration": "eu.mistral.webp",
+      "sheet": {
+        "engine": "Postes de tir portables",
+        "lengthM": 1.9,
+        "wingspanM": null,
+        "mtowKg": 19,
+        "warheadKg": 3,
+        "speedLabel": "Mach 2,7 (missile)",
+        "rangeKm": 8
+      },
+      "enabled": true,
+      "unitLabel": "section",
+      "unitPriceUsd": 4500000,
+      "era": {
+        "introduced": 1988
+      },
+      "interceptor": {
+        "against": ["aircraft", "drone"],
+        "pk": 0.6,
+        "magazine": 12
+      },
+      "sensor": {
+        "kind": "optical",
+        "rangeKm": 15,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "ru.krasukha-4",
+      "name": "Krasukha-4",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["electronic_warfare", "jammer", "anti_drone"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 30000000,
+        "resources": {
+          "oil": 15,
+          "metals": 40,
+          "electronics": 70
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 4500,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 60
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 2,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0,
+      "detectionRangeKm": 150,
+      "ew": {
+        "jamming": 0.8,
+        "jamResistance": 0.7
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.land.ew"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "jammer",
+      "illustration": "ru.krasukha-4.webp",
+      "sheet": {
+        "engine": "Camion 8x8 diesel",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "60 km/h sur route",
+        "rangeKm": 60
+      },
+      "enabled": true,
+      "unitLabel": "système",
+      "unitPriceUsd": 30000000,
+      "era": {
+        "introduced": 2014
+      },
+      "sensor": {
+        "kind": "sigint",
+        "rangeKm": 150,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "us.nasams",
+      "name": "NASAMS",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_defense",
+      "roles": ["medium_range_sam", "anti_drone"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 150000000,
+        "resources": {
+          "oil": 40,
+          "metals": 100,
+          "electronics": 180
+        }
+      },
+      "buildTimeH": 48,
+      "upkeepPerDay": 44000,
+      "speedKmh": 70,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 40
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 16,
+        "helicopter": 14,
+        "drone": 10,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 14,
+        "building": 0
+      },
+      "hp": 18,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 100,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs sur camions, radar AN/MPQ-64 Sentinel",
+        "lengthM": 3.65,
+        "wingspanM": null,
+        "mtowKg": 152,
+        "warheadKg": 22,
+        "speedLabel": "Mach 4 (missile AMRAAM)",
+        "rangeKm": 40
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 150000000,
+      "era": {
+        "introduced": 1998
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 100,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "drone"],
+        "pk": 0.75,
+        "magazine": 18
+      }
+    },
+    {
+      "id": "us.avenger",
+      "name": "Avenger",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_defense",
+      "roles": ["short_range_sam", "anti_drone"],
+      "generation": 3,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 3000000,
+        "resources": {
+          "oil": 4,
+          "metals": 10,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 12,
+      "upkeepPerDay": 1800,
+      "speedKmh": 90,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 0,
+        "aircraft": 7,
+        "helicopter": 14,
+        "drone": 12,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 3,
+        "building": 0
+      },
+      "hp": 12,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 15,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "HMMWV avec 2 lanceurs de 4 Stinger",
+        "lengthM": 1.52,
+        "wingspanM": null,
+        "mtowKg": 15.2,
+        "warheadKg": 3,
+        "speedLabel": "Mach 2,2 (missile)",
+        "rangeKm": 8
+      },
+      "enabled": true,
+      "unitLabel": "véhicule",
+      "unitPriceUsd": 3000000,
+      "era": {
+        "introduced": 1989
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 15,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "drone"],
+        "pk": 0.5,
+        "magazine": 8
+      }
+    },
+    {
+      "id": "us.thaad",
+      "name": "THAAD",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_defense",
+      "roles": ["long_range_sam", "abm", "missile_defense"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 2000000000,
+        "resources": {
+          "oil": 190,
+          "metals": 475,
+          "electronics": 850
+        }
+      },
+      "buildTimeH": 110,
+      "upkeepPerDay": 300000,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 30,
+        "max": 200
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 24,
+        "building": 0
+      },
+      "hp": 20,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 1000,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam5", "research.missiles.abm"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs sur camions HEMTT, radar AN/TPY-2",
+        "lengthM": 6.17,
+        "wingspanM": null,
+        "mtowKg": 900,
+        "warheadKg": null,
+        "speedLabel": "Mach 8,2 (impact direct)",
+        "rangeKm": 200
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 2000000000,
+      "era": {
+        "introduced": 2008
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 1000,
+        "stealthDetect": 0.25
+      },
+      "interceptor": {
+        "against": ["ballistic"],
+        "pk": 0.85,
+        "magazine": 48
+      }
+    },
+    {
+      "id": "us.stinger",
+      "name": "Stinger",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_defense",
+      "roles": ["short_range_sam", "manpads", "anti_drone"],
+      "generation": 3,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 6000000,
+        "resources": {
+          "oil": 6,
+          "metals": 15,
+          "electronics": 25
+        }
+      },
+      "buildTimeH": 6,
+      "upkeepPerDay": 2200,
+      "speedKmh": 30,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0.2,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 8,
+        "helicopter": 14,
+        "drone": 11,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 2,
+        "building": 0
+      },
+      "hp": 12,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 15,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam3"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Postes de tir portables FIM-92 (section de 4 postes)",
+        "lengthM": 1.52,
+        "wingspanM": null,
+        "mtowKg": 15.2,
+        "warheadKg": 3,
+        "speedLabel": "Mach 2,2 (missile)",
+        "rangeKm": 8
+      },
+      "enabled": true,
+      "unitLabel": "section",
+      "unitPriceUsd": 6000000,
+      "era": {
+        "introduced": 1981
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 15,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "drone"],
+        "pk": 0.5,
+        "magazine": 12
+      }
+    },
+    {
+      "id": "us.mim-23-hawk",
+      "name": "MIM-23 Hawk",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_defense",
+      "roles": ["medium_range_sam"],
+      "generation": 2,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 120000000,
+        "resources": {
+          "oil": 35,
+          "metals": 85,
+          "electronics": 155
+        }
+      },
+      "buildTimeH": 40,
+      "upkeepPerDay": 40000,
+      "speedKmh": 40,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 2,
+        "max": 45
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 14,
+        "helicopter": 12,
+        "drone": 5,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 6,
+        "building": 0
+      },
+      "hp": 18,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 100,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.25
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs tractés, radar AN/MPQ-50",
+        "lengthM": 5.08,
+        "wingspanM": null,
+        "mtowKg": 638,
+        "warheadKg": 54,
+        "speedLabel": "Mach 2,4 (missile)",
+        "rangeKm": 45
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 120000000,
+      "era": {
+        "introduced": 1960
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 100,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.5,
+        "magazine": 18
+      }
+    },
+    {
+      "id": "us.ew-jammer",
+      "name": "Brouilleur de guerre électronique (États-Unis)",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_defense",
+      "roles": ["electronic_warfare", "jammer", "anti_drone"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 25000000,
+        "resources": {
+          "oil": 15,
+          "metals": 35,
+          "electronics": 60
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 4800,
+      "speedKmh": 90,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 50
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 2,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 120,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.7
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.land.ew"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "jammer",
+      "sheet": {
+        "engine": "Brouilleur sur camion tactique 6x6",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "90 km/h sur route",
+        "rangeKm": 50
+      },
+      "enabled": true,
+      "unitLabel": "système",
+      "unitPriceUsd": 25000000,
+      "era": {
+        "introduced": 2020
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 120,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "ru.tor-m2",
+      "name": "Tor-M2",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["short_range_sam", "anti_drone"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 25000000,
+        "resources": {
+          "oil": 15,
+          "metals": 35,
+          "electronics": 60
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 3800,
+      "speedKmh": 65,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 16
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 10,
+        "helicopter": 16,
+        "drone": 15,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 12,
+        "building": 0
+      },
+      "hp": 20,
+      "armor": 0.3,
+      "stealth": 0.0,
+      "detectionRangeKm": 32,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Châssis chenillé GM-355, missiles 9M338",
+        "lengthM": 2.9,
+        "wingspanM": null,
+        "mtowKg": 165,
+        "warheadKg": 15,
+        "speedLabel": "Mach 2,5 (missile)",
+        "rangeKm": 16
+      },
+      "enabled": true,
+      "unitLabel": "véhicule",
+      "unitPriceUsd": 25000000,
+      "era": {
+        "introduced": 1986
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 32,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "drone", "rocket"],
+        "pk": 0.7,
+        "magazine": 16
+      }
+    },
+    {
+      "id": "ru.buk-m3",
+      "name": "Buk-M3",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["medium_range_sam"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 120000000,
+        "resources": {
+          "oil": 35,
+          "metals": 85,
+          "electronics": 155
+        }
+      },
+      "buildTimeH": 44,
+      "upkeepPerDay": 39000,
+      "speedKmh": 65,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 2,
+        "max": 70
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 18,
+        "helicopter": 14,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 14,
+        "building": 0
+      },
+      "hp": 20,
+      "armor": 0.2,
+      "stealth": 0.0,
+      "detectionRangeKm": 120,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "TELAR chenillés GM-569, missiles 9M317M",
+        "lengthM": 5.2,
+        "wingspanM": null,
+        "mtowKg": 581,
+        "warheadKg": 62,
+        "speedLabel": "Mach 4,5 (missile)",
+        "rangeKm": 70
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 120000000,
+      "era": {
+        "introduced": 1980
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 120,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.75,
+        "magazine": 12
+      }
+    },
+    {
+      "id": "ru.s-300pmu2",
+      "name": "S-300PMU2",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["long_range_sam", "missile_defense"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 250000000,
+        "resources": {
+          "oil": 55,
+          "metals": 135,
+          "electronics": 245
+        }
+      },
+      "buildTimeH": 48,
+      "upkeepPerDay": 57000,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 200
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 20,
+        "helicopter": 13,
+        "drone": 7,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 15,
+        "building": 0
+      },
+      "hp": 22,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 300,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam3"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs 5P85 sur camions MAZ-543, radar 30N6E2",
+        "lengthM": 7.5,
+        "wingspanM": null,
+        "mtowKg": 1800,
+        "warheadKg": 145,
+        "speedLabel": "Mach 6 (missile)",
+        "rangeKm": 200
+      },
+      "enabled": true,
+      "unitLabel": "division",
+      "unitPriceUsd": 250000000,
+      "era": {
+        "introduced": 1978
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 300,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "ballistic"],
+        "pk": 0.7,
+        "magazine": 24
+      }
+    },
+    {
+      "id": "ru.s-500",
+      "name": "S-500 Prometey",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["long_range_sam", "abm", "missile_defense"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 700000000,
+        "resources": {
+          "oil": 100,
+          "metals": 250,
+          "electronics": 455
+        }
+      },
+      "buildTimeH": 96,
+      "upkeepPerDay": 120000,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 5,
+        "max": 400
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 24,
+        "helicopter": 12,
+        "drone": 6,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 24,
+        "building": 0
+      },
+      "hp": 24,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 800,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam5", "research.missiles.abm"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs sur camions BAZ-69096 10x10",
+        "lengthM": 11,
+        "wingspanM": null,
+        "mtowKg": 2000,
+        "warheadKg": null,
+        "speedLabel": "Mach 20 (missile 77N6)",
+        "rangeKm": 600
+      },
+      "enabled": true,
+      "unitLabel": "division",
+      "unitPriceUsd": 700000000,
+      "era": {
+        "introduced": 2021
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 800,
+        "stealthDetect": 0.5
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "ballistic", "hypersonic"],
+        "pk": 0.75,
+        "magazine": 16
+      }
+    },
+    {
+      "id": "ru.igla",
+      "name": "Igla",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["short_range_sam", "manpads", "anti_drone"],
+      "generation": 3,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 1500000,
+        "resources": {
+          "oil": 3,
+          "metals": 6,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 6,
+      "upkeepPerDay": 620,
+      "speedKmh": 30,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0.2,
+        "max": 5
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 7,
+        "helicopter": 13,
+        "drone": 10,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 1,
+        "building": 0
+      },
+      "hp": 12,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam3"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Postes de tir portables 9K38 (section de 4 postes)",
+        "lengthM": 1.57,
+        "wingspanM": null,
+        "mtowKg": 10.8,
+        "warheadKg": 1.17,
+        "speedLabel": "Mach 1,9 (missile)",
+        "rangeKm": 5
+      },
+      "enabled": true,
+      "unitLabel": "section",
+      "unitPriceUsd": 1500000,
+      "era": {
+        "introduced": 1983
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 12,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "drone"],
+        "pk": 0.45,
+        "magazine": 12
+      }
+    },
+    {
+      "id": "ru.s-75-dvina",
+      "name": "S-75 Dvina",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["medium_range_sam"],
+      "generation": 1,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 40000000,
+        "resources": {
+          "oil": 20,
+          "metals": 45,
+          "electronics": 80
+        }
+      },
+      "buildTimeH": 36,
+      "upkeepPerDay": 28000,
+      "speedKmh": 30,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 5,
+        "max": 45
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 12,
+        "helicopter": 6,
+        "drone": 2,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 2,
+        "building": 0
+      },
+      "hp": 18,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 120,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.15
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs SM-90 tractés, radar SNR-75",
+        "lengthM": 10.6,
+        "wingspanM": null,
+        "mtowKg": 2300,
+        "warheadKg": 200,
+        "speedLabel": "Mach 3,5 (missile)",
+        "rangeKm": 45
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 1957
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 120,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft"],
+        "pk": 0.35,
+        "magazine": 6
+      }
+    },
+    {
+      "id": "ru.s-125-neva",
+      "name": "S-125 Neva/Pechora",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["medium_range_sam"],
+      "generation": 2,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 30000000,
+        "resources": {
+          "oil": 15,
+          "metals": 40,
+          "electronics": 70
+        }
+      },
+      "buildTimeH": 30,
+      "upkeepPerDay": 26000,
+      "speedKmh": 30,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 25
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 11,
+        "helicopter": 8,
+        "drone": 4,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 3,
+        "building": 0
+      },
+      "hp": 16,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 100,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs 5P73 tractés, radar SNR-125",
+        "lengthM": 6.09,
+        "wingspanM": null,
+        "mtowKg": 953,
+        "warheadKg": 60,
+        "speedLabel": "Mach 3 (missile)",
+        "rangeKm": 25
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 30000000,
+      "era": {
+        "introduced": 1961
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 100,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft"],
+        "pk": 0.4,
+        "magazine": 8
+      }
+    },
+    {
+      "id": "ru.2k12-kub",
+      "name": "2K12 Kub",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["medium_range_sam"],
+      "generation": 2,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 25000000,
+        "resources": {
+          "oil": 15,
+          "metals": 35,
+          "electronics": 60
+        }
+      },
+      "buildTimeH": 28,
+      "upkeepPerDay": 26000,
+      "speedKmh": 45,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 4,
+        "max": 24
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 12,
+        "helicopter": 10,
+        "drone": 4,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 3,
+        "building": 0
+      },
+      "hp": 16,
+      "armor": 0.2,
+      "stealth": 0.0,
+      "detectionRangeKm": 75,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs chenillés 2P25, radar 1S91",
+        "lengthM": 5.8,
+        "wingspanM": null,
+        "mtowKg": 599,
+        "warheadKg": 59,
+        "speedLabel": "Mach 2,8 (missile)",
+        "rangeKm": 24
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 25000000,
+      "era": {
+        "introduced": 1967
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 75,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft"],
+        "pk": 0.45,
+        "magazine": 12
+      }
+    },
+    {
+      "id": "ru.9k33-osa",
+      "name": "9K33 Osa",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["short_range_sam"],
+      "generation": 2,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 5000000,
+        "resources": {
+          "oil": 5,
+          "metals": 15,
+          "electronics": 25
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 1100,
+      "speedKmh": 80,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 10
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 8,
+        "helicopter": 13,
+        "drone": 9,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 4,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 30,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.25
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Véhicule amphibie 6x6 BAZ-5937",
+        "lengthM": 3.16,
+        "wingspanM": null,
+        "mtowKg": 170,
+        "warheadKg": 15,
+        "speedLabel": "Mach 2,4 (missile)",
+        "rangeKm": 10
+      },
+      "enabled": true,
+      "unitLabel": "véhicule",
+      "unitPriceUsd": 5000000,
+      "era": {
+        "introduced": 1972
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 30,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft"],
+        "pk": 0.45,
+        "magazine": 6
+      }
+    },
+    {
+      "id": "ru.zsu-23-4-shilka",
+      "name": "ZSU-23-4 Shilka",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["short_range_sam", "spaag", "anti_drone"],
+      "generation": 2,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 1000000,
+        "resources": {
+          "oil": 2,
+          "metals": 5,
+          "electronics": 9
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 550,
+      "speedKmh": 50,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 2.5
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 2,
+        "aircraft": 5,
+        "helicopter": 12,
+        "drone": 12,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 1,
+        "building": 0
+      },
+      "hp": 16,
+      "armor": 0.2,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Châssis chenillé GM-575, 4 canons de 23 mm",
+        "lengthM": 6.54,
+        "wingspanM": null,
+        "mtowKg": 21000,
+        "warheadKg": null,
+        "speedLabel": "50 km/h sur route",
+        "rangeKm": 2.5
+      },
+      "enabled": true,
+      "unitLabel": "véhicule",
+      "unitPriceUsd": 1000000,
+      "era": {
+        "introduced": 1965
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 20,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["drone", "aircraft"],
+        "pk": 0.3,
+        "magazine": 4
+      }
+    },
+    {
+      "id": "ru.strela-10",
+      "name": "Strela-10",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["short_range_sam"],
+      "generation": 2,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 2000000,
+        "resources": {
+          "oil": 3,
+          "metals": 8,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 680,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 5
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 7,
+        "helicopter": 13,
+        "drone": 10,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 2,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.2,
+      "stealth": 0.0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Châssis MT-LB, missiles 9M37",
+        "lengthM": 2.19,
+        "wingspanM": null,
+        "mtowKg": 40,
+        "warheadKg": 3,
+        "speedLabel": "Mach 1,8 (missile)",
+        "rangeKm": 5
+      },
+      "enabled": true,
+      "unitLabel": "véhicule",
+      "unitPriceUsd": 2000000,
+      "era": {
+        "introduced": 1976
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 12,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "drone"],
+        "pk": 0.45,
+        "magazine": 8
+      }
+    },
+    {
+      "id": "cn.hq-9b",
+      "name": "HQ-9B",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "air_defense",
+      "roles": ["long_range_sam", "missile_defense"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 300000000,
+        "resources": {
+          "oil": 60,
+          "metals": 150,
+          "electronics": 275
+        }
+      },
+      "buildTimeH": 56,
+      "upkeepPerDay": 63000,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 260
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 21,
+        "helicopter": 13,
+        "drone": 7,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 16,
+        "building": 0
+      },
+      "hp": 22,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 300,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs sur camions 8x8, radar HT-233",
+        "lengthM": 6.8,
+        "wingspanM": null,
+        "mtowKg": 2000,
+        "warheadKg": 180,
+        "speedLabel": "Mach 4,2 (missile)",
+        "rangeKm": 260
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 300000000,
+      "era": {
+        "introduced": 2017
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 300,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "ballistic"],
+        "pk": 0.7,
+        "magazine": 32
+      }
+    },
+    {
+      "id": "cn.hq-16",
+      "name": "HQ-16",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "air_defense",
+      "roles": ["medium_range_sam"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 100000000,
+        "resources": {
+          "oil": 30,
+          "metals": 80,
+          "electronics": 140
+        }
+      },
+      "buildTimeH": 40,
+      "upkeepPerDay": 36000,
+      "speedKmh": 65,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 2,
+        "max": 70
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 17,
+        "helicopter": 14,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 13,
+        "building": 0
+      },
+      "hp": 20,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 120,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs sur camions 6x6",
+        "lengthM": 5.2,
+        "wingspanM": null,
+        "mtowKg": 615,
+        "warheadKg": 70,
+        "speedLabel": "Mach 3 (missile)",
+        "rangeKm": 70
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 100000000,
+      "era": {
+        "introduced": 2011
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 120,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.7,
+        "magazine": 24
+      }
+    },
+    {
+      "id": "cn.hq-17",
+      "name": "HQ-17",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "air_defense",
+      "roles": ["short_range_sam", "anti_drone"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 15000000,
+        "resources": {
+          "oil": 10,
+          "metals": 25,
+          "electronics": 45
+        }
+      },
+      "buildTimeH": 22,
+      "upkeepPerDay": 2500,
+      "speedKmh": 65,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 15
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 9,
+        "helicopter": 15,
+        "drone": 14,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 11,
+        "building": 0
+      },
+      "hp": 18,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 30,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Véhicule chenillé, missiles à lancement vertical",
+        "lengthM": 2.9,
+        "wingspanM": null,
+        "mtowKg": 167,
+        "warheadKg": 15,
+        "speedLabel": "Mach 2,5 (missile)",
+        "rangeKm": 15
+      },
+      "enabled": true,
+      "unitLabel": "véhicule",
+      "unitPriceUsd": 15000000,
+      "era": {
+        "introduced": 2015
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 30,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "drone"],
+        "pk": 0.65,
+        "magazine": 8
+      }
+    },
+    {
+      "id": "cn.hq-7",
+      "name": "HQ-7",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "air_defense",
+      "roles": ["short_range_sam"],
+      "generation": 3,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 8000000,
+        "resources": {
+          "oil": 7,
+          "metals": 15,
+          "electronics": 30
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 1500,
+      "speedKmh": 70,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 12
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 8,
+        "helicopter": 13,
+        "drone": 10,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 6,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Véhicule 6x6 à 4 lanceurs",
+        "lengthM": 3,
+        "wingspanM": null,
+        "mtowKg": 84,
+        "warheadKg": 14,
+        "speedLabel": "Mach 2,3 (missile)",
+        "rangeKm": 12
+      },
+      "enabled": true,
+      "unitLabel": "véhicule",
+      "unitPriceUsd": 8000000,
+      "era": {
+        "introduced": 1991
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 20,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.5,
+        "magazine": 4
+      }
+    },
+    {
+      "id": "cn.ew-jammer",
+      "name": "Brouilleur de guerre électronique (Chine)",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "air_defense",
+      "roles": ["electronic_warfare", "jammer", "anti_drone"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 20000000,
+        "resources": {
+          "oil": 10,
+          "metals": 30,
+          "electronics": 55
+        }
+      },
+      "buildTimeH": 22,
+      "upkeepPerDay": 3200,
+      "speedKmh": 80,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 50
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 2,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 120,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.65
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.land.ew"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "jammer",
+      "sheet": {
+        "engine": "Brouilleur sur camion 6x6",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "80 km/h sur route",
+        "rangeKm": 50
+      },
+      "enabled": true,
+      "unitLabel": "système",
+      "unitPriceUsd": 20000000,
+      "era": {
+        "introduced": 2015
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 120,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "eu.samp-t",
+      "name": "SAMP/T",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "air_defense",
+      "roles": ["long_range_sam", "missile_defense"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 700000000,
+        "resources": {
+          "oil": 100,
+          "metals": 250,
+          "electronics": 455
+        }
+      },
+      "buildTimeH": 72,
+      "upkeepPerDay": 120000,
+      "speedKmh": 70,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 120
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 21,
+        "helicopter": 13,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 18,
+        "building": 0
+      },
+      "hp": 22,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 350,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs sur camions 8x8, radar Arabel",
+        "lengthM": 4.9,
+        "wingspanM": null,
+        "mtowKg": 450,
+        "warheadKg": 15,
+        "speedLabel": "Mach 4,5 (missile Aster 30)",
+        "rangeKm": 120
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 700000000,
+      "era": {
+        "introduced": 2001
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 350,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "ballistic"],
+        "pk": 0.75,
+        "magazine": 32
+      }
+    },
+    {
+      "id": "eu.iris-t-slm",
+      "name": "IRIS-T SLM",
+      "doctrine": "eu",
+      "origin": "DE",
+      "category": "air_defense",
+      "roles": ["medium_range_sam", "anti_drone"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 170000000,
+        "resources": {
+          "oil": 45,
+          "metals": 110,
+          "electronics": 195
+        }
+      },
+      "buildTimeH": 44,
+      "upkeepPerDay": 46000,
+      "speedKmh": 80,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 40
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 17,
+        "helicopter": 15,
+        "drone": 12,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 15,
+        "building": 0
+      },
+      "hp": 18,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 250,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs sur camions, radar TRML-4D",
+        "lengthM": 2.94,
+        "wingspanM": null,
+        "mtowKg": 89,
+        "warheadKg": 11,
+        "speedLabel": "Mach 3 (missile)",
+        "rangeKm": 40
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 170000000,
+      "era": {
+        "introduced": 2022
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 250,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "drone"],
+        "pk": 0.85,
+        "magazine": 24
+      }
+    },
+    {
+      "id": "eu.skynex",
+      "name": "Skynex",
+      "doctrine": "eu",
+      "origin": "DE",
+      "category": "air_defense",
+      "roles": ["short_range_sam", "spaag", "anti_drone", "c_ram"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 80000000,
+        "resources": {
+          "oil": 25,
+          "metals": 70,
+          "electronics": 125
+        }
+      },
+      "buildTimeH": 30,
+      "upkeepPerDay": 34000,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 4
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 6,
+        "helicopter": 15,
+        "drone": 18,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 14,
+        "building": 0
+      },
+      "hp": 16,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 50,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Canons revolver Oerlikon de 35 mm, radar X-TAR3D",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "60 km/h sur route",
+        "rangeKm": 4
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 80000000,
+      "era": {
+        "introduced": 2021
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 50,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["drone", "cruise", "rocket"],
+        "pk": 0.7,
+        "magazine": 10
+      }
+    },
+    {
+      "id": "eu.gepard",
+      "name": "Gepard",
+      "doctrine": "eu",
+      "origin": "DE",
+      "category": "air_defense",
+      "roles": ["short_range_sam", "spaag", "anti_drone"],
+      "generation": 2,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 3000000,
+        "resources": {
+          "oil": 4,
+          "metals": 10,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 12,
+      "upkeepPerDay": 1500,
+      "speedKmh": 65,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 4
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 2,
+        "aircraft": 6,
+        "helicopter": 14,
+        "drone": 16,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 4,
+        "building": 0
+      },
+      "hp": 20,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 15,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Châssis Leopard 1, 2 canons de 35 mm",
+        "lengthM": 7.68,
+        "wingspanM": null,
+        "mtowKg": 47500,
+        "warheadKg": null,
+        "speedLabel": "65 km/h sur route",
+        "rangeKm": 5.5
+      },
+      "enabled": true,
+      "unitLabel": "véhicule",
+      "unitPriceUsd": 3000000,
+      "era": {
+        "introduced": 1976
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 15,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["drone", "aircraft"],
+        "pk": 0.5,
+        "magazine": 6
+      }
+    },
+    {
+      "id": "eu.crotale",
+      "name": "Crotale",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "air_defense",
+      "roles": ["short_range_sam"],
+      "generation": 2,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 15000000,
+        "resources": {
+          "oil": 10,
+          "metals": 25,
+          "electronics": 45
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 3200,
+      "speedKmh": 70,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 11
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 8,
+        "helicopter": 13,
+        "drone": 10,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 7,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Véhicule 4x4, missiles VT-1 (Crotale NG)",
+        "lengthM": 2.3,
+        "wingspanM": null,
+        "mtowKg": 75,
+        "warheadKg": 13,
+        "speedLabel": "Mach 3,5 (missile VT-1)",
+        "rangeKm": 11
+      },
+      "enabled": true,
+      "unitLabel": "véhicule",
+      "unitPriceUsd": 15000000,
+      "era": {
+        "introduced": 1971
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 20,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.55,
+        "magazine": 8
+      }
+    },
+    {
+      "id": "other.iron-dome",
+      "name": "Dôme de fer",
+      "doctrine": "other",
+      "origin": "IL",
+      "category": "air_defense",
+      "roles": ["short_range_sam", "c_ram", "missile_defense", "anti_drone"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 100000000,
+        "resources": {
+          "oil": 30,
+          "metals": 80,
+          "electronics": 140
+        }
+      },
+      "buildTimeH": 40,
+      "upkeepPerDay": 36000,
+      "speedKmh": 50,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 4,
+        "max": 70
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 6,
+        "helicopter": 12,
+        "drone": 14,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 20,
+        "building": 0
+      },
+      "hp": 16,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 150,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs de 20 missiles Tamir, radar EL/M-2084",
+        "lengthM": 3,
+        "wingspanM": null,
+        "mtowKg": 90,
+        "warheadKg": 11,
+        "speedLabel": "Mach 2,2 (missile)",
+        "rangeKm": 70
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 100000000,
+      "era": {
+        "introduced": 2011
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 150,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["rocket", "cruise", "drone"],
+        "pk": 0.9,
+        "magazine": 60
+      }
+    },
+    {
+      "id": "other.davids-sling",
+      "name": "Fronde de David",
+      "doctrine": "other",
+      "origin": "IL",
+      "category": "air_defense",
+      "roles": ["long_range_sam", "missile_defense"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 400000000,
+        "resources": {
+          "oil": 70,
+          "metals": 180,
+          "electronics": 325
+        }
+      },
+      "buildTimeH": 64,
+      "upkeepPerDay": 77000,
+      "speedKmh": 50,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 5,
+        "max": 250
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 18,
+        "helicopter": 10,
+        "drone": 6,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 20,
+        "building": 0
+      },
+      "hp": 20,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 300,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs sur camions, radar EL/M-2084",
+        "lengthM": 4.6,
+        "wingspanM": null,
+        "mtowKg": 400,
+        "warheadKg": null,
+        "speedLabel": "Mach 7,5 (missile Stunner)",
+        "rangeKm": 300
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 400000000,
+      "era": {
+        "introduced": 2017
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 300,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "ballistic"],
+        "pk": 0.8,
+        "magazine": 24
+      }
+    },
+    {
+      "id": "other.arrow-3",
+      "name": "Arrow 3",
+      "doctrine": "other",
+      "origin": "IL",
+      "category": "air_defense",
+      "roles": ["long_range_sam", "abm", "missile_defense"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 1400000000,
+        "resources": {
+          "oil": 155,
+          "metals": 380,
+          "electronics": 690
+        }
+      },
+      "buildTimeH": 110,
+      "upkeepPerDay": 210000,
+      "speedKmh": 40,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 100,
+        "max": 800
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 26,
+        "building": 0
+      },
+      "hp": 20,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 900,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam5", "research.missiles.abm"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs sur remorques, radar Green Pine",
+        "lengthM": 7,
+        "wingspanM": null,
+        "mtowKg": 1300,
+        "warheadKg": null,
+        "speedLabel": "Mach 9 (impact direct exo-atmosphérique)",
+        "rangeKm": 2400
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 1400000000,
+      "era": {
+        "introduced": 2017
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 900,
+        "stealthDetect": 0.25
+      },
+      "interceptor": {
+        "against": ["ballistic"],
+        "pk": 0.85,
+        "magazine": 24
+      }
+    },
+    {
+      "id": "other.bavar-373",
+      "name": "Bavar-373",
+      "doctrine": "other",
+      "origin": "IR",
+      "category": "air_defense",
+      "roles": ["long_range_sam", "missile_defense"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 150000000,
+        "resources": {
+          "oil": 40,
+          "metals": 100,
+          "electronics": 180
+        }
+      },
+      "buildTimeH": 56,
+      "upkeepPerDay": 43000,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 5,
+        "max": 300
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 18,
+        "helicopter": 12,
+        "drone": 6,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 13,
+        "building": 0
+      },
+      "hp": 20,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 350,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs sur camions, missiles Sayyad-4",
+        "lengthM": 7,
+        "wingspanM": null,
+        "mtowKg": 1500,
+        "warheadKg": 180,
+        "speedLabel": "Mach 6 (missile)",
+        "rangeKm": 300
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 150000000,
+      "era": {
+        "introduced": 2019
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 350,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "ballistic"],
+        "pk": 0.6,
+        "magazine": 16
+      }
+    },
+    {
+      "id": "other.akash",
+      "name": "Akash",
+      "doctrine": "other",
+      "origin": "IN",
+      "category": "air_defense",
+      "roles": ["medium_range_sam"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 80000000,
+        "resources": {
+          "oil": 25,
+          "metals": 70,
+          "electronics": 125
+        }
+      },
+      "buildTimeH": 40,
+      "upkeepPerDay": 33000,
+      "speedKmh": 50,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 30
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 15,
+        "helicopter": 13,
+        "drone": 7,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 9,
+        "building": 0
+      },
+      "hp": 18,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 120,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.sam4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Lanceurs chenillés ou sur camions, radar Rajendra",
+        "lengthM": 5.87,
+        "wingspanM": null,
+        "mtowKg": 720,
+        "warheadKg": 60,
+        "speedLabel": "Mach 2,5 (missile)",
+        "rangeKm": 30
+      },
+      "enabled": true,
+      "unitLabel": "batterie",
+      "unitPriceUsd": 80000000,
+      "era": {
+        "introduced": 2014
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 120,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.65,
+        "magazine": 12
+      }
+    }
+  ]
+}

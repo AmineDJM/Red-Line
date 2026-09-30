@@ -1,6 +1,12 @@
 {
   "id": "world-today",
   "name": "Le monde aujourd'hui",
-  "description": "La carte politique actuelle et les armées d'aujourd'hui. Choisissez n'importe quelle nation et imposez-vous militairement : contrôlez 60 % des provinces du monde ou toutes les capitales ennemies.",
-  "playableNations": "all"
+  "description": "La carte politique actuelle, les budgets de défense et les arsenaux estimés de 2025. Choisissez n'importe quelle nation et imposez-vous militairement : contrôlez 60 % des provinces du monde ou toutes les capitales ennemies.",
+  "playableNations": "all",
+  "year": 2025,
+  "orbatSet": "2025",
+  "camera": {
+    "center": [15, 25],
+    "zoom": 1.6
+  }
 }

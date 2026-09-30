@@ -1,0 +1,220 @@
+{
+  "category": "logistics",
+  "systems": [
+    {
+      "id": "other.supply-convoy",
+      "name": "Convoi logistique",
+      "doctrine": "other",
+      "origin": "XX",
+      "category": "logistics",
+      "roles": ["logistics", "supply"],
+      "generation": 3,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 3000000,
+        "resources": {
+          "oil": 6,
+          "metals": 10,
+          "electronics": 2
+        }
+      },
+      "buildTimeH": 4,
+      "upkeepPerDay": 820,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 12,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 5,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": [],
+      "licensable": false,
+      "exportable": false,
+      "icon": "ifv",
+      "sheet": {
+        "engine": "Camions tactiques (≈ 20 véhicules)",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "60 km/h sur route",
+        "rangeKm": 800
+      },
+      "enabled": true,
+      "unitLabel": "convoi",
+      "unitPriceUsd": 3000000,
+      "era": {
+        "introduced": 1945
+      }
+    },
+    {
+      "id": "other.cargo-ship",
+      "name": "Cargo",
+      "doctrine": "other",
+      "origin": "XX",
+      "category": "logistics",
+      "roles": ["logistics", "sealift"],
+      "generation": 3,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 40000000,
+        "resources": {
+          "oil": 25,
+          "metals": 45,
+          "electronics": 9
+        }
+      },
+      "buildTimeH": 96,
+      "upkeepPerDay": 8900,
+      "speedKmh": 35,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 60,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 30,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": [],
+      "licensable": false,
+      "exportable": false,
+      "icon": "ship",
+      "sheet": {
+        "engine": "1 moteur diesel lent",
+        "lengthM": 180,
+        "wingspanM": 28,
+        "mtowKg": 30000,
+        "warheadKg": null,
+        "speedLabel": "19 nœuds",
+        "rangeKm": 20000
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 1945
+      }
+    },
+    {
+      "id": "other.cargo-aircraft",
+      "name": "Avion cargo affrété",
+      "doctrine": "other",
+      "origin": "XX",
+      "category": "logistics",
+      "roles": ["logistics", "airlift"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 120000000,
+        "resources": {
+          "oil": 50,
+          "metals": 85,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 26000,
+      "speedKmh": 900,
+      "operationalRadiusKm": 4000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 30,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 30,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": [],
+      "licensable": false,
+      "exportable": false,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbosoufflantes",
+        "lengthM": 70.6,
+        "wingspanM": 64.4,
+        "mtowKg": 396890,
+        "warheadKg": null,
+        "speedLabel": "910 km/h",
+        "rangeKm": 8100
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 120000000,
+      "era": {
+        "introduced": 1970
+      },
+      "air": {
+        "fuelH": 10,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    }
+  ]
+}

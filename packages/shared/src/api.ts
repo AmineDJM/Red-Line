@@ -228,6 +228,8 @@ export const CreateLobbyBodySchema = z.object({
   /** Remplacer par une IA un joueur inactif depuis N heures réelles. */
   inactiveAiAfterH: z.number().positive().default(24),
   private: z.boolean().default(false),
+  /** Niveau des IA actives qui tiennent toutes les nations sans joueur humain (facultatif). */
+  aiLevel: z.enum(['easy', 'normal', 'hard']).default('normal'),
 });
 export type CreateLobbyBody = z.infer<typeof CreateLobbyBodySchema>;
 

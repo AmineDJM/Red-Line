@@ -32,6 +32,14 @@ services:
         sync: false
       - key: ADMIN_PASSWORD
         sync: false
+      # Boutique (facultatif : sans ces deux clés, la boutique affiche « paiements indisponibles »).
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      # URL publique (retours de Stripe Checkout, sujet VAPID), ex. https://redline.onrender.com
+      - key: PUBLIC_URL
+        sync: false
 
   - type: web
     name: redline-server-staging
@@ -59,6 +67,13 @@ services:
       - key: ADMIN_EMAIL
         sync: false
       - key: ADMIN_PASSWORD
+        sync: false
+      # Staging : clés Stripe de TEST (sk_test_…) uniquement.
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: PUBLIC_URL
         sync: false
 
 databases:

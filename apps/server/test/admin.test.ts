@@ -211,8 +211,8 @@ describe.skipIf(!hasDb)("API d'administration", () => {
       playerMessage: 'Les chars ralentissent.',
     });
     expect(res.statusCode).toBe(200);
-    const notice = await ws.next('error', (m) => m.code === 'admin_notice');
-    expect(notice.message).toBe('Les chars ralentissent.');
+    const notice = await ws.next('notice');
+    expect(notice.text).toBe('Les chars ralentissent.');
     const g = host.games.get(id)!;
     expect(g.world.catalog.get('eu.test-tank')!.speedKmh).toBe(22);
     expect(g.releaseId).not.toBe(releaseBefore);

@@ -1,0 +1,3067 @@
+{
+  "category": "air_support",
+  "systems": [
+    {
+      "id": "us.a-10c-thunderbolt-ii",
+      "name": "A-10C Thunderbolt II",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_support",
+      "roles": ["close_air_support", "anti_tank"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 25000000,
+        "resources": {
+          "oil": 10,
+          "metals": 25,
+          "electronics": 30
+        }
+      },
+      "buildTimeH": 30,
+      "upkeepPerDay": 12000,
+      "speedKmh": 700,
+      "operationalRadiusKm": 460,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 12
+      },
+      "damage": {
+        "infantry": 9,
+        "armor": 12,
+        "aircraft": 3,
+        "helicopter": 6,
+        "drone": 4,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 0,
+        "building": 7
+      },
+      "hp": 34,
+      "armor": 0.3,
+      "stealth": 0.0,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 11
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "2 turbosoufflantes TF34",
+        "lengthM": 16.3,
+        "wingspanM": 17.5,
+        "mtowKg": 23000,
+        "warheadKg": null,
+        "speedLabel": "706 km/h",
+        "rangeKm": 4150
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 25000000,
+      "era": {
+        "introduced": 1977
+      },
+      "air": {
+        "fuelH": 3.5,
+        "refuelable": true,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "us.e-3-sentry",
+      "name": "E-3 Sentry",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_support",
+      "roles": ["aew", "command"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 450000000,
+        "resources": {
+          "oil": 70,
+          "metals": 130,
+          "electronics": 175
+        }
+      },
+      "buildTimeH": 120,
+      "upkeepPerDay": 82000,
+      "speedKmh": 850,
+      "operationalRadiusKm": 1600,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 36,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 400,
+      "ew": {
+        "jamming": 0.2,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.aew"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turboréacteurs TF33",
+        "lengthM": 46.6,
+        "wingspanM": 44.4,
+        "mtowKg": 147400,
+        "warheadKg": null,
+        "speedLabel": "855 km/h",
+        "rangeKm": 7400
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 450000000,
+      "era": {
+        "introduced": 1977
+      },
+      "air": {
+        "fuelH": 11,
+        "refuelable": true,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "aew",
+        "rangeKm": 400,
+        "stealthDetect": 0.25
+      }
+    },
+    {
+      "id": "us.e-7-wedgetail",
+      "name": "E-7 Wedgetail",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_support",
+      "roles": ["aew", "command"],
+      "generation": 5,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 600000000,
+        "resources": {
+          "oil": 85,
+          "metals": 150,
+          "electronics": 205
+        }
+      },
+      "buildTimeH": 130,
+      "upkeepPerDay": 110000,
+      "speedKmh": 900,
+      "operationalRadiusKm": 1500,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 36,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 600,
+      "ew": {
+        "jamming": 0.25,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.aew", "research.sensors.radar3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "2 turbosoufflantes CFM56",
+        "lengthM": 33.6,
+        "wingspanM": 34.3,
+        "mtowKg": 77600,
+        "warheadKg": null,
+        "speedLabel": "955 km/h",
+        "rangeKm": 6500
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 600000000,
+      "era": {
+        "introduced": 2010
+      },
+      "air": {
+        "fuelH": 10,
+        "refuelable": true,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "aew",
+        "rangeKm": 600,
+        "stealthDetect": 0.35
+      }
+    },
+    {
+      "id": "us.e-2d-hawkeye",
+      "name": "E-2D Advanced Hawkeye",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_support",
+      "roles": ["aew", "command", "carrier_borne"],
+      "generation": 5,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 200000000,
+        "resources": {
+          "oil": 45,
+          "metals": 80,
+          "electronics": 105
+        }
+      },
+      "buildTimeH": 96,
+      "upkeepPerDay": 41000,
+      "speedKmh": 650,
+      "operationalRadiusKm": 1000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 30,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 550,
+      "ew": {
+        "jamming": 0.2,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.aew", "research.sensors.radar3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "2 turbopropulseurs T56-A-427A",
+        "lengthM": 17.6,
+        "wingspanM": 24.6,
+        "mtowKg": 26000,
+        "warheadKg": null,
+        "speedLabel": "650 km/h",
+        "rangeKm": 2700
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 200000000,
+      "era": {
+        "introduced": 2014
+      },
+      "air": {
+        "fuelH": 6,
+        "refuelable": true,
+        "carrierCapable": true
+      },
+      "sensor": {
+        "kind": "aew",
+        "rangeKm": 550,
+        "stealthDetect": 0.4
+      }
+    },
+    {
+      "id": "us.kc-135-stratotanker",
+      "name": "KC-135 Stratotanker",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_support",
+      "roles": ["tanker"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 70000000,
+        "resources": {
+          "oil": 25,
+          "metals": 40,
+          "electronics": 55
+        }
+      },
+      "buildTimeH": 72,
+      "upkeepPerDay": 20000,
+      "speedKmh": 850,
+      "operationalRadiusKm": 2400,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 40,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 50,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.tanker"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbosoufflantes F108 (CFM56)",
+        "lengthM": 41.5,
+        "wingspanM": 39.9,
+        "mtowKg": 146300,
+        "warheadKg": null,
+        "speedLabel": "850 km/h",
+        "rangeKm": 5550
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 70000000,
+      "era": {
+        "introduced": 1957
+      },
+      "air": {
+        "fuelH": 12,
+        "refuelable": true,
+        "carrierCapable": false,
+        "tankerFuelH": 30
+      }
+    },
+    {
+      "id": "us.kc-46-pegasus",
+      "name": "KC-46 Pegasus",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_support",
+      "roles": ["tanker", "transport"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 180000000,
+        "resources": {
+          "oil": 40,
+          "metals": 75,
+          "electronics": 100
+        }
+      },
+      "buildTimeH": 96,
+      "upkeepPerDay": 38000,
+      "speedKmh": 900,
+      "operationalRadiusKm": 2800,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 42,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0,
+        "transport": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.tanker"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "2 turbosoufflantes PW4062",
+        "lengthM": 50.5,
+        "wingspanM": 48.1,
+        "mtowKg": 188200,
+        "warheadKg": null,
+        "speedLabel": "915 km/h",
+        "rangeKm": 11830
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 180000000,
+      "era": {
+        "introduced": 2019
+      },
+      "air": {
+        "fuelH": 13,
+        "refuelable": true,
+        "carrierCapable": false,
+        "tankerFuelH": 32
+      }
+    },
+    {
+      "id": "us.c-17-globemaster-iii",
+      "name": "C-17 Globemaster III",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_support",
+      "roles": ["transport", "strategic_airlift"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 340000000,
+        "resources": {
+          "oil": 60,
+          "metals": 110,
+          "electronics": 145
+        }
+      },
+      "buildTimeH": 110,
+      "upkeepPerDay": 64000,
+      "speedKmh": 830,
+      "operationalRadiusKm": 2400,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 44,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 0,
+        "transport": 3
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.transport"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbosoufflantes F117",
+        "lengthM": 53,
+        "wingspanM": 51.8,
+        "mtowKg": 265350,
+        "warheadKg": null,
+        "speedLabel": "830 km/h",
+        "rangeKm": 4480
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 340000000,
+      "era": {
+        "introduced": 1995
+      },
+      "air": {
+        "fuelH": 10,
+        "refuelable": true,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "us.c-130-hercules",
+      "name": "C-130 Hercules",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_support",
+      "roles": ["transport", "tactical_airlift"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 80000000,
+        "resources": {
+          "oil": 25,
+          "metals": 45,
+          "electronics": 60
+        }
+      },
+      "buildTimeH": 60,
+      "upkeepPerDay": 21000,
+      "speedKmh": 640,
+      "operationalRadiusKm": 1800,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 36,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 0,
+        "transport": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.transport"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbopropulseurs AE 2100 (C-130J)",
+        "lengthM": 29.8,
+        "wingspanM": 40.4,
+        "mtowKg": 74400,
+        "warheadKg": null,
+        "speedLabel": "670 km/h",
+        "rangeKm": 3300
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 80000000,
+      "era": {
+        "introduced": 1956
+      },
+      "air": {
+        "fuelH": 9,
+        "refuelable": true,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "us.ea-18g-growler",
+      "name": "EA-18G Growler",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_support",
+      "roles": ["electronic_warfare", "sead", "jammer", "carrier_borne"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 70000000,
+        "resources": {
+          "oil": 25,
+          "metals": 40,
+          "electronics": 55
+        }
+      },
+      "buildTimeH": 54,
+      "upkeepPerDay": 20000,
+      "speedKmh": 1900,
+      "operationalRadiusKm": 720,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 10,
+        "helicopter": 8,
+        "drone": 6,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 2,
+        "building": 6
+      },
+      "hp": 26,
+      "armor": 0.1,
+      "stealth": 0.05,
+      "detectionRangeKm": 180,
+      "ew": {
+        "jamming": 0.8,
+        "jamResistance": 0.75
+      },
+      "payload": {
+        "slots": 9
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4plus"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "2 turboréacteurs F414",
+        "lengthM": 18.3,
+        "wingspanM": 13.6,
+        "mtowKg": 29964,
+        "warheadKg": null,
+        "speedLabel": "Mach 1,8",
+        "rangeKm": 3330
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 70000000,
+      "era": {
+        "introduced": 2009
+      },
+      "air": {
+        "fuelH": 3.2,
+        "refuelable": true,
+        "carrierCapable": true
+      }
+    },
+    {
+      "id": "us.p-8-poseidon",
+      "name": "P-8 Poseidon",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_support",
+      "roles": ["maritime_patrol", "asw", "antiship"],
+      "generation": 5,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 170000000,
+        "resources": {
+          "oil": 40,
+          "metals": 70,
+          "electronics": 95
+        }
+      },
+      "buildTimeH": 96,
+      "upkeepPerDay": 36000,
+      "speedKmh": 900,
+      "operationalRadiusKm": 2200,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 250
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 12,
+        "submarine": 14,
+        "missile": 0,
+        "building": 2
+      },
+      "hp": 36,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 350,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 11
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.transport", "research.sensors.radar2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "2 turbosoufflantes CFM56-7B",
+        "lengthM": 39.5,
+        "wingspanM": 37.6,
+        "mtowKg": 85820,
+        "warheadKg": null,
+        "speedLabel": "907 km/h",
+        "rangeKm": 7500
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 170000000,
+      "era": {
+        "introduced": 2013
+      },
+      "air": {
+        "fuelH": 10,
+        "refuelable": true,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 350,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.8,
+        "aircraftCapacity": 0,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "us.av-8b-harrier-ii",
+      "name": "AV-8B Harrier II",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_support",
+      "roles": ["close_air_support", "stovl", "carrier_borne"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 50000000,
+        "resources": {
+          "oil": 20,
+          "metals": 35,
+          "electronics": 45
+        }
+      },
+      "buildTimeH": 34,
+      "upkeepPerDay": 16000,
+      "speedKmh": 1080,
+      "operationalRadiusKm": 550,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 25
+      },
+      "damage": {
+        "infantry": 7,
+        "armor": 7,
+        "aircraft": 6,
+        "helicopter": 6,
+        "drone": 4,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 0,
+        "building": 7
+      },
+      "hp": 24,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 80,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 7
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "1 turbosoufflante Pegasus F402",
+        "lengthM": 14.1,
+        "wingspanM": 9.2,
+        "mtowKg": 14100,
+        "warheadKg": null,
+        "speedLabel": "1 083 km/h",
+        "rangeKm": 3300
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 50000000,
+      "era": {
+        "introduced": 1985
+      },
+      "air": {
+        "fuelH": 2.5,
+        "refuelable": true,
+        "carrierCapable": true
+      }
+    },
+    {
+      "id": "us.f-4-phantom-ii",
+      "name": "F-4 Phantom II",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_support",
+      "roles": ["multirole", "air_superiority", "strike"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 25000000,
+        "resources": {
+          "oil": 10,
+          "metals": 25,
+          "electronics": 30
+        }
+      },
+      "buildTimeH": 18,
+      "upkeepPerDay": 12000,
+      "speedKmh": 2350,
+      "operationalRadiusKm": 680,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 40
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 3,
+        "aircraft": 9,
+        "helicopter": 8,
+        "drone": 5,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 1,
+        "building": 7
+      },
+      "hp": 30,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 80,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 9
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen3"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "2 turboréacteurs J79",
+        "lengthM": 19.2,
+        "wingspanM": 11.7,
+        "mtowKg": 28030,
+        "warheadKg": null,
+        "speedLabel": "Mach 2,2",
+        "rangeKm": 2600
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 25000000,
+      "era": {
+        "introduced": 1960
+      },
+      "air": {
+        "fuelH": 2.5,
+        "refuelable": true,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.su-25",
+      "name": "Su-25",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_support",
+      "roles": ["close_air_support", "anti_tank"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 15000000,
+        "resources": {
+          "oil": 9,
+          "metals": 15,
+          "electronics": 25
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 4900,
+      "speedKmh": 950,
+      "operationalRadiusKm": 375,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 10
+      },
+      "damage": {
+        "infantry": 9,
+        "armor": 10,
+        "aircraft": 2,
+        "helicopter": 5,
+        "drone": 3,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 7
+      },
+      "hp": 34,
+      "armor": 0.3,
+      "stealth": 0.0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 10
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "2 turboréacteurs R-195",
+        "lengthM": 15.5,
+        "wingspanM": 14.4,
+        "mtowKg": 19300,
+        "warheadKg": null,
+        "speedLabel": "950 km/h",
+        "rangeKm": 1950
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 15000000,
+      "era": {
+        "introduced": 1981
+      },
+      "air": {
+        "fuelH": 2,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.su-34",
+      "name": "Su-34",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_support",
+      "roles": ["strike", "antiship"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 40000000,
+        "resources": {
+          "oil": 15,
+          "metals": 30,
+          "electronics": 40
+        }
+      },
+      "buildTimeH": 50,
+      "upkeepPerDay": 9000,
+      "speedKmh": 1900,
+      "operationalRadiusKm": 1100,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 40
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 5,
+        "aircraft": 10,
+        "helicopter": 8,
+        "drone": 5,
+        "ship": 7,
+        "submarine": 0,
+        "missile": 1,
+        "building": 11
+      },
+      "hp": 32,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 120,
+      "ew": {
+        "jamming": 0.35,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 12
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4plus"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "2 turboréacteurs AL-31F",
+        "lengthM": 23.3,
+        "wingspanM": 14.7,
+        "mtowKg": 45100,
+        "warheadKg": null,
+        "speedLabel": "Mach 1,8",
+        "rangeKm": 4000
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 2014
+      },
+      "air": {
+        "fuelH": 4,
+        "refuelable": true,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.su-24",
+      "name": "Su-24",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_support",
+      "roles": ["strike"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 20000000,
+        "resources": {
+          "oil": 10,
+          "metals": 20,
+          "electronics": 25
+        }
+      },
+      "buildTimeH": 30,
+      "upkeepPerDay": 5800,
+      "speedKmh": 1650,
+      "operationalRadiusKm": 615,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 30
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 4,
+        "aircraft": 4,
+        "helicopter": 4,
+        "drone": 3,
+        "ship": 5,
+        "submarine": 0,
+        "missile": 0,
+        "building": 9
+      },
+      "hp": 30,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 80,
+      "ew": {
+        "jamming": 0.2,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "2 turboréacteurs AL-21F-3",
+        "lengthM": 22.7,
+        "wingspanM": 17.6,
+        "mtowKg": 43755,
+        "warheadKg": null,
+        "speedLabel": "Mach 1,6",
+        "rangeKm": 2775
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 20000000,
+      "era": {
+        "introduced": 1974
+      },
+      "air": {
+        "fuelH": 2.5,
+        "refuelable": true,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.su-22",
+      "name": "Su-22",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_support",
+      "roles": ["strike"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 10000000,
+        "resources": {
+          "oil": 7,
+          "metals": 15,
+          "electronics": 20
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 4100,
+      "speedKmh": 1850,
+      "operationalRadiusKm": 500,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 15
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 4,
+        "aircraft": 5,
+        "helicopter": 5,
+        "drone": 3,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 0,
+        "building": 7
+      },
+      "hp": 24,
+      "armor": 0.08,
+      "stealth": 0.0,
+      "detectionRangeKm": 50,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen3"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "1 turboréacteur AL-21F-3",
+        "lengthM": 19,
+        "wingspanM": 13.7,
+        "mtowKg": 19400,
+        "warheadKg": null,
+        "speedLabel": "Mach 1,7",
+        "rangeKm": 2300
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 10000000,
+      "era": {
+        "introduced": 1970
+      },
+      "air": {
+        "fuelH": 2,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.mig-23",
+      "name": "MiG-23",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_support",
+      "roles": ["air_superiority", "interceptor"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 12000000,
+        "resources": {
+          "oil": 8,
+          "metals": 15,
+          "electronics": 20
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 4400,
+      "speedKmh": 2500,
+      "operationalRadiusKm": 550,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 50
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 9,
+        "helicopter": 8,
+        "drone": 5,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 1,
+        "building": 4
+      },
+      "hp": 26,
+      "armor": 0.08,
+      "stealth": 0.0,
+      "detectionRangeKm": 70,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen3"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "1 turboréacteur R-35-300",
+        "lengthM": 16.7,
+        "wingspanM": 13.97,
+        "mtowKg": 17800,
+        "warheadKg": null,
+        "speedLabel": "Mach 2,35",
+        "rangeKm": 2820
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 12000000,
+      "era": {
+        "introduced": 1970
+      },
+      "air": {
+        "fuelH": 2,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.a-50",
+      "name": "A-50",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_support",
+      "roles": ["aew", "command"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 330000000,
+        "resources": {
+          "oil": 60,
+          "metals": 105,
+          "electronics": 145
+        }
+      },
+      "buildTimeH": 120,
+      "upkeepPerDay": 57000,
+      "speedKmh": 800,
+      "operationalRadiusKm": 1000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 36,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 400,
+      "ew": {
+        "jamming": 0.15,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.aew"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbosoufflantes D-30KP",
+        "lengthM": 46.6,
+        "wingspanM": 50.5,
+        "mtowKg": 190000,
+        "warheadKg": null,
+        "speedLabel": "800 km/h",
+        "rangeKm": 5000
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 330000000,
+      "era": {
+        "introduced": 1985
+      },
+      "air": {
+        "fuelH": 8,
+        "refuelable": true,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "aew",
+        "rangeKm": 400,
+        "stealthDetect": 0.2
+      }
+    },
+    {
+      "id": "ru.il-78",
+      "name": "Il-78",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_support",
+      "roles": ["tanker"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 90000000,
+        "resources": {
+          "oil": 25,
+          "metals": 50,
+          "electronics": 65
+        }
+      },
+      "buildTimeH": 80,
+      "upkeepPerDay": 17000,
+      "speedKmh": 750,
+      "operationalRadiusKm": 2200,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 40,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 50,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.tanker"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbosoufflantes D-30KP",
+        "lengthM": 46.6,
+        "wingspanM": 50.5,
+        "mtowKg": 210000,
+        "warheadKg": null,
+        "speedLabel": "750 km/h",
+        "rangeKm": 7300
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 90000000,
+      "era": {
+        "introduced": 1984
+      },
+      "air": {
+        "fuelH": 11,
+        "refuelable": false,
+        "carrierCapable": false,
+        "tankerFuelH": 22
+      }
+    },
+    {
+      "id": "ru.il-76",
+      "name": "Il-76",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_support",
+      "roles": ["transport", "strategic_airlift"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 75000000,
+        "resources": {
+          "oil": 25,
+          "metals": 45,
+          "electronics": 60
+        }
+      },
+      "buildTimeH": 70,
+      "upkeepPerDay": 15000,
+      "speedKmh": 780,
+      "operationalRadiusKm": 2000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 40,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 0,
+        "transport": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.transport"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbosoufflantes D-30KP",
+        "lengthM": 46.6,
+        "wingspanM": 50.5,
+        "mtowKg": 190000,
+        "warheadKg": null,
+        "speedLabel": "780 km/h",
+        "rangeKm": 4400
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 75000000,
+      "era": {
+        "introduced": 1974
+      },
+      "air": {
+        "fuelH": 9,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.an-26",
+      "name": "An-26",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_support",
+      "roles": ["transport", "tactical_airlift"],
+      "generation": 2,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 8000000,
+        "resources": {
+          "oil": 6,
+          "metals": 10,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 3800,
+      "speedKmh": 440,
+      "operationalRadiusKm": 1000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 22,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 30,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 0,
+        "transport": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.transport"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "2 turbopropulseurs AI-24VT",
+        "lengthM": 23.8,
+        "wingspanM": 29.2,
+        "mtowKg": 24000,
+        "warheadKg": null,
+        "speedLabel": "440 km/h",
+        "rangeKm": 2550
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 8000000,
+      "era": {
+        "introduced": 1969
+      },
+      "air": {
+        "fuelH": 5,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.yak-130",
+      "name": "Yak-130",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_support",
+      "roles": ["trainer", "light_attack"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 15000000,
+        "resources": {
+          "oil": 9,
+          "metals": 15,
+          "electronics": 25
+        }
+      },
+      "buildTimeH": 20,
+      "upkeepPerDay": 4900,
+      "speedKmh": 1050,
+      "operationalRadiusKm": 550,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 10
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 5,
+        "aircraft": 4,
+        "helicopter": 6,
+        "drone": 5,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 5
+      },
+      "hp": 18,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.25
+      },
+      "payload": {
+        "slots": 9
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "2 turbosoufflantes AI-222-25",
+        "lengthM": 11.5,
+        "wingspanM": 9.8,
+        "mtowKg": 10290,
+        "warheadKg": null,
+        "speedLabel": "1 060 km/h",
+        "rangeKm": 2000
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 15000000,
+      "era": {
+        "introduced": 2010
+      },
+      "air": {
+        "fuelH": 2.5,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "cn.kj-500",
+      "name": "KJ-500",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "air_support",
+      "roles": ["aew", "command"],
+      "generation": 5,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 150000000,
+        "resources": {
+          "oil": 35,
+          "metals": 65,
+          "electronics": 90
+        }
+      },
+      "buildTimeH": 110,
+      "upkeepPerDay": 27000,
+      "speedKmh": 550,
+      "operationalRadiusKm": 1000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 34,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 470,
+      "ew": {
+        "jamming": 0.2,
+        "jamResistance": 0.55
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.aew", "research.sensors.radar3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbopropulseurs WJ-6C",
+        "lengthM": 36,
+        "wingspanM": 38,
+        "mtowKg": 65000,
+        "warheadKg": null,
+        "speedLabel": "570 km/h",
+        "rangeKm": 5700
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 150000000,
+      "era": {
+        "introduced": 2015
+      },
+      "air": {
+        "fuelH": 8,
+        "refuelable": true,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "aew",
+        "rangeKm": 470,
+        "stealthDetect": 0.3
+      }
+    },
+    {
+      "id": "cn.kj-2000",
+      "name": "KJ-2000",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "air_support",
+      "roles": ["aew", "command"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 250000000,
+        "resources": {
+          "oil": 50,
+          "metals": 90,
+          "electronics": 120
+        }
+      },
+      "buildTimeH": 120,
+      "upkeepPerDay": 44000,
+      "speedKmh": 850,
+      "operationalRadiusKm": 1500,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 36,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 470,
+      "ew": {
+        "jamming": 0.15,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.aew", "research.sensors.radar2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbosoufflantes D-30KP-2",
+        "lengthM": 46.6,
+        "wingspanM": 50.5,
+        "mtowKg": 175000,
+        "warheadKg": null,
+        "speedLabel": "850 km/h",
+        "rangeKm": 5500
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 250000000,
+      "era": {
+        "introduced": 2007
+      },
+      "air": {
+        "fuelH": 8,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "aew",
+        "rangeKm": 470,
+        "stealthDetect": 0.2
+      }
+    },
+    {
+      "id": "cn.y-20",
+      "name": "Y-20",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "air_support",
+      "roles": ["transport", "strategic_airlift"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 160000000,
+        "resources": {
+          "oil": 35,
+          "metals": 70,
+          "electronics": 95
+        }
+      },
+      "buildTimeH": 100,
+      "upkeepPerDay": 29000,
+      "speedKmh": 800,
+      "operationalRadiusKm": 2300,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 44,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 0,
+        "transport": 3
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.transport"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbosoufflantes WS-20 / D-30KP-2",
+        "lengthM": 47,
+        "wingspanM": 50,
+        "mtowKg": 220000,
+        "warheadKg": null,
+        "speedLabel": "800 km/h",
+        "rangeKm": 7800
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 160000000,
+      "era": {
+        "introduced": 2016
+      },
+      "air": {
+        "fuelH": 10,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "cn.yy-20",
+      "name": "YY-20",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "air_support",
+      "roles": ["tanker"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 180000000,
+        "resources": {
+          "oil": 40,
+          "metals": 75,
+          "electronics": 100
+        }
+      },
+      "buildTimeH": 100,
+      "upkeepPerDay": 32000,
+      "speedKmh": 800,
+      "operationalRadiusKm": 2300,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 44,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 50,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.tanker"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbosoufflantes WS-20",
+        "lengthM": 47,
+        "wingspanM": 50,
+        "mtowKg": 220000,
+        "warheadKg": null,
+        "speedLabel": "800 km/h",
+        "rangeKm": 7800
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 180000000,
+      "era": {
+        "introduced": 2021
+      },
+      "air": {
+        "fuelH": 11,
+        "refuelable": false,
+        "carrierCapable": false,
+        "tankerFuelH": 28
+      }
+    },
+    {
+      "id": "cn.y-9",
+      "name": "Y-9",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "air_support",
+      "roles": ["transport", "tactical_airlift"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 50000000,
+        "resources": {
+          "oil": 20,
+          "metals": 35,
+          "electronics": 45
+        }
+      },
+      "buildTimeH": 56,
+      "upkeepPerDay": 11000,
+      "speedKmh": 570,
+      "operationalRadiusKm": 1500,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 34,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 0,
+        "transport": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.transport"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbopropulseurs WJ-6C",
+        "lengthM": 36,
+        "wingspanM": 38,
+        "mtowKg": 65000,
+        "warheadKg": null,
+        "speedLabel": "650 km/h",
+        "rangeKm": 5700
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 50000000,
+      "era": {
+        "introduced": 2012
+      },
+      "air": {
+        "fuelH": 9,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "cn.k-8-karakorum",
+      "name": "K-8 Karakorum",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "air_support",
+      "roles": ["trainer", "light_attack"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 7000000,
+        "resources": {
+          "oil": 6,
+          "metals": 10,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 3600,
+      "speedKmh": 800,
+      "operationalRadiusKm": 400,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 6
+      },
+      "damage": {
+        "infantry": 5,
+        "armor": 3,
+        "aircraft": 2,
+        "helicopter": 4,
+        "drone": 3,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 3
+      },
+      "hp": 14,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 25,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.15
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen3"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "1 turbosoufflante TFE731 / WS-11",
+        "lengthM": 11.6,
+        "wingspanM": 9.6,
+        "mtowKg": 4330,
+        "warheadKg": null,
+        "speedLabel": "800 km/h",
+        "rangeKm": 2250
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 7000000,
+      "era": {
+        "introduced": 1994
+      },
+      "air": {
+        "fuelH": 3,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "eu.a400m-atlas",
+      "name": "A400M Atlas",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "air_support",
+      "roles": ["transport", "strategic_airlift", "tanker"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 170000000,
+        "resources": {
+          "oil": 40,
+          "metals": 70,
+          "electronics": 95
+        }
+      },
+      "buildTimeH": 100,
+      "upkeepPerDay": 35000,
+      "speedKmh": 780,
+      "operationalRadiusKm": 2000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 40,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 0,
+        "transport": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.transport"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbopropulseurs TP400-D6",
+        "lengthM": 45.1,
+        "wingspanM": 42.4,
+        "mtowKg": 141000,
+        "warheadKg": null,
+        "speedLabel": "780 km/h",
+        "rangeKm": 6400
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 170000000,
+      "era": {
+        "introduced": 2013
+      },
+      "air": {
+        "fuelH": 10,
+        "refuelable": true,
+        "carrierCapable": false,
+        "tankerFuelH": 12
+      }
+    },
+    {
+      "id": "eu.a330-mrtt",
+      "name": "A330 MRTT",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "air_support",
+      "roles": ["tanker", "transport"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 300000000,
+        "resources": {
+          "oil": 55,
+          "metals": 100,
+          "electronics": 135
+        }
+      },
+      "buildTimeH": 110,
+      "upkeepPerDay": 56000,
+      "speedKmh": 880,
+      "operationalRadiusKm": 2800,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 44,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 0,
+        "transport": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.tanker"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "2 turbosoufflantes Trent 772B",
+        "lengthM": 58.8,
+        "wingspanM": 60.3,
+        "mtowKg": 233000,
+        "warheadKg": null,
+        "speedLabel": "880 km/h",
+        "rangeKm": 14800
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 300000000,
+      "era": {
+        "introduced": 2011
+      },
+      "air": {
+        "fuelH": 13,
+        "refuelable": true,
+        "carrierCapable": false,
+        "tankerFuelH": 36
+      }
+    },
+    {
+      "id": "eu.globaleye",
+      "name": "GlobalEye",
+      "doctrine": "eu",
+      "origin": "SE",
+      "category": "air_support",
+      "roles": ["aew", "command"],
+      "generation": 5,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 380000000,
+        "resources": {
+          "oil": 65,
+          "metals": 115,
+          "electronics": 155
+        }
+      },
+      "buildTimeH": 120,
+      "upkeepPerDay": 69000,
+      "speedKmh": 900,
+      "operationalRadiusKm": 1800,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 32,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 650,
+      "ew": {
+        "jamming": 0.25,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.aew", "research.sensors.radar3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "2 turbosoufflantes Rolls-Royce BR710",
+        "lengthM": 30.3,
+        "wingspanM": 28.7,
+        "mtowKg": 45000,
+        "warheadKg": null,
+        "speedLabel": "900 km/h",
+        "rangeKm": 11100
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 380000000,
+      "era": {
+        "introduced": 2020
+      },
+      "air": {
+        "fuelH": 11,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "aew",
+        "rangeKm": 650,
+        "stealthDetect": 0.35
+      }
+    },
+    {
+      "id": "eu.c-295",
+      "name": "C-295",
+      "doctrine": "eu",
+      "origin": "ES",
+      "category": "air_support",
+      "roles": ["transport", "tactical_airlift"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 35000000,
+        "resources": {
+          "oil": 15,
+          "metals": 30,
+          "electronics": 40
+        }
+      },
+      "buildTimeH": 40,
+      "upkeepPerDay": 12000,
+      "speedKmh": 480,
+      "operationalRadiusKm": 1300,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 26,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 30,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 0,
+        "transport": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.transport"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "2 turbopropulseurs PW127G",
+        "lengthM": 24.5,
+        "wingspanM": 25.8,
+        "mtowKg": 23200,
+        "warheadKg": null,
+        "speedLabel": "480 km/h",
+        "rangeKm": 4600
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 35000000,
+      "era": {
+        "introduced": 2001
+      },
+      "air": {
+        "fuelH": 8,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "eu.mirage-f1",
+      "name": "Mirage F1",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "air_support",
+      "roles": ["multirole", "air_superiority", "antiship"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 15000000,
+        "resources": {
+          "oil": 9,
+          "metals": 15,
+          "electronics": 25
+        }
+      },
+      "buildTimeH": 18,
+      "upkeepPerDay": 9000,
+      "speedKmh": 2350,
+      "operationalRadiusKm": 425,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 40
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 3,
+        "aircraft": 9,
+        "helicopter": 8,
+        "drone": 5,
+        "ship": 5,
+        "submarine": 0,
+        "missile": 1,
+        "building": 5
+      },
+      "hp": 26,
+      "armor": 0.08,
+      "stealth": 0.0,
+      "detectionRangeKm": 70,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 7
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "1 turboréacteur Atar 9K-50",
+        "lengthM": 15.3,
+        "wingspanM": 8.4,
+        "mtowKg": 16200,
+        "warheadKg": null,
+        "speedLabel": "Mach 2,2",
+        "rangeKm": 3300
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 15000000,
+      "era": {
+        "introduced": 1973
+      },
+      "air": {
+        "fuelH": 2,
+        "refuelable": true,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "eu.mirage-5",
+      "name": "Mirage 5",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "air_support",
+      "roles": ["strike", "air_superiority"],
+      "generation": 2,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 8000000,
+        "resources": {
+          "oil": 6,
+          "metals": 10,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 12,
+      "upkeepPerDay": 7900,
+      "speedKmh": 2350,
+      "operationalRadiusKm": 500,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 10
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 3,
+        "aircraft": 6,
+        "helicopter": 5,
+        "drone": 3,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 6
+      },
+      "hp": 22,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 7
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "1 turboréacteur Atar 9C",
+        "lengthM": 15.55,
+        "wingspanM": 8.22,
+        "mtowKg": 13700,
+        "warheadKg": null,
+        "speedLabel": "Mach 2,2",
+        "rangeKm": 4000
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 8000000,
+      "era": {
+        "introduced": 1967
+      },
+      "air": {
+        "fuelH": 1.8,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "eu.alpha-jet",
+      "name": "Alpha Jet",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "air_support",
+      "roles": ["trainer", "light_attack"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 8000000,
+        "resources": {
+          "oil": 6,
+          "metals": 10,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 7900,
+      "speedKmh": 1000,
+      "operationalRadiusKm": 580,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 6
+      },
+      "damage": {
+        "infantry": 5,
+        "armor": 3,
+        "aircraft": 2,
+        "helicopter": 4,
+        "drone": 3,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 3
+      },
+      "hp": 14,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 25,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.15
+      },
+      "payload": {
+        "slots": 5
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "2 turbosoufflantes Larzac 04",
+        "lengthM": 11.75,
+        "wingspanM": 9.11,
+        "mtowKg": 8000,
+        "warheadKg": null,
+        "speedLabel": "1 000 km/h",
+        "rangeKm": 2940
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 8000000,
+      "era": {
+        "introduced": 1977
+      },
+      "air": {
+        "fuelH": 3,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "eu.hawk",
+      "name": "Hawk",
+      "doctrine": "eu",
+      "origin": "GB",
+      "category": "air_support",
+      "roles": ["trainer", "light_attack"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 22000000,
+        "resources": {
+          "oil": 10,
+          "metals": 20,
+          "electronics": 30
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 10000,
+      "speedKmh": 1030,
+      "operationalRadiusKm": 500,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 6
+      },
+      "damage": {
+        "infantry": 5,
+        "armor": 3,
+        "aircraft": 3,
+        "helicopter": 4,
+        "drone": 3,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 3
+      },
+      "hp": 14,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 30,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.15
+      },
+      "payload": {
+        "slots": 5
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen3"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "1 turbosoufflante Adour",
+        "lengthM": 12.4,
+        "wingspanM": 9.9,
+        "mtowKg": 9100,
+        "warheadKg": null,
+        "speedLabel": "1 030 km/h",
+        "rangeKm": 2520
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 22000000,
+      "era": {
+        "introduced": 1976
+      },
+      "air": {
+        "fuelH": 3,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "other.fa-50",
+      "name": "FA-50",
+      "doctrine": "other",
+      "origin": "KR",
+      "category": "air_support",
+      "roles": ["light_fighter", "light_attack", "trainer"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 40000000,
+        "resources": {
+          "oil": 15,
+          "metals": 30,
+          "electronics": 40
+        }
+      },
+      "buildTimeH": 26,
+      "upkeepPerDay": 9000,
+      "speedKmh": 1650,
+      "operationalRadiusKm": 440,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 40
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 3,
+        "aircraft": 9,
+        "helicopter": 8,
+        "drone": 5,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 1,
+        "building": 6
+      },
+      "hp": 22,
+      "armor": 0.08,
+      "stealth": 0.0,
+      "detectionRangeKm": 100,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 7
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "1 turbosoufflante F404",
+        "lengthM": 13.1,
+        "wingspanM": 9.45,
+        "mtowKg": 12300,
+        "warheadKg": null,
+        "speedLabel": "Mach 1,5",
+        "rangeKm": 1850
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 2013
+      },
+      "air": {
+        "fuelH": 2.3,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "other.a-29-super-tucano",
+      "name": "A-29 Super Tucano",
+      "doctrine": "other",
+      "origin": "BR",
+      "category": "air_support",
+      "roles": ["light_attack", "counter_insurgency"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 14000000,
+        "resources": {
+          "oil": 9,
+          "metals": 15,
+          "electronics": 20
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 4800,
+      "speedKmh": 590,
+      "operationalRadiusKm": 550,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 7,
+        "armor": 5,
+        "aircraft": 1,
+        "helicopter": 4,
+        "drone": 3,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 4
+      },
+      "hp": 16,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 25,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.15
+      },
+      "payload": {
+        "slots": 5
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "1 turbopropulseur PT6A-68C",
+        "lengthM": 11.4,
+        "wingspanM": 11.1,
+        "mtowKg": 5400,
+        "warheadKg": null,
+        "speedLabel": "590 km/h",
+        "rangeKm": 1330
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 14000000,
+      "era": {
+        "introduced": 2003
+      },
+      "air": {
+        "fuelH": 6.5,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "other.l-39-albatros",
+      "name": "L-39 Albatros",
+      "doctrine": "other",
+      "origin": "CZ",
+      "category": "air_support",
+      "roles": ["trainer", "light_attack"],
+      "generation": 2,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 6000000,
+        "resources": {
+          "oil": 5,
+          "metals": 10,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 12,
+      "upkeepPerDay": 3500,
+      "speedKmh": 750,
+      "operationalRadiusKm": 400,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 5
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 2,
+        "aircraft": 1,
+        "helicopter": 3,
+        "drone": 3,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 3
+      },
+      "hp": 12,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "1 turbosoufflante AI-25TL",
+        "lengthM": 12.1,
+        "wingspanM": 9.46,
+        "mtowKg": 4700,
+        "warheadKg": null,
+        "speedLabel": "750 km/h",
+        "rangeKm": 1100
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 6000000,
+      "era": {
+        "introduced": 1972
+      },
+      "air": {
+        "fuelH": 2.5,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "other.f-14-tomcat",
+      "name": "F-14 Tomcat",
+      "doctrine": "other",
+      "origin": "US",
+      "category": "air_support",
+      "roles": ["air_superiority", "interceptor", "carrier_borne"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 75000000,
+        "resources": {
+          "oil": 25,
+          "metals": 45,
+          "electronics": 60
+        }
+      },
+      "buildTimeH": 44,
+      "upkeepPerDay": 15000,
+      "speedKmh": 2480,
+      "operationalRadiusKm": 925,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 15,
+        "helicopter": 13,
+        "drone": 8,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 3,
+        "building": 5
+      },
+      "hp": 30,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 200,
+      "ew": {
+        "jamming": 0.2,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 10
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "fighter",
+      "sheet": {
+        "engine": "2 turbosoufflantes TF30 (F110 sur F-14D)",
+        "lengthM": 19.1,
+        "wingspanM": 19.55,
+        "mtowKg": 33720,
+        "warheadKg": null,
+        "speedLabel": "Mach 2,34",
+        "rangeKm": 2960
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 75000000,
+      "era": {
+        "introduced": 1974
+      },
+      "air": {
+        "fuelH": 3,
+        "refuelable": true,
+        "carrierCapable": true
+      }
+    }
+  ]
+}
