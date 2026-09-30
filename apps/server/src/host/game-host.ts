@@ -1,4 +1,4 @@
-import { randomInt, randomUUID } from 'node:crypto';
+import { createHash, randomInt, randomUUID } from 'node:crypto';
 import { and, desc, eq, gt, asc, inArray, ne, sql as dsql } from 'drizzle-orm';
 import type postgres from 'postgres';
 import type { FastifyBaseLogger } from 'fastify';
@@ -135,6 +135,8 @@ export interface HostOptions {
    * à la boucle d'événements. Défaut : 40 ms.
    */
   sliceBudgetMs?: number;
+  /** Part maximale du processeur consacrée aux diffusions d'une partie (0 à 1). Défaut : 0,35. */
+  flushCpuShare?: number;
   /** Partie solo sans joueur connecté depuis ce délai : pause automatique (reprise à son retour). */
   soloIdlePauseMs?: number;
   /** Partie en pause sans aucune connexion depuis ce délai : déchargée de la mémoire (instantané). */
@@ -160,6 +162,9 @@ type GameRow = typeof games.$inferSelect;
 
 const MAX_STEPS_PER_TICK = 100_000;
 const DEFAULT_SLICE_MS = 40;
+const DEFAULT_FLUSH_SHARE = 0.35;
+/** Au-delà, un travail synchrone est journalisé (latence ressentie par tous les joueurs). */
+const SLOW_MS = 250;
 const DEFAULT_SOLO_IDLE_PAUSE_MS = 5 * 60_000;
 const DEFAULT_IDLE_UNLOAD_MS = 10 * 60_000;
 /** Clé de vue des spectateurs (vue publique commune). */
@@ -717,16 +722,31 @@ export class GameHost {
     const g = this.games.get(id);
     if (!g || this.stopped) return;
     const now = Date.now();
+    const t0 = nowMs();
+    let phase = 'simulation';
     this.safely(g, () => {
       if (g.flushQueue) {
         // Suite d'une diffusion découpée en tranches.
+        phase = 'diffusion';
         this.flushSlice(g);
       } else if (!g.errored && !g.clock.paused) {
         if (this.advance(g, now, this.sliceMs)) this.requestFlush(g, now);
       }
-      if (!g.flushQueue && g.flushDue !== null && g.flushDue <= now) this.flush(g, now);
+      if (!g.flushQueue && g.flushDue !== null && g.flushDue <= now) {
+        phase += '+diffusion';
+        this.flush(g, now);
+      }
     });
+    this.slow(g, phase, t0);
     this.reschedule(g, true);
+  }
+
+  /** Signale un travail synchrone anormalement long (bloque toutes les parties et requêtes). */
+  private slow(g: HostedGame, what: string, t0: number): void {
+    const ms = nowMs() - t0;
+    if (ms < SLOW_MS) return;
+    this.d.metrics.count('slowTicks');
+    this.log.warn({ gameId: g.id, ms: Math.round(ms), what }, 'travail synchrone long');
   }
 
   private reschedule(g: HostedGame, afterTick = false): void {
@@ -801,8 +821,8 @@ export class GameHost {
 
   /**
    * Demande une diffusion groupée. Les diffusions d'une partie sont espacées d'au moins
-   * `flushIntervalMs`, et d'au moins leur propre coût CPU (adaptatif) : la diffusion ne peut jamais
-   * occuper plus de la moitié du temps processeur, même avec 64 joueurs et des vues coûteuses.
+   * `flushIntervalMs`, et d'un écart proportionnel à leur coût CPU (adaptatif) : les diffusions d'une
+   * partie n'occupent jamais plus de `flushCpuShare` du processeur, même avec 64 joueurs.
    */
   private requestFlush(g: HostedGame, now: number): void {
     if (g.connections.size === 0) {
@@ -810,7 +830,9 @@ export class GameHost {
       return;
     }
     if (g.flushDue === null) {
-      const gap = Math.max(this.d.options.flushIntervalMs, g.flushCostMs);
+      // Part maximale du processeur consacrée aux diffusions d'une partie : écart = coût × (1 − p) / p.
+      const share = this.d.options.flushCpuShare ?? DEFAULT_FLUSH_SHARE;
+      const gap = Math.max(this.d.options.flushIntervalMs, (g.flushCostMs * (1 - share)) / share);
       g.flushDue = Math.max(now, g.lastFlush + gap);
     }
   }
@@ -1096,10 +1118,12 @@ export class GameHost {
     const now = Date.now();
     this.playerReturned(g, conn.userId, now);
     let result: { ok: boolean; error?: OrderErrorCode; message?: string } = { ok: false };
+    const t0 = nowMs();
     const ok = this.safely(g, () => {
       this.advance(g, now);
       result = this.engine.applyOrder(g.state, conn.nationId, msg.order);
     });
+    this.slow(g, `ordre ${msg.order.kind}`, t0);
     if (!ok) return reply(false, 'not_allowed', 'Erreur interne : la partie est suspendue');
     if (result.ok) {
       g.orderSeq += 1;
@@ -1656,15 +1680,16 @@ export class GameHost {
     if (g.errored || (!force && !modified)) return g.writes;
     const engine = this.engine;
     let bytes: Uint8Array;
-    let hash: string;
+    const t0 = nowMs();
     const ok = this.safely(g, () => {
       if (!g.clock.paused && this.advance(g, now)) {
         this.requestFlush(g, now);
         this.reschedule(g);
       }
+      // Une seule sérialisation (stateHash du moteur resérialiserait l'état : ~110 ms de plus).
       bytes = engine.serializeState(g.state);
-      hash = engine.stateHash(g.state);
     });
+    this.slow(g, 'instantané', t0);
     if (!ok) return g.writes;
     g.dirty = false;
     const seq = ++g.snapshotSeq;
@@ -1676,11 +1701,13 @@ export class GameHost {
     const clock = g.clock;
     const status = g.meta.status;
     return this.chain(g, 'instantané', async () => {
+      // Empreinte des octets de l'instantané (diagnostic), calculée hors du chemin de simulation.
+      const hash = createHash('sha256').update(bytes!).digest('hex').slice(0, 32);
       const { codec, data } = await compressSnapshot(bytes!);
       g.stateBytes = data.length;
       const rows = await this.d.sql`
         INSERT INTO game_snapshots (game_id, seq, game_time_ms, last_order_seq, catalog_release_id, codec, state_hash, state)
-        SELECT ${g.id}::uuid, ${seq}::int, ${time}::float8, ${lastOrderSeq}::int, ${releaseId}::int, ${codec}::text, ${hash!}::text, ${data}::bytea
+        SELECT ${g.id}::uuid, ${seq}::int, ${time}::float8, ${lastOrderSeq}::int, ${releaseId}::int, ${codec}::text, ${hash}::text, ${data}::bytea
         WHERE EXISTS (SELECT 1 FROM games WHERE id = ${g.id} AND lease_owner = ${owner})
         RETURNING seq`;
       if (rows.length === 0) {
