@@ -29,7 +29,9 @@ function missingDistPage(what: string, dir: string): string {
 export async function staticRoutes(app: FastifyInstance, ctx: AppContext): Promise<void> {
   const { config } = ctx;
   // Décore reply.sendFile (Range, ETag, Last-Modified, If-None-Match gérés par @fastify/send).
-  await app.register(fastifyStatic, { root: config.dataDir, serve: false });
+  // preCompressed : fichiers .br/.gz produits au build (scripts/precompress.mjs), choisis selon
+  // Accept-Encoding ; repli sur le fichier d'origine s'ils n'existent pas (tuiles, photos).
+  await app.register(fastifyStatic, { root: config.dataDir, serve: false, preCompressed: true });
 
   const serveFrom =
     (dirs: () => string[], maxAge: string) => (req: FastifyRequest, reply: FastifyReply) => {
@@ -69,9 +71,11 @@ export async function staticRoutes(app: FastifyInstance, ctx: AppContext): Promi
     const clean = safeRel(rel);
     if (clean && isFile(join(dist, clean))) {
       const hashed = clean.startsWith('assets/');
+      // Photos et drapeaux : noms stables, contenu rarement modifié (revalidation par ETag après 1 j).
+      const media = /^(art|flags)\//.test(clean);
       return reply.sendFile(clean, dist, {
         cacheControl: true,
-        maxAge: hashed ? '365d' : 0,
+        maxAge: hashed ? '365d' : media ? '1d' : 0,
         immutable: hashed,
         dotfiles: 'deny',
       });
@@ -95,7 +99,13 @@ export async function staticRoutes(app: FastifyInstance, ctx: AppContext): Promi
       (req.method === 'GET' || req.method === 'HEAD') &&
       !API_PREFIXES.some((p) => url.startsWith(p))
     ) {
-      return spa(config.clientDist, decodeURIComponent(url).replace(/^\/+/, ''), reply, 'Client');
+      let path: string;
+      try {
+        path = decodeURIComponent(url);
+      } catch {
+        return reply.code(400).send({ error: 'bad_request', message: 'Adresse invalide' });
+      }
+      return spa(config.clientDist, path.replace(/^\/+/, ''), reply, 'Client');
     }
     return reply.code(404).send({ error: 'not_found', message: 'Route inconnue' });
   });

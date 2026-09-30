@@ -1,4 +1,4 @@
-import { randomInt, randomUUID } from 'node:crypto';
+import { createHash, randomInt, randomUUID } from 'node:crypto';
 import { and, desc, eq, gt, asc, inArray, ne, sql as dsql } from 'drizzle-orm';
 import type postgres from 'postgres';
 import type { FastifyBaseLogger } from 'fastify';
@@ -61,6 +61,8 @@ export interface PlayerSlot {
   nationId: NationId;
   /** Une IA remplace le joueur (inactif ou parti). */
   isAi: boolean;
+  /** IA imposée par l'administration : le joueur ne reprend pas la main en revenant. */
+  aiForced: boolean;
   lastActiveAt: number | null;
 }
 
@@ -96,6 +98,20 @@ export interface HostedGame {
   pendingNotes: GameNotification[];
   flushDue: number | null;
   lastFlush: number;
+  /**
+   * Diffusion en cours, découpée en tranches (une tranche par nation) pour ne jamais bloquer la boucle
+   * d'événements : clés de vue restant à traiter et notifications capturées au début de la diffusion.
+   */
+  flushQueue: string[] | null;
+  flushNotes: GameNotification[];
+  /** Une diffusion a été demandée pendant la diffusion en cours. */
+  flushAgain: boolean;
+  /** Coût CPU (ms) de la dernière diffusion complète : espace les diffusions suivantes (adaptatif). */
+  flushCostMs: number;
+  /** Simulation en retard sur l'horloge (rattrapage découpé en tranches). */
+  behind: boolean;
+  /** Dernier instant (réel) où la partie avait au moins une connexion de joueur. */
+  idleSince: number | null;
   /** Écritures en base de la partie, sérialisées (journal, instantanés, horloge). */
   writes: Promise<void>;
   errored: boolean;
@@ -116,6 +132,17 @@ export interface HostOptions {
   leaseTtlS: number;
   /** Nombre d'instantanés conservés par partie. */
   keepSnapshots: number;
+  /**
+   * Budget CPU (ms) d'une tranche de travail synchrone (simulation ou diffusion) avant de rendre la main
+   * à la boucle d'événements. Défaut : 40 ms.
+   */
+  sliceBudgetMs?: number;
+  /** Part maximale du processeur consacrée aux diffusions d'une partie (0 à 1). Défaut : 0,35. */
+  flushCpuShare?: number;
+  /** Partie solo sans joueur connecté depuis ce délai : pause automatique (reprise à son retour). */
+  soloIdlePauseMs?: number;
+  /** Partie en pause sans aucune connexion depuis ce délai : déchargée de la mémoire (instantané). */
+  idleUnloadMs?: number;
 }
 
 interface HostDeps {
@@ -136,6 +163,18 @@ interface HostDeps {
 type GameRow = typeof games.$inferSelect;
 
 const MAX_STEPS_PER_TICK = 100_000;
+const DEFAULT_SLICE_MS = 40;
+const DEFAULT_FLUSH_SHARE = 0.35;
+/** Au-delà, un travail synchrone est journalisé (latence ressentie par tous les joueurs). */
+const SLOW_MS = 250;
+const DEFAULT_SOLO_IDLE_PAUSE_MS = 5 * 60_000;
+const DEFAULT_IDLE_UNLOAD_MS = 10 * 60_000;
+/** Clé de vue des spectateurs (vue publique commune). */
+const SPECTATOR_KEY = '\u0000spectator';
+
+/** Rend la main à la boucle d'événements (E/S, autres parties) entre deux tranches de travail. */
+const yieldLoop = () => new Promise<void>((r) => setImmediate(r));
+const nowMs = () => performance.now();
 const MAX_PENDING_NOTES = 2000;
 export const DAY_MS = 86_400_000;
 /** Écriture de last_active_at au plus toutes les N ms par joueur. */
@@ -361,7 +400,13 @@ export class GameHost {
       .where(and(eq(gameOrders.gameId, gameId), gt(gameOrders.seq, snap.lastOrderSeq)))
       .orderBy(asc(gameOrders.seq));
     const nationOfSlot = new Map(players.map((p) => [p.slot, p.nationId]));
+    let sliceStart = nowMs();
     for (const o of orders) {
+      // Rejeu long (journal volumineux) : on rend la main entre deux tranches.
+      if (nowMs() - sliceStart > this.sliceMs) {
+        await yieldLoop();
+        sliceStart = nowMs();
+      }
       engine.advanceTo(state, Math.max(o.gameTimeMs, state.time));
       const payload = o.payload as { sys?: SystemCommand };
       let r: { ok: boolean; error?: string };
@@ -412,6 +457,7 @@ export class GameHost {
         userId: p.userId,
         nationId: p.nationId,
         isAi: p.isAiReplacement,
+        aiForced: p.aiForced,
         lastActiveAt: p.lastActiveAt?.getTime() ?? null,
       })),
       orderSeq: Math.max(snap.lastOrderSeq, orders.at(-1)?.seq ?? 0, row.lastOrderSeq),
@@ -421,6 +467,12 @@ export class GameHost {
       pendingNotes: [],
       flushDue: null,
       lastFlush: 0,
+      flushQueue: null,
+      flushNotes: [],
+      flushAgain: false,
+      flushCostMs: 0,
+      behind: false,
+      idleSince: Date.now(),
       writes: Promise.resolve(),
       errored: false,
       stuckWarned: false,
@@ -430,8 +482,14 @@ export class GameHost {
       lastFrame,
       stateBytes: row.stateBytes,
     };
-    // Rattrapage du temps écoulé pendant l'arrêt (aucun joueur connecté : pas de notification).
-    this.advance(g, Date.now());
+    // Rattrapage du temps écoulé pendant l'arrêt (aucun joueur connecté : pas de notification),
+    // par tranches pour ne pas bloquer les autres parties ni les requêtes. En pause, l'horloge vaut
+    // l'instant de la pause (postérieur au dernier ordre rejoué) : on avance jusque-là.
+    for (;;) {
+      this.advance(g, Date.now(), this.sliceMs);
+      if (!g.behind || this.stopped) break;
+      await yieldLoop();
+    }
     return g;
   }
 
@@ -445,10 +503,9 @@ export class GameHost {
         const g = this.games.get(id);
         if (g && !held.has(id)) this.leaseLost(g);
       }
-      // Parties terminées sans spectateur : on libère la mémoire.
-      for (const g of [...this.games.values()]) {
-        if (g.ended && g.connections.size === 0) await this.unload(g, true);
-      }
+      // Parties terminées sans spectateur, parties en pause abandonnées : on libère la mémoire.
+      // Parties solo sans joueur connecté : pause automatique (reprise au retour du joueur).
+      await this.manageIdle(Date.now());
       if (!this.d.worlds.unavailableReason()) await this.adoptOrphans();
       const keep = new Set<string>();
       for (const g of this.games.values()) keep.add(this.d.worlds.key(this.pinOf(g)));
@@ -464,6 +521,38 @@ export class GameHost {
       this.log.error({ err }, 'battement de cœur des baux en échec');
     } finally {
       this.beating = false;
+    }
+  }
+
+  /**
+   * Gestion des parties sans joueur : une partie solo dont le joueur est absent depuis
+   * `soloIdlePauseMs` est mise en pause (raison 'idle') ; une partie terminée, ou en pause sans aucune
+   * connexion depuis `idleUnloadMs`, est déchargée (instantané, bail libéré) et rechargée à la demande.
+   */
+  async manageIdle(now: number): Promise<void> {
+    const pauseMs = this.d.options.soloIdlePauseMs ?? DEFAULT_SOLO_IDLE_PAUSE_MS;
+    const unloadMs = this.d.options.idleUnloadMs ?? DEFAULT_IDLE_UNLOAD_MS;
+    for (const g of [...this.games.values()]) {
+      if (this.stopped) return;
+      if (g.ended && g.connections.size === 0) {
+        await this.unload(g, true);
+        continue;
+      }
+      if (g.idleSince === null || g.errored) continue;
+      const idle = now - g.idleSince;
+      if (g.meta.status === 'running' && idle >= pauseMs) {
+        // Solo : le joueur est absent. Multi : plus aucun humain aux commandes (tous partis ou
+        // remplacés par des IA pour inactivité) — inutile de simuler 200 IA pour personne.
+        const abandoned = g.meta.mode === 'solo' || g.players.every((p) => !p.userId || p.isAi);
+        if (abandoned) {
+          this.setClock(g, { paused: true }, 'idle');
+          this.log.info({ gameId: g.id, mode: g.meta.mode }, 'partie en pause : aucun joueur');
+        }
+      }
+      if (g.meta.status === 'paused' && g.connections.size === 0 && idle >= unloadMs) {
+        this.log.info({ gameId: g.id }, 'partie en pause inactive déchargée de la mémoire');
+        await this.unload(g, true);
+      }
     }
   }
 
@@ -507,26 +596,40 @@ export class GameHost {
 
   // ───────────────────────────── Simulation ─────────────────────────────
 
-  /** Avance la partie jusqu'au temps de jeu courant. Renvoie vrai si des événements ont été traités. */
-  private advance(g: HostedGame, now: number): boolean {
+  private get sliceMs(): number {
+    return this.d.options.sliceBudgetMs ?? DEFAULT_SLICE_MS;
+  }
+
+  /**
+   * Avance la partie jusqu'au temps de jeu courant. Renvoie vrai si des événements ont été traités.
+   * Avec `budgetMs`, s'arrête dès que le budget CPU est dépassé (entre deux événements) et marque la
+   * partie « en retard » : l'ordonnanceur reprend le rattrapage au tour suivant de la boucle.
+   */
+  private advance(g: HostedGame, now: number, budgetMs = Infinity): boolean {
     const engine = this.engine;
     const target = Math.max(g.state.time, gameNow(g.clock, now));
     const t0 = g.state.time;
+    const start = budgetMs === Infinity ? 0 : nowMs();
     let steps = 0;
     let lastT = -Infinity;
     let changed = false;
+    g.behind = false;
     while (steps < MAX_STEPS_PER_TICK) {
       const next = engine.nextEventTime(g.state);
       if (next === null || next > target) break;
       const t = Math.max(next, g.state.time);
       if (steps > 0 && t <= lastT) break; // garde-fou : événement non consommé
+      if (steps > 0 && budgetMs !== Infinity && nowMs() - start > budgetMs) {
+        g.behind = true;
+        break;
+      }
       this.recordFrame(g, t);
       this.collect(g, engine.advanceTo(g.state, t));
       steps++;
       lastT = t;
       changed = true;
     }
-    if (g.state.time < target) {
+    if (!g.behind && g.state.time < target) {
       this.recordFrame(g, target);
       const notes = engine.advanceTo(g.state, target);
       if (notes.length) changed = true;
@@ -622,13 +725,31 @@ export class GameHost {
     const g = this.games.get(id);
     if (!g || this.stopped) return;
     const now = Date.now();
+    const t0 = nowMs();
+    let phase = 'simulation';
     this.safely(g, () => {
-      if (!g.errored && !g.clock.paused) {
-        if (this.advance(g, now)) this.requestFlush(g, now);
+      if (g.flushQueue) {
+        // Suite d'une diffusion découpée en tranches.
+        phase = 'diffusion';
+        this.flushSlice(g);
+      } else if (!g.errored && !g.clock.paused) {
+        if (this.advance(g, now, this.sliceMs)) this.requestFlush(g, now);
       }
-      if (g.flushDue !== null && g.flushDue <= now) this.flush(g, now);
+      if (!g.flushQueue && g.flushDue !== null && g.flushDue <= now) {
+        phase += '+diffusion';
+        this.flush(g, now);
+      }
     });
+    this.slow(g, phase, t0);
     this.reschedule(g, true);
+  }
+
+  /** Signale un travail synchrone anormalement long (bloque toutes les parties et requêtes). */
+  private slow(g: HostedGame, what: string, t0: number): void {
+    const ms = nowMs() - t0;
+    if (ms < SLOW_MS) return;
+    this.d.metrics.count('slowTicks');
+    this.log.warn({ gameId: g.id, ms: Math.round(ms), what }, 'travail synchrone long');
   }
 
   private reschedule(g: HostedGame, afterTick = false): void {
@@ -639,7 +760,7 @@ export class GameHost {
       try {
         const next = this.engine.nextEventTime(g.state);
         if (next !== null) {
-          if (afterTick && next <= g.state.time) {
+          if (afterTick && next <= g.state.time && !g.behind) {
             // Le moteur annonce un événement déjà passé : on évite de boucler à vide.
             if (!g.stuckWarned) {
               this.log.warn({ gameId: g.id, next, time: g.state.time }, 'événement non consommé');
@@ -660,6 +781,8 @@ export class GameHost {
       }
     }
     if (g.flushDue !== null) at = at === null ? g.flushDue : Math.min(at, g.flushDue);
+    // Travail restant (rattrapage ou diffusion en tranches) : dès le prochain tour de boucle.
+    if ((g.behind && !g.clock.paused && !g.errored) || g.flushQueue) at = now;
     this.scheduler.set(g.id, at);
   }
 
@@ -683,7 +806,10 @@ export class GameHost {
     if (g.meta.status !== 'ended') g.meta.status = 'paused';
     g.pauseReason = 'error';
     g.flushDue = null;
+    g.flushQueue = null;
+    g.flushNotes = [];
     g.pendingNotes = [];
+    g.behind = false;
     this.scheduler.delete(g.id);
     this.persistClock(g, { lastError: errText(err) });
     this.broadcast(g, {
@@ -696,13 +822,27 @@ export class GameHost {
 
   // ───────────────────────────── Diffusion ─────────────────────────────
 
+  /**
+   * Demande une diffusion groupée. Les diffusions d'une partie sont espacées d'au moins
+   * `flushIntervalMs`, et d'un écart proportionnel à leur coût CPU (adaptatif) : les diffusions d'une
+   * partie n'occupent jamais plus de `flushCpuShare` du processeur, même avec 64 joueurs.
+   */
   private requestFlush(g: HostedGame, now: number): void {
     if (g.connections.size === 0) {
       g.pendingNotes = [];
       return;
     }
-    if (g.flushDue === null)
-      g.flushDue = Math.max(now, g.lastFlush + this.d.options.flushIntervalMs);
+    if (g.flushQueue) {
+      // Diffusion en cours : la suivante sera programmée à sa fin, d'après son coût complet.
+      g.flushAgain = true;
+      return;
+    }
+    if (g.flushDue === null) {
+      // Part maximale du processeur consacrée aux diffusions d'une partie : écart = coût × (1 − p) / p.
+      const share = this.d.options.flushCpuShare ?? DEFAULT_FLUSH_SHARE;
+      const gap = Math.max(this.d.options.flushIntervalMs, (g.flushCostMs * (1 - share)) / share);
+      g.flushDue = Math.max(now, g.lastFlush + gap);
+    }
   }
 
   /** Vue d'une connexion : vue du joueur (viewFor) ou vue publique (spectateur). */
@@ -715,40 +855,96 @@ export class GameHost {
     return this.engine.viewFor(g.state, c.nationId);
   }
 
+  private static keyOf(c: Connection): string {
+    return c.spectator ? SPECTATOR_KEY : c.nationId;
+  }
+
   /**
-   * Envoie à chaque connexion le diff de SA vue (viewFor, ou publicView pour un spectateur) et SES
-   * notifications (notificationsFor, ou notifications publiques pour un spectateur).
+   * Envoie aux connexions d'une même clé (nation, ou spectateurs) le diff de LEUR vue et, si fournies,
+   * LEURS notifications (notificationsFor, ou notifications publiques pour un spectateur).
+   * Un seul viewFor et un seul diffViews par vue précédente distincte.
    */
-  private flush(g: HostedGame, now: number): void {
-    g.flushDue = null;
-    g.lastFlush = now;
-    const notes = g.pendingNotes;
-    g.pendingNotes = [];
-    if (g.connections.size === 0) return;
+  private flushKey(g: HostedGame, key: string, notes: GameNotification[]): void {
     const engine = this.engine;
-    const views = new Map<string, PlayerView>();
-    const noteMap = new Map<string, GameNotification[]>();
+    let view: PlayerView | null = null;
+    let mine: GameNotification[] | null = null;
+    const diffs = new Map<PlayerView, ReturnType<Engine['diffViews']>>();
     for (const c of g.connections) {
-      const key = c.spectator ? '\u0000spectator' : c.nationId;
-      let view = views.get(key);
-      if (!view) {
-        view = this.viewOf(g, c);
-        views.set(key, view);
-      }
+      if (GameHost.keyOf(c) !== key) continue;
+      view ??= this.viewOf(g, c);
       if (c.lastView && c.lastView !== view) {
-        const diff = engine.diffViews(c.lastView, view);
+        let diff = diffs.get(c.lastView);
+        if (diff === undefined) {
+          diff = engine.diffViews(c.lastView, view);
+          diffs.set(c.lastView, diff);
+        }
         if (diff) c.send({ t: 'diff', diff });
       }
       c.lastView = view;
       if (notes.length) {
-        let mine = noteMap.get(key);
-        if (!mine) {
-          mine = c.spectator
-            ? notes.filter((n) => PUBLIC_NOTES.has(n.kind))
-            : engine.notificationsFor(g.state, c.nationId, notes);
-          noteMap.set(key, mine);
-        }
+        mine ??= c.spectator
+          ? notes.filter((n) => PUBLIC_NOTES.has(n.kind))
+          : engine.notificationsFor(g.state, c.nationId, notes);
         if (mine.length) c.send({ t: 'notify', items: mine });
+      }
+    }
+  }
+
+  /**
+   * Diffusion à toutes les connexions, découpée en tranches : une nation après l'autre, en rendant la
+   * main à la boucle d'événements dès que le budget d'une tranche est dépassé (suite au prochain tick).
+   */
+  private flush(g: HostedGame, now: number): void {
+    g.flushDue = null;
+    const notes = g.pendingNotes;
+    g.pendingNotes = [];
+    if (g.connections.size === 0) {
+      g.lastFlush = now;
+      return;
+    }
+    if (g.flushQueue) {
+      // Diffusion déjà en cours : les nouvelles notifications partiront avec la suivante.
+      g.pendingNotes = notes.concat(g.pendingNotes);
+      g.flushAgain = true;
+      return;
+    }
+    const keys = new Set<string>();
+    for (const c of g.connections) keys.add(GameHost.keyOf(c));
+    g.flushQueue = [...keys];
+    g.flushNotes = notes;
+    g.flushCostMs = 0;
+    this.flushSlice(g);
+  }
+
+  private flushSlice(g: HostedGame): void {
+    const queue = g.flushQueue;
+    if (!queue) return;
+    const start = nowMs();
+    while (queue.length > 0) {
+      const key = queue.shift()!;
+      this.flushKey(g, key, g.flushNotes);
+      if (queue.length > 0 && nowMs() - start > this.sliceMs) break;
+    }
+    g.flushCostMs += nowMs() - start;
+    if (queue.length === 0) {
+      g.flushQueue = null;
+      g.flushNotes = [];
+      g.lastFlush = Date.now();
+      this.d.metrics.recordFlush(g.flushCostMs);
+      if (g.flushAgain || g.pendingNotes.length > 0) {
+        g.flushAgain = false;
+        this.requestFlush(g, g.lastFlush);
+      }
+    }
+  }
+
+  /** Diffusion immédiate aux seules connexions d'une nation (retour d'un ordre), sans notifications. */
+  private flushNation(g: HostedGame, nationId: NationId): void {
+    if (!nationId) return;
+    for (const c of g.connections) {
+      if (!c.spectator && c.nationId === nationId) {
+        this.flushKey(g, nationId, []);
+        return;
       }
     }
   }
@@ -776,9 +972,20 @@ export class GameHost {
     const g = await this.ensureLoaded(gameId);
     if (!g) return null;
     const now = Date.now();
-    if (!conn.spectator) this.playerReturned(g, conn.userId, now);
+    if (!conn.spectator) {
+      this.playerReturned(g, conn.userId, now);
+      g.idleSince = null;
+      // Partie mise en pause faute de joueur (solo : joueur absent ; multi : tous remplacés par des
+      // IA) : elle reprend au retour d'un joueur.
+      if (g.meta.status === 'paused' && g.pauseReason === 'idle' && !g.errored) {
+        this.setClock(g, { paused: false }, 'player');
+      }
+    }
     const ok = this.safely(g, () => {
-      if (!g.errored && !g.clock.paused && this.advance(g, now)) this.flush(g, now);
+      // Rattrapage borné ; les autres connexions recevront leur diff par la diffusion groupée.
+      if (!g.errored && !g.clock.paused && this.advance(g, now, this.sliceMs)) {
+        this.requestFlush(g, now);
+      }
       conn.lastView = this.viewOf(g, conn);
     });
     if (!ok || !conn.lastView) {
@@ -809,10 +1016,14 @@ export class GameHost {
     const g = this.games.get(gameId);
     if (!g) return;
     g.connections.delete(conn);
-    if (!conn.spectator) this.touch(g, conn.userId, Date.now(), true);
+    const now = Date.now();
+    if (!conn.spectator) this.touch(g, conn.userId, now, true);
+    if (![...g.connections].some((c) => !c.spectator)) g.idleSince ??= now;
     if (g.connections.size === 0) {
       g.pendingNotes = [];
       g.flushDue = null;
+      g.flushQueue = null;
+      g.flushNotes = [];
       this.reschedule(g);
     }
   }
@@ -843,7 +1054,7 @@ export class GameHost {
     const p = g.players.find((x) => x.userId === userId);
     if (!p) return;
     this.touch(g, userId, now, true);
-    if (!p.isAi || g.meta.status === 'ended') return;
+    if (!p.isAi || p.aiForced || g.meta.status === 'ended') return;
     const r = this.applySystemNow(g, { kind: 'setAi', nationId: p.nationId, isAi: false });
     if (!r.ok && r.error !== 'unsupported') return;
     p.isAi = false;
@@ -908,13 +1119,23 @@ export class GameHost {
     if (!this.games.has(g.id)) return reply(false, 'not_allowed', 'Partie indisponible');
     if (g.meta.status === 'ended') return reply(false, 'game_over', 'La partie est terminée');
     if (g.errored) return reply(false, 'not_allowed', 'La partie est suspendue');
+    const slot = g.players.find((p) => p.userId === conn.userId);
+    if (slot?.aiForced) {
+      return reply(
+        false,
+        'not_allowed',
+        "Votre nation est confiée à une IA par l'administration : ordres suspendus.",
+      );
+    }
     const now = Date.now();
     this.playerReturned(g, conn.userId, now);
     let result: { ok: boolean; error?: OrderErrorCode; message?: string } = { ok: false };
+    const t0 = nowMs();
     const ok = this.safely(g, () => {
       this.advance(g, now);
       result = this.engine.applyOrder(g.state, conn.nationId, msg.order);
     });
+    this.slow(g, `ordre ${msg.order.kind}`, t0);
     if (!ok) return reply(false, 'not_allowed', 'Erreur interne : la partie est suspendue');
     if (result.ok) {
       g.orderSeq += 1;
@@ -923,8 +1144,12 @@ export class GameHost {
       this.journal(g, { seq: g.orderSeq, slot, time: g.state.time, payload: msg.order });
     }
     reply(result.ok, result.error, result.message);
-    // Rediffusion immédiate (pas d'attente de la fenêtre de 200 ms).
-    this.safely(g, () => this.flush(g, now));
+    // Retour immédiat au joueur qui a donné l'ordre ; les autres nations (qui peuvent voir l'effet de
+    // l'ordre) le reçoivent avec la prochaine diffusion groupée.
+    this.safely(g, () => {
+      this.flushNation(g, conn.nationId);
+      this.requestFlush(g, now);
+    });
     this.reschedule(g);
   }
 
@@ -1000,7 +1225,10 @@ export class GameHost {
       g.orderSeq += 1;
       g.dirty = true;
       this.journal(g, { seq: g.orderSeq, slot: -1, time: g.state.time, payload: { sys: cmd } });
-      this.safely(g, () => this.flush(g, now));
+      this.safely(g, () => {
+        if ('nationId' in cmd) this.flushNation(g, cmd.nationId);
+        this.requestFlush(g, now);
+      });
       this.reschedule(g);
     }
     return result;
@@ -1017,6 +1245,61 @@ export class GameHost {
       return { ok: false, error: 'game_over', message: 'La partie est terminée' };
     }
     return this.applySystemNow(g, cmd);
+  }
+
+  /**
+   * Administration : confie à une IA la nation d'un joueur (`ai: true`, IA « imposée » que le retour du
+   * joueur ne retire pas, ordres du joueur suspendus), ou la lui rend (`ai: false`).
+   */
+  async adminSetAi(
+    gameId: string,
+    nationId: NationId,
+    ai: boolean,
+    aiLevel: 'easy' | 'normal' | 'hard' = 'normal',
+  ): Promise<{ nationId: NationId; userId: string | null; isAi: boolean; aiForced: boolean }> {
+    const g = await this.ensureLoaded(gameId);
+    if (!g) {
+      throw new HttpError(409, 'game_unavailable', 'Partie introuvable ou hébergée ailleurs');
+    }
+    if (g.meta.status === 'ended') throw new HttpError(409, 'game_over', 'La partie est terminée');
+    if (g.errored) throw new HttpError(409, 'game_error', 'La partie est suspendue sur erreur');
+    const p = g.players.find((x) => x.nationId === nationId);
+    if (!p?.userId) {
+      throw new HttpError(404, 'no_player', 'Aucun joueur humain ne tient cette nation');
+    }
+    if (ai === p.isAi && ai === p.aiForced) {
+      return { nationId, userId: p.userId, isAi: p.isAi, aiForced: p.aiForced };
+    }
+    const r = this.applySystemNow(g, { kind: 'setAi', nationId, isAi: ai, aiLevel });
+    if (!r.ok && r.error !== 'unsupported') {
+      throw new HttpError(409, r.error ?? 'refused', r.message ?? 'Refusé par le moteur');
+    }
+    const now = Date.now();
+    p.isAi = ai;
+    p.aiForced = ai;
+    if (!ai) p.lastActiveAt = now;
+    const slot = p.slot;
+    await this.chain(g, 'IA (administration)', async () => {
+      await this.d.db
+        .update(gamePlayers)
+        .set({
+          isAiReplacement: ai,
+          aiForced: ai,
+          aiSince: ai ? new Date(now) : null,
+          ...(ai ? {} : { lastActiveAt: new Date(now) }),
+        })
+        .where(and(eq(gamePlayers.gameId, g.id), eq(gamePlayers.slot, slot)));
+    });
+    const name = this.nationName(nationId);
+    this.notice(
+      g,
+      ai
+        ? `${name} est confiée à une IA par l'administration.`
+        : `${name} : l'administration a rendu la nation à son joueur.`,
+      ai ? 'warn' : 'info',
+    );
+    this.log.info({ gameId, nation: nationId, ai }, 'IA imposée ou retirée par l’administration');
+    return { nationId, userId: p.userId, isAi: ai, aiForced: ai };
   }
 
   /** Ferme les connexions d'un utilisateur (bannissement). */
@@ -1102,6 +1385,12 @@ export class GameHost {
       pendingNotes: [],
       flushDue: null,
       lastFlush: 0,
+      flushQueue: null,
+      flushNotes: [],
+      flushAgain: false,
+      flushCostMs: 0,
+      behind: false,
+      idleSince: Date.now(),
       writes: Promise.resolve(),
       errored: false,
       stuckWarned: false,
@@ -1185,7 +1474,16 @@ export class GameHost {
       id,
       row,
       prepared,
-      players: [{ slot: 0, userId, nationId: body.nationId, isAi: false, lastActiveAt: now }],
+      players: [
+        {
+          slot: 0,
+          userId,
+          nationId: body.nationId,
+          isAi: false,
+          aiForced: false,
+          lastActiveAt: now,
+        },
+      ],
       clock,
     });
     return { meta: this.games.get(id)?.meta ?? metaOf(row, 1), nationId: body.nationId };
@@ -1258,6 +1556,7 @@ export class GameHost {
         userId: p.userId,
         nationId: p.nationId,
         isAi: false,
+        aiForced: false,
         lastActiveAt: now,
       })),
       clock,
@@ -1286,10 +1585,17 @@ export class GameHost {
     if (existing) {
       existing.userId = userId;
       existing.isAi = false;
+      existing.aiForced = false;
       existing.lastActiveAt = now;
       await this.d.db
         .update(gamePlayers)
-        .set({ userId, isAiReplacement: false, aiSince: null, lastActiveAt: new Date(now) })
+        .set({
+          userId,
+          isAiReplacement: false,
+          aiForced: false,
+          aiSince: null,
+          lastActiveAt: new Date(now),
+        })
         .where(and(eq(gamePlayers.gameId, gameId), eq(gamePlayers.slot, existing.slot)));
     } else {
       const slot = Math.max(-1, ...g.players.map((p) => p.slot)) + 1;
@@ -1300,7 +1606,7 @@ export class GameHost {
         nationId,
         lastActiveAt: new Date(now),
       });
-      g.players.push({ slot, userId, nationId, isAi: false, lastActiveAt: now });
+      g.players.push({ slot, userId, nationId, isAi: false, aiForced: false, lastActiveAt: now });
     }
     g.meta.playerCount = g.players.filter((p) => p.userId).length;
     this.notice(g, `Un nouveau joueur prend la tête de ${this.nationName(nationId)}.`);
@@ -1323,9 +1629,10 @@ export class GameHost {
     }
     p.userId = null;
     p.isAi = true;
+    p.aiForced = false;
     await this.d.db
       .update(gamePlayers)
-      .set({ userId: null, isAiReplacement: true, aiSince: new Date() })
+      .set({ userId: null, isAiReplacement: true, aiForced: false, aiSince: new Date() })
       .where(and(eq(gamePlayers.gameId, gameId), eq(gamePlayers.slot, p.slot)));
     for (const c of [...g.connections]) {
       if (c.userId === userId && !c.spectator) {
@@ -1386,15 +1693,16 @@ export class GameHost {
     if (g.errored || (!force && !modified)) return g.writes;
     const engine = this.engine;
     let bytes: Uint8Array;
-    let hash: string;
+    const t0 = nowMs();
     const ok = this.safely(g, () => {
       if (!g.clock.paused && this.advance(g, now)) {
         this.requestFlush(g, now);
         this.reschedule(g);
       }
+      // Une seule sérialisation (stateHash du moteur resérialiserait l'état : ~110 ms de plus).
       bytes = engine.serializeState(g.state);
-      hash = engine.stateHash(g.state);
     });
+    this.slow(g, 'instantané', t0);
     if (!ok) return g.writes;
     g.dirty = false;
     const seq = ++g.snapshotSeq;
@@ -1406,11 +1714,13 @@ export class GameHost {
     const clock = g.clock;
     const status = g.meta.status;
     return this.chain(g, 'instantané', async () => {
+      // Empreinte des octets de l'instantané (diagnostic), calculée hors du chemin de simulation.
+      const hash = createHash('sha256').update(bytes!).digest('hex').slice(0, 32);
       const { codec, data } = await compressSnapshot(bytes!);
       g.stateBytes = data.length;
       const rows = await this.d.sql`
         INSERT INTO game_snapshots (game_id, seq, game_time_ms, last_order_seq, catalog_release_id, codec, state_hash, state)
-        SELECT ${g.id}::uuid, ${seq}::int, ${time}::float8, ${lastOrderSeq}::int, ${releaseId}::int, ${codec}::text, ${hash!}::text, ${data}::bytea
+        SELECT ${g.id}::uuid, ${seq}::int, ${time}::float8, ${lastOrderSeq}::int, ${releaseId}::int, ${codec}::text, ${hash}::text, ${data}::bytea
         WHERE EXISTS (SELECT 1 FROM games WHERE id = ${g.id} AND lease_owner = ${owner})
         RETURNING seq`;
       if (rows.length === 0) {
@@ -1428,8 +1738,17 @@ export class GameHost {
     });
   }
 
+  /** Instantané de chaque partie, une à la fois : la boucle d'événements respire entre deux. */
   async snapshotAll(force: boolean): Promise<void> {
-    await Promise.all([...this.games.values()].map((g) => this.snapshot(g, force)));
+    const writes: Promise<void>[] = [];
+    let first = true;
+    for (const g of [...this.games.values()]) {
+      if (!first) await yieldLoop();
+      first = false;
+      if (this.games.get(g.id) !== g && !this.stopped) continue;
+      writes.push(this.snapshot(g, force));
+    }
+    await Promise.all(writes);
   }
 
   /** Attend la fin des écritures en cours d'une partie (tests, routes qui relisent la base). */
@@ -1504,7 +1823,7 @@ export class GameHost {
       });
       await this.snapshot(g, true);
       this.notice(g, notice);
-      this.safely(g, () => this.flush(g, now));
+      this.safely(g, () => this.requestFlush(g, now));
       this.reschedule(g);
     }
     return count;
@@ -1550,11 +1869,24 @@ export class GameHost {
       const meta: GameMeta = g?.meta ?? metaOf(r, mine.filter((x) => x.p.userId).length);
       return {
         game: { ...meta },
-        players: mine.map((x) => ({
-          nationId: x.p.nationId,
-          userName: x.name,
-          isAi: x.p.userId === null || x.p.isAiReplacement,
-        })),
+        players: mine.map((x) => {
+          const live = g?.players.find((p) => p.slot === x.p.slot);
+          const isAi = live
+            ? live.userId === null || live.isAi
+            : x.p.userId === null || x.p.isAiReplacement;
+          return {
+            nationId: x.p.nationId,
+            userName: x.name,
+            isAi,
+            userId: x.p.userId,
+            aiForced: live?.aiForced ?? x.p.aiForced,
+            connected: !!(g && x.p.userId && this.isConnected(g, x.p.userId)),
+            lastActiveAt:
+              (live?.lastActiveAt ?? x.p.lastActiveAt?.getTime() ?? null) !== null
+                ? new Date(live?.lastActiveAt ?? x.p.lastActiveAt!.getTime()).toISOString()
+                : null,
+          };
+        }),
         gameTime,
         ...stats,
       };
@@ -1575,9 +1907,16 @@ export class GameHost {
   }
 
   /** Métriques étendues (parties hébergées ici). */
-  hostStats(): { running: number; paused: number; ended: number; stateBytes: number } {
-    const out = { running: 0, paused: 0, ended: 0, stateBytes: 0 };
+  hostStats(): {
+    running: number;
+    paused: number;
+    ended: number;
+    stateBytes: number;
+    behind: number;
+  } {
+    const out = { running: 0, paused: 0, ended: 0, stateBytes: 0, behind: 0 };
     for (const g of this.games.values()) {
+      if (g.behind) out.behind++;
       if (g.meta.status === 'running') out.running++;
       else if (g.meta.status === 'paused') out.paused++;
       else if (g.meta.status === 'ended') out.ended++;

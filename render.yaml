@@ -1,9 +1,11 @@
-# Blueprint Render — Red Line
+# yaml-language-server: $schema=https://render.com/schema/render.yaml.json
+# Blueprint Render — Red Line (validé contre https://render.com/schema/render.yaml.json)
 # Un seul service web (API + WebSocket + client + back-office servis sur la même origine)
 # et une base PostgreSQL, en deux environnements :
-#   - production : branche `main`, offre Starter (pas de mise en veille)
-#   - staging    : branche `staging`, offres gratuites (mise en veille après 15 min, base temporaire)
+#   - production : branche `main`, offre Starter (pas de mise en veille), déployée seulement si la CI passe
+#   - staging    : branche `staging`, offres gratuites (mise en veille après 15 min, base gratuite limitée à 30 j)
 # L'imagerie satellite (data/tiles/*.pmtiles) est dans le dépôt : aucun disque n'est nécessaire.
+# Seuils de passage à l'offre supérieure : docs/charge.md.
 
 services:
   - type: web
@@ -12,16 +14,27 @@ services:
     plan: starter
     region: frankfurt
     branch: main
-    autoDeploy: true
+    # Déploiement automatique uniquement quand les vérifications GitHub (CI) sont au vert.
+    autoDeployTrigger: checksPass
     buildCommand: npx --yes pnpm@10.33.0 install --frozen-lockfile && npx --yes pnpm@10.33.0 build
     preDeployCommand: node apps/server/dist/migrate.js
     startCommand: node apps/server/dist/main.js
     healthCheckPath: /healthz
+    # Arrêt propre (instantané de chaque partie, libération des baux) avant l'arrêt forcé.
+    maxShutdownDelaySeconds: 30
     envVars:
       - key: NODE_VERSION
         value: '22'
       - key: NODE_ENV
         value: production
+      # Starter = 512 Mo : on borne le tas JavaScript pour que le ramasse-miettes travaille avant la limite.
+      # À relever avec l'offre (Standard 2 Go : --max-old-space-size=1536).
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=384
+      # Render est derrière Cloudflare : l'IP réelle du joueur est dans CF-Connecting-IP
+      # (X-Forwarded-For est falsifiable) — limites de débit et empreintes anti-multicomptes.
+      - key: CLIENT_IP_HEADER
+        value: cf-connecting-ip
       - key: DATABASE_URL
         fromDatabase:
           name: redline-db
@@ -32,13 +45,13 @@ services:
         sync: false
       - key: ADMIN_PASSWORD
         sync: false
+      # URL publique (retours de Stripe Checkout, contact VAPID), ex. https://redline.onrender.com
+      - key: PUBLIC_URL
+        sync: false
       # Boutique (facultatif : sans ces deux clés, la boutique affiche « paiements indisponibles »).
       - key: STRIPE_SECRET_KEY
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
-        sync: false
-      # URL publique (retours de Stripe Checkout, sujet VAPID), ex. https://redline.onrender.com
-      - key: PUBLIC_URL
         sync: false
 
   - type: web
@@ -47,8 +60,9 @@ services:
     plan: free
     region: frankfurt
     branch: staging
-    autoDeploy: true
+    autoDeployTrigger: commit
     buildCommand: npx --yes pnpm@10.33.0 install --frozen-lockfile && npx --yes pnpm@10.33.0 build
+    # L'offre gratuite n'a pas de preDeployCommand : migrations au démarrage.
     startCommand: node apps/server/dist/main.js
     healthCheckPath: /healthz
     envVars:
@@ -56,6 +70,10 @@ services:
         value: '22'
       - key: NODE_ENV
         value: production
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=384
+      - key: CLIENT_IP_HEADER
+        value: cf-connecting-ip
       - key: MIGRATE_ON_START
         value: 'true'
       - key: DATABASE_URL
@@ -68,22 +86,30 @@ services:
         sync: false
       - key: ADMIN_PASSWORD
         sync: false
+      - key: PUBLIC_URL
+        sync: false
       # Staging : clés Stripe de TEST (sk_test_…) uniquement.
       - key: STRIPE_SECRET_KEY
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
-        sync: false
-      - key: PUBLIC_URL
         sync: false
 
 databases:
   - name: redline-db
     plan: basic-256mb
     region: frankfurt
+    postgresMajorVersion: '16'
+    # Instantanés (~0,4 Mo par partie monde, 3 conservés), journal d'ordres, frames du timelapse.
+    diskSizeGB: 5
     databaseName: redline
     user: redline
+    # Aucune connexion depuis Internet : seul le service web (réseau privé Render) y accède.
+    # Pour une connexion ponctuelle depuis un poste (pg_dump…), ajouter son IP dans le tableau de bord.
+    ipAllowList: []
   - name: redline-db-staging
     plan: free
     region: frankfurt
+    postgresMajorVersion: '16'
     databaseName: redline_staging
     user: redline
+    ipAllowList: []

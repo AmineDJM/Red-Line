@@ -6,6 +6,11 @@ export class ProcessMetrics {
   private readonly loop: ReturnType<typeof monitorEventLoopDelay>;
   private cpuPct = 0;
   private lagMs = 0;
+  private lagP99Ms = 0;
+  private lagMaxMs = 0;
+  /** Diffusions (vues + diffs) : coût CPU maximal sur la dernière fenêtre d'échantillonnage. */
+  private flushMaxMs = 0;
+  private flushMaxWindow = 0;
   private lastCpu = process.cpuUsage();
   private lastSample = process.hrtime.bigint();
   private readonly timer: NodeJS.Timeout;
@@ -29,7 +34,13 @@ export class ProcessMetrics {
     this.lastSample = now;
     const mean = this.loop.mean;
     this.lagMs = Number.isFinite(mean) ? mean / 1e6 : 0;
+    const p99 = this.loop.percentile(99);
+    this.lagP99Ms = Number.isFinite(p99) ? p99 / 1e6 : 0;
+    const max = this.loop.max;
+    this.lagMaxMs = Number.isFinite(max) ? max / 1e6 : 0;
     this.loop.reset();
+    this.flushMaxMs = this.flushMaxWindow;
+    this.flushMaxWindow = 0;
   }
 
   private rotate(): void {
@@ -44,6 +55,13 @@ export class ProcessMetrics {
     if (n <= 0) return;
     this.rotate();
     this.buckets[this.bucketSecond % 60]! += n;
+  }
+
+  /** Coût CPU d'une diffusion complète d'une partie (toutes nations). */
+  recordFlush(ms: number): void {
+    this.count('flushes');
+    this.count('flushMs', ms);
+    this.flushMaxWindow = Math.max(this.flushMaxWindow, ms);
   }
 
   eventsPerMinute(): number {
@@ -83,6 +101,9 @@ export class ProcessMetrics {
     heapMb: number;
     cpuPct: number;
     eventLoopLagMs: number;
+    eventLoopP99Ms: number;
+    eventLoopMaxMs: number;
+    flushMaxMs: number;
   } {
     const mem = process.memoryUsage();
     const round = (x: number) => Math.round(x * 10) / 10;
@@ -92,6 +113,9 @@ export class ProcessMetrics {
       heapMb: round(mem.heapUsed / 1048576),
       cpuPct: round(this.cpuPct),
       eventLoopLagMs: round(this.lagMs),
+      eventLoopP99Ms: round(this.lagP99Ms),
+      eventLoopMaxMs: round(this.lagMaxMs),
+      flushMaxMs: round(Math.max(this.flushMaxMs, this.flushMaxWindow)),
     };
   }
 

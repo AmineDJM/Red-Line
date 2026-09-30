@@ -236,7 +236,8 @@ export function coup(state: EngineState, n: NationId): void {
 }
 
 export function stabilityView(state: EngineState, n: NationId): StabilityView {
-  const det = stabDetail(state, n);
+  // Lecture seule : une vue ne doit jamais modifier l'état (empreinte et rejeu déterministes).
+  const det = ds(state).stab[n] ?? { prev: stabilityOf(state, n), f: {}, lost: 0, provLost: 0 };
   const value = stabilityOf(state, n);
   const factors = sortedKeys(det.f)
     .map((label) => ({ label, delta: det.f[label]! }))

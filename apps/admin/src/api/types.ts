@@ -218,6 +218,12 @@ export interface MetricsExtra {
   wsMessagesOutPerMin?: number;
   chatMessagesPerMin?: number;
   pushSentPerMin?: number;
+  eventLoopP99Ms?: number;
+  eventLoopMaxMs?: number;
+  flushesPerMin?: number;
+  flushMsPerMin?: number;
+  flushMaxMs?: number;
+  gamesBehind?: number;
 }
 
 export type { NationDef, ProvinceDef, DisputedArea, ResearchNode, Orbat, ScenarioFile };

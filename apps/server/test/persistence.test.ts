@@ -67,7 +67,9 @@ describe.skipIf(!hasDb)('persistance, reprise et bail', () => {
 
     const b = await startApp({ dataDir, instanceId: 'inst-2' });
     try {
-      expect(b.ctx.host.games.has(id)).toBe(true); // adoptée au démarrage
+      // Partie en pause : pas adoptée au démarrage (rien à simuler), chargée à la demande.
+      expect(b.ctx.host.games.has(id)).toBe(false);
+      expect(await b.ctx.host.ensureLoaded(id)).not.toBeNull();
       expect(hashOf(b, id)).toBe(hash);
       expect(b.ctx.host.games.get(id)!.state.time).toBe(time);
       const port = await listen(b.app);
@@ -105,6 +107,7 @@ describe.skipIf(!hasDb)('persistance, reprise et bail', () => {
     // Même identifiant d'instance (redémarrage du même processus) : le bail est repris tout de suite.
     const b = await startApp({ dataDir, instanceId: 'inst-1' });
     try {
+      await b.ctx.host.ensureLoaded(id); // en pause : chargée à la demande
       expect(hashOf(b, id)).toBe(hash);
     } finally {
       await b.app.close();

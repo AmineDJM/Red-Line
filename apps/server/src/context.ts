@@ -20,6 +20,8 @@ import type { RankingService } from './rank/rankings.js';
 export interface RuntimeOptions {
   /** Requêtes d'authentification par minute et par IP. */
   authRateLimitPerMin: number;
+  /** Créations de partie (solo, salon) par minute et par IP. */
+  createRateLimitPerMin: number;
   /** Messages WebSocket par seconde et par connexion (seau à jetons). */
   wsMessagesPerSecond: number;
   wsBurst: number;
@@ -31,6 +33,16 @@ export interface RuntimeOptions {
   chatBurst: number;
   /** Notifications push : délai minimal entre deux alertes de même catégorie (par joueur et partie). */
   pushThrottleMs: number;
+  /**
+   * Parties non terminées qu'un joueur peut avoir créées (chaque partie monde simule ~200 IA et pèse
+   * ~0,5 Mio par instantané) : solo et multijoueur. Les modérateurs ne sont pas limités.
+   */
+  maxActiveSoloPerUser: number;
+  maxActiveMultiPerUser: number;
+  /** Budget d'une tranche de travail synchrone (ms) ; pauses et déchargements des parties inactives. */
+  sliceBudgetMs: number;
+  soloIdlePauseMs: number;
+  idleUnloadMs: number;
 }
 
 export interface AppContext {

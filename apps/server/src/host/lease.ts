@@ -41,11 +41,14 @@ export class LeaseManager {
       WHERE lease_owner = ${this.owner} AND id = ANY(${gameIds}::uuid[])`;
   }
 
-  /** Parties actives sans bail valide (orphelines) — à adopter. */
+  /**
+   * Parties EN COURS sans bail valide (orphelines) — à adopter. Les parties en pause n'ont rien à
+   * simuler : elles sont chargées à la demande (connexion, commande), jamais gardées en mémoire à vide.
+   */
   async orphans(): Promise<string[]> {
     const rows = await this.sql<{ id: string }[]>`
       SELECT id FROM games
-      WHERE status IN ('running', 'paused')
+      WHERE status = 'running'
         AND (lease_owner IS NULL OR lease_owner = ${this.owner} OR lease_until < now())
       ORDER BY created_at`;
     return rows.map((r) => r.id);
