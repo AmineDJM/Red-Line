@@ -8,15 +8,26 @@ import type {
   ProvinceView,
   UnitView,
 } from '@redline/shared';
-import { Button, Drawer, HexIcon, pictogramFor } from '@redline/ui';
+import {
+  Button,
+  Field,
+  Icon,
+  List,
+  ListItem,
+  Select,
+  UnitMarker,
+  Window,
+  pictogramFor,
+  type WindowRect,
+} from '@redline/ui';
 import { DEBUG_HOOKS, IS_MOCK } from '../config.js';
 import { getApi } from '../api/index.js';
-import { GameHud } from '../hud/GameHud.js';
-import { Icons } from '../hud/icons.js';
+import { GameShell } from '../shell/GameShell.js';
+import { useIsMobile } from '../shell/useMedia.js';
 import { loadEngine, LocalGameConnection } from '../net/local.js';
 import { loadSimulationData } from '../sandbox/simulationData.js';
 import { bindConnection, useGame } from '../store/game.js';
-import { useUi } from '../store/ui.js';
+import { useUi, windowBounds } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { ErrorScreen, LoadingScreen } from './Loading.js';
 
@@ -89,8 +100,12 @@ export function SandboxScreen() {
   const [running, setRunning] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const unbind = useRef<(() => void) | null>(null);
-  const drawer = useUi((s) => s.drawer);
-  const openDrawer = useUi((s) => s.openDrawer);
+  const mobile = useIsMobile();
+  const [panel, setPanel] = useState(true);
+  const [rect, setRect] = useState<WindowRect>(() => {
+    const b = windowBounds();
+    return { x: b.right - 372, y: b.top + 12, w: 360, h: Math.min(620, b.bottom - b.top - 24) };
+  });
 
   useEffect(() => {
     if (DEBUG_HOOKS)
@@ -101,7 +116,6 @@ export function SandboxScreen() {
       };
     void getApi().then((api) => world.load(api));
     useGame.getState().reset();
-    useUi.getState().openDrawer('sandbox');
     return () => {
       unbind.current?.();
       useGame.getState().reset();
@@ -210,97 +224,103 @@ export function SandboxScreen() {
   };
 
   return (
-    <GameHud
+    <GameShell
       mode="sandbox"
       fog={false}
       tutorial={false}
-      title={t('sandbox.title')}
-      subtitle={running ? t('sandbox.running') : t('sandbox.subtitle')}
       placing={placing && !running}
       onPlace={place}
-      extraTools={[{ id: 'sandbox', label: t('sandbox.title'), icon: Icons.sandbox() }]}
     >
-      <Drawer
-        open={drawer === 'sandbox'}
-        onClose={() => openDrawer(null)}
-        title={t('sandbox.title')}
-        closeLabel={t('app.close')}
-        width={340}
-      >
-        <div className="stack">
-          <label className="field">
-            <span className="field__label">{t('sandbox.nation')}</span>
-            <select
-              className="select"
-              value={nation}
-              disabled={running}
-              onChange={(e) => setNation(e.target.value)}
-            >
-              {nations.map((n) => (
-                <option key={n.id} value={n.id}>
-                  {n.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="field">
-            <span className="field__label">{t('sandbox.system')}</span>
-            <select
-              className="select"
-              value={systemId}
-              disabled={running}
-              onChange={(e) => setSystemId(e.target.value)}
-            >
-              {systems.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {t(`categories.${s.category}`)} — {s.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          {!running ? <p className="muted small">{t('sandbox.placeHint')}</p> : null}
-          <ul className="army-list">
-            {placements.map((p, i) => {
-              const s = world.catalog[p.systemId];
-              return (
-                <li key={i} className="army-row">
-                  <HexIcon
-                    pictogram={pictogramFor(s)}
-                    color={world.nations[p.owner]?.color}
-                    size={26}
+      {panel ? (
+        <Window
+          title={t('sandbox.title')}
+          path={[t('sandbox.path')]}
+          mode={mobile ? 'sheet' : 'floating'}
+          rect={rect}
+          onRectChange={setRect}
+          bounds={windowBounds()}
+          minSize={{ w: 300, h: 320 }}
+          zIndex={15}
+          onClose={() => setPanel(false)}
+          closeLabel={t('app.close')}
+          className="sandbox-win"
+          footer={
+            running ? (
+              <Button block onClick={reset}>
+                {t('sandbox.reset')}
+              </Button>
+            ) : (
+              <>
+                <Button disabled={!placements.length} onClick={() => setPlacements([])}>
+                  {t('sandbox.clear')}
+                </Button>
+                <Button
+                  variant="primary"
+                  block
+                  disabled={!placements.length}
+                  onClick={() => void launch()}
+                >
+                  {t('sandbox.launch')}
+                </Button>
+              </>
+            )
+          }
+        >
+          <div className="stack">
+            <Field label={t('sandbox.nation')}>
+              <Select
+                value={nation}
+                disabled={running}
+                onChange={setNation}
+                options={nations.map((n) => ({ value: n.id, label: n.name }))}
+              />
+            </Field>
+            <Field label={t('sandbox.system')}>
+              <Select
+                value={systemId}
+                disabled={running}
+                onChange={setSystemId}
+                options={systems.map((s) => ({
+                  value: s.id,
+                  label: `${t(`categories.${s.category}`)} — ${s.name}`,
+                }))}
+              />
+            </Field>
+            {!running ? <p className="muted small">{t('sandbox.placeHint')}</p> : null}
+            <List>
+              {placements.map((p, i) => {
+                const s = world.catalog[p.systemId];
+                return (
+                  <ListItem
+                    key={i}
+                    leading={
+                      <UnitMarker
+                        pictogram={pictogramFor(s)}
+                        nationId={p.owner}
+                        tone="neutral"
+                        size="sm"
+                      />
+                    }
+                    title={s?.name ?? p.systemId}
+                    subtitle={world.nations[p.owner]?.name}
                   />
-                  <span className="army-row__main">
-                    <span className="army-row__name">{s?.name ?? p.systemId}</span>
-                    <span className="army-row__sub">{world.nations[p.owner]?.name}</span>
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-          <p className="muted small">{t('sandbox.placed', { count: placements.length })}</p>
-          {message ? <p className="error-text">{message}</p> : null}
-          {running ? (
-            <Button block onClick={reset}>
-              {t('sandbox.reset')}
-            </Button>
-          ) : (
-            <>
-              <Button
-                variant="primary"
-                size="lg"
-                block
-                disabled={!placements.length}
-                onClick={() => void launch()}
-              >
-                {t('sandbox.launch')}
-              </Button>
-              <Button block disabled={!placements.length} onClick={() => setPlacements([])}>
-                {t('sandbox.clear')}
-              </Button>
-            </>
-          )}
-        </div>
-      </Drawer>
-    </GameHud>
+                );
+              })}
+            </List>
+            <p className="muted small">{t('sandbox.placed', { count: placements.length })}</p>
+            {message ? <p className="error-text">{message}</p> : null}
+          </div>
+        </Window>
+      ) : (
+        <button
+          type="button"
+          className="sandbox-reopen"
+          onClick={() => setPanel(true)}
+          data-map-avoid
+        >
+          <Icon name="sandbox" size={16} /> {t('sandbox.title')}
+        </button>
+      )}
+    </GameShell>
   );
 }

@@ -31,7 +31,16 @@ import {
   type WeaponSystem,
 } from '@redline/shared';
 import type { FeatureCollection } from 'geojson';
-import { Emitter, type GameConnection, type OrderOutcome } from './connection.js';
+import {
+  VIEW_SECTIONS,
+  type BattleReport,
+  type ChatMessage,
+  type IntelOpView,
+  type OperationView,
+} from '@redline/shared';
+import { demoBattleReport } from '../api/mockRest.js';
+import { Emitter, type ChatChannel, type GameConnection, type OrderOutcome } from './connection.js';
+import { demoReply, enrichView } from './mockWorld.js';
 
 export interface MockData {
   nations: NationDef[];
@@ -49,6 +58,8 @@ export interface MockOptions {
   tickMs?: number;
   /** Génère des événements aléatoires périodiques. */
   liveEvents?: boolean;
+  /** Sections des phases 2 à 6 (recherche, renseignement, diplomatie…). Défaut : vrai. */
+  rich?: boolean;
 }
 
 /** PRNG déterministe (mulberry32) : même vue simulée à chaque chargement. */
@@ -123,6 +134,7 @@ export class MockGameConnection extends Emitter implements GameConnection {
   }
 
   private initialNotes: GameNotification[];
+  private chatLog: ChatMessage[] = [];
 
   start() {
     if (this.timer) return;
@@ -130,6 +142,7 @@ export class MockGameConnection extends Emitter implements GameConnection {
     this.emit('status', 'open');
     this.emit('welcome', { game: this.meta, me: this.opts.me, clock: this.clock, view: this.view });
     this.emit('notify', this.initialNotes);
+    if (this.chatLog.length) this.emit('chatHistory', this.chatLog);
     this.timer = setInterval(() => this.tick(), this.opts.tickMs ?? 1000);
     if (this.opts.liveEvents !== false)
       this.eventTimer = setInterval(() => this.randomEvent(), 14_000);
@@ -424,6 +437,23 @@ export class MockGameConnection extends Emitter implements GameConnection {
         by: hostile0,
       });
     }
+    if (this.opts.rich !== false) {
+      const extras = enrichView(view, {
+        me,
+        now,
+        rnd,
+        nations: this.data.nations,
+        provinces,
+        byNation,
+        catalog: this.data.catalog,
+        hostiles,
+        capPt,
+        captureTarget,
+        threatened,
+      });
+      this.chatLog = extras.chat;
+      notes.push(...extras.notes);
+    }
     notes.sort((a, b) => a.time - b.time);
     return { view, notes };
   }
@@ -440,12 +470,17 @@ export class MockGameConnection extends Emitter implements GameConnection {
 
   private push(diff: Omit<ViewDiff, 'time'>) {
     const d: ViewDiff = { time: this.now(), ...diff };
-    this.view = {
-      ...this.view,
-      time: d.time,
-      ...(d.economy ? { economy: d.economy } : {}),
-      ...(d.provinces ? { provinces: { ...this.view.provinces, ...d.provinces } } : {}),
-    };
+    const next: PlayerView = { ...this.view, time: d.time };
+    const target = next as unknown as Record<string, unknown>;
+    for (const k of VIEW_SECTIONS) {
+      const v = (d as unknown as Record<string, unknown>)[k];
+      if (v === undefined) continue;
+      target[k] =
+        k === 'provinces' || k === 'nations'
+          ? { ...(this.view[k] as object), ...(v as object) }
+          : v;
+    }
+    this.view = next;
     if (d.units) {
       const units = { ...this.view.units };
       d.units.remove.forEach((id) => delete units[id]);
@@ -550,6 +585,8 @@ export class MockGameConnection extends Emitter implements GameConnection {
       });
       return { ok: true };
     }
+    const meta = this.applyPhase2(order, t);
+    if (meta) return meta;
     if (!('unitIds' in order)) return { ok: false, error: 'unknown' };
     const units = order.unitIds.map((id: string) => this.view.units[id]);
     if (units.some((u) => !u)) return { ok: false, error: 'unknown_unit' };
@@ -608,6 +645,522 @@ export class MockGameConnection extends Emitter implements GameConnection {
         ]);
     }
     return { ok: true };
+  }
+
+  /** Ordres des phases 2 à 6 : réponse plausible et mise à jour des sections de la vue. */
+  private applyPhase2(order: Order, t: GameTime): OrderOutcome | null {
+    const v = this.view;
+    const me = this.opts.me;
+    const ok = { ok: true } as const;
+    switch (order.kind) {
+      case 'research': {
+        const r = v.research;
+        if (!r) return ok;
+        if (r.done.includes(order.nodeId) || r.queue.includes(order.nodeId)) return ok;
+        if (r.current?.id === order.nodeId) return ok;
+        if (!r.current)
+          this.push({
+            research: {
+              ...r,
+              current: { id: order.nodeId, startedAt: t, completesAt: t + 72 * HOUR },
+            },
+          });
+        else this.push({ research: { ...r, queue: [...r.queue, order.nodeId] } });
+        return ok;
+      }
+      case 'cancelResearch': {
+        const r = v.research;
+        if (!r) return ok;
+        if (r.current?.id === order.nodeId) {
+          const [next, ...rest] = r.queue;
+          this.push({
+            research: {
+              ...r,
+              current: next ? { id: next, startedAt: t, completesAt: t + 72 * HOUR } : null,
+              queue: rest,
+            },
+          });
+        } else this.push({ research: { ...r, queue: r.queue.filter((q) => q !== order.nodeId) } });
+        return ok;
+      }
+      case 'buyLicence': {
+        const s = this.sys(order.systemId);
+        const price = (s?.cost.money ?? 0) * 20;
+        if (v.economy.money < price) return { ok: false, error: 'insufficient_funds' };
+        this.push({
+          licences: [...(v.licences ?? []), { systemId: order.systemId, acquiredAt: t }],
+          economy: { ...v.economy, money: v.economy.money - price },
+        });
+        return ok;
+      }
+      case 'cancelProduction':
+        this.push({
+          economy: {
+            ...v.economy,
+            production: v.economy.production.filter((p) => p.id !== order.productionId),
+          },
+        });
+        return ok;
+      case 'build':
+      case 'repair': {
+        const p = v.provinces[order.provinceId];
+        if (!p) return { ok: false, error: 'invalid_target' };
+        if (p.owner !== me) return { ok: false, error: 'not_owner' };
+        const b = order.building === 'fortification' ? null : order.building;
+        const state = [...(p.buildingState ?? [])];
+        if (b) {
+          const i = state.findIndex((x) => x.type === b);
+          if (order.kind === 'repair' && i >= 0)
+            state[i] = { ...state[i]!, repairUntil: t + 24 * HOUR };
+          else if (i >= 0) state[i] = { ...state[i]!, upgradeUntil: t + 24 * HOUR };
+          else state.push({ type: b, level: 1, health: 1, upgradeUntil: t + 18 * HOUR });
+        }
+        this.push({
+          provinces: {
+            [p.id]: {
+              ...p,
+              buildings: b && !p.buildings.includes(b) ? [...p.buildings, b] : p.buildings,
+              buildingState: state,
+              ...(order.building === 'fortification'
+                ? {
+                    fortification: {
+                      provinceId: p.id,
+                      level: (p.fortification?.level ?? 0) + 1,
+                      completesAt: t + 12 * HOUR,
+                    },
+                  }
+                : {}),
+            },
+          },
+        });
+        return ok;
+      }
+      case 'acceptOffer': {
+        const m = v.market;
+        const o = m?.offers.find((x) => x.id === order.offerId);
+        if (!m || !o) return { ok: false, error: 'invalid_target' };
+        if (v.economy.money < o.price) return { ok: false, error: 'insufficient_funds' };
+        this.push({
+          market: {
+            ...m,
+            offers: m.offers.filter((x) => x.id !== o.id),
+            deliveries: [
+              ...m.deliveries,
+              {
+                id: `d${++this.seq}`,
+                from: o.seller,
+                to: me,
+                item: o.item,
+                carrierUnitId: null,
+                eta: t + 36 * HOUR,
+                covert: false,
+              },
+            ],
+          },
+          economy: { ...v.economy, money: v.economy.money - o.price },
+        });
+        return ok;
+      }
+      case 'cancelOffer': {
+        const m = v.market;
+        if (m)
+          this.push({ market: { ...m, offers: m.offers.filter((x) => x.id !== order.offerId) } });
+        return ok;
+      }
+      case 'sellOffer': {
+        const m = v.market;
+        if (m)
+          this.push({
+            market: {
+              ...m,
+              offers: [
+                ...m.offers,
+                {
+                  id: `o${++this.seq}`,
+                  seller: me,
+                  item: order.item,
+                  price: order.price,
+                  to: order.to ?? null,
+                  createdAt: t,
+                  expiresAt: t + 72 * HOUR,
+                },
+              ],
+            },
+          });
+        return ok;
+      }
+      case 'blackMarket': {
+        const m = v.market;
+        const s = this.sys(order.systemId);
+        const price = (s?.cost.money ?? 0) * 2.5 * order.count;
+        if (v.economy.money < price) return { ok: false, error: 'insufficient_funds' };
+        if (m)
+          this.push({
+            market: {
+              ...m,
+              deliveries: [
+                ...m.deliveries,
+                {
+                  id: `d${++this.seq}`,
+                  from: 'xxx',
+                  to: me,
+                  item: { type: 'units', systemId: order.systemId, count: order.count },
+                  carrierUnitId: null,
+                  eta: t + 60 * HOUR,
+                  covert: true,
+                },
+              ],
+            },
+            economy: { ...v.economy, money: v.economy.money - price },
+          });
+        return ok;
+      }
+      case 'mobilize':
+        if (v.logistics)
+          this.push({
+            logistics: { ...v.logistics, mobilized: order.on, mobilizedSince: order.on ? t : null },
+          });
+        return ok;
+      case 'intelOp': {
+        const i = v.intel;
+        if (!i) return ok;
+        const dept =
+          order.op === 'counterintel_sweep'
+            ? 'interior'
+            : [
+                  'listen_area',
+                  'intercept_army',
+                  'jam_area',
+                  'cyber_radar',
+                  'cyber_orders',
+                  'deploy_decoys',
+                  'fake_radio_traffic',
+                ].includes(order.op)
+              ? 'military'
+              : 'exterior';
+        const d = i.departments.find((x) => x.id === dept);
+        if (d && d.running >= d.capacity) return { ok: false, error: 'capacity' };
+        const op: IntelOpView = {
+          id: `io${++this.seq}`,
+          kind: order.op,
+          dept,
+          target: order.target,
+          startedAt: t,
+          completesAt: t + 24 * HOUR,
+          status: 'running',
+          estimate: 0.55,
+        };
+        this.push({
+          intel: {
+            ...i,
+            operations: [op, ...i.operations],
+            departments: i.departments.map((x) =>
+              x.id === dept ? { ...x, running: x.running + 1 } : x,
+            ),
+          },
+        });
+        return ok;
+      }
+      case 'cancelIntelOp': {
+        const i = v.intel;
+        const op = i?.operations.find((x) => x.id === order.opId);
+        if (i && op)
+          this.push({
+            intel: {
+              ...i,
+              operations: i.operations.filter((x) => x.id !== op.id),
+              departments: i.departments.map((x) =>
+                x.id === op.dept ? { ...x, running: Math.max(0, x.running - 1) } : x,
+              ),
+            },
+          });
+        return ok;
+      }
+      case 'intelBudget': {
+        const i = v.intel;
+        if (i)
+          this.push({
+            intel: {
+              ...i,
+              departments: i.departments.map((x) =>
+                x.id === order.dept ? { ...x, budgetPerDay: order.budgetPerDay } : x,
+              ),
+            },
+          });
+        return ok;
+      }
+      case 'turnAgent': {
+        const i = v.intel;
+        if (i)
+          this.push({
+            intel: {
+              ...i,
+              caughtAgents: i.caughtAgents.map((a) =>
+                a.id === order.agentId ? { ...a, turned: true } : a,
+              ),
+            },
+          });
+        return ok;
+      }
+      case 'declareWar':
+      case 'proposePeace':
+      case 'answerPeace': {
+        const dip = v.diplomacy;
+        if (!dip) return ok;
+        const rel: 'war' | 'ceasefire' | null =
+          order.kind === 'declareWar'
+            ? 'war'
+            : order.kind === 'answerPeace'
+              ? order.accept
+                ? 'ceasefire'
+                : 'war'
+              : null;
+        const pendingKind = order.kind === 'proposePeace' ? order.type : 'peace';
+        const relations = dip.relations.some((r) => r.nationId === order.nationId)
+          ? dip.relations.map((r) =>
+              r.nationId !== order.nationId
+                ? r
+                : rel
+                  ? { ...r, relation: rel, since: t, pending: null }
+                  : { ...r, pending: { from: me, kind: pendingKind, at: t } },
+            )
+          : [
+              ...dip.relations,
+              {
+                nationId: order.nationId,
+                relation: rel ?? ('peace' as const),
+                since: t,
+                pending: null,
+              },
+            ];
+        const nv = v.nations[order.nationId];
+        this.push({
+          diplomacy: { ...dip, relations },
+          ...(nv && rel ? { nations: { [nv.id]: { ...nv, relation: rel } } } : {}),
+        });
+        return ok;
+      }
+      case 'voteResolution': {
+        const c = v.council;
+        if (!c?.session) return ok;
+        this.push({
+          council: {
+            ...c,
+            session: {
+              ...c.session,
+              resolutions: c.session.resolutions.map((r) =>
+                r.id === order.resolutionId ? { ...r, votes: { ...r.votes, [me]: order.vote } } : r,
+              ),
+            },
+          },
+        });
+        return ok;
+      }
+      case 'proposeResolution': {
+        const c = v.council;
+        if (!c?.session) return { ok: false, error: 'locked' };
+        this.push({
+          council: {
+            ...c,
+            session: {
+              ...c.session,
+              resolutions: [
+                ...c.session.resolutions,
+                {
+                  id: `res${++this.seq}`,
+                  type: order.type,
+                  proposer: me,
+                  target: order.target,
+                  text: order.text,
+                  votes: { [me]: 'yes' },
+                  status: 'proposed',
+                  durationDays: 14,
+                },
+              ],
+            },
+          },
+        });
+        return ok;
+      }
+      case 'allianceVote': {
+        const dip = v.diplomacy;
+        if (!dip) return ok;
+        this.push({
+          diplomacy: {
+            ...dip,
+            alliances: dip.alliances.map((a) => ({
+              ...a,
+              votes: a.votes.map((x) =>
+                x.id === order.voteId
+                  ? {
+                      ...x,
+                      yes: order.yes ? [...x.yes, me] : x.yes,
+                      no: order.yes ? x.no : [...x.no, me],
+                    }
+                  : x,
+              ),
+            })),
+          },
+        });
+        return ok;
+      }
+      case 'allianceTreasury': {
+        const dip = v.diplomacy;
+        if (!dip) return ok;
+        this.push({
+          diplomacy: {
+            ...dip,
+            alliances: dip.alliances.map((a) =>
+              a.id === dip.myAllianceId ? { ...a, treasury: a.treasury + order.amount } : a,
+            ),
+          },
+          economy: { ...v.economy, money: v.economy.money - order.amount },
+        });
+        return ok;
+      }
+      case 'leaveAlliance': {
+        const dip = v.diplomacy;
+        if (dip)
+          this.push({
+            diplomacy: {
+              ...dip,
+              myAllianceId: null,
+              alliances: dip.alliances.map((a) => ({
+                ...a,
+                members: a.members.filter((m) => m !== me),
+              })),
+            },
+          });
+        return ok;
+      }
+      case 'createAlliance': {
+        const dip = v.diplomacy;
+        if (!dip) return ok;
+        const id = `al${++this.seq}`;
+        this.push({
+          diplomacy: {
+            ...dip,
+            myAllianceId: id,
+            alliances: [
+              ...dip.alliances,
+              {
+                id,
+                name: order.name,
+                flag: order.flag,
+                leader: me,
+                members: [me],
+                charter: order.charter,
+                treasury: 0,
+                createdAt: t,
+                votes: [],
+                invites: [],
+              },
+            ],
+          },
+        });
+        return ok;
+      }
+      case 'operation': {
+        const op: OperationView = {
+          id: `op${++this.seq}`,
+          name: order.name,
+          hHour: order.hHour,
+          status: 'planned',
+          steps: order.steps.map((s) => ({
+            offsetMin: s.offsetMin,
+            label: s.label ?? s.order.kind,
+            status: 'pending',
+          })),
+        };
+        this.push({ operations: [op, ...(v.operations ?? [])] });
+        return ok;
+      }
+      case 'cancelOperation':
+        this.push({
+          operations: (v.operations ?? []).map((o) =>
+            o.id === order.operationId ? { ...o, status: 'cancelled' } : o,
+          ),
+        });
+        return ok;
+      case 'delegate':
+        this.push({
+          generals: (v.generals ?? []).map((g) =>
+            g.id === order.generalId ? { ...g, directive: order.directive, area: order.area } : g,
+          ),
+        });
+        return ok;
+      case 'appointGeneral':
+        this.push({
+          generals: (v.generals ?? []).map((g) =>
+            g.id === order.generalId ? { ...g, unitIds: order.unitIds } : g,
+          ),
+        });
+        return ok;
+      case 'shareReport':
+      case 'answerInvite':
+      case 'inviteToAlliance':
+      case 'allianceProposeVote':
+      case 'courtNeutral':
+      case 'fundRebels':
+      case 'hireMercenaries':
+      case 'transfer':
+      case 'nuclearAuth':
+        return ok;
+      default:
+        return null;
+    }
+  }
+
+  /** Rapport de bataille détaillé (REST /battle-reports/:id en mode démonstration). */
+  battleReport(id: string): BattleReport | null {
+    const s = this.view.battleReports?.find((r) => r.id === id);
+    return s ? demoBattleReport(s, this.catalog) : null;
+  }
+
+  sendChat(channel: ChatChannel, text: string, to?: string) {
+    const me = this.opts.me;
+    const ch =
+      channel === 'alliance'
+        ? `alliance:${this.view.diplomacy?.myAllianceId ?? 'none'}`
+        : channel === 'private' && to
+          ? `private:${[me, to].sort().join('|')}`
+          : 'game';
+    const last = this.chatLog[this.chatLog.length - 1]?.id ?? 0;
+    const m: ChatMessage = {
+      id: last + 1,
+      gameId: this.meta.id,
+      channel: ch,
+      from: { userId: 'me', nationId: me, name: 'Vous' },
+      text,
+      sentAt: new Date().toISOString(),
+    };
+    this.chatLog.push(m);
+    this.emit('chat', m);
+    // Réponse simulée d'un autre joueur.
+    setTimeout(() => {
+      const other =
+        channel === 'private' && to
+          ? to
+          : (Object.keys(this.view.nations).find((n) => n !== me) ?? null);
+      const r: ChatMessage = {
+        id: m.id + 1,
+        gameId: this.meta.id,
+        channel: ch,
+        from: {
+          userId: 'bot',
+          nationId: other,
+          name: other ? (this.view.nations[other]?.name ?? other) : 'IA',
+        },
+        text: demoReply(this.rnd),
+        sentAt: new Date().toISOString(),
+      };
+      this.chatLog.push(r);
+      this.emit('chat', r);
+    }, 2200);
+  }
+
+  markChatRead() {
+    /* rien à persister en démonstration */
   }
 
   private reanchor(patch: Partial<ClockState>) {

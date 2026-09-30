@@ -19,7 +19,10 @@ export interface HexIconProps {
   style?: CSSProperties;
 }
 
-/** Icône hexagonale pleine aux couleurs d'une nation, avec pictogramme blanc au trait. */
+/**
+ * Icône hexagonale pleine aux couleurs d'une nation, avec pictogramme blanc au trait.
+ * @deprecated Style « infographie » de la phase 1 ; préférer <UnitMarker> ou <Pictogram>.
+ */
 export function HexIcon({
   pictogram,
   color = '#8b5cf6',
@@ -64,40 +67,6 @@ export function HexIcon({
           ))}
         </g>
       ) : null}
-    </svg>
-  );
-}
-
-/** Pictogramme seul, sans hexagone. */
-export function Pictogram({
-  id,
-  size = 20,
-  color = 'currentColor',
-  strokeWidth = PICTOGRAM_STROKE,
-  className,
-}: {
-  id: PictogramId;
-  size?: number;
-  color?: string;
-  strokeWidth?: number;
-  className?: string;
-}) {
-  return (
-    <svg
-      className={className}
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      aria-hidden
-      fill="none"
-      stroke={color}
-      strokeWidth={strokeWidth}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {PICTOGRAMS[id].map((d, i) => (
-        <path key={i} d={d} />
-      ))}
     </svg>
   );
 }

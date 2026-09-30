@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import {
   gameTimeAt,
+  type ChatMessage,
   type ClockState,
   type GameMeta,
   type GameNotification,
@@ -19,6 +20,13 @@ export interface StoredNotification {
 }
 
 const MAX_NOTIFICATIONS = 150;
+const MAX_CHAT = 400;
+
+export interface Notice {
+  id: number;
+  level: 'info' | 'warn';
+  text: string;
+}
 
 /** État de la partie tel que reçu du serveur (ou du moteur local). */
 export interface GameStore {
@@ -31,6 +39,12 @@ export interface GameStore {
   notifications: StoredNotification[];
   /** Incrémenté à chaque changement de `view` (abonnés hors React). */
   viewVersion: number;
+  /** Messagerie : messages reçus (tous canaux), du plus ancien au plus récent. */
+  chat: ChatMessage[];
+  /** Dernier identifiant lu par canal. */
+  chatRead: Record<string, number>;
+  /** Avis de l'administration (bandeau). */
+  notices: Notice[];
 
   attach(conn: GameConnection | null): void;
   welcome(w: WelcomeEvent): void;
@@ -38,6 +52,11 @@ export interface GameStore {
   setClock(c: ClockState): void;
   notify(items: GameNotification[]): void;
   markAllRead(): void;
+  markRead(id: number): void;
+  receiveChat(messages: ChatMessage[]): void;
+  markChannelRead(channel: string): void;
+  notice(n: Omit<Notice, 'id'>): void;
+  dismissNotice(id: number): void;
   reset(): void;
 }
 
@@ -52,6 +71,9 @@ export const useGame = create<GameStore>((set, get) => ({
   view: null,
   notifications: [],
   viewVersion: 0,
+  chat: [],
+  chatRead: {},
+  notices: [],
 
   attach(conn) {
     set({ connection: conn });
@@ -87,8 +109,39 @@ export const useGame = create<GameStore>((set, get) => ({
       notifications: s.notifications.map((n) => (n.read ? n : { ...n, read: true })),
     }));
   },
+  markRead(id) {
+    set((s) => ({
+      notifications: s.notifications.map((n) => (n.id === id ? { ...n, read: true } : n)),
+    }));
+  },
+  receiveChat(messages) {
+    if (!messages.length) return;
+    set((s) => {
+      const byId = new Map(s.chat.map((m) => [m.id, m]));
+      for (const m of messages) byId.set(m.id, m);
+      const chat = [...byId.values()].sort((a, b) => a.id - b.id).slice(-MAX_CHAT);
+      return { chat };
+    });
+  },
+  markChannelRead(channel) {
+    const last = get()
+      .chat.filter((m) => m.channel === channel)
+      .reduce((m, x) => Math.max(m, x.id), 0);
+    if (!last || (get().chatRead[channel] ?? 0) >= last) return;
+    set((s) => ({ chatRead: { ...s.chatRead, [channel]: last } }));
+    get().connection?.markChatRead?.(channel, last);
+  },
+  notice(n) {
+    set((s) => ({ notices: [...s.notices.slice(-2), { ...n, id: ++notifSeq }] }));
+  },
+  dismissNotice(id) {
+    set((s) => ({ notices: s.notices.filter((n) => n.id !== id) }));
+  },
   reset() {
     set({
+      chat: [],
+      chatRead: {},
+      notices: [],
       connection: null,
       status: 'closed',
       meta: null,
@@ -119,6 +172,9 @@ export function bindConnection(conn: GameConnection): () => void {
     conn.on('diff', (d) => useGame.getState().diff(d)),
     conn.on('clock', (c) => useGame.getState().setClock(c)),
     conn.on('notify', (items) => useGame.getState().notify(items)),
+    conn.on('chat', (m) => useGame.getState().receiveChat([m])),
+    conn.on('chatHistory', (list) => useGame.getState().receiveChat(list)),
+    conn.on('notice', (n) => useGame.getState().notice(n)),
   ];
   conn.start();
   return () => {

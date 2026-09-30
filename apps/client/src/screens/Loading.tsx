@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Button, HexIcon } from '@redline/ui';
+import { Button, Icon, Prompt } from '@redline/ui';
 import { navigate } from '../router.js';
 
 export function LoadingScreen({ text }: { text?: string }) {
@@ -7,7 +7,10 @@ export function LoadingScreen({ text }: { text?: string }) {
   return (
     <div className="screen screen--center" role="status">
       <div className="loading">
-        <HexIcon pictogram="city" color="var(--rl-violet)" size={56} className="loading__hex" />
+        <Prompt path={[t('app.loadingPath')]} />
+        <div className="loading__bar" aria-hidden>
+          <span />
+        </div>
         <p>{text ?? t('app.loading')}</p>
       </div>
     </div>
@@ -18,12 +21,16 @@ export function ErrorScreen({ message }: { message: string }) {
   const { t } = useTranslation();
   return (
     <div className="screen screen--center" role="alert">
-      <div className="loading">
-        <HexIcon pictogram="unknown" color="var(--rl-red)" size={56} />
-        <p>{t('app.error')}</p>
-        {message ? <p className="muted small">{message}</p> : null}
+      <div className="loading loading--error">
+        <Prompt path={[t('app.errorPath')]} caret={false} />
+        <p className="loading__err">
+          <Icon name="warning" size={16} /> {t('app.error')}
+        </p>
+        {message ? <pre className="loading__msg">{message}</pre> : null}
         <div className="row">
-          <Button onClick={() => window.location.reload()}>{t('app.retry')}</Button>
+          <Button variant="primary" onClick={() => window.location.reload()}>
+            {t('app.retry')}
+          </Button>
           <Button variant="ghost" onClick={() => navigate('/')}>
             {t('app.back')}
           </Button>

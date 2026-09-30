@@ -1,40 +1,82 @@
-/* Red Line — jetons de design communs au jeu et au back-office.
-   Style : infographie militaire sur imagerie satellite sombre. */
+/* Red Line — jetons de design communs au jeu, à la carte et au back-office.
+   Direction artistique « Terminal tactique » : console de commandement moderne, extrêmement propre.
+   Toutes les couleurs de l'interface viennent d'ici ; ne jamais coder une couleur en dur ailleurs. */
 :root {
-  /* Fond et panneaux */
-  --rl-bg: #070b14; /* bleu nuit, fond de page */
-  --rl-sea: #05080f; /* mers presque noires */
-  --rl-panel: rgba(12, 22, 44, 0.86); /* cartouches bleu marine semi-opaques */
-  --rl-panel-solid: #0c162c;
-  --rl-panel-border: rgba(140, 170, 220, 0.28);
-  --rl-legend: rgba(222, 228, 236, 0.9); /* légende gris clair translucide */
-  --rl-legend-text: #1a2233;
+  color-scheme: dark;
 
-  /* Accents */
-  --rl-orange: #f39a2b; /* portées, trajectoires, valeurs */
-  --rl-orange-strong: #ffb347;
-  --rl-orange-dim: rgba(243, 154, 43, 0.28);
-  --rl-violet: #8b5cf6; /* territoire du joueur */
-  --rl-violet-glow: #b794ff;
-  --rl-navy: #13264d; /* étiquettes */
-  --rl-red: #e5343a; /* menaces critiques uniquement */
-  --rl-green: #3ecf6e;
-  --rl-yellow: #f2d23c;
+  /* ——— Surfaces ——— */
+  --rl-bg: #0a0e13; /* fond de page */
+  --rl-panel: #0e141b; /* panneaux, fenêtres */
+  --rl-panel-2: #121a23; /* en-têtes, lignes alternées, champs */
+  --rl-panel-3: #17212c; /* survol */
+  --rl-glass: rgba(14, 20, 27, 0.94); /* panneau posé sur la carte */
+  --rl-scrim: rgba(5, 8, 11, 0.72); /* voile des fenêtres modales */
+  --rl-line: #1e2a36; /* filets 1 px */
+  --rl-line-strong: #2c3b4a; /* filets accentués, bordures de champs */
 
-  /* Texte */
-  --rl-text: #ffffff;
-  --rl-text-dim: #a9b6cc;
-  --rl-text-muted: #6f7d96;
+  /* ——— Texte ——— */
+  --rl-text: #d6dde6;
+  --rl-text-dim: #7d8b99; /* texte atténué (contraste AA sur --rl-panel) */
+  --rl-text-faint: #56626f; /* éléments décoratifs, désactivés */
+  --rl-text-strong: #f2f5f8;
 
-  /* Typographie */
-  --rl-font-title: 'Barlow Condensed', 'Arial Narrow', sans-serif;
-  --rl-font-ui: 'IBM Plex Sans', system-ui, sans-serif;
-  --rl-font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  /* ——— Accents (sens fixe) ——— */
+  --rl-cyan: #4cc9f0; /* interface, sélection, invite de commande */
+  --rl-cyan-dim: rgba(76, 201, 240, 0.12);
+  --rl-cyan-line: rgba(76, 201, 240, 0.42);
+  --rl-green: #3ddc84; /* ses forces, succès */
+  --rl-green-dim: rgba(61, 220, 132, 0.12);
+  --rl-amber: #ffb020; /* valeurs, portées, trajectoires */
+  --rl-amber-dim: rgba(255, 176, 32, 0.12);
+  --rl-red: #ff4d5e; /* menaces critiques uniquement */
+  --rl-red-dim: rgba(255, 77, 94, 0.13);
+  --rl-violet: #9b6bff; /* territoire du joueur */
+  --rl-violet-dim: rgba(155, 107, 255, 0.14);
+  --rl-blue: #3a86ff; /* information */
+  --rl-blue-dim: rgba(58, 134, 255, 0.14);
 
-  /* Géométrie */
-  --rl-radius: 2px;
-  --rl-bracket: 10px; /* longueur des coins en crochets */
+  /* ——— Typographie ——— */
+  --rl-font-mono:
+    'JetBrains Mono', ui-monospace, 'Cascadia Mono', 'SFMono-Regular', Consolas, monospace;
+  --rl-fs-2xs: 10px;
+  --rl-fs-xs: 10.5px;
+  --rl-fs-sm: 11.5px;
+  --rl-fs: 12.5px;
+  --rl-fs-md: 13.5px;
+  --rl-fs-lg: 15px;
+  --rl-fs-xl: 20px;
+  --rl-fs-2xl: 28px;
+  --rl-track: 0.12em; /* espacement des titres en majuscules */
+
+  /* ——— Géométrie ——— */
+  --rl-radius: 4px;
+  --rl-radius-sm: 3px;
   --rl-touch: 44px; /* taille tactile minimale */
   --rl-gap: 8px;
-  --rl-shadow: 0 6px 24px rgba(0, 0, 0, 0.55);
+  --rl-row: 30px; /* hauteur d'une ligne de tableau (ordinateur) */
+  --rl-bar: 34px; /* hauteur d'une barre de titre */
+  --rl-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.35);
+  --rl-shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.4);
+  --rl-focus: 0 0 0 2px var(--rl-bg), 0 0 0 3px var(--rl-cyan);
+
+  /* ——— Mouvement (court, sans fioriture) ——— */
+  --rl-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --rl-dur: 150ms;
+
+  /* ——— Alias hérités (back-office, carte) : ne pas utiliser dans du nouveau code ——— */
+  --rl-sea: #05080f;
+  --rl-panel-solid: var(--rl-panel);
+  --rl-panel-border: var(--rl-line-strong);
+  --rl-legend: var(--rl-glass);
+  --rl-legend-text: var(--rl-text);
+  --rl-orange: var(--rl-amber);
+  --rl-orange-strong: #ffc452;
+  --rl-orange-dim: var(--rl-amber-dim);
+  --rl-violet-glow: #b99bff;
+  --rl-navy: var(--rl-panel-2);
+  --rl-yellow: #f2d23c;
+  --rl-text-muted: var(--rl-text-dim);
+  --rl-font-title: var(--rl-font-mono);
+  --rl-font-ui: var(--rl-font-mono);
+  --rl-bracket: 10px;
 }

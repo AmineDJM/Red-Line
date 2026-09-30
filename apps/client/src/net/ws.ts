@@ -6,7 +6,7 @@ import {
   type ServerMessage,
 } from '@redline/shared';
 import { ClockSync } from './clockSync.js';
-import { Emitter, type GameConnection, type OrderOutcome } from './connection.js';
+import { Emitter, type ChatChannel, type GameConnection, type OrderOutcome } from './connection.js';
 
 type WsCtor = new (url: string) => WebSocket;
 
@@ -180,6 +180,23 @@ export class WsGameConnection extends Emitter implements GameConnection {
       case 'error':
         this.emit('error', { code: msg.code, message: msg.message });
         break;
+      case 'chat':
+        this.emit('chat', msg.message);
+        break;
+      case 'chatHistory':
+        this.emit('chatHistory', msg.messages);
+        break;
+      case 'notice':
+        this.emit('notice', { level: msg.level, text: msg.text });
+        break;
+      case 'moved':
+        // Partie déplacée vers une autre instance : reconnexion immédiate (même URL).
+        try {
+          this.ws?.close(4000);
+        } catch {
+          /* déjà fermée */
+        }
+        break;
     }
   }
 
@@ -215,6 +232,14 @@ export class WsGameConnection extends Emitter implements GameConnection {
 
   setPaused(paused: boolean) {
     this.send({ t: 'control', paused });
+  }
+
+  sendChat(channel: ChatChannel, text: string, to?: string) {
+    this.send({ t: 'chat', channel, text, ...(to ? { to } : {}) });
+  }
+
+  markChatRead(channel: string, upTo: number) {
+    this.send({ t: 'chatRead', channel, upTo });
   }
 
   serverNow(): number {

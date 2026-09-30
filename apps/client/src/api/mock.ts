@@ -4,17 +4,39 @@
  */
 import type { FeatureCollection } from 'geojson';
 import type {
+  BattleReport,
   CreateGameBody,
+  CreateLobbyBody,
   GameMeta,
+  LegalDocRef,
   NationDef,
   NationId,
+  NationInfo,
   ProvinceDef,
   PublicUser,
+  ResearchNode,
   ScenarioSummary,
   WeaponSystem,
 } from '@redline/shared';
 import { FALLBACK_TILES, FONTS } from '../config.js';
+import { bundledBalance, bundledResearch } from '../lib/staticData.js';
 import { loadBasemap, probeBinary } from './http.js';
+import { demoCatalog, demoResearch } from './mockCatalog.js';
+import {
+  DEMO_COSMETICS,
+  DEMO_PACKS,
+  DEMO_SEASONS,
+  demoBattleReport,
+  demoLegal,
+  demoLobby,
+  demoMyGames,
+  demoNationsInfo,
+  demoRankings,
+  demoStats,
+  demoTimelapse,
+  demoWallet,
+  withDemoBuildings,
+} from './mockRest.js';
 import type { Api, BasemapData, Credentials, RegisterInput, TilesInfo } from './types.js';
 
 export const MOCK_GAME_ID = 'demo';
@@ -104,10 +126,28 @@ async function loadMinimalFixtures(): Promise<MockWorld> {
 /** Données du mode démonstration : vraies données si disponibles (?fixtures=1 force les fixtures). */
 export function loadFixtures(): Promise<MockWorld> {
   const forceFixtures = new URLSearchParams(window.location.search).get('fixtures') === '1';
-  fixtures ??= (async () =>
-    (forceFixtures ? null : await loadRealData()) ?? loadMinimalFixtures())();
+  fixtures ??= (async () => {
+    const w = (forceFixtures ? null : await loadRealData()) ?? (await loadMinimalFixtures());
+    // Démonstration : prix en dollars et catalogue complet (identifiants de data/catalog-ids.json).
+    return { ...w, catalog: await demoCatalog(w.catalog) };
+  })();
   return fixtures;
 }
+
+/** Arbre technologique de démonstration : data/research s'il existe, sinon portes fixes. */
+export async function loadDemoResearch(): Promise<ResearchNode[]> {
+  const nodes = await bundledResearch().catch(() => []);
+  return nodes.length ? nodes : demoResearch();
+}
+
+/** Accès à la partie simulée en cours (rapports de bataille détaillés). */
+export const mockSession: {
+  battle?: (id: string) => BattleReport | null;
+} = {};
+
+const WALLET = { balance: 1080 };
+const OWNED = new Set(['theme-amber']);
+const LEGAL_KEY = 'rl.mock.legal';
 
 const guestUser: PublicUser = {
   id: 'guest-demo',
@@ -158,7 +198,12 @@ export class MockApi implements Api {
     return (await loadFixtures()).nations;
   }
   async provinces() {
-    return (await loadFixtures()).provinces;
+    // Démo : revenus affichés en dollars (≈ budget de défense réel réparti sur les provinces).
+    // La simulation locale garde les valeurs d'origine.
+    return (await loadFixtures()).provinces.map((p) => ({
+      ...p,
+      income: { ...p.income, money: Math.round(p.income.money * 28_000) },
+    }));
   }
   async provincesGeoJSON() {
     return (await loadFixtures()).geo;
@@ -200,12 +245,137 @@ export class MockApi implements Api {
     return mockMeta();
   }
   async game(): Promise<{ game: GameMeta; me: NationId }> {
-    let me = MOCK_DEFAULT_NATION;
+    return { game: mockMeta(), me: mockNation() };
+  }
+
+  // ——— Phases 2+ ———
+  researchNodes() {
+    return loadDemoResearch();
+  }
+  async balance() {
+    return withDemoBuildings(await bundledBalance());
+  }
+  async nationsInfo(): Promise<NationInfo[]> {
+    const f = await loadFixtures();
+    return demoNationsInfo(f.nations, f.provinces, f.catalog);
+  }
+  async myGames() {
+    return demoMyGames(mockNation());
+  }
+  async lobby() {
+    return demoLobby((await loadFixtures()).nations);
+  }
+  async createLobby(body: CreateLobbyBody): Promise<GameMeta> {
+    remember(body.nationId);
+    return { ...mockMeta(), mode: 'multi', name: body.name, maxPlayers: body.maxPlayers };
+  }
+  async joinLobby(_id: string, nationId: NationId): Promise<GameMeta> {
+    remember(nationId);
+    return mockMeta();
+  }
+  async leaveLobby() {}
+  async startLobby(): Promise<GameMeta> {
+    return mockMeta();
+  }
+  async spectate(): Promise<GameMeta> {
+    return { ...mockMeta(), spectator: true };
+  }
+  async timelapse() {
+    const f = await loadFixtures();
+    return demoTimelapse(f.provinces, mockNation());
+  }
+  async stats() {
+    const f = await loadFixtures();
+    const me = mockNation();
+    return demoStats(me, demoTimelapse(f.provinces, me), f.catalog);
+  }
+  async battleReport(_gameId: string, reportId: string): Promise<BattleReport> {
+    const r = mockSession.battle?.(reportId);
+    if (!r) throw new Error('not_found');
+    return r;
+  }
+  async pushKey() {
+    return null;
+  }
+  async pushSubscribe() {}
+  async pushUnsubscribe() {}
+  async shopPacks() {
+    return DEMO_PACKS;
+  }
+  async wallet() {
+    return demoWallet(WALLET.balance);
+  }
+  async checkout(packId: string) {
+    const p = DEMO_PACKS.find((x) => x.id === packId);
+    if (p) WALLET.balance += p.amount + p.bonus;
+    return { url: '' };
+  }
+  async accelerate(_g: string, _t: unknown, hours: number) {
+    const cost = Math.ceil(hours * 10);
+    if (WALLET.balance < cost) return { ok: false, balance: WALLET.balance };
+    WALLET.balance -= cost;
+    return { ok: true, balance: WALLET.balance };
+  }
+  async cosmetics() {
+    return { items: DEMO_COSMETICS, owned: [...OWNED] };
+  }
+  async buyCosmetic(id: string) {
+    const c = DEMO_COSMETICS.find((x) => x.id === id);
+    if (!c || WALLET.balance < c.price || OWNED.has(id))
+      return { ok: false, balance: WALLET.balance };
+    WALLET.balance -= c.price;
+    OWNED.add(id);
+    return { ok: true, balance: WALLET.balance };
+  }
+  async rankings(season?: string) {
+    return {
+      season: DEMO_SEASONS.find((s) => s.id === season) ?? DEMO_SEASONS[0]!,
+      entries: demoRankings(),
+    };
+  }
+  async seasons() {
+    return DEMO_SEASONS;
+  }
+  async legal(doc: LegalDocRef['id']) {
+    return demoLegal(doc);
+  }
+  async acceptLegal() {
     try {
-      me = sessionStorage.getItem(NATION_KEY) ?? MOCK_DEFAULT_NATION;
+      localStorage.setItem(LEGAL_KEY, '3');
     } catch {
       /* stockage indisponible */
     }
-    return { game: mockMeta(), me };
+  }
+  async legalPending(): Promise<LegalDocRef[]> {
+    // Démonstration : l'écran d'acceptation s'affiche avec ?legal=1 tant qu'il n'a pas été validé.
+    const force = new URLSearchParams(window.location.search).get('legal') === '1';
+    let accepted = false;
+    try {
+      accepted = localStorage.getItem(LEGAL_KEY) === '3';
+    } catch {
+      accepted = true;
+    }
+    return force && !accepted
+      ? [
+          { id: 'cgu', version: 3 },
+          { id: 'privacy', version: 3 },
+        ]
+      : [];
+  }
+}
+
+function mockNation(): NationId {
+  try {
+    return sessionStorage.getItem(NATION_KEY) ?? MOCK_DEFAULT_NATION;
+  } catch {
+    return MOCK_DEFAULT_NATION;
+  }
+}
+
+function remember(nationId: NationId) {
+  try {
+    sessionStorage.setItem(NATION_KEY, nationId);
+  } catch {
+    /* stockage indisponible */
   }
 }

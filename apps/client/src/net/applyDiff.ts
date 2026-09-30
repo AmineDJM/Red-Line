@@ -1,10 +1,11 @@
-import type { PlayerView, UnitView, ViewDiff } from '@redline/shared';
+import { VIEW_SECTIONS, type PlayerView, type UnitView, type ViewDiff } from '@redline/shared';
 
 /**
  * Applique un diff à une vue, sans muter l'entrée (les parties inchangées sont partagées,
  * ce qui permet aux abonnés de comparer par référence).
  * Contrat (view.ts) : les champs absents n'ont pas changé ; `units.upsert` remplace l'unité entière ;
- * `nations` et `provinces` remplacent les entrées listées.
+ * `nations` et `provinces` remplacent les entrées listées ; les autres sections (économie, recherche,
+ * renseignement…) sont remplacées en bloc.
  */
 export function applyDiff(view: PlayerView, diff: ViewDiff): PlayerView {
   const next: PlayerView = { ...view, time: Math.max(view.time, diff.time) };
@@ -16,8 +17,13 @@ export function applyDiff(view: PlayerView, diff: ViewDiff): PlayerView {
     for (const u of diff.units.upsert) units[u.id] = u;
     next.units = units;
   }
-  if (diff.economy) next.economy = diff.economy;
-  if (diff.victory) next.victory = diff.victory;
+  // Sections des phases 2+ (recherche, marché, renseignement…) : remplacées en bloc.
+  const src = diff as unknown as Record<string, unknown>;
+  const dst = next as unknown as Record<string, unknown>;
+  for (const k of VIEW_SECTIONS) {
+    if (k === 'nations' || k === 'provinces') continue;
+    if (src[k] !== undefined) dst[k] = src[k];
+  }
   return next;
 }
 
