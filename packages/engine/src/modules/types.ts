@@ -5,6 +5,7 @@ import type {
   OrderErrorCode,
   PlayerView,
   ProvinceId,
+  Resource,
 } from '@redline/shared';
 import type { GameSetup, GameStats, OrderResult, SystemCommand } from '../api.js';
 import type { EngineState, Unit } from '../state/types.js';
@@ -31,10 +32,21 @@ export interface ModEvent {
   d?: unknown;
 }
 
+export interface ModuleIncome {
+  money: number;
+  res: Record<Resource, number>;
+  upkeep: number;
+}
+
 export type OrderHandler = (state: EngineState, n: NationId, order: Order) => OrderResult;
 export type SystemHandler = (state: EngineState, cmd: SystemCommand) => OrderResult;
 
 export interface ModuleHooks {
+  /**
+   * Revenus et entretien journaliers d'une nation : remplace le calcul du cœur (revenus des provinces,
+   * entretien par unité) si un module renvoie une valeur (premier module non nul).
+   */
+  income?(state: EngineState, n: NationId): ModuleIncome | null;
   /** Après le tick journalier du cœur (revenus de base déjà versés). */
   onDailyTick?(state: EngineState): void;
   /** Avant la suppression d'une unité détruite. */
@@ -92,6 +104,24 @@ export interface SharedBoard {
   nuclearAuth: Record<NationId, true>;
   /** eco : nations en mobilisation générale. */
   mobilized: Record<NationId, true>;
+  /**
+   * eco : bâtiments fixes de défense et de détection (site de défense aérienne, batterie côtière,
+   * station radar, silo), clé "<province>:<bâtiment>". Lu par mil (zones d'engagement et de détection) ;
+   * chaque changement est aussi annoncé par les signaux `static_defense` et `radar_station`.
+   */
+  sites: Record<string, StaticSite>;
+}
+
+export interface StaticSite {
+  n: NationId;
+  pid: ProvinceId;
+  b: 'air_defense_site' | 'coastal_battery' | 'radar_station' | 'missile_silo';
+  level: number;
+  /** Santé 0..1 (0 = hors service). */
+  h: number;
+  at: [number, number];
+  /** Portée d'engagement ou de détection (km), selon le niveau. */
+  rangeKm: number;
 }
 
 export interface EngineModule {

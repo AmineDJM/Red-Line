@@ -3,6 +3,7 @@ import type { MovementKind, Resource } from './catalog.js';
 import type { BuildingType } from './map.js';
 import type {
   BuildingView,
+  EconomyDetailView,
   LicenceView,
   LogisticsView,
   MarketView,
@@ -149,6 +150,11 @@ export interface ProductionItem {
   systemId: SystemId;
   startedAt: GameTime;
   completesAt: GameTime;
+  // ——— Phases 2+ (optionnels) ———
+  /** Éléments livrés à la fin (série). */
+  count?: number;
+  /** Fabrication locale, importation au catalogue d'un fournisseur ou marché noir. */
+  source?: 'factory' | 'import' | 'black_market';
 }
 
 export interface EconomyView {
@@ -157,6 +163,8 @@ export interface EconomyView {
   /** Revenu journalier estimé. */
   incomePerDay: { money: number } & Partial<Record<Resource, number>>;
   production: ProductionItem[];
+  /** Tableau de bord économique détaillé (économie réelle, propre nation). */
+  detail?: EconomyDetailView;
 }
 
 export interface VictoryView {

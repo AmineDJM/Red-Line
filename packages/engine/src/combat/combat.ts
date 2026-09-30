@@ -265,17 +265,27 @@ export function jammingFor(state: EngineState, u: Unit): number {
   return best;
 }
 
-export function destroyUnit(state: EngineState, u: Unit, killer: Unit | null): void {
-  callHook('onUnitDestroyed', state, u, killer);
+/**
+ * Supprime une unité détruite. `quiet` : retrait sans destruction (porteur arrivé, unité cédée) — ni
+ * crochet onUnitDestroyed, ni notification.
+ */
+export function destroyUnit(
+  state: EngineState,
+  u: Unit,
+  killer: Unit | null,
+  opts: { quiet?: boolean } = {},
+): void {
+  if (!opts.quiet) callHook('onUnitDestroyed', state, u, killer);
   const t = state.time;
   const at = unitPosAt(state, u, t);
   const seers: string[] = [];
   for (const n of sortedKeys(state.sight)) if (sightLevel(state, n, u.id) > 0) seers.push(n);
-  notify(
-    state,
-    { kind: 'unit_destroyed', time: t, at, unitId: u.id, owner: u.owner, systemId: u.sys },
-    [u.owner, ...(killer ? [killer.owner] : []), ...seers],
-  );
+  if (!opts.quiet)
+    notify(
+      state,
+      { kind: 'unit_destroyed', time: t, at, unitId: u.id, owner: u.owner, systemId: u.sys },
+      [u.owner, ...(killer ? [killer.owner] : []), ...seers],
+    );
   removeUnitPairs(state, u.id);
   for (const n of seers) {
     const k = state.know[n];

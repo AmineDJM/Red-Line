@@ -10,8 +10,11 @@ import {
   type ProvinceId,
   type Vec3,
   type WeaponSystem,
+  MODIFIER_KEYS,
+  type Orbat,
+  type ResearchNode,
 } from '@redline/shared';
-import type { World } from '../api.js';
+import type { World, WorldExtras } from '../api.js';
 import { NavGraph } from '../nav/graph.js';
 
 /** Rayon autour du point de ville dans lequel une unité capture la province (km). */
@@ -38,7 +41,12 @@ export function wi(world: World): WorldInternal {
   return world.internal as WorldInternal;
 }
 
-export function buildWorld(map: MapData, catalog: WeaponSystem[], balance: Balance): World {
+export function buildWorld(
+  map: MapData,
+  catalog: WeaponSystem[],
+  balance: Balance,
+  extras?: WorldExtras,
+): World {
   const cellProv = new Map<string, ProvinceId>();
   for (const cell of Object.keys(map.cells.cells).sort())
     cellProv.set(cell, map.cells.cells[cell]!);
@@ -84,7 +92,64 @@ export function buildWorld(map: MapData, catalog: WeaponSystem[], balance: Balan
     ),
     systemIds: [...catalogMap.keys()].sort(),
   };
-  return { map, catalog: catalogMap, balance, internal };
+  const world: {
+    -readonly [K in keyof World]: World[K];
+  } = { map, catalog: catalogMap, balance, internal };
+  if (extras) Object.assign(world, loadExtras(catalogMap, extras));
+  return world;
+}
+
+/**
+ * Données des phases 2+ : arbre de recherche et ORBAT, indexés et triés. Les incohérences ne sont
+ * jamais bloquantes : elles sont listées dans `loadWarnings` (rapport de chargement).
+ */
+function loadExtras(
+  catalog: Map<string, WeaponSystem>,
+  extras: WorldExtras,
+): Pick<World, 'research' | 'orbats' | 'loadWarnings'> {
+  const warnings: string[] = [];
+  const out: { -readonly [K in 'research' | 'orbats' | 'loadWarnings']?: World[K] } = {};
+  const known = new Set<string>(MODIFIER_KEYS);
+  if (extras.research) {
+    const research = new Map<string, ResearchNode>();
+    for (const n of [...extras.research].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))) {
+      if (research.has(n.id)) warnings.push(`recherche : nœud en double ${n.id}`);
+      research.set(n.id, n);
+      for (const k of Object.keys(n.effects).sort())
+        if (!known.has(k))
+          warnings.push(`recherche : clé d'effet inconnue ${k} (${n.id}), ignorée`);
+    }
+    for (const n of research.values())
+      for (const r of n.requires)
+        if (!research.has(r)) warnings.push(`recherche : prérequis inconnu ${r} (${n.id})`);
+    for (const id of [...catalog.keys()].sort())
+      for (const r of catalog.get(id)!.requires)
+        if (!research.has(r)) warnings.push(`catalogue : porte de recherche inconnue ${r} (${id})`);
+    out.research = research;
+  }
+  if (extras.orbats) {
+    const sets = new Map<string, Map<NationId, Orbat>>();
+    for (const set of Object.keys(extras.orbats).sort()) {
+      const byNation = new Map<NationId, Orbat>();
+      const list = [...extras.orbats[set]!].sort((a, b) =>
+        a.nationId < b.nationId ? -1 : a.nationId > b.nationId ? 1 : 0,
+      );
+      for (const o of list) {
+        if (byNation.has(o.nationId))
+          warnings.push(`ORBAT ${set} : nation en double ${o.nationId}`);
+        byNation.set(o.nationId, o);
+        for (const it of o.inventory)
+          if (!catalog.has(it.systemId))
+            warnings.push(
+              `ORBAT ${set}/${o.nationId} : système absent du catalogue ${it.systemId}, ignoré`,
+            );
+      }
+      sets.set(set, byNation);
+    }
+    out.orbats = sets;
+  }
+  out.loadWarnings = warnings;
+  return out;
 }
 
 /**
