@@ -10,7 +10,7 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json",
-    "bench": "node --expose-gc --import tsx bench/real.ts"
+    "bench": "node --expose-gc bench/run.mjs real"
   },
   "dependencies": {
     "@msgpack/msgpack": "^3.1.3",
@@ -18,6 +18,7 @@
     "h3-js": "^4.5.0"
   },
   "devDependencies": {
+    "esbuild": "^0.28.2",
     "fast-check": "^4.10.2"
   }
 }

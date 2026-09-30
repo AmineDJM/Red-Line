@@ -1,7 +1,6 @@
 // Chargement des vraies données du dépôt (data/), comme le serveur (apps/server/src/data/loader.ts).
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import {
   BalanceSchema,
   CatalogFileSchema,
@@ -30,8 +29,18 @@ export interface RealData {
   scenario: ScenarioFile;
 }
 
-const here = dirname(fileURLToPath(import.meta.url));
-export const DATA_DIR = join(here, '../../../data');
+/** Dossier data/ du dépôt : REDLINE_DATA_DIR, sinon premier parent du répertoire courant qui le contient. */
+function findDataDir(): string {
+  if (process.env.REDLINE_DATA_DIR) return process.env.REDLINE_DATA_DIR;
+  let dir = process.cwd();
+  for (;;) {
+    if (existsSync(join(dir, 'data/map/nations.json'))) return join(dir, 'data');
+    const up = dirname(dir);
+    if (up === dir) throw new Error('dossier data/ introuvable (REDLINE_DATA_DIR)');
+    dir = up;
+  }
+}
+export const DATA_DIR = findDataDir();
 
 function listOf(raw: unknown, key: string): unknown[] {
   if (Array.isArray(raw)) return raw;
