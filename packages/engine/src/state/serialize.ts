@@ -1,4 +1,4 @@
-import { MODULES } from '../modules/registry.js';
+import { MODULES, board } from '../modules/registry.js';
 import { decode, encode } from '@msgpack/msgpack';
 import type { World } from '../api.js';
 import { addToIndex } from './runtime.js';
@@ -77,6 +77,15 @@ export function rebuildRuntime(state: EngineState): void {
     }
   }
   state.mods ??= {};
+  // Migration : une sauvegarde antérieure à un module (partie de phase 1…) n'a pas son état ;
+  // le module est alors initialisé comme à la création, avec la configuration d'origine.
+  board(state);
+  const mods = state.mods as Record<string, unknown>;
+  for (const m of MODULES) {
+    if (mods[m.id] === undefined && m.init) {
+      m.init(state, { seed: state.setup.seed, players: state.setup.players });
+    }
+  }
   for (const m of MODULES) m.rebuild?.(state);
 }
 
