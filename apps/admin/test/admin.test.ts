@@ -207,6 +207,8 @@ describe('client d’API', () => {
     await api.nation.merge('xkx', 'srb', { scope: 'running_games', playerMessage: 'Fusion' });
     await api.listChat({ gameId: 'g', q: 'a b', limit: 5 });
     await api.research.revert('research.aero.gen5', 7);
+    await api.setPlayerAi('g-1', 'dza', true, 'hard');
+    await api.nation.reset('fra', { message: 'Annulation' });
     expect(calls).toEqual([
       {
         method: 'PUT',
@@ -224,6 +226,16 @@ describe('client d’API', () => {
         method: 'POST',
         path: '/admin/api/research/research.aero.gen5/revert',
         body: { revisionId: 7 },
+      },
+      {
+        method: 'POST',
+        path: '/admin/api/games/g-1/players/dza/ai',
+        body: { ai: true, aiLevel: 'hard' },
+      },
+      {
+        method: 'POST',
+        path: '/admin/api/map/nations/fra/reset',
+        body: { message: 'Annulation' },
       },
     ]);
     expect(query({ a: '', b: undefined, c: 0 })).toBe('?c=0');
@@ -344,6 +356,22 @@ describe('serveur factice : exploitation', () => {
     const lobby = games.find((g) => g.game.status === 'lobby')!;
     await expect(api.worldEvent(lobby.game.id, { event: 'pandemic' })).rejects.toMatchObject({
       status: 409,
+    });
+
+    // IA imposée puis nation rendue (joueur humain) ; nation sans joueur : 404.
+    const human = running.players.find((p) => p.userId && !p.isAi)!;
+    expect((await api.setPlayerAi(running.game.id, human.nationId, true)).player.aiForced).toBe(
+      true,
+    );
+    const after = (await api.listGames()).games.find((g) => g.game.id === running.game.id)!;
+    expect(after.players.find((p) => p.nationId === human.nationId)).toMatchObject({
+      isAi: true,
+      aiForced: true,
+    });
+    await api.setPlayerAi(running.game.id, human.nationId, false);
+    const aiOnly = running.players.find((p) => !p.userId)!;
+    await expect(api.setPlayerAi(running.game.id, aiOnly.nationId, true)).rejects.toMatchObject({
+      status: 404,
     });
 
     const { messages } = await api.listChat({ q: 'pas cher' });

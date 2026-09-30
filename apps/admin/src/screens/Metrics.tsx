@@ -99,6 +99,20 @@ export function MetricsScreen() {
             {data.stateBytes !== undefined && (
               <Stat k={T.metrics.state} v={bytes(data.stateBytes)} />
             )}
+            {data.eventLoopP99Ms !== undefined && (
+              <Stat
+                k={T.metrics.lagP99}
+                v={`${num(data.eventLoopP99Ms, 0)} ms`}
+                d={`${T.metrics.lagMax} : ${num(data.eventLoopMaxMs ?? 0, 0)} ms`}
+              />
+            )}
+            {data.flushesPerMin !== undefined && (
+              <Stat
+                k={T.metrics.flushes}
+                v={num(data.flushesPerMin)}
+                d={`${T.metrics.flushCost} : ${num(data.flushMsPerMin ?? 0)} ms · ${T.metrics.flushMax} : ${num(data.flushMaxMs ?? 0, 0)} ms${data.gamesBehind ? ` · ${T.metrics.behind} : ${data.gamesBehind}` : ''}`}
+              />
+            )}
             {data.chatMessagesPerMin !== undefined && (
               <Stat
                 k={T.metrics.chat}

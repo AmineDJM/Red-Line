@@ -261,6 +261,16 @@ export function createApi(t: Transport, onUnauthorized?: () => void) {
     listGames: () => req<{ games: AdminGame[] }>('GET', '/admin/api/games'),
     pauseGame: (id: string) => req<{ ok: boolean }>('POST', `/admin/api/games/${enc(id)}/pause`),
     resumeGame: (id: string) => req<{ ok: boolean }>('POST', `/admin/api/games/${enc(id)}/resume`),
+    /** IA imposée à la place du joueur (ai: true) ou nation rendue au joueur (ai: false). */
+    setPlayerAi: (
+      id: string,
+      nationId: string,
+      ai: boolean,
+      aiLevel: 'easy' | 'normal' | 'hard' = 'normal',
+    ) =>
+      req<{
+        player: { nationId: string; userId: string | null; isAi: boolean; aiForced: boolean };
+      }>('POST', `/admin/api/games/${enc(id)}/players/${enc(nationId)}/ai`, { ai, aiLevel }),
     worldEvent: (id: string, b: WorldEventBody) =>
       req<{ ok: boolean }>('POST', `/admin/api/games/${enc(id)}/event`, b),
     metrics: () => req<Metrics & MetricsExtra>('GET', '/admin/api/metrics'),

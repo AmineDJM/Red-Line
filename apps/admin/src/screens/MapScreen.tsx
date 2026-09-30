@@ -171,6 +171,7 @@ function NationsTab({
     load: () => api.nation.get(id!),
     save: (d, m) => api.nation.save(id!, d, m),
     revert: (r, m) => api.nation.revert(id!, r, m),
+    reset: (m) => api.nation.reset(id!, m),
     schema: NationDefSchema,
     labelFor,
     role: T.roles.balance,
@@ -396,6 +397,7 @@ function NationsTab({
             current={v.original}
             busy={v.busy}
             onRestore={(r) => void v.restore(r)}
+            onReset={() => void v.reset()}
             labelFor={labelFor}
           />
         </div>
