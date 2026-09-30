@@ -154,6 +154,9 @@ function dispatchOrder(state: EngineState, n: NationId, order: Order): OrderResu
     }
     case 'produce': {
       if (!state.nations[n]!.alive) return fail('not_allowed', 'Nation vaincue.');
+      // Un module peut prendre la production en charge (séries, importations, licences).
+      const mod = moduleOrder(state, n, order);
+      if (mod) return mod;
       const err = startProduction(state, n, order.provinceId, order.systemId);
       return err ? fail(err, messageFor(err)) : { ok: true };
     }

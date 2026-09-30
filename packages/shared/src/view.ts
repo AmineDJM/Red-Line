@@ -136,6 +136,11 @@ export interface ProductionItem {
   systemId: SystemId;
   startedAt: GameTime;
   completesAt: GameTime;
+  // ——— Phases 2+ (optionnels) ———
+  /** Éléments livrés à la fin (série). */
+  count?: number;
+  /** Fabrication locale, importation au catalogue d'un fournisseur ou marché noir. */
+  source?: 'factory' | 'import' | 'black_market';
 }
 
 export interface EconomyView {

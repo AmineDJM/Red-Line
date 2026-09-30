@@ -1,7 +1,7 @@
 import type { GameNotification, NationId, Order, PlayerView } from '@redline/shared';
 import type { GameStats, OrderResult, SystemCommand } from '../api.js';
 import type { EngineState } from '../state/types.js';
-import type { EngineModule, ModEvent, ModuleHooks, ModuleId } from './types.js';
+import type { EngineModule, ModEvent, ModuleHooks, ModuleId, ModuleIncome } from './types.js';
 import { ecoModule } from './eco/index.js';
 import { milModule } from './mil/index.js';
 import { intelModule } from './intel/index.js';
@@ -60,6 +60,15 @@ export function unitModifier(
     if (typeof v === 'number' && Number.isFinite(v)) f *= v;
   }
   return f;
+}
+
+/** Revenus journaliers fournis par un module (null = calcul du cœur). */
+export function moduleIncome(state: EngineState, n: NationId): ModuleIncome | null {
+  for (const m of MODULES) {
+    const r = m.hooks?.income?.(state, n);
+    if (r) return r;
+  }
+  return null;
 }
 
 export function canImport(state: EngineState, n: NationId, systemId: string) {

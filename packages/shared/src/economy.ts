@@ -93,6 +93,8 @@ export interface BuildingView {
   health: number;
   /** Réparation en cours. */
   repairUntil?: GameTime | null;
+  /** Construction en cours (bâtiment pas encore opérationnel). */
+  buildUntil?: GameTime | null;
 }
 
 /** Effets des bâtiments (data/balance) : production, ressources, bases, recherche. */

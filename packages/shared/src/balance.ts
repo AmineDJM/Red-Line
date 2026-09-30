@@ -68,6 +68,38 @@ export const BalanceSchema = z.object({
       budgetMultiplier: z.number().positive().default(1),
       /** Part du budget liée aux provinces (conquérir rapporte, perdre coûte), le reste est national. */
       provinceShare: z.number().min(0).max(1).default(0.5),
+      /** Argent de départ : nombre de jours de budget (30 = un mois). */
+      startingDays: z.number().min(0).default(30),
+      /** Part commerciale du revenu (réduite par les sanctions et le blocus des ports). */
+      tradeShare: z.number().min(0).max(1).default(0.3),
+    })
+    .optional(),
+  /** Industrie et commerce (importations, séries, annulations, marché entre joueurs). */
+  industry: z
+    .object({
+      /** Achat au catalogue d'un fournisseur étranger : prix × ce facteur. */
+      importPriceFactor: z.number().positive().default(1.3),
+      /** Délai de livraison d'une importation, ajouté au temps de fabrication (heures de jeu). */
+      importDeliveryHours: z.number().min(0).default(72),
+      /** Série de `count` unités : durée = buildTimeH × (1 + facteur × (count − 1)). */
+      batchTimeFactor: z.number().min(0).default(0.25),
+      /** Part remboursée à l'annulation d'une production ou d'une recherche commencée. */
+      cancelRefund: z.number().min(0).max(1).default(0.5),
+      /** Coût d'une réparation = coût de construction × dégâts × ce facteur. */
+      repairCostFactor: z.number().min(0).default(0.5),
+      /** Durée de vie d'une offre du marché (heures de jeu). */
+      offerHours: z.number().positive().default(72),
+      /** Délai d'une livraison du marché noir (heures de jeu). */
+      blackMarketDeliveryHours: z.number().min(0).default(96),
+    })
+    .optional(),
+  /** Forces de départ réelles (ORBAT) regroupées en piles. */
+  startingForces: z
+    .object({
+      /** Taille maximale d'une pile par catégorie (ex. { "fighter": 24, "tank": 60 }). */
+      stackMax: z.record(z.string(), z.number().int().min(1)).default({}),
+      /** Nombre maximal de piles par nation (les piles grossissent au-delà). */
+      maxStacksPerNation: z.number().int().min(1).default(150),
     })
     .optional(),
   research: z
@@ -104,6 +136,8 @@ export const BalanceSchema = z.object({
       infantryPerProvince: z.number().int().min(0).default(1),
       incomePenalty: z.number().min(0).max(1).default(0.25),
       stabilityPerDay: z.number().default(-1),
+      /** Durée minimale de la mobilisation avant démobilisation (jours de jeu). */
+      minDays: z.number().min(0).default(3),
     })
     .optional(),
   buildings: z
