@@ -15,7 +15,7 @@ Aucune image générée : si aucune photo libre n'existe pour un système, il re
 Acceptées : **domaine public** (dont photos du département de la Défense américain), **CC0**, **CC BY**,
 **CC BY-SA** (toutes versions). Refusées : NC, ND, usage loyal (« fair use »), GFDL seule, GODL indienne,
 licence inconnue. Exception limitée aux **surcharges manuelles** : la **Licence Ouverte** d'Etalab (État français,
-compatible CC BY, utilisée pour 2 sous-marins français sans aucune photo CC) et l'OGL v3 britannique sont admises
+compatible CC BY : 2 sous-marins français) et l'OGL v3 britannique (Challenger 3) sont admises, faute de toute photo CC
 (`acceptLicense(…, extended)`) ; la sélection automatique ne les retient jamais. Seuls les fichiers hébergés sur
 Commons sont interrogés (les fichiers locaux de Wikipedia, souvent non libres, sont donc exclus d'office). La
 vérification se fait sur les métadonnées `extmetadata` (`License`, `LicenseShortName`) : voir `acceptLicense`

@@ -25,7 +25,7 @@ async function candidates(id: string, queries: string[], out: string, noWiki = f
     titles.push(...(await articleImages(src.wiki)));
   }
   const uniq = [...new Set(titles)];
-  const infos = await fileInfos(uniq, 330);
+  const infos = await fileInfos(uniq, 330, true);
   const list = uniq.map((t) => infos.get(t)).filter((i) => usable(i, false));
   const shown = list.slice(0, max);
   const tiles = [];

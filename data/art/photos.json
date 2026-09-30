@@ -1258,6 +1258,14 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Type_59_tank_in_Military_Museum_of_the_Chinese_People%27s_Revolution_20180219.jpg",
     "title": "Type 59 tank in Military Museum of the Chinese People's Revolution 20180219.jpg"
   },
+  "eu.challenger-3": {
+    "file": "/art/photos/eu.challenger-3.webp",
+    "thumb": "/art/photos/eu.challenger-3.thumb.webp",
+    "credit": "Ministry of Defence",
+    "license": "OGL v3",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:DES_2024_100_0104.jpg",
+    "title": "DES 2024 100 0104.jpg"
+  },
   "eu.challenger-2": {
     "file": "/art/photos/eu.challenger-2.webp",
     "thumb": "/art/photos/eu.challenger-2.thumb.webp",
@@ -2927,5 +2935,111 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Antonov_An-124-100M_Ruslan_-_Cargo_Transporter_-_VGHS.jpg",
     "title": "Antonov An-124-100M Ruslan - Cargo Transporter - VGHS.jpg",
     "generic": true
+  },
+  "us.an-tpy-2": {
+    "file": "/art/photos/us.an-tpy-2.webp",
+    "thumb": "/art/photos/us.an-tpy-2.thumb.webp",
+    "credit": "U.S. Army 38ADABDE by Sgt. Connor Davis",
+    "license": "Domaine public",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Keen_Sword_25-_Supporting_the_Joint-Bilateral_Air_Defense_Kill_Chain_Across_Japan_(8731809).jpg",
+    "title": "Keen Sword 25- Supporting the Joint-Bilateral Air Defense Kill Chain Across Japan (8731809).jpg"
+  },
+  "us.an-fps-132-uewr": {
+    "file": "/art/photos/us.an-fps-132-uewr.webp",
+    "thumb": "/art/photos/us.an-fps-132-uewr.thumb.webp",
+    "credit": "US Air Force from USA",
+    "license": "Domaine public",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:AN_FPS-132_Upgraded_Early_Warning_radar_(UEWR)_(7414560082).jpg",
+    "title": "AN FPS-132 Upgraded Early Warning radar (UEWR) (7414560082).jpg"
+  },
+  "us.an-tps-80-g-ator": {
+    "file": "/art/photos/us.an-tps-80-g-ator.webp",
+    "thumb": "/art/photos/us.an-tps-80-g-ator.thumb.webp",
+    "credit": "U.S. Marine Corps photo by Lance Cpl. Matthew Morales",
+    "license": "Domaine public",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:RD_24_-_Marines_with_3-12_Set_Up_a_AN-TPS-80_Ground-Air_Task_Oriented_Radar_on_Camp_Yonaguni_(8564892).jpg",
+    "title": "RD 24 - Marines with 3-12 Set Up a AN-TPS-80 Ground-Air Task Oriented Radar on Camp Yonaguni (8564892).jpg"
+  },
+  "us.an-tps-75": {
+    "file": "/art/photos/us.an-tps-75.webp",
+    "thumb": "/art/photos/us.an-tps-75.thumb.webp",
+    "credit": "U.S. Air Force photo by Staff Sgt. Tory Cusimano",
+    "license": "Domaine public",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:606th_Air_Control_Squadron_deploys_for_Astral_Knight_2019_(5415005).jpg",
+    "title": "606th Air Control Squadron deploys for Astral Knight 2019 (5415005).jpg",
+    "note": "radar du 606th Air Control Squadron (USAF), équipé de l'AN/TPS-75"
+  },
+  "ru.nebo-m": {
+    "file": "/art/photos/ru.nebo-m.webp",
+    "thumb": "/art/photos/ru.nebo-m.thumb.webp",
+    "credit": "Vitaly V. Kuzmin",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:55Zh6ME_long-range_mobile_radar,_Celebration_of_the_100th_anniversary_of_Russian_Air_Force.jpg",
+    "title": "55Zh6ME long-range mobile radar, Celebration of the 100th anniversary of Russian Air Force.jpg"
+  },
+  "ru.voronezh-dm": {
+    "file": "/art/photos/ru.voronezh-dm.webp",
+    "thumb": "/art/photos/ru.voronezh-dm.thumb.webp",
+    "credit": "RussianArms",
+    "license": "CC BY 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:%22Voronezh-M%22_radar_-_panoramio_-_RussianArms_(1).jpg",
+    "title": "\"Voronezh-M\" radar - panoramio - RussianArms (1).jpg"
+  },
+  "ru.protivnik-ge": {
+    "file": "/art/photos/ru.protivnik-ge.webp",
+    "thumb": "/art/photos/ru.protivnik-ge.thumb.webp",
+    "credit": "Vitaly V. Kuzmin",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Protivnik-GE_radar_-_MAKS_2011.jpg",
+    "title": "Protivnik-GE radar - MAKS 2011.jpg"
+  },
+  "ru.p-18": {
+    "file": "/art/photos/ru.p-18.webp",
+    "thumb": "/art/photos/ru.p-18.thumb.webp",
+    "credit": "ShinePhantom",
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:P-18_air_defense_radar_system-1.JPG",
+    "title": "P-18 air defense radar system-1.JPG"
+  },
+  "eu.ground-master-400": {
+    "file": "/art/photos/eu.ground-master-400.webp",
+    "thumb": "/art/photos/eu.ground-master-400.thumb.webp",
+    "credit": "MKFI",
+    "license": "Domaine public",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ground_Master_403_(KEVA2010)_Kokonaisturvallisuus_2015_01.JPG",
+    "title": "Ground Master 403 (KEVA2010) Kokonaisturvallisuus 2015 01.JPG"
+  },
+  "eu.smart-l-ewc": {
+    "file": "/art/photos/eu.smart-l-ewc.webp",
+    "thumb": "/art/photos/eu.smart-l-ewc.thumb.webp",
+    "credit": "Sengoku2501",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:SMART-L_of_the_F803_Zr.Ms._Tromp.jpg",
+    "title": "SMART-L of the F803 Zr.Ms. Tromp.jpg",
+    "note": "radar SMART-L (frégate néerlandaise Tromp), dont dérive la version EWC"
+  },
+  "eu.trml-4d": {
+    "file": "/art/photos/eu.trml-4d.webp",
+    "thumb": "/art/photos/eu.trml-4d.thumb.webp",
+    "credit": "Boevaya mashina",
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:IRIS-T_SLM_radar_unit_TRML-4D_ILA-2022.jpg",
+    "title": "IRIS-T SLM radar unit TRML-4D ILA-2022.jpg"
+  },
+  "other.el-m-2084": {
+    "file": "/art/photos/other.el-m-2084.webp",
+    "thumb": "/art/photos/other.el-m-2084.thumb.webp",
+    "credit": "United States Missile Defense Agency",
+    "license": "Domaine public",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:ELTA_ELM-2084_MMR.JPG",
+    "title": "ELTA ELM-2084 MMR.JPG"
+  },
+  "other.ghadir-oth": {
+    "file": "/art/photos/other.ghadir-oth.webp",
+    "thumb": "/art/photos/other.ghadir-oth.thumb.webp",
+    "credit": "Mohamad Javad Raghbiyan",
+    "license": "CC BY 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Entry_into_service_of_Ghadir_early_warning_radar_(18).jpg",
+    "title": "Entry into service of Ghadir early warning radar (18).jpg"
   }
 }

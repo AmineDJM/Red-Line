@@ -39,6 +39,8 @@
     "focus": [0.45, 0.55],
     "zoom": 1.4
   },
+  "eu.challenger-3": "File:DES 2024 100 0104.jpg",
+  "eu.ground-master-400": "File:Ground Master 403 (KEVA2010) Kokonaisturvallisuus 2015 01.JPG",
   "eu.infantry-light": "File:Italian Army - 8th Alpini Regiment patrol during exercise Picca d’Acciaio - March 2025 02.jpg",
   "eu.infantry-mech": "File:Puma Infantry Fighting Vehicle.jpg",
   "eu.iris-t-slm": "File:Iris-t slm 11th aam brigade field.jpg",
@@ -50,6 +52,7 @@
   "eu.radar-satellite": "File:Launch of Delta II rocket carrying COSMO-2 (071208-F-9876C-001).jpg",
   "eu.samp-t": "File:Système SAMP-T (14 juillet 2021) (2).jpg",
   "eu.sigint-satellite": "File:Vega VV05 assembled in ELV.jpg",
+  "eu.smart-l-ewc": "File:SMART-L of the F803 Zr.Ms. Tromp.jpg",
   "eu.special-forces": "File:KSK Scharfschütze.jpg",
   "eu.suffren": {
     "file": "File:Suffren VARUNA 23.jpg",
@@ -57,6 +60,7 @@
     "zoom": 1.8
   },
   "eu.triomphant": "File:Sous-marin-nucleaire-lanceur-d-engins-le-triomphant.jpg",
+  "eu.trml-4d": "File:IRIS-T SLM radar unit TRML-4D ILA-2022.jpg",
   "eu.type-45": {
     "file": "File:HMS Daring-1.jpg",
     "credit": "Brian Burnell"
@@ -72,11 +76,17 @@
   "other.brahmos": "File:Indian Army's BrahMos Mobile Autonomous Launchers (MAL) during DefExpo 2014, New Delhi..JPG",
   "other.cargo-aircraft": "File:Antonov An-124-100M Ruslan - Cargo Transporter - VGHS.jpg",
   "other.cargo-ship": "File:00 0883 Container Ship MARUS.jpg",
+  "other.el-m-2084": "File:ELTA ELM-2084 MMR.JPG",
   "other.fa-50": "File:Light Combat FA-50 Fighting Eagle.jpg",
   "other.fateh-110": "File:Unveiling ceremony of Fateh-313 missile (05).jpg",
   "other.ghadir": {
     "file": "File:Commissioning ceremony of two Ghadir-class submarines, 2018-11-29 (07).jpg",
     "focus": "top"
+  },
+  "other.ghadir-oth": {
+    "file": "File:Entry into service of Ghadir early warning radar (18).jpg",
+    "focus": [0.6, 0.5],
+    "zoom": 1.15
   },
   "other.hwasong-17": {
     "file": "File:Hwasong17-20201010-KORN Pyonyang-N323-2.jpg",
@@ -113,8 +123,11 @@
   "ru.kilo": "File:«Ростов-на-Дону».jpg",
   "ru.mig-31": "File:Mikoyan-Gurevich MiG-31BM in flight.jpg",
   "ru.naval-infantry": "File:Russian naval infantryman on an FTX in Poland during BALTOPS 2003 (June 2003).jpg",
+  "ru.nebo-m": "File:55Zh6ME long-range mobile radar, Celebration of the 100th anniversary of Russian Air Force.jpg",
   "ru.optical-recon-satellite": "File:Soyuz 2.1b GLONASS-K2 13L launch 01.jpg",
   "ru.orion": "File:Kronstadt Orion-E front right ARMY-2022.jpg",
+  "ru.p-18": "File:P-18 air defense radar system-1.JPG",
+  "ru.protivnik-ge": "File:Protivnik-GE radar - MAKS 2011.jpg",
   "ru.radar-satellite": "File:\"Kondor-E\" reconnaissance satellite on MAKS-2021 airshow.jpg",
   "ru.s-70-okhotnik": {
     "file": "File:S-70 takeoff front view.png",
@@ -130,8 +143,17 @@
   "ru.tu-22m3": "File:Tupolev Tu-22M3.jpg",
   "ru.tu-95ms": "File:Tupolev Tu-95MS (Jan 2015).jpg",
   "ru.vdv-airborne": "File:Iveco LMV Lynx of the Russian Airborne Troops 09.jpg",
+  "ru.voronezh-dm": {
+    "file": "File:\"Voronezh-M\" radar - panoramio - RussianArms (1).jpg",
+    "focus": [0.45, 0.4],
+    "zoom": 1.12
+  },
   "ru.zircon": "File:Zirkon 03.12.2024.jpg",
   "us.airborne": "File:82nd Airborne Division Paratroopers Jump Into Latvia (4466626).jpg",
+  "us.an-fps-132-uewr": "File:AN FPS-132 Upgraded Early Warning radar (UEWR) (7414560082).jpg",
+  "us.an-tps-75": "File:606th Air Control Squadron deploys for Astral Knight 2019 (5415005).jpg",
+  "us.an-tps-80-g-ator": "File:RD 24 - Marines with 3-12 Set Up a AN-TPS-80 Ground-Air Task Oriented Radar on Camp Yonaguni (8564892).jpg",
+  "us.an-tpy-2": "File:Keen Sword 25- Supporting the Joint-Bilateral Air Defense Kill Chain Across Japan (8731809).jpg",
   "us.asat": "File:F-15 with ASM-135 ASAT.jpg",
   "us.atacms": {
     "file": "File:ATACMSMay2006 (cropped).jpg",

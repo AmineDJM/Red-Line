@@ -504,8 +504,7 @@
     "wiki": "Type 59 tank"
   },
   "eu.challenger-3": {
-    "wiki": "Challenger 3",
-    "none": "char en cours de livraison : aucune photo libre trouvée"
+    "wiki": "Challenger 3"
   },
   "eu.challenger-2": {
     "wiki": "Challenger 2"
@@ -1207,5 +1206,86 @@
   },
   "other.cargo-aircraft": {
     "generic": true
+  },
+  "us.an-tpy-2": {
+    "wiki": "AN/TPY-2 transportable radar"
+  },
+  "us.an-fps-132-uewr": {
+    "wiki": "AN/FPS-132 Upgraded Early Warning Radar"
+  },
+  "us.an-tps-80-g-ator": {
+    "wiki": "AN/TPS-80 Ground/Air Task Oriented Radar"
+  },
+  "us.an-tps-75": {
+    "wiki": "AN/TPS-75",
+    "note": "radar du 606th Air Control Squadron (USAF), équipé de l'AN/TPS-75"
+  },
+  "ru.rezonans-ne": {
+    "wiki": "Rezonans-NE",
+    "none": "aucune photo libre trouvée"
+  },
+  "ru.nebo-m": {
+    "wiki": "Nebo-M"
+  },
+  "ru.voronezh-dm": {
+    "wiki": "Voronezh radar"
+  },
+  "ru.container-29b6": {
+    "wiki": "Container (radar)",
+    "none": "aucune photo libre trouvée"
+  },
+  "ru.podsolnukh-e": {
+    "wiki": "Podsolnukh radar",
+    "none": "aucune photo libre trouvée"
+  },
+  "ru.protivnik-ge": {
+    "wiki": "Protivnik-GE"
+  },
+  "ru.p-18": {
+    "wiki": "P-18 radar"
+  },
+  "cn.jy-27a": {
+    "wiki": "JY-27",
+    "none": "aucune photo libre trouvée"
+  },
+  "cn.ylc-8b": {
+    "wiki": "YLC-8",
+    "none": "aucune photo libre trouvée"
+  },
+  "cn.jy-26": {
+    "wiki": "JY-26",
+    "none": "aucune photo libre trouvée"
+  },
+  "cn.type-7010-lpar": {
+    "wiki": "Type 7010 radar",
+    "none": "aucune photo libre trouvée"
+  },
+  "eu.ground-master-400": {
+    "wiki": "Ground Master 400"
+  },
+  "eu.smart-l-ewc": {
+    "wiki": "SMART-L",
+    "note": "radar SMART-L (frégate néerlandaise Tromp), dont dérive la version EWC"
+  },
+  "eu.trml-4d": {
+    "wiki": "TRML-4D"
+  },
+  "other.el-m-2084": {
+    "wiki": "EL/M-2084"
+  },
+  "other.el-m-2080-green-pine": {
+    "wiki": "EL/M-2080 Green Pine",
+    "none": "aucune photo libre trouvée"
+  },
+  "other.ghadir-oth": {
+    "wiki": "Ghadir radar"
+  },
+  "other.sepehr-oth": {
+    "wiki": "Sepehr radar",
+    "none": "aucune photo libre trouvée"
+  },
+  "other.swordfish-lrtr": {
+    "wiki": "Swordfish Long Range Tracking Radar",
+    "none": "aucune photo libre trouvée"
   }
 }
