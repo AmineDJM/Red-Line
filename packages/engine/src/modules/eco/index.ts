@@ -25,7 +25,7 @@ import {
   repairOrder,
   researchBuildingFactor,
 } from './buildings.js';
-import { placeOrbatForces } from './forces.js';
+import { placeOrbatForces, worldStackScale } from './forces.js';
 import { evalSupply, fortificationArmor, supplyEfficiency } from './logistics.js';
 import {
   acceptOfferOrder,
@@ -92,6 +92,7 @@ function init(state: EngineState, setup: { scenario?: { year?: number; orbatSet?
     }
     en.lastMoney = state.nations[n]!.money;
   }
+  if (live) es.stackScale = worldStackScale(state);
 }
 
 function onEvent(state: EngineState, ev: ModEvent): void {

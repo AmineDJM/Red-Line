@@ -1,4 +1,10 @@
-import type { Category, NationId, ResearchBranch, WeaponSystem } from '@redline/shared';
+import type {
+  BuildingType,
+  Category,
+  NationId,
+  ResearchBranch,
+  WeaponSystem,
+} from '@redline/shared';
 import { provincesOf, warsOf } from '../../state/access.js';
 import type { EngineState } from '../../state/types.js';
 import { wi } from '../../state/world.js';
@@ -49,6 +55,10 @@ const AI = {
   batch: 4,
   /** Une réparation n'est lancée que si l'argent couvre ce multiple de son coût. */
   repairFactor: 3,
+  /** Investissement en paix : seulement si la trésorerie dépasse ce nombre de jours de budget. */
+  investDays: 60,
+  /** Bâtiments améliorés en priorité (ressources, industrie). */
+  investIn: ['oil_field', 'mine', 'farm', 'electronics_plant', 'local_industry'] as BuildingType[],
 };
 
 function reserve(state: EngineState, n: NationId): number {
@@ -95,6 +105,24 @@ function thinkRepairs(state: EngineState, n: NationId): void {
       applyOrderImpl(state, n, { kind: 'repair', provinceId: pid, building: b });
     }
   }
+}
+
+/** Investissement : améliore le bâtiment de ressources le moins avancé (un chantier à la fois). */
+function thinkInvest(state: EngineState, n: NationId): void {
+  const bd = budgetDay(state, n);
+  if (bd <= 0 || state.nations[n]!.money < bd * AI.investDays) return;
+  const es = eco(state);
+  for (const id of sortedIds(es.jobs)) if (es.jobs[id]!.n === n) return;
+  const max = cfg(state.world).buildings.maxLevel;
+  let best: { pid: string; b: BuildingType; lvl: number } | null = null;
+  for (const pid of provincesOf(state, n)) {
+    for (const b of AI.investIn) {
+      const lvl = levelOf(state, pid, b);
+      if (lvl <= 0 || lvl >= max || health(state, pid, b) < 1) continue;
+      if (!best || lvl < best.lvl) best = { pid, b, lvl };
+    }
+  }
+  if (best) applyOrderImpl(state, n, { kind: 'build', provinceId: best.pid, building: best.b });
 }
 
 /** En guerre : production locale ou importation de défenses selon le budget. */
@@ -144,4 +172,5 @@ export function ecoAiThink(state: EngineState, n: NationId): void {
   thinkResearch(state, n, atWar);
   thinkRepairs(state, n);
   if (atWar && ns.active) thinkWarProduction(state, n);
+  else if (!atWar) thinkInvest(state, n);
 }

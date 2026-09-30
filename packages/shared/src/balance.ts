@@ -100,6 +100,8 @@ export const BalanceSchema = z.object({
       stackMax: z.record(z.string(), z.number().int().min(1)).default({}),
       /** Nombre maximal de piles par nation (les piles grossissent au-delà). */
       maxStacksPerNation: z.number().int().min(1).default(150),
+      /** Cible du nombre total de piles au départ (monde entier) : les piles grossissent au-delà. */
+      maxStacksWorld: z.number().int().min(1).default(5000),
     })
     .optional(),
   research: z
@@ -177,12 +179,12 @@ export const BalanceSchema = z.object({
   /** Consommation quotidienne de ressources par élément et effets des pénuries. */
   consumption: z
     .object({
-      foodPerInfantry: z.number().min(0).default(0.1),
+      foodPerInfantry: z.number().min(0).default(0.02),
       /** Blindés, véhicules, artillerie, défense aérienne terrestre, convois. */
-      oilPerVehicle: z.number().min(0).default(0.02),
-      oilPerAircraft: z.number().min(0).default(0.1),
-      oilPerShip: z.number().min(0).default(0.5),
-      electronicsPerSpace: z.number().min(0).default(0.05),
+      oilPerVehicle: z.number().min(0).default(0.005),
+      oilPerAircraft: z.number().min(0).default(0.03),
+      oilPerShip: z.number().min(0).default(0.1),
+      electronicsPerSpace: z.number().min(0).default(0.02),
       /** Vitesse de production × ce facteur par ressource en pénurie. */
       shortageProductionFactor: z.number().min(0).max(1).default(0.5),
     })

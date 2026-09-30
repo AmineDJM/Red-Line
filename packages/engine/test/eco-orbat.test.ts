@@ -97,6 +97,16 @@ describe('forces de départ réelles (ORBAT)', () => {
     expect(unitsOf(s, 'aaa', 'tst.infantry').reduce((a, u) => a + u.count, 0)).toBe(120);
   });
 
+  it('cible mondiale de piles : toutes les piles grossissent, comptes exacts', () => {
+    const bal = BalanceSchema.parse({ ...ECO_BALANCE, startingForces: { maxStacksWorld: 12 } });
+    const s = ecoGame({ world: ecoWorldWith(bal) });
+    const all = Object.values(s.units).filter((u) => u.owner !== 'ccc');
+    // Au mieux une pile par système (aaa : 6, bbb : 2, ddd : 1).
+    expect(all.length).toBeLessThanOrEqual(13);
+    expect(unitsOf(s, 'aaa', 'tst.tank').reduce((a, u) => a + u.count, 0)).toBe(130);
+    expect(unitsOf(s, 'aaa', 'us.f-16').reduce((a, u) => a + u.count, 0)).toBe(50);
+  });
+
   it('recherches et licences de départ = ORBAT', () => {
     const s = ecoGame();
     const v = viewFor(s, 'aaa');

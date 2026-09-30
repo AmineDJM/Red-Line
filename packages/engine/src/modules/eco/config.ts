@@ -49,6 +49,7 @@ export const ECO_DEFAULTS = {
       radar: 6,
     } as Record<string, number>,
     maxStacksPerNation: 150,
+    maxStacksWorld: 5000,
   },
   buildings: {
     /**
@@ -173,11 +174,11 @@ export const ECO_DEFAULTS = {
     incomeFloor: 0.5,
   },
   consumption: {
-    foodPerInfantry: 0.1,
-    oilPerVehicle: 0.02,
-    oilPerAircraft: 0.1,
-    oilPerShip: 0.5,
-    electronicsPerSpace: 0.05,
+    foodPerInfantry: 0.02,
+    oilPerVehicle: 0.005,
+    oilPerAircraft: 0.03,
+    oilPerShip: 0.1,
+    electronicsPerSpace: 0.02,
     shortageProductionFactor: 0.5,
   },
 };
@@ -215,6 +216,7 @@ export function cfg(world: World): EcoConfig {
       stackMax: { ...D.startingForces.stackMax, ...(b.startingForces?.stackMax ?? {}) },
       maxStacksPerNation:
         b.startingForces?.maxStacksPerNation ?? D.startingForces.maxStacksPerNation,
+      maxStacksWorld: b.startingForces?.maxStacksWorld ?? D.startingForces.maxStacksWorld,
     },
     buildings: {
       effects,

@@ -27,6 +27,43 @@ function groupOf(sys: WeaponSystem): Group {
 
 const cmp = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
 
+/** Taille de pile d'une catégorie, agrandie si le monde dépasserait la cible de piles. */
+function stackSize(state: EngineState, sys: WeaponSystem): number {
+  const base = cfg(state.world).startingForces.stackMax[sys.category] ?? 24;
+  return Math.max(1, Math.round(base * eco(state).stackScale));
+}
+
+/**
+ * Facteur d'agrandissement des piles pour rester sous `maxStacksWorld` piles au départ (toutes les
+ * nations de la partie dotées d'un ORBAT). Calculé une fois à la création de la partie.
+ */
+export function worldStackScale(state: EngineState): number {
+  const c = cfg(state.world).startingForces;
+  const entries: [number, number][] = [];
+  for (const n of state.nationIds) {
+    const o = orbatOf(state, n);
+    if (!o) continue;
+    for (const it of o.inventory) {
+      const sys = state.world.catalog.get(it.systemId);
+      if (!sys || it.count <= 0) continue;
+      entries.push([it.count, c.stackMax[sys.category] ?? 24]);
+    }
+  }
+  const totalAt = (k: number) =>
+    entries.reduce(
+      (a, [count, base]) => a + Math.ceil(count / Math.max(1, Math.round(base * k))),
+      0,
+    );
+  let scale = 1;
+  for (let i = 0; i < 30; i++) {
+    const total = totalAt(scale);
+    // Au mieux une pile par système : inutile d'agrandir au-delà.
+    if (total <= c.maxStacksWorld || total <= entries.length * 1.05) break;
+    scale *= Math.max(1.05, total / c.maxStacksWorld);
+  }
+  return scale;
+}
+
 /**
  * Forces de départ réelles : l'inventaire de l'ORBAT est regroupé en piles (taille maximale par
  * catégorie, `startingForces.stackMax`), réparties par tourniquet sur les sites adaptés :
@@ -36,7 +73,8 @@ const cmp = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
  *  - défense aérienne et radars : capitale, grandes villes (revenu), bases aériennes et militaires ;
  *  - missiles et nucléaire : lanceurs sur les bases militaires (sinon la capitale) ;
  *  - satellites : à la capitale (le module militaire gère l'orbite).
- * Si le nombre de piles dépasse `maxStacksPerNation`, les tailles de pile sont augmentées.
+ * Les tailles de pile sont agrandies uniformément si le monde dépasse `maxStacksWorld` piles, puis
+ * pour la nation si elle dépasse `maxStacksPerNation`.
  * `count` de chaque pile = nombre réel d'éléments ; la somme est exactement l'inventaire.
  * Les systèmes absents du catalogue sont ignorés (voir world.loadWarnings).
  */
@@ -81,7 +119,7 @@ export function placeOrbatForces(state: EngineState, n: NationId): boolean {
   }
   const entries = [...counts.entries()].sort((a, b) => cmp(a[0], b[0]));
   const c = cfg(state.world).startingForces;
-  const stackOf = (sys: WeaponSystem) => Math.max(1, c.stackMax[sys.category] ?? 24);
+  const stackOf = (sys: WeaponSystem) => stackSize(state, sys);
   let scale = 1;
   let piles: number[] = [];
   for (let iter = 0; iter < 32; iter++) {

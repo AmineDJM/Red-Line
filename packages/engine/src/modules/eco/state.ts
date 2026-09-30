@@ -127,6 +127,8 @@ export interface EcoState {
   /** Provinces sous blocus → nation qui l'impose. */
   blockaded: Record<ProvinceId, NationId>;
   straits: Record<string, NationId>;
+  /** Agrandissement des piles de départ (cible mondiale de piles). */
+  stackScale: number;
   seq: number;
 }
 
@@ -162,6 +164,7 @@ export function emptyEco(live: boolean, year: number, set: string): EcoState {
     dlv: {},
     blockaded: {},
     straits: {},
+    stackScale: 1,
     seq: 0,
   };
 }

@@ -247,15 +247,16 @@ describe('tableau de bord économique', () => {
     );
     expect(d.forecast.money7d).toBeCloseTo(s.nations.aaa!.money + 7 * (1e8 - d.upkeepTotal), -2);
     expect(d.provinces.map((p) => p.id)).toEqual(['aaa-1', 'aaa-2', 'aaa-3']);
-    // Consommation : 25 bataillons × 0,1 nourriture ; 130 chars × 0,02 + 64 avions × 0,1 + 5 navires × 0,5 pétrole.
-    expect(d.resources.food.consumption).toBeCloseTo(2.5, 6);
-    expect(d.resources.oil.consumption).toBeCloseTo(130 * 0.02 + 13 * 0.02 + 64 * 0.1 + 5 * 0.5, 6);
+    // Consommation : 25 bataillons × 0,02 nourriture ; (130 chars + 13 SAM) × 0,005
+    // + 64 avions × 0,03 + 5 navires × 0,1 pétrole.
+    expect(d.resources.food.consumption).toBeCloseTo(0.5, 6);
+    expect(d.resources.oil.consumption).toBeCloseTo(143 * 0.005 + 64 * 0.03 + 5 * 0.1, 1);
   });
 
   it('pénurie : stock épuisé ⇒ production ralentie, moral en baisse ; grand livre des 24 h', () => {
     const s = ecoGame();
-    // La carte de test ne produit pas de nourriture ; 25 bataillons en consomment 2,5 par jour.
-    s.nations.aaa!.res.food = 1;
+    // La carte de test ne produit pas de nourriture ; 25 bataillons en consomment 0,5 par jour.
+    s.nations.aaa!.res.food = 0.2;
     advanceTo(s, DAY);
     const d = viewFor(s, 'aaa').economy.detail!;
     expect(d.resources.food).toMatchObject({ stock: 0, shortage: true });
