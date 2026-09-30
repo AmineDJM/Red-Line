@@ -12,7 +12,7 @@ import {
 import type { GameSetup, World } from '../api.js';
 import { seedRng } from '../rng/rng.js';
 import { schedule } from './access.js';
-import { emptyRuntime } from './runtime.js';
+import { addToIndex, emptyRuntime } from './runtime.js';
 import { STATE_FORMAT, type AiLevel, type EngineState, type NationState, type StateData } from './types.js';
 import { wi } from './world.js';
 import { spawnUnit } from './units.js';
@@ -88,7 +88,10 @@ export function createGameImpl(world: World, setup: GameSetup): EngineState {
 
   const state = attachState(world, data);
   state.rt.silent = true;
-  for (const pid of Object.keys(state.provinces).sort()) registerProvinceZone(state, pid);
+  for (const pid of Object.keys(state.provinces).sort()) {
+    registerProvinceZone(state, pid);
+    addToIndex(state.rt.provsOf, state.provinces[pid]!.owner, pid);
+  }
 
   if (setup.units) {
     for (const spec of setup.units) {

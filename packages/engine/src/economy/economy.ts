@@ -9,7 +9,7 @@ import {
   type Resource,
   type WeaponSystem,
 } from '@redline/shared';
-import { notify, schedule, sortedKeys, sortedSet, sysOf } from '../state/access.js';
+import { notify, provincesOf, schedule, sortedKeys, sortedSet, sysOf } from '../state/access.js';
 import type { EngineState } from '../state/types.js';
 import { wi } from '../state/world.js';
 import { spawnUnit } from '../state/units.js';
@@ -52,9 +52,7 @@ export function dailyIncomeOf(state: EngineState, n: NationId): DailyIncome {
   const mult = state.world.balance.economy.incomeMultiplier;
   const w = wi(state.world);
   const inc: DailyIncome = { money: 0, res: emptyResources(), upkeep: 0 };
-  for (const pid of w.provIds) {
-    const P = state.provinces[pid];
-    if (!P || P.owner !== n) continue;
+  for (const pid of provincesOf(state, n)) {
     const def = w.provById.get(pid)!;
     inc.money += def.income.money * mult;
     for (const r of RESOURCES) inc.res[r] += (def.income[r] ?? 0) * mult;

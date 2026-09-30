@@ -4,6 +4,7 @@ import type { EngineState, Unit } from '../state/types.js';
 import { CAPTURE_RADIUS_KM, wi } from '../state/world.js';
 import { provEntity, provinceOwnerChanged } from '../encounters/pairs.js';
 import type { GameEvent } from '../queue/events.js';
+import { addToIndex, removeFromIndex } from '../state/runtime.js';
 
 /**
  * Capture : une unité `canCapture` d'une nation en guerre avec le propriétaire, arrêtée à ≤ 5 km du
@@ -81,6 +82,8 @@ export function transferProvince(state: EngineState, pid: ProvinceId, to: Nation
   if (from === to) return;
   const t = state.time;
   P.owner = to;
+  removeFromIndex(state.rt.provsOf, from, pid);
+  addToIndex(state.rt.provsOf, to, pid);
   P.capture = null;
   P.capV++;
   const nf = state.nations[from]!;

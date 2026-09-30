@@ -103,6 +103,8 @@ function dispatchOrder(state: EngineState, n: NationId, order: Order): OrderResu
       if (!Array.isArray(units)) return units;
       for (const u of units) {
         u.stance = order.stance;
+        // Une cible acquise automatiquement (posture agressive) est abandonnée hors de cette posture.
+        if (order.stance !== 'aggressive' && u.tmode === 'auto') clearTarget(state, u);
         state.rt.dirtyCombat.add(u.id);
       }
       return { ok: true };

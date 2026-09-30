@@ -1,5 +1,6 @@
 import type { NationId } from '@redline/shared';
-import { atWar, nationUnits, sortedKeys, warKey } from './access.js';
+import { atWar, nationUnits, provincesOf, warKey } from './access.js';
+import { addToIndex } from './runtime.js';
 import type { EngineState } from './types.js';
 
 /**
@@ -11,9 +12,10 @@ export function declareWar(state: EngineState, a: NationId, b: NationId): void {
   if (a === b || atWar(state, a, b)) return;
   if (!state.nations[a] || !state.nations[b]) return;
   state.wars[warKey(a, b)] = state.time;
-  for (const n of [a, b]) for (const uid of nationUnits(state, n)) state.rt.dirtyCombat.add(uid);
-  for (const pid of sortedKeys(state.provinces)) {
-    const owner = state.provinces[pid]!.owner;
-    if (owner === a || owner === b) state.rt.dirtyCapture.add(pid);
+  addToIndex(state.rt.enemies, a, b);
+  addToIndex(state.rt.enemies, b, a);
+  for (const n of [a, b]) {
+    for (const uid of nationUnits(state, n)) state.rt.dirtyCombat.add(uid);
+    for (const pid of provincesOf(state, n)) state.rt.dirtyCapture.add(pid);
   }
 }

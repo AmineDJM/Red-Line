@@ -11,7 +11,6 @@ import {
   type Vec3,
   type WeaponSystem,
 } from '@redline/shared';
-import { gridDisk, latLngToCell } from 'h3-js';
 import type { World } from '../api.js';
 import { NavGraph } from '../nav/graph.js';
 
@@ -64,8 +63,8 @@ export function buildWorld(map: MapData, catalog: WeaponSystem[], balance: Balan
   for (const id of provIds) {
     const p = provById.get(id)!;
     cityVec.set(id, toVec(p.cityPoint));
-    seaSpawn.set(id, findSeaSpawn(nav, p.cityPoint));
   }
+  for (const [id, pt] of findSeaSpawns(nav, provById)) seaSpawn.set(id, pt);
   const catalogMap = new Map<string, WeaponSystem>();
   for (const s of catalog) catalogMap.set(s.id, s);
   const internal: WorldInternal = {
@@ -87,21 +86,29 @@ export function buildWorld(map: MapData, catalog: WeaponSystem[], balance: Balan
   return { map, catalog: catalogMap, balance, internal };
 }
 
-function findSeaSpawn(nav: NavGraph, city: LngLat): LngLat | null {
-  const cell = latLngToCell(city[1], city[0], nav.res);
-  for (let k = 1; k <= 4; k++) {
-    let best: LngLat | null = null;
-    let bestD = Infinity;
-    for (const c of gridDisk(cell, k).sort()) {
-      if (nav.isLandCell(c)) continue;
-      const p = nav.center(nav.node(c));
-      const d = distanceKm(p, city);
-      if (d < bestD) {
-        bestD = d;
-        best = p;
+/**
+ * Point de mise à l'eau de chaque province côtière : la cellule marine voisine d'une de ses cellules
+ * terrestres, la plus proche du point de ville. Null si la province n'a pas de côte.
+ */
+function findSeaSpawns(
+  nav: NavGraph,
+  provById: Map<ProvinceId, ProvinceDef>,
+): Map<ProvinceId, LngLat | null> {
+  const best = new Map<ProvinceId, { d: number; p: LngLat }>();
+  for (const [cell, pid] of nav.cellProv) {
+    const def = provById.get(pid);
+    if (!def) continue;
+    for (const nb of nav.neighbors(nav.node(cell))) {
+      if (nav.land[nb] === 1) continue;
+      const p = nav.center(nb);
+      const d = distanceKm(p, def.cityPoint);
+      const cur = best.get(pid);
+      if (!cur || d < cur.d || (d === cur.d && (p[0] < cur.p[0] || (p[0] === cur.p[0] && p[1] < cur.p[1])))) {
+        best.set(pid, { d, p });
       }
     }
-    if (best) return best;
   }
-  return null;
+  const out = new Map<ProvinceId, LngLat | null>();
+  for (const pid of [...provById.keys()].sort()) out.set(pid, best.get(pid)?.p ?? null);
+  return out;
 }

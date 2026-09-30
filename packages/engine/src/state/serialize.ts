@@ -46,7 +46,15 @@ export function deserializeImpl(world: World, bytes: Uint8Array): EngineState {
 /** Reconstruit les index dérivés à partir des données (ordre trié, donc indépendant de l'historique). */
 export function rebuildRuntime(state: EngineState): void {
   const rt = state.rt;
-  for (const pid of sortedKeys(state.provinces)) registerProvinceZone(state, pid);
+  for (const pid of sortedKeys(state.provinces)) {
+    registerProvinceZone(state, pid);
+    addToIndex(rt.provsOf, state.provinces[pid]!.owner, pid);
+  }
+  for (const k of sortedKeys(state.wars)) {
+    const [a, b] = k.split('|') as [string, string];
+    addToIndex(rt.enemies, a, b);
+    addToIndex(rt.enemies, b, a);
+  }
   for (const uid of sortedKeys(state.units)) {
     const u = state.units[uid]!;
     addToIndex(rt.byNation, u.owner, uid);

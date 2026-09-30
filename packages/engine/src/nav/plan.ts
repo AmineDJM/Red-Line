@@ -41,9 +41,24 @@ function snapTo(g: NavGraph, cell: string, to: LngLat, ok: (c: string) => boolea
   return best;
 }
 
+interface Segment {
+  from: LngLat;
+  to: LngLat;
+  medium: 'land' | 'sea';
+  /** Durée (ms). */
+  dt: number;
+}
+
+/** Trajet de surface indépendant de l'heure de départ (mémoïsable). */
+export type SurfaceSegments = { error: 'unreachable' | 'not_allowed' } | { segs: Segment[] };
+
+const MEMO_MAX = 512;
+
 /**
  * Chemin de surface : A* sur la grille H3 (terre avec embarquement automatique, ou mer + détroits),
  * puis lissage en peu de segments de grand cercle en vérifiant le milieu des cellules traversées.
+ * Le résultat ne dépend que de (système, départ, arrivée) : il peut être mis en cache ; les heures
+ * sont toujours accumulées de la même façon à partir de t0, donc identiques bit à bit.
  */
 export function planSurface(
   g: NavGraph,
@@ -52,7 +67,34 @@ export function planSurface(
   from: LngLat,
   to: LngLat,
   t0: number,
+  memo?: Map<string, SurfaceSegments>,
 ): PlanResult {
+  const key = `${sys.id}|${from[0]},${from[1]}|${to[0]},${to[1]}`;
+  let r = memo?.get(key);
+  if (!r) {
+    r = surfaceSegments(g, balance, sys, from, to);
+    if (memo) {
+      if (memo.size >= MEMO_MAX) memo.clear();
+      memo.set(key, r);
+    }
+  }
+  if ('error' in r) return { error: r.error };
+  const legs: Leg[] = [];
+  let t = t0;
+  for (const s of r.segs) {
+    legs.push({ from: s.from, to: s.to, t0: t, t1: t + s.dt, medium: s.medium });
+    t += s.dt;
+  }
+  return { legs };
+}
+
+function surfaceSegments(
+  g: NavGraph,
+  balance: Balance,
+  sys: WeaponSystem,
+  from: LngLat,
+  to: LngLat,
+): SurfaceSegments {
   if (sys.speedKmh <= 0) return { error: 'not_allowed' };
   const naval = sys.movement === 'sea';
   const okGoal = naval ? (c: string) => g.isShipCell(c) : (c: string) => g.isLandCell(c);
@@ -103,22 +145,18 @@ export function planSurface(
     else runs.push({ m, a: i, b: i });
   }
 
-  const legs: Leg[] = [];
-  let t = t0;
+  const segs: Segment[] = [];
   const speedLand = sys.speedKmh;
   const speedSea = sys.speedKmh * seaFactor;
   const travel = (a: LngLat, b: LngLat, medium: 'land' | 'sea'): void => {
     const d = distanceKm(a, b);
     if (d < 1e-6) return;
     const v = medium === 'land' || naval ? speedLand : speedSea;
-    const dt = (d / v) * HOUR;
-    legs.push({ from: a, to: b, t0: t, t1: t + dt, medium: naval ? 'sea' : medium });
-    t += dt;
+    segs.push({ from: a, to: b, dt: (d / v) * HOUR, medium: naval ? 'sea' : medium });
   };
   const wait = (p: LngLat, medium: 'land' | 'sea'): void => {
     if (embarkMs <= 0) return;
-    legs.push({ from: p, to: p, t0: t, t1: t + embarkMs, medium });
-    t += embarkMs;
+    segs.push({ from: p, to: p, dt: embarkMs, medium });
   };
 
   for (let r = 0; r < runs.length; r++) {
@@ -143,7 +181,7 @@ export function planSurface(
     for (let i = 0; i + 1 < smooth.length; i++) travel(smooth[i]!, smooth[i + 1]!, run.m);
     if (run.m === 'sea' && !naval && r < runs.length - 1) wait(seq[seq.length - 1]!, 'sea'); // débarquement
   }
-  return { legs };
+  return { segs };
 }
 
 /** Lissage « string pulling » : recherche exponentielle puis dichotomique du point visible le plus loin. */

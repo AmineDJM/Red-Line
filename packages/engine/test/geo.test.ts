@@ -1,11 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { destination, distanceKm, HOUR, interpolate, type Leg, type LngLat } from '@redline/shared';
-import { legZoneIntervals, legPiece, trajectoryPieces } from '../src/geo/sphere.js';
+import { legZoneIntervals, piecePos, trajectoryPieces } from '../src/geo/sphere.js';
 import { nextBandChange } from '../src/geo/crossing.js';
 import { coverCap } from '../src/geo/grid.js';
 import { nextFloat, seedRng } from '../src/rng/rng.js';
 import { fromVec } from '@redline/shared';
-import { piecePos } from '../src/geo/sphere.js';
 
 const R = 6371.0088;
 
@@ -165,7 +164,6 @@ describe('croisement de deux mobiles (fenêtre commune, précision ≤ 1 s)', ()
     const t = nextBandChange(A, B, [Math.cos(80 / R)], 0)!;
     const iv = legZoneIntervals(leg, center, 80);
     expect(Math.abs(t - iv[0]![0])).toBeLessThanOrEqual(1);
-    void legPiece;
   });
 });
 

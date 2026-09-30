@@ -1,6 +1,6 @@
 import { distanceKm, type Leg, type LngLat, type NationId, type OrderErrorCode } from '@redline/shared';
-import { planAir, planSurface } from '../nav/plan.js';
-import { sortedKeys, sysOf, unitPosAt } from '../state/access.js';
+import { planAir, planSurface, type SurfaceSegments } from '../nav/plan.js';
+import { provincesOf, sysOf, unitPosAt } from '../state/access.js';
 import type { EngineState, Unit } from '../state/types.js';
 import { wi } from '../state/world.js';
 
@@ -10,8 +10,7 @@ export type UnitPlan = { legs: Leg[] } | { error: OrderErrorCode };
 export function nearestOwnedCityKm(state: EngineState, n: NationId, p: LngLat): number {
   let best = Infinity;
   const w = wi(state.world);
-  for (const pid of sortedKeys(state.provinces)) {
-    if (state.provinces[pid]!.owner !== n) continue;
+  for (const pid of provincesOf(state, n)) {
     const d = distanceKm(w.provById.get(pid)!.cityPoint, p);
     if (d < best) best = d;
   }
@@ -34,5 +33,13 @@ export function planUnitMove(state: EngineState, u: Unit, to: LngLat): UnitPlan 
     if (!airCanReach(state, u, to)) return { error: 'out_of_range' };
     return planAir(sys, from, to, state.time);
   }
-  return planSurface(wi(state.world).nav, state.world.balance, sys, from, to, state.time);
+  return planSurface(
+    wi(state.world).nav,
+    state.world.balance,
+    sys,
+    from,
+    to,
+    state.time,
+    state.rt.planMemo as Map<string, SurfaceSegments>,
+  );
 }

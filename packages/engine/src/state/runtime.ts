@@ -17,6 +17,12 @@ export interface Runtime {
   byNation: Map<NationId, Set<UnitId>>;
   /** Cible → unités qui la poursuivent. */
   chasers: Map<UnitId, Set<UnitId>>;
+  /** Nation → nations avec qui elle est en guerre. */
+  enemies: Map<NationId, Set<NationId>>;
+  /** Nation → provinces possédées. */
+  provsOf: Map<NationId, Set<ProvinceId>>;
+  /** Cache de trajets de surface (résultat identique bit à bit à un calcul frais). */
+  planMemo: Map<string, unknown>;
   /** Cache des morceaux de trajectoire par unité (invalidé à chaque changement de trajet). */
   geom: Map<UnitId, Piece[]>;
   dirtyCombat: Set<UnitId>;
@@ -33,6 +39,9 @@ export function emptyRuntime(): Runtime {
     pairsOf: new Map(),
     byNation: new Map(),
     chasers: new Map(),
+    enemies: new Map(),
+    provsOf: new Map(),
+    planMemo: new Map(),
     geom: new Map(),
     dirtyCombat: new Set(),
     dirtyCapture: new Set(),

@@ -81,13 +81,12 @@ export function atWar(state: EngineState, a: NationId, b: NationId): boolean {
 }
 
 export function warsOf(state: EngineState, n: NationId): NationId[] {
-  const out: NationId[] = [];
-  for (const k of sortedKeys(state.wars)) {
-    const [a, b] = k.split('|') as [NationId, NationId];
-    if (a === n) out.push(b);
-    else if (b === n) out.push(a);
-  }
-  return out;
+  return sortedSet(state.rt.enemies.get(n));
+}
+
+/** Provinces possédées par une nation, triées. */
+export function provincesOf(state: EngineState, n: NationId): string[] {
+  return sortedSet(state.rt.provsOf.get(n));
 }
 
 export function nationUnits(state: EngineState, n: NationId): UnitId[] {

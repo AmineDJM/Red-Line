@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { distanceKm, interpolate, movementEnd, type LngLat } from '@redline/shared';
 import { latLngToCell } from 'h3-js';
-import { advanceTo, applyOrder, buildWorld } from '../src/index.js';
+import { advanceTo, applyOrder, buildWorld, viewFor } from '../src/index.js';
 import { BALANCE, CATALOG, RES, buildMap, cityOf, sandbox, testWorld } from './fixtures.js';
 
 function samples(legs: { from: LngLat; to: LngLat; medium: string }[], stepKm = 5) {
@@ -60,10 +60,9 @@ describe('navigation', () => {
         if (c !== endA && c !== endB) expect(cells[c]).toBeUndefined();
       }
     }
-    const view = () => (s.units.u1!.move ? s.units.u1 : null);
     const seaLeg = legs.find((l) => l.medium === 'sea' && distanceKm(l.from, l.to) > 1)!;
     advanceTo(s, (seaLeg.t0 + seaLeg.t1) / 2);
-    expect(view()).not.toBeNull();
+    expect(viewFor(s, 'bbb').units.u1!.status).toBe('embarked');
     advanceTo(s, movementEnd(s.units.u1!.move!) + 1);
     expect(distanceKm(s.units.u1!.pos, cityOf('ddd-1'))).toBeLessThan(0.01);
   });
@@ -76,7 +75,6 @@ describe('navigation', () => {
     expect(r.ok).toBe(true);
     const legs = s.units.u1!.move!.legs;
     const strait = new Set(s.world.map.straits[0]!.seaCells);
-    const cells = s.world.map.cells.cells;
     let throughStrait = false;
     for (const { p } of samples(legs, 3)) {
       const c = latLngToCell(p[1], p[0], RES);
@@ -84,7 +82,6 @@ describe('navigation', () => {
     }
     expect(throughStrait).toBe(true);
     expect(legs.every((l) => l.medium === 'sea')).toBe(true);
-    void cells;
 
     const noStrait = buildWorld(buildMap({ strait: false }), CATALOG, BALANCE);
     const s2 = sandbox([{ owner: 'bbb', systemId: 'tst.frigate', pos: inner }], { world: noStrait });

@@ -11,6 +11,7 @@ import {
 import {
   atWar,
   nationUnits,
+  provincesOf,
   schedule,
   sortedKeys,
   sysOf,
@@ -21,6 +22,8 @@ import type { EngineState, Unit } from '../state/types.js';
 import { CAPTURE_RADIUS_KM, wi } from '../state/world.js';
 import { applyOrderImpl } from '../orders/orders.js';
 import { canAfford } from '../economy/economy.js';
+import { planUnitMove } from '../movement/plan-unit.js';
+import { computeCrossings } from '../movement/movement.js';
 import { nextInt } from '../rng/rng.js';
 
 /**
@@ -42,6 +45,9 @@ const AI = {
   /** Nombre d'unités d'armée maximal en paix, par province possédée (plus une base). */
   peaceUnitsPerProvince: 0.5,
   peaceUnitsBase: 2,
+  /** Plafond d'unités en guerre. */
+  warUnitsPerProvince: 1.5,
+  warUnitsBase: 6,
   /** Productions simultanées maximales (paix / guerre). */
   maxQueuePeace: 1,
   maxQueueWar: 2,
@@ -80,6 +86,22 @@ function order(state: EngineState, n: NationId, o: Order): boolean {
   return applyOrderImpl(state, n, o).ok;
 }
 
+/**
+ * Le trajet vers ce point traverserait-il une nation avec qui on n'est pas en guerre ? (l'IA évite
+ * d'ouvrir un nouveau front par inadvertance ; même calcul que le moteur, à partir de sa propre unité).
+ */
+function violatesNeutral(state: EngineState, n: NationId, u: Unit, to: LngLat): boolean {
+  const plan = planUnitMove(state, u, to);
+  if ('error' in plan) return true;
+  const start = unitPosAt(state, u, state.time);
+  for (const c of computeCrossings(state, start, plan.legs)) {
+    if (!c.p) continue;
+    const owner = state.provinces[c.p]?.owner;
+    if (owner && owner !== n && !atWar(state, n, owner)) return true;
+  }
+  return false;
+}
+
 function think(state: EngineState, n: NationId): void {
   const enemies = warsOf(state, n);
   if (enemies.length === 0) {
@@ -110,7 +132,8 @@ function think(state: EngineState, n: NationId): void {
         return distanceKm(unitPosAt(state, u, state.time), th.pos) <= AI.defendReachKm;
       })
       .sort((a, b) => dist(state, a, th.pos) - dist(state, b, th.pos) || (a.id < b.id ? -1 : 1));
-    for (const u of cand) {
+    for (const u of cand.slice(0, 4)) {
+      if (violatesNeutral(state, n, u, th.pos)) continue;
       if (order(state, n, { kind: 'attack', unitIds: [u.id], targetId: th.id })) {
         idle.delete(u.id);
         targeted.add(th.id);
@@ -135,9 +158,8 @@ function think(state: EngineState, n: NationId): void {
   if (ns.aiLevel === 'hard') {
     let launched = 0;
     const seen = new Set<ProvinceId>();
-    for (const own of sortedKeys(state.provinces)) {
+    for (const own of provincesOf(state, n)) {
       if (launched >= AI.maxOffensivePerThink) break;
-      if (state.provinces[own]!.owner !== n) continue;
       for (const pid of [...(w.provById.get(own)?.neighbors ?? [])].sort()) {
         if (launched >= AI.maxOffensivePerThink || seen.has(pid)) continue;
         seen.add(pid);
@@ -186,8 +208,7 @@ function ownerAt(state: EngineState, p: LngLat): NationId | null {
 function nearestOwnCityKm(state: EngineState, n: NationId, p: LngLat): number {
   const w = wi(state.world);
   let best = Infinity;
-  for (const pid of w.provIds) {
-    if (state.provinces[pid]?.owner !== n) continue;
+  for (const pid of provincesOf(state, n)) {
     best = Math.min(best, distanceKm(w.provById.get(pid)!.cityPoint, p));
   }
   return best;
@@ -237,6 +258,7 @@ function launchCapture(
     })
     .sort((a, b) => dist(state, a, city) - dist(state, b, city) || (a.id < b.id ? -1 : 1));
   for (const u of cand.slice(0, 3)) {
+    if (violatesNeutral(state, n, u, city)) continue;
     if (order(state, n, { kind: 'move', unitIds: [u.id], to: city })) {
       idle.delete(u.id);
       return true;
@@ -249,10 +271,10 @@ function launchCapture(
 function produce(state: EngineState, n: NationId, peaceful: boolean): void {
   const ns = state.nations[n]!;
   if (ns.production.length >= (peaceful ? AI.maxQueuePeace : AI.maxQueueWar)) return;
-  if (peaceful) {
-    const cap = AI.peaceUnitsBase + AI.peaceUnitsPerProvince * ns.provinceCount;
-    if ((state.rt.byNation.get(n)?.size ?? 0) + ns.production.length >= cap) return;
-  }
+  const maxUnits = peaceful
+    ? AI.peaceUnitsBase + AI.peaceUnitsPerProvince * ns.provinceCount
+    : AI.warUnitsBase + AI.warUnitsPerProvince * ns.provinceCount;
+  if ((state.rt.byNation.get(n)?.size ?? 0) + ns.production.length >= maxUnits) return;
   const w = wi(state.world);
   const options: WeaponSystem[] = [];
   for (const id of w.systemIds) {
@@ -273,7 +295,7 @@ function produce(state: EngineState, n: NationId, peaceful: boolean): void {
   const pick = options[nextInt(state.rng, Math.min(3, options.length))]!;
   const cap = w.nationById.get(n)?.capitalProvinceId;
   let where: ProvinceId | null = cap && state.provinces[cap]?.owner === n ? cap : null;
-  if (!where) where = w.provIds.find((pid) => state.provinces[pid]?.owner === n) ?? null;
+  if (!where) where = provincesOf(state, n)[0] ?? null;
   if (!where) return;
   order(state, n, { kind: 'produce', provinceId: where, systemId: pick.id });
 }

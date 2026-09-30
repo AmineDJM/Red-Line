@@ -106,6 +106,8 @@ export function computeCrossings(state: EngineState, start: LngLat, legs: Leg[])
   const step = nav.edgeKm * 0.5;
   const out: Crossing[] = [];
   let prev = provAt(start);
+  // Un trajet qui commence en territoire étranger compte comme une entrée (unité posée ou arrêtée là).
+  if (prev && legs.length > 0) out.push({ t: legs[0]!.t0, p: prev });
   for (const leg of legs) {
     const d = distanceKm(leg.from, leg.to);
     if (d < 1e-6 || leg.t1 <= leg.t0) continue;
