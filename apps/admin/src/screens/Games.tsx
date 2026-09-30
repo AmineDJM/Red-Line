@@ -1,5 +1,5 @@
 /** Parties en direct : liste, détail, pause et reprise, joueurs, événements mondiaux. */
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type CSSProperties } from 'react';
 import { DAY, HOUR, MINUTE, WorldEventBodySchema, type AdminGame } from '@redline/shared';
 import { useSession } from '../context';
 import type { WorldEventId } from '../api/types';
@@ -102,7 +102,7 @@ export function GamesScreen({ id }: { id?: string }) {
       {error && <ErrorBox message={error} onRetry={() => void reload()} />}
       <div
         className={`split-list ${id ? 'has-sel' : ''}`}
-        style={{ gridTemplateColumns: 'minmax(0, 1.25fr) minmax(0, 1fr)' }}
+        style={{ '--split-cols': 'minmax(0, 1.25fr) minmax(0, 1fr)' } as CSSProperties}
       >
         <Win
           title={T.games.title}
@@ -455,12 +455,24 @@ function GameDetail({
               align: 'right',
               render: (p) =>
                 !live || !p.userId ? null : p.aiForced || p.isAi ? (
-                  <Button small disabled={busy} onClick={() => void setAi(p, false)}>
-                    <Icon name="undo" size={12} /> {T.games.giveBack}
+                  <Button
+                    small
+                    disabled={busy}
+                    title={T.games.giveBack}
+                    aria-label={`${T.games.giveBack} (${nations.get(p.nationId)?.name ?? p.nationId})`}
+                    onClick={() => void setAi(p, false)}
+                  >
+                    <Icon name="undo" size={12} /> {T.games.giveBackShort}
                   </Button>
                 ) : (
-                  <Button small disabled={busy} onClick={() => void setAi(p, true)}>
-                    <Icon name="orbat" size={12} /> {T.games.giveAi}
+                  <Button
+                    small
+                    disabled={busy}
+                    title={T.games.giveAi}
+                    aria-label={`${T.games.giveAi} (${nations.get(p.nationId)?.name ?? p.nationId})`}
+                    onClick={() => void setAi(p, true)}
+                  >
+                    <Icon name="orbat" size={12} /> {T.games.giveAiShort}
                   </Button>
                 ),
             },

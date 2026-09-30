@@ -803,6 +803,8 @@ export const fr = {
       'Une IA imposée garde la nation même si le joueur revient (ses ordres sont suspendus) ; l’IA de remplacement automatique (inactivité) rend la main dès son retour.',
     giveAi: 'Confier à l’IA',
     giveBack: 'Rendre au joueur',
+    giveAiShort: 'IA',
+    giveBackShort: 'Rendre',
     giveAiConfirm:
       '« {nation} » sera tenue par une IA ({level}). {player} ne pourra plus donner d’ordres tant que vous ne lui aurez pas rendu la main. Tous les joueurs de la partie sont prévenus.',
     giveBackConfirm: 'Rendre « {nation} » à {player} ? L’IA cesse immédiatement de la diriger.',
