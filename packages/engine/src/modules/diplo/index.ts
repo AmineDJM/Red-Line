@@ -16,13 +16,7 @@ import { seedRng } from '../../rng/rng.js';
 import type { EngineModule, ModEvent } from '../types.js';
 import { board, signal } from '../registry.js';
 import { worldConfig } from './config.js';
-import {
-  addReputation,
-  addStability,
-  ds,
-  isRegular,
-  type DiploState,
-} from './state.js';
+import { addReputation, addStability, ds, isRegular, type DiploState } from './state.js';
 import { news, pushNews, throttled } from './news.js';
 import {
   onCeasefireEnd,
@@ -87,7 +81,8 @@ type Handler<K extends Order['kind']> = (
 
 function h<K extends Order['kind']>(fn: Handler<K>) {
   return (state: EngineState, n: NationId, o: Order): OrderResult => {
-    if (!state.nations[n]?.alive) return { ok: false, error: 'not_allowed', message: 'Nation vaincue.' };
+    if (!state.nations[n]?.alive)
+      return { ok: false, error: 'not_allowed', message: 'Nation vaincue.' };
     if (!ds(state)) return { ok: false, error: 'unknown', message: 'Diplomatie indisponible.' };
     return fn(state, n, o as Extract<Order, { kind: K }>);
   };
@@ -142,7 +137,8 @@ function init(state: EngineState, setup: GameSetup): void {
   if (setup.victory) b.victory = { ...setup.victory };
   if (setup.aiLevel) {
     const declared = new Set(setup.players.map((p) => p.nationId));
-    for (const n of state.nationIds) if (!declared.has(n)) state.nations[n]!.aiLevel = setup.aiLevel;
+    for (const n of state.nationIds)
+      if (!declared.has(n)) state.nations[n]!.aiLevel = setup.aiLevel;
   }
   initDisputed(state);
   createSession(state, every);
@@ -183,7 +179,8 @@ function onDailyTick(state: EngineState): void {
   for (const k of sortedKeys(d.proposals)) {
     if (state.time - d.proposals[k]!.at > PROPOSAL_DAYS * DAY) delete d.proposals[k];
   }
-  for (const k of sortedKeys(d.throttle)) if (state.time - d.throttle[k]! > 30 * DAY) delete d.throttle[k];
+  for (const k of sortedKeys(d.throttle))
+    if (state.time - d.throttle[k]! > 30 * DAY) delete d.throttle[k];
   unrestDaily(state);
   alliancesDaily(state);
   stabilityDaily(state);
@@ -197,9 +194,19 @@ const WORLD_EVENTS: Record<
   string,
   { days: number; mods: Record<string, number>; stability: number; alert: number }
 > = {
-  oil_crisis: { days: 14, mods: { 'income.money': 0.9, 'income.oil': 0.7 }, stability: 3, alert: 10 },
+  oil_crisis: {
+    days: 14,
+    mods: { 'income.money': 0.9, 'income.oil': 0.7 },
+    stability: 3,
+    alert: 10,
+  },
   market_crash: { days: 10, mods: { 'income.money': 0.8 }, stability: 5, alert: 5 },
-  pandemic: { days: 20, mods: { 'production.speed': 0.85, 'research.speed': 0.9 }, stability: 4, alert: 0 },
+  pandemic: {
+    days: 20,
+    mods: { 'production.speed': 0.85, 'research.speed': 0.9 },
+    stability: 4,
+    alert: 0,
+  },
   arms_fair: { days: 7, mods: { 'production.cost': 0.9 }, stability: 0, alert: 0 },
 };
 
@@ -207,7 +214,11 @@ function worldEvent(state: EngineState, cmd: SystemCommand): OrderResult {
   if (cmd.kind !== 'worldEvent') return { ok: false, error: 'unknown' };
   const d = ds(state);
   const params = cmd.params ?? {};
-  signal(state, 'world_event', { event: cmd.event, params: { ...params }, message: cmd.message ?? '' });
+  signal(state, 'world_event', {
+    event: cmd.event,
+    params: { ...params },
+    message: cmd.message ?? '',
+  });
   if (cmd.event === 'emergency_council') {
     emergencySession(state, cmd.message);
     return { ok: true };
@@ -271,8 +282,17 @@ function onSignal(state: EngineState, name: string, x: Record<string, unknown>):
   switch (name) {
     case 'news': {
       const cat = str(x.category) as NewsCategory;
-      const nations = Array.isArray(x.nations) ? x.nations.filter((n): n is string => typeof n === 'string') : [];
-      pushNews(state, NEWS_CATEGORIES.has(cat) ? cat : 'event', str(x.headline), str(x.body), lngLat(x.at), nations);
+      const nations = Array.isArray(x.nations)
+        ? x.nations.filter((n): n is string => typeof n === 'string')
+        : [];
+      pushNews(
+        state,
+        NEWS_CATEGORIES.has(cat) ? cat : 'event',
+        str(x.headline),
+        str(x.body),
+        lngLat(x.at),
+        nations,
+      );
       return;
     }
     case 'strike': {
@@ -281,7 +301,13 @@ function onSignal(state: EngineState, name: string, x: Record<string, unknown>):
       if (x.nuclear || !by || !victim) return;
       if (throttled(state, `strike|${by}|${victim}|${str(x.kind)}`, 6 * HOUR)) return;
       const at = lngLat(x.at);
-      news(state, 'strike', { A: by, B: victim, X: STRIKE_LABEL[str(x.kind)] ?? '', P: placeName(state, at) }, at, [by, victim]);
+      news(
+        state,
+        'strike',
+        { A: by, B: victim, X: STRIKE_LABEL[str(x.kind)] ?? '', P: placeName(state, at) },
+        at,
+        [by, victim],
+      );
       return;
     }
     case 'nuclear_detonation': {
@@ -289,20 +315,41 @@ function onSignal(state: EngineState, name: string, x: Record<string, unknown>):
       const victim = str(x.victim);
       const at = lngLat(x.at);
       if (by && victim) onNuclear(state, by, victim);
-      news(state, 'nuclear', { A: by, B: victim, P: placeName(state, at, x.pid) }, at, [by, victim].filter(Boolean));
+      news(
+        state,
+        'nuclear',
+        { A: by, B: victim, P: placeName(state, at, x.pid) },
+        at,
+        [by, victim].filter(Boolean),
+      );
       return;
     }
     case 'battle_end': {
-      const nations = (Array.isArray(x.nations) ? x.nations : []).filter((n): n is string => typeof n === 'string').sort();
+      const nations = (Array.isArray(x.nations) ? x.nations : [])
+        .filter((n): n is string => typeof n === 'string')
+        .sort();
       if (nations.length < 2 || throttled(state, `battle|${nations.join('|')}`, 12 * HOUR)) return;
       const at = lngLat(x.at);
       const winner = str(x.winner) || undefined;
-      news(state, 'battle', { A: winner, P: placeName(state, at), X: nations.map((n) => n.toUpperCase()).join(', ') }, at, nations);
+      news(
+        state,
+        'battle',
+        { A: winner, P: placeName(state, at), X: nations.map((n) => n.toUpperCase()).join(', ') },
+        at,
+        nations,
+      );
       return;
     }
     case 'leak': {
       const victim = str(x.victim);
-      pushNews(state, 'leak', str(x.headline) || 'Fuite de documents', str(x.body), null, victim ? [victim] : []);
+      pushNews(
+        state,
+        'leak',
+        str(x.headline) || 'Fuite de documents',
+        str(x.body),
+        null,
+        victim ? [victim] : [],
+      );
       return;
     }
     case 'agent_caught': {
@@ -318,8 +365,15 @@ function onSignal(state: EngineState, name: string, x: Record<string, unknown>):
       const pid = str(x.pid);
       const strait = state.world.map.straits.find((s) => s.id === x.straitId);
       const P = pid ? placeName(state, null, pid) : (strait?.name ?? '—');
-      if (throttled(state, `blockade|${by}|${pid || str(x.straitId)}|${x.on ? 1 : 0}`, 12 * HOUR)) return;
-      news(state, x.on === false ? 'blockade_lifted' : 'blockade', { A: by, P }, null, by ? [by] : []);
+      if (throttled(state, `blockade|${by}|${pid || str(x.straitId)}|${x.on ? 1 : 0}`, 12 * HOUR))
+        return;
+      news(
+        state,
+        x.on === false ? 'blockade_lifted' : 'blockade',
+        { A: by, P },
+        null,
+        by ? [by] : [],
+      );
       return;
     }
     case 'disinformation': {
@@ -337,7 +391,8 @@ function onSignal(state: EngineState, name: string, x: Record<string, unknown>):
       const buyer = str(x.buyer);
       if (!buyer) return;
       addReputation(state, buyer, -5);
-      if (!throttled(state, `bm|${buyer}`, 3 * DAY)) news(state, 'black_market', { A: buyer }, null, [buyer]);
+      if (!throttled(state, `bm|${buyer}`, 3 * DAY))
+        news(state, 'black_market', { A: buyer }, null, [buyer]);
       return;
     }
     case 'stability': {
@@ -352,7 +407,11 @@ function onSignal(state: EngineState, name: string, x: Record<string, unknown>):
 const AUDIENCE_PUBLIC = new Set(['coup', 'ceasefire']);
 const AUDIENCE_PRIVATE = new Set(['peace_proposal', 'alliance', 'alliance_vote']);
 
-function audience(_state: EngineState, _nation: NationId, note: GameNotification): boolean | undefined {
+function audience(
+  _state: EngineState,
+  _nation: NationId,
+  note: GameNotification,
+): boolean | undefined {
   switch (note.kind) {
     case 'war_declared':
     case 'peace_signed':
@@ -387,18 +446,28 @@ export const diploModule: EngineModule = {
     declareWar: h<'declareWar'>((s, n, o) => orderDeclareWar(s, n, o.nationId)),
     proposePeace: h<'proposePeace'>((s, n, o) => orderProposePeace(s, n, o.nationId, o.type)),
     answerPeace: h<'answerPeace'>((s, n, o) => orderAnswerPeace(s, n, o.nationId, o.accept)),
-    createAlliance: h<'createAlliance'>((s, n, o) => orderCreateAlliance(s, n, o.name, o.flag, o.charter)),
+    createAlliance: h<'createAlliance'>((s, n, o) =>
+      orderCreateAlliance(s, n, o.name, o.flag, o.charter),
+    ),
     inviteToAlliance: h<'inviteToAlliance'>((s, n, o) => orderInvite(s, n, o.nationId)),
     answerInvite: h<'answerInvite'>((s, n, o) => orderAnswerInvite(s, n, o.allianceId, o.accept)),
     leaveAlliance: h<'leaveAlliance'>((s, n) => orderLeave(s, n)),
     allianceVote: h<'allianceVote'>((s, n, o) => orderVote(s, n, o.voteId, o.yes)),
-    allianceProposeVote: h<'allianceProposeVote'>((s, n, o) => orderProposeVote(s, n, o.vote, o.subject)),
+    allianceProposeVote: h<'allianceProposeVote'>((s, n, o) =>
+      orderProposeVote(s, n, o.vote, o.subject),
+    ),
     allianceTreasury: h<'allianceTreasury'>((s, n, o) => orderTreasury(s, n, o.amount)),
-    proposeResolution: h<'proposeResolution'>((s, n, o) => orderPropose(s, n, o.type, o.target, o.text)),
-    voteResolution: h<'voteResolution'>((s, n, o) => orderVoteResolution(s, n, o.resolutionId, o.vote)),
+    proposeResolution: h<'proposeResolution'>((s, n, o) =>
+      orderPropose(s, n, o.type, o.target, o.text),
+    ),
+    voteResolution: h<'voteResolution'>((s, n, o) =>
+      orderVoteResolution(s, n, o.resolutionId, o.vote),
+    ),
     courtNeutral: h<'courtNeutral'>((s, n, o) => orderCourtNeutral(s, n, o.nationId, o.aid)),
     fundRebels: h<'fundRebels'>((s, n, o) => orderFundRebels(s, n, o.provinceId, o.amount)),
-    hireMercenaries: h<'hireMercenaries'>((s, n, o) => orderHireMercenaries(s, n, o.provinceId, o.count)),
+    hireMercenaries: h<'hireMercenaries'>((s, n, o) =>
+      orderHireMercenaries(s, n, o.provinceId, o.count),
+    ),
   },
   system: { worldEvent },
   view: (state, nation, view) => {
@@ -434,12 +503,11 @@ export const diploModule: EngineModule = {
       if (!d) return 1;
       let f = 1;
       if (key === 'production.speed' || key === 'income.money') f *= stabilityFactor(state, n);
-      for (const e of d.effects) if (e.until > state.time && e.mods[key] !== undefined) f *= e.mods[key]!;
+      for (const e of d.effects)
+        if (e.until > state.time && e.mods[key] !== undefined) f *= e.mods[key]!;
       return f;
     },
     onSignal,
     audience,
   },
 };
-
-

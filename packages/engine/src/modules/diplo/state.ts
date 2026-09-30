@@ -219,9 +219,9 @@ export function stabilityOf(state: EngineState, n: NationId): number {
 /** Variation de stabilité avec son facteur (libellé court, affiché dans StabilityView). */
 export function addStability(state: EngineState, n: NationId, delta: number, label: string): void {
   if (!isRegular(state, n) || delta === 0) return;
+  const d = stabDetail(state, n);
   const b = board(state);
   b.stability[n] = round1(clamp(stabilityOf(state, n) + delta));
-  const d = stabDetail(state, n);
   d.f[label] = round1((d.f[label] ?? 0) + delta);
 }
 

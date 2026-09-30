@@ -16,7 +16,14 @@ import {
   type AllianceVote,
 } from './state.js';
 import { news } from './news.js';
-import { OK, capitalPoint, declareDefensive, fail, refreshPassage, regularEnemies } from './relations.js';
+import {
+  OK,
+  capitalPoint,
+  declareDefensive,
+  fail,
+  refreshPassage,
+  regularEnemies,
+} from './relations.js';
 
 function charterText(c: AllianceCharter): string {
   const parts: string[] = [];
@@ -33,7 +40,11 @@ function genericNote(
   text: string,
   category = 'alliance',
 ): void {
-  notify(state, { kind: 'generic', time: state.time, at: null, category, title, text, severity: 'info' }, aud);
+  notify(
+    state,
+    { kind: 'generic', time: state.time, at: null, category, title, text, severity: 'info' },
+    aud,
+  );
 }
 
 export function orderCreateAlliance(
@@ -66,7 +77,13 @@ export function orderCreateAlliance(
   };
   board(state).allianceOf[n] = id;
   delete d.leaning[n];
-  news(state, 'alliance_created', { A: n, X: clean, Y: charterText(charter) }, capitalPoint(state, n), [n]);
+  news(
+    state,
+    'alliance_created',
+    { A: n, X: clean, Y: charterText(charter) },
+    capitalPoint(state, n),
+    [n],
+  );
   refreshPassage(state);
   return OK;
 }
@@ -77,11 +94,17 @@ export function orderInvite(state: EngineState, n: NationId, target: NationId): 
   if (A.leader !== n) return fail('not_allowed', "Seul le chef de l'alliance peut inviter.");
   if (!isRegular(state, target) || target === n || !state.nations[target]!.alive)
     return fail('invalid_target', 'Nation invalide.');
-  if (allianceOf(state, target)) return fail('not_allowed', 'Cette nation appartient déjà à une alliance.');
+  if (allianceOf(state, target))
+    return fail('not_allowed', 'Cette nation appartient déjà à une alliance.');
   if (A.members.some((m) => atWar(state, m, target)))
     return fail('not_allowed', 'Cette nation est en guerre avec un membre.');
   if (!A.invites.includes(target)) A.invites = [...A.invites, target].sort();
-  genericNote(state, [target], "Invitation d'alliance", `L'alliance ${A.name} vous invite à la rejoindre.`);
+  genericNote(
+    state,
+    [target],
+    "Invitation d'alliance",
+    `L'alliance ${A.name} vous invite à la rejoindre.`,
+  );
   return OK;
 }
 
@@ -91,10 +114,13 @@ export function joinAlliance(state: EngineState, n: NationId, A: Alliance): void
   A.members = [...A.members, n].sort();
   board(state).allianceOf[n] = A.id;
   delete ds(state).leaning[n];
-  news(state, 'alliance_joined', { A: n, X: A.name, Y: String(A.members.length) }, capitalPoint(state, n), [
-    n,
-    A.leader,
-  ]);
+  news(
+    state,
+    'alliance_joined',
+    { A: n, X: A.name, Y: String(A.members.length) },
+    capitalPoint(state, n),
+    [n, A.leader],
+  );
   refreshPassage(state);
 }
 
@@ -105,10 +131,16 @@ export function orderAnswerInvite(
   accept: boolean,
 ): OrderResult {
   const A = ds(state).alliances[allianceId];
-  if (!A || !A.invites.includes(n)) return fail('invalid_target', 'Aucune invitation de cette alliance.');
+  if (!A || !A.invites.includes(n))
+    return fail('invalid_target', 'Aucune invitation de cette alliance.');
   if (!accept) {
     A.invites = A.invites.filter((x) => x !== n);
-    genericNote(state, [A.leader], 'Invitation déclinée', `${n.toUpperCase()} décline l'invitation.`);
+    genericNote(
+      state,
+      [A.leader],
+      'Invitation déclinée',
+      `${n.toUpperCase()} décline l'invitation.`,
+    );
     return OK;
   }
   if (allianceOf(state, n)) return fail('not_allowed', 'Quittez d’abord votre alliance actuelle.');
@@ -156,7 +188,10 @@ function bestMember(state: EngineState, members: NationId[]): NationId {
 export function orderLeave(state: EngineState, n: NationId): OrderResult {
   const A = allianceOf(state, n);
   if (!A) return fail('not_allowed', "Vous n'appartenez à aucune alliance.");
-  if (regularEnemies(state, n).length > 0 || A.members.some((m) => regularEnemies(state, m).length > 0)) {
+  if (
+    regularEnemies(state, n).length > 0 ||
+    A.members.some((m) => regularEnemies(state, m).length > 0)
+  ) {
     const c = cfg(state);
     addStability(state, n, -c.leaveAllianceStability, "Départ d'alliance");
     addReputation(state, n, -c.leaveAllianceReputation);
@@ -222,7 +257,12 @@ export function orderProposeVote(
   return OK;
 }
 
-export function orderVote(state: EngineState, n: NationId, voteId: string, yes: boolean): OrderResult {
+export function orderVote(
+  state: EngineState,
+  n: NationId,
+  voteId: string,
+  yes: boolean,
+): OrderResult {
   const A = allianceOf(state, n);
   const v = A?.votes.find((x) => x.id === voteId);
   if (!A || !v) return fail('invalid_target', 'Vote introuvable.');
@@ -302,7 +342,12 @@ export function mutualDefense(state: EngineState, aggressor: NationId, victim: N
   openVote(state, A, 'skip_mutual_defense', aggressor, null, delay, victim);
 }
 
-function triggerMutualDefense(state: EngineState, A: Alliance, aggressor: NationId, victim: NationId): void {
+function triggerMutualDefense(
+  state: EngineState,
+  A: Alliance,
+  aggressor: NationId,
+  victim: NationId,
+): void {
   if (!atWar(state, victim, aggressor) || !isRegular(state, aggressor)) return;
   const b = board(state);
   for (const m of [...A.members].sort()) {
@@ -340,12 +385,26 @@ export function alliancesDaily(state: EngineState): void {
     for (const m of [...A.members]) if (!state.nations[m]?.alive) removeMember(state, m, A);
     if (!d.alliances[id]) continue;
     const leader = state.nations[A.leader]!;
+    // Un joueur qui vient de reprendre la nation du chef n'est pas « inactif » d'office.
+    if (leader.isPlayer && d.lastActive[A.leader] === undefined)
+      d.lastActive[A.leader] = state.time;
     const last = d.lastActive[A.leader] ?? 0;
     const inactive = leader.isPlayer && state.time - last > c.leaderInactiveDays * DAY;
     if (inactive && A.members.length > 1 && !A.votes.some((v) => v.kind === 'replace_leader')) {
       const cand = A.members.filter((m) => m !== A.leader);
-      const active = cand.filter((m) => !state.nations[m]!.isPlayer || state.time - (d.lastActive[m] ?? 0) <= c.leaderInactiveDays * DAY);
-      openVote(state, A, 'replace_leader', bestMember(state, active.length > 0 ? active : cand), null, c.allianceVoteHours);
+      const active = cand.filter(
+        (m) =>
+          !state.nations[m]!.isPlayer ||
+          state.time - (d.lastActive[m] ?? 0) <= c.leaderInactiveDays * DAY,
+      );
+      openVote(
+        state,
+        A,
+        'replace_leader',
+        bestMember(state, active.length > 0 ? active : cand),
+        null,
+        c.allianceVoteHours,
+      );
     }
     for (const k of sortedKeys(A.skip)) if (A.skip[k]! <= state.time) delete A.skip[k];
   }
@@ -364,6 +423,7 @@ export function alliancesDaily(state: EngineState): void {
     const ns = state.nations[n];
     if (!bestId || !ns || ns.isPlayer || !ns.alive || allianceOf(state, n)) continue;
     const A = d.alliances[bestId]!;
-    if (L[bestId]! >= c.courtJoinLeaning && !A.members.some((m) => atWar(state, m, n))) joinAlliance(state, n, A);
+    if (L[bestId]! >= c.courtJoinLeaning && !A.members.some((m) => atWar(state, m, n)))
+      joinAlliance(state, n, A);
   }
 }

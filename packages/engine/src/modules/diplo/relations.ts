@@ -1,7 +1,16 @@
 import { DAY, HOUR, type LngLat, type NationId, type Relation } from '@redline/shared';
 import type { OrderResult } from '../../api.js';
 import type { EngineState, Unit } from '../../state/types.js';
-import { atWar, nationUnits, notify, provincesOf, sortedKeys, sysOf, unitPosAt, warsOf } from '../../state/access.js';
+import {
+  atWar,
+  nationUnits,
+  notify,
+  provincesOf,
+  sortedKeys,
+  sysOf,
+  unitPosAt,
+  warsOf,
+} from '../../state/access.js';
 import { declareWar as coreDeclareWar, makePeace } from '../../state/war.js';
 import { wi } from '../../state/world.js';
 import { planUnitMove } from '../../movement/plan-unit.js';
@@ -101,7 +110,13 @@ export function onWarDeclared(state: EngineState, a: NationId, b: NationId): voi
     addStability(state, a, -c.ceasefireViolationStability, 'Cessez-le-feu violé');
     addReputation(state, a, -c.ceasefireViolationReputation);
     news(state, 'ceasefire_violated', { A: a, B: b }, at, [a, b]);
-    autoResolution(state, 'economic_sanctions', a, b, 'Sanctions après la violation du cessez-le-feu.');
+    autoResolution(
+      state,
+      'economic_sanctions',
+      a,
+      b,
+      'Sanctions après la violation du cessez-le-feu.',
+    );
   } else if (isDefensive) {
     const al = d.alliances[board(state).allianceOf[a] ?? ''];
     news(state, 'war_alliance', { A: a, B: b, X: al?.name ?? '' }, at, [a, b]);
@@ -125,7 +140,13 @@ function peacekeepersAttacked(state: EngineState, attacker: NationId): void {
   addStability(state, attacker, -c.condemnationStability, 'Condamnation');
   addReputation(state, attacker, -c.condemnationReputation * 1.5);
   news(state, 'peacekeepers_attacked', { A: attacker }, null, [attacker]);
-  autoResolution(state, 'economic_sanctions', attacker, PK_NATION, 'Sanctions après l’attaque de casques bleus.');
+  autoResolution(
+    state,
+    'economic_sanctions',
+    attacker,
+    PK_NATION,
+    'Sanctions après l’attaque de casques bleus.',
+  );
 }
 
 export function capitalPoint(state: EngineState, n: NationId): LngLat | null {
@@ -156,7 +177,10 @@ export function endWar(
     d.grace[`${a}>${b}`] = until;
     d.grace[`${b}>${a}`] = until;
     scheduleMod(state, { t: until, m: 'diplo', e: 'cf_end', d: { a, b, until } });
-    news(state, 'ceasefire', { A: a, B: b, X: String(days ?? cfg(state).ceasefireDays) }, at, [a, b]);
+    news(state, 'ceasefire', { A: a, B: b, X: String(days ?? cfg(state).ceasefireDays) }, at, [
+      a,
+      b,
+    ]);
     notify(
       state,
       {
@@ -249,7 +273,10 @@ export function repatriate(state: EngineState, x: NationId, host: NationId): voi
   for (const uid of nationUnits(state, x)) {
     const u = state.units[uid];
     if (!u) continue;
-    if (ownerAt(state, unitPosAt(state, u, state.time)) !== host && !(u.move && inTerritoryOf(state, u, host)))
+    if (
+      ownerAt(state, unitPosAt(state, u, state.time)) !== host &&
+      !(u.move && inTerritoryOf(state, u, host))
+    )
       continue;
     const home = homeFor(state, u);
     if (!home) {
@@ -334,7 +361,12 @@ export function orderProposePeace(
   return OK;
 }
 
-function concludePeace(state: EngineState, a: NationId, b: NationId, kind: 'peace' | 'ceasefire'): void {
+function concludePeace(
+  state: EngineState,
+  a: NationId,
+  b: NationId,
+  kind: 'peace' | 'ceasefire',
+): void {
   if (kind === 'peace' && !atWar(state, a, b)) {
     // Paix après un cessez-le-feu : la trêve devient définitive.
     const key = pairKey(a, b);
@@ -362,7 +394,8 @@ export function orderAnswerPeace(
   const d = ds(state);
   const key = pairKey(n, from);
   const p = d.proposals[key];
-  if (!p || p.from !== from || p.to !== n) return fail('invalid_target', 'Aucune proposition en attente.');
+  if (!p || p.from !== from || p.to !== n)
+    return fail('invalid_target', 'Aucune proposition en attente.');
   if (!accept) {
     delete d.proposals[key];
     notify(

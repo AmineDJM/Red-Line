@@ -37,7 +37,12 @@ export function onUnitLost(state: EngineState, u: Unit): void {
   }
 }
 
-export function onProvinceLost(state: EngineState, pid: ProvinceId, from: NationId, to: NationId): void {
+export function onProvinceLost(
+  state: EngineState,
+  pid: ProvinceId,
+  from: NationId,
+  to: NationId,
+): void {
   const c = cfg(state);
   const w = wi(state.world);
   const capital = w.nationById.get(from)?.capitalProvinceId === pid;
@@ -108,7 +113,13 @@ export function stabilityDaily(state: EngineState): void {
       news(
         state,
         'refugees',
-        { A: x, X: hosts.slice(0, 4).map((y) => nationName(state, y)).join(', ') },
+        {
+          A: x,
+          X: hosts
+            .slice(0, 4)
+            .map((y) => nationName(state, y))
+            .join(', '),
+        },
         capitalPoint(state, x),
         [x, ...hosts],
       );
@@ -122,7 +133,12 @@ export function stabilityDaily(state: EngineState): void {
     const before = stabilityOf(state, n);
     let negative = before < det.prev;
     if (det.lost > 0) {
-      addStability(state, n, -Math.min(c.lossCapPerDay, det.lost * c.lossPerUnit), 'Pertes militaires');
+      addStability(
+        state,
+        n,
+        -Math.min(c.lossCapPerDay, det.lost * c.lossPerUnit),
+        'Pertes militaires',
+      );
       negative = true;
     }
     if ((b.sanctions[n] ?? 1) < 1) {
@@ -170,7 +186,12 @@ export function coupRisk(state: EngineState, n: NationId): number {
   const c = cfg(state);
   const s = stabilityOf(state, n);
   if (s >= c.coupThreshold) return 0;
-  return round1(clamp(c.coupChancePerDay * ((c.coupThreshold - s) / Math.max(1, c.coupThreshold)), 0, 1) * 100) / 100;
+  return (
+    round1(
+      clamp(c.coupChancePerDay * ((c.coupThreshold - s) / Math.max(1, c.coupThreshold)), 0, 1) *
+        100,
+    ) / 100
+  );
 }
 
 /**

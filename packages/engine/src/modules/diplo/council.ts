@@ -51,11 +51,13 @@ export function allianceLeaders(state: EngineState): NationId[] {
 }
 
 /** Sièges tournants : nations non alignées tirées au sort (les nations actives ont plus de chances). */
-function pickRotating(state: EngineState, count: number): NationId[] {
+function pickRotating(state: EngineState, count: number, keep: NationId[] = []): NationId[] {
   const b = board(state);
-  const cand = state.nationIds.filter((n) => state.nations[n]!.alive && !b.allianceOf[n]);
-  const out: NationId[] = [];
-  const pool = cand.map((n) => ({ n, w: state.nations[n]!.active ? 5 : 1 }));
+  const out: NationId[] = keep.filter((n) => state.nations[n]?.alive && !b.allianceOf[n]);
+  const cand = state.nationIds.filter(
+    (n) => state.nations[n]!.alive && !b.allianceOf[n] && !out.includes(n),
+  );
+  const pool = cand.map((n) => ({ n, w: state.nations[n]!.isPlayer ? 5 : 1 }));
   while (out.length < count && pool.length > 0) {
     const total = pool.reduce((s, x) => s + x.w, 0);
     let r = nextFloat(ds(state).rng) * total;
@@ -103,6 +105,8 @@ export function openSession(state: EngineState): void {
   s.phase = 'voting';
   s.opensAt = state.time;
   s.votingEndsAt = state.time + d.voteWindowMs;
+  // Sièges tournants confirmés à l'ouverture : une nation entrée entre-temps dans une alliance est remplacée.
+  s.rotating = pickRotating(state, d.rotatingSeats, s.rotating);
   s.members = members(state, s.rotating);
   for (const r of s.resolutions) r.status = 'voting';
   s.v++;
@@ -163,14 +167,33 @@ export function closeSession(state: EngineState): void {
     const label = RESOLUTION_LABELS[r.type];
     const tgt = r.target.nationId;
     const votes = sortedKeys(r.votes)
-      .map((m) => `${nationName(state, m)} ${r.votes[m] === 'yes' ? 'pour' : r.votes[m] === 'no' ? 'contre' : 'abstention'}`)
+      .map(
+        (m) =>
+          `${nationName(state, m)} ${r.votes[m] === 'yes' ? 'pour' : r.votes[m] === 'no' ? 'contre' : 'abstention'}`,
+      )
       .join(', ');
     if (r.status === 'passed') {
       applyResolution(state, r);
-      if (tgt) news(state, 'resolution_passed', { A: tgt, X: label, Y: r.durationDays > 0 ? String(r.durationDays) : votes || '—' }, null, [tgt]);
-      else news(state, 'resolution_zone_passed', { X: label, Y: zoneLabel(state, r.target.provinceIds ?? []) }, null, []);
+      if (tgt)
+        news(
+          state,
+          'resolution_passed',
+          { A: tgt, X: label, Y: r.durationDays > 0 ? String(r.durationDays) : votes || '—' },
+          null,
+          [tgt],
+        );
+      else
+        news(
+          state,
+          'resolution_zone_passed',
+          { X: label, Y: zoneLabel(state, r.target.provinceIds ?? []) },
+          null,
+          [],
+        );
     } else if (r.status === 'vetoed') {
-      const vetoer = sortedKeys(r.votes).find((m) => r.votes[m] === 'no' && allianceLeaders(state).includes(m));
+      const vetoer = sortedKeys(r.votes).find(
+        (m) => r.votes[m] === 'no' && allianceLeaders(state).includes(m),
+      );
       news(state, 'resolution_vetoed', { A: vetoer, X: label }, null, tgt ? [tgt] : []);
     } else {
       news(state, 'resolution_rejected', { A: r.proposer, X: label }, null, tgt ? [tgt] : []);
@@ -220,7 +243,8 @@ function applyResolution(state: EngineState, r: Resolution): void {
   }
   if (r.durationDays <= 0) return;
   const f: InForce = { ...r, until: state.time + r.durationDays * DAY };
-  if (r.type === 'peacekeeping') f.units = spawnPeacekeepers(state, r.target.provinceIds ?? [], f.until);
+  if (r.type === 'peacekeeping')
+    f.units = spawnPeacekeepers(state, r.target.provinceIds ?? [], f.until);
   ds(state).inForce.push(f);
   scheduleMod(state, { t: f.until, m: 'diplo', e: 'r_end', d: { id: r.id } });
   syncBoard(state);
@@ -236,7 +260,8 @@ export function syncBoard(state: EngineState): void {
   for (const f of ds(state).inForce) {
     const t = f.target.nationId;
     if (f.type === 'arms_embargo' && t) b.embargoed[t] = true;
-    if (f.type === 'economic_sanctions' && t) b.sanctions[t] = Math.min(b.sanctions[t] ?? 1, c.sanctionsIncomeFactor);
+    if (f.type === 'economic_sanctions' && t)
+      b.sanctions[t] = Math.min(b.sanctions[t] ?? 1, c.sanctionsIncomeFactor);
     if (f.type === 'no_fly_zone') for (const p of f.target.provinceIds ?? []) b.noFly[p] = true;
   }
 }
@@ -280,7 +305,9 @@ export function orderPropose(
   const d = ds(state);
   const s = d.session;
   if (s.phase !== 'proposals') return fail('locked', 'Le vote est en cours : propositions closes.');
-  if (s.resolutions.filter((r) => r.proposer === n && !r.auto).length >= cfg(state).proposalsPerNation)
+  if (
+    s.resolutions.filter((r) => r.proposer === n && !r.auto).length >= cfg(state).proposalsPerNation
+  )
     return fail('capacity', 'Nombre maximal de propositions atteint pour cette séance.');
   const clean: Resolution['target'] = {};
   if (NATION_TYPES.includes(type)) {
@@ -323,8 +350,8 @@ export function orderVoteResolution(
   vote: 'yes' | 'no' | 'abstain',
 ): OrderResult {
   const s = ds(state).session;
-  if (s.phase !== 'voting') return fail('locked', "Aucun vote en cours au Conseil.");
-  if (!s.members.includes(n)) return fail('not_allowed', "Vous ne siégez pas au Conseil.");
+  if (s.phase !== 'voting') return fail('locked', 'Aucun vote en cours au Conseil.');
+  if (!s.members.includes(n)) return fail('not_allowed', 'Vous ne siégez pas au Conseil.');
   const r = s.resolutions.find((x) => x.id === id);
   if (!r || r.status !== 'voting') return fail('invalid_target', 'Résolution introuvable.');
   if (r.target.nationId === n) return fail('not_allowed', 'Une nation visée ne vote pas.');
@@ -344,7 +371,11 @@ export function autoResolution(
   text: string,
 ): void {
   const s = ds(state).session;
-  if (s.resolutions.some((r) => r.type === type && r.target.nationId === target && r.status !== 'rejected'))
+  if (
+    s.resolutions.some(
+      (r) => r.type === type && r.target.nationId === target && r.status !== 'rejected',
+    )
+  )
     return;
   s.resolutions.push({
     id: nextResolutionId(state),

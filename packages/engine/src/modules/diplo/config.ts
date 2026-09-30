@@ -151,7 +151,8 @@ const cache = new WeakMap<World, DiploConfig>();
 function pick<T extends object>(src: T | undefined): Partial<T> {
   const out: Partial<T> = {};
   if (!src) return out;
-  for (const [k, v] of Object.entries(src)) if (v !== undefined) (out as Record<string, unknown>)[k] = v;
+  for (const [k, v] of Object.entries(src))
+    if (v !== undefined) (out as Record<string, unknown>)[k] = v;
   return out;
 }
 

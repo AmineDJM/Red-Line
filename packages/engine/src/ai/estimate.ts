@@ -37,7 +37,13 @@ export function ownForce(state: EngineState, n: NationId): OwnForce {
 }
 
 /** Force estimée de `t` du point de vue de `n`. */
-export function estimateForce(state: EngineState, n: NationId, t: NationId, mine: OwnForce, caution: number): number {
+export function estimateForce(
+  state: EngineState,
+  n: NationId,
+  t: NationId,
+  mine: OwnForce,
+  caution: number,
+): number {
   let known = 0;
   const k = state.know[n];
   if (k) {
@@ -63,7 +69,9 @@ export function mutualAllies(state: EngineState, t: NationId, except: NationId):
   const b = board(state);
   const id = b.allianceOf[t];
   if (!id || !b.allianceCharters?.[id]?.mutualDefense) return [];
-  return state.nationIds.filter((m) => m !== t && m !== except && b.allianceOf[m] === id && state.nations[m]!.alive);
+  return state.nationIds.filter(
+    (m) => m !== t && m !== except && b.allianceOf[m] === id && state.nations[m]!.alive,
+  );
 }
 
 /** Nations voisines (provinces adjacentes), carte publique. */
@@ -109,7 +117,7 @@ export function adjacency(state: EngineState): Map<NationId, NationId[]> {
 /** Provinces d'origine de `n` désormais tenues par `by`. */
 export function lostTo(state: EngineState, n: NationId, by: NationId): number {
   let c = 0;
-  for (const pid of wi(state.world).provsByNation.get(n) ?? []) if (state.provinces[pid]?.owner === by) c++;
+  for (const pid of wi(state.world).provsByNation.get(n) ?? [])
+    if (state.provinces[pid]?.owner === by) c++;
   return c;
 }
-

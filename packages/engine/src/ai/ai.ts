@@ -28,7 +28,14 @@ import { computeCrossings } from '../movement/movement.js';
 import { nextInt } from '../rng/rng.js';
 import { hasPassage } from '../state/war.js';
 import { neighborNations } from './estimate.js';
-import { STRATEGY, forgetNation, isHot, reactiveThink, strategicThink, thinkContext } from './strategy.js';
+import {
+  STRATEGY,
+  forgetNation,
+  isHot,
+  reactiveThink,
+  strategicThink,
+  thinkContext,
+} from './strategy.js';
 import { ds, pairKey } from '../modules/diplo/state.js';
 
 /**
@@ -129,7 +136,8 @@ function violatesNeutral(state: EngineState, n: NationId, u: Unit, to: LngLat): 
   for (const c of computeCrossings(state, start, plan.legs)) {
     if (!c.p) continue;
     const owner = state.provinces[c.p]?.owner;
-    if (owner && owner !== n && !atWar(state, n, owner) && !hasPassage(state, n, owner)) return true;
+    if (owner && owner !== n && !atWar(state, n, owner) && !hasPassage(state, n, owner))
+      return true;
   }
   return false;
 }

@@ -109,7 +109,9 @@ export const TEMPLATES = {
   mutual_skipped: {
     cat: 'alliance',
     h: ['{X} renonce à la défense mutuelle face à {A}', 'Défense mutuelle suspendue : {X} / {A}'],
-    b: ["Les membres de {X} ont voté la dispense : aucune entrée en guerre automatique contre {A}."],
+    b: [
+      'Les membres de {X} ont voté la dispense : aucune entrée en guerre automatique contre {A}.',
+    ],
   },
   council_open: {
     cat: 'council',
@@ -253,6 +255,14 @@ export const TEMPLATES = {
       'Les insurgés contrôleraient plusieurs axes autour de {P}.',
     ],
   },
+  rallied: {
+    cat: 'revolt',
+    h: [
+      '{P} : les insurgés se rallient à {A}',
+      'Territoire disputé : {P} passe sous contrôle de {A}',
+    ],
+    b: ['Après la chute des autorités de {B}, les insurgés ont proclamé leur ralliement à {A}.'],
+  },
   coup: {
     cat: 'coup',
     h: ['Coup d’État : {A}', '{A} : l’armée prend le pouvoir', '{A} : le gouvernement renversé'],
@@ -263,7 +273,11 @@ export const TEMPLATES = {
   },
   refugees: {
     cat: 'refugees',
-    h: ['Afflux de réfugiés fuyant {A}', 'Crise humanitaire : les civils fuient {A}', 'Exode : {A}'],
+    h: [
+      'Afflux de réfugiés fuyant {A}',
+      'Crise humanitaire : les civils fuient {A}',
+      'Exode : {A}',
+    ],
     b: [
       'Pays d’accueil sous pression : {X}.',
       'Les frontières de {X} voient affluer des familles fuyant les combats.',
@@ -301,7 +315,10 @@ export const TEMPLATES = {
   },
   pandemic: {
     cat: 'event',
-    h: ['Pandémie : l’alerte sanitaire est déclenchée', 'Épidémie mondiale : les industries ralentissent'],
+    h: [
+      'Pandémie : l’alerte sanitaire est déclenchée',
+      'Épidémie mondiale : les industries ralentissent',
+    ],
     b: ['{X}', 'Les chaînes de production tournent au ralenti. {X}'],
   },
   arms_fair: {

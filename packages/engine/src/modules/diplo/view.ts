@@ -133,7 +133,8 @@ function diplomacyView(state: EngineState, me: NationId): DiplomacyView {
   const b = board(state);
   const neutrals: DiplomacyView['neutrals'] = [];
   for (const n of state.nationIds) {
-    if (n === me || b.allianceOf[n] || !state.nations[n]!.alive || state.nations[n]!.isPlayer) continue;
+    if (n === me || b.allianceOf[n] || !state.nations[n]!.alive || state.nations[n]!.isPlayer)
+      continue;
     neutrals.push({ nationId: n, leaning: { ...(d.leaning[n] ?? {}) } });
   }
   return {
@@ -149,7 +150,10 @@ function diplomacyView(state: EngineState, me: NationId): DiplomacyView {
 
 function recentNews(state: EngineState) {
   const all = ds(state).news;
-  return all.slice(-RECENT_NEWS).reverse().map((n) => ({ ...n, nations: [...n.nations] }));
+  return all
+    .slice(-RECENT_NEWS)
+    .reverse()
+    .map((n) => ({ ...n, nations: [...n.nations] }));
 }
 
 /** Champs publics des nations, provinces et unités (communs à la vue joueur et spectateur). */
@@ -204,7 +208,8 @@ function decorate(state: EngineState, view: PlayerView, me: NationId | null): vo
     if (!it) continue;
     const uv = view.units[uid]!;
     // Un mercenaire n'est reconnu comme tel que par son employeur ou une observation précise.
-    if (it.kind !== 'mercenary' || uv.level === 'own' || uv.level === 'precise') uv.affiliation = it.kind;
+    if (it.kind !== 'mercenary' || uv.level === 'own' || uv.level === 'precise')
+      uv.affiliation = it.kind;
   }
 }
 

@@ -41,7 +41,12 @@ import { OK, fail } from './relations.js';
 
 // ——— Pseudo-nations (rebelles par pays, casques bleus) ———
 
-export function ensurePseudo(state: EngineState, id: NationId, kind: PseudoKind, of: NationId | null): void {
+export function ensurePseudo(
+  state: EngineState,
+  id: NationId,
+  kind: PseudoKind,
+  of: NationId | null,
+): void {
   const d = ds(state);
   if (!d.pseudo[id]) d.pseudo[id] = { kind, of };
   if (state.nations[id]) {
@@ -142,14 +147,23 @@ export function spawnPeacekeepers(state: EngineState, pids: ProvinceId[], until:
   for (const pid of pids) {
     if (!state.provinces[pid]) continue;
     for (let k = 0; k < per; k++) {
-      const id = spawnIrregular(state, PK_NATION, 'peacekeeper', spawnPoint(state, pid, k, gc * 0.5), until);
+      const id = spawnIrregular(
+        state,
+        PK_NATION,
+        'peacekeeper',
+        spawnPoint(state, pid, k, gc * 0.5),
+        until,
+      );
       if (id) out.push(id);
     }
   }
   if (pids.length > 0) {
     const w = wi(state.world);
     const at = w.provById.get(pids[0]!)?.cityPoint ?? null;
-    const names = pids.slice(0, 3).map((p) => w.provById.get(p)?.name ?? p).join(', ');
+    const names = pids
+      .slice(0, 3)
+      .map((p) => w.provById.get(p)?.name ?? p)
+      .join(', ');
     news(state, 'peacekeepers', { P: names }, at, []);
   }
   return out;
@@ -180,7 +194,10 @@ export function uprising(state: EngineState, pid: ProvinceId, units: number): Un
 }
 
 /** Zone disputée contenant la province. */
-export function disputedOf(state: EngineState, pid: ProvinceId): { id: string; claimants: NationId[] } | null {
+export function disputedOf(
+  state: EngineState,
+  pid: ProvinceId,
+): { id: string; claimants: NationId[] } | null {
   for (const a of state.world.map.disputed) if (a.provinceIds.includes(pid)) return a;
   return null;
 }
@@ -200,7 +217,12 @@ export function holderOf(state: EngineState, pids: ProvinceId[]): NationId | nul
 }
 
 /** Province prise par des rebelles dans une zone disputée : elle se rallie à un prétendant. */
-export function rebelCapture(state: EngineState, pid: ProvinceId, from: NationId, reb: NationId): void {
+export function rebelCapture(
+  state: EngineState,
+  pid: ProvinceId,
+  from: NationId,
+  reb: NationId,
+): void {
   const area = disputedOf(state, pid);
   if (!area) return;
   const funders = ds(state).funding[pid] ?? {};
@@ -214,14 +236,23 @@ export function rebelCapture(state: EngineState, pid: ProvinceId, from: NationId
 export function onHandover(state: EngineState, pid: ProvinceId, to: NationId, reb: NationId): void {
   const P = state.provinces[pid];
   if (!P || P.owner !== reb || !state.nations[to]?.alive) return;
+  const from = ds(state).pseudo[reb]?.of ?? undefined;
   transferProvince(state, pid, to);
+  const def = wi(state.world).provById.get(pid)!;
+  news(state, 'rallied', { A: to, B: from, P: def.name }, def.cityPoint, from ? [to, from] : [to]);
 }
 
 // ——— Ordres : procuration ———
 
-export function orderFundRebels(state: EngineState, n: NationId, pid: ProvinceId, amount: number): OrderResult {
+export function orderFundRebels(
+  state: EngineState,
+  n: NationId,
+  pid: ProvinceId,
+  amount: number,
+): OrderResult {
   const P = state.provinces[pid];
-  if (!P || P.owner === n || !isRegular(state, P.owner)) return fail('invalid_target', 'Province invalide.');
+  if (!P || P.owner === n || !isRegular(state, P.owner))
+    return fail('invalid_target', 'Province invalide.');
   if (sameAlliance(state, n, P.owner)) return fail('not_allowed', 'Impossible contre un allié.');
   const ns = state.nations[n]!;
   if (!(amount > 0) || ns.money < amount) return fail('insufficient_funds', 'Fonds insuffisants.');
@@ -231,7 +262,12 @@ export function orderFundRebels(state: EngineState, n: NationId, pid: ProvinceId
 }
 
 /** Signal `rebels_funded` (ordre diplo ou opération de renseignement) : agitation dans la province. */
-export function onRebelsFunded(state: EngineState, by: NationId, pid: ProvinceId, amount: number): void {
+export function onRebelsFunded(
+  state: EngineState,
+  by: NationId,
+  pid: ProvinceId,
+  amount: number,
+): void {
   const P = state.provinces[pid];
   if (!P || !(amount > 0)) return;
   const c = cfg(state);
@@ -249,7 +285,12 @@ export function onRebelsFunded(state: EngineState, by: NationId, pid: ProvinceId
   }
 }
 
-export function orderHireMercenaries(state: EngineState, n: NationId, pid: ProvinceId, count: number): OrderResult {
+export function orderHireMercenaries(
+  state: EngineState,
+  n: NationId,
+  pid: ProvinceId,
+  count: number,
+): OrderResult {
   const P = state.provinces[pid];
   if (!P || P.owner !== n) return fail('not_owner', 'Cette province ne vous appartient pas.');
   const sys = irregularSystem(state);
@@ -268,7 +309,12 @@ export function orderHireMercenaries(state: EngineState, n: NationId, pid: Provi
   return OK;
 }
 
-export function orderCourtNeutral(state: EngineState, n: NationId, target: NationId, aid: number): OrderResult {
+export function orderCourtNeutral(
+  state: EngineState,
+  n: NationId,
+  target: NationId,
+  aid: number,
+): OrderResult {
   const A = allianceOf(state, n);
   if (!A) return fail('not_allowed', 'Il faut appartenir à une alliance pour courtiser un neutre.');
   if (!isRegular(state, target) || target === n || !state.nations[target]!.alive)
@@ -291,7 +337,13 @@ export function orderCourtNeutral(state: EngineState, n: NationId, target: Natio
 
 // ——— Tick journalier : zones disputées, révoltes, agitation, irréguliers ———
 
-function revolt(state: EngineState, pid: ProvinceId, armedChance: number, areaName?: string, claimants?: NationId[]): void {
+function revolt(
+  state: EngineState,
+  pid: ProvinceId,
+  armedChance: number,
+  areaName?: string,
+  claimants?: NationId[],
+): void {
   const P = state.provinces[pid]!;
   const holder = P.owner;
   const d = ds(state);
@@ -307,7 +359,9 @@ function revolt(state: EngineState, pid: ProvinceId, armedChance: number, areaNa
     Y: (claimants ?? []).map((c) => c.toUpperCase()).join(', '),
   };
   if (armed) {
-    const tension = areaName ? (d.disputed[disputedOf(state, pid)!.id]?.tension ?? 50) : (d.unrest[pid] ?? 0);
+    const tension = areaName
+      ? (d.disputed[disputedOf(state, pid)!.id]?.tension ?? 50)
+      : (d.unrest[pid] ?? 0);
     uprising(state, pid, cfg(state).rebelUnits + Math.floor(tension / 50));
     news(state, 'uprising', vars, def.cityPoint, [holder]);
   } else {
@@ -330,16 +384,34 @@ export function unrestDaily(state: EngineState): void {
     if (!holder) continue;
     st.holder = holder;
     const drift = c.disputedTensionDriftPerDay;
-    const claimWar = area.claimants.some((x) => area.claimants.some((y) => x < y && atWar(state, x, y)));
+    const claimWar = area.claimants.some((x) =>
+      area.claimants.some((y) => x < y && atWar(state, x, y)),
+    );
     const target = claimWar ? 100 : area.tension;
-    st.tension = round1(st.tension < target ? Math.min(target, st.tension + drift * (claimWar ? 5 : 1)) : Math.max(target, st.tension - drift));
+    st.tension = round1(
+      st.tension < target
+        ? Math.min(target, st.tension + drift * (claimWar ? 5 : 1))
+        : Math.max(target, st.tension - drift),
+    );
     const held = pids.filter((p) => isRegular(state, state.provinces[p]!.owner));
     if (held.length === 0) continue;
     const s = stabilityOf(state, holder);
-    const chance = clamp(area.revoltRate * (st.tension / 50) * (1 + Math.max(0, c.revoltThreshold - s) / Math.max(1, c.revoltThreshold)), 0, 1);
+    const chance = clamp(
+      area.revoltRate *
+        (st.tension / 50) *
+        (1 + Math.max(0, c.revoltThreshold - s) / Math.max(1, c.revoltThreshold)),
+      0,
+      1,
+    );
     if (nextFloat(ds(state).rng) < chance) {
       const pid = held[nextInt(ds(state).rng, held.length)]!;
-      revolt(state, pid, clamp(c.armedUprisingChance * (st.tension / 50), 0, 1), area.name, area.claimants);
+      revolt(
+        state,
+        pid,
+        clamp(c.armedUprisingChance * (st.tension / 50), 0, 1),
+        area.name,
+        area.claimants,
+      );
     }
   }
   // Provinces agitées par un financement étranger.
@@ -425,11 +497,12 @@ export function disputedCaptured(state: EngineState, pid: ProvinceId): void {
   const st = ds(state).disputed[area.id];
   if (!st) return;
   st.tension = round1(clamp(st.tension + cfg(state).disputedCaptureTension));
-  const pids = state.world.map.disputed.find((a) => a.id === area.id)!.provinceIds.filter((p) => state.provinces[p]);
+  const pids = state.world.map.disputed
+    .find((a) => a.id === area.id)!
+    .provinceIds.filter((p) => state.provinces[p]);
   st.holder = holderOf(state, pids) ?? st.holder;
 }
 
 export function isIrregularRebel(state: EngineState, n: NationId): boolean {
   return isPseudo(state, n) && ds(state).pseudo[n]!.kind === 'rebel';
 }
-
