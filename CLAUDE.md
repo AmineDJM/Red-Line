@@ -5,11 +5,13 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
 
 ## État
 
-- **Phase 1 (Socle) : terminée** — bilan dans `docs/phase1-bilan.md`. Critère « conquérir une province ennemie sur
-  mobile et ordinateur » vérifié par `e2e/conquest.spec.ts`.
-- En attente de validation d'Amine : catalogue des chasseurs (`docs/catalog-fighters.md`) et liste complémentaire,
-  avant la phase 2.
-- Règle : avancer phase par phase, **demander la validation avant chaque nouvelle phase**.
+- **Phase 1 (Socle) : terminée** — bilan dans `docs/phase1-bilan.md`.
+- **Phases 2 à 6 : en cours**, lancées ensemble. Amine a validé les chasseurs et demandé de tout faire **sans
+  validation intermédiaire**. Brief des équipes : `docs/agents-brief-v2.md` (contrats, direction artistique,
+  portes de recherche, signaux entre modules).
+- Exigences d'Amine prioritaires : **dollars réels** (prix unitaires réels, budgets de défense réels), **arsenaux
+  réels** au départ (ORBAT), production soumise à la R&D, **vraies photos** des matériels, interface **terminal
+  moderne extrêmement propre** et carte au niveau de **Conflict of Nations**.
 
 ## Carte du dépôt
 
@@ -50,7 +52,6 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
 - Tous les chiffres d'équilibrage dans `data/` (JSON validé par zod), jamais en dur.
 - Textes de l'interface en français, externalisés (`apps/client/src/i18n/fr.json`, `apps/admin/src/i18n/fr.ts`).
 - Nom du jeu : **Red Line** (interface, titres, métadonnées).
-- Catalogue : une catégorie complète validée avant d'étendre aux autres.
 - Accès de diagnostic du client (`window.__rl`, `window.__rlMap`) : actifs en mock ou avec localStorage `rl.debug=1`.
 - `REDLINE_EXTRA_SPEEDS` : vitesses d'essai pour les tests, refusées en production.
 
