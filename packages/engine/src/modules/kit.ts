@@ -19,6 +19,7 @@ export function board(state: EngineState): SharedBoard {
       nuclearAuth: {},
       mobilized: {},
       sites: {},
+      passage: {},
     };
     mods.board = b;
   }

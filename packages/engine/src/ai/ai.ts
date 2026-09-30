@@ -26,15 +26,29 @@ import { canAfford } from '../economy/economy.js';
 import { planUnitMove } from '../movement/plan-unit.js';
 import { computeCrossings } from '../movement/movement.js';
 import { nextInt } from '../rng/rng.js';
+import { hasPassage } from '../state/war.js';
+import { neighborNations } from './estimate.js';
+import {
+  STRATEGY,
+  captureFailures,
+  forgetNation,
+  isHot,
+  reactiveThink,
+  strategicThink,
+  thinkContext,
+} from './strategy.js';
+import { ds, pairKey } from '../modules/diplo/state.js';
 
 /**
- * IA de phase 1 : règles et priorités, sans LLM. Elle ne triche pas : ses décisions ne reposent que
+ * IA tactique (phase 1, complétée) : règles et priorités, sans LLM. La couche stratégique
+ * (guerres, paix, alliances, Conseil, procuration) est dans strategy.ts. Elle ne triche pas : ses décisions ne reposent que
  * sur ce que la nation a le droit de voir (ses unités, ses contacts, la carte politique publique)
  * et elle agit exclusivement par `applyOrder`.
  *
  *  - toutes : défendre le territoire (attaquer les ennemis vus chez soi), produire des défenses ;
  *  - 'normal' (et garnisons neutres) : contre-attaquer les provinces perdues voisines ;
- *  - 'hard' : attaquer aussi les provinces voisines faibles d'un ennemi en guerre.
+ *  - 'hard' : attaquer aussi les provinces voisines faibles d'un ennemi en guerre ;
+ *  - 'normal' : idem, mais seulement contre les nations à qui elle a elle-même déclaré la guerre.
  */
 
 /** Réglages de comportement de l'IA (heuristiques, pas de l'équilibrage de jeu). */
@@ -57,18 +71,46 @@ const AI = {
   /** Contre-attaques / offensives lancées par réflexion. */
   maxCounterPerThink: 2,
   maxOffensivePerThink: 1,
+  /** Tentatives de capture (calculs de trajet) par réflexion, réussies ou non. */
+  maxCaptureAttemptsPerThink: 4,
+  /** Délai avant de retenter une capture sans chemin praticable (heures de jeu). */
+  captureRetryHours: 6,
 };
 
+/**
+ * Réflexion des IA : toutes les nations non tenues par un joueur (jusqu'à ~200). Budget de calcul
+ * maîtrisé : les nations proches d'un conflit (guerre, voisin en guerre, affaire diplomatique en attente)
+ * réfléchissent à chaque période ; les autres, éloignées de tout conflit, sont étalées dans le temps
+ * (une réflexion tactique simplifiée toutes les `tacticalEveryCalm` périodes, décalée par nation).
+ * La réflexion stratégique (diplomatie) est espacée de la même façon.
+ */
 export function handleAiThink(state: EngineState): void {
-  for (const n of state.nationIds) {
+  const period = state.world.balance.time.aiThinkMinutes * MINUTE;
+  const tick = Math.round(state.time / period);
+  const ids = state.nationIds;
+  const ctx = thinkContext(state);
+  for (let i = 0; i < ids.length; i++) {
+    const n = ids[i]!;
     const ns = state.nations[n]!;
-    if (!ns.isAi || !ns.alive || state.winner) continue;
-    think(state, n);
-    callHook('aiThink', state, n);
+    if (!ns.isAi) {
+      forgetNation(state, n);
+      continue;
+    }
+    if (!ns.alive || state.winner) continue;
+    const neighbors = neighborNations(state, n);
+    const hot = isHot(state, n, neighbors, ctx);
+    reactiveThink(state, n, ctx);
+    if (state.winner) return;
+    const every = hot ? STRATEGY.strategicEveryHot : STRATEGY.strategicEveryCalm;
+    if ((tick + i) % every === 0) strategicThink(state, n, neighbors);
+    if (hot || (tick + i) % STRATEGY.tacticalEveryCalm === 0) {
+      think(state, n);
+      callHook('aiThink', state, n);
+    }
   }
   schedule(state, {
     k: 'ai',
-    t: state.time + state.world.balance.time.aiThinkMinutes * MINUTE,
+    t: state.time + period,
   });
 }
 
@@ -99,7 +141,8 @@ function violatesNeutral(state: EngineState, n: NationId, u: Unit, to: LngLat): 
   for (const c of computeCrossings(state, start, plan.legs)) {
     if (!c.p) continue;
     const owner = state.provinces[c.p]?.owner;
-    if (owner && owner !== n && !atWar(state, n, owner)) return true;
+    if (owner && owner !== n && !atWar(state, n, owner) && !hasPassage(state, n, owner))
+      return true;
   }
   return false;
 }
@@ -145,6 +188,10 @@ function think(state: EngineState, n: NationId): void {
   }
 
   // 2. Contre-attaque : provinces d'origine perdues, voisines d'une province possédée.
+  const budget: CaptureBudget = {
+    left: AI.maxCaptureAttemptsPerThink,
+    failed: captureFailures(state, n),
+  };
   if (ns.aiLevel !== 'easy') {
     let launched = 0;
     for (const pid of w.provsByNation.get(n) ?? []) {
@@ -152,12 +199,15 @@ function think(state: EngineState, n: NationId): void {
       const P = state.provinces[pid];
       if (!P || P.owner === n || !atWar(state, n, P.owner)) continue;
       if (!bordersOwned(state, n, pid)) continue;
-      if (launchCapture(state, n, pid, idle, myUnits)) launched++;
+      if (launchCapture(state, n, pid, idle, myUnits, budget)) launched++;
     }
   }
 
-  // 3. Offensive ('hard') : provinces voisines faibles d'un ennemi en guerre.
-  if (ns.aiLevel === 'hard') {
+  // 3. Offensive : 'hard' contre tout ennemi ; 'normal' contre les nations à qui elle a déclaré la guerre.
+  const started = new Set(
+    ds(state) ? enemies.filter((e) => ds(state).aggressor[pairKey(n, e)] === n) : [],
+  );
+  if (ns.aiLevel === 'hard' || (ns.aiLevel === 'normal' && started.size > 0)) {
     let launched = 0;
     const seen = new Set<ProvinceId>();
     for (const own of provincesOf(state, n)) {
@@ -167,10 +217,11 @@ function think(state: EngineState, n: NationId): void {
         seen.add(pid);
         const P = state.provinces[pid];
         if (!P || P.owner === n || !atWar(state, n, P.owner)) continue;
+        if (ns.aiLevel !== 'hard' && !started.has(P.owner)) continue;
         if (!isWeak(state, n, pid, threats)) continue;
         const capturers = [...idle].filter((id) => sysOf(state, state.units[id]!).canCapture);
         if (capturers.length < 2) continue; // garder une réserve
-        if (launchCapture(state, n, pid, idle, myUnits)) launched++;
+        if (launchCapture(state, n, pid, idle, myUnits, budget)) launched++;
       }
     }
   }
@@ -236,6 +287,11 @@ function isWeak(state: EngineState, n: NationId, pid: ProvinceId, threats: Threa
   return true;
 }
 
+interface CaptureBudget {
+  left: number;
+  failed: Record<string, number>;
+}
+
 /** Envoie l'unité de capture libre la plus proche vers la ville, si personne n'y va déjà. */
 function launchCapture(
   state: EngineState,
@@ -243,7 +299,9 @@ function launchCapture(
   pid: ProvinceId,
   idle: Set<string>,
   myUnits: Unit[],
+  budget: CaptureBudget,
 ): boolean {
+  if (budget.left <= 0 || (budget.failed[pid] ?? 0) > state.time) return false;
   const city = wi(state.world).provById.get(pid)!.cityPoint;
   const already = myUnits.some((u) => {
     const legs = u.move?.legs;
@@ -259,6 +317,8 @@ function launchCapture(
       return s.canCapture && s.movement === 'land';
     })
     .sort((a, b) => dist(state, a, city) - dist(state, b, city) || (a.id < b.id ? -1 : 1));
+  if (cand.length === 0) return false;
+  budget.left--;
   for (const u of cand.slice(0, 3)) {
     if (violatesNeutral(state, n, u, city)) continue;
     if (order(state, n, { kind: 'move', unitIds: [u.id], to: city })) {
@@ -266,6 +326,7 @@ function launchCapture(
       return true;
     }
   }
+  budget.failed[pid] = state.time + AI.captureRetryHours * 3_600_000;
   return false;
 }
 

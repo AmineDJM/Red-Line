@@ -18,6 +18,19 @@ import { cityOf } from './fixtures.js';
 import { intelGame, intelWorld, runOp } from './intel-helpers.js';
 
 /** Partie riche en secrets : agent retourné, intoxication, leurres, opérations en cours. */
+/** JSON à clés triées (comparaison de contenu). */
+function canon(v: unknown): string {
+  return JSON.stringify(v, (_k, x: unknown) =>
+    x && typeof x === 'object' && !Array.isArray(x)
+      ? Object.fromEntries(
+          Object.entries(x as Record<string, unknown>).sort(([a], [b]) =>
+            a < b ? -1 : a > b ? 1 : 0,
+          ),
+        )
+      : x,
+  );
+}
+
 function secretGame(seed = 7): EngineState {
   const s = intelGame(
     [
@@ -134,8 +147,10 @@ describe('renseignement : déterminisme et sérialisation', () => {
       advanceTo(s, s.time + 3 * DAY);
     }
     expect(stateHash(c)).toBe(stateHash(a));
-    expect(JSON.stringify(viewFor(c, 'bbb'))).toBe(JSON.stringify(viewFor(a, 'bbb')));
-    expect(JSON.stringify(viewFor(c, 'aaa'))).toBe(JSON.stringify(viewFor(a, 'aaa')));
+    // Égalité de contenu (l'ordre des clés d'un objet recopié de l'état peut différer après
+    // désérialisation, qui trie les clés ; la diffusion des vues n'en dépend pas).
+    expect(canon(viewFor(c, 'bbb'))).toBe(canon(viewFor(a, 'bbb')));
+    expect(canon(viewFor(c, 'aaa'))).toBe(canon(viewFor(a, 'aaa')));
   });
 });
 
@@ -165,7 +180,8 @@ describe('renseignement : IA', () => {
     const agent = Object.values(ist(s).agents).find((a) => a.host === 'ccc')!;
     catchQuietly(s, agent);
     ist(s).nations.ccc!.aiNext = 0;
-    advanceTo(s, s.time + HOUR);
+    // Les nations au calme ne réfléchissent qu'une période d'IA sur huit (module diplo) : ≈ 4 h de jeu.
+    advanceTo(s, s.time + 5 * HOUR);
     expect(ist(s).nations.ccc!.ops.at(-1)?.kind).toBe('turn_agent');
   });
 });

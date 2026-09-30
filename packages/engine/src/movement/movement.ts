@@ -10,7 +10,7 @@ import { atWar, notify, schedule, sortedSet, sysOf, unitPosAt } from '../state/a
 import type { Crossing, EngineState, Unit } from '../state/types.js';
 import { CAPTURE_RADIUS_KM, wi } from '../state/world.js';
 import { refreshUnitPairs, registerUnit } from '../encounters/pairs.js';
-import { declareWar } from '../state/war.js';
+import { declareWar, hasPassage } from '../state/war.js';
 import { requestChase } from '../combat/combat.js';
 import type { GameEvent } from '../queue/events.js';
 import { callHook } from '../modules/registry.js';
@@ -106,7 +106,12 @@ export function handleTerritory(state: EngineState, ev: Extract<GameEvent, { k: 
   // Les porteurs non combattants (convois, cargos des livraisons) ne déclarent pas la guerre.
   if (c.p && sysOf(state, u).category !== 'logistics') {
     const P = state.provinces[c.p];
-    if (P && P.owner !== u.owner && !atWar(state, u.owner, P.owner)) {
+    if (
+      P &&
+      P.owner !== u.owner &&
+      !atWar(state, u.owner, P.owner) &&
+      !hasPassage(state, u.owner, P.owner)
+    ) {
       declareWar(state, u.owner, P.owner);
     }
     // Entrée dans une zone d'exclusion aérienne : le propriétaire peut engager l'aéronef.

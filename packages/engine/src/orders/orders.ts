@@ -77,8 +77,9 @@ function resolveUnits(state: EngineState, n: NationId, ids: UnitId[]): Unit[] | 
 export function applyOrderImpl(state: EngineState, n: NationId, order: Order): OrderResult {
   if (state.winner) return fail('game_over', 'La partie est terminée.');
   if (!state.nations[n]) return fail('not_allowed', 'Nation absente de la partie.');
-  callHook('onOrder', state, n, order);
+  // Un module peut prendre en charge un ordre du cœur (aéronefs à carburant, satellites…).
   const res = moduleIntercept(state, n, order) ?? dispatchOrder(state, n, order);
+  if (res.ok) callHook('onOrder', state, n, order);
   settle(state);
   cleanTop(state);
   return res;

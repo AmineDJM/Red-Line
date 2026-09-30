@@ -285,5 +285,10 @@ export function hostile(state: EngineState, u: Unit, o: Unit): boolean {
   if (u.owner === o.owner) return false;
   if (atWar(state, u.owner, o.owner)) return !ceasefire(state, u.owner, o.owner);
   const pid = noFlyViolation(state, o);
-  return !!pid && state.provinces[pid]?.owner === u.owner;
+  if (!pid) return false;
+  // Le propriétaire de la province et les forces de maintien de la paix (nation « onu » de diplo).
+  return state.provinces[pid]?.owner === u.owner || u.owner === PEACEKEEPERS;
 }
+
+/** Nation pseudo des forces de maintien de la paix (créée par le module diplo). */
+const PEACEKEEPERS = 'onu';

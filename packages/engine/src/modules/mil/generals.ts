@@ -194,7 +194,7 @@ function command(state: EngineState, n: NationId, o: Order): boolean {
   }
 }
 
-/** Crochet onOrder : un ordre direct sur une unité d'un groupe délégué reprend la main. */
+/** Crochet onOrder (ordre accepté) : un ordre direct sur une unité d'un groupe délégué reprend la main. */
 export function releaseOnOrder(state: EngineState, n: NationId, o: Order): void {
   if (driving) return;
   const ids: string[] = [];

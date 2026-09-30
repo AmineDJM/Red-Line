@@ -249,6 +249,8 @@ export const ECO_BALANCE = BalanceSchema.parse({
   industry: {},
   // Répartition automatique des bâtiments de ressources désactivée : chiffres de test exacts.
   buildings: { distribute: false },
+  // Budgets du renseignement à zéro : les comptes des tests d'économie restent exacts au dollar.
+  intel: { defaultBudgetShare: 0, defaultBudgetUsdPerDay: 0 },
 });
 
 /** Même équilibrage, avec la répartition des bâtiments de ressources au départ. */
