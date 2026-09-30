@@ -10,3 +10,4 @@ data/map
 data/glyphs
 tools/**/.cache
 .pgdata
+.claude

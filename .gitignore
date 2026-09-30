@@ -9,3 +9,4 @@ test-results
 .tiles-cache
 tools/**/.cache
 .pgdata
+.claude/worktrees/
