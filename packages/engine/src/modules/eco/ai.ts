@@ -77,11 +77,14 @@ function thinkResearch(state: EngineState, n: NationId, atWar: boolean): void {
   // Meilleur nœud = minimum de (score, identifiant) parmi les nœuds éligibles : les nœuds sont
   // parcourus dans cet ordre (précalculé par arbre) et le premier éligible est retenu.
   const done = new Set(en.done);
+  const budget = money * AI.researchSpendShare;
   for (const id of researchOrder(tree, atWar)) {
+    // Filtres purs, du moins coûteux au plus coûteux (même ensemble éligible).
+    const raw = tree.get(id)!;
+    if (raw.cost.money > budget || done.has(id)) continue;
     const node = nodeOf(state, id);
-    if (!node || done.has(id)) continue;
+    if (!node) continue;
     if (!node.requires.every((r) => hasGate(state, n, r))) continue;
-    if (node.cost.money > money * AI.researchSpendShare) continue;
     applyOrderImpl(state, n, { kind: 'research', nodeId: id });
     return;
   }
