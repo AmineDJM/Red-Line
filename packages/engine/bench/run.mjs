@@ -10,7 +10,9 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const name = process.argv[2] ?? 'real';
-const out = join(here, '../node_modules/.cache/redline-bench', `${name}.mjs`);
+// BENCH_TAG : suffixe du bundle (comparaisons A/B) ; BENCH_BUILD_ONLY=1 : compiler sans exécuter.
+const tag = process.env.BENCH_TAG ?? '';
+const out = join(here, '../node_modules/.cache/redline-bench', `${name}${tag}.mjs`);
 mkdirSync(dirname(out), { recursive: true });
 await build({
   entryPoints: [join(here, `${name}.ts`)],
@@ -24,5 +26,6 @@ await build({
   external: ['h3-js', '@msgpack/msgpack'],
   logLevel: 'warning',
 });
+if (process.env.BENCH_BUILD_ONLY) process.exit(0);
 process.argv.splice(2, 1);
 await import(pathToFileURL(out).href);
