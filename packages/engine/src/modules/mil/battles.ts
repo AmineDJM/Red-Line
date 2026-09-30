@@ -107,7 +107,7 @@ function sideFor(b: BattleSt, n: NationId): BattleSideSt | null {
 }
 
 /** Enregistre une unité comme engagée (effectif compté une fois). */
-export function engage(state: EngineState, b: BattleSt, u: Unit): void {
+export function engage(_state: EngineState, b: BattleSt, u: Unit): void {
   if (b.units[u.id]) return;
   b.units[u.id] = [u.owner, u.sys];
   if (u.role === 'missile') return;

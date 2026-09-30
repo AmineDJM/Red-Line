@@ -7,21 +7,10 @@ import { board } from '../kit.js';
 import { signal } from '../registry.js';
 import { raiseAlert, thresholds, setTensionAtLeast } from './alert.js';
 import { battleFor, countermeasure, timeline, touch } from './battles.js';
-import { mil, milBal, type MissileSt } from './state.js';
+import { milBal, type MissileSt } from './state.js';
 import { countLoss } from './stats.js';
-import { damageUnit, hitBuilding } from './strike.js';
-import {
-  OK,
-  buildingsOf,
-  cityOf,
-  fail,
-  generic,
-  nameOfProvince,
-  posOf,
-  provinceAt,
-  provincesNear,
-  unitsNear,
-} from './util.js';
+import { damageUnit } from './strike.js';
+import { OK, fail, generic, nameOfProvince, posOf, provinceAt, unitsNear } from './util.js';
 
 /**
  * Nucléaire. L'emploi exige une autorisation explicite (ordre `nuclearAuth`, board.nuclearAuth),

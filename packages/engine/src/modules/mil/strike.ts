@@ -482,17 +482,20 @@ export function scheduleInterceptions(state: EngineState, I: Unit): void {
   const prof = interceptorOf(state, I);
   if (!prof) return;
   const m = mil(state);
+  // Parcours des salves en vol (peu nombreuses) plutôt que de toutes les paires de l'intercepteur.
+  let any = false;
+  for (const _ in m.msl) {
+    any = true;
+    break;
+  }
+  if (!any) return;
   const w = weaponRange(state, I);
-  const set = state.rt.pairsOf.get(I.id);
-  if (!set) return;
-  for (const key of [...set].sort()) {
-    if (key.includes('#')) continue;
-    const pair = state.pairs[key];
+  for (const mid of Object.keys(m.msl).sort()) {
+    const M = state.units[mid];
+    if (!M || M.owner === I.owner) continue;
+    const pair = state.pairs[unitPairKey(I.id, mid)];
     if (!pair || !inRange(w, pair.d)) continue;
-    const [a, b] = key.split('|') as [string, string];
-    const M = state.units[a === I.id ? b : a];
-    if (!M || M.role !== 'missile') continue;
-    const st = m.msl[M.id];
+    const st = m.msl[mid];
     if (!st || !prof.against.includes(st.cls)) continue;
     if (sightLevel(state, I.owner, M.id) === 0) continue;
     if (!interceptHostile(state, I, M)) continue;

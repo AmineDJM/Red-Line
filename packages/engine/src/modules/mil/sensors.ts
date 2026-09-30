@@ -2,7 +2,6 @@ import {
   HOUR,
   MINUTE,
   destination,
-  distanceKm,
   type LngLat,
   type NationId,
   type Order,
@@ -22,7 +21,6 @@ import {
   OK,
   fail,
   generic,
-  isSatellite,
   posOf,
   provincesNear,
   resolveOwn,
@@ -234,9 +232,11 @@ export function handleSatPass(state: EngineState, d: { u: string; v: number }): 
   const st = mil(state).sats[d.u];
   if (!u || !st || st.v !== d.v) return;
   const kind = satKind(sysOf(state, u));
-  const aim = st.aim ?? autoAim(state, u.owner);
   st.next = state.time + revisitMs(state, u);
   schedule(state, st.next, 'sat', { u: u.id, v: st.v });
+  // Sans zone désignée et en paix : pas de prise de vue (évite un coût inutile).
+  if (!st.aim && warsOf(state, u.owner).length === 0) return;
+  const aim = st.aim ?? autoAim(state, u.owner);
   if (!aim || !kind) return;
   const r = swathKm(state, u) / 2;
   const bal = milBal(state).sensors;
@@ -371,10 +371,3 @@ export function handleDecoyEnd(state: EngineState, d: { u: string }): void {
   const u = state.units[d.u];
   if (u) retireUnit(state, u);
 }
-
-/** Distance entre deux unités (utilitaire des capteurs). */
-export function unitDistance(state: EngineState, a: Unit, b: Unit): number {
-  return distanceKm(posOf(state, a), posOf(state, b));
-}
-
-export { isSatellite };

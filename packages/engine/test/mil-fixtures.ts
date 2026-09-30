@@ -69,16 +69,6 @@ function sys(
   });
 }
 
-const SHEET = (rangeKm: number) => ({
-  engine: null,
-  lengthM: null,
-  wingspanM: null,
-  mtowKg: null,
-  warheadKg: null,
-  speedLabel: null,
-  rangeKm,
-});
-
 export const MIL_CATALOG: WeaponSystem[] = [
   ...CATALOG,
   sys({

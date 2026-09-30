@@ -70,7 +70,6 @@ import { milPublicView, milView } from './view.js';
 import { carrierCapacity, isAsat, isSatellite, schedule } from './util.js';
 import { battleReportForImpl } from './battles.js';
 import { destroyUnit, jammingFor } from '../../combat/combat.js';
-import { signal } from '../registry.js';
 
 /** Combat complet : aviation (missions, carburant, ravitaillement), marine, sous-marins, missiles et interception, nucléaire et alerte mondiale, opérations combinées, rapports de bataille, capteurs, satellites, brouillage, généraux, forces spéciales, blocus, matériel capturé, bâtiments de défense. */
 
@@ -249,9 +248,6 @@ export const milModule: EngineModule = {
     onUnitDestroyed(state, u, killer) {
       noteDestroyed(state, u);
       fixedDestroyed(state, u, killer?.owner ?? null);
-      if (sysOf(state, u).category === 'logistics' && killer && killer.owner !== u.owner) {
-        signalDelivery(state, u, killer);
-      }
       onGone(state, u);
     },
     onUnitRemoved(state, u) {
@@ -366,15 +362,6 @@ export const milModule: EngineModule = {
     stats: fillStats,
   },
 };
-
-/** Porteur logistique détruit par l'ennemi : les livraisons appartiennent au module eco. */
-function signalDelivery(state: EngineState, u: Unit, killer: Unit): void {
-  signal(state, 'delivery_intercepted', {
-    deliveryId: null,
-    carrierUnitId: u.id,
-    by: killer.owner,
-  });
-}
 
 /** Détail d'un rapport de bataille pour une nation qui y a pris part. */
 export const battleReportFor = battleReportForImpl;

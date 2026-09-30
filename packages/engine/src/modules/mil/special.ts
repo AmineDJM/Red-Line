@@ -1,5 +1,4 @@
 import {
-  MINUTE,
   distanceKm,
   type BlockadeView,
   type BuildingType,
@@ -7,7 +6,6 @@ import {
   type NationId,
   type Order,
   type ProvinceId,
-  type WeaponSystem,
 } from '@redline/shared';
 import { cellToLatLng } from 'h3-js';
 import type { OrderResult } from '../../api.js';
@@ -21,7 +19,7 @@ import type { EngineState, Unit } from '../../state/types.js';
 import { spawnUnit } from '../../state/units.js';
 import { declareWar } from '../../state/war.js';
 import { wi } from '../../state/world.js';
-import { signal, unitModifier } from '../registry.js';
+import { signal } from '../registry.js';
 import { armFuel, missionOf, msOf, newMission, startScan } from './air.js';
 import { raiseAlert } from './alert.js';
 import { mil, milBal, nextId, type BlkSt } from './state.js';

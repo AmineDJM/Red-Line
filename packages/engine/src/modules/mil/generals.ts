@@ -10,7 +10,7 @@ import {
 import type { GameSetup, OrderResult } from '../../api.js';
 import { hostile, targetClassOf } from '../../encounters/profile.js';
 import { applyOrderImpl } from '../../orders/orders.js';
-import { atWar, sortedKeys, sortedSet, sysOf } from '../../state/access.js';
+import { atWar, sortedKeys, sysOf } from '../../state/access.js';
 import type { EngineState, Unit } from '../../state/types.js';
 import { wi } from '../../state/world.js';
 import { mil, milBal, nextId, type GenSt } from './state.js';
@@ -389,5 +389,3 @@ export function dropFromGeneral(state: EngineState, uid: string): void {
   const g = m.gens[gid];
   if (g) g.units = g.units.filter((x) => x !== uid);
 }
-
-export { sortedSet };

@@ -35,8 +35,14 @@ export function inWeaponRange(state: EngineState, u: Unit, d: number): boolean {
 }
 
 function toCos(radii: number[]): number[] {
-  const uniq = [...new Set(radii.filter((r) => r > 0))].sort((a, b) => a - b);
-  return uniq.map((r) => Math.cos(r / EARTH_RADIUS_KM));
+  const out: number[] = [];
+  for (const r of radii) if (r > 0) out.push(r);
+  out.sort((a, b) => a - b);
+  let w = 0;
+  for (let i = 0; i < out.length; i++) if (w === 0 || out[i] !== out[w - 1]) out[w++] = out[i]!;
+  out.length = w;
+  for (let i = 0; i < w; i++) out[i] = Math.cos(out[i]! / EARTH_RADIUS_KM);
+  return out;
 }
 
 function maxRadius(cosThr: number[]): number {
