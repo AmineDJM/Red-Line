@@ -1,0 +1,166 @@
+{
+  "cn.airborne": "File:AirbornePlatoon2018-46.jpg",
+  "cn.early-warning-satellite": "File:Shenzhou 22 CZ-2F Y22 launch 10.png",
+  "cn.infantry-light": "File:CJCS meets PRC troop in Shenyang (36604294635).jpg",
+  "cn.infantry-mech": "File:CJCS meets PRC troop in Shenyang (36558137376).jpg",
+  "cn.j-35": "File:Shenyang J-31 (F60) at 2014 Zhuhai Air Show.jpg",
+  "cn.marines": "File:PLA Marine Boarding Z-18 on PLANS Anhui.png",
+  "cn.optical-recon-satellite": "File:Yaogan-36 satellite launch.png",
+  "cn.phl-16": "File:PHL16TBM 2025 V-J Parade CNS.png",
+  "cn.radar-satellite": "File:HXMT launch.jpg",
+  "cn.sigint-satellite": "File:Shenzhou 12 launch.jpg",
+  "cn.type-003-fujian": "File:Chinese aircraft carrier Fujian flight deck.jpg",
+  "cn.type-022": {
+    "file": "File:Houbei (Type 022) Class Fast Attack Craft.JPG",
+    "credit": "Office of Naval Intelligence (rapport CRS RL33153, Congrès des États-Unis)"
+  },
+  "cn.type-054a": "File:538 Yantai .jpg",
+  "cn.type-055": "File:PLANS Nanchang (DDG-101) 20211018.jpg",
+  "cn.type-056": {
+    "file": "File:596 Huizhou.jpg",
+    "focus": [0.45, 0.8],
+    "zoom": 1.5
+  },
+  "cn.type-094": {
+    "file": "File:Jin (Type 094) Class Ballistic Missile Submarine.JPG",
+    "credit": "Office of Naval Intelligence (rapport CRS RL33153, Congrès des États-Unis)"
+  },
+  "cn.type-15": "File:Type 15 tank 20221020.jpg",
+  "cn.type-63": "File:Type 63 Amphibious APC 20131004.JPG",
+  "cn.wing-loong-ii": "File:Ударный китайский БПЛА Wing Loong II - МАКС-2017 02.jpg",
+  "cn.z-9": "File:PLAN Z-9 Helicopter.jpg",
+  "eu.airborne": "File:Multi-national paratroopers commemorate D-Day with historic jump into Normandy, France (8470231).jpg",
+  "eu.asmp-a": {
+    "file": "File:SG1059332.JPG",
+    "focus": "fit"
+  },
+  "eu.astute": {
+    "file": "File:US Navy 111128-N-NK458-064 The Royal Navy submarine HMS Astute (S119) arrives at Naval Station Norfolk.jpg",
+    "focus": [0.45, 0.55],
+    "zoom": 1.4
+  },
+  "eu.infantry-light": "File:Italian Army - 8th Alpini Regiment patrol during exercise Picca d’Acciaio - March 2025 02.jpg",
+  "eu.infantry-mech": "File:Puma Infantry Fighting Vehicle.jpg",
+  "eu.iris-t-slm": "File:Iris-t slm 11th aam brigade field.jpg",
+  "eu.marines": "File:US Navy 030226-N-1050K-023 Royal Marines from the 40th Commando unit load onto a Landing Craft Utility (LCU) following intensive training in the Kuwaiti Desert.jpg",
+  "eu.mirage-5": "File:BA-05 Mirage 5BA, 1 SM, Arrival at Fairford RIAT 1987.jpg",
+  "eu.mistral": "File:Mistral 3 of the Croatian army.jpg",
+  "eu.optical-recon-satellite": "File:Sentinel-2A liftoff (18882549998).jpg",
+  "eu.queen-elizabeth": "File:HMS Queen Elizabeth (R08) underway in the Atlantic Ocean on 17 October 2019 (191017-N-QI061-2210).JPG",
+  "eu.radar-satellite": "File:Launch of Delta II rocket carrying COSMO-2 (071208-F-9876C-001).jpg",
+  "eu.samp-t": "File:Système SAMP-T (14 juillet 2021) (2).jpg",
+  "eu.sigint-satellite": "File:Vega VV05 assembled in ELV.jpg",
+  "eu.special-forces": "File:KSK Scharfschütze.jpg",
+  "eu.suffren": {
+    "file": "File:Suffren VARUNA 23.jpg",
+    "focus": [0.55, 0.6],
+    "zoom": 1.8
+  },
+  "eu.triomphant": "File:Sous-marin-nucleaire-lanceur-d-engins-le-triomphant.jpg",
+  "eu.type-45": {
+    "file": "File:HMS Daring-1.jpg",
+    "credit": "Brian Burnell"
+  },
+  "eu.typhoon": "File:Eurofighter Typhoon AUT.jpg",
+  "eu.vab": "File:VAB AZURE, Paris.jpg",
+  "eu.vanguard": "File:HMS Vanguard (SSBN-50).jpg",
+  "other.airborne": "File:Italian Army - Paratroopers Brigade \"Folgore\" paratroopers during an exercise with the Italian Air Force's 46th Air Brigade.jpg",
+  "other.al-khalid": "File:Bangladesh Army MBT2000. (39072813711).jpg",
+  "other.altay": "File:Altay Tank.jpg",
+  "other.arjun": "File:Arjun MBT bump track test 2.JPG",
+  "other.asat": "File:PAD integration.JPG",
+  "other.brahmos": "File:Indian Army's BrahMos Mobile Autonomous Launchers (MAL) during DefExpo 2014, New Delhi..JPG",
+  "other.cargo-aircraft": "File:Antonov An-124-100M Ruslan - Cargo Transporter - VGHS.jpg",
+  "other.cargo-ship": "File:00 0883 Container Ship MARUS.jpg",
+  "other.fa-50": "File:Light Combat FA-50 Fighting Eagle.jpg",
+  "other.fateh-110": "File:Unveiling ceremony of Fateh-313 missile (05).jpg",
+  "other.ghadir": {
+    "file": "File:Commissioning ceremony of two Ghadir-class submarines, 2018-11-29 (07).jpg",
+    "focus": "top"
+  },
+  "other.hwasong-17": {
+    "file": "File:Hwasong17-20201010-KORN Pyonyang-N323-2.jpg",
+    "focus": [0.55, 0.62],
+    "zoom": 1.2
+  },
+  "other.infantry-light": "File:Training exercise with M4A1 rifles 170206-A-EO786-023.jpg",
+  "other.infantry-mech": "File:Marines and Australian conduct a mechanized infantry assault for Exercise Koolendong (6810770).jpg",
+  "other.iron-dome": "File:RamatDavid 020517 Iron Dome 01.jpg",
+  "other.k9-thunder": "File:K9 Kõu.jpg",
+  "other.kf-21": "File:A South Korean Air Force KF-21, developed by Korea Aerospace Industries, performs an aerial demonstration at the Aerospace and Defense Exhibition in Seoul, South Korea, October 21, 2023.jpg",
+  "other.marines": "File:Multinational Amphibious Landing during Exercise Talisman Sabre 21 (6758503).jpg",
+  "other.namer": {
+    "file": "File:Flickr - Israel Defense Forces - 13th Battalion of the Golani Brigade Holds Drill at Golan Heights (8).jpg",
+    "credit": "Forces de défense d'Israël (IDF)"
+  },
+  "other.pinaka": "File:Pinaka.JPG",
+  "other.shahab-3": "File:Musée de la révolution islamique et de la défense sacrée, Téhéran (9).jpg",
+  "other.shahed-136": "File:2023 IRGC Aerospace Force achievements Exhibition in Kermanshah (018).jpg",
+  "other.special-forces": "File:Tactical Movement Exercise with Special Forces-El Salvador (9599368).jpg",
+  "other.supply-convoy": "File:Military trucks laden with ammunition convoy.jpg",
+  "other.tejas": "File:KH-2013 IAF Tejas 2 (33026195996).jpg",
+  "ru.2s19-msta": "File:ParkPatriot2015part6-02.jpg",
+  "ru.bmp-1": "File:БМП-1 с учебного полигона Алматинского Института Сухопутных Войск.JPG",
+  "ru.btr-82a": "File:BTR-82A - TankBiathlon14part2-63.jpg",
+  "ru.early-warning-satellite": {
+    "file": "File:Soyuz-2 in Plesetsk 25.10.2018.jpg",
+    "credit": "Ministère de la Défense de la Fédération de Russie (mil.ru)"
+  },
+  "ru.geran-2": "File:Remains of Shahed drone in Vinnytsia Oblast, 2024-03-18 (01) (cropped).jpg",
+  "ru.igla": "File:Dan srpskog jedinstva slobode i zastave - LPRS Igla - 01.jpg",
+  "ru.infantry-light": "File:Anti-AircraftExercise2019-26.jpg",
+  "ru.kh-101": "File:Russian Kh-101 missile shot in Vinnytsia Oblast, 2023-01-26 (05).jpg",
+  "ru.kilo": "File:«Ростов-на-Дону».jpg",
+  "ru.mig-31": "File:Mikoyan-Gurevich MiG-31BM in flight.jpg",
+  "ru.naval-infantry": "File:Russian naval infantryman on an FTX in Poland during BALTOPS 2003 (June 2003).jpg",
+  "ru.optical-recon-satellite": "File:Soyuz 2.1b GLONASS-K2 13L launch 01.jpg",
+  "ru.orion": "File:Kronstadt Orion-E front right ARMY-2022.jpg",
+  "ru.radar-satellite": "File:\"Kondor-E\" reconnaissance satellite on MAKS-2021 airshow.jpg",
+  "ru.s-70-okhotnik": {
+    "file": "File:S-70 takeoff front view.png",
+    "focus": "fit",
+    "credit": "Ministère de la Défense de la Fédération de Russie (mil.ru)"
+  },
+  "ru.sigint-satellite": {
+    "file": "File:Launch of the Angara-A5 from the Plesetsk cosmodrome (2025-06-19) 05.jpg",
+    "credit": "Ministère de la Défense de la Fédération de Russie (mil.ru)"
+  },
+  "ru.spetsnaz": "File:SAVX0514-1(1).jpg",
+  "ru.su-27": "File:Su-27SM3 in flight, Celebration of the 100th anniversary of Russian Air Force.jpg",
+  "ru.tu-22m3": "File:Tupolev Tu-22M3.jpg",
+  "ru.tu-95ms": "File:Tupolev Tu-95MS (Jan 2015).jpg",
+  "ru.vdv-airborne": "File:Iveco LMV Lynx of the Russian Airborne Troops 09.jpg",
+  "ru.zircon": "File:Zirkon 03.12.2024.jpg",
+  "us.airborne": "File:82nd Airborne Division Paratroopers Jump Into Latvia (4466626).jpg",
+  "us.asat": "File:F-15 with ASM-135 ASAT.jpg",
+  "us.atacms": {
+    "file": "File:ATACMSMay2006 (cropped).jpg",
+    "credit": "U.S. Army (Fort Sill)"
+  },
+  "us.avenger": {
+    "file": "File:Avenger missile.jpg",
+    "credit": "U.S. Army"
+  },
+  "us.b-2-spirit": "File:B-2A Spirit.jpg",
+  "us.early-warning-satellite": "File:Delta-4H DSP-23 2 (cropped).jpg",
+  "us.ew-jammer": "File:Electronic Warfare Vehicle Provides Signal Intelligence for Sky Soldiers (4738453).jpg",
+  "us.infantry-light": "File:Flickr - The U.S. Army - Early-morning dismounted patrol mission.jpg",
+  "us.infantry-mech": "File:2nd Battalion, 7th Infantry Regiment- Daytime CALFEX (9231951).jpg",
+  "us.m109-paladin": "File:M109A6 Paladin ID 071010-F-0209C-002.jpg",
+  "us.m270-mlrs": "File:M270 MLRS (1984).JPEG",
+  "us.marines": "File:US Navy 091012-M-8752R-072 Marines and Sailors conduct an amphibious landing demonstration at Egyptian beaches near Alexandria during Exercise Bright Star 2009.jpg",
+  "us.mh-60r-seahawk": "File:MH-60R Seahawk of HSM-75 in flight 2013.JPG",
+  "us.minuteman-iii": "File:Unarmed Minuteman III ICBM launch - operational test - Vandenberg Space Force Base - May 21 2025.jpg",
+  "us.ohio": {
+    "file": "File:USS Henry M. Jackson (SSBN 730).jpg",
+    "focus": [0.4, 0.55],
+    "zoom": 1.4
+  },
+  "us.optical-recon-satellite": "File:HEXAGON KH-9 Reconnaissance Satellite (160822-F-IO108-026).jpg",
+  "us.patriot": "File:German Patriot missile launcher.jpg",
+  "us.prsm": "File:Precision Strike Missile (PrSM) Increment 1 Limited User Test.jpg",
+  "us.radar-satellite": "File:NROL-37 launch tower view.jpg",
+  "us.sigint-satellite": "File:Delta IV NROL-70 Launch (8334017).jpg",
+  "us.special-forces": "File:Special Forces Soldiers Shooting Range Training (6135523).jpg",
+  "us.switchblade-600": "File:Switchblade 600 Loitering Munitions Training (8767595).jpg"
+}

@@ -1,0 +1,1211 @@
+{
+  "us.f-5e": {
+    "wiki": "Northrop F-5"
+  },
+  "us.f-16": {
+    "wiki": "General Dynamics F-16 Fighting Falcon"
+  },
+  "us.f-15e": {
+    "wiki": "McDonnell Douglas F-15E Strike Eagle"
+  },
+  "us.fa-18e": {
+    "wiki": "Boeing F/A-18E/F Super Hornet"
+  },
+  "us.f-22": {
+    "wiki": "Lockheed Martin F-22 Raptor"
+  },
+  "us.f-35": {
+    "wiki": "Lockheed Martin F-35 Lightning II"
+  },
+  "ru.mig-21": {
+    "wiki": "Mikoyan-Gurevich MiG-21"
+  },
+  "ru.mig-29": {
+    "wiki": "Mikoyan MiG-29"
+  },
+  "ru.mig-31": {
+    "wiki": "Mikoyan MiG-31"
+  },
+  "ru.su-27": {
+    "wiki": "Sukhoi Su-27"
+  },
+  "ru.su-30": {
+    "wiki": "Sukhoi Su-30"
+  },
+  "ru.su-35": {
+    "wiki": "Sukhoi Su-35"
+  },
+  "ru.su-57": {
+    "wiki": "Sukhoi Su-57"
+  },
+  "cn.j-7": {
+    "wiki": "Chengdu J-7"
+  },
+  "cn.j-10": {
+    "wiki": "Chengdu J-10"
+  },
+  "cn.j-11": {
+    "wiki": "Shenyang J-11"
+  },
+  "cn.j-16": {
+    "wiki": "Shenyang J-16"
+  },
+  "cn.j-20": {
+    "wiki": "Chengdu J-20"
+  },
+  "cn.j-35": {
+    "wiki": "Shenyang J-35",
+    "note": "prototype FC-31 (J-31), dont dérive le J-35"
+  },
+  "eu.mirage-2000": {
+    "wiki": "Dassault Mirage 2000"
+  },
+  "eu.tornado": {
+    "wiki": "Panavia Tornado"
+  },
+  "eu.gripen": {
+    "wiki": "Saab JAS 39 Gripen"
+  },
+  "eu.typhoon": {
+    "wiki": "Eurofighter Typhoon"
+  },
+  "eu.rafale": {
+    "wiki": "Dassault Rafale"
+  },
+  "other.jf-17": {
+    "wiki": "CAC/PAC JF-17 Thunder"
+  },
+  "other.kf-21": {
+    "wiki": "KAI KF-21 Boramae"
+  },
+  "other.tejas": {
+    "wiki": "HAL Tejas"
+  },
+  "us.patriot": {
+    "wiki": "MIM-104 Patriot",
+    "search": "Patriot launcher"
+  },
+  "ru.s-400": {
+    "wiki": "S-400 missile system"
+  },
+  "ru.pantsir-s1": {
+    "wiki": "Pantsir missile system"
+  },
+  "eu.mistral": {
+    "wiki": "Mistral (missile)"
+  },
+  "ru.krasukha-4": {
+    "wiki": "Krasukha (electronic warfare system)"
+  },
+  "us.m1a2-abrams": {
+    "wiki": "M1 Abrams",
+    "search": "M1A2 Abrams"
+  },
+  "ru.t-90m": {
+    "wiki": "T-90",
+    "search": "T-90M"
+  },
+  "cn.type-99a": {
+    "wiki": "Type 99 tank"
+  },
+  "eu.leopard-2a7": {
+    "wiki": "Leopard 2",
+    "search": "Leopard 2A7"
+  },
+  "eu.leclerc": {
+    "wiki": "Leclerc tank"
+  },
+  "us.m2-bradley": {
+    "wiki": "M2 Bradley"
+  },
+  "ru.bmp-3": {
+    "wiki": "BMP-3"
+  },
+  "us.m109-paladin": {
+    "wiki": "M109 howitzer",
+    "search": "M109A6 Paladin"
+  },
+  "ru.2s19-msta": {
+    "wiki": "2S19 Msta",
+    "search": "2S19 Msta-S"
+  },
+  "eu.caesar": {
+    "wiki": "CAESAR self-propelled howitzer"
+  },
+  "us.mq-9-reaper": {
+    "wiki": "General Atomics MQ-9 Reaper"
+  },
+  "ru.orion": {
+    "wiki": "Kronshtadt Orion"
+  },
+  "other.bayraktar-tb2": {
+    "wiki": "Baykar Bayraktar TB2"
+  },
+  "us.ah-64-apache": {
+    "wiki": "Boeing AH-64 Apache"
+  },
+  "ru.ka-52": {
+    "wiki": "Kamov Ka-52"
+  },
+  "us.infantry-light": {
+    "generic": true
+  },
+  "us.infantry-mech": {
+    "generic": true
+  },
+  "ru.infantry-light": {
+    "generic": true
+  },
+  "ru.infantry-mech": {
+    "generic": true,
+    "none": "aucune photo libre satisfaisante trouvée"
+  },
+  "cn.infantry-light": {
+    "generic": true
+  },
+  "cn.infantry-mech": {
+    "generic": true
+  },
+  "eu.infantry-light": {
+    "generic": true
+  },
+  "eu.infantry-mech": {
+    "generic": true
+  },
+  "other.infantry-light": {
+    "generic": true
+  },
+  "other.infantry-mech": {
+    "generic": true
+  },
+  "us.b-52h-stratofortress": {
+    "wiki": "Boeing B-52 Stratofortress"
+  },
+  "us.b-1b-lancer": {
+    "wiki": "Rockwell B-1 Lancer"
+  },
+  "us.b-2-spirit": {
+    "wiki": "Northrop B-2 Spirit"
+  },
+  "us.b-21-raider": {
+    "wiki": "Northrop Grumman B-21 Raider"
+  },
+  "ru.tu-95ms": {
+    "wiki": "Tupolev Tu-95",
+    "search": "Tu-95MS"
+  },
+  "ru.tu-22m3": {
+    "wiki": "Tupolev Tu-22M",
+    "search": "Tu-22M3"
+  },
+  "ru.tu-160": {
+    "wiki": "Tupolev Tu-160"
+  },
+  "cn.h-6k": {
+    "wiki": "Xian H-6",
+    "search": "H-6K"
+  },
+  "cn.h-20": {
+    "wiki": "Xian H-20",
+    "none": "appareil jamais montré publiquement : aucune photo réelle"
+  },
+  "us.a-10c-thunderbolt-ii": {
+    "wiki": "Fairchild Republic A-10 Thunderbolt II"
+  },
+  "us.e-3-sentry": {
+    "wiki": "Boeing E-3 Sentry"
+  },
+  "us.e-7-wedgetail": {
+    "wiki": "Boeing E-7 Wedgetail"
+  },
+  "us.e-2d-hawkeye": {
+    "wiki": "Northrop Grumman E-2 Hawkeye"
+  },
+  "us.kc-135-stratotanker": {
+    "wiki": "Boeing KC-135 Stratotanker"
+  },
+  "us.kc-46-pegasus": {
+    "wiki": "Boeing KC-46 Pegasus"
+  },
+  "us.c-17-globemaster-iii": {
+    "wiki": "Boeing C-17 Globemaster III"
+  },
+  "us.c-130-hercules": {
+    "wiki": "Lockheed C-130 Hercules"
+  },
+  "us.ea-18g-growler": {
+    "wiki": "Boeing EA-18G Growler"
+  },
+  "us.p-8-poseidon": {
+    "wiki": "Boeing P-8 Poseidon"
+  },
+  "us.av-8b-harrier-ii": {
+    "wiki": "McDonnell Douglas AV-8B Harrier II"
+  },
+  "us.f-4-phantom-ii": {
+    "wiki": "McDonnell Douglas F-4 Phantom II"
+  },
+  "ru.su-25": {
+    "wiki": "Sukhoi Su-25"
+  },
+  "ru.su-34": {
+    "wiki": "Sukhoi Su-34"
+  },
+  "ru.su-24": {
+    "wiki": "Sukhoi Su-24"
+  },
+  "ru.su-22": {
+    "wiki": "Sukhoi Su-17",
+    "search": "Su-22"
+  },
+  "ru.mig-23": {
+    "wiki": "Mikoyan-Gurevich MiG-23"
+  },
+  "ru.a-50": {
+    "wiki": "Beriev A-50"
+  },
+  "ru.il-78": {
+    "wiki": "Ilyushin Il-78"
+  },
+  "ru.il-76": {
+    "wiki": "Ilyushin Il-76"
+  },
+  "ru.an-26": {
+    "wiki": "Antonov An-26"
+  },
+  "ru.yak-130": {
+    "wiki": "Yakovlev Yak-130"
+  },
+  "cn.kj-500": {
+    "wiki": "Shaanxi KJ-500"
+  },
+  "cn.kj-2000": {
+    "wiki": "KJ-2000"
+  },
+  "cn.y-20": {
+    "wiki": "Xian Y-20"
+  },
+  "cn.yy-20": {
+    "wiki": "Xian Y-20",
+    "search": "YY-20"
+  },
+  "cn.y-9": {
+    "wiki": "Shaanxi Y-9"
+  },
+  "cn.k-8-karakorum": {
+    "wiki": "Hongdu JL-8"
+  },
+  "eu.a400m-atlas": {
+    "wiki": "Airbus A400M Atlas"
+  },
+  "eu.a330-mrtt": {
+    "wiki": "Airbus A330 MRTT"
+  },
+  "eu.globaleye": {
+    "wiki": "Saab GlobalEye"
+  },
+  "eu.c-295": {
+    "wiki": "Airbus C-295"
+  },
+  "eu.mirage-f1": {
+    "wiki": "Dassault Mirage F1"
+  },
+  "eu.mirage-5": {
+    "wiki": "Dassault Mirage 5"
+  },
+  "eu.alpha-jet": {
+    "wiki": "Dassault/Dornier Alpha Jet"
+  },
+  "eu.hawk": {
+    "wiki": "BAE Systems Hawk"
+  },
+  "other.fa-50": {
+    "wiki": "KAI T-50 Golden Eagle",
+    "search": "FA-50"
+  },
+  "other.a-29-super-tucano": {
+    "wiki": "Embraer EMB 314 Super Tucano"
+  },
+  "other.l-39-albatros": {
+    "wiki": "Aero L-39 Albatros"
+  },
+  "other.f-14-tomcat": {
+    "wiki": "Grumman F-14 Tomcat",
+    "search": "Iranian F-14"
+  },
+  "us.ah-1z-viper": {
+    "wiki": "Bell AH-1Z Viper"
+  },
+  "us.ah-1-cobra": {
+    "wiki": "Bell AH-1 Cobra"
+  },
+  "us.uh-60-black-hawk": {
+    "wiki": "Sikorsky UH-60 Black Hawk"
+  },
+  "us.ch-47-chinook": {
+    "wiki": "Boeing CH-47 Chinook"
+  },
+  "us.mh-60r-seahawk": {
+    "wiki": "Sikorsky SH-60 Seahawk",
+    "search": "MH-60R"
+  },
+  "us.uh-1-huey": {
+    "wiki": "Bell UH-1 Iroquois"
+  },
+  "ru.mi-28nm": {
+    "wiki": "Mil Mi-28",
+    "search": "Mi-28NM"
+  },
+  "ru.mi-24": {
+    "wiki": "Mil Mi-24"
+  },
+  "ru.mi-8": {
+    "wiki": "Mil Mi-8"
+  },
+  "ru.ka-27": {
+    "wiki": "Kamov Ka-27"
+  },
+  "ru.mi-2": {
+    "wiki": "PZL Mi-2"
+  },
+  "cn.z-10": {
+    "wiki": "CAIC Z-10"
+  },
+  "cn.z-19": {
+    "wiki": "Harbin Z-19"
+  },
+  "cn.z-20": {
+    "wiki": "Harbin Z-20"
+  },
+  "cn.z-9": {
+    "wiki": "Harbin Z-9"
+  },
+  "eu.tigre": {
+    "wiki": "Eurocopter Tiger"
+  },
+  "eu.nh90": {
+    "wiki": "NHIndustries NH90"
+  },
+  "eu.aw101": {
+    "wiki": "AgustaWestland AW101"
+  },
+  "eu.gazelle": {
+    "wiki": "Aérospatiale Gazelle"
+  },
+  "eu.sa-330-puma": {
+    "wiki": "Aérospatiale SA 330 Puma"
+  },
+  "other.t129-atak": {
+    "wiki": "TAI/AgustaWestland T129 ATAK"
+  },
+  "us.rq-4-global-hawk": {
+    "wiki": "Northrop Grumman RQ-4 Global Hawk"
+  },
+  "us.mq-1c-gray-eagle": {
+    "wiki": "General Atomics MQ-1C Gray Eagle"
+  },
+  "us.switchblade-600": {
+    "wiki": "AeroVironment Switchblade"
+  },
+  "us.scaneagle": {
+    "wiki": "Boeing Insitu ScanEagle"
+  },
+  "ru.forpost": {
+    "wiki": "IAI Searcher",
+    "search": "Forpost"
+  },
+  "ru.s-70-okhotnik": {
+    "wiki": "Sukhoi S-70 Okhotnik-B"
+  },
+  "ru.lancet": {
+    "wiki": "ZALA Lancet"
+  },
+  "ru.geran-2": {
+    "wiki": "HESA Shahed 136",
+    "search": "Geran-2",
+    "note": "Geran-2 = désignation russe du Shahed-136"
+  },
+  "ru.orlan-10": {
+    "wiki": "Orlan-10"
+  },
+  "cn.wing-loong-ii": {
+    "wiki": "CAIG Wing Loong II"
+  },
+  "cn.ch-4": {
+    "wiki": "CASC Rainbow",
+    "search": "CH-4"
+  },
+  "cn.ch-5": {
+    "wiki": "CASC Rainbow",
+    "search": "CH-5"
+  },
+  "cn.gj-11": {
+    "wiki": "Hongdu GJ-11"
+  },
+  "eu.patroller": {
+    "wiki": "Sagem Patroller"
+  },
+  "eu.eurodrone": {
+    "wiki": "Eurodrone",
+    "none": "seule une maquette grandeur nature a été exposée (aucun appareil réel photographié sous licence libre)"
+  },
+  "other.akinci": {
+    "wiki": "Baykar Bayraktar Akıncı"
+  },
+  "other.heron-tp": {
+    "wiki": "IAI Eitan"
+  },
+  "other.harop": {
+    "wiki": "IAI Harop"
+  },
+  "other.hermes-900": {
+    "wiki": "Elbit Hermes 900"
+  },
+  "other.shahed-136": {
+    "wiki": "HESA Shahed 136"
+  },
+  "other.mohajer-6": {
+    "wiki": "Qods Mohajer-6"
+  },
+  "us.m60-patton": {
+    "wiki": "M60 tank"
+  },
+  "ru.t-72b3": {
+    "wiki": "T-72",
+    "search": "T-72B3"
+  },
+  "ru.t-80bvm": {
+    "wiki": "T-80",
+    "search": "T-80BVM"
+  },
+  "ru.t-14-armata": {
+    "wiki": "T-14 Armata"
+  },
+  "ru.t-72": {
+    "wiki": "T-72"
+  },
+  "ru.t-62": {
+    "wiki": "T-62"
+  },
+  "ru.t-55": {
+    "wiki": "T-54/T-55"
+  },
+  "cn.type-96b": {
+    "wiki": "Type 96 tank",
+    "search": "Type 96B"
+  },
+  "cn.type-15": {
+    "wiki": "Type 15 tank"
+  },
+  "cn.vt4": {
+    "wiki": "VT-4"
+  },
+  "cn.type-59": {
+    "wiki": "Type 59 tank"
+  },
+  "eu.challenger-3": {
+    "wiki": "Challenger 3",
+    "none": "char en cours de livraison : aucune photo libre trouvée"
+  },
+  "eu.challenger-2": {
+    "wiki": "Challenger 2"
+  },
+  "eu.ariete": {
+    "wiki": "C1 Ariete"
+  },
+  "eu.leopard-1": {
+    "wiki": "Leopard 1"
+  },
+  "eu.amx-30": {
+    "wiki": "AMX-30"
+  },
+  "other.k2-black-panther": {
+    "wiki": "K2 Black Panther"
+  },
+  "other.merkava-iv": {
+    "wiki": "Merkava",
+    "search": "Merkava Mark IV"
+  },
+  "other.altay": {
+    "wiki": "Altay (tank)"
+  },
+  "other.arjun": {
+    "wiki": "Arjun (tank)"
+  },
+  "other.al-khalid": {
+    "wiki": "Al-Khalid tank"
+  },
+  "other.pt-91-twardy": {
+    "wiki": "PT-91 Twardy"
+  },
+  "us.stryker": {
+    "wiki": "Stryker"
+  },
+  "us.ampv": {
+    "wiki": "Armored Multi-Purpose Vehicle"
+  },
+  "us.m113": {
+    "wiki": "M113 armored personnel carrier"
+  },
+  "ru.bmp-2": {
+    "wiki": "BMP-2"
+  },
+  "ru.bmp-1": {
+    "wiki": "BMP-1"
+  },
+  "ru.btr-82a": {
+    "wiki": "BTR-80",
+    "search": "BTR-82A"
+  },
+  "ru.btr-80": {
+    "wiki": "BTR-80"
+  },
+  "ru.brdm-2": {
+    "wiki": "BRDM-2"
+  },
+  "ru.mt-lb": {
+    "wiki": "MT-LB"
+  },
+  "cn.zbd-04a": {
+    "wiki": "ZBD-04"
+  },
+  "cn.zbl-08": {
+    "wiki": "ZBL-08"
+  },
+  "cn.type-63": {
+    "wiki": "Type 63 armored personnel carrier"
+  },
+  "eu.cv90": {
+    "wiki": "CV90"
+  },
+  "eu.puma": {
+    "wiki": "Puma (IFV)"
+  },
+  "eu.vbci": {
+    "wiki": "VBCI"
+  },
+  "eu.boxer": {
+    "wiki": "Boxer (armoured fighting vehicle)"
+  },
+  "eu.patria-amv": {
+    "wiki": "Patria AMV"
+  },
+  "eu.vab": {
+    "wiki": "VAB"
+  },
+  "other.namer": {
+    "wiki": "Namer"
+  },
+  "us.m777": {
+    "wiki": "M777 howitzer"
+  },
+  "us.m142-himars": {
+    "wiki": "M142 HIMARS"
+  },
+  "us.m270-mlrs": {
+    "wiki": "M270 multiple rocket launcher"
+  },
+  "ru.2s35-koalitsiya": {
+    "wiki": "2S35 Koalitsiya-SV"
+  },
+  "ru.2s7-pion": {
+    "wiki": "2S7 Pion"
+  },
+  "ru.2s1-gvozdika": {
+    "wiki": "2S1 Gvozdika"
+  },
+  "ru.2s3-akatsiya": {
+    "wiki": "2S3 Akatsiya"
+  },
+  "ru.d-30": {
+    "wiki": "122 mm howitzer 2A18 (D-30)"
+  },
+  "ru.bm-21-grad": {
+    "wiki": "BM-21 Grad"
+  },
+  "ru.bm-27-uragan": {
+    "wiki": "BM-27 Uragan"
+  },
+  "ru.bm-30-smerch": {
+    "wiki": "BM-30 Smerch"
+  },
+  "ru.tornado-s": {
+    "wiki": "Tornado-S",
+    "search": "Tornado-S"
+  },
+  "ru.tos-1a": {
+    "wiki": "TOS-1"
+  },
+  "cn.plz-05": {
+    "wiki": "PLZ-05"
+  },
+  "cn.phl-03": {
+    "wiki": "PHL-03"
+  },
+  "cn.phl-16": {
+    "wiki": "PHL-16"
+  },
+  "eu.pzh-2000": {
+    "wiki": "Panzerhaubitze 2000"
+  },
+  "eu.archer": {
+    "wiki": "Archer artillery system"
+  },
+  "other.k9-thunder": {
+    "wiki": "K9 Thunder"
+  },
+  "other.k239-chunmoo": {
+    "wiki": "K239 Chunmoo"
+  },
+  "other.pinaka": {
+    "wiki": "Pinaka multi-barrel rocket launcher"
+  },
+  "other.fajr-5": {
+    "wiki": "Fajr-5"
+  },
+  "us.nasams": {
+    "wiki": "NASAMS"
+  },
+  "us.avenger": {
+    "wiki": "AN/TWQ-1 Avenger"
+  },
+  "us.thaad": {
+    "wiki": "Terminal High Altitude Area Defense"
+  },
+  "us.stinger": {
+    "wiki": "FIM-92 Stinger"
+  },
+  "us.mim-23-hawk": {
+    "wiki": "MIM-23 Hawk"
+  },
+  "us.ew-jammer": {
+    "generic": true
+  },
+  "ru.tor-m2": {
+    "wiki": "Tor missile system"
+  },
+  "ru.buk-m3": {
+    "wiki": "Buk missile system",
+    "search": "Buk-M3"
+  },
+  "ru.s-300pmu2": {
+    "wiki": "S-300 missile system",
+    "search": "S-300PMU2"
+  },
+  "ru.s-500": {
+    "wiki": "S-500 missile system",
+    "none": "aucune photo libre exploitable (seule photo : un autoportrait devant le lanceur)"
+  },
+  "ru.igla": {
+    "wiki": "9K38 Igla"
+  },
+  "ru.s-75-dvina": {
+    "wiki": "S-75 Dvina"
+  },
+  "ru.s-125-neva": {
+    "wiki": "S-125 Neva/Pechora"
+  },
+  "ru.2k12-kub": {
+    "wiki": "2K12 Kub"
+  },
+  "ru.9k33-osa": {
+    "wiki": "9K33 Osa"
+  },
+  "ru.zsu-23-4-shilka": {
+    "wiki": "ZSU-23-4 Shilka"
+  },
+  "ru.strela-10": {
+    "wiki": "9K35 Strela-10"
+  },
+  "cn.hq-9b": {
+    "wiki": "HQ-9",
+    "search": "HQ-9B"
+  },
+  "cn.hq-16": {
+    "wiki": "HQ-16"
+  },
+  "cn.hq-17": {
+    "wiki": "HQ-17"
+  },
+  "cn.hq-7": {
+    "wiki": "HQ-7"
+  },
+  "cn.ew-jammer": {
+    "generic": true,
+    "none": "aucune photo libre d'un brouilleur chinois"
+  },
+  "eu.samp-t": {
+    "wiki": "SAMP/T"
+  },
+  "eu.iris-t-slm": {
+    "wiki": "IRIS-T SLM"
+  },
+  "eu.skynex": {
+    "wiki": "Skynex"
+  },
+  "eu.gepard": {
+    "wiki": "Flakpanzer Gepard"
+  },
+  "eu.crotale": {
+    "wiki": "Crotale (missile)"
+  },
+  "other.iron-dome": {
+    "wiki": "Iron Dome"
+  },
+  "other.davids-sling": {
+    "wiki": "David's Sling"
+  },
+  "other.arrow-3": {
+    "wiki": "Arrow 3"
+  },
+  "other.bavar-373": {
+    "wiki": "Bavar-373"
+  },
+  "other.akash": {
+    "wiki": "Akash (missile)"
+  },
+  "us.tomahawk": {
+    "wiki": "Tomahawk (missile)"
+  },
+  "us.jassm-er": {
+    "wiki": "AGM-158 JASSM"
+  },
+  "us.atacms": {
+    "wiki": "MGM-140 ATACMS"
+  },
+  "us.prsm": {
+    "wiki": "Precision Strike Missile"
+  },
+  "us.agm-88-harm": {
+    "wiki": "AGM-88 HARM"
+  },
+  "us.harpoon": {
+    "wiki": "Harpoon (missile)"
+  },
+  "ru.kalibr": {
+    "wiki": "3M-54 Kalibr"
+  },
+  "ru.iskander-m": {
+    "wiki": "9K720 Iskander"
+  },
+  "ru.kh-101": {
+    "wiki": "Kh-101"
+  },
+  "ru.kinzhal": {
+    "wiki": "Kh-47M2 Kinzhal"
+  },
+  "ru.zircon": {
+    "wiki": "3M22 Zircon"
+  },
+  "ru.p-800-oniks": {
+    "wiki": "P-800 Oniks"
+  },
+  "ru.tochka-u": {
+    "wiki": "OTR-21 Tochka"
+  },
+  "ru.scud-b": {
+    "wiki": "Scud"
+  },
+  "cn.cj-10": {
+    "wiki": "CJ-10 (missile)"
+  },
+  "cn.df-15": {
+    "wiki": "DF-15"
+  },
+  "cn.df-17": {
+    "wiki": "DF-17"
+  },
+  "cn.df-21d": {
+    "wiki": "DF-21",
+    "search": "DF-21D"
+  },
+  "cn.df-26": {
+    "wiki": "DF-26"
+  },
+  "cn.yj-18": {
+    "wiki": "YJ-18",
+    "none": "aucune photo libre du missile"
+  },
+  "cn.c-802": {
+    "wiki": "C-802"
+  },
+  "eu.scalp-storm-shadow": {
+    "wiki": "Storm Shadow"
+  },
+  "eu.exocet": {
+    "wiki": "Exocet"
+  },
+  "eu.taurus-kepd-350": {
+    "wiki": "Taurus KEPD 350"
+  },
+  "eu.nsm": {
+    "wiki": "Naval Strike Missile"
+  },
+  "other.brahmos": {
+    "wiki": "BrahMos"
+  },
+  "other.fateh-110": {
+    "wiki": "Fateh-110"
+  },
+  "other.kheibar-shekan": {
+    "wiki": "Kheibar Shekan"
+  },
+  "other.shahab-3": {
+    "wiki": "Shahab-3",
+    "note": "vue de missiles balistiques iraniens de la famille Shahab (musée de Téhéran)"
+  },
+  "other.kn-23": {
+    "wiki": "KN-23",
+    "none": "aucune photo libre du missile"
+  },
+  "us.minuteman-iii": {
+    "wiki": "LGM-30 Minuteman"
+  },
+  "us.trident-ii-d5": {
+    "wiki": "UGM-133 Trident II"
+  },
+  "us.b61-12": {
+    "wiki": "B61 nuclear bomb",
+    "search": "B61-12"
+  },
+  "ru.yars": {
+    "wiki": "RS-24 Yars"
+  },
+  "ru.sarmat": {
+    "wiki": "RS-28 Sarmat",
+    "none": "photos libres (ministère russe de la Défense) uniquement en très basse résolution"
+  },
+  "ru.bulava": {
+    "wiki": "RSM-56 Bulava",
+    "none": "photos libres (ministère russe de la Défense) uniquement en très basse résolution (550 px)"
+  },
+  "cn.df-41": {
+    "wiki": "DF-41",
+    "none": "aucune photo libre exploitable (seule une capture vidéo avec incrustations)"
+  },
+  "cn.jl-3": {
+    "wiki": "JL-3",
+    "none": "aucune photo libre du missile"
+  },
+  "eu.m51": {
+    "wiki": "M51 (missile)",
+    "none": "aucune photo libre (seulement des schémas)"
+  },
+  "eu.asmp-a": {
+    "wiki": "ASMP"
+  },
+  "other.agni-v": {
+    "wiki": "Agni-V",
+    "none": "seule photo libre mal cadrée (salon) ; les autres sont sous licence GODL-India (non retenue)"
+  },
+  "other.shaheen-iii": {
+    "wiki": "Shaheen-III",
+    "none": "aucune photo libre de cette version"
+  },
+  "other.hwasong-17": {
+    "wiki": "Hwasong-17"
+  },
+  "other.jericho-iii": {
+    "wiki": "Jericho (missile)",
+    "none": "aucune photo libre du missile (programme non montré publiquement)"
+  },
+  "us.arleigh-burke": {
+    "wiki": "Arleigh Burke-class destroyer"
+  },
+  "us.gerald-r-ford": {
+    "wiki": "Gerald R. Ford-class aircraft carrier"
+  },
+  "us.nimitz": {
+    "wiki": "Nimitz-class aircraft carrier"
+  },
+  "us.america": {
+    "wiki": "America-class amphibious assault ship"
+  },
+  "us.ticonderoga": {
+    "wiki": "Ticonderoga-class cruiser"
+  },
+  "us.constellation": {
+    "wiki": "Constellation-class frigate",
+    "none": "navire en construction : seulement des vues d'artiste"
+  },
+  "us.lcs": {
+    "wiki": "Littoral combat ship"
+  },
+  "ru.admiral-kuznetsov": {
+    "wiki": "Russian aircraft carrier Admiral Kuznetsov"
+  },
+  "ru.admiral-gorshkov": {
+    "wiki": "Admiral Gorshkov-class frigate"
+  },
+  "ru.karakurt": {
+    "wiki": "Karakurt-class corvette"
+  },
+  "ru.kirov": {
+    "wiki": "Kirov-class battlecruiser"
+  },
+  "ru.slava": {
+    "wiki": "Slava-class cruiser"
+  },
+  "ru.udaloy": {
+    "wiki": "Udaloy-class destroyer"
+  },
+  "ru.steregushchiy": {
+    "wiki": "Steregushchiy-class corvette"
+  },
+  "ru.buyan-m": {
+    "wiki": "Buyan-class corvette"
+  },
+  "ru.gepard-class": {
+    "wiki": "Gepard-class frigate"
+  },
+  "cn.type-055": {
+    "wiki": "Type 055 destroyer"
+  },
+  "cn.type-052d": {
+    "wiki": "Type 052D destroyer"
+  },
+  "cn.type-054a": {
+    "wiki": "Type 054A frigate"
+  },
+  "cn.type-056": {
+    "wiki": "Type 056 corvette"
+  },
+  "cn.type-022": {
+    "wiki": "Type 022 missile boat"
+  },
+  "cn.type-003-fujian": {
+    "wiki": "Chinese aircraft carrier Fujian"
+  },
+  "cn.liaoning": {
+    "wiki": "Chinese aircraft carrier Liaoning"
+  },
+  "cn.shandong": {
+    "wiki": "Chinese aircraft carrier Shandong"
+  },
+  "cn.type-075": {
+    "wiki": "Type 075 landing helicopter dock"
+  },
+  "eu.charles-de-gaulle": {
+    "wiki": "French aircraft carrier Charles de Gaulle"
+  },
+  "eu.fremm": {
+    "wiki": "FREMM multipurpose frigate"
+  },
+  "eu.horizon": {
+    "wiki": "Horizon-class frigate"
+  },
+  "eu.type-45": {
+    "wiki": "Type 45 destroyer"
+  },
+  "eu.queen-elizabeth": {
+    "wiki": "Queen Elizabeth-class aircraft carrier"
+  },
+  "eu.mistral-class": {
+    "wiki": "Mistral-class amphibious assault ship"
+  },
+  "eu.meko-a-200": {
+    "wiki": "MEKO",
+    "search": "MEKO A-200"
+  },
+  "eu.gowind": {
+    "wiki": "Gowind-class corvette"
+  },
+  "other.sejong-the-great": {
+    "wiki": "Sejong the Great-class destroyer"
+  },
+  "other.kolkata": {
+    "wiki": "Kolkata-class destroyer"
+  },
+  "other.saar-6": {
+    "wiki": "Sa'ar 6-class corvette"
+  },
+  "us.virginia": {
+    "wiki": "Virginia-class submarine"
+  },
+  "us.ohio": {
+    "wiki": "Ohio-class submarine"
+  },
+  "us.columbia": {
+    "wiki": "Columbia-class submarine",
+    "none": "sous-marin en construction : seulement des vues d'artiste"
+  },
+  "us.seawolf": {
+    "wiki": "Seawolf-class submarine"
+  },
+  "ru.yasen-m": {
+    "wiki": "Yasen-class submarine"
+  },
+  "ru.borei": {
+    "wiki": "Borei-class submarine"
+  },
+  "ru.kilo": {
+    "wiki": "Kilo-class submarine"
+  },
+  "ru.delta-iv": {
+    "wiki": "Delta-class submarine",
+    "search": "Delta IV submarine"
+  },
+  "cn.type-093": {
+    "wiki": "Type 093 submarine",
+    "none": "aucune photo libre de ce sous-marin"
+  },
+  "cn.type-094": {
+    "wiki": "Type 094 submarine"
+  },
+  "cn.type-039": {
+    "wiki": "Type 039 submarine"
+  },
+  "eu.suffren": {
+    "wiki": "Suffren-class submarine"
+  },
+  "eu.astute": {
+    "wiki": "Astute-class submarine"
+  },
+  "eu.type-212": {
+    "wiki": "Type 212 submarine"
+  },
+  "eu.scorpene": {
+    "wiki": "Scorpène-class submarine"
+  },
+  "eu.triomphant": {
+    "wiki": "Triomphant-class submarine"
+  },
+  "eu.type-209": {
+    "wiki": "Type 209 submarine"
+  },
+  "eu.type-214": {
+    "wiki": "Type 214 submarine"
+  },
+  "eu.vanguard": {
+    "wiki": "Vanguard-class submarine"
+  },
+  "other.soryu": {
+    "wiki": "Sōryū-class submarine"
+  },
+  "other.dolphin": {
+    "wiki": "Dolphin-class submarine"
+  },
+  "other.ghadir": {
+    "wiki": "Ghadir-class submarine"
+  },
+  "us.marines": {
+    "generic": true
+  },
+  "us.special-forces": {
+    "generic": true
+  },
+  "us.airborne": {
+    "generic": true
+  },
+  "ru.naval-infantry": {
+    "generic": true
+  },
+  "ru.spetsnaz": {
+    "generic": true
+  },
+  "ru.vdv-airborne": {
+    "generic": true
+  },
+  "cn.marines": {
+    "generic": true
+  },
+  "cn.special-forces": {
+    "generic": true,
+    "none": "aucune photo libre identifiable des forces spéciales chinoises"
+  },
+  "cn.airborne": {
+    "generic": true
+  },
+  "eu.marines": {
+    "generic": true
+  },
+  "eu.special-forces": {
+    "generic": true
+  },
+  "eu.airborne": {
+    "generic": true
+  },
+  "other.marines": {
+    "generic": true
+  },
+  "other.special-forces": {
+    "generic": true
+  },
+  "other.airborne": {
+    "generic": true
+  },
+  "us.optical-recon-satellite": {
+    "generic": true
+  },
+  "us.radar-satellite": {
+    "generic": true
+  },
+  "us.sigint-satellite": {
+    "generic": true
+  },
+  "us.early-warning-satellite": {
+    "generic": true
+  },
+  "us.asat": {
+    "generic": true
+  },
+  "ru.optical-recon-satellite": {
+    "generic": true
+  },
+  "ru.radar-satellite": {
+    "generic": true,
+    "note": "satellite radar Kondor-E présenté au salon MAKS-2021"
+  },
+  "ru.sigint-satellite": {
+    "generic": true
+  },
+  "ru.early-warning-satellite": {
+    "generic": true
+  },
+  "ru.asat": {
+    "generic": true,
+    "none": "aucune photo libre (système Nudol non montré)"
+  },
+  "cn.optical-recon-satellite": {
+    "generic": true
+  },
+  "cn.radar-satellite": {
+    "generic": true
+  },
+  "cn.sigint-satellite": {
+    "generic": true
+  },
+  "cn.early-warning-satellite": {
+    "generic": true
+  },
+  "cn.asat": {
+    "generic": true,
+    "none": "aucune photo libre"
+  },
+  "eu.optical-recon-satellite": {
+    "generic": true
+  },
+  "eu.radar-satellite": {
+    "generic": true
+  },
+  "eu.sigint-satellite": {
+    "generic": true
+  },
+  "other.optical-recon-satellite": {
+    "generic": true,
+    "none": "photos ISRO sous licence GODL-India (non retenue)"
+  },
+  "other.asat": {
+    "generic": true,
+    "note": "intercepteur PAD, dont dérive le PDV Mk-II de la mission Shakti"
+  },
+  "other.supply-convoy": {
+    "generic": true
+  },
+  "other.cargo-ship": {
+    "generic": true
+  },
+  "other.cargo-aircraft": {
+    "generic": true
+  }
+}
