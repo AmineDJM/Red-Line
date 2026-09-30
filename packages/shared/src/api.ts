@@ -139,18 +139,6 @@ export interface Metrics {
   games: number;
   connectedPlayers: number;
   eventsProcessedPerMin: number;
-  // ——— Phases 5-6 (optionnels) ———
-  /** Parties par statut, toutes instances confondues (base). */
-  gamesByStatus?: Record<string, number>;
-  /** Spectateurs connectés à cette instance. */
-  spectators?: number;
-  /** Taille cumulée des derniers instantanés compressés des parties hébergées ici (octets). */
-  stateBytes?: number;
-  /** Octets et messages WebSocket envoyés sur la dernière minute. */
-  wsBytesOutPerMin?: number;
-  wsMessagesOutPerMin?: number;
-  chatMessagesPerMin?: number;
-  pushSentPerMin?: number;
 }
 
 /*
