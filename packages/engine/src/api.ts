@@ -32,6 +32,8 @@ export interface World {
   readonly research?: ReadonlyMap<string, ResearchNode>;
   /** ORBAT par jeu (« 2025 », « 1985 ») puis par nation. */
   readonly orbats?: ReadonlyMap<string, ReadonlyMap<NationId, Orbat>>;
+  /** Rapport de chargement : incohérences non bloquantes (systèmes d'ORBAT absents du catalogue…). */
+  readonly loadWarnings?: readonly string[];
 }
 
 /** Données supplémentaires de buildWorld (phases 2+). */

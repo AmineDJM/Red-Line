@@ -686,25 +686,11 @@ export function hitBuilding(
   const dmg = Math.min(1, damage);
   const who = by?.owner ?? byNation ?? null;
   signal(state, 'building_hit', { pid, building, damage: dmg, by: who });
-  const health = board(state).buildingHealth?.[pid]?.[building];
-  const city = cityOf(state, pid)!;
-  notify(
-    state,
-    {
-      kind: 'building_hit',
-      time: state.time,
-      at: city,
-      provinceId: pid,
-      building,
-      health: health ?? Math.max(0, 1 - dmg),
-    },
-    who ? [P.owner, who] : [P.owner],
-  );
-  const m = mil(state);
-  const fixedId = m.fixed[`${pid}:${building}`];
-  const fixed = fixedId ? state.units[fixedId] : undefined;
-  if (fixed) damageUnit(state, by, fixed, fixed.maxHp * dmg);
+  // La santé du bâtiment et la notification building_hit sont tenues par eco ; les sites fixes
+  // (unités de défense) suivent la santé annoncée par eco (static_defense / radar_station).
   if (building === 'air_base') {
+    const city = cityOf(state, pid)!;
+    const m = mil(state);
     const land = milBal(state).air.landingKm;
     for (const id of sortedKeys(m.ms)) {
       const ms = m.ms[id]!;

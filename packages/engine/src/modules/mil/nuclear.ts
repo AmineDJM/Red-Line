@@ -81,12 +81,8 @@ export function detonate(state: EngineState, M: Unit, at: LngLat, st: MissileSt)
       damageUnit(state, M, u, u.hp * bal.ringDamage);
     }
   }
-  // Aéronefs embarqués : détruits avec leur porteur (crochet onUnitDestroyed).
-  for (const p of provincesNear(state, at, ring)) {
-    const d = distanceKm(cityOf(state, p)!, at);
-    const dmg = d <= blast ? 1 : bal.ringDamage;
-    for (const bld of buildingsOf(state, p)) hitBuilding(state, p, bld, dmg, M);
-  }
+  // Aéronefs embarqués : détruits avec leur porteur (crochet onUnitDestroyed). Les bâtiments de la
+  // province touchée et de ses voisines sont traités par eco (signal nuclear_detonation).
   if (b) {
     countermeasure(b, 'nuclear', 1);
     timeline(state, b, `Détonation nucléaire à ${nameOfProvince(state, pid)} : ${destroyed} éléments anéantis`);
@@ -111,5 +107,4 @@ export function detonate(state: EngineState, M: Unit, at: LngLat, st: MissileSt)
     signal(state, 'stability', { nation: n, delta: bal.stabilityWorld, reason: 'nuclear_world' });
   }
   generic(state, null, 'nuclear', 'Détonation nucléaire', `Frappe nucléaire à ${where}.`, 'critical', at);
-  void mil;
 }

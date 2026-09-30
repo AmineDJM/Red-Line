@@ -103,7 +103,8 @@ export function handleTerritory(state: EngineState, ev: Extract<GameEvent, { k: 
   const u = state.units[ev.u]!;
   const c = u.cross?.[ev.i];
   if (!c) return;
-  if (c.p) {
+  // Les porteurs non combattants (convois, cargos des livraisons) ne déclarent pas la guerre.
+  if (c.p && sysOf(state, u).category !== 'logistics') {
     const P = state.provinces[c.p];
     if (P && P.owner !== u.owner && !atWar(state, u.owner, P.owner)) {
       declareWar(state, u.owner, P.owner);

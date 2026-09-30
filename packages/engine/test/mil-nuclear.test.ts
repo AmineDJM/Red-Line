@@ -49,7 +49,8 @@ describe('nucléaire et niveau d’alerte mondial', () => {
       expect(signals.some((x) => x.name === 'strike' && x.data.nuclear === true)).toBe(true);
       expect(signals.some((x) => x.name === 'news')).toBe(true);
       expect(signals.some((x) => x.name === 'stability' && x.data.nation === 'bbb')).toBe(true);
-      expect(signals.some((x) => x.name === 'building_hit' && x.data.pid === 'bbb-5' && x.data.damage === 1)).toBe(true);
+      // Bâtiments de la province détruits (eco, sur nuclear_detonation).
+      expect(notesOf(notes, 'building_hit').some((n) => n.provinceId === 'bbb-5' && n.health === 0)).toBe(true);
       const g = notesOf(notes, 'generic').find((n) => n.category === 'nuclear');
       expect(g).toBeDefined();
       expect(notificationsFor(s, 'ddd', notes).some((n) => n.kind === 'generic' && n.category === 'nuclear')).toBe(

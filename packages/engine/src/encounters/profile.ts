@@ -91,10 +91,22 @@ function blinded(state: EngineState, n: NationId): boolean {
 }
 
 /** Portée d'arme utilisable en rounds de combat (0 pour missiles, leurres, lanceurs, aéronefs posés). */
+/** Portée propre d'un site fixe (board.sites, selon son niveau) et son type, sinon undefined. */
+function siteRange(state: EngineState, u: Unit): { r: number; radar: boolean } | undefined {
+  const m = milOpt(state);
+  const r = m?.siteRange[u.id];
+  if (r === undefined) return undefined;
+  return { r, radar: !!m!.fixedOf[u.id]?.endsWith(':radar_station') };
+}
+
 export function weaponRange(state: EngineState, u: Unit): Range {
   if (u.off || u.role) return NO_RANGE;
   const sys = sysOf(state, u);
   if (isLauncher(sys) || sys.category === 'space') return NO_RANGE;
+  const site = siteRange(state, u);
+  if (site && !site.radar) {
+    return site.r > 0 ? { min: Math.min(sys.weaponRangeKm.min, site.r), max: site.r } : NO_RANGE;
+  }
   if (sys.weaponRangeKm.max <= 0) return NO_RANGE;
   if (sys.air && isLanded(state, u)) return NO_RANGE;
   return sys.weaponRangeKm;
@@ -119,6 +131,8 @@ export function detectKm(state: EngineState, u: Unit): number {
   if (sys.category === 'space') return 0;
   if (sys.air && isLanded(state, u)) return 0;
   let r = rawDetectKm(state, sys);
+  const site = siteRange(state, u);
+  if (site?.radar && site.r > 0) r = Math.min(site.r, milBal(state).sensors.maxPairKm);
   if (isRadarSensor(sys)) {
     r *= modifier(state, u.owner, 'sensors.radarRange');
     if (blinded(state, u.owner)) r *= milBal(state).sensors.blindFactor;
@@ -186,7 +200,8 @@ export function zoneKm(state: EngineState, u: Unit): number {
   let det = rawDetectKm(state, sys);
   if (sys.sensor?.kind === 'sonar') det = Math.max(det, sys.sensor.rangeKm);
   const w = isLauncher(sys) ? 0 : sys.weaponRangeKm.max;
-  return Math.max(det * ZONE_SLACK, w);
+  const site = milOpt(state)?.siteRange[u.id] ?? 0;
+  return Math.max(det * ZONE_SLACK, w, Math.min(site, milBal(state).sensors.maxPairKm) * ZONE_SLACK);
 }
 
 /** Position de la base d'attache d'un aéronef à carburant (province ou unité porteuse), sinon null. */

@@ -177,13 +177,12 @@ export interface MilState {
   seq: number;
   /** PRNG propre au module (graine dérivée de celle de la partie). */
   rng: [number, number, number, number] | null;
-  /** Unités fixes créées pour les bâtiments de défense : "province:bâtiment" → unité. */
+  /** Unités fixes des sites de défense (board.sites) : "province:bâtiment" → unité. */
   fixed: Record<string, UnitId>;
-  /** Unité fixe → province (ordre de déplacement refusé). */
-  fixedOf: Record<UnitId, ProvinceId>;
-  /** Bunkers et silos : province → niveau. */
-  bunker: Record<ProvinceId, number>;
-  silo: Record<ProvinceId, number>;
+  /** Unité fixe → "province:bâtiment" (ordre de déplacement refusé). */
+  fixedOf: Record<UnitId, string>;
+  /** Unité fixe → portée du site (engagement ou détection, km), fixée par eco selon le niveau. */
+  siteRange: Record<UnitId, number>;
   ms: Record<UnitId, MissionSt>;
   msl: Record<UnitId, MissileSt>;
   /** Lanceur → prêt à tirer à partir de. */
@@ -228,8 +227,7 @@ export function emptyMil(): MilState {
     rng: null,
     fixed: {},
     fixedOf: {},
-    bunker: {},
-    silo: {},
+    siteRange: {},
     ms: {},
     msl: {},
     reload: {},

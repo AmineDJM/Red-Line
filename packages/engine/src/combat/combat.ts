@@ -300,8 +300,21 @@ export function jammingFor(state: EngineState, u: Unit): number {
   return best;
 }
 
-export function destroyUnit(state: EngineState, u: Unit, killer: Unit | null): void {
+/**
+ * Supprime une unité détruite. `quiet` : retrait sans destruction (porteur arrivé, unité cédée) —
+ * ni onUnitDestroyed ni notification ; les modules en sont informés par onUnitRemoved.
+ */
+export function destroyUnit(
+  state: EngineState,
+  u: Unit,
+  killer: Unit | null,
+  opts: { quiet?: boolean } = {},
+): void {
   if (!state.units[u.id]) return;
+  if (opts.quiet) {
+    retireUnit(state, u);
+    return;
+  }
   callHook('onUnitDestroyed', state, u, killer);
   if (!state.units[u.id]) return;
   const t = state.time;
@@ -318,7 +331,7 @@ export function destroyUnit(state: EngineState, u: Unit, killer: Unit | null): v
 
 /**
  * Retire une unité sans que ce soit une perte (fusion de piles, salve arrivée au but, leurre expiré,
- * lanceur vidé) : pas de notification de destruction ; crochet onUnitRemoved.
+ * porteur logistique arrivé) : pas de notification de destruction ; crochet onUnitRemoved.
  */
 export function retireUnit(state: EngineState, u: Unit): void {
   if (!state.units[u.id]) return;

@@ -42,11 +42,10 @@ import {
   orderJam,
   spawnDecoys,
 } from './sensors.js';
+import { fixedDestroyed, onSiteSignal, reconcileSites, siloModifier } from './defenses.js';
 import {
   blockadeUnitChanged,
   captureMateriel,
-  defenseModifier,
-  onDefenseSignal,
   orderBlockade,
   orderMerge,
   orderSpecialOp,
@@ -107,6 +106,8 @@ function onEvent(state: EngineState, ev: ModEvent): void {
       return handleDecoyEnd(state, d);
     case 'tick':
       return handleTick(state);
+    case 'sites':
+      return reconcileSites(state);
   }
 }
 
@@ -116,6 +117,7 @@ function onEvent(state: EngineState, ev: ModEvent): void {
  */
 function handleTick(state: EngineState): void {
   schedule(state, state.time + HOUR, 'tick');
+  reconcileSites(state);
   const m = mil(state);
   const b = board(state);
   const active: Record<string, number> = {};
@@ -180,8 +182,9 @@ function onGone(state: EngineState, u: Unit): void {
   const fp = m.fixedOf[u.id];
   if (fp) {
     delete m.fixedOf[u.id];
-    for (const k of Object.keys(m.fixed)) if (m.fixed[k] === u.id) delete m.fixed[k];
+    if (m.fixed[fp] === u.id) delete m.fixed[fp];
   }
+  delete m.siteRange[u.id];
   if (Object.keys(m.icq).length > 0) {
     const prefix = `${u.id}>`;
     for (const k of Object.keys(m.icq)) if (k.startsWith(prefix)) delete m.icq[k];
@@ -192,9 +195,11 @@ function onGone(state: EngineState, u: Unit): void {
 export const milModule: EngineModule = {
   id: 'mil',
   init(state, setup) {
-    (state.mods as Record<string, unknown>).mil = emptyMil();
+    const mods = state.mods as Record<string, unknown>;
+    mods.mil ??= emptyMil();
     initGenerals(state, setup);
     schedule(state, HOUR, 'tick');
+    schedule(state, 0, 'sites');
     syncLevel(state);
   },
   rebuild(state) {
@@ -228,6 +233,7 @@ export const milModule: EngineModule = {
     onUnitSpawned: onSpawn,
     onUnitDestroyed(state, u, killer) {
       noteDestroyed(state, u);
+      fixedDestroyed(state, u, killer?.owner ?? null);
       if (sysOf(state, u).category === 'logistics' && killer && killer.owner !== u.owner) {
         signalDelivery(state, u, killer);
       }
@@ -290,7 +296,7 @@ export const milModule: EngineModule = {
       return null;
     },
     unitModifier(state, u, key) {
-      return generalModifier(state, u, key) * defenseModifier(state, u, key);
+      return generalModifier(state, u, key) * siloModifier(state, u, key);
     },
     onProvinceCaptured(state, pid, from, to) {
       captureMateriel(state, pid, from, to);
@@ -311,7 +317,7 @@ export const milModule: EngineModule = {
           return;
         case 'static_defense':
         case 'radar_station':
-          onDefenseSignal(state, name, data);
+          onSiteSignal(state, data);
           return;
       }
     },

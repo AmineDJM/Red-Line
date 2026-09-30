@@ -27,6 +27,7 @@ const DATA_KEYS: (keyof StateData)[] = [
   'know',
   'pending',
   'winner',
+  // États des modules (phases 2+) : sans cette clé, rien n'était sauvegardé ni rejoué.
   'mods',
 ];
 

@@ -97,6 +97,8 @@ export interface BuildingView {
   health: number;
   /** Réparation en cours. */
   repairUntil?: GameTime | null;
+  /** Construction en cours (bâtiment pas encore opérationnel). */
+  buildUntil?: GameTime | null;
 }
 
 /** Effets des bâtiments (data/balance) : production, ressources, bases, recherche. */
@@ -178,4 +180,83 @@ export interface LogisticsView {
   mobilized: boolean;
   /** Fin de la mobilisation générale possible (délai minimal). */
   mobilizedSince: GameTime | null;
+}
+
+// ——— Tableau de bord économique (onglet Économie) ———
+
+/** Clés du grand livre (flux en dollars, signés : recette > 0, dépense < 0). */
+export type LedgerKey =
+  | 'budgetNational'
+  | 'budgetProvincial'
+  | 'trade'
+  | 'mobilization'
+  | 'modifiers'
+  | 'upkeep'
+  | 'production'
+  | 'imports'
+  | 'research'
+  | 'buildings'
+  | 'licences'
+  | 'blackMarket'
+  | 'marketPurchases'
+  | 'marketSales'
+  | 'transfersIn'
+  | 'transfersOut'
+  /** Tout le reste (renseignement, trésorerie d'alliance, dons…), déduit de la variation de trésorerie. */
+  | 'other';
+
+export interface ResourceFlowView {
+  stock: number;
+  /** Production par jour (provinces, bâtiments, modificateurs). */
+  production: number;
+  /** Consommation par jour (unités). */
+  consumption: number;
+  net: number;
+  /** Stock épuisé au dernier jour : production ralentie (et moral en baisse pour la nourriture). */
+  shortage: boolean;
+  /** Jours avant épuisement au rythme actuel (null si le stock ne baisse pas). */
+  daysLeft: number | null;
+}
+
+export interface ProvinceEconomyView {
+  id: ProvinceId;
+  population: number;
+  /** Moral 0..100. */
+  morale: number;
+  /** Revenu en dollars par jour de la province (part provinciale, moral et industrie compris). */
+  income: number;
+  /** Ressources produites par jour. */
+  resources: Partial<Record<Resource, number>>;
+}
+
+export interface EconomyDetailView {
+  /** Budget de défense annuel (ORBAT), null sans ORBAT. */
+  budgetUsdPerYear: number | null;
+  /** Revenus prévus par jour, par poste (dollars). */
+  income: {
+    national: number;
+    provincial: number;
+    /** Effet des sanctions et du blocus sur la part commerciale (≤ 0). */
+    trade: number;
+    /** Effet de la mobilisation (≤ 0). */
+    mobilization: number;
+    /** Effet des modificateurs (recherche…). */
+    modifiers: number;
+    total: number;
+  };
+  /** Entretien prévu par jour, par catégorie d'unités (dollars). */
+  upkeep: Record<string, number>;
+  upkeepTotal: number;
+  /** Flux réels des dernières 24 h de jeu et du jour en cours (dollars signés). */
+  lastDay: Partial<Record<LedgerKey, number>>;
+  today: Partial<Record<LedgerKey, number>>;
+  /** Balance commerciale des dernières 24 h : ventes et cessions reçues − achats et importations. */
+  tradeBalance: number;
+  resources: Record<Resource, ResourceFlowView>;
+  /** Solde prévu par jour et trésorerie prévue. */
+  forecast: { netPerDay: number; money7d: number; money30d: number };
+  population: number;
+  /** Moral moyen pondéré par la population. */
+  morale: number;
+  provinces: ProvinceEconomyView[];
 }

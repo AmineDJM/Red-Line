@@ -115,12 +115,10 @@ export const MilitaryBalanceSchema = z.object({
       othScanMinutes: num(30),
     })
     .default({}),
-  /** Bâtiments de défense (signaux static_defense / radar_station du module eco). */
+  /** Sites de défense (board.sites, signaux static_defense / radar_station du module eco). */
   defenses: z
     .object({
-      /** Protection des unités terrestres qui défendent une province avec bunkers, par niveau. */
-      bunkerArmorPerLevel: num(0.15),
-      /** Protection des lanceurs en silo, par niveau. */
+      /** Protection d'un silo (unité fixe de lanceurs), par niveau. */
       siloArmorPerLevel: num(0.3),
       /** Éléments de l'unité fixe créée par niveau de bâtiment. */
       unitsPerLevel: num(1),
@@ -267,6 +265,40 @@ export const BalanceSchema = z.object({
       budgetMultiplier: z.number().positive().default(1),
       /** Part du budget liée aux provinces (conquérir rapporte, perdre coûte), le reste est national. */
       provinceShare: z.number().min(0).max(1).default(0.5),
+      /** Argent de départ : nombre de jours de budget (30 = un mois). */
+      startingDays: z.number().min(0).default(30),
+      /** Part commerciale du revenu (réduite par les sanctions et le blocus des ports). */
+      tradeShare: z.number().min(0).max(1).default(0.3),
+    })
+    .optional(),
+  /** Industrie et commerce (importations, séries, annulations, marché entre joueurs). */
+  industry: z
+    .object({
+      /** Achat au catalogue d'un fournisseur étranger : prix × ce facteur. */
+      importPriceFactor: z.number().positive().default(1.3),
+      /** Délai de livraison d'une importation, ajouté au temps de fabrication (heures de jeu). */
+      importDeliveryHours: z.number().min(0).default(72),
+      /** Série de `count` unités : durée = buildTimeH × (1 + facteur × (count − 1)). */
+      batchTimeFactor: z.number().min(0).default(0.25),
+      /** Part remboursée à l'annulation d'une production ou d'une recherche commencée. */
+      cancelRefund: z.number().min(0).max(1).default(0.5),
+      /** Coût d'une réparation = coût de construction × dégâts × ce facteur. */
+      repairCostFactor: z.number().min(0).default(0.5),
+      /** Durée de vie d'une offre du marché (heures de jeu). */
+      offerHours: z.number().positive().default(72),
+      /** Délai d'une livraison du marché noir (heures de jeu). */
+      blackMarketDeliveryHours: z.number().min(0).default(96),
+    })
+    .optional(),
+  /** Forces de départ réelles (ORBAT) regroupées en piles. */
+  startingForces: z
+    .object({
+      /** Taille maximale d'une pile par catégorie (ex. { "fighter": 24, "tank": 60 }). */
+      stackMax: z.record(z.string(), z.number().int().min(1)).default({}),
+      /** Nombre maximal de piles par nation (les piles grossissent au-delà). */
+      maxStacksPerNation: z.number().int().min(1).default(150),
+      /** Cible du nombre total de piles au départ (monde entier) : les piles grossissent au-delà. */
+      maxStacksWorld: z.number().int().min(1).default(5000),
     })
     .optional(),
   research: z
@@ -303,6 +335,8 @@ export const BalanceSchema = z.object({
       infantryPerProvince: z.number().int().min(0).default(1),
       incomePenalty: z.number().min(0).max(1).default(0.25),
       stabilityPerDay: z.number().default(-1),
+      /** Durée minimale de la mobilisation avant démobilisation (jours de jeu). */
+      minDays: z.number().min(0).default(3),
     })
     .optional(),
   buildings: z
@@ -312,6 +346,44 @@ export const BalanceSchema = z.object({
       repairHours: z.number().positive().default(48),
       buildHours: z.record(z.string(), z.number()).default({}),
       buildCostUsd: z.record(z.string(), z.number()).default({}),
+      /** Niveau maximal d'un bâtiment (1 à 5 comme dans Conflict of Nations). */
+      maxLevel: z.number().int().min(1).default(5),
+      /** Coût du niveau L = buildCostUsd × levelCostGrowth^(L − 1). */
+      levelCostGrowth: z.number().positive().default(1.6),
+      /** Durée du niveau L = buildHours × (1 + levelTimeGrowth × (L − 1)). */
+      levelTimeGrowth: z.number().min(0).default(0.25),
+      /** Répartir au départ des bâtiments de ressources selon les revenus des provinces. */
+      distribute: z.boolean().default(true),
+    })
+    .optional(),
+  /** Moral des provinces (0..100) : en dessous de 50, les revenus de la province baissent. */
+  morale: z
+    .object({
+      start: z.number().min(0).max(100).default(70),
+      /** Moral d'une province conquise (occupée). */
+      occupied: z.number().min(0).max(100).default(30),
+      /** Retour vers la valeur de départ, par jour. */
+      recoveryPerDay: z.number().min(0).default(2),
+      /** Baisse pour un bâtiment détruit (× dégâts). */
+      hitPenalty: z.number().min(0).default(10),
+      nuclearPenalty: z.number().min(0).default(50),
+      /** Baisse quotidienne en cas de pénurie de nourriture. */
+      shortagePenalty: z.number().min(0).default(5),
+      /** Revenu de la province × min(1, incomeFloor + moral / 100). */
+      incomeFloor: z.number().min(0).max(1).default(0.5),
+    })
+    .optional(),
+  /** Consommation quotidienne de ressources par élément et effets des pénuries. */
+  consumption: z
+    .object({
+      foodPerInfantry: z.number().min(0).default(0.02),
+      /** Blindés, véhicules, artillerie, défense aérienne terrestre, convois. */
+      oilPerVehicle: z.number().min(0).default(0.005),
+      oilPerAircraft: z.number().min(0).default(0.03),
+      oilPerShip: z.number().min(0).default(0.1),
+      electronicsPerSpace: z.number().min(0).default(0.02),
+      /** Vitesse de production × ce facteur par ressource en pénurie. */
+      shortageProductionFactor: z.number().min(0).max(1).default(0.5),
     })
     .optional(),
   alert: z

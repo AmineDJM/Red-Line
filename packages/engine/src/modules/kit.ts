@@ -18,9 +18,11 @@ export function board(state: EngineState): SharedBoard {
       allianceOf: {},
       nuclearAuth: {},
       mobilized: {},
+      sites: {},
     };
     mods.board = b;
   }
+  b.sites ??= {};
   return b;
 }
 

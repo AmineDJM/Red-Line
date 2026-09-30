@@ -1,4 +1,4 @@
-import { callHook, firstError, modifier } from '../modules/registry.js';
+import { callHook, firstError, modifier, moduleIncome } from '../modules/registry.js';
 import {
   DAY,
   HOUR,
@@ -34,9 +34,18 @@ export function dailyIncomeAll(state: EngineState): Map<NationId, DailyIncome> {
   const w = wi(state.world);
   const out = new Map<NationId, DailyIncome>();
   for (const n of state.nationIds) out.set(n, { money: 0, res: emptyResources(), upkeep: 0 });
+  const fromModule = new Set<NationId>();
+  for (const n of state.nationIds) {
+    const m = moduleIncome(state, n);
+    if (m) {
+      out.set(n, m);
+      fromModule.add(n);
+    }
+  }
   for (const pid of sortedKeys(state.provinces)) {
-    const inc = out.get(state.provinces[pid]!.owner);
-    if (!inc) continue;
+    const owner = state.provinces[pid]!.owner;
+    const inc = out.get(owner);
+    if (!inc || fromModule.has(owner)) continue;
     const def = w.provById.get(pid)!;
     inc.money += def.income.money * mult;
     for (const r of RESOURCES) inc.res[r] += (def.income[r] ?? 0) * mult;
@@ -44,12 +53,14 @@ export function dailyIncomeAll(state: EngineState): Map<NationId, DailyIncome> {
   for (const uid of sortedKeys(state.units)) {
     const u = state.units[uid]!;
     const inc = out.get(u.owner);
-    if (inc) inc.upkeep += sysOf(state, u).upkeepPerDay;
+    if (inc && !fromModule.has(u.owner)) inc.upkeep += sysOf(state, u).upkeepPerDay;
   }
   return out;
 }
 
 export function dailyIncomeOf(state: EngineState, n: NationId): DailyIncome {
+  const m = moduleIncome(state, n);
+  if (m) return m;
   const mult = state.world.balance.economy.incomeMultiplier;
   const w = wi(state.world);
   const inc: DailyIncome = { money: 0, res: emptyResources(), upkeep: 0 };
