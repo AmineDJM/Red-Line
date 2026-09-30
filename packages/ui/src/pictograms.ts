@@ -168,6 +168,7 @@ const CATEGORY_PICTOGRAM: Record<Category, PictogramId> = {
   infantry: 'infantry',
   space: 'satellite',
   logistics: 'ifv',
+  radar: 'air_defense',
 };
 
 export function isPictogramId(id: string): id is PictogramId {
@@ -200,8 +201,27 @@ export function pictogramForCategory(category: Category): PictogramId {
   return CATEGORY_PICTOGRAM[category] ?? 'unknown';
 }
 
+/** Bâtiments sans pictogramme dédié (à dessiner) : pictogramme le plus proche en attendant. */
+const BUILDING_FALLBACK: Partial<Record<BuildingType, PictogramId>> = {
+  oil_field: 'refinery',
+  mine: 'arms_factory',
+  farm: 'power_plant',
+  electronics_plant: 'research_center',
+  local_industry: 'arms_factory',
+  recruiting_office: 'military_base',
+  naval_base: 'port',
+  bunker: 'military_base',
+  air_defense_site: 'air_defense',
+  coastal_battery: 'artillery',
+  radar_station: 'air_defense',
+  missile_silo: 'missile',
+  hospital: 'military_base',
+  secret_lab: 'research_center',
+  forward_base: 'military_base',
+};
+
 export function pictogramForBuilding(b: BuildingType): PictogramId {
-  return b;
+  return BUILDING_FALLBACK[b] ?? (b as PictogramId);
 }
 
 /** Sommets d'un hexagone à sommets latéraux (« flat-top »), centre (cx, cy), rayon r. */
