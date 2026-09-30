@@ -180,7 +180,11 @@ export function LobbyRoomScreen({ id }: { id: string }) {
                   {game.game.victory.allEnemyCapitals ? ` · ${t('lobby.capitals')}` : ''}
                 </li>
               ) : null}
-              <li>{t(`shop.policies.${game.game.shopPolicy?.mode ?? 'open'}`)}</li>
+              <li>
+                {t('lobby.room.shop', {
+                  policy: t(`shop.policies.${game.game.shopPolicy?.mode ?? 'open'}`),
+                })}
+              </li>
               <li className="muted">
                 {isCreator ? t('lobby.room.hostHint') : t('lobby.room.guestHint')}
               </li>

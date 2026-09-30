@@ -29,6 +29,21 @@ export const SECTIONS: SectionDef[] = [
   { id: 'settings', icon: 'settings', key: ',', group: 'tools' },
 ];
 
+/** Domaines utiles à un spectateur (vue publique : pas d'armée, d'économie ni de renseignement). */
+export const SPECTATOR_SECTIONS = new Set<WindowId>([
+  'council',
+  'news',
+  'battles',
+  'encyclopedia',
+  'chat',
+  'settings',
+]);
+
+/** Domaines affichés : tous pour un joueur, restreints pour un spectateur. */
+export function visibleSections(spectator: boolean): SectionDef[] {
+  return spectator ? SECTIONS.filter((s) => SPECTATOR_SECTIONS.has(s.id)) : SECTIONS;
+}
+
 export function sectionOf(id: WindowId): SectionDef {
   return SECTIONS.find((s) => s.id === id)!;
 }

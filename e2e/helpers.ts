@@ -23,8 +23,12 @@ export const isMobile = (info: TestInfo) => info.project.name === 'mobile';
 /** Prépare une page : diagnostic actif, tutoriel déjà vu, erreurs collectées, CGU acceptées. */
 export async function preparePage(page: Page, opts: { tutorial?: boolean } = {}) {
   await page.addInitScript((tuto) => {
-    localStorage.setItem('rl.debug', '1');
-    if (!tuto) localStorage.setItem('rl.tutorial.done', '1');
+    try {
+      localStorage.setItem('rl.debug', '1');
+      if (!tuto) localStorage.setItem('rl.tutorial.done', '1');
+    } catch {
+      /* about:blank : pas de stockage */
+    }
   }, !!opts.tutorial);
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));

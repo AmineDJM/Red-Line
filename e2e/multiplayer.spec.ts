@@ -72,16 +72,15 @@ test('lobby à deux joueurs et spectateur', async ({ page, browser }, info) => {
   await b.screenshot({ path: info.outputPath('2-partie-joueur-b.png') });
   // Libère le moteur de rendu logiciel des tests avant d'ouvrir une troisième carte.
   await b.context().close();
+  const c = await newPlayerPage(browser, info, page);
   await page.goto('about:blank');
 
   // C : spectateur (partie multijoueur publique lancée).
-  const c = await newPlayerPage(browser, info, page);
   const errorsC = await preparePage(c);
   await c.goto('/');
   await c.getByRole('button', { name: 'Jouer en invité' }).click();
   await c.waitForURL('**/new');
   await c.goto('/lobby');
-  await c.getByRole('button', { name: 'Tout' }).click();
   await c.locator('tr', { hasText: lobbyName }).getByRole('button', { name: 'Observer' }).click();
   await c.waitForURL(`**/spectate/${gameId}`);
   await waitGameReady(c);

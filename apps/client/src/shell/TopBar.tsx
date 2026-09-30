@@ -239,9 +239,9 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
           {bell}
         </div>
         <div className="topbar__row topbar__row--sub">
-          <Budget compact />
+          {!view?.spectator ? <Budget compact /> : null}
           {level ? <AlertLevelPill level={level} compact /> : null}
-          <Resources />
+          {!view?.spectator ? <Resources /> : null}
         </div>
       </header>
     );
@@ -263,8 +263,12 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
       <span className="topbar__sep" aria-hidden />
       <ClockControl compact={false} />
       <span className="topbar__sep" aria-hidden />
-      <Budget compact={false} />
-      <Resources />
+      {!view?.spectator ? (
+        <>
+          <Budget compact={false} />
+          <Resources />
+        </>
+      ) : null}
       <span className="topbar__spacer" />
       {level ? <AlertLevelPill level={level} /> : null}
       <button

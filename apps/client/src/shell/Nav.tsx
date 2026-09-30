@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Icon, IconButton, Kbd } from '@redline/ui';
 import { useGame } from '../store/game.js';
 import { useUi, type WindowId } from '../store/ui.js';
-import { SECTIONS } from './sections.js';
+import { SECTIONS, visibleSections } from './sections.js';
 
 /** Compteurs d'attention par domaine (nouveaux rapports, votes, messages…). */
 function useBadges(): Partial<Record<WindowId, number>> {
@@ -37,6 +37,7 @@ export function SideNav() {
   const legendOpen = useUi((s) => s.legendOpen);
   const setLegendOpen = useUi((s) => s.setLegendOpen);
   const badges = useBadges();
+  const sections = visibleSections(useGame((st) => !!st.view?.spectator));
   const top = windows.reduce((m, w) => Math.max(m, w.z), 0);
   const item = (s: (typeof SECTIONS)[number]) => {
     const w = windows.find((x) => x.id === s.id);
@@ -61,9 +62,9 @@ export function SideNav() {
   };
   return (
     <nav className="sidenav" aria-label={t('game.toolbar.menu')} data-map-avoid>
-      <ul className="sidenav__list">{SECTIONS.filter((s) => s.group === 'main').map(item)}</ul>
+      <ul className="sidenav__list">{sections.filter((s) => s.group === 'main').map(item)}</ul>
       <ul className="sidenav__list sidenav__list--tools">
-        {SECTIONS.filter((s) => s.group === 'tools').map(item)}
+        {sections.filter((s) => s.group === 'tools').map(item)}
         <li>
           <IconButton
             className="sidenav__btn"
@@ -96,8 +97,9 @@ export function MobileNav() {
     (m, w) => (m === null || w.z > (windows.find((x) => x.id === m)?.z ?? 0) ? w.id : m),
     null,
   );
-  const main = SECTIONS.filter((s) => s.mobile);
-  const others = SECTIONS.filter((s) => !s.mobile);
+  const spectator = useGame((st) => !!st.view?.spectator);
+  const main = visibleSections(spectator).filter((s) => s.mobile);
+  const others = visibleSections(spectator).filter((s) => !s.mobile);
   const moreBadge = others.reduce((s, x) => s + (badges[x.id] ?? 0), 0);
   return (
     <>
@@ -161,7 +163,7 @@ export function MobileNav() {
         <div className="moresheet" role="dialog" aria-label={t('game.toolbar.more')} data-map-avoid>
           <div className="moresheet__title">{t('game.toolbar.allSections')}</div>
           <ul className="moresheet__grid">
-            {SECTIONS.map((s) => (
+            {visibleSections(spectator).map((s) => (
               <li key={s.id}>
                 <button
                   type="button"

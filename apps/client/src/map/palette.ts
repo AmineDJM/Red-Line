@@ -44,7 +44,9 @@ export function relationOf(
   me: NationId | null,
   nations: Record<NationId, NationView | undefined>,
 ): Rel {
-  if (me && owner === me) return 'own';
+  // Spectateur (aucune nation) : personne n'est « ennemi », liseré neutre pour tous.
+  if (!me) return 'neutral';
+  if (owner === me) return 'own';
   const r = nations[owner]?.relation;
   if (r === 'ally') return 'ally';
   if (r === 'peace' || r === 'ceasefire') return 'neutral';

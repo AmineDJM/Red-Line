@@ -1789,7 +1789,8 @@
       "startError": "Lancement impossible pour l'instant.",
       "leave": "Quitter le salon",
       "ended": "Cette partie est terminée.",
-      "notFound": "Salon introuvable."
+      "notFound": "Salon introuvable.",
+      "shop": "Achats en jeu : {{policy}}"
     }
   },
   "games": {
