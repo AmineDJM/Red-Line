@@ -258,7 +258,7 @@ function perceive(state: EngineState, n: NationId): Threat[] {
 
 function ownerAt(state: EngineState, p: LngLat): NationId | null {
   const nav = wi(state.world).nav;
-  const pid = nav.cellProv.get(nav.cellAt(p));
+  const pid = nav.cellProv.get(nav.cellOfPos(p));
   return pid ? (state.provinces[pid]?.owner ?? null) : null;
 }
 

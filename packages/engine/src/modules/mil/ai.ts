@@ -164,7 +164,7 @@ function visibleEnemies(state: EngineState, n: NationId): { threats: Unit[]; air
 
 function nearOwn(state: EngineState, n: NationId, p: LngLat): boolean {
   const nav = wi(state.world).nav;
-  const pid = nav.cellProv.get(nav.cellAt(p));
+  const pid = nav.cellProv.get(nav.cellOfPos(p));
   return !!pid && state.provinces[pid]?.owner === n;
 }
 

@@ -3,6 +3,7 @@ import type {
   Category,
   NationId,
   ResearchBranch,
+  ResearchNode,
   WeaponSystem,
 } from '@redline/shared';
 import { provincesOf, warsOf } from '../../state/access.js';
@@ -73,19 +74,39 @@ function thinkResearch(state: EngineState, n: NationId, atWar: boolean): void {
   const en = ecoNation(state, n);
   if (en.cur || en.queue.length > 0) return;
   const money = state.nations[n]!.money;
-  const order = atWar ? AI.warBranches : AI.peaceBranches;
-  let best: { id: string; score: number } | null = null;
+  // Meilleur nœud = minimum de (score, identifiant) parmi les nœuds éligibles : les nœuds sont
+  // parcourus dans cet ordre (précalculé par arbre) et le premier éligible est retenu.
   const done = new Set(en.done);
-  for (const id of tree.keys()) {
+  for (const id of researchOrder(tree, atWar)) {
     const node = nodeOf(state, id);
     if (!node || done.has(id)) continue;
     if (!node.requires.every((r) => hasGate(state, n, r))) continue;
     if (node.cost.money > money * AI.researchSpendShare) continue;
-    const bi = order.indexOf(node.branch);
-    const score = node.tier * 100 + (bi < 0 ? 99 : bi);
-    if (!best || score < best.score || (score === best.score && id < best.id)) best = { id, score };
+    applyOrderImpl(state, n, { kind: 'research', nodeId: id });
+    return;
   }
-  if (best) applyOrderImpl(state, n, { kind: 'research', nodeId: best.id });
+}
+
+/** Identifiants de l'arbre triés par (score de l'IA, identifiant), en paix et en guerre. */
+const researchOrders = new WeakMap<object, { war: string[]; peace: string[] }>();
+
+function researchOrder(tree: ReadonlyMap<string, ResearchNode>, atWar: boolean): string[] {
+  let o = researchOrders.get(tree);
+  if (!o) {
+    const sorted = (order: readonly string[]): string[] => {
+      const score = new Map<string, number>();
+      for (const [id, node] of tree) {
+        const bi = order.indexOf(node.branch);
+        score.set(id, node.tier * 100 + (bi < 0 ? 99 : bi));
+      }
+      return [...tree.keys()].sort(
+        (a, b) => score.get(a)! - score.get(b)! || (a < b ? -1 : a > b ? 1 : 0),
+      );
+    };
+    o = { war: sorted(AI.warBranches), peace: sorted(AI.peaceBranches) };
+    researchOrders.set(tree, o);
+  }
+  return atWar ? o.war : o.peace;
 }
 
 /** Réparations des bâtiments endommagés, si la trésorerie le permet. */

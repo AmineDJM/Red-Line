@@ -331,7 +331,7 @@ export function noFlyViolation(state: EngineState, u: Unit): string | null {
   const sys = sysOf(state, u);
   if (sys.movement !== 'air' || isLanded(state, u)) return null;
   const nav = wi(state.world).nav;
-  const pid = nav.cellProv.get(nav.cellAt(unitPosAt(state, u, state.time)));
+  const pid = nav.cellProv.get(nav.cellOfPos(unitPosAt(state, u, state.time)));
   if (!pid || !board(state).noFly[pid]) return null;
   const owner = state.provinces[pid]?.owner;
   if (!owner || owner === u.owner) return null;

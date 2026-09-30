@@ -26,7 +26,7 @@ export function supplyOf(state: EngineState, u: Unit, friends?: NationId[]): Sup
   const w = wi(state.world);
   const pos: LngLat = unitPosAt(state, u, state.time);
   const fr = friends ?? friendsOf(state, u.owner);
-  const here = w.nav.cellProv.get(w.nav.cellAt(pos));
+  const here = w.nav.cellProv.get(w.nav.cellOfPos(pos));
   if (here && fr.includes(state.provinces[here]?.owner ?? '')) return 'supplied';
   const R = cfg(state.world).logistics.supplyRangeKm * modifier(state, u.owner, 'supply.range');
   const baseF = effect(state.world, 'military_base', 'supplyRangeFactor', 1);
@@ -87,7 +87,7 @@ export function fortificationArmor(state: EngineState, u: Unit): number {
   if (!es.live && Object.keys(es.forts).length === 0 && Object.keys(es.bld).length === 0) return 1;
   if (sysOf(state, u).movement !== 'land') return 1;
   const w = wi(state.world);
-  const pid = w.nav.cellProv.get(w.nav.cellAt(u.pos));
+  const pid = w.nav.cellProv.get(w.nav.cellOfPos(u.pos));
   if (!pid || state.provinces[pid]?.owner !== u.owner) return 1;
   const lvl = es.forts[pid] ?? 0;
   const fort = lvl > 0 ? 1 + effect(state.world, 'fortification', 'armorPerLevel', 0) * lvl : 1;

@@ -624,15 +624,17 @@ function intruder(state: EngineState, u: Unit, center: LngLat, r: number): Unit 
   const sys = sysOf(state, u);
   let best: Unit | null = null;
   let bestD = Infinity;
-  for (const id of sortedKeys(known)) {
+  // Le plus proche, à égalité le premier identifiant dans l'ordre trié : parcours non trié avec
+  // départage explicite (même résultat), et la distance (le filtre le plus sélectif) d'abord.
+  for (const id in known) {
     const c = known[id]!;
     if (!c.seen) continue;
     const o = state.units[id];
     if (!o || o.off || o.role === 'missile') continue;
+    const dist = distanceKm(posOf(state, o), center);
+    if (dist > r || dist > bestD || (dist === bestD && best !== null && id > best.id)) continue;
     if (sys.damage[targetClassOf(state, o)] <= 0) continue;
     if (!hostile(state, u, o)) continue;
-    const dist = distanceKm(posOf(state, o), center);
-    if (dist > r || dist >= bestD) continue;
     best = o;
     bestD = dist;
   }

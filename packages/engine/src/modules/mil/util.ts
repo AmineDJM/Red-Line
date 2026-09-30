@@ -127,7 +127,7 @@ export function cityOf(state: EngineState, pid: ProvinceId): LngLat | null {
 
 export function provinceAt(state: EngineState, p: LngLat): ProvinceId | null {
   const nav = wi(state.world).nav;
-  const pid = nav.cellProv.get(nav.cellAt(p));
+  const pid = nav.cellProv.get(nav.cellOfPos(p));
   return pid && state.provinces[pid] ? pid : null;
 }
 
@@ -191,13 +191,15 @@ export function unitsNear(
   coverCap(at, rKm + 1, cells);
   const ids = new Set<string>();
   state.rt.bodies.collect([...cells], ids);
+  // Filtres purs d'abord, tri des seules unités retenues (même ordre que le parcours trié).
   const out: Unit[] = [];
-  for (const id of [...ids].sort()) {
+  for (const id of ids) {
     const u = state.units[id];
     if (!u || u.off) continue;
     if (pre && !pre(u)) continue;
     if (distanceKm(unitPosAt(state, u, state.time), at) <= rKm) out.push(u);
   }
+  if (out.length > 1) out.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   return out;
 }
 
