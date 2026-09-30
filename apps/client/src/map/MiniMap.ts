@@ -14,6 +14,7 @@
  */
 import type { Feature, FeatureCollection, Geometry, Position } from 'geojson';
 import type { LngLat, NationId } from '@redline/shared';
+import { LOCALE, plainSpaces, t } from '../i18n/index.js';
 import { useWorld } from '../store/world.js';
 import { C, MONO, REL_COLOR, alpha, type Rel } from './palette.js';
 
@@ -487,7 +488,11 @@ export class MiniMap {
     ctx.font = `500 9px ${MONO}`;
     ctx.fillStyle = C.text;
     ctx.textBaseline = 'bottom';
-    ctx.fillText(`${km.toLocaleString('fr-FR')} km`, x + 4, y - 3);
+    ctx.fillText(
+      plainSpaces(t('map.minimap.km', { value: km.toLocaleString(LOCALE) })),
+      x + 4,
+      y - 3,
+    );
   }
 
   /** Coins en crochets (cadre de terminal). */

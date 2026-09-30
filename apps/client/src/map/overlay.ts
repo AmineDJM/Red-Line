@@ -41,6 +41,8 @@ export interface RingLabel {
   at: LngLat;
   text: string;
   tone?: CalloutTone;
+  /** Centre de l'anneau : l'étiquette est omise si l'anneau est trop petit à l'écran. */
+  center?: LngLat;
 }
 
 export interface LaunchBadge {
@@ -325,6 +327,10 @@ export class OverlayRenderer {
     for (const r of rings) {
       const p = this.project(r.at);
       if (p.x < -60 || p.y < -20 || p.x > this.w + 60 || p.y > this.h + 20) continue;
+      if (r.center) {
+        const c = this.project(r.center);
+        if (Math.hypot(p.x - c.x, p.y - c.y) < 48) continue;
+      }
       this.pill(r.text, p.x, p.y, TONES[r.tone ?? 'amber'], `600 9.5px ${MONO}`);
     }
   }

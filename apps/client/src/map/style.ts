@@ -978,7 +978,7 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         id: 'intel-badges',
         type: 'symbol',
         source: 'intel-badges',
-        minzoom: 3.5,
+        minzoom: 4.8,
         layout: {
           visibility: 'none',
           'icon-image': ['get', 'img'],

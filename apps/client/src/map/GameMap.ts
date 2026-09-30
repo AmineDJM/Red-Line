@@ -1015,12 +1015,17 @@ export class GameMap {
       const lines: Feature<LineString>[] = [];
       if (max > 0.5) {
         lines.push(circleLine(at, max, 'max'));
-        rings.push({ at: destination(at, 0, max), text: t('map.ring.max', { value: fmtKm(max) }) });
+        rings.push({
+          at: destination(at, 0, max),
+          center: at,
+          text: t('map.ring.max', { value: fmtKm(max) }),
+        });
       }
       if (sys.weaponRangeKm.min > 0.5) {
         lines.push(circleLine(at, sys.weaponRangeKm.min, 'min'));
         rings.push({
           at: destination(at, 180, sys.weaponRangeKm.min),
+          center: at,
           text: t('map.ring.min', { value: fmtKm(sys.weaponRangeKm.min) }),
         });
       }
@@ -1028,6 +1033,7 @@ export class GameMap {
         lines.push(circleLine(at, sys.operationalRadiusKm, 'radius'));
         rings.push({
           at: destination(at, 0, sys.operationalRadiusKm),
+          center: at,
           text: t('map.ring.radius', { value: fmtKm(sys.operationalRadiusKm) }),
         });
       }
@@ -1040,6 +1046,7 @@ export class GameMap {
         const key = kind === 'sonar' ? 'sonar' : isRadarSystem(sys) ? 'radar' : 'sensor';
         rings.push({
           at: destination(at, 0, det),
+          center: at,
           text: t(`map.ring.${key}`, { value: fmtKm(det) }),
           tone: 'cyan',
         });

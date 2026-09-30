@@ -121,7 +121,11 @@
       "eta": "{{distance}} · {{eta}}"
     },
     "minimap": {
-      "label": "Mini-carte"
+      "label": "Mini-carte",
+      "km": "{{value}} km"
+    },
+    "pion": {
+      "decoy": "LEURRE"
     }
   }
 }

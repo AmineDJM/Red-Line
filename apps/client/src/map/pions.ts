@@ -11,6 +11,7 @@
  * Un pion est UNE image : l'ordre d'empilement entre pions voisins reste correct (symbol-sort-key),
  * ce qui ne serait pas le cas avec un calque par composant.
  */
+import { t } from '../i18n/index.js';
 import { FLAG_H, FLAG_W, flags } from './flagCache.js';
 import { drawGlyph, type GlyphId } from './glyphs.js';
 import { C, MONO, REL_COLOR, alpha, type Rel } from './palette.js';
@@ -398,7 +399,7 @@ export function drawPion(s: PionSpec): SpriteImage {
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
     ctx.fillStyle = C.amber;
-    ctx.fillText('LEURRE', x + 3, y + h + 4.4);
+    ctx.fillText(t('map.pion.decoy'), x + 3, y + h + 4.4);
   }
   return out(c);
 }
