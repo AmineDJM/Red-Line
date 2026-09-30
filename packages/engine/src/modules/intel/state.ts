@@ -103,7 +103,15 @@ export interface NationIntel {
   /** Anti-répétition des rapports flash : clé → dernier instant. */
   flash: Record<string, GameTime>;
   /** Incidents subis depuis la dernière note de sécurité intérieure. */
-  log: { sabotage: number; cyber: number; rebels: number; caught: number; strikes: number };
+  log: {
+    sabotage: number;
+    cyber: number;
+    rebels: number;
+    caught: number;
+    strikes: number;
+    /** Installations étrangères découvertes (agents) depuis la dernière note. */
+    found: number;
+  };
   /** Prochaine réflexion de renseignement de l'IA. */
   aiNext: GameTime;
 }
@@ -120,6 +128,17 @@ export interface IntelState {
   decoys: Record<string, Decoy>;
   /** Portes de recherche apprises par signal (recherche achevée, vol). */
   gates: Record<NationId, string[]>;
+  /**
+   * Connaissance des provinces étrangères, par nation observatrice : niveaux 0..3 sur les axes
+   * économique (`e`) et militaire (`m`), date de dernière mise à jour (`t`). Entrées non nulles seulement.
+   */
+  pk: Record<NationId, Record<string, ProvinceKnowledge>>;
+}
+
+export interface ProvinceKnowledge {
+  e: number;
+  m: number;
+  t: GameTime;
 }
 
 export function newNationIntel(budget: number): NationIntel {
@@ -131,7 +150,7 @@ export function newNationIntel(budget: number): NationIntel {
     reports: [],
     ops: [],
     flash: {},
-    log: { sabotage: 0, cyber: 0, rebels: 0, caught: 0, strikes: 0 },
+    log: { sabotage: 0, cyber: 0, rebels: 0, caught: 0, strikes: 0, found: 0 },
     aiNext: 0,
   };
 }

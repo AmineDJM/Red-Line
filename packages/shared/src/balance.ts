@@ -183,6 +183,10 @@ export const BalanceSchema = z.object({
       disinformationAmount: z.number().min(0).default(5),
       /** Hausse de tension mondiale quand une opération est démasquée. */
       exposureTension: z.number().min(0).default(2),
+      /** Reconnaissance ciblée sur une nation : provinces dont la connaissance progresse d'un niveau. */
+      reconProvinces: z.number().int().min(1).default(6),
+      /** Âge (heures) au-delà duquel la connaissance d'une province vieillit (état des bâtiments masqué). */
+      provinceStaleH: z.number().positive().default(72),
     })
     .optional(),
   diplomacy: z

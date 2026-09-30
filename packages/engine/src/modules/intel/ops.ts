@@ -27,7 +27,8 @@ import {
   researchOf,
   roll,
 } from './levels.js';
-import { publish, rate } from './reports.js';
+import { publish } from './reports.js';
+import { announce, recon } from './provinces.js';
 import {
   burn,
   catchQuietly,
@@ -66,6 +67,8 @@ export const OP_LABEL: Record<IntelOpKind, string> = {
   deploy_decoys: 'Déploiement de leurres',
   fake_radio_traffic: 'Faux trafic radio',
   counterintel_sweep: 'Opération de contre-espionnage',
+  recon_economic: 'Reconnaissance économique',
+  recon_military: 'Reconnaissance militaire',
 };
 
 /** Opérations HUMINT contre une nation qui profitent des agents implantés. */
@@ -106,6 +109,7 @@ function defenderDept(kind: IntelOpKind): Department | null {
     case 'intercept_army':
     case 'deploy_decoys':
     case 'fake_radio_traffic':
+    case 'recon_military':
       return 'military';
     case 'turn_agent':
       return 'exterior';
@@ -231,6 +235,18 @@ function resolveTarget(
     }
     case 'counterintel_sweep':
       return { target: {} };
+    case 'recon_economic':
+    case 'recon_military': {
+      if (target.provinceId) {
+        const P = state.provinces[target.provinceId];
+        if (!P || P.owner === n) return fail('invalid_target', 'Province cible invalide.');
+        return { victim: P.owner, target: { provinceId: target.provinceId, nationId: P.owner } };
+      }
+      const v = target.nationId;
+      if (!v || v === n || !state.nations[v]?.alive)
+        return fail('invalid_target', 'Nation ou province cible à préciser.');
+      return { victim: v, target: { nationId: v } };
+    }
     default:
       return { victim: t.nationId!, target: t };
   }
@@ -578,6 +594,21 @@ function applySuccess(state: EngineState, n: NationId, op: StoredOp): void {
     case 'counterintel_sweep':
       sweep(state, n);
       return;
+    case 'recon_economic':
+    case 'recon_military': {
+      const axis = op.kind === 'recon_economic' ? 'e' : 'm';
+      const target: { provinceId?: string; nationId?: string } = {};
+      if (op.target.provinceId) target.provinceId = op.target.provinceId;
+      else if (v) target.nationId = v;
+      const ds = recon(state, n, axis, target);
+      announce(state, n, ds, {
+        dept: op.dept,
+        source: OP_META[op.kind].source,
+        title: `${OP_LABEL[op.kind]} — ${vName}`,
+        q: 0.85,
+      });
+      return;
+    }
   }
 }
 
@@ -752,5 +783,3 @@ function leakContent(state: EngineState, victim: NationId): { headline: string; 
     body: facts.map((f) => f.line).join(' '),
   };
 }
-
-export { rate };

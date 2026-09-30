@@ -41,6 +41,8 @@ export interface IntelConfig {
   sabotageDamage: [number, number];
   disinformationAmount: number;
   exposureTension: number;
+  reconProvinces: number;
+  provinceStaleH: number;
   ops: Record<IntelOpKind, OpCost>;
 }
 
@@ -80,6 +82,8 @@ export const DEFAULTS: Omit<IntelConfig, 'ops'> = {
   sabotageDamage: [0.3, 0.6],
   disinformationAmount: 5,
   exposureTension: 2,
+  reconProvinces: 6,
+  provinceStaleH: 72,
 };
 
 /** Coûts par défaut des opérations (dollars US, heures de jeu), surchargés par balance.intel.ops. */
@@ -103,6 +107,8 @@ export const DEFAULT_OPS: Record<IntelOpKind, OpCost> = {
   deploy_decoys: { money: 3_000_000, durationH: 6, baseSuccess: 0.8, exposure: 0.1 },
   fake_radio_traffic: { money: 1_000_000, durationH: 3, baseSuccess: 0.7, exposure: 0.2 },
   counterintel_sweep: { money: 2_000_000, durationH: 12, baseSuccess: 0.75, exposure: 0 },
+  recon_economic: { money: 1_500_000, durationH: 12, baseSuccess: 0.75, exposure: 0.2 },
+  recon_military: { money: 2_000_000, durationH: 12, baseSuccess: 0.7, exposure: 0.25 },
 };
 
 /** Département et source de chaque opération (structure du jeu, pas de l'équilibrage). */
@@ -126,6 +132,8 @@ export const OP_META: Record<IntelOpKind, { dept: Department; source: IntelSourc
   deploy_decoys: { dept: 'military', source: 'sigint' },
   fake_radio_traffic: { dept: 'military', source: 'sigint' },
   counterintel_sweep: { dept: 'interior', source: 'humint' },
+  recon_economic: { dept: 'exterior', source: 'humint' },
+  recon_military: { dept: 'military', source: 'sigint' },
 };
 
 const cache = new WeakMap<object, IntelConfig>();

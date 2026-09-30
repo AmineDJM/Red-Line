@@ -86,7 +86,10 @@ export type IntelOpKind =
   | 'deploy_decoys'
   | 'fake_radio_traffic'
   // Contre-espionnage (intérieur)
-  | 'counterintel_sweep';
+  | 'counterintel_sweep'
+  // Reconnaissance ciblée (connaissance progressive des provinces étrangères)
+  | 'recon_economic' // révèle les installations économiques (cible : nation ou province)
+  | 'recon_military'; // révèle les installations militaires (cible : nation ou province)
 
 export interface IntelOpTarget {
   nationId?: NationId;
