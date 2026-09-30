@@ -84,6 +84,7 @@ export const fr = {
     submarine: 'Sous-marins',
     infantry: 'Infanterie',
     space: 'Espace',
+    logistics: 'Logistique',
   } satisfies Record<Category, string>,
   targetClasses: {
     infantry: 'Infanterie',

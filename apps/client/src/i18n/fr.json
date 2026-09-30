@@ -298,7 +298,8 @@
     "surface_ship": "Navire de surface",
     "submarine": "Sous-marin",
     "infantry": "Infanterie",
-    "space": "Système spatial"
+    "space": "Système spatial",
+    "logistics": "Logistique"
   },
   "doctrines": {
     "us": "États-Unis",
