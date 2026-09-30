@@ -57,6 +57,12 @@ export function refreshPassage(state: EngineState): void {
     out[k] = Math.max(out[k] ?? 0, until);
   }
   board(state).passage = out;
+  const charters: NonNullable<ReturnType<typeof board>['allianceCharters']> = {};
+  for (const id of sortedKeys(d.alliances)) {
+    const A = d.alliances[id]!;
+    charters[id] = { ...A.charter, leader: A.leader };
+  }
+  board(state).allianceCharters = charters;
 }
 
 /** Profondeur d'appel défensif (défense mutuelle en cours) : ces déclarations ne sont pas des agressions. */

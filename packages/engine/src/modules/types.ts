@@ -99,6 +99,11 @@ export interface SharedBoard {
    * Alliances avec droit de passage, retrait après la paix, cessez-le-feu.
    */
   passage?: Record<string, number>;
+  /** diplo : chartes des alliances (partage du renseignement, passage…), par identifiant d'alliance. */
+  allianceCharters?: Record<
+    string,
+    { mutualDefense: boolean; intelSharing: boolean; passage: boolean; leader: NationId }
+  >;
   /** diplo : conditions de victoire propres à la partie (setup.victory), sinon balance.victory. */
   victory?: { provinceShare: number; allEnemyCapitals: boolean };
 }
