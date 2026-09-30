@@ -139,6 +139,18 @@ export interface Metrics {
   games: number;
   connectedPlayers: number;
   eventsProcessedPerMin: number;
+  // ——— Phases 5-6 (optionnels) ———
+  /** Parties par statut, toutes instances confondues (base). */
+  gamesByStatus?: Record<string, number>;
+  /** Spectateurs connectés à cette instance. */
+  spectators?: number;
+  /** Taille cumulée des derniers instantanés compressés des parties hébergées ici (octets). */
+  stateBytes?: number;
+  /** Octets et messages WebSocket envoyés sur la dernière minute. */
+  wsBytesOutPerMin?: number;
+  wsMessagesOutPerMin?: number;
+  chatMessagesPerMin?: number;
+  pushSentPerMin?: number;
 }
 
 /*
@@ -228,6 +240,8 @@ export const CreateLobbyBodySchema = z.object({
   /** Remplacer par une IA un joueur inactif depuis N heures réelles. */
   inactiveAiAfterH: z.number().positive().default(24),
   private: z.boolean().default(false),
+  /** Niveau des IA actives qui tiennent toutes les nations sans joueur humain (facultatif). */
+  aiLevel: z.enum(['easy', 'normal', 'hard']).default('normal'),
 });
 export type CreateLobbyBody = z.infer<typeof CreateLobbyBodySchema>;
 

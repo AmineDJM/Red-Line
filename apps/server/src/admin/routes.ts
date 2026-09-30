@@ -355,10 +355,20 @@ export async function adminRoutes(app: FastifyInstance, ctx: AppContext): Promis
 
   // ─────────── Métriques ───────────
 
-  app.get('/admin/api/metrics', moderator, async (): Promise<Metrics> => ({
-    ...ctx.metrics.snapshot(),
-    games: host.games.size,
-    connectedPlayers: host.connectedPlayers(),
-    eventsProcessedPerMin: ctx.metrics.eventsPerMinute(),
-  }));
+  app.get('/admin/api/metrics', moderator, async (): Promise<Metrics> => {
+    const hs = host.hostStats();
+    return {
+      ...ctx.metrics.snapshot(),
+      games: host.games.size,
+      connectedPlayers: host.connectedPlayers(),
+      eventsProcessedPerMin: ctx.metrics.eventsPerMinute(),
+      gamesByStatus: await host.countByStatus(),
+      spectators: host.spectators(),
+      stateBytes: hs.stateBytes,
+      wsBytesOutPerMin: ctx.metrics.perMinute('wsBytesOut'),
+      wsMessagesOutPerMin: ctx.metrics.perMinute('wsMessagesOut'),
+      chatMessagesPerMin: ctx.metrics.perMinute('chat'),
+      pushSentPerMin: ctx.metrics.perMinute('push'),
+    };
+  });
 }

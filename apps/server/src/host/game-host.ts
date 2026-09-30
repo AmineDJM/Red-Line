@@ -1201,9 +1201,15 @@ export class GameHost {
       .where(eq(gamePlayers.gameId, gameId))
       .orderBy(asc(gamePlayers.slot));
     const setupAi = (row0.setup as { aiLevel?: 'easy' | 'normal' | 'hard' }).aiLevel ?? 'normal';
+    // Multijoueur : toutes les nations sans joueur humain sont des IA ACTIVES au niveau choisi.
+    const humans = new Set(players.map((p) => p.nationId));
+    const all = scenario.nationIds ?? (this.d.store.current().map?.nations ?? []).map((n) => n.id);
     const prepared = await this.prepare({
       scenario,
-      players: players.map((p) => ({ nationId: p.nationId, isAi: false })),
+      players: [
+        ...players.map((p) => ({ nationId: p.nationId, isAi: false })),
+        ...all.filter((n) => !humans.has(n)).map((nationId) => ({ nationId, isAi: true })),
+      ],
       speed: row0.speed,
       victory: row0.victory ?? null,
       aiLevel: setupAi,

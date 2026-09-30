@@ -51,6 +51,32 @@ export class ProcessMetrics {
     return this.buckets.reduce((a, b) => a + b, 0);
   }
 
+  /** Compteurs nommés sur une fenêtre glissante de 60 s (octets WS, messages, chat, push…). */
+  private readonly counters = new Map<string, { buckets: number[]; second: number }>();
+
+  count(name: string, n = 1): void {
+    if (n <= 0) return;
+    const sec = Math.floor(Date.now() / 1000);
+    let c = this.counters.get(name);
+    if (!c) this.counters.set(name, (c = { buckets: new Array<number>(60).fill(0), second: sec }));
+    this.rotateCounter(c, sec);
+    c.buckets[sec % 60]! += n;
+  }
+
+  perMinute(name: string): number {
+    const c = this.counters.get(name);
+    if (!c) return 0;
+    this.rotateCounter(c, Math.floor(Date.now() / 1000));
+    return c.buckets.reduce((a, b) => a + b, 0);
+  }
+
+  private rotateCounter(c: { buckets: number[]; second: number }, sec: number): void {
+    const gap = sec - c.second;
+    if (gap <= 0) return;
+    for (let i = 1; i <= Math.min(gap, 60); i++) c.buckets[(c.second + i) % 60] = 0;
+    c.second = sec;
+  }
+
   snapshot(): {
     uptimeS: number;
     rssMb: number;

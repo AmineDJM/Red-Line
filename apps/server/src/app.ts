@@ -15,8 +15,21 @@ import { authRoutes } from './auth/routes.js';
 import { publicRoutes } from './http/public.js';
 import { staticRoutes } from './http/static.js';
 import { adminRoutes } from './admin/routes.js';
+import { adminDataRoutes } from './admin/data-routes.js';
+import { adminOpsRoutes } from './admin/ops-routes.js';
 import { wsGateway } from './ws/gateway.js';
 import { ProcessMetrics } from './metrics.js';
+import { DataStore } from './data/store.js';
+import { loadShopConfig, type ShopConfig } from './shop/config.js';
+import { stripeProvider, type PaymentProvider } from './shop/payments.js';
+import { seedShop, shopRoutes } from './shop/shop.js';
+import { LegalService, legalRoutes } from './legal/legal.js';
+import { Fingerprints } from './security/fingerprints.js';
+import { ChatService } from './chat/chat.js';
+import { PushService, webPushSender, type PushSender } from './push/push.js';
+import { RankingService } from './rank/rankings.js';
+import { lobbyRoutes } from './multi/lobby.js';
+import { gameExtraRoutes } from './http/games-extra.js';
 
 export interface BuildAppOptions {
   config: Config;
@@ -25,6 +38,14 @@ export interface BuildAppOptions {
   engineMissing?: string[];
   logger?: FastifyServerOptions['logger'];
   runtime?: Partial<RuntimeOptions>;
+  /**
+   * Prestataire de paiement injecté (tests). Absent : Stripe si STRIPE_SECRET_KEY et
+   * STRIPE_WEBHOOK_SECRET sont définies ; null : paiements indisponibles.
+   */
+  payments?: PaymentProvider | null;
+  /** Émetteur Web Push injecté (tests). Absent : web-push. */
+  pushSender?: PushSender;
+  shopConfig?: ShopConfig;
 }
 
 export interface BuiltApp {
@@ -68,6 +89,9 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
       wsBurst: 40,
       flushIntervalMs: 200,
       keepSnapshots: 3,
+      chatPerSecond: 0.5,
+      chatBurst: 5,
+      pushThrottleMs: 10 * 60_000,
       ...opts.runtime,
     };
 
@@ -90,8 +114,12 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
       log.info({ email: config.adminEmail }, 'super-admin à jour');
     }
     await auth.purgeExpired();
+    const fingerprints = new Fingerprints(dbh.db, config.sessionSecret, log);
+    auth.onSeen = (user, req) => fingerprints.record(user.id, req);
 
-    const worlds = new WorldRegistry(dbh.db, opts.engine, data);
+    const store = new DataStore(dbh.db, data);
+    await store.init();
+    const worlds = new WorldRegistry(dbh.db, opts.engine, store);
     await worlds.init();
     const metrics = new ProcessMetrics();
     const host = new GameHost({
@@ -99,6 +127,7 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
       db: dbh.db,
       sql: dbh.sql,
       data,
+      store,
       worlds,
       metrics,
       log,
@@ -112,6 +141,42 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
       },
     });
 
+    const shop = opts.shopConfig ?? loadShopConfig();
+    await seedShop(dbh.db, shop);
+    let payments: PaymentProvider | null;
+    if (opts.payments !== undefined) payments = opts.payments;
+    else if (config.stripe) payments = stripeProvider(config.stripe.secretKey, config.stripe.webhookSecret);
+    else {
+      payments = null;
+      log.warn('STRIPE_SECRET_KEY / STRIPE_WEBHOOK_SECRET absentes : paiements indisponibles');
+    }
+    const legal = new LegalService(dbh.db, config.legalDir, log);
+    const chat = new ChatService({
+      db: dbh.db,
+      host,
+      log,
+      metrics,
+      rate: { perSecond: options.chatPerSecond, burst: options.chatBurst },
+      blockedWords: shop.chat.blockedWords,
+    });
+    const push = new PushService({
+      db: dbh.db,
+      host,
+      engine: opts.engine,
+      store,
+      log,
+      metrics,
+      sender: opts.pushSender ?? webPushSender,
+      subject: config.vapidSubject,
+      envKeys: config.vapid,
+      throttleMs: options.pushThrottleMs,
+    });
+    await push.init();
+    const rankings = new RankingService(dbh.db, shop, log);
+    await rankings.maintain();
+    host.listeners.notes.push((g, notes) => push.onNotes(g, notes));
+    host.listeners.ended.push((g, stats) => rankings.onGameEnded(g, stats));
+
     const ctx: AppContext = {
       config,
       options,
@@ -120,11 +185,19 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
       engine: opts.engine,
       engineMissing: opts.engineMissing ?? [],
       data,
+      store,
       worlds,
       host,
       auth,
       metrics,
       log,
+      shop,
+      payments,
+      legal,
+      fingerprints,
+      chat,
+      push,
+      rankings,
     };
 
     await app.register(fastifyCookie, { secret: config.sessionSecret });
@@ -160,18 +233,30 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
 
     await app.register(async (scope) => authRoutes(scope, ctx));
     await app.register(async (scope) => publicRoutes(scope, ctx));
+    await app.register(async (scope) => gameExtraRoutes(scope, ctx));
+    await app.register(async (scope) => lobbyRoutes(scope, ctx));
+    await app.register(async (scope) => shopRoutes(scope, ctx));
+    await app.register(async (scope) =>
+      legalRoutes(scope, { legal, auth, hashIp: (ip) => fingerprints.hashIp(ip) }),
+    );
+    await app.register(async (scope) => push.routes(scope, auth));
+    await app.register(async (scope) => rankings.routes(scope));
     await app.register(async (scope) => adminRoutes(scope, ctx));
+    await app.register(async (scope) => adminDataRoutes(scope, ctx));
+    await app.register(async (scope) => adminOpsRoutes(scope, ctx));
     await app.register(async (scope) => wsGateway(scope, ctx));
     await staticRoutes(app, ctx);
 
     // Arrêt propre : instantanés + libération des baux, puis fermeture de la base.
     app.addHook('onClose', async () => {
       await host.stop();
+      rankings.stop();
       metrics.stop();
       await dbh.close();
     });
 
     await host.start();
+    rankings.start();
     return { app, ctx };
   } catch (err) {
     await dbh.close().catch(() => {});

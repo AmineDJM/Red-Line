@@ -16,6 +16,8 @@ import { buildApp, type BuiltApp } from '../src/app.js';
 import { runMigrations } from '../src/db/client.js';
 import type { Engine } from '../src/engine.js';
 import type { RuntimeOptions } from '../src/context.js';
+import type { PaymentProvider } from '../src/shop/payments.js';
+import type { PushSender } from '../src/push/push.js';
 import { createFakeEngine } from './fake-engine.js';
 
 export const TEST_DB_URL =
@@ -47,7 +49,10 @@ export async function resetDb(): Promise<void> {
   const sql = postgres(TEST_DB_URL, { max: 1, onnotice: () => {} });
   try {
     await sql`TRUNCATE users, sessions, weapon_systems, catalog_releases, catalog_changes, games,
-      game_players, game_snapshots, game_orders, admin_audit RESTART IDENTITY CASCADE`;
+      game_players, game_snapshots, game_orders, admin_audit, chat_messages, chat_reads,
+      server_settings, push_subscriptions, timelapse_frames, wallet_ledger, shop_packs, shop_promotions,
+      purchases, stripe_events, cosmetics, user_cosmetics, seasons, rankings, game_results,
+      legal_acceptances, user_fingerprints, data_revisions RESTART IDENTITY CASCADE`;
   } finally {
     await sql.end({ timeout: 1 });
   }
@@ -259,6 +264,8 @@ export interface StartOptions {
   engine?: Engine | null;
   runtime?: Partial<RuntimeOptions>;
   env?: Record<string, string>;
+  payments?: PaymentProvider | null;
+  pushSender?: PushSender;
 }
 
 export async function startApp(o: StartOptions): Promise<BuiltApp> {
@@ -278,7 +285,42 @@ export async function startApp(o: StartOptions): Promise<BuiltApp> {
     engine: o.engine === undefined ? createFakeEngine() : o.engine,
     logger: { level: process.env.TEST_LOG_LEVEL ?? 'silent' },
     runtime: { authRateLimitPerMin: 1000, ...o.runtime },
+    payments: o.payments === undefined ? null : o.payments,
+    ...(o.pushSender ? { pushSender: o.pushSender } : {}),
   });
+}
+
+/** Compte enregistré (non invité). */
+export async function register(
+  app: FastifyInstance,
+  email: string,
+  displayName = email.split('@')[0]!,
+): Promise<{ cookie: string; userId: string }> {
+  const res = await app.inject({
+    method: 'POST',
+    url: '/api/auth/register',
+    payload: { email, password: 'motdepasse-test', displayName },
+  });
+  if (res.statusCode !== 200) throw new Error(`register ${res.statusCode} ${res.body}`);
+  return { cookie: sessionCookie(res), userId: res.json().user.id };
+}
+
+/** Connexion d'un compte existant (ex. super-admin d'ADMIN_EMAIL). */
+export async function login(app: FastifyInstance, email: string, password: string): Promise<string> {
+  const res = await app.inject({ method: 'POST', url: '/api/auth/login', payload: { email, password } });
+  if (res.statusCode !== 200) throw new Error(`login ${res.statusCode} ${res.body}`);
+  return sessionCookie(res);
+}
+
+/** Requête JSON authentifiée. */
+export function api(app: FastifyInstance, cookie: string | null) {
+  return (method: 'GET' | 'POST' | 'PUT' | 'DELETE', url: string, payload?: unknown) =>
+    app.inject({
+      method,
+      url,
+      headers: cookie ? { cookie } : {},
+      ...(payload !== undefined ? { payload: payload as object } : {}),
+    });
 }
 
 /** Valeur « rl_session=… » à renvoyer dans l'en-tête Cookie. */

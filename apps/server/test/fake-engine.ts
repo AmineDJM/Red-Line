@@ -5,14 +5,20 @@
  * - Une unité ennemie « secret » patrouille très loin (jamais visible) : elle génère des événements
  *   et des notifications toutes les secondes de jeu, qui ne doivent JAMAIS sortir du serveur.
  * - Ordre `stance` sur l'unité « crash » : lève une exception (test d'isolation).
+ * Phases 5-6 (tests) :
+ * - `declareWar` : prend immédiatement la capitale de la nation visée (province_captured) ;
+ * - `mobilize` { on: true } : victoire de la nation une seconde de jeu plus tard ;
+ * - `createAlliance` / `inviteToAlliance` : alliance simplifiée (membre ajouté aussitôt) ;
+ * - applySystem, publicView (sans l'unité secrète), ownersFrame, stats, battleReportFor ('r1').
  */
 import { createHash } from 'node:crypto';
 import type { Engine } from '../src/engine.js';
-import type { GameSetup, GameState, World } from '@redline/engine';
+import type { GameSetup, GameState, SystemCommand, World } from '@redline/engine';
 import {
   distanceKm,
   positionAt,
   type Balance,
+  type BattleReport,
   type GameNotification,
   type LngLat,
   type MapData,
@@ -39,9 +45,11 @@ interface FakeUnit {
 interface FakeEvent {
   time: number;
   seq: number;
-  kind: 'arrive' | 'patrol';
+  kind: 'arrive' | 'patrol' | 'capture' | 'win';
   unitId: string;
   version: number;
+  by?: string;
+  target?: string;
 }
 
 interface FakeState extends GameState {
@@ -51,10 +59,17 @@ interface FakeState extends GameState {
   nations: string[];
   units: Record<string, FakeUnit>;
   queue: FakeEvent[];
+  // ——— Phases 5-6 ———
+  ai: Record<string, boolean>;
+  owners: Record<string, string>;
+  alliances: { id: string; members: string[] }[];
+  sys: SystemCommand[];
+  winner: string | null;
+  conquered: Record<string, number>;
 }
 
 export const PATROL_PERIOD_MS = 1000;
-export const fakeStats = { buildWorld: 0 };
+export const fakeStats = { buildWorld: 0, lastExtras: null as unknown };
 
 const S = (s: GameState) => s as FakeState;
 
@@ -86,8 +101,10 @@ const buildWorld: Engine['buildWorld'] = (
   map: MapData,
   catalog: WeaponSystem[],
   balance: Balance,
+  extras,
 ) => {
   fakeStats.buildWorld++;
+  fakeStats.lastExtras = extras ?? null;
   return {
     map,
     catalog: new Map(catalog.map((c) => [c.id, c])),
@@ -96,57 +113,89 @@ const buildWorld: Engine['buildWorld'] = (
   };
 };
 
-const createGame: Engine['createGame'] = (world: World, setup: GameSetup) => {
-  const nations = setup.nationIds ?? world.map.nations.map((n) => n.id);
-  const players = setup.players.map((p) => p.nationId);
-  const systemId = [...world.catalog.keys()][0] ?? 'xx.none';
-  const s: FakeState = {
-    world,
-    time: 0,
-    seed: setup.seed,
-    seq: 0,
-    players,
-    nations,
-    units: {},
-    queue: [],
+function makeCreateGame(patrol: boolean): Engine['createGame'] {
+  return (world: World, setup: GameSetup) => {
+    const nations = setup.nationIds ?? world.map.nations.map((n) => n.id);
+    const players = setup.players.filter((p) => !p.isAi).map((p) => p.nationId);
+    const systemId = [...world.catalog.keys()][0] ?? 'xx.none';
+    const s: FakeState = {
+      world,
+      time: 0,
+      seed: setup.seed,
+      seq: 0,
+      players,
+      nations,
+      units: {},
+      queue: [],
+      ai: Object.fromEntries(setup.players.filter((p) => p.isAi).map((p) => [p.nationId, true])),
+      owners: Object.fromEntries(world.map.provinces.map((p) => [p.id, p.nationId])),
+      alliances: [],
+      sys: [],
+      winner: null,
+      conquered: {},
+    };
+    for (const p of players) {
+      const cap = capitalOf(world, p);
+      s.units[`${p}-1`] = {
+        id: `${p}-1`,
+        owner: p,
+        systemId,
+        pos: cap,
+        stance: 'defend',
+        version: 0,
+      };
+      const enemy = nations.find((n) => !players.includes(n)) ?? 'zzz';
+      s.units.scout = {
+        id: 'scout',
+        owner: enemy,
+        systemId,
+        pos: [cap[0] + 1, cap[1] + 1],
+        stance: 'hold',
+        version: 0,
+      };
+      s.units.secret = {
+        id: 'secret',
+        owner: enemy,
+        systemId,
+        pos: [cap[0] + 150 > 180 ? cap[0] - 150 : cap[0] + 150, -cap[1]],
+        stance: 'hold',
+        hidden: true,
+        version: 0,
+      };
+    }
+    if (patrol) push(s, { time: PATROL_PERIOD_MS, kind: 'patrol', unitId: 'secret', version: 0 });
+    return s;
   };
-  for (const p of players) {
-    const cap = capitalOf(world, p);
-    s.units[`${p}-1`] = {
-      id: `${p}-1`,
-      owner: p,
-      systemId,
-      pos: cap,
-      stance: 'defend',
-      version: 0,
-    };
-    const enemy = nations.find((n) => !players.includes(n)) ?? 'zzz';
-    s.units.scout = {
-      id: 'scout',
-      owner: enemy,
-      systemId,
-      pos: [cap[0] + 1, cap[1] + 1],
-      stance: 'hold',
-      version: 0,
-    };
-    s.units.secret = {
-      id: 'secret',
-      owner: enemy,
-      systemId,
-      pos: [cap[0] + 150 > 180 ? cap[0] - 150 : cap[0] + 150, -cap[1]],
-      stance: 'hold',
-      hidden: true,
-      version: 0,
-    };
-  }
-  push(s, { time: PATROL_PERIOD_MS, kind: 'patrol', unitId: 'secret', version: 0 });
-  return s;
-};
+}
 
 const applyOrder: Engine['applyOrder'] = (state, nationId, order: Order) => {
   const s = S(state);
+  if (s.winner) return { ok: false, error: 'game_over' };
   if (order.kind === 'stance' && order.unitIds.includes('crash'))
     throw new Error('boum (faux moteur)');
+  if (order.kind === 'declareWar') {
+    if (!s.nations.includes(order.nationId) || order.nationId === nationId) {
+      return { ok: false, error: 'invalid_target' };
+    }
+    const cap = s.world.map.nations.find((n) => n.id === order.nationId)?.capitalProvinceId;
+    if (!cap) return { ok: false, error: 'invalid_target' };
+    push(s, { time: s.time, kind: 'capture', unitId: '', version: 0, by: nationId, target: cap });
+    return { ok: true };
+  }
+  if (order.kind === 'mobilize') {
+    if (order.on) push(s, { time: s.time + 1000, kind: 'win', unitId: '', version: 0, by: nationId });
+    return { ok: true };
+  }
+  if (order.kind === 'createAlliance') {
+    s.alliances.push({ id: `a${++s.seq}`, members: [nationId] });
+    return { ok: true };
+  }
+  if (order.kind === 'inviteToAlliance') {
+    const a = s.alliances.find((x) => x.members.includes(nationId));
+    if (!a) return { ok: false, error: 'not_allowed' };
+    if (!a.members.includes(order.nationId)) a.members.push(order.nationId);
+    return { ok: true };
+  }
   if (order.kind !== 'move' && order.kind !== 'stop' && order.kind !== 'stance') {
     return { ok: false, error: 'not_allowed', message: 'Ordre non géré par le faux moteur' };
   }
@@ -181,6 +230,28 @@ const advanceTo: Engine['advanceTo'] = (state, t) => {
   const notes: GameNotification[] = [];
   while (s.queue.length && s.queue[0]!.time <= t) {
     const e = s.queue.shift()!;
+    if (e.kind === 'capture') {
+      const from = s.owners[e.target!]!;
+      s.owners[e.target!] = e.by!;
+      s.conquered[e.by!] = (s.conquered[e.by!] ?? 0) + 1;
+      const p = s.world.map.provinces.find((x) => x.id === e.target);
+      notes.push({
+        kind: 'province_captured',
+        time: e.time,
+        at: (p?.cityPoint ?? [0, 0]) as LngLat,
+        provinceId: e.target!,
+        by: e.by!,
+        from,
+      });
+      continue;
+    }
+    if (e.kind === 'win') {
+      if (!s.winner) {
+        s.winner = e.by!;
+        notes.push({ kind: 'victory', time: e.time, winner: e.by! });
+      }
+      continue;
+    }
     const u = s.units[e.unitId];
     if (!u) continue;
     if (e.kind === 'patrol') {
@@ -198,6 +269,38 @@ const advanceTo: Engine['advanceTo'] = (state, t) => {
 };
 
 const nextEventTime: Engine['nextEventTime'] = (state) => S(state).queue[0]?.time ?? null;
+
+function nationsOf(s: FakeState, me: string): Record<string, NationView> {
+  const nations: Record<string, NationView> = {};
+  for (const n of s.world.map.nations) {
+    if (!s.nations.includes(n.id)) continue;
+    nations[n.id] = {
+      id: n.id,
+      name: n.name,
+      color: n.color,
+      isAi: !s.players.includes(n.id) || !!s.ai[n.id],
+      isPlayer: s.players.includes(n.id) && !s.ai[n.id],
+      alive: true,
+      provinceCount: Object.values(s.owners).filter((o) => o === n.id).length,
+      allianceId: s.alliances.find((a) => a.members.includes(n.id))?.id ?? null,
+    };
+  }
+  void me;
+  return nations;
+}
+
+function provincesOf(s: FakeState): Record<string, ProvinceView> {
+  const provinces: Record<string, ProvinceView> = {};
+  for (const p of s.world.map.provinces) {
+    provinces[p.id] = {
+      id: p.id,
+      owner: s.owners[p.id] ?? p.nationId,
+      capture: null,
+      buildings: p.buildings,
+    };
+  }
+  return provinces;
+}
 
 const viewFor: Engine['viewFor'] = (state, nationId) => {
   const s = S(state);
@@ -231,28 +334,12 @@ const viewFor: Engine['viewFor'] = (state, nationId) => {
           uncertaintyKm: 0,
         };
   }
-  const nations: Record<string, NationView> = {};
-  for (const n of s.world.map.nations) {
-    if (!s.nations.includes(n.id)) continue;
-    nations[n.id] = {
-      id: n.id,
-      name: n.name,
-      color: n.color,
-      isAi: !s.players.includes(n.id),
-      isPlayer: s.players.includes(n.id),
-      alive: true,
-      provinceCount: s.world.map.provinces.filter((p) => p.nationId === n.id).length,
-    };
-  }
-  const provinces: Record<string, ProvinceView> = {};
-  for (const p of s.world.map.provinces) {
-    provinces[p.id] = { id: p.id, owner: p.nationId, capture: null, buildings: p.buildings };
-  }
-  return {
+  const mine = s.alliances.find((a) => a.members.includes(nationId));
+  const view: PlayerView = {
     time: s.time,
     me: nationId,
-    nations,
-    provinces,
+    nations: nationsOf(s, nationId),
+    provinces: provincesOf(s),
     units,
     economy: {
       money: s.world.balance.economy.startingMoney,
@@ -263,8 +350,71 @@ const viewFor: Engine['viewFor'] = (state, nationId) => {
     victory: {
       provinceShareTarget: s.world.balance.victory.provinceShare,
       leader: null,
-      winner: null,
+      winner: s.winner,
     },
+  };
+  if (s.alliances.length) {
+    view.diplomacy = {
+      relations: [],
+      alliances: mine
+        ? [
+            {
+              id: mine.id,
+              name: 'Alliance',
+              flag: 'A',
+              leader: mine.members[0]!,
+              members: [...mine.members],
+              charter: { mutualDefense: true, intelSharing: true, passage: true },
+              treasury: 0,
+              createdAt: 0,
+              votes: [],
+              invites: [],
+            },
+          ]
+        : [],
+      myAllianceId: mine?.id ?? null,
+      invitations: [],
+      reputation: 50,
+      disputed: [],
+      neutrals: [],
+    };
+  }
+  return view;
+};
+
+const publicView: NonNullable<Engine['publicView']> = (state) => {
+  const s = S(state);
+  const units: Record<string, UnitView> = {};
+  for (const u of Object.values(s.units)) {
+    if (u.hidden) continue; // l'unité secrète n'est jamais publique
+    units[u.id] = {
+      id: u.id,
+      owner: u.owner,
+      level: 'identified',
+      pos: unitPos(u, s.time),
+      lastSeen: s.time,
+      uncertaintyKm: 0,
+      systemId: u.systemId,
+    };
+  }
+  return {
+    time: s.time,
+    me: '',
+    nations: nationsOf(s, ''),
+    provinces: provincesOf(s),
+    units,
+    economy: {
+      money: 0,
+      resources: { oil: 0, metals: 0, electronics: 0, food: 0 },
+      incomePerDay: { money: 0 },
+      production: [],
+    },
+    victory: {
+      provinceShareTarget: s.world.balance.victory.provinceShare,
+      leader: null,
+      winner: s.winner,
+    },
+    spectator: true,
   };
 };
 
@@ -281,21 +431,11 @@ const diffViews: Engine['diffViews'] = (prev: PlayerView, next: PlayerView): Vie
     d.units = { upsert, remove };
     changed = true;
   }
-  if (J(prev.nations) !== J(next.nations)) {
-    d.nations = next.nations;
-    changed = true;
-  }
-  if (J(prev.provinces) !== J(next.provinces)) {
-    d.provinces = next.provinces;
-    changed = true;
-  }
-  if (J(prev.economy) !== J(next.economy)) {
-    d.economy = next.economy;
-    changed = true;
-  }
-  if (J(prev.victory) !== J(next.victory)) {
-    d.victory = next.victory;
-    changed = true;
+  for (const k of ['nations', 'provinces', 'economy', 'victory', 'diplomacy'] as const) {
+    if (J(prev[k]) !== J(next[k])) {
+      (d as unknown as Record<string, unknown>)[k] = next[k];
+      changed = true;
+    }
   }
   return changed ? d : null;
 };
@@ -323,10 +463,76 @@ const deserializeState: Engine['deserializeState'] = (world, bytes) => {
 const stateHash: Engine['stateHash'] = (state) =>
   createHash('sha256').update(serializeState(state)).digest('hex');
 
-export function createFakeEngine(): Engine {
+const applySystem: NonNullable<Engine['applySystem']> = (state, cmd) => {
+  const s = S(state);
+  switch (cmd.kind) {
+    case 'setAi':
+      if (!s.nations.includes(cmd.nationId)) return { ok: false, error: 'invalid_target' };
+      s.ai[cmd.nationId] = cmd.isAi;
+      break;
+    case 'addPlayer':
+      if (!s.nations.includes(cmd.nationId)) return { ok: false, error: 'invalid_target' };
+      if (!s.players.includes(cmd.nationId)) s.players.push(cmd.nationId);
+      s.ai[cmd.nationId] = false;
+      break;
+    case 'accelerate':
+      if (cmd.target.id === 'inconnu') {
+        return { ok: false, error: 'invalid_target', message: 'Production inconnue' };
+      }
+      break;
+    default:
+      break;
+  }
+  s.sys.push(cmd);
+  return { ok: true };
+};
+
+const ownersFrame: NonNullable<Engine['ownersFrame']> = (state) => ({ ...S(state).owners });
+
+const stats: NonNullable<Engine['stats']> = (state) => {
+  const s = S(state);
+  const out: ReturnType<NonNullable<Engine['stats']>> = { nations: {}, alertLevel: 5 };
+  for (const n of s.nations) {
+    out.nations[n] = {
+      provincesStart: s.world.map.provinces.filter((p) => p.nationId === n).length,
+      provincesEnd: Object.values(s.owners).filter((o) => o === n).length,
+      conquered: s.conquered[n] ?? 0,
+      kills: 0,
+      losses: 0,
+      spentUsd: 0,
+      bestUnits: [],
+    };
+  }
+  return out;
+};
+
+const battleReportFor: NonNullable<Engine['battleReportFor']> = (state, nationId, reportId) => {
+  const s = S(state);
+  if (reportId !== 'r1' || !s.players.includes(nationId)) return null;
   return {
+    id: 'r1',
+    at: [0, 0],
+    provinceId: null,
+    startedAt: 0,
+    endedAt: 1000,
+    title: 'Bataille de test',
+    outcome: 'draw',
+    countermeasures: [],
+    timeline: [{ t: 0, text: 'Contact' }],
+  } as unknown as BattleReport;
+};
+
+export interface FakeEngineOptions {
+  /** Unité secrète en patrouille (événements toutes les secondes de jeu). Défaut : vrai. */
+  patrol?: boolean;
+  /** Fonctions des phases 2+ (applySystem, publicView…). Défaut : vrai. */
+  phase2?: boolean;
+}
+
+export function createFakeEngine(o: FakeEngineOptions = {}): Engine {
+  const base: Engine = {
     buildWorld,
-    createGame,
+    createGame: makeCreateGame(o.patrol !== false),
     applyOrder,
     advanceTo,
     nextEventTime,
@@ -337,4 +543,9 @@ export function createFakeEngine(): Engine {
     deserializeState,
     stateHash,
   };
+  if (o.phase2 === false) return base;
+  return { ...base, applySystem, publicView, ownersFrame, stats, battleReportFor };
 }
+
+/** Accès de test à l'état interne du faux moteur. */
+export const fakeState = (s: GameState) => S(s);

@@ -2,7 +2,7 @@ import { hostname } from 'node:os';
 import { randomBytes } from 'node:crypto';
 import { isAbsolute, join, resolve } from 'node:path';
 import { z } from 'zod';
-import { REPO_ROOT } from './paths.js';
+import { REPO_ROOT, SERVER_ROOT } from './paths.js';
 
 const boolish = z
   .union([z.boolean(), z.string()])
@@ -30,6 +30,17 @@ const EnvSchema = z.object({
   /** Développement et tests uniquement : vitesses supplémentaires (ex. "600,3600"). Refusé en production. */
   REDLINE_EXTRA_SPEEDS: z.string().optional(),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).optional(),
+  // ——— Phases 5-6 ———
+  /** URL publique du site (retours de Stripe Checkout). Défaut : déduite de la requête. */
+  PUBLIC_URL: z.string().url().optional(),
+  STRIPE_SECRET_KEY: z.string().min(1).optional(),
+  STRIPE_WEBHOOK_SECRET: z.string().min(1).optional(),
+  /** Clés VAPID imposées (sinon générées au premier démarrage et stockées en base). */
+  VAPID_PUBLIC_KEY: z.string().min(1).optional(),
+  VAPID_PRIVATE_KEY: z.string().min(1).optional(),
+  VAPID_SUBJECT: z.string().min(1).optional(),
+  /** Dossier des documents légaux (défaut : apps/server/legal). */
+  LEGAL_DIR: z.string().optional(),
 });
 
 export interface Config {
@@ -55,6 +66,12 @@ export interface Config {
   logLevel: string;
   /** Vitesses ajoutées à celles de l'équilibrage (tests de bout en bout). Toujours vide en production. */
   extraSpeeds: number[];
+  publicUrl: string | null;
+  /** Clés Stripe (les deux ensemble) ; null = boutique en « paiements indisponibles ». */
+  stripe: { secretKey: string; webhookSecret: string } | null;
+  vapid: { publicKey: string; privateKey: string } | null;
+  vapidSubject: string;
+  legalDir: string;
 }
 
 const DEV_SECRET = 'redline-dev-secret-ne-pas-utiliser-en-production';
@@ -116,5 +133,16 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     leaseTtlS: e.LEASE_TTL_S,
     logLevel: e.LOG_LEVEL ?? (e.NODE_ENV === 'test' ? 'warn' : 'info'),
     extraSpeeds,
+    publicUrl: e.PUBLIC_URL?.replace(/\/+$/, '') ?? null,
+    stripe:
+      e.STRIPE_SECRET_KEY && e.STRIPE_WEBHOOK_SECRET
+        ? { secretKey: e.STRIPE_SECRET_KEY, webhookSecret: e.STRIPE_WEBHOOK_SECRET }
+        : null,
+    vapid:
+      e.VAPID_PUBLIC_KEY && e.VAPID_PRIVATE_KEY
+        ? { publicKey: e.VAPID_PUBLIC_KEY, privateKey: e.VAPID_PRIVATE_KEY }
+        : null,
+    vapidSubject: e.VAPID_SUBJECT ?? (e.PUBLIC_URL ? e.PUBLIC_URL : 'mailto:noreply@redline.invalid'),
+    legalDir: abs(e.LEGAL_DIR ?? join(SERVER_ROOT, 'legal')),
   };
 }
