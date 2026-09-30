@@ -22,11 +22,17 @@ export function OrderBar() {
     const p = useUi.getState().pendingOrder;
     const c = useGame.getState().connection;
     if (!p || !c) return;
-    const order: Order = p.kind === 'move' ? { kind: 'move', unitIds: p.unitIds, to: p.to } : { kind: 'attack', unitIds: p.unitIds, targetId: p.targetId };
+    const order: Order =
+      p.kind === 'move'
+        ? { kind: 'move', unitIds: p.unitIds, to: p.to }
+        : { kind: 'attack', unitIds: p.unitIds, targetId: p.targetId };
     useUi.getState().setPending(null);
     const res = await c.sendOrder(order);
     if (res.ok) useUi.getState().toast(t('game.orders.sent'), 'ok');
-    else useUi.getState().toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    else
+      useUi
+        .getState()
+        .toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
   }, [t]);
 
   useEffect(() => {
@@ -47,28 +53,46 @@ export function OrderBar() {
   const first = units[0];
   if (!first) return null;
   const from = unitPosition(first, now);
-  const target = pending.kind === 'move' ? pending.to : view.units[pending.targetId] ? unitPosition(view.units[pending.targetId]!, now) : null;
+  const target =
+    pending.kind === 'move'
+      ? pending.to
+      : view.units[pending.targetId]
+        ? unitPosition(view.units[pending.targetId]!, now)
+        : null;
   if (!target) return null;
   const dist = distanceKm(from, target);
-  const speeds = units.map((u) => (u.systemId ? catalog[u.systemId]?.speedKmh : undefined) ?? 0).filter((s) => s > 0);
+  const speeds = units
+    .map((u) => (u.systemId ? catalog[u.systemId]?.speedKmh : undefined) ?? 0)
+    .filter((s) => s > 0);
   const slowest = speeds.length ? Math.min(...speeds) : 0;
   const sys = first.systemId ? catalog[first.systemId] : undefined;
-  const outOfRange = pending.kind === 'attack' && sys?.movement === 'static' && dist > sys.weaponRangeKm.max;
+  const outOfRange =
+    pending.kind === 'attack' && sys?.movement === 'static' && dist > sys.weaponRangeKm.max;
 
   return (
-    <div className="order-bar" data-map-avoid role="dialog" aria-label={t(pending.kind === 'move' ? 'game.orders.moveTitle' : 'game.orders.attackTitle')}>
+    <div
+      className="order-bar"
+      data-map-avoid
+      role="dialog"
+      aria-label={t(pending.kind === 'move' ? 'game.orders.moveTitle' : 'game.orders.attackTitle')}
+    >
       <div className="order-bar__info">
-        <div className="order-bar__title">{t(pending.kind === 'move' ? 'game.orders.moveTitle' : 'game.orders.attackTitle')}</div>
+        <div className="order-bar__title">
+          {t(pending.kind === 'move' ? 'game.orders.moveTitle' : 'game.orders.attackTitle')}
+        </div>
         <div className="order-bar__stats">
           <span>
             {t('game.orders.distance')} <b className="rl-mono">{fmtKm(dist)}</b>
           </span>
           {slowest > 0 && pending.kind === 'move' ? (
             <span>
-              {t('game.orders.eta')} <b className="rl-mono">{fmtDuration((dist / slowest) * HOUR)}</b>
+              {t('game.orders.eta')}{' '}
+              <b className="rl-mono">{fmtDuration((dist / slowest) * HOUR)}</b>
             </span>
           ) : null}
-          {outOfRange ? <span className="order-bar__warn">{t('game.orders.outOfRange')}</span> : null}
+          {outOfRange ? (
+            <span className="order-bar__warn">{t('game.orders.outOfRange')}</span>
+          ) : null}
         </div>
       </div>
       <div className="order-bar__actions">

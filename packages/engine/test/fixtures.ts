@@ -129,7 +129,10 @@ const zeroDamage = {
   building: 0,
 };
 
-function sys(p: Partial<WeaponSystemInput> & Pick<WeaponSystemInput, 'id' | 'category' | 'targetClass' | 'movement'>): WeaponSystem {
+function sys(
+  p: Partial<WeaponSystemInput> &
+    Pick<WeaponSystemInput, 'id' | 'category' | 'targetClass' | 'movement'>,
+): WeaponSystem {
   return WeaponSystemSchema.parse({
     name: p.id,
     doctrine: 'other',

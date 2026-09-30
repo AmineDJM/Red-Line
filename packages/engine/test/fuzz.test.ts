@@ -36,10 +36,14 @@ function toOrder(s: EngineState, spec: OrderSpec): { nation: string; order: Orde
   const mine = Object.keys(s.units)
     .filter((id) => s.units[id]!.owner === nation)
     .sort();
-  const unitIds = [...new Set(spec.picks.map((p) => mine[p % Math.max(1, mine.length)]!))].filter(Boolean);
+  const unitIds = [...new Set(spec.picks.map((p) => mine[p % Math.max(1, mine.length)]!))].filter(
+    Boolean,
+  );
   switch (spec.kind) {
     case 'move':
-      return unitIds.length ? { nation, order: { kind: 'move', unitIds, to: [spec.lng, spec.lat] } } : null;
+      return unitIds.length
+        ? { nation, order: { kind: 'move', unitIds, to: [spec.lng, spec.lat] } }
+        : null;
     case 'attack': {
       const known = Object.keys(s.know[nation] ?? {}).sort();
       const targetId = known[spec.target % Math.max(1, known.length)] ?? 'u1';
@@ -54,7 +58,11 @@ function toOrder(s: EngineState, spec: OrderSpec): { nation: string; order: Orde
     case 'produce':
       return {
         nation,
-        order: { kind: 'produce', provinceId: PROVINCES[spec.prov]!.id, systemId: CATALOG[spec.sys]!.id },
+        order: {
+          kind: 'produce',
+          provinceId: PROVINCES[spec.prov]!.id,
+          systemId: CATALOG[spec.sys]!.id,
+        },
       };
   }
   return null;
@@ -64,7 +72,8 @@ function checkNumbers(v: unknown, path: string): void {
   if (typeof v === 'number') {
     if (!Number.isFinite(v)) throw new Error(`nombre invalide en ${path}: ${v}`);
   } else if (Array.isArray(v)) v.forEach((x, i) => checkNumbers(x, `${path}[${i}]`));
-  else if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) checkNumbers(x, `${path}.${k}`);
+  else if (v && typeof v === 'object')
+    for (const [k, x] of Object.entries(v)) checkNumbers(x, `${path}.${k}`);
 }
 
 function checkInvariants(s: EngineState): void {

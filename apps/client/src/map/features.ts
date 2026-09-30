@@ -25,7 +25,9 @@ export const ORANGE = '#f39a2b';
 
 export const EMPTY: FeatureCollection = { type: 'FeatureCollection', features: [] };
 
-export function fc<G extends Point | LineString | Polygon>(features: Feature<G>[]): FeatureCollection<G> {
+export function fc<G extends Point | LineString | Polygon>(
+  features: Feature<G>[],
+): FeatureCollection<G> {
   return { type: 'FeatureCollection', features };
 }
 
@@ -38,7 +40,10 @@ export interface UnitCtx {
   t: GameTime;
 }
 
-export function nationColor(id: NationId, ctx: { me: NationId | null; nations: Record<NationId, NationView> }): string {
+export function nationColor(
+  id: NationId,
+  ctx: { me: NationId | null; nations: Record<NationId, NationView> },
+): string {
   if (id === ctx.me) return VIOLET_UNIT;
   return ctx.nations[id]?.color ?? UNKNOWN_COLOR;
 }
@@ -76,21 +81,33 @@ export function unitFeatures(units: Iterable<UnitView>, ctx: UnitCtx): FeatureCo
 }
 
 /** Cercles d'incertitude des contacts anciens ou imprécis. */
-export function uncertaintyFeatures(units: Iterable<UnitView>, t: GameTime, me: NationId | null): FeatureCollection<Polygon> {
+export function uncertaintyFeatures(
+  units: Iterable<UnitView>,
+  t: GameTime,
+  me: NationId | null,
+): FeatureCollection<Polygon> {
   const out: Feature<Polygon>[] = [];
   for (const u of units) {
     if (u.owner === me || u.uncertaintyKm < 2) continue;
     out.push({
       type: 'Feature',
       properties: { id: u.id },
-      geometry: { type: 'Polygon', coordinates: [geodesicCircle(unitPosition(u, t), u.uncertaintyKm, 48)] },
+      geometry: {
+        type: 'Polygon',
+        coordinates: [geodesicCircle(unitPosition(u, t), u.uncertaintyKm, 48)],
+      },
     });
   }
   return fc(out);
 }
 
 /** Trajectoires restantes des unités du joueur en mouvement. */
-export function pathFeatures(units: Iterable<UnitView>, t: GameTime, me: NationId | null, selection: ReadonlySet<UnitId>) {
+export function pathFeatures(
+  units: Iterable<UnitView>,
+  t: GameTime,
+  me: NationId | null,
+  selection: ReadonlySet<UnitId>,
+) {
   const lines: Feature<LineString>[] = [];
   const heads: Feature<Point>[] = [];
   for (const u of units) {
@@ -98,7 +115,11 @@ export function pathFeatures(units: Iterable<UnitView>, t: GameTime, me: NationI
     const coords = remainingPath(u.move, t);
     if (coords.length < 2) continue;
     const sel = selection.has(u.id) ? 1 : 0;
-    lines.push({ type: 'Feature', properties: { id: u.id, sel }, geometry: { type: 'LineString', coordinates: coords } });
+    lines.push({
+      type: 'Feature',
+      properties: { id: u.id, sel },
+      geometry: { type: 'LineString', coordinates: coords },
+    });
     const end = coords[coords.length - 1]!;
     const prev = coords[coords.length - 2]!;
     heads.push({
@@ -119,18 +140,30 @@ export function screenBearing(a: LngLat, b: LngLat): number {
 }
 
 /** Anneau de portée entre portée minimale et maximale (polygone percé). */
-export function rangeRing(center: LngLat, minKm: number, maxKm: number): FeatureCollection<Polygon> {
+export function rangeRing(
+  center: LngLat,
+  minKm: number,
+  maxKm: number,
+): FeatureCollection<Polygon> {
   if (maxKm <= 0) return fc([]);
   const outer = geodesicCircle(center, maxKm, 128);
   const rings = [outer];
   if (minKm > 0.5 && minKm < maxKm) rings.push(geodesicCircle(center, minKm, 96).reverse());
   return fc([
-    { type: 'Feature', properties: { kind: 'max' }, geometry: { type: 'Polygon', coordinates: rings } },
+    {
+      type: 'Feature',
+      properties: { kind: 'max' },
+      geometry: { type: 'Polygon', coordinates: rings },
+    },
   ]);
 }
 
 export function circleLine(center: LngLat, km: number, kind: string): Feature<LineString> {
-  return { type: 'Feature', properties: { kind }, geometry: { type: 'LineString', coordinates: geodesicCircle(center, km, 96) } };
+  return {
+    type: 'Feature',
+    properties: { kind },
+    geometry: { type: 'LineString', coordinates: geodesicCircle(center, km, 96) },
+  };
 }
 
 export interface PreviewInput {
@@ -146,25 +179,49 @@ export function previewFeatures(p: PreviewInput) {
   p.from.forEach((f, i) => {
     const coords = greatCircleLine(f, p.to, 40);
     if (coords.length < 2) return;
-    lines.push({ type: 'Feature', properties: { i, kind: p.kind }, geometry: { type: 'LineString', coordinates: coords } });
+    lines.push({
+      type: 'Feature',
+      properties: { i, kind: p.kind },
+      geometry: { type: 'LineString', coordinates: coords },
+    });
     const end = coords[coords.length - 1]!;
     const prev = coords[Math.max(0, coords.length - 2)]!;
     if (p.kind === 'move') {
-      pts.push({ type: 'Feature', properties: { kind: 'arrow', rot: screenBearing(prev, end) }, geometry: { type: 'Point', coordinates: end } });
+      pts.push({
+        type: 'Feature',
+        properties: { kind: 'arrow', rot: screenBearing(prev, end) },
+        geometry: { type: 'Point', coordinates: end },
+      });
     } else {
-      pts.push({ type: 'Feature', properties: { kind: 'launch', n: i + 1 }, geometry: { type: 'Point', coordinates: f } });
+      pts.push({
+        type: 'Feature',
+        properties: { kind: 'launch', n: i + 1 },
+        geometry: { type: 'Point', coordinates: f },
+      });
     }
   });
   if (p.kind === 'attack') {
-    pts.push({ type: 'Feature', properties: { kind: 'target' }, geometry: { type: 'Point', coordinates: p.to } });
+    pts.push({
+      type: 'Feature',
+      properties: { kind: 'target' },
+      geometry: { type: 'Point', coordinates: p.to },
+    });
     const end = lines[0]?.geometry.coordinates;
     if (end && end.length >= 2) {
       const e = end[end.length - 1] as LngLat;
       const pr = end[end.length - 2] as LngLat;
-      pts.push({ type: 'Feature', properties: { kind: 'arrow', rot: screenBearing(pr, e) }, geometry: { type: 'Point', coordinates: e } });
+      pts.push({
+        type: 'Feature',
+        properties: { kind: 'arrow', rot: screenBearing(pr, e) },
+        geometry: { type: 'Point', coordinates: e },
+      });
     }
   }
-  return { lines: fc(lines), points: fc(pts), distanceKm: p.from[0] ? distanceKm(p.from[0], p.to) : 0 };
+  return {
+    lines: fc(lines),
+    points: fc(pts),
+    distanceKm: p.from[0] ? distanceKm(p.from[0], p.to) : 0,
+  };
 }
 
 export interface BuildingCtx {
@@ -174,7 +231,10 @@ export interface BuildingCtx {
 }
 
 /** Bâtiments génériques : une icône par bâtiment, alignées sous le point de ville. */
-export function buildingFeatures(provinces: Iterable<ProvinceView>, ctx: BuildingCtx): FeatureCollection<Point> {
+export function buildingFeatures(
+  provinces: Iterable<ProvinceView>,
+  ctx: BuildingCtx,
+): FeatureCollection<Point> {
   const out: Feature<Point>[] = [];
   for (const p of provinces) {
     if (!p.buildings.length) continue;
@@ -201,7 +261,10 @@ export function buildingFeatures(provinces: Iterable<ProvinceView>, ctx: Buildin
 }
 
 /** Points d'étiquette des nations : centre pondéré de leurs provinces, recalé sur la province la plus proche. */
-export function nationLabelFeatures(defs: Iterable<ProvinceDef>, names: Record<NationId, string>): FeatureCollection<Point> {
+export function nationLabelFeatures(
+  defs: Iterable<ProvinceDef>,
+  names: Record<NationId, string>,
+): FeatureCollection<Point> {
   const acc = new Map<NationId, { x: number; y: number; w: number; list: ProvinceDef[] }>();
   for (const p of defs) {
     const a = acc.get(p.nationId) ?? { x: 0, y: 0, w: 0, list: [] };
@@ -231,7 +294,11 @@ export function nationLabelFeatures(defs: Iterable<ProvinceDef>, names: Record<N
     // Même schéma que basemap/countries.geojson : rang et zoom d'apparition selon la superficie.
     const minzoom = a.w > 1_500_000 ? 1.7 : a.w > 400_000 ? 2.5 : a.w > 60_000 ? 3.5 : 5;
     const rank = a.w > 1_500_000 ? 2 : a.w > 400_000 ? 3 : a.w > 60_000 ? 4 : 6;
-    out.push({ type: 'Feature', properties: { id, name, rank, minzoom }, geometry: { type: 'Point', coordinates: pt } });
+    out.push({
+      type: 'Feature',
+      properties: { id, name, rank, minzoom },
+      geometry: { type: 'Point', coordinates: pt },
+    });
   }
   return fc(out);
 }

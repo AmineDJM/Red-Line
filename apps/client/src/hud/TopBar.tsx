@@ -7,7 +7,15 @@ import { describeNotification, useGameTime } from './helpers.js';
 import { Icons } from './icons.js';
 
 /** Bandeau titre + horloge et vitesse (solo). */
-export function TopBar({ title, subtitle, compact }: { title: string; subtitle: string; compact: boolean }) {
+export function TopBar({
+  title,
+  subtitle,
+  compact,
+}: {
+  title: string;
+  subtitle: string;
+  compact: boolean;
+}) {
   const { t } = useTranslation();
   const notifications = useGame((s) => s.notifications);
   const view = useGame((s) => s.view);
@@ -60,7 +68,11 @@ export function ClockControl({ compact }: { compact: boolean; label?: string }) 
         {paused ? <span className="clock__paused">{t('game.clock.paused')}</span> : null}
       </div>
       {solo ? (
-        <div className="clock__controls" role="group" aria-label={t('game.clock.speed', { speed: clock?.speed ?? 1 })}>
+        <div
+          className="clock__controls"
+          role="group"
+          aria-label={t('game.clock.speed', { speed: clock?.speed ?? 1 })}
+        >
           <button
             type="button"
             className={paused ? 'clock__btn clock__btn--on' : 'clock__btn'}
@@ -90,7 +102,11 @@ export function ClockControl({ compact }: { compact: boolean; label?: string }) 
             <button
               key={s}
               type="button"
-              className={!paused && clock?.speed === s ? 'clock__btn clock__btn--on rl-mono' : 'clock__btn rl-mono'}
+              className={
+                !paused && clock?.speed === s
+                  ? 'clock__btn clock__btn--on rl-mono'
+                  : 'clock__btn rl-mono'
+              }
               onClick={() => {
                 conn?.setSpeed(s);
                 if (paused) conn?.setPaused(false);

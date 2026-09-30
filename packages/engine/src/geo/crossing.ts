@@ -1,5 +1,12 @@
 import type { Vec3 } from '@redline/shared';
-import { arcCircleRoots, dot3, pieceIndexAt, piecePos, type ArcPiece, type Piece } from './sphere.js';
+import {
+  arcCircleRoots,
+  dot3,
+  pieceIndexAt,
+  piecePos,
+  type ArcPiece,
+  type Piece,
+} from './sphere.js';
 
 /**
  * Recherche du prochain instant où la distance entre deux trajectoires franchit un des seuils.
@@ -116,7 +123,7 @@ function scanInterval(
     // Deux arcs : fenêtres courtes, rapprochement maximal (section dorée) puis dichotomies.
     const wSum = pa.w + pb.w;
     const chunk = wSum > 0 ? CHUNK_RAD / wSum : e - s;
-    for (let c0 = s; c0 < e; ) {
+    for (let c0 = s; c0 < e;) {
       const c1 = Math.min(e, c0 + chunk);
       const d0 = local(c0);
       const a0 = Math.acos(Math.max(-1, Math.min(1, d0)));

@@ -1,8 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { LngLat, NationId, NationView, PlayerView, ProvinceView, UnitView } from '@redline/shared';
+import type {
+  LngLat,
+  NationId,
+  NationView,
+  PlayerView,
+  ProvinceView,
+  UnitView,
+} from '@redline/shared';
 import { Button, Drawer, HexIcon, pictogramFor } from '@redline/ui';
-import { IS_MOCK } from '../config.js';
+import { DEBUG_HOOKS, IS_MOCK } from '../config.js';
 import { getApi } from '../api/index.js';
 import { GameHud } from '../hud/GameHud.js';
 import { Icons } from '../hud/icons.js';
@@ -28,14 +35,33 @@ function previewView(placements: Placement[], observer: NationId): PlayerView {
   const w = useWorld.getState();
   const nations: Record<string, NationView> = {};
   for (const n of Object.values(w.nations)) {
-    nations[n.id] = { id: n.id, name: n.name, color: n.color, isAi: false, isPlayer: n.id === observer, alive: true, provinceCount: 0 };
+    nations[n.id] = {
+      id: n.id,
+      name: n.name,
+      color: n.color,
+      isAi: false,
+      isPlayer: n.id === observer,
+      alive: true,
+      provinceCount: 0,
+    };
   }
   const provinces: Record<string, ProvinceView> = {};
-  for (const p of Object.values(w.provinces)) provinces[p.id] = { id: p.id, owner: p.nationId, capture: null, buildings: p.buildings };
+  for (const p of Object.values(w.provinces))
+    provinces[p.id] = { id: p.id, owner: p.nationId, capture: null, buildings: p.buildings };
   const units: Record<string, UnitView> = {};
   placements.forEach((p, i) => {
     const id = `ghost${i}`;
-    units[id] = { id, owner: p.owner, level: 'own', pos: p.pos, lastSeen: 0, uncertaintyKm: 0, systemId: p.systemId, count: p.count ?? w.catalog[p.systemId]?.unitSize, status: 'idle' };
+    units[id] = {
+      id,
+      owner: p.owner,
+      level: 'own',
+      pos: p.pos,
+      lastSeen: 0,
+      uncertaintyKm: 0,
+      systemId: p.systemId,
+      count: p.count ?? w.catalog[p.systemId]?.unitSize,
+      status: 'idle',
+    };
   });
   return {
     time: 0,
@@ -43,7 +69,12 @@ function previewView(placements: Placement[], observer: NationId): PlayerView {
     nations,
     provinces,
     units,
-    economy: { money: 0, resources: { oil: 0, metals: 0, electronics: 0, food: 0 }, incomePerDay: { money: 0 }, production: [] },
+    economy: {
+      money: 0,
+      resources: { oil: 0, metals: 0, electronics: 0, food: 0 },
+      incomePerDay: { money: 0 },
+      production: [],
+    },
     victory: { provinceShareTarget: 1, leader: null, winner: null },
   };
 }
@@ -62,7 +93,12 @@ export function SandboxScreen() {
   const openDrawer = useUi((s) => s.openDrawer);
 
   useEffect(() => {
-    if (IS_MOCK) (window as unknown as { __rl?: unknown }).__rl = { game: useGame, ui: useUi, world: useWorld };
+    if (DEBUG_HOOKS)
+      (window as unknown as { __rl?: unknown }).__rl = {
+        game: useGame,
+        ui: useUi,
+        world: useWorld,
+      };
     void getApi().then((api) => world.load(api));
     useGame.getState().reset();
     useUi.getState().openDrawer('sandbox');
@@ -73,8 +109,17 @@ export function SandboxScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const nations = useMemo(() => Object.values(world.nations).sort((a, b) => a.name.localeCompare(b.name, 'fr')), [world.nations]);
-  const systems = useMemo(() => Object.values(world.catalog).sort((a, b) => a.category.localeCompare(b.category) || a.name.localeCompare(b.name)), [world.catalog]);
+  const nations = useMemo(
+    () => Object.values(world.nations).sort((a, b) => a.name.localeCompare(b.name, 'fr')),
+    [world.nations],
+  );
+  const systems = useMemo(
+    () =>
+      Object.values(world.catalog).sort(
+        (a, b) => a.category.localeCompare(b.category) || a.name.localeCompare(b.name),
+      ),
+    [world.catalog],
+  );
 
   useEffect(() => {
     if (!nation && nations[0]) setNation(nations.find((n) => n.id === 'fra')?.id ?? nations[0].id);
@@ -88,7 +133,14 @@ export function SandboxScreen() {
     useGame.setState((s) => ({
       view: previewView(placements, observer),
       me: observer,
-      meta: { id: 'sandbox', name: t('sandbox.title'), mode: 'solo', scenarioId: 'sandbox', status: 'lobby', speeds: SANDBOX_SPEEDS },
+      meta: {
+        id: 'sandbox',
+        name: t('sandbox.title'),
+        mode: 'solo',
+        scenarioId: 'sandbox',
+        status: 'lobby',
+        speeds: SANDBOX_SPEEDS,
+      },
       clock: { anchorGame: 0, anchorReal: Date.now(), speed: 1, paused: true },
       viewVersion: s.viewVersion + 1,
     }));
@@ -117,7 +169,13 @@ export function SandboxScreen() {
     try {
       const w = useWorld.getState();
       const built = engine.buildWorld(
-        { nations: Object.values(w.nations), provinces: Object.values(w.provinces), cells: sim.cells, straits: sim.straits, disputed: sim.disputed },
+        {
+          nations: Object.values(w.nations),
+          provinces: Object.values(w.provinces),
+          cells: sim.cells,
+          straits: sim.straits,
+          disputed: sim.disputed,
+        },
         Object.values(w.catalog),
         sim.balance,
       );
@@ -126,7 +184,11 @@ export function SandboxScreen() {
       const conn = new LocalGameConnection(
         engine,
         built,
-        { seed: 1, players: involved.map((n) => ({ nationId: n, isAi: false })), units: placements },
+        {
+          seed: 1,
+          players: involved.map((n) => ({ nationId: n, isAi: false })),
+          units: placements,
+        },
         { observer, godView: true, name: t('sandbox.title'), speeds: SANDBOX_SPEEDS },
       );
       unbind.current?.();
@@ -158,11 +220,22 @@ export function SandboxScreen() {
       onPlace={place}
       extraTools={[{ id: 'sandbox', label: t('sandbox.title'), icon: Icons.sandbox() }]}
     >
-      <Drawer open={drawer === 'sandbox'} onClose={() => openDrawer(null)} title={t('sandbox.title')} closeLabel={t('app.close')} width={340}>
+      <Drawer
+        open={drawer === 'sandbox'}
+        onClose={() => openDrawer(null)}
+        title={t('sandbox.title')}
+        closeLabel={t('app.close')}
+        width={340}
+      >
         <div className="stack">
           <label className="field">
             <span className="field__label">{t('sandbox.nation')}</span>
-            <select className="select" value={nation} disabled={running} onChange={(e) => setNation(e.target.value)}>
+            <select
+              className="select"
+              value={nation}
+              disabled={running}
+              onChange={(e) => setNation(e.target.value)}
+            >
               {nations.map((n) => (
                 <option key={n.id} value={n.id}>
                   {n.name}
@@ -172,7 +245,12 @@ export function SandboxScreen() {
           </label>
           <label className="field">
             <span className="field__label">{t('sandbox.system')}</span>
-            <select className="select" value={systemId} disabled={running} onChange={(e) => setSystemId(e.target.value)}>
+            <select
+              className="select"
+              value={systemId}
+              disabled={running}
+              onChange={(e) => setSystemId(e.target.value)}
+            >
               {systems.map((s) => (
                 <option key={s.id} value={s.id}>
                   {t(`categories.${s.category}`)} — {s.name}
@@ -186,7 +264,11 @@ export function SandboxScreen() {
               const s = world.catalog[p.systemId];
               return (
                 <li key={i} className="army-row">
-                  <HexIcon pictogram={pictogramFor(s)} color={world.nations[p.owner]?.color} size={26} />
+                  <HexIcon
+                    pictogram={pictogramFor(s)}
+                    color={world.nations[p.owner]?.color}
+                    size={26}
+                  />
                   <span className="army-row__main">
                     <span className="army-row__name">{s?.name ?? p.systemId}</span>
                     <span className="army-row__sub">{world.nations[p.owner]?.name}</span>
@@ -203,7 +285,13 @@ export function SandboxScreen() {
             </Button>
           ) : (
             <>
-              <Button variant="primary" size="lg" block disabled={!placements.length} onClick={() => void launch()}>
+              <Button
+                variant="primary"
+                size="lg"
+                block
+                disabled={!placements.length}
+                onClick={() => void launch()}
+              >
                 {t('sandbox.launch')}
               </Button>
               <Button block disabled={!placements.length} onClick={() => setPlacements([])}>

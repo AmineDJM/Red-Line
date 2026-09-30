@@ -48,7 +48,10 @@ export type Listener<T> = (payload: T) => void;
  */
 export interface GameConnection {
   readonly kind: 'ws' | 'local' | 'mock';
-  on<K extends keyof GameConnectionEvents>(event: K, fn: Listener<GameConnectionEvents[K]>): () => void;
+  on<K extends keyof GameConnectionEvents>(
+    event: K,
+    fn: Listener<GameConnectionEvents[K]>,
+  ): () => void;
   /** Démarre la connexion (à appeler après s'être abonné aux événements). Idempotent. */
   start(): void;
   /** Envoie un ordre ; la promesse se résout avec le résultat (orderResult). */
@@ -64,7 +67,10 @@ export interface GameConnection {
 export class Emitter {
   private map = new Map<keyof GameConnectionEvents, Set<Listener<never>>>();
 
-  on<K extends keyof GameConnectionEvents>(event: K, fn: Listener<GameConnectionEvents[K]>): () => void {
+  on<K extends keyof GameConnectionEvents>(
+    event: K,
+    fn: Listener<GameConnectionEvents[K]>,
+  ): () => void {
     let set = this.map.get(event);
     if (!set) this.map.set(event, (set = new Set()));
     set.add(fn as Listener<never>);

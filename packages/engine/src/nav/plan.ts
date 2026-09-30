@@ -171,12 +171,11 @@ function surfaceSegments(
     } else {
       seq = pts.slice(run.a, run.b + 1);
     }
-    const allowed =
-      naval
-        ? (c: string) => g.isShipCell(c)
-        : run.m === 'land'
-          ? (c: string) => g.isLandCell(c)
-          : (c: string) => g.isShipCell(c);
+    const allowed = naval
+      ? (c: string) => g.isShipCell(c)
+      : run.m === 'land'
+        ? (c: string) => g.isLandCell(c)
+        : (c: string) => g.isShipCell(c);
     const smooth = smoothRun(g, seq, allowed);
     for (let i = 0; i + 1 < smooth.length; i++) travel(smooth[i]!, smooth[i + 1]!, run.m);
     if (run.m === 'sea' && !naval && r < runs.length - 1) wait(seq[seq.length - 1]!, 'sea'); // débarquement

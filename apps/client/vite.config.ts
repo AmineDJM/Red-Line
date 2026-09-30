@@ -12,7 +12,12 @@ export default defineConfig({
   plugins: [
     react(),
     ...(process.env.REDLINE_LOCAL_DATA
-      ? [localData(path.join(repoRoot, 'data'), process.env.TILES_DIR ?? path.join(repoRoot, 'data/tiles'))]
+      ? [
+          localData(
+            path.join(repoRoot, 'data'),
+            process.env.TILES_DIR ?? path.join(repoRoot, 'data/tiles'),
+          ),
+        ]
       : []),
   ],
   server: {
@@ -48,8 +53,16 @@ export default defineConfig({
       output: {
         codeSplitting: {
           groups: [
-            { name: 'maplibre', test: /node_modules[\\/](\.pnpm[\\/])?(maplibre-gl|@maplibre|pmtiles)/, priority: 30 },
-            { name: 'react', test: /node_modules[\\/](\.pnpm[\\/])?(react|react-dom|scheduler)[@\\/]/, priority: 20 },
+            {
+              name: 'maplibre',
+              test: /node_modules[\\/](\.pnpm[\\/])?(maplibre-gl|@maplibre|pmtiles)/,
+              priority: 30,
+            },
+            {
+              name: 'react',
+              test: /node_modules[\\/](\.pnpm[\\/])?(react|react-dom|scheduler)[@\\/]/,
+              priority: 20,
+            },
             { name: 'engine', test: /packages[\\/]engine[\\/]|h3-js/, priority: 25 },
           ],
         },

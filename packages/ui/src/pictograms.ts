@@ -138,7 +138,10 @@ export const PICTOGRAMS = {
     circle(12, 12, 1.4),
   ],
   // ——— Divers ———
-  unknown: ['M9 8.6 C9 6.3 10.5 5 12 5 C13.8 5 15.2 6.2 15.2 8 C15.2 10.4 12 10.8 12 13.8', 'M12 17.6 L12 17.7'],
+  unknown: [
+    'M9 8.6 C9 6.3 10.5 5 12 5 C13.8 5 15.2 6.2 15.2 8 C15.2 10.4 12 10.8 12 13.8',
+    'M12 17.6 L12 17.7',
+  ],
   city: [circle(12, 12, 4.2), circle(12, 12, 1.2)],
 } as const satisfies Record<string, readonly string[]>;
 
@@ -183,7 +186,9 @@ const ICON_ALIASES: Record<string, PictogramId> = {
 };
 
 /** Pictogramme d'un système d'armes : son champ `icon` s'il est connu, sinon celui de sa catégorie. */
-export function pictogramFor(system: { icon?: string; category: Category } | undefined): PictogramId {
+export function pictogramFor(
+  system: { icon?: string; category: Category } | undefined,
+): PictogramId {
   if (!system) return 'unknown';
   if (system.icon && isPictogramId(system.icon)) return system.icon;
   if (system.icon && ICON_ALIASES[system.icon]) return ICON_ALIASES[system.icon]!;

@@ -16,7 +16,14 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import { Protocol } from 'pmtiles';
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import type { Feature, FeatureCollection, Geometry, LineString } from 'geojson';
-import { distanceKm, type LngLat, type NationId, type ProvinceView, type UnitId, type UnitView } from '@redline/shared';
+import {
+  distanceKm,
+  type LngLat,
+  type NationId,
+  type ProvinceView,
+  type UnitId,
+  type UnitView,
+} from '@redline/shared';
 import { MAX_CALLOUTS, UNIT_TICK_HZ } from '../config.js';
 import { fmtKm, t } from '../i18n/index.js';
 import { gameNow, useGame } from '../store/game.js';
@@ -78,6 +85,11 @@ export class GameMap {
   private provState = new Map<string, { color: string; mine: boolean; cap: number }>();
   private ownersKey = '';
   private units: UnitView[] = [];
+  private lastRefs: { units: unknown; provinces: unknown; me: NationId | null } = {
+    units: null,
+    provinces: null,
+    me: null,
+  };
   private unitsDirty = true;
   private positions = new Map<UnitId, LngLat>();
   private overlayContent: OverlayContent = { callouts: [], routes: [], badges: [] };
@@ -144,7 +156,12 @@ export class GameMap {
     this.overlay = new OverlayRenderer(overlayCanvas, this.map);
     this.overlay.maxCallouts = MAX_CALLOUTS;
     this.map.on('load', () => this.onLoad());
-    this.map.on('render', () => this.overlay.draw(this.overlayContent));
+    const drawOverlay = () => this.overlay.draw(this.overlayContent);
+    this.map.on('render', drawOverlay);
+    // Un saut de caméra programmé (centrage sur une alerte…) ne produit pas toujours d'image :
+    // la surcouche est aussi redessinée sur les mouvements, sinon elle resterait figée.
+    this.map.on('move', drawOverlay);
+    this.map.on('moveend', drawOverlay);
     this.map.on('zoomend', () => this.refreshCallouts());
     this.resizeObs = new ResizeObserver(() => {
       this.overlay.resize();
@@ -161,7 +178,11 @@ export class GameMap {
     this.ready = true;
     this.map.on('click', (e) => this.onClick(e));
     this.map.on('mousemove', (e) => this.onHover(e));
-    this.container.addEventListener('pointerdown', (e) => (this.lastPointer = e.pointerType as 'mouse'), { capture: true });
+    this.container.addEventListener(
+      'pointerdown',
+      (e) => (this.lastPointer = e.pointerType as 'mouse'),
+      { capture: true },
+    );
 
     if (this.opts.mode === 'picker') {
       this.applyPicker();
@@ -174,15 +195,24 @@ export class GameMap {
         if (s.view !== prev.view || s.me !== prev.me) this.onView();
       }),
       useUi.subscribe((s, prev) => {
-        if (s.selection !== prev.selection || s.pendingOrder !== prev.pendingOrder || s.inspected !== prev.inspected) {
+        if (
+          s.selection !== prev.selection ||
+          s.pendingOrder !== prev.pendingOrder ||
+          s.inspected !== prev.inspected
+        ) {
           this.unitsDirty = true;
           this.refreshSelection();
           this.refreshCallouts();
         }
         if (s.focus !== prev.focus && s.focus) {
-          this.map.flyTo({ center: s.focus.at, zoom: Math.max(this.map.getZoom(), s.focus.zoom ?? 5.2), speed: 1.4 });
+          this.map.flyTo({
+            center: s.focus.at,
+            zoom: Math.max(this.map.getZoom(), s.focus.zoom ?? 5.2),
+            speed: 1.4,
+          });
         }
-        if (s.selectedProvince !== prev.selectedProvince) this.highlightProvince(s.selectedProvince);
+        if (s.selectedProvince !== prev.selectedProvince)
+          this.highlightProvince(s.selectedProvince);
       }),
     );
     this.onView();
@@ -203,7 +233,13 @@ export class GameMap {
     const w = useWorld.getState();
     for (const p of Object.values(w.provinces)) {
       const n = w.nations[p.nationId];
-      this.map.setFeatureState({ source: 'provinces', id: p.id }, { color: p.nationId === this.pickedNation ? VIOLET : (n?.color ?? '#3a4252'), pick: p.nationId === this.pickedNation });
+      this.map.setFeatureState(
+        { source: 'provinces', id: p.id },
+        {
+          color: p.nationId === this.pickedNation ? VIOLET : (n?.color ?? '#3a4252'),
+          pick: p.nationId === this.pickedNation,
+        },
+      );
     }
     const geo = w.provincesGeo;
     if (geo) {
@@ -245,12 +281,27 @@ export class GameMap {
       this.unitsDirty = true;
       return;
     }
-    this.units = Object.values(view.units);
-    this.unitsDirty = true;
-    this.applyProvinces(view.provinces, me);
-    const w = useWorld.getState();
-    this.set('buildings', buildingFeatures(Object.values(view.provinces), { me, nations: view.nations, defs: w.provinces }));
-    this.set('uncert', uncertaintyFeatures(this.units, gameNow(), me));
+    // Ne recalcule que ce qui a changé (les diffs partagent les parties inchangées par référence).
+    const unitsChanged = view.units !== this.lastRefs.units || me !== this.lastRefs.me;
+    const provincesChanged = view.provinces !== this.lastRefs.provinces || me !== this.lastRefs.me;
+    this.lastRefs = { units: view.units, provinces: view.provinces, me };
+    if (unitsChanged) {
+      this.units = Object.values(view.units);
+      this.unitsDirty = true;
+      this.set('uncert', uncertaintyFeatures(this.units, gameNow(), me));
+    }
+    if (provincesChanged) {
+      this.applyProvinces(view.provinces, me);
+      const w = useWorld.getState();
+      this.set(
+        'buildings',
+        buildingFeatures(Object.values(view.provinces), {
+          me,
+          nations: view.nations,
+          defs: w.provinces,
+        }),
+      );
+    }
     if (!this.fitted && me) this.fitNation(me);
     this.refreshSelection();
     this.refreshCallouts();
@@ -262,7 +313,9 @@ export class GameMap {
     let ownersChanged = false;
     for (const p of Object.values(provinces)) {
       const mine = p.owner === me;
-      const color = mine ? VIOLET : (nations[p.owner]?.color ?? useWorld.getState().nations[p.owner]?.color ?? '#3a4252');
+      const color = mine
+        ? VIOLET
+        : (nations[p.owner]?.color ?? useWorld.getState().nations[p.owner]?.color ?? '#3a4252');
       const cap = p.capture ? (p.owner === me ? 2 : 1) : 0;
       const prev = this.provState.get(p.id);
       if (!prev || prev.color !== color || prev.mine !== mine || prev.cap !== cap) {
@@ -286,14 +339,19 @@ export class GameMap {
   private updateBorders(provinces: Record<string, ProvinceView>, me: NationId | null) {
     const geo = useWorld.getState().provincesGeo;
     if (!geo) return;
-    const b = computeBorders(geo, (id) => provinces[id]?.owner ?? useWorld.getState().provinces[id]?.nationId, me);
+    const b = computeBorders(
+      geo,
+      (id) => provinces[id]?.owner ?? useWorld.getState().provinces[id]?.nationId,
+      me,
+    );
     this.set('borders', b.nations);
     this.set('my-border', b.mine);
   }
 
   private highlightProvince(id: string | null) {
     if (!this.ready) return;
-    if (this.selectedProvince) this.map.setFeatureState({ source: 'provinces', id: this.selectedProvince }, { sel: false });
+    if (this.selectedProvince)
+      this.map.setFeatureState({ source: 'provinces', id: this.selectedProvince }, { sel: false });
     this.selectedProvince = id;
     if (id) this.map.setFeatureState({ source: 'provinces', id }, { sel: true });
   }
@@ -308,7 +366,13 @@ export class GameMap {
         this.set('fog', {
           type: 'FeatureCollection',
           features: e.data.coordinates.length
-            ? [{ type: 'Feature', properties: {}, geometry: { type: 'MultiPolygon', coordinates: e.data.coordinates } }]
+            ? [
+                {
+                  type: 'Feature',
+                  properties: {},
+                  geometry: { type: 'MultiPolygon', coordinates: e.data.coordinates },
+                },
+              ]
             : [],
         });
       };
@@ -328,7 +392,8 @@ export class GameMap {
       if (provinces[id]?.owner !== me) continue;
       const g = f.geometry;
       if (g.type === 'Polygon') polygons.push(g.coordinates as [number, number][][]);
-      else if (g.type === 'MultiPolygon') polygons.push(...(g.coordinates as [number, number][][][]));
+      else if (g.type === 'MultiPolygon')
+        polygons.push(...(g.coordinates as [number, number][][][]));
     }
     const msg: FogRequest = { type: 'territory', key: this.ownersKey, polygons };
     this.fogWorker.postMessage(msg);
@@ -344,7 +409,10 @@ export class GameMap {
       const r = (u.systemId && catalog[u.systemId]?.detectionRangeKm) || 0;
       if (r <= 0) continue;
       const p = this.positions.get(u.id) ?? u.pos;
-      circles.push({ c: [Math.round(p[0] * 20) / 20, Math.round(p[1] * 20) / 20], r: Math.round(r) });
+      circles.push({
+        c: [Math.round(p[0] * 20) / 20, Math.round(p[1] * 20) / 20],
+        r: Math.round(r),
+      });
     }
     const key = circles.map((c) => `${c.c[0]},${c.c[1]},${c.r}`).join(';');
     if (key === this.fogKey) return;
@@ -376,7 +444,9 @@ export class GameMap {
       });
       // Sélection et cible hors regroupement (source dédiée).
       const focus = all.features.filter((f) => (f.properties?.sel ?? 0) > 0);
-      const rest = focus.length ? all.features.filter((f) => (f.properties?.sel ?? 0) === 0) : all.features;
+      const rest = focus.length
+        ? all.features.filter((f) => (f.properties?.sel ?? 0) === 0)
+        : all.features;
       this.set('units', fc(rest));
       this.set('units-focus', fc(focus));
     }
@@ -426,15 +496,27 @@ export class GameMap {
     const pending = ui.pendingOrder;
     if (pending && view) {
       const from = pending.unitIds
-        .map((id) => this.positions.get(id) ?? (view.units[id] ? unitPosition(view.units[id], gameNow()) : undefined))
+        .map(
+          (id) =>
+            this.positions.get(id) ??
+            (view.units[id] ? unitPosition(view.units[id], gameNow()) : undefined),
+        )
         .filter((p): p is LngLat => !!p);
-      const target = pending.kind === 'move' ? pending.to : (this.positions.get(pending.targetId) ?? view.units[pending.targetId]?.pos);
+      const target =
+        pending.kind === 'move'
+          ? pending.to
+          : (this.positions.get(pending.targetId) ?? view.units[pending.targetId]?.pos);
       if (from.length && target) {
         const pv = previewFeatures({ kind: pending.kind, from, to: target });
         this.set('preview', pv.lines);
         this.set('preview-pts', pv.points);
         const main = pv.lines.features[0];
-        if (main) routes.push({ id: 'preview', coords: main.geometry.coordinates as LngLat[], text: fmtKm(pv.distanceKm) });
+        if (main)
+          routes.push({
+            id: 'preview',
+            coords: main.geometry.coordinates as LngLat[],
+            text: fmtKm(pv.distanceKm),
+          });
         if (pending.kind === 'attack') from.forEach((f, i) => badges.push({ at: f, n: i + 1 }));
       }
     } else {
@@ -531,9 +613,16 @@ export class GameMap {
 
   private onHover(e: MapMouseEvent) {
     if (!this.ready) return;
-    const layers = this.opts.mode === 'picker' ? ['prov-fill'] : ['focus-hex', 'units-hex', 'cluster-hex'];
+    const layers =
+      this.opts.mode === 'picker' ? ['prov-fill'] : ['focus-hex', 'units-hex', 'cluster-hex'];
     const hit = this.hitFeatures(e, layers).length > 0;
-    this.map.getCanvas().style.cursor = hit ? 'pointer' : this.opts.mode === 'picker' ? '' : useUi.getState().selection.length ? 'crosshair' : '';
+    this.map.getCanvas().style.cursor = hit
+      ? 'pointer'
+      : this.opts.mode === 'picker'
+        ? ''
+        : useUi.getState().selection.length
+          ? 'crosshair'
+          : '';
   }
 
   private onClick(e: MapMouseEvent) {
@@ -558,7 +647,8 @@ export class GameMap {
       const clusterId = Number(first.properties.cluster_id);
       void src?.getClusterExpansionZoom(clusterId).then((z) => {
         const g = first.geometry as Geometry;
-        if (g.type === 'Point') this.map.easeTo({ center: g.coordinates as [number, number], zoom: z + 0.3 });
+        if (g.type === 'Point')
+          this.map.easeTo({ center: g.coordinates as [number, number], zoom: z + 0.3 });
       });
       return;
     }
@@ -567,11 +657,16 @@ export class GameMap {
       const u = view?.units[id];
       if (!u) return;
       if (u.level === 'own') {
-        const multi = e.originalEvent.shiftKey || e.originalEvent.ctrlKey || e.originalEvent.metaKey;
+        const multi =
+          e.originalEvent.shiftKey || e.originalEvent.ctrlKey || e.originalEvent.metaKey;
         if (multi) {
           const has = ui.selection.includes(id);
           ui.select(has ? ui.selection.filter((x) => x !== id) : [...ui.selection, id]);
-        } else if (ui.selection.length && ui.selection[0] !== id && u.owner !== useGame.getState().me) {
+        } else if (
+          ui.selection.length &&
+          ui.selection[0] !== id &&
+          u.owner !== useGame.getState().me
+        ) {
           // Bac à sable : unité d'une autre nation commandable → attaque si une sélection existe.
           ui.setPending({ kind: 'attack', unitIds: ui.selection, targetId: id });
         } else {
@@ -602,4 +697,3 @@ export class GameMap {
     this.map.remove();
   }
 }
-

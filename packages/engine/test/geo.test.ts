@@ -90,7 +90,7 @@ describe('croisement de deux mobiles (fenêtre commune, précision ≤ 1 s)', ()
     };
     const inside0 = distanceKm(at(pa, from), at(pb, from)) <= r;
     for (let t = from; t <= Math.max(a.t1, b.t1) + 1000; t += 250) {
-      if ((distanceKm(at(pa, t), at(pb, t)) <= r) !== inside0) return t;
+      if (distanceKm(at(pa, t), at(pb, t)) <= r !== inside0) return t;
     }
     return null;
   }

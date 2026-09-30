@@ -23,7 +23,9 @@ function isLand(p: LngLat): boolean {
 export function worldScaleMap(): MapData {
   const cells: Record<string, string> = {};
   const provCells = new Map<string, { cells: string[]; center: LngLat }>(); // res2 → cellules terrestres
-  const res2All = getRes0Cells().flatMap((c) => cellToChildren(c, 2)).sort();
+  const res2All = getRes0Cells()
+    .flatMap((c) => cellToChildren(c, 2))
+    .sort();
   for (const p2 of res2All) {
     const land: string[] = [];
     for (const c of cellToChildren(p2, 4)) {
@@ -42,9 +44,12 @@ export function worldScaleMap(): MapData {
     byNation.get(p1)!.push(p2);
   }
   const nationIds = new Map<string, string>();
-  [...byNation.keys()].sort().forEach((p1, i) => nationIds.set(p1, `n${i.toString(36).padStart(2, '0')}`));
+  [...byNation.keys()]
+    .sort()
+    .forEach((p1, i) => nationIds.set(p1, `n${i.toString(36).padStart(2, '0')}`));
   const provId = new Map<string, string>();
-  for (const [p1, list] of byNation) list.forEach((p2, k) => provId.set(p2, `${nationIds.get(p1)}-${k + 1}`));
+  for (const [p1, list] of byNation)
+    list.forEach((p2, k) => provId.set(p2, `${nationIds.get(p1)}-${k + 1}`));
 
   const provinces: ProvinceDef[] = [];
   for (const p2 of [...provCells.keys()].sort()) {

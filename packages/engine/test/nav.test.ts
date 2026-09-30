@@ -8,7 +8,8 @@ function samples(legs: { from: LngLat; to: LngLat; medium: string }[], stepKm = 
   const out: { p: LngLat; medium: string }[] = [];
   for (const l of legs) {
     const n = Math.max(1, Math.ceil(distanceKm(l.from, l.to) / stepKm));
-    for (let i = 0; i <= n; i++) out.push({ p: interpolate(l.from, l.to, i / n), medium: l.medium });
+    for (let i = 0; i <= n; i++)
+      out.push({ p: interpolate(l.from, l.to, i / n), medium: l.medium });
   }
   return out;
 }
@@ -47,7 +48,9 @@ describe('navigation', () => {
     expect(waits.length).toBe(2);
     for (const w of waits) expect(w.t1 - w.t0).toBe(BALANCE.movement.embarkMinutes * 60_000);
     // Vitesse réduite en mer.
-    const sea = legs.find((l) => l.medium === 'sea' && l.t1 > l.t0 && distanceKm(l.from, l.to) > 1)!;
+    const sea = legs.find(
+      (l) => l.medium === 'sea' && l.t1 > l.t0 && distanceKm(l.from, l.to) > 1,
+    )!;
     const v = distanceKm(sea.from, sea.to) / ((sea.t1 - sea.t0) / 3_600_000);
     expect(v).toBeCloseTo(30 * BALANCE.movement.embarkedSpeedFactor, 5);
     // Les segments maritimes restent en mer (hors cellules d'extrémité).
@@ -84,13 +87,17 @@ describe('navigation', () => {
     expect(legs.every((l) => l.medium === 'sea')).toBe(true);
 
     const noStrait = buildWorld(buildMap({ strait: false }), CATALOG, BALANCE);
-    const s2 = sandbox([{ owner: 'bbb', systemId: 'tst.frigate', pos: inner }], { world: noStrait });
+    const s2 = sandbox([{ owner: 'bbb', systemId: 'tst.frigate', pos: inner }], {
+      world: noStrait,
+    });
     expect(applyOrder(s2, 'bbb', { kind: 'move', unitIds: ['u1'], to: ocean })).toMatchObject({
       ok: false,
       error: 'unreachable',
     });
     // Dans l'autre sens aussi (le petit bassin est épuisé, pas l'océan).
-    const s3 = sandbox([{ owner: 'bbb', systemId: 'tst.frigate', pos: ocean }], { world: noStrait });
+    const s3 = sandbox([{ owner: 'bbb', systemId: 'tst.frigate', pos: ocean }], {
+      world: noStrait,
+    });
     expect(applyOrder(s3, 'bbb', { kind: 'move', unitIds: ['u1'], to: inner })).toMatchObject({
       ok: false,
       error: 'unreachable',

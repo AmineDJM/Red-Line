@@ -75,10 +75,16 @@ class OpenHeap {
  * embarquement/débarquement. Heuristique admissible : distance orthodromique au plus rapide.
  * Renvoie la suite de nœuds de start à goal, ou null.
  */
-export function astar(g: NavGraph, start: number, goal: number, costs: AstarCosts): number[] | null {
+export function astar(
+  g: NavGraph,
+  start: number,
+  goal: number,
+  costs: AstarCosts,
+): number[] | null {
   if (start === goal) return [start];
   const maxExpand = costs.maxExpand ?? 400_000;
-  const fastest = costs.mode === 'land' ? Math.min(costs.landMsPerRad, costs.seaMsPerRad) : costs.landMsPerRad;
+  const fastest =
+    costs.mode === 'land' ? Math.min(costs.landMsPerRad, costs.seaMsPerRad) : costs.landMsPerRad;
   const gScore = new Map<number, number>();
   const came = new Map<number, number>();
   const closed = new Set<number>();

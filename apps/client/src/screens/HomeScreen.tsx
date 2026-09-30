@@ -51,15 +51,27 @@ export function HomeScreen() {
     e.preventDefault();
     void run(async () => {
       const api = await getApi();
-      return mode === 'register' ? api.register(form) : api.login({ email: form.email, password: form.password });
+      return mode === 'register'
+        ? api.register(form)
+        : api.login({ email: form.email, password: form.password });
     });
   };
 
   return (
     <div className="screen home">
       <div className="home__bg" aria-hidden>
-        <HexIcon color="rgba(139,92,246,0.18)" size={420} outline="rgba(183,148,255,0.35)" className="home__hex home__hex--a" />
-        <HexIcon color="rgba(243,154,43,0.10)" size={260} outline="rgba(243,154,43,0.35)" className="home__hex home__hex--b" />
+        <HexIcon
+          color="rgba(139,92,246,0.18)"
+          size={420}
+          outline="rgba(183,148,255,0.35)"
+          className="home__hex home__hex--a"
+        />
+        <HexIcon
+          color="rgba(243,154,43,0.10)"
+          size={260}
+          outline="rgba(243,154,43,0.35)"
+          className="home__hex home__hex--b"
+        />
       </div>
       <header className="home__banner">
         <h1 className="home__title">{t('home.title')}</h1>
@@ -75,7 +87,13 @@ export function HomeScreen() {
                 {t('home.continue')}
               </Button>
             ) : (
-              <Button variant="primary" size="lg" block disabled={busy} onClick={() => void run(async () => (await getApi()).guest())}>
+              <Button
+                variant="primary"
+                size="lg"
+                block
+                disabled={busy}
+                onClick={() => void run(async () => (await getApi()).guest())}
+              >
                 {t('home.playGuest')}
               </Button>
             )}
@@ -111,12 +129,27 @@ export function HomeScreen() {
             {mode === 'register' ? (
               <label className="field">
                 <span className="field__label">{t('auth.displayName')}</span>
-                <input className="input" required minLength={2} maxLength={40} autoComplete="nickname" value={form.displayName} onChange={(e) => setForm({ ...form, displayName: e.target.value })} />
+                <input
+                  className="input"
+                  required
+                  minLength={2}
+                  maxLength={40}
+                  autoComplete="nickname"
+                  value={form.displayName}
+                  onChange={(e) => setForm({ ...form, displayName: e.target.value })}
+                />
               </label>
             ) : null}
             <label className="field">
               <span className="field__label">{t('auth.email')}</span>
-              <input className="input" type="email" required autoComplete="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+              <input
+                className="input"
+                type="email"
+                required
+                autoComplete="email"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+              />
             </label>
             <label className="field">
               <span className="field__label">{t('auth.password')}</span>
@@ -134,7 +167,11 @@ export function HomeScreen() {
             <Button variant="primary" size="lg" block type="submit" disabled={busy}>
               {mode === 'register' ? t('auth.submitRegister') : t('auth.submitLogin')}
             </Button>
-            <Button variant="ghost" block onClick={() => setMode(mode === 'register' ? 'login' : 'register')}>
+            <Button
+              variant="ghost"
+              block
+              onClick={() => setMode(mode === 'register' ? 'login' : 'register')}
+            >
               {mode === 'register' ? t('auth.switchToLogin') : t('auth.switchToRegister')}
             </Button>
             <Button variant="ghost" block onClick={() => setMode('menu')}>

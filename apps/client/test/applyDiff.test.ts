@@ -17,8 +17,24 @@ function baseView(): PlayerView {
     time: 1000,
     me: 'fra',
     nations: {
-      fra: { id: 'fra', name: 'France', color: '#123456', isAi: false, isPlayer: true, alive: true, provinceCount: 2 },
-      deu: { id: 'deu', name: 'Allemagne', color: '#654321', isAi: true, isPlayer: false, alive: true, provinceCount: 1 },
+      fra: {
+        id: 'fra',
+        name: 'France',
+        color: '#123456',
+        isAi: false,
+        isPlayer: true,
+        alive: true,
+        provinceCount: 2,
+      },
+      deu: {
+        id: 'deu',
+        name: 'Allemagne',
+        color: '#654321',
+        isAi: true,
+        isPlayer: false,
+        alive: true,
+        provinceCount: 1,
+      },
     },
     provinces: {
       'fra-1': { id: 'fra-1', owner: 'fra', buildings: [] },
@@ -40,7 +56,10 @@ describe('applyDiff', () => {
     const v = baseView();
     const diff: ViewDiff = {
       time: 2000,
-      units: { upsert: [unit('u2', { pos: [3, 49], status: 'moving' }), unit('u3')], remove: ['u1'] },
+      units: {
+        upsert: [unit('u2', { pos: [3, 49], status: 'moving' }), unit('u3')],
+        remove: ['u1'],
+      },
     };
     const next = applyDiff(v, diff);
     expect(Object.keys(next.units).sort()).toEqual(['u2', 'u3']);
@@ -75,7 +94,10 @@ describe('applyDiff', () => {
 
   it('remplace victoire et garde un temps monotone', () => {
     const v = baseView();
-    const next = applyDiff(v, { time: 500, victory: { provinceShareTarget: 0.6, leader: 'fra', winner: 'fra' } });
+    const next = applyDiff(v, {
+      time: 500,
+      victory: { provinceShareTarget: 0.6, leader: 'fra', winner: 'fra' },
+    });
     expect(next.victory.winner).toBe('fra');
     expect(next.time).toBe(1000);
   });
@@ -87,6 +109,8 @@ describe('applyDiff', () => {
   });
 
   it('liste les unités touchées', () => {
-    expect([...touchedUnits({ time: 0, units: { upsert: [unit('a')], remove: ['b'] } })].sort()).toEqual(['a', 'b']);
+    expect(
+      [...touchedUnits({ time: 0, units: { upsert: [unit('a')], remove: ['b'] } })].sort(),
+    ).toEqual(['a', 'b']);
   });
 });

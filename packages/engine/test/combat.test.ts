@@ -75,11 +75,15 @@ describe('rencontres et interceptions', () => {
     ]);
     applyOrder(s, 'aaa', { kind: 'move', unitIds: ['u1'], to: [9, 40] });
     const key = unitPairKey('u1', 'u2');
-    const old = s.queue.filter((e) => (e.k === 'contact' && e.key === key) || ('u' in e && e.u === 'u1'));
+    const old = s.queue.filter(
+      (e) => (e.k === 'contact' && e.key === key) || ('u' in e && e.u === 'u1'),
+    );
     expect(old.length).toBeGreaterThan(0);
     run(s, 20 * MINUTE);
     // Demi-tour avant d'entrer en territoire bbb.
-    expect(applyOrder(s, 'aaa', { kind: 'move', unitIds: ['u1'], to: cityOf('aaa-2') }).ok).toBe(true);
+    expect(applyOrder(s, 'aaa', { kind: 'move', unitIds: ['u1'], to: cityOf('aaa-2') }).ok).toBe(
+      true,
+    );
     for (const e of old) expect(isValid(s, e)).toBe(false);
     const notes = run(s, 10 * HOUR);
     expect(s.units.u1).toBeDefined();
@@ -148,10 +152,12 @@ describe('combat, contre-mesures, vétérance', () => {
       { owner: 'aaa', systemId: 'tst.tank', pos: [7.5, 40.02] },
       { owner: 'bbb', systemId: 'tst.fighter', pos: [7.5, 40.0] },
     ]);
-    expect(applyOrder(s, 'aaa', { kind: 'attack', unitIds: ['u1'], targetId: 'u2' })).toMatchObject({
-      ok: false,
-      error: 'invalid_target',
-    });
+    expect(applyOrder(s, 'aaa', { kind: 'attack', unitIds: ['u1'], targetId: 'u2' })).toMatchObject(
+      {
+        ok: false,
+        error: 'invalid_target',
+      },
+    );
   });
 
   it('un chasseur ne fait presque rien à un char (matrice de dégâts)', () => {
@@ -255,12 +261,16 @@ describe('combat, contre-mesures, vétérance', () => {
       { owner: 'aaa', systemId: 'tst.tank', pos: cityOf('aaa-1') },
       { owner: 'bbb', systemId: 'tst.infantry', pos: cityOf('bbb-2') },
     ]);
-    expect(applyOrder(s, 'aaa', { kind: 'attack', unitIds: ['u1'], targetId: 'u2' })).toMatchObject({
-      error: 'invalid_target',
-    });
-    expect(applyOrder(s, 'aaa', { kind: 'attack', unitIds: ['u2'], targetId: 'u1' })).toMatchObject({
-      error: 'not_owner',
-    });
+    expect(applyOrder(s, 'aaa', { kind: 'attack', unitIds: ['u1'], targetId: 'u2' })).toMatchObject(
+      {
+        error: 'invalid_target',
+      },
+    );
+    expect(applyOrder(s, 'aaa', { kind: 'attack', unitIds: ['u2'], targetId: 'u1' })).toMatchObject(
+      {
+        error: 'not_owner',
+      },
+    );
     expect(applyOrder(s, 'aaa', { kind: 'move', unitIds: ['u9'], to: [1, 1] })).toMatchObject({
       error: 'unknown_unit',
     });

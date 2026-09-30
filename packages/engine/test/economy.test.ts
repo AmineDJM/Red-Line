@@ -46,19 +46,27 @@ describe('économie et production', () => {
   it("refus : fonds insuffisants, province d'autrui, système inconnu, navire enclavé", () => {
     const s = sandbox([]);
     s.nations.aaa!.money = 50;
-    expect(applyOrder(s, 'aaa', { kind: 'produce', provinceId: 'aaa-2', systemId: 'tst.tank' })).toMatchObject({
+    expect(
+      applyOrder(s, 'aaa', { kind: 'produce', provinceId: 'aaa-2', systemId: 'tst.tank' }),
+    ).toMatchObject({
       ok: false,
       error: 'insufficient_funds',
     });
     s.nations.aaa!.money = 5000;
     s.nations.aaa!.res.metals = 0;
-    expect(applyOrder(s, 'aaa', { kind: 'produce', provinceId: 'aaa-2', systemId: 'tst.tank' })).toMatchObject({
+    expect(
+      applyOrder(s, 'aaa', { kind: 'produce', provinceId: 'aaa-2', systemId: 'tst.tank' }),
+    ).toMatchObject({
       error: 'insufficient_funds',
     });
-    expect(applyOrder(s, 'aaa', { kind: 'produce', provinceId: 'bbb-2', systemId: 'tst.infantry' })).toMatchObject({
+    expect(
+      applyOrder(s, 'aaa', { kind: 'produce', provinceId: 'bbb-2', systemId: 'tst.infantry' }),
+    ).toMatchObject({
       error: 'not_owner',
     });
-    expect(applyOrder(s, 'aaa', { kind: 'produce', provinceId: 'aaa-2', systemId: 'xx.nope' })).toMatchObject({
+    expect(
+      applyOrder(s, 'aaa', { kind: 'produce', provinceId: 'aaa-2', systemId: 'xx.nope' }),
+    ).toMatchObject({
       error: 'invalid_target',
     });
     expect(s.nations.aaa!.money).toBe(5000);
@@ -67,7 +75,9 @@ describe('économie et production', () => {
   it('navire produit sur la côte (point de mise à l’eau)', () => {
     const s = sandbox([]);
     s.nations.bbb!.res.metals = 100;
-    expect(applyOrder(s, 'bbb', { kind: 'produce', provinceId: 'bbb-2', systemId: 'tst.frigate' }).ok).toBe(true);
+    expect(
+      applyOrder(s, 'bbb', { kind: 'produce', provinceId: 'bbb-2', systemId: 'tst.frigate' }).ok,
+    ).toBe(true);
     advanceTo(s, 13 * HOUR);
     const f = unitsOf(s, 'bbb', 'tst.frigate')[0]!;
     expect(f).toBeDefined();
@@ -94,7 +104,9 @@ describe('économie et production', () => {
     for (const u of unitsOf(s, 'aaa')) {
       expect(cells[latLngToCell(u.pos[1], u.pos[0], RES)]?.startsWith('aaa-')).toBe(true);
     }
-    const sites = new Set(unitsOf(s, 'aaa').map((u) => cells[latLngToCell(u.pos[1], u.pos[0], RES)]));
+    const sites = new Set(
+      unitsOf(s, 'aaa').map((u) => cells[latLngToCell(u.pos[1], u.pos[0], RES)]),
+    );
     expect(sites.size).toBeGreaterThan(1);
     expect(Object.keys(s.wars)).toHaveLength(0);
   });

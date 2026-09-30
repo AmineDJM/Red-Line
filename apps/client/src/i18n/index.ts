@@ -35,7 +35,8 @@ export function fmtCompact(n: number): string {
 
 /** « 1 000 km » (arrondi lisible). */
 export function fmtKm(km: number): string {
-  const v = km >= 100 ? Math.round(km / 10) * 10 : km >= 10 ? Math.round(km) : Math.round(km * 10) / 10;
+  const v =
+    km >= 100 ? Math.round(km / 10) * 10 : km >= 10 ? Math.round(km) : Math.round(km * 10) / 10;
   return plainSpaces(t('units.km', { value: nf1.format(v) }));
 }
 
@@ -43,7 +44,8 @@ export function fmtKm(km: number): string {
 export function fmtDuration(ms: number): string {
   const m = Math.max(0, Math.round(ms / MINUTE));
   if (m < 60) return t('game.time.minutes', { value: m });
-  if (ms < DAY) return t('game.time.hours', { h: Math.floor(m / 60), m: String(m % 60).padStart(2, '0') });
+  if (ms < DAY)
+    return t('game.time.hours', { h: Math.floor(m / 60), m: String(m % 60).padStart(2, '0') });
   return t('game.time.days', { d: Math.floor(ms / DAY), h: Math.floor((ms % DAY) / HOUR) });
 }
 
@@ -62,6 +64,8 @@ export function fmtClock(time: GameTime): { day: string; time: string } {
 let regionNames: Intl.DisplayNames | null = null;
 /** Nom de pays depuis un code ISO alpha-2 (fiche d'arme). */
 export function countryName(iso2: string): string {
+  // « XX » : système générique sans pays d'origine (infanterie des fournisseurs secondaires…).
+  if (iso2.toUpperCase() === 'XX') return t('weapon.genericOrigin');
   try {
     regionNames ??= new Intl.DisplayNames(['fr'], { type: 'region' });
     return regionNames.of(iso2.toUpperCase()) ?? iso2;

@@ -1,7 +1,23 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DOCTRINES, HOUR, RESOURCES, type Doctrine, type UnitView, type WeaponSystem } from '@redline/shared';
-import { Bullet, Button, Drawer, HexIcon, Meter, Tabs, WeaponCard, pictogramFor } from '@redline/ui';
+import {
+  DOCTRINES,
+  HOUR,
+  RESOURCES,
+  type Doctrine,
+  type UnitView,
+  type WeaponSystem,
+} from '@redline/shared';
+import {
+  Bullet,
+  Button,
+  Drawer,
+  HexIcon,
+  Meter,
+  Tabs,
+  WeaponCard,
+  pictogramFor,
+} from '@redline/ui';
 import { fmtClock, fmtDuration, fmtInt } from '../i18n/index.js';
 import { unitPosition } from '../map/interpolation.js';
 import { VIOLET_UNIT } from '../map/features.js';
@@ -47,7 +63,11 @@ export function AlertsDrawer() {
             <li key={n.id}>
               <button
                 type="button"
-                className={['alert', d.critical ? 'alert--critical' : d.major ? 'alert--major' : '', n.read ? '' : 'alert--unread'].join(' ')}
+                className={[
+                  'alert',
+                  d.critical ? 'alert--critical' : d.major ? 'alert--major' : '',
+                  n.read ? '' : 'alert--unread',
+                ].join(' ')}
                 disabled={!d.at}
                 onClick={() => {
                   if (!d.at) return;
@@ -83,7 +103,9 @@ export function ArmyDrawer() {
   const catalog = useWorld((s) => s.catalog);
 
   const groups = useMemo(() => {
-    const own = Object.values(view?.units ?? {}).filter((u) => u.owner === me && u.level === 'own' && u.status !== 'destroyed');
+    const own = Object.values(view?.units ?? {}).filter(
+      (u) => u.owner === me && u.level === 'own' && u.status !== 'destroyed',
+    );
     const byCat = new Map<string, UnitView[]>();
     for (const u of own) {
       const cat = (u.systemId && catalog[u.systemId]?.category) || 'other';
@@ -94,7 +116,12 @@ export function ArmyDrawer() {
   const total = groups.reduce((s, [, l]) => s + l.length, 0);
 
   return (
-    <Drawer open={open} onClose={() => openDrawer(null)} title={`${t('game.army.title')} · ${t('game.army.units', { count: total })}`} closeLabel={t('app.close')}>
+    <Drawer
+      open={open}
+      onClose={() => openDrawer(null)}
+      title={`${t('game.army.title')} · ${t('game.army.units', { count: total })}`}
+      closeLabel={t('app.close')}
+    >
       {total === 0 ? <p className="empty">{t('game.army.empty')}</p> : null}
       {groups.map(([cat, list]) => (
         <section key={cat} className="army-group">
@@ -118,12 +145,18 @@ export function ArmyDrawer() {
                       <span className="army-row__name">{sys?.name ?? u.systemId}</span>
                       <span className="army-row__sub">
                         {u.status ? t(`game.status.${u.status}`) : ''}
-                        {u.count !== undefined ? ` · ${t('game.army.count', { count: u.count })}` : ''}
+                        {u.count !== undefined
+                          ? ` · ${t('game.army.count', { count: u.count })}`
+                          : ''}
                       </span>
                     </span>
                     {u.hpRatio !== undefined ? (
                       <span className="army-row__hp">
-                        <Meter value={u.hpRatio} tone={u.hpRatio < 0.3 ? 'critical' : 'violet'} label={t('game.army.hp')} />
+                        <Meter
+                          value={u.hpRatio}
+                          tone={u.hpRatio < 0.3 ? 'critical' : 'violet'}
+                          label={t('game.army.hp')}
+                        />
                       </span>
                     ) : null}
                   </button>
@@ -153,7 +186,10 @@ export function ProductionDrawer() {
   const defs = useWorld((s) => s.provinces);
   const now = useGameTime(2000);
 
-  const systems = useMemo(() => Object.values(catalog).filter((s) => s.enabled !== false), [catalog]);
+  const systems = useMemo(
+    () => Object.values(catalog).filter((s) => s.enabled !== false),
+    [catalog],
+  );
   const doctrines = DOCTRINES.filter((d) => systems.some((s) => s.doctrine === d));
   const [tab, setTab] = useState<Doctrine>(doctrines[0] ?? 'us');
   const [detail, setDetail] = useState<WeaponSystem | null>(null);
@@ -162,13 +198,20 @@ export function ProductionDrawer() {
     () =>
       Object.values(view?.provinces ?? {})
         .filter((p) => p.owner === me)
-        .map((p) => ({ id: p.id, name: defs[p.id]?.name ?? p.id, capital: !!defs[p.id]?.isCapital }))
+        .map((p) => ({
+          id: p.id,
+          name: defs[p.id]?.name ?? p.id,
+          capital: !!defs[p.id]?.isCapital,
+        }))
         .sort((a, b) => Number(b.capital) - Number(a.capital) || a.name.localeCompare(b.name)),
     [view?.provinces, me, defs],
   );
-  const province = myProvinces.find((p) => p.id === selectedProvince)?.id ?? myProvinces[0]?.id ?? '';
+  const province =
+    myProvinces.find((p) => p.id === selectedProvince)?.id ?? myProvinces[0]?.id ?? '';
   const eco = view?.economy;
-  const list = systems.filter((s) => s.doctrine === tab).sort((a, b) => a.category.localeCompare(b.category) || a.cost.money - b.cost.money);
+  const list = systems
+    .filter((s) => s.doctrine === tab)
+    .sort((a, b) => a.category.localeCompare(b.category) || a.cost.money - b.cost.money);
 
   const produce = async (s: WeaponSystem) => {
     if (!conn || !province) return;
@@ -193,7 +236,13 @@ export function ProductionDrawer() {
   );
 
   return (
-    <Drawer open={open} onClose={() => openDrawer(null)} title={t('game.production.title')} closeLabel={t('app.close')} width={420}>
+    <Drawer
+      open={open}
+      onClose={() => openDrawer(null)}
+      title={t('game.production.title')}
+      closeLabel={t('app.close')}
+      width={420}
+    >
       <section className="prod-queue">
         <h3 className="section-title">{t('game.production.queue')}</h3>
         {eco?.production.length ? (
@@ -205,11 +254,14 @@ export function ProductionDrawer() {
                 <HexIcon pictogram={pictogramFor(s)} color={VIOLET_UNIT} size={26} />
                 <div className="prod-item__main">
                   <div className="prod-item__name">
-                    {s?.name ?? p.systemId} <span className="muted">· {defs[p.provinceId]?.name ?? p.provinceId}</span>
+                    {s?.name ?? p.systemId}{' '}
+                    <span className="muted">· {defs[p.provinceId]?.name ?? p.provinceId}</span>
                   </div>
                   <Meter value={f} tone="accent" />
                 </div>
-                <span className="prod-item__eta rl-mono">{t('game.production.remaining', { value: fmtDuration(p.completesAt - now) })}</span>
+                <span className="prod-item__eta rl-mono">
+                  {t('game.production.remaining', { value: fmtDuration(p.completesAt - now) })}
+                </span>
               </div>
             );
           })
@@ -220,7 +272,11 @@ export function ProductionDrawer() {
 
       <label className="field">
         <span className="field__label">{t('game.production.province')}</span>
-        <select className="select" value={province} onChange={(e) => selectProvince(e.target.value)}>
+        <select
+          className="select"
+          value={province}
+          onChange={(e) => selectProvince(e.target.value)}
+        >
           {myProvinces.map((p) => (
             <option key={p.id} value={p.id}>
               {p.name}
@@ -234,17 +290,31 @@ export function ProductionDrawer() {
           <Button variant="ghost" onClick={() => setDetail(null)}>
             ← {t('game.production.back')}
           </Button>
-          <WeaponCard system={detail} labels={weaponLabels()} subtitle={weaponSubtitle(detail)} compact />
+          <WeaponCard
+            system={detail}
+            labels={weaponLabels()}
+            subtitle={weaponSubtitle(detail)}
+            compact
+          />
           <div className="prod-detail__cost">
             <Bullet>
               {t('game.production.cost')} : {costLine(detail)}
             </Bullet>
             <Bullet>
-              {t('game.production.buildTime')} : <span className="rl-mono accent">{fmtDuration(detail.buildTimeH * HOUR)}</span>
+              {t('game.production.buildTime')} :{' '}
+              <span className="rl-mono accent">{fmtDuration(detail.buildTimeH * HOUR)}</span>
             </Bullet>
           </div>
-          <Button variant="primary" block size="lg" disabled={!province || (eco?.money ?? 0) < detail.cost.money} onClick={() => void produce(detail)}>
-            {(eco?.money ?? 0) < detail.cost.money ? t('game.production.insufficient') : t('game.production.produce')}
+          <Button
+            variant="primary"
+            block
+            size="lg"
+            disabled={!province || (eco?.money ?? 0) < detail.cost.money}
+            onClick={() => void produce(detail)}
+          >
+            {(eco?.money ?? 0) < detail.cost.money
+              ? t('game.production.insufficient')
+              : t('game.production.produce')}
           </Button>
         </div>
       ) : (
@@ -260,11 +330,18 @@ export function ProductionDrawer() {
             {list.map((s) => (
               <li key={s.id}>
                 <button type="button" className="catalog-row" onClick={() => setDetail(s)}>
-                  <HexIcon pictogram={pictogramFor(s)} color="var(--rl-orange)" size={34} outline={null} />
+                  <HexIcon
+                    pictogram={pictogramFor(s)}
+                    color="var(--rl-orange)"
+                    size={34}
+                    outline={null}
+                  />
                   <span className="catalog-row__main">
                     <span className="catalog-row__name">{s.name}</span>
                     <span className="catalog-row__sub">
-                      {t(`categories.${s.category}`)} · {t('game.production.generation', { value: s.generation })} · {fmtDuration(s.buildTimeH * HOUR)}
+                      {t(`categories.${s.category}`)} ·{' '}
+                      {t('game.production.generation', { value: s.generation })} ·{' '}
+                      {fmtDuration(s.buildTimeH * HOUR)}
                     </span>
                     {costLine(s)}
                   </span>
@@ -291,11 +368,23 @@ export function LayersDrawer() {
     { id: 'diplomacy', on: false, soon: true },
   ];
   return (
-    <Drawer open={open} onClose={() => openDrawer(null)} title={t('game.layers.title')} side="right" closeLabel={t('app.close')} width={300}>
+    <Drawer
+      open={open}
+      onClose={() => openDrawer(null)}
+      title={t('game.layers.title')}
+      side="right"
+      closeLabel={t('app.close')}
+      width={300}
+    >
       <ul className="layer-list">
         {layers.map((l) => (
           <li key={l.id}>
-            <button type="button" className={l.soon ? 'layer-row layer-row--soon' : 'layer-row layer-row--on'} disabled={l.soon} aria-pressed={l.on}>
+            <button
+              type="button"
+              className={l.soon ? 'layer-row layer-row--soon' : 'layer-row layer-row--on'}
+              disabled={l.soon}
+              aria-pressed={l.on}
+            >
               <span className="layer-row__check" aria-hidden>
                 {l.on ? '■' : ''}
               </span>

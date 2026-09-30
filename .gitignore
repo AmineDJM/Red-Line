@@ -7,7 +7,5 @@ coverage
 playwright-report
 test-results
 .tiles-cache
-data/tiles/*.pmtiles
-!data/tiles/*-lowzoom.pmtiles
 tools/**/.cache
 .pgdata

@@ -1,9 +1,9 @@
 # Blueprint Render — Red Line
 # Un seul service web (API + WebSocket + client + back-office servis sur la même origine)
 # et une base PostgreSQL, en deux environnements :
-#   - production : branche `main`, offre Starter (pas de mise en veille), disque pour les tuiles
+#   - production : branche `main`, offre Starter (pas de mise en veille)
 #   - staging    : branche `staging`, offres gratuites (mise en veille après 15 min, base temporaire)
-# Les tuiles zoom 0-8 se construisent une fois sur le disque (voir docs/deploiement.md).
+# L'imagerie satellite (data/tiles/*.pmtiles) est dans le dépôt : aucun disque n'est nécessaire.
 
 services:
   - type: web
@@ -14,13 +14,9 @@ services:
     branch: main
     autoDeploy: true
     buildCommand: npx --yes pnpm@10.33.0 install --frozen-lockfile && npx --yes pnpm@10.33.0 build
-    preDeployCommand: npx --yes pnpm@10.33.0 --filter @redline/server db:migrate
+    preDeployCommand: node apps/server/dist/migrate.js
     startCommand: node apps/server/dist/main.js
     healthCheckPath: /healthz
-    disk:
-      name: redline-tiles
-      mountPath: /var/data/tiles
-      sizeGB: 5
     envVars:
       - key: NODE_VERSION
         value: '22'
@@ -36,10 +32,6 @@ services:
         sync: false
       - key: ADMIN_PASSWORD
         sync: false
-      - key: TILES_DIR
-        value: /var/data/tiles
-      - key: INSTANCE_ID
-        value: prod
 
   - type: web
     name: redline-server-staging
@@ -68,8 +60,6 @@ services:
         sync: false
       - key: ADMIN_PASSWORD
         sync: false
-      - key: INSTANCE_ID
-        value: staging
 
 databases:
   - name: redline-db

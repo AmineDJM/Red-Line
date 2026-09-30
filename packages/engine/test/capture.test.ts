@@ -11,7 +11,9 @@ describe('capture de province', () => {
       { owner: 'aaa', systemId: 'tst.infantry', pos: [4.7, 40] },
       { owner: 'aaa', systemId: 'tst.tank', pos: [4.7, 40.1] },
     ]);
-    expect(applyOrder(s, 'aaa', { kind: 'move', unitIds: ['u1'], to: cityOf('bbb-4') }).ok).toBe(true);
+    expect(applyOrder(s, 'aaa', { kind: 'move', unitIds: ['u1'], to: cityOf('bbb-4') }).ok).toBe(
+      true,
+    );
     const arrival = movementEnd(s.units.u1!.move!);
     let notes = advanceTo(s, arrival + 1);
     expect(atWar(s, 'aaa', 'bbb')).toBe(true);
@@ -83,7 +85,9 @@ describe('capture de province', () => {
     expect(notes.find((n) => n.kind === 'victory')).toMatchObject({ winner: 'aaa' });
     expect(s.nations.ddd!.alive).toBe(false);
     expect(viewFor(s, 'aaa').victory).toMatchObject({ winner: 'aaa', leader: 'aaa' });
-    expect(applyOrder(s, 'aaa', { kind: 'stop', unitIds: ['u1'] })).toMatchObject({ error: 'game_over' });
+    expect(applyOrder(s, 'aaa', { kind: 'stop', unitIds: ['u1'] })).toMatchObject({
+      error: 'game_over',
+    });
   });
 
   it('victoire par les capitales ennemies', () => {

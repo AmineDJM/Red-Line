@@ -98,6 +98,8 @@ interface HostDeps {
   log: FastifyBaseLogger;
   instanceId: string;
   options: HostOptions;
+  /** Vitesses de test ajoutées à celles de l'équilibrage (vide en production). */
+  extraSpeeds?: number[];
 }
 
 const MAX_STEPS_PER_TICK = 100_000;
@@ -667,7 +669,7 @@ export class GameHost {
     const engine = this.engine;
     const { world, releaseId, balance } = await this.d.worlds.forNewGames();
     const nation = this.d.data.nationsById.get(body.nationId)!;
-    const speeds = balance.time.speeds;
+    const speeds = [...balance.time.speeds, ...(this.d.extraSpeeds ?? [])];
     const speed = speeds.includes(body.speed) ? body.speed : (speeds[0] ?? 1);
     const seed = randomInt(0, 2 ** 31 - 1);
     const setup: GameSetup = {

@@ -2,7 +2,12 @@ import { describe, expect, it } from 'vitest';
 import type { FeatureCollection, Position } from 'geojson';
 import { computeBorders } from '../src/map/borders.js';
 
-const square = (id: string, x: number, y: number, extra: Position[] = []): FeatureCollection['features'][number] => ({
+const square = (
+  id: string,
+  x: number,
+  y: number,
+  extra: Position[] = [],
+): FeatureCollection['features'][number] => ({
   type: 'Feature',
   properties: { id },
   geometry: {
@@ -17,14 +22,18 @@ const totalLength = (fc: ReturnType<typeof computeBorders>['nations']) =>
       s +
       f.geometry.coordinates.reduce((t, line) => {
         let l = 0;
-        for (let i = 1; i < line.length; i++) l += Math.hypot(line[i]![0]! - line[i - 1]![0]!, line[i]![1]! - line[i - 1]![1]!);
+        for (let i = 1; i < line.length; i++)
+          l += Math.hypot(line[i]![0]! - line[i - 1]![0]!, line[i]![1]! - line[i - 1]![1]!);
         return t + l;
       }, 0),
     0,
   );
 
 describe('frontières calculées depuis la topologie des provinces', () => {
-  const geo: FeatureCollection = { type: 'FeatureCollection', features: [square('a-1', 0, 0), square('a-2', 1, 0), square('b-1', 2, 0)] };
+  const geo: FeatureCollection = {
+    type: 'FeatureCollection',
+    features: [square('a-1', 0, 0), square('a-2', 1, 0), square('b-1', 2, 0)],
+  };
 
   it("n'affiche pas l'arête entre deux provinces du même propriétaire", () => {
     const owners: Record<string, string> = { 'a-1': 'a', 'a-2': 'a', 'b-1': 'b' };
@@ -48,9 +57,25 @@ describe('frontières calculées depuis la topologie des provinces', () => {
     const right: FeatureCollection['features'][number] = {
       type: 'Feature',
       properties: { id: 'a-2' },
-      geometry: { type: 'Polygon', coordinates: [[[1, 0], [2, 0], [2, 1], [1, 1], [1, 0.5], [1, 0]]] },
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [1, 0],
+            [2, 0],
+            [2, 1],
+            [1, 1],
+            [1, 0.5],
+            [1, 0],
+          ],
+        ],
+      },
     };
-    const r = computeBorders({ type: 'FeatureCollection', features: [left, right] }, () => 'a', 'a');
+    const r = computeBorders(
+      { type: 'FeatureCollection', features: [left, right] },
+      () => 'a',
+      'a',
+    );
     expect(totalLength(r.mine)).toBeCloseTo(6, 6);
   });
 });

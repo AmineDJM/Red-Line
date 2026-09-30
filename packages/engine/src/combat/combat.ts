@@ -173,7 +173,9 @@ export function handleChase(state: EngineState, ev: Extract<GameEvent, { k: 'cha
   const speed = sysOf(state, u).speedKmh;
   const etaMs = speed > 0 ? (vecDistKm(here, there) / speed) * 3_600_000 : 0;
   const leg = currentLeg(tgt, now);
-  const aim = leg ? positionAt({ legs: [leg] }, Math.min(now + etaMs, leg.t1)) : unitPosAt(state, tgt, now);
+  const aim = leg
+    ? positionAt({ legs: [leg] }, Math.min(now + etaMs, leg.t1))
+    : unitPosAt(state, tgt, now);
   const plan = planUnitMove(state, u, aim);
   if ('error' in plan || plan.legs.length === 0) {
     // Inatteignable, ou déjà au plus près sans être à portée : on abandonne la cible.

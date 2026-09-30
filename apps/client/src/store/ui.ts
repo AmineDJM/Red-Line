@@ -64,7 +64,10 @@ export const useUi = create<UiStore>((set, get) => ({
   selectedProvince: null,
   pendingOrder: null,
   drawer: null,
-  legendOpen: readBool(STORAGE.legendOpen, typeof window !== 'undefined' && window.innerWidth >= 768),
+  legendOpen: readBool(
+    STORAGE.legendOpen,
+    typeof window !== 'undefined' && window.innerWidth >= 768,
+  ),
   focus: null,
   toasts: [],
   tutorialStep: null,

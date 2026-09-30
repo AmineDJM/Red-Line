@@ -27,6 +27,8 @@ const EnvSchema = z.object({
   MIGRATE_ON_START: boolish.default(false),
   /** Durée du bail d'une partie (secondes). Le battement de cœur passe toutes les LEASE_TTL_S / 3. */
   LEASE_TTL_S: z.coerce.number().positive().default(30),
+  /** Développement et tests uniquement : vitesses supplémentaires (ex. "600,3600"). Refusé en production. */
+  REDLINE_EXTRA_SPEEDS: z.string().optional(),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).optional(),
 });
 
@@ -51,6 +53,8 @@ export interface Config {
   migrateOnStart: boolean;
   leaseTtlS: number;
   logLevel: string;
+  /** Vitesses ajoutées à celles de l'équilibrage (tests de bout en bout). Toujours vide en production. */
+  extraSpeeds: number[];
 }
 
 const DEV_SECRET = 'redline-dev-secret-ne-pas-utiliser-en-production';
@@ -84,6 +88,13 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
   if ((e.ADMIN_EMAIL && !e.ADMIN_PASSWORD) || (!e.ADMIN_EMAIL && e.ADMIN_PASSWORD)) {
     throw new Error('Configuration invalide : ADMIN_EMAIL et ADMIN_PASSWORD vont ensemble');
   }
+  const extraSpeeds = (e.REDLINE_EXTRA_SPEEDS ?? '')
+    .split(',')
+    .map((v) => Number(v.trim()))
+    .filter((v) => Number.isFinite(v) && v > 0);
+  if (isProd && extraSpeeds.length > 0) {
+    throw new Error('Configuration invalide : REDLINE_EXTRA_SPEEDS est interdit en production');
+  }
   const dataDir = abs(e.DATA_DIR ?? join(REPO_ROOT, 'data'));
   return {
     nodeEnv: e.NODE_ENV,
@@ -104,5 +115,6 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     migrateOnStart: e.MIGRATE_ON_START,
     leaseTtlS: e.LEASE_TTL_S,
     logLevel: e.LOG_LEVEL ?? (e.NODE_ENV === 'test' ? 'warn' : 'info'),
+    extraSpeeds,
   };
 }

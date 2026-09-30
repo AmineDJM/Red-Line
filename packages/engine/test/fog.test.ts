@@ -48,7 +48,12 @@ describe('brouillard de guerre', () => {
       { owner: 'bbb', systemId: 'tst.helo', pos: at(250) }, // invisible
     ]);
     const v = viewFor(s, 'aaa');
-    expect(v.units.u2).toMatchObject({ level: 'precise', systemId: 'tst.helo', count: 1, hpRatio: 1 });
+    expect(v.units.u2).toMatchObject({
+      level: 'precise',
+      systemId: 'tst.helo',
+      count: 1,
+      hpRatio: 1,
+    });
     expect(v.units.u2!.status).toBe('idle');
     expect(v.units.u3).toMatchObject({ level: 'identified', systemId: 'tst.helo' });
     expect(v.units.u3!.count).toBeUndefined();
@@ -124,8 +129,12 @@ describe('brouillard de guerre', () => {
     const notes = advanceTo(s, 2 * HOUR);
     const det = notes.filter((n) => n.kind === 'unit_detected');
     expect(det).toHaveLength(1);
-    expect(notificationsFor(s, 'aaa', notes).filter((n) => n.kind === 'unit_detected')).toHaveLength(1);
-    expect(notificationsFor(s, 'bbb', notes).filter((n) => n.kind === 'unit_detected')).toHaveLength(0);
+    expect(
+      notificationsFor(s, 'aaa', notes).filter((n) => n.kind === 'unit_detected'),
+    ).toHaveLength(1);
+    expect(
+      notificationsFor(s, 'bbb', notes).filter((n) => n.kind === 'unit_detected'),
+    ).toHaveLength(0);
     expect(notificationsFor(s, 'bbb', notes).filter((n) => n.kind === 'arrived')).toHaveLength(1);
     expect(notificationsFor(s, 'aaa', notes).filter((n) => n.kind === 'arrived')).toHaveLength(0);
   });

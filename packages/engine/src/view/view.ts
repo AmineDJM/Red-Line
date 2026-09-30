@@ -23,7 +23,10 @@ const LEVELS: InfoLevel[] = ['detected', 'detected', 'identified', 'precise'];
 
 export function unitStatus(state: EngineState, u: Unit): UnitStatus {
   const t = state.time;
-  if (u.engaged || (u.lastHit >= 0 && t - u.lastHit <= state.world.balance.time.combatRoundMinutes * MINUTE))
+  if (
+    u.engaged ||
+    (u.lastHit >= 0 && t - u.lastHit <= state.world.balance.time.combatRoundMinutes * MINUTE)
+  )
     return 'combat';
   if (isEmbarked(state, u, t)) return 'embarked';
   if (u.move) return 'moving';
@@ -106,7 +109,8 @@ function lostUnitView(state: EngineState, id: string, c: Contact): UnitView {
 /** Unités connues d'une nation (les siennes + contacts non oubliés), triées par identifiant. */
 export function knownUnits(state: EngineState, me: NationId): UnitView[] {
   const out: UnitView[] = [];
-  for (const id of sortedSet(state.rt.byNation.get(me))) out.push(ownUnitView(state, state.units[id]!));
+  for (const id of sortedSet(state.rt.byNation.get(me)))
+    out.push(ownUnitView(state, state.units[id]!));
   const known = state.know[me];
   if (known) {
     const forgetMs = state.world.balance.sensors.forgetAfterMinutes * MINUTE;
@@ -183,4 +187,3 @@ export function viewForImpl(state: EngineState, me: NationId): PlayerView {
     },
   };
 }
-

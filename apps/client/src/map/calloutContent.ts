@@ -44,10 +44,22 @@ export function buildCallouts(a: CalloutArgs): CalloutContent[] {
     const sys = u.systemId ? a.catalog[u.systemId] : undefined;
     const lines: string[] = [];
     const status = u.status ? t(`game.status.${u.status}`) : null;
-    lines.push([u.count !== undefined ? t('game.army.count', { count: u.count }) : null, status].filter(Boolean).join(' · '));
+    lines.push(
+      [u.count !== undefined ? t('game.army.count', { count: u.count }) : null, status]
+        .filter(Boolean)
+        .join(' · '),
+    );
     const dest = u.move ? movementDestination(u.move) : undefined;
-    if (dest && u.status === 'moving') lines.push(t('game.callout.moving', { value: fmtKm(distanceKm(at, dest)) }));
-    out.push({ id: `sel:${id}`, at, title: sys?.name ?? t('game.selection.unknownType'), lines: lines.filter(Boolean), priority: 100 - i, tone: 'violet' });
+    if (dest && u.status === 'moving')
+      lines.push(t('game.callout.moving', { value: fmtKm(distanceKm(at, dest)) }));
+    out.push({
+      id: `sel:${id}`,
+      at,
+      title: sys?.name ?? t('game.selection.unknownType'),
+      lines: lines.filter(Boolean),
+      priority: 100 - i,
+      tone: 'violet',
+    });
   });
 
   const targetId = a.pending?.kind === 'attack' ? a.pending.targetId : a.inspected;
@@ -73,7 +85,10 @@ export function buildCallouts(a: CalloutArgs): CalloutContent[] {
     if (!def) continue;
     if (p.capture) {
       const span = Math.max(1, p.capture.completesAt - p.capture.startedAt);
-      const pct = Math.max(0, Math.min(100, Math.round(((a.t - p.capture.startedAt) / span) * 100)));
+      const pct = Math.max(
+        0,
+        Math.min(100, Math.round(((a.t - p.capture.startedAt) / span) * 100)),
+      );
       const threat = p.owner === a.me;
       out.push({
         id: `cap:${p.id}`,
@@ -86,7 +101,12 @@ export function buildCallouts(a: CalloutArgs): CalloutContent[] {
       continue;
     }
     // Sites principaux seulement : capitale dès le zoom régional, les autres de près (critique 6.4).
-    if (p.owner === a.me && p.buildings.length && (a.zoom >= 5.2 || (def.isCapital && a.zoom >= 3.6)) && (!a.inView || a.inView(def.cityPoint))) {
+    if (
+      p.owner === a.me &&
+      p.buildings.length &&
+      (a.zoom >= 5.2 || (def.isCapital && a.zoom >= 3.6)) &&
+      (!a.inView || a.inView(def.cityPoint))
+    ) {
       buildings.push({
         id: `bld:${p.id}`,
         at: def.cityPoint,

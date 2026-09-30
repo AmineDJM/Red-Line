@@ -19,7 +19,13 @@ export interface TabsProps<T extends string = string> {
 }
 
 /** Onglets accessibles (flèches gauche/droite). */
-export function Tabs<T extends string>({ tabs, value, onChange, label, scroll = true }: TabsProps<T>) {
+export function Tabs<T extends string>({
+  tabs,
+  value,
+  onChange,
+  label,
+  scroll = true,
+}: TabsProps<T>) {
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
   const onKey = (e: KeyboardEvent, i: number) => {
     if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
@@ -36,7 +42,11 @@ export function Tabs<T extends string>({ tabs, value, onChange, label, scroll = 
     }
   };
   return (
-    <div className={scroll ? 'rl-tabs rl-tabs--scroll' : 'rl-tabs'} role="tablist" aria-label={label}>
+    <div
+      className={scroll ? 'rl-tabs rl-tabs--scroll' : 'rl-tabs'}
+      role="tablist"
+      aria-label={label}
+    >
       {tabs.map((t, i) => (
         <button
           key={t.id}
@@ -49,7 +59,11 @@ export function Tabs<T extends string>({ tabs, value, onChange, label, scroll = 
           aria-disabled={t.disabled || undefined}
           tabIndex={t.id === value ? 0 : -1}
           title={t.hint}
-          className={['rl-tab', t.id === value ? 'rl-tab--active' : '', t.disabled ? 'rl-tab--disabled' : ''].join(' ')}
+          className={[
+            'rl-tab',
+            t.id === value ? 'rl-tab--active' : '',
+            t.disabled ? 'rl-tab--disabled' : '',
+          ].join(' ')}
           onClick={() => !t.disabled && onChange(t.id)}
           onKeyDown={(e) => onKey(e, i)}
         >

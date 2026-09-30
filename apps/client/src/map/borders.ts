@@ -103,7 +103,10 @@ function rings(f: Feature): Position[][] {
 }
 
 /** Arêtes indexées par paire de sommets non orientée, avec les propriétaires des provinces adjacentes. */
-export function buildEdgeIndex(geo: FeatureCollection, ownerOf: (provinceId: string) => Owner): Map<string, EdgeInfo> {
+export function buildEdgeIndex(
+  geo: FeatureCollection,
+  ownerOf: (provinceId: string) => Owner,
+): Map<string, EdgeInfo> {
   const edges = new Map<string, EdgeInfo>();
   for (const f of geo.features) {
     const id = String(f.properties?.id ?? f.id ?? '');
@@ -154,7 +157,11 @@ function chain(segs: [Position, Position][]): Position[][] {
   return lines;
 }
 
-export function computeBorders(geo: FeatureCollection, ownerOf: (provinceId: string) => Owner, me: string | null): BorderResult {
+export function computeBorders(
+  geo: FeatureCollection,
+  ownerOf: (provinceId: string) => Owner,
+  me: string | null,
+): BorderResult {
   const edges = buildEdgeIndex(geo, ownerOf);
   const nationSegs: [Position, Position][] = [];
   const mineSegs: [Position, Position][] = [];
@@ -169,7 +176,15 @@ export function computeBorders(geo: FeatureCollection, ownerOf: (provinceId: str
   }
   const fc = (segs: [Position, Position][]): FeatureCollection<MultiLineString> => ({
     type: 'FeatureCollection',
-    features: segs.length ? [{ type: 'Feature', properties: {}, geometry: { type: 'MultiLineString', coordinates: chain(segs) } }] : [],
+    features: segs.length
+      ? [
+          {
+            type: 'Feature',
+            properties: {},
+            geometry: { type: 'MultiLineString', coordinates: chain(segs) },
+          },
+        ]
+      : [],
   });
   return { nations: fc(nationSegs), mine: fc(mineSegs) };
 }

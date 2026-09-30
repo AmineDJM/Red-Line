@@ -3,7 +3,16 @@
  * Chargé paresseusement (jamais inclus dans le parcours normal).
  */
 import type { FeatureCollection } from 'geojson';
-import type { CreateGameBody, GameMeta, NationDef, NationId, ProvinceDef, PublicUser, ScenarioSummary, WeaponSystem } from '@redline/shared';
+import type {
+  CreateGameBody,
+  GameMeta,
+  NationDef,
+  NationId,
+  ProvinceDef,
+  PublicUser,
+  ScenarioSummary,
+  WeaponSystem,
+} from '@redline/shared';
 import { FALLBACK_TILES, FONTS } from '../config.js';
 import { loadBasemap, probeBinary } from './http.js';
 import type { Api, BasemapData, Credentials, RegisterInput, TilesInfo } from './types.js';
@@ -54,7 +63,14 @@ async function loadRealData(): Promise<MockWorld | null> {
       getJson<{ systems: WeaponSystem[] }>('/api/catalog'),
     ]);
     if (!n.nations.length || !p.provinces.length) return null;
-    return { nations: n.nations, provinces: p.provinces, geo, catalog: c.systems, basemap: await loadBasemap(), source: 'data' };
+    return {
+      nations: n.nations,
+      provinces: p.provinces,
+      geo,
+      catalog: c.systems,
+      basemap: await loadBasemap(),
+      source: 'data',
+    };
   } catch {
     return null;
   }
@@ -74,7 +90,13 @@ async function loadMinimalFixtures(): Promise<MockWorld> {
     provinces: p.default.provinces as unknown as ProvinceDef[],
     geo: JSON.parse(g.default) as FeatureCollection,
     catalog: c.default.systems as unknown as WeaponSystem[],
-    basemap: { land: JSON.parse(l.default) as FeatureCollection, coastline: null, seas: JSON.parse(s.default) as FeatureCollection, countries: null, cities: null },
+    basemap: {
+      land: JSON.parse(l.default) as FeatureCollection,
+      coastline: null,
+      seas: JSON.parse(s.default) as FeatureCollection,
+      countries: null,
+      cities: null,
+    },
     source: 'fixtures',
   };
 }
@@ -82,11 +104,18 @@ async function loadMinimalFixtures(): Promise<MockWorld> {
 /** Données du mode démonstration : vraies données si disponibles (?fixtures=1 force les fixtures). */
 export function loadFixtures(): Promise<MockWorld> {
   const forceFixtures = new URLSearchParams(window.location.search).get('fixtures') === '1';
-  fixtures ??= (async () => (forceFixtures ? null : await loadRealData()) ?? loadMinimalFixtures())();
+  fixtures ??= (async () =>
+    (forceFixtures ? null : await loadRealData()) ?? loadMinimalFixtures())();
   return fixtures;
 }
 
-const guestUser: PublicUser = { id: 'guest-demo', displayName: 'Invité', email: null, role: 'player', isGuest: true };
+const guestUser: PublicUser = {
+  id: 'guest-demo',
+  displayName: 'Invité',
+  email: null,
+  role: 'player',
+  isGuest: true,
+};
 
 export class MockApi implements Api {
   readonly kind = 'mock' as const;
@@ -100,11 +129,23 @@ export class MockApi implements Api {
     return guestUser;
   }
   async login(body: Credentials) {
-    this.user = { id: 'demo', displayName: body.email.split('@')[0] ?? 'Joueur', email: body.email, role: 'player', isGuest: false };
+    this.user = {
+      id: 'demo',
+      displayName: body.email.split('@')[0] ?? 'Joueur',
+      email: body.email,
+      role: 'player',
+      isGuest: false,
+    };
     return this.user;
   }
   async register(body: RegisterInput) {
-    this.user = { id: 'demo', displayName: body.displayName, email: body.email, role: 'player', isGuest: false };
+    this.user = {
+      id: 'demo',
+      displayName: body.displayName,
+      email: body.email,
+      role: 'player',
+      isGuest: false,
+    };
     return this.user;
   }
   async logout() {
@@ -136,11 +177,19 @@ export class MockApi implements Api {
   async scenarios() {
     try {
       const res = await fetch('/api/scenarios', { headers: MOCK_HEADER });
-      if (res.ok && (res.headers.get('content-type') ?? '').includes('json')) return ((await res.json()) as { scenarios: ScenarioSummary[] }).scenarios;
+      if (res.ok && (res.headers.get('content-type') ?? '').includes('json'))
+        return ((await res.json()) as { scenarios: ScenarioSummary[] }).scenarios;
     } catch {
       /* repli */
     }
-    return [{ id: 'world-today', name: 'Le monde aujourd’hui', description: '', playableNations: 'all' as const }];
+    return [
+      {
+        id: 'world-today',
+        name: 'Le monde aujourd’hui',
+        description: '',
+        playableNations: 'all' as const,
+      },
+    ];
   }
   async createGame(body: CreateGameBody): Promise<GameMeta> {
     try {

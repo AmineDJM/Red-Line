@@ -11,17 +11,27 @@ const require = createRequire(import.meta.url);
 const { chromium } = require('@playwright/test');
 
 const base = process.argv[2] ?? 'http://localhost:5173';
-const out = path.resolve(process.argv[3] ?? 'screenshots');
+const out = path.resolve(process.argv[3] ?? 'test-results/screenshots');
 const only = process.env.SHOTS ? process.env.SHOTS.split(',') : null;
 fs.mkdirSync(out, { recursive: true });
 
 const VIEWPORTS = {
-  mobile: { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true },
+  mobile: {
+    viewport: { width: 390, height: 844 },
+    deviceScaleFactor: 2,
+    isMobile: true,
+    hasTouch: true,
+  },
   desktop: { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 },
 };
 
 const browser = await chromium.launch({
-  args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--enable-webgl'],
+  args: [
+    '--use-angle=swiftshader',
+    '--enable-unsafe-swiftshader',
+    '--ignore-gpu-blocklist',
+    '--enable-webgl',
+  ],
 });
 
 const logs = [];
@@ -39,14 +49,21 @@ async function page(vp, { tutorialDone = true, legendOpen = false } = {}) {
   );
   const p = await ctx.newPage();
   p.on('console', (m) => {
-    if (m.type() === 'error' || m.type() === 'warning') logs.push(`[${vp}] ${m.type()}: ${m.text()}`);
+    if (m.type() === 'error' || m.type() === 'warning')
+      logs.push(`[${vp}] ${m.type()}: ${m.text()}`);
   });
   p.on('pageerror', (e) => logs.push(`[${vp}] pageerror: ${e.message}`));
   return { ctx, p };
 }
 
 async function waitMap(p) {
-  await p.waitForFunction(() => window.__rlMap?.map?.loaded?.() && window.__rlMap.map.areTilesLoaded(), null, { timeout: 12_000 }).catch(() => {});
+  await p
+    .waitForFunction(
+      () => window.__rlMap?.map?.loaded?.() && window.__rlMap.map.areTilesLoaded(),
+      null,
+      { timeout: 12_000 },
+    )
+    .catch(() => {});
   await p.waitForTimeout(1800);
 }
 
@@ -77,7 +94,7 @@ for (const vp of ['desktop', 'mobile']) {
     await shot(p, `new-${vp}`);
     await ctx.close();
   }
-  if (want(`game-${vp}`) || want(`select-${vp}`) || want(`order-${vp}`) || want(`attack-${vp}`) || want(`drawer-${vp}`)) {
+  if (['game', 'select', 'order', 'attack', 'drawer', 'end'].some((k) => want(`${k}-${vp}`))) {
     const { ctx, p } = await page(vp);
     await p.goto(`${base}/game/demo?mock=1`);
     await waitMap(p);
@@ -96,7 +113,10 @@ for (const vp of ['desktop', 'mobile']) {
       const me = game.getState().me;
       const own = Object.values(v.units).filter((u) => u.owner === me);
       const cat = (u) => world.getState().catalog[u.systemId]?.category;
-      const u = own.find((x) => cat(x) === 'air_defense') ?? own.find((x) => cat(x) === 'artillery') ?? own[0];
+      const u =
+        own.find((x) => cat(x) === 'air_defense') ??
+        own.find((x) => cat(x) === 'artillery') ??
+        own[0];
       ui.getState().select([u.id]);
       return u.id;
     });
@@ -119,8 +139,13 @@ for (const vp of ['desktop', 'mobile']) {
       const me = game.getState().me;
       const u = v.units[id];
       const enemies = Object.values(v.units).filter((x) => x.owner !== me);
-      enemies.sort((a, b) => Math.hypot(a.pos[0] - u.pos[0], a.pos[1] - u.pos[1]) - Math.hypot(b.pos[0] - u.pos[0], b.pos[1] - u.pos[1]));
-      if (enemies[0]) ui.getState().setPending({ kind: 'attack', unitIds: [id], targetId: enemies[0].id });
+      enemies.sort(
+        (a, b) =>
+          Math.hypot(a.pos[0] - u.pos[0], a.pos[1] - u.pos[1]) -
+          Math.hypot(b.pos[0] - u.pos[0], b.pos[1] - u.pos[1]),
+      );
+      if (enemies[0])
+        ui.getState().setPending({ kind: 'attack', unitIds: [id], targetId: enemies[0].id });
     }, picked);
     await p.waitForTimeout(900);
     if (want(`attack-${vp}`)) await shot(p, `attack-${vp}`);
@@ -138,6 +163,16 @@ for (const vp of ['desktop', 'mobile']) {
       await p.evaluate(() => window.__rl.ui.getState().openDrawer('army'));
       await p.waitForTimeout(700);
       await shot(p, `drawer-army-${vp}`);
+    }
+    if (want(`end-${vp}`)) {
+      await p.evaluate(() => {
+        window.__rl.ui.getState().openDrawer(null);
+        window.__rl.game.setState((s) => ({
+          view: { ...s.view, victory: { ...s.view.victory, winner: s.me } },
+        }));
+      });
+      await p.waitForTimeout(600);
+      await shot(p, `end-${vp}`);
     }
     await ctx.close();
   }
@@ -162,7 +197,9 @@ for (const vp of ['desktop', 'mobile']) {
       await p.mouse.click(box.x + box.width * dx, box.y + box.height * dy);
       await p.waitForTimeout(150);
     };
-    const systems = await p.evaluate(() => [...document.querySelectorAll('.rl-drawer--open select')[1].options].map((o) => o.value));
+    const systems = await p.evaluate(() =>
+      [...document.querySelectorAll('.rl-drawer--open select')[1].options].map((o) => o.value),
+    );
     const pick = (re) => systems.find((s) => re.test(s)) ?? systems[0];
     const tank = pick(/leopard|abrams|t-90|t-72|tank|char/i);
     const inf = pick(/inf/i);
@@ -178,7 +215,10 @@ for (const vp of ['desktop', 'mobile']) {
     await shot(p, `sandbox-setup-${vp}`);
     await p.locator('.rl-drawer--open .rl-btn--primary').click();
     await p.waitForTimeout(1500);
-    const msg = await p.locator('.rl-drawer--open .error-text').textContent().catch(() => null);
+    const msg = await p
+      .locator('.rl-drawer--open .error-text')
+      .textContent()
+      .catch(() => null);
     if (msg) console.log('bac à sable :', msg);
     const orders = await p.evaluate(async () => {
       const g = window.__rl.game.getState();
@@ -187,8 +227,16 @@ for (const vp of ['desktop', 'mobile']) {
       const deu = units.filter((u) => u.owner === 'deu');
       const res = [];
       // Le moteur exige une cible visible : on marche d'abord sur la position ennemie.
-      if (fra.length && deu[0]) res.push(await g.connection.sendOrder({ kind: 'move', unitIds: fra, to: deu[0].pos }));
-      if (deu.length && fra[0]) res.push(await g.connection.sendOrder({ kind: 'move', unitIds: deu.map((u) => u.id), to: units.find((u) => u.id === fra[0]).pos }));
+      if (fra.length && deu[0])
+        res.push(await g.connection.sendOrder({ kind: 'move', unitIds: fra, to: deu[0].pos }));
+      if (deu.length && fra[0])
+        res.push(
+          await g.connection.sendOrder({
+            kind: 'move',
+            unitIds: deu.map((u) => u.id),
+            to: units.find((u) => u.id === fra[0]).pos,
+          }),
+        );
       g.connection.setSpeed(1440);
       g.connection.setPaused(false);
       window.__rl.ui.getState().openDrawer(null);
@@ -202,7 +250,16 @@ for (const vp of ['desktop', 'mobile']) {
     await shot(p, `sandbox-combat-${vp}`);
     const summary = await p.evaluate(() => {
       const g = window.__rl.game.getState();
-      return { time: g.view?.time, units: Object.values(g.view?.units ?? {}).map((u) => [u.owner, u.status, u.hpRatio, u.count]), notes: g.notifications.map((n) => n.item.kind) };
+      return {
+        time: g.view?.time,
+        units: Object.values(g.view?.units ?? {}).map((u) => [
+          u.owner,
+          u.status,
+          u.hpRatio,
+          u.count,
+        ]),
+        notes: g.notifications.map((n) => n.item.kind),
+      };
     });
     console.log('état bac à sable :', JSON.stringify(summary));
     await ctx.close();
@@ -211,7 +268,9 @@ for (const vp of ['desktop', 'mobile']) {
     const { ctx, p } = await page(vp);
     await p.goto(`${base}/game/demo?mock=1`);
     await waitMap(p);
-    await p.evaluate(() => window.__rlMap.map.jumpTo({ center: [20, 25], zoom: window.innerWidth < 768 ? 1.4 : 2.1 }));
+    await p.evaluate(() =>
+      window.__rlMap.map.jumpTo({ center: [20, 25], zoom: window.innerWidth < 768 ? 1.4 : 2.1 }),
+    );
     await waitMap(p);
     await shot(p, `world-${vp}`);
     await ctx.close();

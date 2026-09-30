@@ -124,7 +124,11 @@ describe('IA', () => {
     const produced = Object.values(s.units).filter((u) => u.owner === 'bbb').length;
     expect(produced).toBeGreaterThan(4);
     // aaa prend bbb-4.
-    applyOrder(s, 'aaa', { kind: 'move', unitIds: ids(s, 'aaa', 'tst.infantry'), to: cityOf('bbb-4') });
+    applyOrder(s, 'aaa', {
+      kind: 'move',
+      unitIds: ids(s, 'aaa', 'tst.infantry'),
+      to: cityOf('bbb-4'),
+    });
     const orders: string[] = [];
     for (let t = 2 * DAY; t <= 6 * DAY; t += HOUR) {
       advanceTo(s, t);

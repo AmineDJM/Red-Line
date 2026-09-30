@@ -4,7 +4,14 @@ import type { PictogramId } from '../pictograms.js';
 
 export type LegendItem =
   | { kind: 'hex'; label: string; color: string; pictogram?: PictogramId }
-  | { kind: 'line'; label: string; color: string; dashed?: boolean; arrow?: boolean; width?: number }
+  | {
+      kind: 'line';
+      label: string;
+      color: string;
+      dashed?: boolean;
+      arrow?: boolean;
+      width?: number;
+    }
   | { kind: 'swatch'; label: string; color: string; glow?: boolean }
   | { kind: 'ring'; label: string; color: string }
   | { kind: 'hatch'; label: string; color: string }
@@ -41,7 +48,10 @@ function Mark({ item }: { item: LegendItem }) {
       return (
         <span
           className="rl-legend__swatch"
-          style={{ background: item.color, boxShadow: item.glow ? `0 0 6px 1px ${item.color}` : undefined }}
+          style={{
+            background: item.color,
+            boxShadow: item.glow ? `0 0 6px 1px ${item.color}` : undefined,
+          }}
           aria-hidden
         />
       );
@@ -49,19 +59,43 @@ function Mark({ item }: { item: LegendItem }) {
       return (
         <svg width="28" height="18" viewBox="0 0 28 18" aria-hidden>
           <path d="M3 16 A11 11 0 0 1 25 16" fill="none" stroke={item.color} strokeWidth="2.5" />
-          <path d="M8 16 A6 6 0 0 1 20 16" fill="none" stroke={item.color} strokeOpacity="0.5" strokeWidth="1" />
-          <path d="M3 16 A11 11 0 0 1 25 16 L20 16 A6 6 0 0 0 8 16 Z" fill={item.color} fillOpacity="0.28" />
+          <path
+            d="M8 16 A6 6 0 0 1 20 16"
+            fill="none"
+            stroke={item.color}
+            strokeOpacity="0.5"
+            strokeWidth="1"
+          />
+          <path
+            d="M3 16 A11 11 0 0 1 25 16 L20 16 A6 6 0 0 0 8 16 Z"
+            fill={item.color}
+            fillOpacity="0.28"
+          />
         </svg>
       );
     case 'hatch':
       return (
         <svg width="28" height="16" viewBox="0 0 28 16" aria-hidden>
           <defs>
-            <pattern id={`rl-h-${item.color.replace(/[^a-z0-9]/gi, '')}`} width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <pattern
+              id={`rl-h-${item.color.replace(/[^a-z0-9]/gi, '')}`}
+              width="4"
+              height="4"
+              patternUnits="userSpaceOnUse"
+              patternTransform="rotate(45)"
+            >
               <line x1="0" y1="0" x2="0" y2="4" stroke={item.color} strokeWidth="1.6" />
             </pattern>
           </defs>
-          <rect x="1" y="1" width="26" height="14" fill={`url(#rl-h-${item.color.replace(/[^a-z0-9]/gi, '')})`} stroke={item.color} strokeOpacity="0.6" />
+          <rect
+            x="1"
+            y="1"
+            width="26"
+            height="14"
+            fill={`url(#rl-h-${item.color.replace(/[^a-z0-9]/gi, '')})`}
+            stroke={item.color}
+            strokeOpacity="0.6"
+          />
         </svg>
       );
     case 'triangle':
@@ -71,7 +105,15 @@ function Mark({ item }: { item: LegendItem }) {
           {item.badge ? (
             <>
               <circle cx="21" cy="6" r="5" fill="var(--rl-red)" />
-              <text x="21" y="8.6" textAnchor="middle" fontSize="7.5" fontWeight="700" fill="#fff" fontFamily="var(--rl-font-mono)">
+              <text
+                x="21"
+                y="8.6"
+                textAnchor="middle"
+                fontSize="7.5"
+                fontWeight="700"
+                fill="#fff"
+                fontFamily="var(--rl-font-mono)"
+              >
                 {item.badge}
               </text>
             </>

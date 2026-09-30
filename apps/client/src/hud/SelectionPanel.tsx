@@ -1,5 +1,13 @@
 import { useTranslation } from 'react-i18next';
-import { BracketFrame, Button, HexIcon, Meter, StatLine, WeaponCard, pictogramFor } from '@redline/ui';
+import {
+  BracketFrame,
+  Button,
+  HexIcon,
+  Meter,
+  StatLine,
+  WeaponCard,
+  pictogramFor,
+} from '@redline/ui';
 import { fmtDuration, fmtInt, fmtKm } from '../i18n/index.js';
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
@@ -28,28 +36,64 @@ export function SelectionPanel({ compact }: { compact: boolean }) {
 
   const extra = (
     <div className="sel-extra">
-      {selection.length > 1 ? <div className="sel-extra__multi">{t('game.selection.multi', { count: selection.length })}</div> : null}
-      {!own ? <StatLine label={t('game.selection.owner')} value={view.nations[u.owner]?.name ?? u.owner} tone="plain" mono={false} /> : null}
-      {u.count !== undefined ? <StatLine label={t('game.selection.count')} value={fmtInt(u.count)} /> : null}
-      {u.status ? <StatLine label={t('game.selection.status')} value={t(`game.status.${u.status}`)} tone={u.status === 'combat' ? 'critical' : 'plain'} mono={false} /> : null}
+      {selection.length > 1 ? (
+        <div className="sel-extra__multi">
+          {t('game.selection.multi', { count: selection.length })}
+        </div>
+      ) : null}
+      {!own ? (
+        <StatLine
+          label={t('game.selection.owner')}
+          value={view.nations[u.owner]?.name ?? u.owner}
+          tone="plain"
+          mono={false}
+        />
+      ) : null}
+      {u.count !== undefined ? (
+        <StatLine label={t('game.selection.count')} value={fmtInt(u.count)} />
+      ) : null}
+      {u.status ? (
+        <StatLine
+          label={t('game.selection.status')}
+          value={t(`game.status.${u.status}`)}
+          tone={u.status === 'combat' ? 'critical' : 'plain'}
+          mono={false}
+        />
+      ) : null}
       {u.hpRatio !== undefined ? (
         <div className="sel-extra__hp">
           <span>{t('game.selection.hp')}</span>
-          <Meter value={u.hpRatio} tone={u.hpRatio < 0.3 ? 'critical' : u.hpRatio < 0.6 ? 'accent' : 'ok'} label={t('game.selection.hp')} />
+          <Meter
+            value={u.hpRatio}
+            tone={u.hpRatio < 0.3 ? 'critical' : u.hpRatio < 0.6 ? 'accent' : 'ok'}
+            label={t('game.selection.hp')}
+          />
           <span className="rl-mono">{Math.round(u.hpRatio * 100)} %</span>
         </div>
       ) : null}
       {!own && u.level !== 'precise' ? (
         <div className="sel-extra__intel">
           <span className="sel-extra__lvl">{t(`game.level.${u.level}`)}</span>
-          {now - u.lastSeen > 60_000 ? <span>{t('game.selection.lastSeen', { value: fmtDuration(now - u.lastSeen) })}</span> : null}
-          {u.uncertaintyKm > 0 ? <span>{t('game.selection.uncertainty', { value: fmtKm(u.uncertaintyKm) })}</span> : null}
+          {now - u.lastSeen > 60_000 ? (
+            <span>{t('game.selection.lastSeen', { value: fmtDuration(now - u.lastSeen) })}</span>
+          ) : null}
+          {u.uncertaintyKm > 0 ? (
+            <span>{t('game.selection.uncertainty', { value: fmtKm(u.uncertaintyKm) })}</span>
+          ) : null}
         </div>
       ) : null}
       {own ? (
         <div className="sel-extra__actions">
           {u.status === 'moving' ? (
-            <Button icon={Icons.stop(14)} onClick={() => void conn?.sendOrder({ kind: 'stop', unitIds: selection.length ? selection : [u.id] })}>
+            <Button
+              icon={Icons.stop(14)}
+              onClick={() =>
+                void conn?.sendOrder({
+                  kind: 'stop',
+                  unitIds: selection.length ? selection : [u.id],
+                })
+              }
+            >
               {t('game.selection.stop')}
             </Button>
           ) : null}
@@ -76,12 +120,25 @@ export function SelectionPanel({ compact }: { compact: boolean }) {
       ) : (
         <BracketFrame className="rl-weapon">
           <div className="rl-weapon__head">
-            <HexIcon pictogram={sys ? pictogramFor(sys) : 'unknown'} color={u.level === 'detected' ? '#5b6477' : nationColor(u.owner, { me, nations: view.nations })} size={compact ? 46 : 56} />
+            <HexIcon
+              pictogram={sys ? pictogramFor(sys) : 'unknown'}
+              color={
+                u.level === 'detected'
+                  ? '#5b6477'
+                  : nationColor(u.owner, { me, nations: view.nations })
+              }
+              size={compact ? 46 : 56}
+            />
             <div className="rl-weapon__titles">
               <div className="rl-weapon__name">{t('game.legend.detected')}</div>
               <div className="rl-weapon__sub">{view.nations[u.owner]?.name ?? ''}</div>
             </div>
-            <button type="button" className="rl-weapon__close" onClick={clear} aria-label={t('game.selection.deselect')}>
+            <button
+              type="button"
+              className="rl-weapon__close"
+              onClick={clear}
+              aria-label={t('game.selection.deselect')}
+            >
               {Icons.close(16)}
             </button>
           </div>

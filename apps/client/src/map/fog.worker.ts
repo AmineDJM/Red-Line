@@ -16,7 +16,10 @@ let territory: Poly[] = [];
 let lastCircles: SensorCircle[] = [];
 let lastSeq = 0;
 
-const scope = self as unknown as { onmessage: ((e: MessageEvent<FogRequest>) => void) | null; postMessage(m: FogResponse): void };
+const scope = self as unknown as {
+  onmessage: ((e: MessageEvent<FogRequest>) => void) | null;
+  postMessage(m: FogResponse): void;
+};
 
 function compute(seq: number) {
   const t0 = performance.now();

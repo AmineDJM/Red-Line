@@ -5,7 +5,13 @@
  */
 import type { Map as MlMap } from 'maplibre-gl';
 import type { LngLat } from '@redline/shared';
-import { placeCallouts, type CalloutInput, type PlacedCallout, type Point, type Rect } from './callouts.js';
+import {
+  placeCallouts,
+  type CalloutInput,
+  type PlacedCallout,
+  type Point,
+  type Rect,
+} from './callouts.js';
 
 export interface CalloutContent {
   id: string;
@@ -52,6 +58,8 @@ export class OverlayRenderer {
   private w = 0;
   private h = 0;
   private previous = new Map<string, number>();
+  /** La dernière image a dessiné quelque chose. */
+  private hasInk = false;
   private measureCache = new Map<string, { w: number; h: number }>();
   /** Zones d'interface à éviter (px CSS, relatives au canvas). */
   insets = { top: 0, right: 0, bottom: 0, left: 0 };
@@ -94,8 +102,21 @@ export class OverlayRenderer {
 
   draw(content: OverlayContent) {
     const ctx = this.ctx;
+    const empty = !content.routes.length && !content.badges.length && !content.callouts.length;
+    if (empty) {
+      // Chromium n'applique pas toujours un clearRect seul (aucun dessin ensuite) : sans cette remise
+      // à zéro explicite, les dernières étiquettes resteraient figées à l'écran après un saut de caméra.
+      if (this.hasInk) {
+        this.canvas.width = this.canvas.width;
+        this.hasInk = false;
+      }
+      this.previous.clear();
+      return;
+    }
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
-    ctx.clearRect(0, 0, this.w, this.h);
+    this.hasInk = true;
     const segments = this.drawRoutes(content.routes);
     this.drawBadges(content.badges);
     this.drawCallouts(content.callouts, segments, content.icons ?? []);

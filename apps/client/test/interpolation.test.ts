@@ -8,7 +8,15 @@ const move: Movement = {
     { from: [10, 0], to: [10, 10], t0: 10 * HOUR, t1: 20 * HOUR, medium: 'land' },
   ],
 };
-const u = (m?: Movement): UnitView => ({ id: 'u', owner: 'fra', level: 'own', pos: [5, 5], lastSeen: 0, uncertaintyKm: 0, ...(m ? { move: m } : {}) });
+const u = (m?: Movement): UnitView => ({
+  id: 'u',
+  owner: 'fra',
+  level: 'own',
+  pos: [5, 5],
+  lastSeen: 0,
+  uncertaintyKm: 0,
+  ...(m ? { move: m } : {}),
+});
 
 describe('interpolation des positions', () => {
   it("renvoie la position fixe d'une unité sans trajet", () => {
@@ -53,8 +61,11 @@ describe('interpolation des positions', () => {
   });
 
   it('déplie les longitudes à travers l’antiméridien', () => {
-    const m: Movement = { legs: [{ from: [170, 0], to: [-170, 0], t0: 0, t1: HOUR, medium: 'air' }] };
+    const m: Movement = {
+      legs: [{ from: [170, 0], to: [-170, 0], t0: 0, t1: HOUR, medium: 'air' }],
+    };
     const path = remainingPath(m, 0);
-    for (let i = 1; i < path.length; i++) expect(Math.abs(path[i]![0] - path[i - 1]![0])).toBeLessThan(10);
+    for (let i = 1; i < path.length; i++)
+      expect(Math.abs(path[i]![0] - path[i - 1]![0])).toBeLessThan(10);
   });
 });

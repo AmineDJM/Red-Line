@@ -13,7 +13,13 @@ import type { GameSetup, World } from '../api.js';
 import { seedRng } from '../rng/rng.js';
 import { schedule } from './access.js';
 import { addToIndex, emptyRuntime } from './runtime.js';
-import { STATE_FORMAT, type AiLevel, type EngineState, type NationState, type StateData } from './types.js';
+import {
+  STATE_FORMAT,
+  type AiLevel,
+  type EngineState,
+  type NationState,
+  type StateData,
+} from './types.js';
 import { wi } from './world.js';
 import { spawnUnit } from './units.js';
 import { registerProvinceZone } from '../encounters/pairs.js';
@@ -36,7 +42,11 @@ export function createGameImpl(world: World, setup: GameSetup): EngineState {
   const inGame = new Set(nationIds);
   const players = setup.players
     .filter((p) => inGame.has(p.nationId))
-    .map((p) => ({ nationId: p.nationId, isAi: p.isAi, aiLevel: (p.aiLevel ?? 'normal') as AiLevel }))
+    .map((p) => ({
+      nationId: p.nationId,
+      isAi: p.isAi,
+      aiLevel: (p.aiLevel ?? 'normal') as AiLevel,
+    }))
     .sort((a, b) => (a.nationId < b.nationId ? -1 : a.nationId > b.nationId ? 1 : 0));
 
   const data: StateData = {

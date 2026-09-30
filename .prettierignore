@@ -5,3 +5,8 @@ data/map/cells.json
 data/basemap
 data/tiles
 *.pmtiles
+apps/client/test-fixtures
+data/map
+data/glyphs
+tools/**/.cache
+.pgdata

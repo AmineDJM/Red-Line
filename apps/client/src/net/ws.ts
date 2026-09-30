@@ -1,4 +1,10 @@
-import { decodeMessage, encodeMessage, type ClientMessage, type Order, type ServerMessage } from '@redline/shared';
+import {
+  decodeMessage,
+  encodeMessage,
+  type ClientMessage,
+  type Order,
+  type ServerMessage,
+} from '@redline/shared';
 import { ClockSync } from './clockSync.js';
 import { Emitter, type GameConnection, type OrderOutcome } from './connection.js';
 
@@ -32,11 +38,17 @@ export class WsGameConnection extends Emitter implements GameConnection {
   private attempt = 0;
   private closed = false;
   private nextId = 1;
-  private pending = new Map<number, { resolve: (o: OrderOutcome) => void; timer: ReturnType<typeof setTimeout> }>();
+  private pending = new Map<
+    number,
+    { resolve: (o: OrderOutcome) => void; timer: ReturnType<typeof setTimeout> }
+  >();
   private readonly sync = new ClockSync();
   private pingTimer: ReturnType<typeof setInterval> | null = null;
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
-  private readonly opts: Required<Omit<WsOptions, 'url' | 'WebSocketImpl'>> & { url: string; WebSocketImpl: WsCtor };
+  private readonly opts: Required<Omit<WsOptions, 'url' | 'WebSocketImpl'>> & {
+    url: string;
+    WebSocketImpl: WsCtor;
+  };
 
   constructor(
     readonly gameId: string,

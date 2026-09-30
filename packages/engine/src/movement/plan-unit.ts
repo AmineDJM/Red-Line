@@ -1,4 +1,10 @@
-import { distanceKm, type Leg, type LngLat, type NationId, type OrderErrorCode } from '@redline/shared';
+import {
+  distanceKm,
+  type Leg,
+  type LngLat,
+  type NationId,
+  type OrderErrorCode,
+} from '@redline/shared';
 import { planAir, planSurface, type SurfaceSegments } from '../nav/plan.js';
 import { provincesOf, sysOf, unitPosAt } from '../state/access.js';
 import type { EngineState, Unit } from '../state/types.js';

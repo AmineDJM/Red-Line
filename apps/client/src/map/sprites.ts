@@ -22,9 +22,18 @@ function hexPathOn(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: num
   ctx.closePath();
 }
 
-function add(map: MlMap, id: string, img: { width: number; height: number; data: Uint8ClampedArray }, sdf: boolean) {
+function add(
+  map: MlMap,
+  id: string,
+  img: { width: number; height: number; data: Uint8ClampedArray },
+  sdf: boolean,
+) {
   if (map.hasImage(id)) map.removeImage(id);
-  map.addImage(id, { width: img.width, height: img.height, data: new Uint8Array(img.data.buffer) }, { pixelRatio: PIXEL_RATIO, sdf });
+  map.addImage(
+    id,
+    { width: img.width, height: img.height, data: new Uint8Array(img.data.buffer) },
+    { pixelRatio: PIXEL_RATIO, sdf },
+  );
 }
 
 export function registerSprites(map: MlMap) {
@@ -147,7 +156,8 @@ function hatch(size: number, color: string, width: number) {
 
 // ——— Étiquettes en image (repli sans glyphes PBF) ———
 
-export type TextStyle = 'country-l' | 'country-m' | 'country-s' | 'sea-l' | 'sea-s' | 'count' | 'prov';
+export type TextStyle =
+  'country-l' | 'country-m' | 'country-s' | 'sea-l' | 'sea-s' | 'count' | 'prov';
 
 interface TextSpec {
   font: string;
@@ -160,13 +170,69 @@ interface TextSpec {
 }
 
 const TEXT: Record<TextStyle, TextSpec> = {
-  'country-l': { font: '700 {s}px "Barlow Condensed", "Arial Narrow", sans-serif', size: 19, spacing: 0.22, color: '#ffffff', halo: 'rgba(0,0,0,0.75)', haloWidth: 3, upper: true },
-  'country-m': { font: '700 {s}px "Barlow Condensed", "Arial Narrow", sans-serif', size: 15, spacing: 0.2, color: '#ffffff', halo: 'rgba(0,0,0,0.75)', haloWidth: 3, upper: true },
-  'country-s': { font: '700 {s}px "Barlow Condensed", "Arial Narrow", sans-serif', size: 12, spacing: 0.16, color: 'rgba(255,255,255,0.92)', halo: 'rgba(0,0,0,0.7)', haloWidth: 2.5, upper: true },
-  'sea-l': { font: 'italic 400 {s}px "IBM Plex Sans", sans-serif', size: 14, spacing: 0.12, color: '#8d99ad', halo: 'rgba(0,0,0,0.5)', haloWidth: 2, upper: false },
-  'sea-s': { font: 'italic 400 {s}px "IBM Plex Sans", sans-serif', size: 12, spacing: 0.08, color: '#8391a6', halo: 'rgba(0,0,0,0.5)', haloWidth: 2, upper: false },
-  count: { font: '600 {s}px "IBM Plex Mono", monospace', size: 12, spacing: 0, color: '#ffffff', halo: 'rgba(0,0,0,0.6)', haloWidth: 2, upper: false },
-  prov: { font: '400 {s}px "IBM Plex Sans", sans-serif', size: 11, spacing: 0.04, color: 'rgba(235,240,250,0.85)', halo: 'rgba(0,0,0,0.7)', haloWidth: 2, upper: false },
+  'country-l': {
+    font: '700 {s}px "Barlow Condensed", "Arial Narrow", sans-serif',
+    size: 19,
+    spacing: 0.22,
+    color: '#ffffff',
+    halo: 'rgba(0,0,0,0.75)',
+    haloWidth: 3,
+    upper: true,
+  },
+  'country-m': {
+    font: '700 {s}px "Barlow Condensed", "Arial Narrow", sans-serif',
+    size: 15,
+    spacing: 0.2,
+    color: '#ffffff',
+    halo: 'rgba(0,0,0,0.75)',
+    haloWidth: 3,
+    upper: true,
+  },
+  'country-s': {
+    font: '700 {s}px "Barlow Condensed", "Arial Narrow", sans-serif',
+    size: 12,
+    spacing: 0.16,
+    color: 'rgba(255,255,255,0.92)',
+    halo: 'rgba(0,0,0,0.7)',
+    haloWidth: 2.5,
+    upper: true,
+  },
+  'sea-l': {
+    font: 'italic 400 {s}px "IBM Plex Sans", sans-serif',
+    size: 14,
+    spacing: 0.12,
+    color: '#8d99ad',
+    halo: 'rgba(0,0,0,0.5)',
+    haloWidth: 2,
+    upper: false,
+  },
+  'sea-s': {
+    font: 'italic 400 {s}px "IBM Plex Sans", sans-serif',
+    size: 12,
+    spacing: 0.08,
+    color: '#8391a6',
+    halo: 'rgba(0,0,0,0.5)',
+    haloWidth: 2,
+    upper: false,
+  },
+  count: {
+    font: '600 {s}px "IBM Plex Mono", monospace',
+    size: 12,
+    spacing: 0,
+    color: '#ffffff',
+    halo: 'rgba(0,0,0,0.6)',
+    haloWidth: 2,
+    upper: false,
+  },
+  prov: {
+    font: '400 {s}px "IBM Plex Sans", sans-serif',
+    size: 11,
+    spacing: 0.04,
+    color: 'rgba(235,240,250,0.85)',
+    halo: 'rgba(0,0,0,0.7)',
+    haloWidth: 2,
+    upper: false,
+  },
 };
 
 export const TEXT_IMAGE_PREFIX = 'txt|';
@@ -182,7 +248,14 @@ function spacedWidth(ctx: CanvasRenderingContext2D, text: string, spacingPx: num
   return Math.max(0, w - spacingPx);
 }
 
-function drawSpaced(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, spacingPx: number, stroke: boolean) {
+function drawSpaced(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  spacingPx: number,
+  stroke: boolean,
+) {
   let cx = x;
   for (const ch of text) {
     if (stroke) ctx.strokeText(ch, cx, y);
@@ -227,6 +300,10 @@ export function handleMissingImage(map: MlMap, id: string) {
   if (!(style in TEXT)) return;
   const img = renderTextImage(style, rest.slice(sep + 1));
   if (!map.hasImage(id)) {
-    map.addImage(id, { width: img.width, height: img.height, data: new Uint8Array(img.data.buffer) }, { pixelRatio: PIXEL_RATIO });
+    map.addImage(
+      id,
+      { width: img.width, height: img.height, data: new Uint8Array(img.data.buffer) },
+      { pixelRatio: PIXEL_RATIO },
+    );
   }
 }

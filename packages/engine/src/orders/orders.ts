@@ -14,11 +14,7 @@ function fail(error: OrderErrorCode, message?: string): OrderResult {
   return message ? { ok: false, error, message } : { ok: false, error };
 }
 
-function resolveUnits(
-  state: EngineState,
-  n: NationId,
-  ids: UnitId[],
-): Unit[] | OrderResult {
+function resolveUnits(state: EngineState, n: NationId, ids: UnitId[]): Unit[] | OrderResult {
   const out: Unit[] = [];
   for (const id of [...new Set(ids)].sort()) {
     const u = state.units[id];
@@ -65,7 +61,8 @@ function dispatchOrder(state: EngineState, n: NationId, order: Order): OrderResu
       }
       const tClass = sysOf(state, tgt).targetClass;
       const able = units.filter((u) => sysOf(state, u).damage[tClass] > 0);
-      if (able.length === 0) return fail('invalid_target', 'Aucune de ces unités ne peut toucher cette cible.');
+      if (able.length === 0)
+        return fail('invalid_target', 'Aucune de ces unités ne peut toucher cette cible.');
       const aim = unitPosAt(state, tgt, state.time);
       const plans = new Map<UnitId, Leg[]>();
       for (const u of able) {

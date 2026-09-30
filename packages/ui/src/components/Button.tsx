@@ -37,7 +37,9 @@ export function Button({
         .join(' ')}
     >
       {icon ? <span className="rl-btn__icon">{icon}</span> : null}
-      {children !== undefined && children !== null ? <span className="rl-btn__label">{children}</span> : null}
+      {children !== undefined && children !== null ? (
+        <span className="rl-btn__label">{children}</span>
+      ) : null}
     </button>
   );
 }

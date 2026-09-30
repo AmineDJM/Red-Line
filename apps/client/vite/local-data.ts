@@ -29,15 +29,19 @@ export function localData(dataDir: string, tilesDir = path.join(dataDir, 'tiles'
       server.middlewares.use((req, res, next) => {
         if (!req.headers['x-redline-mock'] || !req.url?.startsWith('/api/')) return next();
         const url = req.url.split('?')[0];
-        const readJson = (f: string): unknown => JSON.parse(fs.readFileSync(path.join(dataDir, f), 'utf8'));
-        const list = (v: unknown, key: string) => (Array.isArray(v) ? v : ((v as Record<string, unknown>)?.[key] ?? []));
+        const readJson = (f: string): unknown =>
+          JSON.parse(fs.readFileSync(path.join(dataDir, f), 'utf8'));
+        const list = (v: unknown, key: string) =>
+          Array.isArray(v) ? v : ((v as Record<string, unknown>)?.[key] ?? []);
         const send = (body: unknown) => {
           res.setHeader('Content-Type', 'application/json');
           res.end(JSON.stringify(body));
         };
         try {
-          if (url === '/api/map/nations') return send({ nations: list(readJson('map/nations.json'), 'nations') });
-          if (url === '/api/map/provinces') return send({ provinces: list(readJson('map/provinces.json'), 'provinces') });
+          if (url === '/api/map/nations')
+            return send({ nations: list(readJson('map/nations.json'), 'nations') });
+          if (url === '/api/map/provinces')
+            return send({ provinces: list(readJson('map/provinces.json'), 'provinces') });
           if (url === '/api/map/provinces.geojson') {
             res.setHeader('Content-Type', 'application/geo+json');
             fs.createReadStream(path.join(dataDir, 'map/provinces.geojson')).pipe(res);
@@ -49,7 +53,12 @@ export function localData(dataDir: string, tilesDir = path.join(dataDir, 'tiles'
               .readdirSync(dir)
               .filter((f) => f.endsWith('.json'))
               .map((f) => readJson(`scenarios/${f}`) as Record<string, unknown>)
-              .map((x) => ({ id: x.id, name: x.name, description: x.description ?? '', playableNations: x.playableNations ?? 'all' }));
+              .map((x) => ({
+                id: x.id,
+                name: x.name,
+                description: x.description ?? '',
+                playableNations: x.playableNations ?? 'all',
+              }));
             return send({ scenarios });
           }
           if (url === '/api/catalog') {
@@ -73,7 +82,11 @@ export function localData(dataDir: string, tilesDir = path.join(dataDir, 'tiles'
         if (!root) return next();
         const rel = url.slice(root[0].length);
         const file = path.resolve(root[1], rel);
-        if (!file.startsWith(path.resolve(root[1])) || !fs.existsSync(file) || !fs.statSync(file).isFile()) {
+        if (
+          !file.startsWith(path.resolve(root[1])) ||
+          !fs.existsSync(file) ||
+          !fs.statSync(file).isFile()
+        ) {
           return next();
         }
         const size = fs.statSync(file).size;

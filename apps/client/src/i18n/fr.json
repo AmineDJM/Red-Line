@@ -72,7 +72,7 @@
   },
   "game": {
     "bannerTitle": "{{nation}} · Situation militaire",
-    "bannerSubtitle": "{{game}} · {{scenario}}",
+    "bannerSubtitle": "{{game}}",
     "connecting": "Connexion à la partie…",
     "reconnecting": "Connexion perdue, reconnexion…",
     "failed": "Connexion refusée par le serveur.",
@@ -330,7 +330,8 @@
       "m": "m",
       "kg": "kg",
       "km": "km"
-    }
+    },
+    "genericOrigin": "Générique"
   },
   "units": {
     "km": "{{value}} km"

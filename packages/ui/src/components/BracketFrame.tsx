@@ -19,11 +19,18 @@ export function BracketFrame({
   style,
   ...rest
 }: BracketFrameProps) {
-  const s: CSSProperties = accent ? { ...style, ['--rl-bracket-color' as string]: accent } : { ...style };
+  const s: CSSProperties = accent
+    ? { ...style, ['--rl-bracket-color' as string]: accent }
+    : { ...style };
   return (
     <div
       {...rest}
-      className={['rl-bracket', `rl-bracket--${tone}`, padded ? 'rl-bracket--padded' : '', className ?? '']
+      className={[
+        'rl-bracket',
+        `rl-bracket--${tone}`,
+        padded ? 'rl-bracket--padded' : '',
+        className ?? '',
+      ]
         .filter(Boolean)
         .join(' ')}
       style={s}

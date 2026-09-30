@@ -2,7 +2,14 @@ import type { ReactNode } from 'react';
 import { MapView } from '../map/MapView.js';
 import { AlertsDrawer, ArmyDrawer, LayersDrawer, ProductionDrawer } from './Drawers.js';
 import { LegendPanel } from './LegendPanel.js';
-import { ConnectionBanner, EndScreen, Toasts, Toolbar, Tutorial, useKeyboardShortcuts } from './Misc.js';
+import {
+  ConnectionBanner,
+  EndScreen,
+  Toasts,
+  Toolbar,
+  Tutorial,
+  useKeyboardShortcuts,
+} from './Misc.js';
 import { OrderBar } from './OrderBar.js';
 import { ResourceBar } from './ResourceBar.js';
 import { SelectionPanel } from './SelectionPanel.js';
@@ -26,12 +33,25 @@ export interface GameHudProps {
 }
 
 /** Écran de jeu : carte plein écran + interface superposée, responsive. */
-export function GameHud({ title, subtitle, mode, fog, tutorial, children, extraTools, placing, onPlace, badge }: GameHudProps) {
+export function GameHud({
+  title,
+  subtitle,
+  mode,
+  fog,
+  tutorial,
+  children,
+  extraTools,
+  placing,
+  onPlace,
+  badge,
+}: GameHudProps) {
   const mobile = useIsMobile();
   useKeyboardShortcuts();
   const hasSelection = useUi((s) => s.selection.length > 0 || s.inspected !== null);
   const pending = useUi((s) => s.pendingOrder !== null);
-  const insets = mobile ? { top: 112, right: 0, bottom: 72, left: 0 } : { top: 104, right: 0, bottom: 0, left: 72 };
+  const insets = mobile
+    ? { top: 112, right: 0, bottom: 72, left: 0 }
+    : { top: 104, right: 0, bottom: 0, left: 72 };
   return (
     <div className={mobile ? 'game game--mobile' : 'game game--desktop'}>
       <MapView mode={mode} fog={fog} insets={insets} placing={placing} onPlace={onPlace} />

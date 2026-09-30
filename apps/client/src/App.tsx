@@ -5,9 +5,15 @@ import { HomeScreen } from './screens/HomeScreen.js';
 import { LoadingScreen } from './screens/Loading.js';
 
 // Les écrans avec carte chargent MapLibre dans un morceau séparé.
-const NewGameScreen = lazy(() => import('./screens/NewGameScreen.js').then((m) => ({ default: m.NewGameScreen })));
-const GameScreen = lazy(() => import('./screens/GameScreen.js').then((m) => ({ default: m.GameScreen })));
-const SandboxScreen = lazy(() => import('./screens/SandboxScreen.js').then((m) => ({ default: m.SandboxScreen })));
+const NewGameScreen = lazy(() =>
+  import('./screens/NewGameScreen.js').then((m) => ({ default: m.NewGameScreen })),
+);
+const GameScreen = lazy(() =>
+  import('./screens/GameScreen.js').then((m) => ({ default: m.GameScreen })),
+);
+const SandboxScreen = lazy(() =>
+  import('./screens/SandboxScreen.js').then((m) => ({ default: m.SandboxScreen })),
+);
 
 export function App() {
   const route = useRoute();
@@ -16,7 +22,13 @@ export function App() {
   useEffect(() => {
     const base = t('app.name');
     const sub =
-      route.name === 'new' ? t('newGame.title') : route.name === 'sandbox' ? t('sandbox.title') : route.name === 'game' ? t('game.layers.military') : null;
+      route.name === 'new'
+        ? t('newGame.title')
+        : route.name === 'sandbox'
+          ? t('sandbox.title')
+          : route.name === 'game'
+            ? t('game.layers.military')
+            : null;
     document.title = sub ? `${base} · ${sub}` : base;
   }, [route, t]);
 

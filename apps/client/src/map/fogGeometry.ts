@@ -26,7 +26,9 @@ const WORLD: Poly = [
 
 /** Cercle géodésique ramené dans [-180, 180] (découpé à l'antiméridien si besoin). */
 export function circlePolys(s: SensorCircle, steps = 40): MultiPoly {
-  const ring = geodesicCircle(s.c, s.r, steps).map(([x, y]) => [x, Math.max(-85, Math.min(85, y))] as [number, number]);
+  const ring = geodesicCircle(s.c, s.r, steps).map(
+    ([x, y]) => [x, Math.max(-85, Math.min(85, y))] as [number, number],
+  );
   const minX = Math.min(...ring.map((p) => p[0]));
   const maxX = Math.max(...ring.map((p) => p[0]));
   if (minX >= -180 && maxX <= 180) return [[ring]];

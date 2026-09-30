@@ -11,7 +11,12 @@ export function ResourceBar() {
   if (!eco) return null;
   const items = [
     { key: 'money', icon: Icons.money(16), value: eco.money, perDay: eco.incomePerDay.money },
-    ...RESOURCES.map((r) => ({ key: r, icon: Icons[r](16), value: eco.resources[r] ?? 0, perDay: eco.incomePerDay[r] ?? 0 })),
+    ...RESOURCES.map((r) => ({
+      key: r,
+      icon: Icons[r](16),
+      value: eco.resources[r] ?? 0,
+      perDay: eco.incomePerDay[r] ?? 0,
+    })),
   ];
   return (
     <div className="resources" data-map-avoid role="list" aria-label={t('game.resources.money')}>

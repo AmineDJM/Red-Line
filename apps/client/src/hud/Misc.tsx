@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, IconButton } from '@redline/ui';
 import { STORAGE } from '../config.js';
@@ -8,7 +8,13 @@ import { useUi, type DrawerId } from '../store/ui.js';
 import { Icons } from './icons.js';
 
 /** Barre d'outils : colonne à gauche sur ordinateur, rangée en bas sur mobile. */
-export function Toolbar({ mobile, extra }: { mobile: boolean; extra?: { id: Exclude<DrawerId, null>; label: string; icon: React.ReactNode }[] }) {
+export function Toolbar({
+  mobile,
+  extra,
+}: {
+  mobile: boolean;
+  extra?: { id: Exclude<DrawerId, null>; label: string; icon: ReactNode }[];
+}) {
   const { t } = useTranslation();
   const drawer = useUi((s) => s.drawer);
   const toggle = useUi((s) => s.toggleDrawer);
@@ -17,7 +23,7 @@ export function Toolbar({ mobile, extra }: { mobile: boolean; extra?: { id: Excl
   const notifications = useGame((s) => s.notifications);
   const unread = notifications.filter((n) => !n.read).length;
   const markAllRead = useGame((s) => s.markAllRead);
-  const items: { id: Exclude<DrawerId, null>; label: string; icon: React.ReactNode; badge?: number }[] = [
+  const items: { id: Exclude<DrawerId, null>; label: string; icon: ReactNode; badge?: number }[] = [
     ...(extra ?? []),
     { id: 'army', label: t('game.toolbar.army'), icon: Icons.army() },
     { id: 'production', label: t('game.toolbar.production'), icon: Icons.factory() },
@@ -25,7 +31,11 @@ export function Toolbar({ mobile, extra }: { mobile: boolean; extra?: { id: Excl
     { id: 'layers', label: t('game.toolbar.layers'), icon: Icons.layers() },
   ];
   return (
-    <nav className={mobile ? 'toolbar toolbar--bottom' : 'toolbar toolbar--side'} data-map-avoid aria-label={t('game.toolbar.menu')}>
+    <nav
+      className={mobile ? 'toolbar toolbar--bottom' : 'toolbar toolbar--side'}
+      data-map-avoid
+      aria-label={t('game.toolbar.menu')}
+    >
       {items.map((it) => (
         <IconButton
           key={it.id}
@@ -40,7 +50,13 @@ export function Toolbar({ mobile, extra }: { mobile: boolean; extra?: { id: Excl
           }}
         />
       ))}
-      <IconButton label={t('game.toolbar.legend')} icon={Icons.legend()} active={legendOpen} showLabel={mobile} onClick={() => setLegend(!legendOpen)} />
+      <IconButton
+        label={t('game.toolbar.legend')}
+        icon={Icons.legend()}
+        active={legendOpen}
+        showLabel={mobile}
+        onClick={() => setLegend(!legendOpen)}
+      />
     </nav>
   );
 }
@@ -51,7 +67,12 @@ export function Toasts() {
   return (
     <div className="toasts" aria-live="polite">
       {toasts.map((t) => (
-        <button key={t.id} type="button" className={`toast toast--${t.tone}`} onClick={() => dismiss(t.id)}>
+        <button
+          key={t.id}
+          type="button"
+          className={`toast toast--${t.tone}`}
+          onClick={() => dismiss(t.id)}
+        >
           {t.text}
         </button>
       ))}
@@ -64,9 +85,19 @@ export function ConnectionBanner() {
   const status = useGame((s) => s.status);
   const hasView = useGame((s) => !!s.view);
   if (status === 'open' || status === 'closed') return null;
-  const text = status === 'failed' ? t('game.failed') : status === 'reconnecting' ? t('game.reconnecting') : hasView ? t('game.reconnecting') : t('game.connecting');
+  const text =
+    status === 'failed'
+      ? t('game.failed')
+      : status === 'reconnecting'
+        ? t('game.reconnecting')
+        : hasView
+          ? t('game.reconnecting')
+          : t('game.connecting');
   return (
-    <div className={status === 'failed' ? 'conn-banner conn-banner--failed' : 'conn-banner'} role="status">
+    <div
+      className={status === 'failed' ? 'conn-banner conn-banner--failed' : 'conn-banner'}
+      role="status"
+    >
       {text}
     </div>
   );
@@ -111,14 +142,24 @@ export function Tutorial({ enabled }: { enabled: boolean }) {
     setStep(null);
   };
   return (
-    <div className={`tutorial tutorial--step${step}`} role="dialog" aria-live="polite" data-map-avoid>
-      <div className="tutorial__count rl-mono">{t('game.tutorial.counter', { index: step + 1, total })}</div>
+    <div
+      className={`tutorial tutorial--step${step}`}
+      role="dialog"
+      aria-live="polite"
+      data-map-avoid
+    >
+      <div className="tutorial__count rl-mono">
+        {t('game.tutorial.counter', { index: step + 1, total })}
+      </div>
       <p className="tutorial__text">{t(`game.tutorial.step${step + 1}`)}</p>
       <div className="tutorial__actions">
         <Button variant="ghost" onClick={finish}>
           {t('app.skip')}
         </Button>
-        <Button variant="primary" onClick={() => (step + 1 >= total ? finish() : setStep(step + 1))}>
+        <Button
+          variant="primary"
+          onClick={() => (step + 1 >= total ? finish() : setStep(step + 1))}
+        >
           {step + 1 >= total ? t('app.done') : t('app.next')}
         </Button>
       </div>
@@ -138,11 +179,19 @@ export function EndScreen() {
   const victory = winner === me;
   const winnerName = winner ? (view.nations[winner]?.name ?? winner) : '';
   return (
-    <div className={victory ? 'end end--victory' : 'end end--defeat'} role="dialog" aria-modal="true">
+    <div
+      className={victory ? 'end end--victory' : 'end end--defeat'}
+      role="dialog"
+      aria-modal="true"
+    >
       <div className="end__card">
         <div className="end__kicker">{view.nations[me ?? '']?.name}</div>
         <h2 className="end__title">{victory ? t('game.end.victory') : t('game.end.defeat')}</h2>
-        <p className="end__text">{victory ? t('game.end.victoryText', { nation: winnerName }) : t('game.end.defeatText', { nation: winnerName || '—' })}</p>
+        <p className="end__text">
+          {victory
+            ? t('game.end.victoryText', { nation: winnerName })
+            : t('game.end.defeatText', { nation: winnerName || '—' })}
+        </p>
         <div className="end__actions">
           <Button onClick={() => setDismissed(true)}>{t('game.end.observe')}</Button>
           <Button onClick={() => navigate('/')}>{t('game.end.home')}</Button>
@@ -160,7 +209,14 @@ export function useKeyboardShortcuts() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
-      if (target && (target.tagName === 'INPUT' || target.tagName === 'SELECT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return;
+      if (
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'SELECT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable)
+      )
+        return;
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       const { connection, clock, meta } = useGame.getState();
       const ui = useUi.getState();

@@ -40,7 +40,8 @@ export function wi(world: World): WorldInternal {
 
 export function buildWorld(map: MapData, catalog: WeaponSystem[], balance: Balance): World {
   const cellProv = new Map<string, ProvinceId>();
-  for (const cell of Object.keys(map.cells.cells).sort()) cellProv.set(cell, map.cells.cells[cell]!);
+  for (const cell of Object.keys(map.cells.cells).sort())
+    cellProv.set(cell, map.cells.cells[cell]!);
   const strait = new Set<string>();
   for (const s of map.straits) for (const c of s.seaCells) strait.add(c);
   const nav = new NavGraph(map.cells.res, cellProv, strait, new Set(map.cells.impassable ?? []));
@@ -103,7 +104,11 @@ function findSeaSpawns(
       const p = nav.center(nb);
       const d = distanceKm(p, def.cityPoint);
       const cur = best.get(pid);
-      if (!cur || d < cur.d || (d === cur.d && (p[0] < cur.p[0] || (p[0] === cur.p[0] && p[1] < cur.p[1])))) {
+      if (
+        !cur ||
+        d < cur.d ||
+        (d === cur.d && (p[0] < cur.p[0] || (p[0] === cur.p[0] && p[1] < cur.p[1])))
+      ) {
         best.set(pid, { d, p });
       }
     }

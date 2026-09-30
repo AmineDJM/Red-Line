@@ -402,7 +402,7 @@ Les valeurs sont des **valeurs de jeu**, fondées sur des ordres de grandeur pub
 
 ## 8. Déploiement (`render.yaml`)
 
-- `redline-server` : Web Service Node, contrôle de santé sur `/healthz`, disque persistant monté sur `/var/data/tiles`. Il sert **aussi** le client (`/`) et le back-office (`/admin/`), en builds statiques.
+- `redline-server` : Web Service Node, contrôle de santé sur `/healthz`. Pas de disque : l'imagerie est dans le dépôt (voir `docs/deploiement.md`). Il sert **aussi** le client (`/`) et le back-office (`/admin/`), en builds statiques.
   - **Décision (validée en phase 1)** : pas de Static Sites séparés. Deux sous-domaines `onrender.com` distincts comptent comme deux sites différents, car `onrender.com` figure sur la liste des suffixes publics. Le cookie de session deviendrait un cookie tiers, bloqué par Safari. Servir tout depuis la même origine supprime aussi CORS.
 - `redline-db` : PostgreSQL Render.
 - Deux environnements : **staging** (branche `staging`, offres gratuites ou minimales) et **production** (branche `main`), séparés par des suffixes dans le même Blueprint, ou via les _Environments_ d'un projet Render.

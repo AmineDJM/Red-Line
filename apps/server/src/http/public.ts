@@ -117,7 +117,7 @@ export async function publicRoutes(app: FastifyInstance, ctx: AppContext): Promi
       (!scenario.nationIds || scenario.nationIds.includes(body.nationId));
     if (!playable)
       throw new HttpError(400, 'nation_not_playable', 'Nation non jouable dans ce scénario');
-    const speeds = data.balance!.time.speeds;
+    const speeds = [...data.balance!.time.speeds, ...ctx.config.extraSpeeds];
     if (!speeds.includes(body.speed)) {
       throw new HttpError(400, 'invalid_speed', `Vitesses autorisées : ${speeds.join(', ')}`);
     }

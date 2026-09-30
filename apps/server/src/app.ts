@@ -103,6 +103,7 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
       metrics,
       log,
       instanceId: config.instanceId,
+      extraSpeeds: config.extraSpeeds,
       options: {
         flushIntervalMs: options.flushIntervalMs,
         snapshotIntervalS: config.snapshotIntervalS,

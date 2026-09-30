@@ -25,24 +25,36 @@ export interface WeaponRow {
 }
 
 /** Lignes « caractéristique : valeur » tirées de WeaponSystem.sheet (les valeurs nulles sont omises). */
-export function weaponSheetRows(system: WeaponSystem, labels: WeaponCardLabels, locale = 'fr-FR'): WeaponRow[] {
+export function weaponSheetRows(
+  system: WeaponSystem,
+  labels: WeaponCardLabels,
+  locale = 'fr-FR',
+): WeaponRow[] {
   const nf = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
   const num = (v: number, unit: string) => `${nf.format(v)} ${unit}`;
   const s = system.sheet;
   const rows: WeaponRow[] = [];
   if (s.engine) rows.push({ key: 'engine', label: labels.engine, value: s.engine });
-  if (s.lengthM != null) rows.push({ key: 'length', label: labels.length, value: num(s.lengthM, labels.units.m) });
-  if (s.wingspanM != null) rows.push({ key: 'wingspan', label: labels.wingspan, value: num(s.wingspanM, labels.units.m) });
-  if (s.mtowKg != null) rows.push({ key: 'mtow', label: labels.mtow, value: num(s.mtowKg, labels.units.kg) });
-  if (s.warheadKg != null) rows.push({ key: 'warhead', label: labels.warhead, value: num(s.warheadKg, labels.units.kg) });
+  if (s.lengthM != null)
+    rows.push({ key: 'length', label: labels.length, value: num(s.lengthM, labels.units.m) });
+  if (s.wingspanM != null)
+    rows.push({ key: 'wingspan', label: labels.wingspan, value: num(s.wingspanM, labels.units.m) });
+  if (s.mtowKg != null)
+    rows.push({ key: 'mtow', label: labels.mtow, value: num(s.mtowKg, labels.units.kg) });
+  if (s.warheadKg != null)
+    rows.push({ key: 'warhead', label: labels.warhead, value: num(s.warheadKg, labels.units.kg) });
   if (s.speedLabel) rows.push({ key: 'speed', label: labels.speed, value: s.speedLabel });
-  if (s.rangeKm != null) rows.push({ key: 'range', label: labels.range, value: num(s.rangeKm, labels.units.km) });
+  if (s.rangeKm != null)
+    rows.push({ key: 'range', label: labels.range, value: num(s.rangeKm, labels.units.km) });
   const wr = system.weaponRangeKm;
   if (wr.max > 0) {
     rows.push({
       key: 'weaponRange',
       label: labels.weaponRange,
-      value: wr.min > 0 ? `${nf.format(wr.min)} – ${num(wr.max, labels.units.km)}` : num(wr.max, labels.units.km),
+      value:
+        wr.min > 0
+          ? `${nf.format(wr.min)} – ${num(wr.max, labels.units.km)}`
+          : num(wr.max, labels.units.km),
     });
   }
   return rows;
@@ -83,15 +95,31 @@ export function WeaponCard({
   return (
     <BracketFrame className={compact ? 'rl-weapon rl-weapon--compact' : 'rl-weapon'}>
       <div className="rl-weapon__head">
-        <HexIcon pictogram={pictogramFor(system)} color={accent} size={compact ? 46 : 60} outline={null} />
+        <HexIcon
+          pictogram={pictogramFor(system)}
+          color={accent}
+          size={compact ? 46 : 60}
+          outline={null}
+        />
         <div className="rl-weapon__titles">
           <div className="rl-weapon__name">{system.name}</div>
           <div className="rl-weapon__sub">{subtitle}</div>
         </div>
         {onClose ? (
-          <button type="button" className="rl-weapon__close" onClick={onClose} aria-label={closeLabel} title={closeLabel}>
+          <button
+            type="button"
+            className="rl-weapon__close"
+            onClick={onClose}
+            aria-label={closeLabel}
+            title={closeLabel}
+          >
             <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden>
-              <path d="M5 5 L19 19 M19 5 L5 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <path
+                d="M5 5 L19 19 M19 5 L5 19"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
             </svg>
           </button>
         ) : null}

@@ -19,7 +19,9 @@ export function unitPosition(u: UnitView, t: GameTime): LngLat {
 
 /** Vrai si l'unité se déplace à l'instant t (trajet non terminé). */
 export function isMoving(u: UnitView, t: GameTime): boolean {
-  return !!u.move && u.move.legs.length > 0 && movementEnd(u.move) > t && (u.move.legs[0]?.t0 ?? 0) <= t;
+  return (
+    !!u.move && u.move.legs.length > 0 && movementEnd(u.move) > t && (u.move.legs[0]?.t0 ?? 0) <= t
+  );
 }
 
 /** Cap courant (degrés) d'une unité en mouvement, sinon null. */

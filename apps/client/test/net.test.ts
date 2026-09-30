@@ -1,5 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { decodeMessage, encodeMessage, type ClientMessage, type PlayerView, type ServerMessage } from '@redline/shared';
+import {
+  decodeMessage,
+  encodeMessage,
+  type ClientMessage,
+  type PlayerView,
+  type ServerMessage,
+} from '@redline/shared';
 import { ClockSync } from '../src/net/clockSync.js';
 import { backoffDelay, WsGameConnection } from '../src/net/ws.js';
 import { bindConnection, useGame } from '../src/store/game.js';
@@ -29,7 +35,12 @@ class FakeSocket {
   }
   receive(msg: ServerMessage) {
     const bytes = encodeMessage(msg);
-    this.onmessage?.({ data: bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer });
+    this.onmessage?.({
+      data: bytes.buffer.slice(
+        bytes.byteOffset,
+        bytes.byteOffset + bytes.byteLength,
+      ) as ArrayBuffer,
+    });
   }
   drop(code = 1006) {
     this.readyState = 3;
@@ -45,13 +56,25 @@ const view: PlayerView = {
   units: {
     u1: { id: 'u1', owner: 'fra', level: 'own', pos: [0, 0], lastSeen: 0, uncertaintyKm: 0 },
   },
-  economy: { money: 0, resources: { oil: 0, metals: 0, electronics: 0, food: 0 }, incomePerDay: { money: 0 }, production: [] },
+  economy: {
+    money: 0,
+    resources: { oil: 0, metals: 0, electronics: 0, food: 0 },
+    incomePerDay: { money: 0 },
+    production: [],
+  },
   victory: { provinceShareTarget: 0.6, leader: null, winner: null },
 };
 
 const welcome: ServerMessage = {
   t: 'welcome',
-  game: { id: 'g1', name: 'Test', mode: 'solo', scenarioId: 'world-today', status: 'running', speeds: [1, 2] },
+  game: {
+    id: 'g1',
+    name: 'Test',
+    mode: 'solo',
+    scenarioId: 'world-today',
+    status: 'running',
+    speeds: [1, 2],
+  },
   me: 'fra',
   clock: { anchorGame: 0, anchorReal: 0, speed: 1, paused: false },
   view,
@@ -84,12 +107,21 @@ describe('WsGameConnection', () => {
     sock.receive(welcome);
     expect(useGame.getState().me).toBe('fra');
     expect(Object.keys(useGame.getState().view!.units)).toEqual(['u1']);
-    sock.receive({ t: 'diff', diff: { time: 5000, units: { upsert: [{ ...view.units.u1!, pos: [1, 1] }], remove: [] } } });
+    sock.receive({
+      t: 'diff',
+      diff: { time: 5000, units: { upsert: [{ ...view.units.u1!, pos: [1, 1] }], remove: [] } },
+    });
     expect(useGame.getState().view!.units.u1!.pos).toEqual([1, 1]);
     expect(useGame.getState().view!.time).toBe(5000);
-    sock.receive({ t: 'notify', items: [{ kind: 'arrived', time: 5000, at: [1, 1], unitId: 'u1' }] });
+    sock.receive({
+      t: 'notify',
+      items: [{ kind: 'arrived', time: 5000, at: [1, 1], unitId: 'u1' }],
+    });
     expect(useGame.getState().notifications).toHaveLength(1);
-    sock.receive({ t: 'clock', clock: { anchorGame: 5000, anchorReal: 10, speed: 4, paused: false } });
+    sock.receive({
+      t: 'clock',
+      clock: { anchorGame: 5000, anchorReal: 10, speed: 4, paused: false },
+    });
     expect(useGame.getState().clock!.speed).toBe(4);
     unbind();
   });
@@ -114,7 +146,10 @@ describe('WsGameConnection', () => {
 
   it('refuse les ordres hors connexion et échoue les ordres en attente à la coupure', async () => {
     const { conn, sock, unbind } = connect();
-    await expect(conn.sendOrder({ kind: 'stop', unitIds: ['u1'] })).resolves.toMatchObject({ ok: false, error: 'disconnected' });
+    await expect(conn.sendOrder({ kind: 'stop', unitIds: ['u1'] })).resolves.toMatchObject({
+      ok: false,
+      error: 'disconnected',
+    });
     sock.open();
     const p = conn.sendOrder({ kind: 'stop', unitIds: ['u1'] });
     sock.drop();

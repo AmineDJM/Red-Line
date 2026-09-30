@@ -69,7 +69,8 @@ function pointInRing(p: LngLat, ring: Ring): boolean {
   for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
     const [xi, yi] = ring[i] as [number, number];
     const [xj, yj] = ring[j] as [number, number];
-    if (yi > p[1] !== yj > p[1] && p[0] < ((xj - xi) * (p[1] - yi)) / (yj - yi) + xi) inside = !inside;
+    if (yi > p[1] !== yj > p[1] && p[0] < ((xj - xi) * (p[1] - yi)) / (yj - yi) + xi)
+      inside = !inside;
   }
   return inside;
 }
@@ -78,7 +79,8 @@ function onLand(p: LngLat, geo: FeatureCollection | null | undefined): boolean {
   if (!geo) return true;
   for (const f of geo.features) {
     const g = f.geometry;
-    const polys = g.type === 'Polygon' ? [g.coordinates] : g.type === 'MultiPolygon' ? g.coordinates : [];
+    const polys =
+      g.type === 'Polygon' ? [g.coordinates] : g.type === 'MultiPolygon' ? g.coordinates : [];
     for (const poly of polys) {
       if (poly[0] && pointInRing(p, poly[0] as Ring)) return true;
     }
@@ -129,7 +131,8 @@ export class MockGameConnection extends Emitter implements GameConnection {
     this.emit('welcome', { game: this.meta, me: this.opts.me, clock: this.clock, view: this.view });
     this.emit('notify', this.initialNotes);
     this.timer = setInterval(() => this.tick(), this.opts.tickMs ?? 1000);
-    if (this.opts.liveEvents !== false) this.eventTimer = setInterval(() => this.randomEvent(), 14_000);
+    if (this.opts.liveEvents !== false)
+      this.eventTimer = setInterval(() => this.randomEvent(), 14_000);
   }
 
   // ——— Construction de la vue initiale ———
@@ -138,7 +141,10 @@ export class MockGameConnection extends Emitter implements GameConnection {
     return this.catalog.get(id);
   }
 
-  private pickSystem(cat: WeaponSystem['category'], prefer?: WeaponSystem['doctrine']): WeaponSystem | undefined {
+  private pickSystem(
+    cat: WeaponSystem['category'],
+    prefer?: WeaponSystem['doctrine'],
+  ): WeaponSystem | undefined {
     const all = this.data.catalog.filter((s) => s.category === cat);
     return all.find((s) => s.doctrine === prefer) ?? all[0];
   }
@@ -169,7 +175,8 @@ export class MockGameConnection extends Emitter implements GameConnection {
     const hostiles = others.slice(0, 2).map((o) => o.n.id);
 
     const provViews: Record<string, ProvinceView> = {};
-    for (const p of provinces) provViews[p.id] = { id: p.id, owner: p.nationId, capture: null, buildings: [...p.buildings] };
+    for (const p of provinces)
+      provViews[p.id] = { id: p.id, owner: p.nationId, capture: null, buildings: [...p.buildings] };
 
     // Une province ennemie en cours de capture par le joueur, une province du joueur menacée.
     const enemyFront = hostiles
@@ -182,12 +189,20 @@ export class MockGameConnection extends Emitter implements GameConnection {
     );
     const captureTarget = enemyFront[0];
     if (captureTarget) {
-      provViews[captureTarget.id]!.capture = { by: me, startedAt: now - 2 * HOUR, completesAt: now + 5 * HOUR };
+      provViews[captureTarget.id]!.capture = {
+        by: me,
+        startedAt: now - 2 * HOUR,
+        completesAt: now + 5 * HOUR,
+      };
     }
     const threatened = myFront[0];
     const hostile0 = hostiles[0];
     if (threatened && hostile0 && threatened.id !== myCap?.id) {
-      provViews[threatened.id]!.capture = { by: hostile0, startedAt: now - 30 * MINUTE, completesAt: now + 9 * HOUR };
+      provViews[threatened.id]!.capture = {
+        by: hostile0,
+        startedAt: now - 30 * MINUTE,
+        completesAt: now + 9 * HOUR,
+      };
     }
 
     const units: Record<string, UnitView> = {};
@@ -201,7 +216,8 @@ export class MockGameConnection extends Emitter implements GameConnection {
     // ——— Forces du joueur ———
     const front = myFront.slice(0, 4);
     const rear = mine.filter((p) => !front.includes(p));
-    const place = (list: ProvinceDef[], i: number): LngLat => (list.length ? list[i % list.length]!.cityPoint : capPt);
+    const place = (list: ProvinceDef[], i: number): LngLat =>
+      list.length ? list[i % list.length]!.cityPoint : capPt;
     const ownPlan: [WeaponSystem['category'], number, 'front' | 'rear' | 'sea' | 'air'][] = [
       ['tank', 3, 'front'],
       ['ifv', 2, 'front'],
@@ -230,7 +246,13 @@ export class MockGameConnection extends Emitter implements GameConnection {
       if (!s) continue;
       for (let i = 0; i < n; i++, k++) {
         const base =
-          where === 'front' ? place(front, k) : where === 'rear' ? place(rear.length ? rear : front, k) : where === 'sea' ? seaSpot(k) : place(mine, k * 3);
+          where === 'front'
+            ? place(front, k)
+            : where === 'rear'
+              ? place(rear.length ? rear : front, k)
+              : where === 'sea'
+                ? seaSpot(k)
+                : place(mine, k * 3);
         const pos = where === 'sea' ? base : jitter(base, where === 'air' ? 120 : 35);
         const u = add({
           owner: me,
@@ -255,7 +277,11 @@ export class MockGameConnection extends Emitter implements GameConnection {
             const dur = (d / Math.max(1, s.speedKmh)) * HOUR;
             const t0 = now - dur * 0.3;
             const from = where === 'air' ? pos : pos;
-            u.move = { legs: [{ from, to: dest, t0, t1: t0 + dur, medium: where === 'air' ? 'air' : 'land' }] };
+            u.move = {
+              legs: [
+                { from, to: dest, t0, t1: t0 + dur, medium: where === 'air' ? 'air' : 'land' },
+              ],
+            };
             u.status = 'moving';
           }
         }
@@ -283,7 +309,9 @@ export class MockGameConnection extends Emitter implements GameConnection {
       const s = this.pickSystem(cat, 'eu') ?? this.pickSystem(cat);
       if (!s) return;
       const ps = byNation.get(owner) ?? [];
-      const near = [...ps].sort((a, b) => distanceKm(a.cityPoint, capPt) - distanceKm(b.cityPoint, capPt));
+      const near = [...ps].sort(
+        (a, b) => distanceKm(a.cityPoint, capPt) - distanceKm(b.cityPoint, capPt),
+      );
       const base = near[i % Math.min(3, near.length)]?.cityPoint ?? capPt;
       const pos = jitter(base, 60);
       const stale = level === 'detected' ? 20 * MINUTE + rnd() * 90 * MINUTE : 0;
@@ -294,7 +322,9 @@ export class MockGameConnection extends Emitter implements GameConnection {
         lastSeen: now - stale,
         uncertaintyKm: level === 'detected' ? 25 + rnd() * 50 : 0,
         ...(level !== 'detected' ? { systemId: s.id } : {}),
-        ...(level === 'precise' ? { count: s.unitSize, hpRatio: 0.4 + rnd() * 0.6, status: 'idle' as const } : {}),
+        ...(level === 'precise'
+          ? { count: s.unitSize, hpRatio: 0.4 + rnd() * 0.6, status: 'idle' as const }
+          : {}),
       });
       if (s.movement === 'air' && level !== 'detected') {
         const dest = jitter(capPt, 150);
@@ -332,10 +362,26 @@ export class MockGameConnection extends Emitter implements GameConnection {
         incomePerDay: { money: 3_420, oil: 180, metals: 95, electronics: 40, food: 260 },
         production: [
           ...(cheap[0] && myCap
-            ? [{ id: 'p1', provinceId: myCap.id, systemId: cheap[0].id, startedAt: now - 3 * HOUR, completesAt: now + 5 * HOUR }]
+            ? [
+                {
+                  id: 'p1',
+                  provinceId: myCap.id,
+                  systemId: cheap[0].id,
+                  startedAt: now - 3 * HOUR,
+                  completesAt: now + 5 * HOUR,
+                },
+              ]
             : []),
           ...(cheap[3] && myCap
-            ? [{ id: 'p2', provinceId: myCap.id, systemId: cheap[3].id, startedAt: now - 10 * HOUR, completesAt: now + 2 * HOUR }]
+            ? [
+                {
+                  id: 'p2',
+                  provinceId: myCap.id,
+                  systemId: cheap[3].id,
+                  startedAt: now - 10 * HOUR,
+                  completesAt: now + 2 * HOUR,
+                },
+              ]
             : []),
         ],
       },
@@ -344,16 +390,39 @@ export class MockGameConnection extends Emitter implements GameConnection {
 
     const notes: GameNotification[] = [];
     const firstEnemy = Object.values(units).find((u) => u.owner !== me);
-    if (firstEnemy) notes.push({ kind: 'unit_detected', time: now - 50 * MINUTE, at: firstEnemy.pos, unitId: firstEnemy.id });
+    if (firstEnemy)
+      notes.push({
+        kind: 'unit_detected',
+        time: now - 50 * MINUTE,
+        at: firstEnemy.pos,
+        unitId: firstEnemy.id,
+      });
     if (captureTarget) {
-      notes.push({ kind: 'province_capture_started', time: now - 2 * HOUR, at: captureTarget.cityPoint, provinceId: captureTarget.id, by: me });
+      notes.push({
+        kind: 'province_capture_started',
+        time: now - 2 * HOUR,
+        at: captureTarget.cityPoint,
+        provinceId: captureTarget.id,
+        by: me,
+      });
     }
     const ownFront = Object.values(units).find((u) => u.owner === me && u.status === 'moving');
     if (ownFront && firstEnemy) {
-      notes.push({ kind: 'combat_started', time: now - 25 * MINUTE, at: ownFront.pos, unitIds: [ownFront.id, firstEnemy.id] });
+      notes.push({
+        kind: 'combat_started',
+        time: now - 25 * MINUTE,
+        at: ownFront.pos,
+        unitIds: [ownFront.id, firstEnemy.id],
+      });
     }
     if (threatened && hostile0) {
-      notes.push({ kind: 'province_capture_started', time: now - 30 * MINUTE, at: threatened.cityPoint, provinceId: threatened.id, by: hostile0 });
+      notes.push({
+        kind: 'province_capture_started',
+        time: now - 30 * MINUTE,
+        at: threatened.cityPoint,
+        provinceId: threatened.id,
+        by: hostile0,
+      });
     }
     notes.sort((a, b) => a.time - b.time);
     return { view, notes };
@@ -394,7 +463,11 @@ export class MockGameConnection extends Emitter implements GameConnection {
     for (const u of Object.values(this.view.units)) {
       if (!u.move || movementEnd(u.move) > t) continue;
       const dest = movementDestination(u.move) ?? u.pos;
-      const done: UnitView = { ...u, pos: dest, status: u.status === undefined ? undefined : 'idle' };
+      const done: UnitView = {
+        ...u,
+        pos: dest,
+        status: u.status === undefined ? undefined : 'idle',
+      };
       delete done.move;
       if (u.owner === this.opts.me) {
         done.lastSeen = t;
@@ -465,7 +538,13 @@ export class MockGameConnection extends Emitter implements GameConnection {
           money: eco.money - s.cost.money,
           production: [
             ...eco.production,
-            { id: `p${++this.seq}`, provinceId: order.provinceId, systemId: s.id, startedAt: t, completesAt: t + s.buildTimeH * HOUR },
+            {
+              id: `p${++this.seq}`,
+              provinceId: order.provinceId,
+              systemId: s.id,
+              startedAt: t,
+              completesAt: t + s.buildTimeH * HOUR,
+            },
           ],
         },
       });
@@ -507,7 +586,8 @@ export class MockGameConnection extends Emitter implements GameConnection {
           const speed = Math.max(1, s?.speedKmh ?? 40);
           const medium = s?.movement === 'sea' ? 'sea' : s?.movement === 'air' ? 'air' : 'land';
           const next: UnitView = { ...base, status: d > 0.5 ? 'moving' : 'combat', targetId };
-          if (d > 0.5) next.move = { legs: [{ from: pos, to, t0: t, t1: t + (d / speed) * HOUR, medium }] };
+          if (d > 0.5)
+            next.move = { legs: [{ from: pos, to, t0: t, t1: t + (d / speed) * HOUR, medium }] };
           upsert.push(next);
           break;
         }
@@ -516,14 +596,27 @@ export class MockGameConnection extends Emitter implements GameConnection {
     this.push({ units: { upsert, remove: [] } });
     if (order.kind === 'attack') {
       const tgt = this.view.units[order.targetId];
-      if (tgt) this.emit('notify', [{ kind: 'combat_started', time: t, at: this.current(tgt, t), unitIds: [...order.unitIds, tgt.id] }]);
+      if (tgt)
+        this.emit('notify', [
+          {
+            kind: 'combat_started',
+            time: t,
+            at: this.current(tgt, t),
+            unitIds: [...order.unitIds, tgt.id],
+          },
+        ]);
     }
     return { ok: true };
   }
 
   private reanchor(patch: Partial<ClockState>) {
     const now = Date.now();
-    this.clock = { ...this.clock, anchorGame: gameTimeAt(this.clock, now), anchorReal: now, ...patch };
+    this.clock = {
+      ...this.clock,
+      anchorGame: gameTimeAt(this.clock, now),
+      anchorReal: now,
+      ...patch,
+    };
     this.emit('clock', this.clock);
   }
 

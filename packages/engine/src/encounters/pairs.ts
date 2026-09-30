@@ -1,4 +1,10 @@
-import { EARTH_RADIUS_KM, type NationId, type ProvinceId, type UnitId, type WeaponSystem } from '@redline/shared';
+import {
+  EARTH_RADIUS_KM,
+  type NationId,
+  type ProvinceId,
+  type UnitId,
+  type WeaponSystem,
+} from '@redline/shared';
 import { coverCap, sweepCells } from '../geo/grid.js';
 import { dotAt, nextBandChange } from '../geo/crossing.js';
 import type { Piece } from '../geo/sphere.js';
@@ -61,7 +67,10 @@ export function registerProvinceZone(state: EngineState, p: ProvinceId): void {
   if (!def) return;
   const cells = new Set<number>();
   coverCap(def.cityPoint, wi(state.world).provZoneKm + 0.5, cells);
-  state.rt.zones.add(provEntity(p), [...cells].sort((a, b) => a - b));
+  state.rt.zones.add(
+    provEntity(p),
+    [...cells].sort((a, b) => a - b),
+  );
 }
 
 /** (Ré)enregistre le balayage d'une unité à partir de l'instant courant. */
@@ -188,7 +197,9 @@ function provPieces(state: EngineState, p: ProvinceId): Piece[] {
 }
 
 function cityFlags(state: EngineState, d: number): number {
-  return (d <= CAPTURE_RADIUS_KM ? 1 : 0) | (d <= state.world.balance.combat.groundContactKm ? 2 : 0);
+  return (
+    (d <= CAPTURE_RADIUS_KM ? 1 : 0) | (d <= state.world.balance.combat.groundContactKm ? 2 : 0)
+  );
 }
 
 function evalProvPair(state: EngineState, key: string): void {

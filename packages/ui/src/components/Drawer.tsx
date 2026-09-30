@@ -17,7 +17,16 @@ export interface DrawerProps {
  * Tiroir : panneau latéral sur ordinateur, feuille glissante depuis le bas sur mobile
  * (glisser la poignée vers le bas pour fermer).
  */
-export function Drawer({ open, onClose, title, side = 'left', children, footer, closeLabel, width = 380 }: DrawerProps) {
+export function Drawer({
+  open,
+  onClose,
+  title,
+  side = 'left',
+  children,
+  footer,
+  closeLabel,
+  width = 380,
+}: DrawerProps) {
   const sheetRef = useRef<HTMLElement>(null);
   const drag = useRef<{ y0: number; dy: number; id: number } | null>(null);
 
@@ -72,9 +81,20 @@ export function Drawer({ open, onClose, title, side = 'left', children, footer, 
       </div>
       <div className="rl-drawer__head">
         <h2 className="rl-drawer__title">{title}</h2>
-        <button type="button" className="rl-drawer__close" onClick={onClose} aria-label={closeLabel} title={closeLabel}>
+        <button
+          type="button"
+          className="rl-drawer__close"
+          onClick={onClose}
+          aria-label={closeLabel}
+          title={closeLabel}
+        >
           <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden>
-            <path d="M5 5 L19 19 M19 5 L5 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            <path
+              d="M5 5 L19 19 M19 5 L5 19"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
           </svg>
         </button>
       </div>

@@ -5,7 +5,15 @@
  */
 const INF = 1e20;
 
-function edt1d(grid: Float64Array, offset: number, stride: number, length: number, f: Float64Array, v: Uint16Array, z: Float64Array) {
+function edt1d(
+  grid: Float64Array,
+  offset: number,
+  stride: number,
+  length: number,
+  f: Float64Array,
+  v: Uint16Array,
+  z: Float64Array,
+) {
   v[0] = 0;
   z[0] = -INF;
   z[1] = INF;
@@ -43,7 +51,13 @@ function edt2d(grid: Float64Array, width: number, height: number) {
  * Convertit une couche alpha (0..255, forme antialiasée) en SDF sur 0..255.
  * `radius` : distance (px) couverte de part et d'autre du bord.
  */
-export function alphaToSdf(alpha: Uint8ClampedArray | Uint8Array, width: number, height: number, radius: number, cutoff = 0.25): Uint8ClampedArray {
+export function alphaToSdf(
+  alpha: Uint8ClampedArray | Uint8Array,
+  width: number,
+  height: number,
+  radius: number,
+  cutoff = 0.25,
+): Uint8ClampedArray {
   const size = width * height;
   const outer = new Float64Array(size);
   const inner = new Float64Array(size);

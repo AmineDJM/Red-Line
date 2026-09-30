@@ -15,6 +15,22 @@ function readMockFlag(): boolean {
 /** Mode de démonstration sans serveur (?mock=1) : données de test et connexion simulée. */
 export const IS_MOCK = readMockFlag();
 
+/**
+ * Accès de diagnostic (window.__rl, window.__rlMap) pour les tests de bout en bout : actif en mock
+ * ou quand localStorage « rl.debug » vaut 1. Sans risque : le client ne détient que ce que le serveur
+ * a le droit de lui envoyer, et le serveur valide chaque ordre.
+ */
+export const DEBUG_HOOKS =
+  IS_MOCK ||
+  (typeof window !== 'undefined' &&
+    (() => {
+      try {
+        return localStorage.getItem('rl.debug') === '1';
+      } catch {
+        return false;
+      }
+    })());
+
 /** Fréquence de mise à jour des positions interpolées sur la carte (Hz). */
 export const UNIT_TICK_HZ = 12;
 
@@ -39,7 +55,10 @@ export const FONTS = {
 } as const;
 
 /** Tuiles par défaut si /api/map/tiles ne répond pas. */
-export const FALLBACK_TILES = { satellite: '/tiles/satellite-lowzoom.pmtiles', maxzoom: 5 } as const;
+export const FALLBACK_TILES = {
+  satellite: '/tiles/satellite-lowzoom.pmtiles',
+  maxzoom: 5,
+} as const;
 
 /** Clés de stockage local. */
 export const STORAGE = {

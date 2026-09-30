@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { LngLat, NationId } from '@redline/shared';
-import { IS_MOCK } from '../config.js';
+import { DEBUG_HOOKS, IS_MOCK } from '../config.js';
 import { GameMap, type MapMode } from './GameMap.js';
 
 export interface MapViewProps {
@@ -23,7 +23,16 @@ const FONTS_TO_LOAD = [
 ];
 
 /** Conteneur React de la carte : crée le contrôleur une fois les polices prêtes (images d'étiquettes). */
-export function MapView({ mode, fog = false, pickedNation, onPickNation, placing, onPlace, insets, className }: MapViewProps) {
+export function MapView({
+  mode,
+  fog = false,
+  pickedNation,
+  onPickNation,
+  placing,
+  onPlace,
+  insets,
+  className,
+}: MapViewProps) {
   const ref = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mapRef = useRef<GameMap | null>(null);
@@ -36,7 +45,10 @@ export function MapView({ mode, fog = false, pickedNation, onPickNation, placing
 
   useEffect(() => {
     let disposed = false;
-    const fonts = typeof document !== 'undefined' && document.fonts ? Promise.all(FONTS_TO_LOAD.map((f) => document.fonts.load(f))) : Promise.resolve();
+    const fonts =
+      typeof document !== 'undefined' && document.fonts
+        ? Promise.all(FONTS_TO_LOAD.map((f) => document.fonts.load(f)))
+        : Promise.resolve();
     const timeout = new Promise((r) => setTimeout(r, 2500));
     void Promise.race([fonts, timeout]).finally(() => {
       if (disposed || !ref.current || !canvasRef.current) return;
@@ -50,8 +62,9 @@ export function MapView({ mode, fog = false, pickedNation, onPickNation, placing
       });
       mapRef.current = gm;
       if (insetsRef.current) gm.setInsets(insetsRef.current);
-      if (pickedRef.current) gm.map.once('load', () => gm.setPickedNation(pickedRef.current ?? null));
-      if (IS_MOCK) (window as unknown as { __rlMap?: GameMap }).__rlMap = gm;
+      if (pickedRef.current)
+        gm.map.once('load', () => gm.setPickedNation(pickedRef.current ?? null));
+      if (DEBUG_HOOKS) (window as unknown as { __rlMap?: GameMap }).__rlMap = gm;
     });
     return () => {
       disposed = true;

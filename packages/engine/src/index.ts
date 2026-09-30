@@ -28,7 +28,8 @@ import { deserializeImpl, serializeImpl, stateHashImpl } from './state/serialize
 
 const S = (s: unknown): EngineState => s as EngineState;
 
-export const buildWorld: BuildWorld = (map, catalog, balance) => buildWorldImpl(map, catalog, balance);
+export const buildWorld: BuildWorld = (map, catalog, balance) =>
+  buildWorldImpl(map, catalog, balance);
 export const createGame: CreateGame = (world, setup) => createGameImpl(world, setup);
 export const applyOrder: ApplyOrder = (state, nationId, order) =>
   applyOrderImpl(S(state), nationId, order);

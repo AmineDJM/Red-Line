@@ -1,4 +1,11 @@
-import { EARTH_RADIUS_KM, toVec, type Leg, type LngLat, type Movement, type Vec3 } from '@redline/shared';
+import {
+  EARTH_RADIUS_KM,
+  toVec,
+  type Leg,
+  type LngLat,
+  type Movement,
+  type Vec3,
+} from '@redline/shared';
 
 /**
  * Trajectoire par morceaux sur la sphère unité : chaque morceau est soit un point fixe, soit un arc de

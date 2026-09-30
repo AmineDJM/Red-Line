@@ -20,7 +20,9 @@ export function TitleBanner({ title, subtitle, right, alert, compact }: TitleBan
         {alert ? (
           <button
             type="button"
-            className={alert.critical ? 'rl-banner__alert rl-banner__alert--critical' : 'rl-banner__alert'}
+            className={
+              alert.critical ? 'rl-banner__alert rl-banner__alert--critical' : 'rl-banner__alert'
+            }
             onClick={alert.onClick}
           >
             <span className="rl-dot" aria-hidden />

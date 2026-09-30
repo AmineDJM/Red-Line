@@ -66,7 +66,10 @@ const RUN = 10;
 
 export const CANDIDATE_COUNT = OFFSETS.length * QUADRANTS.length;
 
-export function candidateGeometry(c: CalloutInput, index: number): { rect: Rect; leader: [Point, Point, Point] } {
+export function candidateGeometry(
+  c: CalloutInput,
+  index: number,
+): { rect: Rect; leader: [Point, Point, Point] } {
   const [kx, ky] = OFFSETS[Math.floor(index / QUADRANTS.length)]!;
   const [sx, sy] = QUADRANTS[index % QUADRANTS.length]!;
   const elbow = { x: c.anchor.x + sx * kx, y: c.anchor.y + sy * ky };
@@ -76,7 +79,12 @@ export function candidateGeometry(c: CalloutInput, index: number): { rect: Rect;
 }
 
 export function rectsOverlap(a: Rect, b: Rect, margin = 0): boolean {
-  return a.x < b.x + b.w + margin && b.x < a.x + a.w + margin && a.y < b.y + b.h + margin && b.y < a.y + a.h + margin;
+  return (
+    a.x < b.x + b.w + margin &&
+    b.x < a.x + a.w + margin &&
+    a.y < b.y + b.h + margin &&
+    b.y < a.y + a.h + margin
+  );
 }
 
 function inside(r: Rect, b: Rect): boolean {
@@ -116,8 +124,15 @@ export function placeCallouts(items: CalloutInput[], opts: PlacementOptions): Pl
   const margin = opts.margin ?? 4;
   const box = opts.anchorBox ?? 22;
   const max = opts.max ?? items.length;
-  const sorted = [...items].sort((a, b) => b.priority - a.priority || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
-  const anchorRects: Rect[] = sorted.map((c) => ({ x: c.anchor.x - box / 2, y: c.anchor.y - box / 2, w: box, h: box }));
+  const sorted = [...items].sort(
+    (a, b) => b.priority - a.priority || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0),
+  );
+  const anchorRects: Rect[] = sorted.map((c) => ({
+    x: c.anchor.x - box / 2,
+    y: c.anchor.y - box / 2,
+    w: box,
+    h: box,
+  }));
   const blocked = [...(opts.obstacles ?? []), ...anchorRects];
   const placed: PlacedCallout[] = [];
 
@@ -128,8 +143,16 @@ export function placeCallouts(items: CalloutInput[], opts: PlacementOptions): Pl
     for (const p of placed) {
       if (rectsOverlap(rect, p.rect, margin)) return false;
       // Le nouveau filet ne traverse pas une étiquette posée, et inversement.
-      if (segIntersectsRect(leader[0], leader[1], p.rect) || segIntersectsRect(leader[1], leader[2], p.rect)) return false;
-      if (segIntersectsRect(p.leader[0], p.leader[1], rect) || segIntersectsRect(p.leader[1], p.leader[2], rect)) return false;
+      if (
+        segIntersectsRect(leader[0], leader[1], p.rect) ||
+        segIntersectsRect(leader[1], leader[2], p.rect)
+      )
+        return false;
+      if (
+        segIntersectsRect(p.leader[0], p.leader[1], rect) ||
+        segIntersectsRect(p.leader[1], p.leader[2], rect)
+      )
+        return false;
     }
     return true;
   };
@@ -138,7 +161,10 @@ export function placeCallouts(items: CalloutInput[], opts: PlacementOptions): Pl
     if (placed.length >= max) break;
     if (!inside({ x: c.anchor.x, y: c.anchor.y, w: 0, h: 0 }, opts.bounds)) continue;
     const prev = opts.previous?.get(c.id);
-    const order = prev !== undefined ? [prev, ...Array.from({ length: CANDIDATE_COUNT }, (_, i) => i).filter((i) => i !== prev)] : Array.from({ length: CANDIDATE_COUNT }, (_, i) => i);
+    const order =
+      prev !== undefined
+        ? [prev, ...Array.from({ length: CANDIDATE_COUNT }, (_, i) => i).filter((i) => i !== prev)]
+        : Array.from({ length: CANDIDATE_COUNT }, (_, i) => i);
     for (const i of order) {
       const g = candidateGeometry(c, i);
       if (valid(g.rect, g.leader)) {

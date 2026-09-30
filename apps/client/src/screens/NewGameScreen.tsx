@@ -48,7 +48,8 @@ export function NewGameScreen() {
   }, [world.provinces]);
 
   const scenario = scenarios.find((s) => s.id === scenarioId);
-  const playable = (id: string) => !scenario || scenario.playableNations === 'all' || scenario.playableNations.includes(id);
+  const playable = (id: string) =>
+    !scenario || scenario.playableNations === 'all' || scenario.playableNations.includes(id);
   const list = useMemo(() => {
     const q = query
       .trim()
@@ -57,7 +58,16 @@ export function NewGameScreen() {
       .replace(/\p{Diacritic}/gu, '');
     return Object.values(world.nations)
       .filter((n) => playable(n.id) && (counts.get(n.id) ?? 0) > 0)
-      .filter((n) => !q || n.name.toLocaleLowerCase('fr').normalize('NFD').replace(/\p{Diacritic}/gu, '').includes(q) || n.id.includes(q))
+      .filter(
+        (n) =>
+          !q ||
+          n.name
+            .toLocaleLowerCase('fr')
+            .normalize('NFD')
+            .replace(/\p{Diacritic}/gu, '')
+            .includes(q) ||
+          n.id.includes(q),
+      )
       .sort((a, b) => a.name.localeCompare(b.name, 'fr'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [world.nations, query, counts, scenario]);
@@ -72,7 +82,13 @@ export function NewGameScreen() {
     try {
       const api = await getApi();
       if (!(await api.me())) await api.guest();
-      const game = await api.createGame({ scenarioId, nationId: nation, mode: 'solo', speed, aiLevel: level });
+      const game = await api.createGame({
+        scenarioId,
+        nationId: nation,
+        mode: 'solo',
+        speed,
+        aiLevel: level,
+      });
       navigate(`/game/${encodeURIComponent(game.id)}`);
     } catch {
       setError(t('newGame.error'));
@@ -88,7 +104,16 @@ export function NewGameScreen() {
         <MapView mode="picker" pickedNation={nation} onPickNation={setNation} />
       </div>
       <div className="newgame__top">
-        <TitleBanner compact={mobile} title={t('newGame.title')} subtitle={t('newGame.subtitle')} right={<Button variant="ghost" onClick={() => navigate('/')}>{t('app.back')}</Button>} />
+        <TitleBanner
+          compact={mobile}
+          title={t('newGame.title')}
+          subtitle={t('newGame.subtitle')}
+          right={
+            <Button variant="ghost" onClick={() => navigate('/')}>
+              {t('app.back')}
+            </Button>
+          }
+        />
       </div>
       <aside className="newgame__panel">
         <div className="newgame__search">
@@ -106,10 +131,18 @@ export function NewGameScreen() {
         <ul className="nation-list" role="listbox" aria-label={t('newGame.nation')}>
           {list.map((n) => (
             <li key={n.id}>
-              <button type="button" role="option" aria-selected={nation === n.id} className={nation === n.id ? 'nation-row nation-row--sel' : 'nation-row'} onClick={() => setNation(n.id)}>
+              <button
+                type="button"
+                role="option"
+                aria-selected={nation === n.id}
+                className={nation === n.id ? 'nation-row nation-row--sel' : 'nation-row'}
+                onClick={() => setNation(n.id)}
+              >
                 <HexIcon color={nation === n.id ? 'var(--rl-violet)' : n.color} size={24} />
                 <span className="nation-row__name">{n.name}</span>
-                <span className="nation-row__sub rl-mono">{t('newGame.provinces', { count: counts.get(n.id) ?? 0 })}</span>
+                <span className="nation-row__sub rl-mono">
+                  {t('newGame.provinces', { count: counts.get(n.id) ?? 0 })}
+                </span>
               </button>
             </li>
           ))}
@@ -122,7 +155,11 @@ export function NewGameScreen() {
           {scenarios.length > 1 ? (
             <label className="field">
               <span className="field__label">{t('newGame.scenario')}</span>
-              <select className="select" value={scenarioId} onChange={(e) => setScenarioId(e.target.value)}>
+              <select
+                className="select"
+                value={scenarioId}
+                onChange={(e) => setScenarioId(e.target.value)}
+              >
                 {scenarios.map((s) => (
                   <option key={s.id} value={s.id}>
                     {s.name}
@@ -135,7 +172,14 @@ export function NewGameScreen() {
             <span className="field__label">{t('newGame.speed')}</span>
             <div className="seg" role="radiogroup" aria-label={t('newGame.speed')}>
               {DEFAULT_SPEEDS.map((s) => (
-                <button key={s} type="button" role="radio" aria-checked={speed === s} className={speed === s ? 'seg__btn seg__btn--on rl-mono' : 'seg__btn rl-mono'} onClick={() => setSpeed(s)}>
+                <button
+                  key={s}
+                  type="button"
+                  role="radio"
+                  aria-checked={speed === s}
+                  className={speed === s ? 'seg__btn seg__btn--on rl-mono' : 'seg__btn rl-mono'}
+                  onClick={() => setSpeed(s)}
+                >
                   {t('game.clock.speedShort', { speed: s })}
                 </button>
               ))}
@@ -145,14 +189,27 @@ export function NewGameScreen() {
             <span className="field__label">{t('newGame.difficulty')}</span>
             <div className="seg" role="radiogroup" aria-label={t('newGame.difficulty')}>
               {LEVELS.map((l) => (
-                <button key={l} type="button" role="radio" aria-checked={level === l} className={level === l ? 'seg__btn seg__btn--on' : 'seg__btn'} onClick={() => setLevel(l)}>
+                <button
+                  key={l}
+                  type="button"
+                  role="radio"
+                  aria-checked={level === l}
+                  className={level === l ? 'seg__btn seg__btn--on' : 'seg__btn'}
+                  onClick={() => setLevel(l)}
+                >
                   {t(`newGame.levels.${l}`)}
                 </button>
               ))}
             </div>
           </div>
           {error ? <p className="error-text">{error}</p> : null}
-          <Button variant="primary" size="lg" block disabled={!nation || busy} onClick={() => void start()}>
+          <Button
+            variant="primary"
+            size="lg"
+            block
+            disabled={!nation || busy}
+            onClick={() => void start()}
+          >
             {busy ? t('newGame.creating') : t('newGame.start')}
           </Button>
         </div>

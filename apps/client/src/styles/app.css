@@ -204,7 +204,13 @@ a {
   width: 100vw;
   margin: 0 -16px 28px;
   padding: max(36px, env(safe-area-inset-top)) 24px 30px;
-  background: linear-gradient(90deg, rgba(232, 118, 22, 0.96) 0%, rgba(238, 132, 30, 0.8) 35%, rgba(243, 154, 43, 0.3) 70%, rgba(243, 154, 43, 0) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(232, 118, 22, 0.96) 0%,
+    rgba(238, 132, 30, 0.8) 35%,
+    rgba(243, 154, 43, 0.3) 70%,
+    rgba(243, 154, 43, 0) 100%
+  );
 }
 .home__title {
   margin: 0;

@@ -57,7 +57,13 @@ export const useGame = create<GameStore>((set, get) => ({
     set({ connection: conn });
   },
   welcome(w) {
-    set((s) => ({ meta: w.game, me: w.me, clock: w.clock, view: w.view, viewVersion: s.viewVersion + 1 }));
+    set((s) => ({
+      meta: w.game,
+      me: w.me,
+      clock: w.clock,
+      view: w.view,
+      viewVersion: s.viewVersion + 1,
+    }));
   },
   diff(d) {
     const v = get().view;
@@ -70,17 +76,28 @@ export const useGame = create<GameStore>((set, get) => ({
   notify(items) {
     if (!items.length) return;
     set((s) => ({
-      notifications: [...items.map((item) => ({ id: ++notifSeq, item, read: false })).reverse(), ...s.notifications].slice(
-        0,
-        MAX_NOTIFICATIONS,
-      ),
+      notifications: [
+        ...items.map((item) => ({ id: ++notifSeq, item, read: false })).reverse(),
+        ...s.notifications,
+      ].slice(0, MAX_NOTIFICATIONS),
     }));
   },
   markAllRead() {
-    set((s) => ({ notifications: s.notifications.map((n) => (n.read ? n : { ...n, read: true })) }));
+    set((s) => ({
+      notifications: s.notifications.map((n) => (n.read ? n : { ...n, read: true })),
+    }));
   },
   reset() {
-    set({ connection: null, status: 'closed', meta: null, me: null, clock: null, view: null, notifications: [], viewVersion: 0 });
+    set({
+      connection: null,
+      status: 'closed',
+      meta: null,
+      me: null,
+      clock: null,
+      view: null,
+      notifications: [],
+      viewVersion: 0,
+    });
   },
 }));
 

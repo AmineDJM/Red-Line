@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { CANDIDATE_COUNT, candidateGeometry, placeCallouts, rectsOverlap, type CalloutInput, type Rect } from '../src/map/callouts.js';
+import {
+  CANDIDATE_COUNT,
+  candidateGeometry,
+  placeCallouts,
+  rectsOverlap,
+  type CalloutInput,
+  type Rect,
+} from '../src/map/callouts.js';
 
 /** PRNG déterministe pour des jeux d'essai reproductibles. */
 function rng(seed: number) {
@@ -36,7 +43,8 @@ describe('placement anti-collision des étiquettes', () => {
         expect(a.y).toBeGreaterThanOrEqual(bounds.y);
         expect(a.x + a.w).toBeLessThanOrEqual(bounds.x + bounds.w);
         expect(a.y + a.h).toBeLessThanOrEqual(bounds.y + bounds.h);
-        for (let j = i + 1; j < placed.length; j++) expect(rectsOverlap(a, placed[j]!.rect)).toBe(false);
+        for (let j = i + 1; j < placed.length; j++)
+          expect(rectsOverlap(a, placed[j]!.rect)).toBe(false);
       }
     }
   });
@@ -84,7 +92,11 @@ describe('placement anti-collision des étiquettes', () => {
     const c = placeCallouts(items.slice(0, 1), { bounds, previous });
     const want = previous.get(items[0]!.id)!;
     const g = candidateGeometry(items[0]!, want);
-    const inBounds = g.rect.x >= 0 && g.rect.y >= 0 && g.rect.x + g.rect.w <= bounds.w && g.rect.y + g.rect.h <= bounds.h;
+    const inBounds =
+      g.rect.x >= 0 &&
+      g.rect.y >= 0 &&
+      g.rect.x + g.rect.w <= bounds.w &&
+      g.rect.y + g.rect.h <= bounds.h;
     if (inBounds) expect(c[0]!.candidate).toBe(want);
   });
 
@@ -102,7 +114,10 @@ describe('placement anti-collision des étiquettes', () => {
   });
 
   it('omet les ancres hors écran', () => {
-    const placed = placeCallouts([{ id: 'out', anchor: { x: -100, y: 50 }, w: 80, h: 20, priority: 5 }], { bounds });
+    const placed = placeCallouts(
+      [{ id: 'out', anchor: { x: -100, y: 50 }, w: 80, h: 20, priority: 5 }],
+      { bounds },
+    );
     expect(placed).toHaveLength(0);
   });
 });

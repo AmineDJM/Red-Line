@@ -1,30 +1,70 @@
 # CLAUDE.md — Red Line
 
-Jeu de stratégie géopolitique en temps réel sur la vraie carte du monde, dans le navigateur (inspiré de Conflict of Nations). Victoire uniquement militaire.
+Jeu de stratégie géopolitique en temps réel sur la vraie carte du monde, dans le navigateur (inspiré de Conflict of
+Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Claude Code — Red Line » fourni par Amine.
 
-Cahier des charges : fourni par Amine (PDF « Prompt Claude Code — Red Line »). Proposition d'architecture : `docs/architecture.md`.
+## État
 
-## État actuel
+- **Phase 1 (Socle) : terminée** — bilan dans `docs/phase1-bilan.md`. Critère « conquérir une province ennemie sur
+  mobile et ordinateur » vérifié par `e2e/conquest.spec.ts`.
+- En attente de validation d'Amine : catalogue des chasseurs (`docs/catalog-fighters.md`) et liste complémentaire,
+  avant la phase 2.
+- Règle : avancer phase par phase, **demander la validation avant chaque nouvelle phase**.
 
-- **Phase 0 : proposition d'architecture en attente de validation.** Aucun code n'est écrit.
-- Règle de travail : avancer phase par phase et **demander la validation avant chaque nouvelle phase**.
+## Carte du dépôt
 
-## Décisions proposées (pas encore validées)
+- `packages/shared` : contrats (types, schémas zod, protocole WS, API REST, géométrie sphérique). Tout changement
+  de contrat se fait ici, en champs optionnels si possible.
+- `packages/engine` : simulation pure et déterministe (aucune E/S, aucun `Date.now`, aucun `Math.random`).
+- `packages/ui` : design system commun (hexagones, cadres à crochets, fiche d'arme, jetons de couleur).
+- `apps/server` : Fastify + WebSocket + PostgreSQL (Drizzle) ; sert aussi `apps/client/dist` (`/`) et
+  `apps/admin/dist` (`/admin/`).
+- `apps/client` : jeu (React, Vite, MapLibre, Zustand, i18next). `apps/admin` : back-office.
+- `data/` : catalogue, équilibrage, scénarios, carte (générée), fond de carte, glyphes, tuiles satellite.
+- `tools/map`, `tools/tiles`, `tools/glyphs` : pipelines reproductibles qui produisent `data/`.
+- `e2e/` : Playwright contre le vrai serveur. `docs/` : architecture, déploiement, bilans.
 
-- Monorepo pnpm, TypeScript strict. `apps/{client,admin,server}`, `packages/{shared,engine,ui}`, `data/`, `tools/`.
-- `packages/engine` est **pur et déterministe** : pas d'E/S, pas de `Date.now`, pas de `Math.random` (PRNG à graine). Temps de jeu en ms.
-- Simulation par événements : file de priorité par partie, clé de tri `(time, priority, seq)`, invalidation paresseuse par version d'entité.
-- Trajets en segments de grand cercle ; entrée dans les zones circulaires calculée exactement ; croisements mobiles par dichotomie.
-- Navigation terre/mer sur une grille H3 (résolution 4) ; le terrain n'affecte jamais le combat.
-- Persistance : instantanés compressés + journal d'ordres en ajout seul ; reprise = instantané + rejeu. Bail de partie via un verrou consultatif PostgreSQL.
+## Décisions prises
+
+- Monorepo pnpm, TypeScript strict ; paquets internes consommés en source (pas de build des libs).
+- Simulation par événements : file `(time, priority, seq)`, invalidation paresseuse par version ; trajets en grand
+  cercle ; entrée dans les zones circulaires calculée exactement ; croisements mobiles par recherche bornée.
+- Navigation sur grille H3 résolution 4 ; `cells.json.impassable` = terres sans propriétaire (Antarctique, zones
+  tampons), infranchissables. Le terrain n'influence jamais le combat.
+- Guerre déclarée automatiquement par un ordre d'attaque ou l'entrée dans une province étrangère.
+- Persistance : instantanés compressés + journal d'ordres ; reprise = instantané + rejeu. Bail de partie en base
+  (colonnes `lease_owner`/`lease_until`) ; ne jamais fixer `INSTANCE_ID` à une constante sur Render.
 - L'état interne d'une partie vit dans `GameState`, pas dans des tables SQL.
-- Le serveur n'envoie que ce que le joueur a le droit de voir (diffs MessagePack).
-- Carte : Blue Marble (domaine public) en PMTiles jusqu'au zoom 8, Natural Earth en vecteur ; provinces et propriétaires servis en GeoJSON dynamique.
-- Cibles stratégiques : bâtiments **génériques** par province, jamais de vrais sites nommés. De l'image de référence, on ne reprend que les codes visuels.
+- Le serveur n'envoie que ce que le joueur a le droit de voir (`viewFor`, `notificationsFor`, diffs MessagePack).
+- **Même origine** pour API, jeu et back-office (pas de Static Sites séparés : `onrender.com` est sur la liste des
+  suffixes publics, un cookie inter-sous-domaines deviendrait tiers et serait bloqué par Safari).
+- Imagerie : Blue Marble juillet 2004 (décembre = Russie et Canada enneigés), zoom 0 à 8, **commitée**
+  (~93 Mio, sous la limite GitHub de 100 Mio) ; pas de disque Render.
+- Fond vectoriel en GeoJSON statique (`data/basemap`) plutôt qu'en PMTiles vectoriel (petit volume, pas de tippecanoe).
+- Cibles stratégiques : bâtiments **génériques** par province, jamais de vrais sites nommés. De l'image de référence,
+  on ne reprend que les codes visuels.
+- Couleurs de nations : jamais de violet (réservé au joueur), deux voisins jamais identiques.
 
 ## Conventions
 
-- Tous les chiffres d'équilibrage dans `data/` (JSON validé par zod), jamais en dur dans le code.
-- Textes de l'interface externalisés (i18next, français d'abord).
-- Nom du jeu : **Red Line** (interface, titres de pages, métadonnées).
-- Catalogue d'armes : faire valider une catégorie complète (les chasseurs) avant d'étendre aux autres.
+- Tous les chiffres d'équilibrage dans `data/` (JSON validé par zod), jamais en dur.
+- Textes de l'interface en français, externalisés (`apps/client/src/i18n/fr.json`, `apps/admin/src/i18n/fr.ts`).
+- Nom du jeu : **Red Line** (interface, titres, métadonnées).
+- Catalogue : une catégorie complète validée avant d'étendre aux autres.
+- Accès de diagnostic du client (`window.__rl`, `window.__rlMap`) : actifs en mock ou avec localStorage `rl.debug=1`.
+- `REDLINE_EXTRA_SPEEDS` : vitesses d'essai pour les tests, refusées en production.
+
+## Commandes
+
+```bash
+pnpm install
+pnpm --filter @redline/server db:dev   # PostgreSQL jetable, port 54329 (données dans .pgdata)
+pnpm build && pnpm start               # http://localhost:3000
+pnpm dev                               # serveur :3000, client :5173, admin :5174
+pnpm typecheck && pnpm test            # 203 tests unitaires
+pnpm e2e                               # bout en bout (build + base requis)
+pnpm format                            # Prettier
+```
+
+Attention : dans l'environnement cloud de Claude, `DATABASE_URL` pointe vers une base Render réelle. Pour les essais
+locaux, toujours forcer `DATABASE_URL=postgres://postgres@127.0.0.1:54329/redline`.

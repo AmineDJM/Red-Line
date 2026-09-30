@@ -10,7 +10,14 @@ import type {
   WeaponSystem,
 } from '@redline/shared';
 import { BASEMAP_FILES, FALLBACK_TILES, FONTS } from '../config.js';
-import { ApiError, type Api, type BasemapData, type Credentials, type RegisterInput, type TilesInfo } from './types.js';
+import {
+  ApiError,
+  type Api,
+  type BasemapData,
+  type Credentials,
+  type RegisterInput,
+  type TilesInfo,
+} from './types.js';
 
 async function request<T>(method: string, url: string, body?: unknown): Promise<T> {
   let res: Response;
@@ -50,9 +57,17 @@ async function optionalGeoJSON(url: string): Promise<FeatureCollection | null> {
 
 export async function loadBasemap(): Promise<BasemapData> {
   const [land, coastline, seas, countries, cities] = await Promise.all(
-    (['land', 'coastline', 'seas', 'countries', 'cities'] as const).map((k) => optionalGeoJSON(`/basemap/${BASEMAP_FILES[k]}`)),
+    (['land', 'coastline', 'seas', 'countries', 'cities'] as const).map((k) =>
+      optionalGeoJSON(`/basemap/${BASEMAP_FILES[k]}`),
+    ),
   );
-  return { land: land ?? null, coastline: coastline ?? null, seas: seas ?? null, countries: countries ?? null, cities: cities ?? null };
+  return {
+    land: land ?? null,
+    coastline: coastline ?? null,
+    seas: seas ?? null,
+    countries: countries ?? null,
+    cities: cities ?? null,
+  };
 }
 
 /** Vérifie qu'une ressource binaire existe (et n'est pas la page SPA de repli). */
@@ -76,7 +91,8 @@ export class HttpApi implements Api {
     try {
       return (await request<{ user: PublicUser }>('GET', '/api/me')).user;
     } catch (e) {
-      if (e instanceof ApiError && (e.status === 401 || e.status === 0 || e.status >= 500)) return null;
+      if (e instanceof ApiError && (e.status === 401 || e.status === 0 || e.status >= 500))
+        return null;
       throw e;
     }
   }

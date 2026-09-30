@@ -49,7 +49,9 @@ const REQUIRED: (keyof EngineModule)[] = [
 
 /** Charge le moteur ; renvoie null (et la liste des fonctions manquantes) s'il n'est pas encore implémenté. */
 export async function loadEngine(): Promise<{ engine: EngineModule | null; missing: string[] }> {
-  const mod = (await import('@redline/engine')) as unknown as Partial<Record<keyof EngineModule, unknown>>;
+  const mod = (await import('@redline/engine')) as unknown as Partial<
+    Record<keyof EngineModule, unknown>
+  >;
   const missing = REQUIRED.filter((k) => typeof mod[k] !== 'function');
   return { engine: missing.length ? null : (mod as unknown as EngineModule), missing };
 }
@@ -93,7 +95,13 @@ export class LocalGameConnection extends Emitter implements GameConnection {
   ) {
     super();
     this.state = engine.createGame(world, setup);
-    this.nations = [...new Set([opts.observer, ...setup.players.map((p) => p.nationId), ...(setup.units ?? []).map((u) => u.owner)])];
+    this.nations = [
+      ...new Set([
+        opts.observer,
+        ...setup.players.map((p) => p.nationId),
+        ...(setup.units ?? []).map((u) => u.owner),
+      ]),
+    ];
     this.clock = { anchorGame: this.state.time, anchorReal: Date.now(), speed: 1, paused: true };
     this.meta = {
       id: 'sandbox',
@@ -109,14 +117,21 @@ export class LocalGameConnection extends Emitter implements GameConnection {
   start() {
     if (this.timer) return;
     this.emit('status', 'open');
-    this.emit('welcome', { game: this.meta, me: this.opts.observer, clock: this.clock, view: this.view });
+    this.emit('welcome', {
+      game: this.meta,
+      me: this.opts.observer,
+      clock: this.clock,
+      view: this.view,
+    });
     this.timer = setInterval(() => this.tick(), this.opts.tickMs ?? 100);
   }
 
   private computeView(): PlayerView {
     const base = this.engine.viewFor(this.state, this.opts.observer);
     if (!this.opts.godView) return base;
-    const others = this.nations.filter((n) => n !== this.opts.observer).map((n) => this.engine.viewFor(this.state, n));
+    const others = this.nations
+      .filter((n) => n !== this.opts.observer)
+      .map((n) => this.engine.viewFor(this.state, n));
     return mergeViews(base, others);
   }
 
@@ -135,7 +150,9 @@ export class LocalGameConnection extends Emitter implements GameConnection {
     const diff = this.engine.diffViews(this.view, next);
     this.view = next;
     if (diff) this.emit('diff', diff);
-    const visible = this.opts.godView ? items : this.engine.notificationsFor(this.state, this.opts.observer, items);
+    const visible = this.opts.godView
+      ? items
+      : this.engine.notificationsFor(this.state, this.opts.observer, items);
     if (visible.length) this.emit('notify', visible);
   }
 
@@ -152,7 +169,8 @@ export class LocalGameConnection extends Emitter implements GameConnection {
 
   /** Nation qui donne l'ordre : propriétaire de la première unité (bac à sable : toutes commandables). */
   private issuer(order: Order): NationId {
-    if (order.kind === 'produce') return this.view.provinces[order.provinceId]?.owner ?? this.opts.observer;
+    if (order.kind === 'produce')
+      return this.view.provinces[order.provinceId]?.owner ?? this.opts.observer;
     const first = order.unitIds[0];
     return (first && this.view.units[first]?.owner) || this.opts.observer;
   }
@@ -160,17 +178,30 @@ export class LocalGameConnection extends Emitter implements GameConnection {
   async sendOrder(order: Order): Promise<OrderOutcome> {
     try {
       const items = this.advance();
-      const res = this.engine.applyOrder(this.state, this.opts.godView ? this.issuer(order) : this.opts.observer, order);
+      const res = this.engine.applyOrder(
+        this.state,
+        this.opts.godView ? this.issuer(order) : this.opts.observer,
+        order,
+      );
       this.publish(items);
       return res;
     } catch (e) {
-      return { ok: false, error: 'not_allowed', message: e instanceof Error ? e.message : String(e) };
+      return {
+        ok: false,
+        error: 'not_allowed',
+        message: e instanceof Error ? e.message : String(e),
+      };
     }
   }
 
   private reanchor(patch: Partial<ClockState>) {
     const now = Date.now();
-    this.clock = { ...this.clock, anchorGame: gameTimeAt(this.clock, now), anchorReal: now, ...patch };
+    this.clock = {
+      ...this.clock,
+      anchorGame: gameTimeAt(this.clock, now),
+      anchorReal: now,
+      ...patch,
+    };
     this.emit('clock', this.clock);
   }
 

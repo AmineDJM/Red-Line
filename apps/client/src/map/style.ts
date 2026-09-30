@@ -28,10 +28,25 @@ export interface StyleInput {
   clusterUnits: boolean;
 }
 
-const geo = (data: FeatureCollection | null = EMPTY, extra: Record<string, unknown> = {}): SourceSpecification =>
+const geo = (
+  data: FeatureCollection | null = EMPTY,
+  extra: Record<string, unknown> = {},
+): SourceSpecification =>
   ({ type: 'geojson', data: data ?? EMPTY, ...extra }) as SourceSpecification;
 
-const UNIT_SIZE: ExpressionSpecification = ['interpolate', ['linear'], ['zoom'], 1.5, 0.44, 4, 0.56, 7, 0.68, 10, 0.78];
+const UNIT_SIZE: ExpressionSpecification = [
+  'interpolate',
+  ['linear'],
+  ['zoom'],
+  1.5,
+  0.44,
+  4,
+  0.56,
+  7,
+  0.68,
+  10,
+  0.78,
+];
 const UNCLUSTERED: ExpressionSpecification = ['!', ['has', 'point_count']];
 
 /** Étiquette : texte MapLibre si les glyphes existent, sinon image générée (`txt|style|texte`). */
@@ -62,12 +77,21 @@ function label(
         'text-allow-overlap': false,
         'text-padding': 4,
       },
-      paint: { 'text-color': opts.color, 'text-halo-color': opts.halo, 'text-halo-width': opts.haloWidth, 'text-halo-blur': 0.8 },
+      paint: {
+        'text-color': opts.color,
+        'text-halo-color': opts.halo,
+        'text-halo-width': opts.haloWidth,
+        'text-halo-blur': 0.8,
+      },
     };
   }
   return {
     layout: {
-      'icon-image': ['concat', `${TEXT_IMAGE_PREFIX}${opts.style}|`, field] as ExpressionSpecification,
+      'icon-image': [
+        'concat',
+        `${TEXT_IMAGE_PREFIX}${opts.style}|`,
+        field,
+      ] as ExpressionSpecification,
       'icon-allow-overlap': false,
       'icon-padding': 4,
     },
@@ -77,7 +101,11 @@ function label(
 
 export function buildStyle(i: StyleInput): StyleSpecification {
   const sources: Record<string, SourceSpecification> = {
-    provinces: { type: 'geojson', data: i.provinces ?? EMPTY, promoteId: 'id' } as SourceSpecification,
+    provinces: {
+      type: 'geojson',
+      data: i.provinces ?? EMPTY,
+      promoteId: 'id',
+    } as SourceSpecification,
     'basemap-land': geo(i.basemap?.land ?? null),
     'basemap-coast': geo(i.basemap?.coastline ?? null),
     'basemap-seas': geo(i.basemap?.seas ?? null),
@@ -119,7 +147,12 @@ export function buildStyle(i: StyleInput): StyleSpecification {
   const mz = i.tiles?.maxzoom ?? 5;
   const layers: LayerSpecification[] = [
     { id: 'bg', type: 'background', paint: { 'background-color': '#04070d' } },
-    { id: 'land', type: 'fill', source: 'basemap-land', paint: { 'fill-color': '#121a26', 'fill-antialias': false } },
+    {
+      id: 'land',
+      type: 'fill',
+      source: 'basemap-land',
+      paint: { 'fill-color': '#121a26', 'fill-antialias': false },
+    },
     {
       id: 'prov-base',
       type: 'fill',
@@ -162,8 +195,21 @@ export function buildStyle(i: StyleInput): StyleSpecification {
       filter: ['has', 'disputed'],
       paint: { 'fill-pattern': 'hatch-disputed', 'fill-opacity': 0.7 },
     },
-    { id: 'fog', type: 'fill', source: 'fog', paint: { 'fill-color': '#01030a', 'fill-opacity': 0.38, 'fill-antialias': false } },
-    { id: 'fog-hatch', type: 'fill', source: 'fog', paint: { 'fill-pattern': 'hatch-fog', 'fill-opacity': ['interpolate', ['linear'], ['zoom'], 2, 0.35, 6, 0.7] } },
+    {
+      id: 'fog',
+      type: 'fill',
+      source: 'fog',
+      paint: { 'fill-color': '#01030a', 'fill-opacity': 0.38, 'fill-antialias': false },
+    },
+    {
+      id: 'fog-hatch',
+      type: 'fill',
+      source: 'fog',
+      paint: {
+        'fill-pattern': 'hatch-fog',
+        'fill-opacity': ['interpolate', ['linear'], ['zoom'], 2, 0.35, 6, 0.7],
+      },
+    },
     {
       id: 'prov-line',
       type: 'line',
@@ -207,14 +253,22 @@ export function buildStyle(i: StyleInput): StyleSpecification {
       type: 'line',
       source: 'my-border',
       layout: { 'line-join': 'round', 'line-cap': 'round' },
-      paint: { 'line-color': '#d2bcff', 'line-width': ['interpolate', ['linear'], ['zoom'], 1, 0.9, 6, 1.8] },
+      paint: {
+        'line-color': '#d2bcff',
+        'line-width': ['interpolate', ['linear'], ['zoom'], 1, 0.9, 6, 1.8],
+      },
     },
     {
       id: 'capture',
       type: 'line',
       source: 'provinces',
       paint: {
-        'line-color': ['case', ['==', ['coalesce', ['feature-state', 'cap'], 0], 2], '#e5343a', ORANGE],
+        'line-color': [
+          'case',
+          ['==', ['coalesce', ['feature-state', 'cap'], 0], 2],
+          '#e5343a',
+          ORANGE,
+        ],
         'line-width': 2,
         'line-dasharray': [2, 1.5],
         'line-opacity': ['case', ['>', ['coalesce', ['feature-state', 'cap'], 0], 0], 0.95, 0],
@@ -233,7 +287,13 @@ export function buildStyle(i: StyleInput): StyleSpecification {
   );
 
   // ——— Étiquettes ———
-  const seaLayer = (id: string, filter: FilterSpecification, style: TextStyle, size: number, minzoom: number): LayerSpecification => {
+  const seaLayer = (
+    id: string,
+    filter: FilterSpecification,
+    style: TextStyle,
+    size: number,
+    minzoom: number,
+  ): LayerSpecification => {
     const l = label(i.glyphs, ['get', 'name'], {
       style,
       font: FONTS.italic,
@@ -243,7 +303,15 @@ export function buildStyle(i: StyleInput): StyleSpecification {
       halo: 'rgba(0,0,0,0.5)',
       haloWidth: 1,
     });
-    return { id, type: 'symbol', source: 'basemap-seas', minzoom, filter, layout: l.layout!, paint: l.paint! } as LayerSpecification;
+    return {
+      id,
+      type: 'symbol',
+      source: 'basemap-seas',
+      minzoom,
+      filter,
+      layout: l.layout!,
+      paint: l.paint!,
+    } as LayerSpecification;
   };
   const rank: ExpressionSpecification = ['coalesce', ['get', 'rank'], 1];
   layers.push(
@@ -288,12 +356,26 @@ export function buildStyle(i: StyleInput): StyleSpecification {
     const layout = i.glyphs
       ? { ...l.layout!, 'text-anchor': 'left', 'text-offset': [0.55, 0], 'text-max-width': 8 }
       : { ...l.layout!, 'icon-anchor': 'left', 'icon-offset': [5, 0] };
-    layers.push({ id: `${id}-label`, type: 'symbol', source: 'basemap-cities', minzoom: minzoom + 0.3, filter, layout, paint: l.paint! } as LayerSpecification);
+    layers.push({
+      id: `${id}-label`,
+      type: 'symbol',
+      source: 'basemap-cities',
+      minzoom: minzoom + 0.3,
+      filter,
+      layout,
+      paint: l.paint!,
+    } as LayerSpecification);
   }
 
   // Pays : capitales blanches espacées avec ombre, par paliers de zoom.
   const labelMz: ExpressionSpecification = ['coalesce', ['get', 'minzoom'], 3];
-  const country = (id: string, filter: FilterSpecification, style: TextStyle, size: number, minzoom: number): LayerSpecification => {
+  const country = (
+    id: string,
+    filter: FilterSpecification,
+    style: TextStyle,
+    size: number,
+    minzoom: number,
+  ): LayerSpecification => {
     const l = label(i.glyphs, ['get', 'name'], {
       style,
       font: FONTS.title,
@@ -317,23 +399,49 @@ export function buildStyle(i: StyleInput): StyleSpecification {
   };
   layers.push(
     country('country-labels-l', ['<=', labelMz, 2], 'country-l', 18, 1.5),
-    country('country-labels-m', ['all', ['>', labelMz, 2], ['<=', labelMz, 3]], 'country-m', 15, 2.5),
-    country('country-labels-s', ['all', ['>', labelMz, 3], ['<=', labelMz, 4.5]], 'country-s', 13, 3.5),
+    country(
+      'country-labels-m',
+      ['all', ['>', labelMz, 2], ['<=', labelMz, 3]],
+      'country-m',
+      15,
+      2.5,
+    ),
+    country(
+      'country-labels-s',
+      ['all', ['>', labelMz, 3], ['<=', labelMz, 4.5]],
+      'country-s',
+      13,
+      3.5,
+    ),
     country('country-labels-xs', ['>', labelMz, 4.5], 'country-s', 12, 4.8),
   );
 
   if (i.mode !== 'picker') {
     layers.push(
       // ——— Contacts incertains ———
-      { id: 'uncert-fill', type: 'fill', source: 'uncert', paint: { 'fill-color': '#9aa6bd', 'fill-opacity': 0.08 } },
+      {
+        id: 'uncert-fill',
+        type: 'fill',
+        source: 'uncert',
+        paint: { 'fill-color': '#9aa6bd', 'fill-opacity': 0.08 },
+      },
       {
         id: 'uncert-line',
         type: 'line',
         source: 'uncert',
-        paint: { 'line-color': 'rgba(200,210,228,0.55)', 'line-width': 1, 'line-dasharray': [2, 2] },
+        paint: {
+          'line-color': 'rgba(200,210,228,0.55)',
+          'line-width': 1,
+          'line-dasharray': [2, 2],
+        },
       },
       // ——— Arc de portée ———
-      { id: 'range-fill', type: 'fill', source: 'range', paint: { 'fill-color': ORANGE, 'fill-opacity': 0.2 } },
+      {
+        id: 'range-fill',
+        type: 'fill',
+        source: 'range',
+        paint: { 'fill-color': ORANGE, 'fill-opacity': 0.2 },
+      },
       {
         id: 'range-lines',
         type: 'line',
@@ -342,7 +450,13 @@ export function buildStyle(i: StyleInput): StyleSpecification {
           'line-color': ORANGE,
           'line-width': ['match', ['get', 'kind'], 'max', 2.2, 'min', 1, 1.2],
           'line-opacity': ['match', ['get', 'kind'], 'max', 0.95, 'min', 0.5, 0.7],
-          'line-dasharray': ['match', ['get', 'kind'], 'radius', ['literal', [3, 3]], ['literal', [1, 0]]],
+          'line-dasharray': [
+            'match',
+            ['get', 'kind'],
+            'radius',
+            ['literal', [3, 3]],
+            ['literal', [1, 0]],
+          ],
         },
       },
       // ——— Trajectoires des unités en mouvement ———
@@ -391,7 +505,12 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         type: 'symbol',
         source: 'preview-pts',
         filter: ['==', ['get', 'kind'], 'target'],
-        layout: { 'icon-image': 'ring', 'icon-size': 0.95, 'icon-allow-overlap': true, 'icon-ignore-placement': true },
+        layout: {
+          'icon-image': 'ring',
+          'icon-size': 0.95,
+          'icon-allow-overlap': true,
+          'icon-ignore-placement': true,
+        },
         paint: { 'icon-color': '#e5343a' },
       },
       {
@@ -399,7 +518,13 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         type: 'symbol',
         source: 'preview-pts',
         filter: ['==', ['get', 'kind'], 'launch'],
-        layout: { 'icon-image': 'tri', 'icon-size': 0.62, 'icon-allow-overlap': true, 'icon-ignore-placement': true, 'icon-offset': [0, 30] },
+        layout: {
+          'icon-image': 'tri',
+          'icon-size': 0.62,
+          'icon-allow-overlap': true,
+          'icon-ignore-placement': true,
+          'icon-offset': [0, 30],
+        },
         paint: { 'icon-color': ORANGE, 'icon-halo-color': 'rgba(0,0,0,0.6)', 'icon-halo-width': 1 },
       },
       {
@@ -426,9 +551,19 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         type: 'symbol',
         source: 'units',
         filter: ['has', 'point_count'],
-        layout: { 'icon-image': 'hex', 'icon-size': 0.62, 'icon-allow-overlap': true, 'icon-ignore-placement': true },
+        layout: {
+          'icon-image': 'hex',
+          'icon-size': 0.62,
+          'icon-allow-overlap': true,
+          'icon-ignore-placement': true,
+        },
         paint: {
-          'icon-color': ['case', ['>=', ['get', 'mine'], ['-', ['get', 'point_count'], ['get', 'mine']]], '#7b4cf0', '#56607a'],
+          'icon-color': [
+            'case',
+            ['>=', ['get', 'mine'], ['-', ['get', 'point_count'], ['get', 'mine']]],
+            '#7b4cf0',
+            '#56607a',
+          ],
           'icon-halo-color': 'rgba(255,255,255,0.9)',
           'icon-halo-width': 1.4,
         },
@@ -439,7 +574,12 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         type: 'symbol',
         source: 'units',
         filter: ['all', UNCLUSTERED, ['>', ['get', 'sel'], 0]],
-        layout: { 'icon-image': 'hex-sel', 'icon-size': UNIT_SIZE, 'icon-allow-overlap': true, 'icon-ignore-placement': true },
+        layout: {
+          'icon-image': 'hex-sel',
+          'icon-size': UNIT_SIZE,
+          'icon-allow-overlap': true,
+          'icon-ignore-placement': true,
+        },
         paint: { 'icon-color': ['case', ['==', ['get', 'sel'], 2], '#e5343a', ORANGE] },
       },
       {
@@ -456,7 +596,12 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         },
         paint: {
           'icon-color': ['get', 'color'],
-          'icon-halo-color': ['case', ['==', ['get', 'mine'], 1], 'rgba(235,225,255,0.95)', 'rgba(255,255,255,0.8)'],
+          'icon-halo-color': [
+            'case',
+            ['==', ['get', 'mine'], 1],
+            'rgba(235,225,255,0.95)',
+            'rgba(255,255,255,0.8)',
+          ],
           'icon-halo-width': 1.2,
           'icon-opacity': ['get', 'op'],
         },
@@ -496,14 +641,24 @@ function focusLayers(): LayerSpecification[] {
       id: 'focus-sel',
       type: 'symbol',
       source: 'units-focus',
-      layout: { 'icon-image': 'hex-sel', 'icon-size': UNIT_SIZE, 'icon-allow-overlap': true, 'icon-ignore-placement': true },
+      layout: {
+        'icon-image': 'hex-sel',
+        'icon-size': UNIT_SIZE,
+        'icon-allow-overlap': true,
+        'icon-ignore-placement': true,
+      },
       paint: { 'icon-color': ['case', ['==', ['get', 'sel'], 2], '#e5343a', ORANGE] },
     },
     {
       id: 'focus-hex',
       type: 'symbol',
       source: 'units-focus',
-      layout: { 'icon-image': 'hex', 'icon-size': UNIT_SIZE, 'icon-allow-overlap': true, 'icon-ignore-placement': true },
+      layout: {
+        'icon-image': 'hex',
+        'icon-size': UNIT_SIZE,
+        'icon-allow-overlap': true,
+        'icon-ignore-placement': true,
+      },
       paint: {
         'icon-color': ['get', 'color'],
         'icon-halo-color': 'rgba(255,255,255,0.95)',
@@ -528,8 +683,20 @@ function focusLayers(): LayerSpecification[] {
   ];
 }
 
-function buildingLayers(kind: 'mine' | 'other', minzoom: number, filter: FilterSpecification): LayerSpecification[] {
-  const size: ExpressionSpecification = ['interpolate', ['linear'], ['zoom'], minzoom, 0.3, 8, 0.44];
+function buildingLayers(
+  kind: 'mine' | 'other',
+  minzoom: number,
+  filter: FilterSpecification,
+): LayerSpecification[] {
+  const size: ExpressionSpecification = [
+    'interpolate',
+    ['linear'],
+    ['zoom'],
+    minzoom,
+    0.3,
+    8,
+    0.44,
+  ];
   return [
     {
       id: `bld-${kind}-hex`,
@@ -584,7 +751,11 @@ function clusterCount(glyphs: boolean): LayerSpecification {
         'text-allow-overlap': true,
         'text-ignore-placement': true,
       },
-      paint: { 'text-color': '#ffffff', 'text-halo-color': 'rgba(0,0,0,0.6)', 'text-halo-width': 1 },
+      paint: {
+        'text-color': '#ffffff',
+        'text-halo-color': 'rgba(0,0,0,0.6)',
+        'text-halo-width': 1,
+      },
     };
   }
   return {
@@ -599,4 +770,3 @@ function clusterCount(glyphs: boolean): LayerSpecification {
     },
   };
 }
-
