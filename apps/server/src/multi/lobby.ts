@@ -13,7 +13,8 @@ import type { AppContext } from '../context.js';
 import { gamePlayers, games, users } from '../db/schema.js';
 import { HttpError } from '../auth/auth.js';
 import { parseBody, unavailable } from '../http/util.js';
-import { gameIdParam, requireUser } from '../http/access.js';
+import { assertCreationQuota, gameIdParam, requireUser } from '../http/access.js';
+import { createLimit } from '../http/public.js';
 import { metaOf } from '../host/game-host.js';
 
 const JoinBodySchema = z.object({ nationId: z.string().min(1).max(64) });
@@ -112,9 +113,11 @@ export async function lobbyRoutes(app: FastifyInstance, ctx: AppContext): Promis
     return { game: (await lobbyViews([row]))[0] };
   });
 
-  app.post('/api/lobby', async (req, reply) => {
-    const { user } = await requireUser(ctx, req, reply);
+  app.post('/api/lobby', { config: createLimit(ctx) }, async (req, reply) => {
+    const auth = await requireUser(ctx, req, reply);
+    const { user } = auth;
     const body = parseBody(CreateLobbyBodySchema, req.body);
+    await assertCreationQuota(ctx, auth, 'multi');
     const r = ctx.worlds.unavailableReason();
     if (r) throw unavailable(r.code, r.message);
     const scenario = scenarioOf(body.scenarioId);

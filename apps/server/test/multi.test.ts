@@ -426,7 +426,7 @@ describe.skipIf(!hasDb)('multijoueur : lobby, messagerie, spectateur, IA de remp
     expect((stored!.value as { publicKey: string }).publicKey).toBe(key.publicKey);
 
     const sub = {
-      endpoint: 'https://push.example.test/bob',
+      endpoint: 'https://fcm.googleapis.com/fcm/send/bob',
       keys: { p256dh: 'p'.repeat(40), auth: 'a'.repeat(16) },
     };
     expect((await api(built.app, B.cookie)('POST', '/api/push/subscribe', sub)).statusCode).toBe(

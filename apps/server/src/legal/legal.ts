@@ -1,3 +1,4 @@
+import { clientIp } from '../http/security.js';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { and, eq } from 'drizzle-orm';
@@ -147,7 +148,7 @@ export async function legalRoutes(
   app.post('/api/legal/accept', async (req: FastifyRequest, reply: FastifyReply) => {
     const { user } = checkRole(await auth.authenticate(req, reply), 'player');
     const body = parseBody(AcceptBodySchema, req.body);
-    await legal.accept(user.id, body.docs, deps.hashIp(req.ip ?? ''));
+    await legal.accept(user.id, body.docs, deps.hashIp(clientIp(req)));
     return { ok: true, needsAcceptance: await legal.needsAcceptance(user.id) };
   });
 }

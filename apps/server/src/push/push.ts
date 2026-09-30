@@ -53,8 +53,38 @@ export interface PushPayload {
   url: string;
 }
 
+/**
+ * Services de notification des navigateurs (Chrome/Edge/Opera/Samsung : FCM ; Firefox : Mozilla ;
+ * Safari : Apple ; anciens Edge : WNS). Toute autre adresse est refusée : le serveur ne doit jamais
+ * envoyer de requête vers une adresse choisie par un utilisateur (SSRF vers le réseau interne).
+ */
+const PUSH_HOSTS = [
+  'fcm.googleapis.com',
+  'android.googleapis.com',
+  'updates.push.services.mozilla.com',
+  'push.services.mozilla.com',
+  'push.apple.com',
+  'notify.windows.com',
+];
+
+export function pushEndpointAllowed(endpoint: string): boolean {
+  let u: URL;
+  try {
+    u = new URL(endpoint);
+  } catch {
+    return false;
+  }
+  if (u.protocol !== 'https:' || u.port !== '' || u.username || u.password) return false;
+  const host = u.hostname.toLowerCase();
+  return PUSH_HOSTS.some((h) => host === h || host.endsWith(`.${h}`));
+}
+
 const SubscribeSchema = z.object({
-  endpoint: z.string().url().max(1000),
+  endpoint: z
+    .string()
+    .url()
+    .max(1000)
+    .refine(pushEndpointAllowed, 'Service de notification non reconnu'),
   keys: z.object({ p256dh: z.string().min(10).max(200), auth: z.string().min(4).max(100) }),
   expirationTime: z.number().nullable().optional(),
 });
@@ -230,6 +260,10 @@ export class PushService {
     const vapid = { ...this.keys, subject: this.deps.subject };
     await Promise.all(
       subs.map(async (s) => {
+        if (!pushEndpointAllowed(s.endpoint)) {
+          gone.push(s.id);
+          return;
+        }
         try {
           const r = await this.deps.sender.send(
             { endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } },

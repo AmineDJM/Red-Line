@@ -2,6 +2,7 @@ import { desc, eq } from 'drizzle-orm';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import {
+  AdminSetAiBodySchema,
   ImportBodySchema,
   SaveSystemBodySchema,
   WeaponSystemSchema,
@@ -41,6 +42,15 @@ export interface MetricsExtra {
   wsMessagesOutPerMin: number;
   chatMessagesPerMin: number;
   pushSentPerMin: number;
+  /** Latence de la boucle d'événements (99e centile et maximum sur les 5 dernières secondes). */
+  eventLoopP99Ms: number;
+  eventLoopMaxMs: number;
+  /** Diffusions (vues + diffs) : nombre et coût CPU sur la dernière minute, pire diffusion récente. */
+  flushesPerMin: number;
+  flushMsPerMin: number;
+  flushMaxMs: number;
+  /** Parties hébergées ici en retard sur leur horloge (rattrapage en cours). */
+  gamesBehind: number;
 }
 
 function zodMessage(e: z.ZodError): string {
@@ -368,6 +378,22 @@ export async function adminRoutes(app: FastifyInstance, ctx: AppContext): Promis
   app.post('/admin/api/games/:id/pause', moderator, pauseRoute(true));
   app.post('/admin/api/games/:id/resume', moderator, pauseRoute(false));
 
+  // Remplacement manuel d'un joueur par une IA (et restitution de la nation au joueur).
+  app.post('/admin/api/games/:id/players/:nationId/ai', moderator, async (req) => {
+    const id = z.string().uuid().safeParse(idParam(req));
+    if (!id.success) throw new HttpError(404, 'not_found', 'Partie introuvable');
+    const nationId = String((req.params as { nationId: string }).nationId ?? '').slice(0, 64);
+    const body = parseBody(AdminSetAiBodySchema, req.body);
+    const player = await host.adminSetAi(id.data, nationId, body.ai, body.aiLevel);
+    await db.insert(adminAudit).values({
+      adminId: adminOf(req).user.id,
+      action: body.ai ? 'game.player_ai' : 'game.player_restore',
+      target: `game:${id.data}`,
+      after: { nationId, userId: player.userId, aiLevel: body.ai ? body.aiLevel : null },
+    });
+    return { player };
+  });
+
   // ─────────── Métriques ───────────
 
   app.get('/admin/api/metrics', moderator, async (): Promise<Metrics & MetricsExtra> => {
@@ -384,6 +410,9 @@ export async function adminRoutes(app: FastifyInstance, ctx: AppContext): Promis
       wsMessagesOutPerMin: ctx.metrics.perMinute('wsMessagesOut'),
       chatMessagesPerMin: ctx.metrics.perMinute('chat'),
       pushSentPerMin: ctx.metrics.perMinute('push'),
+      flushesPerMin: ctx.metrics.perMinute('flushes'),
+      flushMsPerMin: Math.round(ctx.metrics.perMinute('flushMs')),
+      gamesBehind: hs.behind,
     };
   });
 }

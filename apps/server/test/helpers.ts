@@ -284,7 +284,7 @@ export async function startApp(o: StartOptions): Promise<BuiltApp> {
     config,
     engine: o.engine === undefined ? createFakeEngine() : o.engine,
     logger: { level: process.env.TEST_LOG_LEVEL ?? 'silent' },
-    runtime: { authRateLimitPerMin: 1000, ...o.runtime },
+    runtime: { authRateLimitPerMin: 1000, createRateLimitPerMin: 1000, ...o.runtime },
     payments: o.payments === undefined ? null : o.payments,
     ...(o.pushSender ? { pushSender: o.pushSender } : {}),
   });
