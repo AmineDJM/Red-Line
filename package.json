@@ -1,0 +1,27 @@
+{
+  "name": "red-line",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @redline/server --filter @redline/client --filter @redline/admin dev",
+    "build": "pnpm --filter @redline/client build && pnpm --filter @redline/admin build && pnpm --filter @redline/server build",
+    "start": "pnpm --filter @redline/server start",
+    "test": "pnpm -r --if-present test",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "~1.56.1",
+    "@types/node": "^26.6.3",
+    "prettier": "^3.9.9",
+    "tsx": "^4.23.15",
+    "typescript": "~5.8.3",
+    "vitest": "^5.0.3"
+  }
+}

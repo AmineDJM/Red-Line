@@ -1,0 +1,7 @@
+pnpm-lock.yaml
+dist
+data/map/*.geojson
+data/map/cells.json
+data/basemap
+data/tiles
+*.pmtiles

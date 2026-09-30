@@ -1,0 +1,88 @@
+import { z } from 'zod';
+import { RESOURCES } from './catalog.js';
+
+/** Bâtiments stratégiques génériques (jamais de sites réels nommés). */
+export const BUILDING_TYPES = [
+  'refinery',
+  'power_plant',
+  'port',
+  'air_base',
+  'military_base',
+  'arms_factory',
+  'research_center',
+] as const;
+export type BuildingType = (typeof BUILDING_TYPES)[number];
+
+const lngLat = z.tuple([z.number().min(-180).max(180), z.number().min(-90).max(90)]);
+
+export const NationDefSchema = z.object({
+  id: z.string(), // iso3 en minuscules, ou identifiant d'entité ("gaza", "pse")
+  iso: z.string(), // ISO alpha-3 ou code d'entité
+  name: z.string(),
+  kind: z.enum(['state', 'entity']),
+  /** Couleur de teinte, hex "#rrggbb". */
+  color: z.string().regex(/^#[0-9a-fA-F]{6}$/),
+  capitalProvinceId: z.string(),
+});
+export type NationDef = z.infer<typeof NationDefSchema>;
+
+export const ProvinceDefSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  /** Propriétaire au début d'un scénario « monde actuel ». */
+  nationId: z.string(),
+  centroid: lngLat,
+  /** Point de la ville principale : c'est là qu'on capture la province. */
+  cityPoint: lngLat,
+  isCapital: z.boolean().default(false),
+  coastal: z.boolean().default(false),
+  /** Production journalière par ressource, plus l'argent. */
+  income: z.object({
+    money: z.number().min(0),
+    ...(Object.fromEntries(RESOURCES.map((r) => [r, z.number().min(0).optional()])) as Record<
+      (typeof RESOURCES)[number],
+      z.ZodOptional<z.ZodNumber>
+    >),
+  }),
+  buildings: z.array(z.enum(BUILDING_TYPES)).default([]),
+  neighbors: z.array(z.string()).default([]),
+  /** Superficie approximative en km², pour l'équilibrage. */
+  areaKm2: z.number().min(0),
+});
+export type ProvinceDef = z.infer<typeof ProvinceDefSchema>;
+
+/** Grille H3 : cellule terrestre → province. Toute cellule absente est de la mer. */
+export const CellsFileSchema = z.object({
+  res: z.number().int(),
+  cells: z.record(z.string(), z.string()),
+});
+export type CellsFile = z.infer<typeof CellsFileSchema>;
+
+/** Détroits et canaux : cellules marines ajoutées à la grille de navigation navale. */
+export const StraitSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  seaCells: z.array(z.string()),
+});
+export type Strait = z.infer<typeof StraitSchema>;
+
+export const DisputedAreaSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  provinceIds: z.array(z.string()),
+  claimants: z.array(z.string()),
+  /** Jauge de tension de base, 0 à 100. */
+  tension: z.number().min(0).max(100),
+  /** Probabilité relative de révolte par jour de jeu (phase 4). */
+  revoltRate: z.number().min(0),
+});
+export type DisputedArea = z.infer<typeof DisputedAreaSchema>;
+
+/** Toutes les données statiques de la carte (sans géométrie des provinces). */
+export interface MapData {
+  nations: NationDef[];
+  provinces: ProvinceDef[];
+  cells: CellsFile;
+  straits: Strait[];
+  disputed: DisputedArea[];
+}

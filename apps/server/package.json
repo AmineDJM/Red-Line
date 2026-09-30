@@ -1,0 +1,33 @@
+{
+  "name": "@redline/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "build": "node build.mjs",
+    "start": "node dist/main.js",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx src/db/migrate.ts"
+  },
+  "dependencies": {
+    "@fastify/cookie": "^11.1.2",
+    "@fastify/rate-limit": "^11.2.0",
+    "@fastify/static": "^10.1.5",
+    "@fastify/websocket": "^11.3.1",
+    "@node-rs/argon2": "^2.2.1",
+    "@redline/engine": "workspace:*",
+    "@redline/shared": "workspace:*",
+    "drizzle-orm": "^0.45.3",
+    "fastify": "^5.12.5",
+    "postgres": "^3.4.9"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.18.2",
+    "drizzle-kit": "^0.31.11",
+    "esbuild": "^0.28.2",
+    "pino-pretty": "^13.1.3"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "@redline/tools-map",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsx src/build.ts"
+  },
+  "dependencies": {
+    "@redline/shared": "workspace:*",
+    "@turf/turf": "^7.4.0",
+    "h3-js": "^4.5.0",
+    "mapshaper": "^0.7.71",
+    "polyclip-ts": "^0.16.8"
+  }
+}

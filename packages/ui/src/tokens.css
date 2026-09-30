@@ -1,0 +1,40 @@
+/* Red Line — jetons de design communs au jeu et au back-office.
+   Style : infographie militaire sur imagerie satellite sombre. */
+:root {
+  /* Fond et panneaux */
+  --rl-bg: #070b14; /* bleu nuit, fond de page */
+  --rl-sea: #05080f; /* mers presque noires */
+  --rl-panel: rgba(12, 22, 44, 0.86); /* cartouches bleu marine semi-opaques */
+  --rl-panel-solid: #0c162c;
+  --rl-panel-border: rgba(140, 170, 220, 0.28);
+  --rl-legend: rgba(222, 228, 236, 0.9); /* légende gris clair translucide */
+  --rl-legend-text: #1a2233;
+
+  /* Accents */
+  --rl-orange: #f39a2b; /* portées, trajectoires, valeurs */
+  --rl-orange-strong: #ffb347;
+  --rl-orange-dim: rgba(243, 154, 43, 0.28);
+  --rl-violet: #8b5cf6; /* territoire du joueur */
+  --rl-violet-glow: #b794ff;
+  --rl-navy: #13264d; /* étiquettes */
+  --rl-red: #e5343a; /* menaces critiques uniquement */
+  --rl-green: #3ecf6e;
+  --rl-yellow: #f2d23c;
+
+  /* Texte */
+  --rl-text: #ffffff;
+  --rl-text-dim: #a9b6cc;
+  --rl-text-muted: #6f7d96;
+
+  /* Typographie */
+  --rl-font-title: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --rl-font-ui: 'IBM Plex Sans', system-ui, sans-serif;
+  --rl-font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Géométrie */
+  --rl-radius: 2px;
+  --rl-bracket: 10px; /* longueur des coins en crochets */
+  --rl-touch: 44px; /* taille tactile minimale */
+  --rl-gap: 8px;
+  --rl-shadow: 0 6px 24px rgba(0, 0, 0, 0.55);
+}

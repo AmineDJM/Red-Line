@@ -41,21 +41,21 @@ Principe directeur : **le moteur de simulation est une bibliothèque pure** (`pa
 
 ## 2. Stack retenue
 
-| Domaine | Choix | Pourquoi |
-|---|---|---|
-| Monorepo | **pnpm workspaces** (+ scripts `pnpm -r`) | Simple, rapide, pas besoin de Turborepo au départ |
-| Langage | TypeScript strict partout, Node 22 LTS | Types partagés client/serveur/admin |
-| Validation | **zod** (schémas dans `packages/shared`) | Même schéma pour valider les ordres, les fiches d'armes JSON et les formulaires admin |
-| Serveur | **Fastify** + `@fastify/websocket` (ws) | Rapide, typé, écosystème mûr |
-| ORM / migrations | **Drizzle ORM** + drizzle-kit | SQL explicite, léger, migrations versionnées |
-| Sérialisation WS | **MessagePack** (`@msgpack/msgpack`) + diffs | Messages 30 à 50 % plus petits que du JSON |
-| Client | React 19 + Vite, **Zustand** pour l'état, **MapLibre GL JS** + protocole `pmtiles` | Conforme au cahier |
-| Grille de navigation | **h3-js** (hexagones H3, Apache-2.0) | Pathfinding terre/mer sans terrain, et cohérent avec l'esthétique hexagonale |
-| Géométrie | calculs sphériques maison + `@turf/*` ponctuellement | Arcs de portée géodésiques, grands cercles |
-| i18n | i18next, `fr.json` | Textes externalisés dès le départ |
-| Tests | **Vitest** (+ fast-check pour les propriétés du moteur), Playwright (smoke test mobile + desktop) | Le moteur est la partie critique |
-| Auth | Email + mot de passe (argon2), cookie de session httpOnly, **compte invité** pour jouer tout de suite | Pas de dépendance externe au départ |
-| Polices | Barlow Condensed, IBM Plex Sans, IBM Plex Mono (licence OFL, auto-hébergées, glyphes PBF générés pour MapLibre) | Conforme au cahier |
+| Domaine              | Choix                                                                                                           | Pourquoi                                                                              |
+| -------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Monorepo             | **pnpm workspaces** (+ scripts `pnpm -r`)                                                                       | Simple, rapide, pas besoin de Turborepo au départ                                     |
+| Langage              | TypeScript strict partout, Node 22 LTS                                                                          | Types partagés client/serveur/admin                                                   |
+| Validation           | **zod** (schémas dans `packages/shared`)                                                                        | Même schéma pour valider les ordres, les fiches d'armes JSON et les formulaires admin |
+| Serveur              | **Fastify** + `@fastify/websocket` (ws)                                                                         | Rapide, typé, écosystème mûr                                                          |
+| ORM / migrations     | **Drizzle ORM** + drizzle-kit                                                                                   | SQL explicite, léger, migrations versionnées                                          |
+| Sérialisation WS     | **MessagePack** (`@msgpack/msgpack`) + diffs                                                                    | Messages 30 à 50 % plus petits que du JSON                                            |
+| Client               | React 19 + Vite, **Zustand** pour l'état, **MapLibre GL JS** + protocole `pmtiles`                              | Conforme au cahier                                                                    |
+| Grille de navigation | **h3-js** (hexagones H3, Apache-2.0)                                                                            | Pathfinding terre/mer sans terrain, et cohérent avec l'esthétique hexagonale          |
+| Géométrie            | calculs sphériques maison + `@turf/*` ponctuellement                                                            | Arcs de portée géodésiques, grands cercles                                            |
+| i18n                 | i18next, `fr.json`                                                                                              | Textes externalisés dès le départ                                                     |
+| Tests                | **Vitest** (+ fast-check pour les propriétés du moteur), Playwright (smoke test mobile + desktop)               | Le moteur est la partie critique                                                      |
+| Auth                 | Email + mot de passe (argon2), cookie de session httpOnly, **compte invité** pour jouer tout de suite           | Pas de dépendance externe au départ                                                   |
+| Polices              | Barlow Condensed, IBM Plex Sans, IBM Plex Mono (licence OFL, auto-hébergées, glyphes PBF générés pour MapLibre) | Conforme au cahier                                                                    |
 
 ---
 
@@ -149,8 +149,8 @@ red-line/
 
 ### 4.3 Trajets et interceptions (le cœur du cahier)
 
-- Un trajet est une suite de **segments de grand cercle** : départ, arrivée, vitesse constante. La position à l'instant *t* s'obtient par interpolation (slerp), avec le même code côté serveur et côté client.
-- **Entrée dans une zone circulaire** (radar, défense aérienne, patrouille…) : sur la sphère unité, le point du segment vaut `p(θ) = a·cosθ + b·sinθ` ; la condition « dans la zone de centre *c* et de rayon *r* » s'écrit `A·cosθ + B·sinθ ≥ cos(r/R)`, qui se résout **exactement** (`√(A²+B²)·cos(θ−φ) ≥ k`). On obtient ainsi l'heure d'entrée et de sortie sans pas de temps.
+- Un trajet est une suite de **segments de grand cercle** : départ, arrivée, vitesse constante. La position à l'instant _t_ s'obtient par interpolation (slerp), avec le même code côté serveur et côté client.
+- **Entrée dans une zone circulaire** (radar, défense aérienne, patrouille…) : sur la sphère unité, le point du segment vaut `p(θ) = a·cosθ + b·sinθ` ; la condition « dans la zone de centre _c_ et de rayon _r_ » s'écrit `A·cosθ + B·sinθ ≥ cos(r/R)`, qui se résout **exactement** (`√(A²+B²)·cos(θ−φ) ≥ k`). On obtient ainsi l'heure d'entrée et de sortie sans pas de temps.
 - **Zones mobiles** (patrouille aérienne, navire escorteur) et **croisements de deux unités mobiles** : distance minimale sur la fenêtre commune de deux segments, par recherche dichotomique bornée (précision de 1 s de jeu), faute de solution fermée simple.
 - **Index spatial** : cellules H3 de résolution 2. Chaque zone et chaque segment s'enregistrent dans les cellules qu'ils touchent, et seules les paires candidates sont testées.
 - Un convoi peut donc être détecté, engagé ou détruit à mi-parcours : l'événement `ZoneEnter` tombe avant `MoveArrive`.
@@ -172,7 +172,7 @@ red-line/
 - **Journal d'ordres** en ajout seul : chaque ordre accepté est horodaté en temps de jeu et enregistré.
 - **Instantané** complet de l'état (file d'événements et état du PRNG compris), compressé, toutes les N minutes réelles (réglable) et à l'arrêt propre du processus.
 - **Reprise** = dernier instantané + rejeu des ordres postérieurs, puis rattrapage du temps écoulé pendant l'arrêt. Le **replay** d'une bataille utilise le même chemin.
-- Un test automatique vérifie que *état initial + ordres ⇒ même état final au bit près*.
+- Un test automatique vérifie que _état initial + ordres ⇒ même état final au bit près_.
 - **Bail de partie** (verrou consultatif PostgreSQL + battement de cœur) : une partie n'est simulée que par un seul processus à la fois. Indispensable au moment des déploiements Render, quand l'ancienne et la nouvelle instance coexistent quelques secondes, et plus tard pour répartir les parties sur plusieurs serveurs.
 
 ### 4.7 Visibilité et réseau
@@ -185,19 +185,19 @@ red-line/
 
 ## 5. Carte et rendu
 
-| Couche | Source | Format | Remarque |
-|---|---|---|---|
-| Imagerie | **NASA Blue Marble Next Generation, topographie et bathymétrie** (domaine public) | raster WebP → PMTiles, zoom 0 à 8 | Assombrie et désaturée au pré-traitement, relief déjà ombré dans cette variante |
-| Côtes, noms de mers, villes | **Natural Earth** (domaine public) | vecteur → PMTiles | Statique |
-| Nations, provinces, propriétaires | `data/map` → base → **GeoJSON servi par l'API** | source GeoJSON MapLibre | **Dynamique**, jamais cuit dans les tuiles |
-| Unités, sites, portées, trajectoires | état de la partie | sources GeoJSON mises à jour par diff | |
+| Couche                               | Source                                                                            | Format                                | Remarque                                                                        |
+| ------------------------------------ | --------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------- |
+| Imagerie                             | **NASA Blue Marble Next Generation, topographie et bathymétrie** (domaine public) | raster WebP → PMTiles, zoom 0 à 8     | Assombrie et désaturée au pré-traitement, relief déjà ombré dans cette variante |
+| Côtes, noms de mers, villes          | **Natural Earth** (domaine public)                                                | vecteur → PMTiles                     | Statique                                                                        |
+| Nations, provinces, propriétaires    | `data/map` → base → **GeoJSON servi par l'API**                                   | source GeoJSON MapLibre               | **Dynamique**, jamais cuit dans les tuiles                                      |
+| Unités, sites, portées, trajectoires | état de la partie                                                                 | sources GeoJSON mises à jour par diff |                                                                                 |
 
 Rendu fidèle à l'image de référence :
 
 - **Teinte des territoires** : couche `fill` avec couleur par `feature-state` (changer de propriétaire ne renvoie pas de géométrie), opacité de 0,45 à 0,6 pour le joueur, plus une couche `line` avec `line-blur` pour le halo.
 - **Territoires disputés** : `fill-pattern` hachuré, aux couleurs des prétendants.
 - **Brouillard** : polygone mondial percé par l'union des cercles des capteurs (recalculée seulement quand un capteur change), avec un motif de hachures sombres.
-- **Icônes hexagonales** : deux sprites SDF superposés, l'hexagone teinté à la couleur de la nation (`icon-color`) et le pictogramme blanc. Un seul jeu de sprites pour toutes les nations, et regroupement (*clustering*) natif aux zooms monde et région.
+- **Icônes hexagonales** : deux sprites SDF superposés, l'hexagone teinté à la couleur de la nation (`icon-color`) et le pictogramme blanc. Un seul jeu de sprites pour toutes les nations, et regroupement (_clustering_) natif aux zooms monde et région.
 - **Arcs de portée** : anneau géodésique (polygone entre portée minimale et maximale), remplissage orange translucide et bord extérieur marqué.
 - **Trajectoires** : ligne en grand cercle, flèche en `symbol` et distance écrite le long de la ligne (`symbol-placement: line`).
 - **Étiquettes à filets coudés** : voir la critique 6.4.
@@ -209,24 +209,31 @@ Rendu fidèle à l'image de référence :
 Le cahier demande de signaler les choix qui me semblent mauvais. Les voici, avec ma recommandation.
 
 ### 6.1 Offre Render : il faut une instance payante dès le départ
-Les services web gratuits de Render **s'endorment après 15 minutes sans trafic** : les minuteurs de partie s'arrêteraient et les parties persistantes seraient impossibles. La base PostgreSQL gratuite est, elle, **temporaire** (elle expire au bout de quelques semaines ; délai exact à revérifier sur la grille tarifaire). → **Recommandation** : serveur en offre *Starter*, PostgreSQL en offre payante la plus basse, client et admin en *Static Sites* (gratuits). L'environnement de test peut rester sur les offres gratuites.
+
+Les services web gratuits de Render **s'endorment après 15 minutes sans trafic** : les minuteurs de partie s'arrêteraient et les parties persistantes seraient impossibles. La base PostgreSQL gratuite est, elle, **temporaire** (elle expire au bout de quelques semaines ; délai exact à revérifier sur la grille tarifaire). → **Recommandation** : serveur en offre _Starter_, PostgreSQL en offre payante la plus basse, client et admin en _Static Sites_ (gratuits). L'environnement de test peut rester sur les offres gratuites.
 
 ### 6.2 Imagerie satellite : pas de précision « ville » avec une source libre
+
 Blue Marble a une résolution d'environ 500 m par pixel, ce qui la rend exploitable jusqu'au zoom 8 environ, pas au-delà. Les sources plus fines et vraiment libres pour un usage commercial sont rares : pour Sentinel-2 cloudless (EOX), seule l'édition 2016 serait sous CC BY 4.0 et les suivantes sont non commerciales, à vérifier avant tout usage. → **Recommandation** : imagerie jusqu'au zoom 8 (environ 87 000 tuiles, de l'ordre de 1 à 2 Go en WebP, surtout de la mer très compressible). Au-delà, bascule progressive vers un style **vectoriel sombre** (terres gris-bleu, routes et villes Natural Earth), qui colle d'ailleurs très bien à l'esthétique infographique.
 
 ### 6.3 Où servir les tuiles
+
 Servir les PMTiles depuis le serveur de jeu impose un **disque persistant Render**. Un tel disque interdit les déploiements sans interruption, mais le bail de partie (4.6) gère déjà cette coupure. Autre défaut : chaque octet de tuile consomme la bande passante et le CPU du serveur de jeu. → **Recommandation** : phase 1 sur disque Render, comme le demande le cahier, derrière un en-tête `Cache-Control` long. Si la bande passante coûte cher, bascule vers Cloudflare R2 (sortie gratuite, requêtes Range prises en charge) : le code ne change pas, seule l'URL change.
 
 ### 6.4 Étiquettes à filets « qui ne se chevauchent jamais »
+
 Afficher des centaines d'étiquettes reliées par des filets coudés, sans chevauchement et à 60 i/s sur mobile, n'est pas réaliste : l'image de référence en montre une vingtaine, et elle est statique. → **Recommandation** : les étiquettes cartouches à filets s'affichent pour un **ensemble limité** (sélection, objectifs de l'opération en cours, sites principaux à l'écran, 30 à 40 au maximum), placées par un algorithme glouton anti-collision dans une surcouche canvas. Tout le reste utilise les étiquettes natives de MapLibre, qui gèrent déjà les collisions en masquant les étiquettes qui se chevauchent.
 
 ### 6.5 Persister « l'état et la file d'événements »
+
 C'est ce que je propose, mais **par instantanés et journal d'ordres** plutôt qu'en écrivant la file en base à chaque changement : beaucoup moins d'écritures, et le replay devient gratuit (voir 4.6).
 
 ### 6.6 Tout ce qui est interne à une partie vit dans l'état du moteur, pas dans des tables
+
 Alliances, rapports de renseignement, résolutions du Conseil, stabilité… vivent dans `GameState` (sérialisé dans l'instantané). Les tables relationnelles ne servent qu'à ce qui traverse les parties : comptes, catalogue, carte, scénarios, achats, classements. Cela évite des dizaines de tables et garde le moteur testable. Exception : les **rapports** et le **fil d'actualité** sont aussi copiés dans une table en ajout seul, pour la pagination et la consultation hors partie.
 
 ### 6.7 Image de référence
+
 Je reprends **uniquement ses codes visuels** (imagerie sombre, teinte violette, hexagones, filets, arcs orange, fiche d'arme, légende), comme le demande le cahier. Son contenu, qui nomme de vrais sites civils et nucléaires comme cibles, n'est pas repris : en jeu, les cibles restent des **bâtiments génériques par province** (raffinerie, centrale, port…), ce qui correspond déjà à la page 10 du cahier.
 
 ---
@@ -285,38 +292,56 @@ Les parties **épinglent** une `catalog_release` et une `map_release` : une modi
 
 ```ts
 interface GameState {
-  time: GameTime;                 // ms de jeu
+  time: GameTime; // ms de jeu
   rng: RngState;
-  seq: number;                    // compteur d'événements
-  config: GameConfig;             // règles figées de la partie
-  catalog: CatalogIndex;          // catalogue épinglé (lecture seule)
-  nations: Record<NationId, NationState>;   // ressources, stabilité, recherche, alerte…
+  seq: number; // compteur d'événements
+  config: GameConfig; // règles figées de la partie
+  catalog: CatalogIndex; // catalogue épinglé (lecture seule)
+  nations: Record<NationId, NationState>; // ressources, stabilité, recherche, alerte…
   provinces: Record<ProvinceId, ProvinceState>; // propriétaire, bâtiments, PV, capture en cours
   units: Record<UnitId, Unit>;
-  zones: Record<ZoneId, Zone>;    // détection / engagement, dérivées des unités et bâtiments
+  zones: Record<ZoneId, Zone>; // détection / engagement, dérivées des unités et bâtiments
   combats: Record<CombatId, Combat>;
-  knowledge: Record<NationId, Record<UnitId, Contact>>;  // brouillard de guerre
-  queue: EventQueue;              // tas + index d'invalidation
+  knowledge: Record<NationId, Record<UnitId, Contact>>; // brouillard de guerre
+  queue: EventQueue; // tas + index d'invalidation
   // phases suivantes : intel, alliances, council, market…
 }
 
 interface Unit {
-  id: UnitId; owner: NationId; systemId: SystemId;
-  count: number; hp: number; xp: number;
-  pos: LatLng;                    // position au dernier point de trajet
-  move?: Movement;                // trajet en cours, sinon unité immobile
+  id: UnitId;
+  owner: NationId;
+  systemId: SystemId;
+  count: number;
+  hp: number;
+  xp: number;
+  pos: LatLng; // position au dernier point de trajet
+  move?: Movement; // trajet en cours, sinon unité immobile
   stance: 'hold' | 'defend' | 'aggressive';
   supply: 'supplied' | 'limited' | 'cut';
-  version: number;                // pour l'invalidation paresseuse des événements
+  version: number; // pour l'invalidation paresseuse des événements
 }
 
-interface Movement { legs: Leg[]; departAt: GameTime; arriveAt: GameTime; }
-interface Leg { from: LatLng; to: LatLng; t0: GameTime; t1: GameTime; medium: 'land'|'sea'|'air'; }
+interface Movement {
+  legs: Leg[];
+  departAt: GameTime;
+  arriveAt: GameTime;
+}
+interface Leg {
+  from: LatLng;
+  to: LatLng;
+  t0: GameTime;
+  t1: GameTime;
+  medium: 'land' | 'sea' | 'air';
+}
 
-interface Contact {                // ce qu'une nation sait d'une unité ennemie
+interface Contact {
+  // ce qu'une nation sait d'une unité ennemie
   level: 'detected' | 'identified' | 'precise';
-  lastSeen: GameTime; lastPos: LatLng; move?: Movement;  // trajet vu, s'il l'a été
-  systemId?: SystemId; count?: number;                   // selon le niveau
+  lastSeen: GameTime;
+  lastPos: LatLng;
+  move?: Movement; // trajet vu, s'il l'a été
+  systemId?: SystemId;
+  count?: number; // selon le niveau
 }
 ```
 
@@ -337,18 +362,37 @@ interface Contact {                // ce qu'une nation sait d'une unité ennemie
   "speedKmh": 2100,
   "operationalRadiusKm": 550,
   "weaponRangeKm": { "min": 1, "max": 100 },
-  "damage": { "infantry": 4, "armor": 6, "aircraft": 14, "helicopter": 12, "drone": 10,
-              "ship": 5, "submarine": 0, "missile": 2, "building": 8 },
-  "hp": 30, "armor": 1,
+  "damage": {
+    "infantry": 4,
+    "armor": 6,
+    "aircraft": 14,
+    "helicopter": 12,
+    "drone": 10,
+    "ship": 5,
+    "submarine": 0,
+    "missile": 2,
+    "building": 8
+  },
+  "hp": 30,
+  "armor": 1,
   "stealth": 0.1,
   "detectionRangeKm": 150,
   "ew": { "jamming": 0.2, "jamResistance": 0.4 },
   "payload": { "slots": 6 },
   "requires": ["research.aero.gen4"],
-  "licensable": true, "exportable": true,
-  "icon": "fighter", "illustration": "us.f-16.webp",
-  "sheet": { "engine": "1 turboréacteur", "lengthM": 15.1, "wingspanM": 9.8,
-             "mtowKg": 19200, "warheadKg": null, "speedLabel": "Mach 2", "rangeKm": 4200 }
+  "licensable": true,
+  "exportable": true,
+  "icon": "fighter",
+  "illustration": "us.f-16.webp",
+  "sheet": {
+    "engine": "1 turboréacteur",
+    "lengthM": 15.1,
+    "wingspanM": 9.8,
+    "mtowKg": 19200,
+    "warheadKg": null,
+    "speedLabel": "Mach 2",
+    "rangeKm": 4200
+  }
 }
 ```
 
@@ -361,7 +405,7 @@ Les valeurs sont des **valeurs de jeu**, fondées sur des ordres de grandeur pub
 - `redline-server` : Web Service Node, `pnpm --filter server build`, contrôle de santé sur `/healthz`, disque persistant monté sur `/data/tiles`.
 - `redline-client`, `redline-admin` : Static Sites, avec réécriture SPA vers `index.html`.
 - `redline-db` : PostgreSQL Render.
-- Deux environnements : **staging** (branche `staging`, offres gratuites ou minimales) et **production** (branche `main`), séparés par des suffixes dans le même Blueprint, ou via les *Environments* d'un projet Render.
+- Deux environnements : **staging** (branche `staging`, offres gratuites ou minimales) et **production** (branche `main`), séparés par des suffixes dans le même Blueprint, ou via les _Environments_ d'un projet Render.
 - Migrations Drizzle exécutées en `preDeployCommand`. Le catalogue JSON est chargé en base au démarrage, uniquement pour les fiches absentes ou marquées comme plus récentes dans le dépôt, pour ne jamais écraser une modification faite dans le back-office.
 
 ---
@@ -384,7 +428,7 @@ Critère de fin du cahier : **conquérir une province ennemie sur mobile et sur 
 
 ## 10. Questions à trancher avant de coder
 
-1. **Budget Render** : d'accord pour un serveur en *Starter* et un PostgreSQL payant dès la production (voir 6.1) ?
+1. **Budget Render** : d'accord pour un serveur en _Starter_ et un PostgreSQL payant dès la production (voir 6.1) ?
 2. **Imagerie** : d'accord pour Blue Marble jusqu'au zoom 8, puis un style vectoriel sombre (voir 6.2) ?
 3. **Tuiles** : disque Render au départ, avec R2 comme option si la bande passante coûte cher (voir 6.3) ?
 4. **Comptes** : email + mot de passe + invité en phase 1, et Google/Apple plus tard ?
