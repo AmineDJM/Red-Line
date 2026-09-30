@@ -520,7 +520,10 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
     nv.stability = 40 + Math.round(rnd() * 55);
     nv.doctrine = ['us', 'ru', 'cn', 'eu', 'other'][Math.floor(rnd() * 5)];
   }
-  if (view.nations[me]) view.nations[me]!.stability = 64;
+  if (view.nations[me]) {
+    view.nations[me]!.stability = 64;
+    view.nations[me]!.doctrine = 'ru';
+  }
   if (h1 && view.nations[h1]) view.nations[h1]!.sanctioned = true;
 
   // ——— Conseil de sécurité ———

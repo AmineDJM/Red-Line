@@ -67,7 +67,7 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
   if (own && u.supply)
     rows.push({
       label: t('game.selection.supply'),
-      value: t(`army.supply.${u.supply}`),
+      value: t(`army.supplyState.${u.supply}`),
       tone: u.supply === 'supplied' ? 'green' : u.supply === 'limited' ? 'amber' : 'red',
     });
   if (own && u.mission && u.mission.kind !== 'none')

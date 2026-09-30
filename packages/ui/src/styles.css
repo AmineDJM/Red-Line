@@ -836,7 +836,7 @@
 }
 .rl-kv dt {
   flex: 1;
-  min-width: 0;
+  min-width: 9ch;
   color: var(--rl-text-dim);
   font-size: var(--rl-fs-sm);
   overflow: hidden;
@@ -849,10 +849,8 @@
   font-weight: 600;
   font-size: var(--rl-fs-sm);
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 64%;
+  max-width: 68%;
+  overflow-wrap: anywhere;
 }
 @media (max-width: 719px) {
   .rl-kv--c2 {

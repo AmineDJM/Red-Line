@@ -225,7 +225,7 @@ export function describeNotification(
     case 'intel_report': {
       const r = view?.intel?.reports.find((x) => x.id === n.reportId);
       return {
-        text: r ? `${n.flash ? t('intel.flash') + ' · ' : ''}${r.title}` : k('intel_report'),
+        text: r ? r.title : k('intel_report'),
         critical: n.flash,
         major: true,
         at: n.at,

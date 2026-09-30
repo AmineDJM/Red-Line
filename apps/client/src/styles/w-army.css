@@ -1,0 +1,226 @@
+/* ——— Armée ——— */
+.army-search {
+  width: 240px;
+}
+.urow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.urow__name {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.urow__name span {
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-2xs);
+}
+.generals {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 12px;
+}
+.general {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.general__traits,
+.general__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.general__units {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 6px;
+  border: 1px dashed var(--rl-line-strong);
+  border-radius: 3px;
+}
+.general__units button {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.general__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.general__label {
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-2xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.opedit {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.opedit__head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.opedit__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.opstep {
+  display: grid;
+  grid-template-columns: 110px 1fr 28px;
+  gap: 10px;
+  align-items: start;
+  padding: 8px;
+  border: 1px solid var(--rl-line);
+  border-left: 2px solid var(--rl-cyan);
+  border-radius: 3px;
+  background: var(--rl-bg);
+}
+.opstep--invalid {
+  border-left-color: var(--rl-amber);
+}
+.opstep__time {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.opstep__time span {
+  color: var(--rl-amber);
+  font-size: var(--rl-fs-xs);
+  font-weight: 700;
+}
+.opstep__main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.opstep__row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  align-items: center;
+  gap: 8px;
+}
+.opstep__row:last-child {
+  grid-template-columns: auto auto 1fr;
+}
+.opstep__units {
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-xs);
+  white-space: nowrap;
+}
+.opstep__del {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--rl-text-dim);
+  cursor: pointer;
+}
+.opstep__del:hover {
+  background: var(--rl-red-dim);
+  color: var(--rl-red);
+}
+.opedit__foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.optimeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.optimeline__step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 8ch 14px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 30px;
+  font-size: var(--rl-fs-sm);
+}
+.optimeline__step::before {
+  content: '';
+  position: absolute;
+  left: calc(8ch + 16px);
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--rl-line-strong);
+}
+.optimeline__step:first-child::before {
+  top: 50%;
+}
+.optimeline__step:last-child::before {
+  bottom: 50%;
+}
+.optimeline__t {
+  color: var(--rl-amber);
+  font-weight: 700;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.optimeline__dot {
+  position: relative;
+  z-index: 1;
+  width: 10px;
+  height: 10px;
+  margin-left: 2px;
+  border-radius: 50%;
+  border: 2px solid var(--rl-line-strong);
+  background: var(--rl-panel);
+}
+.optimeline__step--done .optimeline__dot {
+  border-color: var(--rl-green);
+  background: var(--rl-green);
+}
+.optimeline__step--failed .optimeline__dot {
+  border-color: var(--rl-red);
+  background: var(--rl-red);
+}
+.optimeline__step--due .optimeline__dot {
+  border-color: var(--rl-cyan);
+  box-shadow: 0 0 8px var(--rl-cyan);
+}
+.optimeline__st {
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+@media (max-width: 767px) {
+  .opedit__head,
+  .opstep,
+  .opstep__row,
+  .opstep__row:last-child {
+    grid-template-columns: 1fr;
+  }
+  .army-search {
+    width: 100%;
+  }
+}

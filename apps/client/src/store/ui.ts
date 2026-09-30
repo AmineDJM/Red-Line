@@ -120,16 +120,16 @@ function readBool(key: string, fallback: boolean): boolean {
 
 /** Tailles par défaut des fenêtres (ordinateur). */
 const WINDOW_SIZE: Record<WindowId, { w: number; h: number }> = {
-  army: { w: 900, h: 640 },
-  production: { w: 1120, h: 720 },
+  army: { w: 1060, h: 680 },
+  production: { w: 1280, h: 760 },
   research: { w: 1120, h: 700 },
   economy: { w: 980, h: 680 },
-  intel: { w: 1180, h: 720 },
+  intel: { w: 1280, h: 760 },
   diplomacy: { w: 1000, h: 680 },
   council: { w: 920, h: 680 },
   news: { w: 620, h: 700 },
   battles: { w: 1000, h: 680 },
-  encyclopedia: { w: 1120, h: 720 },
+  encyclopedia: { w: 1280, h: 760 },
   chat: { w: 560, h: 620 },
   shop: { w: 900, h: 640 },
   settings: { w: 520, h: 560 },
