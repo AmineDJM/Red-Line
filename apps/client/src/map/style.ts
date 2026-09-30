@@ -85,9 +85,27 @@ export const LAYER_GROUPS: Record<MapLayerGroup, string[]> = {
     'impacts',
   ],
   ranges: ['range-fill', 'range-lines', 'detect-line', 'uncert-fill', 'uncert-line'],
-  cities: ['cities-0', 'cities-1', 'cities-2', 'cities-3', 'cities-0-dot', 'cities-1-dot', 'cities-2-dot', 'cities-3-dot'],
+  cities: [
+    'cities-0',
+    'cities-1',
+    'cities-2',
+    'cities-3',
+    'cities-0-dot',
+    'cities-1-dot',
+    'cities-2-dot',
+    'cities-3-dot',
+  ],
   buildings: ['bld', 'bld-reveal', 'prov-markers'],
-  labels: ['sea-labels-0', 'sea-labels-1', 'sea-labels-2', 'sea-labels-3', 'country-labels-l', 'country-labels-m', 'country-labels-s', 'country-labels-xs'],
+  labels: [
+    'sea-labels-0',
+    'sea-labels-1',
+    'sea-labels-2',
+    'sea-labels-3',
+    'country-labels-l',
+    'country-labels-m',
+    'country-labels-s',
+    'country-labels-xs',
+  ],
   fog: ['fog', 'fog-edge'],
   intel: ['intel-fill', 'intel-line', 'intel-badges', 'radar-foreign'],
   radar: ['radar-own'],
@@ -870,7 +888,11 @@ export function buildStyle(i: StyleInput): StyleSpecification {
           'icon-ignore-placement': true,
           'icon-offset': [0, 40],
         },
-        paint: { 'icon-color': C.amber, 'icon-halo-color': 'rgba(0,0,0,0.6)', 'icon-halo-width': 1 },
+        paint: {
+          'icon-color': C.amber,
+          'icon-halo-color': 'rgba(0,0,0,0.6)',
+          'icon-halo-width': 1,
+        },
       },
       {
         id: 'preview-arrow',
@@ -907,7 +929,13 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         minzoom: 4.5,
         layout: {
           'icon-image': ['match', ['get', 'kind'], 'blockade', 'blockade', ['get', 'img']],
-          'icon-offset': ['match', ['get', 'kind'], 'blockade', ['literal', [-16, -12]], ['literal', [-16, 1]]],
+          'icon-offset': [
+            'match',
+            ['get', 'kind'],
+            'blockade',
+            ['literal', [-16, -12]],
+            ['literal', [-16, 1]],
+          ],
           'icon-allow-overlap': true,
           'icon-ignore-placement': true,
         },
@@ -1114,7 +1142,14 @@ function pionPartLayers(prefix: string, source: string, glyphs: boolean): LayerS
     },
   ];
   if (glyphs) {
-    const text = (id: string, field: string, size: number, off: string, anchor: 'right' | 'center', color: string) =>
+    const text = (
+      id: string,
+      field: string,
+      size: number,
+      off: string,
+      anchor: 'right' | 'center',
+      color: string,
+    ) =>
       ({
         id,
         type: 'symbol',
@@ -1153,7 +1188,10 @@ function pionPartLayers(prefix: string, source: string, glyphs: boolean): LayerS
         },
         paint: { 'icon-opacity': ['get', 'op'] },
       }) as LayerSpecification;
-    out.push(img(`${prefix}-count`, 'cnt', 11 / 12, 'tpx', 'right'), img(`${prefix}-stack`, 'stk', 8.5 / 12, 'spx', 'center'));
+    out.push(
+      img(`${prefix}-count`, 'cnt', 11 / 12, 'tpx', 'right'),
+      img(`${prefix}-stack`, 'stk', 8.5 / 12, 'spx', 'center'),
+    );
   }
   return out;
 }
@@ -1189,7 +1227,17 @@ function headingLayout(): SymbolLayerSpecification['layout'] {
 
 function headingPaint(): SymbolLayerSpecification['paint'] {
   return {
-    'icon-color': ['match', ['get', 'rel'], 'own', C.green, 'ally', C.violet, 'neutral', C.grey, C.red],
+    'icon-color': [
+      'match',
+      ['get', 'rel'],
+      'own',
+      C.green,
+      'ally',
+      C.violet,
+      'neutral',
+      C.grey,
+      C.red,
+    ],
     'icon-halo-color': 'rgba(0,0,0,0.7)',
     'icon-halo-width': 1.2,
   };

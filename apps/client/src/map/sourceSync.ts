@@ -55,7 +55,8 @@ export function diffFeatures(
     }
     const changes: { key: string; value: unknown }[] = [];
     const removed: string[] = [];
-    for (const k in props) if (!sameValue(props[k], old.props[k])) changes.push({ key: k, value: props[k] });
+    for (const k in props)
+      if (!sameValue(props[k], old.props[k])) changes.push({ key: k, value: props[k] });
     for (const k in old.props) if (!(k in props)) removed.push(k);
     const geomChanged = g !== old.geom;
     if (geomChanged || changes.length || removed.length) {

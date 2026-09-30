@@ -107,7 +107,8 @@ function unitRows(u: UnitView, sys: WeaponSystem | undefined, ctx: TipCtx): TipR
 function unitFlags(u: UnitView, sys: WeaponSystem | undefined, rel: Rel): string[] {
   const out: string[] = [];
   if (u.decoy) out.push(t('map.flag.decoy'));
-  if (sys?.category === 'submarine') out.push(t(rel === 'own' ? 'map.flag.submerged' : 'map.flag.sonar'));
+  if (sys?.category === 'submarine')
+    out.push(t(rel === 'own' ? 'map.flag.submerged' : 'map.flag.sonar'));
   if (u.jamming) out.push(t('map.flag.jamming'));
   return out;
 }
@@ -132,7 +133,9 @@ export function tipModel(target: TipTarget, ctx: TipCtx): TipModel | null {
           rows: [
             {
               k: t('map.tip.impact'),
-              v: t('map.tip.impactIn', { value: fmtDuration(Math.max(0, u.missile.impactAt - ctx.t)) }),
+              v: t('map.tip.impactIn', {
+                value: fmtDuration(Math.max(0, u.missile.impactAt - ctx.t)),
+              }),
               tone: RED,
             },
           ],
@@ -166,7 +169,9 @@ export function tipModel(target: TipTarget, ctx: TipCtx): TipModel | null {
       .slice(0, 5)
       .map(([n, c]) => `×${c}  ${n}`);
     if (byType.size > 5) list.push(t('map.tip.stackMore', { count: byType.size - 5 }));
-    const rows: TipRow[] = [{ k: t('map.tip.stack'), v: t('map.tip.stackValue', { count: units.length }) }];
+    const rows: TipRow[] = [
+      { k: t('map.tip.stack'), v: t('map.tip.stackValue', { count: units.length }) },
+    ];
     if (known) rows.push({ k: t('map.tip.count'), v: `×${fmtInt(total)}` });
     const combat = units.some((x) => x.status === 'combat');
     if (combat) rows.push({ k: t('map.tip.state'), v: t('map.status.combat'), tone: RED });
@@ -190,7 +195,12 @@ export function tipModel(target: TipTarget, ctx: TipCtx): TipModel | null {
     const st = p?.buildingState?.find((b) => b.type === target.type);
     const rows: TipRow[] = [{ k: t('map.tip.city'), v: def.cityName ?? def.name }];
     if (st) {
-      rows.push({ k: t('map.tip.hp'), v: `${Math.round(st.health * 100)} %`, bar: st.health, tone: hpTone(st.health) });
+      rows.push({
+        k: t('map.tip.hp'),
+        v: `${Math.round(st.health * 100)} %`,
+        bar: st.health,
+        tone: hpTone(st.health),
+      });
     }
     const state = !st
       ? null
@@ -218,10 +228,18 @@ export function tipModel(target: TipTarget, ctx: TipCtx): TipModel | null {
   if (p?.capture) {
     const span = Math.max(1, p.capture.completesAt - p.capture.startedAt);
     const f = Math.max(0, Math.min(1, (ctx.t - p.capture.startedAt) / span));
-    rows.push({ k: t('map.tip.capture'), v: `${Math.round(f * 100)} %`, bar: f, tone: owner === ctx.me ? RED : AMBER });
+    rows.push({
+      k: t('map.tip.capture'),
+      v: `${Math.round(f * 100)} %`,
+      bar: f,
+      tone: owner === ctx.me ? RED : AMBER,
+    });
   }
   if (p?.fortification?.level)
-    rows.push({ k: t('map.tip.fortification'), v: t('map.tip.fortLevel', { value: p.fortification.level }) });
+    rows.push({
+      k: t('map.tip.fortification'),
+      v: t('map.tip.fortLevel', { value: p.fortification.level }),
+    });
   if (p?.intel) {
     const old = ctx.t - p.intel.updatedAt > INTEL_STALE_MS;
     rows.push({
@@ -232,17 +250,29 @@ export function tipModel(target: TipTarget, ctx: TipCtx): TipModel | null {
     });
   }
   if (p?.unrest && p.unrest > 0)
-    rows.push({ k: t('map.tip.unrest'), v: `${Math.round(p.unrest)} %`, bar: p.unrest / 100, tone: RED });
+    rows.push({
+      k: t('map.tip.unrest'),
+      v: `${Math.round(p.unrest)} %`,
+      bar: p.unrest / 100,
+      tone: RED,
+    });
   const list: string[] = [];
   if (p?.blockaded) list.push(t('map.tip.blockaded'));
   if (p?.noFlyZone) list.push(t('map.tip.noFlyZone'));
   if (p?.disputedId) list.push(t('map.tip.disputed'));
   if (p?.buildings.length)
-    list.push(`${t('map.tip.buildings')} : ${p.buildings.map((b) => t(`map.bld.${b}`)).join(', ')}`);
+    list.push(
+      `${t('map.tip.buildings')} : ${p.buildings.map((b) => t(`map.bld.${b}`)).join(', ')}`,
+    );
   return {
     arg: def.id,
     title: def.cityName ?? def.name,
-    sub: def.isCapital || def.cityRank === 1 ? t('map.tip.capital') : def.name !== (def.cityName ?? def.name) ? def.name : t('map.tip.city'),
+    sub:
+      def.isCapital || def.cityRank === 1
+        ? t('map.tip.capital')
+        : def.name !== (def.cityName ?? def.name)
+          ? def.name
+          : t('map.tip.city'),
     nation,
     rel,
     rows,

@@ -94,7 +94,8 @@ function bboxOf(g: Geometry): [number, number, number, number] {
     if (p[1]! > y1) y1 = p[1]!;
   };
   if (g.type === 'Polygon') g.coordinates.forEach((r) => r.forEach(visit));
-  else if (g.type === 'MultiPolygon') g.coordinates.forEach((pl) => pl.forEach((r) => r.forEach(visit)));
+  else if (g.type === 'MultiPolygon')
+    g.coordinates.forEach((pl) => pl.forEach((r) => r.forEach(visit)));
   return [x0, y0, x1, y1];
 }
 
@@ -102,7 +103,9 @@ function indexOf(geo: FeatureCollection): Indexed[] {
   let idx = indexCache.get(geo);
   if (!idx) {
     idx = geo.features
-      .filter((f) => f.geometry && (f.geometry.type === 'Polygon' || f.geometry.type === 'MultiPolygon'))
+      .filter(
+        (f) => f.geometry && (f.geometry.type === 'Polygon' || f.geometry.type === 'MultiPolygon'),
+      )
       .map((f) => ({ id: String(f.properties?.id ?? f.id ?? ''), bbox: bboxOf(f.geometry), f }));
     indexCache.set(geo, idx);
   }
@@ -247,7 +250,8 @@ export class MiniMap {
     );
     const pathOf = (g: Geometry) => {
       const path = new Path2D();
-      const polys = g.type === 'Polygon' ? [g.coordinates] : g.type === 'MultiPolygon' ? g.coordinates : [];
+      const polys =
+        g.type === 'Polygon' ? [g.coordinates] : g.type === 'MultiPolygon' ? g.coordinates : [];
       for (const poly of polys)
         for (const ring of poly) {
           ring.forEach((pt, i) => {
@@ -265,7 +269,8 @@ export class MiniMap {
       const owner = owners?.[it.id] ?? w.provinces[it.id]?.nationId ?? '';
       ctx.fillStyle = '#121b27';
       ctx.fill(path);
-      const col = owner === me ? C.violet : (colors?.[owner] ?? w.nations[owner]?.color ?? '#3a4252');
+      const col =
+        owner === me ? C.violet : (colors?.[owner] ?? w.nations[owner]?.color ?? '#3a4252');
       ctx.fillStyle = alpha(col, owner === me ? 0.42 : 0.3);
       ctx.fill(path);
     }
@@ -296,7 +301,11 @@ export class MiniMap {
     ctx.font = `400 9px ${MONO}`;
     ctx.fillStyle = C.dim;
     ctx.textBaseline = 'top';
-    for (let lng = Math.ceil(Math.min(a[0], b[0]) / step) * step; lng <= Math.max(a[0], b[0]); lng += step) {
+    for (
+      let lng = Math.ceil(Math.min(a[0], b[0]) / step) * step;
+      lng <= Math.max(a[0], b[0]);
+      lng += step
+    ) {
       const [x] = project([lng, a[1]]);
       ctx.beginPath();
       ctx.moveTo(Math.round(x) + 0.5, 0);
@@ -304,7 +313,11 @@ export class MiniMap {
       ctx.stroke();
       ctx.fillText(`${Math.abs(lng)}°${lng >= 0 ? 'E' : 'O'}`, x + 3, 3);
     }
-    for (let lat = Math.ceil(Math.min(a[1], b[1]) / step) * step; lat <= Math.max(a[1], b[1]); lat += step) {
+    for (
+      let lat = Math.ceil(Math.min(a[1], b[1]) / step) * step;
+      lat <= Math.max(a[1], b[1]);
+      lat += step
+    ) {
       const [, y] = project([a[0], lat]);
       ctx.beginPath();
       ctx.moveTo(0, Math.round(y) + 0.5);
@@ -456,7 +469,10 @@ export class MiniMap {
   private drawScale(pxPerKm: number) {
     const ctx = this.ctx;
     const target = this.w * 0.22;
-    const km = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000].find((k) => k * pxPerKm >= target / 2) ?? 5000;
+    const km =
+      [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000].find(
+        (k) => k * pxPerKm >= target / 2,
+      ) ?? 5000;
     const len = km * pxPerKm;
     const x = 10;
     const y = this.h - 12;

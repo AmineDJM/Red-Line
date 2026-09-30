@@ -114,7 +114,8 @@
       "radius": "RAYON {{value}}",
       "radar": "RADAR {{value}}",
       "sonar": "SONAR {{value}}",
-      "sensor": "DÉTECTION {{value}}"
+      "sensor": "DÉTECTION {{value}}",
+      "sat": "SAT · passage dans {{value}}"
     },
     "order": {
       "eta": "{{distance}} · {{eta}}"

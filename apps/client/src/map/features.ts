@@ -341,14 +341,26 @@ export function pionProps(spec: PionSpec, off: [number, number]) {
     img: pionKey(spec),
     off: [r(off[0] + PION_ICON_OFFSET[0]), r(off[1] + PION_ICON_OFFSET[1])],
     cnt: spec.count,
-    toff: [r((off[0] + PION_PARTS.count[0]) / COUNT_TEXT), r((off[1] + PION_PARTS.count[1]) / COUNT_TEXT)],
+    toff: [
+      r((off[0] + PION_PARTS.count[0]) / COUNT_TEXT),
+      r((off[1] + PION_PARTS.count[1]) / COUNT_TEXT),
+    ],
     hp: spec.hp,
     hoff: [r(off[0] + PION_PARTS.hp[0]), r(off[1] + PION_PARTS.hp[1])],
     // Repli sans glyphes (images de texte de 12 px) : décalage exprimé à l'échelle de l'image.
-    tpx: [r(((off[0] + PION_PARTS.count[0]) * 12) / COUNT_TEXT), r(((off[1] + PION_PARTS.count[1]) * 12) / COUNT_TEXT)],
+    tpx: [
+      r(((off[0] + PION_PARTS.count[0]) * 12) / COUNT_TEXT),
+      r(((off[1] + PION_PARTS.count[1]) * 12) / COUNT_TEXT),
+    ],
     stk: spec.stack > 1 ? (spec.stack > 99 ? '99+' : String(spec.stack)) : '',
-    spx: [r(((off[0] + PION_PARTS.stack[0]) * 12) / STACK_TEXT), r(((off[1] + PION_PARTS.stack[1]) * 12) / STACK_TEXT)],
-    soff: [r((off[0] + PION_PARTS.stack[0]) / STACK_TEXT), r((off[1] + PION_PARTS.stack[1]) / STACK_TEXT)],
+    spx: [
+      r(((off[0] + PION_PARTS.stack[0]) * 12) / STACK_TEXT),
+      r(((off[1] + PION_PARTS.stack[1]) * 12) / STACK_TEXT),
+    ],
+    soff: [
+      r((off[0] + PION_PARTS.stack[0]) / STACK_TEXT),
+      r((off[1] + PION_PARTS.stack[1]) / STACK_TEXT),
+    ],
   };
 }
 

@@ -192,7 +192,13 @@ export class GameMap {
   private knownBuildings = new Map<string, Set<string>>();
   private revealIds: string[] = [];
   private revealStart = 0;
-  private animState = { paths: false, preview: false, capture: false, orbits: false, missiles: false };
+  private animState = {
+    paths: false,
+    preview: false,
+    capture: false,
+    orbits: false,
+    missiles: false,
+  };
   private animStep = 0;
   private groupVisible: Partial<Record<MapLayerGroup, boolean>> = {};
   private animationsOn =
@@ -324,7 +330,8 @@ export class GameMap {
     this.groupVisible[group] = visible;
     if (!this.ready) return;
     for (const id of LAYER_GROUPS[group]) {
-      if (this.map.getLayer(id)) this.map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
+      if (this.map.getLayer(id))
+        this.map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
     }
     if (group === 'intel') this.refreshIntelLayer();
   }
@@ -372,7 +379,10 @@ export class GameMap {
   focusUnit(id: UnitId, zoom = 6) {
     const u = useGame.getState().view?.units[id];
     if (!u) return;
-    this.map.flyTo({ center: this.positions.get(id) ?? u.pos, zoom: Math.max(this.map.getZoom(), zoom) });
+    this.map.flyTo({
+      center: this.positions.get(id) ?? u.pos,
+      zoom: Math.max(this.map.getZoom(), zoom),
+    });
   }
 
   // ——— Initialisation ———
@@ -383,9 +393,14 @@ export class GameMap {
     this.map.on('click', (e) => this.onClick(e));
     this.map.on('mousemove', (e) => this.onHover(e));
     this.map.on('mouseout', () => this.clearHover());
-    this.listen(this.container, 'pointerdown', (e) => {
-      this.lastPointer = (e as PointerEvent).pointerType as 'mouse';
-    }, { capture: true });
+    this.listen(
+      this.container,
+      'pointerdown',
+      (e) => {
+        this.lastPointer = (e as PointerEvent).pointerType as 'mouse';
+      },
+      { capture: true },
+    );
     this.setupBoxSelect();
     this.setupLongPress();
 
@@ -540,10 +555,7 @@ export class GameMap {
       this.syncs.buildings.push(
         buildingFeatures(provs, { me, nations: view.nations, defs: w.provinces, t: tNow }).features,
       );
-      this.set(
-        'prov-markers',
-        provinceMarkerFeatures(provs, w.provinces),
-      );
+      this.set('prov-markers', provinceMarkerFeatures(provs, w.provinces));
       this.refreshIntelLayer();
     }
     if (satsChanged) this.set('satellites', satelliteFeatures(view.satellites, tNow));
@@ -680,7 +692,11 @@ export class GameMap {
       if (p.owner !== me && p.intel && p.intel.level <= 1) {
         const f = this.geoFeature(p.id);
         if (f) {
-          veil.push({ type: 'Feature', properties: { id: p.id, lvl: p.intel.level }, geometry: f.geometry });
+          veil.push({
+            type: 'Feature',
+            properties: { id: p.id, lvl: p.intel.level },
+            geometry: f.geometry,
+          });
           vk.push(`${p.id}:${p.intel.level}`);
         }
       }
@@ -712,7 +728,10 @@ export class GameMap {
   }
 
   /** Contours des provinces en cours de capture (source dédiée, animée). */
-  private captureFeatures(provinces: Record<string, ProvinceView>, me: NationId | null): FeatureCollection {
+  private captureFeatures(
+    provinces: Record<string, ProvinceView>,
+    me: NationId | null,
+  ): FeatureCollection {
     const geo = useWorld.getState().provincesGeo;
     if (!geo) return EMPTY;
     if (!this.geoIndex)
@@ -721,7 +740,12 @@ export class GameMap {
     for (const p of Object.values(provinces)) {
       if (!p.capture) continue;
       const f = this.geoIndex.get(p.id);
-      if (f) out.push({ type: 'Feature', properties: { id: p.id, cap: p.owner === me ? 2 : 1 }, geometry: f.geometry });
+      if (f)
+        out.push({
+          type: 'Feature',
+          properties: { id: p.id, cap: p.owner === me ? 2 : 1 },
+          geometry: f.geometry,
+        });
     }
     return { type: 'FeatureCollection', features: out };
   }
@@ -945,7 +969,8 @@ export class GameMap {
   /** Libère les images de pions inutilisées depuis deux cycles (≈ 40 s). */
   private collectSprites() {
     this.gcCounter++;
-    for (const id of this.usedImages) if (this.sprites.has(id)) this.sprites.set(id, this.gcCounter);
+    for (const id of this.usedImages)
+      if (this.sprites.has(id)) this.sprites.set(id, this.gcCounter);
     this.usedImages.clear();
     for (const [id, seen] of this.sprites) {
       if (!id.startsWith('pion|') || this.gcCounter - seen < 2) continue;
@@ -961,10 +986,7 @@ export class GameMap {
     this.set('paths', p.lines);
     this.set('path-heads', p.heads);
     this.animState.paths = p.lines.features.length > 0;
-    this.set(
-      'attack-links',
-      view ? attackLinkFeatures(view.units, this.positions, me) : EMPTY,
-    );
+    this.set('attack-links', view ? attackLinkFeatures(view.units, this.positions, me) : EMPTY);
   }
 
   private refreshOrbits() {
@@ -1015,8 +1037,7 @@ export class GameMap {
       if (det > max * 1.05 && det > 1) {
         this.set('detect', fc([circleLine(at, det, 'detect')]));
         const kind = sys.sensor?.kind;
-        const key =
-          kind === 'sonar' ? 'sonar' : isRadarSystem(sys) ? 'radar' : 'sensor';
+        const key = kind === 'sonar' ? 'sonar' : isRadarSystem(sys) ? 'radar' : 'sensor';
         rings.push({
           at: destination(at, 0, det),
           text: t(`map.ring.${key}`, { value: fmtKm(det) }),
@@ -1086,6 +1107,17 @@ export class GameMap {
           tone: 'cyan',
         });
       }
+    }
+    // Passages de satellites imminents : heure de passage au centre de la fauchée.
+    const tNow = gameNow();
+    for (const sat of view?.satellites ?? []) {
+      const dt = sat.nextPassAt - tNow;
+      if (dt < 0 || dt > 6 * 3600_000 || !sat.footprint.length) continue;
+      const c: LngLat = [
+        sat.footprint.reduce((a, q) => a + q[0], 0) / sat.footprint.length,
+        sat.footprint.reduce((a, q) => a + q[1], 0) / sat.footprint.length,
+      ];
+      rings.push({ at: c, text: t('map.ring.sat', { value: fmtDuration(dt) }), tone: 'cyan' });
     }
     this.overlayContent = { ...this.overlayContent, routes, badges, rings };
     this.map.triggerRepaint();
@@ -1196,7 +1228,8 @@ export class GameMap {
         const c = g.type === 'Point' ? (g.coordinates as [number, number]) : null;
         const p = c ? this.map.project(c) : { x, y };
         const off = f.properties?.off;
-        const o = typeof off === 'string' ? (JSON.parse(off) as number[]) : (off as number[] | undefined);
+        const o =
+          typeof off === 'string' ? (JSON.parse(off) as number[]) : (off as number[] | undefined);
         const s = f.layer.id === 'missiles' ? 0 : 1;
         const px = p.x + (o?.[0] ?? 0) * s;
         const py = p.y + (o?.[1] ?? 0) * s;
@@ -1220,7 +1253,8 @@ export class GameMap {
     const test = (f: Feature<Point>, bonus: number, box: boolean) => {
       const c = f.geometry.coordinates as [number, number];
       const p = this.map.project(c);
-      const off = (f.properties?.foff ?? (box ? f.properties?.off : [0, 0])) as number[] | undefined;
+      const off = (f.properties?.foff ?? (box ? f.properties?.off : [0, 0])) as
+        number[] | undefined;
       const base: [number, number] = f.properties?.foff ? [0, 0] : PION_ICON_OFFSET;
       const cx = p.x + ((off?.[0] ?? 0) - (box ? base[0] : 0)) * s;
       const cy = p.y + ((off?.[1] ?? 0) - (box ? base[1] : 0)) * s;
@@ -1238,7 +1272,11 @@ export class GameMap {
     return b ? b.ids.split(',').filter(Boolean) : null;
   }
 
-  private tipTargetAt(x: number, y: number, radius?: number): { key: string; target: TipTarget } | null {
+  private tipTargetAt(
+    x: number,
+    y: number,
+    radius?: number,
+  ): { key: string; target: TipTarget } | null {
     const ids = this.hitPion(
       x,
       y,
@@ -1346,7 +1384,10 @@ export class GameMap {
         const t0 = e.touches[0];
         if (
           !t0 ||
-          Math.hypot(t0.clientX - r.left - this.longPress.x, t0.clientY - r.top - this.longPress.y) > 10
+          Math.hypot(
+            t0.clientX - r.left - this.longPress.x,
+            t0.clientY - r.top - this.longPress.y,
+          ) > 10
         )
           cancel();
       },
@@ -1393,7 +1434,13 @@ export class GameMap {
         const y1 = ue.clientY - r.top;
         if (Math.abs(x1 - b.x0) < 4 && Math.abs(y1 - b.y0) < 4) return;
         this.suppressClickUntil = performance.now() + 300;
-        this.selectInRect(Math.min(b.x0, x1), Math.min(b.y0, y1), Math.max(b.x0, x1), Math.max(b.y0, y1), ue.ctrlKey || ue.metaKey);
+        this.selectInRect(
+          Math.min(b.x0, x1),
+          Math.min(b.y0, y1),
+          Math.max(b.x0, x1),
+          Math.max(b.y0, y1),
+          ue.ctrlKey || ue.metaKey,
+        );
       };
       window.addEventListener('mousemove', move);
       window.addEventListener('mouseup', up);

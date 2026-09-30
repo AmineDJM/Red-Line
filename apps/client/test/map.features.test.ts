@@ -96,7 +96,7 @@ describe('relations et pions', () => {
     expect(compactCount(undefined)).toBe('');
   });
 
-  it("états : combat, ravitaillement coupé, sous-marin, contact imprécis, leurre du propriétaire", () => {
+  it('états : combat, ravitaillement coupé, sous-marin, contact imprécis, leurre du propriétaire', () => {
     const infos = unitInfos(
       [
         unit('a', { status: 'combat', supply: 'cut' }),
@@ -117,11 +117,17 @@ describe('relations et pions', () => {
   });
 
   it('aéronef en vol : cap ; missile en vol : marqueur séparé', () => {
-    const move: Movement = { legs: [{ from: [0, 0], to: [10, 0], t0: 0, t1: 2 * HOUR, medium: 'air' }] };
+    const move: Movement = {
+      legs: [{ from: [0, 0], to: [10, 0], t0: 0, t1: 2 * HOUR, medium: 'air' }],
+    };
     const infos = unitInfos(
       [
         unit('jet', { systemId: 'f16', move, status: 'moving' }),
-        unit('m', { systemId: 'cm', move, missile: { target: { type: 'point', at: [10, 0] }, impactAt: 2 * HOUR } }),
+        unit('m', {
+          systemId: 'cm',
+          move,
+          missile: { target: { type: 'point', at: [10, 0] }, impactAt: 2 * HOUR },
+        }),
       ],
       ctx,
     );
@@ -133,7 +139,13 @@ describe('relations et pions', () => {
     expect(r.missiles.map((x) => x.properties!.id)).toEqual(['m']);
     expect(r.headings).toHaveLength(1);
     const m = missileFeatures(
-      [unit('m', { systemId: 'cm', move, missile: { target: { type: 'point', at: [10, 0] }, impactAt: 2 * HOUR } })],
+      [
+        unit('m', {
+          systemId: 'cm',
+          move,
+          missile: { target: { type: 'point', at: [10, 0] }, impactAt: 2 * HOUR },
+        }),
+      ],
       HOUR,
       'fra',
     );

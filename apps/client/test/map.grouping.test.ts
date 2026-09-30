@@ -61,7 +61,7 @@ describe('regroupement des pions', () => {
 
   it('reste rapide : 2 000 unités en quelques millisecondes', () => {
     let seed = 3;
-    const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
     const pts = Array.from({ length: 2000 }, (_, i) =>
       item(`u${i}`, [-10 + rnd() * 40, 30 + rnd() * 25], `n${i % 12}`, rnd()),
     );

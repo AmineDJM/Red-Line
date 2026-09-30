@@ -229,8 +229,18 @@ export function registerSprites(map: MlMap) {
   add(map, 'hatch-disputed', hatch(12, 'rgba(255, 176, 32, 0.55)', 1.6), false);
   add(map, 'hatch-unrest', hatch(10, 'rgba(255, 77, 94, 0.6)', 1.6), false);
   // Voile : fond sombre intégré au motif (une seule passe de dessin).
-  add(map, 'hatch-veil', crossHatch(12, 'rgba(125, 139, 153, 0.34)', 1, 'rgba(4, 7, 11, 0.36)'), false);
-  add(map, 'hatch-veil-light', hatch(12, 'rgba(125, 139, 153, 0.26)', 1, 'rgba(4, 7, 11, 0.16)'), false);
+  add(
+    map,
+    'hatch-veil',
+    crossHatch(12, 'rgba(125, 139, 153, 0.34)', 1, 'rgba(4, 7, 11, 0.36)'),
+    false,
+  );
+  add(
+    map,
+    'hatch-veil-light',
+    hatch(12, 'rgba(125, 139, 153, 0.26)', 1, 'rgba(4, 7, 11, 0.16)'),
+    false,
+  );
   add(map, 'hatch-nfz', crossHatch(14, 'rgba(255, 77, 94, 0.45)', 1.2), false);
   add(map, 'hatch-sat', hatch(10, 'rgba(76, 201, 240, 0.35)', 1), false);
 }

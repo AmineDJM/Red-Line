@@ -46,9 +46,7 @@ export function buildCallouts(a: CalloutArgs): CalloutContent[] {
     const sys = u.systemId ? a.catalog[u.systemId] : undefined;
     const lines: string[] = [];
     const status = u.status ? t(`map.status.${u.status}`) : null;
-    lines.push(
-      [u.count !== undefined ? `×${u.count}` : null, status].filter(Boolean).join(' · '),
-    );
+    lines.push([u.count !== undefined ? `×${u.count}` : null, status].filter(Boolean).join(' · '));
     const dest = u.move ? movementDestination(u.move) : undefined;
     if (dest && u.status === 'moving') {
       const km = distanceKm(at, dest);

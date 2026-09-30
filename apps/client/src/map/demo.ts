@@ -140,7 +140,11 @@ export function applyDemoScene(o: DemoOptions = {}) {
   const capPt = cap.cityPoint;
 
   // ——— Relations : nations présentes en armes = guerre ; un voisin allié ; le reste neutre. ———
-  const hostile = new Set(Object.values(view.units).filter((u) => u.owner !== me).map((u) => u.owner));
+  const hostile = new Set(
+    Object.values(view.units)
+      .filter((u) => u.owner !== me)
+      .map((u) => u.owner),
+  );
   const near = Object.values(defs)
     .filter((d) => d.nationId !== me)
     .sort((a, b) => distanceKm(a.cityPoint, capPt) - distanceKm(b.cityPoint, capPt));
@@ -178,7 +182,13 @@ export function applyDemoScene(o: DemoOptions = {}) {
       stance: 'defend',
       ...extra,
     });
-  const moveLeg = (from: LngLat, to: LngLat, speed: number, medium: 'air' | 'sea' | 'land', done = 0.35) => {
+  const moveLeg = (
+    from: LngLat,
+    to: LngLat,
+    speed: number,
+    medium: 'air' | 'sea' | 'land',
+    done = 0.35,
+  ) => {
     const dur = (distanceKm(from, to) / Math.max(1, speed)) * HOUR;
     const t0 = t - dur * done;
     return { legs: [{ from, to, t0, t1: t0 + dur, medium }] };
@@ -232,9 +242,18 @@ export function applyDemoScene(o: DemoOptions = {}) {
   // Radar de veille, leurre, ravitaillement coupé, embarqué, combat.
   own(catalog['demo.radar'], destination(capPt, 150, 40));
   const tank = pick('tank');
-  const front = destination(capPt, bearing(capPt, enemyCity), Math.min(250, distanceKm(capPt, enemyCity) * 0.6));
+  const front = destination(
+    capPt,
+    bearing(capPt, enemyCity),
+    Math.min(250, distanceKm(capPt, enemyCity) * 0.6),
+  );
   own(tank, destination(front, 90, 10), { decoy: true, count: 12 });
-  own(tank, destination(front, 200, 25), { supply: 'cut', status: 'combat', count: 9, hpRatio: 0.28 });
+  own(tank, destination(front, 200, 25), {
+    supply: 'cut',
+    status: 'combat',
+    count: 9,
+    hpRatio: 0.28,
+  });
   own(pick('infantry'), destination(front, 330, 30), { supply: 'limited', count: 3 });
   own(pick('infantry'), sea(1), { status: 'embarked', count: 2 });
   add({
@@ -258,7 +277,16 @@ export function applyDemoScene(o: DemoOptions = {}) {
 
   // Unités supplémentaires (performance) : réparties dans ~1 500 km autour de la capitale.
   const owners = [me, me, enemy, ally ?? enemy, ...near.slice(0, 12).map((d) => d.nationId)];
-  const cats = ['tank', 'ifv', 'infantry', 'artillery', 'air_defense', 'fighter', 'helicopter', 'drone'];
+  const cats = [
+    'tank',
+    'ifv',
+    'infantry',
+    'artillery',
+    'air_defense',
+    'fighter',
+    'helicopter',
+    'drone',
+  ];
   for (let i = 0; i < (o.extra ?? 0); i++) {
     const s = pick(cats[i % cats.length]!);
     if (!s) continue;
@@ -266,7 +294,9 @@ export function applyDemoScene(o: DemoOptions = {}) {
     const pos = destination(capPt, rnd() * 360, 30 + rnd() * 1500);
     const mineU = owner === me;
     const moving = rnd() < 0.35;
-    const lvl = mineU ? 'own' : (['precise', 'identified', 'detected'] as const)[Math.floor(rnd() * 3)]!;
+    const lvl = mineU
+      ? 'own'
+      : (['precise', 'identified', 'detected'] as const)[Math.floor(rnd() * 3)]!;
     const u = add({
       owner,
       level: lvl,
@@ -275,12 +305,22 @@ export function applyDemoScene(o: DemoOptions = {}) {
       uncertaintyKm: lvl === 'detected' ? 10 + rnd() * 30 : 0,
       ...(lvl !== 'detected' ? { systemId: s.id } : {}),
       ...(lvl === 'own' || lvl === 'precise'
-        ? { count: Math.max(1, Math.round(rnd() * 20)), hpRatio: 0.3 + rnd() * 0.7, status: 'idle' as const }
+        ? {
+            count: Math.max(1, Math.round(rnd() * 20)),
+            hpRatio: 0.3 + rnd() * 0.7,
+            status: 'idle' as const,
+          }
         : {}),
     });
     if (moving && lvl !== 'detected') {
       const air = s.movement === 'air';
-      u.move = moveLeg(pos, destination(pos, rnd() * 360, air ? 400 : 120), air ? s.speedKmh : 40, air ? 'air' : 'land', rnd() * 0.5);
+      u.move = moveLeg(
+        pos,
+        destination(pos, rnd() * 360, air ? 400 : 120),
+        air ? s.speedKmh : 40,
+        air ? 'air' : 'land',
+        rnd() * 0.5,
+      );
       if (u.status) u.status = 'moving';
     }
   }
@@ -353,7 +393,13 @@ export function applyDemoScene(o: DemoOptions = {}) {
     destination(sc, 120, 260),
     destination(sc, 150, 330),
   ];
-  const satellites = [{ unitId: 'sat-demo', nextPassAt: t + 40 * MINUTE, footprint: [footprint[0]!, footprint[1]!, footprint[2]!, footprint[3]!] }];
+  const satellites = [
+    {
+      unitId: 'sat-demo',
+      nextPassAt: t + 40 * MINUTE,
+      footprint: [footprint[0]!, footprint[1]!, footprint[2]!, footprint[3]!],
+    },
+  ];
   // Ordre de passage cohérent (quadrilatère convexe).
   satellites[0]!.footprint = [footprint[0]!, footprint[1]!, footprint[3]!, footprint[2]!];
 
@@ -363,13 +409,21 @@ export function applyDemoScene(o: DemoOptions = {}) {
   }));
 
   // Révélation différée d'un bâtiment ennemi (animation de découverte).
-  const target = near.find((d) => provinces[d.id]?.intel && (provinces[d.id]!.intel!.level ?? 0) >= 2);
+  const target = near.find(
+    (d) => provinces[d.id]?.intel && (provinces[d.id]!.intel!.level ?? 0) >= 2,
+  );
   if (target)
     setTimeout(() => {
       const v = useGame.getState().view;
       const p = v?.provinces[target.id];
       if (!v || !p) return;
-      const nb = [...new Set([...p.buildings, 'missile_silo' as BuildingType, 'air_defense_site' as BuildingType])];
+      const nb = [
+        ...new Set([
+          ...p.buildings,
+          'missile_silo' as BuildingType,
+          'air_defense_site' as BuildingType,
+        ]),
+      ];
       useGame.setState((s) => ({
         view: s.view
           ? { ...s.view, provinces: { ...s.view.provinces, [target.id]: { ...p, buildings: nb } } }

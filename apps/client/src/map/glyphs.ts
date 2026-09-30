@@ -33,8 +33,12 @@ function gear(cx: number, cy: number, r: number, teeth: number, depth: number): 
 function wheat(): string[] {
   const out: string[] = [];
   for (const y of [8.4, 12.2, 16]) {
-    out.push(`M12 ${y} C9.6 ${y - 0.4} 8.6 ${y - 2.8} 9 ${y - 4.4} C11 ${y - 3.8} 12 ${y - 2} 12 ${y} Z`);
-    out.push(`M12 ${y} C14.4 ${y - 0.4} 15.4 ${y - 2.8} 15 ${y - 4.4} C13 ${y - 3.8} 12 ${y - 2} 12 ${y} Z`);
+    out.push(
+      `M12 ${y} C9.6 ${y - 0.4} 8.6 ${y - 2.8} 9 ${y - 4.4} C11 ${y - 3.8} 12 ${y - 2} 12 ${y} Z`,
+    );
+    out.push(
+      `M12 ${y} C14.4 ${y - 0.4} 15.4 ${y - 2.8} 15 ${y - 4.4} C13 ${y - 3.8} 12 ${y - 2} 12 ${y} Z`,
+    );
   }
   out.push('M12 5.4 C10.9 4.4 11 2.8 12 1.8 C13 2.8 13.1 4.4 12 5.4 Z');
   return out;
@@ -108,10 +112,7 @@ export const GLYPHS = {
     sw: 1.5,
   },
   carrier: {
-    fill: [
-      'M1 12.6 L23 12.6 L21 18 L4.2 18 Z',
-      'M15.2 12.6 L15.2 9.2 L18.6 9.2 L18.6 12.6 Z',
-    ],
+    fill: ['M1 12.6 L23 12.6 L21 18 L4.2 18 Z', 'M15.2 12.6 L15.2 9.2 L18.6 9.2 L18.6 12.6 Z'],
     stroke: ['M3.8 15.2 L13 15.2'],
     sw: 1,
   },
@@ -137,7 +138,11 @@ export const GLYPHS = {
       'M1.8 9.2 L7.8 9.2 L7.8 14.8 L1.8 14.8 Z',
       'M16.2 9.2 L22.2 9.2 L22.2 14.8 L16.2 14.8 Z',
     ],
-    stroke: ['M7.8 12 L9.6 12 M14.4 12 L16.2 12', 'M12 9.6 L12 6.4', 'M9.4 4.4 A2.8 2.8 0 0 0 14.6 4.4'],
+    stroke: [
+      'M7.8 12 L9.6 12 M14.4 12 L16.2 12',
+      'M12 9.6 L12 6.4',
+      'M9.4 4.4 A2.8 2.8 0 0 0 14.6 4.4',
+    ],
     sw: 1.4,
   },
   logistics: {
@@ -150,12 +155,21 @@ export const GLYPHS = {
   },
   radar: {
     fill: ['M3 17.4 L15 17.4 L15 20 L3 20 Z', circle(12.6, 8.4, 1.2)],
-    stroke: ['M4.6 4.2 A9.4 9.4 0 0 0 16.4 15', 'M9.4 10.6 L12.6 8.4', 'M8.6 17.4 L10.4 11.6 L12.2 17.4', 'M16.8 5 A4 4 0 0 1 19.6 8.2 M17.6 1.8 A7.4 7.4 0 0 1 22.8 7.4'],
+    stroke: [
+      'M4.6 4.2 A9.4 9.4 0 0 0 16.4 15',
+      'M9.4 10.6 L12.6 8.4',
+      'M8.6 17.4 L10.4 11.6 L12.2 17.4',
+      'M16.8 5 A4 4 0 0 1 19.6 8.2 M17.6 1.8 A7.4 7.4 0 0 1 22.8 7.4',
+    ],
     sw: 1.7,
   },
   // ——— Bâtiments (tuiles de 11 px : formes simples et très distinctes) ———
   refinery: {
-    fill: ['M3.6 21 L3.6 9.4 L7.4 9.4 L7.4 21 Z', 'M9.4 21 L9.4 5.6 L13 5.6 L13 21 Z', circle(18.2, 16.8, 3.6)],
+    fill: [
+      'M3.6 21 L3.6 9.4 L7.4 9.4 L7.4 21 Z',
+      'M9.4 21 L9.4 5.6 L13 5.6 L13 21 Z',
+      circle(18.2, 16.8, 3.6),
+    ],
     stroke: ['M2.4 21.4 L21.6 21.4', 'M11.2 5 C10.2 3.8 10.8 2.6 11.6 1.8'],
     sw: 1.5,
   },
@@ -177,7 +191,11 @@ export const GLYPHS = {
   },
   air_base: {
     fill: ['M8.2 21.8 L10.6 2.2 L13.4 2.2 L15.8 21.8 Z'],
-    knock: ['M11.4 4.4 L12.6 4.4 L12.6 7.4 L11.4 7.4 Z', 'M11.4 10 L12.6 10 L12.6 13 L11.4 13 Z', 'M11.4 15.6 L12.6 15.6 L12.6 18.6 L11.4 18.6 Z'],
+    knock: [
+      'M11.4 4.4 L12.6 4.4 L12.6 7.4 L11.4 7.4 Z',
+      'M11.4 10 L12.6 10 L12.6 13 L11.4 13 Z',
+      'M11.4 15.6 L12.6 15.6 L12.6 18.6 L11.4 18.6 Z',
+    ],
     stroke: ['M3 12 L7.4 12 M16.6 12 L21 12'],
     sw: 1.6,
   },
@@ -210,7 +228,14 @@ export const GLYPHS = {
     sw: 1.9,
   },
   mine: {
-    fill: ['M2.6 9.2 L21.4 9.2 L18.8 17 L5.2 17 Z', circle(8, 19.4, 2), circle(16, 19.4, 2), circle(8.6, 7, 2.1), circle(13, 6.4, 2.4), circle(16.8, 7.4, 1.8)],
+    fill: [
+      'M2.6 9.2 L21.4 9.2 L18.8 17 L5.2 17 Z',
+      circle(8, 19.4, 2),
+      circle(16, 19.4, 2),
+      circle(8.6, 7, 2.1),
+      circle(13, 6.4, 2.4),
+      circle(16.8, 7.4, 1.8),
+    ],
   },
   farm: {
     fill: wheat(),
@@ -239,7 +264,10 @@ export const GLYPHS = {
   },
   naval_base: {
     stroke: ['M2.6 5 L2.6 19.8 L21.4 19.8 L21.4 5'],
-    fill: ['M5.6 12.8 L18.4 12.8 L16.6 16.6 L7.4 16.6 Z', 'M9.6 12.8 L9.6 9.8 L13.8 9.8 L13.8 12.8 Z'],
+    fill: [
+      'M5.6 12.8 L18.4 12.8 L16.6 16.6 L7.4 16.6 Z',
+      'M9.6 12.8 L9.6 9.8 L13.8 9.8 L13.8 12.8 Z',
+    ],
     sw: 2,
   },
   bunker: {
@@ -257,21 +285,31 @@ export const GLYPHS = {
   },
   coastal_battery: {
     fill: ['M3 15 L3 10.6 L11.6 10.6 L12.6 15 Z', 'M10.8 11.2 L21.4 7.2 L22 8.8 L11.4 12.8 Z'],
-    stroke: ['M1.8 19.4 C3.6 17.8 5.4 17.8 7.2 19.4 C9 21 10.8 21 12.6 19.4 C14.4 17.8 16.2 17.8 18 19.4 C19.8 21 21.2 21 22.4 19.8'],
+    stroke: [
+      'M1.8 19.4 C3.6 17.8 5.4 17.8 7.2 19.4 C9 21 10.8 21 12.6 19.4 C14.4 17.8 16.2 17.8 18 19.4 C19.8 21 21.2 21 22.4 19.8',
+    ],
     sw: 1.7,
   },
   radar_station: {
     fill: [circle(12.4, 9, 1.4), 'M7.4 21.6 L10.2 13 L12.6 13 L15.4 21.6 Z'],
-    stroke: ['M3.4 4.4 A10.4 10.4 0 0 0 16.2 17.2', 'M9 12.6 L12.4 9', 'M16.4 3.2 A4.6 4.6 0 0 1 20.4 7.4'],
+    stroke: [
+      'M3.4 4.4 A10.4 10.4 0 0 0 16.2 17.2',
+      'M9 12.6 L12.4 9',
+      'M16.4 3.2 A4.6 4.6 0 0 1 20.4 7.4',
+    ],
     sw: 1.9,
   },
   missile_silo: {
-    fill: ['M12 2 C13.4 3.4 13.7 4.9 13.7 6.4 L13.7 16.4 L10.3 16.4 L10.3 6.4 C10.3 4.9 10.6 3.4 12 2 Z'],
+    fill: [
+      'M12 2 C13.4 3.4 13.7 4.9 13.7 6.4 L13.7 16.4 L10.3 16.4 L10.3 6.4 C10.3 4.9 10.6 3.4 12 2 Z',
+    ],
     stroke: ['M7.2 12 L7.2 21 L16.8 21 L16.8 12', 'M2.4 12 L7.2 12 M16.8 12 L21.6 12'],
     sw: 1.8,
   },
   hospital: {
-    fill: ['M9.2 3.2 L14.8 3.2 L14.8 9.2 L20.8 9.2 L20.8 14.8 L14.8 14.8 L14.8 20.8 L9.2 20.8 L9.2 14.8 L3.2 14.8 L3.2 9.2 L9.2 9.2 Z'],
+    fill: [
+      'M9.2 3.2 L14.8 3.2 L14.8 9.2 L20.8 9.2 L20.8 14.8 L14.8 14.8 L14.8 20.8 L9.2 20.8 L9.2 14.8 L3.2 14.8 L3.2 9.2 L9.2 9.2 Z',
+    ],
   },
   secret_lab: {
     fill: [
@@ -286,7 +324,9 @@ export const GLYPHS = {
   },
   city: { fill: [circle(12, 12, 4.2)] },
   unknown: {
-    stroke: ['M8.6 8.4 C8.6 5.8 10.3 4.4 12 4.4 C14 4.4 15.6 5.8 15.6 7.8 C15.6 10.6 12 11 12 14.2'],
+    stroke: [
+      'M8.6 8.4 C8.6 5.8 10.3 4.4 12 4.4 C14 4.4 15.6 5.8 15.6 7.8 C15.6 10.6 12 11 12 14.2',
+    ],
     fill: [circle(12, 18.6, 1.6)],
     sw: 2.4,
   },
@@ -317,7 +357,8 @@ const CATEGORY_GLYPH: Record<Category, keyof typeof GLYPHS> = {
 /** Pictogramme de carte d'un système d'armes. */
 export function glyphFor(sys: Pick<WeaponSystem, 'category' | 'icon'> | undefined): GlyphId {
   if (!sys) return 'unknown';
-  if (sys.icon === 'carrier' || (sys.icon && /carrier|porte-avions/.test(sys.icon))) return 'carrier';
+  if (sys.icon === 'carrier' || (sys.icon && /carrier|porte-avions/.test(sys.icon)))
+    return 'carrier';
   if (sys.icon && sys.icon in GLYPHS) return sys.icon as GlyphId;
   return CATEGORY_GLYPH[sys.category] ?? 'unknown';
 }

@@ -37,10 +37,7 @@ export const PION_CANVAS_H = PION_H + M_TOP + M_BOTTOM;
  * Décalage (px CSS) à appliquer à l'icône pour que le CENTRE DU PION tombe sur la position
  * (le canevas n'est pas symétrique).
  */
-export const PION_ICON_OFFSET: [number, number] = [
-  (M_RIGHT - M_LEFT) / 2,
-  (M_BOTTOM - M_TOP) / 2,
-];
+export const PION_ICON_OFFSET: [number, number] = [(M_RIGHT - M_LEFT) / 2, (M_BOTTOM - M_TOP) / 2];
 
 /** Lettres d'état portées par la clé du pion. */
 export type PionFlag =
