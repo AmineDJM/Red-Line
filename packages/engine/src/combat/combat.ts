@@ -33,6 +33,14 @@ import type { GameEvent } from '../queue/events.js';
  * de dégâts, du brouillage et de la furtivité.
  */
 
+/**
+ * Délai avant de reprendre la poursuite d'une cible sortie de portée (garde anti-Zénon). Sans lui, une
+ * cible qui s'éloigne à la limite de portée provoquait une boucle « poursuite → à portée, arrêt → hors
+ * de portée, poursuite » toutes les ~2 ms de jeu (des milliers d'itérations par jour et par unité).
+ * Une minute de jeu : la poursuite reste continue à l'échelle d'un round de combat.
+ */
+const CHASE_RETRY_MS = MINUTE;
+
 function roundMs(state: EngineState): number {
   return state.world.balance.time.combatRoundMinutes * MINUTE;
 }
@@ -155,7 +163,7 @@ export function refreshCombat(state: EngineState, uid: UnitId): void {
   if (u.target) {
     const tgt = state.units[u.target]!;
     const visible = sightLevel(state, u.owner, tgt.id) > 0;
-    if (visible && canMove(state, u) && !u.chasing) requestChase(state, u.id, 0);
+    if (visible && canMove(state, u) && !u.chasing) requestChase(state, u.id, CHASE_RETRY_MS);
     else if (!visible && !u.move) clearTarget(state, u);
   }
 }
