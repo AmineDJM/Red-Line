@@ -27,6 +27,8 @@ import {
   type WeaponSystem,
 } from '@redline/shared';
 
+import { flagIso2 } from '@redline/ui';
+
 const orbatFiles = import.meta.glob('../../../../data/orbat/2025/*.json', { import: 'default' });
 
 /** PRNG déterministe (mulberry32). */
@@ -144,10 +146,16 @@ export async function demoNationsInfo(
       /* fichier illisible */
     }
   }
-  const byDoctrine = (d: string) =>
-    catalog
-      .filter((s) => s.doctrine === d && ['fighter', 'tank', 'air_defense', 'surface_ship'].includes(s.category))
-      .sort((a, b) => b.generation - a.generation);
+  const KEY = ['fighter', 'tank', 'air_defense', 'surface_ship', 'submarine', 'artillery'];
+  const byDoctrine = (d: string, iso2: string | null) => {
+    const national = catalog.filter((s) => iso2 && s.origin.toLowerCase() === iso2 && KEY.includes(s.category));
+    const pool = national.length >= 3 ? national : catalog.filter((s) => s.doctrine === d && KEY.includes(s.category));
+    // Un système par catégorie, le plus récent d'abord.
+    const seen = new Set<string>();
+    return [...pool]
+      .sort((a, b) => b.generation - a.generation)
+      .filter((s) => (seen.has(s.category) ? false : (seen.add(s.category), true)));
+  };
   return nations
     .filter((n) => (counts.get(n.id) ?? 0) > 0)
     .map((n) => {
@@ -159,8 +167,7 @@ export async function demoNationsInfo(
       const rnd = prng(hash(n.id));
       const highlights = inv
         ? [...inv].sort((a, c) => c.count - a.count).slice(0, 4)
-        : byDoctrine(doctrine)
-            .filter((_, i) => i % 3 === Math.floor(rnd() * 3))
+        : byDoctrine(doctrine, flagIso2(n.id))
             .slice(0, 4)
             .map((s) => ({ systemId: s.id, count: 4 + Math.floor(rnd() * 60) }));
       return {

@@ -13,7 +13,7 @@ import {
   formatMoney,
 } from '@redline/ui';
 import { getApi } from '../api/index.js';
-import { MapView } from '../map/MapView.js';
+import { WorldPicker } from './WorldPicker.js';
 import { norm } from '../lib/commands.js';
 import { photoFor, usePhotos } from '../lib/photos.js';
 import { useIsMobile } from '../shell/useMedia.js';
@@ -129,7 +129,7 @@ export function NationPicker({
 
       <div className="picker__main">
         <div className="picker__map">
-          <MapView mode="picker" pickedNation={nation} onPickNation={pick} />
+          <WorldPicker picked={nation} onPick={pick} takenBy={takenBy} playable={playable} label={t('newGame.mapLabel')} />
           <div className="picker__maphint" aria-hidden>
             <Icon name="mapPin" size={13} /> {t('newGame.pickOnMap')}
           </div>
@@ -180,7 +180,7 @@ export function NationPicker({
         </aside>
       </div>
 
-      <footer className="picker__band" aria-live="polite">
+      <footer className={picked ? 'picker__band' : 'picker__band picker__band--empty'} aria-live="polite">
         <div className="picker__selected">
           {picked ? (
             <>

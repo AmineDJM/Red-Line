@@ -154,7 +154,8 @@
     "start": "Lancer la partie",
     "creating": "Création de la partie…",
     "entity": "entité",
-    "error": "Impossible de créer la partie."
+    "error": "Impossible de créer la partie.",
+    "mapLabel": "Carte du monde : cliquez sur une nation pour la choisir"
   },
   "game": {
     "connecting": "Connexion à la partie…",
@@ -711,7 +712,15 @@
       "cgv": "Conditions de vente",
       "privacy": "Confidentialité",
       "withdrawal": "Rétractation"
-    }
+    },
+    "path": "legal",
+    "version": "Version {{version}} · mise à jour le {{date}}",
+    "error": "Document indisponible.",
+    "gateTitle": "Conditions d'utilisation",
+    "gateText": "Nos conditions ont été mises à jour. Merci de les lire et de les accepter pour continuer à jouer.",
+    "read": "Lire les documents",
+    "checkbox": "J'ai lu et j'accepte les documents ci-dessus.",
+    "accept": "Accepter et continuer"
   },
   "intel": {
     "flash": "FLASH",
@@ -986,7 +995,8 @@
       "cosmetic": "Cosmétique",
       "refund": "Remboursement",
       "admin": "Crédit administrateur"
-    }
+    },
+    "subtitle": "Crédits de commandement, cosmétiques et accélérations. Aucune loot box."
   },
   "researchNodes": {
     "aero_gen2": "Chasseurs de 2e génération",
@@ -1620,5 +1630,132 @@
     "help": "Aide",
     "restartTutorial": "Relancer le tutoriel",
     "game": "Partie"
+  },
+  "lobby": {
+    "title": "Multijoueur",
+    "path": "lobby",
+    "subtitle": "Jusqu'à 64 joueurs humains par partie ; toutes les autres nations sont tenues par l'IA.",
+    "create": "Créer une partie",
+    "createPath": "nouvelle",
+    "createSubtitle": "Réglages de la partie, puis choix de votre nation.",
+    "join": "Rejoindre une partie",
+    "filter": "Filtre",
+    "openOnly": "Places libres",
+    "aiNote": "Nations non choisies : IA · joueur inactif remplacé par l'IA",
+    "error": "Lobby indisponible.",
+    "empty": "Aucune partie ouverte.",
+    "by": "par {{name}}",
+    "capitals": "capitales",
+    "spectate": "Observer",
+    "cols": {
+      "game": "Partie",
+      "players": "Joueurs",
+      "speed": "Vitesse",
+      "victory": "Victoire",
+      "shop": "Achats"
+    },
+    "defaultName": "Nouvelle guerre mondiale",
+    "worldToday": "Le monde aujourd'hui",
+    "sections": {
+      "game": "Partie",
+      "victory": "Conditions de victoire",
+      "rules": "Règles"
+    },
+    "name": "Nom de la partie",
+    "maxPlayers": "Joueurs humains",
+    "maxPlayersHint": "64 au maximum ; les autres nations sont des IA.",
+    "private": "Partie privée",
+    "privateHint": "Accessible uniquement par lien.",
+    "provinceShare": "Part des provinces du monde à contrôler",
+    "capitalsToggle": "Ou prendre toutes les capitales ennemies",
+    "shopPolicy": "Achats en jeu",
+    "shopHint": "Désactivez-les pour une partie compétitive.",
+    "cap": "Plafond de crédits par joueur",
+    "inactive": "Joueur inactif remplacé par l'IA après",
+    "next": "Choisir ma nation",
+    "pickNation": "Choisissez votre nation",
+    "createConfirm": "Créer la partie",
+    "createError": "Impossible de créer la partie.",
+    "humans": "joueurs",
+    "aiRest": "reste en IA",
+    "joining": "Connexion…",
+    "joinConfirm": "Rejoindre",
+    "joinError": "Impossible de rejoindre (nation déjà prise ?)."
+  },
+  "games": {
+    "title": "Mes parties",
+    "path": "parties",
+    "subtitle": "Reprenez une partie en cours ou consultez le bilan d'une partie terminée.",
+    "error": "Impossible de charger vos parties.",
+    "empty": "Aucune partie pour le moment.",
+    "cols": {
+      "game": "Partie",
+      "nation": "Nation",
+      "players": "Joueurs",
+      "status": "État"
+    },
+    "mode": {
+      "solo": "Solo",
+      "multi": "Multijoueur"
+    },
+    "status": {
+      "lobby": "en attente",
+      "running": "en cours",
+      "paused": "en pause",
+      "ended": "terminée"
+    },
+    "resume": "Reprendre",
+    "stats": "Bilan"
+  },
+  "rankings": {
+    "title": "Classements",
+    "path": "classements",
+    "subtitle": "Points de saison gagnés en parties multijoueurs.",
+    "season": "Saison",
+    "error": "Classement indisponible.",
+    "remaining": "Fin de saison",
+    "days_one": "{{count}} jour",
+    "days_other": "{{count}} jours",
+    "players": "Classés",
+    "rewards": "Récompenses de saison",
+    "top": "Top {{rank}}",
+    "cols": {
+      "player": "Joueur",
+      "points": "Points",
+      "wins": "Victoires",
+      "games": "Parties",
+      "rate": "Taux"
+    }
+  },
+  "endgame": {
+    "title": "Bilan de la partie",
+    "path": "fin-de-partie",
+    "error": "Statistiques indisponibles.",
+    "winner": "Vainqueur : {{nation}}",
+    "noWinner": "Aucun vainqueur",
+    "days_one": "{{count}} jour",
+    "days_other": "{{count}} jours",
+    "day": "J+{{day}}",
+    "provincesHeld_one": "{{count}} province",
+    "provincesHeld_other": "{{count}} provinces",
+    "timelapse": "Évolution des frontières",
+    "provinces": "Provinces",
+    "conquered": "Conquêtes",
+    "kills": "Destructions",
+    "losses": "Pertes",
+    "spent": "Dépenses",
+    "bestUnits": "Meilleures unités",
+    "killsCount_one": "{{count}} destruction",
+    "killsCount_other": "{{count}} destructions",
+    "table": "Statistiques par nation",
+    "cols": {
+      "nation": "Nation",
+      "player": "Joueur",
+      "provinces": "Provinces",
+      "conquered": "Conquêtes",
+      "kills": "Destructions",
+      "losses": "Pertes",
+      "spent": "Dépenses"
+    }
   }
 }
