@@ -11,10 +11,11 @@ Textes des licences : [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/),
 [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/),
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/),
 [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/),
-[Licence Ouverte](https://www.etalab.gouv.fr/licence-ouverte-open-licence/) (État français, compatible CC BY ;
-utilisée seulement faute de photo CC ou domaine public).
+[Licence Ouverte](https://www.etalab.gouv.fr/licence-ouverte-open-licence/) (État français) et
+[OGL v3](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/) (Royaume-Uni), toutes deux
+compatibles CC BY et utilisées seulement faute de photo CC ou domaine public.
 
-Généré par `tools/art` (360 photos). Ne pas modifier à la main.
+Généré par `tools/art` (374 photos). Ne pas modifier à la main.
 
 Format : **système** (`identifiant`) — auteur — licence — fichier source sur Commons.
 
@@ -174,6 +175,7 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 - **Type 15** (`cn.type-15`) — 颐园居 — CC BY-SA 4.0 — [Type 15 tank 20221020.jpg](https://commons.wikimedia.org/wiki/File:Type_15_tank_20221020.jpg)
 - **VT4** (`cn.vt4`) — Mztourist — CC BY-SA 4.0 — [NORINCO VT-4 at IDEX 2017.jpg](https://commons.wikimedia.org/wiki/File:NORINCO_VT-4_at_IDEX_2017.jpg)
 - **Type 59** (`cn.type-59`) — Tyg728 — CC BY-SA 4.0 — [Type 59 tank in Military Museum of the Chinese People's Revolution 20180219.jpg](https://commons.wikimedia.org/wiki/File:Type_59_tank_in_Military_Museum_of_the_Chinese_People%27s_Revolution_20180219.jpg)
+- **Challenger 3** (`eu.challenger-3`) — Ministry of Defence — OGL v3 — [DES 2024 100 0104.jpg](https://commons.wikimedia.org/wiki/File:DES_2024_100_0104.jpg)
 - **Challenger 2** (`eu.challenger-2`) — Fiorellino — CC BY-SA 3.0 — [Challenger2-Bergen-Hohne-Training-Area-2.jpg](https://commons.wikimedia.org/wiki/File:Challenger2-Bergen-Hohne-Training-Area-2.jpg)
 - **Ariete** (`eu.ariete`) — Italian Army — CC BY 2.5 — [Italian Army - 4th Tank Regiment - Ariete tanks during an exercise at Capo Teulada October 2022.jpg](https://commons.wikimedia.org/wiki/File:Italian_Army_-_4th_Tank_Regiment_-_Ariete_tanks_during_an_exercise_at_Capo_Teulada_October_2022.jpg)
 - **Leopard 1** (`eu.leopard-1`) — Rainer Lippert — CC BY-SA 4.0 — [Leopard 1A5.jpg](https://commons.wikimedia.org/wiki/File:Leopard_1A5.jpg)
@@ -378,13 +380,25 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 - **Convoi logistique** (`other.supply-convoy`) — Photo Credit: Mark Cleghorn, US Army Photographer — Domaine public — [Military trucks laden with ammunition convoy.jpg](https://commons.wikimedia.org/wiki/File:Military_trucks_laden_with_ammunition_convoy.jpg) — _photo représentative_
 - **Cargo** (`other.cargo-ship`) — W. Bulach — CC BY-SA 4.0 — [00 0883 Container Ship MARUS.jpg](https://commons.wikimedia.org/wiki/File:00_0883_Container_Ship_MARUS.jpg) — _photo représentative_
 - **Avion cargo affrété** (`other.cargo-aircraft`) — Md Shaifuzzaman Ayon — CC BY-SA 4.0 — [Antonov An-124-100M Ruslan - Cargo Transporter - VGHS.jpg](https://commons.wikimedia.org/wiki/File:Antonov_An-124-100M_Ruslan_-_Cargo_Transporter_-_VGHS.jpg) — _photo représentative_
+- **AN/TPY-2** (`us.an-tpy-2`) — U.S. Army 38ADABDE by Sgt. Connor Davis — Domaine public — [Keen Sword 25- Supporting the Joint-Bilateral Air Defense Kill Chain Across Japan (8731809).jpg](<https://commons.wikimedia.org/wiki/File:Keen_Sword_25-_Supporting_the_Joint-Bilateral_Air_Defense_Kill_Chain_Across_Japan_(8731809).jpg>)
+- **AN/FPS-132 UEWR** (`us.an-fps-132-uewr`) — US Air Force from USA — Domaine public — [AN FPS-132 Upgraded Early Warning radar (UEWR) (7414560082).jpg](<https://commons.wikimedia.org/wiki/File:AN_FPS-132_Upgraded_Early_Warning_radar_(UEWR)_(7414560082).jpg>)
+- **AN/TPS-80 G/ATOR** (`us.an-tps-80-g-ator`) — U.S. Marine Corps photo by Lance Cpl. Matthew Morales — Domaine public — [RD 24 - Marines with 3-12 Set Up a AN-TPS-80 Ground-Air Task Oriented Radar on Camp Yonaguni (8564892).jpg](<https://commons.wikimedia.org/wiki/File:RD_24_-_Marines_with_3-12_Set_Up_a_AN-TPS-80_Ground-Air_Task_Oriented_Radar_on_Camp_Yonaguni_(8564892).jpg>)
+- **AN/TPS-75** (`us.an-tps-75`) — U.S. Air Force photo by Staff Sgt. Tory Cusimano — Domaine public — [606th Air Control Squadron deploys for Astral Knight 2019 (5415005).jpg](<https://commons.wikimedia.org/wiki/File:606th_Air_Control_Squadron_deploys_for_Astral_Knight_2019_(5415005).jpg>) — _radar du 606th Air Control Squadron (USAF), équipé de l'AN/TPS-75_
+- **Nebo-M** (`ru.nebo-m`) — Vitaly V. Kuzmin — CC BY-SA 4.0 — [55Zh6ME long-range mobile radar, Celebration of the 100th anniversary of Russian Air Force.jpg](https://commons.wikimedia.org/wiki/File:55Zh6ME_long-range_mobile_radar,_Celebration_of_the_100th_anniversary_of_Russian_Air_Force.jpg)
+- **Voronezh-DM** (`ru.voronezh-dm`) — RussianArms — CC BY 3.0 — ["Voronezh-M" radar - panoramio - RussianArms (1).jpg](<https://commons.wikimedia.org/wiki/File:%22Voronezh-M%22_radar_-_panoramio_-_RussianArms_(1).jpg>)
+- **Protivnik-GE** (`ru.protivnik-ge`) — Vitaly V. Kuzmin — CC BY-SA 4.0 — [Protivnik-GE radar - MAKS 2011.jpg](https://commons.wikimedia.org/wiki/File:Protivnik-GE_radar_-_MAKS_2011.jpg)
+- **P-18** (`ru.p-18`) — ShinePhantom — CC BY-SA 3.0 — [P-18 air defense radar system-1.JPG](https://commons.wikimedia.org/wiki/File:P-18_air_defense_radar_system-1.JPG)
+- **Ground Master 400** (`eu.ground-master-400`) — MKFI — Domaine public — [Ground Master 403 (KEVA2010) Kokonaisturvallisuus 2015 01.JPG](<https://commons.wikimedia.org/wiki/File:Ground_Master_403_(KEVA2010)_Kokonaisturvallisuus_2015_01.JPG>)
+- **SMART-L EWC** (`eu.smart-l-ewc`) — Sengoku2501 — CC BY-SA 4.0 — [SMART-L of the F803 Zr.Ms. Tromp.jpg](https://commons.wikimedia.org/wiki/File:SMART-L_of_the_F803_Zr.Ms._Tromp.jpg) — _radar SMART-L (frégate néerlandaise Tromp), dont dérive la version EWC_
+- **TRML-4D** (`eu.trml-4d`) — Boevaya mashina — CC BY-SA 3.0 — [IRIS-T SLM radar unit TRML-4D ILA-2022.jpg](https://commons.wikimedia.org/wiki/File:IRIS-T_SLM_radar_unit_TRML-4D_ILA-2022.jpg)
+- **EL/M-2084** (`other.el-m-2084`) — United States Missile Defense Agency — Domaine public — [ELTA ELM-2084 MMR.JPG](https://commons.wikimedia.org/wiki/File:ELTA_ELM-2084_MMR.JPG)
+- **Ghadir OTH** (`other.ghadir-oth`) — Mohamad Javad Raghbiyan — CC BY 4.0 — [Entry into service of Ghadir early warning radar (18).jpg](<https://commons.wikimedia.org/wiki/File:Entry_into_service_of_Ghadir_early_warning_radar_(18).jpg>)
 
 ## Systèmes sans photo
 
 - `ru.infantry-mech` (Infanterie mécanisée (Russie)) : aucune photo libre satisfaisante trouvée
 - `cn.h-20` (H-20) : appareil jamais montré publiquement : aucune photo réelle
 - `eu.eurodrone` (Eurodrone) : seule une maquette grandeur nature a été exposée (aucun appareil réel photographié sous licence libre)
-- `eu.challenger-3` (Challenger 3) : char en cours de livraison : aucune photo libre trouvée
 - `ru.s-500` (S-500) : aucune photo libre exploitable (seule photo : un autoportrait devant le lanceur)
 - `cn.ew-jammer` (EW jammer) : aucune photo libre d'un brouilleur chinois
 - `cn.yj-18` (YJ-18) : aucune photo libre du missile
@@ -404,3 +418,13 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 - `ru.asat` (ASAT) : aucune photo libre (système Nudol non montré)
 - `cn.asat` (ASAT) : aucune photo libre
 - `other.optical-recon-satellite` (Optical recon satellite) : photos ISRO sous licence GODL-India (non retenue)
+- `ru.rezonans-ne` (Rezonans-NE) : aucune photo libre trouvée
+- `ru.container-29b6` (Container 29B6) : aucune photo libre trouvée
+- `ru.podsolnukh-e` (Podsolnukh-E) : aucune photo libre trouvée
+- `cn.jy-27a` (JY-27A) : aucune photo libre trouvée
+- `cn.ylc-8b` (YLC-8B) : aucune photo libre trouvée
+- `cn.jy-26` (JY-26) : aucune photo libre trouvée
+- `cn.type-7010-lpar` (Type 7010 LPAR) : aucune photo libre trouvée
+- `other.el-m-2080-green-pine` (EL/M-2080 Green Pine) : aucune photo libre trouvée
+- `other.sepehr-oth` (Sepehr OTH) : aucune photo libre trouvée
+- `other.swordfish-lrtr` (Swordfish LRTR) : aucune photo libre trouvée
