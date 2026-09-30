@@ -1,4 +1,10 @@
-import { distanceKm, type LngLat, type NationId, type Order, type StrikeTarget } from '@redline/shared';
+import {
+  distanceKm,
+  type LngLat,
+  type NationId,
+  type Order,
+  type StrikeTarget,
+} from '@redline/shared';
 import { isLauncher, isRadarSensor, targetClassOf } from '../../encounters/profile.js';
 import { applyOrderImpl } from '../../orders/orders.js';
 import { sortedKeys, sortedSet, sysOf, warsOf } from '../../state/access.js';
@@ -45,6 +51,9 @@ function order(state: EngineState, n: NationId, o: Order): boolean {
 
 export function combatAi(state: EngineState, n: NationId): void {
   if (!state.rt.enemies.get(n)?.size) return;
+  // Réactive : rien à faire tant qu'aucun ennemi n'est observé (coût nul pour les guerres dormantes).
+  const { threats, air } = visibleEnemies(state, n);
+  if (threats.length === 0 && !air) return;
   const ns = state.nations[n]!;
   const level = ns.aiLevel;
   const units = sortedSet(state.rt.byNation.get(n))
@@ -52,12 +61,15 @@ export function combatAi(state: EngineState, n: NationId): void {
     .filter((u) => !u.role);
   const w = wi(state.world);
   const capId = w.nationById.get(n)?.capitalProvinceId;
-  const capital = capId && state.provinces[capId]?.owner === n ? w.provById.get(capId)!.cityPoint : null;
+  const capital =
+    capId && state.provinces[capId]?.owner === n ? w.provById.get(capId)!.cityPoint : null;
 
-  // 1. Patrouilles de chasse et avion radar au-dessus de la capitale.
-  if (capital) {
+  // 1. Menace aérienne (avions, drones, missiles) : chasse et avion radar au-dessus de la capitale.
+  if (capital && air) {
     const ms = mil(state).ms;
-    const onCap = units.filter((u) => ms[u.id]?.mis === 'patrol' && sysOf(state, u).movement === 'air').length;
+    const onCap = units.filter(
+      (u) => ms[u.id]?.mis === 'patrol' && sysOf(state, u).movement === 'air',
+    ).length;
     let want = AI.caps[level] - onCap;
     for (const u of units) {
       if (want <= 0) break;
@@ -65,7 +77,10 @@ export function combatAi(state: EngineState, n: NationId): void {
       const m = msOf(state, u);
       if (!isFuelAir(s) || !m || m.up || m.ready > state.time) continue;
       if (isTanker(s) || isAew(s) || isRecon(s) || s.damage.aircraft <= 0) continue;
-      if (order(state, n, { kind: 'patrol', unitIds: [u.id], at: capital, radiusKm: AI.capRadiusKm })) want--;
+      if (
+        order(state, n, { kind: 'patrol', unitIds: [u.id], at: capital, radiusKm: AI.capRadiusKm })
+      )
+        want--;
     }
     const aew = units.find((u) => {
       const m = msOf(state, u);
@@ -81,7 +96,6 @@ export function combatAi(state: EngineState, n: NationId): void {
   }
   if (level === 'easy') return;
 
-  const threats = visibleEnemies(state, n);
   // 2. Salves de missiles.
   let salvos = AI.salvosPerThink[level];
   let tries = 6;
@@ -96,7 +110,9 @@ export function combatAi(state: EngineState, n: NationId): void {
     const target = pickMissileTarget(state, n, u, range, threats, s.missile?.kind ?? 'cruise');
     if (!target) continue;
     const count = isLauncher(s) ? Math.min(u.count, AI.salvoSize[level]) : undefined;
-    const o: Order = count ? { kind: 'strike', unitIds: [u.id], target, count } : { kind: 'strike', unitIds: [u.id], target };
+    const o: Order = count
+      ? { kind: 'strike', unitIds: [u.id], target, count }
+      : { kind: 'strike', unitIds: [u.id], target };
     if (order(state, n, o)) salvos--;
   }
   // 3. Frappes aériennes sur les ennemis vus chez soi.
@@ -111,25 +127,39 @@ export function combatAi(state: EngineState, n: NationId): void {
     const t = threats
       .filter((x) => s.damage[targetClassOf(state, x)] > 0 && sysOf(state, x).movement === 'land')
       .filter((x) => nearOwn(state, n, posOf(state, x)))
-      .sort((a, b) => distanceKm(posOf(state, a), here) - distanceKm(posOf(state, b), here) || (a.id < b.id ? -1 : 1))[0];
+      .sort(
+        (a, b) =>
+          distanceKm(posOf(state, a), here) - distanceKm(posOf(state, b), here) ||
+          (a.id < b.id ? -1 : 1),
+      )[0];
     if (!t) continue;
     if (airFeasible(state, u, posOf(state, t))) continue;
-    if (order(state, n, { kind: 'strike', unitIds: [u.id], target: { type: 'unit', unitId: t.id } })) strikes--;
+    if (
+      order(state, n, { kind: 'strike', unitIds: [u.id], target: { type: 'unit', unitId: t.id } })
+    )
+      strikes--;
   }
 }
 
-function visibleEnemies(state: EngineState, n: NationId): Unit[] {
-  const out: Unit[] = [];
+/** Ennemis observés (hors missiles) et présence d'une menace aérienne (aéronef ou missile vu). */
+function visibleEnemies(state: EngineState, n: NationId): { threats: Unit[]; air: boolean } {
+  const threats: Unit[] = [];
+  let air = false;
   const known = state.know[n];
-  if (!known) return out;
-  const enemies = new Set(warsOf(state, n));
+  if (!known) return { threats, air };
+  const enemies = state.rt.enemies.get(n);
   for (const id of sortedKeys(known)) {
     const c = known[id]!;
     const u = state.units[id];
-    if (!c.seen || !u || u.off || u.role === 'missile' || !enemies.has(u.owner)) continue;
-    out.push(u);
+    if (!c.seen || !u || u.off || !enemies?.has(u.owner)) continue;
+    if (u.role === 'missile') {
+      air = true;
+      continue;
+    }
+    if (sysOf(state, u).movement === 'air') air = true;
+    threats.push(u);
   }
-  return out;
+  return { threats, air };
 }
 
 function nearOwn(state: EngineState, n: NationId, p: LngLat): boolean {
@@ -176,7 +206,9 @@ function pickMissileTarget(
   for (const e of enemies) {
     for (const pid of sortedSet(state.rt.provsOf.get(e))) {
       const blds = buildingsOf(state, pid);
-      const b = (['air_base', 'military_base', 'arms_factory'] as const).find((x) => blds.includes(x));
+      const b = (['air_base', 'military_base', 'arms_factory'] as const).find((x) =>
+        blds.includes(x),
+      );
       if (!b) continue;
       const d = distanceKm(cityOf(state, pid)!, here);
       if (d <= range && d < bestD) {

@@ -17,7 +17,9 @@ describe('aviation : patrouille, carburant, retour à la base', () => {
     expect(ms().up).toBe(false);
     expect(ms().base).toBe('aaa-2');
     const at: [number, number] = [7.5, 44];
-    expect(applyOrder(s, 'aaa', { kind: 'patrol', unitIds: ['u1'], at, radiusKm: 100 }).ok).toBe(true);
+    expect(applyOrder(s, 'aaa', { kind: 'patrol', unitIds: ['u1'], at, radiusKm: 100 }).ok).toBe(
+      true,
+    );
     expect(ms().up).toBe(true);
     advanceTo(s, H(1));
     expect(ms().mis).toBe('patrol');
@@ -45,12 +47,19 @@ describe('aviation : patrouille, carburant, retour à la base', () => {
     const r = applyOrder(s, 'aaa', { kind: 'patrol', unitIds: ['u1'], at, radiusKm: 100 });
     expect(r.error).toBe('cooldown');
     advanceTo(s, ms().ready + 1);
-    expect(applyOrder(s, 'aaa', { kind: 'patrol', unitIds: ['u1'], at, radiusKm: 100 }).ok).toBe(true);
+    expect(applyOrder(s, 'aaa', { kind: 'patrol', unitIds: ['u1'], at, radiusKm: 100 }).ok).toBe(
+      true,
+    );
   });
 
   it("rayon d'action compté depuis la base ; autonomie insuffisante refusée", () => {
     const s = milSandbox([{ owner: 'aaa', systemId: 'tst.jet', pos: cityOf('aaa-2') }]);
-    const far = applyOrder(s, 'aaa', { kind: 'patrol', unitIds: ['u1'], at: [20, 44], radiusKm: 50 });
+    const far = applyOrder(s, 'aaa', {
+      kind: 'patrol',
+      unitIds: ['u1'],
+      at: [20, 44],
+      radiusKm: 50,
+    });
     expect(far.ok).toBe(false);
     expect(far.error).toBe('out_of_range');
   });
@@ -72,9 +81,13 @@ describe('aviation : patrouille, carburant, retour à la base', () => {
     ]);
     const jet = () => mil(s).ms.u1!;
     const tk = () => mil(s).ms.u2!;
-    expect(applyOrder(s, 'aaa', { kind: 'patrol', unitIds: ['u2'], at: [7.5, 44], radiusKm: 50 }).ok).toBe(true);
+    expect(
+      applyOrder(s, 'aaa', { kind: 'patrol', unitIds: ['u2'], at: [7.5, 44], radiusKm: 50 }).ok,
+    ).toBe(true);
     expect(tk().mis).toBe('refuel');
-    expect(applyOrder(s, 'aaa', { kind: 'patrol', unitIds: ['u1'], at: [10, 44], radiusKm: 100 }).ok).toBe(true);
+    expect(
+      applyOrder(s, 'aaa', { kind: 'patrol', unitIds: ['u1'], at: [10, 44], radiusKm: 100 }).ok,
+    ).toBe(true);
     const bingo = jet().bingo!;
     advanceTo(s, bingo + MINUTE);
     expect(jet().ph).toBe('tanker');
@@ -116,7 +129,9 @@ describe('aviation : patrouille, carburant, retour à la base', () => {
     let v = viewFor(s, 'aaa').units.u2!;
     expect(v.status).toBe('embarked');
     expect(v.mission?.baseUnitId).toBe('u1');
-    expect(applyOrder(s, 'aaa', { kind: 'patrol', unitIds: ['u2'], at: [10, 44], radiusKm: 50 }).ok).toBe(true);
+    expect(
+      applyOrder(s, 'aaa', { kind: 'patrol', unitIds: ['u2'], at: [10, 44], radiusKm: 50 }).ok,
+    ).toBe(true);
     expect(s.units.u2!.off).toBeFalsy();
     expect(ms().up).toBe(true);
     advanceTo(s, H(3));
@@ -133,16 +148,22 @@ describe('aviation : patrouille, carburant, retour à la base', () => {
 
   it('rebase vers une autre base aérienne ; déplacement simple vers un terrain ami = changement de base', () => {
     const s = milSandbox([{ owner: 'aaa', systemId: 'tst.jet', pos: cityOf('aaa-2') }]);
-    expect(applyOrder(s, 'aaa', { kind: 'rebase', unitIds: ['u1'], provinceId: 'aaa-3' }).ok).toBe(true);
+    expect(applyOrder(s, 'aaa', { kind: 'rebase', unitIds: ['u1'], provinceId: 'aaa-3' }).ok).toBe(
+      true,
+    );
     advanceTo(s, H(1.5));
     expect(mil(s).ms.u1!.base).toBe('aaa-3');
     expect(mil(s).ms.u1!.up).toBe(false);
     advanceTo(s, H(3));
-    expect(applyOrder(s, 'aaa', { kind: 'move', unitIds: ['u1'], to: cityOf('aaa-1') }).ok).toBe(true);
+    expect(applyOrder(s, 'aaa', { kind: 'move', unitIds: ['u1'], to: cityOf('aaa-1') }).ok).toBe(
+      true,
+    );
     advanceTo(s, H(5));
     expect(mil(s).ms.u1!.base).toBe('aaa-1');
     expect(mil(s).ms.u1!.up).toBe(false);
     // Base inexistante : refusé.
-    expect(applyOrder(s, 'aaa', { kind: 'rebase', unitIds: ['u1'], provinceId: 'bbb-2' }).ok).toBe(false);
+    expect(applyOrder(s, 'aaa', { kind: 'rebase', unitIds: ['u1'], provinceId: 'bbb-2' }).ok).toBe(
+      false,
+    );
   });
 });

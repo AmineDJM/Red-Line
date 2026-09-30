@@ -89,7 +89,16 @@ export const MIL_CATALOG: WeaponSystem[] = [
     speedKmh: 900,
     operationalRadiusKm: 1000,
     weaponRangeKm: { min: 0, max: 60 },
-    damage: { ...zero, aircraft: 12, helicopter: 10, drone: 8, armor: 2, infantry: 2, building: 4, missile: 4 },
+    damage: {
+      ...zero,
+      aircraft: 12,
+      helicopter: 10,
+      drone: 8,
+      armor: 2,
+      infantry: 2,
+      building: 4,
+      missile: 4,
+    },
     hp: 25,
     detectionRangeKm: 150,
     air: { fuelH: 3, refuelable: true },
@@ -168,7 +177,13 @@ export const MIL_CATALOG: WeaponSystem[] = [
     damage: { ...zero, building: 60, armor: 40, infantry: 40 },
     hp: 10,
     detectionRangeKm: 20,
-    missile: { kind: 'ballistic', speedKmh: 6000, warhead: 'conventional', evasion: 0.5, blastKm: 2 },
+    missile: {
+      kind: 'ballistic',
+      speedKmh: 6000,
+      warhead: 'conventional',
+      evasion: 0.5,
+      blastKm: 2,
+    },
   }),
   sys({
     id: 'tst.icbm',
@@ -303,7 +318,13 @@ export const MIL_CATALOG: WeaponSystem[] = [
     damage: { ...zero, missile: 30 },
     hp: 10,
     detectionRangeKm: 50,
-    missile: { kind: 'ballistic', speedKmh: 20000, warhead: 'conventional', evasion: 0.5, blastKm: 0 },
+    missile: {
+      kind: 'ballistic',
+      speedKmh: 20000,
+      warhead: 'conventional',
+      evasion: 0.5,
+      blastKm: 0,
+    },
   }),
 ];
 
@@ -323,7 +344,9 @@ export function milMap(): MapData {
     ...map,
     provinces: map.provinces.map((p) => ({
       ...p,
-      buildings: [...new Set([...p.buildings, ...((extra[p.id] ?? []) as typeof p.buildings)])].sort(),
+      buildings: [
+        ...new Set([...p.buildings, ...((extra[p.id] ?? []) as typeof p.buildings)]),
+      ].sort(),
     })),
   };
 }

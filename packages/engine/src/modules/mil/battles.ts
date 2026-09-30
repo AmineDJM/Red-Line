@@ -42,7 +42,12 @@ function join(side: BattleSideSt, n: NationId): void {
 }
 
 /** Bataille ouverte à laquelle rattacher un fait d'armes entre deux nations en un lieu. */
-export function battleFor(state: EngineState, attacker: NationId, victim: NationId, at: LngLat): BattleSt {
+export function battleFor(
+  state: EngineState,
+  attacker: NationId,
+  victim: NationId,
+  at: LngLat,
+): BattleSt {
   const m = mil(state);
   const bal = milBal(state).battle;
   let best: BattleSt | null = null;
@@ -157,7 +162,13 @@ export function touch(state: EngineState, b: BattleSt): void {
 }
 
 /** Tir direct ayant infligé des dégâts (crochet onDamage). */
-export function recordHit(state: EngineState, att: Unit, tgt: Unit, lost: number, cls: TargetClass): BattleSt {
+export function recordHit(
+  state: EngineState,
+  att: Unit,
+  tgt: Unit,
+  lost: number,
+  cls: TargetClass,
+): BattleSt {
   const at = posOf(state, tgt);
   const b = battleFor(state, att.owner, tgt.owner, at);
   const first = Object.keys(b.units).length === 0;
@@ -213,7 +224,11 @@ export function handleClose(state: EngineState, d: { b: string }): void {
   m.open = m.open.filter((x) => x !== b.id);
   const nations = [...new Set([...b.a.nations, ...b.d.nations])].sort();
   const winner =
-    b.outcome === 'attacker' ? (b.a.nations[0] ?? null) : b.outcome === 'defender' ? (b.d.nations[0] ?? null) : null;
+    b.outcome === 'attacker'
+      ? (b.a.nations[0] ?? null)
+      : b.outcome === 'defender'
+        ? (b.d.nations[0] ?? null)
+        : null;
   signal(state, 'battle_end', { reportId: b.id, at: b.at, winner, nations });
   notify(state, { kind: 'battle_report', time: state.time, reportId: b.id, at: b.at }, nations);
   raiseAlert(state, milBal(state).tension.battle, 'battle');
@@ -287,7 +302,11 @@ export function participates(b: BattleSt, n: NationId): boolean {
 }
 
 /** Détail d'un rapport de bataille pour une nation qui y a pris part (sinon null). */
-export function battleReportForImpl(state: EngineState, nation: NationId, id: string): BattleReport | null {
+export function battleReportForImpl(
+  state: EngineState,
+  nation: NationId,
+  id: string,
+): BattleReport | null {
   const b = mil(state).battles[id];
   if (!b || !participates(b, nation)) return null;
   return reportOf(b);

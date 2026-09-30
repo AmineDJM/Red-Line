@@ -110,7 +110,11 @@ export function isSsbn(sys: WeaponSystem): boolean {
 }
 
 /** Missile tiré depuis les cellules d'un navire : même doctrine de préférence. */
-function missileForShip(state: EngineState, ship: WeaponSystem, antiShip: boolean): WeaponSystem | null {
+function missileForShip(
+  state: EngineState,
+  ship: WeaponSystem,
+  antiShip: boolean,
+): WeaponSystem | null {
   const nuclear = isSsbn(ship);
   const ok = (s: WeaponSystem): boolean => {
     const k = s.missile!.kind;
@@ -163,7 +167,8 @@ export function aimOf(state: EngineState, target: StrikeTarget): LngLat | null {
 
 function nuclearAllowed(state: EngineState, n: NationId): OrderResult | null {
   const b = board(state);
-  if (!b.nuclearAuth[n]) return fail('locked', 'Emploi du nucléaire non autorisé (ordre nuclearAuth).');
+  if (!b.nuclearAuth[n])
+    return fail('locked', 'Emploi du nucléaire non autorisé (ordre nuclearAuth).');
   if (b.alertLevel > milBal(state).nuclear.maxAlertForStrike) {
     return fail('locked', `Niveau d'alerte ${b.alertLevel} : frappe nucléaire impossible.`);
   }
@@ -211,11 +216,13 @@ export function orderStrike(
       if (!tUnit || !isSatellite(sysOf(state, tUnit))) {
         return fail('invalid_target', 'Une arme antisatellite ne vise qu’un satellite.');
       }
-      if (board(state).alertLevel > 3) return fail('locked', 'Niveau d’alerte trop bas pour une arme antisatellite.');
+      if (board(state).alertLevel > 3)
+        return fail('locked', 'Niveau d’alerte trop bas pour une arme antisatellite.');
       plans.push({ u, kind: 'asat', count: 1 });
       continue;
     }
-    if (tUnit && isSatellite(sysOf(state, tUnit))) return fail('invalid_target', 'Satellite hors d’atteinte.');
+    if (tUnit && isSatellite(sysOf(state, tUnit)))
+      return fail('invalid_target', 'Satellite hors d’atteinte.');
     if (u.off && !m.ms[u.id]?.emb) return fail('not_allowed', 'Unité indisponible.');
     if (isLauncher(s)) {
       if (distanceKm(posOf(state, u), aim) > strikeRangeKm(s)) {
@@ -240,7 +247,11 @@ export function orderStrike(
       const msys = missileForShip(state, s, tClass === 'ship' || tClass === 'submarine');
       if (!msys) return fail('not_allowed', 'Aucun missile disponible pour ce navire.');
       const left = cellsLeft(state, u);
-      if (left <= 0) return fail('insufficient_resources', 'Cellules de lancement vides (rechargement au port).');
+      if (left <= 0)
+        return fail(
+          'insufficient_resources',
+          'Cellules de lancement vides (rechargement au port).',
+        );
       if (distanceKm(posOf(state, u), aim) > strikeRangeKm(msys)) {
         return fail('out_of_range', 'Cible hors de portée du missile.');
       }
@@ -254,7 +265,8 @@ export function orderStrike(
       continue;
     }
     if (s.movement === 'air') {
-      if (s.damage[tClass] <= 0) return fail('invalid_target', 'Cet appareil ne peut pas frapper cette cible.');
+      if (s.damage[tClass] <= 0)
+        return fail('invalid_target', 'Cet appareil ne peut pas frapper cette cible.');
       if (noFlyAt(state, n, aim)) return fail('locked', 'Zone d’exclusion aérienne.');
       const err = airFeasible(state, u, aim);
       if (err) return err;
@@ -408,7 +420,14 @@ function warnLaunch(state: EngineState, M: Unit, st: MissileSt): void {
   }
   notify(
     state,
-    { kind: 'missile_launch', time: t, at: st.launchAt, unitId: M.id, impactAt: st.impactAt, target: st.aim },
+    {
+      kind: 'missile_launch',
+      time: t,
+      at: st.launchAt,
+      unitId: M.id,
+      impactAt: st.impactAt,
+      target: st.aim,
+    },
     [...aud],
   );
 }
@@ -428,7 +447,11 @@ export function interceptorOf(state: EngineState, I: Unit): InterceptorProfile |
   if (weaponRange(state, I).max <= 0) return null;
   const s = sysOf(state, I);
   if (s.interceptor) {
-    return { pk: s.interceptor.pk, magazine: s.interceptor.magazine, against: s.interceptor.against };
+    return {
+      pk: s.interceptor.pk,
+      magazine: s.interceptor.magazine,
+      against: s.interceptor.against,
+    };
   }
   if (s.damage.missile > 0) {
     const b = milBal(state).intercept;
@@ -449,7 +472,8 @@ function interceptHostile(state: EngineState, I: Unit, M: Unit): boolean {
   if (atWar(state, I.owner, M.owner)) return !ceasefire(state, I.owner, M.owner);
   // Défense d'un allié visé (même alliance) : on intercepte ce qui le vise.
   const b = board(state);
-  const ally = st?.victim && b.allianceOf[I.owner] && b.allianceOf[I.owner] === b.allianceOf[st.victim];
+  const ally =
+    st?.victim && b.allianceOf[I.owner] && b.allianceOf[I.owner] === b.allianceOf[st.victim];
   return !!ally;
 }
 
@@ -555,7 +579,11 @@ export function handleIntercept(state: EngineState, d: { i: string; m: string })
     countermeasure(b, 'evasion', fired - killed);
     if (jam > 0) countermeasure(b, 'jamming', 1);
     shot(state, b, ipos, mpos, 'missile', killed > 0);
-    timeline(state, b, `${isys.name} (${I.owner.toUpperCase()}) : ${killed}/${M.count} ${msys.name} interceptés (${fired} tirs)`);
+    timeline(
+      state,
+      b,
+      `${isys.name} (${I.owner.toUpperCase()}) : ${killed}/${M.count} ${msys.name} interceptés (${fired} tirs)`,
+    );
     touch(state, b);
   }
   statOf(state, I.owner).intercepted += killed;
@@ -590,7 +618,13 @@ export function forgetMissile(state: EngineState, id: string): void {
 /* Impact                                                                                           */
 /* ------------------------------------------------------------------------------------------------ */
 
-function strikeDamage(state: EngineState, by: Unit, sys: WeaponSystem, t: Unit, per: number): number {
+function strikeDamage(
+  state: EngineState,
+  by: Unit,
+  sys: WeaponSystem,
+  t: Unit,
+  per: number,
+): number {
   const cls = targetClassOf(state, t);
   const ts = sysOf(state, t);
   let dmg = sys.damage[cls] * per;
@@ -626,7 +660,8 @@ export function impact(state: EngineState, M: Unit): void {
   let hits = 0;
   if (st.target.type === 'building') {
     const pid = st.target.provinceId;
-    const dmg = (n * sys.damage.building * modifier(state, M.owner, 'missiles.accuracy')) / bal.buildingHp;
+    const dmg =
+      (n * sys.damage.building * modifier(state, M.owner, 'missiles.accuracy')) / bal.buildingHp;
     hitBuilding(state, pid, st.target.building, dmg, M);
     hits = n;
   } else {
@@ -662,10 +697,22 @@ export function impact(state: EngineState, M: Unit): void {
       if (t.role === 'decoy' && b) countermeasure(b, 'decoy', 1);
       inflict(state, M, t, dmg);
     }
-    if (b) shot(state, b, st.launchAt, at, primary ? targetClassOf(state, primary) : 'infantry', hits > 0);
+    if (b)
+      shot(
+        state,
+        b,
+        st.launchAt,
+        at,
+        primary ? targetClassOf(state, primary) : 'infantry',
+        hits > 0,
+      );
   }
   if (b) {
-    timeline(state, b, `Impact de ${n} ${sys.name} : ${hits > 0 ? 'cible touchée' : 'aucun dégât'}`);
+    timeline(
+      state,
+      b,
+      `Impact de ${n} ${sys.name} : ${hits > 0 ? 'cible touchée' : 'aucun dégât'}`,
+    );
     touch(state, b);
   }
   signal(state, 'strike', { by: M.owner, victim: st.victim, at, kind: 'missile', nuclear: false });
@@ -765,7 +812,11 @@ export function deliverAirStrike(state: EngineState, u: Unit, ms: MissionSt): vo
     const b = victim ? battleFor(state, u.owner, victim, here) : null;
     if (b) {
       engage(state, b, u);
-      timeline(state, b, `Frappe aérienne (${sys.name}) sur ${tg.building} à ${nameOfProvince(state, tg.provinceId)}`);
+      timeline(
+        state,
+        b,
+        `Frappe aérienne (${sys.name}) sur ${tg.building} à ${nameOfProvince(state, tg.provinceId)}`,
+      );
       shot(state, b, here, cityOf(state, tg.provinceId)!, 'building', hit);
       touch(state, b);
     }
@@ -783,7 +834,15 @@ export function deliverAirStrike(state: EngineState, u: Unit, ms: MissionSt): vo
   signal(state, 'strike', { by: u.owner, victim, at: here, kind: 'air', nuclear: false });
   raiseAlert(state, milBal(state).tension.strike, 'strike');
   if (!hit) {
-    generic(state, [u.owner], 'strike', 'Frappe sans effet', `${sys.name} : objectif non atteint.`, 'info', here);
+    generic(
+      state,
+      [u.owner],
+      'strike',
+      'Frappe sans effet',
+      `${sys.name} : objectif non atteint.`,
+      'info',
+      here,
+    );
   }
   done();
 }

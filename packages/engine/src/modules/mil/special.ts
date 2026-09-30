@@ -68,12 +68,14 @@ export function orderSpecialOp(
   if (o.mission === 'sabotage') {
     const list = buildingsOf(state, o.provinceId);
     building = o.building ?? list[0] ?? null;
-    if (!building || !list.includes(building)) return fail('invalid_target', 'Aucun bâtiment à saboter.');
+    if (!building || !list.includes(building))
+      return fail('invalid_target', 'Aucun bâtiment à saboter.');
   }
   const city = cityOf(state, o.provinceId)!;
   const plans = new Map<string, ReturnType<typeof planUnitMove>>();
   for (const u of units) {
-    if (!isSpecialForces(sysOf(state, u))) return fail('not_allowed', 'Réservé aux forces spéciales.');
+    if (!isSpecialForces(sysOf(state, u)))
+      return fail('not_allowed', 'Réservé aux forces spéciales.');
     const p = planUnitMove(state, u, city);
     if ('error' in p) return fail(p.error, 'Destination inaccessible.');
     plans.set(u.id, p);
@@ -108,7 +110,10 @@ export function resolveSpecialOp(state: EngineState, u: Unit): void {
     if (d.owner === victim && !d.role && sysOf(state, d).movement === 'land') defenders++;
   }
   const vet = veterancyLevel(state, u.xp);
-  const p = Math.max(bal.minSuccess, (bal.baseSuccess - bal.defenderPenalty * defenders) * (1 + 0.1 * vet));
+  const p = Math.max(
+    bal.minSuccess,
+    (bal.baseSuccess - bal.defenderPenalty * defenders) * (1 + 0.1 * vet),
+  );
   const ok = roll(state) < p;
   const where = nameOfProvince(state, op.pid);
   if (op.mission !== 'rescue' && victim !== u.owner && !atWar(state, u.owner, victim)) {
@@ -127,12 +132,36 @@ export function resolveSpecialOp(state: EngineState, u: Unit): void {
       signal(state, 'rescue', { by: u.owner, pid: op.pid, victim });
     }
     raiseAlert(state, 1, 'special_op');
-    generic(state, [u.owner], 'special_op', 'Opération spéciale réussie', `${label(op.mission)} à ${where}.`, 'info', city);
+    generic(
+      state,
+      [u.owner],
+      'special_op',
+      'Opération spéciale réussie',
+      `${label(op.mission)} à ${where}.`,
+      'info',
+      city,
+    );
     if (op.mission !== 'rescue') {
-      generic(state, [victim], 'special_op', 'Action de forces spéciales', `${label(op.mission)} ennemi à ${where}.`, 'warn', city);
+      generic(
+        state,
+        [victim],
+        'special_op',
+        'Action de forces spéciales',
+        `${label(op.mission)} ennemi à ${where}.`,
+        'warn',
+        city,
+      );
     }
   } else {
-    generic(state, [u.owner], 'special_op', 'Opération spéciale échouée', `${label(op.mission)} à ${where}.`, 'warn', city);
+    generic(
+      state,
+      [u.owner],
+      'special_op',
+      'Opération spéciale échouée',
+      `${label(op.mission)} à ${where}.`,
+      'warn',
+      city,
+    );
     if (state.units[u.id]) damageUnit(state, null, u, u.maxHp * bal.failureLoss);
   }
   if (!state.units[u.id]) return;
@@ -186,7 +215,8 @@ export function orderBlockade(
   }
   const plans = new Map<string, ReturnType<typeof planUnitMove>>();
   for (const u of units) {
-    if (sysOf(state, u).movement !== 'sea') return fail('not_allowed', 'Seuls les navires font un blocus.');
+    if (sysOf(state, u).movement !== 'sea')
+      return fail('not_allowed', 'Seuls les navires font un blocus.');
     const p = planUnitMove(state, u, at);
     if ('error' in p) return fail(p.error, 'Destination inaccessible.');
     plans.set(u.id, p);
@@ -201,7 +231,10 @@ export function orderBlockade(
   const blk: BlkSt = {
     id,
     by: n,
-    target: 'provinceId' in o.target ? { provinceId: o.target.provinceId } : { straitId: o.target.straitId },
+    target:
+      'provinceId' in o.target
+        ? { provinceId: o.target.provinceId }
+        : { straitId: o.target.straitId },
     at,
     units: units.map((u) => u.id),
     since: state.time,
@@ -260,8 +293,10 @@ export function checkBlockade(state: EngineState, b: BlkSt): void {
     if ('provinceId' in b.target) data.pid = b.target.provinceId;
     else data.straitId = b.target.straitId;
     signal(state, 'blockade', data);
-    const victim = 'provinceId' in b.target ? state.provinces[b.target.provinceId]?.owner : undefined;
-    const where = 'provinceId' in b.target ? nameOfProvince(state, b.target.provinceId) : b.target.straitId;
+    const victim =
+      'provinceId' in b.target ? state.provinces[b.target.provinceId]?.owner : undefined;
+    const where =
+      'provinceId' in b.target ? nameOfProvince(state, b.target.provinceId) : b.target.straitId;
     generic(
       state,
       victim ? [b.by, victim] : [b.by],
@@ -323,7 +358,12 @@ export function blockadedProvinces(state: EngineState): Set<ProvinceId> {
  * quelques armes de l'arsenal adverse (les systèmes terrestres les plus répandus, au plus maxSystems)
  * sont récupérées. Les unités fixes des bâtiments de défense de l'ancien propriétaire sont détruites.
  */
-export function captureMateriel(state: EngineState, pid: ProvinceId, from: NationId, to: NationId): void {
+export function captureMateriel(
+  state: EngineState,
+  pid: ProvinceId,
+  from: NationId,
+  to: NationId,
+): void {
   const m = mil(state);
   const bal = milBal(state).capture;
   const city = cityOf(state, pid);
@@ -368,12 +408,23 @@ export function captureMateriel(state: EngineState, pid: ProvinceId, from: Natio
     .sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))
     .slice(0, Math.round(bal.maxSystems));
   for (const [sysId, total] of top) {
-    const k = Math.max(1, Math.min(4, Math.floor((total / Math.max(1, counts.size)) * bal.fraction)));
+    const k = Math.max(
+      1,
+      Math.min(4, Math.floor((total / Math.max(1, counts.size)) * bal.fraction)),
+    );
     spawnUnit(state, to, sysId, city, k);
     gained.push(`${k} ${state.world.catalog.get(sysId)!.name}`);
   }
   if (gained.length > 0) {
-    generic(state, [to], 'capture', 'Matériel capturé', `${nameOfProvince(state, pid)} : ${gained.join(', ')}.`, 'info', city);
+    generic(
+      state,
+      [to],
+      'capture',
+      'Matériel capturé',
+      `${nameOfProvince(state, pid)} : ${gained.join(', ')}.`,
+      'info',
+      city,
+    );
   }
 }
 
@@ -381,7 +432,11 @@ export function captureMateriel(state: EngineState, pid: ProvinceId, from: Natio
 /* Piles : scission et fusion                                                                       */
 /* ================================================================================================ */
 
-export function orderSplit(state: EngineState, n: NationId, o: Extract<Order, { kind: 'split' }>): OrderResult {
+export function orderSplit(
+  state: EngineState,
+  n: NationId,
+  o: Extract<Order, { kind: 'split' }>,
+): OrderResult {
   const res = resolveOwn(state, n, [o.unitId], true);
   if (!Array.isArray(res)) return res;
   const u = res[0]!;
@@ -428,17 +483,23 @@ export function orderSplit(state: EngineState, n: NationId, o: Extract<Order, { 
   return OK;
 }
 
-export function orderMerge(state: EngineState, n: NationId, o: Extract<Order, { kind: 'merge' }>): OrderResult {
+export function orderMerge(
+  state: EngineState,
+  n: NationId,
+  o: Extract<Order, { kind: 'merge' }>,
+): OrderResult {
   const units = resolveOwn(state, n, o.unitIds, true);
   if (!Array.isArray(units)) return units;
   if (units.length < 2) return fail('invalid_target', 'Il faut au moins deux unités.');
   const first = units[0]!;
   const p0 = posOf(state, first);
   for (const u of units) {
-    if (u.sys !== first.sys) return fail('invalid_target', 'Fusion possible seulement entre unités du même type.');
+    if (u.sys !== first.sys)
+      return fail('invalid_target', 'Fusion possible seulement entre unités du même type.');
     if (u.move) return fail('not_allowed', 'Les unités doivent être à l’arrêt.');
     if (!!u.off !== !!first.off) return fail('not_allowed', 'Unités embarquées et non embarquées.');
-    if (distanceKm(posOf(state, u), p0) > 10) return fail('out_of_range', 'Unités trop éloignées (10 km).');
+    if (distanceKm(posOf(state, u), p0) > 10)
+      return fail('out_of_range', 'Unités trop éloignées (10 km).');
     if (mil(state).fixedOf[u.id]) return fail('not_allowed', 'Unité fixe.');
   }
   const m = mil(state);
@@ -463,4 +524,3 @@ export function orderMerge(state: EngineState, n: NationId, o: Extract<Order, { 
   state.rt.dirtyCombat.add(first.id);
   return OK;
 }
-

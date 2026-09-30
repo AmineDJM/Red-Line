@@ -67,7 +67,7 @@ import {
   scheduleInterceptions,
 } from './strike.js';
 import { milPublicView, milView } from './view.js';
-import { isAsat, isSatellite, schedule } from './util.js';
+import { carrierCapacity, isAsat, isSatellite, schedule } from './util.js';
 import { battleReportForImpl } from './battles.js';
 import { destroyUnit, jammingFor } from '../../combat/combat.js';
 import { signal } from '../registry.js';
@@ -125,20 +125,29 @@ function handleTick(state: EngineState): void {
   const m = mil(state);
   const b = board(state);
   const active: Record<string, number> = {};
-  for (const k of sortedKeys(b.ceasefires)) if (b.ceasefires[k]! > state.time) active[k] = b.ceasefires[k]!;
+  for (const k of sortedKeys(b.ceasefires))
+    if (b.ceasefires[k]! > state.time) active[k] = b.ceasefires[k]!;
   const changed = new Set<string>();
   for (const k of Object.keys(active)) if (m.cf[k] === undefined) changed.add(k);
   for (const k of Object.keys(m.cf)) if (active[k] === undefined) changed.add(k);
   m.cf = active;
   for (const k of [...changed].sort()) {
-    for (const n of k.split('|')) for (const id of nationUnits(state, n)) state.rt.dirtyCombat.add(id);
+    for (const n of k.split('|'))
+      for (const id of nationUnits(state, n)) state.rt.dirtyCombat.add(id);
   }
   const nf = sortedKeys(b.noFly).join(',');
   if (nf !== m.nf) {
     m.nf = nf;
     for (const id of sortedKeys(state.units)) {
       const u = state.units[id]!;
-      if (sysOf(state, u).movement === 'air') state.rt.dirtyCombat.add(id);
+      if (sysOf(state, u).movement !== 'air' || u.role) continue;
+      state.rt.dirtyCombat.add(id);
+      // Les unités au contact (défense aérienne) réévaluent aussi leurs cibles.
+      for (const key of [...(state.rt.pairsOf.get(id) ?? [])].sort()) {
+        if (key.includes('#')) continue;
+        const [a, b] = key.split('|') as [string, string];
+        state.rt.dirtyCombat.add(a === id ? b : a);
+      }
     }
   }
 }
@@ -157,19 +166,21 @@ function onSpawn(state: EngineState, u: Unit): void {
 function onGone(state: EngineState, u: Unit): void {
   const m = mil(state);
   if (u.role === 'missile') forgetMissile(state, u.id);
-  // Aéronefs embarqués : perdus avec leur porteur.
-  for (const id of sortedKeys(m.ms)) {
-    const ms = m.ms[id]!;
-    if (ms.emb === u.id) {
-      const a = state.units[id];
-      delete m.ms[id];
-      if (a) {
-        countLoss(state, a, a.count, null);
-        destroyUnit(state, a, null);
+  // Aéronefs embarqués : perdus avec leur porteur (parcours seulement pour une unité porteuse).
+  if (carrierCapacity(sysOf(state, u)) > 0) {
+    for (const id of sortedKeys(m.ms)) {
+      const ms = m.ms[id]!;
+      if (ms.emb === u.id) {
+        const a = state.units[id];
+        delete m.ms[id];
+        if (a) {
+          countLoss(state, a, a.count, null);
+          destroyUnit(state, a, null);
+        }
+      } else if (ms.bk === 'c' && ms.base === u.id) {
+        ms.bk = null;
+        ms.base = null;
       }
-    } else if (ms.bk === 'c' && ms.base === u.id) {
-      ms.bk = null;
-      ms.base = null;
     }
   }
   blockadeUnitChanged(state, u, true);
@@ -252,7 +263,7 @@ export const milModule: EngineModule = {
       const b = recordHit(state, att, tgt, lost, targetClassOf(state, tgt));
       if (jammingFor(state, tgt) > 0) b.cm.jamming = (b.cm.jamming ?? 0) + 1;
       if (tgt.role !== 'decoy' && tgt.owner !== att.owner && !att.role) {
-        if (!(state.sight[tgt.owner]?.[att.id])) b.cm.stealth = (b.cm.stealth ?? 0) + 1;
+        if (!state.sight[tgt.owner]?.[att.id]) b.cm.stealth = (b.cm.stealth ?? 0) + 1;
       }
       if (tgt.role === 'decoy') {
         b.cm.decoy = (b.cm.decoy ?? 0) + 1;
@@ -314,7 +325,8 @@ export const milModule: EngineModule = {
           addTension(state, Number(data.amount) || 0);
           return;
         case 'cyber':
-          if (data.kind === 'radar') blindRadars(state, data.victim as string, Number(data.hours) || 0);
+          if (data.kind === 'radar')
+            blindRadars(state, data.victim as string, Number(data.hours) || 0);
           return;
         case 'decoys':
           spawnDecoys(state, data);
@@ -357,7 +369,11 @@ export const milModule: EngineModule = {
 
 /** Porteur logistique détruit par l'ennemi : les livraisons appartiennent au module eco. */
 function signalDelivery(state: EngineState, u: Unit, killer: Unit): void {
-  signal(state, 'delivery_intercepted', { deliveryId: null, carrierUnitId: u.id, by: killer.owner });
+  signal(state, 'delivery_intercepted', {
+    deliveryId: null,
+    carrierUnitId: u.id,
+    by: killer.owner,
+  });
 }
 
 /** Détail d'un rapport de bataille pour une nation qui y a pris part. */

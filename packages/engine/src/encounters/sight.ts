@@ -109,4 +109,3 @@ function updateLevel(state: EngineState, nation: NationId, u: Unit, lvl: number)
   c.lvl = lvl;
   if (lvl >= 2) c.sys = u.sys;
 }
-

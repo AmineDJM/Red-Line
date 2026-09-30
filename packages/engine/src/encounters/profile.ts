@@ -1,4 +1,10 @@
-import { distanceKm, type LngLat, type NationId, type TargetClass, type WeaponSystem } from '@redline/shared';
+import {
+  distanceKm,
+  type LngLat,
+  type NationId,
+  type TargetClass,
+  type WeaponSystem,
+} from '@redline/shared';
 import { modifier, unitModifier } from '../modules/registry.js';
 import { board } from '../modules/kit.js';
 import { milBal, milOpt } from '../modules/mil/state.js';
@@ -52,8 +58,7 @@ export function isOthRadar(state: EngineState, sys: WeaponSystem): boolean {
   const s = sys.sensor;
   if (!s || s.kind !== 'radar') return false;
   return (
-    sys.roles.some((r) => OTH_ROLES.includes(r)) ||
-    s.rangeKm >= milBal(state).sensors.othMinRangeKm
+    sys.roles.some((r) => OTH_ROLES.includes(r)) || s.rangeKm >= milBal(state).sensors.othMinRangeKm
   );
 }
 
@@ -170,7 +175,8 @@ export function sonarKm(state: EngineState, u: Unit): number {
   let r = 0;
   if (sys.sensor?.kind === 'sonar') r = sys.sensor.rangeKm;
   const asw = sys.naval?.asw ?? 0;
-  if (asw > 0) r = Math.max(r, Math.min(sys.detectionRangeKm * asw, milBal(state).sensors.aswMaxKm));
+  if (asw > 0)
+    r = Math.max(r, Math.min(sys.detectionRangeKm * asw, milBal(state).sensors.aswMaxKm));
   if (r <= 0) return 0;
   return r * modifier(state, u.owner, 'naval.sonar') * unitModifier(state, u, 'naval.sonar');
 }
@@ -223,7 +229,11 @@ export function zoneKm(state: EngineState, u: Unit): number {
   if (sys.sensor?.kind === 'sonar') det = Math.max(det, sys.sensor.rangeKm);
   const w = isLauncher(sys) ? 0 : sys.weaponRangeKm.max;
   const site = milOpt(state)?.siteRange[u.id] ?? 0;
-  return Math.max(det * ZONE_SLACK, w, Math.min(site, milBal(state).sensors.maxPairKm) * ZONE_SLACK);
+  return Math.max(
+    det * ZONE_SLACK,
+    w,
+    Math.min(site, milBal(state).sensors.maxPairKm) * ZONE_SLACK,
+  );
 }
 
 /** Position de la base d'attache d'un aéronef à carburant (province ou unité porteuse), sinon null. */

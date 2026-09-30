@@ -13,7 +13,12 @@ function salvo(patriots: number) {
       { owner: 'aaa', systemId: 'tst.cruise', pos: cityOf('aaa-1'), count: 10 }, // u1
     ];
     for (let i = 0; i < patriots; i++) {
-      units.push({ owner: 'bbb', systemId: 'tst.patriot', pos: [7.3, 40 + i * 0.02] as [number, number], count: 1 });
+      units.push({
+        owner: 'bbb',
+        systemId: 'tst.patriot',
+        pos: [7.3, 40 + i * 0.02] as [number, number],
+        count: 1,
+      });
     }
     const s = milSandbox(units);
     const r = applyOrder(s, 'aaa', {
@@ -79,7 +84,11 @@ describe('missiles : frappe, interception, saturation', () => {
     const mid = Object.keys(s.units).find((id) => s.units[id]!.role === 'missile')!;
     const own = viewFor(s, 'aaa').units[mid]!;
     expect(own.missile?.impactAt).toBeGreaterThan(s.time);
-    expect(own.missile?.target).toEqual({ type: 'building', provinceId: 'bbb-2', building: 'air_base' });
+    expect(own.missile?.target).toEqual({
+      type: 'building',
+      provinceId: 'bbb-2',
+      building: 'air_base',
+    });
     const notes = advanceTo(s, s.time + 1000);
     void notes;
     const dv = viewFor(s, 'ddd').units[mid];
@@ -95,10 +104,18 @@ describe('missiles : frappe, interception, saturation', () => {
       { owner: 'aaa', systemId: 'tst.radar', pos: [8.5, 44.8] }, // u3 : voit la frégate
     ]);
     advanceTo(s, MINUTE);
-    const r = applyOrder(s, 'aaa', { kind: 'strike', unitIds: ['u1'], target: { type: 'unit', unitId: 'u2' } });
+    const r = applyOrder(s, 'aaa', {
+      kind: 'strike',
+      unitIds: ['u1'],
+      target: { type: 'unit', unitId: 'u2' },
+    });
     expect(r.ok).toBe(true);
     expect(viewFor(s, 'aaa').units.u1!.mission?.ammo).toBe(0);
-    const again = applyOrder(s, 'aaa', { kind: 'strike', unitIds: ['u1'], target: { type: 'unit', unitId: 'u2' } });
+    const again = applyOrder(s, 'aaa', {
+      kind: 'strike',
+      unitIds: ['u1'],
+      target: { type: 'unit', unitId: 'u2' },
+    });
     expect(again.error).toBe('insufficient_resources');
     advanceTo(s, 2 * HOUR);
     const f = s.units.u2;
@@ -111,10 +128,18 @@ describe('missiles : frappe, interception, saturation', () => {
       { owner: 'bbb', systemId: 'tst.tank', pos: cityOf('bbb-2') }, // u2 : invisible pour aaa
     ]);
     expect(
-      applyOrder(s, 'aaa', { kind: 'strike', unitIds: ['u1'], target: { type: 'unit', unitId: 'u2' } }).error,
+      applyOrder(s, 'aaa', {
+        kind: 'strike',
+        unitIds: ['u1'],
+        target: { type: 'unit', unitId: 'u2' },
+      }).error,
     ).toBe('invalid_target');
     expect(
-      applyOrder(s, 'aaa', { kind: 'strike', unitIds: ['u1'], target: { type: 'point', at: [60, 44] } }).error,
+      applyOrder(s, 'aaa', {
+        kind: 'strike',
+        unitIds: ['u1'],
+        target: { type: 'point', at: [60, 44] },
+      }).error,
     ).toBe('out_of_range');
   });
 });

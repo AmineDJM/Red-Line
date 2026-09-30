@@ -43,11 +43,16 @@ import {
 
 /* ——— Brouillage ——— */
 
-export function orderJam(state: EngineState, n: NationId, o: Extract<Order, { kind: 'jam' }>): OrderResult {
+export function orderJam(
+  state: EngineState,
+  n: NationId,
+  o: Extract<Order, { kind: 'jam' }>,
+): OrderResult {
   const units = resolveOwn(state, n, o.unitIds);
   if (!Array.isArray(units)) return units;
   for (const u of units) {
-    if (sysOf(state, u).ew.jamming <= 0) return fail('not_allowed', 'Cette unité n’a pas de brouilleur.');
+    if (sysOf(state, u).ew.jamming <= 0)
+      return fail('not_allowed', 'Cette unité n’a pas de brouilleur.');
   }
   const m = mil(state);
   for (const u of units) {
@@ -69,7 +74,14 @@ export function blindRadars(state: EngineState, victim: NationId, hours: number)
   m.blind[victim] = Math.max(was ?? 0, until);
   if (was === undefined || was <= state.time) refreshSensors(state, victim);
   schedule(state, until, 'unblind', { n: victim });
-  generic(state, [victim], 'cyber', 'Radars aveuglés', 'Une cyberattaque perturbe nos radars.', 'warn');
+  generic(
+    state,
+    [victim],
+    'cyber',
+    'Radars aveuglés',
+    'Une cyberattaque perturbe nos radars.',
+    'warn',
+  );
 }
 
 export function handleUnblind(state: EngineState, d: { n: string }): void {
@@ -156,7 +168,13 @@ export function emitImagery(state: EngineState, u: Unit, _why: string): void {
   const s = sysOf(state, u);
   const r = Math.max(detectKm(state, u), s.detectionRangeKm * 0.5, 10);
   const at = posOf(state, u);
-  imagery(state, u.owner, at, r, s.movement === 'air' && s.category === 'drone' ? 'drone' : 'aircraft');
+  imagery(
+    state,
+    u.owner,
+    at,
+    r,
+    s.movement === 'air' && s.category === 'drone' ? 'drone' : 'aircraft',
+  );
 }
 
 export function imagery(
@@ -166,7 +184,9 @@ export function imagery(
   radiusKm: number,
   kind: 'satellite' | 'drone' | 'aircraft' | 'radar',
 ): void {
-  const pids = provincesNear(state, at, radiusKm).filter((p) => state.provinces[p]!.owner !== nation);
+  const pids = provincesNear(state, at, radiusKm).filter(
+    (p) => state.provinces[p]!.owner !== nation,
+  );
   signal(state, 'imagery', { nation, at: [at[0], at[1]], radiusKm, kind, pids });
 }
 
@@ -220,13 +240,19 @@ export function handleSatPass(state: EngineState, d: { u: string; v: number }): 
   if (!aim || !kind) return;
   const r = swathKm(state, u) / 2;
   const bal = milBal(state).sensors;
-  const lvl = kind === 'optical' ? bal.satelliteOptical : kind === 'radar' ? bal.satelliteRadar : bal.satelliteSigint;
+  const lvl =
+    kind === 'optical'
+      ? bal.satelliteOptical
+      : kind === 'radar'
+        ? bal.satelliteRadar
+        : bal.satelliteSigint;
   let found = 0;
   for (const o of unitsNear(state, aim, r)) {
     if (o.owner === u.owner || o.role === 'missile') continue;
     const os = sysOf(state, o);
     if (isHiddenSub(state, o)) continue;
-    if (kind === 'sigint' && !(isRadarSensor(os) || os.ew.jamming > 0 || os.movement === 'sea')) continue;
+    if (kind === 'sigint' && !(isRadarSensor(os) || os.ew.jamming > 0 || os.movement === 'sea'))
+      continue;
     if (snapshot(state, u.owner, o, Math.round(lvl))) found++;
   }
   imagery(state, u.owner, aim, r, kind === 'radar' ? 'radar' : 'satellite');
@@ -275,7 +301,8 @@ export function handleOth(state: EngineState, d: { u: string }): void {
   // Balayage seulement en temps de guerre (coût nul en paix).
   if (warsOf(state, u.owner).length === 0) return;
   const s = sysOf(state, u);
-  const r = (s.sensor?.rangeKm ?? s.detectionRangeKm) * modifier(state, u.owner, 'sensors.radarRange');
+  const r =
+    (s.sensor?.rangeKm ?? s.detectionRangeKm) * modifier(state, u.owner, 'sensors.radarRange');
   const here = posOf(state, u);
   for (const o of unitsNear(state, here, r)) {
     if (o.owner === u.owner || !atWar(state, u.owner, o.owner)) continue;

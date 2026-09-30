@@ -18,7 +18,11 @@ describe('opérations combinées (heure H)', () => {
       name: 'Tempête',
       hHour: H,
       steps: [
-        { offsetMin: -60, label: 'Approche', order: { kind: 'move', unitIds: ['u1'], to: [5.3, 40] } },
+        {
+          offsetMin: -60,
+          label: 'Approche',
+          order: { kind: 'move', unitIds: ['u1'], to: [5.3, 40] },
+        },
         {
           offsetMin: 0,
           label: 'Frappe',
@@ -33,7 +37,11 @@ describe('opérations combinées (heure H)', () => {
           label: 'Couverture',
           order: { kind: 'patrol', unitIds: ['u3'], at: [6, 41], radiusKm: 80 },
         },
-        { offsetMin: 45, label: 'Invalide', order: { kind: 'move', unitIds: ['u999'], to: [1, 41] } },
+        {
+          offsetMin: 45,
+          label: 'Invalide',
+          order: { kind: 'move', unitIds: ['u999'], to: [1, 41] },
+        },
       ],
     });
     expect(r.ok).toBe(true);
@@ -79,7 +87,9 @@ describe('opérations combinées (heure H)', () => {
       }).ok,
     ).toBe(true);
     const id = viewFor(s, 'aaa').operations![0]!.id;
-    expect(applyOrder(s, 'bbb', { kind: 'cancelOperation', operationId: id }).error).toBe('not_owner');
+    expect(applyOrder(s, 'bbb', { kind: 'cancelOperation', operationId: id }).error).toBe(
+      'not_owner',
+    );
     expect(applyOrder(s, 'aaa', { kind: 'cancelOperation', operationId: id }).ok).toBe(true);
     advanceTo(s, 4 * HOUR);
     expect(s.units.u1!.move).toBeNull();
@@ -98,7 +108,9 @@ describe('rapports de bataille', () => {
         { owner: 'bbb', systemId: 'tst.infantry', pos: [7.52, 40.0] }, // u3
       ]);
       const before = { u2: s.units.u2!.count, u3: s.units.u3!.count, u1: s.units.u1!.count };
-      expect(applyOrder(s, 'aaa', { kind: 'attack', unitIds: ['u1'], targetId: 'u2' }).ok).toBe(true);
+      expect(applyOrder(s, 'aaa', { kind: 'attack', unitIds: ['u1'], targetId: 'u2' }).ok).toBe(
+        true,
+      );
       const notes = advanceTo(s, 12 * HOUR);
       const br = notesOf(notes, 'battle_report');
       expect(br).toHaveLength(1);
@@ -113,8 +125,7 @@ describe('rapports de bataille', () => {
       expect(r.defender.nations).toEqual(['bbb']);
       expect(r.endedAt).not.toBeNull();
       expect(r.provinceId).toBe('bbb-4');
-      const lostInf =
-        before.u2 - (s.units.u2?.count ?? 0) + (before.u3 - (s.units.u3?.count ?? 0));
+      const lostInf = before.u2 - (s.units.u2?.count ?? 0) + (before.u3 - (s.units.u3?.count ?? 0));
       const lostTank = before.u1 - (s.units.u1?.count ?? 0);
       const dl = r.defender.losses.find((x) => x.systemId === 'tst.infantry')?.count ?? 0;
       const al = r.attacker.losses.find((x) => x.systemId === 'tst.tank')?.count ?? 0;

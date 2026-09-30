@@ -163,7 +163,12 @@ export function initAircraft(state: EngineState, u: Unit): void {
   }
   const pid = provinceAt(state, pos);
   const city = pid ? cityOf(state, pid) : null;
-  if (pid && city && state.provinces[pid]!.owner === u.owner && distanceKm(city, pos) <= bal.landingKm) {
+  if (
+    pid &&
+    city &&
+    state.provinces[pid]!.owner === u.owner &&
+    distanceKm(city, pos) <= bal.landingKm
+  ) {
     m.bk = 'p';
     m.base = pid;
   } else {
@@ -588,7 +593,8 @@ export function handleScan(state: EngineState, d: { u: string; sv: number }): vo
   const sys = sysOf(state, u);
   if (m.mis === 'recon' || (isRecon(sys) && m.ph === 'station')) emitImagery(state, u, 'patrol');
   if (m.mis !== 'patrol' && m.mis !== 'blockade') {
-    if (!u.move && m.ph === 'station' && distanceKm(posOf(state, u), m.at) > 5) moveTo(state, u, m.at);
+    if (!u.move && m.ph === 'station' && distanceKm(posOf(state, u), m.at) > 5)
+      moveTo(state, u, m.at);
     return;
   }
   const center = m.at;
@@ -659,7 +665,8 @@ export function airFeasible(
   back?: LngLat | null,
 ): OrderResult | null {
   const m = msOf(state, u);
-  if (!m || !m.fa) return airCanReach(state, u, to) ? null : fail('out_of_range', "Hors du rayon d'action.");
+  if (!m || !m.fa)
+    return airCanReach(state, u, to) ? null : fail('out_of_range', "Hors du rayon d'action.");
   if (!m.up && m.ready > state.time) {
     return fail('cooldown', 'Appareil en remise en œuvre au sol.');
   }
@@ -697,7 +704,11 @@ export function flyTo(state: EngineState, u: Unit, to: LngLat): void {
 }
 
 /** Ordre `patrol` : aéronefs (CAP, ravitailleur, avion radar, reconnaissance), navires, satellites. */
-export function orderPatrol(state: EngineState, n: NationId, o: Extract<Order, { kind: 'patrol' }>): OrderResult {
+export function orderPatrol(
+  state: EngineState,
+  n: NationId,
+  o: Extract<Order, { kind: 'patrol' }>,
+): OrderResult {
   const units = resolveOwn(state, n, o.unitIds, true);
   if (!Array.isArray(units)) return units;
   for (const u of units) {
@@ -767,9 +778,12 @@ export function interceptMove(
       // Arrivée sur un terrain ami : pas de retour à prévoir.
       const pid = provinceAt(state, o.to);
       const field =
-        pid && state.provinces[pid]!.owner === n && hasBuilding(state, pid, 'air_base') ? cityOf(state, pid) : null;
+        pid && state.provinces[pid]!.owner === n && hasBuilding(state, pid, 'air_base')
+          ? cityOf(state, pid)
+          : null;
       const err = airFeasible(state, u, o.to, field ?? undefined);
-      if (err && !(field && err.error === 'out_of_range' && rebaseReach(state, u, o.to))) return err;
+      if (err && !(field && err.error === 'out_of_range' && rebaseReach(state, u, o.to)))
+        return err;
       continue;
     }
     if (u.off) return fail('not_allowed', 'Unité indisponible pour cet ordre.');
@@ -819,12 +833,17 @@ function rebaseReach(state: EngineState, u: Unit, to: LngLat): boolean {
 }
 
 /** Ordre `rtb`. */
-export function orderRtb(state: EngineState, n: NationId, o: Extract<Order, { kind: 'rtb' }>): OrderResult {
+export function orderRtb(
+  state: EngineState,
+  n: NationId,
+  o: Extract<Order, { kind: 'rtb' }>,
+): OrderResult {
   const units = resolveOwn(state, n, o.unitIds, true);
   if (!Array.isArray(units)) return units;
   for (const u of units) {
     const s = sysOf(state, u);
-    if (s.movement !== 'air' && s.movement !== 'sea') return fail('not_allowed', 'Aéronefs et navires seulement.');
+    if (s.movement !== 'air' && s.movement !== 'sea')
+      return fail('not_allowed', 'Aéronefs et navires seulement.');
   }
   for (const u of units) {
     if (u.off) continue;
@@ -835,7 +854,11 @@ export function orderRtb(state: EngineState, n: NationId, o: Extract<Order, { ki
 }
 
 /** Ordre `rebase` : nouvelle base (province avec base aérienne / port, ou unité porteuse). */
-export function orderRebase(state: EngineState, n: NationId, o: Extract<Order, { kind: 'rebase' }>): OrderResult {
+export function orderRebase(
+  state: EngineState,
+  n: NationId,
+  o: Extract<Order, { kind: 'rebase' }>,
+): OrderResult {
   const units = resolveOwn(state, n, o.unitIds, true);
   if (!Array.isArray(units)) return units;
   const carrier = state.units[o.provinceId];
@@ -859,14 +882,20 @@ export function orderRebase(state: EngineState, n: NationId, o: Extract<Order, {
         if (!rebaseReach(state, u, target)) return fail('out_of_range', 'Autonomie insuffisante.');
       } else {
         const heli = s.category === 'helicopter';
-        if (!hasBuilding(state, o.provinceId, 'air_base') && !(heli && hasBuilding(state, o.provinceId, 'military_base'))) {
+        if (
+          !hasBuilding(state, o.provinceId, 'air_base') &&
+          !(heli && hasBuilding(state, o.provinceId, 'military_base'))
+        ) {
           return fail('invalid_target', 'Pas de base aérienne dans cette province.');
         }
-        if (!rebaseReach(state, u, cityOf(state, o.provinceId)!)) return fail('out_of_range', 'Autonomie insuffisante.');
+        if (!rebaseReach(state, u, cityOf(state, o.provinceId)!))
+          return fail('out_of_range', 'Autonomie insuffisante.');
       }
     } else if (s.movement === 'sea') {
       if (carrier || !P) return fail('invalid_target', 'Un navire change de port d’attache.');
-      if (!(hasBuilding(state, o.provinceId, 'port') || hasBuilding(state, o.provinceId, 'naval_base'))) {
+      if (!(
+        hasBuilding(state, o.provinceId, 'port') || hasBuilding(state, o.provinceId, 'naval_base')
+      )) {
         return fail('invalid_target', 'Pas de port dans cette province.');
       }
       const spot = wi(state.world).seaSpawn.get(o.provinceId);
@@ -879,7 +908,9 @@ export function orderRebase(state: EngineState, n: NationId, o: Extract<Order, {
   }
   if (carrier) {
     const cap = carrierCapacity(sysOf(state, carrier)) * carrier.count;
-    const already = units.filter((u) => msOf(state, u)?.emb === carrier.id).reduce((a, u) => a + u.count, 0);
+    const already = units
+      .filter((u) => msOf(state, u)?.emb === carrier.id)
+      .reduce((a, u) => a + u.count, 0);
     if (embarkedCount(state, carrier.id) - already + needed > cap) {
       return fail('capacity', 'Capacité du porte-avions dépassée.');
     }

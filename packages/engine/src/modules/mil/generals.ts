@@ -31,19 +31,78 @@ import { OK, fail, generic, posOf, roll, schedule } from './util.js';
  */
 
 const TRAITS: GeneralTrait[] = ['offensive', 'defender', 'logistician', 'aviator', 'admiral'];
-const FIRST = ['A.', 'B.', 'C.', 'D.', 'E.', 'F.', 'G.', 'H.', 'I.', 'J.', 'K.', 'L.', 'M.', 'N.', 'O.', 'P.', 'R.', 'S.', 'T.', 'V.'];
+const FIRST = [
+  'A.',
+  'B.',
+  'C.',
+  'D.',
+  'E.',
+  'F.',
+  'G.',
+  'H.',
+  'I.',
+  'J.',
+  'K.',
+  'L.',
+  'M.',
+  'N.',
+  'O.',
+  'P.',
+  'R.',
+  'S.',
+  'T.',
+  'V.',
+];
 const LAST = [
-  'Valmont', 'Serrat', 'Korvin', 'Almeda', 'Brandt', 'Castel', 'Dorval', 'Estrin', 'Falke', 'Garnier',
-  'Halden', 'Iversen', 'Jarosz', 'Kessler', 'Lemaire', 'Marek', 'Novak', 'Orlov', 'Petrescu', 'Quint',
-  'Rostam', 'Sayed', 'Tamura', 'Uribe', 'Varga', 'Wendt', 'Yilmaz', 'Zaric', 'Moreau', 'Lindqvist',
-  'Okafor', 'Haddad', 'Kovac', 'Farouk', 'Delacroix', 'Ivanek', 'Barros', 'Nakamura', 'Sorensen', 'Adeyemi',
+  'Valmont',
+  'Serrat',
+  'Korvin',
+  'Almeda',
+  'Brandt',
+  'Castel',
+  'Dorval',
+  'Estrin',
+  'Falke',
+  'Garnier',
+  'Halden',
+  'Iversen',
+  'Jarosz',
+  'Kessler',
+  'Lemaire',
+  'Marek',
+  'Novak',
+  'Orlov',
+  'Petrescu',
+  'Quint',
+  'Rostam',
+  'Sayed',
+  'Tamura',
+  'Uribe',
+  'Varga',
+  'Wendt',
+  'Yilmaz',
+  'Zaric',
+  'Moreau',
+  'Lindqvist',
+  'Okafor',
+  'Haddad',
+  'Kovac',
+  'Farouk',
+  'Delacroix',
+  'Ivanek',
+  'Barros',
+  'Nakamura',
+  'Sorensen',
+  'Adeyemi',
 ];
 
 /** Création des généraux des nations actives (graine du module : déterministe). */
 export function initGenerals(state: EngineState, setup: GameSetup): void {
   const bal = milBal(state).generals;
   const m = mil(state);
-  const active = [...new Set(setup.players.map((p) => p.nationId))].filter((n) => state.nations[n]).sort();
+  const active = [...new Set(setup.players.map((p) => p.nationId))]
+    .filter((n) => state.nations[n])
+    .sort();
   for (const n of active) {
     const span = Math.max(0, Math.round(bal.perNationMax - bal.perNationMin));
     const count = Math.round(bal.perNationMin) + Math.floor(roll(state) * (span + 1));
@@ -72,7 +131,8 @@ export function orderAppoint(
   if (!g) return fail('invalid_target', 'Général inconnu.');
   if (g.owner !== n) return fail('not_owner', 'Ce général ne vous appartient pas.');
   const ids = [...new Set(o.unitIds)].sort();
-  if (ids.length > milBal(state).generals.maxUnits) return fail('capacity', 'Trop d’unités pour un seul général.');
+  if (ids.length > milBal(state).generals.maxUnits)
+    return fail('capacity', 'Trop d’unités pour un seul général.');
   for (const id of ids) {
     const u = state.units[id];
     if (!u) return fail('unknown_unit', `Unité inconnue : ${id}`);
@@ -108,7 +168,10 @@ export function orderDelegate(
 }
 
 function centroid(state: EngineState, g: GenSt): LngLat | null {
-  const pts = g.units.map((id) => state.units[id]).filter((u): u is Unit => !!u && !u.off).map((u) => posOf(state, u));
+  const pts = g.units
+    .map((id) => state.units[id])
+    .filter((u): u is Unit => !!u && !u.off)
+    .map((u) => posOf(state, u));
   if (pts.length === 0) return null;
   let x = 0;
   let y = 0;
@@ -148,7 +211,14 @@ export function releaseOnOrder(state: EngineState, n: NationId, o: Order): void 
     const g = m.gens[gid]!;
     g.directive = null;
     g.v++;
-    generic(state, [n], 'general', 'Reprise en main', `${g.name} rend le commandement direct de son groupe.`, 'info');
+    generic(
+      state,
+      [n],
+      'general',
+      'Reprise en main',
+      `${g.name} rend le commandement direct de son groupe.`,
+      'info',
+    );
   }
 }
 
@@ -158,7 +228,10 @@ export function handleGeneral(state: EngineState, d: { g: string; v: number }): 
   g.units = g.units.filter((id) => state.units[id]?.owner === g.owner);
   if (g.units.length > 0 && state.nations[g.owner]?.alive) think(state, g);
   if (g.directive && g.v === d.v) {
-    schedule(state, state.time + milBal(state).generals.thinkMinutes * MINUTE, 'gen', { g: g.id, v: g.v });
+    schedule(state, state.time + milBal(state).generals.thinkMinutes * MINUTE, 'gen', {
+      g: g.id,
+      v: g.v,
+    });
   }
 }
 
@@ -189,8 +262,12 @@ function think(state: EngineState, g: GenSt): void {
   const units = g.units.map((id) => state.units[id]!).filter((u) => !u.off && !u.role);
   const radius = g.directive === 'harass' ? R * 1.5 : R;
   const threats = threatsNear(state, n, area, radius);
-  if (g.directive === 'harass') threats.sort((a, b) => a.u.hp - b.u.hp || (a.u.id < b.u.id ? -1 : 1));
-  else threats.sort((a, b) => distanceKm(a.pos, area) - distanceKm(b.pos, area) || (a.u.id < b.u.id ? -1 : 1));
+  if (g.directive === 'harass')
+    threats.sort((a, b) => a.u.hp - b.u.hp || (a.u.id < b.u.id ? -1 : 1));
+  else
+    threats.sort(
+      (a, b) => distanceKm(a.pos, area) - distanceKm(b.pos, area) || (a.u.id < b.u.id ? -1 : 1),
+    );
   const busy = new Set<string>();
   const assigned = new Map<string, number>();
   for (const u of units) if (u.target && state.units[u.target]) busy.add(u.id);
@@ -251,7 +328,8 @@ function enemyCityNear(state: EngineState, n: NationId, at: LngLat, r: number): 
 
 /** Crochet unitModifier : traits du général qui commande l'unité. */
 export function generalModifier(state: EngineState, u: Unit, key: string): number {
-  const m = state.mods.mil as { unitGen?: Record<string, string>; gens?: Record<string, GenSt> } | undefined;
+  const m = state.mods.mil as
+    { unitGen?: Record<string, string>; gens?: Record<string, GenSt> } | undefined;
   const gid = m?.unitGen?.[u.id];
   if (!gid) return 1;
   const g = m!.gens![gid];
@@ -278,7 +356,8 @@ export function generalModifier(state: EngineState, u: Unit, key: string): numbe
         }
         break;
       case 'admiral':
-        if (sys.movement === 'sea' && (key === 'combat.damage' || key === 'naval.sonar')) f *= 1 + bonus;
+        if (sys.movement === 'sea' && (key === 'combat.damage' || key === 'naval.sonar'))
+          f *= 1 + bonus;
         break;
     }
   }

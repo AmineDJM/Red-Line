@@ -40,13 +40,23 @@ export function orderNuclearAuth(
   const b = board(state);
   if (!o.on) {
     delete b.nuclearAuth[n];
-    generic(state, [n], 'nuclear', 'Autorisation nucléaire levée', 'Les forces nucléaires reviennent au contrôle normal.', 'info');
+    generic(
+      state,
+      [n],
+      'nuclear',
+      'Autorisation nucléaire levée',
+      'Les forces nucléaires reviennent au contrôle normal.',
+      'info',
+    );
     return OK;
   }
   if (b.nuclearAuth[n]) return OK;
   const max = milBal(state).nuclear.maxAlertForAuth;
   if (b.alertLevel > max) {
-    return fail('locked', `Niveau d'alerte ${b.alertLevel} : autorisation impossible (niveau ${max} ou plus grave requis).`);
+    return fail(
+      'locked',
+      `Niveau d'alerte ${b.alertLevel} : autorisation impossible (niveau ${max} ou plus grave requis).`,
+    );
   }
   b.nuclearAuth[n] = true;
   raiseAlert(state, milBal(state).tension.nuclearAuth, 'nuclear_auth');
@@ -85,7 +95,11 @@ export function detonate(state: EngineState, M: Unit, at: LngLat, st: MissileSt)
   // province touchée et de ses voisines sont traités par eco (signal nuclear_detonation).
   if (b) {
     countermeasure(b, 'nuclear', 1);
-    timeline(state, b, `Détonation nucléaire à ${nameOfProvince(state, pid)} : ${destroyed} éléments anéantis`);
+    timeline(
+      state,
+      b,
+      `Détonation nucléaire à ${nameOfProvince(state, pid)} : ${destroyed} éléments anéantis`,
+    );
     touch(state, b);
   }
   const where = nameOfProvince(state, pid);
@@ -100,11 +114,20 @@ export function detonate(state: EngineState, M: Unit, at: LngLat, st: MissileSt)
     at,
     nations: victim ? [M.owner, victim] : [M.owner],
   });
-  if (victim) signal(state, 'stability', { nation: victim, delta: bal.stabilityVictim, reason: 'nuclear' });
+  if (victim)
+    signal(state, 'stability', { nation: victim, delta: bal.stabilityVictim, reason: 'nuclear' });
   signal(state, 'stability', { nation: M.owner, delta: bal.stabilityStriker, reason: 'nuclear' });
   for (const n of state.nationIds) {
     if (n === victim || n === M.owner) continue;
     signal(state, 'stability', { nation: n, delta: bal.stabilityWorld, reason: 'nuclear_world' });
   }
-  generic(state, null, 'nuclear', 'Détonation nucléaire', `Frappe nucléaire à ${where}.`, 'critical', at);
+  generic(
+    state,
+    null,
+    'nuclear',
+    'Détonation nucléaire',
+    `Frappe nucléaire à ${where}.`,
+    'critical',
+    at,
+  );
 }

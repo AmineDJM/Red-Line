@@ -62,7 +62,12 @@ export function reconcileSites(state: EngineState): void {
     if (!(SITE_TYPES as readonly string[]).includes(s.b)) continue;
     const cur = m.fixed[k] ? state.units[m.fixed[k]!] : undefined;
     if (cur && cur.owner === s.n) continue;
-    syncFixed(state, s.pid, s.b as SiteType, { n: s.n, level: s.level, h: s.h, rangeKm: s.rangeKm });
+    syncFixed(state, s.pid, s.b as SiteType, {
+      n: s.n,
+      level: s.level,
+      h: s.h,
+      rangeKm: s.rangeKm,
+    });
   }
   for (const k of sortedKeys(m.fixed)) {
     if (sites[k]) continue;
@@ -174,7 +179,12 @@ export function fixedDestroyed(state: EngineState, u: Unit, by: NationId | null)
   delete m.siteRange[u.id];
   if (m.fixed[key] === u.id) delete m.fixed[key];
   const i = key.indexOf(':');
-  signal(state, 'building_hit', { pid: key.slice(0, i), building: key.slice(i + 1), damage: 1, by });
+  signal(state, 'building_hit', {
+    pid: key.slice(0, i),
+    building: key.slice(i + 1),
+    damage: 1,
+    by,
+  });
 }
 
 /** Crochet unitModifier : durcissement des munitions stockées dans une province à silos. */

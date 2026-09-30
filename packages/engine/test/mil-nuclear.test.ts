@@ -50,13 +50,19 @@ describe('nucléaire et niveau d’alerte mondial', () => {
       expect(signals.some((x) => x.name === 'news')).toBe(true);
       expect(signals.some((x) => x.name === 'stability' && x.data.nation === 'bbb')).toBe(true);
       // Bâtiments de la province détruits (eco, sur nuclear_detonation).
-      expect(notesOf(notes, 'building_hit').some((n) => n.provinceId === 'bbb-5' && n.health === 0)).toBe(true);
+      expect(
+        notesOf(notes, 'building_hit').some((n) => n.provinceId === 'bbb-5' && n.health === 0),
+      ).toBe(true);
       const g = notesOf(notes, 'generic').find((n) => n.category === 'nuclear');
       expect(g).toBeDefined();
-      expect(notificationsFor(s, 'ddd', notes).some((n) => n.kind === 'generic' && n.category === 'nuclear')).toBe(
-        true,
-      );
-      expect(notificationsFor(s, 'ddd', notes).some((n) => n.kind === 'alert_level' && n.level === 1)).toBe(true);
+      expect(
+        notificationsFor(s, 'ddd', notes).some(
+          (n) => n.kind === 'generic' && n.category === 'nuclear',
+        ),
+      ).toBe(true);
+      expect(
+        notificationsFor(s, 'ddd', notes).some((n) => n.kind === 'alert_level' && n.level === 1),
+      ).toBe(true);
     });
   });
 
@@ -89,7 +95,11 @@ describe('nucléaire et niveau d’alerte mondial', () => {
       { owner: 'bbb', systemId: 'tst.optsat', pos: cityOf('bbb-2') }, // u2
     ]);
     const shoot = () =>
-      applyOrder(s, 'aaa', { kind: 'strike', unitIds: ['u1'], target: { type: 'unit', unitId: 'u2' } });
+      applyOrder(s, 'aaa', {
+        kind: 'strike',
+        unitIds: ['u1'],
+        target: { type: 'unit', unitId: 'u2' },
+      });
     expect(shoot().error).toBe('locked');
     signal(s, 'alert', { amount: 50, reason: 'test' });
     let tries = 0;

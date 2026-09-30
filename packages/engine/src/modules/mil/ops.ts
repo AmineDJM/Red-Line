@@ -21,7 +21,10 @@ export function orderOperation(
   if (o.steps.length === 0) return fail('invalid_target', 'Opération sans étape.');
   const times = o.steps.map((s) => o.hHour + s.offsetMin * MINUTE);
   if (times.some((t) => !(t >= state.time))) {
-    return fail('invalid_target', 'L’heure H est trop proche : certaines étapes seraient déjà passées.');
+    return fail(
+      'invalid_target',
+      'L’heure H est trop proche : certaines étapes seraient déjà passées.',
+    );
   }
   for (const s of o.steps) {
     const k = (s.order as { kind?: string }).kind;
@@ -62,7 +65,9 @@ export function orderCancelOperation(
     return fail('not_allowed', 'Opération déjà terminée.');
   }
   op.status = 'cancelled';
-  notify(state, { kind: 'operation', time: state.time, operationId: op.id, status: 'cancelled' }, [n]);
+  notify(state, { kind: 'operation', time: state.time, operationId: op.id, status: 'cancelled' }, [
+    n,
+  ]);
   return OK;
 }
 
@@ -73,7 +78,9 @@ export function handleOpStep(state: EngineState, d: { op: string; i: number }): 
   if (!step || step.status !== 'pending') return;
   if (op.status === 'planned') {
     op.status = 'running';
-    notify(state, { kind: 'operation', time: state.time, operationId: op.id, status: 'running' }, [op.owner]);
+    notify(state, { kind: 'operation', time: state.time, operationId: op.id, status: 'running' }, [
+      op.owner,
+    ]);
   }
   const res = state.nations[op.owner]?.alive
     ? applyOrderImpl(state, op.owner, step.order as Order)
@@ -90,7 +97,9 @@ export function handleOpStep(state: EngineState, d: { op: string; i: number }): 
   }
   if (op.steps.every((s) => s.status !== 'pending')) {
     op.status = op.steps.every((s) => s.status === 'failed') ? 'failed' : 'done';
-    notify(state, { kind: 'operation', time: state.time, operationId: op.id, status: op.status }, [op.owner]);
+    notify(state, { kind: 'operation', time: state.time, operationId: op.id, status: op.status }, [
+      op.owner,
+    ]);
   }
 }
 

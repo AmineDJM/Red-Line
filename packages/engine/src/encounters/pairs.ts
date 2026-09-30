@@ -175,11 +175,7 @@ function evalUnitPair(state: EngineState, key: string): void {
   pair.ev = next !== null ? schedule(state, { k: 'contact', t: next, key }) : 0;
   changeSight(state, A.owner, B.id, oldLa, la);
   changeSight(state, B.owner, A.id, oldLb, lb);
-  if (
-    !existing ||
-    inRange(wa, oldD) !== inRange(wa, d) ||
-    inRange(wb, oldD) !== inRange(wb, d)
-  ) {
+  if (!existing || inRange(wa, oldD) !== inRange(wa, d) || inRange(wb, oldD) !== inRange(wb, d)) {
     state.rt.dirtyCombat.add(ia);
     state.rt.dirtyCombat.add(ib);
   }
