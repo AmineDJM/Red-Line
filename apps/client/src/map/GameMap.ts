@@ -108,15 +108,20 @@ export interface MapStats {
   tickAvgMs: number;
   tickMaxMs: number;
   groupAvgMs: number;
+  /** Mises à jour effectives des pions (regroupement + envoi). */
+  regroups: number;
+  /** Ticks sans changement visible (rien envoyé). */
+  unchangedTicks: number;
   sprites: number;
   sync: { full: number; diff: number; skipped: number };
 }
 
+const TILE_PX = 512;
 const TOUCH_RADIUS = 18;
 const MOUSE_RADIUS = 6;
 const LONG_PRESS_MS = 480;
 const HOVER_DELAY_MS = 160;
-const UNIT_LAYERS = ['focus-hex', 'units-hex', 'missiles'];
+const UNIT_LAYERS = ['focus-hex', 'units-hex', 'units-m-hex', 'missiles'];
 const CITY_LAYERS = ['cities-0', 'cities-1', 'cities-2', 'cities-3'];
 /** Au-delà de cet étalement, toucher une pile zoome dessus au lieu de la sélectionner. */
 const STACK_SPREAD_KM = 30;
@@ -169,7 +174,10 @@ export class GameMap {
   private pickedNation: NationId | null = null;
   private resizeObs: ResizeObserver | null = null;
   private fitted = false;
-  private syncs: Record<'units' | 'focus' | 'headings' | 'missiles' | 'buildings', SourceSync>;
+  private syncs: Record<
+    'units' | 'moving' | 'focus' | 'headings' | 'missiles' | 'buildings',
+    SourceSync
+  >;
   private sprites = new Map<string, number>();
   private usedImages = new Set<string>();
   private gcCounter = 0;
@@ -178,6 +186,7 @@ export class GameMap {
   private revealStart = 0;
   private animState = { paths: false, preview: false, capture: false, orbits: false, missiles: false };
   private animStep = 0;
+  private groupVisible: Partial<Record<MapLayerGroup, boolean>> = {};
   private animationsOn =
     typeof window === 'undefined' ||
     !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -190,7 +199,8 @@ export class GameMap {
   private cityThresholds: [number, number] = [Infinity, Infinity];
   /** Diagnostic : nombre de résolutions demandées par image. */
   readonly resolveCount = new Map<string, number>();
-  private perf = { ticks: 0, total: 0, max: 0, group: 0, groups: 0, pions: 0 };
+  private perf = { ticks: 0, total: 0, max: 0, group: 0, groups: 0, pions: 0, skipped: 0 };
+  private unitsSig = '';
 
   constructor(
     private readonly container: HTMLElement,
@@ -244,6 +254,7 @@ export class GameMap {
     const src = (id: string) => () => this.src(id);
     this.syncs = {
       units: new SourceSync(src('units')),
+      moving: new SourceSync(src('units-moving')),
       focus: new SourceSync(src('units-focus')),
       headings: new SourceSync(src('headings')),
       missiles: new SourceSync(src('missiles')),
@@ -297,6 +308,7 @@ export class GameMap {
 
   /** Affiche ou masque un groupe de calques (voir `LAYER_GROUPS`). */
   setLayerGroup(group: MapLayerGroup, visible: boolean) {
+    this.groupVisible[group] = visible;
     if (!this.ready) return;
     for (const id of LAYER_GROUPS[group]) {
       if (this.map.getLayer(id)) this.map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
@@ -324,13 +336,23 @@ export class GameMap {
       tickAvgMs: p.ticks ? p.total / p.ticks : 0,
       tickMaxMs: p.max,
       groupAvgMs: p.groups ? p.group / p.groups : 0,
+      regroups: p.groups,
+      unchangedTicks: p.skipped,
       sprites: this.sprites.size,
       sync: { full: sum('full'), diff: sum('diff'), skipped: sum('skipped') },
     };
   }
 
   resetStats() {
-    this.perf = { ticks: 0, total: 0, max: 0, group: 0, groups: 0, pions: this.perf.pions };
+    this.perf = {
+      ticks: 0,
+      total: 0,
+      max: 0,
+      group: 0,
+      groups: 0,
+      pions: this.perf.pions,
+      skipped: 0,
+    };
   }
 
   /** Centre la carte sur une unité (et la sélectionne si `select`). */
@@ -518,7 +540,7 @@ export class GameMap {
   }
 
   private refreshIntelLayer() {
-    if (!this.ready || !useMapLayers.getState().visible.intel) {
+    if (!this.ready || !this.groupVisible.intel) {
       this.set('intel-badges', EMPTY);
       return;
     }
@@ -558,13 +580,17 @@ export class GameMap {
     const nations = view?.nations ?? {};
     let ownersChanged = false;
     let anyCapture = false;
+    this.captureIds = [];
     for (const p of Object.values(provinces)) {
       const mine = p.owner === me;
       const color = mine
         ? VIOLET
         : (nations[p.owner]?.color ?? useWorld.getState().nations[p.owner]?.color ?? '#3a4252');
       const cap = p.capture ? (p.owner === me ? 2 : 1) : 0;
-      if (cap) anyCapture = true;
+      if (cap) {
+        anyCapture = true;
+        this.captureIds.push(p.id);
+      }
       const next = {
         color,
         mine,
@@ -594,6 +620,7 @@ export class GameMap {
     }
     this.animState.capture = anyCapture;
     this.set('capture', this.captureFeatures(provinces, me));
+    this.refreshOverlays(provinces, me);
     if (ownersChanged) {
       const key = Object.values(provinces)
         .map((p) => p.owner)
@@ -616,6 +643,60 @@ export class GameMap {
   }
 
   private geoIndex: Map<string, Feature> | null = null;
+  private overlayKeys = { veil: '', flags: '' };
+  private captureIds: string[] = [];
+
+  private geoFeature(id: string): Feature | undefined {
+    const geo = useWorld.getState().provincesGeo;
+    if (!geo) return undefined;
+    if (!this.geoIndex)
+      this.geoIndex = new Map(geo.features.map((f) => [String(f.properties?.id ?? f.id ?? ''), f]));
+    return this.geoIndex.get(id);
+  }
+
+  /**
+   * Voile du renseignement et marques de province (disputé, révolte, blocus, exclusion aérienne) :
+   * sources ne contenant que les provinces concernées, renvoyées seulement si elles changent.
+   */
+  private refreshOverlays(provinces: Record<string, ProvinceView>, me: NationId | null) {
+    const veil: Feature[] = [];
+    const flags: Feature[] = [];
+    const vk: string[] = [];
+    const fk: string[] = [];
+    for (const p of Object.values(provinces)) {
+      if (p.owner !== me && p.intel && p.intel.level <= 1) {
+        const f = this.geoFeature(p.id);
+        if (f) {
+          veil.push({ type: 'Feature', properties: { id: p.id, lvl: p.intel.level }, geometry: f.geometry });
+          vk.push(`${p.id}:${p.intel.level}`);
+        }
+      }
+      const unrest = Math.round(p.unrest ?? 0);
+      if (p.disputedId || unrest > 30 || p.noFlyZone || p.blockaded) {
+        const f = this.geoFeature(p.id);
+        if (!f) continue;
+        const props = {
+          id: p.id,
+          disp: p.disputedId ? 1 : 0,
+          unrest,
+          nfz: p.noFlyZone ? 1 : 0,
+          blk: p.blockaded ? 1 : 0,
+        };
+        flags.push({ type: 'Feature', properties: props, geometry: f.geometry });
+        fk.push(`${p.id}:${props.disp}${props.unrest}${props.nfz}${props.blk}`);
+      }
+    }
+    const v = vk.join(',');
+    const k = fk.join(',');
+    if (v !== this.overlayKeys.veil) {
+      this.overlayKeys.veil = v;
+      this.set('veil', { type: 'FeatureCollection', features: veil });
+    }
+    if (k !== this.overlayKeys.flags) {
+      this.overlayKeys.flags = k;
+      this.set('prov-flags', { type: 'FeatureCollection', features: flags });
+    }
+  }
 
   /** Contours des provinces en cours de capture (source dédiée, animée). */
   private captureFeatures(provinces: Record<string, ProvinceView>, me: NationId | null): FeatureCollection {
@@ -646,10 +727,12 @@ export class GameMap {
 
   private highlightProvince(id: string | null) {
     if (!this.ready) return;
-    if (this.selectedProvince)
-      this.map.setFeatureState({ source: 'provinces', id: this.selectedProvince }, { sel: false });
     this.selectedProvince = id;
-    if (id) this.map.setFeatureState({ source: 'provinces', id }, { sel: true });
+    const f = id ? this.geoFeature(id) : undefined;
+    this.set(
+      'prov-sel',
+      f ? { type: 'FeatureCollection', features: [{ ...f, properties: { id } }] } : EMPTY,
+    );
   }
 
   // ——— Brouillard (Web Worker) ———
@@ -775,6 +858,27 @@ export class GameMap {
     });
     for (const i of this.infos) this.positions.set(i.id, i.pos);
     this.groupZoom = this.quantZoom();
+    // Rien n'a bougé d'au moins un demi-pixel à l'écran (cas courant : unités lentes, vitesse ×1) :
+    // pas de regroupement ni d'envoi au worker de MapLibre.
+    const q = 180 / (TILE_PX * Math.pow(2, this.map.getZoom()));
+    let missiles = false;
+    const sig: string[] = [String(this.groupZoom)];
+    for (const i of this.infos) {
+      if (i.missile) missiles = true;
+      sig.push(
+        `${i.id}:${Math.round(i.pos[0] / q)},${Math.round(i.pos[1] / q)},${i.flags},${i.sel},${i.count ?? ''},${
+          i.hp === undefined ? '' : Math.round(i.hp * 10)
+        },${i.heading === null ? '' : Math.round(i.heading / 3)},${Math.round(i.op * 10)}`,
+      );
+    }
+    const key = sig.join(';');
+    if (key === this.unitsSig) {
+      this.perf.skipped++;
+      // Missiles en vol : seuls leur marqueur et leur traînée avancent.
+      if (missiles) this.updateMissiles(tNow, me);
+      return;
+    }
+    this.unitsSig = key;
     const g0 = performance.now();
     const r = tokenFeatures(this.infos, {
       nations,
@@ -784,18 +888,33 @@ export class GameMap {
     this.perf.group += performance.now() - g0;
     this.perf.groups++;
     this.perf.pions = r.tokens.length + r.focus.length;
-    this.syncs.units.push(r.tokens);
+    this.syncs.units.push(r.tokens.filter((f) => !f.properties!.mv));
+    this.syncs.moving.push(r.tokens.filter((f) => f.properties!.mv));
     this.syncs.focus.push(r.focus);
     this.syncs.headings.push(r.headings);
     this.syncs.missiles.push(r.missiles);
     for (const f of r.tokens) this.usedImages.add(String(f.properties!.img));
     for (const f of r.focus) this.usedImages.add(String(f.properties!.img));
-    // Traînées des aéronefs et missiles en vol.
+    this.updateMissiles(tNow, me);
+  }
+
+  /** Traînées des aéronefs et missiles en vol, trajectoire prévue, impacts. */
+  private updateMissiles(tNow: number, me: NationId | null) {
     const m = missileFeatures(this.units, tNow, me);
     this.set('trails', m.trails);
     this.set('missile-ahead', m.ahead);
     this.set('impacts', m.impacts);
     this.animState.missiles = m.ahead.features.length > 0;
+    if (m.ahead.features.length) {
+      const feats = this.infos
+        .filter((i) => i.missile)
+        .map((i) => ({
+          type: 'Feature' as const,
+          properties: { id: i.id, rot: i.heading ?? 0, rel: i.rel, sel: i.sel, op: i.op },
+          geometry: { type: 'Point' as const, coordinates: [i.pos[0], i.pos[1]] },
+        }));
+      this.syncs.missiles.push(feats);
+    }
   }
 
   /** Pions d'une nation dessinés avant l'arrivée de son drapeau : redessinés en place. */
@@ -982,6 +1101,7 @@ export class GameMap {
         zoom: this.map.getZoom(),
         t: gameNow(),
         inView: (p: LngLat) => b.contains(p as [number, number]),
+        captures: this.captureIds,
       }),
     };
     this.map.triggerRepaint();

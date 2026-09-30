@@ -28,6 +28,7 @@ import {
   BLD_SIZE,
   PION_H,
   PION_ICON_OFFSET,
+  PION_PARTS,
   PION_W,
   compactCount,
   pionKey,
@@ -245,10 +246,10 @@ export function tokenFeatures(
   ctx: { nations: Record<NationId, NationView>; zoom: number; group: boolean },
 ): TokenResult {
   const free: UnitInfo[] = [];
+  const selected: UnitInfo[] = [];
   const focus: Feature<Point>[] = [];
   const headings: Feature<Point>[] = [];
   const missiles: Feature<Point>[] = [];
-  const base: [number, number] = PION_ICON_OFFSET;
   for (const i of infos) {
     if (i.missile) {
       missiles.push(
@@ -262,29 +263,38 @@ export function tokenFeatures(
       continue;
     }
     if (i.sel) {
-      focus.push(
-        pointFeature(i.id, i.pos, {
-          img: pionKey(pionSpecFor([i], ctx, true)),
-          sel: i.sel,
-          sort: sortKey(i.rel, i.sel),
-          op: i.op,
-          off: base,
-          n: 1,
-          members: i.id,
-        }),
-      );
-      if (i.heading !== null)
-        headings.push(
-          pointFeature(i.id, i.pos, {
-            rot: i.heading,
-            rel: i.rel,
-            f: 1,
-            off: headingOffset(i.heading, [0, 0]),
-          }),
-        );
+      selected.push(i);
       continue;
     }
     free.push(i);
+  }
+  // Sélection et cible : jamais regroupées, mais écartées si elles se recouvrent.
+  const spread = groupItems(
+    selected.map((i) => ({ ...i, key: i.id })),
+    { zoom: ctx.zoom, w: PION_W, h: PION_H },
+  );
+  for (const g of spread) {
+    const i = g.leader;
+    focus.push(
+      pointFeature(i.id, i.pos, {
+        ...pionProps(pionSpecFor([i], ctx, true), g.off),
+        sel: i.sel,
+        sort: sortKey(i.rel, i.sel),
+        op: i.op,
+        foff: g.off,
+        n: 1,
+        members: i.id,
+      }),
+    );
+    if (i.heading !== null)
+      headings.push(
+        pointFeature(i.id, i.pos, {
+          rot: i.heading,
+          rel: i.rel,
+          f: 1,
+          off: headingOffset(i.heading, g.off),
+        }),
+      );
   }
   const groups: Group<UnitInfo>[] = ctx.group
     ? groupItems(free, { zoom: ctx.zoom, w: PION_W, h: PION_H })
@@ -292,15 +302,15 @@ export function tokenFeatures(
   const tokens: Feature<Point>[] = [];
   for (const g of groups) {
     const lead = g.leader;
-    const off: [number, number] = [g.off[0] + base[0], g.off[1] + base[1]];
     tokens.push(
       pointFeature(g.id, lead.pos, {
-        img: pionKey(pionSpecFor(g.members, ctx)),
+        ...pionProps(pionSpecFor(g.members, ctx), g.off),
         sel: 0,
         sort: sortKey(lead.rel, 0) + (g.members.length > 1 ? 1 : 0),
         op: Math.max(...g.members.map((m) => m.op)),
-        off,
         n: g.members.length,
+        // Pile en mouvement : source dédiée, mise à jour souvent (voir GameMap).
+        mv: g.members.some((m) => m.flags.includes('m')) ? 1 : 0,
         members: g.members.length > 1 ? g.members.map((m) => m.id).join(',') : lead.id,
       }),
     );
@@ -315,6 +325,31 @@ export function tokenFeatures(
       );
   }
   return { tokens, focus, headings, missiles, groups };
+}
+
+/** Taille (px CSS à l'échelle 1) des textes des pions : effectif et numéro de pile. */
+export const COUNT_TEXT = 11;
+export const STACK_TEXT = 8.5;
+
+/**
+ * Propriétés d'un pion : image (sans effectif ni barre d'état, qui changent souvent), texte
+ * d'effectif, barre d'état et numéro de pile, avec leurs décalages (écartement compris).
+ */
+export function pionProps(spec: PionSpec, off: [number, number]) {
+  const r = (v: number) => Math.round(v * 100) / 100;
+  return {
+    img: pionKey(spec),
+    off: [r(off[0] + PION_ICON_OFFSET[0]), r(off[1] + PION_ICON_OFFSET[1])],
+    cnt: spec.count,
+    toff: [r((off[0] + PION_PARTS.count[0]) / COUNT_TEXT), r((off[1] + PION_PARTS.count[1]) / COUNT_TEXT)],
+    hp: spec.hp,
+    hoff: [r(off[0] + PION_PARTS.hp[0]), r(off[1] + PION_PARTS.hp[1])],
+    // Repli sans glyphes (images de texte de 12 px) : décalage exprimé à l'échelle de l'image.
+    tpx: [r(((off[0] + PION_PARTS.count[0]) * 12) / COUNT_TEXT), r(((off[1] + PION_PARTS.count[1]) * 12) / COUNT_TEXT)],
+    stk: spec.stack > 1 ? (spec.stack > 99 ? '99+' : String(spec.stack)) : '',
+    spx: [r(((off[0] + PION_PARTS.stack[0]) * 12) / STACK_TEXT), r(((off[1] + PION_PARTS.stack[1]) * 12) / STACK_TEXT)],
+    soff: [r((off[0] + PION_PARTS.stack[0]) / STACK_TEXT), r((off[1] + PION_PARTS.stack[1]) / STACK_TEXT)],
+  };
 }
 
 /**

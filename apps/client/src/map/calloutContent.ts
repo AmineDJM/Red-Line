@@ -27,6 +27,8 @@ export interface CalloutArgs {
   t: GameTime;
   /** Filtre de visibilité (étendue de la carte). */
   inView?: (p: LngLat) => boolean;
+  /** Provinces en cours de capture (évite de parcourir toutes les provinces). */
+  captures?: string[];
 }
 
 /**
@@ -85,7 +87,13 @@ export function buildCallouts(a: CalloutArgs): CalloutContent[] {
   }
 
   // Captures : étiquettes à partir de l'échelle régionale (à l'échelle du monde, le contour suffit).
-  for (const p of a.zoom >= 3.4 ? Object.values(a.view.provinces) : []) {
+  const capturing =
+    a.zoom < 3.4
+      ? []
+      : a.captures
+        ? a.captures.map((id) => a.view.provinces[id]).filter((p) => !!p)
+        : Object.values(a.view.provinces);
+  for (const p of capturing) {
     if (!p.capture) continue;
     const def = a.defs[p.id];
     if (!def || (a.inView && !a.inView(def.cityPoint))) continue;

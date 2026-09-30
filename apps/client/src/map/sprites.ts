@@ -225,19 +225,24 @@ export function registerSprites(map: MlMap) {
   );
   add(map, 'blockade', blockadeIcon(), false);
 
-  add(map, 'hatch-fog', hatch(16, 'rgba(150, 168, 190, 0.10)', 1), false);
+  add(map, 'hatch-fog', hatch(16, 'rgba(150, 168, 190, 0.12)', 1, 'rgba(2, 5, 10, 0.44)'), false);
   add(map, 'hatch-disputed', hatch(12, 'rgba(255, 176, 32, 0.55)', 1.6), false);
   add(map, 'hatch-unrest', hatch(10, 'rgba(255, 77, 94, 0.6)', 1.6), false);
-  add(map, 'hatch-veil', crossHatch(12, 'rgba(125, 139, 153, 0.34)', 1), false);
-  add(map, 'hatch-veil-light', hatch(12, 'rgba(125, 139, 153, 0.26)', 1), false);
+  // Voile : fond sombre intégré au motif (une seule passe de dessin).
+  add(map, 'hatch-veil', crossHatch(12, 'rgba(125, 139, 153, 0.34)', 1, 'rgba(4, 7, 11, 0.36)'), false);
+  add(map, 'hatch-veil-light', hatch(12, 'rgba(125, 139, 153, 0.26)', 1, 'rgba(4, 7, 11, 0.16)'), false);
   add(map, 'hatch-nfz', crossHatch(14, 'rgba(255, 77, 94, 0.45)', 1.2), false);
   add(map, 'hatch-sat', hatch(10, 'rgba(76, 201, 240, 0.35)', 1), false);
 }
 
-function hatch(size: number, color: string, width: number) {
+function hatch(size: number, color: string, width: number, bg?: string) {
   const c = document.createElement('canvas');
   c.width = c.height = size;
   const ctx = c.getContext('2d', { willReadFrequently: true })!;
+  if (bg) {
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, size, size);
+  }
   ctx.strokeStyle = color;
   ctx.lineWidth = width;
   ctx.beginPath();
@@ -252,10 +257,14 @@ function hatch(size: number, color: string, width: number) {
   return { width: size, height: size, data: ctx.getImageData(0, 0, size, size).data };
 }
 
-function crossHatch(size: number, color: string, width: number) {
+function crossHatch(size: number, color: string, width: number, bg?: string) {
   const c = document.createElement('canvas');
   c.width = c.height = size;
   const ctx = c.getContext('2d', { willReadFrequently: true })!;
+  if (bg) {
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, size, size);
+  }
   ctx.strokeStyle = color;
   ctx.lineWidth = width;
   ctx.beginPath();

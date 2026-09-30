@@ -1,5 +1,30 @@
 /* Styles propres à la carte (infobulles, sélection par rectangle, mini-carte), « Terminal tactique ». */
 
+/* Structure du conteneur (autonome : ne dépend pas de la feuille de style de l'application). */
+.map-root {
+  position: absolute;
+  inset: 0;
+  background: #060b14;
+}
+.map-root > .map-canvas {
+  /* plus spécifique que .maplibregl-map { position: relative } */
+  position: absolute;
+  inset: 0;
+}
+.map-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.map-root .maplibregl-ctrl-attrib {
+  font: 400 10px 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+}
+.map-root .maplibregl-ctrl-attrib.maplibregl-compact {
+  background: rgba(10, 14, 19, 0.75) !important;
+  color: #7d8b99;
+}
+
 .rlm-tip {
   --rlm-edge: #4cc9f0;
   position: absolute;
@@ -7,7 +32,7 @@
   top: 0;
   z-index: 5;
   min-width: 200px;
-  max-width: 290px;
+  max-width: 300px;
   padding: 6px 9px 7px 10px;
   background: rgba(10, 14, 19, 0.96);
   border: 1px solid #1e2a36;
@@ -75,7 +100,7 @@
 }
 .rlm-tip__row {
   display: grid;
-  grid-template-columns: 82px 1fr;
+  grid-template-columns: 96px 1fr;
   gap: 8px;
   align-items: center;
 }

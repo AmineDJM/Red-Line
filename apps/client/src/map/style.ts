@@ -55,7 +55,24 @@ export type MapLayerGroup =
 export const HIDDEN_BY_DEFAULT: MapLayerGroup[] = ['intel'];
 
 export const LAYER_GROUPS: Record<MapLayerGroup, string[]> = {
-  units: ['units-hex', 'units-heading', 'missiles', 'focus-frame', 'focus-hex', 'focus-heading'],
+  units: [
+    'units-hex',
+    'units-hp',
+    'units-count',
+    'units-stack',
+    'units-m-hex',
+    'units-m-hp',
+    'units-m-count',
+    'units-m-stack',
+    'units-heading',
+    'missiles',
+    'focus-frame',
+    'focus-hex',
+    'focus-hp',
+    'focus-count',
+    'focus-stack',
+    'focus-heading',
+  ],
   orders: [
     'paths-casing',
     'paths',
@@ -71,7 +88,7 @@ export const LAYER_GROUPS: Record<MapLayerGroup, string[]> = {
   cities: ['cities-0', 'cities-1', 'cities-2', 'cities-3', 'cities-0-dot', 'cities-1-dot', 'cities-2-dot', 'cities-3-dot'],
   buildings: ['bld', 'bld-reveal', 'prov-markers'],
   labels: ['sea-labels-0', 'sea-labels-1', 'sea-labels-2', 'sea-labels-3', 'country-labels-l', 'country-labels-m', 'country-labels-s', 'country-labels-xs'],
-  fog: ['fog', 'fog-hatch', 'fog-edge'],
+  fog: ['fog', 'fog-edge'],
   intel: ['intel-fill', 'intel-line', 'intel-badges', 'radar-foreign'],
   radar: ['radar-own'],
   satellites: ['sat-fill', 'sat-line'],
@@ -143,6 +160,17 @@ function label(
   };
 }
 
+/**
+ * Décalage d'icône lu dans une propriété tableau. Les requêtes de rendu (queryRenderedFeatures)
+ * relisent les propriétés sérialisées (tableaux → chaînes) : repli sur [0, 0] sans avertissement.
+ */
+const offsetProp = (k: string): ExpressionSpecification => [
+  'case',
+  ['==', ['typeof', ['get', k]], 'string'],
+  ['literal', [0, 0]],
+  ['array', 'number', 2, ['get', k]],
+];
+
 const fs = (k: string, fallback: unknown = 0): ExpressionSpecification =>
   ['coalesce', ['feature-state', k], fallback] as ExpressionSpecification;
 
@@ -162,6 +190,9 @@ export function buildStyle(i: StyleInput): StyleSpecification {
     borders: geo(),
     'my-border': geo(),
     capture: geo(),
+    veil: geo(),
+    'prov-flags': geo(),
+    'prov-sel': geo(),
     fog: geo(),
     uncert: geo(),
     range: geo(),
@@ -183,6 +214,7 @@ export function buildStyle(i: StyleInput): StyleSpecification {
     'prov-markers': geo(),
     'intel-badges': geo(),
     units: dyn(),
+    'units-moving': dyn(),
     'units-focus': dyn(),
     headings: dyn(),
     missiles: dyn(),
@@ -209,6 +241,8 @@ export function buildStyle(i: StyleInput): StyleSpecification {
       id: 'prov-base',
       type: 'fill',
       source: 'provinces',
+      // Sous l'imagerie opaque, inutile de la dessiner.
+      ...(i.tiles ? { minzoom: i.tiles.maxzoom } : {}),
       paint: { 'fill-color': '#111a25', 'fill-antialias': false },
     },
   ];
@@ -249,69 +283,46 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         'fill-antialias': false,
       },
     },
-    // Voile du renseignement : province étrangère inconnue (0) ou à peine aperçue (1).
-    {
-      id: 'prov-veil-dark',
-      type: 'fill',
-      source: 'provinces',
-      paint: {
-        'fill-color': '#04070b',
-        'fill-opacity': ['match', intelLvl, 0, 0.34, 1, 0.16, 0] as ExpressionSpecification,
-        'fill-antialias': false,
-      },
-    },
+    // Voile du renseignement (province étrangère inconnue : 0, à peine aperçue : 1) et marques
+    // des provinces (disputé, révolte, exclusion aérienne) : sources dédiées ne contenant que les
+    // provinces concernées (une passe de dessin sur les seules géométries utiles).
     {
       id: 'prov-veil',
       type: 'fill',
-      source: 'provinces',
-      paint: {
-        'fill-pattern': 'hatch-veil',
-        'fill-opacity': ['match', intelLvl, 0, 1, 0] as ExpressionSpecification,
-      },
+      source: 'veil',
+      filter: ['==', ['get', 'lvl'], 0],
+      paint: { 'fill-pattern': 'hatch-veil' },
     },
     {
       id: 'prov-veil-light',
       type: 'fill',
-      source: 'provinces',
-      paint: {
-        'fill-pattern': 'hatch-veil-light',
-        'fill-opacity': ['match', intelLvl, 1, 1, 0] as ExpressionSpecification,
-      },
+      source: 'veil',
+      filter: ['==', ['get', 'lvl'], 1],
+      paint: { 'fill-pattern': 'hatch-veil-light' },
     },
     {
       id: 'prov-disputed',
       type: 'fill',
-      source: 'provinces',
-      paint: {
-        'fill-pattern': 'hatch-disputed',
-        'fill-opacity': ['case', ['boolean', ['feature-state', 'disp'], false], 0.85, 0],
-      },
+      source: 'prov-flags',
+      filter: ['==', ['get', 'disp'], 1],
+      paint: { 'fill-pattern': 'hatch-disputed', 'fill-opacity': 0.85 },
     },
     {
       id: 'prov-unrest',
       type: 'fill',
-      source: 'provinces',
+      source: 'prov-flags',
+      filter: ['>', ['get', 'unrest'], 30],
       paint: {
         'fill-pattern': 'hatch-unrest',
-        'fill-opacity': [
-          'interpolate',
-          ['linear'],
-          fs('unrest'),
-          30,
-          0,
-          100,
-          0.9,
-        ] as ExpressionSpecification,
+        'fill-opacity': ['interpolate', ['linear'], ['get', 'unrest'], 30, 0.2, 100, 0.9],
       },
     },
     {
       id: 'prov-nfz',
       type: 'fill',
-      source: 'provinces',
-      paint: {
-        'fill-pattern': 'hatch-nfz',
-        'fill-opacity': ['case', ['boolean', ['feature-state', 'nfz'], false], 0.9, 0],
-      },
+      source: 'prov-flags',
+      filter: ['==', ['get', 'nfz'], 1],
+      paint: { 'fill-pattern': 'hatch-nfz', 'fill-opacity': 0.9 },
     },
     {
       id: 'capture-fill',
@@ -348,19 +359,11 @@ export function buildStyle(i: StyleInput): StyleSpecification {
       },
     },
     {
+      // Brouillard : assombrissement et hachures fines dans un seul motif (une passe de dessin).
       id: 'fog',
       type: 'fill',
       source: 'fog',
-      paint: { 'fill-color': '#02050a', 'fill-opacity': 0.42, 'fill-antialias': false },
-    },
-    {
-      id: 'fog-hatch',
-      type: 'fill',
-      source: 'fog',
-      paint: {
-        'fill-pattern': 'hatch-fog',
-        'fill-opacity': ['interpolate', ['linear'], ['zoom'], 2, 0.3, 6, 0.8],
-      },
+      paint: { 'fill-pattern': 'hatch-fog' },
     },
     {
       id: 'prov-line',
@@ -461,23 +464,25 @@ export function buildStyle(i: StyleInput): StyleSpecification {
     {
       id: 'prov-blockade',
       type: 'line',
-      source: 'provinces',
+      source: 'prov-flags',
+      filter: ['==', ['get', 'blk'], 1],
       paint: {
         'line-color': C.red,
         'line-width': 1.6,
         'line-dasharray': [1, 1.5],
-        'line-opacity': ['case', ['boolean', ['feature-state', 'blk'], false], 0.85, 0],
+        'line-opacity': 0.85,
       },
     },
     {
       id: 'prov-nfz-line',
       type: 'line',
-      source: 'provinces',
+      source: 'prov-flags',
+      filter: ['==', ['get', 'nfz'], 1],
       paint: {
         'line-color': C.red,
         'line-width': 1.2,
         'line-dasharray': [4, 2],
-        'line-opacity': ['case', ['boolean', ['feature-state', 'nfz'], false], 0.8, 0],
+        'line-opacity': 0.8,
       },
     },
     {
@@ -495,12 +500,8 @@ export function buildStyle(i: StyleInput): StyleSpecification {
     {
       id: 'prov-sel',
       type: 'line',
-      source: 'provinces',
-      paint: {
-        'line-color': C.cyan,
-        'line-width': 1.8,
-        'line-opacity': ['case', ['boolean', ['feature-state', 'sel'], false], 0.95, 0],
-      },
+      source: 'prov-sel',
+      paint: { 'line-color': C.cyan, 'line-width': 1.8, 'line-opacity': 0.95 },
     },
     {
       id: 'sat-fill',
@@ -915,11 +916,11 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         id: 'bld',
         type: 'symbol',
         source: 'buildings',
-        minzoom: 6.3,
+        minzoom: 6.7,
         layout: {
           'icon-image': ['get', 'img'],
-          'icon-offset': ['get', 'off'],
-          'icon-size': ['interpolate', ['linear'], ['zoom'], 6.3, 0.9, 8.5, 1.12],
+          'icon-offset': offsetProp('off'),
+          'icon-size': ['interpolate', ['linear'], ['zoom'], 6.7, 0.92, 8.5, 1.12],
           'icon-allow-overlap': true,
           'icon-ignore-placement': true,
         },
@@ -932,11 +933,11 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         id: 'bld-reveal',
         type: 'symbol',
         source: 'buildings',
-        minzoom: 6.3,
+        minzoom: 6.7,
         layout: {
           'icon-image': 'ring',
-          'icon-offset': ['get', 'roff'],
-          'icon-size': ['interpolate', ['linear'], ['zoom'], 6.3, 0.62 * 0.9, 8.5, 0.62 * 1.12],
+          'icon-offset': offsetProp('roff'),
+          'icon-size': ['interpolate', ['linear'], ['zoom'], 6.7, 0.62 * 0.92, 8.5, 0.62 * 1.12],
           'icon-allow-overlap': true,
           'icon-ignore-placement': true,
         },
@@ -978,13 +979,31 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         layout: {
           'icon-image': ['get', 'img'],
           'icon-size': PION_SIZE,
-          'icon-offset': ['get', 'off'],
+          'icon-offset': offsetProp('off'),
           'icon-allow-overlap': true,
           'icon-ignore-placement': true,
           'symbol-sort-key': ['get', 'sort'],
         },
         paint: { 'icon-opacity': ['get', 'op'] },
       },
+      ...pionPartLayers('units', 'units', i.glyphs),
+      // Piles en mouvement : même rendu, source séparée (les piles immobiles ne sont pas
+      // retraitées à chaque déplacement).
+      {
+        id: 'units-m-hex',
+        type: 'symbol',
+        source: 'units-moving',
+        layout: {
+          'icon-image': ['get', 'img'],
+          'icon-size': PION_SIZE,
+          'icon-offset': offsetProp('off'),
+          'icon-allow-overlap': true,
+          'icon-ignore-placement': true,
+          'symbol-sort-key': ['get', 'sort'],
+        },
+        paint: { 'icon-opacity': ['get', 'op'] },
+      },
+      ...pionPartLayers('units-m', 'units-moving', i.glyphs),
       {
         id: 'units-heading',
         type: 'symbol',
@@ -1020,6 +1039,7 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         layout: {
           'icon-image': 'sel-frame',
           'icon-size': PION_SIZE,
+          'icon-offset': offsetProp('foff'),
           'icon-allow-overlap': true,
           'icon-ignore-placement': true,
         },
@@ -1036,13 +1056,14 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         layout: {
           'icon-image': ['get', 'img'],
           'icon-size': PION_SIZE,
-          'icon-offset': ['get', 'off'],
+          'icon-offset': offsetProp('off'),
           'icon-allow-overlap': true,
           'icon-ignore-placement': true,
           'symbol-sort-key': ['get', 'sort'],
         },
         paint: { 'icon-opacity': ['get', 'op'] },
       },
+      ...pionPartLayers('focus', 'units-focus', i.glyphs),
       {
         id: 'focus-heading',
         type: 'symbol',
@@ -1060,6 +1081,81 @@ export function buildStyle(i: StyleInput): StyleSpecification {
     sources,
     layers,
   };
+}
+
+const scaled = (k: number): ExpressionSpecification =>
+  [
+    'interpolate',
+    ['linear'],
+    ['zoom'],
+    ...PION_SCALE_STOPS.flatMap(([z, v]) => [z, v * k]),
+  ] as ExpressionSpecification;
+
+/**
+ * Éléments variables du pion, en calques dédiés au-dessus de l'image : barre d'état (`hp-N`),
+ * effectif et numéro de pile (texte ; images de texte sans glyphes).
+ */
+function pionPartLayers(prefix: string, source: string, glyphs: boolean): LayerSpecification[] {
+  const common = { 'icon-allow-overlap': true, 'icon-ignore-placement': true } as const;
+  const out: LayerSpecification[] = [
+    {
+      id: `${prefix}-hp`,
+      type: 'symbol',
+      source,
+      filter: ['>=', ['get', 'hp'], 0],
+      layout: {
+        ...common,
+        'icon-image': ['concat', 'hp-', ['to-string', ['get', 'hp']]],
+        'icon-size': PION_SIZE,
+        'icon-offset': offsetProp('hoff'),
+        'symbol-sort-key': ['get', 'sort'],
+      },
+      paint: { 'icon-opacity': ['get', 'op'] },
+    },
+  ];
+  if (glyphs) {
+    const text = (id: string, field: string, size: number, off: string, anchor: 'right' | 'center', color: string) =>
+      ({
+        id,
+        type: 'symbol',
+        source,
+        filter: ['!=', ['get', field], ''],
+        layout: {
+          'text-field': ['get', field],
+          'text-font': [FONTS.semibold],
+          'text-size': scaled(size),
+          'text-offset': offsetProp(off),
+          'text-anchor': anchor,
+          'text-allow-overlap': true,
+          'text-ignore-placement': true,
+          'symbol-sort-key': ['get', 'sort'],
+        },
+        paint: { 'text-color': color, 'text-opacity': ['get', 'op'] },
+      }) as LayerSpecification;
+    out.push(
+      text(`${prefix}-count`, 'cnt', 11, 'toff', 'right', '#eef3f8'),
+      text(`${prefix}-stack`, 'stk', 8.5, 'soff', 'center', C.bg),
+    );
+  } else {
+    const img = (id: string, field: string, k: number, off: string, anchor: 'right' | 'center') =>
+      ({
+        id,
+        type: 'symbol',
+        source,
+        filter: ['!=', ['get', field], ''],
+        layout: {
+          ...common,
+          'icon-image': ['concat', `${TEXT_IMAGE_PREFIX}count|`, ['get', field]],
+          'icon-size': scaled(k),
+          // Décalage en px d'image : ramené à l'échelle du texte (k).
+          'icon-offset': offsetProp(off),
+          'icon-anchor': anchor,
+        },
+        paint: { 'icon-opacity': ['get', 'op'] },
+      }) as LayerSpecification;
+    out.push(img(`${prefix}-count`, 'cnt', 11 / 12, 'tpx', 'right'), img(`${prefix}-stack`, 'stk', 8.5 / 12, 'spx', 'center'));
+  }
+  return out;
 }
 
 /**
@@ -1085,7 +1181,7 @@ function headingLayout(): SymbolLayerSpecification['layout'] {
     'icon-size': PION_SIZE,
     'icon-rotate': ['get', 'rot'],
     'icon-rotation-alignment': 'map',
-    'icon-offset': ['get', 'off'],
+    'icon-offset': offsetProp('off'),
     'icon-allow-overlap': true,
     'icon-ignore-placement': true,
   };

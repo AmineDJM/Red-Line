@@ -15,7 +15,13 @@ import { FLAG_H, FLAG_W, flags } from './flagCache.js';
 import { drawGlyph, type GlyphId } from './glyphs.js';
 import { C, MONO, REL_COLOR, alpha, type Rel } from './palette.js';
 
-export const SPRITE_RATIO = 2;
+/**
+ * Résolution des sprites composites : 2 sur écran dense (mobile), 1,25 sinon. Chaque tuile d'une
+ * source d'icônes embarque son propre atlas d'images, renvoyé au GPU à chaque mise à jour : des
+ * sprites plus légers sur ordinateur rendent ces envois nettement moins coûteux.
+ */
+export const SPRITE_RATIO =
+  typeof window !== 'undefined' && (window.devicePixelRatio || 1) >= 1.5 ? 2 : 1.25;
 
 /** Dimensions du pion (px CSS, à icon-size 1). */
 export const PION_W = 58;
@@ -65,8 +71,28 @@ export interface PionSpec {
   flags: string;
   /** Pion sélectionné (liseré renforcé). */
   sel?: boolean;
+  /**
+   * Texte de l'onglet de pile. Sur la carte, effectif, onglet et barre d'état sont des calques
+   * séparés (voir PION_PARTS) : l'image du pion ne change pas à chaque perte ou regroupement.
+   */
+  stackLabel?: string;
 }
 
+/**
+ * Positions (px CSS à l'échelle 1, depuis le centre du pion) des éléments dessinés par des calques
+ * dédiés : effectif (texte aligné à droite), numéro de pile (onglet), barre d'état (image `hp-N`).
+ */
+export const PION_PARTS = {
+  count: [PION_W / 2 - 4, -0.8] as [number, number],
+  stack: [PION_W / 2 - 0.5, -PION_H / 2 - 6] as [number, number],
+  hp: [0.5, PION_H / 2 - 3.1] as [number, number],
+  hpWidth: PION_W - 9,
+};
+
+/**
+ * Clé de l'image du pion sur la carte : nation, pictogramme, relation, cartes empilées (0-2),
+ * onglet de pile, états, sélection. Effectif et barre d'état n'en font pas partie.
+ */
 export function pionKey(s: PionSpec): string {
   return [
     'pion',
@@ -74,9 +100,7 @@ export function pionKey(s: PionSpec): string {
     s.color.slice(1),
     s.glyph,
     s.rel,
-    s.count,
-    s.hp,
-    s.stack,
+    Math.min(3, Math.max(1, s.stack)),
     s.flags,
     s.sel ? 1 : 0,
   ].join('|');
@@ -84,17 +108,17 @@ export function pionKey(s: PionSpec): string {
 
 export function parsePionKey(key: string): PionSpec | null {
   const p = key.split('|');
-  if (p[0] !== 'pion' || p.length < 10) return null;
+  if (p[0] !== 'pion' || p.length < 8) return null;
   return {
     nation: p[1]!,
     color: `#${p[2]}`,
     glyph: p[3] as GlyphId,
     rel: p[4] as Rel,
-    count: p[5]!,
-    hp: Number(p[6]),
-    stack: Number(p[7]),
-    flags: p[8]!,
-    sel: p[9] === '1',
+    count: '',
+    hp: -1,
+    stack: Number(p[5]),
+    flags: p[6]!,
+    sel: p[7] === '1',
   };
 }
 
@@ -285,7 +309,7 @@ export function drawPion(s: PionSpec): SpriteImage {
   // Drapeau, pictogramme, effectif.
   const fh = 12.6;
   const fw = 16.8;
-  const cy = y + (s.hp >= 0 ? (h - 3) / 2 : h / 2);
+  const cy = y + (h - 3) / 2;
   drawFlag(ctx, s.nation, s.color, x + 5, cy - fh / 2, fw, fh);
   const gs = 18;
   drawGlyph(ctx, s.glyph, x + 24.5, cy - gs / 2, gs, unknown ? C.dim : '#f2f6fa');
@@ -352,23 +376,23 @@ export function drawPion(s: PionSpec): SpriteImage {
     ctx.fillRect(tx - 0.5, ty - 1.8, 1, 1);
   }
 
-  // Nombre de piles (onglet coin supérieur droit).
+  // Onglet de pile (coin supérieur droit) ; le numéro est écrit par un calque de texte.
   if (s.stack > 1) {
-    const txt = s.stack > 99 ? '99+' : String(s.stack);
-    ctx.font = `700 8.4px ${MONO}`;
-    const tw = Math.max(10, ctx.measureText(txt).width + 5);
-    const bx = x + w + 6 - tw / 2 - 1;
-    const by = y - 6.5;
-    rr(ctx, bx - tw / 2 + 2, by - 4.6, tw, 9.2, 2);
+    const tx = x + w - 0.5;
+    const ty = y - 6;
+    rr(ctx, tx - 8.5, ty - 5, 17, 10, 2);
     ctx.fillStyle = edge;
     ctx.fill();
     ctx.strokeStyle = C.bg;
     ctx.lineWidth = 1;
     ctx.stroke();
-    ctx.fillStyle = C.bg;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(txt, bx + 2, by + 0.4);
+    if (s.stackLabel) {
+      ctx.font = `700 8.4px ${MONO}`;
+      ctx.fillStyle = C.bg;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(s.stackLabel, tx, ty + 0.4);
+    }
   }
 
   // Leurre (propriétaire seulement) : mention discrète.
@@ -499,6 +523,20 @@ export function drawCity(cls: number, rel: Rel | 'none'): SpriteImage {
 export const INTEL_COLORS = ['#ff4d5e', '#ffb020', '#4cc9f0', '#3ddc84'] as const;
 
 /** Pastille du niveau de connaissance d'une province (calque « Renseignement »). */
+/** Barre d'état seule (calque `units-hp`), niveau 0..10. */
+export function drawHpBar(level: number): SpriteImage {
+  const bw = PION_PARTS.hpWidth;
+  const { c, ctx } = canvas(bw + 2, 4.2);
+  ctx.fillStyle = 'rgba(0,0,0,0.55)';
+  ctx.fillRect(0, 0, bw + 2, 4.2);
+  ctx.fillStyle = '#243241';
+  ctx.fillRect(1, 1, bw, 2.2);
+  const r = Math.max(0, Math.min(10, level)) / 10;
+  ctx.fillStyle = r > 0.6 ? C.green : r > 0.3 ? C.amber : C.red;
+  ctx.fillRect(1, 1, Math.max(1, bw * r), 2.2);
+  return out(c);
+}
+
 export function drawIntelBadge(level: number): SpriteImage {
   const { c, ctx } = canvas(30, 12);
   const col = INTEL_COLORS[Math.max(0, Math.min(3, level))]!;
@@ -572,6 +610,10 @@ export async function resolveSprite(
   if (id.startsWith('bld|')) {
     const [, type, rel, state, level] = id.split('|');
     add(id, drawBuilding(type!, rel as Rel, state as BuildingState, Number(level ?? 1)));
+    return true;
+  }
+  if (id.startsWith('hp-')) {
+    add(id, drawHpBar(Number(id.slice(3))));
     return true;
   }
   if (id.startsWith('intel|')) {
