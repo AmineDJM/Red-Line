@@ -1,6 +1,7 @@
 import type {
   AdvanceTo,
   ApplyOrder,
+  ApplySystem,
   BuildWorld,
   CreateGame,
   DeserializeState,
@@ -8,11 +9,22 @@ import type {
   GameState,
   NextEventTime,
   NotificationsFor,
+  OwnersFrame,
+  PublicView,
   SerializeState,
   StateHash,
+  Stats,
   ViewFor,
 } from '@redline/engine';
+import type { BattleReport, NationId } from '@redline/shared';
 import * as engineModule from '@redline/engine';
+
+/** Rapport de bataille détaillé vu par une nation (null si inconnu ou non autorisé). */
+export type BattleReportFor = (
+  state: GameState,
+  nationId: NationId,
+  reportId: string,
+) => BattleReport | null;
 
 /**
  * Le moteur tel que le serveur le consomme : un objet injecté (le vrai `@redline/engine` en production,
@@ -30,6 +42,12 @@ export interface Engine {
   serializeState: SerializeState;
   deserializeState: DeserializeState;
   stateHash: StateHash;
+  // ——— Phases 2+ (facultatifs : fonctionnalités dégradées proprement s'ils manquent) ———
+  applySystem?: ApplySystem;
+  publicView?: PublicView;
+  ownersFrame?: OwnersFrame;
+  stats?: Stats;
+  battleReportFor?: BattleReportFor;
   /**
    * Facultatif (hors contrat) : statistiques pour le back-office. À défaut, le serveur essaie de lire
    * `state.units` et `state.queue` par introspection.
@@ -51,13 +69,22 @@ export const ENGINE_FUNCTIONS = [
   'stateHash',
 ] as const satisfies readonly (keyof Engine)[];
 
+export const OPTIONAL_ENGINE_FUNCTIONS = [
+  'applySystem',
+  'publicView',
+  'ownersFrame',
+  'stats',
+  'battleReportFor',
+  'stateStats',
+] as const satisfies readonly (keyof Engine)[];
+
 /** Construit l'objet Engine à partir d'un module ; renvoie la liste des fonctions manquantes sinon. */
 export function engineFromModule(mod: Record<string, unknown>): Engine | { missing: string[] } {
   const missing = ENGINE_FUNCTIONS.filter((k) => typeof mod[k] !== 'function');
   if (missing.length > 0) return { missing };
   const e = {} as Record<string, unknown>;
   for (const k of ENGINE_FUNCTIONS) e[k] = mod[k];
-  if (typeof mod.stateStats === 'function') e.stateStats = mod.stateStats;
+  for (const k of OPTIONAL_ENGINE_FUNCTIONS) if (typeof mod[k] === 'function') e[k] = mod[k];
   return e as unknown as Engine;
 }
 

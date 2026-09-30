@@ -61,6 +61,9 @@ export interface CookieOptions {
 }
 
 export class Auth {
+  /** Appelé à la connexion et à chaque mise à jour de last_seen_at (empreintes, activité horaire). */
+  onSeen: ((user: UserRow, request: FastifyRequest) => void) | null = null;
+
   constructor(
     private readonly db: Db,
     private readonly cookie: CookieOptions,
@@ -113,7 +116,8 @@ export class Auth {
         .where(and(eq(sessions.id, id), gt(sessions.expiresAt, new Date())))
         .limit(1);
       const row = rows[0];
-      if (row) {
+      // Compte banni : traité comme non connecté (ses sessions sont aussi supprimées au bannissement).
+      if (row && !row.u.bannedAt) {
         state = { user: row.u, sessionId: row.s.id };
         (request as FastifyRequest & { _sessionCreatedAt?: Date })._sessionCreatedAt =
           row.s.createdAt;
@@ -146,16 +150,27 @@ export class Auth {
         .update(users)
         .set({ lastSeenAt: new Date(now) })
         .where(eq(users.id, state.user.id));
+      state.user.lastSeenAt = new Date(now);
+      this.onSeen?.(state.user, request);
     }
     return state;
   }
 
   /** Nouvelle session pour un utilisateur (connexion) : l'ancienne session de la requête est supprimée. */
   async login(request: FastifyRequest, reply: FastifyReply, user: UserRow): Promise<void> {
+    if (user.bannedAt) {
+      throw new HttpError(403, 'banned', 'Ce compte est suspendu');
+    }
     const old = this.tokenFrom(request);
     if (old) await this.db.delete(sessions).where(eq(sessions.id, sessionIdOf(old)));
     const sessionId = await this.createSession(reply, user.id, request.headers['user-agent']);
     this.setResolved(request, { user, sessionId });
+    this.onSeen?.(user, request);
+  }
+
+  /** Supprime toutes les sessions d'un utilisateur (bannissement). */
+  async revokeAll(userId: string): Promise<void> {
+    await this.db.delete(sessions).where(eq(sessions.userId, userId));
   }
 
   async logout(request: FastifyRequest, reply: FastifyReply): Promise<void> {

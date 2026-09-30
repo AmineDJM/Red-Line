@@ -1,0 +1,39 @@
+{
+  "packs": [
+    { "id": "pack-recon", "name": "Dotation de reconnaissance", "amount": 100, "bonus": 0, "priceCents": 199, "currency": "eur", "sort": 1 },
+    { "id": "pack-brigade", "name": "Dotation de brigade", "amount": 550, "bonus": 50, "priceCents": 999, "currency": "eur", "sort": 2 },
+    { "id": "pack-division", "name": "Dotation de division", "amount": 1200, "bonus": 200, "priceCents": 1999, "currency": "eur", "sort": 3 },
+    { "id": "pack-corps", "name": "Dotation de corps d'armée", "amount": 3200, "bonus": 800, "priceCents": 4999, "currency": "eur", "sort": 4 }
+  ],
+  "cosmetics": [
+    { "id": "theme.terminal.amber", "kind": "terminal_theme", "name": "Terminal ambre", "price": 150, "preview": "/art/cosmetics/terminal-amber.webp" },
+    { "id": "theme.terminal.phosphor", "kind": "terminal_theme", "name": "Phosphore vert", "price": 150, "preview": "/art/cosmetics/terminal-phosphor.webp" },
+    { "id": "theme.map.night", "kind": "map_theme", "name": "Carte nocturne", "price": 250, "preview": "/art/cosmetics/map-night.webp" },
+    { "id": "theme.map.topo", "kind": "map_theme", "name": "Carte topographique", "price": 250, "preview": "/art/cosmetics/map-topo.webp" },
+    { "id": "skin.units.desert", "kind": "unit_skin", "name": "Camouflage désert", "price": 300, "preview": "/art/cosmetics/skin-desert.webp" },
+    { "id": "skin.units.arctic", "kind": "unit_skin", "name": "Camouflage arctique", "price": 300, "preview": "/art/cosmetics/skin-arctic.webp" },
+    { "id": "flag.frame.gold", "kind": "flag", "name": "Cadre de drapeau doré", "price": 100, "preview": "/art/cosmetics/flag-gold.webp" },
+    { "id": "season.flag.laurel", "kind": "flag", "name": "Lauriers de saison", "price": 0, "preview": "/art/cosmetics/flag-laurel.webp", "purchasable": false },
+    { "id": "season.theme.command", "kind": "terminal_theme", "name": "Poste de commandement (saison)", "price": 0, "preview": "/art/cosmetics/terminal-command.webp", "purchasable": false },
+    { "id": "season.skin.veteran", "kind": "unit_skin", "name": "Vétéran (saison)", "price": 0, "preview": "/art/cosmetics/skin-veteran.webp", "purchasable": false }
+  ],
+  "accelerate": { "pricePerHour": 2, "minimum": 5 },
+  "seasons": {
+    "lengthDays": 90,
+    "rewards": [
+      { "rank": 1, "cosmeticId": "season.theme.command" },
+      { "rank": 3, "cosmeticId": "season.skin.veteran" },
+      { "rank": 10, "cosmeticId": "season.flag.laurel" }
+    ]
+  },
+  "points": {
+    "win": 100,
+    "participation": 10,
+    "perProvinceConquered": 2,
+    "perKill": 0.05,
+    "minHumanPlayers": 2
+  },
+  "chat": {
+    "blockedWords": ["connard", "connasse", "enculé", "salope", "pute", "nègre", "bougnoule", "youpin", "pédé", "nigger", "faggot"]
+  }
+}

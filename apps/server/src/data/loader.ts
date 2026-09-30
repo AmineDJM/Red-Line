@@ -10,28 +10,32 @@ import {
   CellsFileSchema,
   DisputedAreaSchema,
   NationDefSchema,
+  OrbatSchema,
   ProvinceDefSchema,
+  ResearchFileSchema,
+  ScenarioFileSchema as SharedScenarioFileSchema,
   StraitSchema,
   type Balance,
   type MapData,
   type NationDef,
+  type Orbat,
+  type ResearchNode,
+  type ScenarioFile,
   type ScenarioSummary,
   type WeaponSystem,
 } from '@redline/shared';
 import type { FastifyBaseLogger } from 'fastify';
 
-/** Fichier de scénario (data/scenarios/*.json). Seuls id, name, description, playableNations sont exposés. */
-export const ScenarioFileSchema = z
-  .object({
-    id: z.string().min(1),
-    name: z.string().min(1),
-    description: z.string().default(''),
-    playableNations: z.union([z.literal('all'), z.array(z.string())]).default('all'),
-    /** Sous-ensemble de nations de la partie (scénarios régionaux). Absent = toutes. */
-    nationIds: z.array(z.string()).optional(),
-  })
-  .passthrough();
-export type ScenarioFile = z.infer<typeof ScenarioFileSchema>;
+export type { ScenarioFile };
+
+/**
+ * Fichier de scénario (data/scenarios/*.json), schéma partagé. Tolérant : description vide et
+ * « toutes les nations » par défaut pour les fichiers minimaux.
+ */
+export const ScenarioFileSchema = SharedScenarioFileSchema.extend({
+  description: z.string().default(''),
+  playableNations: z.union([z.literal('all'), z.array(z.string())]).default('all'),
+});
 
 export const DEFAULT_SCENARIO: ScenarioFile = {
   id: 'world-today',
@@ -39,7 +43,21 @@ export const DEFAULT_SCENARIO: ScenarioFile = {
   description:
     'Toutes les nations du monde actuel. Choisissez la vôtre ; les autres sont tenues par des IA.',
   playableNations: 'all',
+  year: 2025,
+  orbatSet: '2025',
 };
+
+/** Manifeste des photos réelles (data/art/photos.json) : systemId → fichier, crédit, licence. */
+export const PhotoEntrySchema = z
+  .object({
+    file: z.string(),
+    credit: z.string(),
+    license: z.string(),
+    sourceUrl: z.string(),
+  })
+  .passthrough();
+export const PhotoManifestSchema = z.record(z.string(), PhotoEntrySchema);
+export type PhotoManifest = z.infer<typeof PhotoManifestSchema>;
 
 export interface StaticAsset {
   body: Buffer;
@@ -60,6 +78,15 @@ export interface GameData {
   catalogErrors: string[];
   provincesGeojson: StaticAsset | null;
   scenarios: ScenarioFile[];
+  // ——— Phases 2+ (fichiers facultatifs, produits par d'autres équipes) ———
+  /** Nœuds de recherche (data/research/*.json). */
+  research: ResearchNode[];
+  /** ORBAT par jeu (data/orbat/<set>/*.json). */
+  orbats: Record<string, Orbat[]>;
+  /** Manifeste des photos (data/art/photos.json). */
+  photos: PhotoManifest;
+  /** Erreurs non bloquantes rencontrées au chargement (affichées dans le back-office). */
+  warnings: string[];
 }
 
 function errMsg(e: unknown): string {
@@ -133,6 +160,14 @@ export async function loadGameData(dataDir: string, log: FastifyBaseLogger): Pro
     catalogErrors: [],
     provincesGeojson: null,
     scenarios: [],
+    research: [],
+    orbats: {},
+    photos: {},
+    warnings: [],
+  };
+  const warn = (msg: string) => {
+    data.warnings.push(msg);
+    log.warn(msg);
   };
 
   // Carte
@@ -197,14 +232,86 @@ export async function loadGameData(dataDir: string, log: FastifyBaseLogger): Pro
     const files = (await readdir(scDir)).filter((n) => n.endsWith('.json')).sort();
     for (const name of files) {
       try {
-        data.scenarios.push(ScenarioFileSchema.parse(await readJson(join(scDir, name))));
+        const sc = ScenarioFileSchema.parse(await readJson(join(scDir, name)));
+        if (data.scenarios.some((s) => s.id === sc.id)) warn(`scénario ${name} : id en double`);
+        else data.scenarios.push(sc);
       } catch (e) {
-        log.warn(`scénario ${name} ignoré : ${errMsg(e)}`);
+        warn(`scénario ${name} ignoré : ${errMsg(e)}`);
       }
     }
   }
   if (data.scenarios.length === 0) data.scenarios.push(DEFAULT_SCENARIO);
 
+  // Recherche
+  const rsDir = join(dataDir, 'research');
+  if (existsSync(rsDir)) {
+    const seen = new Set<string>();
+    for (const name of (await readdir(rsDir)).filter((n) => n.endsWith('.json')).sort()) {
+      try {
+        const file = ResearchFileSchema.parse(await readJson(join(rsDir, name)));
+        for (const n of file.nodes) {
+          if (seen.has(n.id)) {
+            warn(`recherche ${name} : nœud en double ${n.id}`);
+            continue;
+          }
+          seen.add(n.id);
+          data.research.push(n);
+        }
+      } catch (e) {
+        warn(`recherche ${name} ignorée : ${errMsg(e)}`);
+      }
+    }
+  }
+
+  // ORBAT : data/orbat/<set>/<nation>.json
+  const obDir = join(dataDir, 'orbat');
+  if (existsSync(obDir)) {
+    for (const set of (await readdir(obDir, { withFileTypes: true }))
+      .filter((d) => d.isDirectory())
+      .map((d) => d.name)
+      .sort()) {
+      const list: Orbat[] = [];
+      for (const name of (await readdir(join(obDir, set))).filter((n) => n.endsWith('.json')).sort()) {
+        try {
+          list.push(OrbatSchema.parse(await readJson(join(obDir, set, name))));
+        } catch (e) {
+          warn(`ORBAT ${set}/${name} ignoré : ${errMsg(e)}`);
+        }
+      }
+      data.orbats[set] = list;
+    }
+  }
+
+  // Photos
+  const photosPath = join(dataDir, 'art', 'photos.json');
+  if (existsSync(photosPath)) {
+    try {
+      const raw = (await readJson(photosPath)) as Record<string, unknown>;
+      // Accepte { photos: {...} } ou directement le dictionnaire.
+      const dict =
+        raw && typeof raw === 'object' && raw.photos && typeof raw.photos === 'object'
+          ? raw.photos
+          : raw;
+      const parsed: PhotoManifest = {};
+      for (const [id, v] of Object.entries(dict as Record<string, unknown>)) {
+        const r = PhotoEntrySchema.safeParse(v);
+        if (r.success) parsed[id] = r.data;
+      }
+      data.photos = parsed;
+    } catch (e) {
+      warn(`photos.json illisible : ${errMsg(e)}`);
+    }
+  }
+
+  log.info(
+    {
+      research: data.research.length,
+      orbatSets: Object.fromEntries(Object.entries(data.orbats).map(([k, v]) => [k, v.length])),
+      photos: Object.keys(data.photos).length,
+      scenarios: data.scenarios.length,
+    },
+    'données de jeu chargées',
+  );
   return data;
 }
 

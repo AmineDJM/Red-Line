@@ -17,7 +17,7 @@ import {
   uniqueIndex,
   uuid,
 } from 'drizzle-orm/pg-core';
-import type { Balance, ChangeScope, Role, WeaponSystem } from '@redline/shared';
+import type { Balance, ChangeScope, Role, ShopPolicy, WeaponSystem } from '@redline/shared';
 
 const bytea = customType<{ data: Buffer; driverData: Buffer }>({
   dataType() {
@@ -41,6 +41,13 @@ export const users = pgTable(
     premiumBalance: integer('premium_balance').notNull().default(0),
     createdAt: tz('created_at').notNull().defaultNow(),
     lastSeenAt: tz('last_seen_at').notNull().defaultNow(),
+    /** Bannissement (connexion refusée, sessions supprimées). */
+    bannedAt: tz('banned_at'),
+    banReason: text('ban_reason'),
+    /** Messagerie coupée jusqu'à cette date (modération). */
+    chatMutedUntil: tz('chat_muted_until'),
+    /** Activité par heure UTC (24 compteurs) : détection des multi-comptes. */
+    activityHours: jsonb('activity_hours').$type<number[]>(),
   },
   (t) => [
     uniqueIndex('users_email_key').on(sql`lower(${t.email})`),
@@ -135,6 +142,22 @@ export const games = pgTable(
     createdBy: uuid('created_by').references(() => users.id, { onDelete: 'set null' }),
     createdAt: tz('created_at').notNull().defaultNow(),
     endedAt: tz('ended_at'),
+    // ——— Phases 5-6 ———
+    /** Joueurs humains attendus (multijoueur). */
+    maxPlayers: integer('max_players').notNull().default(1),
+    shopPolicy: jsonb('shop_policy').$type<ShopPolicy>().notNull().default({ mode: 'open' }),
+    victory: jsonb('victory').$type<{ provinceShare: number; allEnemyCapitals: boolean } | null>(),
+    /** Remplacement par une IA d'un joueur inactif depuis N heures réelles. */
+    inactiveAiAfterH: doublePrecision('inactive_ai_after_h').notNull().default(24),
+    isPrivate: boolean('is_private').notNull().default(false),
+    startedAt: tz('started_at'),
+    /** Révision des données d'administration (data_revisions.id) épinglée par la partie. */
+    dataRev: integer('data_rev').notNull().default(0),
+    winner: text('winner'),
+    /** Statistiques de fin de partie (moteur.stats). */
+    finalStats: jsonb('final_stats').$type<Record<string, unknown> | null>(),
+    /** Taille du dernier instantané (octets compressés), pour les métriques. */
+    stateBytes: integer('state_bytes').notNull().default(0),
   },
   (t) => [
     index('games_status_idx').on(t.status),
@@ -155,6 +178,8 @@ export const gamePlayers = pgTable(
     isAiReplacement: boolean('is_ai_replacement').notNull().default(false),
     joinedAt: tz('joined_at').notNull().defaultNow(),
     lastActiveAt: tz('last_active_at'),
+    /** Depuis quand une IA remplace le joueur inactif. */
+    aiSince: tz('ai_since'),
   },
   (t) => [
     primaryKey({ columns: [t.gameId, t.slot] }),
@@ -213,6 +238,304 @@ export const adminAudit = pgTable(
   (t) => [index('admin_audit_created_idx').on(t.createdAt)],
 );
 
+// ───────────────────────────── Multijoueur ─────────────────────────────
+
+/** Messagerie : canaux "game", "alliance:<id>", "private:<a>|<b>". */
+export const chatMessages = pgTable(
+  'chat_messages',
+  {
+    id: bigserial('id', { mode: 'number' }).primaryKey(),
+    gameId: uuid('game_id')
+      .notNull()
+      .references(() => games.id, { onDelete: 'cascade' }),
+    channel: text('channel').notNull(),
+    userId: uuid('user_id').references(() => users.id, { onDelete: 'set null' }),
+    nationId: text('nation_id'),
+    authorName: text('author_name').notNull(),
+    text: text('text').notNull(),
+    hidden: boolean('hidden').notNull().default(false),
+    hiddenBy: uuid('hidden_by').references(() => users.id, { onDelete: 'set null' }),
+    /** Mots filtrés automatiquement. */
+    filtered: boolean('filtered').notNull().default(false),
+    createdAt: tz('created_at').notNull().defaultNow(),
+  },
+  (t) => [
+    index('chat_messages_game_idx').on(t.gameId, t.channel, t.id),
+    index('chat_messages_created_idx').on(t.createdAt),
+  ],
+);
+
+export const chatReads = pgTable(
+  'chat_reads',
+  {
+    gameId: uuid('game_id')
+      .notNull()
+      .references(() => games.id, { onDelete: 'cascade' }),
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    channel: text('channel').notNull(),
+    upTo: bigint('up_to', { mode: 'number' }).notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.gameId, t.userId, t.channel] })],
+);
+
+/** Réglages persistants du serveur (clés VAPID…). */
+export const serverSettings = pgTable('server_settings', {
+  key: text('key').primaryKey(),
+  value: jsonb('value').notNull(),
+  createdAt: tz('created_at').notNull().defaultNow(),
+});
+
+export const pushSubscriptions = pgTable(
+  'push_subscriptions',
+  {
+    id: serial('id').primaryKey(),
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    endpoint: text('endpoint').notNull(),
+    p256dh: text('p256dh').notNull(),
+    auth: text('auth').notNull(),
+    createdAt: tz('created_at').notNull().defaultNow(),
+    lastSentAt: tz('last_sent_at'),
+  },
+  (t) => [
+    uniqueIndex('push_subscriptions_endpoint_key').on(t.endpoint),
+    index('push_subscriptions_user_idx').on(t.userId),
+  ],
+);
+
+/** Évolution des frontières : un enregistrement par jour de jeu où elles ont changé (delta). */
+export const timelapseFrames = pgTable(
+  'timelapse_frames',
+  {
+    gameId: uuid('game_id')
+      .notNull()
+      .references(() => games.id, { onDelete: 'cascade' }),
+    day: integer('day').notNull(),
+    /** Jour 0 : propriétaires complets ; ensuite, seulement les provinces qui ont changé. */
+    delta: jsonb('delta').$type<Record<string, string>>().notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.gameId, t.day] })],
+);
+
+// ───────────────────────────── Boutique ─────────────────────────────
+
+export type WalletReason = 'purchase' | 'accelerate' | 'cosmetic' | 'refund' | 'admin';
+
+/** Portefeuille de monnaie premium : journal en AJOUT SEUL (déclencheur SQL anti-modification). */
+export const walletLedger = pgTable(
+  'wallet_ledger',
+  {
+    id: bigserial('id', { mode: 'number' }).primaryKey(),
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    delta: integer('delta').notNull(),
+    reason: text('reason').$type<WalletReason>().notNull(),
+    ref: text('ref'),
+    gameId: uuid('game_id').references(() => games.id, { onDelete: 'set null' }),
+    balanceAfter: integer('balance_after').notNull(),
+    createdAt: tz('created_at').notNull().defaultNow(),
+  },
+  (t) => [
+    index('wallet_ledger_user_idx').on(t.userId, t.id),
+    index('wallet_ledger_game_idx').on(t.gameId, t.userId),
+    check(
+      'wallet_ledger_reason_check',
+      sql`${t.reason} in ('purchase','accelerate','cosmetic','refund','admin')`,
+    ),
+  ],
+);
+
+export const shopPacks = pgTable('shop_packs', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  amount: integer('amount').notNull(),
+  bonus: integer('bonus').notNull().default(0),
+  priceCents: integer('price_cents').notNull(),
+  currency: text('currency').$type<'eur' | 'usd'>().notNull().default('eur'),
+  active: boolean('active').notNull().default(true),
+  sort: integer('sort').notNull().default(0),
+  updatedAt: tz('updated_at').notNull().defaultNow(),
+});
+
+export const shopPromotions = pgTable('shop_promotions', {
+  id: serial('id').primaryKey(),
+  /** null = tous les packs. */
+  packId: text('pack_id').references(() => shopPacks.id, { onDelete: 'cascade' }),
+  label: text('label').notNull(),
+  percentOff: integer('percent_off').notNull(),
+  startsAt: tz('starts_at').notNull(),
+  endsAt: tz('ends_at').notNull(),
+  active: boolean('active').notNull().default(true),
+  createdAt: tz('created_at').notNull().defaultNow(),
+});
+
+export type PurchaseStatus = 'pending' | 'paid' | 'refunded' | 'failed';
+
+export const purchases = pgTable(
+  'purchases',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    userId: uuid('user_id').references(() => users.id, { onDelete: 'set null' }),
+    packId: text('pack_id').notNull(),
+    /** Monnaie premium créditée (montant + bonus). */
+    credits: integer('credits').notNull(),
+    priceCents: integer('price_cents').notNull(),
+    currency: text('currency').notNull(),
+    status: text('status').$type<PurchaseStatus>().notNull().default('pending'),
+    stripeSessionId: text('stripe_session_id'),
+    paymentIntent: text('payment_intent'),
+    createdAt: tz('created_at').notNull().defaultNow(),
+    paidAt: tz('paid_at'),
+    refundedAt: tz('refunded_at'),
+  },
+  (t) => [
+    uniqueIndex('purchases_session_key').on(t.stripeSessionId),
+    index('purchases_user_idx').on(t.userId),
+    index('purchases_intent_idx').on(t.paymentIntent),
+  ],
+);
+
+/** Idempotence des webhooks Stripe. */
+export const stripeEvents = pgTable('stripe_events', {
+  id: text('id').primaryKey(),
+  type: text('type').notNull(),
+  receivedAt: tz('received_at').notNull().defaultNow(),
+});
+
+export type CosmeticKind = 'unit_skin' | 'flag' | 'map_theme' | 'terminal_theme';
+
+export const cosmetics = pgTable('cosmetics', {
+  id: text('id').primaryKey(),
+  kind: text('kind').$type<CosmeticKind>().notNull(),
+  name: text('name').notNull(),
+  price: integer('price').notNull(),
+  preview: text('preview').notNull().default(''),
+  /** Achetable en boutique (faux = récompense de saison uniquement). */
+  purchasable: boolean('purchasable').notNull().default(true),
+  active: boolean('active').notNull().default(true),
+});
+
+export const userCosmetics = pgTable(
+  'user_cosmetics',
+  {
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    cosmeticId: text('cosmetic_id').notNull(),
+    source: text('source').$type<'purchase' | 'season' | 'admin'>().notNull(),
+    acquiredAt: tz('acquired_at').notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.cosmeticId] })],
+);
+
+// ───────────────────────────── Classements ─────────────────────────────
+
+export const seasons = pgTable('seasons', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  startsAt: tz('starts_at').notNull(),
+  endsAt: tz('ends_at').notNull(),
+  rewards: jsonb('rewards').$type<{ rank: number; cosmeticId: string }[]>().notNull(),
+  closedAt: tz('closed_at'),
+});
+
+export const rankings = pgTable(
+  'rankings',
+  {
+    seasonId: text('season_id')
+      .notNull()
+      .references(() => seasons.id, { onDelete: 'cascade' }),
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    points: integer('points').notNull().default(0),
+    wins: integer('wins').notNull().default(0),
+    games: integer('games').notNull().default(0),
+    updatedAt: tz('updated_at').notNull().defaultNow(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.seasonId, t.userId] }),
+    index('rankings_points_idx').on(t.seasonId, t.points),
+  ],
+);
+
+export const gameResults = pgTable(
+  'game_results',
+  {
+    gameId: uuid('game_id')
+      .notNull()
+      .references(() => games.id, { onDelete: 'cascade' }),
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    nationId: text('nation_id').notNull(),
+    seasonId: text('season_id'),
+    won: boolean('won').notNull(),
+    points: integer('points').notNull(),
+    createdAt: tz('created_at').notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.gameId, t.userId] })],
+);
+
+// ───────────────────────────── Légal, sécurité, données ─────────────────────────────
+
+export const legalAcceptances = pgTable(
+  'legal_acceptances',
+  {
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    docId: text('doc_id').notNull(),
+    version: integer('version').notNull(),
+    acceptedAt: tz('accepted_at').notNull().defaultNow(),
+    ipHash: text('ip_hash'),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.docId, t.version] })],
+);
+
+/** Empreintes de connexion (IP hachée, user-agent haché) : détection des multi-comptes. */
+export const userFingerprints = pgTable(
+  'user_fingerprints',
+  {
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    ipHash: text('ip_hash').notNull(),
+    uaHash: text('ua_hash').notNull(),
+    userAgent: text('user_agent'),
+    firstSeen: tz('first_seen').notNull().defaultNow(),
+    lastSeen: tz('last_seen').notNull().defaultNow(),
+    hits: integer('hits').notNull().default(1),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.ipHash, t.uaHash] }),
+    index('user_fingerprints_ip_idx').on(t.ipHash),
+  ],
+);
+
+export type DataKind = 'rules' | 'research' | 'orbat' | 'scenario' | 'nation' | 'province' | 'disputed';
+
+/** Données de jeu modifiées depuis le back-office : chaque modification est une révision (retour arrière). */
+export const dataRevisions = pgTable(
+  'data_revisions',
+  {
+    id: serial('id').primaryKey(),
+    kind: text('kind').$type<DataKind>().notNull(),
+    key: text('key').notNull(),
+    /** null = retour à la valeur du dépôt. */
+    data: jsonb('data'),
+    message: text('message').notNull().default(''),
+    scope: text('scope').$type<ChangeScope>().notNull().default('new_games'),
+    authorId: uuid('author_id').references(() => users.id, { onDelete: 'set null' }),
+    createdAt: tz('created_at').notNull().defaultNow(),
+  },
+  (t) => [index('data_revisions_key_idx').on(t.kind, t.key, t.id)],
+);
+
 export const schema = {
   users,
   sessions,
@@ -224,4 +547,22 @@ export const schema = {
   gameSnapshots,
   gameOrders,
   adminAudit,
+  chatMessages,
+  chatReads,
+  serverSettings,
+  pushSubscriptions,
+  timelapseFrames,
+  walletLedger,
+  shopPacks,
+  shopPromotions,
+  purchases,
+  stripeEvents,
+  cosmetics,
+  userCosmetics,
+  seasons,
+  rankings,
+  gameResults,
+  legalAcceptances,
+  userFingerprints,
+  dataRevisions,
 };
