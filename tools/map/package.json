@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsx src/build.ts",
     "test": "vitest run",
-    "typecheck": "tsc -p tsconfig.json"
+    "typecheck": "tsc -p tsconfig.json",
+    "cities": "node scripts/cities.mjs"
   },
   "dependencies": {
     "@redline/shared": "workspace:*",

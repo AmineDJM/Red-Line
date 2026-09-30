@@ -10,6 +10,24 @@ export const BUILDING_TYPES = [
   'military_base',
   'arms_factory',
   'research_center',
+  // ——— Phases 2+ : bâtiments façon Conflict of Nations (tous génériques, jamais de sites réels) ———
+  /** Production de ressources. */
+  'oil_field',
+  'mine',
+  'farm',
+  'electronics_plant',
+  'local_industry',
+  /** Militaires et défense. */
+  'recruiting_office',
+  'naval_base',
+  'bunker',
+  'air_defense_site',
+  'coastal_battery',
+  'radar_station',
+  'missile_silo',
+  'hospital',
+  'secret_lab',
+  'forward_base',
 ] as const;
 export type BuildingType = (typeof BUILDING_TYPES)[number];
 
@@ -48,6 +66,12 @@ export const ProvinceDefSchema = z.object({
   neighbors: z.array(z.string()).default([]),
   /** Superficie approximative en km², pour l'équilibrage. */
   areaKm2: z.number().min(0),
+  /** Nom de la ville principale (affiché sur la carte). */
+  cityName: z.string().optional(),
+  /** Rang de la ville : 1 capitale, 2 grande ville, 3 ville moyenne, 4 petite ville. */
+  cityRank: z.number().int().min(1).max(4).optional(),
+  /** Population estimée de la province (habitants). */
+  population: z.number().min(0).optional(),
 });
 export type ProvinceDef = z.infer<typeof ProvinceDefSchema>;
 
