@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { LngLat, NationId, NationView, PlayerView, ProvinceView, UnitView } from '@redline/shared';
 import { Button, Drawer, HexIcon, pictogramFor } from '@redline/ui';
+import { IS_MOCK } from '../config.js';
 import { getApi } from '../api/index.js';
 import { GameHud } from '../hud/GameHud.js';
 import { Icons } from '../hud/icons.js';
@@ -11,6 +12,9 @@ import { bindConnection, useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { ErrorScreen, LoadingScreen } from './Loading.js';
+
+/** Vitesses de l'outil de développement (observation accélérée du combat), pas de l'équilibrage. */
+const SANDBOX_SPEEDS = [1, 16, 60, 360, 1440];
 
 interface Placement {
   owner: NationId;
@@ -58,6 +62,7 @@ export function SandboxScreen() {
   const openDrawer = useUi((s) => s.openDrawer);
 
   useEffect(() => {
+    if (IS_MOCK) (window as unknown as { __rl?: unknown }).__rl = { game: useGame, ui: useUi, world: useWorld };
     void getApi().then((api) => world.load(api));
     useGame.getState().reset();
     useUi.getState().openDrawer('sandbox');
@@ -83,7 +88,7 @@ export function SandboxScreen() {
     useGame.setState((s) => ({
       view: previewView(placements, observer),
       me: observer,
-      meta: { id: 'sandbox', name: t('sandbox.title'), mode: 'solo', scenarioId: 'sandbox', status: 'lobby', speeds: [1, 2, 4, 8, 16, 32] },
+      meta: { id: 'sandbox', name: t('sandbox.title'), mode: 'solo', scenarioId: 'sandbox', status: 'lobby', speeds: SANDBOX_SPEEDS },
       clock: { anchorGame: 0, anchorReal: Date.now(), speed: 1, paused: true },
       viewVersion: s.viewVersion + 1,
     }));
@@ -122,7 +127,7 @@ export function SandboxScreen() {
         engine,
         built,
         { seed: 1, players: involved.map((n) => ({ nationId: n, isAi: false })), units: placements },
-        { observer, godView: true, name: t('sandbox.title') },
+        { observer, godView: true, name: t('sandbox.title'), speeds: SANDBOX_SPEEDS },
       );
       unbind.current?.();
       unbind.current = bindConnection(conn);

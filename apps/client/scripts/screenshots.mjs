@@ -148,6 +148,65 @@ for (const vp of ['desktop', 'mobile']) {
     await shot(p, `tutorial-${vp}`);
     await ctx.close();
   }
+  if (want(`sandbox-${vp}`)) {
+    const { ctx, p } = await page(vp);
+    await p.goto(`${base}/sandbox?mock=1`);
+    await waitMap(p);
+    await p.evaluate(() => window.__rlMap.map.jumpTo({ center: [6.5, 49.2], zoom: 6.5 }));
+    await waitMap(p);
+    const sel = p.locator('.rl-drawer--open select');
+    const box = await p.locator('.map-root').boundingBox();
+    const place = async (nation, system, dx, dy) => {
+      await sel.nth(0).selectOption(nation);
+      await sel.nth(1).selectOption(system);
+      await p.mouse.click(box.x + box.width * dx, box.y + box.height * dy);
+      await p.waitForTimeout(150);
+    };
+    const systems = await p.evaluate(() => [...document.querySelectorAll('.rl-drawer--open select')[1].options].map((o) => o.value));
+    const pick = (re) => systems.find((s) => re.test(s)) ?? systems[0];
+    const tank = pick(/leopard|abrams|t-90|t-72|tank|char/i);
+    const inf = pick(/inf/i);
+    if (vp === 'desktop') {
+      await place('fra', tank, 0.62, 0.55);
+      await place('fra', inf, 0.65, 0.6);
+      await place('deu', tank, 0.72, 0.5);
+      await place('deu', inf, 0.75, 0.56);
+    } else {
+      await place('fra', tank, 0.35, 0.3);
+      await place('deu', tank, 0.6, 0.25);
+    }
+    await shot(p, `sandbox-setup-${vp}`);
+    await p.locator('.rl-drawer--open .rl-btn--primary').click();
+    await p.waitForTimeout(1500);
+    const msg = await p.locator('.rl-drawer--open .error-text').textContent().catch(() => null);
+    if (msg) console.log('bac à sable :', msg);
+    const orders = await p.evaluate(async () => {
+      const g = window.__rl.game.getState();
+      const units = Object.values(g.view?.units ?? {});
+      const fra = units.filter((u) => u.owner === 'fra').map((u) => u.id);
+      const deu = units.filter((u) => u.owner === 'deu');
+      const res = [];
+      // Le moteur exige une cible visible : on marche d'abord sur la position ennemie.
+      if (fra.length && deu[0]) res.push(await g.connection.sendOrder({ kind: 'move', unitIds: fra, to: deu[0].pos }));
+      if (deu.length && fra[0]) res.push(await g.connection.sendOrder({ kind: 'move', unitIds: deu.map((u) => u.id), to: units.find((u) => u.id === fra[0]).pos }));
+      g.connection.setSpeed(1440);
+      g.connection.setPaused(false);
+      window.__rl.ui.getState().openDrawer(null);
+      if (fra[0]) window.__rl.ui.getState().select([fra[0]]);
+      return res;
+    });
+    console.log('ordres bac à sable :', JSON.stringify(orders));
+    await p.waitForTimeout(3000);
+    await shot(p, `sandbox-run-${vp}`);
+    await p.waitForTimeout(6000);
+    await shot(p, `sandbox-combat-${vp}`);
+    const summary = await p.evaluate(() => {
+      const g = window.__rl.game.getState();
+      return { time: g.view?.time, units: Object.values(g.view?.units ?? {}).map((u) => [u.owner, u.status, u.hpRatio, u.count]), notes: g.notifications.map((n) => n.item.kind) };
+    });
+    console.log('état bac à sable :', JSON.stringify(summary));
+    await ctx.close();
+  }
   if (want(`world-${vp}`)) {
     const { ctx, p } = await page(vp);
     await p.goto(`${base}/game/demo?mock=1`);

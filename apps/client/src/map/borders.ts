@@ -21,6 +21,77 @@ interface EdgeInfo {
   a: Position;
   b: Position;
   owners: Owner[];
+  provinces: string[];
+}
+
+/**
+ * Tolérance (degrés) pour apparier des arêtes quasi colinéaires : jonctions en T et frontières
+ * internes simplifiées indépendamment de part et d'autre (≈ 2 km, constaté dans data/map).
+ */
+const EPS = 0.02;
+/** Sinus maximal de l'angle entre deux arêtes appariées (≈ 25°). */
+const MAX_SIN = 0.42;
+const CELL = 0.1;
+
+function distPointSeg(p: Position, a: Position, b: Position): number {
+  const ax = a[0]!;
+  const ay = a[1]!;
+  const dx = b[0]! - ax;
+  const dy = b[1]! - ay;
+  const l2 = dx * dx + dy * dy;
+  let t = l2 > 0 ? ((p[0]! - ax) * dx + (p[1]! - ay) * dy) / l2 : 0;
+  t = Math.max(0, Math.min(1, t));
+  return Math.hypot(p[0]! - (ax + t * dx), p[1]! - (ay + t * dy));
+}
+
+/**
+ * Deuxième passe : une arête non appariée dont le milieu se trouve sur une arête non appariée
+ * d'une autre province est partagée (sommet présent d'un seul côté, « jonction en T »).
+ */
+function matchCollinear(edges: Map<string, EdgeInfo>) {
+  const single = [...edges.values()].filter((e) => e.owners.length === 1);
+  const grid = new Map<string, EdgeInfo[]>();
+  for (const e of single) {
+    const x0 = Math.floor(Math.min(e.a[0]!, e.b[0]!) / CELL);
+    const x1 = Math.floor(Math.max(e.a[0]!, e.b[0]!) / CELL);
+    const y0 = Math.floor(Math.min(e.a[1]!, e.b[1]!) / CELL);
+    const y1 = Math.floor(Math.max(e.a[1]!, e.b[1]!) / CELL);
+    if ((x1 - x0 + 1) * (y1 - y0 + 1) > 400) continue;
+    for (let x = x0; x <= x1; x++)
+      for (let y = y0; y <= y1; y++) {
+        const k = `${x}:${y}`;
+        const l = grid.get(k);
+        if (l) l.push(e);
+        else grid.set(k, [e]);
+      }
+  }
+  for (const e of single) {
+    const mid: Position = [(e.a[0]! + e.b[0]!) / 2, (e.a[1]! + e.b[1]!) / 2];
+    const cx = Math.floor(mid[0]! / CELL);
+    const cy = Math.floor(mid[1]! / CELL);
+    const ex = e.b[0]! - e.a[0]!;
+    const ey = e.b[1]! - e.a[1]!;
+    const el = Math.hypot(ex, ey) || 1;
+    let best: EdgeInfo | null = null;
+    let bestD = EPS;
+    for (let dx = -1; dx <= 1; dx++)
+      for (let dy = -1; dy <= 1; dy++)
+        for (const f of grid.get(`${cx + dx}:${cy + dy}`) ?? []) {
+          if (f === e || f.provinces[0] === e.provinces[0]) continue;
+          const d = distPointSeg(mid, f.a, f.b);
+          if (d >= bestD) continue;
+          const fx = f.b[0]! - f.a[0]!;
+          const fy = f.b[1]! - f.a[1]!;
+          const sin = Math.abs(ex * fy - ey * fx) / (el * (Math.hypot(fx, fy) || 1));
+          if (sin > MAX_SIN) continue;
+          best = f;
+          bestD = d;
+        }
+    if (best) {
+      e.owners.push(best.owners[0]);
+      e.provinces.push(best.provinces[0]!);
+    }
+  }
 }
 
 function rings(f: Feature): Position[][] {
@@ -46,11 +117,14 @@ export function buildEdgeIndex(geo: FeatureCollection, ownerOf: (provinceId: str
         if (ka === kb) continue;
         const k = ka < kb ? `${ka}|${kb}` : `${kb}|${ka}`;
         const e = edges.get(k);
-        if (e) e.owners.push(owner);
-        else edges.set(k, { a, b, owners: [owner] });
+        if (e) {
+          e.owners.push(owner);
+          e.provinces.push(id);
+        } else edges.set(k, { a, b, owners: [owner], provinces: [id] });
       }
     }
   }
+  matchCollinear(edges);
   return edges;
 }
 

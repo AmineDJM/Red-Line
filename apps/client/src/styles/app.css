@@ -1009,10 +1009,19 @@ a {
   color: var(--rl-violet-glow);
 }
 .newgame--mobile .newgame__map {
-  bottom: 52%;
+  bottom: 54%;
+}
+.newgame--mobile .nation-list {
+  flex: none;
+  min-height: 176px;
+  max-height: 176px;
+}
+.newgame--mobile .newgame__options .field {
+  margin-top: 2px;
 }
 .newgame--mobile .newgame__panel {
-  top: 48%;
+  top: 44%;
+  overflow-y: auto;
   left: 0;
   right: 0;
   bottom: 0;
@@ -1023,7 +1032,7 @@ a {
 
 @media (min-width: 768px) {
   .rl-drawer {
-    --rl-drawer-top: 112px;
+    --rl-drawer-top: 150px;
     --rl-drawer-inset: 72px;
   }
 }
