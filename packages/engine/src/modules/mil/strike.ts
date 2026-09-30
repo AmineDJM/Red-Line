@@ -536,7 +536,10 @@ export function handleIntercept(state: EngineState, d: { i: string; m: string })
   }
   const winMs = bal.reengageMinutes * MINUTE;
   let [ws, used] = m.icw[I.id] ?? [now, 0];
-  if (now - ws >= winMs) {
+  // `now >= ws + winMs` (et non `now - ws >= winMs`) : l'événement de la fenêtre suivante est
+  // programmé à `ws + winMs` ; la soustraction flottante peut donner winMs − ε à cet instant précis,
+  // et l'interception se reprogrammait alors indéfiniment au même instant (boucle infinie).
+  if (now >= ws + winMs) {
     ws = now;
     used = 0;
   }
