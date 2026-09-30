@@ -104,6 +104,24 @@ export interface SharedBoard {
   nuclearAuth: Record<NationId, true>;
   /** eco : nations en mobilisation générale. */
   mobilized: Record<NationId, true>;
+  /**
+   * eco : bâtiments fixes de défense et de détection (site de défense aérienne, batterie côtière,
+   * station radar, silo), clé "<province>:<bâtiment>". Lu par mil (zones d'engagement et de détection) ;
+   * chaque changement est aussi annoncé par les signaux `static_defense` et `radar_station`.
+   */
+  sites: Record<string, StaticSite>;
+}
+
+export interface StaticSite {
+  n: NationId;
+  pid: ProvinceId;
+  b: 'air_defense_site' | 'coastal_battery' | 'radar_station' | 'missile_silo';
+  level: number;
+  /** Santé 0..1 (0 = hors service). */
+  h: number;
+  at: [number, number];
+  /** Portée d'engagement ou de détection (km), selon le niveau. */
+  rangeKm: number;
 }
 
 export interface EngineModule {

@@ -94,7 +94,7 @@ export function researchOrder(
   const paid: Paid = { money: node.cost.money, res: scaledRes(node.cost.resources, 1) };
   const err = canPay(state, n, paid);
   if (err) return fail(err);
-  pay(state, n, paid);
+  pay(state, n, paid, 'research');
   if (en.cur) en.queue.push({ id: node.id, paid });
   else startResearch(state, n, node.id, paid);
   return { ok: true };
@@ -123,7 +123,7 @@ function startNext(state: EngineState, n: NationId): void {
       binaryHas(en.done, q.id) ||
       !node.requires.every((r) => hasGate(state, n, r) || inProgress(state, n, r))
     ) {
-      refund(state, n, q.paid, 1);
+      refund(state, n, q.paid, 1, 'research');
       continue;
     }
     startResearch(state, n, q.id, q.paid);
@@ -146,14 +146,14 @@ export function cancelResearchOrder(
 ): OrderResult {
   const en = ecoNation(state, n);
   if (en.cur?.id === order.nodeId) {
-    refund(state, n, en.cur.paid, cfg(state.world).industry.cancelRefund);
+    refund(state, n, en.cur.paid, cfg(state.world).industry.cancelRefund, 'research');
     en.cur = null;
     startNext(state, n);
     return { ok: true };
   }
   const i = en.queue.findIndex((q) => q.id === order.nodeId);
   if (i < 0) return fail('invalid_target', 'Recherche non planifiée.');
-  refund(state, n, en.queue[i]!.paid, 1);
+  refund(state, n, en.queue[i]!.paid, 1, 'research');
   en.queue.splice(i, 1);
   return { ok: true };
 }
@@ -172,12 +172,12 @@ export function stealNode(state: EngineState, n: NationId, id: string): void {
   if (!state.nations[n] || !state.world.research?.has(id)) return;
   const en = ecoNation(state, n);
   if (en.cur?.id === id) {
-    refund(state, n, en.cur.paid, 1);
+    refund(state, n, en.cur.paid, 1, 'research');
     en.cur = null;
   }
   const i = en.queue.findIndex((q) => q.id === id);
   if (i >= 0) {
-    refund(state, n, en.queue[i]!.paid, 1);
+    refund(state, n, en.queue[i]!.paid, 1, 'research');
     en.queue.splice(i, 1);
   }
   grantNode(state, n, id, true);

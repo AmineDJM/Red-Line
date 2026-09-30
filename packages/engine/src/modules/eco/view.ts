@@ -1,5 +1,6 @@
 import {
   MODIFIER_KEYS,
+  type BuildingType,
   type BuildingView,
   type DeliveryView,
   type GameNotification,
@@ -10,9 +11,9 @@ import {
 } from '@redline/shared';
 import { provincesOf } from '../../state/access.js';
 import type { EngineState } from '../../state/types.js';
-import { wi } from '../../state/world.js';
 import { board } from '../kit.js';
-import { buildingsOf, health } from './buildings.js';
+import { buildingsOf, depotsOf, health, levelOf } from './buildings.js';
+import { economyDetail } from './detail.js';
 import { researchModifier } from './research.js';
 import { eco, ecoNation, sortedIds } from './state.js';
 
@@ -25,10 +26,6 @@ function publicParts(state: EngineState, view: PlayerView): void {
     if (b.embargoed[id]) nv.embargoed = true;
   }
   const es = eco(state);
-  for (const pid of sortedIds(es.bld)) {
-    const pv = view.provinces[pid];
-    if (pv) pv.buildings = buildingsOf(state, pid);
-  }
   for (const pid of sortedIds(es.blockaded)) {
     const pv = view.provinces[pid];
     if (pv) pv.blockaded = true;
@@ -86,44 +83,62 @@ export function ecoView(state: EngineState, me: NationId, view: PlayerView): voi
 
   // Logistique
   view.logistics = {
-    depots: sortedIds(es.depots)
-      .map((id) => es.depots[id]!)
-      .filter((d) => d.n === me)
-      .map((d) => ({ id: d.id, provinceId: d.pid, at: d.at, rangeKm: d.rangeKm })),
+    depots: depotsOf(state, me).map((d) => ({
+      id: `${d.pid}:forward_base`,
+      provinceId: d.pid,
+      at: d.at,
+      rangeKm: d.rangeKm,
+    })),
     mobilized: !!board(state).mobilized[me],
     mobilizedSince: en.mobSince,
   };
 
   // Bâtiments et fortifications des provinces possédées
-  const jobsByProv = new Map<string, { kind: string; t: number }[]>();
+  const jobsByProv = new Map<string, { kind: string; t: number; lvl: number }[]>();
   for (const id of sortedIds(es.jobs)) {
     const j = es.jobs[id]!;
     if (j.n !== me) continue;
     let l = jobsByProv.get(j.pid);
     if (!l) jobsByProv.set(j.pid, (l = []));
-    l.push({ kind: j.kind, t: j.completesAt });
+    l.push({ kind: j.kind, t: j.completesAt, lvl: j.lvl });
   }
-  const w = wi(state.world);
   for (const pid of provincesOf(state, me)) {
     const pv = view.provinces[pid];
     if (!pv) continue;
+    const jobs = jobsByProv.get(pid) ?? [];
+    const present = buildingsOf(state, pid);
     const list: BuildingView[] = [];
-    for (const b of buildingsOf(state, pid)) {
-      const bv: BuildingView = { type: b, health: health(state, pid, b) };
+    for (const b of present) {
+      const bv: BuildingView = {
+        type: b,
+        level: levelOf(state, pid, b),
+        health: health(state, pid, b),
+      };
       const rep = es.bld[pid]?.[b]?.rep;
       if (rep !== undefined && rep !== null) bv.repairUntil = rep;
+      const up = jobs.find((j) => j.kind === b);
+      if (up) bv.upgradeUntil = up.t;
       list.push(bv);
     }
-    const jobs = jobsByProv.get(pid) ?? [];
     for (const j of jobs) {
-      if (j.kind === 'fortification' || j.kind === 'forward_base') continue;
-      list.push({ type: j.kind as BuildingView['type'], health: 0, buildUntil: j.t });
+      if (j.kind === 'fortification' || present.includes(j.kind as BuildingType)) continue;
+      list.push({
+        type: j.kind as BuildingType,
+        level: 0,
+        health: 0,
+        buildUntil: j.t,
+        upgradeUntil: j.t,
+      });
     }
-    if (list.length > 0 || w.provById.get(pid)!.buildings.length > 0) pv.buildingState = list;
+    pv.buildings = present;
+    pv.buildingState = list;
     const lvl = es.forts[pid] ?? 0;
     const fj = jobs.find((j) => j.kind === 'fortification');
-    if (lvl > 0 || fj) pv.fortification = { provinceId: pid, level: lvl, completesAt: fj?.t ?? null };
+    if (lvl > 0 || fj)
+      pv.fortification = { provinceId: pid, level: lvl, completesAt: fj?.t ?? null };
   }
+
+  if (es.live) view.economy.detail = economyDetail(state, me);
 
   // Ravitaillement des unités
   if (es.live) {

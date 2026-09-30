@@ -1,5 +1,6 @@
 import {
   RESOURCES,
+  type LedgerKey,
   type NationId,
   type OrderErrorCode,
   type Resource,
@@ -49,19 +50,34 @@ export function canPay(state: EngineState, n: NationId, p: Paid): OrderErrorCode
   return null;
 }
 
-export function pay(state: EngineState, n: NationId, p: Paid): void {
+/** Inscrit un flux signé au grand livre du jour (recette > 0, dépense < 0). */
+export function book(state: EngineState, n: NationId, key: LedgerKey, amount: number): void {
+  if (amount === 0 || !state.nations[n]) return;
+  const en = ecoNation(state, n);
+  en.today[key] = (en.today[key] ?? 0) + amount;
+}
+
+export function pay(state: EngineState, n: NationId, p: Paid, key: LedgerKey): void {
   const ns = state.nations[n]!;
   ns.money -= p.money;
   for (const r of RESOURCES) ns.res[r] -= p.res[r] ?? 0;
   ecoNation(state, n).spent += p.money;
+  book(state, n, key, -p.money);
 }
 
-export function refund(state: EngineState, n: NationId, p: Paid, share: number): void {
+export function refund(
+  state: EngineState,
+  n: NationId,
+  p: Paid,
+  share: number,
+  key: LedgerKey,
+): void {
   const ns = state.nations[n];
   if (!ns) return;
   ns.money += p.money * share;
   for (const r of RESOURCES) ns.res[r] += (p.res[r] ?? 0) * share;
   ecoNation(state, n).spent -= p.money * share;
+  book(state, n, key, p.money * share);
 }
 
 export function scaledRes(

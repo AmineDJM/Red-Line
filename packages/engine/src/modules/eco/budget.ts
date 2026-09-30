@@ -6,6 +6,7 @@ import {
   type Order,
   type ProvinceId,
   type Resource,
+  type WeaponSystem,
 } from '@redline/shared';
 import type { OrderResult } from '../../api.js';
 import { provincesOf, sortedSet, sysOf } from '../../state/access.js';
@@ -15,8 +16,8 @@ import { wi } from '../../state/world.js';
 import { board } from '../kit.js';
 import { modifier, signal } from '../registry.js';
 import type { ModuleIncome } from '../types.js';
-import { health, refineryOil } from './buildings.js';
-import { cfg } from './config.js';
+import { health, power, provinceIncomeFactor, provinceResources } from './buildings.js';
+import { cfg, effect } from './config.js';
 import { eco, ecoNation, ecoRt, orbatOf } from './state.js';
 import { eraOk, fail } from './util.js';
 
@@ -31,7 +32,7 @@ export function budgetDay(state: EngineState, n: NationId): number {
 /**
  * Revenu journalier en argent de chaque province, figé pour la partie : part provinciale du budget de
  * son propriétaire d'origine, au prorata de `income.money` (dollars) ; sans ORBAT, ancien calcul
- * (`income.money × incomeMultiplier`).
+ * (`income.money × incomeMultiplier`). Le moral et l'industrie locale s'appliquent par-dessus.
  */
 export function provValues(state: EngineState): Map<ProvinceId, number> {
   const rt = ecoRt(state);
@@ -59,6 +60,11 @@ export function provValues(state: EngineState): Map<ProvinceId, number> {
   return out;
 }
 
+/** Revenu en dollars par jour d'une province pour son propriétaire actuel. */
+export function provinceIncome(state: EngineState, pid: ProvinceId): number {
+  return (provValues(state).get(pid) ?? 0) * provinceIncomeFactor(state, pid);
+}
+
 /** Part des ports de la nation qui ne sont pas sous blocus (1 sans port). */
 function openPortShare(state: EngineState, n: NationId): number {
   const es = eco(state);
@@ -72,46 +78,202 @@ function openPortShare(state: EngineState, n: NationId): number {
   return ports === 0 ? 1 : open / ports;
 }
 
-/** Revenus en dollars (économie réelle) ; null hors économie réelle (calcul du cœur). */
-export function ecoIncome(state: EngineState, n: NationId): ModuleIncome | null {
-  const es = eco(state);
-  if (!es.live) return null;
+/** Ressource consommée par jour et par élément d'un système (null : aucune). */
+function consumptionOf(state: EngineState, sys: WeaponSystem): [Resource, number] | null {
+  const c = cfg(state.world).consumption;
+  if (sys.category === 'infantry') return ['food', c.foodPerInfantry];
+  if (sys.category === 'space') return ['electronics', c.electronicsPerSpace];
+  if (sys.movement === 'sea') return ['oil', c.oilPerShip];
+  if (sys.movement === 'air') return ['oil', c.oilPerAircraft];
+  if (sys.movement === 'land') return ['oil', c.oilPerVehicle];
+  return null;
+}
+
+export interface Breakdown {
+  national: number;
+  provincial: number;
+  trade: number;
+  mobilization: number;
+  modifiers: number;
+  total: number;
+  production: Record<Resource, number>;
+  consumption: Record<Resource, number>;
+  upkeep: Record<string, number>;
+  upkeepTotal: number;
+}
+
+/** Revenus, ressources et entretien prévus par jour, poste par poste (économie réelle). */
+export function breakdown(state: EngineState, n: NationId): Breakdown {
   const c = cfg(state.world);
-  const w = wi(state.world);
-  const vals = provValues(state);
   const provs = provincesOf(state, n);
-  let money = 0;
-  for (const p of provs) money += vals.get(p) ?? 0;
-  if (orbatOf(state, n)) money += budgetDay(state, n) * (1 - c.money.provinceShare);
+  let provincial = 0;
+  for (const p of provs) provincial += provinceIncome(state, p);
+  const national = orbatOf(state, n) ? budgetDay(state, n) * (1 - c.money.provinceShare) : 0;
+  const gross = national + provincial;
   const sanction = board(state).sanctions[n] ?? 1;
-  const trade = c.money.tradeShare;
-  money *= 1 - trade + trade * sanction * openPortShare(state, n);
-  if (board(state).mobilized[n]) money *= 1 - c.mobilization.incomePenalty;
-  money *= modifier(state, n, 'income.money');
+  const t = c.money.tradeShare;
+  const tradeF = 1 - t + t * sanction * openPortShare(state, n);
+  const afterTrade = gross * tradeF;
+  const mobilization = board(state).mobilized[n] ? -afterTrade * c.mobilization.incomePenalty : 0;
+  const afterMob = afterTrade + mobilization;
+  const mod = modifier(state, n, 'income.money');
 
-  const mult = state.world.balance.economy.incomeMultiplier;
-  const res = {} as Record<Resource, number>;
-  for (const r of RESOURCES) res[r] = 0;
-  for (const p of provs) {
-    const def = w.provById.get(p)!;
-    for (const r of RESOURCES) res[r] += (def.income[r] ?? 0) * mult;
+  const production = {} as Record<Resource, number>;
+  const consumption = {} as Record<Resource, number>;
+  for (const r of RESOURCES) {
+    production[r] = 0;
+    consumption[r] = 0;
   }
-  res.oil += refineryOil(state, n);
-  for (const r of RESOURCES) res[r] *= modifier(state, n, `income.${r}`);
+  for (const p of provs) {
+    const y = provinceResources(state, p);
+    for (const r of RESOURCES) production[r] += y[r];
+  }
+  for (const r of RESOURCES) production[r] *= modifier(state, n, `income.${r}`);
 
-  let upkeep = 0;
+  const upkeep: Record<string, number> = {};
+  let upkeepTotal = 0;
+  const upMod = modifier(state, n, 'upkeep');
   for (const uid of sortedSet(state.rt.byNation.get(n))) {
     const u = state.units[uid];
-    if (u) upkeep += sysOf(state, u).upkeepPerDay * u.count;
+    if (!u) continue;
+    const sys = sysOf(state, u);
+    const v = sys.upkeepPerDay * u.count * upMod;
+    if (v !== 0) {
+      upkeep[sys.category] = (upkeep[sys.category] ?? 0) + v;
+      upkeepTotal += v;
+    }
+    const cons = consumptionOf(state, sys);
+    if (cons) consumption[cons[0]] += cons[1] * u.count;
   }
-  upkeep *= modifier(state, n, 'upkeep');
-  return { money, res, upkeep };
+  return {
+    national,
+    provincial,
+    trade: gross * (tradeF - 1),
+    mobilization,
+    modifiers: afterMob * (mod - 1),
+    total: afterMob * mod,
+    production,
+    consumption,
+    upkeep,
+    upkeepTotal,
+  };
+}
+
+/** Revenus en dollars (économie réelle) ; null hors économie réelle (calcul du cœur). */
+export function ecoIncome(state: EngineState, n: NationId): ModuleIncome | null {
+  if (!eco(state).live) return null;
+  const b = breakdown(state, n);
+  const res = {} as Record<Resource, number>;
+  for (const r of RESOURCES) res[r] = b.production[r] - b.consumption[r];
+  return { money: b.total, res, upkeep: b.upkeepTotal };
 }
 
 /** Argent de départ : `startingDays` jours de budget (nations dotées d'un ORBAT). */
 export function startingMoney(state: EngineState, n: NationId): number | null {
   if (!orbatOf(state, n)) return null;
   return budgetDay(state, n) * cfg(state.world).money.startingDays;
+}
+
+/**
+ * Tick journalier du module (après le versement du cœur) : grand livre, pénuries, moral.
+ * Les revenus versés par le cœur sont ceux de `breakdown` (même état, même calcul).
+ */
+export function economyDaily(state: EngineState): void {
+  const es = eco(state);
+  if (!es.live) return;
+  const c = cfg(state.world);
+  const w = wi(state.world);
+  const foodShort = new Set<NationId>();
+  for (const n of state.nationIds) {
+    const ns = state.nations[n]!;
+    const en = ecoNation(state, n);
+    if (ns.alive) {
+      const b = breakdown(state, n);
+      const today = en.today;
+      const add = (k: string, v: number) => {
+        if (v !== 0) today[k] = (today[k] ?? 0) + v;
+      };
+      add('budgetNational', b.national);
+      add('budgetProvincial', b.provincial);
+      add('trade', b.trade);
+      add('mobilization', b.mobilization);
+      add('modifiers', b.modifiers);
+      add('upkeep', -b.upkeepTotal);
+      for (const r of RESOURCES) {
+        if (ns.res[r] < 0) ns.res[r] = 0;
+        if (ns.res[r] <= 0 && b.consumption[r] > b.production[r]) en.short[r] = true;
+        else delete en.short[r];
+      }
+      if (en.short.food) foodShort.add(n);
+    }
+    let known = 0;
+    for (const k of Object.keys(en.today)) known += en.today[k]!;
+    const other = ns.money - en.lastMoney - known;
+    en.lastDay = { ...en.today };
+    if (Math.abs(other) > Math.max(1e-3, 1e-12 * Math.abs(ns.money))) en.lastDay.other = other;
+    en.today = {};
+    en.lastMoney = ns.money;
+  }
+  // Moral : retour vers la cible (départ, ou « occupée »), pénurie de nourriture.
+  for (const pid of Object.keys(state.provinces).sort()) {
+    const P = state.provinces[pid]!;
+    const original = w.provById.get(pid)!.nationId === P.owner;
+    const target = original ? c.morale.start : c.morale.occupied;
+    let m = es.morale[pid] ?? c.morale.start;
+    if (m < target) m = Math.min(target, m + c.morale.recoveryPerDay);
+    else if (m > target) m = Math.max(target, m - c.morale.recoveryPerDay);
+    if (foodShort.has(P.owner)) m -= c.morale.shortagePenalty;
+    m = Math.max(0, Math.min(100, m));
+    if (m === c.morale.start) delete es.morale[pid];
+    else es.morale[pid] = m;
+  }
+}
+
+/** Province conquise : moral d'occupation (sauf libération). */
+export function moraleOnCapture(state: EngineState, pid: ProvinceId, to: NationId): void {
+  const es = eco(state);
+  if (!es.live) return;
+  const c = cfg(state.world).morale;
+  const original = wi(state.world).provById.get(pid)!.nationId === to;
+  if (!original) {
+    if (c.occupied === c.start) delete es.morale[pid];
+    else es.morale[pid] = Math.min(es.morale[pid] ?? c.start, c.occupied);
+  }
+}
+
+/** Soins quotidiens : hôpitaux (unités à l'arrêt dans la province) et bases navales (navires au port). */
+export function healDaily(state: EngineState): void {
+  if (!eco(state).live) return;
+  const w = wi(state.world);
+  const hosp = effect(state.world, 'hospital', 'healPerLevel', 0);
+  const naval = effect(state.world, 'naval_base', 'healPerLevel', 0);
+  if (hosp <= 0 && naval <= 0) return;
+  for (const n of state.nationIds) {
+    const navalPorts: { pt: [number, number]; p: number }[] = [];
+    if (naval > 0)
+      for (const pid of provincesOf(state, n)) {
+        const p = power(state, pid, 'naval_base');
+        const pt = w.seaSpawn.get(pid);
+        if (p > 0 && pt) navalPorts.push({ pt, p });
+      }
+    for (const uid of sortedSet(state.rt.byNation.get(n))) {
+      const u = state.units[uid]!;
+      if (u.move || u.engaged) continue;
+      const sys = sysOf(state, u);
+      const cap = Math.min(u.maxHp, u.count * sys.hp);
+      if (u.hp >= cap) continue;
+      let rate = 0;
+      if (sys.movement === 'sea') {
+        for (const x of navalPorts)
+          if (Math.abs(x.pt[0] - u.pos[0]) < 0.5 && Math.abs(x.pt[1] - u.pos[1]) < 0.5)
+            rate = Math.max(rate, naval * x.p);
+      } else {
+        const pid = w.nav.cellProv.get(w.nav.cellAt(u.pos));
+        if (pid && state.provinces[pid]?.owner === n) rate = hosp * power(state, pid, 'hospital');
+      }
+      if (rate > 0) u.hp = Math.min(cap, u.hp + rate * u.count * sys.hp);
+    }
+  }
 }
 
 // ——— Mobilisation générale ———
@@ -150,18 +312,20 @@ export function mobilizeOrder(
   const c = cfg(state.world).mobilization;
   if (order.on) {
     if (b.mobilized[n]) return fail('not_allowed', 'Déjà mobilisée.');
-    if (!state.nations[n]!.alive) return fail('not_allowed');
     b.mobilized[n] = true;
     en.mobSince = state.time;
     const sysId = mobilizationInfantry(state, n);
-    if (sysId && c.infantryPerProvince > 0) {
+    if (sysId) {
       const w = wi(state.world);
       const gc = state.world.balance.combat.groundContactKm;
+      const perOffice = effect(state.world, 'recruiting_office', 'mobilizationPerLevel', 0);
       for (const pid of provincesOf(state, n)) {
         const city = w.provById.get(pid)!.cityPoint;
-        for (let k = 0; k < c.infantryPerProvince; k++) {
+        const k =
+          c.infantryPerProvince + Math.floor(perOffice * power(state, pid, 'recruiting_office'));
+        for (let i = 0; i < k; i++) {
           let pos = city;
-          const cand = destination(city, (k * 137.508 + 60) % 360, gc * 0.4);
+          const cand = destination(city, (i * 137.508 + 60) % 360, gc * 0.4);
           if (w.nav.cellProv.get(w.nav.cellAt(cand)) === pid) pos = cand;
           spawnUnit(state, n, sysId, pos);
         }

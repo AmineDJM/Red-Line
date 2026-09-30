@@ -3,6 +3,7 @@ import type { MovementKind, Resource } from './catalog.js';
 import type { BuildingType } from './map.js';
 import type {
   BuildingView,
+  EconomyDetailView,
   LicenceView,
   LogisticsView,
   MarketView,
@@ -162,6 +163,8 @@ export interface EconomyView {
   /** Revenu journalier estimé. */
   incomePerDay: { money: number } & Partial<Record<Resource, number>>;
   production: ProductionItem[];
+  /** Tableau de bord économique détaillé (économie réelle, propre nation). */
+  detail?: EconomyDetailView;
 }
 
 export interface VictoryView {

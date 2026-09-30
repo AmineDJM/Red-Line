@@ -180,7 +180,12 @@ function node(p: Partial<ResearchNode> & Pick<ResearchNode, 'id' | 'branch' | 't
 }
 
 export const RESEARCH: ResearchNode[] = [
-  node({ id: 'research.industry.l1', branch: 'industry', tier: 0, effects: { 'production.speed': 1.25 } }),
+  node({
+    id: 'research.industry.l1',
+    branch: 'industry',
+    tier: 0,
+    effects: { 'production.speed': 1.25 },
+  }),
   node({ id: 'research.aero.gen4', branch: 'aero', tier: 3 }),
   node({ id: 'research.aero.gen4plus', branch: 'aero', tier: 4, requires: ['research.aero.gen4'] }),
   node({
@@ -242,10 +247,21 @@ export const ECO_BALANCE = BalanceSchema.parse({
   logistics: {},
   mobilization: {},
   industry: {},
-  buildings: {},
+  // Répartition automatique des bâtiments de ressources désactivée : chiffres de test exacts.
+  buildings: { distribute: false },
 });
 
+/** Même équilibrage, avec la répartition des bâtiments de ressources au départ. */
+export const ECO_BALANCE_DISTRIBUTED = BalanceSchema.parse({ ...ECO_BALANCE, buildings: {} });
+
 let cached: World | null = null;
+
+export function ecoWorldWith(balance = ECO_BALANCE, orbats: Orbat[] = ORBATS): World {
+  return buildWorld(ecoMap(), ECO_CATALOG, balance, {
+    research: RESEARCH,
+    orbats: { '2025': orbats },
+  });
+}
 
 export function ecoWorld(): World {
   if (!cached)

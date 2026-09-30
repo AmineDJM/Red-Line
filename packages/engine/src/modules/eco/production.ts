@@ -15,8 +15,8 @@ import { wi } from '../../state/world.js';
 import { startProduction } from '../../economy/economy.js';
 import { scheduleMod } from '../kit.js';
 import { canImport, firstError, modifier } from '../registry.js';
-import { health, provinceProductionSpeed } from './buildings.js';
-import { cfg, requiredBuilding } from './config.js';
+import { provinceProductionSpeed } from './buildings.js';
+import { cfg, requiredBuildings } from './config.js';
 import { hasGate } from './research.js';
 import { eco, ecoNation, type Paid } from './state.js';
 import { canPay, eraOk, fail, isNuclear, pay, refund, scaledRes, unitPrice } from './util.js';
@@ -38,7 +38,7 @@ export function localCheck(
   if (!eraOk(sys, es.year)) return 'not_allowed';
   const licensed = ecoNation(state, n).licences[sys.id] !== undefined;
   if (!licensed && !sys.requires.every((r) => hasGate(state, n, r))) return 'research_required';
-  if (health(state, pid, requiredBuilding(sys)) <= 0) return 'not_allowed';
+  if (provinceProductionSpeed(state, pid, requiredBuildings(sys)) <= 0) return 'not_allowed';
   return null;
 }
 
@@ -116,8 +116,8 @@ export function produceOrder(
     if (err) return fail(err);
     const speed =
       modifier(state, n, 'production.speed') *
-      provinceProductionSpeed(state, order.provinceId, requiredBuilding(sys));
-    pay(state, n, paid);
+      provinceProductionSpeed(state, order.provinceId, requiredBuildings(sys));
+    pay(state, n, paid, 'production');
     const ms = (batchHours(state, sys, count) * HOUR) / (speed > 0 ? speed : 1);
     addItem(state, n, order.provinceId, sys, elements, ms, paid, 'factory');
     return { ok: true };
@@ -129,7 +129,7 @@ export function produceOrder(
       const paid: Paid = { money: sys.cost.money * count * ind.importPriceFactor, res: {} };
       const err = canPay(state, n, paid);
       if (err) return fail(err);
-      pay(state, n, paid);
+      pay(state, n, paid, 'imports');
       const ms = (batchHours(state, sys, count) + ind.importDeliveryHours) * HOUR;
       addItem(state, n, order.provinceId, sys, elements, ms, paid, 'import');
       return { ok: true };
@@ -196,12 +196,25 @@ export function cancelProductionOrder(
   ns.production.splice(idx, 1);
   const share = cfg(state.world).industry.cancelRefund;
   const meta = es.prod[item.id];
+  const key =
+    item.source === 'import'
+      ? 'imports'
+      : item.source === 'black_market'
+        ? 'blackMarket'
+        : 'production';
   if (meta) {
-    refund(state, n, meta.paid, share);
+    refund(state, n, meta.paid, share, key);
     delete es.prod[item.id];
   } else {
     const sys = state.world.catalog.get(item.systemId);
-    if (sys) refund(state, n, { money: sys.cost.money, res: scaledRes(sys.cost.resources, 1) }, share);
+    if (sys)
+      refund(
+        state,
+        n,
+        { money: sys.cost.money, res: scaledRes(sys.cost.resources, 1) },
+        share,
+        key,
+      );
   }
   return { ok: true };
 }
@@ -250,7 +263,7 @@ export function buyLicenceOrder(
   const paid: Paid = { money: licencePrice(state, sys), res: {} };
   const err = canPay(state, n, paid);
   if (err) return fail(err);
-  pay(state, n, paid);
+  pay(state, n, paid, 'licences');
   en.licences[sys.id] = state.time;
   return { ok: true };
 }

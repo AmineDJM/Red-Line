@@ -4,7 +4,15 @@ import type { EngineState } from '../../state/types.js';
 import type { EngineModule, ModEvent, OrderHandler } from '../types.js';
 import { board } from '../kit.js';
 import { ecoAiThink } from './ai.js';
-import { ecoIncome, mobilizationDaily, mobilizeOrder, startingMoney } from './budget.js';
+import {
+  ecoIncome,
+  economyDaily,
+  healDaily,
+  mobilizationDaily,
+  mobilizeOrder,
+  moraleOnCapture,
+  startingMoney,
+} from './budget.js';
 import {
   accelerateJob,
   accelerateRepair,
@@ -50,6 +58,7 @@ import {
 import { eco, ecoNation, emptyEco, orbatOf, resetEcoRt, sortedIds } from './state.js';
 import { ecoAudience, ecoPublicView, ecoView } from './view.js';
 import { fail } from './util.js';
+import { cfg } from './config.js';
 
 /** Ordre réservé aux nations encore en vie. */
 function alive<K extends Order['kind']>(
@@ -81,6 +90,7 @@ function init(state: EngineState, setup: { scenario?: { year?: number; orbatSet?
         if (node.tier === 0 && (node.eraYear === undefined || node.eraYear <= es.year))
           grantNode(state, n, id, false);
     }
+    en.lastMoney = state.nations[n]!.money;
   }
 }
 
@@ -208,6 +218,8 @@ export const ecoModule: EngineModule = {
     onDailyTick(state) {
       const es = eco(state);
       for (const uid of sortedIds(es.supply)) if (!state.units[uid]) delete es.supply[uid];
+      economyDaily(state);
+      healDaily(state);
       evalSupply(state);
       mobilizationDaily(state);
     },
@@ -218,6 +230,7 @@ export const ecoModule: EngineModule = {
     },
     onProvinceCaptured(state, pid, from, to) {
       buildingsOnCapture(state, pid);
+      moraleOnCapture(state, pid, to);
       evalSupply(state, [from, to]);
     },
     canProduce(state, n, systemId, pid): OrderErrorCode | null {
@@ -226,7 +239,14 @@ export const ecoModule: EngineModule = {
     },
     modifier(state, n, key) {
       const r = researchModifier(state, n, key);
-      if (key === 'research.speed' && eco(state).live) return r * researchBuildingFactor(state, n);
+      const es = eco(state);
+      if (!es.live) return r;
+      if (key === 'research.speed') return r * researchBuildingFactor(state, n);
+      if (key === 'production.speed') {
+        const short = Object.keys(es.nations[n]?.short ?? {}).length;
+        if (short > 0)
+          return r * Math.pow(cfg(state.world).consumption.shortageProductionFactor, short);
+      }
       return r;
     },
     unitModifier(state, u, key) {

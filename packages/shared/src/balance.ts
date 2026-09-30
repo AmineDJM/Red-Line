@@ -147,6 +147,44 @@ export const BalanceSchema = z.object({
       repairHours: z.number().positive().default(48),
       buildHours: z.record(z.string(), z.number()).default({}),
       buildCostUsd: z.record(z.string(), z.number()).default({}),
+      /** Niveau maximal d'un bâtiment (1 à 5 comme dans Conflict of Nations). */
+      maxLevel: z.number().int().min(1).default(5),
+      /** Coût du niveau L = buildCostUsd × levelCostGrowth^(L − 1). */
+      levelCostGrowth: z.number().positive().default(1.6),
+      /** Durée du niveau L = buildHours × (1 + levelTimeGrowth × (L − 1)). */
+      levelTimeGrowth: z.number().min(0).default(0.25),
+      /** Répartir au départ des bâtiments de ressources selon les revenus des provinces. */
+      distribute: z.boolean().default(true),
+    })
+    .optional(),
+  /** Moral des provinces (0..100) : en dessous de 50, les revenus de la province baissent. */
+  morale: z
+    .object({
+      start: z.number().min(0).max(100).default(70),
+      /** Moral d'une province conquise (occupée). */
+      occupied: z.number().min(0).max(100).default(30),
+      /** Retour vers la valeur de départ, par jour. */
+      recoveryPerDay: z.number().min(0).default(2),
+      /** Baisse pour un bâtiment détruit (× dégâts). */
+      hitPenalty: z.number().min(0).default(10),
+      nuclearPenalty: z.number().min(0).default(50),
+      /** Baisse quotidienne en cas de pénurie de nourriture. */
+      shortagePenalty: z.number().min(0).default(5),
+      /** Revenu de la province × min(1, incomeFloor + moral / 100). */
+      incomeFloor: z.number().min(0).max(1).default(0.5),
+    })
+    .optional(),
+  /** Consommation quotidienne de ressources par élément et effets des pénuries. */
+  consumption: z
+    .object({
+      foodPerInfantry: z.number().min(0).default(0.1),
+      /** Blindés, véhicules, artillerie, défense aérienne terrestre, convois. */
+      oilPerVehicle: z.number().min(0).default(0.02),
+      oilPerAircraft: z.number().min(0).default(0.1),
+      oilPerShip: z.number().min(0).default(0.5),
+      electronicsPerSpace: z.number().min(0).default(0.05),
+      /** Vitesse de production × ce facteur par ressource en pénurie. */
+      shortageProductionFactor: z.number().min(0).max(1).default(0.5),
     })
     .optional(),
   alert: z

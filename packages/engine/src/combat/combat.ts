@@ -280,11 +280,12 @@ export function destroyUnit(
   const at = unitPosAt(state, u, t);
   const seers: string[] = [];
   for (const n of sortedKeys(state.sight)) if (sightLevel(state, n, u.id) > 0) seers.push(n);
-  if (!opts.quiet) notify(
-    state,
-    { kind: 'unit_destroyed', time: t, at, unitId: u.id, owner: u.owner, systemId: u.sys },
-    [u.owner, ...(killer ? [killer.owner] : []), ...seers],
-  );
+  if (!opts.quiet)
+    notify(
+      state,
+      { kind: 'unit_destroyed', time: t, at, unitId: u.id, owner: u.owner, systemId: u.sys },
+      [u.owner, ...(killer ? [killer.owner] : []), ...seers],
+    );
   removeUnitPairs(state, u.id);
   for (const n of seers) {
     const k = state.know[n];

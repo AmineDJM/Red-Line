@@ -116,7 +116,8 @@ function loadExtras(
       if (research.has(n.id)) warnings.push(`recherche : nœud en double ${n.id}`);
       research.set(n.id, n);
       for (const k of Object.keys(n.effects).sort())
-        if (!known.has(k)) warnings.push(`recherche : clé d'effet inconnue ${k} (${n.id}), ignorée`);
+        if (!known.has(k))
+          warnings.push(`recherche : clé d'effet inconnue ${k} (${n.id}), ignorée`);
     }
     for (const n of research.values())
       for (const r of n.requires)
@@ -134,11 +135,14 @@ function loadExtras(
         a.nationId < b.nationId ? -1 : a.nationId > b.nationId ? 1 : 0,
       );
       for (const o of list) {
-        if (byNation.has(o.nationId)) warnings.push(`ORBAT ${set} : nation en double ${o.nationId}`);
+        if (byNation.has(o.nationId))
+          warnings.push(`ORBAT ${set} : nation en double ${o.nationId}`);
         byNation.set(o.nationId, o);
         for (const it of o.inventory)
           if (!catalog.has(it.systemId))
-            warnings.push(`ORBAT ${set}/${o.nationId} : système absent du catalogue ${it.systemId}, ignoré`);
+            warnings.push(
+              `ORBAT ${set}/${o.nationId} : système absent du catalogue ${it.systemId}, ignoré`,
+            );
       }
       sets.set(set, byNation);
     }

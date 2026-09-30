@@ -1,6 +1,5 @@
 import type {
   GameTime,
-  LngLat,
   NationId,
   Orbat,
   ProvinceId,
@@ -40,6 +39,13 @@ export interface EcoNation {
   mobSince: GameTime | null;
   /** Dollars dépensés (statistiques). */
   spent: number;
+  /** Ressources en pénurie au dernier tick journalier. */
+  short: Partial<Record<Resource, true>>;
+  /** Grand livre : flux signés du jour en cours et du jour précédent (clés LedgerKey). */
+  today: Record<string, number>;
+  lastDay: Record<string, number>;
+  /** Trésorerie juste après le dernier tick journalier (poste « other » par différence). */
+  lastMoney: number;
 }
 
 /** État d'un bâtiment qui s'écarte du défaut (présent à la carte, santé 1, sans réparation). */
@@ -51,6 +57,8 @@ export interface BState {
   rv: number;
   /** Bâtiment construit en cours de partie (absent de la carte). */
   add?: true;
+  /** Niveau, s'il diffère du niveau de départ. */
+  lvl?: number;
 }
 
 export type JobKind = string; // BuildingType | 'fortification' | 'forward_base'
@@ -64,6 +72,8 @@ export interface Job {
   completesAt: GameTime;
   paid: number;
   v: number;
+  /** Niveau visé (1 = construction, > 1 = amélioration). */
+  lvl: number;
 }
 
 export interface ProdMeta {
@@ -96,14 +106,6 @@ export interface Delivery {
   mv: number;
 }
 
-export interface Depot {
-  id: string;
-  n: NationId;
-  pid: ProvinceId;
-  at: LngLat;
-  rangeKm: number;
-}
-
 export interface EcoState {
   /** Économie réelle (recherche et/ou ORBAT chargés) ; sinon comportement de la phase 1. */
   live: boolean;
@@ -116,7 +118,8 @@ export interface EcoState {
   bld: Record<ProvinceId, Record<string, BState>>;
   jobs: Record<string, Job>;
   forts: Record<ProvinceId, number>;
-  depots: Record<string, Depot>;
+  /** Moral des provinces qui s'écarte de la valeur de départ. */
+  morale: Record<ProvinceId, number>;
   /** Ravitaillement des unités qui ne sont pas « supplied ». */
   supply: Record<UnitId, 'limited' | 'cut'>;
   offers: Record<string, Offer>;
@@ -136,6 +139,10 @@ export function emptyEcoNation(): EcoNation {
     licences: {},
     mobSince: null,
     spent: 0,
+    short: {},
+    today: {},
+    lastDay: {},
+    lastMoney: 0,
   };
 }
 
@@ -149,7 +156,7 @@ export function emptyEco(live: boolean, year: number, set: string): EcoState {
     bld: {},
     jobs: {},
     forts: {},
-    depots: {},
+    morale: {},
     supply: {},
     offers: {},
     dlv: {},

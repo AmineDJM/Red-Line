@@ -1,4 +1,10 @@
-import { destination, type LngLat, type NationId, type ProvinceId, type WeaponSystem } from '@redline/shared';
+import {
+  destination,
+  type LngLat,
+  type NationId,
+  type ProvinceId,
+  type WeaponSystem,
+} from '@redline/shared';
 import type { EngineState } from '../../state/types.js';
 import { spawnUnit } from '../../state/units.js';
 import { wi } from '../../state/world.js';
@@ -14,7 +20,7 @@ function groupOf(sys: WeaponSystem): Group {
     return 'sea';
   if (sys.category === 'space') return 'space';
   if (AIR_CATEGORIES.has(sys.category) || sys.movement === 'air') return 'air';
-  if (sys.category === 'air_defense') return 'ad';
+  if (sys.category === 'air_defense' || sys.category === 'radar') return 'ad';
   if (sys.category === 'strike_missile' || sys.category === 'nuclear') return 'missile';
   return 'land';
 }
@@ -27,7 +33,7 @@ const cmp = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
  *  - aéronefs : provinces avec base aérienne (sinon la capitale) ;
  *  - navires et sous-marins : en mer devant les ports (point de mise à l'eau) ;
  *  - forces terrestres : capitale, bases militaires, provinces frontalières ;
- *  - défense aérienne : capitale, grandes villes (revenu), bases aériennes et militaires ;
+ *  - défense aérienne et radars : capitale, grandes villes (revenu), bases aériennes et militaires ;
  *  - missiles et nucléaire : lanceurs sur les bases militaires (sinon la capitale) ;
  *  - satellites : à la capitale (le module militaire gère l'orbite).
  * Si le nombre de piles dépasse `maxStacksPerNation`, les tailles de pile sont augmentées.
@@ -49,7 +55,7 @@ export function placeOrbatForces(state: EngineState, n: NationId): boolean {
 
   const air = owned.filter((p) => has(p, 'air_base'));
   const coastal = owned.filter((p) => !!w.seaSpawn.get(p));
-  const ports = coastal.filter((p) => has(p, 'port'));
+  const ports = coastal.filter((p) => has(p, 'port') || has(p, 'naval_base'));
   const bases = owned.filter((p) => has(p, 'military_base'));
   const border = owned.filter((p) =>
     def(p).neighbors.some((q) => state.provinces[q] && state.provinces[q]!.owner !== n),

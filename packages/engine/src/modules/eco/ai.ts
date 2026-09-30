@@ -4,8 +4,8 @@ import type { EngineState } from '../../state/types.js';
 import { wi } from '../../state/world.js';
 import { applyOrderImpl } from '../../orders/orders.js';
 import { budgetDay } from './budget.js';
-import { buildingsOf, health } from './buildings.js';
-import { cfg, requiredBuilding } from './config.js';
+import { buildingsOf, health, levelOf, provinceProductionSpeed } from './buildings.js';
+import { cfg, requiredBuildings } from './config.js';
 import { importCheck, localCheck } from './production.js';
 import { hasGate, nodeOf } from './research.js';
 import { eco, ecoNation, sortedIds } from './state.js';
@@ -18,8 +18,26 @@ const AI = {
   /** Une recherche n'est lancée que si elle coûte moins que cette part de la trésorerie. */
   researchSpendShare: 0.25,
   /** Priorité des branches (paix / guerre). */
-  peaceBranches: ['industry', 'aero', 'land', 'sensors', 'naval', 'missiles', 'cyber', 'intel'] as ResearchBranch[],
-  warBranches: ['aero', 'missiles', 'land', 'sensors', 'industry', 'naval', 'cyber', 'intel'] as ResearchBranch[],
+  peaceBranches: [
+    'industry',
+    'aero',
+    'land',
+    'sensors',
+    'naval',
+    'missiles',
+    'cyber',
+    'intel',
+  ] as ResearchBranch[],
+  warBranches: [
+    'aero',
+    'missiles',
+    'land',
+    'sensors',
+    'industry',
+    'naval',
+    'cyber',
+    'intel',
+  ] as ResearchBranch[],
   /** En guerre : catégories achetées ou produites, par ordre de préférence. */
   warCategories: ['air_defense', 'fighter', 'tank', 'artillery', 'drone'] as Category[],
   /** Réserve conservée : jours de budget (ou part de la trésorerie sans ORBAT). */
@@ -68,7 +86,11 @@ function thinkRepairs(state: EngineState, n: NationId): void {
     for (const b of buildingsOf(state, pid)) {
       const h = health(state, pid, b);
       if (h >= 1 || es.bld[pid]?.[b]?.rep != null) continue;
-      const cost = (c.buildings.buildCostUsd[b] ?? 0) * (1 - h) * c.industry.repairCostFactor;
+      const cost =
+        (c.buildings.buildCostUsd[b] ?? 0) *
+        Math.pow(c.buildings.levelCostGrowth, levelOf(state, pid, b) - 1) *
+        (1 - h) *
+        c.industry.repairCostFactor;
       if (state.nations[n]!.money < cost * AI.repairFactor) continue;
       applyOrderImpl(state, n, { kind: 'repair', provinceId: pid, building: b });
     }
@@ -88,8 +110,8 @@ function thinkWarProduction(state: EngineState, n: NationId): void {
     for (const id of w.systemIds) {
       const sys = state.world.catalog.get(id)!;
       if (sys.category !== cat || !sys.enabled || sys.movement === 'sea') continue;
-      const need = requiredBuilding(sys);
-      const pid = provs.find((p) => health(state, p, need) > 0);
+      const need = requiredBuildings(sys);
+      const pid = provs.find((p) => provinceProductionSpeed(state, p, need) > 0);
       if (pid && !localCheck(state, n, sys, pid)) options.push({ sys, pid, local: true });
       else if (provs[0] && !importCheck(state, n, sys))
         options.push({ sys, pid: pid ?? provs[0], local: false });
@@ -105,7 +127,10 @@ function thinkWarProduction(state: EngineState, n: NationId): void {
       const unit = o.sys.cost.money * (o.local ? 1 : cfg(state.world).industry.importPriceFactor);
       const count = Math.min(AI.batch, Math.floor(spare / Math.max(1, unit)));
       if (count < 1) continue;
-      if (applyOrderImpl(state, n, { kind: 'produce', provinceId: o.pid, systemId: o.sys.id, count }).ok)
+      if (
+        applyOrderImpl(state, n, { kind: 'produce', provinceId: o.pid, systemId: o.sys.id, count })
+          .ok
+      )
         return;
     }
   }

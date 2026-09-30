@@ -25,7 +25,7 @@ import { cfg } from './config.js';
 import { queueBlackMarket } from './production.js';
 import { hasGate } from './research.js';
 import { eco, ecoNation, nextId, sortedIds, type Delivery } from './state.js';
-import { canPay, eraOk, fail, isNuclear, pay } from './util.js';
+import { book, canPay, eraOk, fail, isNuclear, pay } from './util.js';
 
 /** Porteurs génériques des livraisons (catégorie logistics), s'ils sont au catalogue. */
 export const CARRIERS = {
@@ -204,8 +204,9 @@ export function acceptOfferOrder(
   }
   if (o.item.type === 'units' && !takeUnits(state, o.seller, o.item.systemId, o.item.count))
     return fail('capacity');
-  pay(state, n, { money: o.price, res: {} });
+  pay(state, n, { money: o.price, res: {} }, 'marketPurchases');
   state.nations[o.seller]!.money += o.price;
+  book(state, o.seller, 'marketSales', o.price);
   delete es.offers[o.id];
   deliver(state, o.seller, n, o.item, false);
   return { ok: true };
@@ -227,6 +228,7 @@ export function transferOrder(
   if (order.item.type === 'units' && !takeUnits(state, n, order.item.systemId, order.item.count))
     return fail('capacity');
   escrow(state, n, order.item, 1);
+  if (order.item.type === 'money') book(state, n, 'transfersOut', -order.item.amount);
   deliver(state, n, to, order.item, order.covert);
   return { ok: true };
 }
@@ -251,7 +253,7 @@ export function blackMarketOrder(
   };
   const err = canPay(state, n, paid);
   if (err) return fail(err);
-  pay(state, n, paid);
+  pay(state, n, paid, 'blackMarket');
   queueBlackMarket(state, n, pid, sys, count, paid);
   if (nextFloat(state.rng) < cfg(state.world).blackMarket.detectionChance)
     signal(state, 'black_market_detected', { buyer: n, systemId: sys.id });
@@ -283,7 +285,9 @@ function planRoute(
   const memo = state.rt.planMemo as Map<string, SurfaceSegments>;
   const t = state.time;
   const itemSys =
-    item.type === 'units' ? state.world.catalog.get(item.systemId) : (undefined as WeaponSystem | undefined);
+    item.type === 'units'
+      ? state.world.catalog.get(item.systemId)
+      : (undefined as WeaponSystem | undefined);
   const land = state.world.catalog.get(CARRIERS.land);
   if (land && itemSys?.movement !== 'sea') {
     const o = origins[0]!.p;
@@ -309,14 +313,16 @@ function planRoute(
       const a = w.seaSpawn.get(oPort.p)!;
       const b = w.seaSpawn.get(dPort)!;
       const plan = planSurface(w.nav, state.world.balance, ship, a, b, t, memo);
-      if (!('error' in plan) && plan.legs.length > 0) return { sysId: ship.id, from: a, legs: plan.legs };
+      if (!('error' in plan) && plan.legs.length > 0)
+        return { sysId: ship.id, from: a, legs: plan.legs };
     }
   }
   const air = state.world.catalog.get(CARRIERS.air);
   if (air && itemSys?.movement !== 'sea') {
     const from0 = w.provById.get(origins[0]!.p)!.cityPoint;
     const plan = planAir(air, from0, destPt, t);
-    if (!('error' in plan) && plan.legs.length > 0) return { sysId: air.id, from: from0, legs: plan.legs };
+    if (!('error' in plan) && plan.legs.length > 0)
+      return { sysId: air.id, from: from0, legs: plan.legs };
   }
   return null;
 }
@@ -335,6 +341,7 @@ export function deliver(
 ): void {
   if (item.type === 'money') {
     state.nations[to]!.money += item.amount;
+    book(state, to, 'transfersIn', item.amount);
     return;
   }
   if (item.type === 'licence') {
@@ -377,7 +384,11 @@ function audienceOf(d: Delivery): NationId[] {
 function arrive(state: EngineState, d: Delivery, carrier: Unit | null): void {
   const w = wi(state.world);
   const dest = state.provinces[d.dest]?.owner === d.to ? d.dest : capitalOf(state, d.to);
-  const at = carrier ? unitPosAt(state, carrier, state.time) : dest ? w.provById.get(dest)!.cityPoint : [0, 0] as LngLat;
+  const at = carrier
+    ? unitPosAt(state, carrier, state.time)
+    : dest
+      ? w.provById.get(dest)!.cityPoint
+      : ([0, 0] as LngLat);
   if (carrier) destroyUnit(state, carrier, null, { quiet: true });
   delete eco(state).dlv[d.id];
   if (!state.nations[d.to]?.alive || !dest) return;
@@ -409,7 +420,12 @@ export function onDeliveryArrival(state: EngineState, ev: { id: string; mv: numb
     const legs = u.move.legs;
     d.mv = u.mv;
     d.eta = legs[legs.length - 1]!.t1;
-    scheduleMod(state, { t: Math.max(d.eta, state.time), m: 'eco', e: 'dlv', d: { id: d.id, mv: u.mv } });
+    scheduleMod(state, {
+      t: Math.max(d.eta, state.time),
+      m: 'eco',
+      e: 'dlv',
+      d: { id: d.id, mv: u.mv },
+    });
     return;
   }
   arrive(state, d, u);
