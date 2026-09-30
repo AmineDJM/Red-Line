@@ -37,7 +37,12 @@ export function Page({
           </Badge>
         ) : null}
         {back !== null ? (
-          <Button variant="ghost" size="sm" icon={<Icon name="chevronLeft" size={13} />} onClick={() => navigate(back)}>
+          <Button
+            variant="ghost"
+            size="sm"
+            icon={<Icon name="chevronLeft" size={13} />}
+            onClick={() => navigate(back)}
+          >
             {t('app.back')}
           </Button>
         ) : null}

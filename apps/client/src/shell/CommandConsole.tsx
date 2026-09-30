@@ -69,7 +69,10 @@ export function CommandConsole() {
       setValue(active.insert);
       return;
     }
-    const line = active?.run && active.insert.startsWith(trimmed.split(' ')[0] ?? '') ? active.insert : trimmed;
+    const line =
+      active?.run && active.insert.startsWith(trimmed.split(' ')[0] ?? '')
+        ? active.insert
+        : trimmed;
     if (!line) return;
     add('in', line);
     const h = [...history.filter((x) => x !== line), line].slice(-50);
@@ -144,9 +147,9 @@ export function CommandConsole() {
       }}
       emptyHelp={
         <span>
-          {t('console.examples')}{' '}
-          <code>move sel alger</code> · <code>produce 4 su-30mka</code> · <code>research aero.gen5</code> ·{' '}
-          <code>goto paris</code> · <code>intel infiltrate_spy maroc</code>
+          {t('console.examples')} <code>move sel alger</code> · <code>produce 4 su-30mka</code> ·{' '}
+          <code>research aero.gen5</code> · <code>goto paris</code> ·{' '}
+          <code>intel infiltrate_spy maroc</code>
         </span>
       }
     />

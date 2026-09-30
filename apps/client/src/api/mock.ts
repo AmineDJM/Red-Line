@@ -19,7 +19,7 @@ import type {
   WeaponSystem,
 } from '@redline/shared';
 import { FALLBACK_TILES, FONTS } from '../config.js';
-import { bundledResearch } from '../lib/staticData.js';
+import { bundledBalance, bundledResearch } from '../lib/staticData.js';
 import { loadBasemap, probeBinary } from './http.js';
 import { demoCatalog, demoResearch } from './mockCatalog.js';
 import {
@@ -35,6 +35,7 @@ import {
   demoStats,
   demoTimelapse,
   demoWallet,
+  withDemoBuildings,
 } from './mockRest.js';
 import type { Api, BasemapData, Credentials, RegisterInput, TilesInfo } from './types.js';
 
@@ -197,7 +198,12 @@ export class MockApi implements Api {
     return (await loadFixtures()).nations;
   }
   async provinces() {
-    return (await loadFixtures()).provinces;
+    // Démo : revenus affichés en dollars (≈ budget de défense réel réparti sur les provinces).
+    // La simulation locale garde les valeurs d'origine.
+    return (await loadFixtures()).provinces.map((p) => ({
+      ...p,
+      income: { ...p.income, money: Math.round(p.income.money * 28_000) },
+    }));
   }
   async provincesGeoJSON() {
     return (await loadFixtures()).geo;
@@ -245,6 +251,9 @@ export class MockApi implements Api {
   // ——— Phases 2+ ———
   researchNodes() {
     return loadDemoResearch();
+  }
+  async balance() {
+    return withDemoBuildings(await bundledBalance());
   }
   async nationsInfo(): Promise<NationInfo[]> {
     const f = await loadFixtures();
@@ -312,13 +321,17 @@ export class MockApi implements Api {
   }
   async buyCosmetic(id: string) {
     const c = DEMO_COSMETICS.find((x) => x.id === id);
-    if (!c || WALLET.balance < c.price || OWNED.has(id)) return { ok: false, balance: WALLET.balance };
+    if (!c || WALLET.balance < c.price || OWNED.has(id))
+      return { ok: false, balance: WALLET.balance };
     WALLET.balance -= c.price;
     OWNED.add(id);
     return { ok: true, balance: WALLET.balance };
   }
   async rankings(season?: string) {
-    return { season: DEMO_SEASONS.find((s) => s.id === season) ?? DEMO_SEASONS[0]!, entries: demoRankings() };
+    return {
+      season: DEMO_SEASONS.find((s) => s.id === season) ?? DEMO_SEASONS[0]!,
+      entries: demoRankings(),
+    };
   }
   async seasons() {
     return DEMO_SEASONS;

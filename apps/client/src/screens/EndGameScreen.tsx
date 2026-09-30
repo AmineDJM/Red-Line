@@ -78,16 +78,36 @@ function Timelapse({ data, me }: { data: TimelapseView; me: NationId | null }) {
   const owned = Object.values(data.frames[day]?.owners ?? {}).filter((o) => o === me).length;
   return (
     <div className="timelapse">
-      <canvas ref={ref} className="minimap timelapse__canvas" role="img" aria-label={t('endgame.timelapse')} />
+      <canvas
+        ref={ref}
+        className="minimap timelapse__canvas"
+        role="img"
+        aria-label={t('endgame.timelapse')}
+      />
       <div className="timelapse__hud">
         <span className="replay__rec">{t('endgame.day', { day })}</span>
         <span>{t('endgame.provincesHeld', { count: owned })}</span>
       </div>
       <div className="replay__controls">
-        <button type="button" className="replay__play" onClick={() => setPlaying(!playing)} aria-label={playing ? t('game.clock.pause') : t('game.clock.play')}>
+        <button
+          type="button"
+          className="replay__play"
+          onClick={() => setPlaying(!playing)}
+          aria-label={playing ? t('game.clock.pause') : t('game.clock.play')}
+        >
           <Icon name={playing ? 'pause' : 'play'} size={13} />
         </button>
-        <Slider value={day} min={0} max={last} onChange={(v) => { setPlaying(false); setDay(v); }} label={t('endgame.day', { day })} format={(v) => `J+${v}`} />
+        <Slider
+          value={day}
+          min={0}
+          max={last}
+          onChange={(v) => {
+            setPlaying(false);
+            setDay(v);
+          }}
+          label={t('endgame.day', { day })}
+          format={(v) => `J+${v}`}
+        />
         <span className="muted small">{t('endgame.days', { count: last })}</span>
       </div>
     </div>
@@ -128,7 +148,11 @@ export function EndGameScreen({ id }: { id: string }) {
           <Button variant="subtle" onClick={() => navigate('/')}>
             {t('game.end.home')}
           </Button>
-          <Button variant="primary" icon={<Icon name="play" size={11} />} onClick={() => navigate('/new')}>
+          <Button
+            variant="primary"
+            icon={<Icon name="play" size={11} />}
+            onClick={() => navigate('/new')}
+          >
             {t('game.end.newGame')}
           </Button>
         </>
@@ -146,13 +170,22 @@ export function EndGameScreen({ id }: { id: string }) {
               <span className="endbanner__kicker">{me ? world.nations[me]?.name : ''}</span>
               <h2>{victory ? t('game.end.victory') : t('game.end.defeat')}</h2>
               <span className="muted">
-                {stats.winner ? t('endgame.winner', { nation: world.nations[stats.winner]?.name ?? stats.winner }) : t('endgame.noWinner')} · {t('endgame.days', { count: stats.durationDays })}
+                {stats.winner
+                  ? t('endgame.winner', {
+                      nation: world.nations[stats.winner]?.name ?? stats.winner,
+                    })
+                  : t('endgame.noWinner')}{' '}
+                · {t('endgame.days', { count: stats.durationDays })}
               </span>
             </div>
           </div>
           {mine ? (
             <div className="kpis">
-              <Stat label={t('endgame.provinces')} value={`${mine.provincesStart} → ${mine.provincesEnd}`} tone={mine.provincesEnd >= mine.provincesStart ? 'green' : 'red'} />
+              <Stat
+                label={t('endgame.provinces')}
+                value={`${mine.provincesStart} → ${mine.provincesEnd}`}
+                tone={mine.provincesEnd >= mine.provincesStart ? 'green' : 'red'}
+              />
               <Stat label={t('endgame.conquered')} value={mine.conquered} tone="violet" />
               <Stat label={t('endgame.kills')} value={formatInt(mine.kills)} tone="amber" />
               <Stat label={t('endgame.losses')} value={formatInt(mine.losses)} tone="red" />
@@ -170,10 +203,14 @@ export function EndGameScreen({ id }: { id: string }) {
                     const s = world.catalog[b.systemId];
                     return (
                       <li key={b.systemId}>
-                        {s ? <WeaponPhoto system={s} photo={photoFor(s, photos)} variant="thumb" /> : null}
+                        {s ? (
+                          <WeaponPhoto system={s} photo={photoFor(s, photos)} variant="thumb" />
+                        ) : null}
                         <span>
                           <b>{s?.name ?? b.systemId}</b>
-                          <span className="rl-tone-amber">{t('endgame.killsCount', { count: b.kills })}</span>
+                          <span className="rl-tone-amber">
+                            {t('endgame.killsCount', { count: b.kills })}
+                          </span>
                         </span>
                       </li>
                     );
@@ -194,17 +231,56 @@ export function EndGameScreen({ id }: { id: string }) {
                 render: (n) => (
                   <span className="nat nat--strong">
                     <Flag nationId={n.nationId} size={12} />
-                    <span className="nat__name">{world.nations[n.nationId]?.name ?? n.nationId}</span>
-                    {n.nationId === stats.winner ? <Icon name="crown" size={13} className="rl-tone-amber" /> : null}
+                    <span className="nat__name">
+                      {world.nations[n.nationId]?.name ?? n.nationId}
+                    </span>
+                    {n.nationId === stats.winner ? (
+                      <Icon name="crown" size={13} className="rl-tone-amber" />
+                    ) : null}
                   </span>
                 ),
               },
-              { key: 'p', header: t('endgame.cols.player'), render: (n) => n.player ?? <Badge tone="neutral">IA</Badge>, hideOnMobile: true },
-              { key: 'end', header: t('endgame.cols.provinces'), align: 'right', render: (n) => `${n.provincesStart} → ${n.provincesEnd}`, sort: (a, b) => a.provincesEnd - b.provincesEnd },
-              { key: 'c', header: t('endgame.cols.conquered'), align: 'right', render: (n) => n.conquered, sort: (a, b) => a.conquered - b.conquered },
-              { key: 'k', header: t('endgame.cols.kills'), align: 'right', render: (n) => formatInt(n.kills), hideOnMobile: true },
-              { key: 'l', header: t('endgame.cols.losses'), align: 'right', render: (n) => formatInt(n.losses), hideOnMobile: true },
-              { key: 's', header: t('endgame.cols.spent'), align: 'right', render: (n) => <span className="rl-money">{formatMoney(n.spentUsd)}</span>, hideOnMobile: true },
+              {
+                key: 'p',
+                header: t('endgame.cols.player'),
+                render: (n) => n.player ?? <Badge tone="neutral">IA</Badge>,
+                hideOnMobile: true,
+              },
+              {
+                key: 'end',
+                header: t('endgame.cols.provinces'),
+                align: 'right',
+                render: (n) => `${n.provincesStart} → ${n.provincesEnd}`,
+                sort: (a, b) => a.provincesEnd - b.provincesEnd,
+              },
+              {
+                key: 'c',
+                header: t('endgame.cols.conquered'),
+                align: 'right',
+                render: (n) => n.conquered,
+                sort: (a, b) => a.conquered - b.conquered,
+              },
+              {
+                key: 'k',
+                header: t('endgame.cols.kills'),
+                align: 'right',
+                render: (n) => formatInt(n.kills),
+                hideOnMobile: true,
+              },
+              {
+                key: 'l',
+                header: t('endgame.cols.losses'),
+                align: 'right',
+                render: (n) => formatInt(n.losses),
+                hideOnMobile: true,
+              },
+              {
+                key: 's',
+                header: t('endgame.cols.spent'),
+                align: 'right',
+                render: (n) => <span className="rl-money">{formatMoney(n.spentUsd)}</span>,
+                hideOnMobile: true,
+              },
             ]}
           />
         </div>

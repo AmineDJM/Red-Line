@@ -54,10 +54,21 @@ export interface FlagProps {
   /** Préfixe d'URL si l'application n'est pas servie à la racine. */
   base?: string;
   className?: string;
+  /** Chargement immédiat (drapeau principal d'un écran) au lieu du chargement différé. */
+  eager?: boolean;
 }
 
 /** Drapeau 4:3 (flag-icons, MIT) avec repli sur la couleur de la nation. */
-export function Flag({ nationId, iso2, size = 14, color, title, base = '', className }: FlagProps) {
+export function Flag({
+  nationId,
+  iso2,
+  size = 14,
+  color,
+  title,
+  base = '',
+  className,
+  eager,
+}: FlagProps) {
   const url = iso2 ? `${base}/flags/${iso2.toLowerCase()}.svg` : flagUrl(nationId ?? '', base);
   const code = (nationId ?? iso2 ?? '').slice(0, 3).toUpperCase();
   const [failed, setFailed] = useState(false);
@@ -82,7 +93,7 @@ export function Flag({ nationId, iso2, size = 14, color, title, base = '', class
       style={style}
       alt={title ?? ''}
       title={title}
-      loading="lazy"
+      loading={eager ? 'eager' : 'lazy'}
       decoding="async"
       onError={() => setFailed(true)}
     />

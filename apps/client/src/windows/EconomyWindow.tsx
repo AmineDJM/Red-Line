@@ -47,7 +47,8 @@ import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 
-type Tab = 'dashboard' | 'resources' | 'buildings' | 'market' | 'deliveries' | 'black' | 'logistics';
+type Tab =
+  'dashboard' | 'resources' | 'buildings' | 'market' | 'deliveries' | 'black' | 'logistics';
 
 function useSend() {
   const { t } = useTranslation();
@@ -55,7 +56,8 @@ function useSend() {
   return async (order: Order, ok: string) => {
     const res = await useGame.getState().connection?.sendOrder(order);
     if (res?.ok) toast(ok, 'ok');
-    else if (res) toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    else if (res)
+      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
   };
 }
 
@@ -109,19 +111,50 @@ function Dashboard() {
   const sum = economySummary(view, me, catalog);
   const eco = view?.economy;
   const d = sum.details;
-  const maxFlow = Math.max(1, ...sum.income.map((x) => x.amount), ...sum.expenses.map((x) => x.amount));
+  const maxFlow = Math.max(
+    1,
+    ...sum.income.map((x) => x.amount),
+    ...sum.expenses.map((x) => x.amount),
+  );
   return (
     <div className="vstack">
       <div className="kpis">
-        <Stat label={t('economy.treasury')} value={<Money value={eco?.money ?? 0} />} tone="amber" sub={d.history ? <Sparkline values={d.history} tone="amber" width={120} label={t('economy.trend')} /> : null} />
-        <Stat label={t('economy.annualBudget')} value={d.annualBudget ? formatMoney(d.annualBudget) : '—'} sub={t('economy.budgetSource')} />
-        <Stat label={t('economy.income')} value={formatMoney(sum.totalIncome, { signed: true })} tone="green" sub={t('economy.perDay')} />
-        <Stat label={t('economy.expenses')} value={formatMoney(-sum.totalExpenses)} tone="red" sub={t('economy.perDay')} />
+        <Stat
+          label={t('economy.treasury')}
+          value={<Money value={eco?.money ?? 0} />}
+          tone="amber"
+          sub={
+            d.history ? (
+              <Sparkline values={d.history} tone="amber" width={120} label={t('economy.trend')} />
+            ) : null
+          }
+        />
+        <Stat
+          label={t('economy.annualBudget')}
+          value={d.annualBudget ? formatMoney(d.annualBudget) : '—'}
+          sub={t('economy.budgetSource')}
+        />
+        <Stat
+          label={t('economy.income')}
+          value={formatMoney(sum.totalIncome, { signed: true })}
+          tone="green"
+          sub={t('economy.perDay')}
+        />
+        <Stat
+          label={t('economy.expenses')}
+          value={formatMoney(-sum.totalExpenses)}
+          tone="red"
+          sub={t('economy.perDay')}
+        />
         <Stat
           label={t('economy.balance')}
           value={formatMoney(sum.balance, { signed: true })}
           tone={sum.balance >= 0 ? 'green' : 'red'}
-          sub={sum.balance < 0 && eco ? t('economy.runway', { days: Math.floor(eco.money / -sum.balance) }) : t('economy.perDay')}
+          sub={
+            sum.balance < 0 && eco
+              ? t('economy.runway', { days: Math.floor(eco.money / -sum.balance) })
+              : t('economy.perDay')
+          }
         />
       </div>
       {sum.estimated ? <p className="hint">{t('economy.estimated')}</p> : null}
@@ -132,9 +165,14 @@ function Dashboard() {
               <li key={x.key}>
                 <span className="flows__label">{t(`economy.incomeKeys.${x.key}`)}</span>
                 <span className="flows__bar">
-                  <span className="flows__fill flows__fill--in" style={{ width: `${(x.amount / maxFlow) * 100}%` }} />
+                  <span
+                    className="flows__fill flows__fill--in"
+                    style={{ width: `${(x.amount / maxFlow) * 100}%` }}
+                  />
                 </span>
-                <span className="flows__value rl-tone-green">{formatMoney(x.amount, { signed: true })}</span>
+                <span className="flows__value rl-tone-green">
+                  {formatMoney(x.amount, { signed: true })}
+                </span>
               </li>
             ))}
           </ul>
@@ -145,7 +183,10 @@ function Dashboard() {
               <li key={x.key}>
                 <span className="flows__label">{t(`economy.expenseKeys.${x.key}`)}</span>
                 <span className="flows__bar">
-                  <span className="flows__fill flows__fill--out" style={{ width: `${(x.amount / maxFlow) * 100}%` }} />
+                  <span
+                    className="flows__fill flows__fill--out"
+                    style={{ width: `${(x.amount / maxFlow) * 100}%` }}
+                  />
                 </span>
                 <span className="flows__value rl-tone-red">{formatMoney(-x.amount)}</span>
               </li>
@@ -160,11 +201,42 @@ function Dashboard() {
             rows={d.construction}
             rowKey={(c) => c.id}
             columns={[
-              { key: 'b', header: t('economy.cols.building'), render: (c) => <b>{t(`buildings.${c.building}`)}</b> },
-              { key: 'p', header: t('economy.cols.province'), render: (c) => provinceName(c.provinceId) },
-              { key: 'k', header: t('economy.cols.work'), render: (c) => <Badge tone={c.kind === 'repair' ? 'amber' : 'cyan'}>{t(`economy.work.${c.kind}`, { level: c.level })}</Badge> },
-              { key: 'pr', header: t('economy.cols.progress'), width: '26%', render: (c) => <ProgressBar value={(now - c.startedAt) / Math.max(1, c.completesAt - c.startedAt)} size="sm" /> },
-              { key: 'e', header: t('economy.cols.eta'), align: 'right', render: (c) => <Countdown ms={c.completesAt - now} dayUnit={t('time.dayUnit')} /> },
+              {
+                key: 'b',
+                header: t('economy.cols.building'),
+                render: (c) => <b>{t(`buildings.${c.building}`)}</b>,
+              },
+              {
+                key: 'p',
+                header: t('economy.cols.province'),
+                render: (c) => provinceName(c.provinceId),
+              },
+              {
+                key: 'k',
+                header: t('economy.cols.work'),
+                render: (c) => (
+                  <Badge tone={c.kind === 'repair' ? 'amber' : 'cyan'}>
+                    {t(`economy.work.${c.kind}`, { level: c.level })}
+                  </Badge>
+                ),
+              },
+              {
+                key: 'pr',
+                header: t('economy.cols.progress'),
+                width: '26%',
+                render: (c) => (
+                  <ProgressBar
+                    value={(now - c.startedAt) / Math.max(1, c.completesAt - c.startedAt)}
+                    size="sm"
+                  />
+                ),
+              },
+              {
+                key: 'e',
+                header: t('economy.cols.eta'),
+                align: 'right',
+                render: (c) => <Countdown ms={c.completesAt - now} dayUnit={t('time.dayUnit')} />,
+              },
             ]}
           />
         ) : (
@@ -198,16 +270,40 @@ function Resources() {
             </span>
           ),
         },
-        { key: 'stock', header: t('economy.cols.stock'), align: 'right', render: (r) => formatNumber(flows[r].stock, 0), sort: (a, b) => flows[a].stock - flows[b].stock },
-        { key: 'prod', header: t('economy.cols.production'), align: 'right', render: (r) => <span className="rl-tone-green">+{formatNumber(flows[r].production, 0)}</span> },
-        { key: 'cons', header: t('economy.cols.consumption'), align: 'right', render: (r) => <span className="rl-tone-red">−{formatNumber(flows[r].consumption, 0)}</span> },
+        {
+          key: 'stock',
+          header: t('economy.cols.stock'),
+          align: 'right',
+          render: (r) => formatNumber(flows[r].stock, 0),
+          sort: (a, b) => flows[a].stock - flows[b].stock,
+        },
+        {
+          key: 'prod',
+          header: t('economy.cols.production'),
+          align: 'right',
+          render: (r) => (
+            <span className="rl-tone-green">+{formatNumber(flows[r].production, 0)}</span>
+          ),
+        },
+        {
+          key: 'cons',
+          header: t('economy.cols.consumption'),
+          align: 'right',
+          render: (r) => (
+            <span className="rl-tone-red">−{formatNumber(flows[r].consumption, 0)}</span>
+          ),
+        },
         {
           key: 'net',
           header: t('economy.cols.net'),
           align: 'right',
           render: (r) => {
             const n = flows[r].production - flows[r].consumption;
-            return <b className={n >= 0 ? 'rl-tone-green' : 'rl-tone-amber'}>{`${n >= 0 ? '+' : '−'}${formatNumber(Math.abs(n), 0)}`}</b>;
+            return (
+              <b
+                className={n >= 0 ? 'rl-tone-green' : 'rl-tone-amber'}
+              >{`${n >= 0 ? '+' : '−'}${formatNumber(Math.abs(n), 0)}`}</b>
+            );
           },
         },
         {
@@ -225,7 +321,17 @@ function Resources() {
           header: t('economy.cols.trend'),
           align: 'right',
           hideOnMobile: true,
-          render: (r) => (flows[r].history ? <Sparkline values={flows[r].history!} tone={flows[r].shortage ? 'red' : 'cyan'} width={110} height={22} /> : '—'),
+          render: (r) =>
+            flows[r].history ? (
+              <Sparkline
+                values={flows[r].history!}
+                tone={flows[r].shortage ? 'red' : 'cyan'}
+                width={110}
+                height={22}
+              />
+            ) : (
+              '—'
+            ),
         },
       ]}
     />
@@ -252,15 +358,23 @@ function Buildings() {
             ? true
             : filter === 'damaged'
               ? (p.buildingState ?? []).some((b) => b.health < 1)
-              : (p.buildingState ?? []).some((b) => (b.upgradeUntil ?? 0) > now || (b.repairUntil ?? 0) > now),
+              : (p.buildingState ?? []).some(
+                  (b) => (b.upgradeUntil ?? 0) > now || (b.repairUntil ?? 0) > now,
+                ),
         )
-        .sort((a, b) => Number(!!defs[b.id]?.isCapital) - Number(!!defs[a.id]?.isCapital) || (b.buildingState?.length ?? 0) - (a.buildingState?.length ?? 0)),
+        .sort(
+          (a, b) =>
+            Number(!!defs[b.id]?.isCapital) - Number(!!defs[a.id]?.isCapital) ||
+            (b.buildingState?.length ?? 0) - (a.buildingState?.length ?? 0),
+        ),
     [view?.provinces, me, q, filter, defs, now],
   );
   const totals = useMemo(() => {
     const m = new Map<string, number>();
     for (const p of Object.values(view?.provinces ?? {}))
-      if (p.owner === me) for (const b of p.buildingState ?? p.buildings.map((type) => ({ type }))) m.set(b.type, (m.get(b.type) ?? 0) + 1);
+      if (p.owner === me)
+        for (const b of p.buildingState ?? p.buildings.map((type) => ({ type })))
+          m.set(b.type, (m.get(b.type) ?? 0) + 1);
     return [...m.entries()].sort((a, b) => b[1] - a[1]);
   }, [view?.provinces, me]);
   return (
@@ -273,7 +387,13 @@ function Buildings() {
         ))}
       </div>
       <div className="row">
-        <SearchInput value={q} onChange={setQ} label={t('app.search')} placeholder={t('economy.searchProvince')} className="grow" />
+        <SearchInput
+          value={q}
+          onChange={setQ}
+          label={t('app.search')}
+          placeholder={t('economy.searchProvince')}
+          className="grow"
+        />
         <Segmented
           size="sm"
           label={t('economy.filter')}
@@ -299,18 +419,28 @@ function Buildings() {
             >
               <Icon name="mapPin" size={13} />
               <b>{provinceName(p.id)}</b>
-              {defs[p.id]?.isCapital ? <Badge tone="amber">{t('game.callout.capital')}</Badge> : null}
+              {defs[p.id]?.isCapital ? (
+                <Badge tone="amber">{t('game.callout.capital')}</Badge>
+              ) : null}
             </button>
-            <span className="muted small">{t('economy.buildingsCount', { count: p.buildingState?.length ?? p.buildings.length })}</span>
+            <span className="muted small">
+              {t('economy.buildingsCount', {
+                count: p.buildingState?.length ?? p.buildings.length,
+              })}
+            </span>
           </header>
           <ul className="bldgs">
-            {(p.buildingState ?? p.buildings.map((type) => ({ type, level: 1, health: 1 }))).map((b) => (
-              <BuildingRow key={b.type} provinceId={p.id} b={b} now={now} editable compact />
-            ))}
+            {(p.buildingState ?? p.buildings.map((type) => ({ type, level: 1, health: 1 }))).map(
+              (b) => (
+                <BuildingRow key={b.type} provinceId={p.id} b={b} now={now} editable compact />
+              ),
+            )}
           </ul>
         </section>
       ))}
-      {!provinces.length ? <EmptyState compact icon="building" title={t('economy.noProvince')} /> : null}
+      {!provinces.length ? (
+        <EmptyState compact icon="building" title={t('economy.noProvince')} />
+      ) : null}
     </div>
   );
 }
@@ -341,7 +471,9 @@ function Market() {
             { value: 'licence', label: t('economy.items.licence') },
           ]}
         />
-        {view?.market?.embargoed.includes(me ?? '') ? <Badge tone="red">{t('economy.embargoed')}</Badge> : null}
+        {view?.market?.embargoed.includes(me ?? '') ? (
+          <Badge tone="red">{t('economy.embargoed')}</Badge>
+        ) : null}
       </div>
       <Table
         label={t('economy.tabs.market')}
@@ -349,22 +481,65 @@ function Market() {
         rowKey={(o) => o.id}
         empty={<EmptyState compact icon="market" title={t('economy.noOffers')} />}
         columns={[
-          { key: 'seller', header: t('economy.cols.seller'), render: (o: MarketOffer) => <NationTag id={o.seller} /> },
-          { key: 'item', header: t('economy.cols.item'), render: (o) => <ItemLabel item={o.item} /> },
-          { key: 'to', header: '', render: (o) => (o.to ? <Badge tone="violet" variant="outline">{t('economy.reserved')}</Badge> : null), hideOnMobile: true },
-          { key: 'price', header: t('economy.cols.price'), align: 'right', render: (o) => <Money value={o.price} />, sort: (a, b) => a.price - b.price },
-          { key: 'exp', header: t('economy.cols.expires'), align: 'right', hideOnMobile: true, render: (o) => <Countdown ms={o.expiresAt - now} dayUnit={t('time.dayUnit')} /> },
+          {
+            key: 'seller',
+            header: t('economy.cols.seller'),
+            render: (o: MarketOffer) => <NationTag id={o.seller} />,
+          },
+          {
+            key: 'item',
+            header: t('economy.cols.item'),
+            render: (o) => <ItemLabel item={o.item} />,
+          },
+          {
+            key: 'to',
+            header: '',
+            render: (o) =>
+              o.to ? (
+                <Badge tone="violet" variant="outline">
+                  {t('economy.reserved')}
+                </Badge>
+              ) : null,
+            hideOnMobile: true,
+          },
+          {
+            key: 'price',
+            header: t('economy.cols.price'),
+            align: 'right',
+            render: (o) => <Money value={o.price} />,
+            sort: (a, b) => a.price - b.price,
+          },
+          {
+            key: 'exp',
+            header: t('economy.cols.expires'),
+            align: 'right',
+            hideOnMobile: true,
+            render: (o) => <Countdown ms={o.expiresAt - now} dayUnit={t('time.dayUnit')} />,
+          },
           {
             key: 'act',
             header: '',
             align: 'right',
             render: (o) =>
               o.seller === me ? (
-                <Button size="sm" variant="ghost" onClick={() => void send({ kind: 'cancelOffer', offerId: o.id }, t('economy.offerCancelled'))}>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() =>
+                    void send({ kind: 'cancelOffer', offerId: o.id }, t('economy.offerCancelled'))
+                  }
+                >
                   {t('economy.withdraw')}
                 </Button>
               ) : (
-                <Button size="sm" variant="primary" disabled={(view?.economy.money ?? 0) < o.price} onClick={() => void send({ kind: 'acceptOffer', offerId: o.id }, t('economy.bought'))}>
+                <Button
+                  size="sm"
+                  variant="primary"
+                  disabled={(view?.economy.money ?? 0) < o.price}
+                  onClick={() =>
+                    void send({ kind: 'acceptOffer', offerId: o.id }, t('economy.bought'))
+                  }
+                >
                   {t('economy.buy')}
                 </Button>
               ),
@@ -374,13 +549,25 @@ function Market() {
       <Panel title={t('economy.sell')}>
         <div className="sellform">
           <Field label={t('economy.cols.resource')}>
-            <Select value={res} onChange={setRes} options={RESOURCES.map((r) => ({ value: r, label: t(`game.resources.${r}`) }))} />
+            <Select
+              value={res}
+              onChange={setRes}
+              options={RESOURCES.map((r) => ({ value: r, label: t(`game.resources.${r}`) }))}
+            />
           </Field>
           <Field label={t('economy.quantity')}>
-            <Input inputMode="numeric" value={qty} onChange={(e) => setQty(e.target.value.replace(/\D/g, ''))} />
+            <Input
+              inputMode="numeric"
+              value={qty}
+              onChange={(e) => setQty(e.target.value.replace(/\D/g, ''))}
+            />
           </Field>
           <Field label={t('economy.priceM')}>
-            <Input inputMode="decimal" value={price} onChange={(e) => setPrice(e.target.value.replace(/[^\d.,]/g, ''))} />
+            <Input
+              inputMode="decimal"
+              value={price}
+              onChange={(e) => setPrice(e.target.value.replace(/[^\d.,]/g, ''))}
+            />
           </Field>
           <Button
             variant="primary"
@@ -388,7 +575,12 @@ function Market() {
             disabled={!Number(qty) || !Number(price.replace(',', '.'))}
             onClick={() =>
               void send(
-                { kind: 'sellOffer', item: { type: 'resource', resource: res, qty: Number(qty) }, price: Number(price.replace(',', '.')) * 1e6, to: null },
+                {
+                  kind: 'sellOffer',
+                  item: { type: 'resource', resource: res, qty: Number(qty) },
+                  price: Number(price.replace(',', '.')) * 1e6,
+                  to: null,
+                },
                 t('economy.offerPosted'),
               )
             }
@@ -414,10 +606,37 @@ function Deliveries() {
       rowKey={(d) => d.id}
       empty={<EmptyState compact icon="truck" title={t('economy.noDeliveries')} />}
       columns={[
-        { key: 'from', header: t('economy.cols.from'), render: (d) => (d.from === 'xxx' ? <span className="muted">{t('economy.unknownSeller')}</span> : <NationTag id={d.from} />) },
+        {
+          key: 'from',
+          header: t('economy.cols.from'),
+          render: (d) =>
+            d.from === 'xxx' ? (
+              <span className="muted">{t('economy.unknownSeller')}</span>
+            ) : (
+              <NationTag id={d.from} />
+            ),
+        },
         { key: 'item', header: t('economy.cols.item'), render: (d) => <ItemLabel item={d.item} /> },
-        { key: 'cov', header: '', render: (d) => (d.covert ? <Badge tone="amber" variant="outline">{t('economy.covert')}</Badge> : <Badge tone="neutral">{t('economy.official')}</Badge>), hideOnMobile: true },
-        { key: 'eta', header: t('economy.cols.eta'), align: 'right', render: (d) => <Countdown ms={d.eta - now} dayUnit={t('time.dayUnit')} />, sort: (a, b) => a.eta - b.eta },
+        {
+          key: 'cov',
+          header: '',
+          render: (d) =>
+            d.covert ? (
+              <Badge tone="amber" variant="outline">
+                {t('economy.covert')}
+              </Badge>
+            ) : (
+              <Badge tone="neutral">{t('economy.official')}</Badge>
+            ),
+          hideOnMobile: true,
+        },
+        {
+          key: 'eta',
+          header: t('economy.cols.eta'),
+          align: 'right',
+          render: (d) => <Countdown ms={d.eta - now} dayUnit={t('time.dayUnit')} />,
+          sort: (a, b) => a.eta - b.eta,
+        },
         {
           key: 'act',
           header: '',
@@ -425,7 +644,12 @@ function Deliveries() {
           render: (d) => {
             const u = d.carrierUnitId ? view?.units[d.carrierUnitId] : null;
             return u ? (
-              <Button size="sm" variant="ghost" icon={<Icon name="mapPin" size={12} />} onClick={() => focusOn(u.pos, 6)}>
+              <Button
+                size="sm"
+                variant="ghost"
+                icon={<Icon name="mapPin" size={12} />}
+                onClick={() => focusOn(u.pos, 6)}
+              >
                 {t('economy.track')}
               </Button>
             ) : null;
@@ -447,7 +671,19 @@ function BlackMarket() {
   const factor = balance?.blackMarket?.priceFactor ?? 2.5;
   const risk = balance?.blackMarket?.detectionChance ?? 0.25;
   const list = Object.values(catalog)
-    .filter((s: WeaponSystem) => s.enabled !== false && ['drone', 'air_defense', 'strike_missile', 'tank', 'helicopter', 'artillery', 'infantry'].includes(s.category))
+    .filter(
+      (s: WeaponSystem) =>
+        s.enabled !== false &&
+        [
+          'drone',
+          'air_defense',
+          'strike_missile',
+          'tank',
+          'helicopter',
+          'artillery',
+          'infantry',
+        ].includes(s.category),
+    )
     .filter((s) => !q || norm(s.name).includes(norm(q)))
     .sort((a, b) => a.cost.money - b.cost.money)
     .slice(0, 40);
@@ -457,25 +693,57 @@ function BlackMarket() {
         <Icon name="warning" size={16} />
         <div>
           <b>{t('economy.blackTitle')}</b>
-          <p>{t('economy.blackText', { factor: formatNumber(factor, 1), risk: formatPct(risk) })}</p>
+          <p>
+            {t('economy.blackText', { factor: formatNumber(factor, 1), risk: formatPct(risk) })}
+          </p>
         </div>
       </div>
-      <SearchInput value={q} onChange={setQ} label={t('app.search')} placeholder={t('arsenal.search')} />
+      <SearchInput
+        value={q}
+        onChange={setQ}
+        label={t('app.search')}
+        placeholder={t('arsenal.search')}
+      />
       <Table
         label={t('economy.tabs.black')}
         rows={list}
         rowKey={(s) => s.id}
         columns={[
-          { key: 'p', header: '', width: '64px', render: (s) => <WeaponPhoto system={s} photo={photoFor(s, photos)} variant="mini" /> },
+          {
+            key: 'p',
+            header: '',
+            width: '64px',
+            render: (s) => <WeaponPhoto system={s} photo={photoFor(s, photos)} variant="mini" />,
+          },
           { key: 'n', header: t('arsenal.cols.name'), render: (s) => <b>{s.name}</b> },
-          { key: 'c', header: t('arsenal.cols.category'), render: (s) => t(`categories.${s.category}`), hideOnMobile: true },
-          { key: 'pr', header: t('economy.cols.price'), align: 'right', render: (s) => <Money value={s.cost.money * factor} /> },
+          {
+            key: 'c',
+            header: t('arsenal.cols.category'),
+            render: (s) => t(`categories.${s.category}`),
+            hideOnMobile: true,
+          },
+          {
+            key: 'pr',
+            header: t('economy.cols.price'),
+            align: 'right',
+            render: (s) => <Money value={s.cost.money * factor} />,
+          },
           {
             key: 'a',
             header: '',
             align: 'right',
             render: (s) => (
-              <Button size="sm" variant="danger" disabled={money < s.cost.money * factor} onClick={() => void send({ kind: 'blackMarket', systemId: s.id, count: 1 }, t('production.blackMarketOrdered'))}>
+              <Button
+                size="sm"
+                variant="danger"
+                disabled={money < s.cost.money * factor}
+                onClick={() =>
+                  void send(
+                    { kind: 'blackMarket', systemId: s.id, count: 1 },
+                    t('production.blackMarketOrdered'),
+                  )
+                }
+              >
                 {t('economy.buy')}
               </Button>
             ),
@@ -505,7 +773,12 @@ function Logistics() {
         <div className="mob">
           <Toggle
             checked={!!log?.mobilized}
-            onChange={(on) => void send({ kind: 'mobilize', on }, t(on ? 'console.done.mobilizeOn' : 'console.done.mobilizeOff'))}
+            onChange={(on) =>
+              void send(
+                { kind: 'mobilize', on },
+                t(on ? 'console.done.mobilizeOn' : 'console.done.mobilizeOff'),
+              )
+            }
             label={log?.mobilized ? t('economy.mobilized') : t('economy.notMobilized')}
             description={t('economy.mobilizeHelp', {
               inf: mob?.infantryPerProvince ?? 1,
@@ -513,7 +786,11 @@ function Logistics() {
               stab: mob?.stabilityPerDay ?? -1,
             })}
           />
-          {log?.mobilizedSince ? <span className="muted small">{t('economy.since', { value: Math.round((now - log.mobilizedSince) / 3_600_000) })}</span> : null}
+          {log?.mobilizedSince ? (
+            <span className="muted small">
+              {t('economy.since', { value: Math.round((now - log.mobilizedSince) / 3_600_000) })}
+            </span>
+          ) : null}
         </div>
       </Panel>
       <div className="cols3">
@@ -528,9 +805,32 @@ function Logistics() {
           rowKey={(d) => d.id}
           empty={<EmptyState compact icon="box" title={t('economy.noDepots')} />}
           columns={[
-            { key: 'p', header: t('economy.cols.province'), render: (d) => <b>{provinceName(d.provinceId)}</b> },
-            { key: 'r', header: t('economy.cols.range'), align: 'right', render: (d) => <span className="rl-tone-amber">{d.rangeKm} km</span> },
-            { key: 'a', header: '', align: 'right', render: (d) => <Button size="sm" variant="ghost" icon={<Icon name="mapPin" size={12} />} onClick={() => focusOn(d.at, 6)}>{t('economy.show')}</Button> },
+            {
+              key: 'p',
+              header: t('economy.cols.province'),
+              render: (d) => <b>{provinceName(d.provinceId)}</b>,
+            },
+            {
+              key: 'r',
+              header: t('economy.cols.range'),
+              align: 'right',
+              render: (d) => <span className="rl-tone-amber">{d.rangeKm} km</span>,
+            },
+            {
+              key: 'a',
+              header: '',
+              align: 'right',
+              render: (d) => (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  icon={<Icon name="mapPin" size={12} />}
+                  onClick={() => focusOn(d.at, 6)}
+                >
+                  {t('economy.show')}
+                </Button>
+              ),
+            },
           ]}
         />
       </Panel>
@@ -539,7 +839,8 @@ function Logistics() {
           <ul className="plainlist">
             {view.blockades.map((b) => (
               <li key={b.id}>
-                <NationTag id={b.by} /> → {'provinceId' in b.target ? provinceName(b.target.provinceId) : b.target.straitId}
+                <NationTag id={b.by} /> →{' '}
+                {'provinceId' in b.target ? provinceName(b.target.provinceId) : b.target.straitId}
               </li>
             ))}
           </ul>
@@ -570,7 +871,19 @@ export function EconomyWindow({ win, frame }: WindowContentProps) {
     <Window
       {...frame}
       path={[t('sections.path.economy'), t(`economy.tabs.${tab}`)]}
-      tabs={<Tabs label={t('sections.economy')} value={tab} onChange={setTab} tabs={tabs.map((x) => ({ id: x.id, label: t(`economy.tabs.${x.id}`), icon: <Icon name={x.icon} size={13} />, count: x.count }))} />}
+      tabs={
+        <Tabs
+          label={t('sections.economy')}
+          value={tab}
+          onChange={setTab}
+          tabs={tabs.map((x) => ({
+            id: x.id,
+            label: t(`economy.tabs.${x.id}`),
+            icon: <Icon name={x.icon} size={13} />,
+            count: x.count,
+          }))}
+        />
+      }
       headerExtra={
         <span className="win-meta">
           <span>{t('economy.treasury')}</span> <Money value={view?.economy.money ?? 0} />

@@ -1,10 +1,4 @@
-import {
-  lazy,
-  Suspense,
-  useCallback,
-  type ComponentType,
-  type LazyExoticComponent,
-} from 'react';
+import { lazy, Suspense, useCallback, type ComponentType, type LazyExoticComponent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Spinner, Window, type WindowProps } from '@redline/ui';
 import { useUi, windowBounds, type WindowId, type WindowState } from '../store/ui.js';

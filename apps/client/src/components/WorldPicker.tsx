@@ -55,12 +55,20 @@ export function WorldPicker({ picked, onPick, takenBy = {}, playable, label }: P
   const nations = useWorld((s) => s.nations);
   const [hover, setHover] = useState<{ id: NationId; x: number; y: number } | null>(null);
   const [cam, setCam] = useState({ z: 1, cx: (X0 + X1) / 2, cy: (Y0 + Y1) / 2 + 8 });
-  const drag = useRef<{ x: number; y: number; cx: number; cy: number; moved: boolean } | null>(null);
+  const drag = useRef<{ x: number; y: number; cx: number; cy: number; moved: boolean } | null>(
+    null,
+  );
   const [size, setSize] = useState({ w: 800, h: 500 });
 
   const shapes = useMemo(() => (geo ? shapesOf(geo) : []), [geo]);
   const paths = useMemo(() => {
-    const out: { id: string; nation: string; path: Path2D; bbox: [number, number, number, number]; rings: number[][][] }[] = [];
+    const out: {
+      id: string;
+      nation: string;
+      path: Path2D;
+      bbox: [number, number, number, number];
+      rings: number[][][];
+    }[] = [];
     for (const s of shapes) {
       const nation = provinces[s.id]?.nationId;
       if (!nation) continue;
@@ -98,7 +106,9 @@ export function WorldPicker({ picked, onPick, takenBy = {}, playable, label }: P
     const own = paths.filter(
       (p) =>
         p.nation === picked &&
-        (!cap || Math.hypot((p.bbox[0] + p.bbox[2]) / 2 - cap[0], (p.bbox[1] + p.bbox[3]) / 2 - cap[1]) < 35),
+        (!cap ||
+          Math.hypot((p.bbox[0] + p.bbox[2]) / 2 - cap[0], (p.bbox[1] + p.bbox[3]) / 2 - cap[1]) <
+            35),
     );
     if (!own.length) return;
     let x0 = 180;
@@ -112,7 +122,10 @@ export function WorldPicker({ picked, onPick, takenBy = {}, playable, label }: P
       y1 = Math.max(y1, p.bbox[3]);
     }
     if (x1 - x0 > 180) return; // nation à cheval sur l'antiméridien : pas de recentrage
-    const fit = Math.min((X1 - X0) / Math.max(8, (x1 - x0) * 3.2), (Y1 - Y0) / Math.max(6, (y1 - y0) * 3.2));
+    const fit = Math.min(
+      (X1 - X0) / Math.max(8, (x1 - x0) * 3.2),
+      (Y1 - Y0) / Math.max(6, (y1 - y0) * 3.2),
+    );
     setCam({ z: Math.max(1, Math.min(6, fit)), cx: (x0 + x1) / 2, cy: (y0 + y1) / 2 });
   }, [picked, paths, provinces, nations]);
 
@@ -147,7 +160,14 @@ export function WorldPicker({ picked, onPick, takenBy = {}, playable, label }: P
       ctx.lineTo(size.w, y);
       ctx.stroke();
     }
-    ctx.setTransform(dpr * scale, 0, 0, dpr * scale, dpr * (size.w / 2 - cam.cx * scale), dpr * (size.h / 2 + cam.cy * scale));
+    ctx.setTransform(
+      dpr * scale,
+      0,
+      0,
+      dpr * scale,
+      dpr * (size.w / 2 - cam.cx * scale),
+      dpr * (size.h / 2 + cam.cy * scale),
+    );
     ctx.lineJoin = 'round';
     for (const p of paths) {
       const n = nations[p.nation];
@@ -200,7 +220,11 @@ export function WorldPicker({ picked, onPick, takenBy = {}, playable, label }: P
         ref={canvas}
         role="img"
         aria-label={label}
-        style={{ width: size.w, height: size.h, cursor: hover ? 'pointer' : drag.current ? 'grabbing' : 'grab' }}
+        style={{
+          width: size.w,
+          height: size.h,
+          cursor: hover ? 'pointer' : drag.current ? 'grabbing' : 'grab',
+        }}
         onPointerDown={(e) => {
           (e.target as HTMLElement).setPointerCapture(e.pointerId);
           drag.current = { x: e.clientX, y: e.clientY, cx: cam.cx, cy: cam.cy, moved: false };
@@ -240,7 +264,9 @@ export function WorldPicker({ picked, onPick, takenBy = {}, playable, label }: P
       {hovered && hover ? (
         <div className="worldpicker__tip" style={{ left: hover.x + 14, top: hover.y + 12 }}>
           <b>{hovered.name}</b>
-          {takenBy[hover.id] ? <span className="nation-row__player">{takenBy[hover.id]}</span> : null}
+          {takenBy[hover.id] ? (
+            <span className="nation-row__player">{takenBy[hover.id]}</span>
+          ) : null}
         </div>
       ) : null}
     </div>

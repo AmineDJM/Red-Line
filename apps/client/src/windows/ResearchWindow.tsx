@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RESEARCH_BRANCHES, type Order, type ResearchBranch, type ResearchNode } from '@redline/shared';
+import {
+  RESEARCH_BRANCHES,
+  type Order,
+  type ResearchBranch,
+  type ResearchNode,
+} from '@redline/shared';
 import {
   Badge,
   Button,
@@ -71,7 +76,9 @@ function layout(nodes: ResearchNode[]): { placed: Placed[]; rows: number; cols: 
   const visit = (n: ResearchNode, r: number) => {
     if (placed.has(n.id)) return;
     placed.set(n.id, { node: n, col: n.tier - minTier, row: r });
-    const kids = (children.get(n.id) ?? []).sort((a, b) => a.tier - b.tier || a.id.localeCompare(b.id));
+    const kids = (children.get(n.id) ?? []).sort(
+      (a, b) => a.tier - b.tier || a.id.localeCompare(b.id),
+    );
     kids.forEach((k, i) => {
       if (placed.has(k.id)) return;
       if (i === 0) visit(k, r);
@@ -82,7 +89,8 @@ function layout(nodes: ResearchNode[]): { placed: Placed[]; rows: number; cols: 
     visit(root, row);
     row++;
   }
-  for (const n of nodes) if (!placed.has(n.id)) placed.set(n.id, { node: n, col: n.tier - minTier, row: row++ });
+  for (const n of nodes)
+    if (!placed.has(n.id)) placed.set(n.id, { node: n, col: n.tier - minTier, row: row++ });
   // Colonnes strictement croissantes le long d'une dépendance.
   const list = [...placed.values()];
   for (let pass = 0; pass < 3; pass++)
@@ -104,7 +112,8 @@ function useSend() {
   return async (order: Order, ok: string) => {
     const res = await useGame.getState().connection?.sendOrder(order);
     if (res?.ok) toast(ok, 'ok');
-    else if (res) toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    else if (res)
+      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
   };
 }
 
@@ -144,19 +153,26 @@ export function ResearchWindow({ frame, mobile }: WindowContentProps) {
             : 'locked';
 
   const branchNodes = all.filter((n) => n.branch === branch);
-  const { placed, rows, cols } = useMemo(() => layout(branchNodes), [branchNodes.map((n) => n.id).join()]);
+  const { placed, rows, cols } = useMemo(
+    () => layout(branchNodes),
+    [branchNodes.map((n) => n.id).join()],
+  );
   const pos = new Map(placed.map((p) => [p.node.id, p]));
   const width = PAD * 2 + cols * COL_W - (COL_W - NODE_W);
   const height = PAD * 2 + rows * ROW_H - (ROW_H - NODE_H);
   const sel = selected ? nodes[selected] : null;
   const cur = r?.current ? nodes[r.current.id] : null;
   const unlocks = sel ? Object.values(catalog).filter((s) => s.requires.includes(sel.id)) : [];
-  const branchDone = (b: ResearchBranch) => all.filter((n) => n.branch === b && done.has(n.id)).length;
+  const branchDone = (b: ResearchBranch) =>
+    all.filter((n) => n.branch === b && done.has(n.id)).length;
   const branchTotal = (b: ResearchBranch) => all.filter((n) => n.branch === b).length;
   const mods = Object.entries(r?.modifiers ?? {}).filter(([, v]) => v !== 1);
 
   const start = (n: ResearchNode) =>
-    void send({ kind: 'research', nodeId: n.id }, r?.current ? t('research.queued', { node: n.name }) : t('research.started', { node: n.name }));
+    void send(
+      { kind: 'research', nodeId: n.id },
+      r?.current ? t('research.queued', { node: n.name }) : t('research.started', { node: n.name }),
+    );
 
   if (!all.length)
     return (
@@ -193,9 +209,14 @@ export function ResearchWindow({ frame, mobile }: WindowContentProps) {
                 <span className="research__cur-name">{cur.name}</span>
                 <span className="research__cur-id">{cur.id.replace(/^research\./, '')}</span>
                 <ProgressBar
-                  value={(now - r.current.startedAt) / Math.max(1, r.current.completesAt - r.current.startedAt)}
+                  value={
+                    (now - r.current.startedAt) /
+                    Math.max(1, r.current.completesAt - r.current.startedAt)
+                  }
                   size="md"
-                  trailing={<Countdown ms={r.current.completesAt - now} dayUnit={t('time.dayUnit')} />}
+                  trailing={
+                    <Countdown ms={r.current.completesAt - now} dayUnit={t('time.dayUnit')} />
+                  }
                   label={t('research.progress')}
                 />
               </button>
@@ -218,13 +239,17 @@ export function ResearchWindow({ frame, mobile }: WindowContentProps) {
                     type="button"
                     className="research__qx"
                     aria-label={t('research.remove')}
-                    onClick={() => void send({ kind: 'cancelResearch', nodeId: id }, t('research.removed'))}
+                    onClick={() =>
+                      void send({ kind: 'cancelResearch', nodeId: id }, t('research.removed'))
+                    }
                   >
                     <Icon name="close" size={11} />
                   </button>
                 </li>
               ))}
-              {!r?.queue.length ? <li className="muted small">{t('research.queueEmpty')}</li> : null}
+              {!r?.queue.length ? (
+                <li className="muted small">{t('research.queueEmpty')}</li>
+              ) : null}
             </ol>
           </div>
           {!mobile ? (
@@ -235,7 +260,9 @@ export function ResearchWindow({ frame, mobile }: WindowContentProps) {
                   <li key={k}>
                     <span>{t(`modifiers.${k.replace(/\./g, '_')}`, { defaultValue: k })}</span>
                     <b className={v! >= 1 ? 'rl-tone-green' : 'rl-tone-amber'}>
-                      {k.endsWith('.level') ? `+${v}` : `${v! >= 1 ? '+' : '−'}${formatNumber(Math.abs(v! - 1) * 100, 0)} %`}
+                      {k.endsWith('.level')
+                        ? `+${v}`
+                        : `${v! >= 1 ? '+' : '−'}${formatNumber(Math.abs(v! - 1) * 100, 0)} %`}
                     </b>
                   </li>
                 ))}
@@ -246,7 +273,12 @@ export function ResearchWindow({ frame, mobile }: WindowContentProps) {
         </section>
 
         <div className="research__body">
-          <div className="research__graph" ref={graphRef} role="tree" aria-label={t(`research.branches.${branch}`)}>
+          <div
+            className="research__graph"
+            ref={graphRef}
+            role="tree"
+            aria-label={t(`research.branches.${branch}`)}
+          >
             <div className="research__canvas" style={{ width, height }}>
               <svg className="research__edges" width={width} height={height} aria-hidden>
                 {placed.flatMap((p) =>
@@ -280,25 +312,53 @@ export function ResearchWindow({ frame, mobile }: WindowContentProps) {
                     type="button"
                     role="treeitem"
                     aria-selected={selected === p.node.id}
-                    className={['rnode', `rnode--${st}`, selected === p.node.id ? 'rnode--sel' : ''].join(' ')}
-                    style={{ left: PAD + p.col * COL_W, top: PAD + p.row * ROW_H, width: NODE_W, height: NODE_H }}
+                    className={[
+                      'rnode',
+                      `rnode--${st}`,
+                      selected === p.node.id ? 'rnode--sel' : '',
+                    ].join(' ')}
+                    style={{
+                      left: PAD + p.col * COL_W,
+                      top: PAD + p.row * ROW_H,
+                      width: NODE_W,
+                      height: NODE_H,
+                    }}
                     onClick={() => setSelected(p.node.id)}
                     onDoubleClick={() => st === 'available' && start(p.node)}
                   >
                     <span className="rnode__top">
                       <span className="rnode__state" aria-hidden>
-                        {st === 'done' ? '✓' : st === 'current' ? '▶' : st === 'queued' ? `${(r?.queue.indexOf(p.node.id) ?? 0) + 1}` : st === 'locked' ? '·' : '○'}
+                        {st === 'done'
+                          ? '✓'
+                          : st === 'current'
+                            ? '▶'
+                            : st === 'queued'
+                              ? `${(r?.queue.indexOf(p.node.id) ?? 0) + 1}`
+                              : st === 'locked'
+                                ? '·'
+                                : '○'}
                       </span>
                       <span className="rnode__name">{p.node.name}</span>
                     </span>
                     <span className="rnode__meta">
                       <span>{formatMoney(p.node.cost.money)}</span>
                       <span>{formatHours(p.node.durationH, t('time.dayUnit'))}</span>
-                      {external.length ? <span className="rnode__ext" title={external.map((x) => researchName(x, nodes)).join(', ')}>+{external.length}</span> : null}
+                      {external.length ? (
+                        <span
+                          className="rnode__ext"
+                          title={external.map((x) => researchName(x, nodes)).join(', ')}
+                        >
+                          +{external.length}
+                        </span>
+                      ) : null}
                     </span>
                     {st === 'current' && r?.current ? (
                       <span className="rnode__bar">
-                        <span style={{ width: `${Math.min(100, ((now - r.current.startedAt) / Math.max(1, r.current.completesAt - r.current.startedAt)) * 100)}%` }} />
+                        <span
+                          style={{
+                            width: `${Math.min(100, ((now - r.current.startedAt) / Math.max(1, r.current.completesAt - r.current.startedAt)) * 100)}%`,
+                          }}
+                        />
                       </span>
                     ) : null}
                   </button>
@@ -311,7 +371,17 @@ export function ResearchWindow({ frame, mobile }: WindowContentProps) {
             {sel ? (
               <>
                 <div className="research__dhead">
-                  <Badge tone={status(sel) === 'done' ? 'green' : status(sel) === 'current' ? 'cyan' : status(sel) === 'locked' ? 'neutral' : 'amber'}>
+                  <Badge
+                    tone={
+                      status(sel) === 'done'
+                        ? 'green'
+                        : status(sel) === 'current'
+                          ? 'cyan'
+                          : status(sel) === 'locked'
+                            ? 'neutral'
+                            : 'amber'
+                    }
+                  >
                     {t(`research.status.${status(sel)}`)}
                   </Badge>
                   <code>{sel.id}</code>
@@ -343,7 +413,16 @@ export function ResearchWindow({ frame, mobile }: WindowContentProps) {
                       {sel.requires.map((x) => (
                         <li key={x} className={done.has(x) ? 'ok' : ''}>
                           <Icon name={done.has(x) ? 'check' : 'lock'} size={12} />
-                          <button type="button" onClick={() => { const n = nodes[x]; if (n) { setBranch(n.branch); setSelected(x); } }}>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const n = nodes[x];
+                              if (n) {
+                                setBranch(n.branch);
+                                setSelected(x);
+                              }
+                            }}
+                          >
                             {researchName(x, nodes)}
                           </button>
                         </li>
@@ -357,8 +436,14 @@ export function ResearchWindow({ frame, mobile }: WindowContentProps) {
                     <ul className="research__effects">
                       {Object.entries(sel.effects).map(([k, v]) => (
                         <li key={k}>
-                          <span>{t(`modifiers.${k.replace(/\./g, '_')}`, { defaultValue: k })}</span>
-                          <b>{k.endsWith('.level') ? `+${v}` : `${v >= 1 ? '+' : '−'}${formatNumber(Math.abs(v - 1) * 100, 0)} %`}</b>
+                          <span>
+                            {t(`modifiers.${k.replace(/\./g, '_')}`, { defaultValue: k })}
+                          </span>
+                          <b>
+                            {k.endsWith('.level')
+                              ? `+${v}`
+                              : `${v >= 1 ? '+' : '−'}${formatNumber(Math.abs(v - 1) * 100, 0)} %`}
+                          </b>
                         </li>
                       ))}
                     </ul>
@@ -381,17 +466,33 @@ export function ResearchWindow({ frame, mobile }: WindowContentProps) {
                 ) : null}
                 <div className="research__actions">
                   {status(sel) === 'available' ? (
-                    <Button variant="primary" icon={<Icon name="play" size={12} />} disabled={money < sel.cost.money} onClick={() => start(sel)} data-testid="research-start">
+                    <Button
+                      variant="primary"
+                      icon={<Icon name="play" size={12} />}
+                      disabled={money < sel.cost.money}
+                      onClick={() => start(sel)}
+                      data-testid="research-start"
+                    >
                       {r?.current ? t('research.enqueue') : t('research.start')}
                     </Button>
                   ) : null}
                   {status(sel) === 'locked' ? (
-                    <Button variant="subtle" icon={<Icon name="plus" size={12} />} onClick={() => start(sel)}>
+                    <Button
+                      variant="subtle"
+                      icon={<Icon name="plus" size={12} />}
+                      onClick={() => start(sel)}
+                    >
                       {t('research.enqueue')}
                     </Button>
                   ) : null}
                   {status(sel) === 'current' || status(sel) === 'queued' ? (
-                    <Button variant="danger" icon={<Icon name="close" size={12} />} onClick={() => void send({ kind: 'cancelResearch', nodeId: sel.id }, t('research.removed'))}>
+                    <Button
+                      variant="danger"
+                      icon={<Icon name="close" size={12} />}
+                      onClick={() =>
+                        void send({ kind: 'cancelResearch', nodeId: sel.id }, t('research.removed'))
+                      }
+                    >
                       {t('research.cancel')}
                     </Button>
                   ) : null}

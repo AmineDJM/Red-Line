@@ -38,13 +38,23 @@ export interface GameShellProps {
  * Coque de jeu : carte plein écran, barre supérieure, barre latérale (ordinateur) ou barre de
  * navigation (mobile), fenêtres, sélection, confirmation d'ordre, alertes, console.
  */
-export function GameShell({ mode, fog, tutorial, children, placing, onPlace, badge }: GameShellProps) {
+export function GameShell({
+  mode,
+  fog,
+  tutorial,
+  children,
+  placing,
+  onPlace,
+  badge,
+}: GameShellProps) {
   const mobile = useIsMobile();
   const [help, setHelp] = useState(false);
   const toggleHelp = useCallback(() => setHelp((h) => !h), []);
   useShortcuts(toggleHelp);
   const pending = useUi((s) => s.pendingOrder !== null);
-  const hasSelection = useUi((s) => s.selection.length > 0 || s.inspected !== null || s.selectedProvince !== null);
+  const hasSelection = useUi(
+    (s) => s.selection.length > 0 || s.inspected !== null || s.selectedProvince !== null,
+  );
   const sheetOpen = useUi((s) => mobile && (s.windows.length > 0 || s.moreOpen));
   const insets = mobile
     ? { top: 78, right: 0, bottom: 64, left: 0 }

@@ -23,17 +23,30 @@ import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 
-function outcomeFor(b: BattleReportSummary, me: string | null): { tone: 'green' | 'red' | 'amber' | 'cyan'; key: string } {
+function outcomeFor(
+  b: BattleReportSummary,
+  me: string | null,
+): { tone: 'green' | 'red' | 'amber' | 'cyan'; key: string } {
   if (b.outcome === 'ongoing') return { tone: 'cyan', key: 'ongoing' };
   if (b.outcome === 'draw') return { tone: 'amber', key: 'draw' };
   const winners = b.outcome === 'attacker' ? b.attacker.nations : b.defender.nations;
-  return winners.includes(me ?? '') ? { tone: 'green', key: 'victory' } : { tone: 'red', key: 'defeat' };
+  return winners.includes(me ?? '')
+    ? { tone: 'green', key: 'victory' }
+    : { tone: 'red', key: 'defeat' };
 }
 
 const lossCount = (s: BattleSide) => s.losses.reduce((n, x) => n + x.count, 0);
 const engagedCount = (s: BattleSide) => s.engaged.reduce((n, x) => n + x.count, 0);
 
-function SideTable({ side, label, tone }: { side: BattleSide; label: string; tone: 'red' | 'cyan' }) {
+function SideTable({
+  side,
+  label,
+  tone,
+}: {
+  side: BattleSide;
+  label: string;
+  tone: 'red' | 'cyan';
+}) {
   const { t } = useTranslation();
   const catalog = useWorld((s) => s.catalog);
   const photos = usePhotos();
@@ -66,7 +79,9 @@ function SideTable({ side, label, tone }: { side: BattleSide; label: string; ton
               <tr key={e.systemId}>
                 <td>
                   <span className="qrow">
-                    {s ? <WeaponPhoto system={s} photo={photoFor(s, photos)} variant="mini" /> : null}
+                    {s ? (
+                      <WeaponPhoto system={s} photo={photoFor(s, photos)} variant="mini" />
+                    ) : null}
                     <b>{s?.name ?? e.systemId}</b>
                   </span>
                 </td>
@@ -118,14 +133,27 @@ function Detail({ summary }: { summary: BattleReportSummary }) {
           <h3>{summary.title}</h3>
           <span className="muted small">
             {fmtClock(summary.startedAt).day} {fmtClock(summary.startedAt).time}
-            {summary.endedAt ? ` · ${t('battles.lasted', { value: fmtDuration(summary.endedAt - summary.startedAt) })}` : ''}
+            {summary.endedAt
+              ? ` · ${t('battles.lasted', { value: fmtDuration(summary.endedAt - summary.startedAt) })}`
+              : ''}
           </span>
         </div>
-        <Button size="sm" variant="subtle" icon={<Icon name="mapPin" size={12} />} onClick={() => focusOn(summary.at, 7)}>
+        <Button
+          size="sm"
+          variant="subtle"
+          icon={<Icon name="mapPin" size={12} />}
+          onClick={() => focusOn(summary.at, 7)}
+        >
           {t('news.locate')}
         </Button>
       </header>
-      {report ? <BattleReplay report={report} /> : error ? <p className="hint">{t('battles.noDetail')}</p> : <Spinner label={t('app.loading')} />}
+      {report ? (
+        <BattleReplay report={report} />
+      ) : error ? (
+        <p className="hint">{t('battles.noDetail')}</p>
+      ) : (
+        <Spinner label={t('app.loading')} />
+      )}
       <div className="battle__sides">
         <SideTable side={summary.attacker} label={t('battles.attacker')} tone="red" />
         <SideTable side={summary.defender} label={t('battles.defender')} tone="cyan" />
@@ -181,7 +209,11 @@ export function BattlesWindow({ win, frame, mobile }: WindowContentProps) {
                 const o = outcomeFor(b, me);
                 return (
                   <li key={b.id}>
-                    <button type="button" className={cur?.id === b.id ? 'bitem bitem--sel' : 'bitem'} onClick={() => setSel(b.id)}>
+                    <button
+                      type="button"
+                      className={cur?.id === b.id ? 'bitem bitem--sel' : 'bitem'}
+                      onClick={() => setSel(b.id)}
+                    >
                       <span className="bitem__top">
                         <Badge tone={o.tone} dot pulse={b.outcome === 'ongoing'}>
                           {t(`battles.outcome.${o.key}`)}
@@ -190,7 +222,8 @@ export function BattlesWindow({ win, frame, mobile }: WindowContentProps) {
                       </span>
                       <span className="bitem__title">{b.title}</span>
                       <span className="bitem__loss">
-                        <span className="rl-tone-red">−{lossCount(b.attacker)}</span> / <span className="rl-tone-red">−{lossCount(b.defender)}</span>
+                        <span className="rl-tone-red">−{lossCount(b.attacker)}</span> /{' '}
+                        <span className="rl-tone-red">−{lossCount(b.defender)}</span>
                         <span className="muted"> {t('battles.losses')}</span>
                       </span>
                     </button>
@@ -202,7 +235,12 @@ export function BattlesWindow({ win, frame, mobile }: WindowContentProps) {
           {cur ? (
             <div className="battles__detail">
               {mobile ? (
-                <Button variant="ghost" size="sm" icon={<Icon name="chevronLeft" size={13} />} onClick={() => setSel(null)}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  icon={<Icon name="chevronLeft" size={13} />}
+                  onClick={() => setSel(null)}
+                >
                   {t('battles.back')}
                 </Button>
               ) : null}

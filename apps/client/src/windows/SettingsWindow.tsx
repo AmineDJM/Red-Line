@@ -36,7 +36,12 @@ export function SettingsWindow({ frame }: WindowContentProps) {
       <div className="vstack">
         <Panel title={t('settings.display')}>
           <div className="stack">
-            <Toggle checked={legendOpen} onChange={setLegendOpen} label={t('settings.legend')} description={t('settings.legendHelp')} />
+            <Toggle
+              checked={legendOpen}
+              onChange={setLegendOpen}
+              label={t('settings.legend')}
+              description={t('settings.legendHelp')}
+            />
           </div>
         </Panel>
         <Panel title={t('settings.notifications')}>
@@ -48,14 +53,19 @@ export function SettingsWindow({ frame }: WindowContentProps) {
                 if (on) {
                   const r = await enableNotifications();
                   setNotif(r === 'push' || r === 'local');
-                  toast(t(`settings.notif.${r}`), r === 'denied' || r === 'unsupported' ? 'error' : 'ok');
+                  toast(
+                    t(`settings.notif.${r}`),
+                    r === 'denied' || r === 'unsupported' ? 'error' : 'ok',
+                  );
                 } else {
                   await disableNotifications();
                   setNotif(false);
                 }
               }}
               label={t('settings.browserNotifications')}
-              description={notificationsSupported() ? t('settings.notifHelp') : t('settings.notif.unsupported')}
+              description={
+                notificationsSupported() ? t('settings.notifHelp') : t('settings.notif.unsupported')
+              }
             />
           </div>
         </Panel>
@@ -97,7 +107,11 @@ export function SettingsWindow({ frame }: WindowContentProps) {
             <Button variant="subtle" onClick={() => navigate('/legal/cgu')}>
               {t('legal.title')}
             </Button>
-            <Button variant="danger" icon={<Icon name="logout" size={13} />} onClick={() => navigate('/')}>
+            <Button
+              variant="danger"
+              icon={<Icon name="logout" size={13} />}
+              onClick={() => navigate('/')}
+            >
               {t('game.exit')}
             </Button>
           </div>

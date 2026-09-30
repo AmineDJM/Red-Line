@@ -39,7 +39,8 @@ function normalize(raw: unknown): Manifest {
 
 function resolveUrl(file: string): string {
   if (/^(https?:)?\/\//.test(file) || file.startsWith('/')) return file;
-  if (file.startsWith('art/') || file.startsWith('public/')) return `/${file.replace(/^public\//, '')}`;
+  if (file.startsWith('art/') || file.startsWith('public/'))
+    return `/${file.replace(/^public\//, '')}`;
   return `/art/photos/${file}`;
 }
 

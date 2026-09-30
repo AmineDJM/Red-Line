@@ -46,7 +46,8 @@ export const Input = forwardRef<
   HTMLInputElement,
   InputHTMLAttributes<HTMLInputElement> & { prompt?: boolean }
 >(function Input({ className, prompt, ...rest }, ref) {
-  if (!prompt) return <input ref={ref} className={['rl-input', className ?? ''].join(' ')} {...rest} />;
+  if (!prompt)
+    return <input ref={ref} className={['rl-input', className ?? ''].join(' ')} {...rest} />;
   return (
     <span className="rl-input-wrap rl-input-wrap--prompt">
       <span className="rl-input-wrap__prompt" aria-hidden>
@@ -57,8 +58,10 @@ export const Input = forwardRef<
   );
 });
 
-export interface SearchInputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value'> {
+export interface SearchInputProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'onChange' | 'value'
+> {
   value: string;
   onChange: (v: string) => void;
   /** Libellé accessible (obligatoire si pas de <label>). */
@@ -101,8 +104,10 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(functi
   );
 });
 
-export interface SelectProps<T extends string>
-  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'onChange' | 'value'> {
+export interface SelectProps<T extends string> extends Omit<
+  SelectHTMLAttributes<HTMLSelectElement>,
+  'onChange' | 'value'
+> {
   value: T;
   onChange: (v: T) => void;
   options: { value: T; label: string; disabled?: boolean }[];

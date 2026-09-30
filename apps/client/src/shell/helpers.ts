@@ -1,11 +1,5 @@
 import { useEffect, useState } from 'react';
-import type {
-  GameNotification,
-  LngLat,
-  NationId,
-  PlayerView,
-  WeaponSystem,
-} from '@redline/shared';
+import type { GameNotification, LngLat, NationId, PlayerView, WeaponSystem } from '@redline/shared';
 import type { IconName, WeaponCardLabels } from '@redline/ui';
 import { countryName, t } from '../i18n/index.js';
 import { gameNow, useGame } from '../store/game.js';
@@ -86,8 +80,13 @@ export function describeNotification(
         icon: 'target',
       };
     }
-    case 'unit_detected':
-      return { text: k('unit_detected'), critical: false, major: false, at, icon: 'radio' };
+    case 'unit_detected': {
+      const u = view?.units[n.unitId];
+      const text = u?.systemId
+        ? k('unit_detected_known', { unit: unitName(u.systemId), nation: nation(u.owner) })
+        : k('unit_detected');
+      return { text, critical: false, major: false, at, icon: 'radio' };
+    }
     case 'province_capture_started': {
       const provOwner = view?.provinces[n.provinceId]?.owner;
       if (n.by === me)
@@ -173,7 +172,11 @@ export function describeNotification(
     case 'research_complete':
       return {
         text: k('research_complete', {
-          node: w.research[n.nodeId]?.name ?? t(`researchNodes.${n.nodeId.replace(/^research\./, '').replace(/\./g, '_')}`, { defaultValue: n.nodeId }),
+          node:
+            w.research[n.nodeId]?.name ??
+            t(`researchNodes.${n.nodeId.replace(/^research\./, '').replace(/\./g, '_')}`, {
+              defaultValue: n.nodeId,
+            }),
         }),
         critical: false,
         major: false,
@@ -246,7 +249,9 @@ export function describeNotification(
     }
     case 'operation':
       return {
-        text: k('operation', { status: t(`army.ops.status.${n.status}`, { defaultValue: n.status }) }),
+        text: k('operation', {
+          status: t(`army.ops.status.${n.status}`, { defaultValue: n.status }),
+        }),
         critical: n.status === 'failed',
         major: true,
         at: null,

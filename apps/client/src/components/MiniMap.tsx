@@ -119,7 +119,10 @@ export function drawMiniMap(
   }
   const X = (lng: number) => w / 2 + (lng - cx) * sx;
   const Y = (lat: number) => h / 2 - (lat - cy) * sy;
-  const vx0 = cx - w / 2 / sx, vx1 = cx + w / 2 / sx, vy0 = cy - h / 2 / sy, vy1 = cy + h / 2 / sy;
+  const vx0 = cx - w / 2 / sx,
+    vx1 = cx + w / 2 / sx,
+    vy0 = cy - h / 2 / sy,
+    vy1 = cy + h / 2 / sy;
 
   ctx.lineJoin = 'round';
   for (const s of shapes) {
@@ -128,7 +131,8 @@ export function drawMiniMap(
     ctx.beginPath();
     for (const ring of s.rings) {
       ring.forEach(([lng, lat], i) => {
-        const x = X(lng!), y = Y(lat!);
+        const x = X(lng!),
+          y = Y(lat!);
         if (i) ctx.lineTo(x, y);
         else ctx.moveTo(x, y);
       });
@@ -167,7 +171,8 @@ export function drawMiniMap(
     ctx.setLineDash([]);
   }
   for (const m of p.markers ?? []) {
-    const x = X(m.at[0]), y = Y(m.at[1]);
+    const x = X(m.at[0]),
+      y = Y(m.at[1]);
     if (m.radiusKm) {
       const r = (m.radiusKm / KM_PER_DEG) * sy;
       ctx.beginPath();

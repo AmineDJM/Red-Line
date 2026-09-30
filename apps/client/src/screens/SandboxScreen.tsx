@@ -293,7 +293,14 @@ export function SandboxScreen() {
                 return (
                   <ListItem
                     key={i}
-                    leading={<UnitMarker pictogram={pictogramFor(s)} nationId={p.owner} tone="neutral" size="sm" />}
+                    leading={
+                      <UnitMarker
+                        pictogram={pictogramFor(s)}
+                        nationId={p.owner}
+                        tone="neutral"
+                        size="sm"
+                      />
+                    }
                     title={s?.name ?? p.systemId}
                     subtitle={world.nations[p.owner]?.name}
                   />
@@ -305,7 +312,12 @@ export function SandboxScreen() {
           </div>
         </Window>
       ) : (
-        <button type="button" className="sandbox-reopen" onClick={() => setPanel(true)} data-map-avoid>
+        <button
+          type="button"
+          className="sandbox-reopen"
+          onClick={() => setPanel(true)}
+          data-map-avoid
+        >
           <Icon name="sandbox" size={16} /> {t('sandbox.title')}
         </button>
       )}

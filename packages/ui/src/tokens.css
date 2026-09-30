@@ -36,8 +36,8 @@
   --rl-blue-dim: rgba(58, 134, 255, 0.14);
 
   /* ——— Typographie ——— */
-  --rl-font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', 'SFMono-Regular', Consolas,
-    monospace;
+  --rl-font-mono:
+    'JetBrains Mono', ui-monospace, 'Cascadia Mono', 'SFMono-Regular', Consolas, monospace;
   --rl-fs-2xs: 10px;
   --rl-fs-xs: 10.5px;
   --rl-fs-sm: 11.5px;

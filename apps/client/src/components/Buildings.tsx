@@ -26,11 +26,22 @@ export const MAX_BUILDING_LEVEL = 5;
 
 /** Familles de bâtiments (menu « Construire »). */
 export const BUILDING_GROUPS: { id: string; types: BuildingType[] }[] = [
-  { id: 'resources', types: ['oil_field', 'refinery', 'mine', 'farm', 'electronics_plant', 'power_plant'] },
+  {
+    id: 'resources',
+    types: ['oil_field', 'refinery', 'mine', 'farm', 'electronics_plant', 'power_plant'],
+  },
   { id: 'industry', types: ['local_industry', 'arms_factory', 'research_center', 'secret_lab'] },
   {
     id: 'military',
-    types: ['military_base', 'air_base', 'port', 'naval_base', 'recruiting_office', 'forward_base', 'hospital'],
+    types: [
+      'military_base',
+      'air_base',
+      'port',
+      'naval_base',
+      'recruiting_office',
+      'forward_base',
+      'hospital',
+    ],
   },
   {
     id: 'defense',
@@ -94,8 +105,15 @@ export function BuildingRow({
         ? { kind: 'build', provinceId, building: b.type }
         : { kind: 'repair', provinceId, building: b.type },
     );
-    if (res?.ok) toast(t(kind === 'build' ? 'buildings.ui.upgradeStarted' : 'buildings.ui.repairStarted', { name: t(`buildings.${b.type}`) }), 'ok');
-    else if (res) toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    if (res?.ok)
+      toast(
+        t(kind === 'build' ? 'buildings.ui.upgradeStarted' : 'buildings.ui.repairStarted', {
+          name: t(`buildings.${b.type}`),
+        }),
+        'ok',
+      );
+    else if (res)
+      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
   };
   return (
     <li className={compact ? 'bldg bldg--compact' : 'bldg'}>
@@ -119,7 +137,13 @@ export function BuildingRow({
               <Countdown ms={b.repairUntil! - now} dayUnit={t('time.dayUnit')} />
             </>
           ) : b.health < 1 ? (
-            <ProgressBar value={b.health} tone="auto" size="xs" trailing={`${Math.round(b.health * 100)} %`} label={t('buildings.ui.health')} />
+            <ProgressBar
+              value={b.health}
+              tone="auto"
+              size="xs"
+              trailing={`${Math.round(b.health * 100)} %`}
+              label={t('buildings.ui.health')}
+            />
           ) : (
             <span className="bldg__ok">{t('buildings.ui.operational')}</span>
           )}
@@ -128,7 +152,12 @@ export function BuildingRow({
       {editable ? (
         <span className="bldg__actions">
           {b.health < 1 && !repairing ? (
-            <Button size="sm" variant="subtle" icon={<Icon name="wrench" size={12} />} onClick={() => void send('repair')}>
+            <Button
+              size="sm"
+              variant="subtle"
+              icon={<Icon name="wrench" size={12} />}
+              onClick={() => void send('repair')}
+            >
               {t('buildings.ui.repair')}
             </Button>
           ) : null}
@@ -139,13 +168,18 @@ export function BuildingRow({
               disabled={next.money !== null && money < next.money}
               title={
                 next.money !== null
-                  ? t('buildings.ui.costTip', { cost: formatMoney(next.money), time: next.hours ? formatHours(next.hours, t('time.dayUnit')) : '—' })
+                  ? t('buildings.ui.costTip', {
+                      cost: formatMoney(next.money),
+                      time: next.hours ? formatHours(next.hours, t('time.dayUnit')) : '—',
+                    })
                   : undefined
               }
               onClick={() => void send('build')}
             >
               {compact ? `N${level + 1}` : t('buildings.ui.upgrade', { level: level + 1 })}
-              {next.money !== null && !compact ? <span className="bldg__cost">{formatMoney(next.money)}</span> : null}
+              {next.money !== null && !compact ? (
+                <span className="bldg__cost">{formatMoney(next.money)}</span>
+              ) : null}
             </Button>
           ) : null}
         </span>
@@ -174,7 +208,8 @@ export function BuildMenu({
   const build = async (type: BuildingType) => {
     const res = await conn?.sendOrder({ kind: 'build', provinceId, building: type });
     if (res?.ok) toast(t('buildings.ui.buildStarted', { name: t(`buildings.${type}`) }), 'ok');
-    else if (res) toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    else if (res)
+      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
   };
   return (
     <div className="buildmenu">
@@ -185,7 +220,9 @@ export function BuildMenu({
             type="button"
             role="tab"
             aria-selected={x.id === group}
-            className={x.id === group ? 'buildmenu__group buildmenu__group--on' : 'buildmenu__group'}
+            className={
+              x.id === group ? 'buildmenu__group buildmenu__group--on' : 'buildmenu__group'
+            }
             onClick={() => setGroup(x.id)}
           >
             {t(`buildings.groups.${x.id}`)}
@@ -231,4 +268,3 @@ export function BuildMenu({
     </div>
   );
 }
-

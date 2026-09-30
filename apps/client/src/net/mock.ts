@@ -39,12 +39,7 @@ import {
   type OperationView,
 } from '@redline/shared';
 import { demoBattleReport } from '../api/mockRest.js';
-import {
-  Emitter,
-  type ChatChannel,
-  type GameConnection,
-  type OrderOutcome,
-} from './connection.js';
+import { Emitter, type ChatChannel, type GameConnection, type OrderOutcome } from './connection.js';
 import { demoReply, enrichView } from './mockWorld.js';
 
 export interface MockData {
@@ -768,7 +763,8 @@ export class MockGameConnection extends Emitter implements GameConnection {
       }
       case 'cancelOffer': {
         const m = v.market;
-        if (m) this.push({ market: { ...m, offers: m.offers.filter((x) => x.id !== order.offerId) } });
+        if (m)
+          this.push({ market: { ...m, offers: m.offers.filter((x) => x.id !== order.offerId) } });
         return ok;
       }
       case 'sellOffer': {

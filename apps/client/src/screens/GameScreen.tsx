@@ -14,8 +14,7 @@ import { usePushNotifications } from '../lib/push.js';
 
 /** Crée la connexion à la partie : WebSocket, ou simulée en mode ?mock=1. */
 async function connect(gameId: string, spectate: boolean): Promise<GameConnection> {
-  if (!IS_MOCK)
-    return new WsGameConnection(gameId, spectate ? { url: spectateUrl(gameId) } : {});
+  if (!IS_MOCK) return new WsGameConnection(gameId, spectate ? { url: spectateUrl(gameId) } : {});
   const [{ MockGameConnection }, mockApi, api] = await Promise.all([
     import('../net/mock.js'),
     import('../api/mock.js'),
@@ -85,7 +84,13 @@ export function GameScreen({ id, spectate = false }: { id: string; spectate?: bo
       mode="game"
       fog={!spectate}
       tutorial={!spectate}
-      badge={IS_MOCK ? <Badge tone="amber" variant="outline">{t('app.mockBadge')}</Badge> : null}
+      badge={
+        IS_MOCK ? (
+          <Badge tone="amber" variant="outline">
+            {t('app.mockBadge')}
+          </Badge>
+        ) : null
+      }
     />
   );
 }

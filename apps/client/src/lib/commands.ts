@@ -118,7 +118,9 @@ export function norm(s: string): string {
 }
 
 function slug(s: string): string {
-  return norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return norm(s)
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 }
 
 function findCommand(word: string) {
@@ -260,7 +262,12 @@ export function parseCommand(input: string, ctx: CommandCtx): CommandAction {
     case 'goto': {
       const p = resolvePlace(rest.join(' '), ctx);
       return p
-        ? { type: 'goto', at: p.at, zoom: 6, summary: ctx.label('console.done.goto', { place: p.name }) }
+        ? {
+            type: 'goto',
+            at: p.at,
+            zoom: 6,
+            summary: ctx.label('console.done.goto', { place: p.name }),
+          }
         : err('place', { place: rest.join(' ') });
     }
     case 'select': {
@@ -270,7 +277,11 @@ export function parseCommand(input: string, ctx: CommandCtx): CommandAction {
     case 'stop': {
       const ids = resolveUnits(rest.join(' ') || 'sel', ctx);
       return ids.length
-        ? { type: 'order', order: { kind: 'stop', unitIds: ids }, summary: ctx.label('console.done.stop', { count: ids.length }) }
+        ? {
+            type: 'order',
+            order: { kind: 'stop', unitIds: ids },
+            summary: ctx.label('console.done.stop', { count: ids.length }),
+          }
         : err('units');
     }
     case 'move': {
@@ -305,8 +316,13 @@ export function parseCommand(input: string, ctx: CommandCtx): CommandAction {
       }
       const s = resolveSystem(args[0] ?? '', ctx);
       if (!s) return err('system', { system: args[0] ?? '' });
-      const placeText = args.slice(1).join(' ').replace(/^(a|à|in|en)\s+/i, '');
-      const mine = Object.values(ctx.provinces).filter((p) => ctx.view.provinces[p.id]?.owner === ctx.me);
+      const placeText = args
+        .slice(1)
+        .join(' ')
+        .replace(/^(a|à|in|en)\s+/i, '');
+      const mine = Object.values(ctx.provinces).filter(
+        (p) => ctx.view.provinces[p.id]?.owner === ctx.me,
+      );
       const prov = placeText
         ? bestOf(mine, placeText, provNames)
         : (mine.find((p) => p.isCapital) ?? mine[0] ?? null);
@@ -314,13 +330,21 @@ export function parseCommand(input: string, ctx: CommandCtx): CommandAction {
       return {
         type: 'order',
         order: { kind: 'produce', provinceId: prov.id, systemId: s.id, count },
-        summary: ctx.label('console.done.produce', { count, system: s.name, place: prov.cityName ?? prov.name }),
+        summary: ctx.label('console.done.produce', {
+          count,
+          system: s.name,
+          place: prov.cityName ?? prov.name,
+        }),
       };
     }
     case 'research': {
       const n = resolveNode(rest.join(' '), ctx);
       return n
-        ? { type: 'order', order: { kind: 'research', nodeId: n.id }, summary: ctx.label('console.done.research', { node: n.name }) }
+        ? {
+            type: 'order',
+            order: { kind: 'research', nodeId: n.id },
+            summary: ctx.label('console.done.research', { node: n.name }),
+          }
         : err('node', { node: rest.join(' ') });
     }
     case 'intel': {
@@ -339,7 +363,10 @@ export function parseCommand(input: string, ctx: CommandCtx): CommandAction {
             ? { nationId: nation.id }
             : { provinceId: place!.provinceId, at: place!.at, radiusKm: 100 },
         },
-        summary: ctx.label('console.done.intel', { op: ctx.label(`intel.ops.${op}`), target: nation?.name ?? place!.name }),
+        summary: ctx.label('console.done.intel', {
+          op: ctx.label(`intel.ops.${op}`),
+          target: nation?.name ?? place!.name,
+        }),
       };
     }
     case 'peace':
@@ -350,13 +377,25 @@ export function parseCommand(input: string, ctx: CommandCtx): CommandAction {
       const order: Order =
         cmd.id === 'war'
           ? { kind: 'declareWar', nationId: n.id }
-          : { kind: 'proposePeace', nationId: n.id, type: cmd.id === 'peace' ? 'peace' : 'ceasefire' };
-      return { type: 'order', order, summary: ctx.label(`console.done.${cmd.id}`, { nation: n.name }) };
+          : {
+              kind: 'proposePeace',
+              nationId: n.id,
+              type: cmd.id === 'peace' ? 'peace' : 'ceasefire',
+            };
+      return {
+        type: 'order',
+        order,
+        summary: ctx.label(`console.done.${cmd.id}`, { nation: n.name }),
+      };
     }
     case 'mobilize': {
       const v = norm(rest[0] ?? 'on');
       const on = !['off', 'non', '0', 'fin'].includes(v);
-      return { type: 'order', order: { kind: 'mobilize', on }, summary: ctx.label(on ? 'console.done.mobilizeOn' : 'console.done.mobilizeOff') };
+      return {
+        type: 'order',
+        order: { kind: 'mobilize', on },
+        summary: ctx.label(on ? 'console.done.mobilizeOn' : 'console.done.mobilizeOff'),
+      };
     }
   }
 }
@@ -426,62 +465,167 @@ export function suggest(input: string, ctx: CommandCtx, limit = 8): CommandSugge
   switch (lastArg) {
     case 'units': {
       if (ctx.selection.length && score(q, 'sel', 'selection') > 0)
-        push({ id: 'u-sel', kind: ctx.label('console.kinds.unit'), label: 'sel', detail: ctx.label('console.selection', { count: ctx.selection.length }), insert: withToken(prefix, 'sel') });
+        push({
+          id: 'u-sel',
+          kind: ctx.label('console.kinds.unit'),
+          label: 'sel',
+          detail: ctx.label('console.selection', { count: ctx.selection.length }),
+          insert: withToken(prefix, 'sel'),
+        });
       const systems = [...new Set(own.map((u) => u.systemId).filter(Boolean) as string[])];
       for (const id of rank(systems, (id) => [ctx.catalog[id]?.name ?? '', id]).slice(0, 4)) {
         const n = own.filter((u) => u.systemId === id).length;
-        push({ id: `s-${id}`, kind: ctx.label('console.kinds.unit'), label: slug(ctx.catalog[id]?.name ?? id), hint: ctx.catalog[id]?.name, detail: `×${n}`, insert: withToken(prefix, slug(ctx.catalog[id]?.name ?? id)) });
+        push({
+          id: `s-${id}`,
+          kind: ctx.label('console.kinds.unit'),
+          label: slug(ctx.catalog[id]?.name ?? id),
+          hint: ctx.catalog[id]?.name,
+          detail: `×${n}`,
+          insert: withToken(prefix, slug(ctx.catalog[id]?.name ?? id)),
+        });
       }
-      for (const u of rank(own, (u) => [u.id, ctx.catalog[u.systemId ?? '']?.name ?? '']).slice(0, 4))
-        push({ id: `u-${u.id}`, kind: ctx.label('console.kinds.unit'), label: u.id, hint: ctx.catalog[u.systemId ?? '']?.name, insert: withToken(prefix, u.id) });
+      for (const u of rank(own, (u) => [u.id, ctx.catalog[u.systemId ?? '']?.name ?? '']).slice(
+        0,
+        4,
+      ))
+        push({
+          id: `u-${u.id}`,
+          kind: ctx.label('console.kinds.unit'),
+          label: u.id,
+          hint: ctx.catalog[u.systemId ?? '']?.name,
+          insert: withToken(prefix, u.id),
+        });
       break;
     }
     case 'target': {
       const enemies = Object.values(ctx.view.units).filter((u) => u.owner !== ctx.me);
-      for (const u of rank(enemies, (u) => [u.id, ctx.catalog[u.systemId ?? '']?.name ?? '']).slice(0, limit))
-        push({ id: `t-${u.id}`, kind: ctx.label('console.kinds.target'), label: u.id, hint: u.systemId ? ctx.catalog[u.systemId]?.name : ctx.label('game.legend.detected'), detail: ctx.nations[u.owner]?.name, insert: withToken(prefix, u.id) });
+      for (const u of rank(enemies, (u) => [u.id, ctx.catalog[u.systemId ?? '']?.name ?? '']).slice(
+        0,
+        limit,
+      ))
+        push({
+          id: `t-${u.id}`,
+          kind: ctx.label('console.kinds.target'),
+          label: u.id,
+          hint: u.systemId ? ctx.catalog[u.systemId]?.name : ctx.label('game.legend.detected'),
+          detail: ctx.nations[u.owner]?.name,
+          insert: withToken(prefix, u.id),
+        });
       break;
     }
     case 'count':
     case 'system': {
-      for (const s of rank(Object.values(ctx.catalog), (s) => [s.name, s.id, s.id.split('.')[1] ?? '']).slice(0, limit))
-        push({ id: `sys-${s.id}`, kind: ctx.label('console.kinds.system'), label: slug(s.name), hint: `${s.name} · ${ctx.label(`categories.${s.category}`)}`, insert: withToken(prefix, slug(s.name)) });
+      for (const s of rank(Object.values(ctx.catalog), (s) => [
+        s.name,
+        s.id,
+        s.id.split('.')[1] ?? '',
+      ]).slice(0, limit))
+        push({
+          id: `sys-${s.id}`,
+          kind: ctx.label('console.kinds.system'),
+          label: slug(s.name),
+          hint: `${s.name} · ${ctx.label(`categories.${s.category}`)}`,
+          insert: withToken(prefix, slug(s.name)),
+        });
       break;
     }
     case 'place': {
       const mineOnly = cmd.id === 'produce';
-      const provs = Object.values(ctx.provinces).filter((p) => !mineOnly || ctx.view.provinces[p.id]?.owner === ctx.me);
+      const provs = Object.values(ctx.provinces).filter(
+        (p) => !mineOnly || ctx.view.provinces[p.id]?.owner === ctx.me,
+      );
       if (!mineOnly)
         for (const n of rank(Object.values(ctx.nations), (n) => [n.name, n.id]).slice(0, 2))
-          push({ id: `n-${n.id}`, kind: ctx.label('console.kinds.nation'), label: n.name, insert: withToken(prefix, n.name) });
+          push({
+            id: `n-${n.id}`,
+            kind: ctx.label('console.kinds.nation'),
+            label: n.name,
+            insert: withToken(prefix, n.name),
+          });
       for (const p of rank(provs, provNames).slice(0, limit))
-        push({ id: `p-${p.id}`, kind: ctx.label('console.kinds.place'), label: p.cityName ?? p.name, hint: p.cityName && p.cityName !== p.name ? p.name : undefined, detail: ctx.nations[p.nationId]?.name, insert: withToken(prefix, p.cityName ?? p.name) });
+        push({
+          id: `p-${p.id}`,
+          kind: ctx.label('console.kinds.place'),
+          label: p.cityName ?? p.name,
+          hint: p.cityName && p.cityName !== p.name ? p.name : undefined,
+          detail: ctx.nations[p.nationId]?.name,
+          insert: withToken(prefix, p.cityName ?? p.name),
+        });
       break;
     }
     case 'node': {
       const done = new Set(ctx.view.research?.done ?? []);
-      for (const n of rank(Object.values(ctx.research).filter((n) => !done.has(n.id)), (n) => [n.id.replace(/^research\./, ''), n.name]).slice(0, limit))
-        push({ id: `r-${n.id}`, kind: ctx.label('console.kinds.node'), label: n.id.replace(/^research\./, ''), hint: n.name, insert: withToken(prefix, n.id.replace(/^research\./, '')) });
+      for (const n of rank(
+        Object.values(ctx.research).filter((n) => !done.has(n.id)),
+        (n) => [n.id.replace(/^research\./, ''), n.name],
+      ).slice(0, limit))
+        push({
+          id: `r-${n.id}`,
+          kind: ctx.label('console.kinds.node'),
+          label: n.id.replace(/^research\./, ''),
+          hint: n.name,
+          insert: withToken(prefix, n.id.replace(/^research\./, '')),
+        });
       break;
     }
     case 'speed':
-      for (const s of [1, 2, 4, 8, 16]) push({ id: `sp-${s}`, kind: ctx.label('console.kinds.value'), label: `×${s}`, insert: `${prefix}${s}`, run: true });
+      for (const s of [1, 2, 4, 8, 16])
+        push({
+          id: `sp-${s}`,
+          kind: ctx.label('console.kinds.value'),
+          label: `×${s}`,
+          insert: `${prefix}${s}`,
+          run: true,
+        });
       break;
     case 'op':
       for (const o of rank([...INTEL_OPS], (o) => [o, ctx.label(`intel.ops.${o}`)]).slice(0, limit))
-        push({ id: `op-${o}`, kind: ctx.label('console.kinds.op'), label: o, hint: ctx.label(`intel.ops.${o}`), insert: withToken(prefix, o) });
+        push({
+          id: `op-${o}`,
+          kind: ctx.label('console.kinds.op'),
+          label: o,
+          hint: ctx.label(`intel.ops.${o}`),
+          insert: withToken(prefix, o),
+        });
       break;
     case 'nation':
-      for (const n of rank(Object.values(ctx.nations).filter((n) => n.id !== ctx.me), (n) => [n.name, n.id]).slice(0, limit))
-        push({ id: `n-${n.id}`, kind: ctx.label('console.kinds.nation'), label: n.name, insert: withToken(prefix, n.name) });
+      for (const n of rank(
+        Object.values(ctx.nations).filter((n) => n.id !== ctx.me),
+        (n) => [n.name, n.id],
+      ).slice(0, limit))
+        push({
+          id: `n-${n.id}`,
+          kind: ctx.label('console.kinds.nation'),
+          label: n.name,
+          insert: withToken(prefix, n.name),
+        });
       break;
     case 'window':
       for (const w of rank([...WINDOW_IDS], (w) => [w, ctx.label(`sections.${w}`)]))
-        push({ id: `w-${w}`, kind: ctx.label('console.kinds.window'), label: w, hint: ctx.label(`sections.${w}`), insert: `${prefix}${w}`, run: true });
+        push({
+          id: `w-${w}`,
+          kind: ctx.label('console.kinds.window'),
+          label: w,
+          hint: ctx.label(`sections.${w}`),
+          insert: `${prefix}${w}`,
+          run: true,
+        });
       break;
     case 'onoff':
-      push({ id: 'on', kind: ctx.label('console.kinds.value'), label: 'on', insert: `${prefix}on`, run: true });
-      push({ id: 'off', kind: ctx.label('console.kinds.value'), label: 'off', insert: `${prefix}off`, run: true });
+      push({
+        id: 'on',
+        kind: ctx.label('console.kinds.value'),
+        label: 'on',
+        insert: `${prefix}on`,
+        run: true,
+      });
+      push({
+        id: 'off',
+        kind: ctx.label('console.kinds.value'),
+        label: 'off',
+        insert: `${prefix}off`,
+        run: true,
+      });
       break;
   }
   return out;

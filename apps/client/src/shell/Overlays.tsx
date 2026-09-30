@@ -82,9 +82,19 @@ export function OrderBar() {
   const tsys = targetUnit?.systemId ? catalog[targetUnit.systemId] : undefined;
 
   return (
-    <div className="orderbar" data-map-avoid role="dialog" aria-label={title} data-testid="order-bar">
+    <div
+      className="orderbar"
+      data-map-avoid
+      role="dialog"
+      aria-label={title}
+      data-testid="order-bar"
+    >
       <div className="orderbar__head">
-        <span className={pending.kind === 'attack' ? 'orderbar__kind orderbar__kind--attack' : 'orderbar__kind'}>
+        <span
+          className={
+            pending.kind === 'attack' ? 'orderbar__kind orderbar__kind--attack' : 'orderbar__kind'
+          }
+        >
           <Icon name={pending.kind === 'attack' ? 'target' : 'arrowRight'} size={14} />
           {title}
         </span>
@@ -96,7 +106,13 @@ export function OrderBar() {
       </div>
       <div className="orderbar__body">
         <div className="orderbar__units">
-          <UnitMarker pictogram={pictogramFor(sys)} nationId={first.owner} count={first.count} tone="own" size="sm" />
+          <UnitMarker
+            pictogram={pictogramFor(sys)}
+            nationId={first.owner}
+            count={first.count}
+            tone="own"
+            size="sm"
+          />
           {units.length > 1 ? <Badge tone="cyan">+{units.length - 1}</Badge> : null}
           {pending.kind === 'attack' ? (
             <>
@@ -160,9 +176,22 @@ export function AlertCenter({ mobile }: { mobile: boolean }) {
     return () => clearTimeout(id);
   }, [open, markAllRead]);
   if (!open) return null;
-  const items = notifications
-    .map((n) => ({ n, d: describeNotification(n.item, view, me) }))
-    .filter((x) => filter === 'all' || x.d.critical);
+  // Les alertes identiques consécutives (ex. contacts radar en rafale) sont regroupées : × N.
+  const items: {
+    n: (typeof notifications)[number];
+    d: ReturnType<typeof describeNotification>;
+    count: number;
+    unread: boolean;
+  }[] = [];
+  for (const n of notifications) {
+    const d = describeNotification(n.item, view, me);
+    if (filter === 'critical' && !d.critical) continue;
+    const prev = items[items.length - 1];
+    if (prev && prev.d.text === d.text && prev.d.icon === d.icon) {
+      prev.count++;
+      prev.unread ||= !n.read;
+    } else items.push({ n, d, count: 1, unread: !n.read });
+  }
   return (
     <aside
       className={mobile ? 'alertcenter alertcenter--mobile' : 'alertcenter'}
@@ -175,7 +204,11 @@ export function AlertCenter({ mobile }: { mobile: boolean }) {
         <h2>{t('game.alerts.title')}</h2>
         <span className="alertcenter__count">{notifications.length}</span>
         <span className="alertcenter__spacer" />
-        <div className="alertcenter__filters" role="radiogroup" aria-label={t('game.alerts.filter')}>
+        <div
+          className="alertcenter__filters"
+          role="radiogroup"
+          aria-label={t('game.alerts.filter')}
+        >
           {(['all', 'critical'] as const).map((f) => (
             <button
               key={f}
@@ -189,14 +222,19 @@ export function AlertCenter({ mobile }: { mobile: boolean }) {
             </button>
           ))}
         </div>
-        <IconButton label={t('app.close')} icon={<Icon name="close" size={15} />} size="sm" onClick={() => setOpen(false)} />
+        <IconButton
+          label={t('app.close')}
+          icon={<Icon name="close" size={15} />}
+          size="sm"
+          onClick={() => setOpen(false)}
+        />
       </header>
       <div className="alertcenter__body">
         {items.length === 0 ? (
           <EmptyState icon="bell" title={t('game.alerts.empty')} compact />
         ) : (
           <ol className="alertlist">
-            {items.map(({ n, d }) => {
+            {items.map(({ n, d, count, unread }) => {
               const c = fmtClock(n.item.time);
               const tone = notificationTone(d);
               const actionable = !!(d.at || d.open);
@@ -204,7 +242,7 @@ export function AlertCenter({ mobile }: { mobile: boolean }) {
                 <li key={n.id}>
                   <button
                     type="button"
-                    className={`alertitem alertitem--${tone}${n.read ? '' : ' alertitem--unread'}`}
+                    className={`alertitem alertitem--${tone}${unread ? ' alertitem--unread' : ''}`}
                     disabled={!actionable}
                     onClick={() => {
                       markRead(n.id);
@@ -216,7 +254,10 @@ export function AlertCenter({ mobile }: { mobile: boolean }) {
                     <span className="alertitem__icon">
                       <Icon name={d.icon} size={14} />
                     </span>
-                    <span className="alertitem__text">{d.text}</span>
+                    <span className="alertitem__text">
+                      {d.text}
+                      {count > 1 ? <span className="alertitem__count">×{count}</span> : null}
+                    </span>
                     <span className="alertitem__time">
                       {c.day} {c.time}
                     </span>
@@ -228,7 +269,12 @@ export function AlertCenter({ mobile }: { mobile: boolean }) {
         )}
       </div>
       <footer className="alertcenter__foot">
-        <Button size="sm" variant="ghost" onClick={markAllRead} disabled={!notifications.some((n) => !n.read)}>
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={markAllRead}
+          disabled={!notifications.some((n) => !n.read)}
+        >
           {t('game.alerts.markRead')}
         </Button>
       </footer>
@@ -307,10 +353,19 @@ export function ConnectionBanner() {
         </div>
       ) : null}
       {notices.map((n) => (
-        <div key={n.id} className={n.level === 'warn' ? 'banner banner--amber' : 'banner'} role="status">
+        <div
+          key={n.id}
+          className={n.level === 'warn' ? 'banner banner--amber' : 'banner'}
+          role="status"
+        >
           <Icon name={n.level === 'warn' ? 'warning' : 'info'} size={14} />
           <span className="banner__text">{n.text}</span>
-          <button type="button" className="banner__close" onClick={() => dismiss(n.id)} aria-label={t('app.close')}>
+          <button
+            type="button"
+            className="banner__close"
+            onClick={() => dismiss(n.id)}
+            aria-label={t('app.close')}
+          >
             <Icon name="close" size={12} />
           </button>
         </div>
@@ -330,7 +385,12 @@ export function LegendPanel({ fog }: { fog: boolean }) {
     { kind: 'unit', label: t('game.legend.allyForces'), pictogram: 'fighter', tone: 'ally' },
     { kind: 'unit', label: t('game.legend.enemyForces'), pictogram: 'ifv', tone: 'enemy' },
     { kind: 'unit', label: t('game.legend.detected'), pictogram: 'unknown', tone: 'unknown' },
-    { kind: 'swatch', label: t('game.legend.ownTerritory'), color: 'rgba(155, 107, 255, 0.7)', glow: true },
+    {
+      kind: 'swatch',
+      label: t('game.legend.ownTerritory'),
+      color: 'rgba(155, 107, 255, 0.7)',
+      glow: true,
+    },
     { kind: 'ring', label: t('game.legend.range'), color: '#ffb020' },
     { kind: 'line', label: t('game.legend.route'), color: '#ffb020', arrow: true, dashed: true },
     { kind: 'line', label: t('game.legend.border'), color: '#d6dde6', width: 1.4 },
@@ -367,7 +427,11 @@ export function EndOverlay() {
   const victory = winner === me;
   const winnerName = winner ? (view.nations[winner]?.name ?? winner) : '';
   return (
-    <div className={victory ? 'endov endov--victory' : 'endov endov--defeat'} role="dialog" aria-modal="true">
+    <div
+      className={victory ? 'endov endov--victory' : 'endov endov--defeat'}
+      role="dialog"
+      aria-modal="true"
+    >
       <div className="endov__card">
         <div className="endov__kicker">{view.nations[me ?? '']?.name}</div>
         <h2 className="endov__title">{victory ? t('game.end.victory') : t('game.end.defeat')}</h2>
@@ -379,7 +443,10 @@ export function EndOverlay() {
         <div className="endov__actions">
           <Button onClick={() => setDismissed(true)}>{t('game.end.observe')}</Button>
           <Button onClick={() => navigate('/')}>{t('game.end.home')}</Button>
-          <Button variant="primary" onClick={() => navigate(`/game/${encodeURIComponent(meta?.id ?? 'demo')}/end`)}>
+          <Button
+            variant="primary"
+            onClick={() => navigate(`/game/${encodeURIComponent(meta?.id ?? 'demo')}/end`)}
+          >
             {t('game.end.stats')}
           </Button>
         </div>
@@ -407,7 +474,12 @@ export function ShortcutsHelp({ onClose }: { onClose: () => void }) {
     <div className="shortcuts" role="dialog" aria-label={t('shortcuts.title')} data-map-avoid>
       <header>
         <h2>{t('shortcuts.title')}</h2>
-        <IconButton label={t('app.close')} icon={<Icon name="close" size={14} />} size="sm" onClick={onClose} />
+        <IconButton
+          label={t('app.close')}
+          icon={<Icon name="close" size={14} />}
+          size="sm"
+          onClick={onClose}
+        />
       </header>
       <dl>
         {rows.map(([keys, label], i) => (

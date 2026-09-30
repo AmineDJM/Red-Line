@@ -14,8 +14,8 @@ function useBadges(): Partial<Record<WindowId, number>> {
   const votes =
     view?.council?.session?.resolutions.filter((r) => me && !r.votes[me] && r.status === 'voting')
       .length ?? 0;
-  const pendingPeace = view?.diplomacy?.relations.filter((r) => r.pending && r.pending.from !== me)
-    .length ?? 0;
+  const pendingPeace =
+    view?.diplomacy?.relations.filter((r) => r.pending && r.pending.from !== me).length ?? 0;
   const ongoing = view?.battleReports?.filter((b) => b.outcome === 'ongoing').length ?? 0;
   const unreadChat = chat.filter(
     (m) => m.from.nationId !== me && m.id > (chatRead[m.channel] ?? 0),
@@ -116,6 +116,7 @@ export function MobileNav() {
           <IconButton
             key={s.id}
             label={t(`sections.${s.id}`)}
+            shortLabel={t(`sections.short.${s.id}`)}
             icon={<Icon name={s.icon} size={20} />}
             showLabel
             badge={badges[s.id]}
@@ -136,6 +137,7 @@ export function MobileNav() {
           <IconButton
             key={s.id}
             label={t(`sections.${s.id}`)}
+            shortLabel={t(`sections.short.${s.id}`)}
             icon={<Icon name={s.icon} size={20} />}
             showLabel
             badge={badges[s.id]}

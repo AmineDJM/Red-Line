@@ -44,6 +44,11 @@ test('conquérir une province ennemie', async ({ page }, info) => {
   });
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
+  // Acceptation des conditions si le serveur la demande (dialogue modal à tout moment).
+  await page.addLocatorHandler(page.getByTestId('legal-accept'), async () => {
+    await page.getByRole('dialog').getByRole('checkbox').check();
+    await page.getByTestId('legal-accept').click();
+  });
 
   // 1. Accueil → invité → nouvelle partie.
   await page.goto('/');
@@ -119,7 +124,7 @@ test('conquérir une province ennemie', async ({ page }, info) => {
   await page.screenshot({ path: info.outputPath('1-ordre.png') });
 
   // 6. Troisième geste : confirmer.
-  await page.locator('.order-bar').getByRole('button', { name: 'Confirmer' }).click();
+  await page.getByTestId('order-bar').getByRole('button', { name: 'Confirmer' }).click();
   await expect
     .poll(() =>
       page.evaluate(

@@ -5,7 +5,13 @@ import { Icon, Segmented, Slider } from '@redline/ui';
 import { fmtClock } from '../i18n/index.js';
 import { useWorld } from '../store/world.js';
 import { useGame } from '../store/game.js';
-import { drawMiniMap, shapesOf, useOwnerColor, type MiniMapLine, type MiniMapMarker } from './MiniMap.js';
+import {
+  drawMiniMap,
+  shapesOf,
+  useOwnerColor,
+  type MiniMapLine,
+  type MiniMapMarker,
+} from './MiniMap.js';
 
 const DURATION_MS = 7000;
 
@@ -50,7 +56,9 @@ export function BattleReplay({ report, height = 260 }: { report: BattleReport; h
     const markers: MiniMapMarker[] = [];
     for (const u of a.units) {
       const nb = b.units.find((x) => x.id === u.id);
-      const at: [number, number] = nb ? [u.at[0] + (nb.at[0] - u.at[0]) * f, u.at[1] + (nb.at[1] - u.at[1]) * f] : u.at;
+      const at: [number, number] = nb
+        ? [u.at[0] + (nb.at[0] - u.at[0]) * f, u.at[1] + (nb.at[1] - u.at[1]) * f]
+        : u.at;
       const own = u.owner === me;
       markers.push({
         at,
@@ -63,10 +71,22 @@ export function BattleReplay({ report, height = 260 }: { report: BattleReport; h
     for (const s of shots) {
       const age = time - s.t;
       if (age < 0 || age > (t1 - t0) * 0.06) continue;
-      lines.push({ from: s.from, to: s.to, color: s.hit ? '#ffb020' : 'rgba(255, 176, 32, 0.4)', width: s.hit ? 1.4 : 0.8, dashed: !s.hit });
+      lines.push({
+        from: s.from,
+        to: s.to,
+        color: s.hit ? '#ffb020' : 'rgba(255, 176, 32, 0.4)',
+        width: s.hit ? 1.4 : 0.8,
+        dashed: !s.hit,
+      });
       if (s.hit) markers.push({ at: s.to, color: '#ffb020', size: 5, shape: 'ring' });
     }
-    markers.push({ at: report.at, color: 'rgba(214, 221, 230, 0.35)', radiusKm: 30, size: 0.1, shape: 'ring' });
+    markers.push({
+      at: report.at,
+      color: 'rgba(214, 221, 230, 0.35)',
+      radiusKm: 30,
+      size: 0.1,
+      shape: 'ring',
+    });
     drawMiniMap(c, shapesOf(geo), colorOf, { center: report.at, spanKm: 55, markers, lines });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress, geo, report]);
@@ -74,7 +94,13 @@ export function BattleReplay({ report, height = 260 }: { report: BattleReport; h
   const clock = fmtClock(t0 + (t1 - t0) * progress);
   return (
     <div className="replay">
-      <canvas ref={ref} className="minimap replay__canvas" style={{ height }} role="img" aria-label={t('battles.replay')} />
+      <canvas
+        ref={ref}
+        className="minimap replay__canvas"
+        style={{ height }}
+        role="img"
+        aria-label={t('battles.replay')}
+      />
       <div className="replay__hud" aria-hidden>
         <span className="replay__rec">REPLAY</span>
         <span>
@@ -93,11 +119,32 @@ export function BattleReplay({ report, height = 260 }: { report: BattleReport; h
         </span>
       </div>
       <div className="replay__controls">
-        <button type="button" className="replay__play" onClick={() => setPlaying(!playing)} aria-label={playing ? t('game.clock.pause') : t('game.clock.play')}>
+        <button
+          type="button"
+          className="replay__play"
+          onClick={() => setPlaying(!playing)}
+          aria-label={playing ? t('game.clock.pause') : t('game.clock.play')}
+        >
           <Icon name={playing ? 'pause' : 'play'} size={13} />
         </button>
-        <Slider value={Math.round(progress * 1000)} min={0} max={1000} onChange={(v) => { setPlaying(false); setProgress(v / 1000); }} label={t('battles.scrub')} format={() => `${Math.round(progress * 100)} %`} />
-        <Segmented size="sm" label={t('battles.speed')} value={speed} onChange={setSpeed} options={[1, 2, 4].map((s) => ({ value: s, label: `×${s}` }))} />
+        <Slider
+          value={Math.round(progress * 1000)}
+          min={0}
+          max={1000}
+          onChange={(v) => {
+            setPlaying(false);
+            setProgress(v / 1000);
+          }}
+          label={t('battles.scrub')}
+          format={() => `${Math.round(progress * 100)} %`}
+        />
+        <Segmented
+          size="sm"
+          label={t('battles.speed')}
+          value={speed}
+          onChange={setSpeed}
+          options={[1, 2, 4].map((s) => ({ value: s, label: `×${s}` }))}
+        />
       </div>
     </div>
   );

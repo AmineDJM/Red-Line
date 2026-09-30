@@ -17,6 +17,7 @@ import type {
   PublicUser,
   RankingEntry,
   ResearchNode,
+  Balance,
   ScenarioSummary,
   SeasonView,
   ShopPack,
@@ -76,6 +77,8 @@ export interface Api {
   // ——— Phases 2+ (données statiques) ———
   /** Arbre technologique (GET /api/research, repli : data/research embarqué). */
   researchNodes(): Promise<ResearchNode[]>;
+  /** Équilibrage (défaut : data/balance embarqué). La démo y ajoute les coûts de construction. */
+  balance?(): Promise<Balance | null>;
   /** Fiches nations de l'écran de sélection (GET /api/nations/info). */
   nationsInfo(): Promise<NationInfo[]>;
 

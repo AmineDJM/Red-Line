@@ -54,10 +54,17 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
       toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
   };
 
-  const rows: { label: string; value: ReactNode; tone?: 'amber' | 'green' | 'red' | 'cyan' | 'dim' }[] = [];
+  const rows: {
+    label: string;
+    value: ReactNode;
+    tone?: 'amber' | 'green' | 'red' | 'cyan' | 'dim';
+  }[] = [];
   if (!own) rows.push({ label: t('game.selection.owner'), value: nationName(u.owner) });
   if (u.count !== undefined)
-    rows.push({ label: t('game.selection.count'), value: `${formatInt(u.count)} ${sys?.unitLabel ?? ''}`.trim() });
+    rows.push({
+      label: t('game.selection.count'),
+      value: `${formatInt(u.count)} ${sys?.unitLabel ?? ''}`.trim(),
+    });
   if (u.status)
     rows.push({
       label: t('game.selection.status'),
@@ -78,15 +85,31 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
   if (general) rows.push({ label: t('game.selection.general'), value: general.name });
   if (sys && u.level !== 'detected') {
     if (sys.weaponRangeKm.max > 0)
-      rows.push({ label: t('weapon.weaponRange'), value: fmtKm(sys.weaponRangeKm.max), tone: 'amber' });
+      rows.push({
+        label: t('weapon.weaponRange'),
+        value: fmtKm(sys.weaponRangeKm.max),
+        tone: 'amber',
+      });
     if (sys.speedKmh > 0)
-      rows.push({ label: t('weapon.speed'), value: `${formatInt(sys.speedKmh)} km/h`, tone: 'amber' });
+      rows.push({
+        label: t('weapon.speed'),
+        value: `${formatInt(sys.speedKmh)} km/h`,
+        tone: 'amber',
+      });
   }
   if (!own && u.level !== 'precise') {
     if (now - u.lastSeen > 60_000)
-      rows.push({ label: t('game.selection.lastSeenLabel'), value: fmtDuration(now - u.lastSeen), tone: 'dim' });
+      rows.push({
+        label: t('game.selection.lastSeenLabel'),
+        value: fmtDuration(now - u.lastSeen),
+        tone: 'dim',
+      });
     if (u.uncertaintyKm > 0)
-      rows.push({ label: t('game.selection.uncertaintyLabel'), value: `±${fmtKm(u.uncertaintyKm)}`, tone: 'dim' });
+      rows.push({
+        label: t('game.selection.uncertaintyLabel'),
+        value: `±${fmtKm(u.uncertaintyKm)}`,
+        tone: 'dim',
+      });
   }
 
   const name = sys && u.level !== 'detected' ? sys.name : t('game.legend.detected');
@@ -100,7 +123,12 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
       <header className="selpanel__head">
         {sys && u.level !== 'detected' && !compact ? (
           <div className="selpanel__photo">
-            <WeaponPhoto system={sys} photo={photoFor(sys, photos)} variant="thumb" labels={weaponLabels()} />
+            <WeaponPhoto
+              system={sys}
+              photo={photoFor(sys, photos)}
+              variant="thumb"
+              labels={weaponLabels()}
+            />
           </div>
         ) : null}
         <div className="selpanel__titles">
@@ -153,7 +181,12 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
       {u.hpRatio !== undefined ? (
         <div className="selpanel__hp">
           <span>{t('game.selection.hp')}</span>
-          <Gauge value={u.hpRatio} tone="auto" cells={compact ? 12 : 16} label={t('game.selection.hp')} />
+          <Gauge
+            value={u.hpRatio}
+            tone="auto"
+            cells={compact ? 12 : 16}
+            label={t('game.selection.hp')}
+          />
         </div>
       ) : null}
       <KeyValue items={compact ? rows.slice(0, 4) : rows} columns={compact ? 1 : 1} />
@@ -173,12 +206,20 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
           ) : null}
           <div className="selpanel__actions">
             {u.status === 'moving' || u.status === 'combat' ? (
-              <Button size="sm" icon={<Icon name="stop" size={12} />} onClick={() => void send({ kind: 'stop', unitIds: ids })}>
+              <Button
+                size="sm"
+                icon={<Icon name="stop" size={12} />}
+                onClick={() => void send({ kind: 'stop', unitIds: ids })}
+              >
                 {t('game.selection.stop')}
               </Button>
             ) : null}
             {sys?.movement === 'air' ? (
-              <Button size="sm" icon={<Icon name="home" size={13} />} onClick={() => void send({ kind: 'rtb', unitIds: ids })}>
+              <Button
+                size="sm"
+                icon={<Icon name="home" size={13} />}
+                onClick={() => void send({ kind: 'rtb', unitIds: ids })}
+              >
                 {t('army.rtb')}
               </Button>
             ) : null}
@@ -228,7 +269,7 @@ export function SelectionPanel({ compact }: { compact: boolean }) {
   const id = selection[0] ?? inspected;
   const u = id ? view?.units[id] : undefined;
   if (u && view) return <UnitPanel u={u} compact={compact} />;
-  if (province && view?.provinces[province]) return <ProvincePanel id={province} compact={compact} />;
+  if (province && view?.provinces[province])
+    return <ProvincePanel id={province} compact={compact} />;
   return null;
 }
-

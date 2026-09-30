@@ -45,7 +45,9 @@ export function AlertLevelPill({ level, compact }: { level: AlertLevel; compact?
       className={`alertlvl alertlvl--${tone}${compact ? ' alertlvl--compact' : ''}`}
       title={t('game.alertLevel.tooltip', { level, label: t(`game.alertLevel.labels.${level}`) })}
     >
-      <span className="alertlvl__label">{compact ? t('game.alertLevel.short') : t('game.alertLevel.title')}</span>
+      <span className="alertlvl__label">
+        {compact ? t('game.alertLevel.short') : t('game.alertLevel.title')}
+      </span>
       <span className="alertlvl__cells" aria-hidden>
         {[5, 4, 3, 2, 1].map((l) => (
           <i key={l} className={l >= level ? 'on' : ''} />
@@ -174,7 +176,10 @@ function Resources() {
           >
             <Icon name={RESOURCE_ICON[r]} size={14} />
             <span className="topres__value">{formatCompact(f.stock)}</span>
-            <span className={net < 0 ? 'topres__trend topres__trend--down' : 'topres__trend'} aria-hidden>
+            <span
+              className={net < 0 ? 'topres__trend topres__trend--down' : 'topres__trend'}
+              aria-hidden
+            >
               {net < 0 ? '▼' : '▲'}
             </span>
           </button>
@@ -197,8 +202,12 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
   const setPaletteOpen = useUi((s) => s.setPaletteOpen);
   const toggleWindow = useUi((s) => s.toggleWindow);
   const unread = notifications.filter((n) => !n.read).length;
-  const critical = notifications.some((n) => !n.read && n.item.kind === 'generic' && n.item.severity === 'critical');
-  const unreadChat = chat.filter((m) => m.from.nationId !== me && m.id > (chatRead[m.channel] ?? 0)).length;
+  const critical = notifications.some(
+    (n) => !n.read && n.item.kind === 'generic' && n.item.severity === 'critical',
+  );
+  const unreadChat = chat.filter(
+    (m) => m.from.nationId !== me && m.id > (chatRead[m.channel] ?? 0),
+  ).length;
   const nation = me ? view?.nations[me] : null;
   const alliance = view?.diplomacy?.alliances.find((a) => a.id === view.diplomacy?.myAllianceId);
   const level = view?.alertLevel;
@@ -273,11 +282,7 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
         onClick={() => toggleWindow('chat')}
       />
       {bell}
-      <IconButton
-        label={t('game.exit')}
-        icon={<Icon name="logout" size={17} />}
-        onClick={onExit}
-      />
+      <IconButton label={t('game.exit')} icon={<Icon name="logout" size={17} />} onClick={onExit} />
     </header>
   );
 }

@@ -41,7 +41,9 @@ export function LobbyScreen() {
       .then(setGames)
       .catch(() => setError(true));
   }, []);
-  const list = (games ?? []).filter((g) => filter === 'all' || (g.game.playerCount ?? 0) < (g.game.maxPlayers ?? 64));
+  const list = (games ?? []).filter(
+    (g) => filter === 'all' || (g.game.playerCount ?? 0) < (g.game.maxPlayers ?? 64),
+  );
   return (
     <Page
       path={[t('lobby.path')]}
@@ -49,17 +51,35 @@ export function LobbyScreen() {
       subtitle={t('lobby.subtitle')}
       actions={
         <>
-          <Button variant="subtle" icon={<Icon name="refresh" size={13} />} onClick={() => navigate('/games')}>
+          <Button
+            variant="subtle"
+            icon={<Icon name="refresh" size={13} />}
+            onClick={() => navigate('/games')}
+          >
             {t('home.resume')}
           </Button>
-          <Button variant="primary" icon={<Icon name="plus" size={13} />} onClick={() => navigate('/lobby/new')} data-testid="lobby-create">
+          <Button
+            variant="primary"
+            icon={<Icon name="plus" size={13} />}
+            onClick={() => navigate('/lobby/new')}
+            data-testid="lobby-create"
+          >
             {t('lobby.create')}
           </Button>
         </>
       }
     >
       <div className="row row--between">
-        <Segmented size="sm" label={t('lobby.filter')} value={filter} onChange={setFilter} options={[{ value: 'open', label: t('lobby.openOnly') }, { value: 'all', label: t('app.all') }]} />
+        <Segmented
+          size="sm"
+          label={t('lobby.filter')}
+          value={filter}
+          onChange={setFilter}
+          options={[
+            { value: 'open', label: t('lobby.openOnly') },
+            { value: 'all', label: t('app.all') },
+          ]}
+        />
         <span className="muted small">{t('lobby.aiNote')}</span>
       </div>
       {error ? (
@@ -98,7 +118,13 @@ export function LobbyScreen() {
               ),
               sort: (a, b) => (a.game.playerCount ?? 0) - (b.game.playerCount ?? 0),
             },
-            { key: 'speed', header: t('lobby.cols.speed'), align: 'right', render: (g) => `×${g.speed}`, hideOnMobile: true },
+            {
+              key: 'speed',
+              header: t('lobby.cols.speed'),
+              align: 'right',
+              render: (g) => `×${g.speed}`,
+              hideOnMobile: true,
+            },
             {
               key: 'victory',
               header: t('lobby.cols.victory'),
@@ -117,7 +143,11 @@ export function LobbyScreen() {
               key: 'shop',
               header: t('lobby.cols.shop'),
               hideOnMobile: true,
-              render: (g) => <Badge tone={policyTone(g.game.shopPolicy?.mode ?? 'open')}>{t(`shop.policies.${g.game.shopPolicy?.mode ?? 'open'}`)}</Badge>,
+              render: (g) => (
+                <Badge tone={policyTone(g.game.shopPolicy?.mode ?? 'open')}>
+                  {t(`shop.policies.${g.game.shopPolicy?.mode ?? 'open'}`)}
+                </Badge>
+              ),
             },
             {
               key: 'act',
@@ -125,10 +155,20 @@ export function LobbyScreen() {
               align: 'right',
               render: (g) => (
                 <span className="rowactions">
-                  <Button size="sm" variant="ghost" icon={<Icon name="eye" size={12} />} onClick={() => navigate(`/spectate/${encodeURIComponent(g.game.id)}`)}>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    icon={<Icon name="eye" size={12} />}
+                    onClick={() => navigate(`/spectate/${encodeURIComponent(g.game.id)}`)}
+                  >
                     {t('lobby.spectate')}
                   </Button>
-                  <Button size="sm" variant="primary" disabled={(g.game.playerCount ?? 0) >= (g.game.maxPlayers ?? 64)} onClick={() => navigate(`/lobby/${encodeURIComponent(g.game.id)}`)}>
+                  <Button
+                    size="sm"
+                    variant="primary"
+                    disabled={(g.game.playerCount ?? 0) >= (g.game.maxPlayers ?? 64)}
+                    onClick={() => navigate(`/lobby/${encodeURIComponent(g.game.id)}`)}
+                  >
                     {t('lobby.join')}
                   </Button>
                 </span>
@@ -164,11 +204,15 @@ export function LobbyCreateScreen() {
   useEffect(() => {
     void getApi().then((api) => {
       void world.load(api);
-      api.scenarios().then(setScenarios).catch(() => undefined);
+      api
+        .scenarios()
+        .then(setScenarios)
+        .catch(() => undefined);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const set = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) => setForm((f) => ({ ...f, [k]: v }));
+  const set = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
+    setForm((f) => ({ ...f, [k]: v }));
 
   if (step === 'nation') {
     if (world.status === 'error') return <ErrorScreen message={world.error ?? ''} />;
@@ -194,8 +238,14 @@ export function LobbyCreateScreen() {
               speed: form.speed,
               maxPlayers: form.maxPlayers,
               nationId,
-              victory: { provinceShare: form.provinceShare, allEnemyCapitals: form.allEnemyCapitals },
-              shopPolicy: { mode: form.shop, ...(form.shop === 'limited' ? { capPerPlayer: form.cap } : {}) },
+              victory: {
+                provinceShare: form.provinceShare,
+                allEnemyCapitals: form.allEnemyCapitals,
+              },
+              shopPolicy: {
+                mode: form.shop,
+                ...(form.shop === 'limited' ? { capPerPlayer: form.cap } : {}),
+              },
               inactiveAiAfterH: form.inactiveAiAfterH,
               private: form.private,
             });
@@ -210,46 +260,115 @@ export function LobbyCreateScreen() {
   }
 
   return (
-    <Page path={[t('lobby.path'), t('lobby.createPath')]} title={t('lobby.create')} subtitle={t('lobby.createSubtitle')} back="/lobby">
+    <Page
+      path={[t('lobby.path'), t('lobby.createPath')]}
+      title={t('lobby.create')}
+      subtitle={t('lobby.createSubtitle')}
+      back="/lobby"
+    >
       <div className="cols2">
         <Panel title={t('lobby.sections.game')}>
           <div className="stack">
             <Field label={t('lobby.name')}>
-              <Input value={form.name} maxLength={60} onChange={(e) => set('name', e.target.value)} />
+              <Input
+                value={form.name}
+                maxLength={60}
+                onChange={(e) => set('name', e.target.value)}
+              />
             </Field>
             <Field label={t('newGame.scenario')}>
-              <Select value={form.scenarioId} onChange={(v) => set('scenarioId', v)} options={(scenarios.length ? scenarios : [{ id: 'world-today', name: t('lobby.worldToday') }]).map((s) => ({ value: s.id, label: s.name }))} />
+              <Select
+                value={form.scenarioId}
+                onChange={(v) => set('scenarioId', v)}
+                options={(scenarios.length
+                  ? scenarios
+                  : [{ id: 'world-today', name: t('lobby.worldToday') }]
+                ).map((s) => ({ value: s.id, label: s.name }))}
+              />
             </Field>
             <Field label={t('newGame.speed')}>
-              <Segmented label={t('newGame.speed')} value={form.speed} onChange={(v) => set('speed', v)} options={[1, 2, 4].map((s) => ({ value: s, label: `×${s}` }))} />
+              <Segmented
+                label={t('newGame.speed')}
+                value={form.speed}
+                onChange={(v) => set('speed', v)}
+                options={[1, 2, 4].map((s) => ({ value: s, label: `×${s}` }))}
+              />
             </Field>
             <Field label={t('lobby.maxPlayers')} hint={t('lobby.maxPlayersHint')}>
-              <Slider value={form.maxPlayers} onChange={(v) => set('maxPlayers', v)} min={2} max={64} label={t('lobby.maxPlayers')} format={(v) => `${v} / 64`} />
+              <Slider
+                value={form.maxPlayers}
+                onChange={(v) => set('maxPlayers', v)}
+                min={2}
+                max={64}
+                label={t('lobby.maxPlayers')}
+                format={(v) => `${v} / 64`}
+              />
             </Field>
-            <Toggle checked={form.private} onChange={(v) => set('private', v)} label={t('lobby.private')} description={t('lobby.privateHint')} />
+            <Toggle
+              checked={form.private}
+              onChange={(v) => set('private', v)}
+              label={t('lobby.private')}
+              description={t('lobby.privateHint')}
+            />
           </div>
         </Panel>
         <div className="vstack">
           <Panel title={t('lobby.sections.victory')}>
             <div className="stack">
               <Field label={t('lobby.provinceShare')}>
-                <Slider value={Math.round(form.provinceShare * 100)} onChange={(v) => set('provinceShare', v / 100)} min={30} max={100} step={5} label={t('lobby.provinceShare')} format={(v) => `${v} %`} />
+                <Slider
+                  value={Math.round(form.provinceShare * 100)}
+                  onChange={(v) => set('provinceShare', v / 100)}
+                  min={30}
+                  max={100}
+                  step={5}
+                  label={t('lobby.provinceShare')}
+                  format={(v) => `${v} %`}
+                />
               </Field>
-              <Toggle checked={form.allEnemyCapitals} onChange={(v) => set('allEnemyCapitals', v)} label={t('lobby.capitalsToggle')} />
+              <Toggle
+                checked={form.allEnemyCapitals}
+                onChange={(v) => set('allEnemyCapitals', v)}
+                label={t('lobby.capitalsToggle')}
+              />
             </div>
           </Panel>
           <Panel title={t('lobby.sections.rules')}>
             <div className="stack">
               <Field label={t('lobby.shopPolicy')} hint={t('lobby.shopHint')}>
-                <Segmented label={t('lobby.shopPolicy')} value={form.shop} onChange={(v) => set('shop', v)} options={(['open', 'limited', 'disabled'] as const).map((m) => ({ value: m, label: t(`shop.policies.${m}`) }))} />
+                <Segmented
+                  label={t('lobby.shopPolicy')}
+                  value={form.shop}
+                  onChange={(v) => set('shop', v)}
+                  options={(['open', 'limited', 'disabled'] as const).map((m) => ({
+                    value: m,
+                    label: t(`shop.policies.${m}`),
+                  }))}
+                />
               </Field>
               {form.shop === 'limited' ? (
                 <Field label={t('lobby.cap')}>
-                  <Slider value={form.cap} onChange={(v) => set('cap', v)} min={0} max={5000} step={100} label={t('lobby.cap')} format={(v) => String(v)} />
+                  <Slider
+                    value={form.cap}
+                    onChange={(v) => set('cap', v)}
+                    min={0}
+                    max={5000}
+                    step={100}
+                    label={t('lobby.cap')}
+                    format={(v) => String(v)}
+                  />
                 </Field>
               ) : null}
               <Field label={t('lobby.inactive')}>
-                <Slider value={form.inactiveAiAfterH} onChange={(v) => set('inactiveAiAfterH', v)} min={6} max={96} step={6} label={t('lobby.inactive')} format={(v) => `${v} h`} />
+                <Slider
+                  value={form.inactiveAiAfterH}
+                  onChange={(v) => set('inactiveAiAfterH', v)}
+                  min={6}
+                  max={96}
+                  step={6}
+                  label={t('lobby.inactive')}
+                  format={(v) => `${v} h`}
+                />
               </Field>
             </div>
           </Panel>
@@ -259,7 +378,13 @@ export function LobbyCreateScreen() {
         <Button variant="ghost" onClick={() => navigate('/lobby')}>
           {t('app.cancel')}
         </Button>
-        <Button variant="primary" size="lg" disabled={form.name.trim().length < 2} icon={<Icon name="flag" size={14} />} onClick={() => setStep('nation')}>
+        <Button
+          variant="primary"
+          size="lg"
+          disabled={form.name.trim().length < 2}
+          icon={<Icon name="flag" size={14} />}
+          onClick={() => setStep('nation')}
+        >
           {t('lobby.next')}
         </Button>
       </div>
@@ -277,7 +402,10 @@ export function LobbyJoinScreen({ id }: { id: string }) {
   useEffect(() => {
     void getApi().then((api) => {
       void world.load(api);
-      api.lobby().then((l) => setGame(l.find((g) => g.game.id === id) ?? null)).catch(() => setError(t('lobby.error')));
+      api
+        .lobby()
+        .then((l) => setGame(l.find((g) => g.game.id === id) ?? null))
+        .catch(() => setError(t('lobby.error')));
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
@@ -296,7 +424,8 @@ export function LobbyJoinScreen({ id }: { id: string }) {
       headerExtra={
         game ? (
           <span className="picker__players">
-            <Icon name="users" size={13} /> {game.game.playerCount ?? 0}/{game.game.maxPlayers ?? 64} {t('lobby.humans')} · {t('lobby.aiRest')}
+            <Icon name="users" size={13} /> {game.game.playerCount ?? 0}/
+            {game.game.maxPlayers ?? 64} {t('lobby.humans')} · {t('lobby.aiRest')}
           </span>
         ) : null
       }

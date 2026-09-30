@@ -228,6 +228,15 @@
 .council__session .rl-countdown {
   min-width: 120px;
 }
+@media (max-width: 719px) {
+  .council__session {
+    flex-wrap: wrap;
+  }
+  .council__session > .rl-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
 .reso {
   display: flex;
   flex-direction: column;
@@ -852,7 +861,7 @@
 }
 .packs {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 10px;
 }
 .pack {

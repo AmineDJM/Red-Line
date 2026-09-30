@@ -6,12 +6,7 @@ import {
   type ServerMessage,
 } from '@redline/shared';
 import { ClockSync } from './clockSync.js';
-import {
-  Emitter,
-  type ChatChannel,
-  type GameConnection,
-  type OrderOutcome,
-} from './connection.js';
+import { Emitter, type ChatChannel, type GameConnection, type OrderOutcome } from './connection.js';
 
 type WsCtor = new (url: string) => WebSocket;
 

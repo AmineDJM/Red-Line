@@ -158,7 +158,11 @@ export function Dialog({
   }, [open, onClose]);
   if (!open) return null;
   return (
-    <div className="rl-dialog" role="presentation" onMouseDown={(e) => e.target === e.currentTarget && onClose?.()}>
+    <div
+      className="rl-dialog"
+      role="presentation"
+      onMouseDown={(e) => e.target === e.currentTarget && onClose?.()}
+    >
       <div
         ref={ref}
         className={['rl-dialog__card', tone ? `rl-dialog__card--${tone}` : ''].join(' ')}

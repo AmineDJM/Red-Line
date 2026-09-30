@@ -17,7 +17,11 @@ const STEPS: Step[] = [
   { id: 'welcome' },
   { id: 'select', done: () => useUi.getState().selection.length > 0 },
   { id: 'order', done: () => !!useUi.getState().pendingOrder },
-  { id: 'confirm', target: '[data-testid="order-bar"]', done: () => !useUi.getState().pendingOrder },
+  {
+    id: 'confirm',
+    target: '[data-testid="order-bar"]',
+    done: () => !useUi.getState().pendingOrder,
+  },
   {
     id: 'production',
     target: '[data-testid="nav-production"]',
@@ -28,7 +32,11 @@ const STEPS: Step[] = [
     target: '[data-testid="nav-research"], [data-testid="nav-more"]',
     done: () => useUi.getState().windows.some((w) => w.id === 'research'),
   },
-  { id: 'console', target: '[data-testid="console-button"]', done: () => useUi.getState().paletteOpen },
+  {
+    id: 'console',
+    target: '[data-testid="console-button"]',
+    done: () => useUi.getState().paletteOpen,
+  },
   { id: 'time', target: '[data-testid="clock"]' },
   { id: 'alerts', target: '[data-testid="alerts-button"]' },
   { id: 'end' },
@@ -100,10 +108,21 @@ export function Tutorial({ enabled }: { enabled: boolean }) {
         <div
           className="tuto-ring"
           aria-hidden
-          style={{ left: rect.left - 4, top: rect.top - 4, width: rect.width + 8, height: rect.height + 8 }}
+          style={{
+            left: rect.left - 4,
+            top: rect.top - 4,
+            width: rect.width + 8,
+            height: rect.height + 8,
+          }}
         />
       ) : null}
-      <div className="tuto" role="dialog" aria-live="polite" aria-label={t('tutorial.title')} data-map-avoid>
+      <div
+        className="tuto"
+        role="dialog"
+        aria-live="polite"
+        aria-label={t('tutorial.title')}
+        data-map-avoid
+      >
         <div className="tuto__head">
           <Prompt path={[t('tutorial.path'), `${step + 1}-${STEPS.length}`]} />
           <span className="tuto__progress" aria-hidden>

@@ -45,7 +45,9 @@ export function ProgressBar({
         aria-valuenow={indeterminate ? undefined : Math.round(v * 100)}
       >
         <div
-          className={indeterminate ? 'rl-progress__fill rl-progress__fill--ind' : 'rl-progress__fill'}
+          className={
+            indeterminate ? 'rl-progress__fill rl-progress__fill--ind' : 'rl-progress__fill'
+          }
           style={indeterminate ? undefined : { width: `${v * 100}%` }}
         />
       </div>

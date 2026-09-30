@@ -28,24 +28,38 @@ export function ChatWindow({ win, frame, mobile }: WindowContentProps) {
   const chatRead = useGame((s) => s.chatRead);
   const markChannelRead = useGame((s) => s.markChannelRead);
   const nations = useWorld((s) => s.nations);
-  const [active, setActive] = useState<string>(win.params.channel === 'alliance' ? 'alliance' : 'game');
+  const [active, setActive] = useState<string>(
+    win.params.channel === 'alliance' ? 'alliance' : 'game',
+  );
   const [text, setText] = useState('');
   const [newTo, setNewTo] = useState('');
   const [showList, setShowList] = useState(true);
   const bottom = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (win.params.channel) setActive(win.params.channel === 'alliance' ? 'alliance' : win.params.channel);
+    if (win.params.channel)
+      setActive(win.params.channel === 'alliance' ? 'alliance' : win.params.channel);
   }, [win.seq, win.params.channel]);
 
   const alliance = view?.diplomacy?.alliances.find((a) => a.id === view.diplomacy?.myAllianceId);
   const convs: Conv[] = useMemo(() => {
     const list: Conv[] = [{ key: 'game', kind: 'game', label: t('chat.game') }];
-    if (alliance) list.push({ key: 'alliance', kind: 'alliance', label: t('chat.alliance', { name: alliance.name }) });
-    const privates = new Set(chat.filter((m) => m.channel.startsWith('private:')).map((m) => m.channel));
+    if (alliance)
+      list.push({
+        key: 'alliance',
+        kind: 'alliance',
+        label: t('chat.alliance', { name: alliance.name }),
+      });
+    const privates = new Set(
+      chat.filter((m) => m.channel.startsWith('private:')).map((m) => m.channel),
+    );
     if (active.startsWith('private:')) privates.add(active);
     for (const ch of privates) {
-      const other = ch.slice('private:'.length).split('|').find((x) => x !== me) ?? '';
+      const other =
+        ch
+          .slice('private:'.length)
+          .split('|')
+          .find((x) => x !== me) ?? '';
       list.push({ key: ch, kind: 'private', to: other, label: nationName(other) });
     }
     return list;
@@ -54,7 +68,9 @@ export function ChatWindow({ win, frame, mobile }: WindowContentProps) {
   const cur = convs.find((c) => c.key === active) ?? convs[0]!;
   const messages = chat.filter((m) => convKey(m) === cur.key);
   const unread = (c: Conv) =>
-    chat.filter((m) => convKey(m) === c.key && m.from.nationId !== me && m.id > (chatRead[m.channel] ?? 0)).length;
+    chat.filter(
+      (m) => convKey(m) === c.key && m.from.nationId !== me && m.id > (chatRead[m.channel] ?? 0),
+    ).length;
 
   useEffect(() => {
     bottom.current?.scrollIntoView({ block: 'end' });
@@ -90,7 +106,11 @@ export function ChatWindow({ win, frame, mobile }: WindowContentProps) {
                 if (mobile) setShowList(false);
               }}
             >
-              {c.kind === 'private' && c.to ? <Flag nationId={c.to} size={11} /> : <Icon name={c.kind === 'game' ? 'globe' : 'users'} size={14} />}
+              {c.kind === 'private' && c.to ? (
+                <Flag nationId={c.to} size={11} />
+              ) : (
+                <Icon name={c.kind === 'game' ? 'globe' : 'users'} size={14} />
+              )}
               <span className="conv__label">{c.label}</span>
               {unread(c) ? <i className="conv__badge">{unread(c)}</i> : null}
             </button>
@@ -122,7 +142,12 @@ export function ChatWindow({ win, frame, mobile }: WindowContentProps) {
         {!mobile || !showList ? (
           <section className="chat__main" aria-label={cur.label}>
             {mobile ? (
-              <Button variant="ghost" size="sm" icon={<Icon name="chevronLeft" size={13} />} onClick={() => setShowList(true)}>
+              <Button
+                variant="ghost"
+                size="sm"
+                icon={<Icon name="chevronLeft" size={13} />}
+                onClick={() => setShowList(true)}
+              >
                 {t('chat.channels')}
               </Button>
             ) : null}
@@ -132,18 +157,32 @@ export function ChatWindow({ win, frame, mobile }: WindowContentProps) {
                   const mine = m.from.nationId === me && m.from.userId !== 'bot';
                   const prev = messages[i - 1];
                   const grouped = prev && prev.from.userId === m.from.userId;
-                  const time = new Date(m.sentAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+                  const time = new Date(m.sentAt).toLocaleTimeString('fr-FR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  });
                   return (
-                    <div key={m.id} className={['msg', mine ? 'msg--mine' : '', grouped ? 'msg--grouped' : ''].join(' ')}>
+                    <div
+                      key={m.id}
+                      className={[
+                        'msg',
+                        mine ? 'msg--mine' : '',
+                        grouped ? 'msg--grouped' : '',
+                      ].join(' ')}
+                    >
                       {!grouped ? (
                         <div className="msg__head">
                           {m.from.nationId ? <Flag nationId={m.from.nationId} size={10} /> : null}
                           <b>{m.from.name}</b>
-                          {m.from.nationId ? <span className="muted">{nationName(m.from.nationId)}</span> : null}
+                          {m.from.nationId ? (
+                            <span className="muted">{nationName(m.from.nationId)}</span>
+                          ) : null}
                           <span className="msg__time">{time}</span>
                         </div>
                       ) : null}
-                      <p className={m.hidden ? 'msg__text msg__text--hidden' : 'msg__text'}>{m.hidden ? t('chat.hidden') : m.text}</p>
+                      <p className={m.hidden ? 'msg__text msg__text--hidden' : 'msg__text'}>
+                        {m.hidden ? t('chat.hidden') : m.text}
+                      </p>
                     </div>
                   );
                 })
@@ -156,8 +195,20 @@ export function ChatWindow({ win, frame, mobile }: WindowContentProps) {
               <span className="chat__prompt" aria-hidden>
                 &gt;
               </span>
-              <input value={text} maxLength={1000} onChange={(e) => setText(e.target.value)} placeholder={t('chat.placeholder', { channel: cur.label })} aria-label={t('chat.message')} />
-              <Button type="submit" variant="primary" size="sm" icon={<Icon name="send" size={12} />} disabled={!text.trim()}>
+              <input
+                value={text}
+                maxLength={1000}
+                onChange={(e) => setText(e.target.value)}
+                placeholder={t('chat.placeholder', { channel: cur.label })}
+                aria-label={t('chat.message')}
+              />
+              <Button
+                type="submit"
+                variant="primary"
+                size="sm"
+                icon={<Icon name="send" size={12} />}
+                disabled={!text.trim()}
+              >
                 {t('chat.send')}
               </Button>
             </form>

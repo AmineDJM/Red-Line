@@ -22,6 +22,24 @@
   justify-content: flex-end;
   gap: 2px;
 }
+/* Mobile : actions de ligne sous le libellé (colonne d'actions masquée). */
+.rowactions--below {
+  display: flex;
+  white-space: normal;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 4px;
+  margin-top: 6px;
+}
+.rowactions--below:empty {
+  display: none;
+}
+.relcell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
 .kpis {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));

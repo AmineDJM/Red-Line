@@ -56,7 +56,10 @@ export function unitLabel(u: UnitView, catalog: Record<string, WeaponSystem>): s
 }
 
 /** Nombre d'éléments possédés par système (unités du joueur encore en vie). */
-export function ownedCounts(view: PlayerView | null, me: NationId | null): Record<SystemId, number> {
+export function ownedCounts(
+  view: PlayerView | null,
+  me: NationId | null,
+): Record<SystemId, number> {
   const out: Record<SystemId, number> = {};
   if (!view || !me) return out;
   for (const u of Object.values(view.units)) {

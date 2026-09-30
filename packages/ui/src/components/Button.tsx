@@ -73,6 +73,8 @@ export interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonEle
   active?: boolean;
   /** Affiche le libellé sous l'icône (barre de navigation mobile). */
   showLabel?: boolean;
+  /** Libellé visible abrégé (avec `showLabel`) ; `label` reste le nom accessible. */
+  shortLabel?: string;
   size?: 'sm' | 'md' | 'lg';
   /** Raccourci affiché dans l'infobulle native. */
   shortcut?: string;
@@ -86,6 +88,7 @@ export function IconButton({
   badgeTone = 'cyan',
   active,
   showLabel,
+  shortLabel,
   size = 'md',
   shortcut,
   className,
@@ -112,7 +115,11 @@ export function IconButton({
       {...rest}
     >
       <span className="rl-iconbtn__icon">{icon}</span>
-      {showLabel ? <span className="rl-iconbtn__label">{label}</span> : null}
+      {showLabel ? (
+        <span className="rl-iconbtn__label" aria-hidden>
+          {shortLabel ?? label}
+        </span>
+      ) : null}
       {hasBadge ? (
         <span className={`rl-iconbtn__badge rl-iconbtn__badge--${badgeTone}`} aria-hidden>
           {badge}

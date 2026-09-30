@@ -27,16 +27,16 @@ export function Badge({
 }: BadgeProps) {
   return (
     <span
-      className={[
-        'rl-badge',
-        `rl-badge--${tone}`,
-        `rl-badge--${variant}`,
-        className ?? '',
-      ].join(' ')}
+      className={['rl-badge', `rl-badge--${tone}`, `rl-badge--${variant}`, className ?? ''].join(
+        ' ',
+      )}
       title={title}
     >
       {dot || pulse ? (
-        <span className={pulse ? 'rl-badge__dot rl-badge__dot--pulse' : 'rl-badge__dot'} aria-hidden />
+        <span
+          className={pulse ? 'rl-badge__dot rl-badge__dot--pulse' : 'rl-badge__dot'}
+          aria-hidden
+        />
       ) : null}
       {children}
     </span>
@@ -44,7 +44,15 @@ export function Badge({
 }
 
 /** Point de statut seul (liste, tableau). */
-export function StatusDot({ tone = 'neutral', pulse, label }: { tone?: Tone; pulse?: boolean; label?: string }) {
+export function StatusDot({
+  tone = 'neutral',
+  pulse,
+  label,
+}: {
+  tone?: Tone;
+  pulse?: boolean;
+  label?: string;
+}) {
   return (
     <span
       className={`rl-dot rl-dot--${tone}${pulse ? ' rl-dot--pulse' : ''}`}

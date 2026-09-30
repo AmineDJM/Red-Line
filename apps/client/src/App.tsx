@@ -68,7 +68,9 @@ export function App() {
       {route.name === 'home' ? <HomeScreen /> : null}
       {route.name === 'new' ? <NewGameScreen /> : null}
       {route.name === 'game' ? <GameScreen key={route.id} id={route.id} /> : null}
-      {route.name === 'spectate' ? <GameScreen key={`s-${route.id}`} id={route.id} spectate /> : null}
+      {route.name === 'spectate' ? (
+        <GameScreen key={`s-${route.id}`} id={route.id} spectate />
+      ) : null}
       {route.name === 'end' ? <EndGameScreen id={route.id} /> : null}
       {route.name === 'lobby' ? <LobbyScreen /> : null}
       {route.name === 'lobbyCreate' ? <LobbyCreateScreen /> : null}

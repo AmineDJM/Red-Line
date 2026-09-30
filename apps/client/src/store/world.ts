@@ -59,7 +59,7 @@ export const useWorld = create<WorldState>((set, get) => ({
     set({ extras: 'loading' });
     const [nodes, balance] = await Promise.all([
       api.researchNodes().catch(() => []),
-      bundledBalance().catch(() => null),
+      (api.balance ? api.balance() : bundledBalance()).catch(() => null),
     ]);
     set({ research: byId(nodes), balance, extras: 'ready' });
   },

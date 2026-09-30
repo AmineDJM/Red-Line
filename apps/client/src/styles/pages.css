@@ -5,8 +5,7 @@
   display: flex;
   flex-direction: column;
   background:
-    radial-gradient(900px 500px at 80% 0%, rgba(76, 201, 240, 0.05), transparent 60%),
-    var(--rl-bg);
+    radial-gradient(900px 500px at 80% 0%, rgba(76, 201, 240, 0.05), transparent 60%), var(--rl-bg);
 }
 .page__bar {
   flex: none;
@@ -220,4 +219,12 @@
   flex-direction: column;
   gap: 4px;
   font-size: var(--rl-fs-sm);
+}
+
+.dialog-heading {
+  margin: 0;
+  color: var(--rl-text-strong);
+  font-size: var(--rl-fs-lg);
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }

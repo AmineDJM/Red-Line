@@ -182,7 +182,8 @@ export class HttpApi implements Api {
     return (await request<{ game: GameMeta }>('POST', '/api/lobby', body)).game;
   }
   async joinLobby(id: string, nationId: NationId): Promise<GameMeta> {
-    return (await request<{ game: GameMeta }>('POST', `/api/lobby/${enc(id)}/join`, { nationId })).game;
+    return (await request<{ game: GameMeta }>('POST', `/api/lobby/${enc(id)}/join`, { nationId }))
+      .game;
   }
   async leaveLobby(id: string): Promise<void> {
     await request('POST', `/api/lobby/${enc(id)}/leave`, {});

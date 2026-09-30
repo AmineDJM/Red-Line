@@ -57,7 +57,8 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
           : { provinceId: id, nationId: p.owner },
     });
     if (res?.ok) toast(t('province.reconStarted', { province: def.cityName ?? def.name }), 'ok');
-    else if (res) toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    else if (res)
+      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
   };
 
   return (
@@ -118,12 +119,27 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
               ...(def.population
                 ? [{ label: t('province.population'), value: formatCompact(def.population) }]
                 : []),
-              { label: t('province.income'), value: formatMoney(def.income.money), tone: 'amber' as const },
+              {
+                label: t('province.income'),
+                value: formatMoney(def.income.money),
+                tone: 'amber' as const,
+              },
               ...(p.fortification
-                ? [{ label: t('province.fortification'), value: t('province.level', { level: p.fortification.level }) }]
+                ? [
+                    {
+                      label: t('province.fortification'),
+                      value: t('province.level', { level: p.fortification.level }),
+                    },
+                  ]
                 : []),
               ...(p.unrest !== undefined
-                ? [{ label: t('province.unrest'), value: `${Math.round(p.unrest)} %`, tone: p.unrest > 50 ? ('red' as const) : undefined }]
+                ? [
+                    {
+                      label: t('province.unrest'),
+                      value: `${Math.round(p.unrest)} %`,
+                      tone: p.unrest > 50 ? ('red' as const) : undefined,
+                    },
+                  ]
                 : []),
             ]}
           />
@@ -148,7 +164,14 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
           ) : (
             <ul className="bldgs">
               {state.map((b) => (
-                <BuildingRow key={b.type} provinceId={id} b={b} now={now} editable={own} compact={compact} />
+                <BuildingRow
+                  key={b.type}
+                  provinceId={id}
+                  b={b}
+                  now={now}
+                  editable={own}
+                  compact={compact}
+                />
               ))}
               {!state.length ? <li className="muted small">{t('province.noBuildings')}</li> : null}
             </ul>
@@ -166,7 +189,9 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
                 size="sm"
                 variant="ghost"
                 icon={<Icon name="shield" size={13} />}
-                onClick={() => void conn?.sendOrder({ kind: 'build', provinceId: id, building: 'fortification' })}
+                onClick={() =>
+                  void conn?.sendOrder({ kind: 'build', provinceId: id, building: 'fortification' })
+                }
               >
                 {t('province.fortify')}
               </Button>
@@ -180,7 +205,9 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
             <Gauge
               value={(intel?.level ?? 0) / 3}
               cells={3}
-              tone={(intel?.level ?? 0) >= 2 ? 'green' : (intel?.level ?? 0) === 1 ? 'amber' : 'red'}
+              tone={
+                (intel?.level ?? 0) >= 2 ? 'green' : (intel?.level ?? 0) === 1 ? 'amber' : 'red'
+              }
               valueText={t(`province.intelLevel.${intel?.level ?? 0}`)}
               label={t('province.knowledge')}
             />
@@ -189,11 +216,19 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
             items={[
               {
                 label: t('province.updated'),
-                value: intel ? t('province.ago', { value: fmtDuration(Math.max(0, now - intel.updatedAt)) }) : '—',
+                value: intel
+                  ? t('province.ago', { value: fmtDuration(Math.max(0, now - intel.updatedAt)) })
+                  : '—',
                 tone: 'dim',
               },
-              { label: t('province.economicIntel'), value: intel?.economic ? t('app.yes') : t('app.no') },
-              { label: t('province.militaryIntel'), value: intel?.military ? t('app.yes') : t('app.no') },
+              {
+                label: t('province.economicIntel'),
+                value: intel?.economic ? t('app.yes') : t('app.no'),
+              },
+              {
+                label: t('province.militaryIntel'),
+                value: intel?.military ? t('app.yes') : t('app.no'),
+              },
             ]}
           />
           <div className="provpanel__section">
@@ -212,16 +247,28 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
                   {b.level ? <span className="bldg__lvl">N{b.level}</span> : null}
                 </li>
               ))}
-              {(intel?.level ?? 0) < 3 ? <li className="bldg bldg--unknown">{t('province.moreUnknown')}</li> : null}
+              {(intel?.level ?? 0) < 3 ? (
+                <li className="bldg bldg--unknown">{t('province.moreUnknown')}</li>
+              ) : null}
             </ul>
           ) : (
             <p className="provpanel__unknown">{t('province.unknownHint')}</p>
           )}
           <div className="selpanel__actions">
-            <Button size="sm" variant="primary" icon={<Icon name="spy" size={13} />} onClick={() => void intelOp('infiltrate_spy')} data-testid="recon-button">
+            <Button
+              size="sm"
+              variant="primary"
+              icon={<Icon name="spy" size={13} />}
+              onClick={() => void intelOp('infiltrate_spy')}
+              data-testid="recon-button"
+            >
               {t('province.recon')}
             </Button>
-            <Button size="sm" icon={<Icon name="radio" size={13} />} onClick={() => void intelOp('listen_area')}>
+            <Button
+              size="sm"
+              icon={<Icon name="radio" size={13} />}
+              onClick={() => void intelOp('listen_area')}
+            >
               {t('province.listen')}
             </Button>
           </div>

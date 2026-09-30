@@ -69,7 +69,11 @@ export function SectionTitle({ children, meta }: { children: ReactNode; meta?: R
 }
 
 export interface KeyValueProps {
-  items: { label: ReactNode; value: ReactNode; tone?: 'amber' | 'green' | 'red' | 'cyan' | 'dim' }[];
+  items: {
+    label: ReactNode;
+    value: ReactNode;
+    tone?: 'amber' | 'green' | 'red' | 'cyan' | 'dim';
+  }[];
   /** Nombre de colonnes (1 ou 2). */
   columns?: 1 | 2;
   className?: string;

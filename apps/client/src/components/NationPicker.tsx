@@ -121,15 +121,26 @@ export function NationPicker({
           <h1>{title}</h1>
           {subtitle ? <span>{subtitle}</span> : null}
         </div>
-        {headerExtra}
-        <Button variant="ghost" size="sm" icon={<Icon name="chevronLeft" size={13} />} onClick={onBack}>
+        {headerExtra ? <div className="picker__extra">{headerExtra}</div> : null}
+        <Button
+          variant="ghost"
+          size="sm"
+          icon={<Icon name="chevronLeft" size={13} />}
+          onClick={onBack}
+        >
           {t('app.back')}
         </Button>
       </header>
 
       <div className="picker__main">
         <div className="picker__map">
-          <WorldPicker picked={nation} onPick={pick} takenBy={takenBy} playable={playable} label={t('newGame.mapLabel')} />
+          <WorldPicker
+            picked={nation}
+            onPick={pick}
+            takenBy={takenBy}
+            playable={playable}
+            label={t('newGame.mapLabel')}
+          />
           <div className="picker__maphint" aria-hidden>
             <Icon name="mapPin" size={13} /> {t('newGame.pickOnMap')}
           </div>
@@ -149,7 +160,12 @@ export function NationPicker({
               {takenCount ? ` · ${t('newGame.taken', { count: takenCount })}` : ''}
             </span>
           </div>
-          <ul className="picker__list" role="listbox" aria-label={t('newGame.nation')} ref={listRef}>
+          <ul
+            className="picker__list"
+            role="listbox"
+            aria-label={t('newGame.nation')}
+            ref={listRef}
+          >
             {list.map((n) => {
               const player = takenBy[n.id];
               const sel = nation === n.id;
@@ -161,7 +177,11 @@ export function NationPicker({
                     aria-selected={sel}
                     aria-disabled={!!player}
                     data-nation={n.id}
-                    className={['nation-row', sel ? 'nation-row--sel' : '', player ? 'nation-row--taken' : ''].join(' ')}
+                    className={[
+                      'nation-row',
+                      sel ? 'nation-row--sel' : '',
+                      player ? 'nation-row--taken' : '',
+                    ].join(' ')}
                     onClick={() => pick(n.id)}
                   >
                     <Flag nationId={n.id} size={15} color={n.color} />
@@ -170,7 +190,9 @@ export function NationPicker({
                       {player ? <span className="nation-row__player"> ({player})</span> : null}
                     </span>
                     <span className="nation-row__sub">
-                      {player ? t('newGame.human') : t('newGame.provinces', { count: counts.get(n.id) ?? 0 })}
+                      {player
+                        ? t('newGame.human')
+                        : t('newGame.provinces', { count: counts.get(n.id) ?? 0 })}
                     </span>
                   </button>
                 </li>
@@ -180,17 +202,33 @@ export function NationPicker({
         </aside>
       </div>
 
-      <footer className={picked ? 'picker__band' : 'picker__band picker__band--empty'} aria-live="polite">
+      <footer
+        className={picked ? 'picker__band' : 'picker__band picker__band--empty'}
+        aria-live="polite"
+      >
         <div className="picker__selected">
           {picked ? (
             <>
-              <Flag nationId={picked.id} size={mobile ? 30 : 54} color={picked.color} title={picked.name} className="picker__flag" />
+              <Flag
+                nationId={picked.id}
+                size={mobile ? 30 : 54}
+                color={picked.color}
+                title={picked.name}
+                className="picker__flag"
+                eager
+              />
               <div className="picker__who">
                 <span className="picker__label">{t('newGame.selected')}</span>
                 <strong className="picker__name">{picked.name}</strong>
                 <span className="picker__badges">
-                  {info ? <Badge tone="cyan" variant="outline">{t(`doctrines.${info.doctrine}`, { defaultValue: info.doctrine })}</Badge> : null}
-                  <Badge tone="neutral">{t('newGame.provinces', { count: counts.get(picked.id) ?? 0 })}</Badge>
+                  {info ? (
+                    <Badge tone="cyan" variant="outline">
+                      {t(`doctrines.${info.doctrine}`, { defaultValue: info.doctrine })}
+                    </Badge>
+                  ) : null}
+                  <Badge tone="neutral">
+                    {t('newGame.provinces', { count: counts.get(picked.id) ?? 0 })}
+                  </Badge>
                 </span>
               </div>
             </>
@@ -228,7 +266,14 @@ export function NationPicker({
               const s = world.catalog[h.systemId];
               return (
                 <li key={h.systemId}>
-                  {s ? <WeaponPhoto system={s} photo={photoFor(s, photos)} variant="thumb" showCredit={false} /> : null}
+                  {s ? (
+                    <WeaponPhoto
+                      system={s}
+                      photo={photoFor(s, photos)}
+                      variant="thumb"
+                      showCredit={false}
+                    />
+                  ) : null}
                   <span className="picker__hl-name">{s?.name ?? h.systemId}</span>
                   <span className="picker__hl-count">×{h.count}</span>
                 </li>
@@ -241,7 +286,13 @@ export function NationPicker({
           <Button variant="subtle" icon={<Icon name="refresh" size={13} />} onClick={random}>
             {t('newGame.random')}
           </Button>
-          <Button variant="primary" size="lg" disabled={!nation || busy} onClick={() => nation && onConfirm(nation)} data-testid="picker-confirm">
+          <Button
+            variant="primary"
+            size="lg"
+            disabled={!nation || busy}
+            onClick={() => nation && onConfirm(nation)}
+            data-testid="picker-confirm"
+          >
             {confirmLabel}
           </Button>
         </div>

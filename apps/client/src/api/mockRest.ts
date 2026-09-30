@@ -7,6 +7,7 @@ import {
   HOUR,
   destination,
   distanceKm,
+  type Balance,
   type BattleReport,
   type BattleReportSummary,
   type CosmeticItem,
@@ -139,7 +140,10 @@ export async function demoNationsInfo(
   for (const p of provinces) counts.set(p.nationId, (counts.get(p.nationId) ?? 0) + 1);
   const orbats = new Map<string, Record<string, unknown>>();
   for (const [path, load] of Object.entries(orbatFiles)) {
-    const id = path.split('/').pop()!.replace(/\.json$/, '');
+    const id = path
+      .split('/')
+      .pop()!
+      .replace(/\.json$/, '');
     try {
       orbats.set(id, (await load()) as Record<string, unknown>);
     } catch {
@@ -148,8 +152,13 @@ export async function demoNationsInfo(
   }
   const KEY = ['fighter', 'tank', 'air_defense', 'surface_ship', 'submarine', 'artillery'];
   const byDoctrine = (d: string, iso2: string | null) => {
-    const national = catalog.filter((s) => iso2 && s.origin.toLowerCase() === iso2 && KEY.includes(s.category));
-    const pool = national.length >= 3 ? national : catalog.filter((s) => s.doctrine === d && KEY.includes(s.category));
+    const national = catalog.filter(
+      (s) => iso2 && s.origin.toLowerCase() === iso2 && KEY.includes(s.category),
+    );
+    const pool =
+      national.length >= 3
+        ? national
+        : catalog.filter((s) => s.doctrine === d && KEY.includes(s.category));
     // Un système par catégorie, le plus récent d'abord.
     const seen = new Set<string>();
     return [...pool]
@@ -162,7 +171,8 @@ export async function demoNationsInfo(
       const o = orbats.get(n.id);
       const b = BUDGETS[n.id];
       const doctrine = (o?.doctrine as string) ?? b?.[2] ?? 'other';
-      const [description, doctrineText] = DESCRIPTIONS[n.id] ?? genericDescription(n, counts.get(n.id) ?? 0);
+      const [description, doctrineText] =
+        DESCRIPTIONS[n.id] ?? genericDescription(n, counts.get(n.id) ?? 0);
       const inv = (o?.inventory as { systemId: string; count: number }[] | undefined) ?? null;
       const rnd = prng(hash(n.id));
       const highlights = inv
@@ -176,7 +186,8 @@ export async function demoNationsInfo(
         description: (o?.description as string) ?? description,
         doctrine,
         doctrineText: (o?.doctrineText as string) ?? doctrineText,
-        defenseBudgetUsd: (o?.defenseBudgetUsd as number) ?? b?.[0] ?? Math.round((0.2 + rnd() * 2) * 1e9),
+        defenseBudgetUsd:
+          (o?.defenseBudgetUsd as number) ?? b?.[0] ?? Math.round((0.2 + rnd() * 2) * 1e9),
         activePersonnel: (o?.activePersonnel as number) ?? b?.[1] ?? null,
         provinceCount: counts.get(n.id) ?? 0,
         highlights,
@@ -186,7 +197,20 @@ export async function demoNationsInfo(
 
 // ——— Lobby et parties ———
 
-const PLAYERS = ['Kestrel', 'Atlas_7', 'N0madSahel', 'VektorPrime', 'Mistral', 'Orca', 'Tariq', 'Solveig', 'Ghostline', 'Yuki', 'Commandant_R', 'Bellatrix'];
+const PLAYERS = [
+  'Kestrel',
+  'Atlas_7',
+  'N0madSahel',
+  'VektorPrime',
+  'Mistral',
+  'Orca',
+  'Tariq',
+  'Solveig',
+  'Ghostline',
+  'Yuki',
+  'Commandant_R',
+  'Bellatrix',
+];
 
 function meta(id: string, name: string, patch: Partial<GameMeta> = {}): GameMeta {
   return {
@@ -211,10 +235,18 @@ export function demoLobby(nations: NationDef[]): LobbyGame[] {
     const rnd = prng(seed);
     const pool = nations.filter((x) => x.kind === 'state');
     const out: NationId[] = [];
-    while (out.length < n && pool.length) out.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0]!.id);
+    while (out.length < n && pool.length)
+      out.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0]!.id);
     return out;
   };
-  const make = (id: string, name: string, seed: number, taken: number, patch: Partial<GameMeta>, speed: number) => {
+  const make = (
+    id: string,
+    name: string,
+    seed: number,
+    taken: number,
+    patch: Partial<GameMeta>,
+    speed: number,
+  ) => {
     const t = pick(seed, taken);
     return {
       game: meta(id, name, { playerCount: taken, ...patch }),
@@ -227,8 +259,22 @@ export function demoLobby(nations: NationDef[]): LobbyGame[] {
   };
   return [
     make('lobby-1', 'Guerre mondiale · 64 joueurs', 3, 41, { shopPolicy: { mode: 'open' } }, 1),
-    make('lobby-2', 'Méditerranée en feu', 5, 9, { maxPlayers: 24, shopPolicy: { mode: 'limited', capPerPlayer: 500 } }, 2),
-    make('lobby-3', 'Compétitif · saison 3', 8, 57, { shopPolicy: { mode: 'disabled' }, victory: { provinceShare: 0.5, allEnemyCapitals: true } }, 1),
+    make(
+      'lobby-2',
+      'Méditerranée en feu',
+      5,
+      9,
+      { maxPlayers: 24, shopPolicy: { mode: 'limited', capPerPlayer: 500 } },
+      2,
+    ),
+    make(
+      'lobby-3',
+      'Compétitif · saison 3',
+      8,
+      57,
+      { shopPolicy: { mode: 'disabled' }, victory: { provinceShare: 0.5, allEnemyCapitals: true } },
+      1,
+    ),
     make('lobby-4', 'Blitz ×4 débutants', 11, 4, { maxPlayers: 16, speeds: [4] }, 4),
   ];
 }
@@ -238,14 +284,23 @@ export function demoMyGames(me: NationId): MyGame[] {
   return [
     {
       game: {
-        ...meta('demo', 'Démonstration', { mode: 'solo', status: 'running', speeds: [1, 2, 4, 8, 16], playerCount: 1 }),
+        ...meta('demo', 'Démonstration', {
+          mode: 'solo',
+          status: 'running',
+          speeds: [1, 2, 4, 8, 16],
+          playerCount: 1,
+        }),
         startedAt: new Date(now - 2 * 86400_000).toISOString(),
       },
       nationId: me,
       createdAt: new Date(now - 2 * 86400_000).toISOString(),
     },
     {
-      game: meta('lobby-2', 'Méditerranée en feu', { status: 'running', playerCount: 18, maxPlayers: 24 }),
+      game: meta('lobby-2', 'Méditerranée en feu', {
+        status: 'running',
+        playerCount: 18,
+        maxPlayers: 24,
+      }),
       nationId: 'ita',
       createdAt: new Date(now - 9 * 86400_000).toISOString(),
     },
@@ -260,14 +315,26 @@ export function demoMyGames(me: NationId): MyGame[] {
 // ——— Fin de partie ———
 
 export function demoTimelapse(provinces: ProvinceDef[], me: NationId, days = 36): TimelapseView {
-  const owners: Record<string, NationId> = Object.fromEntries(provinces.map((p) => [p.id, p.nationId]));
+  const owners: Record<string, NationId> = Object.fromEntries(
+    provinces.map((p) => [p.id, p.nationId]),
+  );
   const byId = new Map(provinces.map((p) => [p.id, p]));
   const rnd = prng(hash(me) ^ 0x5eed);
   const frames: TimelapseView['frames'] = [{ day: 0, owners: { ...owners } }];
   // Deux IA voisines grignotent aussi quelques provinces.
   const mine = provinces.find((p) => p.nationId === me);
   const rivals = mine
-    ? [...new Set(provinces.filter((p) => p.nationId !== me).sort((a, b) => distanceKm(a.cityPoint, mine.cityPoint) - distanceKm(b.cityPoint, mine.cityPoint)).map((p) => p.nationId))].slice(0, 4)
+    ? [
+        ...new Set(
+          provinces
+            .filter((p) => p.nationId !== me)
+            .sort(
+              (a, b) =>
+                distanceKm(a.cityPoint, mine.cityPoint) - distanceKm(b.cityPoint, mine.cityPoint),
+            )
+            .map((p) => p.nationId),
+        ),
+      ].slice(0, 4)
     : [];
   const actors = [me, me, me, rivals[2], rivals[3]].filter(Boolean) as NationId[];
   for (let d = 1; d <= days; d++) {
@@ -275,7 +342,9 @@ export function demoTimelapse(provinces: ProvinceDef[], me: NationId, days = 36)
       const frontier = Object.entries(owners)
         .filter(([, o]) => o === actor)
         .flatMap(([pid]) => byId.get(pid)?.neighbors ?? [])
-        .filter((n) => owners[n] && owners[n] !== actor && (actor !== me || rivals.includes(owners[n]!)));
+        .filter(
+          (n) => owners[n] && owners[n] !== actor && (actor !== me || rivals.includes(owners[n]!)),
+        );
       const steps = actor === me ? 1 + Math.floor(rnd() * 3) : rnd() < 0.4 ? 1 : 0;
       for (let k = 0; k < steps && frontier.length; k++) {
         const target = frontier.splice(Math.floor(rnd() * frontier.length), 1)[0]!;
@@ -287,13 +356,27 @@ export function demoTimelapse(provinces: ProvinceDef[], me: NationId, days = 36)
   return { frames };
 }
 
-export function demoStats(me: NationId, timelapse: TimelapseView, catalog: WeaponSystem[]): GameStatsView {
+export function demoStats(
+  me: NationId,
+  timelapse: TimelapseView,
+  catalog: WeaponSystem[],
+): GameStatsView {
   const first = timelapse.frames[0]!.owners;
   const last = timelapse.frames[timelapse.frames.length - 1]!.owners;
-  const count = (o: Record<string, NationId>, n: NationId) => Object.values(o).filter((x) => x === n).length;
-  const involved = [...new Set([me, ...Object.keys(first).filter((p) => first[p] !== last[p]).flatMap((p) => [first[p]!, last[p]!])])];
+  const count = (o: Record<string, NationId>, n: NationId) =>
+    Object.values(o).filter((x) => x === n).length;
+  const involved = [
+    ...new Set([
+      me,
+      ...Object.keys(first)
+        .filter((p) => first[p] !== last[p])
+        .flatMap((p) => [first[p]!, last[p]!]),
+    ]),
+  ];
   const rnd = prng(42);
-  const top = catalog.filter((s) => ['fighter', 'tank', 'artillery', 'strike_missile'].includes(s.category));
+  const top = catalog.filter((s) =>
+    ['fighter', 'tank', 'artillery', 'strike_missile'].includes(s.category),
+  );
   return {
     winner: me,
     durationDays: timelapse.frames.length - 1,
@@ -306,14 +389,19 @@ export function demoStats(me: NationId, timelapse: TimelapseView, catalog: Weapo
       kills: Math.round((n === me ? 480 : 120) * (0.5 + rnd())),
       losses: Math.round((n === me ? 160 : 260) * (0.5 + rnd())),
       spentUsd: Math.round((n === me ? 38e9 : 12e9) * (0.6 + rnd())),
-      bestUnits: top.slice(i, i + 3).map((s) => ({ systemId: s.id, kills: Math.round(20 + rnd() * 90) })),
+      bestUnits: top
+        .slice(i, i + 3)
+        .map((s) => ({ systemId: s.id, kills: Math.round(20 + rnd() * 90) })),
     })),
   };
 }
 
 // ——— Rapport de bataille détaillé ———
 
-export function demoBattleReport(s: BattleReportSummary, catalog: Map<string, WeaponSystem>): BattleReport {
+export function demoBattleReport(
+  s: BattleReportSummary,
+  catalog: Map<string, WeaponSystem>,
+): BattleReport {
   const rnd = prng(hash(s.id));
   const t0 = s.startedAt;
   const t1 = s.endedAt ?? s.startedAt + 3 * HOUR;
@@ -328,7 +416,9 @@ export function demoBattleReport(s: BattleReportSummary, catalog: Map<string, We
         owner: b.nations[0]!,
         systemId: e.systemId,
         start: destination(s.at, bearing0 + (k - 1.5) * 14 + gi * 9, 22 + rnd() * 14),
-        dies: rnd() < (b.losses.find((l) => l.systemId === e.systemId)?.count ?? 0) / Math.max(1, e.count),
+        dies:
+          rnd() <
+          (b.losses.find((l) => l.systemId === e.systemId)?.count ?? 0) / Math.max(1, e.count),
       })),
     );
   };
@@ -345,7 +435,13 @@ export function demoBattleReport(s: BattleReportSummary, catalog: Map<string, We
           const adv = u.id.startsWith('a') ? Math.min(0.75, f * 1.1) : Math.min(0.25, f * 0.4);
           const lng = u.start[0] + (s.at[0] - u.start[0]) * adv;
           const lat = u.start[1] + (s.at[1] - u.start[1]) * adv;
-          return { id: u.id, owner: u.owner, systemId: u.systemId, at: [lng, lat] as [number, number], hp: Math.max(0.1, 1 - f * (u.dies ? 0.9 : 0.35 * rnd())) };
+          return {
+            id: u.id,
+            owner: u.owner,
+            systemId: u.systemId,
+            at: [lng, lat] as [number, number],
+            hp: Math.max(0.1, 1 - f * (u.dies ? 0.9 : 0.35 * rnd())),
+          };
         }),
     });
     if (i > 1 && i < N) {
@@ -359,7 +455,13 @@ export function demoBattleReport(s: BattleReportSummary, catalog: Map<string, We
         const fromA = rnd() < 0.55;
         const shooter = fromA ? a : d;
         const target = fromA ? d : a;
-        shots.push({ t, from: shooter.at, to: target.at, cls: catalog.get(target.systemId)?.targetClass ?? 'armor', hit: rnd() < 0.6 });
+        shots.push({
+          t,
+          from: shooter.at,
+          to: target.at,
+          cls: catalog.get(target.systemId)?.targetClass ?? 'armor',
+          hit: rnd() < 0.6,
+        });
       }
     }
   }
@@ -370,16 +472,32 @@ export function demoBattleReport(s: BattleReportSummary, catalog: Map<string, We
     ...s,
     countermeasures: [
       { kind: 'jamming', text: 'Brouillage radar : précision des tirs adverses réduite', count: 3 },
-      { kind: 'interception', text: 'Missiles interceptés par la défense aérienne', count: 5 + Math.floor(rnd() * 6) },
+      {
+        kind: 'interception',
+        text: 'Missiles interceptés par la défense aérienne',
+        count: 5 + Math.floor(rnd() * 6),
+      },
       { kind: 'decoy', text: 'Leurres engagés par l’adversaire', count: 2 },
     ],
     timeline: [
       { t: t0, text: 'Contact établi par la reconnaissance avancée.' },
       { t: t0 + (t1 - t0) * 0.15, text: 'Préparation d’artillerie sur les positions adverses.' },
-      { t: t0 + (t1 - t0) * 0.32, text: `Premières pertes : ${dl ? name(dl.systemId) : 'unité adverse'} détruit.` },
+      {
+        t: t0 + (t1 - t0) * 0.32,
+        text: `Premières pertes : ${dl ? name(dl.systemId) : 'unité adverse'} détruit.`,
+      },
       { t: t0 + (t1 - t0) * 0.5, text: 'Brouillage actif : liaisons adverses dégradées.' },
-      { t: t0 + (t1 - t0) * 0.7, text: `Contre-attaque : ${al ? name(al.systemId) : 'unité alliée'} touché.` },
-      { t: t1, text: s.outcome === 'ongoing' ? 'Combats en cours.' : 'Fin des combats, position tenue par le vainqueur.' },
+      {
+        t: t0 + (t1 - t0) * 0.7,
+        text: `Contre-attaque : ${al ? name(al.systemId) : 'unité alliée'} touché.`,
+      },
+      {
+        t: t1,
+        text:
+          s.outcome === 'ongoing'
+            ? 'Combats en cours.'
+            : 'Fin des combats, position tenue par le vainqueur.',
+      },
     ],
     replay: { t0, t1, frames, shots },
   };
@@ -388,19 +506,79 @@ export function demoBattleReport(s: BattleReportSummary, catalog: Map<string, We
 // ——— Boutique, classements, légal ———
 
 export const DEMO_PACKS: ShopPack[] = [
-  { id: 'pack-s', name: 'Paquetage', amount: 500, bonus: 0, priceCents: 499, currency: 'eur', promo: null },
-  { id: 'pack-m', name: 'Dotation', amount: 1200, bonus: 100, priceCents: 999, currency: 'eur', promo: null },
-  { id: 'pack-l', name: 'Budget spécial', amount: 2600, bonus: 400, priceCents: 1999, currency: 'eur', promo: { label: 'Offre de saison', percentOff: 20, until: new Date(Date.now() + 5 * 86400_000).toISOString() } },
-  { id: 'pack-xl', name: 'Loi de programmation', amount: 7000, bonus: 1500, priceCents: 4999, currency: 'eur', promo: null },
+  {
+    id: 'pack-s',
+    name: 'Paquetage',
+    amount: 500,
+    bonus: 0,
+    priceCents: 499,
+    currency: 'eur',
+    promo: null,
+  },
+  {
+    id: 'pack-m',
+    name: 'Dotation',
+    amount: 1200,
+    bonus: 100,
+    priceCents: 999,
+    currency: 'eur',
+    promo: null,
+  },
+  {
+    id: 'pack-l',
+    name: 'Budget spécial',
+    amount: 2600,
+    bonus: 400,
+    priceCents: 1999,
+    currency: 'eur',
+    promo: {
+      label: 'Offre de saison',
+      percentOff: 20,
+      until: new Date(Date.now() + 5 * 86400_000).toISOString(),
+    },
+  },
+  {
+    id: 'pack-xl',
+    name: 'Loi de programmation',
+    amount: 7000,
+    bonus: 1500,
+    priceCents: 4999,
+    currency: 'eur',
+    promo: null,
+  },
 ];
 
 export const DEMO_COSMETICS: CosmeticItem[] = [
-  { id: 'theme-amber', kind: 'terminal_theme', name: 'Terminal ambre (1983)', price: 300, preview: 'amber' },
-  { id: 'theme-green', kind: 'terminal_theme', name: 'Phosphore vert', price: 300, preview: 'green' },
+  {
+    id: 'theme-amber',
+    kind: 'terminal_theme',
+    name: 'Terminal ambre (1983)',
+    price: 300,
+    preview: 'amber',
+  },
+  {
+    id: 'theme-green',
+    kind: 'terminal_theme',
+    name: 'Phosphore vert',
+    price: 300,
+    preview: 'green',
+  },
   { id: 'map-night', kind: 'map_theme', name: 'Carte nocturne', price: 450, preview: 'night' },
-  { id: 'skin-desert', kind: 'unit_skin', name: 'Pions « Désert »', price: 250, preview: 'desert' },
-  { id: 'skin-arctic', kind: 'unit_skin', name: 'Pions « Arctique »', price: 250, preview: 'arctic' },
-  { id: 'flag-frame', kind: 'flag', name: 'Cadre de drapeau « Vétéran »', price: 150, preview: 'veteran' },
+  { id: 'skin-desert', kind: 'unit_skin', name: 'Pions « Désert »', price: 250, preview: 'desert' },
+  {
+    id: 'skin-arctic',
+    kind: 'unit_skin',
+    name: 'Pions « Arctique »',
+    price: 250,
+    preview: 'arctic',
+  },
+  {
+    id: 'flag-frame',
+    kind: 'flag',
+    name: 'Cadre de drapeau « Vétéran »',
+    price: 150,
+    preview: 'veteran',
+  },
 ];
 
 export function demoWallet(balance: number): { balance: number; history: WalletEntry[] } {
@@ -408,7 +586,13 @@ export function demoWallet(balance: number): { balance: number; history: WalletE
   return {
     balance,
     history: [
-      { id: 4, delta: -120, reason: 'accelerate', ref: 'research:research.aero.gen5', createdAt: d(5) },
+      {
+        id: 4,
+        delta: -120,
+        reason: 'accelerate',
+        ref: 'research:research.aero.gen5',
+        createdAt: d(5),
+      },
       { id: 3, delta: -300, reason: 'cosmetic', ref: 'theme-amber', createdAt: d(30) },
       { id: 2, delta: 1300, reason: 'purchase', ref: 'pack-m', createdAt: d(52) },
       { id: 1, delta: 200, reason: 'admin', ref: 'bienvenue', createdAt: d(200) },
@@ -417,17 +601,48 @@ export function demoWallet(balance: number): { balance: number; history: WalletE
 }
 
 export const DEMO_SEASONS: SeasonView[] = [
-  { id: 's3', name: 'Saison 3 · Ligne rouge', startsAt: '2026-09-01T00:00:00Z', endsAt: '2026-11-30T23:59:59Z', rewards: [{ rank: 1, cosmeticId: 'flag-frame' }, { rank: 10, cosmeticId: 'theme-green' }] },
-  { id: 's2', name: 'Saison 2 · Dissuasion', startsAt: '2026-06-01T00:00:00Z', endsAt: '2026-08-31T23:59:59Z', rewards: [] },
+  {
+    id: 's3',
+    name: 'Saison 3 · Ligne rouge',
+    startsAt: '2026-09-01T00:00:00Z',
+    endsAt: '2026-11-30T23:59:59Z',
+    rewards: [
+      { rank: 1, cosmeticId: 'flag-frame' },
+      { rank: 10, cosmeticId: 'theme-green' },
+    ],
+  },
+  {
+    id: 's2',
+    name: 'Saison 2 · Dissuasion',
+    startsAt: '2026-06-01T00:00:00Z',
+    endsAt: '2026-08-31T23:59:59Z',
+    rewards: [],
+  },
 ];
 
 export function demoRankings(): RankingEntry[] {
   const rnd = prng(3);
   let pts = 4820;
-  return PLAYERS.concat(['Hoplite', 'Invité-4412', 'Rook', 'Sentinelle', 'Kairos', 'Ibis', 'Moraine', 'Pax']).map((name, i) => {
+  return PLAYERS.concat([
+    'Hoplite',
+    'Invité-4412',
+    'Rook',
+    'Sentinelle',
+    'Kairos',
+    'Ibis',
+    'Moraine',
+    'Pax',
+  ]).map((name, i) => {
     pts -= Math.round(90 + rnd() * 260);
     const games = 12 + Math.round(rnd() * 40);
-    return { rank: i + 1, userId: `u${i}`, name, points: pts, wins: Math.round(games * (0.15 + rnd() * 0.35)), games };
+    return {
+      rank: i + 1,
+      userId: `u${i}`,
+      name,
+      points: pts,
+      wins: Math.round(games * (0.15 + rnd() * 0.35)),
+      games,
+    };
   });
 }
 
@@ -488,3 +703,43 @@ export function demoLegal(id: LegalDoc['id']): LegalDoc {
   return { id, version: 3, title, markdown, updatedAt: '2026-09-01T00:00:00Z' };
 }
 
+/**
+ * Démo : coûts (dollars, niveau 1) et durées (heures) de construction tant que data/balance n'a pas
+ * de section `buildings`. Le client multiplie par le niveau visé.
+ */
+const DEMO_BUILD: Record<string, [usd: number, hours: number]> = {
+  refinery: [180e6, 36],
+  power_plant: [140e6, 30],
+  port: [120e6, 30],
+  air_base: [260e6, 42],
+  military_base: [150e6, 30],
+  arms_factory: [320e6, 48],
+  research_center: [220e6, 40],
+  oil_field: [90e6, 24],
+  mine: [60e6, 20],
+  farm: [25e6, 12],
+  electronics_plant: [240e6, 40],
+  local_industry: [45e6, 16],
+  recruiting_office: [20e6, 10],
+  naval_base: [380e6, 48],
+  bunker: [30e6, 12],
+  air_defense_site: [160e6, 28],
+  coastal_battery: [110e6, 24],
+  radar_station: [85e6, 20],
+  missile_silo: [900e6, 72],
+  hospital: [55e6, 18],
+  secret_lab: [480e6, 60],
+  forward_base: [40e6, 8],
+};
+
+export function withDemoBuildings(balance: Balance | null): Balance | null {
+  if (!balance) return balance;
+  const b = balance.buildings ?? { effects: {}, repairHours: 48, buildHours: {}, buildCostUsd: {} };
+  const buildCostUsd = { ...b.buildCostUsd };
+  const buildHours = { ...b.buildHours };
+  for (const [type, [usd, hours]] of Object.entries(DEMO_BUILD)) {
+    buildCostUsd[type] ??= usd;
+    buildHours[type] ??= hours;
+  }
+  return { ...balance, buildings: { ...b, buildCostUsd, buildHours } };
+}

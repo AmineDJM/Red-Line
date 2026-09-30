@@ -42,7 +42,8 @@ function useSend() {
   return async (order: Order, ok: string) => {
     const res = await useGame.getState().connection?.sendOrder(order);
     if (res?.ok) toast(ok, 'ok');
-    else if (res) toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    else if (res)
+      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
     return !!res?.ok;
   };
 }
@@ -63,20 +64,110 @@ function Relations() {
     () =>
       Object.values(nations)
         .filter((n) => n.id !== me && (view?.nations[n.id]?.provinceCount ?? 1) > 0)
-        .filter((n) => (filter === 'all' ? true : filter === 'known' ? known.has(n.id) : relationOf(view, n.id) === filter))
+        .filter((n) =>
+          filter === 'all'
+            ? true
+            : filter === 'known'
+              ? known.has(n.id)
+              : relationOf(view, n.id) === filter,
+        )
         .filter((n) => !q || norm(n.name).includes(norm(q)))
         .map((n) => ({ id: n.id, rel: known.get(n.id) })),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [nations, me, filter, q, dip, view?.nations],
   );
   const order: Record<Relation, number> = { war: 0, ceasefire: 1, ally: 2, peace: 3 };
+  const relationActions = (r: (typeof rows)[number]) => {
+    const rel = relationOf(view, r.id);
+    const p = r.rel?.pending;
+    if (p && p.from !== me)
+      return (
+        <span className="rowactions">
+          <Badge tone="amber">{t(`diplomacy.proposal.${p.kind}`)}</Badge>
+          <Button
+            size="sm"
+            variant="success"
+            onClick={() =>
+              void send(
+                { kind: 'answerPeace', nationId: r.id, accept: true },
+                t('diplomacy.accepted'),
+              )
+            }
+          >
+            {t('diplomacy.accept')}
+          </Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() =>
+              void send(
+                { kind: 'answerPeace', nationId: r.id, accept: false },
+                t('diplomacy.refused'),
+              )
+            }
+          >
+            {t('diplomacy.refuse')}
+          </Button>
+        </span>
+      );
+    if (p && p.from === me) return <Badge tone="neutral">{t('diplomacy.sent')}</Badge>;
+    return rel === 'war' ? (
+      <span className="rowactions">
+        <Button
+          size="sm"
+          variant="subtle"
+          onClick={() =>
+            void send(
+              { kind: 'proposePeace', nationId: r.id, type: 'ceasefire' },
+              t('console.done.ceasefire', { nation: nationName(r.id) }),
+            )
+          }
+        >
+          {t('diplomacy.ceasefire')}
+        </Button>
+        <Button
+          size="sm"
+          variant="subtle"
+          onClick={() =>
+            void send(
+              { kind: 'proposePeace', nationId: r.id, type: 'peace' },
+              t('console.done.peace', { nation: nationName(r.id) }),
+            )
+          }
+        >
+          {t('diplomacy.peace')}
+        </Button>
+      </span>
+    ) : rel !== 'ally' ? (
+      <Button size="sm" variant="danger" onClick={() => setWar(r.id)}>
+        {t('diplomacy.declareWar')}
+      </Button>
+    ) : null;
+  };
   return (
     <div className="vstack">
       <div className="kpis">
-        <Stat label={t('diplomacy.reputation')} value={`${dip?.reputation ?? '—'}`} tone={(dip?.reputation ?? 50) >= 50 ? 'green' : 'amber'} sub={t('diplomacy.reputationHint')} />
-        <Stat label={t('diplomacy.atWar')} value={(dip?.relations ?? []).filter((r) => r.relation === 'war').length} tone="red" />
-        <Stat label={t('diplomacy.allies')} value={(dip?.relations ?? []).filter((r) => r.relation === 'ally').length} tone="green" />
-        <Stat label={t('diplomacy.pending')} value={(dip?.relations ?? []).filter((r) => r.pending && r.pending.from !== me).length} tone="amber" />
+        <Stat
+          label={t('diplomacy.reputation')}
+          value={`${dip?.reputation ?? '—'}`}
+          tone={(dip?.reputation ?? 50) >= 50 ? 'green' : 'amber'}
+          sub={t('diplomacy.reputationHint')}
+        />
+        <Stat
+          label={t('diplomacy.atWar')}
+          value={(dip?.relations ?? []).filter((r) => r.relation === 'war').length}
+          tone="red"
+        />
+        <Stat
+          label={t('diplomacy.allies')}
+          value={(dip?.relations ?? []).filter((r) => r.relation === 'ally').length}
+          tone="green"
+        />
+        <Stat
+          label={t('diplomacy.pending')}
+          value={(dip?.relations ?? []).filter((r) => r.pending && r.pending.from !== me).length}
+          tone="amber"
+        />
       </div>
       <div className="row row--between">
         <Segmented
@@ -91,7 +182,13 @@ function Relations() {
             { value: 'all', label: t('app.all') },
           ]}
         />
-        <SearchInput value={q} onChange={setQ} label={t('app.search')} placeholder={t('newGame.searchPlaceholder')} className="army-search" />
+        <SearchInput
+          value={q}
+          onChange={setQ}
+          label={t('app.search')}
+          placeholder={t('newGame.searchPlaceholder')}
+          className="army-search"
+        />
       </div>
       <Table
         label={t('diplomacy.tabs.relations')}
@@ -100,46 +197,74 @@ function Relations() {
         defaultSort={{ key: 'rel', dir: 'asc' }}
         rowClass={(r) => (r.rel?.pending && r.rel.pending.from !== me ? 'tr-attn' : undefined)}
         columns={[
-          { key: 'n', header: t('diplomacy.cols.nation'), render: (r) => <NationTag id={r.id} strong />, sort: (a, b) => nationName(a.id).localeCompare(nationName(b.id)) },
-          { key: 'rel', header: t('diplomacy.cols.relation'), render: (r) => <RelationBadge relation={relationOf(view, r.id)} />, sort: (a, b) => order[relationOf(view, a.id)] - order[relationOf(view, b.id)] },
-          { key: 'since', header: t('diplomacy.cols.since'), hideOnMobile: true, render: (r) => (r.rel ? <Ago from={r.rel.since} now={now} /> : '—') },
-          { key: 'al', header: t('diplomacy.cols.alliance'), hideOnMobile: true, render: (r) => { const a = dip?.alliances.find((x) => x.members.includes(r.id)); return a ? <span className="altag">[{a.flag}] {a.name}</span> : <span className="muted">—</span>; } },
-          { key: 'stab', header: t('diplomacy.cols.stability'), align: 'right', hideOnMobile: true, render: (r) => { const s = view?.nations[r.id]?.stability; return s === undefined ? '—' : <span className={s < 35 ? 'rl-tone-red' : s < 55 ? 'rl-tone-amber' : ''}>{s} %</span>; } },
+          {
+            key: 'n',
+            header: t('diplomacy.cols.nation'),
+            render: (r) => (
+              <>
+                <span className="relcell">
+                  <NationTag id={r.id} strong />
+                  <span className="rl-only-mobile">
+                    <RelationBadge relation={relationOf(view, r.id)} />
+                  </span>
+                </span>
+                <span className="rl-only-mobile rowactions rowactions--below">
+                  {relationActions(r)}
+                </span>
+              </>
+            ),
+            sort: (a, b) => nationName(a.id).localeCompare(nationName(b.id)),
+          },
+          {
+            key: 'rel',
+            header: t('diplomacy.cols.relation'),
+            hideOnMobile: true,
+            render: (r) => <RelationBadge relation={relationOf(view, r.id)} />,
+            sort: (a, b) => order[relationOf(view, a.id)] - order[relationOf(view, b.id)],
+          },
+          {
+            key: 'since',
+            header: t('diplomacy.cols.since'),
+            hideOnMobile: true,
+            render: (r) => (r.rel ? <Ago from={r.rel.since} now={now} /> : '—'),
+          },
+          {
+            key: 'al',
+            header: t('diplomacy.cols.alliance'),
+            hideOnMobile: true,
+            render: (r) => {
+              const a = dip?.alliances.find((x) => x.members.includes(r.id));
+              return a ? (
+                <span className="altag">
+                  [{a.flag}] {a.name}
+                </span>
+              ) : (
+                <span className="muted">—</span>
+              );
+            },
+          },
+          {
+            key: 'stab',
+            header: t('diplomacy.cols.stability'),
+            align: 'right',
+            hideOnMobile: true,
+            render: (r) => {
+              const s = view?.nations[r.id]?.stability;
+              return s === undefined ? (
+                '—'
+              ) : (
+                <span className={s < 35 ? 'rl-tone-red' : s < 55 ? 'rl-tone-amber' : ''}>
+                  {s} %
+                </span>
+              );
+            },
+          },
           {
             key: 'act',
             header: '',
             align: 'right',
-            render: (r) => {
-              const rel = relationOf(view, r.id);
-              const p = r.rel?.pending;
-              if (p && p.from !== me)
-                return (
-                  <span className="rowactions">
-                    <Badge tone="amber">{t(`diplomacy.proposal.${p.kind}`)}</Badge>
-                    <Button size="sm" variant="success" onClick={() => void send({ kind: 'answerPeace', nationId: r.id, accept: true }, t('diplomacy.accepted'))}>
-                      {t('diplomacy.accept')}
-                    </Button>
-                    <Button size="sm" variant="ghost" onClick={() => void send({ kind: 'answerPeace', nationId: r.id, accept: false }, t('diplomacy.refused'))}>
-                      {t('diplomacy.refuse')}
-                    </Button>
-                  </span>
-                );
-              if (p && p.from === me) return <Badge tone="neutral">{t('diplomacy.sent')}</Badge>;
-              return rel === 'war' ? (
-                <span className="rowactions">
-                  <Button size="sm" variant="subtle" onClick={() => void send({ kind: 'proposePeace', nationId: r.id, type: 'ceasefire' }, t('console.done.ceasefire', { nation: nationName(r.id) }))}>
-                    {t('diplomacy.ceasefire')}
-                  </Button>
-                  <Button size="sm" variant="subtle" onClick={() => void send({ kind: 'proposePeace', nationId: r.id, type: 'peace' }, t('console.done.peace', { nation: nationName(r.id) }))}>
-                    {t('diplomacy.peace')}
-                  </Button>
-                </span>
-              ) : rel !== 'ally' ? (
-                <Button size="sm" variant="danger" onClick={() => setWar(r.id)}>
-                  {t('diplomacy.declareWar')}
-                </Button>
-              ) : null;
-            },
+            hideOnMobile: true,
+            render: (r) => relationActions(r),
           },
         ]}
       />
@@ -158,7 +283,11 @@ function Relations() {
             <Button
               variant="danger"
               onClick={() => {
-                if (war) void send({ kind: 'declareWar', nationId: war }, t('console.done.war', { nation: nationName(war) }));
+                if (war)
+                  void send(
+                    { kind: 'declareWar', nationId: war },
+                    t('console.done.war', { nation: nationName(war) }),
+                  );
                 setWar(null);
               }}
             >
@@ -194,7 +323,10 @@ function AllianceCard({ a, mine }: { a: AllianceView; mine: boolean }) {
       <div className="alliance">
         <div className="alliance__members">
           {a.members.map((m) => (
-            <span key={m} className={m === a.leader ? 'alliance__m alliance__m--lead' : 'alliance__m'}>
+            <span
+              key={m}
+              className={m === a.leader ? 'alliance__m alliance__m--lead' : 'alliance__m'}
+            >
               <NationTag id={m} size={10} />
               {m === a.leader ? <Icon name="crown" size={12} /> : null}
             </span>
@@ -215,7 +347,17 @@ function AllianceCard({ a, mine }: { a: AllianceView; mine: boolean }) {
               <Money value={a.treasury} />
               <span className="grow" />
               {[100e6, 500e6].map((v) => (
-                <Button key={v} size="sm" variant="subtle" onClick={() => void send({ kind: 'allianceTreasury', amount: v }, t('diplomacy.deposited', { amount: formatMoney(v) }))}>
+                <Button
+                  key={v}
+                  size="sm"
+                  variant="subtle"
+                  onClick={() =>
+                    void send(
+                      { kind: 'allianceTreasury', amount: v },
+                      t('diplomacy.deposited', { amount: formatMoney(v) }),
+                    )
+                  }
+                >
                   +{formatMoney(v)}
                 </Button>
               ))}
@@ -232,19 +374,47 @@ function AllianceCard({ a, mine }: { a: AllianceView; mine: boolean }) {
                     <Countdown ms={v.endsAt - now} dayUnit={t('time.dayUnit')} />
                   </div>
                   <div className="vote__bar">
-                    <span className="vote__yes" style={{ width: `${(v.yes.length / total) * 100}%` }} />
-                    <span className="vote__no" style={{ width: `${(v.no.length / total) * 100}%` }} />
+                    <span
+                      className="vote__yes"
+                      style={{ width: `${(v.yes.length / total) * 100}%` }}
+                    />
+                    <span
+                      className="vote__no"
+                      style={{ width: `${(v.no.length / total) * 100}%` }}
+                    />
                   </div>
                   <div className="vote__foot">
-                    <span className="rl-tone-green">{t('diplomacy.yes')} {v.yes.length}</span>
-                    <span className="rl-tone-red">{t('diplomacy.no')} {v.no.length}</span>
+                    <span className="rl-tone-green">
+                      {t('diplomacy.yes')} {v.yes.length}
+                    </span>
+                    <span className="rl-tone-red">
+                      {t('diplomacy.no')} {v.no.length}
+                    </span>
                     <span className="grow" />
                     {!voted ? (
                       <>
-                        <Button size="sm" variant="success" onClick={() => void send({ kind: 'allianceVote', voteId: v.id, yes: true }, t('diplomacy.voted'))}>
+                        <Button
+                          size="sm"
+                          variant="success"
+                          onClick={() =>
+                            void send(
+                              { kind: 'allianceVote', voteId: v.id, yes: true },
+                              t('diplomacy.voted'),
+                            )
+                          }
+                        >
                           {t('diplomacy.yes')}
                         </Button>
-                        <Button size="sm" variant="danger" onClick={() => void send({ kind: 'allianceVote', voteId: v.id, yes: false }, t('diplomacy.voted'))}>
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          onClick={() =>
+                            void send(
+                              { kind: 'allianceVote', voteId: v.id, yes: false },
+                              t('diplomacy.voted'),
+                            )
+                          }
+                        >
                           {t('diplomacy.no')}
                         </Button>
                       </>
@@ -261,11 +431,19 @@ function AllianceCard({ a, mine }: { a: AllianceView; mine: boolean }) {
               </p>
             ) : null}
             <div className="row">
-              <Button size="sm" icon={<Icon name="chat" size={12} />} onClick={() => openWindow('chat', { channel: 'alliance' })}>
+              <Button
+                size="sm"
+                icon={<Icon name="chat" size={12} />}
+                onClick={() => openWindow('chat', { channel: 'alliance' })}
+              >
                 {t('diplomacy.allianceChat')}
               </Button>
               <span className="grow" />
-              <Button size="sm" variant="danger" onClick={() => void send({ kind: 'leaveAlliance' }, t('diplomacy.left'))}>
+              <Button
+                size="sm"
+                variant="danger"
+                onClick={() => void send({ kind: 'leaveAlliance' }, t('diplomacy.left'))}
+              >
                 {t('diplomacy.leave')}
               </Button>
             </div>
@@ -290,7 +468,11 @@ function CreateAlliance() {
   const send = useSend();
   const [name, setName] = useState('');
   const [flag, setFlag] = useState('');
-  const [charter, setCharter] = useState({ mutualDefense: true, intelSharing: true, passage: false });
+  const [charter, setCharter] = useState({
+    mutualDefense: true,
+    intelSharing: true,
+    passage: false,
+  });
   return (
     <Panel title={t('diplomacy.create')}>
       <div className="stack">
@@ -299,13 +481,37 @@ function CreateAlliance() {
             <Input value={name} maxLength={40} onChange={(e) => setName(e.target.value)} />
           </Field>
           <Field label={t('diplomacy.allianceFlag')}>
-            <Input value={flag} maxLength={4} onChange={(e) => setFlag(e.target.value.toUpperCase())} />
+            <Input
+              value={flag}
+              maxLength={4}
+              onChange={(e) => setFlag(e.target.value.toUpperCase())}
+            />
           </Field>
         </div>
         {(['mutualDefense', 'intelSharing', 'passage'] as const).map((k) => (
-          <Toggle key={k} checked={charter[k]} onChange={(v) => setCharter({ ...charter, [k]: v })} label={t(`diplomacy.charter.${k}`)} description={t(`diplomacy.charterHelp.${k}`)} />
+          <Toggle
+            key={k}
+            checked={charter[k]}
+            onChange={(v) => setCharter({ ...charter, [k]: v })}
+            label={t(`diplomacy.charter.${k}`)}
+            description={t(`diplomacy.charterHelp.${k}`)}
+          />
         ))}
-        <Button variant="primary" disabled={name.trim().length < 2} onClick={() => void send({ kind: 'createAlliance', name: name.trim(), flag: flag || name.slice(0, 2).toUpperCase(), charter }, t('diplomacy.created', { name }))}>
+        <Button
+          variant="primary"
+          disabled={name.trim().length < 2}
+          onClick={() =>
+            void send(
+              {
+                kind: 'createAlliance',
+                name: name.trim(),
+                flag: flag || name.slice(0, 2).toUpperCase(),
+                charter,
+              },
+              t('diplomacy.created', { name }),
+            )
+          }
+        >
           {t('diplomacy.createBtn')}
         </Button>
       </div>
@@ -329,10 +535,28 @@ function Alliances() {
             <Icon name="users" size={15} />
             <span>{t('diplomacy.invitation', { name: a.name })}</span>
             <span className="grow" />
-            <Button size="sm" variant="success" onClick={() => void send({ kind: 'answerInvite', allianceId: id, accept: true }, t('diplomacy.joined', { name: a.name }))}>
+            <Button
+              size="sm"
+              variant="success"
+              onClick={() =>
+                void send(
+                  { kind: 'answerInvite', allianceId: id, accept: true },
+                  t('diplomacy.joined', { name: a.name }),
+                )
+              }
+            >
               {t('diplomacy.accept')}
             </Button>
-            <Button size="sm" variant="ghost" onClick={() => void send({ kind: 'answerInvite', allianceId: id, accept: false }, t('diplomacy.refused'))}>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() =>
+                void send(
+                  { kind: 'answerInvite', allianceId: id, accept: false },
+                  t('diplomacy.refused'),
+                )
+              }
+            >
               {t('diplomacy.refuse')}
             </Button>
           </div>
@@ -360,10 +584,33 @@ function Neutrals() {
     <div className="vstack">
       <div className="row row--between">
         <p className="hint">{t('diplomacy.neutralsHelp')}</p>
-        <Segmented size="sm" label={t('diplomacy.aid')} value={aid} onChange={setAid} options={[100e6, 200e6, 500e6, 1e9].map((v) => ({ value: v, label: formatMoney(v) }))} />
+        <Segmented
+          size="sm"
+          label={t('diplomacy.aid')}
+          value={aid}
+          onChange={setAid}
+          options={[100e6, 200e6, 500e6, 1e9].map((v) => ({ value: v, label: formatMoney(v) }))}
+        />
       </div>
       {dip.neutrals.map((n) => (
-        <Panel key={n.nationId} title={<NationTag id={n.nationId} strong />} actions={<Button size="sm" variant="primary" onClick={() => void send({ kind: 'courtNeutral', nationId: n.nationId, aid }, t('diplomacy.courted', { nation: nationName(n.nationId) }))}>{t('diplomacy.court', { amount: formatMoney(aid) })}</Button>}>
+        <Panel
+          key={n.nationId}
+          title={<NationTag id={n.nationId} strong />}
+          actions={
+            <Button
+              size="sm"
+              variant="primary"
+              onClick={() =>
+                void send(
+                  { kind: 'courtNeutral', nationId: n.nationId, aid },
+                  t('diplomacy.courted', { nation: nationName(n.nationId) }),
+                )
+              }
+            >
+              {t('diplomacy.court', { amount: formatMoney(aid) })}
+            </Button>
+          }
+        >
           <ul className="leaning">
             {Object.entries(n.leaning)
               .sort((a, b) => b[1] - a[1])
@@ -371,8 +618,20 @@ function Neutrals() {
                 const a = alliances.find((x) => x.id === al);
                 return (
                   <li key={al}>
-                    <span className={al === dip.myAllianceId ? 'leaning__name leaning__name--mine' : 'leaning__name'}>{a ? `[${a.flag}] ${a.name}` : al}</span>
-                    <ProgressBar value={v} tone={al === dip.myAllianceId ? 'green' : 'blue'} trailing={formatPct(v)} />
+                    <span
+                      className={
+                        al === dip.myAllianceId
+                          ? 'leaning__name leaning__name--mine'
+                          : 'leaning__name'
+                      }
+                    >
+                      {a ? `[${a.flag}] ${a.name}` : al}
+                    </span>
+                    <ProgressBar
+                      value={v}
+                      tone={al === dip.myAllianceId ? 'green' : 'blue'}
+                      trailing={formatPct(v)}
+                    />
                   </li>
                 );
               })}
@@ -393,7 +652,12 @@ function Disputed() {
   return (
     <div className="generals">
       {dip.disputed.map((d) => (
-        <Panel key={d.id} title={d.name} meta={t('diplomacy.provinces', { count: d.provinceIds.length })} accent={d.tension >= 70 ? 'red' : d.tension >= 45 ? 'amber' : undefined}>
+        <Panel
+          key={d.id}
+          title={d.name}
+          meta={t('diplomacy.provinces', { count: d.provinceIds.length })}
+          accent={d.tension >= 70 ? 'red' : d.tension >= 45 ? 'amber' : undefined}
+        >
           <div className="stack">
             <div className="row row--between">
               <span className="dept__label">{t('diplomacy.holder')}</span>
@@ -401,17 +665,43 @@ function Disputed() {
             </div>
             <div className="row row--between">
               <span className="dept__label">{t('diplomacy.claimants')}</span>
-              <span className="row">{d.claimants.map((c) => <NationTag key={c} id={c} size={10} />)}</span>
+              <span className="row">
+                {d.claimants.map((c) => (
+                  <NationTag key={c} id={c} size={10} />
+                ))}
+              </span>
             </div>
             <div className="row row--between">
               <span className="dept__label">{t('diplomacy.tension')}</span>
-              <Gauge value={d.tension / 100} tone={d.tension >= 70 ? 'red' : d.tension >= 45 ? 'amber' : 'green'} cells={10} />
+              <Gauge
+                value={d.tension / 100}
+                tone={d.tension >= 70 ? 'red' : d.tension >= 45 ? 'amber' : 'green'}
+                cells={10}
+              />
             </div>
             <div className="row">
-              <Button size="sm" variant="subtle" icon={<Icon name="mapPin" size={12} />} onClick={() => { const p = provinces[d.provinceIds[0] ?? '']; if (p) focusOn(p.cityPoint, 6); }}>
+              <Button
+                size="sm"
+                variant="subtle"
+                icon={<Icon name="mapPin" size={12} />}
+                onClick={() => {
+                  const p = provinces[d.provinceIds[0] ?? ''];
+                  if (p) focusOn(p.cityPoint, 6);
+                }}
+              >
                 {t('economy.show')}
               </Button>
-              <Button size="sm" variant="danger" icon={<Icon name="money" size={12} />} onClick={() => void send({ kind: 'fundRebels', provinceId: d.provinceIds[0] ?? '', amount: 100e6 }, t('diplomacy.rebelsFunded'))}>
+              <Button
+                size="sm"
+                variant="danger"
+                icon={<Icon name="money" size={12} />}
+                onClick={() =>
+                  void send(
+                    { kind: 'fundRebels', provinceId: d.provinceIds[0] ?? '', amount: 100e6 },
+                    t('diplomacy.rebelsFunded'),
+                  )
+                }
+              >
                 {t('diplomacy.fundRebels')}
               </Button>
             </div>
@@ -430,9 +720,23 @@ function Stability() {
   return (
     <div className="vstack">
       <div className="kpis">
-        <Stat label={t('diplomacy.stability')} value={`${Math.round(s.value)} %`} tone={s.value < 30 ? 'red' : s.value < 50 ? 'amber' : 'green'} sub={<Gauge value={s.value / 100} tone="auto" cells={14} showValue={false} />} />
-        <Stat label={t('diplomacy.trend')} value={`${s.trend >= 0 ? '+' : '−'}${formatNumber(Math.abs(s.trend), 1)} / j`} tone={s.trend >= 0 ? 'green' : 'amber'} />
-        <Stat label={t('diplomacy.coupRisk')} value={formatPct(s.coupRisk, 1)} tone={s.coupRisk > 0.15 ? 'red' : 'default'} sub={t('diplomacy.coupHint')} />
+        <Stat
+          label={t('diplomacy.stability')}
+          value={`${Math.round(s.value)} %`}
+          tone={s.value < 30 ? 'red' : s.value < 50 ? 'amber' : 'green'}
+          sub={<Gauge value={s.value / 100} tone="auto" cells={14} showValue={false} />}
+        />
+        <Stat
+          label={t('diplomacy.trend')}
+          value={`${s.trend >= 0 ? '+' : '−'}${formatNumber(Math.abs(s.trend), 1)} / j`}
+          tone={s.trend >= 0 ? 'green' : 'amber'}
+        />
+        <Stat
+          label={t('diplomacy.coupRisk')}
+          value={formatPct(s.coupRisk, 1)}
+          tone={s.coupRisk > 0.15 ? 'red' : 'default'}
+          sub={t('diplomacy.coupHint')}
+        />
       </div>
       <Panel title={t('diplomacy.factors')}>
         <ul className="factors">
@@ -440,9 +744,14 @@ function Stability() {
             <li key={i}>
               <span className="factors__label">{f.label}</span>
               <span className="factors__bar">
-                <span className={f.delta >= 0 ? 'factors__pos' : 'factors__neg'} style={{ width: `${(Math.abs(f.delta) / max) * 50}%` }} />
+                <span
+                  className={f.delta >= 0 ? 'factors__pos' : 'factors__neg'}
+                  style={{ width: `${(Math.abs(f.delta) / max) * 50}%` }}
+                />
               </span>
-              <b className={f.delta >= 0 ? 'rl-tone-green' : 'rl-tone-red'}>{`${f.delta >= 0 ? '+' : '−'}${formatNumber(Math.abs(f.delta), 1)}`}</b>
+              <b
+                className={f.delta >= 0 ? 'rl-tone-green' : 'rl-tone-red'}
+              >{`${f.delta >= 0 ? '+' : '−'}${formatNumber(Math.abs(f.delta), 1)}`}</b>
             </li>
           ))}
         </ul>
@@ -471,11 +780,36 @@ export function DiplomacyWindow({ win, frame }: WindowContentProps) {
           value={tab}
           onChange={setTab}
           tabs={[
-            { id: 'relations', label: t('diplomacy.tabs.relations'), dot: pending > 0, icon: <Icon name="handshake" size={13} /> },
-            { id: 'alliances', label: t('diplomacy.tabs.alliances'), count: dip?.alliances.length, dot: !!dip?.invitations.length, icon: <Icon name="users" size={13} /> },
-            { id: 'neutrals', label: t('diplomacy.tabs.neutrals'), count: dip?.neutrals.length, icon: <Icon name="globe" size={13} /> },
-            { id: 'disputed', label: t('diplomacy.tabs.disputed'), count: dip?.disputed.length, icon: <Icon name="flag" size={13} /> },
-            { id: 'stability', label: t('diplomacy.tabs.stability'), icon: <Icon name="shield" size={13} /> },
+            {
+              id: 'relations',
+              label: t('diplomacy.tabs.relations'),
+              dot: pending > 0,
+              icon: <Icon name="handshake" size={13} />,
+            },
+            {
+              id: 'alliances',
+              label: t('diplomacy.tabs.alliances'),
+              count: dip?.alliances.length,
+              dot: !!dip?.invitations.length,
+              icon: <Icon name="users" size={13} />,
+            },
+            {
+              id: 'neutrals',
+              label: t('diplomacy.tabs.neutrals'),
+              count: dip?.neutrals.length,
+              icon: <Icon name="globe" size={13} />,
+            },
+            {
+              id: 'disputed',
+              label: t('diplomacy.tabs.disputed'),
+              count: dip?.disputed.length,
+              icon: <Icon name="flag" size={13} />,
+            },
+            {
+              id: 'stability',
+              label: t('diplomacy.tabs.stability'),
+              icon: <Icon name="shield" size={13} />,
+            },
           ]}
         />
       }

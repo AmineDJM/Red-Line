@@ -35,18 +35,33 @@ export function NewsWindow({ frame }: WindowContentProps) {
   const now = useGameTime(10_000);
   const [cat, setCat] = useState<NewsCategory | 'all'>('all');
   const cats = [...new Set(news.map((n) => n.category))];
-  const list = news.filter((n) => cat === 'all' || n.category === cat).sort((a, b) => b.time - a.time);
+  const list = news
+    .filter((n) => cat === 'all' || n.category === cat)
+    .sort((a, b) => b.time - a.time);
   return (
     <Window
       {...frame}
       path={[t('sections.path.news')]}
       toolbar={
         <div className="newsfilters" role="radiogroup" aria-label={t('news.filter')}>
-          <button type="button" role="radio" aria-checked={cat === 'all'} className={cat === 'all' ? 'on' : ''} onClick={() => setCat('all')}>
+          <button
+            type="button"
+            role="radio"
+            aria-checked={cat === 'all'}
+            className={cat === 'all' ? 'on' : ''}
+            onClick={() => setCat('all')}
+          >
             {t('app.all')} <b>{news.length}</b>
           </button>
           {cats.map((c) => (
-            <button key={c} type="button" role="radio" aria-checked={cat === c} className={cat === c ? 'on' : ''} onClick={() => setCat(c)}>
+            <button
+              key={c}
+              type="button"
+              role="radio"
+              aria-checked={cat === c}
+              className={cat === c ? 'on' : ''}
+              onClick={() => setCat(c)}
+            >
               <Icon name={CAT_ICON[c]} size={12} />
               {t(`news.cats.${c}`)}
             </button>
@@ -62,7 +77,14 @@ export function NewsWindow({ frame }: WindowContentProps) {
             const c = fmtClock(n.time);
             const hot = HOT.includes(n.category);
             return (
-              <li key={n.id} className={['dispatch', hot ? 'dispatch--hot' : '', i === 0 && cat === 'all' ? 'dispatch--top' : ''].join(' ')}>
+              <li
+                key={n.id}
+                className={[
+                  'dispatch',
+                  hot ? 'dispatch--hot' : '',
+                  i === 0 && cat === 'all' ? 'dispatch--top' : '',
+                ].join(' ')}
+              >
                 <div className="dispatch__time">
                   <span>{c.day}</span>
                   <b>{c.time}</b>
@@ -73,7 +95,9 @@ export function NewsWindow({ frame }: WindowContentProps) {
                       <Icon name={CAT_ICON[n.category]} size={11} />
                       {t(`news.cats.${n.category}`)}
                     </span>
-                    {i === 0 && cat === 'all' ? <span className="dispatch__urgent">{t('news.urgent')}</span> : null}
+                    {i === 0 && cat === 'all' ? (
+                      <span className="dispatch__urgent">{t('news.urgent')}</span>
+                    ) : null}
                     <Ago from={n.time} now={now} />
                   </div>
                   <h3 className="dispatch__headline">{n.headline}</h3>
@@ -90,7 +114,11 @@ export function NewsWindow({ frame }: WindowContentProps) {
                         </span>
                       ))}
                       {n.at ? (
-                        <button type="button" className="dispatch__locate" onClick={() => focusOn(n.at!, 5.5)}>
+                        <button
+                          type="button"
+                          className="dispatch__locate"
+                          onClick={() => focusOn(n.at!, 5.5)}
+                        >
                           <Icon name="mapPin" size={12} /> {t('news.locate')}
                         </button>
                       ) : null}

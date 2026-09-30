@@ -6,7 +6,15 @@ import { nationName } from '../lib/game.js';
 import { useGame } from '../store/game.js';
 
 /** Drapeau + nom de nation (violet si c'est le joueur). */
-export function NationTag({ id, strong, size = 12 }: { id: NationId; strong?: boolean; size?: number }) {
+export function NationTag({
+  id,
+  strong,
+  size = 12,
+}: {
+  id: NationId;
+  strong?: boolean;
+  size?: number;
+}) {
   const me = useGame((s) => s.me);
   const color = useGame((s) => s.view?.nations[id]?.color);
   return (
@@ -27,7 +35,10 @@ export function Cotation({ r, c }: { r: SourceReliability; c: InfoCredibility })
   return (
     <span
       className={`cot cot--${tone}`}
-      title={t('intel.cotationTip', { r: t(`intel.reliability.${r}`), c: t(`intel.credibility.${c}`) })}
+      title={t('intel.cotationTip', {
+        r: t(`intel.reliability.${r}`),
+        c: t(`intel.credibility.${c}`),
+      })}
     >
       {r}
       {c}
@@ -42,11 +53,20 @@ export function isLowCotation(r: SourceReliability, c: InfoCredibility): boolean
 /** Âge relatif (« il y a 3 h 20 »). */
 export function Ago({ from, now }: { from: number; now: number }) {
   const { t } = useTranslation();
-  return <span className="ago">{t('time.ago', { value: fmtDuration(Math.max(0, now - from)) })}</span>;
+  return (
+    <span className="ago">{t('time.ago', { value: fmtDuration(Math.max(0, now - from)) })}</span>
+  );
 }
 
 export function RelationBadge({ relation }: { relation: 'war' | 'peace' | 'ceasefire' | 'ally' }) {
   const { t } = useTranslation();
-  const tone = relation === 'war' ? 'red' : relation === 'ally' ? 'green' : relation === 'ceasefire' ? 'amber' : 'neutral';
+  const tone =
+    relation === 'war'
+      ? 'red'
+      : relation === 'ally'
+        ? 'green'
+        : relation === 'ceasefire'
+          ? 'amber'
+          : 'neutral';
   return <Badge tone={tone}>{t(`diplomacy.relation.${relation}`)}</Badge>;
 }

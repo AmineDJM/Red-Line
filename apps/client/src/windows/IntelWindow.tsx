@@ -40,16 +40,35 @@ import { useWorld } from '../store/world.js';
 export const OPS_BY_DEPT: Record<Department, Record<IntelSource, IntelOpKind[]>> = {
   interior: { humint: ['counterintel_sweep', 'turn_agent', 'plant_fake_report'], sigint: [] },
   exterior: {
-    humint: ['infiltrate_spy', 'recruit_source', 'steal_research', 'sabotage_factory', 'fund_rebels', 'exfiltrate', 'leak_plans'],
+    humint: [
+      'infiltrate_spy',
+      'recruit_source',
+      'steal_research',
+      'sabotage_factory',
+      'fund_rebels',
+      'exfiltrate',
+      'leak_plans',
+    ],
     sigint: ['cyber_production', 'disinformation'],
   },
   military: {
     humint: ['deploy_decoys'],
-    sigint: ['listen_area', 'intercept_army', 'jam_area', 'cyber_radar', 'cyber_orders', 'fake_radio_traffic'],
+    sigint: [
+      'listen_area',
+      'intercept_army',
+      'jam_area',
+      'cyber_radar',
+      'cyber_orders',
+      'fake_radio_traffic',
+    ],
   },
 };
 
-const DEPT_ICON: Record<Department, IconName> = { interior: 'shield', exterior: 'globe', military: 'target' };
+const DEPT_ICON: Record<Department, IconName> = {
+  interior: 'shield',
+  exterior: 'globe',
+  military: 'target',
+};
 
 function useSend() {
   const { t } = useTranslation();
@@ -57,11 +76,22 @@ function useSend() {
   return async (order: Order, ok: string) => {
     const res = await useGame.getState().connection?.sendOrder(order);
     if (res?.ok) toast(ok, 'ok');
-    else if (res) toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    else if (res)
+      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
   };
 }
 
-function ReportCard({ r, now, open, onToggle }: { r: IntelReport; now: number; open: boolean; onToggle: () => void }) {
+function ReportCard({
+  r,
+  now,
+  open,
+  onToggle,
+}: {
+  r: IntelReport;
+  now: number;
+  open: boolean;
+  onToggle: () => void;
+}) {
   const { t } = useTranslation();
   const focusOn = useUi((s) => s.focusOn);
   const select = useUi((s) => s.select);
@@ -69,7 +99,10 @@ function ReportCard({ r, now, open, onToggle }: { r: IntelReport; now: number; o
   const selectProvince = useUi((s) => s.selectProvince);
   const view = useGame((s) => s.view);
   const send = useSend();
-  const allies = view?.diplomacy?.alliances.find((a) => a.id === view.diplomacy?.myAllianceId)?.members.filter((m) => m !== view.me) ?? [];
+  const allies =
+    view?.diplomacy?.alliances
+      .find((a) => a.id === view.diplomacy?.myAllianceId)
+      ?.members.filter((m) => m !== view.me) ?? [];
   const low = isLowCotation(r.reliability, r.credibility);
   const flash = r.kind === 'flash';
   const doAction = (a: IntelReport['actions'][number]) => {
@@ -78,10 +111,17 @@ function ReportCard({ r, now, open, onToggle }: { r: IntelReport; now: number; o
       case 'send_recon':
         focusOn(a.at, 6.5);
         if (a.kind === 'send_recon')
-          void send({ kind: 'intelOp', op: 'listen_area', target: { at: a.at, radiusKm: 80 } }, t('intel.reconSent'));
+          void send(
+            { kind: 'intelOp', op: 'listen_area', target: { at: a.at, radiusKm: 80 } },
+            t('intel.reconSent'),
+          );
         break;
       case 'share':
-        if (allies[0]) void send({ kind: 'shareReport', reportId: a.reportId, to: allies[0] }, t('intel.shared', { nation: nationName(allies[0]) }));
+        if (allies[0])
+          void send(
+            { kind: 'shareReport', reportId: a.reportId, to: allies[0] },
+            t('intel.shared', { nation: nationName(allies[0]) }),
+          );
         break;
       case 'open_unit':
         if (view?.units[a.unitId]?.owner === view?.me) select([a.unitId]);
@@ -98,13 +138,30 @@ function ReportCard({ r, now, open, onToggle }: { r: IntelReport; now: number; o
     }
   };
   return (
-    <article className={['report', flash ? 'report--flash' : '', open ? 'report--open' : '', low ? 'report--low' : ''].join(' ')}>
+    <article
+      className={[
+        'report',
+        flash ? 'report--flash' : '',
+        open ? 'report--open' : '',
+        low ? 'report--low' : '',
+      ].join(' ')}
+    >
       <button type="button" className="report__head" onClick={onToggle} aria-expanded={open}>
         <Cotation r={r.reliability} c={r.credibility} />
         <span className="report__titles">
           <span className="report__meta">
-            {flash ? <Badge tone="red" variant="solid">{t('intel.flash')}</Badge> : <span className="report__kind">{t(`intel.kinds.${r.kind}`)}</span>}
-            {r.sharedBy ? <Badge tone="green" variant="outline">{t('intel.sharedBy', { nation: nationName(r.sharedBy) })}</Badge> : null}
+            {flash ? (
+              <Badge tone="red" variant="solid">
+                {t('intel.flash')}
+              </Badge>
+            ) : (
+              <span className="report__kind">{t(`intel.kinds.${r.kind}`)}</span>
+            )}
+            {r.sharedBy ? (
+              <Badge tone="green" variant="outline">
+                {t('intel.sharedBy', { nation: nationName(r.sharedBy) })}
+              </Badge>
+            ) : null}
             <Ago from={r.time} now={now} />
           </span>
           <span className="report__title">{r.title}</span>
@@ -124,7 +181,15 @@ function ReportCard({ r, now, open, onToggle }: { r: IntelReport; now: number; o
               <MiniMap
                 center={r.at}
                 spanKm={Math.max(120, r.radiusKm * 3)}
-                markers={[{ at: r.at, radiusKm: r.radiusKm, color: flash ? '#ff4d5e' : '#ffb020', shape: 'cross', size: 4 }]}
+                markers={[
+                  {
+                    at: r.at,
+                    radiusKm: r.radiusKm,
+                    color: flash ? '#ff4d5e' : '#ffb020',
+                    shape: 'cross',
+                    size: 4,
+                  },
+                ]}
                 height={120}
                 label={t('intel.minimap')}
               />
@@ -133,13 +198,21 @@ function ReportCard({ r, now, open, onToggle }: { r: IntelReport; now: number; o
           {r.subject?.nationId ? (
             <div className="report__subject">
               <span>{t('intel.subject')}</span> <NationTag id={r.subject.nationId} />
-              {r.subject.provinceId ? <span className="muted">· {provinceName(r.subject.provinceId)}</span> : null}
+              {r.subject.provinceId ? (
+                <span className="muted">· {provinceName(r.subject.provinceId)}</span>
+              ) : null}
             </div>
           ) : null}
           {r.actions.length ? (
             <div className="report__actions">
               {r.actions.map((a, i) => (
-                <Button key={i} size="sm" variant={a.kind === 'plan_strike' ? 'danger' : 'subtle'} icon={<Icon name={ACTION_ICON[a.kind]} size={12} />} onClick={() => doAction(a)}>
+                <Button
+                  key={i}
+                  size="sm"
+                  variant={a.kind === 'plan_strike' ? 'danger' : 'subtle'}
+                  icon={<Icon name={ACTION_ICON[a.kind]} size={12} />}
+                  onClick={() => doAction(a)}
+                >
                   {t(`intel.actions.${a.kind}`)}
                 </Button>
               ))}
@@ -159,7 +232,15 @@ const ACTION_ICON: Record<IntelReport['actions'][number]['kind'], IconName> = {
   open_province: 'mapPin',
 };
 
-function LaunchDialog({ dept, source, onClose }: { dept: Department; source: IntelSource; onClose: () => void }) {
+function LaunchDialog({
+  dept,
+  source,
+  onClose,
+}: {
+  dept: Department;
+  source: IntelSource;
+  onClose: () => void;
+}) {
   const { t } = useTranslation();
   const view = useGame((s) => s.view);
   const me = useGame((s) => s.me);
@@ -179,7 +260,9 @@ function LaunchDialog({ dept, source, onClose }: { dept: Department; source: Int
         }),
     [nations, me, view?.nations],
   );
-  const [target, setTarget] = useState<NationId>(op === 'counterintel_sweep' ? (me ?? '') : (enemies[0]?.id ?? ''));
+  const [target, setTarget] = useState<NationId>(
+    op === 'counterintel_sweep' ? (me ?? '') : (enemies[0]?.id ?? ''),
+  );
   const cost = balance?.intel?.ops[op];
   const selfTarget = op === 'counterintel_sweep' || op === 'plant_fake_report';
   return (
@@ -199,7 +282,11 @@ function LaunchDialog({ dept, source, onClose }: { dept: Department; source: Int
             icon={<Icon name="play" size={12} />}
             onClick={() => {
               void send(
-                { kind: 'intelOp', op, target: { nationId: selfTarget ? me ?? undefined : target } },
+                {
+                  kind: 'intelOp',
+                  op,
+                  target: { nationId: selfTarget ? (me ?? undefined) : target },
+                },
                 t('intel.opLaunched', { op: t(`intel.ops.${op}`) }),
               );
               onClose();
@@ -213,12 +300,23 @@ function LaunchDialog({ dept, source, onClose }: { dept: Department; source: Int
     >
       <div className="stack">
         <Field label={t('intel.operation')}>
-          <Select value={op} onChange={(v) => setOp(v as IntelOpKind)} options={ops.map((o) => ({ value: o, label: t(`intel.ops.${o}`) }))} />
+          <Select
+            value={op}
+            onChange={(v) => setOp(v as IntelOpKind)}
+            options={ops.map((o) => ({ value: o, label: t(`intel.ops.${o}`) }))}
+          />
         </Field>
         <p className="hint">{t(`intel.opsHelp.${op}`)}</p>
         {!selfTarget ? (
           <Field label={t('intel.target')}>
-            <Select value={target} onChange={setTarget} options={enemies.map((n) => ({ value: n.id, label: `${view?.nations[n.id]?.relation === 'war' ? '⚔ ' : ''}${n.name}` }))} />
+            <Select
+              value={target}
+              onChange={setTarget}
+              options={enemies.map((n) => ({
+                value: n.id,
+                label: `${view?.nations[n.id]?.relation === 'war' ? '⚔ ' : ''}${n.name}`,
+              }))}
+            />
           </Field>
         ) : null}
         <dl className="opcost">
@@ -244,7 +342,19 @@ function LaunchDialog({ dept, source, onClose }: { dept: Department; source: Int
   );
 }
 
-function DeptColumn({ dept, source, now, openId, setOpenId }: { dept: Department; source: IntelSource; now: number; openId: string | null; setOpenId: (id: string | null) => void }) {
+function DeptColumn({
+  dept,
+  source,
+  now,
+  openId,
+  setOpenId,
+}: {
+  dept: Department;
+  source: IntelSource;
+  now: number;
+  openId: string | null;
+  setOpenId: (id: string | null) => void;
+}) {
   const { t } = useTranslation();
   const intel = useGame((s) => s.view?.intel);
   const send = useSend();
@@ -265,35 +375,72 @@ function DeptColumn({ dept, source, now, openId, setOpenId }: { dept: Department
           <h3>{t(`intel.depts.${dept}`)}</h3>
           <span>{t(`intel.deptsShort.${dept}`)}</span>
         </span>
-        {d ? <Badge tone="cyan" variant="outline">{t('intel.level', { level: d.level })}</Badge> : null}
+        {d ? (
+          <Badge tone="cyan" variant="outline">
+            {t('intel.level', { level: d.level })}
+          </Badge>
+        ) : null}
       </header>
       {d ? (
         <div className="dept__stats">
           <div className="dept__budget">
             <span className="dept__label">{t('intel.budget')}</span>
             <span className="dept__budget-ctl">
-              <button type="button" onClick={() => void send({ kind: 'intelBudget', dept, budgetPerDay: Math.max(0, d.budgetPerDay - step) }, t('intel.budgetSet'))} aria-label={t('intel.budgetDown')}>
+              <button
+                type="button"
+                onClick={() =>
+                  void send(
+                    { kind: 'intelBudget', dept, budgetPerDay: Math.max(0, d.budgetPerDay - step) },
+                    t('intel.budgetSet'),
+                  )
+                }
+                aria-label={t('intel.budgetDown')}
+              >
                 <Icon name="minus" size={11} />
               </button>
               <Money value={d.budgetPerDay} suffix={t('game.topbar.perDay')} />
-              <button type="button" onClick={() => void send({ kind: 'intelBudget', dept, budgetPerDay: d.budgetPerDay + step }, t('intel.budgetSet'))} aria-label={t('intel.budgetUp')}>
+              <button
+                type="button"
+                onClick={() =>
+                  void send(
+                    { kind: 'intelBudget', dept, budgetPerDay: d.budgetPerDay + step },
+                    t('intel.budgetSet'),
+                  )
+                }
+                aria-label={t('intel.budgetUp')}
+              >
                 <Icon name="plus" size={11} />
               </button>
             </span>
           </div>
           <div className="dept__cap">
             <span className="dept__label">{t('intel.capacity')}</span>
-            <Gauge value={d.running / Math.max(1, d.capacity)} cells={d.capacity} tone={d.running >= d.capacity ? 'amber' : 'cyan'} valueText={`${d.running}/${d.capacity}`} />
+            <Gauge
+              value={d.running / Math.max(1, d.capacity)}
+              cells={d.capacity}
+              tone={d.running >= d.capacity ? 'amber' : 'cyan'}
+              valueText={`${d.running}/${d.capacity}`}
+            />
           </div>
         </div>
       ) : null}
       <div className="dept__reports">
         {reports.length ? (
           reports.map((r) => (
-            <ReportCard key={r.id} r={r} now={now} open={openId === r.id} onToggle={() => setOpenId(openId === r.id ? null : r.id)} />
+            <ReportCard
+              key={r.id}
+              r={r}
+              now={now}
+              open={openId === r.id}
+              onToggle={() => setOpenId(openId === r.id ? null : r.id)}
+            />
           ))
         ) : (
-          <EmptyState compact icon={source === 'humint' ? 'spy' : 'radio'} title={t('intel.noReports')} />
+          <EmptyState
+            compact
+            icon={source === 'humint' ? 'spy' : 'radio'}
+            title={t('intel.noReports')}
+          />
         )}
       </div>
       <div className="dept__ops">
@@ -302,7 +449,13 @@ function DeptColumn({ dept, source, now, openId, setOpenId }: { dept: Department
             {t('intel.operations')} <b>{ops.length}</b>
           </span>
           {canLaunch ? (
-            <Button size="sm" variant="subtle" icon={<Icon name="plus" size={12} />} onClick={() => setLaunch(true)} data-testid={`intel-launch-${dept}`}>
+            <Button
+              size="sm"
+              variant="subtle"
+              icon={<Icon name="plus" size={12} />}
+              onClick={() => setLaunch(true)}
+              data-testid={`intel-launch-${dept}`}
+            >
               {t('intel.launchShort')}
             </Button>
           ) : null}
@@ -318,10 +471,27 @@ function DeptColumn({ dept, source, now, openId, setOpenId }: { dept: Department
                     {formatPct(o.estimate)}
                   </span>
                 ) : (
-                  <Badge tone={o.status === 'success' ? 'green' : o.status === 'compromised' ? 'red' : 'amber'}>{t(`intel.opStatus.${o.status}`)}</Badge>
+                  <Badge
+                    tone={
+                      o.status === 'success'
+                        ? 'green'
+                        : o.status === 'compromised'
+                          ? 'red'
+                          : 'amber'
+                    }
+                  >
+                    {t(`intel.opStatus.${o.status}`)}
+                  </Badge>
                 )}
                 {o.status === 'running' ? (
-                  <button type="button" className="op__cancel" onClick={() => void send({ kind: 'cancelIntelOp', opId: o.id }, t('intel.opCancelled'))} aria-label={t('app.cancel')}>
+                  <button
+                    type="button"
+                    className="op__cancel"
+                    onClick={() =>
+                      void send({ kind: 'cancelIntelOp', opId: o.id }, t('intel.opCancelled'))
+                    }
+                    aria-label={t('app.cancel')}
+                  >
                     <Icon name="close" size={11} />
                   </button>
                 ) : null}
@@ -329,16 +499,25 @@ function DeptColumn({ dept, source, now, openId, setOpenId }: { dept: Department
               <div className="op__target">
                 {o.target.nationId ? <NationTag id={o.target.nationId} size={9} /> : null}
                 {o.target.provinceId ? <span>{provinceName(o.target.provinceId)}</span> : null}
-                {o.target.at && !o.target.provinceId ? <span>{t('intel.zone', { km: o.target.radiusKm ?? 0 })}</span> : null}
+                {o.target.at && !o.target.provinceId ? (
+                  <span>{t('intel.zone', { km: o.target.radiusKm ?? 0 })}</span>
+                ) : null}
               </div>
               {o.status === 'running' ? (
-                <ProgressBar value={f} size="xs" trailing={fmtDuration(Math.max(0, o.completesAt - now))} label={t('intel.progress')} />
+                <ProgressBar
+                  value={f}
+                  size="xs"
+                  trailing={fmtDuration(Math.max(0, o.completesAt - now))}
+                  label={t('intel.progress')}
+                />
               ) : null}
             </div>
           );
         })}
       </div>
-      {launch ? <LaunchDialog dept={dept} source={source} onClose={() => setLaunch(false)} /> : null}
+      {launch ? (
+        <LaunchDialog dept={dept} source={source} onClose={() => setLaunch(false)} />
+      ) : null}
     </section>
   );
 }
@@ -358,7 +537,17 @@ function Agents() {
             <li key={a.id} className={`agent agent--${a.status}`}>
               <span className="agent__code">{a.codename}</span>
               <NationTag id={a.nationId} size={9} />
-              <Badge tone={a.status === 'active' ? 'green' : a.status === 'double' ? 'violet' : a.status === 'burned' || a.status === 'captured' ? 'red' : 'neutral'}>
+              <Badge
+                tone={
+                  a.status === 'active'
+                    ? 'green'
+                    : a.status === 'double'
+                      ? 'violet'
+                      : a.status === 'burned' || a.status === 'captured'
+                        ? 'red'
+                        : 'neutral'
+                }
+              >
                 {t(`intel.agentStatus.${a.status}`)}
               </Badge>
               <Ago from={a.since} now={now} />
@@ -376,7 +565,13 @@ function Agents() {
               {c.turned ? (
                 <Badge tone="violet">{t('intel.turned')}</Badge>
               ) : (
-                <Button size="sm" variant="subtle" onClick={() => void send({ kind: 'turnAgent', agentId: c.id }, t('intel.turnedOk'))}>
+                <Button
+                  size="sm"
+                  variant="subtle"
+                  onClick={() =>
+                    void send({ kind: 'turnAgent', agentId: c.id }, t('intel.turnedOk'))
+                  }
+                >
                   {t('intel.turn')}
                 </Button>
               )}
@@ -407,7 +602,8 @@ export function IntelWindow({ win, frame, mobile }: WindowContentProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [win.seq]);
   const count = (s: IntelSource) => intel?.reports.filter((r) => r.source === s).length ?? 0;
-  const flash = (s: IntelSource) => !!intel?.reports.some((r) => r.source === s && r.kind === 'flash');
+  const flash = (s: IntelSource) =>
+    !!intel?.reports.some((r) => r.source === s && r.kind === 'flash');
   const totalBudget = intel?.departments.reduce((s, d) => s + d.budgetPerDay, 0) ?? 0;
   return (
     <Window
@@ -421,8 +617,20 @@ export function IntelWindow({ win, frame, mobile }: WindowContentProps) {
             value={source}
             onChange={setSource}
             tabs={[
-              { id: 'humint', label: t('intel.humint'), count: count('humint'), dot: flash('humint'), icon: <Icon name="spy" size={13} /> },
-              { id: 'sigint', label: t('intel.sigint'), count: count('sigint'), dot: flash('sigint'), icon: <Icon name="radio" size={13} /> },
+              {
+                id: 'humint',
+                label: t('intel.humint'),
+                count: count('humint'),
+                dot: flash('humint'),
+                icon: <Icon name="spy" size={13} />,
+              },
+              {
+                id: 'sigint',
+                label: t('intel.sigint'),
+                count: count('sigint'),
+                dot: flash('sigint'),
+                icon: <Icon name="radio" size={13} />,
+              },
             ]}
           />
           {mobile ? (
@@ -440,7 +648,8 @@ export function IntelWindow({ win, frame, mobile }: WindowContentProps) {
       headerExtra={
         !mobile ? (
           <span className="win-meta">
-            <span>{t('intel.totalBudget')}</span> <Money value={totalBudget} suffix={t('game.topbar.perDay')} />
+            <span>{t('intel.totalBudget')}</span>{' '}
+            <Money value={totalBudget} suffix={t('game.topbar.perDay')} />
           </span>
         ) : null
       }
@@ -451,7 +660,14 @@ export function IntelWindow({ win, frame, mobile }: WindowContentProps) {
         <div className="intel">
           <div className="intel__cols">
             {(mobile ? [dept] : DEPARTMENTS).map((d) => (
-              <DeptColumn key={d} dept={d} source={source} now={now} openId={openId} setOpenId={setOpenId} />
+              <DeptColumn
+                key={d}
+                dept={d}
+                source={source}
+                now={now}
+                openId={openId}
+                setOpenId={setOpenId}
+              />
             ))}
           </div>
           {source === 'humint' ? <Agents /> : null}

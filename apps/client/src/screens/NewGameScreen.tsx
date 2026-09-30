@@ -50,7 +50,13 @@ export function NewGameScreen() {
     try {
       const api = await getApi();
       if (!(await api.me())) await api.guest();
-      const game = await api.createGame({ scenarioId, nationId: nation, mode: 'solo', speed, aiLevel: level });
+      const game = await api.createGame({
+        scenarioId,
+        nationId: nation,
+        mode: 'solo',
+        speed,
+        aiLevel: level,
+      });
       navigate(`/game/${encodeURIComponent(game.id)}`);
     } catch {
       setError(t('newGame.error'));

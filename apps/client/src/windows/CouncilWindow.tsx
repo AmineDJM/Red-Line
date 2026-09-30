@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RESOLUTION_TYPES, type NationId, type Order, type ResolutionType, type ResolutionView } from '@redline/shared';
+import {
+  RESOLUTION_TYPES,
+  type NationId,
+  type Order,
+  type ResolutionType,
+  type ResolutionView,
+} from '@redline/shared';
 import {
   Badge,
   Button,
@@ -27,19 +33,32 @@ function useSend() {
   return async (order: Order, ok: string) => {
     const res = await useGame.getState().connection?.sendOrder(order);
     if (res?.ok) toast(ok, 'ok');
-    else if (res) toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    else if (res)
+      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
     return !!res?.ok;
   };
 }
 
-function targetText(r: ResolutionView, t: (k: string, o?: Record<string, unknown>) => string): string {
+function targetText(
+  r: ResolutionView,
+  t: (k: string, o?: Record<string, unknown>) => string,
+): string {
   if (r.target.nationId) return nationName(r.target.nationId);
-  if (r.target.provinceIds?.length) return r.target.provinceIds.map((p) => provinceName(p)).join(', ');
+  if (r.target.provinceIds?.length)
+    return r.target.provinceIds.map((p) => provinceName(p)).join(', ');
   if (r.target.at) return t('council.zone', { km: r.target.radiusKm ?? 0 });
   return '—';
 }
 
-function Resolution({ r, voters, permanent }: { r: ResolutionView; voters: NationId[]; permanent: NationId[] }) {
+function Resolution({
+  r,
+  voters,
+  permanent,
+}: {
+  r: ResolutionView;
+  voters: NationId[];
+  permanent: NationId[];
+}) {
   const { t } = useTranslation();
   const me = useGame((s) => s.me);
   const send = useSend();
@@ -49,7 +68,12 @@ function Resolution({ r, voters, permanent }: { r: ResolutionView; voters: Natio
   const veto = permanent.filter((p) => r.votes[p] === 'no');
   const mine = me ? r.votes[me] : undefined;
   const canVote = !!me && voters.includes(me) && (r.status === 'voting' || r.status === 'proposed');
-  const tone = r.status === 'passed' ? 'green' : r.status === 'rejected' || r.status === 'vetoed' ? 'red' : 'amber';
+  const tone =
+    r.status === 'passed'
+      ? 'green'
+      : r.status === 'rejected' || r.status === 'vetoed'
+        ? 'red'
+        : 'amber';
   return (
     <article className="reso">
       <header className="reso__head">
@@ -58,7 +82,11 @@ function Resolution({ r, voters, permanent }: { r: ResolutionView; voters: Natio
         </Badge>
         <span className="reso__target">{targetText(r, t)}</span>
         <span className="grow" />
-        {veto.length && r.status === 'voting' ? <Badge tone="red">{t('council.vetoThreat', { nations: veto.map((v) => nationName(v)).join(', ') })}</Badge> : null}
+        {veto.length && r.status === 'voting' ? (
+          <Badge tone="red">
+            {t('council.vetoThreat', { nations: veto.map((v) => nationName(v)).join(', ') })}
+          </Badge>
+        ) : null}
         <Badge tone={tone}>{t(`council.status.${r.status}`)}</Badge>
       </header>
       <blockquote className="reso__text">
@@ -79,15 +107,25 @@ function Resolution({ r, voters, permanent }: { r: ResolutionView; voters: Natio
           <span className="reso__pend" style={{ flex: pending }} />
         </div>
         <div className="reso__counts">
-          <span className="rl-tone-green">{t('council.votes.yes')} {tally.yes}</span>
-          <span className="muted">{t('council.votes.abstain')} {tally.abstain}</span>
-          <span className="rl-tone-red">{t('council.votes.no')} {tally.no}</span>
+          <span className="rl-tone-green">
+            {t('council.votes.yes')} {tally.yes}
+          </span>
+          <span className="muted">
+            {t('council.votes.abstain')} {tally.abstain}
+          </span>
+          <span className="rl-tone-red">
+            {t('council.votes.no')} {tally.no}
+          </span>
           <span className="muted">{t('council.waiting', { count: pending })}</span>
         </div>
       </div>
       <ul className="reso__voters">
         {voters.map((v) => (
-          <li key={v} className={`voter voter--${r.votes[v] ?? 'none'}`} title={`${nationName(v)} : ${t(`council.votes.${r.votes[v] ?? 'none'}`)}`}>
+          <li
+            key={v}
+            className={`voter voter--${r.votes[v] ?? 'none'}`}
+            title={`${nationName(v)} : ${t(`council.votes.${r.votes[v] ?? 'none'}`)}`}
+          >
             <Flag nationId={v} size={11} />
             <span>{v.toUpperCase()}</span>
             {permanent.includes(v) ? <i className="voter__veto">V</i> : null}
@@ -101,9 +139,22 @@ function Resolution({ r, voters, permanent }: { r: ResolutionView; voters: Natio
             <Button
               key={v}
               size="sm"
-              variant={mine === v ? (v === 'yes' ? 'success' : v === 'no' ? 'danger' : 'primary') : 'subtle'}
+              variant={
+                mine === v
+                  ? v === 'yes'
+                    ? 'success'
+                    : v === 'no'
+                      ? 'danger'
+                      : 'primary'
+                  : 'subtle'
+              }
               pressed={mine === v}
-              onClick={() => void send({ kind: 'voteResolution', resolutionId: r.id, vote: v }, t('council.voted'))}
+              onClick={() =>
+                void send(
+                  { kind: 'voteResolution', resolutionId: r.id, vote: v },
+                  t('council.voted'),
+                )
+              }
               data-testid={`vote-${r.id}-${v}`}
             >
               {t(`council.votes.${v}`)}
@@ -123,20 +174,40 @@ function Propose({ onDone }: { onDone: () => void }) {
   const [type, setType] = useState<ResolutionType>('ceasefire');
   const [target, setTarget] = useState<NationId>('');
   const [text, setText] = useState('');
-  const list = Object.values(nations).filter((n) => n.id !== me).sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+  const list = Object.values(nations)
+    .filter((n) => n.id !== me)
+    .sort((a, b) => a.name.localeCompare(b.name, 'fr'));
   return (
     <Panel title={t('council.propose')} accent="cyan">
       <div className="stack">
         <div className="cols2">
           <Field label={t('council.type')}>
-            <Select value={type} onChange={(v) => setType(v as ResolutionType)} options={RESOLUTION_TYPES.map((x) => ({ value: x, label: t(`council.types.${x}`) }))} />
+            <Select
+              value={type}
+              onChange={(v) => setType(v as ResolutionType)}
+              options={RESOLUTION_TYPES.map((x) => ({ value: x, label: t(`council.types.${x}`) }))}
+            />
           </Field>
           <Field label={t('council.target')}>
-            <Select value={target} onChange={setTarget} options={[{ value: '', label: t('council.pickTarget') }, ...list.map((n) => ({ value: n.id, label: n.name }))]} />
+            <Select
+              value={target}
+              onChange={setTarget}
+              options={[
+                { value: '', label: t('council.pickTarget') },
+                ...list.map((n) => ({ value: n.id, label: n.name })),
+              ]}
+            />
           </Field>
         </div>
         <Field label={t('council.text')} hint={t('council.textHint')}>
-          <textarea className="rl-textarea" rows={4} maxLength={500} value={text} onChange={(e) => setText(e.target.value)} placeholder={t('council.textPlaceholder')} />
+          <textarea
+            className="rl-textarea"
+            rows={4}
+            maxLength={500}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder={t('council.textPlaceholder')}
+          />
         </Field>
         <div className="row">
           <span className="grow" />
@@ -146,7 +217,17 @@ function Propose({ onDone }: { onDone: () => void }) {
           <Button
             variant="primary"
             disabled={!target || text.trim().length < 10}
-            onClick={() => void send({ kind: 'proposeResolution', type, target: { nationId: target }, text: text.trim() }, t('council.proposed')).then((ok) => ok && onDone())}
+            onClick={() =>
+              void send(
+                {
+                  kind: 'proposeResolution',
+                  type,
+                  target: { nationId: target },
+                  text: text.trim(),
+                },
+                t('council.proposed'),
+              ).then((ok) => ok && onDone())
+            }
           >
             {t('council.submit')}
           </Button>
@@ -190,7 +271,11 @@ export function CouncilWindow({ frame }: WindowContentProps) {
           </div>
           <span className="grow" />
           <Badge tone="neutral">{t(`council.majority.${council.rule.majority}`)}</Badge>
-          {council.rule.veto ? <Badge tone="amber" variant="outline">{t('council.veto')}</Badge> : null}
+          {council.rule.veto ? (
+            <Badge tone="amber" variant="outline">
+              {t('council.veto')}
+            </Badge>
+          ) : null}
         </div>
       }
     >
@@ -201,11 +286,18 @@ export function CouncilWindow({ frame }: WindowContentProps) {
             <>
               <div>
                 <b>{t(`council.phase.${s.phase}`)}</b>
-                <span className="muted small">{t('council.agenda', { count: s.resolutions.length })}</span>
+                <span className="muted small">
+                  {t('council.agenda', { count: s.resolutions.length })}
+                </span>
               </div>
               <span className="grow" />
               <span className="dept__label">{t('council.closesIn')}</span>
-              <Countdown ms={s.votingEndsAt - now} total={s.votingEndsAt - s.opensAt} urgentBelowMs={3_600_000} dayUnit={t('time.dayUnit')} />
+              <Countdown
+                ms={s.votingEndsAt - now}
+                total={s.votingEndsAt - s.opensAt}
+                urgentBelowMs={3_600_000}
+                dayUnit={t('time.dayUnit')}
+              />
             </>
           ) : (
             <>
@@ -216,14 +308,26 @@ export function CouncilWindow({ frame }: WindowContentProps) {
             </>
           )}
           {!proposing ? (
-            <Button size="sm" variant="primary" icon={<Icon name="plus" size={12} />} onClick={() => setProposing(true)}>
+            <Button
+              size="sm"
+              variant="primary"
+              icon={<Icon name="plus" size={12} />}
+              onClick={() => setProposing(true)}
+            >
               {t('council.propose')}
             </Button>
           ) : null}
         </div>
         {proposing ? <Propose onDone={() => setProposing(false)} /> : null}
         {s?.resolutions.length ? (
-          s.resolutions.map((r) => <Resolution key={r.id} r={r} voters={voters} permanent={council.rule.veto ? council.members : []} />)
+          s.resolutions.map((r) => (
+            <Resolution
+              key={r.id}
+              r={r}
+              voters={voters}
+              permanent={council.rule.veto ? council.members : []}
+            />
+          ))
         ) : (
           <EmptyState compact icon="vote" title={t('council.noResolutions')} />
         )}

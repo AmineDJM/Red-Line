@@ -47,7 +47,13 @@ export function formatMoney(usd: number, opts: MoneyOptions = {}): string {
   const abs = Math.abs(usd);
   // Seuils décalés d'un demi-arrondi : jamais « $1 000 k », toujours « $1 M ».
   const [div, unit] =
-    abs >= 999.5e6 ? [1e9, units.Md] : abs >= 999.5e3 ? [1e6, units.M] : abs >= 999.5 ? [1e3, units.k] : [1, ''];
+    abs >= 999.5e6
+      ? [1e9, units.Md]
+      : abs >= 999.5e3
+        ? [1e6, units.M]
+        : abs >= 999.5
+          ? [1e3, units.k]
+          : [1, ''];
   const value = abs / div;
   const d = unit && value < 99.95 ? digits : 0;
   const body = `$${tidy(nf(locale, d).format(value))}${unit ? NBSP + unit : ''}`;

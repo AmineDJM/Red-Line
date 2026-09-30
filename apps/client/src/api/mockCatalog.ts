@@ -130,7 +130,8 @@ const RANGE: Record<Category, number> = {
 /** Génération estimée d'après le nom (démonstration). */
 function guessGeneration(e: CatalogIdEntry): number {
   const n = e.name.toLowerCase();
-  if (/f-35|f-22|su-57|j-20|j-35|b-21|kf-21|tempest|fcas|hypers|zircon|avangard|kinzhal/.test(n)) return 5;
+  if (/f-35|f-22|su-57|j-20|j-35|b-21|kf-21|tempest|fcas|hypers|zircon|avangard|kinzhal/.test(n))
+    return 5;
   if (/f-5|mig-21|mig-23|t-55|t-62|m60|f-4|mirage (iii|5|f1)|kilo|type 69/.test(n)) return 2;
   if (/f-16|f-15|su-27|mig-29|t-72|leopard 2a4|m1a1|mirage 2000/.test(n)) return 4;
   return e.category === 'infantry' || e.category === 'logistics' ? 3 : 4;
@@ -202,7 +203,13 @@ function gateFor(s: WeaponSystem): string[] {
     case 'air_support':
       return [`research.aero.${['gen2', 'gen2', 'gen3', 'gen4', 'gen4plus', 'gen5'][g] ?? 'gen4'}`];
     case 'bomber':
-      return [g >= 5 ? 'research.aero.stealth-bomber' : g >= 4 ? 'research.aero.bomber2' : 'research.aero.bomber1'];
+      return [
+        g >= 5
+          ? 'research.aero.stealth-bomber'
+          : g >= 4
+            ? 'research.aero.bomber2'
+            : 'research.aero.bomber1',
+      ];
     case 'helicopter':
       return [`research.aero.helo${Math.min(3, Math.max(1, g - 2))}`];
     case 'drone':
@@ -314,7 +321,10 @@ export function demoResearch(): ResearchNode[] {
         description: t(`researchNodes.desc.${line.prefix ?? line.branch}`, { defaultValue: '' }),
         branch: line.branch,
         tier,
-        cost: { money: Math.round((150e6 + tier * 260e6) / 1e6) * 1e6, resources: { electronics: 400 + tier * 300 } },
+        cost: {
+          money: Math.round((150e6 + tier * 260e6) / 1e6) * 1e6,
+          resources: { electronics: 400 + tier * 300 },
+        },
         durationH: 48 + tier * 60,
         requires: prev ? [prev] : [],
         effects: EFFECTS[id] ?? {},

@@ -11,9 +11,15 @@ const DOCS: LegalDocRef['id'][] = ['cgu', 'cgv', 'privacy', 'withdrawal'];
 /** Rendu Markdown minimal et sûr (titres, gras, listes, paragraphes) : aucun HTML injecté. */
 export function Markdown({ text }: { text: string }) {
   const inline = (s: string): ReactNode[] =>
-    s.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
-      part.startsWith('**') && part.endsWith('**') ? <strong key={i}>{part.slice(2, -2)}</strong> : <Fragment key={i}>{part}</Fragment>,
-    );
+    s
+      .split(/(\*\*[^*]+\*\*)/g)
+      .map((part, i) =>
+        part.startsWith('**') && part.endsWith('**') ? (
+          <strong key={i}>{part.slice(2, -2)}</strong>
+        ) : (
+          <Fragment key={i}>{part}</Fragment>
+        ),
+      );
   // Découpage ligne à ligne : titres (#), listes (- ou *), paragraphes (lignes consécutives).
   const out: ReactNode[] = [];
   let para: string[] = [];
@@ -64,10 +70,32 @@ export function LegalScreen({ doc }: { doc: LegalDocRef['id'] }) {
       .catch(() => setError(true));
   }, [doc]);
   return (
-    <Page path={[t('legal.path'), doc]} title={t('legal.title')} subtitle={data ? t('legal.version', { version: data.version, date: new Date(data.updatedAt).toLocaleDateString('fr-FR') }) : undefined}>
-      <Tabs label={t('legal.title')} value={doc} onChange={(d) => navigate(`/legal/${d}`, { replace: true })} tabs={DOCS.map((d) => ({ id: d, label: t(`legal.docs.${d}`) }))} />
+    <Page
+      path={[t('legal.path'), doc]}
+      title={t('legal.title')}
+      subtitle={
+        data
+          ? t('legal.version', {
+              version: data.version,
+              date: new Date(data.updatedAt).toLocaleDateString('fr-FR'),
+            })
+          : undefined
+      }
+    >
+      <Tabs
+        label={t('legal.title')}
+        value={doc}
+        onChange={(d) => navigate(`/legal/${d}`, { replace: true })}
+        tabs={DOCS.map((d) => ({ id: d, label: t(`legal.docs.${d}`) }))}
+      />
       <div className="legal">
-        {error ? <EmptyState icon="document" title={t('legal.error')} /> : data ? <Markdown text={data.markdown} /> : <Spinner label={t('app.loading')} />}
+        {error ? (
+          <EmptyState icon="document" title={t('legal.error')} />
+        ) : data ? (
+          <Markdown text={data.markdown} />
+        ) : (
+          <Spinner label={t('app.loading')} />
+        )}
       </div>
     </Page>
   );
@@ -88,7 +116,11 @@ export function LegalGate() {
   }, []);
   if (!pending.length || route.name === 'legal') return null;
   return (
-    <Dialog open title={t('legal.gateTitle')} path={[t('legal.path'), 'acceptation']} width={560}
+    <Dialog
+      open
+      title={t('legal.gateTitle')}
+      path={[t('legal.path'), 'acceptation']}
+      width={560}
       footer={
         <>
           <Button variant="ghost" onClick={() => navigate('/legal/cgu')}>
@@ -114,11 +146,15 @@ export function LegalGate() {
       }
     >
       <div className="stack">
+        <h3 className="dialog-heading">{t('legal.gateTitle')}</h3>
         <p>{t('legal.gateText')}</p>
         <ul className="plainlist">
           {pending.map((d) => (
             <li key={d.id}>
-              <a href={`/legal/${d.id}`} onClick={(e) => (e.preventDefault(), navigate(`/legal/${d.id}`))}>
+              <a
+                href={`/legal/${d.id}`}
+                onClick={(e) => (e.preventDefault(), navigate(`/legal/${d.id}`))}
+              >
                 {t(`legal.docs.${d.id}`)}
               </a>{' '}
               <span className="muted small">v{d.version}</span>

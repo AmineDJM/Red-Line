@@ -835,7 +835,14 @@ code {
 }
 .topbar--mobile .topres__item {
   height: 26px;
-  padding: 0 5px;
+  padding: 0 3px;
+  gap: 3px;
+}
+.topbar--mobile .topres {
+  gap: 0;
+}
+.topbar__row--sub {
+  gap: 6px;
 }
 .topbar--mobile .topres__trend {
   display: none;
@@ -943,6 +950,16 @@ code {
   min-width: 0;
   max-width: 76px;
 }
+/* Fenêtres plein écran mobiles : elles s'arrêtent au-dessus de la barre de navigation. */
+.game--mobile .rl-win--sheet {
+  bottom: calc(64px + env(safe-area-inset-bottom));
+  padding-bottom: 0;
+}
+/* Attribution de la carte au-dessus de la barre de navigation mobile. */
+.game--mobile .maplibregl-ctrl-bottom-right,
+.game--mobile .maplibregl-ctrl-bottom-left {
+  bottom: calc(64px + env(safe-area-inset-bottom));
+}
 .mobnav__console {
   display: inline-flex;
   align-items: center;
@@ -1039,7 +1056,8 @@ code {
   position: absolute;
   z-index: 18;
   right: 12px;
-  bottom: 12px;
+  /* Laisse la place au bouton d'attribution de la carte (coin inférieur droit). */
+  bottom: 44px;
 }
 .game--mobile .game__legend {
   right: 8px;
@@ -1469,7 +1487,9 @@ code {
   border: 1px solid var(--rl-cyan-line);
   border-radius: var(--rl-radius);
   background: var(--rl-glass);
-  box-shadow: var(--rl-shadow), 0 0 0 1px rgba(76, 201, 240, 0.1);
+  box-shadow:
+    var(--rl-shadow),
+    0 0 0 1px rgba(76, 201, 240, 0.1);
   backdrop-filter: blur(8px);
   animation: rl-win-in 150ms var(--rl-ease);
   overflow: hidden;
@@ -1713,6 +1733,15 @@ code {
 .alertitem--red {
   box-shadow: inset 2px 0 0 var(--rl-red);
 }
+.alertitem__count {
+  margin-left: 8px;
+  padding: 0 5px;
+  border: 1px solid var(--rl-line-strong);
+  border-radius: 2px;
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-xs);
+  font-weight: 600;
+}
 .alertitem__text {
   line-height: 1.45;
   padding-top: 2px;
@@ -1860,7 +1889,9 @@ code {
   border: 1px solid var(--rl-cyan-line);
   border-radius: var(--rl-radius);
   background: var(--rl-panel);
-  box-shadow: var(--rl-shadow), 0 0 0 1px rgba(76, 201, 240, 0.1);
+  box-shadow:
+    var(--rl-shadow),
+    0 0 0 1px rgba(76, 201, 240, 0.1);
   animation: rl-win-in 160ms var(--rl-ease);
 }
 .game--mobile .tuto {
@@ -2046,8 +2077,18 @@ code {
   position: fixed;
   inset: 0;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   background: var(--rl-bg);
+}
+.picker__extra {
+  flex: none;
+  min-width: 0;
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-xs);
+}
+.picker--mobile .picker__extra {
+  display: none;
 }
 .picker__bar {
   display: flex;
@@ -2225,7 +2266,9 @@ code {
 }
 .picker__flag {
   border-radius: 3px;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15), var(--rl-shadow-sm);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.15),
+    var(--rl-shadow-sm);
 }
 .picker__who {
   display: flex;

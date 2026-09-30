@@ -53,7 +53,10 @@ export async function enableNotifications(): Promise<'push' | 'local' | 'denied'
     const reg = await navigator.serviceWorker.register('/sw.js');
     const sub =
       (await reg.pushManager.getSubscription()) ??
-      (await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToUint8(key) }));
+      (await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: b64ToUint8(key),
+      }));
     await api.pushSubscribe(sub.toJSON());
     return 'push';
   } catch {
@@ -91,7 +94,11 @@ export function usePushNotifications(gameId: string) {
         const d = describeNotification(n.item, s.view, s.me);
         if (!d.critical) continue;
         try {
-          new Notification(t('app.name'), { body: d.text, tag: `${gameId}-${n.id}`, icon: '/icon-192.png' });
+          new Notification(t('app.name'), {
+            body: d.text,
+            tag: `${gameId}-${n.id}`,
+            icon: '/icon-192.png',
+          });
         } catch {
           /* notification refusée */
         }

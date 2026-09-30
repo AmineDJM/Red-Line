@@ -169,7 +169,14 @@ export function HomeScreen() {
                 </div>
                 <ul className="menu">
                   {user ? (
-                    <MenuItem primary icon="play" label={t('home.continue')} hint={t('home.hints.solo')} onClick={() => navigate('/new')} testId="menu-new" />
+                    <MenuItem
+                      primary
+                      icon="play"
+                      label={t('home.continue')}
+                      hint={t('home.hints.solo')}
+                      onClick={() => navigate('/new')}
+                      testId="menu-new"
+                    />
                   ) : (
                     <MenuItem
                       primary
@@ -181,11 +188,36 @@ export function HomeScreen() {
                       testId="menu-guest"
                     />
                   )}
-                  <MenuItem icon="users" label={t('home.multi')} hint={t('home.hints.multi')} onClick={() => void ensure('/lobby')} />
-                  <MenuItem icon="refresh" label={t('home.resume')} hint={t('home.hints.resume')} onClick={() => void ensure('/games')} />
-                  <MenuItem icon="trophy" label={t('home.rankings')} hint={t('home.hints.rankings')} onClick={() => navigate('/rankings')} />
-                  <MenuItem icon="shop" label={t('home.shop')} hint={t('home.hints.shop')} onClick={() => void ensure('/shop')} />
-                  <MenuItem icon="sandbox" label={t('home.sandbox')} hint={t('home.hints.sandbox')} onClick={() => navigate('/sandbox')} />
+                  <MenuItem
+                    icon="users"
+                    label={t('home.multi')}
+                    hint={t('home.hints.multi')}
+                    onClick={() => void ensure('/lobby')}
+                  />
+                  <MenuItem
+                    icon="refresh"
+                    label={t('home.resume')}
+                    hint={t('home.hints.resume')}
+                    onClick={() => void ensure('/games')}
+                  />
+                  <MenuItem
+                    icon="trophy"
+                    label={t('home.rankings')}
+                    hint={t('home.hints.rankings')}
+                    onClick={() => navigate('/rankings')}
+                  />
+                  <MenuItem
+                    icon="shop"
+                    label={t('home.shop')}
+                    hint={t('home.hints.shop')}
+                    onClick={() => void ensure('/shop')}
+                  />
+                  <MenuItem
+                    icon="sandbox"
+                    label={t('home.sandbox')}
+                    hint={t('home.hints.sandbox')}
+                    onClick={() => navigate('/sandbox')}
+                  />
                 </ul>
                 <div className="home__auth">
                   {!user || user.isGuest ? (
@@ -290,7 +322,10 @@ export function HomeScreen() {
             <a href="/legal/cgv" onClick={(e) => (e.preventDefault(), navigate('/legal/cgv'))}>
               {t('legal.docs.cgv')}
             </a>
-            <a href="/legal/privacy" onClick={(e) => (e.preventDefault(), navigate('/legal/privacy'))}>
+            <a
+              href="/legal/privacy"
+              onClick={(e) => (e.preventDefault(), navigate('/legal/privacy'))}
+            >
               {t('legal.docs.privacy')}
             </a>
           </nav>

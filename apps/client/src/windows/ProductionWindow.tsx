@@ -31,17 +31,31 @@ type Tab = 'arsenal' | 'queue' | 'licences';
 function useSend() {
   const { t } = useTranslation();
   const toast = useUi((s) => s.toast);
-  return async (order: Parameters<NonNullable<ReturnType<typeof useGame.getState>['connection']>['sendOrder']>[0], okText: string) => {
+  return async (
+    order: Parameters<
+      NonNullable<ReturnType<typeof useGame.getState>['connection']>['sendOrder']
+    >[0],
+    okText: string,
+  ) => {
     const conn = useGame.getState().connection;
     const res = await conn?.sendOrder(order);
     if (res?.ok) toast(okText, 'ok');
-    else if (res) toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    else if (res)
+      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
     return !!res?.ok;
   };
 }
 
 /** Actions de la fiche : province, quantité, produire / importer / licence. */
-function ProduceActions({ s, provinceId, setProvinceId }: { s: WeaponSystem; provinceId: ProvinceId; setProvinceId: (p: ProvinceId) => void }) {
+function ProduceActions({
+  s,
+  provinceId,
+  setProvinceId,
+}: {
+  s: WeaponSystem;
+  provinceId: ProvinceId;
+  setProvinceId: (p: ProvinceId) => void;
+}) {
   const { t } = useTranslation();
   const view = useGame((s) => s.view);
   const me = useGame((s) => s.me);
@@ -57,8 +71,18 @@ function ProduceActions({ s, provinceId, setProvinceId }: { s: WeaponSystem; pro
     () =>
       Object.values(view?.provinces ?? {})
         .filter((p) => p.owner === me)
-        .map((p) => ({ id: p.id, ok: p.buildings.includes(need), name: provinceName(p.id), capital: !!defs[p.id]?.isCapital }))
-        .sort((a, b) => Number(b.ok) - Number(a.ok) || Number(b.capital) - Number(a.capital) || a.name.localeCompare(b.name)),
+        .map((p) => ({
+          id: p.id,
+          ok: p.buildings.includes(need),
+          name: provinceName(p.id),
+          capital: !!defs[p.id]?.isCapital,
+        }))
+        .sort(
+          (a, b) =>
+            Number(b.ok) - Number(a.ok) ||
+            Number(b.capital) - Number(a.capital) ||
+            a.name.localeCompare(b.name),
+        ),
     [view?.provinces, me, need, defs],
   );
   const prov = mine.find((p) => p.id === provinceId) ?? mine[0];
@@ -92,7 +116,8 @@ function ProduceActions({ s, provinceId, setProvinceId }: { s: WeaponSystem; pro
       </div>
       {prov && !prov.ok ? (
         <p className="produce__warn">
-          <Icon name="warning" size={13} /> {t('production.needBuilding', { building: t(`buildings.${need}`) })}
+          <Icon name="warning" size={13} />{' '}
+          {t('production.needBuilding', { building: t(`buildings.${need}`) })}
         </p>
       ) : null}
       <div className="produce__total">
@@ -117,7 +142,11 @@ function ProduceActions({ s, provinceId, setProvinceId }: { s: WeaponSystem; pro
             {t('production.produce')}
           </Button>
         ) : (
-          <Button variant="subtle" icon={<Icon name="research" size={14} />} onClick={() => openWindow('research')}>
+          <Button
+            variant="subtle"
+            icon={<Icon name="research" size={14} />}
+            onClick={() => openWindow('research')}
+          >
             {t('production.goResearch', { node: researchName(st.missing[0] ?? '', research) })}
           </Button>
         )}
@@ -140,7 +169,12 @@ function ProduceActions({ s, provinceId, setProvinceId }: { s: WeaponSystem; pro
             variant="subtle"
             icon={<Icon name="document" size={14} />}
             disabled={money < licencePrice}
-            onClick={() => void send({ kind: 'buyLicence', systemId: s.id }, t('production.licenceBought', { unit: s.name }))}
+            onClick={() =>
+              void send(
+                { kind: 'buyLicence', systemId: s.id },
+                t('production.licenceBought', { unit: s.name }),
+              )
+            }
           >
             {t('production.buyLicence', { price: formatMoney(licencePrice) })}
           </Button>
@@ -149,7 +183,12 @@ function ProduceActions({ s, provinceId, setProvinceId }: { s: WeaponSystem; pro
           <Button
             variant="danger"
             icon={<Icon name="spy" size={14} />}
-            onClick={() => void send({ kind: 'blackMarket', systemId: s.id, count: Math.min(10, count) }, t('production.blackMarketOrdered'))}
+            onClick={() =>
+              void send(
+                { kind: 'blackMarket', systemId: s.id, count: Math.min(10, count) },
+                t('production.blackMarketOrdered'),
+              )
+            }
           >
             {t('production.blackMarket')}
           </Button>
@@ -170,7 +209,13 @@ function Queue() {
   const now = useGameTime(1000);
   const items = view?.economy.production ?? [];
   if (!items.length)
-    return <EmptyState icon="production" title={t('production.queueEmpty')} text={t('production.queueHint')} />;
+    return (
+      <EmptyState
+        icon="production"
+        title={t('production.queueEmpty')}
+        text={t('production.queueHint')}
+      />
+    );
   return (
     <Table
       label={t('production.queue')}
@@ -193,7 +238,12 @@ function Queue() {
             );
           },
         },
-        { key: 'site', header: t('production.site'), render: (p) => provinceName(p.provinceId), hideOnMobile: true },
+        {
+          key: 'site',
+          header: t('production.site'),
+          render: (p) => provinceName(p.provinceId),
+          hideOnMobile: true,
+        },
         {
           key: 'progress',
           header: t('production.cols.progress'),
@@ -210,7 +260,9 @@ function Queue() {
           key: 'eta',
           header: t('production.cols.eta'),
           align: 'right',
-          render: (p) => <Countdown ms={p.completesAt - now} dayUnit={t('time.dayUnit')} urgentBelowMs={-1} />,
+          render: (p) => (
+            <Countdown ms={p.completesAt - now} dayUnit={t('time.dayUnit')} urgentBelowMs={-1} />
+          ),
           sort: (a, b) => a.completesAt - b.completesAt,
         },
         {
@@ -226,8 +278,15 @@ function Queue() {
                 title={t('production.accelerate')}
                 onClick={() =>
                   void getApi()
-                    .then((api) => api.accelerate(meta?.id ?? 'demo', { type: 'production', id: p.id }, 6))
-                    .then((r) => toast(r.ok ? t('shop.accelerated', { balance: r.balance }) : t('shop.notEnough'), r.ok ? 'ok' : 'error'))
+                    .then((api) =>
+                      api.accelerate(meta?.id ?? 'demo', { type: 'production', id: p.id }, 6),
+                    )
+                    .then((r) =>
+                      toast(
+                        r.ok ? t('shop.accelerated', { balance: r.balance }) : t('shop.notEnough'),
+                        r.ok ? 'ok' : 'error',
+                      ),
+                    )
                     .catch(() => toast(t('shop.unavailable'), 'error'))
                 }
               >
@@ -238,7 +297,12 @@ function Queue() {
                 variant="ghost"
                 icon={<Icon name="close" size={12} />}
                 aria-label={t('production.cancel')}
-                onClick={() => void send({ kind: 'cancelProduction', productionId: p.id }, t('production.cancelled'))}
+                onClick={() =>
+                  void send(
+                    { kind: 'cancelProduction', productionId: p.id },
+                    t('production.cancelled'),
+                  )
+                }
               />
             </span>
           ),
@@ -255,7 +319,14 @@ function Licences() {
   const photos = usePhotos();
   const now = useGameTime(5000);
   const list = view?.licences ?? [];
-  if (!list.length) return <EmptyState icon="document" title={t('production.noLicences')} text={t('production.licenceHint')} />;
+  if (!list.length)
+    return (
+      <EmptyState
+        icon="document"
+        title={t('production.noLicences')}
+        text={t('production.licenceHint')}
+      />
+    );
   return (
     <ul className="licences">
       {list.map((l) => {
@@ -266,7 +337,10 @@ function Licences() {
             <div>
               <b>{s?.name ?? l.systemId}</b>
               <span className="muted small">
-                {s ? t(`doctrines.${s.doctrine}`) : ''} · {t('production.acquired', { value: Math.max(0, Math.round((now - l.acquiredAt) / 86_400_000)) })}
+                {s ? t(`doctrines.${s.doctrine}`) : ''} ·{' '}
+                {t('production.acquired', {
+                  value: Math.max(0, Math.round((now - l.acquiredAt) / 86_400_000)),
+                })}
               </span>
               <Badge tone="violet">{t('arsenal.licence')}</Badge>
             </div>
@@ -284,7 +358,9 @@ export function ProductionWindow({ win, frame, mobile }: WindowContentProps) {
   const me = useGame((s) => s.me);
   const selectedProvince = useUi((s) => s.selectedProvince);
   const [tab, setTab] = useState<Tab>((win.params.tab as Tab) ?? 'arsenal');
-  const [provinceId, setProvinceId] = useState<ProvinceId>(win.params.provinceId ?? selectedProvince ?? '');
+  const [provinceId, setProvinceId] = useState<ProvinceId>(
+    win.params.provinceId ?? selectedProvince ?? '',
+  );
   useEffect(() => {
     if (win.params.tab) setTab(win.params.tab as Tab);
     if (win.params.provinceId) setProvinceId(win.params.provinceId);
@@ -302,9 +378,23 @@ export function ProductionWindow({ win, frame, mobile }: WindowContentProps) {
           value={tab}
           onChange={setTab}
           tabs={[
-            { id: 'arsenal', label: t('production.tabs.arsenal'), icon: <Icon name="encyclopedia" size={13} /> },
-            { id: 'queue', label: t('production.tabs.queue'), count: queue, icon: <Icon name="clock" size={13} /> },
-            { id: 'licences', label: t('production.tabs.licences'), count: view?.licences?.length ?? 0, icon: <Icon name="document" size={13} /> },
+            {
+              id: 'arsenal',
+              label: t('production.tabs.arsenal'),
+              icon: <Icon name="encyclopedia" size={13} />,
+            },
+            {
+              id: 'queue',
+              label: t('production.tabs.queue'),
+              count: queue,
+              icon: <Icon name="clock" size={13} />,
+            },
+            {
+              id: 'licences',
+              label: t('production.tabs.licences'),
+              count: view?.licences?.length ?? 0,
+              icon: <Icon name="document" size={13} />,
+            },
           ]}
         />
       }
@@ -323,7 +413,9 @@ export function ProductionWindow({ win, frame, mobile }: WindowContentProps) {
           mode="production"
           mobile={mobile}
           initialSystemId={win.params.systemId}
-          renderActions={(s) => <ProduceActions s={s} provinceId={provinceId} setProvinceId={setProvinceId} />}
+          renderActions={(s) => (
+            <ProduceActions s={s} provinceId={provinceId} setProvinceId={setProvinceId} />
+          )}
         />
       ) : tab === 'queue' ? (
         <div className="win-pad">
@@ -337,4 +429,3 @@ export function ProductionWindow({ win, frame, mobile }: WindowContentProps) {
     </Window>
   );
 }
-

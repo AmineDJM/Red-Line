@@ -121,7 +121,11 @@ export function WeaponPhoto({
           />
         ) : (
           <div className="rl-photo__none" aria-label={labels?.noPhoto} role="img">
-            <Pictogram id={pictogramFor(system)} size={variant === 'mini' ? 20 : variant === 'thumb' ? 40 : 64} strokeWidth={1.2} />
+            <Pictogram
+              id={pictogramFor(system)}
+              size={variant === 'mini' ? 20 : variant === 'thumb' ? 40 : 64}
+              strokeWidth={1.2}
+            />
           </div>
         )}
         {overlay ? <div className="rl-photo__overlay">{overlay}</div> : null}
@@ -231,7 +235,12 @@ export function WeaponCard({
             title={closeLabel}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden>
-              <path d="M6 6 L18 18 M18 6 L6 18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              <path
+                d="M6 6 L18 18 M18 6 L6 18"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+              />
             </svg>
           </button>
         ) : null}
@@ -282,11 +291,9 @@ export function WeaponTile({
   return (
     <button
       type="button"
-      className={[
-        'rl-wtile',
-        selected ? 'rl-wtile--sel' : '',
-        dimmed ? 'rl-wtile--dim' : '',
-      ].join(' ')}
+      className={['rl-wtile', selected ? 'rl-wtile--sel' : '', dimmed ? 'rl-wtile--dim' : ''].join(
+        ' ',
+      )}
       onClick={onSelect}
       aria-pressed={selected}
     >
