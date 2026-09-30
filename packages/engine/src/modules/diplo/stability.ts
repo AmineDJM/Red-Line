@@ -96,6 +96,8 @@ export function stabilityDaily(state: EngineState): void {
   for (const x of sortedKeys(d.hurt)) {
     const h = d.hurt[x]!;
     if (!(h > 0) || !isRegular(state, x) || regularEnemies(state, x).length === 0) continue;
+    // Il faut des combats notables sur son sol (au moins une province perdue ou plusieurs unités détruites).
+    if (h < 3) continue;
     const hosts = neighborsOf(state, x).filter((y) => !atWar(state, x, y));
     const hit = Math.min(c.refugeeCapPerDay, c.refugeePerDay * Math.sqrt(h));
     for (const y of hosts) {

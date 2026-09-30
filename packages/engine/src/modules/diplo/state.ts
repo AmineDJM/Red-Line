@@ -155,6 +155,8 @@ export interface DiploState {
   effects: WorldEffect[];
   /** Nations ayant subi un coup d'État (politique changée). */
   coups: Record<NationId, GameTime>;
+  /** Version de la carte politique (incrémentée à chaque capture ; caches dérivés de l'IA). */
+  ownerV: number;
   /** Pertes en territoire depuis le dernier tick (réfugiés). */
   hurt: Record<NationId, number>;
 }

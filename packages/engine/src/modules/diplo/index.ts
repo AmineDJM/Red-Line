@@ -129,6 +129,7 @@ function init(state: EngineState, setup: GameSetup): void {
     refugees: {},
     effects: [],
     coups: {},
+    ownerV: 0,
     hurt: {},
   };
   state.mods.diplo = d;
@@ -139,6 +140,10 @@ function init(state: EngineState, setup: GameSetup): void {
     d.rep[n] = c.reputationStart;
   }
   if (setup.victory) b.victory = { ...setup.victory };
+  if (setup.aiLevel) {
+    const declared = new Set(setup.players.map((p) => p.nationId));
+    for (const n of state.nationIds) if (!declared.has(n)) state.nations[n]!.aiLevel = setup.aiLevel;
+  }
   initDisputed(state);
   createSession(state, every);
 }
@@ -412,6 +417,7 @@ export const diploModule: EngineModule = {
     },
     onProvinceCaptured(state, pid, from, to) {
       if (!ds(state)) return;
+      ds(state).ownerV++;
       onProvinceLost(state, pid, from, to);
       disputedCaptured(state, pid);
       if (isIrregularRebel(state, to)) rebelCapture(state, pid, from, to);
