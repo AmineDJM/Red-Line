@@ -282,6 +282,12 @@ export function takeoff(state: EngineState, u: Unit, m: MissionSt): void {
     m.emb = null;
     u.off = false;
     state.rt.geom.delete(u.id);
+    m.up = true;
+    m.ft = state.time;
+    // De retour sur la carte : réinscrit dans l'index spatial même si aucun trajet ne suit.
+    refreshUnitPairs(state, u);
+    state.rt.dirtyCombat.add(u.id);
+    return;
   }
   m.up = true;
   m.ft = state.time;
