@@ -1,7 +1,8 @@
 /**
- * Surcouche canvas au-dessus de la carte : étiquettes cartouches à filets coudés (ensemble limité),
- * distance écrite le long des trajectoires, pastilles rouges numérotées des sites de lancement.
- * Redessinée à chaque image de la carte (événement `render`), coût négligeable (≤ 40 éléments).
+ * Surcouche canvas au-dessus de la carte (style terminal) : cartouches à filets coudés (ensemble
+ * limité), distance/durée écrites sur les trajectoires, étiquettes des anneaux de portée, pastilles
+ * numérotées des sites de lancement. Redessinée à chaque image de la carte (événement `render`),
+ * coût négligeable (≤ 40 éléments).
  */
 import type { Map as MlMap } from 'maplibre-gl';
 import type { LngLat } from '@redline/shared';
@@ -12,6 +13,9 @@ import {
   type Point,
   type Rect,
 } from './callouts.js';
+import { C, MONO } from './palette.js';
+
+export type CalloutTone = 'amber' | 'cyan' | 'red' | 'green';
 
 export interface CalloutContent {
   id: string;
@@ -19,8 +23,10 @@ export interface CalloutContent {
   title: string;
   lines: string[];
   priority: number;
-  /** Couleur du liseré gauche (orange par défaut, rouge pour les menaces critiques). */
-  tone?: 'orange' | 'violet' | 'red';
+  /** Couleur du liseré gauche et de l'invite (ambre par défaut). */
+  tone?: CalloutTone;
+  /** Jauge 0..1 (capture, progression) affichée sous le titre. */
+  progress?: number;
 }
 
 export interface RouteLabel {
@@ -28,6 +34,15 @@ export interface RouteLabel {
   /** Polyligne de la trajectoire (lng/lat). */
   coords: LngLat[];
   text: string;
+  tone?: CalloutTone;
+}
+
+export interface RingLabel {
+  at: LngLat;
+  text: string;
+  tone?: CalloutTone;
+  /** Centre de l'anneau : l'étiquette est omise si l'anneau est trop petit à l'écran. */
+  center?: LngLat;
 }
 
 export interface LaunchBadge {
@@ -39,18 +54,25 @@ export interface OverlayContent {
   callouts: CalloutContent[];
   routes: RouteLabel[];
   badges: LaunchBadge[];
+  rings?: RingLabel[];
   /** Positions d'icônes (unités) que les étiquettes ne doivent pas recouvrir. */
   icons?: LngLat[];
 }
 
-const TITLE_FONT = '700 13px "Barlow Condensed", "Arial Narrow", sans-serif';
-const LINE_FONT = '400 11.5px "IBM Plex Sans", system-ui, sans-serif';
-const LABEL_FONT = '600 13px "IBM Plex Mono", ui-monospace, monospace';
+const TITLE_FONT = `700 11px ${MONO}`;
+const LINE_FONT = `400 10.5px ${MONO}`;
+const LABEL_FONT = `600 10.5px ${MONO}`;
 const PAD_X = 8;
 const PAD_Y = 5;
-const TITLE_H = 15;
-const LINE_H = 15;
-const TONES = { orange: '#f39a2b', violet: '#b794ff', red: '#e5343a' } as const;
+const TITLE_H = 14;
+const LINE_H = 14;
+const PROGRESS_H = 6;
+export const TONES: Record<CalloutTone, string> = {
+  amber: C.amber,
+  cyan: C.cyan,
+  red: C.red,
+  green: C.green,
+};
 
 export class OverlayRenderer {
   private ctx: CanvasRenderingContext2D;
@@ -86,15 +108,22 @@ export class OverlayRenderer {
   }
 
   private measure(c: CalloutContent) {
-    const key = `${c.title}\u0001${c.lines.join('\u0002')}`;
+    const key = `${c.title}\u0001${c.lines.join('\u0002')}\u0003${c.progress !== undefined}`;
     const hit = this.measureCache.get(key);
     if (hit) return hit;
     const ctx = this.ctx;
     ctx.font = TITLE_FONT;
-    let w = ctx.measureText(c.title.toLocaleUpperCase('fr')).width * 1.1;
+    let w = ctx.measureText(`› ${c.title.toLocaleUpperCase('fr')}`).width;
     ctx.font = LINE_FONT;
-    for (const l of c.lines) w = Math.max(w, ctx.measureText(l).width + 12);
-    const m = { w: Math.ceil(w + PAD_X * 2 + 3), h: PAD_Y * 2 + TITLE_H + c.lines.length * LINE_H };
+    for (const l of c.lines) w = Math.max(w, ctx.measureText(l).width + 10);
+    const m = {
+      w: Math.ceil(Math.max(w, c.progress !== undefined ? 96 : 0) + PAD_X * 2 + 3),
+      h:
+        PAD_Y * 2 +
+        TITLE_H +
+        c.lines.length * LINE_H +
+        (c.progress !== undefined ? PROGRESS_H + 2 : 0),
+    };
     if (this.measureCache.size > 500) this.measureCache.clear();
     this.measureCache.set(key, m);
     return m;
@@ -102,7 +131,11 @@ export class OverlayRenderer {
 
   draw(content: OverlayContent) {
     const ctx = this.ctx;
-    const empty = !content.routes.length && !content.badges.length && !content.callouts.length;
+    const empty =
+      !content.routes.length &&
+      !content.badges.length &&
+      !content.callouts.length &&
+      !content.rings?.length;
     if (empty) {
       // Chromium n'applique pas toujours un clearRect seul (aucun dessin ensuite) : sans cette remise
       // à zéro explicite, les dernières étiquettes resteraient figées à l'écran après un saut de caméra.
@@ -118,6 +151,7 @@ export class OverlayRenderer {
     ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     this.hasInk = true;
     const segments = this.drawRoutes(content.routes);
+    this.drawRings(content.rings ?? []);
     this.drawBadges(content.badges);
     this.drawCallouts(content.callouts, segments, content.icons ?? []);
   }
@@ -149,8 +183,8 @@ export class OverlayRenderer {
     const iconRects: Rect[] = [];
     for (const ic of icons) {
       const p = this.project(ic);
-      if (p.x < -20 || p.y < -20 || p.x > this.w + 20 || p.y > this.h + 20) continue;
-      iconRects.push({ x: p.x - 11, y: p.y - 10, w: 22, h: 20 });
+      if (p.x < -30 || p.y < -20 || p.x > this.w + 30 || p.y > this.h + 20) continue;
+      iconRects.push({ x: p.x - 24, y: p.y - 12, w: 48, h: 24 });
       if (iconRects.length > 400) break;
     }
     const placed = placeCallouts(inputs, {
@@ -159,7 +193,7 @@ export class OverlayRenderer {
       avoidSegments: segments,
       previous: this.previous,
       max: this.maxCallouts,
-      anchorBox: 24,
+      anchorBox: 30,
     });
     this.previous = new Map(placed.map((p) => [p.id, p.candidate]));
     for (const p of placed) this.drawCallout(p, byId.get(p.id)!);
@@ -167,62 +201,96 @@ export class OverlayRenderer {
 
   private drawCallout(p: PlacedCallout, c: CalloutContent) {
     const ctx = this.ctx;
+    const tone = TONES[c.tone ?? 'amber'];
     const [a, e, t] = p.leader;
-    // Filet : démarre au bord de l'icône, pas en son centre.
+    // Filet : démarre au bord du pion, pas en son centre.
     const dx = e.x - a.x;
     const dy = e.y - a.y;
     const len = Math.hypot(dx, dy) || 1;
-    const start = { x: a.x + (dx / len) * 13, y: a.y + (dy / len) * 13 };
+    const start = { x: a.x + (dx / len) * 16, y: a.y + (dy / len) * 16 };
     ctx.lineWidth = 1;
-    ctx.strokeStyle = 'rgba(0,0,0,0.55)';
+    ctx.strokeStyle = 'rgba(0,0,0,0.6)';
     ctx.beginPath();
     ctx.moveTo(start.x, start.y + 1);
     ctx.lineTo(e.x, e.y + 1);
     ctx.lineTo(t.x, t.y + 1);
     ctx.stroke();
-    ctx.strokeStyle = 'rgba(232, 238, 248, 0.9)';
+    ctx.strokeStyle = tone;
+    ctx.globalAlpha = 0.85;
     ctx.beginPath();
     ctx.moveTo(start.x, start.y);
     ctx.lineTo(e.x, e.y);
     ctx.lineTo(t.x, t.y);
     ctx.stroke();
-    ctx.fillStyle = 'rgba(232, 238, 248, 0.95)';
-    ctx.beginPath();
-    ctx.arc(start.x, start.y, 1.6, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = tone;
+    ctx.fillRect(start.x - 1.5, start.y - 1.5, 3, 3);
 
     const r = p.rect;
-    ctx.fillStyle = 'rgba(13, 26, 54, 0.88)';
-    ctx.fillRect(r.x, r.y, r.w, r.h);
-    ctx.strokeStyle = 'rgba(140, 170, 220, 0.35)';
-    ctx.strokeRect(r.x + 0.5, r.y + 0.5, r.w - 1, r.h - 1);
-    ctx.fillStyle = TONES[c.tone ?? 'orange'];
-    ctx.fillRect(r.x, r.y, 2.5, r.h);
+    ctx.fillStyle = 'rgba(10,14,19,0.94)';
+    ctx.beginPath();
+    ctx.roundRect(r.x, r.y, r.w, r.h, 3);
+    ctx.fill();
+    ctx.strokeStyle = C.rule;
+    ctx.beginPath();
+    ctx.roundRect(r.x + 0.5, r.y + 0.5, r.w - 1, r.h - 1, 3);
+    ctx.stroke();
+    ctx.fillStyle = tone;
+    ctx.fillRect(r.x, r.y + 2, 2, r.h - 4);
 
     ctx.textBaseline = 'middle';
     ctx.font = TITLE_FONT;
-    ctx.fillStyle = '#ffffff';
-    const title = c.title.toLocaleUpperCase('fr');
-    let x = r.x + PAD_X + 1;
     const ty = r.y + PAD_Y + TITLE_H / 2;
-    for (const ch of title) {
-      ctx.fillText(ch, x, ty);
-      x += ctx.measureText(ch).width + 1.1;
+    ctx.fillStyle = tone;
+    ctx.fillText('›', r.x + PAD_X, ty);
+    ctx.fillStyle = C.text;
+    ctx.fillText(c.title.toLocaleUpperCase('fr'), r.x + PAD_X + 10, ty);
+    let y = r.y + PAD_Y + TITLE_H;
+    if (c.progress !== undefined) {
+      const bx = r.x + PAD_X;
+      const bw = r.w - PAD_X * 2;
+      ctx.fillStyle = '#1e2a36';
+      ctx.fillRect(bx, y + 2, bw, 3);
+      ctx.fillStyle = tone;
+      ctx.fillRect(bx, y + 2, bw * Math.max(0, Math.min(1, c.progress)), 3);
+      y += PROGRESS_H + 2;
     }
     ctx.font = LINE_FONT;
     c.lines.forEach((l, i) => {
-      const y = r.y + PAD_Y + TITLE_H + LINE_H * i + LINE_H / 2;
-      ctx.fillStyle = TONES.orange;
-      ctx.beginPath();
-      ctx.arc(r.x + PAD_X + 3, y, 2.4, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#dfe6f2';
-      ctx.fillText(l, r.x + PAD_X + 10, y);
+      const ly = y + LINE_H * i + LINE_H / 2;
+      ctx.fillStyle = C.dim;
+      ctx.fillText('·', r.x + PAD_X + 1, ly);
+      ctx.fillStyle = C.text;
+      ctx.fillText(l, r.x + PAD_X + 10, ly);
     });
   }
 
-  private drawRoutes(routes: RouteLabel[]): [Point, Point][] {
+  /** Étiquette en pastille (fond sombre, texte teinté), centrée sur (x, y). */
+  private pill(text: string, x: number, y: number, tone: string, font = LABEL_FONT) {
     const ctx = this.ctx;
+    ctx.font = font;
+    const w = ctx.measureText(text).width + 10;
+    const h = 15;
+    ctx.fillStyle = 'rgba(10,14,19,0.9)';
+    ctx.beginPath();
+    ctx.roundRect(x - w / 2, y - h / 2, w, h, 2.5);
+    ctx.fill();
+    ctx.strokeStyle = tone;
+    ctx.globalAlpha = 0.7;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(x - w / 2 + 0.5, y - h / 2 + 0.5, w - 1, h - 1, 2.5);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = tone;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, x, y + 0.5);
+    ctx.textAlign = 'left';
+    return { w, h };
+  }
+
+  private drawRoutes(routes: RouteLabel[]): [Point, Point][] {
     const segments: [Point, Point][] = [];
     for (const r of routes) {
       if (r.coords.length < 2) continue;
@@ -236,7 +304,7 @@ export class OverlayRenderer {
         seg.push(d);
         total += d;
       }
-      if (total < 60) continue;
+      if (total < 70) continue;
       let acc = 0;
       let i = 0;
       while (i < seg.length - 1 && acc + seg[i]! < total / 2) acc += seg[i++]!;
@@ -245,48 +313,44 @@ export class OverlayRenderer {
       const f = seg[i]! > 0 ? (total / 2 - acc) / seg[i]! : 0;
       const mx = p0.x + (p1.x - p0.x) * f;
       const my = p0.y + (p1.y - p0.y) * f;
-      let ang = Math.atan2(p1.y - p0.y, p1.x - p0.x);
-      if (ang > Math.PI / 2) ang -= Math.PI;
-      if (ang < -Math.PI / 2) ang += Math.PI;
-      ctx.save();
-      ctx.translate(mx, my);
-      ctx.rotate(ang);
-      ctx.font = LABEL_FONT;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.lineJoin = 'round';
-      ctx.lineWidth = 3.5;
-      ctx.strokeStyle = 'rgba(0,0,0,0.8)';
-      ctx.strokeText(r.text, 0, -6);
-      ctx.fillStyle = '#ffffff';
-      ctx.fillText(r.text, 0, -6);
-      ctx.restore();
+      const { w, h } = this.pill(r.text, mx, my, TONES[r.tone ?? 'amber']);
       // Zone de l'étiquette de distance, à ne pas recouvrir non plus.
       segments.push([
-        { x: mx - 40, y: my - 22 },
-        { x: mx + 40, y: my - 22 },
+        { x: mx - w / 2, y: my - h / 2 },
+        { x: mx + w / 2, y: my + h / 2 },
       ]);
     }
-    ctx.textAlign = 'left';
     return segments;
+  }
+
+  private drawRings(rings: RingLabel[]) {
+    for (const r of rings) {
+      const p = this.project(r.at);
+      if (p.x < -60 || p.y < -20 || p.x > this.w + 60 || p.y > this.h + 20) continue;
+      if (r.center) {
+        const c = this.project(r.center);
+        if (Math.hypot(p.x - c.x, p.y - c.y) < 48) continue;
+      }
+      this.pill(r.text, p.x, p.y, TONES[r.tone ?? 'amber'], `600 9.5px ${MONO}`);
+    }
   }
 
   private drawBadges(badges: LaunchBadge[]) {
     const ctx = this.ctx;
     for (const b of badges) {
       const p = this.project(b.at);
-      // Pastille à droite du triangle de lancement (dessiné sous l'icône de l'unité).
-      const x = p.x + 13;
-      const y = p.y + 14;
-      ctx.fillStyle = '#e5343a';
-      ctx.strokeStyle = 'rgba(0,0,0,0.6)';
+      // Pastille à droite du triangle de lancement (dessiné sous le pion).
+      const x = p.x + 14;
+      const y = p.y + 22;
+      ctx.fillStyle = C.amber;
+      ctx.strokeStyle = 'rgba(0,0,0,0.7)';
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.arc(x, y, 8, 0, Math.PI * 2);
+      ctx.roundRect(x - 7, y - 7, 14, 14, 3);
       ctx.fill();
       ctx.stroke();
-      ctx.fillStyle = '#fff';
-      ctx.font = '700 10.5px "IBM Plex Mono", monospace';
+      ctx.fillStyle = C.bg;
+      ctx.font = `700 10px ${MONO}`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(String(b.n), x, y + 0.5);
