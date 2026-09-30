@@ -1,4 +1,4 @@
-import { callHook } from '../modules/registry.js';
+import { board, callHook } from '../modules/registry.js';
 import { MINUTE, type NationId, type ProvinceId } from '@redline/shared';
 import { atWar, isEmbarked, notify, schedule, sortedSet, sysOf } from '../state/access.js';
 import type { EngineState, Unit } from '../state/types.js';
@@ -124,7 +124,7 @@ export function leaderOf(state: EngineState): NationId | null {
 
 export function checkVictory(state: EngineState): void {
   if (state.winner) return;
-  const v = state.world.balance.victory;
+  const v = board(state).victory ?? state.world.balance.victory;
   const total = state.totalProvinces;
   let winner: NationId | null = null;
   if (v.provinceShare > 0 && total > 0) {

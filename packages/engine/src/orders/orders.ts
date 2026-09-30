@@ -9,7 +9,7 @@ import { airCanReach, planUnitMove } from '../movement/plan-unit.js';
 import { clearTarget, setTarget } from '../combat/combat.js';
 import { startProduction } from '../economy/economy.js';
 import { cleanTop, settle } from '../sim/settle.js';
-import { moduleOrder, moduleSystem } from '../modules/registry.js';
+import { callHook, moduleOrder, moduleSystem } from '../modules/registry.js';
 import type { SystemCommand } from '../api.js';
 
 /** Commande système (serveur, administration). */
@@ -76,6 +76,7 @@ export function applyOrderImpl(state: EngineState, n: NationId, order: Order): O
   if (state.winner) return fail('game_over', 'La partie est terminée.');
   if (!state.nations[n]) return fail('not_allowed', 'Nation absente de la partie.');
   const res = dispatchOrder(state, n, order);
+  if (res.ok) callHook('onOrder', state, n, order);
   settle(state);
   cleanTop(state);
   return res;

@@ -65,6 +65,16 @@ export interface GameSetup {
   speed?: number;
   /** Conditions de victoire propres à la partie. */
   victory?: { provinceShare: number; allEnemyCapitals: boolean };
+  /** Niveau des IA qui tiennent les nations non déclarées dans `players` (défaut : 'normal'). */
+  aiLevel?: 'easy' | 'normal' | 'hard';
+  /** Règles du Conseil de sécurité propres à la partie (sinon balance.diplomacy). */
+  diplomacy?: {
+    majority?: 'simple' | 'two_thirds';
+    veto?: boolean;
+    voteWindowRealHours?: number;
+    councilEveryDays?: number;
+    rotatingSeats?: number;
+  };
 }
 
 /** Commandes système : serveur ou administration, jamais un client. */

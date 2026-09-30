@@ -137,6 +137,8 @@ export interface NationView {
   allianceId?: string | null;
   /** Stabilité publique (arrondie) ; le détail est dans PlayerView.stability pour sa propre nation. */
   stability?: number;
+  /** Réputation diplomatique publique 0..100 (agressions, violations, condamnations). */
+  reputation?: number;
   mobilized?: boolean;
   embargoed?: boolean;
   sanctioned?: boolean;
