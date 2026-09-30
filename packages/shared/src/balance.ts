@@ -193,6 +193,10 @@ export const OrbatSchema = z.object({
   /** Sources et niveau de confiance de l'estimation. */
   sources: z.array(z.string()).default([]),
   confidence: z.enum(['high', 'medium', 'low']).default('medium'),
+  /** Description de la nation (écran de sélection, ton neutre, en français). */
+  description: z.string().optional(),
+  /** Doctrine militaire en une ou deux phrases (écran de sélection). */
+  doctrineText: z.string().optional(),
 });
 export type Orbat = z.infer<typeof OrbatSchema>;
 

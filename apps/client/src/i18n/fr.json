@@ -299,7 +299,8 @@
     "submarine": "Sous-marin",
     "infantry": "Infanterie",
     "space": "Système spatial",
-    "logistics": "Logistique"
+    "logistics": "Logistique",
+    "radar": "Radars"
   },
   "doctrines": {
     "us": "États-Unis",
