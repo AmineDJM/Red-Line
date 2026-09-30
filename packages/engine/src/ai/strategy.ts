@@ -26,6 +26,7 @@ import {
 } from '../modules/diplo/state.js';
 import { relationOf } from '../modules/diplo/relations.js';
 import { disputedOf } from '../modules/diplo/unrest.js';
+import { elide } from '../modules/diplo/news.js';
 import {
   estimateForce,
   lostTo,
@@ -50,6 +51,10 @@ import {
 interface LevelProfile {
   /** Rapport de force minimal pour déclarer une guerre (Infinity : jamais). */
   warRatio: number;
+  /** Il faut un motif (territoire revendiqué, allié attaqué, nation paria), sauf écrasante supériorité. */
+  needsCasusBelli: boolean;
+  /** Supériorité qui dispense de motif. */
+  overwhelmingRatio: number;
   maxWars: number;
   /** Probabilité de passer à l'acte quand une cible convient (par réflexion stratégique). */
   warChance: number;
@@ -69,6 +74,8 @@ interface LevelProfile {
 export const PROFILES: Record<AiLevel, LevelProfile> = {
   easy: {
     warRatio: Infinity,
+    needsCasusBelli: true,
+    overwhelmingRatio: Infinity,
     maxWars: 0,
     warChance: 0,
     warmupDays: Infinity,
@@ -81,20 +88,24 @@ export const PROFILES: Record<AiLevel, LevelProfile> = {
     council: false,
   },
   normal: {
-    warRatio: 3,
+    warRatio: 2,
+    needsCasusBelli: true,
+    overwhelmingRatio: Infinity,
     maxWars: 1,
-    warChance: 0.03,
+    warChance: 0.05,
     warmupDays: 7,
     caution: 1.2,
     peaceRatio: 0.7,
     acceptRatio: 1.3,
     alliances: true,
     court: true,
-    fund: false,
+    fund: true,
     council: true,
   },
   hard: {
     warRatio: 1.6,
+    needsCasusBelli: false,
+    overwhelmingRatio: 1.6,
     maxWars: 2,
     warChance: 0.12,
     warmupDays: 3,
@@ -124,6 +135,8 @@ const S = {
   minStabilityForWar: 45,
   allianceMinProvinces: 4,
   nationsPerAlliance: 20,
+  /** Au-delà, l'IA ne charge plus l'ordre du jour du Conseil. */
+  maxCouncilProposals: 8,
   invitesPerThink: 3,
   inviteLeaning: 0.4,
 };
@@ -135,6 +148,8 @@ interface Memory {
   lastProxy: number;
   /** Séance du Conseil pour laquelle elle a déjà proposé. */
   proposedSession: number;
+  /** Captures impossibles (aucun chemin sans violer un neutre) : province → nouvel essai après. */
+  capFail: Record<string, number>;
 }
 
 interface AiState {
@@ -154,7 +169,13 @@ function memory(state: EngineState, n: NationId): Memory {
   if (!m) {
     // Reprise en cours de partie (joueur inactif remplacé) : transition douce.
     const calm = state.time > 0 ? state.time + S.takeoverCalmDays * DAY : 0;
-    s.mem[n] = m = { calmUntil: calm, peaceAsk: {}, lastProxy: state.time, proposedSession: 0 };
+    s.mem[n] = m = {
+      calmUntil: calm,
+      peaceAsk: {},
+      lastProxy: state.time,
+      proposedSession: 0,
+      capFail: {},
+    };
   }
   return m;
 }
@@ -163,6 +184,14 @@ function memory(state: EngineState, n: NationId): Memory {
 export function forgetNation(state: EngineState, n: NationId): void {
   const s = (state.mods as Record<string, unknown>).ai as AiState | undefined;
   if (s?.mem[n]) delete s.mem[n];
+}
+
+/** Registre des captures impossibles d'une nation (budget de calcul de l'IA tactique). */
+export function captureFailures(state: EngineState, n: NationId): Record<string, number> {
+  const m = memory(state, n);
+  m.capFail ??= {};
+  for (const k of sortedKeys(m.capFail)) if (m.capFail[k]! <= state.time) delete m.capFail[k];
+  return m.capFail;
 }
 
 function order(state: EngineState, n: NationId, o: Order): boolean {
@@ -449,6 +478,7 @@ function seekWar(
     if (rel !== 'peace') continue;
     if (d.grace[`${n}>${t}`] !== undefined) continue;
     const r = ratioAgainst(state, n, t, mine, P);
+    if (P.needsCasusBelli && r < P.overwhelmingRatio && !casusBelli(state, n, t)) continue;
     if (r >= bestRatio) {
       bestRatio = r;
       best = t;
@@ -456,6 +486,21 @@ function seekWar(
   }
   if (!best || nextFloat(state.rng) >= P.warChance) return;
   order(state, n, { kind: 'declareWar', nationId: best });
+}
+
+/**
+ * Motif de guerre public : territoire revendiqué tenu par `t`, provinces perdues au profit de `t`
+ * (revanche), allié attaqué par `t`, nation paria.
+ */
+function casusBelli(state: EngineState, n: NationId, t: NationId): boolean {
+  const d = ds(state);
+  if (lostTo(state, n, t) > 0) return true;
+  for (const area of state.world.map.disputed) {
+    if (area.claimants.includes(n) && d.disputed[area.id]?.holder === t) return true;
+  }
+  const A = allianceOf(state, n);
+  if (A && A.members.some((m) => m !== n && atWar(state, m, t))) return true;
+  return reputation(state, t) < 35;
 }
 
 function alliances(
@@ -487,7 +532,7 @@ function alliances(
       (cap && (w.provById.get(cap)?.cityName ?? w.provById.get(cap)?.name)) || n.toUpperCase();
     order(state, n, {
       kind: 'createAlliance',
-      name: `Pacte de ${place}`.slice(0, 40),
+      name: elide(`Pacte de ${place}`).slice(0, 40),
       flag: n.toUpperCase().slice(0, 3),
       charter: { mutualDefense: true, intelSharing: true, passage: true },
     });
@@ -519,6 +564,7 @@ function council(
 ): void {
   const s = ds(state).session;
   if (s.phase !== 'proposals' || m.proposedSession === s.id) return;
+  if (s.resolutions.length >= S.maxCouncilProposals) return;
   const d = ds(state);
   for (const e of warsOf(state, n)) {
     if (!isRegular(state, e)) continue;

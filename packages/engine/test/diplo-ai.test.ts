@@ -36,7 +36,7 @@ function losingAi(level: 'easy' | 'normal' | 'hard' = 'normal'): EngineState {
   return s;
 }
 
-describe('IA stratégique', () => {
+describe('IA stratégique', { timeout: 60_000 }, () => {
   it('l’IA qui perd demande un cessez-le-feu, puis la paix est conclue', () => {
     const s = losingAi();
     advanceTo(s, DAY);

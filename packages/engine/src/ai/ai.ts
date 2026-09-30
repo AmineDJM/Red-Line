@@ -30,6 +30,7 @@ import { hasPassage } from '../state/war.js';
 import { neighborNations } from './estimate.js';
 import {
   STRATEGY,
+  captureFailures,
   forgetNation,
   isHot,
   reactiveThink,
@@ -70,6 +71,10 @@ const AI = {
   /** Contre-attaques / offensives lancées par réflexion. */
   maxCounterPerThink: 2,
   maxOffensivePerThink: 1,
+  /** Tentatives de capture (calculs de trajet) par réflexion, réussies ou non. */
+  maxCaptureAttemptsPerThink: 4,
+  /** Délai avant de retenter une capture sans chemin praticable (heures de jeu). */
+  captureRetryHours: 6,
 };
 
 /**
@@ -183,6 +188,10 @@ function think(state: EngineState, n: NationId): void {
   }
 
   // 2. Contre-attaque : provinces d'origine perdues, voisines d'une province possédée.
+  const budget: CaptureBudget = {
+    left: AI.maxCaptureAttemptsPerThink,
+    failed: captureFailures(state, n),
+  };
   if (ns.aiLevel !== 'easy') {
     let launched = 0;
     for (const pid of w.provsByNation.get(n) ?? []) {
@@ -190,7 +199,7 @@ function think(state: EngineState, n: NationId): void {
       const P = state.provinces[pid];
       if (!P || P.owner === n || !atWar(state, n, P.owner)) continue;
       if (!bordersOwned(state, n, pid)) continue;
-      if (launchCapture(state, n, pid, idle, myUnits)) launched++;
+      if (launchCapture(state, n, pid, idle, myUnits, budget)) launched++;
     }
   }
 
@@ -212,7 +221,7 @@ function think(state: EngineState, n: NationId): void {
         if (!isWeak(state, n, pid, threats)) continue;
         const capturers = [...idle].filter((id) => sysOf(state, state.units[id]!).canCapture);
         if (capturers.length < 2) continue; // garder une réserve
-        if (launchCapture(state, n, pid, idle, myUnits)) launched++;
+        if (launchCapture(state, n, pid, idle, myUnits, budget)) launched++;
       }
     }
   }
@@ -278,6 +287,11 @@ function isWeak(state: EngineState, n: NationId, pid: ProvinceId, threats: Threa
   return true;
 }
 
+interface CaptureBudget {
+  left: number;
+  failed: Record<string, number>;
+}
+
 /** Envoie l'unité de capture libre la plus proche vers la ville, si personne n'y va déjà. */
 function launchCapture(
   state: EngineState,
@@ -285,7 +299,9 @@ function launchCapture(
   pid: ProvinceId,
   idle: Set<string>,
   myUnits: Unit[],
+  budget: CaptureBudget,
 ): boolean {
+  if (budget.left <= 0 || (budget.failed[pid] ?? 0) > state.time) return false;
   const city = wi(state.world).provById.get(pid)!.cityPoint;
   const already = myUnits.some((u) => {
     const legs = u.move?.legs;
@@ -301,6 +317,8 @@ function launchCapture(
       return s.canCapture && s.movement === 'land';
     })
     .sort((a, b) => dist(state, a, city) - dist(state, b, city) || (a.id < b.id ? -1 : 1));
+  if (cand.length === 0) return false;
+  budget.left--;
   for (const u of cand.slice(0, 3)) {
     if (violatesNeutral(state, n, u, city)) continue;
     if (order(state, n, { kind: 'move', unitIds: [u.id], to: city })) {
@@ -308,6 +326,7 @@ function launchCapture(
       return true;
     }
   }
+  budget.failed[pid] = state.time + AI.captureRetryHours * 3_600_000;
   return false;
 }
 

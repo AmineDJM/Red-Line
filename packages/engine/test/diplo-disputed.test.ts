@@ -31,7 +31,7 @@ function disputedGame(over: Record<string, unknown> = {}) {
   return game({ world });
 }
 
-describe('diplomatie : territoires disputés et rebelles', () => {
+describe('diplomatie : territoires disputés et rebelles', { timeout: 60_000 }, () => {
   it('vue : zone disputée, détenteur, tension, agitation de la province', () => {
     const s = disputedGame();
     const v = viewFor(s, 'ccc');

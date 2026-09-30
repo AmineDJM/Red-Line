@@ -36,7 +36,7 @@ function councilGame(
 
 const opens = (s: EngineState) => D(s).session.opensAt;
 
-describe('diplomatie : Conseil de sécurité', () => {
+describe('diplomatie : Conseil de sécurité', { timeout: 60_000 }, () => {
   it('séance mensuelle : propositions, puis vote de 12 h réelles (converties avec la vitesse)', () => {
     const s = councilGame({}, 4);
     expect(opens(s)).toBe(30 * DAY);

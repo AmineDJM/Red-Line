@@ -353,7 +353,16 @@ export interface NewsVars {
   Y?: string;
 }
 
+/** Élision devant une voyelle (« de Ukraine » → « d’Ukraine »), sans toucher au h aspiré. */
+export function elide(s: string): string {
+  return s.replace(/\b([Dd])e ([AEIOUÉÈÊÂÎÔaeiouéèêâîô])/g, '$1’$2');
+}
+
 function fill(tpl: string, state: EngineState, v: NewsVars): string {
+  return elide(fill0(tpl, state, v));
+}
+
+function fill0(tpl: string, state: EngineState, v: NewsVars): string {
   return tpl
     .replace(/\{A\}/g, v.A ? nationName(state, v.A) : '—')
     .replace(/\{B\}/g, v.B ? nationName(state, v.B) : '—')

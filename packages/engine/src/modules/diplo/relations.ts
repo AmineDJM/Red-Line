@@ -1,4 +1,12 @@
-import { DAY, HOUR, type LngLat, type NationId, type Relation } from '@redline/shared';
+import {
+  DAY,
+  HOUR,
+  distanceKm,
+  type Leg,
+  type LngLat,
+  type NationId,
+  type Relation,
+} from '@redline/shared';
 import type { OrderResult } from '../../api.js';
 import type { EngineState, Unit } from '../../state/types.js';
 import {
@@ -11,10 +19,10 @@ import {
   unitPosAt,
   warsOf,
 } from '../../state/access.js';
-import { declareWar as coreDeclareWar, makePeace } from '../../state/war.js';
+import { declareWar as coreDeclareWar, hasPassage, makePeace } from '../../state/war.js';
 import { wi } from '../../state/world.js';
 import { planUnitMove } from '../../movement/plan-unit.js';
-import { setMovement } from '../../movement/movement.js';
+import { computeCrossings, setMovement } from '../../movement/movement.js';
 import { destroyUnit } from '../../combat/combat.js';
 import { board, scheduleMod, signal } from '../registry.js';
 import {
@@ -238,7 +246,7 @@ function homeFor(state: EngineState, u: Unit): LngLat | null {
   for (const pid of provincesOf(state, u.owner)) {
     const p = sea ? w.seaSpawn.get(pid) : w.provById.get(pid)!.cityPoint;
     if (!p) continue;
-    const dx = Math.hypot(p[0] - here[0], p[1] - here[1]);
+    const dx = distanceKm(p, here);
     if (dx < bestD) {
       bestD = dx;
       best = p;
@@ -264,8 +272,23 @@ export function withdraw(state: EngineState, x: NationId, host: NationId): void 
     const home = homeFor(state, u);
     if (!home) continue;
     const plan = planUnitMove(state, u, home);
-    if (!('error' in plan)) setMovement(state, u, plan.legs);
+    if ('error' in plan) continue;
+    // Un retrait ne doit pas traverser un pays tiers (ce serait une déclaration de guerre) :
+    // l'unité attend alors son rapatriement d'office à la fin du délai.
+    if (s.movement !== 'sea' && crossesThird(state, u, plan.legs, host)) continue;
+    setMovement(state, u, plan.legs);
   }
+}
+
+function crossesThird(state: EngineState, u: Unit, legs: Leg[], host: NationId): boolean {
+  const start = unitPosAt(state, u, state.time);
+  for (const c of computeCrossings(state, start, legs)) {
+    if (!c.p) continue;
+    const o = state.provinces[c.p]?.owner;
+    if (!o || o === u.owner || o === host || atWar(state, u.owner, o)) continue;
+    if (!hasPassage(state, u.owner, o)) return true;
+  }
+  return false;
 }
 
 /** Fin du délai de retrait : les unités restées chez l'autre sont rapatriées d'office. */

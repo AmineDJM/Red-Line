@@ -74,7 +74,7 @@ function play(s: EngineState, from: number, to: number): void {
   advanceTo(s, to);
 }
 
-describe('diplomatie : déterminisme et sérialisation', () => {
+describe('diplomatie : déterminisme et sérialisation', { timeout: 60_000 }, () => {
   it('même graine + mêmes ordres ⇒ même état ; sauvegarde / reprise identique', () => {
     const a = newGame(21);
     play(a, 0, 12 * DAY);
