@@ -150,6 +150,7 @@ export interface Metrics {
  *   POST /api/lobby/:id/join   { nationId }       → { game: GameMeta }
  *   POST /api/lobby/:id/leave                     → { ok }
  *   POST /api/lobby/:id/start                     → { game }          (créateur, ou automatique quand plein)
+ *   GET  /api/nations/info                    → { nations: NationInfo[] }  (description, doctrine, budget, drapeau)
  *   GET  /api/games/:id/spectate                  → { game }          (puis WS /ws?gameId=…&spectate=1)
  *   GET  /api/games/:id/stats                     → GameStatsView     (fin de partie)
  *   GET  /api/games/:id/timelapse                 → TimelapseView     (évolution des frontières)
@@ -202,6 +203,8 @@ export interface LobbyGame {
   game: GameMeta;
   scenarioName: string;
   takenNations: NationId[];
+  /** Pseudonyme du joueur qui tient chaque nation prise (écran de sélection). */
+  takenBy?: Record<NationId, string>;
   creator: string;
   speed: number;
 }
@@ -210,7 +213,8 @@ export const CreateLobbyBodySchema = z.object({
   scenarioId: z.string().default('world-today'),
   name: z.string().min(2).max(60),
   speed: z.number().positive().default(1),
-  maxPlayers: z.number().int().min(2).max(64).default(8),
+  /** 64 joueurs humains au plus ; toutes les autres nations sont tenues par des IA. */
+  maxPlayers: z.number().int().min(1).max(64).default(64),
   nationId: z.string(),
   victory: z
     .object({ provinceShare: z.number().min(0.1).max(1), allEnemyCapitals: z.boolean() })
@@ -319,3 +323,17 @@ export const WorldEventBodySchema = z.object({
   message: z.string().max(500).optional(),
   params: z.record(z.string(), z.number()).optional(),
 });
+
+/** Fiche d'une nation pour l'écran de sélection (données ORBAT publiques). */
+export interface NationInfo {
+  id: NationId;
+  name: string;
+  description: string;
+  doctrine: string;
+  doctrineText: string;
+  defenseBudgetUsd: number;
+  activePersonnel: number | null;
+  provinceCount: number;
+  /** Principaux systèmes en service (identifiants et quantités). */
+  highlights: { systemId: string; count: number }[];
+}

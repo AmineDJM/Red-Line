@@ -89,6 +89,10 @@ export interface ResearchView {
 
 export interface BuildingView {
   type: BuildingType;
+  /** Niveau 1 à 5 (comme dans Conflict of Nations) ; absent = 1. */
+  level?: number;
+  /** Construction ou amélioration en cours. */
+  upgradeUntil?: GameTime | null;
   /** 0..1 ; en dessous de 1 l'effet est réduit, à 0 il est nul jusqu'à réparation. */
   health: number;
   /** Réparation en cours. */
@@ -104,6 +108,21 @@ export const BUILDING_EFFECTS_DOC = {
   military_base: 'Production terrestre, dépôt logistique, garnison.',
   arms_factory: 'Production d’armement lourd (blindés, artillerie, missiles).',
   research_center: 'Points de recherche.',
+  oil_field: 'Extraction de pétrole.',
+  mine: 'Extraction de métaux.',
+  farm: 'Production de nourriture.',
+  electronics_plant: 'Production de composants électroniques.',
+  local_industry: 'Industrie locale : revenus et vitesse de construction de la province.',
+  recruiting_office: 'Recrutement : production d’infanterie, mobilisation plus rapide.',
+  naval_base: 'Base navale : production et réparation des navires et sous-marins.',
+  bunker: 'Bunkers : forte protection des unités terrestres qui défendent la province.',
+  air_defense_site: 'Site de défense aérienne fixe (engage les aéronefs et missiles).',
+  coastal_battery: 'Batterie côtière antinavire.',
+  radar_station: 'Station radar fixe : détection aérienne étendue autour de la province.',
+  missile_silo: 'Silo : lancement de missiles balistiques (et nucléaires si autorisés).',
+  hospital: 'Hôpital militaire : les unités se rétablissent plus vite, pertes réduites.',
+  secret_lab: 'Laboratoire secret : recherche avancée plus rapide.',
+  forward_base: 'Base avancée : dépôt logistique et point de ravitaillement du front.',
 } as const satisfies Record<BuildingType, string>;
 
 // ——— Licences, marché, marché noir, livraisons ———
