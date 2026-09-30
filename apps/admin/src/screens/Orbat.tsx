@@ -21,10 +21,9 @@ import {
   Win,
 } from '../components/term';
 import { CommitBar, RevisionPanel } from '../components/versioning';
-import { Thumb } from '../components/weapon';
 import { T, fmt } from '../i18n';
 import { compact, num, usd } from '../lib/format';
-import { useNations, usePhotos, useResearch, useSystems } from '../lib/refs';
+import { useNations, useResearch, useSystems } from '../lib/refs';
 import { href, navigate } from '../lib/router';
 import { matches, rank } from '../lib/search';
 import { useVersioned } from '../lib/useVersioned';
@@ -151,7 +150,6 @@ function OrbatEditor({
   const { api } = useSession();
   const systems = useSystems().data ?? [];
   const research = useResearch().data ?? [];
-  const photos = usePhotos().data ?? {};
   const nations = useNations().data ?? [];
   const nat = nations.find((n) => n.id === nation);
   const key = `${set}/${nation}`;
@@ -222,20 +220,9 @@ function OrbatEditor({
 
   const cols: Column<(typeof rows)[number]>[] = [
     {
-      key: 'p',
-      label: '',
-      width: 60,
-      render: (r) => (
-        <Thumb
-          photo={r.s ? (r.s.system.photo ?? photos[r.s.system.id]) : null}
-          icon={r.s?.system.icon ?? '?'}
-        />
-      ),
-    },
-    {
       key: 's',
       label: T.orbat.colSystem,
-      className: 'two',
+      className: 'two wrap',
       sort: (r) => r.s?.system.name ?? r.it.systemId,
       render: (r) => (
         <>
@@ -251,6 +238,15 @@ function OrbatEditor({
           )}
           <span className="sub">
             {r.s ? `${T.categories[r.s.system.category]} · ${r.it.systemId}` : '?'}
+            {r.s && missing(r.s).length > 0 && (
+              <span
+                className="c-amber"
+                title={fmt(T.orbat.cannotProduceHint, { gates: missing(r.s).join(', ') })}
+              >
+                {' '}
+                · ⚠ {T.orbat.cannotProduce}
+              </span>
+            )}
           </span>
         </>
       ),
@@ -263,7 +259,7 @@ function OrbatEditor({
       render: (r) => (
         <input
           className="input num"
-          style={{ width: 84, textAlign: 'right', height: 26 }}
+          style={{ width: 72, textAlign: 'right', height: 26 }}
           inputMode="numeric"
           aria-label={T.orbat.colCount}
           value={r.it.count}
@@ -284,7 +280,7 @@ function OrbatEditor({
       render: (r) => (
         <input
           className="input"
-          style={{ height: 26, minWidth: 120 }}
+          style={{ height: 26, width: 118 }}
           aria-label={T.orbat.colVariant}
           value={r.it.variant ?? ''}
           onChange={(e) => setItem(r.i, 'variant', e.target.value || undefined)}
@@ -299,21 +295,6 @@ function OrbatEditor({
       render: (r) => (
         <span className="val">{usd(r.it.count * (r.s?.system.unitPriceUsd ?? 0))}</span>
       ),
-    },
-    {
-      key: 'prod',
-      label: T.orbat.colProduce,
-      hideM: true,
-      render: (r) => {
-        const m = missing(r.s);
-        return m.length ? (
-          <Badge tone="warn" title={fmt(T.orbat.cannotProduceHint, { gates: m.join(', ') })}>
-            {T.orbat.cannotProduce}
-          </Badge>
-        ) : (
-          <Badge tone="ok">{T.orbat.canProduce}</Badge>
-        );
-      },
     },
     {
       key: 'x',

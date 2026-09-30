@@ -65,7 +65,7 @@ export function affixFor(unit: Unit | undefined, v: number): string | undefined 
 function metaLine(node: SNode, unit?: Unit): ReactNode {
   const parts: ReactNode[] = [];
   const r = rangeLabel(node);
-  if (r) parts.push(`${T.rules.range} ${r}`);
+  if (r) parts.push(r === 'entier' ? 'nombre entier' : `${T.rules.range} ${r}`);
   if (
     node.hasDefault &&
     (typeof node.default === 'number' ||

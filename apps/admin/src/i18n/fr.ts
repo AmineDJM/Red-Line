@@ -795,7 +795,7 @@ export const fr = {
     } as Record<string, [string, string]>,
     params: {
       days: ['Durée (jours)', 'j'],
-      factor: ['Facteur des modificateurs', 'x'],
+      factor: ['Facteur', 'x'],
       stability: ['Perte de stabilité', 'pts'],
     } as Record<string, [string, string]>,
     chatLink: 'Messages de cette partie',

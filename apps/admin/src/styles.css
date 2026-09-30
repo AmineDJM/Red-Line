@@ -2655,8 +2655,8 @@ input[type='range'] {
 }
 .login-banner {
   margin: 0 0 16px;
-  font-size: 10px;
-  line-height: 1.15;
+  font-size: 11px;
+  line-height: 1.3;
   color: var(--t-cyan);
   white-space: pre;
   overflow: hidden;
@@ -2813,6 +2813,12 @@ input[type='range'] {
   .tbl th {
     padding: 0 7px;
   }
+  .tbl td.two {
+    white-space: normal;
+    min-width: 130px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
   .list-pane .tbl-wrap {
     max-height: none;
   }
@@ -2848,7 +2854,7 @@ input[type='range'] {
     font-size: 10px;
   }
   .login-banner {
-    font-size: 7px;
+    font-size: 7.5px;
   }
 }
 @media (min-width: 861px) {
@@ -2860,7 +2866,7 @@ input[type='range'] {
 /* ─────────── Liste | détail | enregistrement ─────────── */
 .tri {
   display: grid;
-  grid-template-columns: 270px minmax(0, 1fr) 330px;
+  grid-template-columns: 236px minmax(0, 1fr) 300px;
   gap: 14px;
   align-items: start;
 }
