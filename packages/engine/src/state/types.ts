@@ -123,6 +123,8 @@ export interface Contact {
   count: number | null;
   hpr: number | null;
   status: string | null;
+  /** Incertitude initiale de position (km) : contact issu du renseignement, pas d'un capteur. */
+  unc?: number;
 }
 
 export interface PendingNote {

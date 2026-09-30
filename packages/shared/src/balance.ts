@@ -138,6 +138,51 @@ export const BalanceSchema = z.object({
           }),
         )
         .default({}),
+      // ——— Réglages du module renseignement (optionnels, valeurs par défaut du moteur) ———
+      /** Budget journalier par département au départ : part du budget de défense quotidien (ORBAT). */
+      defaultBudgetShare: z.number().min(0).max(1).default(0.02),
+      /** Budget journalier par département au départ, en dollars, si la nation n'a pas d'ORBAT. */
+      defaultBudgetUsdPerDay: z.number().min(0).default(200_000),
+      /** Budget de référence (dollars/jour) : à ce budget, la qualité due au budget vaut 50 %. */
+      budgetRefUsdPerDay: z.number().positive().default(1_000_000),
+      /** Âge (heures de jeu) au-delà duquel un rapport est signalé comme ancien. */
+      staleAfterH: z.number().positive().default(24),
+      /** Croissance de l'incertitude de position d'un rapport, en km par heure d'âge. */
+      reportUncertaintyKmh: z.number().min(0).default(10),
+      /** Rapports conservés par nation, et affichés dans la vue. */
+      maxReports: z.number().int().min(1).default(80),
+      viewReports: z.number().int().min(1).default(40),
+      /** Période d'analyse des mouvements (rapports flash), en minutes de jeu. */
+      scanEveryMin: z.number().positive().default(60),
+      /** Rapport flash : nombre d'unités ennemies en mouvement à moins de flashBorderKm d'une ville. */
+      flashMinUnits: z.number().int().min(1).default(6),
+      flashBorderKm: z.number().positive().default(150),
+      flashCooldownH: z.number().positive().default(12),
+      /** Écoute d'une zone : durée, rayon par défaut et maximal, période de rafraîchissement. */
+      listenHours: z.number().positive().default(12),
+      listenRadiusKm: z.number().positive().default(150),
+      listenMaxRadiusKm: z.number().positive().default(600),
+      listenEveryMin: z.number().positive().default(30),
+      /** Interception des communications d'une armée : durée. */
+      interceptHours: z.number().positive().default(12),
+      /** Brouillage d'une zone : durée. */
+      jamHours: z.number().positive().default(6),
+      /** Effets cyber : durée (heures). */
+      cyberHours: z.number().positive().default(12),
+      /** Leurres : durée, nombre de base, distance maximale au territoire. */
+      decoyHours: z.number().positive().default(48),
+      decoyCount: z.number().int().min(1).default(3),
+      decoyMaxKm: z.number().positive().default(400),
+      /** Chance quotidienne de base de démasquer un agent étranger (avant niveaux et budget). */
+      agentDetectPerDay: z.number().min(0).max(1).default(0.05),
+      /** Délai entre la capture discrète d'un agent et son arrestation publique (retournement possible). */
+      caughtGraceH: z.number().positive().default(24),
+      /** Dégâts d'un sabotage réussi (fraction de la santé du bâtiment), minimum et maximum. */
+      sabotageDamage: z.tuple([z.number(), z.number()]).default([0.3, 0.6]),
+      /** Désinformation : baisse de stabilité de la cible. */
+      disinformationAmount: z.number().min(0).default(5),
+      /** Hausse de tension mondiale quand une opération est démasquée. */
+      exposureTension: z.number().min(0).default(2),
     })
     .optional(),
   diplomacy: z

@@ -27,6 +27,7 @@ const DATA_KEYS: (keyof StateData)[] = [
   'know',
   'pending',
   'winner',
+  'mods',
 ];
 
 /** MessagePack canonique (clés triées) de tout l'état, hors monde et index dérivés. */

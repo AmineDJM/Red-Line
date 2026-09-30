@@ -54,6 +54,8 @@ export interface IntelReport {
   actions: ReportAction[];
   /** Partagé par un allié. */
   sharedBy?: NationId;
+  /** Information ancienne (au-delà de balance.intel.staleAfterH) : position incertaine. */
+  stale?: boolean;
   /**
    * Côté moteur uniquement : vrai si c'est une intoxication. JAMAIS envoyé au client
    * (le client ne voit que la cotation, qu'un bon contre-espionnage rend plus fiable).
@@ -112,6 +114,8 @@ export interface AgentView {
   nationId: NationId; // pays d'implantation
   status: 'active' | 'burned' | 'double' | 'exfiltrated' | 'captured';
   since: GameTime;
+  /** Officier traitant infiltré ou source recrutée sur place. */
+  kind?: 'officer' | 'source';
 }
 
 export interface DepartmentView {

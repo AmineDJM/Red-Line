@@ -92,6 +92,10 @@ export interface SharedBoard {
   nuclearAuth: Record<NationId, true>;
   /** eco : nations en mobilisation générale. */
   mobilized: Record<NationId, true>;
+  /** diplo / IA : guerres planifiées par une nation IA (cibles), lues par intel (intentions). */
+  warPlans?: Record<NationId, NationId[]>;
+  /** diplo : alliances dont la charte prévoit le partage du renseignement (partage automatique). */
+  intelSharing?: Record<string, true>;
 }
 
 export interface EngineModule {
