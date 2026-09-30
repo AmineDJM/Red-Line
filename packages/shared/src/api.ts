@@ -150,6 +150,8 @@ export interface Metrics {
  *   POST /api/lobby/:id/join   { nationId }       → { game: GameMeta }
  *   POST /api/lobby/:id/leave                     → { ok }
  *   POST /api/lobby/:id/start                     → { game }          (créateur, ou automatique quand plein)
+ *   GET  /api/research                          → { nodes: ResearchNode[] }  (arbre effectif)
+ *   GET  /api/balance                           → { balance: Balance | null } (équilibrage effectif)
  *   GET  /api/nations/info                    → { nations: NationInfo[] }  (description, doctrine, budget, drapeau)
  *   GET  /api/games/:id/spectate                  → { game }          (puis WS /ws?gameId=…&spectate=1)
  *   GET  /api/games/:id/stats                     → GameStatsView     (fin de partie)

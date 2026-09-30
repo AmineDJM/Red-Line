@@ -54,6 +54,10 @@ export async function publicRoutes(app: FastifyInstance, ctx: AppContext): Promi
     return { systems: rows.map((r) => r.data) };
   });
 
+  // Arbre technologique et équilibrage effectifs (lecture publique : aucun secret de partie).
+  app.get('/api/research', async () => ({ nodes: ctx.store.current().research }));
+  app.get('/api/balance', async () => ({ balance: ctx.store.current().balance }));
+
   // Données effectives (dépôt + modifications du back-office), mises en cache par révision.
   const requireMap = () => {
     const cur = ctx.store.current();

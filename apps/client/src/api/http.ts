@@ -1,5 +1,6 @@
 import type { FeatureCollection } from 'geojson';
 import type {
+  Balance,
   BattleReport,
   CosmeticItem,
   CreateGameBody,
@@ -160,6 +161,13 @@ export class HttpApi implements Api {
   }
 
   // ——— Phases 2+ ———
+  async balance(): Promise<Balance | null> {
+    try {
+      return (await request<{ balance: Balance | null }>('GET', '/api/balance')).balance;
+    } catch {
+      return null;
+    }
+  }
   async researchNodes(): Promise<ResearchNode[]> {
     try {
       const r = await request<{ nodes: ResearchNode[] }>('GET', '/api/research');
