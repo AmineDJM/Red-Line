@@ -480,6 +480,7 @@ export function handleIntercept(state: EngineState, d: { i: string; m: string })
   const I = state.units[d.i];
   const M = state.units[d.m];
   const st = M ? m.msl[M.id] : undefined;
+  if (m.icq[k] === -1) return;
   const drop = (): void => {
     delete m.icq[k];
   };
@@ -495,9 +496,11 @@ export function handleIntercept(state: EngineState, d: { i: string; m: string })
   let [left, last] = m.mag[I.id] ?? [full, -1];
   if (last >= 0 && now - last >= bal.reloadHours * HOUR) left = full;
   if (left <= 0) {
+    // Munitions épuisées : la salve passe cette défense (compté une fois, pas de ré-engagement).
     const b = st.battle ? m.battles[st.battle] : undefined;
     if (b) countermeasure(b, 'saturation', M.count);
-    return drop();
+    m.icq[k] = -1;
+    return;
   }
   const winMs = bal.reengageMinutes * MINUTE;
   let [ws, used] = m.icw[I.id] ?? [now, 0];
