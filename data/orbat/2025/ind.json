@@ -18,17 +18,17 @@
     },
     {
       "systemId": "eu.mirage-2000",
-      "count": 45,
-      "variant": "Mirage 2000H/I/TI"
-    },
-    {
-      "systemId": "ru.mig-29",
-      "count": 60,
-      "variant": "MiG-29UPG"
+      "count": 46,
+      "variant": "Mirage 2000H/I/TH/TI"
     },
     {
       "systemId": "ru.mig-29",
       "count": 40,
+      "variant": "MiG-29UPG"
+    },
+    {
+      "systemId": "ru.mig-29",
+      "count": 34,
       "variant": "MiG-29K/KUB (marine)"
     },
     {
@@ -45,7 +45,7 @@
     },
     {
       "systemId": "eu.hawk",
-      "count": 110,
+      "count": 119,
       "variant": "Hawk Mk132"
     },
     {
@@ -76,13 +76,13 @@
     },
     {
       "systemId": "ru.il-76",
-      "count": 14,
+      "count": 17,
       "variant": "Il-76MD"
     },
     {
       "systemId": "ru.an-26",
-      "count": 100,
-      "variant": "An-32RE",
+      "count": 111,
+      "variant": "An-32RE, HS 748",
       "note": "modèle le plus proche"
     },
     {
@@ -102,8 +102,8 @@
     },
     {
       "systemId": "eu.sa-330-puma",
-      "count": 300,
-      "variant": "HAL Dhruv ALH (armée, IAF, marine)",
+      "count": 200,
+      "variant": "HAL Dhruv ALH (armée, IAF, marine, garde-côtes)",
       "note": "modèle le plus proche"
     },
     {
@@ -146,12 +146,12 @@
     },
     {
       "systemId": "ru.ka-27",
-      "count": 24,
+      "count": 28,
       "variant": "Ka-28 / Ka-31"
     },
     {
       "systemId": "other.heron-tp",
-      "count": 100,
+      "count": 40,
       "variant": "Heron I / Heron Mk II",
       "note": "modèle le plus proche"
     },

@@ -7,13 +7,13 @@
   "inventory": [
     {
       "systemId": "us.f-16",
-      "count": 200,
-      "variant": "F-16A/B/C/D"
+      "count": 220,
+      "variant": "F-16C/D Block 40/52"
     },
     {
       "systemId": "eu.rafale",
-      "count": 30,
-      "variant": "Rafale EM/DM"
+      "count": 46,
+      "variant": "Rafale EM/DM (F4)"
     },
     {
       "systemId": "ru.mig-29",
@@ -38,13 +38,14 @@
     },
     {
       "systemId": "eu.alpha-jet",
-      "count": 40,
+      "count": 53,
       "variant": "Alpha Jet"
     },
     {
       "systemId": "cn.k-8-karakorum",
-      "count": 120,
-      "variant": "K-8E"
+      "count": 60,
+      "variant": "K-8E",
+      "note": "estimation (≈ 30 à 80 selon les sources)"
     },
     {
       "systemId": "us.e-2d-hawkeye",
@@ -68,7 +69,7 @@
     },
     {
       "systemId": "ru.ka-52",
-      "count": 40,
+      "count": 46,
       "variant": "Ka-52"
     },
     {
@@ -83,8 +84,8 @@
     },
     {
       "systemId": "us.ch-47-chinook",
-      "count": 19,
-      "variant": "CH-47D"
+      "count": 20,
+      "variant": "CH-47D/F"
     },
     {
       "systemId": "eu.nh90",
@@ -101,6 +102,12 @@
       "systemId": "cn.wing-loong-ii",
       "count": 30,
       "variant": "Wing Loong I/II"
+    },
+    {
+      "systemId": "cn.ch-5",
+      "count": 10,
+      "variant": "WJ-700",
+      "note": "modèle le plus proche"
     },
     {
       "systemId": "us.m1a2-abrams",

@@ -7,7 +7,7 @@
   "inventory": [
     {
       "systemId": "us.f-16",
-      "count": 50,
+      "count": 39,
       "variant": "F-16AM/BM",
       "note": "livrés par le Danemark, les Pays-Bas, la Norvège et la Belgique, après pertes"
     },
@@ -18,22 +18,22 @@
     },
     {
       "systemId": "ru.mig-29",
-      "count": 40,
+      "count": 45,
       "variant": "MiG-29 / MiG-29MU2"
     },
     {
       "systemId": "ru.su-27",
-      "count": 25,
+      "count": 23,
       "variant": "Su-27P1M/S1M"
     },
     {
       "systemId": "ru.su-24",
-      "count": 12,
+      "count": 13,
       "variant": "Su-24M/MR"
     },
     {
       "systemId": "ru.su-25",
-      "count": 15,
+      "count": 17,
       "variant": "Su-25M1"
     },
     {

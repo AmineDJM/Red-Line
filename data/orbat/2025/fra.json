@@ -74,7 +74,7 @@
     },
     {
       "systemId": "eu.nh90",
-      "count": 80,
+      "count": 63,
       "variant": "NH90 TTH Caïman (ALAT)"
     },
     {
@@ -84,12 +84,12 @@
     },
     {
       "systemId": "eu.sa-330-puma",
-      "count": 45,
-      "variant": "SA330 Puma, AS532 Cougar, H225M Caracal"
+      "count": 73,
+      "variant": "SA330 Puma, AS532 Cougar, H225M Caracal (ALAT et armée de l'air)"
     },
     {
       "systemId": "eu.gazelle",
-      "count": 90,
+      "count": 80,
       "variant": "SA342 Gazelle"
     },
     {
@@ -110,35 +110,48 @@
     },
     {
       "systemId": "eu.leclerc",
-      "count": 200,
-      "variant": "Leclerc / Leclerc XLR"
+      "count": 222,
+      "variant": "Leclerc / Leclerc XLR",
+      "note": "≈ 184 en stock non comptés"
     },
     {
       "systemId": "eu.vbci",
-      "count": 630,
+      "count": 627,
       "variant": "VBCI"
     },
     {
       "systemId": "eu.vbci",
-      "count": 200,
+      "count": 128,
       "variant": "EBRC Jaguar",
       "note": "modèle le plus proche"
     },
     {
+      "systemId": "eu.vbci",
+      "count": 181,
+      "variant": "AMX-10RC",
+      "note": "modèle le plus proche ; remplacement par le Jaguar en cours"
+    },
+    {
       "systemId": "eu.vab",
-      "count": 900,
+      "count": 886,
       "variant": "VBMR Griffon",
       "note": "modèle le plus proche"
     },
     {
       "systemId": "eu.vab",
-      "count": 1000,
+      "count": 414,
+      "variant": "VBMR-L Serval",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.vab",
+      "count": 1474,
       "variant": "VAB"
     },
     {
       "systemId": "eu.caesar",
-      "count": 60,
-      "variant": "CAESAR / CAESAR MkII",
+      "count": 75,
+      "variant": "CAESAR",
       "note": "après cessions à l'Ukraine"
     },
     {
@@ -160,9 +173,9 @@
     },
     {
       "systemId": "eu.mistral",
-      "count": 75,
+      "count": 58,
       "variant": "Mistral 3",
-      "note": "≈ 300 postes de tir  soit 75 sections"
+      "note": "≈ 234 postes de tir  soit 58 sections"
     },
     {
       "systemId": "eu.scalp-storm-shadow",

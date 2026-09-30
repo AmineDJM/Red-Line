@@ -7,7 +7,7 @@
   "inventory": [
     {
       "systemId": "us.f-15e",
-      "count": 150,
+      "count": 170,
       "variant": "F-15SA / F-15S modernisés"
     },
     {
@@ -23,19 +23,19 @@
     },
     {
       "systemId": "eu.tornado",
-      "count": 60,
+      "count": 81,
       "variant": "Tornado IDS",
       "note": "retrait en cours"
     },
     {
       "systemId": "eu.hawk",
-      "count": 44,
-      "variant": "Hawk Mk165"
+      "count": 81,
+      "variant": "Hawk Mk65A/165"
     },
     {
       "systemId": "us.e-3-sentry",
-      "count": 5,
-      "variant": "E-3A"
+      "count": 6,
+      "variant": "E-3A / RE-3A"
     },
     {
       "systemId": "eu.globaleye",

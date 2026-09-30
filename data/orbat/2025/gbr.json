@@ -74,31 +74,31 @@
     },
     {
       "systemId": "eu.challenger-2",
-      "count": 200,
+      "count": 213,
       "variant": "Challenger 2",
-      "note": "conversion en Challenger 3 à partir de 2027"
+      "note": "288 au total, conversion de 148 en Challenger 3"
     },
     {
       "systemId": "eu.cv90",
-      "count": 380,
+      "count": 400,
       "variant": "FV510 Warrior",
       "note": "modèle le plus proche"
     },
     {
       "systemId": "eu.cv90",
-      "count": 150,
+      "count": 142,
       "variant": "Ajax",
       "note": "modèle le plus proche"
     },
     {
       "systemId": "eu.boxer",
-      "count": 50,
+      "count": 100,
       "variant": "Boxer",
-      "note": "premières livraisons"
+      "note": "livraisons en cours"
     },
     {
       "systemId": "us.m113",
-      "count": 500,
+      "count": 600,
       "variant": "FV432 Bulldog",
       "note": "modèle le plus proche"
     },
@@ -110,26 +110,26 @@
     },
     {
       "systemId": "us.m777",
-      "count": 120,
+      "count": 126,
       "variant": "L118/L119 Light Gun (105 mm)",
       "note": "modèle le plus proche"
     },
     {
       "systemId": "us.m270-mlrs",
-      "count": 44,
+      "count": 43,
       "variant": "M270A2"
     },
     {
       "systemId": "eu.iris-t-slm",
-      "count": 8,
+      "count": 3,
       "variant": "Sky Sabre (CAMM)",
-      "note": "≈ 24 lanceurs  soit 8 batteries ; modèle le plus proche"
+      "note": "3 batteries, modèle le plus proche"
     },
     {
       "systemId": "eu.mistral",
-      "count": 25,
-      "variant": "Starstreak / Stormer HVM",
-      "note": "≈ 100 postes de tir  soit 25 sections ; modèle le plus proche"
+      "count": 50,
+      "variant": "Starstreak LML / Stormer HVM",
+      "note": "≈ 198 postes de tir  soit 50 sections ; modèle le plus proche"
     },
     {
       "systemId": "eu.scalp-storm-shadow",

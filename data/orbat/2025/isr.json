@@ -100,7 +100,7 @@
     },
     {
       "systemId": "other.namer",
-      "count": 400,
+      "count": 290,
       "variant": "Namer"
     },
     {
@@ -111,7 +111,7 @@
     },
     {
       "systemId": "other.namer",
-      "count": 200,
+      "count": 100,
       "variant": "Achzarit",
       "note": "modèle le plus proche"
     },
@@ -138,9 +138,9 @@
     },
     {
       "systemId": "other.iron-dome",
-      "count": 15,
+      "count": 12,
       "variant": "Iron Dome",
-      "note": "≈ 60 lanceurs  soit 15 batteries ; (≈ 15 batteries)"
+      "note": "au moins 9 batteries (estimation : 12)"
     },
     {
       "systemId": "other.davids-sling",

@@ -19,7 +19,7 @@
     },
     {
       "systemId": "cn.j-16",
-      "count": 350,
+      "count": 380,
       "variant": "J-16"
     },
     {
@@ -29,8 +29,13 @@
     },
     {
       "systemId": "cn.j-11",
-      "count": 250,
-      "variant": "J-11A/B/BS/BH"
+      "count": 245,
+      "variant": "J-11A/B/BS/BG (armée de l'air)"
+    },
+    {
+      "systemId": "cn.j-11",
+      "count": 50,
+      "variant": "J-11B/BS (aéronavale)"
     },
     {
       "systemId": "cn.j-11",
@@ -50,6 +55,12 @@
       "note": "retrait en cours"
     },
     {
+      "systemId": "cn.j-7",
+      "count": 40,
+      "variant": "J-8F/H",
+      "note": "modèle le plus proche ; retrait en cours"
+    },
+    {
       "systemId": "ru.su-30",
       "count": 97,
       "variant": "Su-30MKK/MK2"
@@ -61,12 +72,12 @@
     },
     {
       "systemId": "ru.su-27",
-      "count": 20,
+      "count": 32,
       "variant": "Su-27SK/UBK"
     },
     {
       "systemId": "ru.su-24",
-      "count": 180,
+      "count": 200,
       "variant": "JH-7A Flying Leopard",
       "note": "chasseur-bombardier, modèle le plus proche"
     },
@@ -77,7 +88,7 @@
     },
     {
       "systemId": "cn.kj-500",
-      "count": 50,
+      "count": 60,
       "variant": "KJ-500/KJ-500A"
     },
     {
@@ -93,7 +104,7 @@
     },
     {
       "systemId": "cn.y-20",
-      "count": 90,
+      "count": 55,
       "variant": "Y-20"
     },
     {
@@ -134,29 +145,35 @@
     },
     {
       "systemId": "cn.z-19",
-      "count": 180,
+      "count": 120,
       "variant": "Z-19/Z-19E"
     },
     {
       "systemId": "cn.z-20",
-      "count": 150,
-      "variant": "Z-20/Z-20F"
+      "count": 220,
+      "variant": "Z-20/Z-20T/Z-20S/Z-20F"
     },
     {
       "systemId": "cn.z-9",
-      "count": 300,
-      "variant": "Z-9 (armée, marine)"
+      "count": 155,
+      "variant": "Z-9WZ/Z-9C (armée, marine)"
     },
     {
       "systemId": "ru.mi-8",
-      "count": 300,
+      "count": 230,
       "variant": "Mi-17/Mi-171"
     },
     {
       "systemId": "ru.mi-8",
-      "count": 100,
+      "count": 140,
       "variant": "Z-8/Z-18",
       "note": "transport lourd, modèle le plus proche"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 19,
+      "variant": "S-70C2",
+      "note": "acquis dans les années 1980"
     },
     {
       "systemId": "ru.ka-27",
@@ -165,13 +182,13 @@
     },
     {
       "systemId": "cn.wing-loong-ii",
-      "count": 100,
+      "count": 60,
       "variant": "GJ-2 (Wing Loong II) / GJ-1"
     },
     {
       "systemId": "cn.ch-5",
-      "count": 40,
-      "variant": "WZ-7 / WZ-8",
+      "count": 30,
+      "variant": "WZ-7 / WZ-8 / WZ-10",
       "note": "HALE, modèle le plus proche"
     },
     {
