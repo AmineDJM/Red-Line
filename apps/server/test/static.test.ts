@@ -111,6 +111,28 @@ describe.skipIf(!hasDb)('fichiers statiques, tuiles et carte', () => {
     expect(asset.body).toBe('console.log(1)');
     expect(String(asset.headers['cache-control'])).toContain('immutable');
 
+    // Version précompressée (build) servie selon Accept-Encoding ; repli sinon.
+    const { precompress } = await import('../scripts/precompress.mjs');
+    writeFileSync(join(dataDir, 'client-dist/assets/big-1.js'), 'const x = 1;\n'.repeat(500));
+    await precompress([join(dataDir, 'client-dist')]);
+    const brRes = await built.app.inject({
+      method: 'GET',
+      url: '/assets/big-1.js',
+      headers: { 'accept-encoding': 'br, gzip' },
+    });
+    expect(brRes.headers['content-encoding']).toBe('br');
+    expect(Number(brRes.headers['content-length'])).toBeLessThan(1000);
+    const plain = await built.app.inject({ method: 'GET', url: '/assets/big-1.js' });
+    expect(plain.headers['content-encoding']).toBeUndefined();
+    expect(plain.body.length).toBe(13 * 500);
+    const tile = await built.app.inject({
+      method: 'GET',
+      url: '/tiles/satellite-lowzoom.pmtiles',
+      headers: { 'accept-encoding': 'br, gzip', range: 'bytes=0-9' },
+    });
+    expect(tile.statusCode).toBe(206);
+    expect(tile.headers['content-encoding']).toBeUndefined();
+
     const adm = await built.app.inject({ method: 'GET', url: '/admin/catalogue/eu.x' });
     expect(adm.body).toContain('admin');
     expect((await built.app.inject({ method: 'GET', url: '/admin' })).body).toContain('admin');

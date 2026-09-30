@@ -29,7 +29,9 @@ function missingDistPage(what: string, dir: string): string {
 export async function staticRoutes(app: FastifyInstance, ctx: AppContext): Promise<void> {
   const { config } = ctx;
   // Décore reply.sendFile (Range, ETag, Last-Modified, If-None-Match gérés par @fastify/send).
-  await app.register(fastifyStatic, { root: config.dataDir, serve: false });
+  // preCompressed : fichiers .br/.gz produits au build (scripts/precompress.mjs), choisis selon
+  // Accept-Encoding ; repli sur le fichier d'origine s'ils n'existent pas (tuiles, photos).
+  await app.register(fastifyStatic, { root: config.dataDir, serve: false, preCompressed: true });
 
   const serveFrom =
     (dirs: () => string[], maxAge: string) => (req: FastifyRequest, reply: FastifyReply) => {

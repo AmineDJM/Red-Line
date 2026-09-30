@@ -34,3 +34,15 @@ await build({
   },
   logLevel: 'info',
 });
+
+// Fichiers statiques précompressés (Brotli + gzip) servis tels quels par le serveur.
+const { precompress } = await import('./scripts/precompress.mjs');
+const repo = join(root, '..', '..');
+const r = await precompress([
+  join(repo, 'apps/client/dist'),
+  join(repo, 'apps/admin/dist'),
+  join(repo, 'data/basemap'),
+]);
+console.log(
+  `précompression : ${r.files} fichiers, ${(r.before / 1048576).toFixed(1)} Mio → ${(r.after / 1048576).toFixed(1)} Mio (Brotli)`,
+);

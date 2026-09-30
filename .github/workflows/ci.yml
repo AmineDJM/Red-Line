@@ -5,9 +5,18 @@ on:
     branches: [main, staging, 'claude/**']
   pull_request:
 
+# Un nouveau push annule la vérification en cours de la même branche.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     services:
       postgres:
         image: postgres:16
@@ -30,12 +39,37 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm format:check
       - run: pnpm typecheck
+      # Tests unitaires de tous les paquets ; ceux du serveur utilisent la base ci-dessus, dont les
+      # parcours complets avec le VRAI moteur et les VRAIES données (partie monde, reprise, bail).
       - run: pnpm test
       - run: pnpm build
+      # Même commande que Render : les fichiers précompressés et les dist doivent exister.
+      - name: Artefacts de production
+        run: |
+          test -f apps/server/dist/main.js && test -f apps/server/dist/migrate.js
+          test -f apps/client/dist/index.html && test -f apps/admin/dist/index.html
+          ls apps/client/dist/assets/*.js.br > /dev/null
+          du -sh apps/client/dist apps/admin/dist apps/server/dist
+      # Migrations sur une base vide, puis démarrage en production et contrôle de santé.
+      - name: Démarrage en production
+        env:
+          NODE_ENV: production
+          DATABASE_URL: postgres://redline:redline@localhost:5432/redline_test
+          SESSION_SECRET: ci-secret-ci-secret-ci-secret-ci-secret
+          PORT: '3000'
+        run: |
+          node apps/server/dist/migrate.js
+          node apps/server/dist/main.js &
+          for i in $(seq 1 60); do curl -fs localhost:3000/healthz && break; sleep 1; done
+          curl -fs localhost:3000/healthz
+          curl -fsI localhost:3000/ | grep -i content-security-policy
+          curl -fs -o /dev/null localhost:3000/admin/
+          kill %1
 
   e2e:
     runs-on: ubuntu-latest
     needs: check
+    timeout-minutes: 40
     services:
       postgres:
         image: postgres:16
