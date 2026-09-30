@@ -165,6 +165,7 @@ function decorate(state: EngineState, view: PlayerView, me: NationId | null): vo
     if (me && id !== me && isRegular(state, id)) nv.relation = relationOf(state, me, id);
     nv.allianceId = b.allianceOf[id] ?? null;
     nv.stability = Math.round(stabilityOf(state, id));
+    nv.reputation = Math.round(reputation(state, id));
     nv.embargoed = !!b.embargoed[id];
     nv.sanctioned = (b.sanctions[id] ?? 1) < 1;
     if (b.mobilized[id]) nv.mobilized = true;
