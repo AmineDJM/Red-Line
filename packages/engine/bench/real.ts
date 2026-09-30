@@ -39,15 +39,41 @@ function save(name: string): void {
 
 const rows: [string, string][] = [];
 const metrics: Record<string, number | string> = {};
-function row(label: string, ms: number | null, extra = '', key?: string): void {
+/**
+ * Temps de CPU du processus depuis le dernier start() (utilisateur + système, fils du ramasse-miettes
+ * compris) : moins sensible que le temps réel à une machine partagée et chargée.
+ */
+let cpu0 = process.cpuUsage();
+function cpuMs(div = 1): number {
+  const c = process.cpuUsage(cpu0);
+  return (c.user + c.system) / 1000 / div;
+}
+const fmt = (ms: number): string => `${ms.toFixed(ms < 100 ? 1 : 0)} ms`;
+function row(
+  label: string,
+  ms: number | null,
+  extra = '',
+  key?: string,
+  div = 1,
+  cpuAt?: number,
+): void {
+  const cpu = ms === null ? null : (cpuAt ?? cpuMs(div));
   rows.push([
     label,
-    (ms === null ? '' : `${ms.toFixed(ms < 100 ? 1 : 0)} ms`) + (extra ? `  ${extra}` : ''),
+    (ms === null ? '' : `${fmt(ms)} (CPU ${fmt(cpu!)})`) + (extra ? `  ${extra}` : ''),
   ]);
-  if (key && ms !== null) metrics[key] = Math.round(ms * 10) / 10;
+  if (key && ms !== null) {
+    metrics[key] = Math.round(ms * 10) / 10;
+    metrics[`${key}Cpu`] = Math.round(cpu! * 10) / 10;
+  }
   console.log(label.padEnd(34), rows[rows.length - 1]![1]);
 }
 const now = (): number => performance.now();
+/** Début d'une mesure : temps réel et temps de CPU. */
+function start(): number {
+  cpu0 = process.cpuUsage();
+  return performance.now();
+}
 const mib = (b: number): string => `${(b / 1048576).toFixed(1)} Mio`;
 function heap(): number {
   (globalThis as { gc?: () => void }).gc?.();
@@ -55,7 +81,7 @@ function heap(): number {
 }
 
 // ——— Chargement des données (comme le serveur) ———
-let t = now();
+let t = start();
 const { map, catalog, balance, research, orbats, scenario } = loadRealData();
 const elements = (orbats['2025'] ?? []).reduce(
   (a, o) => a + o.inventory.reduce((b, i) => b + i.count, 0),
@@ -69,13 +95,13 @@ row(
 );
 
 // ——— Monde et partie ———
-t = now();
+t = start();
 const world = buildWorld(map, catalog, balance, { research, orbats });
 row('buildWorld', now() - t, `${world.loadWarnings?.length ?? 0} avertissements`, 'buildWorld');
 
 const HUMAN = 'fra';
 const h0 = heap();
-t = now();
+t = start();
 const s = createGame(world, {
   seed: 2025,
   players: [{ nationId: HUMAN, isAi: false }],
@@ -84,12 +110,15 @@ const s = createGame(world, {
   speed: 1,
 }) as EngineState;
 const tCreate = now() - t;
+const cCreate = cpuMs();
 const h1 = heap();
 row(
   'createGame',
   tCreate,
   `${Object.keys(s.units).length} unités, ${Object.keys(s.pairs).length} paires, ${s.queue.length} événements`,
   'createGame',
+  1,
+  cCreate,
 );
 row('mémoire (tas de la partie)', null, `${mib(h1 - h0)} (tas total ${mib(h1)})`);
 metrics.heapMiB = Math.round(((h1 - h0) / 1048576) * 10) / 10;
@@ -97,7 +126,7 @@ console.log('  empreinte initiale', stateHash(s));
 save('j0');
 
 // ——— Jour calme ———
-t = now();
+t = start();
 let notes = advanceTo(s, DAY);
 row('jour calme (J0 → J1)', now() - t, `${notes.length} notifications`, 'calmDay');
 const hashCalm = stateHash(s);
@@ -117,13 +146,14 @@ const WARS: [NationId, NationId][] = [
   ['dza', 'mar'],
   ['ven', 'guy'],
 ];
-t = now();
+t = start();
 let declared = 0;
 for (const [a, b] of WARS) {
   if (!s.nations[a] || !s.nations[b]) continue;
   if (applyOrder(s, a, { kind: 'declareWar', nationId: b }).ok) declared++;
 }
 const tWar = now() - t;
+const cWar = cpuMs();
 const rng = seedRng(11);
 const cities = (n: NationId): [number, number][] =>
   Object.values(s.provinces)
@@ -134,7 +164,7 @@ const cities = (n: NationId): [number, number][] =>
 let accepted = 0;
 let tried = 0;
 const byKind: Record<string, number> = {};
-t = now();
+t = start();
 for (let round = 0; round < 40 && accepted < 200; round++) {
   for (const [a, b] of WARS) {
     if (accepted >= 200) break;
@@ -172,12 +202,15 @@ for (let round = 0; round < 40 && accepted < 200; round++) {
   }
 }
 const tOrders = now() - t;
+const cOrders = cpuMs();
 save('j1-orders');
 row(
   `${declared} guerres déclarées`,
   tWar,
   `${Object.keys(s.wars).length} guerres en cours`,
   'declareWars',
+  1,
+  cWar,
 );
 row(
   `${accepted} ordres (${tried} essayés)`,
@@ -186,8 +219,10 @@ row(
     .map(([k, v]) => `${k} ${v}`)
     .join(', '),
   'orders',
+  1,
+  cOrders,
 );
-t = now();
+t = start();
 notes = advanceTo(s, 2 * DAY);
 row(
   'jour de guerre intense (J1 → J2)',
@@ -196,14 +231,14 @@ row(
   'warDay',
 );
 console.log('  empreinte J2', stateHash(s));
-t = now();
+t = start();
 notes = advanceTo(s, 3 * DAY);
 row('jour suivant (J2 → J3)', now() - t, `${notes.length} notifications`, 'nextDay');
 save('j3');
 
 const DAYS = Number(process.env.BENCH_DAYS ?? 10);
 const perDay: number[] = [];
-t = now();
+t = start();
 for (let d = 0; d < DAYS; d++) {
   const t1 = now();
   const nn = advanceTo(s, (4 + d) * DAY);
@@ -215,12 +250,15 @@ for (let d = 0; d < DAYS; d++) {
   );
 }
 const tDays = now() - t;
+const cDays = cpuMs();
 row(
   `${DAYS} jours consécutifs (J3 → J${3 + DAYS})`,
   tDays,
   `moyenne ${(tDays / Math.max(1, DAYS)).toFixed(0)} ms, max ${Math.max(...perDay, 0).toFixed(0)} ms, ` +
     `${Object.keys(s.wars).length} guerres, ${Object.keys(s.units).length} unités`,
   'days',
+  1,
+  cDays,
 );
 metrics.dayMax = Math.round(Math.max(...perDay, 0));
 const hashEnd = stateHash(s);
@@ -235,7 +273,7 @@ const sample: NationId[] = [HUMAN, ...WARS.flat()]
 for (const n of viewNations) if (sample.length < 20 && !sample.includes(n)) sample.push(n);
 viewFor(s, HUMAN); // préchauffage
 const views = new Map<NationId, PlayerView>();
-t = now();
+t = start();
 for (const n of sample) views.set(n, viewFor(s, n));
 const tView = (now() - t) / sample.length;
 row(
@@ -243,29 +281,36 @@ row(
   tView,
   `${Object.keys(views.get(HUMAN)!.units).length} unités visibles (fra)`,
   'viewFor',
+  sample.length,
 );
 advanceTo(s, s.time + 60_000 * 30);
-t = now();
+t = start();
 let diffs = 0;
 for (const n of sample) {
   const next = viewFor(s, n);
   if (diffViews(views.get(n)!, next)) diffs++;
 }
 const tViewDiff = (now() - t) / sample.length;
-row(`viewFor + diffViews (30 min plus tard)`, tViewDiff, `${diffs} diffs non vides`, 'viewDiff');
+row(
+  `viewFor + diffViews (30 min plus tard)`,
+  tViewDiff,
+  `${diffs} diffs non vides`,
+  'viewDiff',
+  sample.length,
+);
 
 // ——— Instantané ———
-t = now();
+t = start();
 const bytes = serializeState(s);
 row('serializeState', now() - t, `${mib(bytes.length)} (${bytes.length} octets)`, 'serialize');
 metrics.snapshotMiB = Math.round((bytes.length / 1048576) * 100) / 100;
-t = now();
+t = start();
 const back = deserializeState(world, bytes) as EngineState;
 row('deserializeState', now() - t, '', 'deserialize');
-t = now();
+t = start();
 const same = stateHash(back) === stateHash(s);
 row('stateHash × 2', now() - t, same ? 'reprise identique' : 'REPRISE DIFFÉRENTE');
-t = now();
+t = start();
 advanceTo(s, s.time + DAY / 2);
 advanceTo(back, back.time + DAY / 2);
 const sameAfter = stateHash(back) === stateHash(s);
