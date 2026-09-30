@@ -105,6 +105,7 @@ export function astar(g: NavGraph, start: number, goal: number, costs: AstarCost
     const uLand = g.land[u] === 1;
     for (const v of g.neighbors(u)) {
       if (closed.has(v)) continue;
+      if (g.blocked[v] === 1 && g.ship[v] !== 1) continue;
       const vLand = g.land[v] === 1;
       let cost: number;
       if (costs.mode === 'sea') {

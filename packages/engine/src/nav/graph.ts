@@ -11,6 +11,8 @@ export class NavGraph {
   readonly edgeKm: number;
   readonly cellProv: ReadonlyMap<string, ProvinceId>;
   readonly strait: ReadonlySet<string>;
+  /** Cellules terrestres sans propriétaire (Antarctique, zones tampons…) : ni terre praticable ni mer. */
+  readonly impassable: ReadonlySet<string>;
 
   private readonly ids = new Map<string, number>();
   readonly cells: string[] = [];
@@ -21,6 +23,8 @@ export class NavGraph {
   readonly land: number[] = [];
   /** 1 = navigable pour un navire (mer ou détroit). */
   readonly ship: number[] = [];
+  /** 1 = infranchissable pour tous. */
+  readonly blocked: number[] = [];
   /** Clé de départage intrinsèque (bits de l'index H3). */
   readonly keyHi: number[] = [];
   readonly keyLo: number[] = [];
@@ -29,11 +33,17 @@ export class NavGraph {
   private readonly shipComp: number[] = [];
   private nextComp = 0;
 
-  constructor(res: number, cellProv: Map<string, ProvinceId>, strait: Set<string>) {
+  constructor(
+    res: number,
+    cellProv: Map<string, ProvinceId>,
+    strait: Set<string>,
+    impassable: Set<string> = new Set(),
+  ) {
     this.res = res;
     this.edgeKm = getHexagonEdgeLengthAvg(res, 'km');
     this.cellProv = cellProv;
     this.strait = strait;
+    this.impassable = impassable;
     const landCells = [...cellProv.keys()].sort();
     for (const c of landCells) this.node(c);
     for (let i = 0; i < landCells.length; i++) this.neighbors(i);
@@ -52,7 +62,12 @@ export class NavGraph {
   }
 
   isShipCell(cell: string): boolean {
-    return !this.cellProv.has(cell) || this.strait.has(cell);
+    return this.strait.has(cell) || this.isSeaCell(cell);
+  }
+
+  /** Mer libre (ni terre possédée, ni zone infranchissable). */
+  isSeaCell(cell: string): boolean {
+    return !this.cellProv.has(cell) && !this.impassable.has(cell);
   }
 
   node(cell: string): number {
@@ -69,8 +84,10 @@ export class NavGraph {
     this.y.push(c * Math.sin(lo));
     this.z.push(Math.sin(la));
     const isLand = this.cellProv.has(cell);
+    const isBlocked = !isLand && this.impassable.has(cell);
     this.land.push(isLand ? 1 : 0);
-    this.ship.push(!isLand || this.strait.has(cell) ? 1 : 0);
+    this.blocked.push(isBlocked ? 1 : 0);
+    this.ship.push((!isLand && !isBlocked) || this.strait.has(cell) ? 1 : 0);
     this.keyHi.push(parseInt(cell.slice(0, 7), 16));
     this.keyLo.push(parseInt(cell.slice(7), 16));
     this.shipComp.push(-1);

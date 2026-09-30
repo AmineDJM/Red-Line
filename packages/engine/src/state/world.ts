@@ -43,7 +43,7 @@ export function buildWorld(map: MapData, catalog: WeaponSystem[], balance: Balan
   for (const cell of Object.keys(map.cells.cells).sort()) cellProv.set(cell, map.cells.cells[cell]!);
   const strait = new Set<string>();
   for (const s of map.straits) for (const c of s.seaCells) strait.add(c);
-  const nav = new NavGraph(map.cells.res, cellProv, strait);
+  const nav = new NavGraph(map.cells.res, cellProv, strait, new Set(map.cells.impassable ?? []));
 
   const provById = new Map<ProvinceId, ProvinceDef>();
   for (const p of map.provinces) provById.set(p.id, p);
@@ -99,7 +99,7 @@ function findSeaSpawns(
     const def = provById.get(pid);
     if (!def) continue;
     for (const nb of nav.neighbors(nav.node(cell))) {
-      if (nav.land[nb] === 1) continue;
+      if (nav.land[nb] === 1 || nav.blocked[nb] === 1) continue;
       const p = nav.center(nb);
       const d = distanceKm(p, def.cityPoint);
       const cur = best.get(pid);

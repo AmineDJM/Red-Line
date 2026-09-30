@@ -2,10 +2,10 @@
 
 Pipeline Python qui transforme NASA Blue Marble en tuiles raster sombres pour le fond de carte de Red Line.
 
-| Fichier                                | Zoom  | Taille        | Git                           |
-| -------------------------------------- | ----- | ------------- | ----------------------------- |
-| `data/tiles/satellite-lowzoom.pmtiles` | 0 à 5 | ~2 Mo         | commité                       |
-| `data/tiles/satellite.pmtiles`         | 0 à 8 | voir plus bas | ignoré (construit par script) |
+| Fichier                                | Zoom  | Taille | Git                           |
+| -------------------------------------- | ----- | ------ | ----------------------------- |
+| `data/tiles/satellite-lowzoom.pmtiles` | 0 à 5 | ~2 Mo  | commité                       |
+| `data/tiles/satellite.pmtiles`         | 0 à 8 | ~97 Mo | ignoré (construit par script) |
 
 Le client utilise `satellite.pmtiles` s'il existe, sinon la version `lowzoom`.
 
@@ -57,10 +57,10 @@ Incrémenter `GRADE_VERSION` après toute modification de l'étalonnage pour inv
 
 ## Mesures (machine de développement : 4 cœurs, 15 Go de RAM)
 
-| Cible      | Durée     | Taille    | Disque temporaire                     |
-| ---------- | --------- | --------- | ------------------------------------- |
-| zoom 0 à 5 | ~1 min 30 | 2,1 Mo    | 0,7 Go                                |
-| zoom 0 à 8 | FULL_TIME | FULL_SIZE | ~15 Go (sources 0,4 Go, images 14 Go) |
+| Cible      | Durée                                            | Taille | Disque temporaire                     |
+| ---------- | ------------------------------------------------ | ------ | ------------------------------------- |
+| zoom 0 à 5 | ~1 min 30                                        | 2,1 Mo | 0,7 Go                                |
+| zoom 0 à 8 | ~29 min (étalonnage 23 min, 87 381 tuiles 6 min) | 97 Mo  | ~15 Go (sources 0,4 Go, images 14 Go) |
 
 ## Limites
 
@@ -69,3 +69,6 @@ Incrémenter `GRADE_VERSION` après toute modification de l'étalonnage pour inv
 - Nuages absents mais une seule saison (juillet) : banquise antarctique d'hiver visible en bleu à peine plus clair.
 - Les lacs intérieurs gardent l'étalonnage « terre » (couleur sombre de la source) : seuls les océans et mers
   du masque Natural Earth sont traités comme de la mer.
+
+Après une construction complète, `tools/tiles/.cache/graded-*.u8` (~14 Go) peut être supprimé ; il n'accélère
+que les reconstructions sans changement d'étalonnage.

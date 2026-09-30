@@ -55,6 +55,8 @@ export type ProvinceDef = z.infer<typeof ProvinceDefSchema>;
 export const CellsFileSchema = z.object({
   res: z.number().int(),
   cells: z.record(z.string(), z.string()),
+  /** Cellules terrestres sans propriétaire (Antarctique, zones tampons) : infranchissables. */
+  impassable: z.array(z.string()).optional(),
 });
 export type CellsFile = z.infer<typeof CellsFileSchema>;
 
