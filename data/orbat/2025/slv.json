@@ -29,5 +29,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Salvador est le plus petit pays d'Amérique centrale et le seul sans côte caribéenne. Son armée est engagée aux côtés de la police dans la lutte contre les gangs. Le pays est l'un des plus densément peuplés d'Amérique.",
+  "doctrineText": "Forces légères. Doctrine de sécurité intérieure."
 }

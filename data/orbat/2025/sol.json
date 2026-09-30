@@ -23,5 +23,7 @@
     "Estimation (Somaliland ; SIPRI sans donnée)",
     "Estimations publiques (armée nationale du Somaliland)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Somaliland est un territoire du nord-ouest de la Somalie qui s'est proclamé indépendant en 1991 sans reconnaissance internationale. Il borde le golfe d'Aden et dispose du port de Berbera. Il dispose de sa propre armée et de sa propre monnaie.",
+  "doctrineText": "Forces légères au matériel ancien."
 }

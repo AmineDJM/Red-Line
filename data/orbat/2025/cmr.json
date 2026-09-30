@@ -63,5 +63,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Cameroun s'étend du golfe de Guinée au lac Tchad. Ses forces armées combattent Boko Haram dans le nord et des séparatistes dans les régions anglophones. Il participe à la force multinationale du bassin du lac Tchad.",
+  "doctrineText": "Arsenal léger d'origines française, chinoise et israélienne. Doctrine de contre-insurrection."
 }

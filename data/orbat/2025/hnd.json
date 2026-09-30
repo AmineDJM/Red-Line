@@ -34,5 +34,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Honduras occupe le centre de l'Amérique centrale et accueille une base aérienne américaine. Ses forces armées sont réduites et engagées contre le crime organisé. Sa côte caribéenne est un point de transit du trafic de drogue.",
+  "doctrineText": "Forces légères au matériel ancien. Doctrine de sécurité intérieure."
 }

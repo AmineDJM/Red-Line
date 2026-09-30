@@ -74,5 +74,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "La Zambie est un pays enclavé d'Afrique australe riche en cuivre. Ses forces armées sont modestes et équipées de matériel chinois. Elle participe aux opérations de maintien de la paix.",
+  "doctrineText": "Arsenal léger d'origine chinoise. Doctrine de défense territoriale."
 }

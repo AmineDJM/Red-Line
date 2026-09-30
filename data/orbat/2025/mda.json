@@ -59,5 +59,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "La Moldavie est un petit pays enclavé entre la Roumanie et l'Ukraine. La région séparatiste de Transnistrie, où stationnent des troupes russes, échappe à son contrôle. Son armée est très réduite et en cours de modernisation.",
+  "doctrineText": "Forces légères au matériel ancien, renforcées par des dons européens. Doctrine de neutralité."
 }

@@ -39,5 +39,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Paraguay est un pays enclavé au cœur de l'Amérique du Sud, entre le Brésil, l'Argentine et la Bolivie. Ses forces armées sont réduites et faiblement équipées. Il partage avec le Brésil le barrage d'Itaipú, l'un des plus grands du monde.",
+  "doctrineText": "Forces légères au matériel ancien. Doctrine de défense territoriale."
 }

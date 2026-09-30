@@ -366,5 +366,7 @@
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
     "FAS, Status of World Nuclear Forces 2025 (vecteurs nucléaires)"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "Le Pakistan s'étend de la mer d'Arabie à l'Himalaya, entre l'Inde, l'Afghanistan, l'Iran et la Chine. Puissance nucléaire, il entretient une armée nombreuse structurée par la rivalité avec l'Inde, avec laquelle il s'est affronté en mai 2025. Sa frontière afghane est le théâtre de combats contre des groupes armés et de heurts avec les talibans. La Chine est son principal fournisseur d'armes.",
+  "doctrineText": "Arsenal majoritairement chinois (JF-17 coproduit, J-10C, chars, frégates Type 054A) et américain (F-16). Doctrine de dissuasion nucléaire et de défense face à l'Inde."
 }

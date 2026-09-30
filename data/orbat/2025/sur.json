@@ -17,5 +17,7 @@
     "Estimation (SIPRI sans donnée)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Suriname est un petit pays forestier du nord de l'Amérique du Sud. Son armée est très réduite. Il partage une frontière avec la Guyane française et le Guyana.",
+  "doctrineText": "Forces légères."
 }

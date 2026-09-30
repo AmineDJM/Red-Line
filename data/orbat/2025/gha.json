@@ -1,7 +1,7 @@
 {
   "nationId": "gha",
   "year": 2025,
-  "doctrine": "other",
+  "doctrine": "cn",
   "defenseBudgetUsd": 507000000,
   "activePersonnel": 15500,
   "inventory": [
@@ -32,22 +32,22 @@
       "note": "modèle le plus proche"
     },
     {
-      "systemId": "other.infantry-light",
+      "systemId": "cn.infantry-light",
       "count": 17,
       "note": "infanterie légère : ≈ 10 k personnes / 600"
     },
     {
-      "systemId": "other.infantry-mech",
+      "systemId": "cn.infantry-mech",
       "count": 1,
       "note": "infanterie mécanisée / motorisée : ≈ 0,3 k personnes / 600"
     },
     {
-      "systemId": "other.airborne",
+      "systemId": "cn.airborne",
       "count": 1,
       "note": "troupes aéroportées / d'assaut aérien : ≈ 0,6 k personnes / 600"
     },
     {
-      "systemId": "other.special-forces",
+      "systemId": "cn.special-forces",
       "count": 1,
       "note": "forces spéciales : ≈ 0,6 k personnes / 600"
     }
@@ -65,5 +65,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Ghana borde le golfe de Guinée et est réputé pour sa stabilité politique. Ses forces armées participent largement au maintien de la paix. Sa marine lutte contre la piraterie dans le golfe de Guinée.",
+  "doctrineText": "Forces légères d'origine chinoise et occidentale. Doctrine de sécurité maritime et de maintien de la paix."
 }

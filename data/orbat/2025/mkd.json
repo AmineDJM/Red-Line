@@ -50,5 +50,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "La Macédoine du Nord est un pays enclavé des Balkans, membre de l'OTAN depuis 2020. Son armée est petite et a cédé une partie de son matériel soviétique à l'Ukraine. Elle se rééquipe avec du matériel occidental.",
+  "doctrineText": "Forces légères en transition vers le matériel occidental. Doctrine de défense collective."
 }

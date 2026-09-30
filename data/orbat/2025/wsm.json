@@ -18,5 +18,7 @@
     "Estimation (budget de la police ; pas d'armée)",
     "Estimation (forces de police nationales)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Les Samoa sont un État insulaire polynésien du Pacifique Sud. Elles n'ont pas d'armée. Leur défense repose sur un accord d'amitié avec la Nouvelle-Zélande.",
+  "doctrineText": "Aucune force armée : police."
 }

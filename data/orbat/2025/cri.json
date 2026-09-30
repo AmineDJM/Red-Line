@@ -23,5 +23,7 @@
     "Estimation (budget de la sécurité publique ; pas d'armée depuis 1948)",
     "Ministère de la Sécurité publique du Costa Rica"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "Le Costa Rica a aboli son armée en 1948 et consacre ses ressources à l'éducation et à la santé. Sa sécurité est assurée par la Force publique, un corps de police. Il est l'un des rares États au monde à ne disposer d'aucune force militaire.",
+  "doctrineText": "Aucune force armée : Force publique (police)."
 }

@@ -95,5 +95,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "La République démocratique du Congo est le deuxième pays d'Afrique par la superficie. Ses forces armées, nombreuses mais mal équipées, affrontent de multiples groupes armés dans l'est du pays, dont le M23. Le pays partage des frontières avec neuf États, dont plusieurs sont impliqués dans les conflits de l'est.",
+  "doctrineText": "Arsenal léger d'origines diverses complété par des drones chinois. Doctrine de contre-insurrection."
 }

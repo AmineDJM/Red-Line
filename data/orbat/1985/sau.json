@@ -1,0 +1,145 @@
+{
+  "nationId": "sau",
+  "year": 1985,
+  "doctrine": "us",
+  "defenseBudgetUsd": 17657000000,
+  "activePersonnel": 62500,
+  "inventory": [
+    {
+      "systemId": "other.f-14-tomcat",
+      "count": 60,
+      "variant": "F-15C/D Eagle",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.f-5e",
+      "count": 90,
+      "variant": "F-5E/F"
+    },
+    {
+      "systemId": "eu.tornado",
+      "count": 20,
+      "variant": "Tornado IDS (commandés en 1985)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.mirage-5",
+      "count": 30,
+      "variant": "BAC Lightning",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.e-3-sentry",
+      "count": 5,
+      "variant": "E-3A Sentry"
+    },
+    {
+      "systemId": "us.kc-135-stratotanker",
+      "count": 8,
+      "variant": "KE-3A",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 40,
+      "variant": "C-130E/H, KC-130H"
+    },
+    {
+      "systemId": "us.uh-1-huey",
+      "count": 50,
+      "variant": "AB-205/206/212"
+    },
+    {
+      "systemId": "eu.amx-30",
+      "count": 300,
+      "variant": "AMX-30S"
+    },
+    {
+      "systemId": "us.m60-patton",
+      "count": 150,
+      "variant": "M60A3"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 1000,
+      "variant": "M113, AMX-10P, V-150",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 100,
+      "variant": "M109, GCT",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.mim-23-hawk",
+      "count": 16,
+      "variant": "Improved Hawk"
+    },
+    {
+      "systemId": "eu.crotale",
+      "count": 40,
+      "variant": "Shahine, Crotale"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 50,
+      "variant": "Harpoon"
+    },
+    {
+      "systemId": "ru.udaloy",
+      "count": 4,
+      "variant": "Madina (F2000S)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.infantry-light",
+      "count": 29,
+      "note": "infanterie légère : ≈ 17,6 k personnes / 600 ; armée de terre ; Garde nationale (≈ 25 000) non comptée"
+    },
+    {
+      "systemId": "us.infantry-mech",
+      "count": 33,
+      "note": "infanterie mécanisée / motorisée : ≈ 20 k personnes / 600"
+    },
+    {
+      "systemId": "us.airborne",
+      "count": 2,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 1,2 k personnes / 600"
+    },
+    {
+      "systemId": "us.special-forces",
+      "count": 2,
+      "note": "forces spéciales : ≈ 1,2 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.gen3",
+    "research.industry.l1",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.missiles.sam2",
+    "research.missiles.sam3",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.sensors.radar1",
+    "research.sensors.radar2"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 1985, dollars courants)",
+    "IISS, The Military Balance 1985-1986 (ordres de grandeur)",
+    "SIPRI Military Expenditure Database (dépenses 1985, dollars courants)"
+  ],
+  "confidence": "medium"
+}

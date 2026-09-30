@@ -430,5 +430,7 @@
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
     "Ministère sud-coréen de la Défense, Livre blanc 2024"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "description": "La Corée du Sud occupe la moitié sud de la péninsule coréenne, séparée du Nord par la zone démilitarisée depuis l'armistice de 1953. Elle entretient une armée nombreuse, appuyée par la présence de forces américaines. Son industrie de défense est devenue l'une des premières exportatrices au monde, notamment pour les chars, l'artillerie et les avions d'entraînement. Sa capitale se trouve à portée de l'artillerie nord-coréenne.",
+  "doctrineText": "Arsenal national moderne (K2, K9, KF-21, destroyers KDX-III) et américain (F-35, F-15K, Patriot). Doctrine de dissuasion et de frappe préventive face à la Corée du Nord."
 }

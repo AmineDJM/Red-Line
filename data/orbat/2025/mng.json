@@ -94,5 +94,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Pays enclavé entre la Russie et la Chine, la Mongolie compte parmi les États les moins densément peuplés du monde. Ses forces armées sont modestes et équipées de matériel soviétique ancien. Elle participe activement aux opérations de maintien de la paix.",
+  "doctrineText": "Arsenal d'origine soviétique et russe. Doctrine défensive et de neutralité entre ses deux grands voisins."
 }

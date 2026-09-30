@@ -17,5 +17,7 @@
     "Estimation (≈ 20 % du budget de l'Autorité palestinienne consacré aux services de sécurité)",
     "Estimations publiques des effectifs des services de sécurité de l'Autorité palestinienne"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "L'Autorité palestinienne administre une partie de la Cisjordanie. Elle ne dispose pas d'armée mais de services de sécurité et de forces de police formés avec l'aide internationale. Son territoire est morcelé et entouré par Israël et la Jordanie.",
+  "doctrineText": "Forces de sécurité paramilitaires équipées d'armes légères, sans matériel lourd."
 }

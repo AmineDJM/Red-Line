@@ -53,5 +53,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Mozambique borde l'océan Indien en Afrique australe. Ses forces armées, réduites, affrontent une insurrection djihadiste dans le nord du pays avec l'appui du Rwanda. Sa longue côte borde le canal du Mozambique, riche en gaz naturel.",
+  "doctrineText": "Forces légères au matériel soviétique ancien. Doctrine de contre-insurrection."
 }

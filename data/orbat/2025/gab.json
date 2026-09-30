@@ -27,5 +27,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Gabon est un pays forestier et pétrolier d'Afrique centrale. Ses forces armées sont réduites. Une présence militaire française réduite y est maintenue.",
+  "doctrineText": "Forces légères d'origine française."
 }

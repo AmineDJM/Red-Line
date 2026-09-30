@@ -297,5 +297,7 @@
     "FAS, Status of World Nuclear Forces 2025 (vecteurs nucléaires)",
     "UK MoD, Quarterly Service Personnel Statistics 2025"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "description": "Archipel de l'Atlantique Nord, le Royaume-Uni est une puissance nucléaire et un membre permanent du Conseil de sécurité des Nations unies. Sa marine met en œuvre deux porte-avions et des sous-marins nucléaires d'attaque et lanceurs d'engins. Pilier de l'OTAN, il entretient une coopération militaire très étroite avec les États-Unis. Ses forces terrestres sont réduites mais professionnelles et projetables.",
+  "doctrineText": "Arsenal mêlant production nationale et européenne (Typhoon, Challenger, Astute) et matériel américain (F-35B, Apache, P-8, missiles Trident). Doctrine expéditionnaire et maritime, intégrée à l'OTAN."
 }

@@ -18,5 +18,7 @@
     "SIPRI",
     "Forces armées d'Haïti (reconstituées)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Haïti occupe le tiers occidental de l'île d'Hispaniola. Ses forces armées, dissoutes en 1995 et reconstituées depuis 2017, restent embryonnaires face aux gangs armés. Une mission multinationale de soutien à la sécurité appuie la police nationale.",
+  "doctrineText": "Forces d'infanterie légère embryonnaires."
 }

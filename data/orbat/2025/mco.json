@@ -18,5 +18,7 @@
     "Estimation (Compagnie des carabiniers du Prince et sûreté publique)",
     "Gouvernement princier de Monaco"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "Monaco est une cité-État de la côte méditerranéenne enclavée dans le territoire français. Sa défense est assurée par la France. La Compagnie des carabiniers du Prince assure la garde du souverain.",
+  "doctrineText": "Aucune force armée : garde princière et police."
 }

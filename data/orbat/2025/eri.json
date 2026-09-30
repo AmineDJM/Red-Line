@@ -69,5 +69,7 @@
     "Estimation (SIPRI sans donnée ; service national illimité)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "L'Érythrée borde la mer Rouge face à l'Arabie. Le service national illimité lui permet d'aligner une armée très nombreuse par rapport à sa population. Ses forces ont été engagées dans la guerre du Tigré aux côtés de l'Éthiopie.",
+  "doctrineText": "Arsenal soviétique ancien. Doctrine de défense territoriale de masse."
 }

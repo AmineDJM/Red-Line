@@ -172,10 +172,11 @@ function checkOrbat(set: string, file: string, o: Orbat) {
     const sys = catalog.get(it.systemId);
     if (!sys) {
       warn(`${where} : ${it.systemId} absent de data/catalog (présent dans catalog-ids.json)`);
-    } else if (sys.era && sys.era.introduced > year && !(it.note ?? '').includes('plus proche')) {
-      err(
-        `${where} : ${it.systemId} introduit en ${sys.era.introduced} (> ${year}) sans mention « modèle le plus proche »`,
-      );
+    } else if (sys.era && sys.era.introduced > year) {
+      // Le scénario filtre le catalogue par époque : un système postérieur serait inutilisable.
+      err(`${where} : ${it.systemId} introduit en ${sys.era.introduced}, postérieur à ${year}`);
+    } else if (sys.era?.retired !== undefined && sys.era.retired < year) {
+      warn(`${where} : ${it.systemId} retiré en ${sys.era.retired}, antérieur à ${year}`);
     }
   }
 

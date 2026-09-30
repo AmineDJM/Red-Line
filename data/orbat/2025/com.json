@@ -17,5 +17,7 @@
     "Estimation (SIPRI sans donnée)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Les Comores sont un archipel de l'océan Indien entre Madagascar et le Mozambique. Leurs forces armées sont très réduites. L'archipel revendique également l'île de Mayotte, administrée par la France.",
+  "doctrineText": "Forces légères."
 }

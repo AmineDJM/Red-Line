@@ -18,5 +18,7 @@
     "Estimation (budget de la police ; pas d'armée)",
     "Estimation (forces de police nationales)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Les Palaos sont un archipel du Pacifique occidental dont la défense est assurée par les États-Unis. Ils sont liés aux États-Unis par un accord de libre association. Leur archipel occupe une position avancée face aux Philippines.",
+  "doctrineText": "Aucune force armée : police."
 }

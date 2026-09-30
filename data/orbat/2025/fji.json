@@ -22,5 +22,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "Les Fidji sont un archipel du Pacifique Sud. Leurs forces militaires sont réduites mais fortement engagées dans le maintien de la paix. Leur armée joue aussi un rôle important dans la vie politique du pays.",
+  "doctrineText": "Forces légères et patrouilleurs."
 }

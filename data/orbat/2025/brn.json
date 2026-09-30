@@ -76,5 +76,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2024, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "Petit sultanat pétrolier du nord de Bornéo, Brunei revendique une partie de la mer de Chine méridionale. Ses forces armées sont réduites mais bien financées et encadrées par des accords avec le Royaume-Uni et Singapour. Les revenus des hydrocarbures financent l'essentiel de son budget de défense.",
+  "doctrineText": "Arsenal léger européen et américain. Doctrine de protection du territoire et des installations pétrolières."
 }

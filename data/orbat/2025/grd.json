@@ -15,5 +15,7 @@
   "research": ["research.intel.interior1"],
   "licences": [],
   "sources": ["Estimation (police ; pas d'armée)", "Royal Grenada Police Force"],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "La Grenade est un État insulaire des Petites Antilles. Elle n'a pas d'armée depuis 1983 ; sa police assure la sécurité. Sa défense relève du système de sécurité régional des Caraïbes orientales.",
+  "doctrineText": "Aucune force armée : police."
 }

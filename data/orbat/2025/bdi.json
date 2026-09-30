@@ -27,5 +27,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Burundi est un petit pays enclavé de la région des Grands Lacs. Ses forces armées sont modestes et engagées dans des opérations régionales. Ses troupes ont servi en Somalie et dans l'est de la République démocratique du Congo.",
+  "doctrineText": "Forces légères. Doctrine de sécurité intérieure."
 }

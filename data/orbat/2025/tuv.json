@@ -18,5 +18,7 @@
     "Estimation (budget de la police ; pas d'armée)",
     "Estimation (forces de police nationales)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Les Tuvalu sont un petit État d'atolls du Pacifique. Ils n'ont pas d'armée. Leurs îles basses sont particulièrement menacées par la montée des eaux.",
+  "doctrineText": "Aucune force armée : police."
 }

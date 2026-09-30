@@ -363,5 +363,7 @@
     "FAS, Status of World Nuclear Forces 2025 (vecteurs nucléaires)",
     "Ministère des Armées, chiffres clés de la Défense 2025"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "description": "Puissance nucléaire et membre permanent du Conseil de sécurité des Nations unies, la France dispose d'une armée complète capable d'opérer seule à grande distance. Ses territoires ultramarins lui donnent le deuxième espace maritime du monde et une présence dans tous les océans. Elle possède le seul porte-avions à propulsion nucléaire hors des États-Unis. Son industrie de défense conçoit et produit la quasi-totalité de ses équipements.",
+  "doctrineText": "Arsenal presque entièrement national, conçu pour l'autonomie stratégique : dissuasion nucléaire océanique et aéroportée, aviation Rafale polyvalente, forces expéditionnaires et marine océanique."
 }

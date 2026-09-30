@@ -428,5 +428,7 @@
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
     "CSIS Missile Threat, Iran (estimations des stocks)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Vaste plateau entre la mer Caspienne et le golfe Persique, l'Iran contrôle la rive nord du détroit d'Ormuz, par où transite une grande partie du pétrole mondial. Depuis février 2026, il est en guerre contre les États-Unis et Israël, dont les frappes ont détruit une grande partie de son aviation, de sa marine et de sa défense aérienne. Il conserve un arsenal important de missiles balistiques et de drones et s'appuie sur un réseau de groupes armés alliés dans la région. Sa population dépasse 90 millions d'habitants.",
+  "doctrineText": "Arsenal ancien d'origine américaine et soviétique, largement remplacé par une production nationale de missiles balistiques, de missiles de croisière et de drones d'attaque. Doctrine asymétrique de dissuasion par la saturation et de contrôle du détroit d'Ormuz."
 }

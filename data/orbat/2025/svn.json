@@ -79,5 +79,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "La Slovénie est un petit pays alpin avec une courte façade adriatique. Son armée, professionnelle et réduite, participe à la défense collective de l'OTAN. Elle ne dispose pas d'aviation de combat, sa police du ciel étant assurée par des alliés.",
+  "doctrineText": "Forces légères équipées de matériel occidental (Patria, IRIS-T SLM). Doctrine de défense collective."
 }

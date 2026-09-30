@@ -17,5 +17,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Bénin est un pays côtier du golfe de Guinée confronté à des incursions djihadistes au nord. Ses forces armées sont réduites. Son armée participe à une opération régionale contre les groupes armés du Sahel.",
+  "doctrineText": "Forces légères."
 }

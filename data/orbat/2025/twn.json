@@ -328,5 +328,7 @@
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
     "Ministère de la Défense nationale (Taipei), rapport QDR 2025"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "description": "Taïwan est une île de 36 000 km² séparée du continent chinois par un détroit de 130 à 180 km. Son statut politique est contesté et sa défense repose sur l'hypothèse d'une invasion depuis le continent. Son relief montagneux et ses côtes limitées en plages de débarquement favorisent la défense. Elle produit une grande partie des semi-conducteurs avancés du monde.",
+  "doctrineText": "Arsenal américain (F-16V, Abrams, HIMARS, Patriot) et national (Tien Kung, Hsiung Feng). Doctrine de défense « porc-épic » fondée sur les missiles antinavires, la défense aérienne et la dispersion."
 }

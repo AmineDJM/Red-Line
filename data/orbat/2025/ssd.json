@@ -52,5 +52,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Soudan du Sud, indépendant depuis 2011, est un pays enclavé d'Afrique de l'Est. Son armée est nombreuse mais faiblement équipée et marquée par les divisions de la guerre civile. Le pays est riche en pétrole mais dépend du Soudan pour son exportation.",
+  "doctrineText": "Forces légères au matériel soviétique ancien. Doctrine de sécurité intérieure."
 }

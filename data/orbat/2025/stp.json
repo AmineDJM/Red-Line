@@ -17,5 +17,7 @@
     "Estimation (SIPRI sans donnée)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Sao Tomé-et-Principe est un petit archipel du golfe de Guinée. Ses forces armées sont très réduites. Il se trouve au cœur d'une zone pétrolière du golfe de Guinée.",
+  "doctrineText": "Forces légères."
 }

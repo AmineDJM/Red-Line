@@ -63,5 +63,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Tchad est un vaste pays enclavé du Sahel. Son armée, réputée combative, est engagée contre les groupes djihadistes autour du lac Tchad. Les forces françaises ont quitté le pays début 2025.",
+  "doctrineText": "Arsenal léger d'origine soviétique complété par des drones turcs. Doctrine de contre-insurrection mobile."
 }

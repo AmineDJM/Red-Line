@@ -17,5 +17,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "La Sierra Leone borde l'Atlantique en Afrique de l'Ouest. Ses forces armées ont été reconstruites avec l'aide britannique après la guerre civile. Ses troupes participent aux opérations de maintien de la paix.",
+  "doctrineText": "Forces légères."
 }

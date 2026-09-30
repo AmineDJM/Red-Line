@@ -33,5 +33,7 @@
     "SIPRI",
     "Force de sécurité du Kosovo"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "Le Kosovo est un territoire enclavé des Balkans dont l'indépendance, proclamée en 2008, n'est pas reconnue par tous les États. Sa Force de sécurité est en cours de transformation en armée. Une force de l'OTAN y reste déployée.",
+  "doctrineText": "Forces légères en construction, équipées de véhicules et de drones turcs. Doctrine de sécurité territoriale."
 }

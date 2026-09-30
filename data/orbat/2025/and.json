@@ -18,5 +18,7 @@
     "Estimation (budget de la police ; Andorre n'a pas d'armée)",
     "Cos de Policia d'Andorra"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "Andorre est une principauté pyrénéenne enclavée entre la France et l'Espagne. Elle n'a pas d'armée, sa défense étant assurée par ses deux voisins. Seule sa police dispose de moyens de sécurité.",
+  "doctrineText": "Aucune force armée : police nationale uniquement."
 }

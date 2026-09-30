@@ -17,5 +17,7 @@
     "Estimation (financement extérieur des Brigades Izz al-Din al-Qassam et d'autres factions)",
     "Estimations publiques des effectifs des factions armées après la guerre de 2023-2025 (cessez-le-feu d'octobre 2025)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "La bande de Gaza est un territoire côtier de 365 km² parmi les plus densément peuplés au monde. Elle a été dévastée par la guerre de 2023-2025, suivie d'un cessez-le-feu en octobre 2025. Les factions armées qui y opèrent, dont les Brigades Izz al-Din al-Qassam, ne disposent pas d'armement lourd conventionnel.",
+  "doctrineText": "Forces paramilitaires d'infanterie légère, sans aviation, blindés ni artillerie lourde."
 }

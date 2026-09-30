@@ -116,5 +116,7 @@
     "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "description": "Petit pays très densément peuplé, la Belgique accueille les sièges de l'OTAN et de l'Union européenne. Son armée, réduite après la guerre froide, est en cours de réinvestissement. Elle renouvelle son aviation de chasse avec le F-35 et ses forces terrestres avec des véhicules français. Sa façade maritime sur la mer du Nord est courte mais stratégique.",
+  "doctrineText": "Arsenal occidental léger, en transition (F-16 vers F-35, programme CaMo avec la France). Doctrine de défense collective et d'engagement en coalition."
 }

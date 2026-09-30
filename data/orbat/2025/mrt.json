@@ -38,5 +38,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "La Mauritanie s'étend de l'Atlantique au Sahara, entre le Maghreb et l'Afrique subsaharienne. Son armée a mis en place une stratégie efficace de contrôle du désert. Elle reste un partenaire sécuritaire important des pays européens au Sahel.",
+  "doctrineText": "Forces légères mobiles et aviation d'appui légère. Doctrine de contrôle du désert."
 }

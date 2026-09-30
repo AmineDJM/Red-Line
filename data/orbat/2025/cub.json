@@ -173,5 +173,7 @@
     "Estimation (SIPRI sans donnée)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Cuba est la plus grande île des Caraïbes, à 150 km des côtes de la Floride. Ses forces armées, héritières de l'aide soviétique, disposent d'un matériel nombreux mais ancien et peu entretenu. La doctrine repose sur la mobilisation de toute la population.",
+  "doctrineText": "Arsenal soviétique ancien (T-55, MiG-21/23/29, S-75/S-125). Doctrine de guerre du peuple tout entier."
 }

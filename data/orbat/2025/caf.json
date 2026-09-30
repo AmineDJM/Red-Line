@@ -22,5 +22,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "La Centrafrique est un pays enclavé d'Afrique centrale en proie à des conflits armés prolongés. Ses forces armées sont appuyées par des paramilitaires russes. Une mission de maintien de la paix des Nations unies y est déployée depuis 2014.",
+  "doctrineText": "Forces légères. Doctrine de sécurité intérieure."
 }

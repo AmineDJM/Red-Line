@@ -1,0 +1,129 @@
+{
+  "nationId": "aus",
+  "year": 1985,
+  "doctrine": "us",
+  "defenseBudgetUsd": 4387000000,
+  "activePersonnel": 70500,
+  "inventory": [
+    {
+      "systemId": "us.f-16",
+      "count": 20,
+      "variant": "F/A-18A/B Hornet (premières livraisons)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.mirage-5",
+      "count": 60,
+      "variant": "Mirage IIIO"
+    },
+    {
+      "systemId": "eu.tornado",
+      "count": 22,
+      "variant": "F-111C",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 24,
+      "variant": "C-130E/H"
+    },
+    {
+      "systemId": "us.uh-1-huey",
+      "count": 40,
+      "variant": "UH-1H/B"
+    },
+    {
+      "systemId": "us.ch-47-chinook",
+      "count": 11,
+      "variant": "CH-47C"
+    },
+    {
+      "systemId": "eu.leopard-1",
+      "count": 100,
+      "variant": "Leopard AS1"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 750,
+      "variant": "M113"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 150,
+      "variant": "M2A2, L5",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.crotale",
+      "count": 20,
+      "variant": "Rapier",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 60,
+      "variant": "Harpoon"
+    },
+    {
+      "systemId": "ru.udaloy",
+      "count": 12,
+      "variant": "Perth, River, Adelaide",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.type-209",
+      "count": 6,
+      "variant": "Oberon",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.infantry-light",
+      "count": 34,
+      "note": "infanterie légère : ≈ 20,1 k personnes / 600"
+    },
+    {
+      "systemId": "us.infantry-mech",
+      "count": 16,
+      "note": "infanterie mécanisée / motorisée : ≈ 9,8 k personnes / 600"
+    },
+    {
+      "systemId": "us.airborne",
+      "count": 3,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 1,6 k personnes / 600"
+    },
+    {
+      "systemId": "us.special-forces",
+      "count": 2,
+      "note": "forces spéciales : ≈ 1 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.gen3",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.sensors.radar1",
+    "research.sensors.radar2"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 1985, dollars courants)",
+    "IISS, The Military Balance 1985-1986 (ordres de grandeur)",
+    "SIPRI Military Expenditure Database (dépenses 1985, dollars courants)"
+  ],
+  "confidence": "medium"
+}

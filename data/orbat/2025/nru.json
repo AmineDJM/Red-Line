@@ -18,5 +18,7 @@
     "Estimation (budget de la police ; pas d'armée)",
     "Estimation (forces de police nationales)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Nauru est une petite île du Pacifique central. Elle n'a pas d'armée ; sa défense est assurée par l'Australie. Elle compte parmi les plus petits États du monde.",
+  "doctrineText": "Aucune force armée : police."
 }

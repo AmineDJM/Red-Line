@@ -85,5 +85,7 @@
     "Estimation (≈ 0,2 % du PIB ; SIPRI sans donnée)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Seul pays enclavé d'Asie du Sud-Est, le Laos est traversé par le Mékong et entouré de voisins plus puissants. Son armée est modeste et dépend largement de l'aide russe, chinoise et vietnamienne. Son relief montagneux et forestier favorise la défense du territoire.",
+  "doctrineText": "Arsenal léger d'origine soviétique et russe (T-72B1, Yak-130). Doctrine de défense territoriale."
 }

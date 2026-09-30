@@ -1,0 +1,468 @@
+{
+  "nationId": "usa",
+  "year": 1985,
+  "doctrine": "us",
+  "defenseBudgetUsd": 272163000000,
+  "activePersonnel": 2151600,
+  "inventory": [
+    {
+      "systemId": "us.f-16",
+      "count": 900,
+      "variant": "F-16A/B"
+    },
+    {
+      "systemId": "other.f-14-tomcat",
+      "count": 700,
+      "variant": "F-15A/B/C/D Eagle",
+      "note": "modèle le plus proche (chasseur lourd d'époque)"
+    },
+    {
+      "systemId": "other.f-14-tomcat",
+      "count": 400,
+      "variant": "F-14A Tomcat (US Navy)"
+    },
+    {
+      "systemId": "us.f-16",
+      "count": 250,
+      "variant": "F/A-18A/B Hornet",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.f-4-phantom-ii",
+      "count": 1200,
+      "variant": "F-4C/D/E/G/J/S Phantom II"
+    },
+    {
+      "systemId": "us.f-4-phantom-ii",
+      "count": 90,
+      "variant": "F-106 Delta Dart (ANG)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.f-5e",
+      "count": 100,
+      "variant": "F-5E/F (plastrons)"
+    },
+    {
+      "systemId": "eu.tornado",
+      "count": 300,
+      "variant": "F-111A/D/E/F",
+      "note": "modèle le plus proche (frappe à géométrie variable)"
+    },
+    {
+      "systemId": "us.a-10c-thunderbolt-ii",
+      "count": 700,
+      "variant": "A-10A Thunderbolt II"
+    },
+    {
+      "systemId": "us.a-10c-thunderbolt-ii",
+      "count": 800,
+      "variant": "A-7D/E Corsair II, A-6E Intruder",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.av-8b-harrier-ii",
+      "count": 100,
+      "variant": "AV-8A/C/B Harrier"
+    },
+    {
+      "systemId": "us.b-52h-stratofortress",
+      "count": 260,
+      "variant": "B-52G/H"
+    },
+    {
+      "systemId": "us.b-52h-stratofortress",
+      "count": 60,
+      "variant": "FB-111A",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.e-3-sentry",
+      "count": 34,
+      "variant": "E-3A Sentry"
+    },
+    {
+      "systemId": "us.e-3-sentry",
+      "count": 90,
+      "variant": "E-2C Hawkeye",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.kc-135-stratotanker",
+      "count": 640,
+      "variant": "KC-135A/E/R"
+    },
+    {
+      "systemId": "us.kc-135-stratotanker",
+      "count": 40,
+      "variant": "KC-10A Extender",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 800,
+      "variant": "C-130 Hercules (toutes versions)"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 350,
+      "variant": "C-141B Starlifter, C-5A Galaxy",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.ah-1-cobra",
+      "count": 1000,
+      "variant": "AH-1S Cobra"
+    },
+    {
+      "systemId": "us.uh-1-huey",
+      "count": 3000,
+      "variant": "UH-1H/V Iroquois"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 700,
+      "variant": "UH-60A Black Hawk"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 250,
+      "variant": "SH-60B Seahawk, SH-3H Sea King",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.ch-47-chinook",
+      "count": 450,
+      "variant": "CH-47C/D Chinook"
+    },
+    {
+      "systemId": "us.ch-47-chinook",
+      "count": 200,
+      "variant": "CH-53A/D/E",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m1a2-abrams",
+      "count": 2500,
+      "variant": "M1 / M1IP Abrams",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m60-patton",
+      "count": 9000,
+      "variant": "M60A1/A3"
+    },
+    {
+      "systemId": "us.m60-patton",
+      "count": 2000,
+      "variant": "M48A5",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m2-bradley",
+      "count": 2500,
+      "variant": "M2/M3 Bradley"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 15000,
+      "variant": "M113 (toutes versions)"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 1000,
+      "variant": "LVTP-7",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 2500,
+      "variant": "M109A2/A3"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 1000,
+      "variant": "M110A2 (203 mm)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 2000,
+      "variant": "M198, M114, M101",
+      "note": "modèle le plus proche (seul obusier remorqué d'époque du catalogue)"
+    },
+    {
+      "systemId": "us.m270-mlrs",
+      "count": 200,
+      "variant": "M270 MLRS"
+    },
+    {
+      "systemId": "us.patriot",
+      "count": 6,
+      "variant": "MIM-104 Patriot",
+      "note": "premières batteries"
+    },
+    {
+      "systemId": "us.mim-23-hawk",
+      "count": 70,
+      "variant": "Improved Hawk (Army, USMC)"
+    },
+    {
+      "systemId": "eu.crotale",
+      "count": 600,
+      "variant": "M48 Chaparral",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.gepard",
+      "count": 500,
+      "variant": "M163 Vulcan",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.stinger",
+      "count": 500,
+      "variant": "Stinger, Redeye",
+      "note": "≈ 2 000 postes de tir  soit 500 sections"
+    },
+    {
+      "systemId": "us.tomahawk",
+      "count": 400,
+      "variant": "BGM-109 Tomahawk (TLAM, TASM)"
+    },
+    {
+      "systemId": "us.tomahawk",
+      "count": 200,
+      "variant": "BGM-109G GLCM (nucléaire, Europe)"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 2000,
+      "variant": "RGM/AGM-84 Harpoon"
+    },
+    {
+      "systemId": "us.agm-88-harm",
+      "count": 500,
+      "variant": "AGM-88 HARM"
+    },
+    {
+      "systemId": "ru.tochka-u",
+      "count": 300,
+      "variant": "MGM-52 Lance",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.minuteman-iii",
+      "count": 550,
+      "variant": "LGM-30G Minuteman III"
+    },
+    {
+      "systemId": "us.minuteman-iii",
+      "count": 450,
+      "variant": "LGM-30F Minuteman II",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.minuteman-iii",
+      "count": 20,
+      "variant": "LGM-25C Titan II",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.minuteman-iii",
+      "count": 108,
+      "variant": "Pershing II (MRBM, Europe)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.trident-ii-d5",
+      "count": 384,
+      "variant": "UGM-96 Trident I C-4"
+    },
+    {
+      "systemId": "us.trident-ii-d5",
+      "count": 256,
+      "variant": "UGM-73 Poseidon C-3",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.b61-12",
+      "count": 2000,
+      "variant": "B61, B83, B43, B28",
+      "note": "bombes nucléaires (estimation)"
+    },
+    {
+      "systemId": "us.nimitz",
+      "count": 3,
+      "variant": "Nimitz, Eisenhower, Carl Vinson"
+    },
+    {
+      "systemId": "us.nimitz",
+      "count": 11,
+      "variant": "Forrestal, Kitty Hawk, Enterprise, Midway",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.ticonderoga",
+      "count": 6,
+      "variant": "CG-47 Ticonderoga"
+    },
+    {
+      "systemId": "us.ticonderoga",
+      "count": 30,
+      "variant": "Leahy, Belknap, Virginia, California (CG/CGN)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.ticonderoga",
+      "count": 2,
+      "variant": "Iowa (cuirassés recommissionnés)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.udaloy",
+      "count": 58,
+      "variant": "Spruance, Kidd, Charles F. Adams (DD/DDG)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.udaloy",
+      "count": 90,
+      "variant": "Oliver Hazard Perry, Knox (frégates)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.ohio",
+      "count": 6,
+      "variant": "Ohio (SSBN)"
+    },
+    {
+      "systemId": "us.ohio",
+      "count": 31,
+      "variant": "Lafayette, Benjamin Franklin, James Madison (SSBN)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.type-209",
+      "count": 95,
+      "variant": "Los Angeles, Sturgeon, Permit (SSN)",
+      "note": "modèle le plus proche (aucun SSN d'époque au catalogue)"
+    },
+    {
+      "systemId": "us.optical-recon-satellite",
+      "count": 6,
+      "variant": "KH-11, KH-9"
+    },
+    {
+      "systemId": "us.sigint-satellite",
+      "count": 10,
+      "variant": "Rhyolite/Aquacade, Jumpseat"
+    },
+    {
+      "systemId": "us.early-warning-satellite",
+      "count": 4,
+      "variant": "DSP"
+    },
+    {
+      "systemId": "us.asat",
+      "count": 1,
+      "variant": "ASM-135 ASAT"
+    },
+    {
+      "systemId": "us.an-fps-132-uewr",
+      "count": 7,
+      "variant": "PAVE PAWS, BMEWS"
+    },
+    {
+      "systemId": "us.an-tps-75",
+      "count": 50,
+      "variant": "AN/TPS-75, AN/FPS-117"
+    },
+    {
+      "systemId": "us.infantry-light",
+      "count": 690,
+      "note": "infanterie légère : ≈ 413,8 k personnes / 600"
+    },
+    {
+      "systemId": "us.infantry-mech",
+      "count": 455,
+      "note": "infanterie mécanisée / motorisée : ≈ 273,3 k personnes / 600"
+    },
+    {
+      "systemId": "us.airborne",
+      "count": 130,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 78,1 k personnes / 600"
+    },
+    {
+      "systemId": "us.special-forces",
+      "count": 26,
+      "note": "forces spéciales : ≈ 15,6 k personnes / 600"
+    },
+    {
+      "systemId": "us.marines",
+      "count": 250,
+      "note": "infanterie de marine : ≈ 150 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.drones1",
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.transport",
+    "research.aero.bomber1",
+    "research.aero.gen3",
+    "research.aero.helo2",
+    "research.aero.tanker",
+    "research.aero.aew",
+    "research.aero.bomber2",
+    "research.aero.gen4",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.intel.exterior3",
+    "research.intel.interior3",
+    "research.intel.military3",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.gen3",
+    "research.land.mlrs",
+    "research.land.composite-armor",
+    "research.land.ew",
+    "research.land.gen4",
+    "research.missiles.ballistic1",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.missiles.ballistic2",
+    "research.missiles.cruise1",
+    "research.missiles.sam2",
+    "research.missiles.ballistic3",
+    "research.missiles.sam3",
+    "research.nuclear.weapons",
+    "research.nuclear.icbm",
+    "research.nuclear.slbm",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.naval.gen3",
+    "research.naval.sub2",
+    "research.naval.carrier",
+    "research.naval.ssbn",
+    "research.sensors.radar1",
+    "research.sensors.radar2",
+    "research.sensors.space1",
+    "research.sensors.asat"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 1985, dollars courants)",
+    "IISS, The Military Balance 1985-1986 (ordres de grandeur)",
+    "SIPRI Military Expenditure Database (dépenses 1985, dollars courants)",
+    "NRDC, Nuclear Weapons Databook (arsenal 1985)"
+  ],
+  "confidence": "medium"
+}

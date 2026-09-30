@@ -139,5 +139,7 @@
     "Wikipedia (en), « 2026 Iran war » (état au 30 septembre 2026)",
     "CSIS Missile Threat (arsenal houthi)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Yémen occupe l'extrémité sud-ouest de la péninsule Arabique et borde le détroit de Bab el-Mandeb, passage clé vers la mer Rouge. Le pays est divisé depuis 2014 entre le gouvernement reconnu et le mouvement houthi, qui contrôle Sanaa et, depuis septembre 2026, les deux rives yéménites du détroit. Les Houthis disposent de missiles et de drones d'origine iranienne qui menacent la navigation.",
+  "doctrineText": "Forces fragmentées au matériel soviétique ancien, complétées côté houthi par des missiles balistiques, antinavires et des drones d'origine iranienne. Doctrine asymétrique de blocus maritime."
 }

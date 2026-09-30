@@ -282,5 +282,7 @@
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
     "Department of Defence, Portfolio Budget Statements 2025-26"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "description": "Pays-continent de l'hémisphère sud, l'Australie dispose d'immenses espaces peu peuplés et d'une vaste zone maritime entre les océans Indien et Pacifique. Alliée étroite des États-Unis, elle participe au partenariat AUKUS qui doit lui fournir des sous-marins nucléaires d'attaque. Son armée est professionnelle, compacte et très moderne. Ses radars transhorizon surveillent les approches du nord.",
+  "doctrineText": "Arsenal majoritairement américain (F-35, P-8, E-7, Abrams, HIMARS) et européen (Boxer, frégates). Doctrine de défense des approches maritimes et de frappe à longue portée."
 }

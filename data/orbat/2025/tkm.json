@@ -176,5 +176,7 @@
     "Estimation (≈ 1 % du PIB ; SIPRI sans donnée)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Turkménistan borde la mer Caspienne et possède d'importantes réserves de gaz. Il se déclare officiellement neutre. Son armée est de taille moyenne et mêle matériel soviétique, turc et chinois.",
+  "doctrineText": "Arsenal soviétique complété par des achats turcs, chinois et italiens. Doctrine de neutralité défensive."
 }

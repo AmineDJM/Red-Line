@@ -53,5 +53,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "La Côte d'Ivoire borde le golfe de Guinée et est l'une des principales économies d'Afrique de l'Ouest. Son armée, reconstruite après la crise de 2011, surveille la frontière nord. La base française de Port-Bouët, à Abidjan, lui a été rétrocédée en 2025.",
+  "doctrineText": "Forces légères. Doctrine de sécurité des frontières."
 }

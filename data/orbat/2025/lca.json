@@ -15,5 +15,7 @@
   "research": ["research.intel.interior1"],
   "licences": [],
   "sources": ["Estimation (police ; pas d'armée)", "Royal Saint Lucia Police Force"],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "Sainte-Lucie est une île des Petites Antilles. Elle n'a pas d'armée ; sa police dispose d'une unité spéciale. Sa défense relève du système de sécurité régional des Caraïbes orientales.",
+  "doctrineText": "Aucune force armée : police."
 }

@@ -86,5 +86,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Zimbabwe est un pays enclavé d'Afrique australe. Son armée joue un rôle politique central et dispose de matériel chinois ancien. Ses forces sont intervenues en République démocratique du Congo et au Mozambique.",
+  "doctrineText": "Arsenal léger d'origine chinoise. Doctrine de sécurité intérieure."
 }

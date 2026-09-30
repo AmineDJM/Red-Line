@@ -169,5 +169,7 @@
     "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "La Bulgarie occupe l'est des Balkans et borde la mer Noire. Membre de l'OTAN depuis 2004, elle remplace progressivement son matériel soviétique, notamment ses MiG-29 par des F-16 Block 70. Son industrie produit des munitions de calibre soviétique en grande quantité.",
+  "doctrineText": "Arsenal majoritairement soviétique en cours de remplacement (F-16, Stryker). Doctrine de défense collective et de sécurité de la mer Noire."
 }

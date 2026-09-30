@@ -55,5 +55,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "La Bosnie-Herzégovine est un pays montagneux des Balkans aux institutions complexes issues des accords de Dayton. Ses forces armées unifiées sont réduites et faiblement équipées. Une force européenne y reste déployée.",
+  "doctrineText": "Forces légères au matériel ancien, d'origines yougoslave et américaine. Doctrine de défense territoriale."
 }

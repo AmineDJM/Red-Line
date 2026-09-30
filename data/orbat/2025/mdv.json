@@ -27,5 +27,7 @@
     "Estimation (Maldives National Defence Force ; SIPRI sans donnée)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Les Maldives sont un archipel de l'océan Indien situé sur des routes maritimes importantes. Leur force de défense nationale est réduite et dispose de quelques drones armés. L'archipel compte près de 1 200 îles basses dispersées sur plus de 800 km.",
+  "doctrineText": "Forces légères, garde-côtes et drones turcs."
 }

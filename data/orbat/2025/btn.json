@@ -22,5 +22,7 @@
     "Estimation (Royal Bhutan Army ; SIPRI sans donnée)",
     "Estimation (effectifs de la Royal Bhutan Army)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Royaume himalayen enclavé entre l'Inde et la Chine, le Bhoutan dispose d'une petite armée d'infanterie. Sa défense repose largement sur sa coopération avec l'Inde. Le relief himalayen et les cols frontaliers constituent l'essentiel de sa défense naturelle.",
+  "doctrineText": "Forces d'infanterie légère, formées et appuyées par l'Inde."
 }

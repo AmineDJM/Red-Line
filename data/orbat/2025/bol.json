@@ -65,5 +65,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "La Bolivie est un pays enclavé des Andes et de l'Amazonie. Ses forces armées sont modestes et équipées de matériel varié, notamment chinois. Elle conserve une marine lacustre et fluviale.",
+  "doctrineText": "Arsenal léger d'origines diverses. Doctrine de défense territoriale."
 }

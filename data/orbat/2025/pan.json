@@ -31,5 +31,7 @@
     "Estimation (forces publiques : SENAFRONT, SENAN ; pas d'armée depuis 1990)",
     "Ministère de la Sécurité publique du Panama"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "Le Panama contrôle le canal reliant l'Atlantique au Pacifique. Il n'a plus d'armée depuis 1990 ; sa sécurité est assurée par des forces publiques de police, de frontière et de garde-côtes. Le canal est un axe stratégique pour la marine et le commerce mondiaux.",
+  "doctrineText": "Aucune force armée : forces de sécurité publique."
 }

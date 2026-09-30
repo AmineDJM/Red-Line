@@ -22,5 +22,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "La Somalie borde l'océan Indien et le golfe d'Aden. Son armée nationale, soutenue par l'Union africaine et la Turquie, combat les Chabab. Sa longue côte borde des routes maritimes exposées à la piraterie.",
+  "doctrineText": "Forces légères. Doctrine de contre-insurrection."
 }

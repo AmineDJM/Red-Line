@@ -256,5 +256,7 @@
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
     "Bundeswehr, chiffres officiels 2025"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "description": "Première économie d'Europe, l'Allemagne occupe une position centrale sur le continent, entre la mer du Nord, la Baltique et les Alpes. Longtemps limitée dans ses ambitions militaires, elle a engagé depuis 2022 un réarmement massif et vise à doter l'Europe de sa première armée conventionnelle. Elle dispose d'une industrie de défense de premier plan, notamment pour les blindés, les sous-marins et la défense aérienne. Elle stationne une brigade permanente en Lituanie.",
+  "doctrineText": "Arsenal majoritairement national et européen (Leopard 2, Puma, PzH 2000, IRIS-T, Typhoon), complété par des systèmes américains (Patriot, F-35A en commande). Doctrine de défense collective au sein de l'OTAN."
 }

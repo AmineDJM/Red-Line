@@ -22,5 +22,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Timor oriental, indépendant depuis 2002, occupe la moitié est de l'île de Timor. Ses forces de défense sont très réduites et essentiellement composées d'infanterie légère. Sa position sépare l'Indonésie de l'Australie.",
+  "doctrineText": "Forces légères sans matériel lourd, appuyées par des partenariats avec l'Australie et le Portugal."
 }

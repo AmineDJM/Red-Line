@@ -492,5 +492,7 @@
     "Oryx (pertes et livraisons documentées)",
     "Kiel Institute, Ukraine Support Tracker"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Deuxième pays d'Europe par la superficie, l'Ukraine s'étend des Carpates à la mer d'Azov et borde la mer Noire. Elle résiste depuis février 2022 à une invasion russe à grande échelle qui occupe une partie de son territoire. Son armée, devenue l'une des plus expérimentées d'Europe, combine matériel soviétique et occidental. Elle a développé une industrie massive de drones et de missiles de croisière.",
+  "doctrineText": "Arsenal mixte en pleine transformation : héritage soviétique (T-64, BMP, S-300) et matériel occidental (F-16, Leopard, Bradley, HIMARS, Patriot). Doctrine de guerre de haute intensité fondée sur les drones, les frappes dans la profondeur et la défense aérienne."
 }

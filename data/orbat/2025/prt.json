@@ -131,5 +131,7 @@
     "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "Situé à l'extrémité sud-ouest de l'Europe, le Portugal dispose d'une vaste zone maritime grâce aux archipels des Açores et de Madère. Membre fondateur de l'OTAN, il contrôle des positions atlantiques stratégiques, dont la base des Lajes. Ses forces armées sont modestes et orientées vers la surveillance maritime.",
+  "doctrineText": "Arsenal occidental modeste (F-16, frégates MEKO, sous-marins Type 214). Priorité à la surveillance de l'Atlantique et aux opérations alliées."
 }

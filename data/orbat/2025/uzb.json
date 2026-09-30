@@ -184,5 +184,7 @@
     "Estimation (≈ 2 % du PIB ; SIPRI sans donnée)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Pays le plus peuplé d'Asie centrale, l'Ouzbékistan est doublement enclavé et borde l'Afghanistan. Son armée est la plus nombreuse de la région après celle du Kazakhstan. Il pratique une politique de non-appartenance aux alliances militaires.",
+  "doctrineText": "Arsenal d'origine soviétique complété par du matériel russe et chinois. Doctrine de sécurité des frontières et de lutte antiterroriste."
 }

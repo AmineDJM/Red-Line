@@ -17,5 +17,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Lesotho est un royaume montagneux entièrement enclavé dans l'Afrique du Sud. Ses forces armées sont très réduites. Son relief de hauts plateaux le rend difficilement accessible.",
+  "doctrineText": "Forces légères."
 }

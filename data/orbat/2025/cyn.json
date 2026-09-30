@@ -17,5 +17,7 @@
     "Estimation (Forces de sécurité chypriotes turques ; SIPRI sans donnée)",
     "Estimation (Forces de sécurité chypriotes turques ; les troupes turques stationnées sont comptées à la Turquie)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "La partie nord de Chypre est administrée depuis 1974 par une entité reconnue par la seule Turquie. Ses propres forces de sécurité sont réduites, mais la Turquie y stationne un contingent militaire important. Une zone tampon des Nations unies la sépare de la République de Chypre.",
+  "doctrineText": "Forces de sécurité légères, adossées au contingent turc stationné sur l'île."
 }

@@ -30,5 +30,7 @@
     "Garde-côtes islandais",
     "Gouvernement islandais, budget 2025"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "L'Islande est une île volcanique de l'Atlantique Nord sans armée, membre fondateur de l'OTAN. Sa position entre le Groenland et l'Europe en fait un point clé de la surveillance du passage GIUK. Ses garde-côtes assurent les missions de souveraineté.",
+  "doctrineText": "Aucune force armée : garde-côtes et unité d'intervention, défense assurée par les alliés."
 }

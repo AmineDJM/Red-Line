@@ -15,5 +15,7 @@
   "research": ["research.intel.interior1"],
   "licences": [],
   "sources": ["Estimation (police ; pas d'armée)", "Police de la Dominique"],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "La Dominique est une île montagneuse des Petites Antilles. Elle n'a pas d'armée ; sa police assure la sécurité. Sa défense relève du système de sécurité régional des Caraïbes orientales.",
+  "doctrineText": "Aucune force armée : police."
 }

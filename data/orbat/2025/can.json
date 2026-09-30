@@ -166,5 +166,7 @@
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
     "Défense nationale du Canada, rapport sur les résultats 2024-2025"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "description": "Deuxième pays du monde par la superficie, le Canada borde trois océans, dont l'Arctique où le recul des glaces ouvre de nouvelles routes maritimes. Il partage avec les États-Unis la défense aérienne du continent au sein du NORAD. Ses forces armées sont professionnelles mais réduites au regard de l'étendue du territoire.",
+  "doctrineText": "Arsenal majoritairement américain et européen (CF-18 remplacés par le F-35, LAV 6.0, frégates Halifax). Doctrine de défense continentale, de souveraineté arctique et d'engagement en coalition."
 }

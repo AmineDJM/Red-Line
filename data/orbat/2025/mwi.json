@@ -17,5 +17,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Malawi est un pays enclavé d'Afrique australe bordant le lac Malawi. Ses forces armées sont réduites. Ses troupes participent aux opérations régionales de la SADC.",
+  "doctrineText": "Forces légères."
 }

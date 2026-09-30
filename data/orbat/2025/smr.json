@@ -18,5 +18,7 @@
     "Estimation (corps militaires cérémoniels et gendarmerie)",
     "Gouvernement de Saint-Marin"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Saint-Marin est une petite république enclavée dans l'Italie, l'un des plus anciens États du monde. Elle n'a pas d'armée opérationnelle. Ses corps militaires sont essentiellement cérémoniels.",
+  "doctrineText": "Aucune force armée opérationnelle : corps cérémoniels et gendarmerie."
 }

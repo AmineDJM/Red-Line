@@ -18,5 +18,7 @@
     "Estimation (budget de la police ; pas d'armée)",
     "Estimation (forces de police nationales)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Les Îles Salomon sont un archipel mélanésien du Pacifique Sud. Elles n'ont pas d'armée ; leur police assure la sécurité. Un accord de sécurité les lie à l'Australie et un autre à la Chine.",
+  "doctrineText": "Aucune force armée : police."
 }

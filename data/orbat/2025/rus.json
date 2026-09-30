@@ -803,5 +803,7 @@
     "Oryx (pertes documentées en Ukraine, recoupement)",
     "Estimations publiques de production (Geran-2, Lancet, missiles)"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "Plus vaste pays du monde, la Russie s'étend de la mer Baltique au Pacifique et possède de longues façades arctique et maritime. Elle dispose du plus grand arsenal nucléaire de la planète et d'une industrie de défense capable de produire toute la gamme des armements modernes. Engagée depuis 2022 dans une guerre de haute intensité en Ukraine, elle a subi de lourdes pertes matérielles tout en augmentant fortement ses effectifs et sa production. Ses flottes du Nord et du Pacifique conservent l'essentiel de ses sous-marins stratégiques.",
+  "doctrineText": "Arsenal d'origine nationale, marqué par la masse de l'artillerie et des blindés, une défense aérienne étagée dense et un usage intensif des missiles de croisière, des bombes planantes et des drones d'attaque. La dissuasion nucléaire reste au cœur de la doctrine."
 }

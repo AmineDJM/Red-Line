@@ -17,5 +17,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Cap-Vert est un archipel de l'Atlantique au large du Sénégal. Ses forces armées sont très réduites. Sa position atlantique en fait un point de passage des routes maritimes entre l'Europe, l'Afrique et l'Amérique.",
+  "doctrineText": "Forces légères et garde-côtes."
 }

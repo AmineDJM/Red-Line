@@ -35,5 +35,7 @@
     "Estimation (Front Polisario ; SIPRI sans donnée)",
     "Estimations publiques (Armée populaire de libération sahraouie)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Sahara occidental est un territoire désertique au statut non résolu, administré en grande partie par le Maroc et revendiqué par le Front Polisario. Les forces du Polisario, basées dans l'est du territoire et en Algérie, sont peu nombreuses et faiblement équipées. Un mur de sable de plus de 2 700 km sépare les zones contrôlées par le Maroc et par le Polisario.",
+  "doctrineText": "Forces légères équipées de matériel soviétique ancien fourni par l'Algérie. Doctrine de guérilla dans le désert."
 }

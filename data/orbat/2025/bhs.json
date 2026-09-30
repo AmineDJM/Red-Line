@@ -22,5 +22,7 @@
     "Estimation (Royal Bahamas Defence Force)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "Les Bahamas sont un archipel de l'Atlantique au large de la Floride. Leur force de défense est essentiellement navale et chargée de la surveillance maritime. L'archipel compte plus de 700 îles dispersées sur une vaste zone maritime.",
+  "doctrineText": "Forces navales légères et infanterie de marine."
 }

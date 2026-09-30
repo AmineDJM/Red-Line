@@ -315,5 +315,7 @@
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
     "FAS, Status of World Nuclear Forces 2025 (vecteurs nucléaires)"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "description": "Petit territoire entre la Méditerranée et la vallée du Jourdain, Israël dispose d'une armée parmi les plus puissantes du Moyen-Orient, fondée sur la conscription et une large réserve mobilisable. Engagé depuis 2023 dans une guerre sur plusieurs fronts, à Gaza, au Liban et contre l'Iran, il a démontré sa capacité de frappe à longue distance. Il dispose d'une défense antimissile multicouche unique au monde. Il ne confirme ni ne dément posséder l'arme nucléaire.",
+  "doctrineText": "Arsenal aérien américain (F-35I, F-15, F-16) et production nationale de pointe (Merkava, drones, Iron Dome, Arrow, missiles). Doctrine de supériorité technologique, de frappe préventive et de défense antimissile."
 }

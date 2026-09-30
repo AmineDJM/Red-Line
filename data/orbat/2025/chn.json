@@ -650,5 +650,7 @@
     "FAS, Status of World Nuclear Forces 2025 (vecteurs nucléaires)",
     "US DoD, Military and Security Developments Involving the PRC 2024 (forces de missiles)"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "description": "Deuxième puissance économique mondiale, la Chine dispose de l'armée la plus nombreuse en effectifs d'active et de la première marine du monde par le nombre de navires. Sa façade maritime ouvre sur les mers de Chine orientale et méridionale, où se concentrent ses priorités stratégiques, notamment autour de Taïwan. Son industrie de défense produit désormais des avions furtifs, des porte-avions et des missiles hypersoniques. Son arsenal nucléaire est en forte croissance depuis le début des années 2020.",
+  "doctrineText": "Arsenal presque entièrement national, orienté vers le déni d'accès : missiles balistiques et de croisière antinavires, défense aérienne intégrée, aviation de combat moderne et marine de haute mer en expansion rapide."
 }

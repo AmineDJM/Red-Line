@@ -18,5 +18,7 @@
     "Estimation (budget de la police ; pas d'armée)",
     "Estimation (forces de police nationales)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Les Îles Marshall sont un État d'atolls du Pacifique dont la défense est assurée par les États-Unis. Elles accueillent un site d'essais de missiles américain. Leurs atolls couvrent une vaste zone du Pacifique central.",
+  "doctrineText": "Aucune force armée : police."
 }

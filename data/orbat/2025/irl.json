@@ -70,5 +70,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "description": "L'Irlande occupe la majeure partie de l'île d'Irlande, à l'ouest de la Grande-Bretagne. Neutre, elle dispose de forces de défense réduites et sans aviation de combat. Sa marine surveille une vaste zone de l'Atlantique Nord.",
+  "doctrineText": "Forces légères équipées de matériel européen. Doctrine de neutralité et de maintien de la paix."
 }

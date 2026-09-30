@@ -17,5 +17,7 @@
     "Estimation (Vanuatu Mobile Force ; SIPRI sans donnée)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Vanuatu est un archipel mélanésien du Pacifique Sud. Sa force mobile est très réduite. L'archipel compte plus de 80 îles.",
+  "doctrineText": "Forces légères."
 }

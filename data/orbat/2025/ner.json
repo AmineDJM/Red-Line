@@ -48,5 +48,7 @@
     "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
     "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "description": "Le Niger est un vaste pays enclavé du Sahel. Depuis le coup d'État de 2023, il s'est rapproché du Mali et du Burkina Faso et combat des groupes djihadistes sur plusieurs fronts. Il s'est retiré de la CEDEAO et a demandé le départ des forces françaises et américaines.",
+  "doctrineText": "Forces légères appuyées par des drones turcs. Doctrine de contre-insurrection."
 }
