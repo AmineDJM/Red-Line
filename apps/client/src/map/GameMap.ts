@@ -366,17 +366,19 @@ export class GameMap {
       const ui = useUi.getState();
       const catalog = useWorld.getState().catalog;
       for (const u of this.units) this.positions.set(u.id, unitPosition(u, tNow));
-      this.set(
-        'units',
-        unitFeatures(this.units, {
-          me,
-          nations: view?.nations ?? {},
-          catalog,
-          selection: new Set(ui.selection),
-          target: ui.pendingOrder?.kind === 'attack' ? ui.pendingOrder.targetId : ui.inspected,
-          t: tNow,
-        }),
-      );
+      const all = unitFeatures(this.units, {
+        me,
+        nations: view?.nations ?? {},
+        catalog,
+        selection: new Set(ui.selection),
+        target: ui.pendingOrder?.kind === 'attack' ? ui.pendingOrder.targetId : ui.inspected,
+        t: tNow,
+      });
+      // Sélection et cible hors regroupement (source dédiée).
+      const focus = all.features.filter((f) => (f.properties?.sel ?? 0) > 0);
+      const rest = focus.length ? all.features.filter((f) => (f.properties?.sel ?? 0) === 0) : all.features;
+      this.set('units', fc(rest));
+      this.set('units-focus', fc(focus));
     }
     // Trajectoires, portée et aperçu : ~4 Hz.
     if (this.tickCount % 3 === 0) {
@@ -529,7 +531,7 @@ export class GameMap {
 
   private onHover(e: MapMouseEvent) {
     if (!this.ready) return;
-    const layers = this.opts.mode === 'picker' ? ['prov-fill'] : ['units-hex', 'cluster-hex'];
+    const layers = this.opts.mode === 'picker' ? ['prov-fill'] : ['focus-hex', 'units-hex', 'cluster-hex'];
     const hit = this.hitFeatures(e, layers).length > 0;
     this.map.getCanvas().style.cursor = hit ? 'pointer' : this.opts.mode === 'picker' ? '' : useUi.getState().selection.length ? 'crosshair' : '';
   }
@@ -549,7 +551,7 @@ export class GameMap {
     }
     const ui = useUi.getState();
     const { view } = useGame.getState();
-    const hits = this.hitFeatures(e, ['units-hex', 'cluster-hex']);
+    const hits = this.hitFeatures(e, ['focus-hex', 'units-hex', 'cluster-hex']);
     const first = hits[0];
     if (first && first.properties?.cluster) {
       const src = this.src('units');

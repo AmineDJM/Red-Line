@@ -94,6 +94,7 @@ export function buildStyle(i: StyleInput): StyleSpecification {
     preview: geo(),
     'preview-pts': geo(),
     buildings: geo(),
+    'units-focus': geo(),
     units: geo(
       EMPTY,
       i.clusterUnits
@@ -476,6 +477,8 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         },
         paint: { 'icon-color': '#ffffff', 'icon-opacity': ['get', 'op'] },
       },
+      // Unités sélectionnées ou ciblées : source séparée, jamais regroupées.
+      ...focusLayers(),
     );
   }
 
@@ -485,6 +488,44 @@ export function buildStyle(i: StyleInput): StyleSpecification {
     sources,
     layers,
   };
+}
+
+function focusLayers(): LayerSpecification[] {
+  return [
+    {
+      id: 'focus-sel',
+      type: 'symbol',
+      source: 'units-focus',
+      layout: { 'icon-image': 'hex-sel', 'icon-size': UNIT_SIZE, 'icon-allow-overlap': true, 'icon-ignore-placement': true },
+      paint: { 'icon-color': ['case', ['==', ['get', 'sel'], 2], '#e5343a', ORANGE] },
+    },
+    {
+      id: 'focus-hex',
+      type: 'symbol',
+      source: 'units-focus',
+      layout: { 'icon-image': 'hex', 'icon-size': UNIT_SIZE, 'icon-allow-overlap': true, 'icon-ignore-placement': true },
+      paint: {
+        'icon-color': ['get', 'color'],
+        'icon-halo-color': 'rgba(255,255,255,0.95)',
+        'icon-halo-width': 1.2,
+        'icon-opacity': ['get', 'op'],
+      },
+    },
+    {
+      id: 'focus-pic',
+      type: 'symbol',
+      source: 'units-focus',
+      layout: {
+        'icon-image': ['concat', 'pic-', ['get', 'pic']],
+        'icon-size': UNIT_SIZE,
+        'icon-rotate': ['get', 'rot'],
+        'icon-rotation-alignment': 'map',
+        'icon-allow-overlap': true,
+        'icon-ignore-placement': true,
+      },
+      paint: { 'icon-color': '#ffffff' },
+    },
+  ];
 }
 
 function buildingLayers(kind: 'mine' | 'other', minzoom: number, filter: FilterSpecification): LayerSpecification[] {

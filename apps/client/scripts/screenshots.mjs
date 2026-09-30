@@ -25,15 +25,18 @@ const browser = await chromium.launch({
 });
 
 const logs = [];
-async function page(vp, { tutorialDone = true } = {}) {
+async function page(vp, { tutorialDone = true, legendOpen = false } = {}) {
   const ctx = await browser.newContext({ ...VIEWPORTS[vp], locale: 'fr-FR' });
-  await ctx.addInitScript((done) => {
-    try {
-      if (done) localStorage.setItem('rl.tutorial.done', '1');
-      else localStorage.removeItem('rl.tutorial.done');
-      localStorage.setItem('rl.legend.open', '1');
-    } catch {}
-  }, tutorialDone);
+  await ctx.addInitScript(
+    ([done, legend]) => {
+      try {
+        if (done) localStorage.setItem('rl.tutorial.done', '1');
+        else localStorage.removeItem('rl.tutorial.done');
+        localStorage.setItem('rl.legend.open', legend ? '1' : '0');
+      } catch {}
+    },
+    [tutorialDone, vp === 'desktop' || legendOpen],
+  );
   const p = await ctx.newPage();
   p.on('console', (m) => {
     if (m.type() === 'error' || m.type() === 'warning') logs.push(`[${vp}] ${m.type()}: ${m.text()}`);
