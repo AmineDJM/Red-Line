@@ -1,0 +1,1593 @@
+{
+  "category": "space",
+  "systems": [
+    {
+      "id": "us.optical-recon-satellite",
+      "name": "Satellite de reconnaissance optique (États-Unis)",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "space",
+      "roles": ["satellite", "reconnaissance", "imagery"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 3500000000,
+        "resources": {
+          "oil": 130,
+          "metals": 395,
+          "electronics": 1590
+        }
+      },
+      "buildTimeH": 240,
+      "upkeepPerDay": 480000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.space1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Satellite en orbite LEO",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Orbite basse",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "satellite",
+      "unitPriceUsd": 3500000000,
+      "era": {
+        "introduced": 1976
+      },
+      "sensor": {
+        "kind": "satellite",
+        "rangeKm": 60,
+        "stealthDetect": 0.3
+      },
+      "space": {
+        "orbit": "leo",
+        "revisitH": 6,
+        "swathKm": 60
+      }
+    },
+    {
+      "id": "us.radar-satellite",
+      "name": "Satellite de reconnaissance radar (États-Unis)",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "space",
+      "roles": ["satellite", "reconnaissance", "sar", "all_weather"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 1500000000,
+        "resources": {
+          "oil": 80,
+          "metals": 240,
+          "electronics": 955
+        }
+      },
+      "buildTimeH": 220,
+      "upkeepPerDay": 210000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 100,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.space2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Satellite en orbite LEO",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Orbite basse",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "satellite",
+      "unitPriceUsd": 1500000000,
+      "era": {
+        "introduced": 1988
+      },
+      "sensor": {
+        "kind": "satellite",
+        "rangeKm": 100,
+        "stealthDetect": 0.35
+      },
+      "space": {
+        "orbit": "leo",
+        "revisitH": 6,
+        "swathKm": 100
+      }
+    },
+    {
+      "id": "us.sigint-satellite",
+      "name": "Satellite d'écoute électronique (États-Unis)",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "space",
+      "roles": ["satellite", "sigint", "elint"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 3000000000,
+        "resources": {
+          "oil": 120,
+          "metals": 360,
+          "electronics": 1450
+        }
+      },
+      "buildTimeH": 240,
+      "upkeepPerDay": 420000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 3000,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.space1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Satellite en orbite GEO",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Orbite géostationnaire",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "satellite",
+      "unitPriceUsd": 3000000000,
+      "era": {
+        "introduced": 1970
+      },
+      "sensor": {
+        "kind": "sigint",
+        "rangeKm": 3000,
+        "stealthDetect": 0.0
+      },
+      "space": {
+        "orbit": "geo",
+        "revisitH": 1,
+        "swathKm": 3000
+      }
+    },
+    {
+      "id": "us.early-warning-satellite",
+      "name": "Satellite d'alerte avancée (États-Unis)",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "space",
+      "roles": ["satellite", "early_warning", "ballistic_missile_defense"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 1600000000,
+        "resources": {
+          "oil": 85,
+          "metals": 250,
+          "electronics": 995
+        }
+      },
+      "buildTimeH": 240,
+      "upkeepPerDay": 220000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 10000,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.space1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Satellite en orbite GEO",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Orbite géostationnaire",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "satellite",
+      "unitPriceUsd": 1600000000,
+      "era": {
+        "introduced": 1970
+      },
+      "sensor": {
+        "kind": "early_warning",
+        "rangeKm": 10000,
+        "stealthDetect": 0.0
+      },
+      "space": {
+        "orbit": "geo",
+        "revisitH": 1,
+        "swathKm": 10000
+      }
+    },
+    {
+      "id": "us.asat",
+      "name": "Arme antisatellite (États-Unis)",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "space",
+      "roles": ["asat", "direct_ascent"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 40000000,
+        "resources": {
+          "oil": 9,
+          "metals": 25,
+          "electronics": 110
+        }
+      },
+      "buildTimeH": 72,
+      "upkeepPerDay": 11000,
+      "speedKmh": 40,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 200,
+        "max": 2000
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 30,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 50,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.asat"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Intercepteur à ascension directe (dérivé SM-3)",
+        "lengthM": 6.55,
+        "wingspanM": null,
+        "mtowKg": 1500,
+        "warheadKg": null,
+        "speedLabel": "Mach 15",
+        "rangeKm": 2000
+      },
+      "enabled": true,
+      "unitLabel": "intercepteur",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 1985
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 20000,
+        "warhead": "conventional",
+        "evasion": 0.5,
+        "blastKm": 0.0
+      }
+    },
+    {
+      "id": "ru.optical-recon-satellite",
+      "name": "Satellite de reconnaissance optique (Russie)",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "space",
+      "roles": ["satellite", "reconnaissance", "imagery"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 400000000,
+        "resources": {
+          "oil": 35,
+          "metals": 110,
+          "electronics": 430
+        }
+      },
+      "buildTimeH": 160,
+      "upkeepPerDay": 56000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 50,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.space1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Satellite en orbite LEO",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Orbite basse",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "satellite",
+      "unitPriceUsd": 400000000,
+      "era": {
+        "introduced": 1974
+      },
+      "sensor": {
+        "kind": "satellite",
+        "rangeKm": 50,
+        "stealthDetect": 0.3
+      },
+      "space": {
+        "orbit": "leo",
+        "revisitH": 12,
+        "swathKm": 50
+      }
+    },
+    {
+      "id": "ru.radar-satellite",
+      "name": "Satellite de reconnaissance radar (Russie)",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "space",
+      "roles": ["satellite", "reconnaissance", "sar", "all_weather"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 300000000,
+        "resources": {
+          "oil": 30,
+          "metals": 90,
+          "electronics": 365
+        }
+      },
+      "buildTimeH": 180,
+      "upkeepPerDay": 43000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 100,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.space2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Satellite en orbite LEO",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Orbite basse",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "satellite",
+      "unitPriceUsd": 300000000,
+      "era": {
+        "introduced": 1987
+      },
+      "sensor": {
+        "kind": "satellite",
+        "rangeKm": 100,
+        "stealthDetect": 0.35
+      },
+      "space": {
+        "orbit": "leo",
+        "revisitH": 12,
+        "swathKm": 100
+      }
+    },
+    {
+      "id": "ru.sigint-satellite",
+      "name": "Satellite d'écoute électronique (Russie)",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "space",
+      "roles": ["satellite", "sigint", "elint"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 400000000,
+        "resources": {
+          "oil": 35,
+          "metals": 110,
+          "electronics": 430
+        }
+      },
+      "buildTimeH": 180,
+      "upkeepPerDay": 56000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 1500,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.space1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Satellite en orbite LEO",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Orbite basse",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "satellite",
+      "unitPriceUsd": 400000000,
+      "era": {
+        "introduced": 1970
+      },
+      "sensor": {
+        "kind": "sigint",
+        "rangeKm": 1500,
+        "stealthDetect": 0.0
+      },
+      "space": {
+        "orbit": "leo",
+        "revisitH": 12,
+        "swathKm": 1500
+      }
+    },
+    {
+      "id": "ru.early-warning-satellite",
+      "name": "Satellite d'alerte avancée (Russie)",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "space",
+      "roles": ["satellite", "early_warning", "ballistic_missile_defense"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 500000000,
+        "resources": {
+          "oil": 40,
+          "metals": 125,
+          "electronics": 495
+        }
+      },
+      "buildTimeH": 200,
+      "upkeepPerDay": 70000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 10000,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.space1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Satellite en orbite GEO",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Orbite géostationnaire",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "satellite",
+      "unitPriceUsd": 500000000,
+      "era": {
+        "introduced": 1982
+      },
+      "sensor": {
+        "kind": "early_warning",
+        "rangeKm": 10000,
+        "stealthDetect": 0.0
+      },
+      "space": {
+        "orbit": "geo",
+        "revisitH": 1,
+        "swathKm": 10000
+      }
+    },
+    {
+      "id": "ru.asat",
+      "name": "Arme antisatellite (Russie)",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "space",
+      "roles": ["asat", "direct_ascent", "road_mobile"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 60000000,
+        "resources": {
+          "oil": 10,
+          "metals": 35,
+          "electronics": 140
+        }
+      },
+      "buildTimeH": 72,
+      "upkeepPerDay": 9900,
+      "speedKmh": 40,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 200,
+        "max": 2000
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 30,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 50,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.asat"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Intercepteur à ascension directe A-235 Nudol, sur véhicule",
+        "lengthM": 10,
+        "wingspanM": null,
+        "mtowKg": 9600,
+        "warheadKg": null,
+        "speedLabel": "Mach 10+",
+        "rangeKm": 2000
+      },
+      "enabled": true,
+      "unitLabel": "intercepteur",
+      "unitPriceUsd": 60000000,
+      "era": {
+        "introduced": 1978
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 20000,
+        "warhead": "conventional",
+        "evasion": 0.5,
+        "blastKm": 0.0
+      }
+    },
+    {
+      "id": "cn.optical-recon-satellite",
+      "name": "Satellite de reconnaissance optique (Chine)",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "space",
+      "roles": ["satellite", "reconnaissance", "imagery"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 300000000,
+        "resources": {
+          "oil": 30,
+          "metals": 90,
+          "electronics": 365
+        }
+      },
+      "buildTimeH": 160,
+      "upkeepPerDay": 43000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.space1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Satellite en orbite LEO",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Orbite basse",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "satellite",
+      "unitPriceUsd": 300000000,
+      "era": {
+        "introduced": 2006
+      },
+      "sensor": {
+        "kind": "satellite",
+        "rangeKm": 60,
+        "stealthDetect": 0.3
+      },
+      "space": {
+        "orbit": "leo",
+        "revisitH": 8,
+        "swathKm": 60
+      }
+    },
+    {
+      "id": "cn.radar-satellite",
+      "name": "Satellite de reconnaissance radar (Chine)",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "space",
+      "roles": ["satellite", "reconnaissance", "sar", "all_weather"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 300000000,
+        "resources": {
+          "oil": 30,
+          "metals": 90,
+          "electronics": 365
+        }
+      },
+      "buildTimeH": 180,
+      "upkeepPerDay": 43000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 100,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.space2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Satellite en orbite LEO",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Orbite basse",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "satellite",
+      "unitPriceUsd": 300000000,
+      "era": {
+        "introduced": 2006
+      },
+      "sensor": {
+        "kind": "satellite",
+        "rangeKm": 100,
+        "stealthDetect": 0.35
+      },
+      "space": {
+        "orbit": "leo",
+        "revisitH": 8,
+        "swathKm": 100
+      }
+    },
+    {
+      "id": "cn.sigint-satellite",
+      "name": "Satellite d'écoute électronique (Chine)",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "space",
+      "roles": ["satellite", "sigint", "elint"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 300000000,
+        "resources": {
+          "oil": 30,
+          "metals": 90,
+          "electronics": 365
+        }
+      },
+      "buildTimeH": 180,
+      "upkeepPerDay": 43000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 1500,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.space1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Satellite en orbite LEO",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Orbite basse",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "satellite",
+      "unitPriceUsd": 300000000,
+      "era": {
+        "introduced": 2010
+      },
+      "sensor": {
+        "kind": "sigint",
+        "rangeKm": 1500,
+        "stealthDetect": 0.0
+      },
+      "space": {
+        "orbit": "leo",
+        "revisitH": 8,
+        "swathKm": 1500
+      }
+    },
+    {
+      "id": "cn.early-warning-satellite",
+      "name": "Satellite d'alerte avancée (Chine)",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "space",
+      "roles": ["satellite", "early_warning", "ballistic_missile_defense"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 400000000,
+        "resources": {
+          "oil": 35,
+          "metals": 110,
+          "electronics": 430
+        }
+      },
+      "buildTimeH": 200,
+      "upkeepPerDay": 56000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 10000,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.space1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Satellite en orbite GEO",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Orbite géostationnaire",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "satellite",
+      "unitPriceUsd": 400000000,
+      "era": {
+        "introduced": 2019
+      },
+      "sensor": {
+        "kind": "early_warning",
+        "rangeKm": 10000,
+        "stealthDetect": 0.0
+      },
+      "space": {
+        "orbit": "geo",
+        "revisitH": 1,
+        "swathKm": 10000
+      }
+    },
+    {
+      "id": "cn.asat",
+      "name": "Arme antisatellite (Chine)",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "space",
+      "roles": ["asat", "direct_ascent", "road_mobile"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 40000000,
+        "resources": {
+          "oil": 9,
+          "metals": 25,
+          "electronics": 110
+        }
+      },
+      "buildTimeH": 72,
+      "upkeepPerDay": 7100,
+      "speedKmh": 40,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 200,
+        "max": 2000
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 30,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 50,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.asat"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Intercepteur à ascension directe SC-19 / DN-3",
+        "lengthM": 10,
+        "wingspanM": null,
+        "mtowKg": 15000,
+        "warheadKg": null,
+        "speedLabel": "Mach 20",
+        "rangeKm": 2000
+      },
+      "enabled": true,
+      "unitLabel": "intercepteur",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 2007
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 20000,
+        "warhead": "conventional",
+        "evasion": 0.5,
+        "blastKm": 0.0
+      }
+    },
+    {
+      "id": "eu.optical-recon-satellite",
+      "name": "Satellite de reconnaissance optique (Europe)",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "space",
+      "roles": ["satellite", "reconnaissance", "imagery"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 600000000,
+        "resources": {
+          "oil": 45,
+          "metals": 140,
+          "electronics": 550
+        }
+      },
+      "buildTimeH": 160,
+      "upkeepPerDay": 87000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.space1"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Satellite en orbite LEO",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Orbite basse",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "satellite",
+      "unitPriceUsd": 600000000,
+      "era": {
+        "introduced": 1995
+      },
+      "sensor": {
+        "kind": "satellite",
+        "rangeKm": 60,
+        "stealthDetect": 0.3
+      },
+      "space": {
+        "orbit": "leo",
+        "revisitH": 12,
+        "swathKm": 60
+      }
+    },
+    {
+      "id": "eu.radar-satellite",
+      "name": "Satellite de reconnaissance radar (Europe)",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "space",
+      "roles": ["satellite", "reconnaissance", "sar", "all_weather"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 350000000,
+        "resources": {
+          "oil": 35,
+          "metals": 100,
+          "electronics": 400
+        }
+      },
+      "buildTimeH": 180,
+      "upkeepPerDay": 52000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 100,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.space2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Satellite en orbite LEO",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Orbite basse",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "satellite",
+      "unitPriceUsd": 350000000,
+      "era": {
+        "introduced": 2006
+      },
+      "sensor": {
+        "kind": "satellite",
+        "rangeKm": 100,
+        "stealthDetect": 0.35
+      },
+      "space": {
+        "orbit": "leo",
+        "revisitH": 12,
+        "swathKm": 100
+      }
+    },
+    {
+      "id": "eu.sigint-satellite",
+      "name": "Satellite d'écoute électronique (Europe)",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "space",
+      "roles": ["satellite", "sigint", "elint"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 200000000,
+        "resources": {
+          "oil": 25,
+          "metals": 70,
+          "electronics": 285
+        }
+      },
+      "buildTimeH": 180,
+      "upkeepPerDay": 32000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 1500,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.space1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Satellite en orbite LEO",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Orbite basse",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "satellite",
+      "unitPriceUsd": 200000000,
+      "era": {
+        "introduced": 2011
+      },
+      "sensor": {
+        "kind": "sigint",
+        "rangeKm": 1500,
+        "stealthDetect": 0.0
+      },
+      "space": {
+        "orbit": "leo",
+        "revisitH": 12,
+        "swathKm": 1500
+      }
+    },
+    {
+      "id": "other.optical-recon-satellite",
+      "name": "Satellite de reconnaissance optique (Inde)",
+      "doctrine": "other",
+      "origin": "IN",
+      "category": "space",
+      "roles": ["satellite", "reconnaissance", "imagery"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 100000000,
+        "resources": {
+          "oil": 15,
+          "metals": 45,
+          "electronics": 190
+        }
+      },
+      "buildTimeH": 160,
+      "upkeepPerDay": 15000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.space1"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Satellite en orbite LEO",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Orbite basse",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "satellite",
+      "unitPriceUsd": 100000000,
+      "era": {
+        "introduced": 2007
+      },
+      "sensor": {
+        "kind": "satellite",
+        "rangeKm": 40,
+        "stealthDetect": 0.3
+      },
+      "space": {
+        "orbit": "leo",
+        "revisitH": 24,
+        "swathKm": 40
+      }
+    },
+    {
+      "id": "other.asat",
+      "name": "Arme antisatellite (Inde)",
+      "doctrine": "other",
+      "origin": "IN",
+      "category": "space",
+      "roles": ["asat", "direct_ascent"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 20000000,
+        "resources": {
+          "oil": 6,
+          "metals": 20,
+          "electronics": 70
+        }
+      },
+      "buildTimeH": 72,
+      "upkeepPerDay": 4400,
+      "speedKmh": 40,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 200,
+        "max": 2000
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 30,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 50,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.asat"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "satellite",
+      "sheet": {
+        "engine": "Intercepteur PDV Mk-II",
+        "lengthM": 13,
+        "wingspanM": null,
+        "mtowKg": 18000,
+        "warheadKg": null,
+        "speedLabel": "Mach 15",
+        "rangeKm": 2000
+      },
+      "enabled": true,
+      "unitLabel": "intercepteur",
+      "unitPriceUsd": 20000000,
+      "era": {
+        "introduced": 2019
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 20000,
+        "warhead": "conventional",
+        "evasion": 0.5,
+        "blastKm": 0.0
+      }
+    }
+  ]
+}

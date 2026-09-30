@@ -1,0 +1,1730 @@
+{
+  "category": "radar",
+  "systems": [
+    {
+      "id": "us.an-tpy-2",
+      "name": "AN/TPY-2",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "radar",
+      "roles": ["radar", "ballistic_missile_defense", "tracking"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 550000000,
+        "resources": {
+          "oil": 45,
+          "metals": 175,
+          "electronics": 435
+        }
+      },
+      "buildTimeH": 96,
+      "upkeepPerDay": 78000,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 16,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 1000,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar à antenne active en bande X, transportable",
+        "lengthM": 12.8,
+        "wingspanM": null,
+        "mtowKg": 34000,
+        "warheadKg": null,
+        "speedLabel": "Transportable (C-17)",
+        "rangeKm": 1000
+      },
+      "enabled": true,
+      "unitLabel": "radar",
+      "unitPriceUsd": 550000000,
+      "era": {
+        "introduced": 2006
+      },
+      "sensor": {
+        "kind": "early_warning",
+        "rangeKm": 1000,
+        "stealthDetect": 0.25
+      }
+    },
+    {
+      "id": "us.an-fps-132-uewr",
+      "name": "AN/FPS-132 UEWR",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "radar",
+      "roles": ["radar", "early_warning", "ballistic_missile_defense"],
+      "generation": 4,
+      "targetClass": "building",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 1000000000,
+        "resources": {
+          "oil": 60,
+          "metals": 250,
+          "electronics": 625
+        }
+      },
+      "buildTimeH": 480,
+      "upkeepPerDay": 140000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 60,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 5000,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar fixe à deux faces en UHF (bâtiment de 32 m)",
+        "lengthM": 32,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Installation fixe",
+        "rangeKm": 5500
+      },
+      "enabled": true,
+      "unitLabel": "station",
+      "unitPriceUsd": 1000000000,
+      "era": {
+        "introduced": 1980
+      },
+      "sensor": {
+        "kind": "early_warning",
+        "rangeKm": 5000,
+        "stealthDetect": 0.4
+      }
+    },
+    {
+      "id": "us.an-tps-80-g-ator",
+      "name": "AN/TPS-80 G/ATOR",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "radar",
+      "roles": ["radar", "air_surveillance", "counter_battery"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 40000000,
+        "resources": {
+          "oil": 9,
+          "metals": 35,
+          "electronics": 90
+        }
+      },
+      "buildTimeH": 30,
+      "upkeepPerDay": 8200,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 200,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar AESA en bande S/C sur remorque",
+        "lengthM": 6.5,
+        "wingspanM": null,
+        "mtowKg": 7000,
+        "warheadKg": null,
+        "speedLabel": "Mobile (tracté)",
+        "rangeKm": 200
+      },
+      "enabled": true,
+      "unitLabel": "radar",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 2018
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 200,
+        "stealthDetect": 0.2
+      }
+    },
+    {
+      "id": "us.an-tps-75",
+      "name": "AN/TPS-75",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "radar",
+      "roles": ["radar", "air_surveillance"],
+      "generation": 3,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 15000000,
+        "resources": {
+          "oil": 5,
+          "metals": 20,
+          "electronics": 50
+        }
+      },
+      "buildTimeH": 20,
+      "upkeepPerDay": 4800,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 430,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar 3D en bande S, transportable",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": 12000,
+        "warheadKg": null,
+        "speedLabel": "Transportable",
+        "rangeKm": 430
+      },
+      "enabled": true,
+      "unitLabel": "radar",
+      "unitPriceUsd": 15000000,
+      "era": {
+        "introduced": 1968
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 430,
+        "stealthDetect": 0.1
+      }
+    },
+    {
+      "id": "ru.rezonans-ne",
+      "name": "Rezonans-NE",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "radar",
+      "roles": ["radar", "air_surveillance", "counter_stealth", "early_warning"],
+      "generation": 5,
+      "targetClass": "building",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 120000000,
+        "resources": {
+          "oil": 15,
+          "metals": 70,
+          "electronics": 175
+        }
+      },
+      "buildTimeH": 120,
+      "upkeepPerDay": 17000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 50,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 1100,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar à ondes métriques (VHF), réseau fixe",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Installation fixe",
+        "rangeKm": 1100
+      },
+      "enabled": true,
+      "unitLabel": "station",
+      "unitPriceUsd": 120000000,
+      "era": {
+        "introduced": 2008
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 1100,
+        "stealthDetect": 0.7
+      }
+    },
+    {
+      "id": "ru.nebo-m",
+      "name": "Nebo-M",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "radar",
+      "roles": ["radar", "air_surveillance", "counter_stealth"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 100000000,
+        "resources": {
+          "oil": 15,
+          "metals": 65,
+          "electronics": 155
+        }
+      },
+      "buildTimeH": 72,
+      "upkeepPerDay": 15000,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 16,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 600,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "3 radars sur camions (VHF, bande L et bande X)",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Mobile sur camions",
+        "rangeKm": 600
+      },
+      "enabled": true,
+      "unitLabel": "radar",
+      "unitPriceUsd": 100000000,
+      "era": {
+        "introduced": 2017
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 600,
+        "stealthDetect": 0.55
+      }
+    },
+    {
+      "id": "ru.voronezh-dm",
+      "name": "Voronezh-DM",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "radar",
+      "roles": ["radar", "early_warning", "ballistic_missile_defense"],
+      "generation": 5,
+      "targetClass": "building",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 300000000,
+        "resources": {
+          "oil": 30,
+          "metals": 120,
+          "electronics": 305
+        }
+      },
+      "buildTimeH": 360,
+      "upkeepPerDay": 42000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 60,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 6000,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar d'alerte avancée préfabriqué en UHF",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Installation fixe",
+        "rangeKm": 6000
+      },
+      "enabled": true,
+      "unitLabel": "station",
+      "unitPriceUsd": 300000000,
+      "era": {
+        "introduced": 2012
+      },
+      "sensor": {
+        "kind": "early_warning",
+        "rangeKm": 6000,
+        "stealthDetect": 0.5
+      }
+    },
+    {
+      "id": "ru.container-29b6",
+      "name": "Konteyner 29B6",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "radar",
+      "roles": ["radar", "over_the_horizon", "counter_stealth"],
+      "generation": 5,
+      "targetClass": "building",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 300000000,
+        "resources": {
+          "oil": 30,
+          "metals": 120,
+          "electronics": 305
+        }
+      },
+      "buildTimeH": 360,
+      "upkeepPerDay": 42000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 50,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 3000,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar transhorizon (HF), antennes fixes",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Installation fixe",
+        "rangeKm": 3000
+      },
+      "enabled": true,
+      "unitLabel": "station",
+      "unitPriceUsd": 300000000,
+      "era": {
+        "introduced": 2019
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 3000,
+        "stealthDetect": 0.6
+      }
+    },
+    {
+      "id": "ru.podsolnukh-e",
+      "name": "Podsolnukh-E",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "radar",
+      "roles": ["radar", "over_the_horizon", "coastal_surveillance"],
+      "generation": 4,
+      "targetClass": "building",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 50000000,
+        "resources": {
+          "oil": 10,
+          "metals": 40,
+          "electronics": 105
+        }
+      },
+      "buildTimeH": 96,
+      "upkeepPerDay": 7700,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 40,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 450,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar côtier transhorizon à onde de surface",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Installation fixe",
+        "rangeKm": 450
+      },
+      "enabled": true,
+      "unitLabel": "station",
+      "unitPriceUsd": 50000000,
+      "era": {
+        "introduced": 2008
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 450,
+        "stealthDetect": 0.4
+      }
+    },
+    {
+      "id": "ru.protivnik-ge",
+      "name": "Protivnik-GE",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "radar",
+      "roles": ["radar", "air_surveillance"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 30000000,
+        "resources": {
+          "oil": 8,
+          "metals": 30,
+          "electronics": 75
+        }
+      },
+      "buildTimeH": 30,
+      "upkeepPerDay": 4900,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 400,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar 3D en bande L sur camion",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Mobile sur camion",
+        "rangeKm": 400
+      },
+      "enabled": true,
+      "unitLabel": "radar",
+      "unitPriceUsd": 30000000,
+      "era": {
+        "introduced": 2012
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 400,
+        "stealthDetect": 0.25
+      }
+    },
+    {
+      "id": "ru.p-18",
+      "name": "P-18",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "radar",
+      "roles": ["radar", "air_surveillance", "counter_stealth"],
+      "generation": 2,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 3000000,
+        "resources": {
+          "oil": 2,
+          "metals": 8,
+          "electronics": 20
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 1200,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 12,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 250,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar 2D à ondes métriques (VHF) sur camion",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Mobile sur camion",
+        "rangeKm": 250
+      },
+      "enabled": true,
+      "unitLabel": "radar",
+      "unitPriceUsd": 3000000,
+      "era": {
+        "introduced": 1970
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 250,
+        "stealthDetect": 0.45
+      }
+    },
+    {
+      "id": "cn.jy-27a",
+      "name": "JY-27A",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "radar",
+      "roles": ["radar", "air_surveillance", "counter_stealth"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 40000000,
+        "resources": {
+          "oil": 9,
+          "metals": 35,
+          "electronics": 90
+        }
+      },
+      "buildTimeH": 30,
+      "upkeepPerDay": 6300,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 500,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar AESA à ondes métriques (VHF) sur camions",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Mobile sur camions",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "radar",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 2015
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 500,
+        "stealthDetect": 0.6
+      }
+    },
+    {
+      "id": "cn.ylc-8b",
+      "name": "YLC-8B",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "radar",
+      "roles": ["radar", "air_surveillance", "counter_stealth"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 40000000,
+        "resources": {
+          "oil": 9,
+          "metals": 35,
+          "electronics": 90
+        }
+      },
+      "buildTimeH": 30,
+      "upkeepPerDay": 6300,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 550,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar 3D en UHF sur camions",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Mobile sur camions",
+        "rangeKm": 550
+      },
+      "enabled": true,
+      "unitLabel": "radar",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 2014
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 550,
+        "stealthDetect": 0.5
+      }
+    },
+    {
+      "id": "cn.jy-26",
+      "name": "JY-26",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "radar",
+      "roles": ["radar", "air_surveillance"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 20000000,
+        "resources": {
+          "oil": 6,
+          "metals": 25,
+          "electronics": 60
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 3600,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 450,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar 3D AESA en bande S sur camion",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Mobile sur camion",
+        "rangeKm": 450
+      },
+      "enabled": true,
+      "unitLabel": "radar",
+      "unitPriceUsd": 20000000,
+      "era": {
+        "introduced": 2014
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 450,
+        "stealthDetect": 0.2
+      }
+    },
+    {
+      "id": "cn.type-7010-lpar",
+      "name": "Radar à grande antenne Type 7010",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "radar",
+      "roles": ["radar", "early_warning", "ballistic_missile_defense"],
+      "generation": 5,
+      "targetClass": "building",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 500000000,
+        "resources": {
+          "oil": 40,
+          "metals": 165,
+          "electronics": 410
+        }
+      },
+      "buildTimeH": 360,
+      "upkeepPerDay": 69000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 60,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 5500,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar d'alerte avancée fixe à antenne active",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Installation fixe",
+        "rangeKm": 5500
+      },
+      "enabled": true,
+      "unitLabel": "station",
+      "unitPriceUsd": 500000000,
+      "era": {
+        "introduced": 2015
+      },
+      "sensor": {
+        "kind": "early_warning",
+        "rangeKm": 5500,
+        "stealthDetect": 0.45
+      }
+    },
+    {
+      "id": "eu.ground-master-400",
+      "name": "Ground Master 400",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "radar",
+      "roles": ["radar", "air_surveillance"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 30000000,
+        "resources": {
+          "oil": 8,
+          "metals": 30,
+          "electronics": 75
+        }
+      },
+      "buildTimeH": 30,
+      "upkeepPerDay": 6300,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 515,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.55
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar 3D AESA en bande L sur camion",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": 10000,
+        "warheadKg": null,
+        "speedLabel": "Mobile sur camion",
+        "rangeKm": 515
+      },
+      "enabled": true,
+      "unitLabel": "radar",
+      "unitPriceUsd": 30000000,
+      "era": {
+        "introduced": 2012
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 515,
+        "stealthDetect": 0.2
+      }
+    },
+    {
+      "id": "eu.smart-l-ewc",
+      "name": "SMART-L EWC",
+      "doctrine": "eu",
+      "origin": "NL",
+      "category": "radar",
+      "roles": ["radar", "early_warning", "ballistic_missile_defense", "air_surveillance"],
+      "generation": 5,
+      "targetClass": "building",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 150000000,
+        "resources": {
+          "oil": 20,
+          "metals": 80,
+          "electronics": 200
+        }
+      },
+      "buildTimeH": 120,
+      "upkeepPerDay": 23000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 45,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 2000,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.55
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar AESA en bande L, version terrestre fixe",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Installation fixe",
+        "rangeKm": 2000
+      },
+      "enabled": true,
+      "unitLabel": "station",
+      "unitPriceUsd": 150000000,
+      "era": {
+        "introduced": 2021
+      },
+      "sensor": {
+        "kind": "early_warning",
+        "rangeKm": 2000,
+        "stealthDetect": 0.3
+      }
+    },
+    {
+      "id": "eu.trml-4d",
+      "name": "TRML-4D",
+      "doctrine": "eu",
+      "origin": "DE",
+      "category": "radar",
+      "roles": ["radar", "air_surveillance", "fire_control"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 25000000,
+        "resources": {
+          "oil": 7,
+          "metals": 25,
+          "electronics": 70
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 5600,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 250,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.55
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar AESA en bande C sur camion",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Mobile sur camion",
+        "rangeKm": 250
+      },
+      "enabled": true,
+      "unitLabel": "radar",
+      "unitPriceUsd": 25000000,
+      "era": {
+        "introduced": 2018
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 250,
+        "stealthDetect": 0.2
+      }
+    },
+    {
+      "id": "other.el-m-2084",
+      "name": "EL/M-2084",
+      "doctrine": "other",
+      "origin": "IL",
+      "category": "radar",
+      "roles": ["radar", "air_surveillance", "fire_control", "counter_battery"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 50000000,
+        "resources": {
+          "oil": 10,
+          "metals": 40,
+          "electronics": 105
+        }
+      },
+      "buildTimeH": 30,
+      "upkeepPerDay": 7700,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 470,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.55
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar AESA en bande S sur remorque",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Mobile (tracté)",
+        "rangeKm": 470
+      },
+      "enabled": true,
+      "unitLabel": "radar",
+      "unitPriceUsd": 50000000,
+      "era": {
+        "introduced": 2011
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 470,
+        "stealthDetect": 0.25
+      }
+    },
+    {
+      "id": "other.el-m-2080-green-pine",
+      "name": "EL/M-2080 Green Pine",
+      "doctrine": "other",
+      "origin": "IL",
+      "category": "radar",
+      "roles": ["radar", "early_warning", "ballistic_missile_defense"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 200000000,
+        "resources": {
+          "oil": 25,
+          "metals": 95,
+          "electronics": 240
+        }
+      },
+      "buildTimeH": 72,
+      "upkeepPerDay": 28000,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 16,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 900,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar AESA en bande L, transportable",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Transportable",
+        "rangeKm": 900
+      },
+      "enabled": true,
+      "unitLabel": "radar",
+      "unitPriceUsd": 200000000,
+      "era": {
+        "introduced": 2000
+      },
+      "sensor": {
+        "kind": "early_warning",
+        "rangeKm": 900,
+        "stealthDetect": 0.3
+      }
+    },
+    {
+      "id": "other.ghadir-oth",
+      "name": "Ghadir",
+      "doctrine": "other",
+      "origin": "IR",
+      "category": "radar",
+      "roles": ["radar", "over_the_horizon", "early_warning"],
+      "generation": 4,
+      "targetClass": "building",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 100000000,
+        "resources": {
+          "oil": 15,
+          "metals": 65,
+          "electronics": 155
+        }
+      },
+      "buildTimeH": 240,
+      "upkeepPerDay": 15000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 45,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 1100,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar transhorizon fixe",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Installation fixe",
+        "rangeKm": 1100
+      },
+      "enabled": true,
+      "unitLabel": "station",
+      "unitPriceUsd": 100000000,
+      "era": {
+        "introduced": 2013
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 1100,
+        "stealthDetect": 0.5
+      }
+    },
+    {
+      "id": "other.sepehr-oth",
+      "name": "Sepehr",
+      "doctrine": "other",
+      "origin": "IR",
+      "category": "radar",
+      "roles": ["radar", "over_the_horizon", "early_warning"],
+      "generation": 5,
+      "targetClass": "building",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 150000000,
+        "resources": {
+          "oil": 20,
+          "metals": 80,
+          "electronics": 200
+        }
+      },
+      "buildTimeH": 300,
+      "upkeepPerDay": 21000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 45,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 3000,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar transhorizon (HF) fixe",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Installation fixe",
+        "rangeKm": 3000
+      },
+      "enabled": true,
+      "unitLabel": "station",
+      "unitPriceUsd": 150000000,
+      "era": {
+        "introduced": 2019
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 3000,
+        "stealthDetect": 0.55
+      }
+    },
+    {
+      "id": "other.swordfish-lrtr",
+      "name": "Swordfish LRTR",
+      "doctrine": "other",
+      "origin": "IN",
+      "category": "radar",
+      "roles": ["radar", "early_warning", "ballistic_missile_defense"],
+      "generation": 5,
+      "targetClass": "building",
+      "movement": "static",
+      "canCapture": false,
+      "cost": {
+        "money": 200000000,
+        "resources": {
+          "oil": 25,
+          "metals": 95,
+          "electronics": 240
+        }
+      },
+      "buildTimeH": 240,
+      "upkeepPerDay": 28000,
+      "speedKmh": 0,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 45,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 800,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.sensors.radar3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "air_defense",
+      "sheet": {
+        "engine": "Radar de poursuite à longue portée en bande L",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "Installation fixe",
+        "rangeKm": 800
+      },
+      "enabled": true,
+      "unitLabel": "station",
+      "unitPriceUsd": 200000000,
+      "era": {
+        "introduced": 2012
+      },
+      "sensor": {
+        "kind": "early_warning",
+        "rangeKm": 800,
+        "stealthDetect": 0.3
+      }
+    }
+  ]
+}

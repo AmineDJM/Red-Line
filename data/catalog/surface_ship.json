@@ -1,0 +1,3079 @@
+{
+  "category": "surface_ship",
+  "systems": [
+    {
+      "id": "us.arleigh-burke",
+      "name": "Arleigh Burke",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "surface_ship",
+      "roles": ["destroyer", "aegis", "air_defense", "ballistic_missile_defense", "land_attack"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 2200000000,
+        "resources": {
+          "oil": 150,
+          "metals": 600,
+          "electronics": 500
+        }
+      },
+      "buildTimeH": 450,
+      "upkeepPerDay": 210000,
+      "speedKmh": 56,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 170
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 3,
+        "aircraft": 20,
+        "helicopter": 14,
+        "drone": 10,
+        "ship": 18,
+        "submarine": 12,
+        "missile": 20,
+        "building": 18
+      },
+      "hp": 150,
+      "armor": 0.3,
+      "stealth": 0.0,
+      "detectionRangeKm": 350,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4", "research.missiles.sam4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "destroyer",
+      "sheet": {
+        "engine": "4 turbines à gaz LM2500",
+        "lengthM": 155,
+        "wingspanM": 20,
+        "mtowKg": 9700,
+        "warheadKg": null,
+        "speedLabel": "30+ nœuds",
+        "rangeKm": 8100
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 2200000000,
+      "era": {
+        "introduced": 1991
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 350,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "ballistic"],
+        "pk": 0.75,
+        "magazine": 48
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.7,
+        "aircraftCapacity": 2,
+        "launchCells": 96
+      }
+    },
+    {
+      "id": "us.gerald-r-ford",
+      "name": "Gerald R. Ford",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "surface_ship",
+      "roles": ["carrier", "nuclear_powered"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 13300000000,
+        "resources": {
+          "oil": 440,
+          "metals": 1770,
+          "electronics": 1475
+        }
+      },
+      "buildTimeH": 1100,
+      "upkeepPerDay": 1400000,
+      "speedKmh": 56,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 30
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 6,
+        "helicopter": 8,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 2,
+        "missile": 10,
+        "building": 0
+      },
+      "hp": 360,
+      "armor": 0.4,
+      "stealth": 0.0,
+      "detectionRangeKm": 400,
+      "ew": {
+        "jamming": 0.35,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.carrier", "research.naval.gen5"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "carrier",
+      "sheet": {
+        "engine": "2 réacteurs nucléaires A1B",
+        "lengthM": 337,
+        "wingspanM": 78,
+        "mtowKg": 100000,
+        "warheadKg": null,
+        "speedLabel": "30+ nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 13300000000,
+      "era": {
+        "introduced": 2017
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 400,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.5,
+        "magazine": 32
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.2,
+        "aircraftCapacity": 75,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "us.nimitz",
+      "name": "Nimitz",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "surface_ship",
+      "roles": ["carrier", "nuclear_powered"],
+      "generation": 4,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 8500000000,
+        "resources": {
+          "oil": 340,
+          "metals": 1355,
+          "electronics": 1125
+        }
+      },
+      "buildTimeH": 1000,
+      "upkeepPerDay": 1300000,
+      "speedKmh": 56,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 30
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 6,
+        "helicopter": 8,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 2,
+        "missile": 10,
+        "building": 0
+      },
+      "hp": 340,
+      "armor": 0.4,
+      "stealth": 0.0,
+      "detectionRangeKm": 400,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.carrier"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "carrier",
+      "sheet": {
+        "engine": "2 réacteurs nucléaires A4W",
+        "lengthM": 332.8,
+        "wingspanM": 76.8,
+        "mtowKg": 100000,
+        "warheadKg": null,
+        "speedLabel": "30+ nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 8500000000,
+      "era": {
+        "introduced": 1975
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 400,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.45,
+        "magazine": 32
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.2,
+        "aircraftCapacity": 64,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "us.america",
+      "name": "America",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "surface_ship",
+      "roles": ["amphibious", "light_carrier"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 3800000000,
+        "resources": {
+          "oil": 210,
+          "metals": 835,
+          "electronics": 695
+        }
+      },
+      "buildTimeH": 640,
+      "upkeepPerDay": 540000,
+      "speedKmh": 41,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 20
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 6,
+        "helicopter": 9,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 10,
+        "building": 0
+      },
+      "hp": 240,
+      "armor": 0.35,
+      "stealth": 0.0,
+      "detectionRangeKm": 250,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8,
+        "transport": 3
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "carrier",
+      "sheet": {
+        "engine": "2 turbines à gaz LM2500",
+        "lengthM": 257,
+        "wingspanM": 32,
+        "mtowKg": 45000,
+        "warheadKg": null,
+        "speedLabel": "22 nœuds",
+        "rangeKm": 17000
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 3800000000,
+      "era": {
+        "introduced": 2014
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 250,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.4,
+        "magazine": 16
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.2,
+        "aircraftCapacity": 20,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "us.ticonderoga",
+      "name": "Ticonderoga",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "surface_ship",
+      "roles": ["cruiser", "aegis", "air_defense", "land_attack"],
+      "generation": 4,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 2400000000,
+        "resources": {
+          "oil": 160,
+          "metals": 635,
+          "electronics": 530
+        }
+      },
+      "buildTimeH": 480,
+      "upkeepPerDay": 220000,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 170
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 3,
+        "aircraft": 20,
+        "helicopter": 14,
+        "drone": 10,
+        "ship": 18,
+        "submarine": 10,
+        "missile": 18,
+        "building": 20
+      },
+      "hp": 170,
+      "armor": 0.3,
+      "stealth": 0.0,
+      "detectionRangeKm": 350,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen3", "research.missiles.sam3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "destroyer",
+      "sheet": {
+        "engine": "4 turbines à gaz LM2500",
+        "lengthM": 173,
+        "wingspanM": 16.8,
+        "mtowKg": 9800,
+        "warheadKg": null,
+        "speedLabel": "32,5 nœuds",
+        "rangeKm": 11100
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 2400000000,
+      "era": {
+        "introduced": 1983
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 350,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "ballistic"],
+        "pk": 0.7,
+        "magazine": 60
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.6,
+        "aircraftCapacity": 2,
+        "launchCells": 122
+      }
+    },
+    {
+      "id": "us.constellation",
+      "name": "Constellation",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "surface_ship",
+      "roles": ["frigate", "asw", "air_defense"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 1300000000,
+        "resources": {
+          "oil": 110,
+          "metals": 440,
+          "electronics": 365
+        }
+      },
+      "buildTimeH": 360,
+      "upkeepPerDay": 130000,
+      "speedKmh": 48,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 16,
+        "helicopter": 13,
+        "drone": 10,
+        "ship": 16,
+        "submarine": 12,
+        "missile": 16,
+        "building": 10
+      },
+      "hp": 110,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 300,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen5"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "frigate",
+      "sheet": {
+        "engine": "1 turbine LM2500 + 2 moteurs électriques (CODLAG)",
+        "lengthM": 151,
+        "wingspanM": 19.8,
+        "mtowKg": 7300,
+        "warheadKg": null,
+        "speedLabel": "26 nœuds",
+        "rangeKm": 11000
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 1300000000,
+      "era": {
+        "introduced": 2025
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 300,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.7,
+        "magazine": 32
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.75,
+        "aircraftCapacity": 1,
+        "launchCells": 32
+      }
+    },
+    {
+      "id": "us.lcs",
+      "name": "Littoral Combat Ship",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "surface_ship",
+      "roles": ["littoral", "corvette"],
+      "generation": 4,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 550000000,
+        "resources": {
+          "oil": 65,
+          "metals": 260,
+          "electronics": 220
+        }
+      },
+      "buildTimeH": 240,
+      "upkeepPerDay": 56000,
+      "speedKmh": 81,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 100
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 2,
+        "aircraft": 4,
+        "helicopter": 8,
+        "drone": 8,
+        "ship": 8,
+        "submarine": 4,
+        "missile": 6,
+        "building": 2
+      },
+      "hp": 70,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 120,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "frigate",
+      "sheet": {
+        "engine": "2 turbines à gaz + 2 diesels",
+        "lengthM": 118,
+        "wingspanM": 17.5,
+        "mtowKg": 3500,
+        "warheadKg": null,
+        "speedLabel": "40+ nœuds",
+        "rangeKm": 6500
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 550000000,
+      "era": {
+        "introduced": 2008
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 120,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.3,
+        "aircraftCapacity": 1,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "ru.admiral-kuznetsov",
+      "name": "Amiral Kouznetsov",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "surface_ship",
+      "roles": ["carrier", "antiship"],
+      "generation": 4,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 3000000000,
+        "resources": {
+          "oil": 180,
+          "metals": 725,
+          "electronics": 605
+        }
+      },
+      "buildTimeH": 900,
+      "upkeepPerDay": 330000,
+      "speedKmh": 54,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 300
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 10,
+        "helicopter": 10,
+        "drone": 8,
+        "ship": 15,
+        "submarine": 6,
+        "missile": 10,
+        "building": 0
+      },
+      "hp": 280,
+      "armor": 0.35,
+      "stealth": 0.0,
+      "detectionRangeKm": 300,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.carrier"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "carrier",
+      "sheet": {
+        "engine": "Turbines à vapeur (8 chaudières)",
+        "lengthM": 305,
+        "wingspanM": 72,
+        "mtowKg": 58600,
+        "warheadKg": null,
+        "speedLabel": "29 nœuds",
+        "rangeKm": 15700
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 3000000000,
+      "era": {
+        "introduced": 1991
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 300,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.45,
+        "magazine": 24
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.3,
+        "aircraftCapacity": 40,
+        "launchCells": 12
+      }
+    },
+    {
+      "id": "ru.admiral-gorshkov",
+      "name": "Amiral Gorchkov",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "surface_ship",
+      "roles": ["frigate", "antiship", "land_attack"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 500000000,
+        "resources": {
+          "oil": 60,
+          "metals": 245,
+          "electronics": 205
+        }
+      },
+      "buildTimeH": 320,
+      "upkeepPerDay": 45000,
+      "speedKmh": 55,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 16,
+        "helicopter": 13,
+        "drone": 9,
+        "ship": 20,
+        "submarine": 10,
+        "missile": 14,
+        "building": 14
+      },
+      "hp": 110,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 250,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "frigate",
+      "sheet": {
+        "engine": "2 turbines M90FR + 2 diesels (CODAG)",
+        "lengthM": 135,
+        "wingspanM": 16,
+        "mtowKg": 5400,
+        "warheadKg": null,
+        "speedLabel": "29,5 nœuds",
+        "rangeKm": 8300
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 500000000,
+      "era": {
+        "introduced": 2018
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 250,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.65,
+        "magazine": 32
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.6,
+        "aircraftCapacity": 1,
+        "launchCells": 48
+      }
+    },
+    {
+      "id": "ru.karakurt",
+      "name": "Karakourt",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "surface_ship",
+      "roles": ["corvette", "missile_ship", "land_attack"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 150000000,
+        "resources": {
+          "oil": 30,
+          "metals": 120,
+          "electronics": 100
+        }
+      },
+      "buildTimeH": 160,
+      "upkeepPerDay": 11000,
+      "speedKmh": 56,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 300
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 6,
+        "helicopter": 10,
+        "drone": 10,
+        "ship": 16,
+        "submarine": 0,
+        "missile": 10,
+        "building": 14
+      },
+      "hp": 60,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 150,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "frigate",
+      "sheet": {
+        "engine": "3 diesels M-507D",
+        "lengthM": 67,
+        "wingspanM": 11,
+        "mtowKg": 870,
+        "warheadKg": null,
+        "speedLabel": "30 nœuds",
+        "rangeKm": 2600
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 150000000,
+      "era": {
+        "introduced": 2018
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 150,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "drone"],
+        "pk": 0.55,
+        "magazine": 8
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.0,
+        "aircraftCapacity": 0,
+        "launchCells": 8
+      }
+    },
+    {
+      "id": "ru.kirov",
+      "name": "Kirov",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "surface_ship",
+      "roles": ["battlecruiser", "antiship", "air_defense", "nuclear_powered"],
+      "generation": 4,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 4000000000,
+        "resources": {
+          "oil": 215,
+          "metals": 860,
+          "electronics": 715
+        }
+      },
+      "buildTimeH": 640,
+      "upkeepPerDay": 280000,
+      "speedKmh": 59,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 300
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 3,
+        "aircraft": 20,
+        "helicopter": 14,
+        "drone": 10,
+        "ship": 24,
+        "submarine": 12,
+        "missile": 18,
+        "building": 18
+      },
+      "hp": 230,
+      "armor": 0.35,
+      "stealth": 0.0,
+      "detectionRangeKm": 350,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen3", "research.missiles.sam3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "destroyer",
+      "sheet": {
+        "engine": "2 réacteurs nucléaires KN-3 + chaudières",
+        "lengthM": 252,
+        "wingspanM": 28.5,
+        "mtowKg": 28000,
+        "warheadKg": null,
+        "speedLabel": "32 nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 4000000000,
+      "era": {
+        "introduced": 1980
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 350,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.7,
+        "magazine": 48
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.6,
+        "aircraftCapacity": 3,
+        "launchCells": 116
+      }
+    },
+    {
+      "id": "ru.slava",
+      "name": "Slava",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "surface_ship",
+      "roles": ["cruiser", "antiship", "air_defense"],
+      "generation": 4,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 1500000000,
+        "resources": {
+          "oil": 120,
+          "metals": 480,
+          "electronics": 400
+        }
+      },
+      "buildTimeH": 480,
+      "upkeepPerDay": 120000,
+      "speedKmh": 59,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 300
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 3,
+        "aircraft": 18,
+        "helicopter": 13,
+        "drone": 8,
+        "ship": 22,
+        "submarine": 8,
+        "missile": 14,
+        "building": 10
+      },
+      "hp": 160,
+      "armor": 0.3,
+      "stealth": 0.0,
+      "detectionRangeKm": 300,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen3", "research.missiles.sam3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "destroyer",
+      "sheet": {
+        "engine": "Turbines à gaz (COGAG)",
+        "lengthM": 186.4,
+        "wingspanM": 20.8,
+        "mtowKg": 11490,
+        "warheadKg": null,
+        "speedLabel": "32 nœuds",
+        "rangeKm": 13000
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 1500000000,
+      "era": {
+        "introduced": 1982
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 300,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.6,
+        "magazine": 40
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.4,
+        "aircraftCapacity": 1,
+        "launchCells": 80
+      }
+    },
+    {
+      "id": "ru.udaloy",
+      "name": "Oudaloï",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "surface_ship",
+      "roles": ["destroyer", "asw"],
+      "generation": 3,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 800000000,
+        "resources": {
+          "oil": 80,
+          "metals": 330,
+          "electronics": 275
+        }
+      },
+      "buildTimeH": 400,
+      "upkeepPerDay": 68000,
+      "speedKmh": 54,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 50
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 10,
+        "helicopter": 10,
+        "drone": 6,
+        "ship": 8,
+        "submarine": 16,
+        "missile": 8,
+        "building": 2
+      },
+      "hp": 130,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 200,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "destroyer",
+      "sheet": {
+        "engine": "4 turbines à gaz (COGAG)",
+        "lengthM": 163,
+        "wingspanM": 19.3,
+        "mtowKg": 7570,
+        "warheadKg": null,
+        "speedLabel": "29 nœuds",
+        "rangeKm": 10500
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 800000000,
+      "era": {
+        "introduced": 1980
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 200,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.45,
+        "magazine": 16
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.85,
+        "aircraftCapacity": 2,
+        "launchCells": 8
+      }
+    },
+    {
+      "id": "ru.steregushchiy",
+      "name": "Steregouchtchi",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "surface_ship",
+      "roles": ["corvette", "asw"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 300000000,
+        "resources": {
+          "oil": 45,
+          "metals": 180,
+          "electronics": 150
+        }
+      },
+      "buildTimeH": 220,
+      "upkeepPerDay": 25000,
+      "speedKmh": 50,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 130
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 8,
+        "helicopter": 10,
+        "drone": 8,
+        "ship": 12,
+        "submarine": 10,
+        "missile": 8,
+        "building": 4
+      },
+      "hp": 70,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 150,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "frigate",
+      "sheet": {
+        "engine": "4 diesels 16D49 (CODAD)",
+        "lengthM": 104.5,
+        "wingspanM": 11.1,
+        "mtowKg": 2220,
+        "warheadKg": null,
+        "speedLabel": "27 nœuds",
+        "rangeKm": 6500
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 300000000,
+      "era": {
+        "introduced": 2008
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 150,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.5,
+        "magazine": 12
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.6,
+        "aircraftCapacity": 1,
+        "launchCells": 8
+      }
+    },
+    {
+      "id": "ru.buyan-m",
+      "name": "Bouïan-M",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "surface_ship",
+      "roles": ["corvette", "missile_ship", "land_attack"],
+      "generation": 4,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 100000000,
+        "resources": {
+          "oil": 25,
+          "metals": 95,
+          "electronics": 80
+        }
+      },
+      "buildTimeH": 140,
+      "upkeepPerDay": 9800,
+      "speedKmh": 46,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 300
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 4,
+        "helicopter": 6,
+        "drone": 6,
+        "ship": 14,
+        "submarine": 0,
+        "missile": 6,
+        "building": 14
+      },
+      "hp": 45,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 100,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "frigate",
+      "sheet": {
+        "engine": "3 moteurs diesel (hydrojets)",
+        "lengthM": 74.1,
+        "wingspanM": 11,
+        "mtowKg": 949,
+        "warheadKg": null,
+        "speedLabel": "25 nœuds",
+        "rangeKm": 3700
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 100000000,
+      "era": {
+        "introduced": 2014
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 100,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.0,
+        "aircraftCapacity": 0,
+        "launchCells": 8
+      }
+    },
+    {
+      "id": "ru.gepard-class",
+      "name": "Guépard (classe)",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "surface_ship",
+      "roles": ["frigate"],
+      "generation": 4,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 300000000,
+        "resources": {
+          "oil": 45,
+          "metals": 180,
+          "electronics": 150
+        }
+      },
+      "buildTimeH": 220,
+      "upkeepPerDay": 25000,
+      "speedKmh": 52,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 130
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 6,
+        "helicopter": 10,
+        "drone": 8,
+        "ship": 12,
+        "submarine": 8,
+        "missile": 6,
+        "building": 8
+      },
+      "hp": 80,
+      "armor": 0.2,
+      "stealth": 0.0,
+      "detectionRangeKm": 150,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "frigate",
+      "sheet": {
+        "engine": "2 turbines à gaz + 1 diesel (CODOG)",
+        "lengthM": 102.1,
+        "wingspanM": 13.1,
+        "mtowKg": 1930,
+        "warheadKg": null,
+        "speedLabel": "28 nœuds",
+        "rangeKm": 7400
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 300000000,
+      "era": {
+        "introduced": 2002
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 150,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.5,
+        "aircraftCapacity": 1,
+        "launchCells": 8
+      }
+    },
+    {
+      "id": "cn.type-055",
+      "name": "Type 055",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "surface_ship",
+      "roles": ["destroyer", "air_defense", "antiship", "land_attack"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 1000000000,
+        "resources": {
+          "oil": 95,
+          "metals": 375,
+          "electronics": 310
+        }
+      },
+      "buildTimeH": 500,
+      "upkeepPerDay": 79000,
+      "speedKmh": 56,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 250
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 3,
+        "aircraft": 22,
+        "helicopter": 15,
+        "drone": 11,
+        "ship": 22,
+        "submarine": 14,
+        "missile": 20,
+        "building": 18
+      },
+      "hp": 180,
+      "armor": 0.3,
+      "stealth": 0.1,
+      "detectionRangeKm": 400,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen5", "research.missiles.sam4"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "destroyer",
+      "sheet": {
+        "engine": "4 turbines à gaz QC-280 (COGAG)",
+        "lengthM": 180,
+        "wingspanM": 20,
+        "mtowKg": 13000,
+        "warheadKg": null,
+        "speedLabel": "30 nœuds",
+        "rangeKm": 9300
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 1000000000,
+      "era": {
+        "introduced": 2020
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 400,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "ballistic"],
+        "pk": 0.75,
+        "magazine": 64
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.8,
+        "aircraftCapacity": 2,
+        "launchCells": 112
+      }
+    },
+    {
+      "id": "cn.type-052d",
+      "name": "Type 052D",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "surface_ship",
+      "roles": ["destroyer", "air_defense", "antiship"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 600000000,
+        "resources": {
+          "oil": 70,
+          "metals": 275,
+          "electronics": 230
+        }
+      },
+      "buildTimeH": 400,
+      "upkeepPerDay": 56000,
+      "speedKmh": 56,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 200
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 3,
+        "aircraft": 20,
+        "helicopter": 14,
+        "drone": 10,
+        "ship": 18,
+        "submarine": 12,
+        "missile": 18,
+        "building": 14
+      },
+      "hp": 140,
+      "armor": 0.28,
+      "stealth": 0.05,
+      "detectionRangeKm": 350,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4", "research.missiles.sam4"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "destroyer",
+      "sheet": {
+        "engine": "2 turbines QC-280 + 2 diesels (CODOG)",
+        "lengthM": 157,
+        "wingspanM": 17,
+        "mtowKg": 7500,
+        "warheadKg": null,
+        "speedLabel": "30 nœuds",
+        "rangeKm": 8300
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 600000000,
+      "era": {
+        "introduced": 2014
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 350,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.7,
+        "magazine": 48
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.7,
+        "aircraftCapacity": 1,
+        "launchCells": 64
+      }
+    },
+    {
+      "id": "cn.type-054a",
+      "name": "Type 054A",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "surface_ship",
+      "roles": ["frigate", "asw"],
+      "generation": 4,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 350000000,
+        "resources": {
+          "oil": 50,
+          "metals": 200,
+          "electronics": 165
+        }
+      },
+      "buildTimeH": 280,
+      "upkeepPerDay": 33000,
+      "speedKmh": 50,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 12,
+        "helicopter": 12,
+        "drone": 8,
+        "ship": 14,
+        "submarine": 10,
+        "missile": 10,
+        "building": 4
+      },
+      "hp": 100,
+      "armor": 0.22,
+      "stealth": 0.0,
+      "detectionRangeKm": 200,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "frigate",
+      "sheet": {
+        "engine": "4 diesels SEMT Pielstick (CODAD)",
+        "lengthM": 134,
+        "wingspanM": 16,
+        "mtowKg": 4050,
+        "warheadKg": null,
+        "speedLabel": "27 nœuds",
+        "rangeKm": 7000
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 350000000,
+      "era": {
+        "introduced": 2008
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 200,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.6,
+        "magazine": 32
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.6,
+        "aircraftCapacity": 1,
+        "launchCells": 32
+      }
+    },
+    {
+      "id": "cn.type-056",
+      "name": "Type 056",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "surface_ship",
+      "roles": ["corvette", "asw"],
+      "generation": 4,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 80000000,
+        "resources": {
+          "oil": 20,
+          "metals": 80,
+          "electronics": 70
+        }
+      },
+      "buildTimeH": 140,
+      "upkeepPerDay": 10000,
+      "speedKmh": 52,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 120
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 4,
+        "helicopter": 8,
+        "drone": 6,
+        "ship": 10,
+        "submarine": 8,
+        "missile": 5,
+        "building": 2
+      },
+      "hp": 55,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 120,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "frigate",
+      "sheet": {
+        "engine": "2 diesels SEMT Pielstick",
+        "lengthM": 89,
+        "wingspanM": 11.1,
+        "mtowKg": 1500,
+        "warheadKg": null,
+        "speedLabel": "28 nœuds",
+        "rangeKm": 3700
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 80000000,
+      "era": {
+        "introduced": 2013
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 120,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.5,
+        "aircraftCapacity": 0,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "cn.type-022",
+      "name": "Type 022",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "surface_ship",
+      "roles": ["missile_boat", "antiship"],
+      "generation": 4,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 40000000,
+        "resources": {
+          "oil": 15,
+          "metals": 55,
+          "electronics": 45
+        }
+      },
+      "buildTimeH": 60,
+      "upkeepPerDay": 3200,
+      "speedKmh": 67,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 2,
+        "helicopter": 4,
+        "drone": 4,
+        "ship": 12,
+        "submarine": 0,
+        "missile": 2,
+        "building": 2
+      },
+      "hp": 25,
+      "armor": 0.05,
+      "stealth": 0.3,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "frigate",
+      "sheet": {
+        "engine": "2 diesels, catamaran à hydrojets",
+        "lengthM": 42.6,
+        "wingspanM": 12.2,
+        "mtowKg": 224,
+        "warheadKg": null,
+        "speedLabel": "36 nœuds",
+        "rangeKm": 1500
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 2004
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 60,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.0,
+        "aircraftCapacity": 0,
+        "launchCells": 8
+      }
+    },
+    {
+      "id": "cn.type-003-fujian",
+      "name": "Fujian (Type 003)",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "surface_ship",
+      "roles": ["carrier"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 10000000000,
+        "resources": {
+          "oil": 375,
+          "metals": 1490,
+          "electronics": 1245
+        }
+      },
+      "buildTimeH": 1100,
+      "upkeepPerDay": 750000,
+      "speedKmh": 56,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 30
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 6,
+        "helicopter": 8,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 2,
+        "missile": 10,
+        "building": 0
+      },
+      "hp": 330,
+      "armor": 0.4,
+      "stealth": 0.0,
+      "detectionRangeKm": 400,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.carrier", "research.naval.gen5"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "carrier",
+      "sheet": {
+        "engine": "Turbines à vapeur, 3 catapultes électromagnétiques",
+        "lengthM": 316,
+        "wingspanM": 76,
+        "mtowKg": 80000,
+        "warheadKg": null,
+        "speedLabel": "30 nœuds",
+        "rangeKm": 15000
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 10000000000,
+      "era": {
+        "introduced": 2025
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 400,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.5,
+        "magazine": 32
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.2,
+        "aircraftCapacity": 60,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "cn.liaoning",
+      "name": "Liaoning",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "surface_ship",
+      "roles": ["carrier"],
+      "generation": 4,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 3000000000,
+        "resources": {
+          "oil": 180,
+          "metals": 725,
+          "electronics": 605
+        }
+      },
+      "buildTimeH": 900,
+      "upkeepPerDay": 330000,
+      "speedKmh": 59,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 30
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 8,
+        "helicopter": 10,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 4,
+        "missile": 10,
+        "building": 0
+      },
+      "hp": 270,
+      "armor": 0.35,
+      "stealth": 0.0,
+      "detectionRangeKm": 300,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.carrier"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "carrier",
+      "sheet": {
+        "engine": "Turbines à vapeur (8 chaudières)",
+        "lengthM": 304.5,
+        "wingspanM": 75,
+        "mtowKg": 60900,
+        "warheadKg": null,
+        "speedLabel": "32 nœuds",
+        "rangeKm": 14000
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 3000000000,
+      "era": {
+        "introduced": 2012
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 300,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.45,
+        "magazine": 24
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.2,
+        "aircraftCapacity": 36,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "cn.shandong",
+      "name": "Shandong",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "surface_ship",
+      "roles": ["carrier"],
+      "generation": 4,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 4000000000,
+        "resources": {
+          "oil": 215,
+          "metals": 860,
+          "electronics": 715
+        }
+      },
+      "buildTimeH": 950,
+      "upkeepPerDay": 380000,
+      "speedKmh": 57,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 30
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 8,
+        "helicopter": 10,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 4,
+        "missile": 10,
+        "building": 0
+      },
+      "hp": 280,
+      "armor": 0.35,
+      "stealth": 0.0,
+      "detectionRangeKm": 300,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.carrier"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "carrier",
+      "sheet": {
+        "engine": "Turbines à vapeur",
+        "lengthM": 315,
+        "wingspanM": 75,
+        "mtowKg": 70000,
+        "warheadKg": null,
+        "speedLabel": "31 nœuds",
+        "rangeKm": 14000
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 4000000000,
+      "era": {
+        "introduced": 2019
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 300,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.45,
+        "magazine": 24
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.2,
+        "aircraftCapacity": 44,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "cn.type-075",
+      "name": "Type 075",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "surface_ship",
+      "roles": ["amphibious", "helicopter_carrier"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 1500000000,
+        "resources": {
+          "oil": 120,
+          "metals": 480,
+          "electronics": 400
+        }
+      },
+      "buildTimeH": 560,
+      "upkeepPerDay": 160000,
+      "speedKmh": 43,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 10
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 4,
+        "helicopter": 10,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 2,
+        "missile": 8,
+        "building": 0
+      },
+      "hp": 220,
+      "armor": 0.3,
+      "stealth": 0.0,
+      "detectionRangeKm": 250,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8,
+        "transport": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "carrier",
+      "sheet": {
+        "engine": "4 diesels (CODAD)",
+        "lengthM": 237,
+        "wingspanM": 36,
+        "mtowKg": 40000,
+        "warheadKg": null,
+        "speedLabel": "23 nœuds",
+        "rangeKm": 18000
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 1500000000,
+      "era": {
+        "introduced": 2021
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 250,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.4,
+        "magazine": 16
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.2,
+        "aircraftCapacity": 28,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "eu.charles-de-gaulle",
+      "name": "Charles de Gaulle",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "surface_ship",
+      "roles": ["carrier", "nuclear_powered"],
+      "generation": 4,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 5500000000,
+        "resources": {
+          "oil": 260,
+          "metals": 1040,
+          "electronics": 870
+        }
+      },
+      "buildTimeH": 950,
+      "upkeepPerDay": 600000,
+      "speedKmh": 50,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 30
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 8,
+        "helicopter": 10,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 2,
+        "missile": 12,
+        "building": 0
+      },
+      "hp": 290,
+      "armor": 0.38,
+      "stealth": 0.0,
+      "detectionRangeKm": 400,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.carrier"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "carrier",
+      "sheet": {
+        "engine": "2 réacteurs nucléaires K15",
+        "lengthM": 261.5,
+        "wingspanM": 64.4,
+        "mtowKg": 42500,
+        "warheadKg": null,
+        "speedLabel": "27 nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 5500000000,
+      "era": {
+        "introduced": 2001
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 400,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.55,
+        "magazine": 32
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.2,
+        "aircraftCapacity": 40,
+        "launchCells": 32
+      }
+    },
+    {
+      "id": "eu.fremm",
+      "name": "FREMM",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "surface_ship",
+      "roles": ["frigate", "asw", "land_attack"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 800000000,
+        "resources": {
+          "oil": 80,
+          "metals": 330,
+          "electronics": 275
+        }
+      },
+      "buildTimeH": 320,
+      "upkeepPerDay": 68000,
+      "speedKmh": 50,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 14,
+        "helicopter": 13,
+        "drone": 9,
+        "ship": 16,
+        "submarine": 14,
+        "missile": 14,
+        "building": 14
+      },
+      "hp": 110,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 250,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "frigate",
+      "sheet": {
+        "engine": "1 turbine LM2500 + 2 moteurs électriques (CODLOG)",
+        "lengthM": 142,
+        "wingspanM": 20,
+        "mtowKg": 6000,
+        "warheadKg": null,
+        "speedLabel": "27 nœuds",
+        "rangeKm": 11100
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 800000000,
+      "era": {
+        "introduced": 2012
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 250,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.7,
+        "magazine": 32
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.85,
+        "aircraftCapacity": 1,
+        "launchCells": 32
+      }
+    },
+    {
+      "id": "eu.horizon",
+      "name": "Horizon",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "surface_ship",
+      "roles": ["destroyer", "air_defense"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 1300000000,
+        "resources": {
+          "oil": 110,
+          "metals": 440,
+          "electronics": 365
+        }
+      },
+      "buildTimeH": 400,
+      "upkeepPerDay": 110000,
+      "speedKmh": 54,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 120
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 20,
+        "helicopter": 14,
+        "drone": 10,
+        "ship": 14,
+        "submarine": 10,
+        "missile": 18,
+        "building": 2
+      },
+      "hp": 130,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 400,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4", "research.missiles.sam4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "destroyer",
+      "sheet": {
+        "engine": "2 turbines LM2500 + 2 diesels (CODOG)",
+        "lengthM": 153,
+        "wingspanM": 20.3,
+        "mtowKg": 7050,
+        "warheadKg": null,
+        "speedLabel": "29 nœuds",
+        "rangeKm": 13000
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 1300000000,
+      "era": {
+        "introduced": 2008
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 400,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.75,
+        "magazine": 48
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.6,
+        "aircraftCapacity": 1,
+        "launchCells": 48
+      }
+    },
+    {
+      "id": "eu.type-45",
+      "name": "Type 45 (Daring)",
+      "doctrine": "eu",
+      "origin": "GB",
+      "category": "surface_ship",
+      "roles": ["destroyer", "air_defense"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 1500000000,
+        "resources": {
+          "oil": 120,
+          "metals": 480,
+          "electronics": 400
+        }
+      },
+      "buildTimeH": 420,
+      "upkeepPerDay": 120000,
+      "speedKmh": 56,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 120
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 22,
+        "helicopter": 14,
+        "drone": 10,
+        "ship": 12,
+        "submarine": 8,
+        "missile": 20,
+        "building": 2
+      },
+      "hp": 140,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 400,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4", "research.missiles.sam4"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "destroyer",
+      "sheet": {
+        "engine": "2 turbines WR-21 + propulsion électrique intégrée",
+        "lengthM": 152.4,
+        "wingspanM": 21.2,
+        "mtowKg": 8500,
+        "warheadKg": null,
+        "speedLabel": "30 nœuds",
+        "rangeKm": 13000
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 1500000000,
+      "era": {
+        "introduced": 2009
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 400,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "ballistic"],
+        "pk": 0.75,
+        "magazine": 48
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.5,
+        "aircraftCapacity": 1,
+        "launchCells": 48
+      }
+    },
+    {
+      "id": "eu.queen-elizabeth",
+      "name": "Queen Elizabeth",
+      "doctrine": "eu",
+      "origin": "GB",
+      "category": "surface_ship",
+      "roles": ["carrier", "stovl_carrier"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 4000000000,
+        "resources": {
+          "oil": 215,
+          "metals": 860,
+          "electronics": 715
+        }
+      },
+      "buildTimeH": 950,
+      "upkeepPerDay": 370000,
+      "speedKmh": 46,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 10
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 4,
+        "helicopter": 8,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 2,
+        "missile": 8,
+        "building": 0
+      },
+      "hp": 290,
+      "armor": 0.35,
+      "stealth": 0.0,
+      "detectionRangeKm": 350,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.carrier"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "carrier",
+      "sheet": {
+        "engine": "2 turbines MT30 + 4 diesels (propulsion électrique)",
+        "lengthM": 284,
+        "wingspanM": 73,
+        "mtowKg": 65000,
+        "warheadKg": null,
+        "speedLabel": "25+ nœuds",
+        "rangeKm": 18500
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 4000000000,
+      "era": {
+        "introduced": 2017
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 350,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["cruise"],
+        "pk": 0.4,
+        "magazine": 12
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.2,
+        "aircraftCapacity": 40,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "eu.mistral-class",
+      "name": "Mistral (classe)",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "surface_ship",
+      "roles": ["amphibious", "helicopter_carrier"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 650000000,
+        "resources": {
+          "oil": 70,
+          "metals": 290,
+          "electronics": 240
+        }
+      },
+      "buildTimeH": 420,
+      "upkeepPerDay": 75000,
+      "speedKmh": 35,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 6
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 3,
+        "helicopter": 8,
+        "drone": 6,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 6,
+        "building": 0
+      },
+      "hp": 170,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 200,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8,
+        "transport": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "carrier",
+      "sheet": {
+        "engine": "3 diesels-alternateurs, 2 pods azimutaux",
+        "lengthM": 199,
+        "wingspanM": 32,
+        "mtowKg": 21300,
+        "warheadKg": null,
+        "speedLabel": "18,8 nœuds",
+        "rangeKm": 11000
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 650000000,
+      "era": {
+        "introduced": 2006
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 200,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.3,
+        "magazine": 4
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.2,
+        "aircraftCapacity": 16,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "eu.meko-a-200",
+      "name": "MEKO A-200",
+      "doctrine": "eu",
+      "origin": "DE",
+      "category": "surface_ship",
+      "roles": ["frigate"],
+      "generation": 4,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 400000000,
+        "resources": {
+          "oil": 55,
+          "metals": 215,
+          "electronics": 180
+        }
+      },
+      "buildTimeH": 260,
+      "upkeepPerDay": 48000,
+      "speedKmh": 52,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 120
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 10,
+        "helicopter": 12,
+        "drone": 8,
+        "ship": 12,
+        "submarine": 10,
+        "missile": 8,
+        "building": 2
+      },
+      "hp": 90,
+      "armor": 0.2,
+      "stealth": 0.0,
+      "detectionRangeKm": 180,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "frigate",
+      "sheet": {
+        "engine": "1 turbine à gaz + 2 diesels (CODAG-WARP)",
+        "lengthM": 121,
+        "wingspanM": 16.3,
+        "mtowKg": 3590,
+        "warheadKg": null,
+        "speedLabel": "28 nœuds",
+        "rangeKm": 14800
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 400000000,
+      "era": {
+        "introduced": 2006
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 180,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.55,
+        "magazine": 16
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.5,
+        "aircraftCapacity": 1,
+        "launchCells": 16
+      }
+    },
+    {
+      "id": "eu.gowind",
+      "name": "Gowind 2500",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "surface_ship",
+      "roles": ["corvette", "asw"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 300000000,
+        "resources": {
+          "oil": 45,
+          "metals": 180,
+          "electronics": 150
+        }
+      },
+      "buildTimeH": 200,
+      "upkeepPerDay": 31000,
+      "speedKmh": 46,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 180
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 8,
+        "helicopter": 11,
+        "drone": 8,
+        "ship": 12,
+        "submarine": 10,
+        "missile": 8,
+        "building": 2
+      },
+      "hp": 60,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 150,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "frigate",
+      "sheet": {
+        "engine": "4 diesels MTU (CODAD)",
+        "lengthM": 102,
+        "wingspanM": 16,
+        "mtowKg": 2600,
+        "warheadKg": null,
+        "speedLabel": "25 nœuds",
+        "rangeKm": 7400
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 300000000,
+      "era": {
+        "introduced": 2017
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 150,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.55,
+        "magazine": 16
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.6,
+        "aircraftCapacity": 1,
+        "launchCells": 16
+      }
+    },
+    {
+      "id": "other.sejong-the-great",
+      "name": "Sejong le Grand",
+      "doctrine": "other",
+      "origin": "KR",
+      "category": "surface_ship",
+      "roles": ["destroyer", "aegis", "air_defense", "land_attack"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 1000000000,
+        "resources": {
+          "oil": 95,
+          "metals": 375,
+          "electronics": 310
+        }
+      },
+      "buildTimeH": 460,
+      "upkeepPerDay": 79000,
+      "speedKmh": 56,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 170
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 3,
+        "aircraft": 20,
+        "helicopter": 14,
+        "drone": 10,
+        "ship": 20,
+        "submarine": 14,
+        "missile": 18,
+        "building": 16
+      },
+      "hp": 160,
+      "armor": 0.3,
+      "stealth": 0.0,
+      "detectionRangeKm": 350,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4", "research.missiles.sam4"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "destroyer",
+      "sheet": {
+        "engine": "4 turbines à gaz LM2500 (COGAG)",
+        "lengthM": 165.9,
+        "wingspanM": 21.4,
+        "mtowKg": 11000,
+        "warheadKg": null,
+        "speedLabel": "30 nœuds",
+        "rangeKm": 10200
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 1000000000,
+      "era": {
+        "introduced": 2008
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 350,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "ballistic"],
+        "pk": 0.7,
+        "magazine": 48
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.7,
+        "aircraftCapacity": 2,
+        "launchCells": 128
+      }
+    },
+    {
+      "id": "other.kolkata",
+      "name": "Kolkata",
+      "doctrine": "other",
+      "origin": "IN",
+      "category": "surface_ship",
+      "roles": ["destroyer", "antiship", "air_defense"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 800000000,
+        "resources": {
+          "oil": 80,
+          "metals": 330,
+          "electronics": 275
+        }
+      },
+      "buildTimeH": 420,
+      "upkeepPerDay": 71000,
+      "speedKmh": 56,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 300
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 3,
+        "aircraft": 16,
+        "helicopter": 13,
+        "drone": 9,
+        "ship": 20,
+        "submarine": 12,
+        "missile": 14,
+        "building": 14
+      },
+      "hp": 140,
+      "armor": 0.28,
+      "stealth": 0.0,
+      "detectionRangeKm": 250,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4", "research.missiles.sam4"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "destroyer",
+      "sheet": {
+        "engine": "4 turbines à gaz Zorya (COGAG)",
+        "lengthM": 163,
+        "wingspanM": 17.4,
+        "mtowKg": 7400,
+        "warheadKg": null,
+        "speedLabel": "30 nœuds",
+        "rangeKm": 8000
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 800000000,
+      "era": {
+        "introduced": 2014
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 250,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise"],
+        "pk": 0.65,
+        "magazine": 32
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.6,
+        "aircraftCapacity": 2,
+        "launchCells": 48
+      }
+    },
+    {
+      "id": "other.saar-6",
+      "name": "Sa'ar 6",
+      "doctrine": "other",
+      "origin": "IL",
+      "category": "surface_ship",
+      "roles": ["corvette", "air_defense"],
+      "generation": 5,
+      "targetClass": "ship",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 350000000,
+        "resources": {
+          "oil": 50,
+          "metals": 200,
+          "electronics": 165
+        }
+      },
+      "buildTimeH": 220,
+      "upkeepPerDay": 25000,
+      "speedKmh": 48,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 12,
+        "helicopter": 12,
+        "drone": 12,
+        "ship": 12,
+        "submarine": 6,
+        "missile": 14,
+        "building": 2
+      },
+      "hp": 65,
+      "armor": 0.18,
+      "stealth": 0.0,
+      "detectionRangeKm": 250,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen4"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "frigate",
+      "sheet": {
+        "engine": "2 diesels MTU (CODAD)",
+        "lengthM": 90,
+        "wingspanM": 13.5,
+        "mtowKg": 1900,
+        "warheadKg": null,
+        "speedLabel": "26 nœuds",
+        "rangeKm": 4500
+      },
+      "enabled": true,
+      "unitLabel": "navire",
+      "unitPriceUsd": 350000000,
+      "era": {
+        "introduced": 2020
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 250,
+        "stealthDetect": 0.0
+      },
+      "interceptor": {
+        "against": ["aircraft", "cruise", "drone", "rocket"],
+        "pk": 0.75,
+        "magazine": 40
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.4,
+        "aircraftCapacity": 1,
+        "launchCells": 72
+      }
+    }
+  ]
+}

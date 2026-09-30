@@ -1,0 +1,1083 @@
+{
+  "category": "nuclear",
+  "systems": [
+    {
+      "id": "us.minuteman-iii",
+      "name": "LGM-30G Minuteman III",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "nuclear",
+      "roles": ["nuclear", "icbm", "silo"],
+      "generation": 3,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 30000000,
+        "resources": {
+          "oil": 15,
+          "metals": 40,
+          "electronics": 75
+        }
+      },
+      "buildTimeH": 96,
+      "upkeepPerDay": 5500,
+      "speedKmh": 24000,
+      "operationalRadiusKm": 13000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 13000
+      },
+      "damage": {
+        "infantry": 300,
+        "armor": 250,
+        "aircraft": 0,
+        "helicopter": 60,
+        "drone": 60,
+        "ship": 300,
+        "submarine": 0,
+        "missile": 0,
+        "building": 500
+      },
+      "hp": 5,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.nuclear.icbm"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "3 étages à propergol solide",
+        "lengthM": 18.2,
+        "wingspanM": null,
+        "mtowKg": 36030,
+        "warheadKg": 1150,
+        "speedLabel": "Mach 23",
+        "rangeKm": 13000
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 30000000,
+      "era": {
+        "introduced": 1970
+      },
+      "missile": {
+        "kind": "icbm",
+        "speedKmh": 24000,
+        "warhead": "nuclear",
+        "evasion": 0.8,
+        "blastKm": 6
+      }
+    },
+    {
+      "id": "us.trident-ii-d5",
+      "name": "UGM-133 Trident II D5",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "nuclear",
+      "roles": ["nuclear", "slbm", "mirv"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 35000000,
+        "resources": {
+          "oil": 15,
+          "metals": 40,
+          "electronics": 85
+        }
+      },
+      "buildTimeH": 96,
+      "upkeepPerDay": 6200,
+      "speedKmh": 29000,
+      "operationalRadiusKm": 12000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 12000
+      },
+      "damage": {
+        "infantry": 300,
+        "armor": 250,
+        "aircraft": 0,
+        "helicopter": 60,
+        "drone": 60,
+        "ship": 300,
+        "submarine": 0,
+        "missile": 0,
+        "building": 500
+      },
+      "hp": 5,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.nuclear.slbm"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "3 étages à propergol solide",
+        "lengthM": 13.4,
+        "wingspanM": null,
+        "mtowKg": 59000,
+        "warheadKg": 2800,
+        "speedLabel": "Mach 24",
+        "rangeKm": 12000
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 35000000,
+      "era": {
+        "introduced": 1979
+      },
+      "missile": {
+        "kind": "slbm",
+        "speedKmh": 29000,
+        "warhead": "nuclear",
+        "evasion": 0.85,
+        "blastKm": 6
+      }
+    },
+    {
+      "id": "us.b61-12",
+      "name": "B61-12",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "nuclear",
+      "roles": ["nuclear", "gravity_bomb", "air_launched"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 28000000,
+        "resources": {
+          "oil": 15,
+          "metals": 35,
+          "electronics": 75
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 5200,
+      "speedKmh": 1000,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 20
+      },
+      "damage": {
+        "infantry": 300,
+        "armor": 250,
+        "aircraft": 0,
+        "helicopter": 60,
+        "drone": 60,
+        "ship": 300,
+        "submarine": 0,
+        "missile": 0,
+        "building": 500
+      },
+      "hp": 5,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.nuclear.weapons"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "Bombe guidée à kit de queue, sans propulsion",
+        "lengthM": 3.6,
+        "wingspanM": null,
+        "mtowKg": 374,
+        "warheadKg": null,
+        "speedLabel": "Largage (subsonique)",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "bombe",
+      "unitPriceUsd": 28000000,
+      "era": {
+        "introduced": 1968
+      },
+      "missile": {
+        "kind": "bomb",
+        "speedKmh": 1000,
+        "warhead": "nuclear",
+        "evasion": 0.1,
+        "blastKm": 4
+      }
+    },
+    {
+      "id": "ru.yars",
+      "name": "RS-24 Yars",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "nuclear",
+      "roles": ["nuclear", "icbm", "road_mobile", "mirv"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 25000000,
+        "resources": {
+          "oil": 15,
+          "metals": 35,
+          "electronics": 70
+        }
+      },
+      "buildTimeH": 96,
+      "upkeepPerDay": 3800,
+      "speedKmh": 25000,
+      "operationalRadiusKm": 12000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 12000
+      },
+      "damage": {
+        "infantry": 300,
+        "armor": 250,
+        "aircraft": 0,
+        "helicopter": 60,
+        "drone": 60,
+        "ship": 300,
+        "submarine": 0,
+        "missile": 0,
+        "building": 500
+      },
+      "hp": 5,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.nuclear.icbm"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "3 étages à propergol solide, sur véhicule MZKT-79221",
+        "lengthM": 22.5,
+        "wingspanM": null,
+        "mtowKg": 49600,
+        "warheadKg": 1200,
+        "speedLabel": "Mach 22",
+        "rangeKm": 12000
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 25000000,
+      "era": {
+        "introduced": 1985
+      },
+      "missile": {
+        "kind": "icbm",
+        "speedKmh": 25000,
+        "warhead": "nuclear",
+        "evasion": 0.85,
+        "blastKm": 8
+      }
+    },
+    {
+      "id": "ru.sarmat",
+      "name": "RS-28 Sarmat",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "nuclear",
+      "roles": ["nuclear", "icbm", "silo", "mirv", "hgv"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 100000000,
+        "resources": {
+          "oil": 30,
+          "metals": 80,
+          "electronics": 155
+        }
+      },
+      "buildTimeH": 140,
+      "upkeepPerDay": 14000,
+      "speedKmh": 25000,
+      "operationalRadiusKm": 18000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 18000
+      },
+      "damage": {
+        "infantry": 300,
+        "armor": 250,
+        "aircraft": 0,
+        "helicopter": 60,
+        "drone": 60,
+        "ship": 300,
+        "submarine": 0,
+        "missile": 0,
+        "building": 500
+      },
+      "hp": 5,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.nuclear.icbm"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "3 étages à ergols liquides",
+        "lengthM": 35.5,
+        "wingspanM": null,
+        "mtowKg": 208100,
+        "warheadKg": 10000,
+        "speedLabel": "Mach 20+",
+        "rangeKm": 18000
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 100000000,
+      "era": {
+        "introduced": 2023
+      },
+      "missile": {
+        "kind": "icbm",
+        "speedKmh": 25000,
+        "warhead": "nuclear",
+        "evasion": 0.95,
+        "blastKm": 12
+      }
+    },
+    {
+      "id": "ru.bulava",
+      "name": "R-30 Bulava",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "nuclear",
+      "roles": ["nuclear", "slbm", "mirv"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 30000000,
+        "resources": {
+          "oil": 15,
+          "metals": 40,
+          "electronics": 75
+        }
+      },
+      "buildTimeH": 96,
+      "upkeepPerDay": 4500,
+      "speedKmh": 24000,
+      "operationalRadiusKm": 9300,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 9300
+      },
+      "damage": {
+        "infantry": 300,
+        "armor": 250,
+        "aircraft": 0,
+        "helicopter": 60,
+        "drone": 60,
+        "ship": 300,
+        "submarine": 0,
+        "missile": 0,
+        "building": 500
+      },
+      "hp": 5,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.nuclear.slbm"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "3 étages à propergol solide",
+        "lengthM": 12.1,
+        "wingspanM": null,
+        "mtowKg": 36800,
+        "warheadKg": 1150,
+        "speedLabel": "Mach 20",
+        "rangeKm": 9300
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 30000000,
+      "era": {
+        "introduced": 2013
+      },
+      "missile": {
+        "kind": "slbm",
+        "speedKmh": 24000,
+        "warhead": "nuclear",
+        "evasion": 0.85,
+        "blastKm": 6
+      }
+    },
+    {
+      "id": "cn.df-41",
+      "name": "DF-41",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "nuclear",
+      "roles": ["nuclear", "icbm", "road_mobile", "mirv"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 30000000,
+        "resources": {
+          "oil": 15,
+          "metals": 40,
+          "electronics": 75
+        }
+      },
+      "buildTimeH": 100,
+      "upkeepPerDay": 4500,
+      "speedKmh": 25000,
+      "operationalRadiusKm": 13000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 13000
+      },
+      "damage": {
+        "infantry": 300,
+        "armor": 250,
+        "aircraft": 0,
+        "helicopter": 60,
+        "drone": 60,
+        "ship": 300,
+        "submarine": 0,
+        "missile": 0,
+        "building": 500
+      },
+      "hp": 5,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.nuclear.icbm"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "3 étages à propergol solide, sur véhicule 16x16",
+        "lengthM": 21,
+        "wingspanM": null,
+        "mtowKg": 80000,
+        "warheadKg": 2500,
+        "speedLabel": "Mach 25",
+        "rangeKm": 13000
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 30000000,
+      "era": {
+        "introduced": 2017
+      },
+      "missile": {
+        "kind": "icbm",
+        "speedKmh": 25000,
+        "warhead": "nuclear",
+        "evasion": 0.85,
+        "blastKm": 8
+      }
+    },
+    {
+      "id": "cn.jl-3",
+      "name": "JL-3",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "nuclear",
+      "roles": ["nuclear", "slbm", "mirv"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 30000000,
+        "resources": {
+          "oil": 15,
+          "metals": 40,
+          "electronics": 75
+        }
+      },
+      "buildTimeH": 96,
+      "upkeepPerDay": 4500,
+      "speedKmh": 24000,
+      "operationalRadiusKm": 10000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 10000
+      },
+      "damage": {
+        "infantry": 300,
+        "armor": 250,
+        "aircraft": 0,
+        "helicopter": 60,
+        "drone": 60,
+        "ship": 300,
+        "submarine": 0,
+        "missile": 0,
+        "building": 500
+      },
+      "hp": 5,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.nuclear.slbm"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "3 étages à propergol solide",
+        "lengthM": 13,
+        "wingspanM": null,
+        "mtowKg": 40000,
+        "warheadKg": 1500,
+        "speedLabel": "Mach 20+",
+        "rangeKm": 10000
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 30000000,
+      "era": {
+        "introduced": 2020
+      },
+      "missile": {
+        "kind": "slbm",
+        "speedKmh": 24000,
+        "warhead": "nuclear",
+        "evasion": 0.85,
+        "blastKm": 6
+      }
+    },
+    {
+      "id": "eu.m51",
+      "name": "M51",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "nuclear",
+      "roles": ["nuclear", "slbm", "mirv"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 80000000,
+        "resources": {
+          "oil": 25,
+          "metals": 70,
+          "electronics": 135
+        }
+      },
+      "buildTimeH": 100,
+      "upkeepPerDay": 12000,
+      "speedKmh": 25000,
+      "operationalRadiusKm": 9000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 9000
+      },
+      "damage": {
+        "infantry": 300,
+        "armor": 250,
+        "aircraft": 0,
+        "helicopter": 60,
+        "drone": 60,
+        "ship": 300,
+        "submarine": 0,
+        "missile": 0,
+        "building": 500
+      },
+      "hp": 5,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.nuclear.slbm"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "3 étages à propergol solide",
+        "lengthM": 12,
+        "wingspanM": null,
+        "mtowKg": 56000,
+        "warheadKg": null,
+        "speedLabel": "Mach 25",
+        "rangeKm": 9000
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 80000000,
+      "era": {
+        "introduced": 2010
+      },
+      "missile": {
+        "kind": "slbm",
+        "speedKmh": 25000,
+        "warhead": "nuclear",
+        "evasion": 0.85,
+        "blastKm": 6
+      }
+    },
+    {
+      "id": "eu.asmp-a",
+      "name": "ASMP-A",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "nuclear",
+      "roles": ["nuclear", "cruise_missile", "air_launched"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 30000000,
+        "resources": {
+          "oil": 15,
+          "metals": 40,
+          "electronics": 75
+        }
+      },
+      "buildTimeH": 48,
+      "upkeepPerDay": 5200,
+      "speedKmh": 3200,
+      "operationalRadiusKm": 500,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 500
+      },
+      "damage": {
+        "infantry": 300,
+        "armor": 250,
+        "aircraft": 0,
+        "helicopter": 60,
+        "drone": 60,
+        "ship": 300,
+        "submarine": 0,
+        "missile": 0,
+        "building": 500
+      },
+      "hp": 5,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.nuclear.weapons", "research.missiles.cruise2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 statoréacteur à kérosène",
+        "lengthM": 5.38,
+        "wingspanM": null,
+        "mtowKg": 860,
+        "warheadKg": 200,
+        "speedLabel": "Mach 3",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 30000000,
+      "era": {
+        "introduced": 2009
+      },
+      "missile": {
+        "kind": "cruise",
+        "speedKmh": 3200,
+        "warhead": "nuclear",
+        "evasion": 0.6,
+        "blastKm": 5
+      }
+    },
+    {
+      "id": "other.agni-v",
+      "name": "Agni-V",
+      "doctrine": "other",
+      "origin": "IN",
+      "category": "nuclear",
+      "roles": ["nuclear", "icbm", "road_mobile"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 15000000,
+        "resources": {
+          "oil": 10,
+          "metals": 25,
+          "electronics": 50
+        }
+      },
+      "buildTimeH": 96,
+      "upkeepPerDay": 2500,
+      "speedKmh": 24000,
+      "operationalRadiusKm": 7000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 7000
+      },
+      "damage": {
+        "infantry": 300,
+        "armor": 250,
+        "aircraft": 0,
+        "helicopter": 60,
+        "drone": 60,
+        "ship": 300,
+        "submarine": 0,
+        "missile": 0,
+        "building": 500
+      },
+      "hp": 5,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.nuclear.icbm"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "3 étages à propergol solide, en conteneur",
+        "lengthM": 17.5,
+        "wingspanM": null,
+        "mtowKg": 50000,
+        "warheadKg": 1500,
+        "speedLabel": "Mach 24",
+        "rangeKm": 7000
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 15000000,
+      "era": {
+        "introduced": 2018
+      },
+      "missile": {
+        "kind": "icbm",
+        "speedKmh": 24000,
+        "warhead": "nuclear",
+        "evasion": 0.8,
+        "blastKm": 5
+      }
+    },
+    {
+      "id": "other.shaheen-iii",
+      "name": "Shaheen-III",
+      "doctrine": "other",
+      "origin": "PK",
+      "category": "nuclear",
+      "roles": ["nuclear", "mrbm", "road_mobile"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 10000000,
+        "resources": {
+          "oil": 8,
+          "metals": 20,
+          "electronics": 40
+        }
+      },
+      "buildTimeH": 72,
+      "upkeepPerDay": 1800,
+      "speedKmh": 18000,
+      "operationalRadiusKm": 2750,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 2750
+      },
+      "damage": {
+        "infantry": 300,
+        "armor": 250,
+        "aircraft": 0,
+        "helicopter": 60,
+        "drone": 60,
+        "ship": 300,
+        "submarine": 0,
+        "missile": 0,
+        "building": 500
+      },
+      "hp": 5,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.nuclear.weapons", "research.missiles.ballistic3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "2 étages à propergol solide",
+        "lengthM": 19.3,
+        "wingspanM": null,
+        "mtowKg": 25000,
+        "warheadKg": 1000,
+        "speedLabel": "Mach 18",
+        "rangeKm": 2750
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 10000000,
+      "era": {
+        "introduced": 2022
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 18000,
+        "warhead": "nuclear",
+        "evasion": 0.7,
+        "blastKm": 3
+      }
+    },
+    {
+      "id": "other.hwasong-17",
+      "name": "Hwasong-17",
+      "doctrine": "other",
+      "origin": "KP",
+      "category": "nuclear",
+      "roles": ["nuclear", "icbm", "road_mobile"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 30000000,
+        "resources": {
+          "oil": 15,
+          "metals": 40,
+          "electronics": 75
+        }
+      },
+      "buildTimeH": 120,
+      "upkeepPerDay": 4500,
+      "speedKmh": 25000,
+      "operationalRadiusKm": 15000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 15000
+      },
+      "damage": {
+        "infantry": 300,
+        "armor": 250,
+        "aircraft": 0,
+        "helicopter": 60,
+        "drone": 60,
+        "ship": 300,
+        "submarine": 0,
+        "missile": 0,
+        "building": 500
+      },
+      "hp": 5,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.nuclear.icbm"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "2 étages à ergols liquides, sur véhicule à 11 essieux",
+        "lengthM": 25,
+        "wingspanM": null,
+        "mtowKg": 100000,
+        "warheadKg": null,
+        "speedLabel": "Mach 22",
+        "rangeKm": 15000
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 30000000,
+      "era": {
+        "introduced": 2022
+      },
+      "missile": {
+        "kind": "icbm",
+        "speedKmh": 25000,
+        "warhead": "nuclear",
+        "evasion": 0.75,
+        "blastKm": 6
+      }
+    },
+    {
+      "id": "other.jericho-iii",
+      "name": "Jericho III",
+      "doctrine": "other",
+      "origin": "IL",
+      "category": "nuclear",
+      "roles": ["nuclear", "icbm", "silo"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 15000000,
+        "resources": {
+          "oil": 10,
+          "metals": 25,
+          "electronics": 50
+        }
+      },
+      "buildTimeH": 96,
+      "upkeepPerDay": 2500,
+      "speedKmh": 22000,
+      "operationalRadiusKm": 6500,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 6500
+      },
+      "damage": {
+        "infantry": 300,
+        "armor": 250,
+        "aircraft": 0,
+        "helicopter": 60,
+        "drone": 60,
+        "ship": 300,
+        "submarine": 0,
+        "missile": 0,
+        "building": 500
+      },
+      "hp": 5,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.nuclear.icbm"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "3 étages à propergol solide",
+        "lengthM": 15.5,
+        "wingspanM": null,
+        "mtowKg": 30000,
+        "warheadKg": 1300,
+        "speedLabel": "Mach 20",
+        "rangeKm": 6500
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 15000000,
+      "era": {
+        "introduced": 2011
+      },
+      "missile": {
+        "kind": "icbm",
+        "speedKmh": 22000,
+        "warhead": "nuclear",
+        "evasion": 0.8,
+        "blastKm": 5
+      }
+    }
+  ]
+}

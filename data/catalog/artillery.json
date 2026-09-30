@@ -1,0 +1,1758 @@
+{
+  "category": "artillery",
+  "systems": [
+    {
+      "id": "us.m109-paladin",
+      "name": "M109 Paladin",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "artillery",
+      "roles": ["artillery", "counter_battery"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 14000000,
+        "resources": {
+          "oil": 15,
+          "metals": 50,
+          "electronics": 25
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 3000,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 30
+      },
+      "damage": {
+        "infantry": 10,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 9
+      },
+      "hp": 24,
+      "armor": 0.35,
+      "stealth": 0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen3"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "artillery",
+      "illustration": "us.m109-paladin.webp",
+      "sheet": {
+        "engine": "1 diesel (675 ch)",
+        "lengthM": 9.1,
+        "wingspanM": null,
+        "mtowKg": 35000,
+        "warheadKg": 7,
+        "speedLabel": "60 km/h sur route",
+        "rangeKm": 30
+      },
+      "enabled": true,
+      "unitLabel": "pièce",
+      "unitPriceUsd": 14000000,
+      "era": {
+        "introduced": 1963
+      }
+    },
+    {
+      "id": "ru.2s19-msta",
+      "name": "2S19 Msta-S",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "artillery",
+      "roles": ["artillery", "counter_battery"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 3000000,
+        "resources": {
+          "oil": 6,
+          "metals": 20,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 22,
+      "upkeepPerDay": 740,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 29
+      },
+      "damage": {
+        "infantry": 10,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 9
+      },
+      "hp": 24,
+      "armor": 0.35,
+      "stealth": 0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "artillery",
+      "illustration": "ru.2s19-msta.webp",
+      "sheet": {
+        "engine": "1 diesel V-84A (840 ch)",
+        "lengthM": 11.9,
+        "wingspanM": null,
+        "mtowKg": 42000,
+        "warheadKg": 8,
+        "speedLabel": "60 km/h sur route",
+        "rangeKm": 29
+      },
+      "enabled": true,
+      "unitLabel": "pièce",
+      "unitPriceUsd": 3000000,
+      "era": {
+        "introduced": 1989
+      }
+    },
+    {
+      "id": "eu.caesar",
+      "name": "CAESAR",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "artillery",
+      "roles": ["artillery", "counter_battery", "shoot_and_scoot"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 6000000,
+        "resources": {
+          "oil": 9,
+          "metals": 30,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 20,
+      "upkeepPerDay": 1700,
+      "speedKmh": 80,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 40
+      },
+      "damage": {
+        "infantry": 11,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 10
+      },
+      "hp": 18,
+      "armor": 0.15,
+      "stealth": 0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "artillery",
+      "illustration": "eu.caesar.webp",
+      "sheet": {
+        "engine": "Camion 6x6 diesel",
+        "lengthM": 10,
+        "wingspanM": null,
+        "mtowKg": 17700,
+        "warheadKg": 8,
+        "speedLabel": "80 km/h sur route",
+        "rangeKm": 40
+      },
+      "enabled": true,
+      "unitLabel": "pièce",
+      "unitPriceUsd": 6000000,
+      "era": {
+        "introduced": 2008
+      }
+    },
+    {
+      "id": "us.m777",
+      "name": "M777",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "artillery",
+      "roles": ["artillery", "counter_battery", "towed", "air_mobile"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 3500000,
+        "resources": {
+          "oil": 6,
+          "metals": 20,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 12,
+      "upkeepPerDay": 1600,
+      "speedKmh": 40,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 40
+      },
+      "damage": {
+        "infantry": 10,
+        "armor": 5,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 9
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "Obusier tracté de 155 mm (camion tracteur)",
+        "lengthM": 10.7,
+        "wingspanM": null,
+        "mtowKg": 4200,
+        "warheadKg": 11,
+        "speedLabel": "40 km/h tracté",
+        "rangeKm": 40
+      },
+      "enabled": true,
+      "unitLabel": "pièce",
+      "unitPriceUsd": 3500000,
+      "era": {
+        "introduced": 2005
+      }
+    },
+    {
+      "id": "us.m142-himars",
+      "name": "M142 HIMARS",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "artillery",
+      "roles": ["mlrs", "area_saturation", "precision_strike", "shoot_and_scoot"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 5000000,
+        "resources": {
+          "oil": 8,
+          "metals": 25,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 18,
+      "upkeepPerDay": 1800,
+      "speedKmh": 85,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 15,
+        "max": 80
+      },
+      "damage": {
+        "infantry": 12,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 11
+      },
+      "hp": 16,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4", "research.land.mlrs"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "Camion FMTV 6x6 (330 ch)",
+        "lengthM": 7,
+        "wingspanM": null,
+        "mtowKg": 16250,
+        "warheadKg": 90,
+        "speedLabel": "85 km/h sur route",
+        "rangeKm": 80
+      },
+      "enabled": true,
+      "unitLabel": "lanceur",
+      "unitPriceUsd": 5000000,
+      "era": {
+        "introduced": 2005
+      }
+    },
+    {
+      "id": "us.m270-mlrs",
+      "name": "M270 MLRS",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "artillery",
+      "roles": ["mlrs", "area_saturation", "precision_strike"],
+      "generation": 3,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 6000000,
+        "resources": {
+          "oil": 9,
+          "metals": 30,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 20,
+      "upkeepPerDay": 1900,
+      "speedKmh": 64,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 10,
+        "max": 80
+      },
+      "damage": {
+        "infantry": 14,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 12
+      },
+      "hp": 20,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen3", "research.land.mlrs"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "Châssis chenillé M993 (600 ch)",
+        "lengthM": 6.85,
+        "wingspanM": null,
+        "mtowKg": 25000,
+        "warheadKg": 90,
+        "speedLabel": "64 km/h sur route",
+        "rangeKm": 80
+      },
+      "enabled": true,
+      "unitLabel": "lanceur",
+      "unitPriceUsd": 6000000,
+      "era": {
+        "introduced": 1983
+      }
+    },
+    {
+      "id": "ru.2s35-koalitsiya",
+      "name": "2S35 Koalitsiya-SV",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "artillery",
+      "roles": ["artillery", "counter_battery"],
+      "generation": 5,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 8000000,
+        "resources": {
+          "oil": 10,
+          "metals": 35,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 30,
+      "upkeepPerDay": 1400,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 70
+      },
+      "damage": {
+        "infantry": 13,
+        "armor": 8,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 12
+      },
+      "hp": 26,
+      "armor": 0.35,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen5"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "1 diesel V-92S2 (1 000 ch)",
+        "lengthM": 12,
+        "wingspanM": null,
+        "mtowKg": 55000,
+        "warheadKg": 9,
+        "speedLabel": "60 km/h sur route",
+        "rangeKm": 70
+      },
+      "enabled": true,
+      "unitLabel": "pièce",
+      "unitPriceUsd": 8000000,
+      "era": {
+        "introduced": 2023
+      }
+    },
+    {
+      "id": "ru.2s7-pion",
+      "name": "2S7 Pion",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "artillery",
+      "roles": ["artillery", "counter_battery"],
+      "generation": 2,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 2500000,
+        "resources": {
+          "oil": 5,
+          "metals": 15,
+          "electronics": 9
+        }
+      },
+      "buildTimeH": 18,
+      "upkeepPerDay": 670,
+      "speedKmh": 50,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 5,
+        "max": 40
+      },
+      "damage": {
+        "infantry": 12,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 14
+      },
+      "hp": 20,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "1 diesel V-46-1 (840 ch)",
+        "lengthM": 10.5,
+        "wingspanM": null,
+        "mtowKg": 46500,
+        "warheadKg": 17,
+        "speedLabel": "50 km/h sur route",
+        "rangeKm": 40
+      },
+      "enabled": true,
+      "unitLabel": "pièce",
+      "unitPriceUsd": 2500000,
+      "era": {
+        "introduced": 1976
+      }
+    },
+    {
+      "id": "ru.2s1-gvozdika",
+      "name": "2S1 Gvozdika",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "artillery",
+      "roles": ["artillery", "counter_battery"],
+      "generation": 2,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 700000,
+        "resources": {
+          "oil": 2,
+          "metals": 8,
+          "electronics": 4
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 420,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 2,
+        "max": 15
+      },
+      "damage": {
+        "infantry": 8,
+        "armor": 4,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 6
+      },
+      "hp": 16,
+      "armor": 0.2,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "1 diesel YaMZ-238N (300 ch)",
+        "lengthM": 7.26,
+        "wingspanM": null,
+        "mtowKg": 16000,
+        "warheadKg": 3.6,
+        "speedLabel": "60 km/h sur route",
+        "rangeKm": 15
+      },
+      "enabled": true,
+      "unitLabel": "pièce",
+      "unitPriceUsd": 700000,
+      "era": {
+        "introduced": 1971
+      }
+    },
+    {
+      "id": "ru.2s3-akatsiya",
+      "name": "2S3 Akatsiya",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "artillery",
+      "roles": ["artillery", "counter_battery"],
+      "generation": 2,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 1000000,
+        "resources": {
+          "oil": 3,
+          "metals": 10,
+          "electronics": 5
+        }
+      },
+      "buildTimeH": 12,
+      "upkeepPerDay": 470,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 20
+      },
+      "damage": {
+        "infantry": 9,
+        "armor": 5,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 8
+      },
+      "hp": 20,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "1 diesel V-59 (520 ch)",
+        "lengthM": 8.4,
+        "wingspanM": null,
+        "mtowKg": 27500,
+        "warheadKg": 6,
+        "speedLabel": "60 km/h sur route",
+        "rangeKm": 20
+      },
+      "enabled": true,
+      "unitLabel": "pièce",
+      "unitPriceUsd": 1000000,
+      "era": {
+        "introduced": 1971
+      }
+    },
+    {
+      "id": "ru.d-30",
+      "name": "D-30",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "artillery",
+      "roles": ["artillery", "counter_battery", "towed"],
+      "generation": 2,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 200000,
+        "resources": {
+          "oil": 1,
+          "metals": 4,
+          "electronics": 2
+        }
+      },
+      "buildTimeH": 6,
+      "upkeepPerDay": 360,
+      "speedKmh": 40,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 2,
+        "max": 15
+      },
+      "damage": {
+        "infantry": 7,
+        "armor": 3,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 5
+      },
+      "hp": 10,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "Obusier tracté de 122 mm (camion tracteur)",
+        "lengthM": 5.4,
+        "wingspanM": null,
+        "mtowKg": 3210,
+        "warheadKg": 3.6,
+        "speedLabel": "40 km/h tracté",
+        "rangeKm": 15
+      },
+      "enabled": true,
+      "unitLabel": "pièce",
+      "unitPriceUsd": 200000,
+      "era": {
+        "introduced": 1963
+      }
+    },
+    {
+      "id": "ru.bm-21-grad",
+      "name": "BM-21 Grad",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "artillery",
+      "roles": ["mlrs", "area_saturation"],
+      "generation": 2,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 500000,
+        "resources": {
+          "oil": 2,
+          "metals": 7,
+          "electronics": 3
+        }
+      },
+      "buildTimeH": 8,
+      "upkeepPerDay": 400,
+      "speedKmh": 75,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 5,
+        "max": 20
+      },
+      "damage": {
+        "infantry": 11,
+        "armor": 3,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 7
+      },
+      "hp": 12,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "Camion Ural-375D 6x6",
+        "lengthM": 7.35,
+        "wingspanM": null,
+        "mtowKg": 13700,
+        "warheadKg": 6.4,
+        "speedLabel": "75 km/h sur route",
+        "rangeKm": 20
+      },
+      "enabled": true,
+      "unitLabel": "lanceur",
+      "unitPriceUsd": 500000,
+      "era": {
+        "introduced": 1963
+      }
+    },
+    {
+      "id": "ru.bm-27-uragan",
+      "name": "BM-27 Uragan",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "artillery",
+      "roles": ["mlrs", "area_saturation"],
+      "generation": 3,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 1500000,
+        "resources": {
+          "oil": 4,
+          "metals": 15,
+          "electronics": 6
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 530,
+      "speedKmh": 65,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 8,
+        "max": 35
+      },
+      "damage": {
+        "infantry": 13,
+        "armor": 4,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 10
+      },
+      "hp": 14,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen3", "research.land.mlrs"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "Camion ZIL-135LM 8x8",
+        "lengthM": 9.63,
+        "wingspanM": null,
+        "mtowKg": 20000,
+        "warheadKg": 51,
+        "speedLabel": "65 km/h sur route",
+        "rangeKm": 35
+      },
+      "enabled": true,
+      "unitLabel": "lanceur",
+      "unitPriceUsd": 1500000,
+      "era": {
+        "introduced": 1975
+      }
+    },
+    {
+      "id": "ru.bm-30-smerch",
+      "name": "BM-30 Smerch",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "artillery",
+      "roles": ["mlrs", "area_saturation"],
+      "generation": 3,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 3000000,
+        "resources": {
+          "oil": 6,
+          "metals": 20,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 740,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 20,
+        "max": 90
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 5,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 13
+      },
+      "hp": 16,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen3", "research.land.mlrs"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "Camion MAZ-543M 8x8",
+        "lengthM": 12.1,
+        "wingspanM": null,
+        "mtowKg": 43700,
+        "warheadKg": 243,
+        "speedLabel": "60 km/h sur route",
+        "rangeKm": 90
+      },
+      "enabled": true,
+      "unitLabel": "lanceur",
+      "unitPriceUsd": 3000000,
+      "era": {
+        "introduced": 1989
+      }
+    },
+    {
+      "id": "ru.tornado-s",
+      "name": "Tornado-S",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "artillery",
+      "roles": ["mlrs", "area_saturation", "precision_strike"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 5000000,
+        "resources": {
+          "oil": 8,
+          "metals": 25,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 20,
+      "upkeepPerDay": 1000,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 20,
+        "max": 120
+      },
+      "damage": {
+        "infantry": 16,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 14
+      },
+      "hp": 16,
+      "armor": 0.08,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4", "research.land.mlrs"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "Camion MAZ-543M 8x8",
+        "lengthM": 12.1,
+        "wingspanM": null,
+        "mtowKg": 43700,
+        "warheadKg": 243,
+        "speedLabel": "60 km/h sur route",
+        "rangeKm": 120
+      },
+      "enabled": true,
+      "unitLabel": "lanceur",
+      "unitPriceUsd": 5000000,
+      "era": {
+        "introduced": 2016
+      }
+    },
+    {
+      "id": "ru.tos-1a",
+      "name": "TOS-1A",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "artillery",
+      "roles": ["mlrs", "thermobaric"],
+      "generation": 3,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 5000000,
+        "resources": {
+          "oil": 8,
+          "metals": 25,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 18,
+      "upkeepPerDay": 1000,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0.4,
+        "max": 6
+      },
+      "damage": {
+        "infantry": 18,
+        "armor": 5,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 12
+      },
+      "hp": 28,
+      "armor": 0.35,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen3", "research.land.mlrs"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "1 diesel V-84MS (840 ch), châssis T-72",
+        "lengthM": 9.5,
+        "wingspanM": null,
+        "mtowKg": 46000,
+        "warheadKg": 35,
+        "speedLabel": "60 km/h sur route",
+        "rangeKm": 6
+      },
+      "enabled": true,
+      "unitLabel": "lanceur",
+      "unitPriceUsd": 5000000,
+      "era": {
+        "introduced": 2001
+      }
+    },
+    {
+      "id": "cn.plz-05",
+      "name": "PLZ-05",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "artillery",
+      "roles": ["artillery", "counter_battery"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 3000000,
+        "resources": {
+          "oil": 6,
+          "metals": 20,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 20,
+      "upkeepPerDay": 740,
+      "speedKmh": 56,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 50
+      },
+      "damage": {
+        "infantry": 11,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 10
+      },
+      "hp": 24,
+      "armor": 0.35,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "1 diesel (1 000 ch)",
+        "lengthM": 11,
+        "wingspanM": null,
+        "mtowKg": 43000,
+        "warheadKg": 11,
+        "speedLabel": "56 km/h sur route",
+        "rangeKm": 50
+      },
+      "enabled": true,
+      "unitLabel": "pièce",
+      "unitPriceUsd": 3000000,
+      "era": {
+        "introduced": 2008
+      }
+    },
+    {
+      "id": "cn.phl-03",
+      "name": "PHL-03",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "artillery",
+      "roles": ["mlrs", "area_saturation"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 3000000,
+        "resources": {
+          "oil": 6,
+          "metals": 20,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 740,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 20,
+        "max": 130
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 5,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 13
+      },
+      "hp": 16,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4", "research.land.mlrs"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "Camion Wanshan 8x8",
+        "lengthM": 12,
+        "wingspanM": null,
+        "mtowKg": 42000,
+        "warheadKg": 190,
+        "speedLabel": "60 km/h sur route",
+        "rangeKm": 130
+      },
+      "enabled": true,
+      "unitLabel": "lanceur",
+      "unitPriceUsd": 3000000,
+      "era": {
+        "introduced": 2004
+      }
+    },
+    {
+      "id": "cn.phl-16",
+      "name": "PHL-16",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "artillery",
+      "roles": ["mlrs", "area_saturation", "precision_strike"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 5000000,
+        "resources": {
+          "oil": 8,
+          "metals": 25,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 20,
+      "upkeepPerDay": 1000,
+      "speedKmh": 80,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 20,
+        "max": 220
+      },
+      "damage": {
+        "infantry": 16,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 0,
+        "building": 15
+      },
+      "hp": 16,
+      "armor": 0.08,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4", "research.land.mlrs"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "Camion 8x8",
+        "lengthM": 12,
+        "wingspanM": null,
+        "mtowKg": 45000,
+        "warheadKg": 200,
+        "speedLabel": "80 km/h sur route",
+        "rangeKm": 220
+      },
+      "enabled": true,
+      "unitLabel": "lanceur",
+      "unitPriceUsd": 5000000,
+      "era": {
+        "introduced": 2019
+      }
+    },
+    {
+      "id": "eu.pzh-2000",
+      "name": "PzH 2000",
+      "doctrine": "eu",
+      "origin": "DE",
+      "category": "artillery",
+      "roles": ["artillery", "counter_battery"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 14000000,
+        "resources": {
+          "oil": 15,
+          "metals": 50,
+          "electronics": 25
+        }
+      },
+      "buildTimeH": 26,
+      "upkeepPerDay": 2800,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 45
+      },
+      "damage": {
+        "infantry": 13,
+        "armor": 7,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 12
+      },
+      "hp": 26,
+      "armor": 0.35,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "1 diesel MTU 881 (1 000 ch)",
+        "lengthM": 11.7,
+        "wingspanM": null,
+        "mtowKg": 55800,
+        "warheadKg": 11,
+        "speedLabel": "60 km/h sur route",
+        "rangeKm": 45
+      },
+      "enabled": true,
+      "unitLabel": "pièce",
+      "unitPriceUsd": 14000000,
+      "era": {
+        "introduced": 1998
+      }
+    },
+    {
+      "id": "eu.archer",
+      "name": "Archer",
+      "doctrine": "eu",
+      "origin": "SE",
+      "category": "artillery",
+      "roles": ["artillery", "counter_battery", "shoot_and_scoot"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 8000000,
+        "resources": {
+          "oil": 10,
+          "metals": 35,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 22,
+      "upkeepPerDay": 2000,
+      "speedKmh": 70,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 40
+      },
+      "damage": {
+        "infantry": 12,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 11
+      },
+      "hp": 18,
+      "armor": 0.2,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "Camion Volvo A30D 6x6",
+        "lengthM": 14.1,
+        "wingspanM": null,
+        "mtowKg": 33500,
+        "warheadKg": 11,
+        "speedLabel": "70 km/h sur route",
+        "rangeKm": 40
+      },
+      "enabled": true,
+      "unitLabel": "pièce",
+      "unitPriceUsd": 8000000,
+      "era": {
+        "introduced": 2016
+      }
+    },
+    {
+      "id": "other.k9-thunder",
+      "name": "K9 Thunder",
+      "doctrine": "other",
+      "origin": "KR",
+      "category": "artillery",
+      "roles": ["artillery", "counter_battery"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 4000000,
+        "resources": {
+          "oil": 7,
+          "metals": 25,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 22,
+      "upkeepPerDay": 880,
+      "speedKmh": 67,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 40
+      },
+      "damage": {
+        "infantry": 12,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 11
+      },
+      "hp": 24,
+      "armor": 0.35,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "1 diesel MTU 881 Ka-500 (1 000 ch)",
+        "lengthM": 12,
+        "wingspanM": null,
+        "mtowKg": 47000,
+        "warheadKg": 11,
+        "speedLabel": "67 km/h sur route",
+        "rangeKm": 40
+      },
+      "enabled": true,
+      "unitLabel": "pièce",
+      "unitPriceUsd": 4000000,
+      "era": {
+        "introduced": 1999
+      }
+    },
+    {
+      "id": "other.k239-chunmoo",
+      "name": "K239 Chunmoo",
+      "doctrine": "other",
+      "origin": "KR",
+      "category": "artillery",
+      "roles": ["mlrs", "area_saturation", "precision_strike"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 6000000,
+        "resources": {
+          "oil": 9,
+          "metals": 30,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 20,
+      "upkeepPerDay": 1200,
+      "speedKmh": 80,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 10,
+        "max": 160
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 14
+      },
+      "hp": 16,
+      "armor": 0.08,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4", "research.land.mlrs"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "Camion Hanwha 8x8",
+        "lengthM": 9.3,
+        "wingspanM": null,
+        "mtowKg": 30000,
+        "warheadKg": 90,
+        "speedLabel": "80 km/h sur route",
+        "rangeKm": 160
+      },
+      "enabled": true,
+      "unitLabel": "lanceur",
+      "unitPriceUsd": 6000000,
+      "era": {
+        "introduced": 2015
+      }
+    },
+    {
+      "id": "other.pinaka",
+      "name": "Pinaka",
+      "doctrine": "other",
+      "origin": "IN",
+      "category": "artillery",
+      "roles": ["mlrs", "area_saturation"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 3000000,
+        "resources": {
+          "oil": 6,
+          "metals": 20,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 740,
+      "speedKmh": 80,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 10,
+        "max": 75
+      },
+      "damage": {
+        "infantry": 14,
+        "armor": 5,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 11
+      },
+      "hp": 14,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4", "research.land.mlrs"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "Camion Tatra 8x8",
+        "lengthM": 12,
+        "wingspanM": null,
+        "mtowKg": 36000,
+        "warheadKg": 100,
+        "speedLabel": "80 km/h sur route",
+        "rangeKm": 75
+      },
+      "enabled": true,
+      "unitLabel": "lanceur",
+      "unitPriceUsd": 3000000,
+      "era": {
+        "introduced": 2000
+      }
+    },
+    {
+      "id": "other.fajr-5",
+      "name": "Fajr-5",
+      "doctrine": "other",
+      "origin": "IR",
+      "category": "artillery",
+      "roles": ["mlrs", "area_saturation"],
+      "generation": 3,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 1500000,
+        "resources": {
+          "oil": 4,
+          "metals": 15,
+          "electronics": 6
+        }
+      },
+      "buildTimeH": 12,
+      "upkeepPerDay": 530,
+      "speedKmh": 70,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 20,
+        "max": 75
+      },
+      "damage": {
+        "infantry": 12,
+        "armor": 4,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 10
+      },
+      "hp": 12,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen3", "research.land.mlrs"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "artillery",
+      "sheet": {
+        "engine": "Camion Mercedes-Benz 6x6",
+        "lengthM": 10.45,
+        "wingspanM": null,
+        "mtowKg": 26000,
+        "warheadKg": 90,
+        "speedLabel": "70 km/h sur route",
+        "rangeKm": 75
+      },
+      "enabled": true,
+      "unitLabel": "lanceur",
+      "unitPriceUsd": 1500000,
+      "era": {
+        "introduced": 1996
+      }
+    }
+  ]
+}

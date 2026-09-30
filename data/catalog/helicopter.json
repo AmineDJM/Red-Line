@@ -1,0 +1,1780 @@
+{
+  "category": "helicopter",
+  "systems": [
+    {
+      "id": "us.ah-64-apache",
+      "name": "AH-64 Apache",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "helicopter",
+      "roles": ["attack_helicopter", "anti_tank"],
+      "generation": 4,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 35000000,
+        "resources": {
+          "oil": 15,
+          "metals": 30,
+          "electronics": 40
+        }
+      },
+      "buildTimeH": 28,
+      "upkeepPerDay": 8100,
+      "speedKmh": 290,
+      "operationalRadiusKm": 480,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 8,
+        "armor": 14,
+        "aircraft": 1,
+        "helicopter": 4,
+        "drone": 3,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 0,
+        "building": 5
+      },
+      "hp": 22,
+      "armor": 0.25,
+      "stealth": 0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo3"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "helicopter",
+      "illustration": "us.ah-64-apache.webp",
+      "sheet": {
+        "engine": "2 turbomoteurs T700",
+        "lengthM": 17.7,
+        "wingspanM": 14.6,
+        "mtowKg": 10400,
+        "warheadKg": null,
+        "speedLabel": "290 km/h",
+        "rangeKm": 1900
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 35000000,
+      "era": {
+        "introduced": 1986
+      },
+      "air": {
+        "fuelH": 2.5,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.ka-52",
+      "name": "Ka-52 Alligator",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "helicopter",
+      "roles": ["attack_helicopter", "anti_tank"],
+      "generation": 4,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 16000000,
+        "resources": {
+          "oil": 9,
+          "metals": 20,
+          "electronics": 25
+        }
+      },
+      "buildTimeH": 26,
+      "upkeepPerDay": 3500,
+      "speedKmh": 300,
+      "operationalRadiusKm": 460,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 10
+      },
+      "damage": {
+        "infantry": 8,
+        "armor": 13,
+        "aircraft": 1,
+        "helicopter": 4,
+        "drone": 3,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 0,
+        "building": 5
+      },
+      "hp": 24,
+      "armor": 0.3,
+      "stealth": 0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "helicopter",
+      "illustration": "ru.ka-52.webp",
+      "sheet": {
+        "engine": "2 turbomoteurs VK-2500",
+        "lengthM": 13.5,
+        "wingspanM": 14.5,
+        "mtowKg": 10800,
+        "warheadKg": null,
+        "speedLabel": "300 km/h",
+        "rangeKm": 1100
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 16000000,
+      "era": {
+        "introduced": 2011
+      },
+      "air": {
+        "fuelH": 2.5,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "us.ah-1z-viper",
+      "name": "AH-1Z Viper",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "helicopter",
+      "roles": ["attack_helicopter", "anti_tank", "carrier_borne"],
+      "generation": 4,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 31000000,
+        "resources": {
+          "oil": 15,
+          "metals": 25,
+          "electronics": 35
+        }
+      },
+      "buildTimeH": 26,
+      "upkeepPerDay": 7300,
+      "speedKmh": 300,
+      "operationalRadiusKm": 230,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 8,
+        "armor": 14,
+        "aircraft": 1,
+        "helicopter": 4,
+        "drone": 3,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 0,
+        "building": 5
+      },
+      "hp": 22,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs T700-GE-401C",
+        "lengthM": 17.8,
+        "wingspanM": 14.6,
+        "mtowKg": 8390,
+        "warheadKg": null,
+        "speedLabel": "300 km/h",
+        "rangeKm": 685
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 31000000,
+      "era": {
+        "introduced": 2010
+      },
+      "air": {
+        "fuelH": 2.5,
+        "refuelable": false,
+        "carrierCapable": true
+      }
+    },
+    {
+      "id": "us.ah-1-cobra",
+      "name": "AH-1 Cobra",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "helicopter",
+      "roles": ["attack_helicopter", "anti_tank"],
+      "generation": 3,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 12000000,
+        "resources": {
+          "oil": 7,
+          "metals": 15,
+          "electronics": 20
+        }
+      },
+      "buildTimeH": 18,
+      "upkeepPerDay": 3700,
+      "speedKmh": 280,
+      "operationalRadiusKm": 250,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 4
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 3,
+        "drone": 2,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 0,
+        "building": 4
+      },
+      "hp": 18,
+      "armor": 0.2,
+      "stealth": 0.0,
+      "detectionRangeKm": 15,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "1 turbomoteur T53-L-703",
+        "lengthM": 13.6,
+        "wingspanM": 13.4,
+        "mtowKg": 4500,
+        "warheadKg": null,
+        "speedLabel": "277 km/h",
+        "rangeKm": 510
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 12000000,
+      "era": {
+        "introduced": 1967
+      },
+      "air": {
+        "fuelH": 2,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "us.uh-60-black-hawk",
+      "name": "UH-60 Black Hawk",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "helicopter",
+      "roles": ["utility_helicopter", "transport", "air_assault"],
+      "generation": 4,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 21000000,
+        "resources": {
+          "oil": 10,
+          "metals": 20,
+          "electronics": 30
+        }
+      },
+      "buildTimeH": 20,
+      "upkeepPerDay": 5400,
+      "speedKmh": 295,
+      "operationalRadiusKm": 300,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 1
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 1,
+        "drone": 1,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 1
+      },
+      "hp": 20,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 15,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 2,
+        "transport": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs T700-GE-701D",
+        "lengthM": 19.8,
+        "wingspanM": 16.4,
+        "mtowKg": 10660,
+        "warheadKg": null,
+        "speedLabel": "294 km/h",
+        "rangeKm": 590
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 21000000,
+      "era": {
+        "introduced": 1979
+      },
+      "air": {
+        "fuelH": 2.3,
+        "refuelable": true,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "us.ch-47-chinook",
+      "name": "CH-47 Chinook",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "helicopter",
+      "roles": ["utility_helicopter", "transport", "heavy_lift"],
+      "generation": 4,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 40000000,
+        "resources": {
+          "oil": 15,
+          "metals": 30,
+          "electronics": 40
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 9000,
+      "speedKmh": 300,
+      "operationalRadiusKm": 370,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 1
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 1,
+        "drone": 1,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 1
+      },
+      "hp": 26,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 15,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 1,
+        "transport": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs T55-GA-714A",
+        "lengthM": 30.1,
+        "wingspanM": 18.3,
+        "mtowKg": 22680,
+        "warheadKg": null,
+        "speedLabel": "310 km/h",
+        "rangeKm": 740
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 1962
+      },
+      "air": {
+        "fuelH": 2.5,
+        "refuelable": true,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "us.mh-60r-seahawk",
+      "name": "MH-60R Seahawk",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "helicopter",
+      "roles": ["asw", "naval_helicopter", "antiship"],
+      "generation": 4,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 40000000,
+        "resources": {
+          "oil": 15,
+          "metals": 30,
+          "electronics": 40
+        }
+      },
+      "buildTimeH": 22,
+      "upkeepPerDay": 9000,
+      "speedKmh": 270,
+      "operationalRadiusKm": 250,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 0,
+        "helicopter": 1,
+        "drone": 1,
+        "ship": 6,
+        "submarine": 12,
+        "missile": 0,
+        "building": 2
+      },
+      "hp": 20,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 3
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs T700-GE-401C",
+        "lengthM": 19.8,
+        "wingspanM": 16.4,
+        "mtowKg": 10433,
+        "warheadKg": null,
+        "speedLabel": "270 km/h",
+        "rangeKm": 830
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 2006
+      },
+      "air": {
+        "fuelH": 3.5,
+        "refuelable": false,
+        "carrierCapable": true
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 40,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.75,
+        "aircraftCapacity": 0,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "us.uh-1-huey",
+      "name": "UH-1 Huey",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "helicopter",
+      "roles": ["utility_helicopter", "transport"],
+      "generation": 2,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 4000000,
+        "resources": {
+          "oil": 4,
+          "metals": 8,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 2100,
+      "speedKmh": 200,
+      "operationalRadiusKm": 250,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 1
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 1,
+        "drone": 1,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 1
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1,
+        "transport": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "1 turbomoteur T53-L-13",
+        "lengthM": 17.4,
+        "wingspanM": 14.6,
+        "mtowKg": 4310,
+        "warheadKg": null,
+        "speedLabel": "220 km/h",
+        "rangeKm": 510
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 4000000,
+      "era": {
+        "introduced": 1959
+      },
+      "air": {
+        "fuelH": 2.5,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.mi-28nm",
+      "name": "Mi-28NM",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "helicopter",
+      "roles": ["attack_helicopter", "anti_tank"],
+      "generation": 4,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 18000000,
+        "resources": {
+          "oil": 10,
+          "metals": 20,
+          "electronics": 25
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 3900,
+      "speedKmh": 300,
+      "operationalRadiusKm": 225,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 8,
+        "armor": 13,
+        "aircraft": 1,
+        "helicopter": 4,
+        "drone": 3,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 0,
+        "building": 5
+      },
+      "hp": 24,
+      "armor": 0.3,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs VK-2500",
+        "lengthM": 17,
+        "wingspanM": 17.2,
+        "mtowKg": 11700,
+        "warheadKg": null,
+        "speedLabel": "300 km/h",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 18000000,
+      "era": {
+        "introduced": 2009
+      },
+      "air": {
+        "fuelH": 2.5,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.mi-24",
+      "name": "Mi-24",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "helicopter",
+      "roles": ["attack_helicopter", "anti_tank", "transport"],
+      "generation": 3,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 12000000,
+        "resources": {
+          "oil": 7,
+          "metals": 15,
+          "electronics": 20
+        }
+      },
+      "buildTimeH": 20,
+      "upkeepPerDay": 2700,
+      "speedKmh": 320,
+      "operationalRadiusKm": 250,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 5
+      },
+      "damage": {
+        "infantry": 7,
+        "armor": 11,
+        "aircraft": 0,
+        "helicopter": 3,
+        "drone": 2,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 0,
+        "building": 5
+      },
+      "hp": 26,
+      "armor": 0.3,
+      "stealth": 0.0,
+      "detectionRangeKm": 15,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 4,
+        "transport": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs TV3-117",
+        "lengthM": 17.5,
+        "wingspanM": 17.3,
+        "mtowKg": 12000,
+        "warheadKg": null,
+        "speedLabel": "335 km/h",
+        "rangeKm": 450
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 12000000,
+      "era": {
+        "introduced": 1972
+      },
+      "air": {
+        "fuelH": 2,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.mi-8",
+      "name": "Mi-8",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "helicopter",
+      "roles": ["utility_helicopter", "transport"],
+      "generation": 2,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 12000000,
+        "resources": {
+          "oil": 7,
+          "metals": 15,
+          "electronics": 20
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 2700,
+      "speedKmh": 250,
+      "operationalRadiusKm": 290,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 2
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 1,
+        "aircraft": 0,
+        "helicopter": 1,
+        "drone": 1,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 2
+      },
+      "hp": 20,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 2,
+        "transport": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs TV3-117VM",
+        "lengthM": 18.2,
+        "wingspanM": 21.3,
+        "mtowKg": 13000,
+        "warheadKg": null,
+        "speedLabel": "250 km/h",
+        "rangeKm": 580
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 12000000,
+      "era": {
+        "introduced": 1967
+      },
+      "air": {
+        "fuelH": 3,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.ka-27",
+      "name": "Ka-27",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "helicopter",
+      "roles": ["asw", "naval_helicopter", "antiship"],
+      "generation": 3,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 15000000,
+        "resources": {
+          "oil": 9,
+          "metals": 20,
+          "electronics": 25
+        }
+      },
+      "buildTimeH": 20,
+      "upkeepPerDay": 3300,
+      "speedKmh": 270,
+      "operationalRadiusKm": 200,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 1,
+        "armor": 1,
+        "aircraft": 0,
+        "helicopter": 1,
+        "drone": 1,
+        "ship": 4,
+        "submarine": 11,
+        "missile": 0,
+        "building": 1
+      },
+      "hp": 20,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 50,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs TV3-117KM",
+        "lengthM": 11.3,
+        "wingspanM": 15.9,
+        "mtowKg": 12000,
+        "warheadKg": null,
+        "speedLabel": "270 km/h",
+        "rangeKm": 980
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 15000000,
+      "era": {
+        "introduced": 1982
+      },
+      "air": {
+        "fuelH": 4,
+        "refuelable": false,
+        "carrierCapable": true
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 30,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.7,
+        "aircraftCapacity": 0,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "ru.mi-2",
+      "name": "Mi-2",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "helicopter",
+      "roles": ["utility_helicopter", "liaison"],
+      "generation": 1,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1000000,
+        "resources": {
+          "oil": 2,
+          "metals": 3,
+          "electronics": 4
+        }
+      },
+      "buildTimeH": 6,
+      "upkeepPerDay": 600,
+      "speedKmh": 200,
+      "operationalRadiusKm": 200,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 1
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 1,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 1
+      },
+      "hp": 10,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 8,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs GTD-350",
+        "lengthM": 11.4,
+        "wingspanM": 14.5,
+        "mtowKg": 3550,
+        "warheadKg": null,
+        "speedLabel": "210 km/h",
+        "rangeKm": 440
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 1000000,
+      "era": {
+        "introduced": 1965
+      },
+      "air": {
+        "fuelH": 2.5,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "cn.z-10",
+      "name": "Z-10",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "helicopter",
+      "roles": ["attack_helicopter", "anti_tank"],
+      "generation": 4,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 20000000,
+        "resources": {
+          "oil": 10,
+          "metals": 20,
+          "electronics": 25
+        }
+      },
+      "buildTimeH": 22,
+      "upkeepPerDay": 4200,
+      "speedKmh": 300,
+      "operationalRadiusKm": 250,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 8,
+        "armor": 13,
+        "aircraft": 1,
+        "helicopter": 4,
+        "drone": 3,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 0,
+        "building": 5
+      },
+      "hp": 22,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs WZ-9",
+        "lengthM": 14.15,
+        "wingspanM": 13,
+        "mtowKg": 7000,
+        "warheadKg": null,
+        "speedLabel": "300 km/h",
+        "rangeKm": 820
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 20000000,
+      "era": {
+        "introduced": 2012
+      },
+      "air": {
+        "fuelH": 3,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "cn.z-19",
+      "name": "Z-19",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "helicopter",
+      "roles": ["attack_helicopter", "anti_tank", "reconnaissance"],
+      "generation": 3,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 12000000,
+        "resources": {
+          "oil": 7,
+          "metals": 15,
+          "electronics": 20
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 2700,
+      "speedKmh": 245,
+      "operationalRadiusKm": 250,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 10,
+        "aircraft": 1,
+        "helicopter": 3,
+        "drone": 2,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 3
+      },
+      "hp": 14,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 18,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs WZ-8C",
+        "lengthM": 12,
+        "wingspanM": 11.9,
+        "mtowKg": 4250,
+        "warheadKg": null,
+        "speedLabel": "245 km/h",
+        "rangeKm": 700
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 12000000,
+      "era": {
+        "introduced": 2012
+      },
+      "air": {
+        "fuelH": 3,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "cn.z-20",
+      "name": "Z-20",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "helicopter",
+      "roles": ["utility_helicopter", "transport", "naval_helicopter"],
+      "generation": 4,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 25000000,
+        "resources": {
+          "oil": 10,
+          "metals": 25,
+          "electronics": 30
+        }
+      },
+      "buildTimeH": 20,
+      "upkeepPerDay": 5200,
+      "speedKmh": 300,
+      "operationalRadiusKm": 300,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 1
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 1,
+        "drone": 1,
+        "ship": 1,
+        "submarine": 2,
+        "missile": 0,
+        "building": 1
+      },
+      "hp": 20,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 15,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 2,
+        "transport": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs WZ-10",
+        "lengthM": 19.8,
+        "wingspanM": 16.4,
+        "mtowKg": 10000,
+        "warheadKg": null,
+        "speedLabel": "300 km/h",
+        "rangeKm": 750
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 25000000,
+      "era": {
+        "introduced": 2019
+      },
+      "air": {
+        "fuelH": 2.5,
+        "refuelable": false,
+        "carrierCapable": true
+      }
+    },
+    {
+      "id": "cn.z-9",
+      "name": "Z-9",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "helicopter",
+      "roles": ["utility_helicopter", "naval_helicopter"],
+      "generation": 3,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 6000000,
+        "resources": {
+          "oil": 5,
+          "metals": 10,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 12,
+      "upkeepPerDay": 1600,
+      "speedKmh": 305,
+      "operationalRadiusKm": 400,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 1
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 1,
+        "aircraft": 0,
+        "helicopter": 1,
+        "drone": 1,
+        "ship": 1,
+        "submarine": 1,
+        "missile": 0,
+        "building": 1
+      },
+      "hp": 12,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs WZ-8A",
+        "lengthM": 12.1,
+        "wingspanM": 11.9,
+        "mtowKg": 4100,
+        "warheadKg": null,
+        "speedLabel": "305 km/h",
+        "rangeKm": 1000
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 6000000,
+      "era": {
+        "introduced": 1994
+      },
+      "air": {
+        "fuelH": 3.5,
+        "refuelable": false,
+        "carrierCapable": true
+      }
+    },
+    {
+      "id": "eu.tigre",
+      "name": "Tigre",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "helicopter",
+      "roles": ["attack_helicopter", "anti_tank"],
+      "generation": 4,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 45000000,
+        "resources": {
+          "oil": 15,
+          "metals": 35,
+          "electronics": 45
+        }
+      },
+      "buildTimeH": 26,
+      "upkeepPerDay": 9700,
+      "speedKmh": 290,
+      "operationalRadiusKm": 400,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 8,
+        "armor": 14,
+        "aircraft": 2,
+        "helicopter": 5,
+        "drone": 3,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 0,
+        "building": 5
+      },
+      "hp": 22,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 22,
+      "ew": {
+        "jamming": 0.15,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs MTR390",
+        "lengthM": 14.1,
+        "wingspanM": 13,
+        "mtowKg": 6000,
+        "warheadKg": null,
+        "speedLabel": "290 km/h",
+        "rangeKm": 800
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 45000000,
+      "era": {
+        "introduced": 2005
+      },
+      "air": {
+        "fuelH": 3,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "eu.nh90",
+      "name": "NH90",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "helicopter",
+      "roles": ["utility_helicopter", "transport", "naval_helicopter"],
+      "generation": 4,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 40000000,
+        "resources": {
+          "oil": 15,
+          "metals": 30,
+          "electronics": 40
+        }
+      },
+      "buildTimeH": 22,
+      "upkeepPerDay": 8800,
+      "speedKmh": 300,
+      "operationalRadiusKm": 400,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 1
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 1,
+        "drone": 1,
+        "ship": 2,
+        "submarine": 4,
+        "missile": 0,
+        "building": 1
+      },
+      "hp": 20,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 2,
+        "transport": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs RTM322",
+        "lengthM": 19.6,
+        "wingspanM": 16.3,
+        "mtowKg": 10600,
+        "warheadKg": null,
+        "speedLabel": "300 km/h",
+        "rangeKm": 800
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 2007
+      },
+      "air": {
+        "fuelH": 3.5,
+        "refuelable": false,
+        "carrierCapable": true
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.3,
+        "aircraftCapacity": 0,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "eu.aw101",
+      "name": "AW101",
+      "doctrine": "eu",
+      "origin": "IT",
+      "category": "helicopter",
+      "roles": ["asw", "naval_helicopter", "antiship", "transport"],
+      "generation": 4,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 50000000,
+        "resources": {
+          "oil": 20,
+          "metals": 35,
+          "electronics": 45
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 11000,
+      "speedKmh": 309,
+      "operationalRadiusKm": 450,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 0,
+        "helicopter": 1,
+        "drone": 1,
+        "ship": 6,
+        "submarine": 12,
+        "missile": 0,
+        "building": 2
+      },
+      "hp": 24,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 3,
+        "transport": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "3 turbomoteurs RTM322",
+        "lengthM": 22.8,
+        "wingspanM": 18.6,
+        "mtowKg": 15600,
+        "warheadKg": null,
+        "speedLabel": "309 km/h",
+        "rangeKm": 1360
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 50000000,
+      "era": {
+        "introduced": 1999
+      },
+      "air": {
+        "fuelH": 5,
+        "refuelable": false,
+        "carrierCapable": true
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 40,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": false,
+        "asw": 0.75,
+        "aircraftCapacity": 0,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "eu.gazelle",
+      "name": "Gazelle",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "helicopter",
+      "roles": ["attack_helicopter", "anti_tank", "reconnaissance"],
+      "generation": 2,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 3000000,
+        "resources": {
+          "oil": 3,
+          "metals": 7,
+          "electronics": 9
+        }
+      },
+      "buildTimeH": 8,
+      "upkeepPerDay": 1700,
+      "speedKmh": 260,
+      "operationalRadiusKm": 300,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 4
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 8,
+        "aircraft": 0,
+        "helicopter": 2,
+        "drone": 2,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 2
+      },
+      "hp": 10,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "1 turbomoteur Astazou XIV",
+        "lengthM": 11.97,
+        "wingspanM": 10.5,
+        "mtowKg": 1900,
+        "warheadKg": null,
+        "speedLabel": "264 km/h",
+        "rangeKm": 670
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 3000000,
+      "era": {
+        "introduced": 1973
+      },
+      "air": {
+        "fuelH": 3,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "eu.sa-330-puma",
+      "name": "SA 330 Puma",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "helicopter",
+      "roles": ["utility_helicopter", "transport"],
+      "generation": 2,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 8000000,
+        "resources": {
+          "oil": 6,
+          "metals": 10,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 12,
+      "upkeepPerDay": 2600,
+      "speedKmh": 257,
+      "operationalRadiusKm": 290,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 1
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 1,
+        "drone": 1,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 1
+      },
+      "hp": 18,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 1,
+        "transport": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs Turmo IVC",
+        "lengthM": 18.15,
+        "wingspanM": 15,
+        "mtowKg": 7400,
+        "warheadKg": null,
+        "speedLabel": "257 km/h",
+        "rangeKm": 580
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 8000000,
+      "era": {
+        "introduced": 1968
+      },
+      "air": {
+        "fuelH": 2.5,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "other.t129-atak",
+      "name": "T129 ATAK",
+      "doctrine": "other",
+      "origin": "TR",
+      "category": "helicopter",
+      "roles": ["attack_helicopter", "anti_tank"],
+      "generation": 4,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 28000000,
+        "resources": {
+          "oil": 10,
+          "metals": 25,
+          "electronics": 35
+        }
+      },
+      "buildTimeH": 22,
+      "upkeepPerDay": 5800,
+      "speedKmh": 280,
+      "operationalRadiusKm": 250,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 8,
+        "armor": 12,
+        "aircraft": 1,
+        "helicopter": 4,
+        "drone": 3,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 0,
+        "building": 5
+      },
+      "hp": 20,
+      "armor": 0.25,
+      "stealth": 0.0,
+      "detectionRangeKm": 18,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.helo3"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "helicopter",
+      "sheet": {
+        "engine": "2 turbomoteurs LHTEC CTS800-4A",
+        "lengthM": 14.5,
+        "wingspanM": 11.9,
+        "mtowKg": 5000,
+        "warheadKg": null,
+        "speedLabel": "280 km/h",
+        "rangeKm": 537
+      },
+      "enabled": true,
+      "unitLabel": "hélicoptère",
+      "unitPriceUsd": 28000000,
+      "era": {
+        "introduced": 2014
+      },
+      "air": {
+        "fuelH": 3,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    }
+  ]
+}
