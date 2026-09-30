@@ -306,8 +306,16 @@ export async function register(
 }
 
 /** Connexion d'un compte existant (ex. super-admin d'ADMIN_EMAIL). */
-export async function login(app: FastifyInstance, email: string, password: string): Promise<string> {
-  const res = await app.inject({ method: 'POST', url: '/api/auth/login', payload: { email, password } });
+export async function login(
+  app: FastifyInstance,
+  email: string,
+  password: string,
+): Promise<string> {
+  const res = await app.inject({
+    method: 'POST',
+    url: '/api/auth/login',
+    payload: { email, password },
+  });
   if (res.statusCode !== 200) throw new Error(`login ${res.statusCode} ${res.body}`);
   return sessionCookie(res);
 }
@@ -453,3 +461,18 @@ export class WsClient {
 }
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/** Attend qu’une condition devienne vraie (sondage toutes les 20 ms). */
+export async function until<T>(
+  fn: () => T | Promise<T>,
+  what: string,
+  timeoutMs = 5000,
+): Promise<NonNullable<T>> {
+  const t0 = Date.now();
+  for (;;) {
+    const v = await fn();
+    if (v) return v as NonNullable<T>;
+    if (Date.now() - t0 > timeoutMs) throw new Error(`délai dépassé : ${what}`);
+    await sleep(20);
+  }
+}

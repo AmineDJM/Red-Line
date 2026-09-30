@@ -168,7 +168,8 @@ export async function adminDataRoutes(app: FastifyInstance, ctx: AppContext): Pr
     app.get(one, balance, async (req) => {
       const key = keyOf(req);
       const value = currentValue(kind, key);
-      if (value === null || value === undefined) throw new HttpError(404, 'not_found', 'Introuvable');
+      if (value === null || value === undefined)
+        throw new HttpError(404, 'not_found', 'Introuvable');
       return { data: value, ...history(kind, key) };
     });
     app.put(one, balance, async (req) => {
@@ -237,6 +238,16 @@ export async function adminDataRoutes(app: FastifyInstance, ctx: AppContext): Pr
       scope: body.scope,
       playerMessage: body.playerMessage,
       action: 'data.rules.revert',
+    });
+  });
+
+  app.post('/admin/api/rules/reset', balance, async (req) => {
+    const body = parseBody(SaveBodySchema.omit({ data: true }), req.body);
+    return write(req, 'rules', 'default', null, {
+      message: body.message || 'Retour à l’équilibrage du dépôt',
+      scope: body.scope,
+      playerMessage: body.playerMessage,
+      action: 'data.rules.reset',
     });
   });
 

@@ -142,7 +142,8 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
       e.VAPID_PUBLIC_KEY && e.VAPID_PRIVATE_KEY
         ? { publicKey: e.VAPID_PUBLIC_KEY, privateKey: e.VAPID_PRIVATE_KEY }
         : null,
-    vapidSubject: e.VAPID_SUBJECT ?? (e.PUBLIC_URL ? e.PUBLIC_URL : 'mailto:noreply@redline.invalid'),
+    vapidSubject:
+      e.VAPID_SUBJECT ?? (e.PUBLIC_URL ? e.PUBLIC_URL : 'mailto:noreply@redline.invalid'),
     legalDir: abs(e.LEGAL_DIR ?? join(SERVER_ROOT, 'legal')),
   };
 }

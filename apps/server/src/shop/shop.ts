@@ -1,7 +1,12 @@
 import { and, asc, desc, eq, sql } from 'drizzle-orm';
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
-import { AccelerateBodySchema, type CosmeticItem, type ShopPack, type WalletEntry } from '@redline/shared';
+import {
+  AccelerateBodySchema,
+  type CosmeticItem,
+  type ShopPack,
+  type WalletEntry,
+} from '@redline/shared';
 import type { AppContext } from '../context.js';
 import type { Db } from '../db/client.js';
 import {
@@ -60,7 +65,9 @@ export function packView(pack: PackRow, promos: PromoRow[], now = new Date()): S
     name: pack.name,
     amount: pack.amount,
     bonus: pack.bonus,
-    priceCents: promo ? Math.round((pack.priceCents * (100 - promo.percentOff)) / 100) : pack.priceCents,
+    priceCents: promo
+      ? Math.round((pack.priceCents * (100 - promo.percentOff)) / 100)
+      : pack.priceCents,
     currency: pack.currency,
     promo: promo
       ? { label: promo.label, percentOff: promo.percentOff, until: promo.endsAt.toISOString() }
@@ -167,7 +174,10 @@ export async function processPaymentEvent(
 }
 
 /** Remboursement depuis l'administration : Stripe d'abord, puis débit (idempotent avec le webhook). */
-export async function refundPurchase(ctx: AppContext, purchaseId: string): Promise<{ balance: number | null }> {
+export async function refundPurchase(
+  ctx: AppContext,
+  purchaseId: string,
+): Promise<{ balance: number | null }> {
   const [p] = await ctx.db.select().from(purchases).where(eq(purchases.id, purchaseId));
   if (!p) throw new HttpError(404, 'not_found', 'Achat introuvable');
   if (p.status !== 'paid') throw new HttpError(409, 'not_refundable', `Achat ${p.status}`);
@@ -176,7 +186,11 @@ export async function refundPurchase(ctx: AppContext, purchaseId: string): Promi
     await ctx.payments.refund(p.paymentIntent);
   }
   return ctx.db.transaction(async (tx) => {
-    const [cur] = await tx.select().from(purchases).where(eq(purchases.id, purchaseId)).for('update');
+    const [cur] = await tx
+      .select()
+      .from(purchases)
+      .where(eq(purchases.id, purchaseId))
+      .for('update');
     if (!cur || cur.status !== 'paid' || !cur.userId) return { balance: null };
     await tx
       .update(purchases)
@@ -198,7 +212,8 @@ const CheckoutBodySchema = z.object({ packId: z.string().min(1).max(64) });
 export async function shopRoutes(app: FastifyInstance, ctx: AppContext): Promise<void> {
   const { db } = ctx;
 
-  const activePromos = () => db.select().from(shopPromotions).where(eq(shopPromotions.active, true));
+  const activePromos = () =>
+    db.select().from(shopPromotions).where(eq(shopPromotions.active, true));
 
   app.get('/api/shop/packs', async () => {
     const [packs, promos] = await Promise.all([
@@ -237,7 +252,8 @@ export async function shopRoutes(app: FastifyInstance, ctx: AppContext): Promise
       if (missing.length) {
         return reply.code(403).send({
           error: 'legal_required',
-          message: 'Acceptez les conditions générales de vente et la renonciation à la rétractation',
+          message:
+            'Acceptez les conditions générales de vente et la renonciation à la rétractation',
           needsAcceptance: missing,
         });
       }
@@ -322,16 +338,14 @@ export async function shopRoutes(app: FastifyInstance, ctx: AppContext): Promise
     return {
       items: items
         .filter((c) => c.purchasable || owned.includes(c.id))
-        .map(
-          (c): CosmeticItem & { purchasable: boolean } => ({
-            id: c.id,
-            kind: c.kind,
-            name: c.name,
-            price: c.price,
-            preview: c.preview,
-            purchasable: c.purchasable,
-          }),
-        ),
+        .map((c): CosmeticItem & { purchasable: boolean } => ({
+          id: c.id,
+          kind: c.kind,
+          name: c.name,
+          price: c.price,
+          preview: c.preview,
+          purchasable: c.purchasable,
+        })),
       owned,
     };
   });
@@ -357,7 +371,9 @@ export async function shopRoutes(app: FastifyInstance, ctx: AppContext): Promise
         reason: 'cosmetic',
         ref: item.id,
       });
-      await tx.insert(userCosmetics).values({ userId: user.id, cosmeticId: id, source: 'purchase' });
+      await tx
+        .insert(userCosmetics)
+        .values({ userId: user.id, cosmeticId: id, source: 'purchase' });
       return b;
     });
     return { ok: true, balance };
@@ -438,4 +454,3 @@ export async function shopRoutes(app: FastifyInstance, ctx: AppContext): Promise
 export async function listPromotions(db: Db) {
   return db.select().from(shopPromotions).orderBy(desc(shopPromotions.id));
 }
-

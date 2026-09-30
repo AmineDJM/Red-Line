@@ -70,7 +70,8 @@ export class RankingService {
       .orderBy(desc(seasons.startsAt))
       .limit(1);
     if (cur) return cur;
-    const count = (await this.db.select({ n: sql<number>`count(*)::int` }).from(seasons))[0]?.n ?? 0;
+    const count =
+      (await this.db.select({ n: sql<number>`count(*)::int` }).from(seasons))[0]?.n ?? 0;
     const s = {
       id: `s${count + 1}`,
       name: `Saison ${count + 1}`,
@@ -174,7 +175,10 @@ export class RankingService {
       const q = req.query as { season?: string };
       let season: SeasonRow | undefined;
       if (q.season) {
-        [season] = await this.db.select().from(seasons).where(eq(seasons.id, String(q.season)));
+        [season] = await this.db
+          .select()
+          .from(seasons)
+          .where(eq(seasons.id, String(q.season)));
         if (!season) throw new HttpError(404, 'not_found', 'Saison introuvable');
       } else season = await this.current();
       return { season: toSeasonView(season), entries: await this.entries(season.id) };

@@ -271,7 +271,9 @@ export async function loadGameData(dataDir: string, log: FastifyBaseLogger): Pro
       .map((d) => d.name)
       .sort()) {
       const list: Orbat[] = [];
-      for (const name of (await readdir(join(obDir, set))).filter((n) => n.endsWith('.json')).sort()) {
+      for (const name of (await readdir(join(obDir, set)))
+        .filter((n) => n.endsWith('.json'))
+        .sort()) {
         try {
           list.push(OrbatSchema.parse(await readJson(join(obDir, set, name))));
         } catch (e) {

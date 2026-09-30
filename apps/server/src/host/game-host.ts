@@ -456,6 +456,8 @@ export class GameHost {
       const now = Date.now();
       if (now - this.lastInactiveCheck >= INACTIVE_CHECK_MS) {
         this.lastInactiveCheck = now;
+        // Révisions de données écrites par une autre instance (back-office servi ailleurs).
+        await this.d.store.refreshIfStale();
         await this.checkInactive(now);
       }
     } catch (err) {
@@ -851,7 +853,7 @@ export class GameHost {
         .set({ isAiReplacement: false, aiSince: null })
         .where(and(eq(gamePlayers.gameId, g.id), eq(gamePlayers.slot, p.slot)));
     });
-    this.notice(g, `Le joueur de ${this.nationName(p.nationId)} a repris le contrôle de sa nation.`);
+    this.notice(g, `${this.nationName(p.nationId)} : le joueur a repris le contrôle de sa nation.`);
     this.log.info({ gameId: g.id, nation: p.nationId }, 'joueur de retour : IA retirée');
   }
 
@@ -980,7 +982,11 @@ export class GameHost {
   ): { ok: boolean; error?: OrderErrorCode | 'unsupported'; message?: string } {
     const engine = this.engine;
     if (!engine.applySystem) {
-      return { ok: false, error: 'unsupported', message: 'Commande système non gérée par le moteur' };
+      return {
+        ok: false,
+        error: 'unsupported',
+        message: 'Commande système non gérée par le moteur',
+      };
     }
     if (g.errored) return { ok: false, error: 'not_allowed', message: 'La partie est suspendue' };
     const now = Date.now();
@@ -1179,9 +1185,7 @@ export class GameHost {
       id,
       row,
       prepared,
-      players: [
-        { slot: 0, userId, nationId: body.nationId, isAi: false, lastActiveAt: now },
-      ],
+      players: [{ slot: 0, userId, nationId: body.nationId, isAi: false, lastActiveAt: now }],
       clock,
     });
     return { meta: this.games.get(id)?.meta ?? metaOf(row, 1), nationId: body.nationId };
@@ -1310,7 +1314,12 @@ export class GameHost {
     const p = g.players.find((x) => x.userId === userId);
     if (!p) throw new HttpError(404, 'not_found', 'Vous ne jouez pas dans cette partie');
     if (g.meta.status !== 'ended') {
-      this.applySystemNow(g, { kind: 'setAi', nationId: p.nationId, isAi: true, aiLevel: 'normal' });
+      this.applySystemNow(g, {
+        kind: 'setAi',
+        nationId: p.nationId,
+        isAi: true,
+        aiLevel: 'normal',
+      });
     }
     p.userId = null;
     p.isAi = true;

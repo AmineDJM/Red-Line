@@ -13,13 +13,13 @@ updatedAt: 2026-09-30
 
 ## 2. Données collectées
 
-| Donnée                                                      | Finalité                                           | Base légale              | Durée                          |
-| ----------------------------------------------------------- | -------------------------------------------------- | ------------------------ | ------------------------------ |
-| Adresse e-mail, pseudonyme, mot de passe (haché)            | Compte                                             | Contrat                  | Durée du compte + 1 an         |
-| Parties, ordres, messages de la messagerie                  | Fonctionnement du jeu, modération                  | Contrat, intérêt légitime | Durée de la partie + 1 an      |
-| IP **hachée** (non réversible), navigateur, heures d'activité | Sécurité, lutte contre la triche et les multi-comptes | Intérêt légitime         | 12 mois                        |
-| Abonnements aux notifications (Web Push)                    | Alertes de jeu                                     | Consentement             | Jusqu'au désabonnement         |
-| Achats (montant, date, identifiant Stripe)                  | Facturation, obligations comptables                | Obligation légale        | 10 ans                         |
+| Donnée                                                        | Finalité                                              | Base légale               | Durée                     |
+| ------------------------------------------------------------- | ----------------------------------------------------- | ------------------------- | ------------------------- |
+| Adresse e-mail, pseudonyme, mot de passe (haché)              | Compte                                                | Contrat                   | Durée du compte + 1 an    |
+| Parties, ordres, messages de la messagerie                    | Fonctionnement du jeu, modération                     | Contrat, intérêt légitime | Durée de la partie + 1 an |
+| IP **hachée** (non réversible), navigateur, heures d'activité | Sécurité, lutte contre la triche et les multi-comptes | Intérêt légitime          | 12 mois                   |
+| Abonnements aux notifications (Web Push)                      | Alertes de jeu                                        | Consentement              | Jusqu'au désabonnement    |
+| Achats (montant, date, identifiant Stripe)                    | Facturation, obligations comptables                   | Obligation légale         | 10 ans                    |
 
 Aucune donnée de carte bancaire n'est traitée par l'Éditeur (paiement opéré par Stripe).
 

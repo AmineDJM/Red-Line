@@ -517,7 +517,8 @@ export const userFingerprints = pgTable(
   ],
 );
 
-export type DataKind = 'rules' | 'research' | 'orbat' | 'scenario' | 'nation' | 'province' | 'disputed';
+export type DataKind =
+  'rules' | 'research' | 'orbat' | 'scenario' | 'nation' | 'province' | 'disputed';
 
 /** Données de jeu modifiées depuis le back-office : chaque modification est une révision (retour arrière). */
 export const dataRevisions = pgTable(

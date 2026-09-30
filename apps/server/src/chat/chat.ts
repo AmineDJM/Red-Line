@@ -205,7 +205,11 @@ export class ChatService {
   }
 
   /** Masquage (ou rétablissement) par la modération, rediffusé aux joueurs connectés. */
-  async setHidden(messageId: number, hidden: boolean, adminId: string): Promise<ChatMessage | null> {
+  async setHidden(
+    messageId: number,
+    hidden: boolean,
+    adminId: string,
+  ): Promise<ChatMessage | null> {
     const [row] = await this.deps.db
       .update(chatMessages)
       .set({ hidden, hiddenBy: hidden ? adminId : null })
@@ -214,7 +218,10 @@ export class ChatService {
     if (!row) return null;
     const g = this.deps.host.games.get(row.gameId);
     const out = toChatMessage(row);
-    if (g) this.deps.host.broadcast(g, { t: 'chat', message: out }, (c) => this.receives(c, row.channel));
+    if (g)
+      this.deps.host.broadcast(g, { t: 'chat', message: out }, (c) =>
+        this.receives(c, row.channel),
+      );
     return out;
   }
 }

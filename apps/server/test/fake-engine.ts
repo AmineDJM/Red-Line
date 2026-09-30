@@ -183,7 +183,8 @@ const applyOrder: Engine['applyOrder'] = (state, nationId, order: Order) => {
     return { ok: true };
   }
   if (order.kind === 'mobilize') {
-    if (order.on) push(s, { time: s.time + 1000, kind: 'win', unitId: '', version: 0, by: nationId });
+    if (order.on)
+      push(s, { time: s.time + 1000, kind: 'win', unitId: '', version: 0, by: nationId });
     return { ok: true };
   }
   if (order.kind === 'createAlliance') {

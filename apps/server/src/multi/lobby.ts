@@ -18,11 +18,7 @@ import { metaOf } from '../host/game-host.js';
 
 const JoinBodySchema = z.object({ nationId: z.string().min(1).max(64) });
 
-export function nationPlayable(
-  ctx: AppContext,
-  scenario: ScenarioFile,
-  nationId: string,
-): boolean {
+export function nationPlayable(ctx: AppContext, scenario: ScenarioFile, nationId: string): boolean {
   if (!ctx.store.current().nationsById.has(nationId)) return false;
   return (
     (scenario.playableNations === 'all' || scenario.playableNations.includes(nationId)) &&
@@ -97,10 +93,7 @@ export async function lobbyRoutes(app: FastifyInstance, ctx: AppContext): Promis
         and(
           eq(games.mode, 'multi'),
           inArray(games.status, ['lobby', 'running', 'paused']),
-          or(
-            eq(games.isPrivate, false),
-            mineIds.length ? inArray(games.id, mineIds) : sql`false`,
-          ),
+          or(eq(games.isPrivate, false), mineIds.length ? inArray(games.id, mineIds) : sql`false`),
         ),
       )
       .orderBy(desc(games.createdAt))
@@ -111,7 +104,10 @@ export async function lobbyRoutes(app: FastifyInstance, ctx: AppContext): Promis
   app.get('/api/lobby/:id', async (req, reply) => {
     await requireUser(ctx, req, reply);
     const id = gameIdParam(req);
-    const [row] = await db.select().from(games).where(and(eq(games.id, id), eq(games.mode, 'multi')));
+    const [row] = await db
+      .select()
+      .from(games)
+      .where(and(eq(games.id, id), eq(games.mode, 'multi')));
     if (!row) throw new HttpError(404, 'not_found', 'Partie introuvable');
     return { game: (await lobbyViews([row]))[0] };
   });
@@ -195,7 +191,8 @@ export async function lobbyRoutes(app: FastifyInstance, ctx: AppContext): Promis
       if (players.some((p) => p.nationId === nationId)) {
         throw new HttpError(409, 'nation_taken', 'Nation déjà prise');
       }
-      if (players.length >= locked.maxPlayers) throw new HttpError(409, 'game_full', 'Partie complète');
+      if (players.length >= locked.maxPlayers)
+        throw new HttpError(409, 'game_full', 'Partie complète');
       const slot = Math.max(-1, ...players.map((p) => p.slot)) + 1;
       await tx.insert(gamePlayers).values({ gameId: id, slot, userId: user.id, nationId });
       return players.length + 1;
@@ -266,7 +263,8 @@ export async function lobbyRoutes(app: FastifyInstance, ctx: AppContext): Promis
     if (!cur.map) throw unavailable('data_unavailable', 'Carte indisponible');
     const set =
       (typeof q.set === 'string' && q.set) ||
-      (typeof q.scenario === 'string' && cur.scenarios.find((s) => s.id === q.scenario)?.orbatSet) ||
+      (typeof q.scenario === 'string' &&
+        cur.scenarios.find((s) => s.id === q.scenario)?.orbatSet) ||
       '2025';
     const key = `${cur.rev}|${set}`;
     let nations = infoCache.get(key);

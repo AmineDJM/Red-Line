@@ -146,7 +146,13 @@ export async function adminOpsRoutes(app: FastifyInstance, ctx: AppContext): Pro
 
   app.post('/admin/api/chat/mute', moderator, async (req) => {
     const body = parseBody(
-      z.object({ userId: z.string().uuid(), hours: z.number().min(0).max(24 * 365) }),
+      z.object({
+        userId: z.string().uuid(),
+        hours: z
+          .number()
+          .min(0)
+          .max(24 * 365),
+      }),
       req.body,
     );
     const until = body.hours > 0 ? new Date(Date.now() + body.hours * 3_600_000) : null;
@@ -301,7 +307,11 @@ export async function adminOpsRoutes(app: FastifyInstance, ctx: AppContext): Pro
       db.select().from(shopPromotions),
     ]);
     return {
-      packs: packs.map((p) => ({ ...p, updatedAt: p.updatedAt.toISOString(), view: packView(p, promos) })),
+      packs: packs.map((p) => ({
+        ...p,
+        updatedAt: p.updatedAt.toISOString(),
+        view: packView(p, promos),
+      })),
     };
   });
 
@@ -416,5 +426,4 @@ export async function adminOpsRoutes(app: FastifyInstance, ctx: AppContext): Pro
       })),
     };
   });
-
 }

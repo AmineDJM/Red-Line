@@ -49,8 +49,6 @@ export async function gameAccess(
   const started = row.status !== 'lobby';
   const canSpectate =
     started &&
-    (hasRole(auth.user.role, 'moderator') ||
-      !!member ||
-      (row.mode === 'multi' && !row.isPrivate));
+    (hasRole(auth.user.role, 'moderator') || !!member || (row.mode === 'multi' && !row.isPrivate));
   return { row, member: member ?? null, canSpectate };
 }

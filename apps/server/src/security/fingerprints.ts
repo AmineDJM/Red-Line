@@ -100,7 +100,8 @@ export class Fingerprints {
       const ids = [...row.ids].sort();
       if (ids.length > 30) continue; // IP de réseau partagé (école, opérateur) : trop large pour conclure
       for (let i = 0; i < ids.length; i++)
-        for (let j = i + 1; j < ids.length; j++) pairKeys.set(`${ids[i]}|${ids[j]}`, [ids[i]!, ids[j]!]);
+        for (let j = i + 1; j < ids.length; j++)
+          pairKeys.set(`${ids[i]}|${ids[j]}`, [ids[i]!, ids[j]!]);
     }
     if (pairKeys.size === 0) return [];
     const allIds = [...new Set([...pairKeys.values()].flat())];

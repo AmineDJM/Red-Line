@@ -61,11 +61,8 @@ function replaceById<T extends { id: string }>(base: T[], over: Map<string, T | 
   const seen = new Set<string>();
   for (const item of base) {
     seen.add(item.id);
-    if (!over.has(item.id)) out.push(item);
-    else {
-      const v = over.get(item.id);
-      if (v) out.push(v);
-    }
+    // null = retour à la valeur du dépôt.
+    out.push(over.get(item.id) ?? item);
   }
   for (const [id, v] of over) if (!seen.has(id) && v) out.push(v);
   return out;
@@ -123,11 +120,7 @@ export class DataStore {
       const nations = replaceById<NationDef>(map.nations, get<NationDef>('nation'));
       const provinces = replaceById<ProvinceDef>(map.provinces, get<ProvinceDef>('province'));
       const disputed = replaceById<DisputedArea>(map.disputed, get<DisputedArea>('disputed'));
-      if (
-        nations !== map.nations ||
-        provinces !== map.provinces ||
-        disputed !== map.disputed
-      ) {
+      if (nations !== map.nations || provinces !== map.provinces || disputed !== map.disputed) {
         map = { ...map, nations, provinces, disputed };
       }
     }
@@ -147,8 +140,8 @@ export class DataStore {
       }
       const byNation = new Map(base.map((o) => [o.nationId, o] as const));
       for (const [n, v] of over) {
+        // null = retour à la valeur du dépôt (déjà dans byNation, ou absente du dépôt).
         if (v) byNation.set(n, v);
-        else byNation.delete(n);
       }
       orbats[set] = [...byNation.values()].sort((a, b) => (a.nationId < b.nationId ? -1 : 1));
     }

@@ -145,7 +145,8 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
     await seedShop(dbh.db, shop);
     let payments: PaymentProvider | null;
     if (opts.payments !== undefined) payments = opts.payments;
-    else if (config.stripe) payments = stripeProvider(config.stripe.secretKey, config.stripe.webhookSecret);
+    else if (config.stripe)
+      payments = stripeProvider(config.stripe.secretKey, config.stripe.webhookSecret);
     else {
       payments = null;
       log.warn('STRIPE_SECRET_KEY / STRIPE_WEBHOOK_SECRET absentes : paiements indisponibles');

@@ -114,9 +114,7 @@ export class PushService {
   onNotes(g: HostedGame, notes: GameNotification[]): void {
     const engine = this.deps.engine;
     if (!engine || !this.keys) return;
-    const absent = g.players.filter(
-      (p) => p.userId && !this.deps.host.isConnected(g, p.userId),
-    );
+    const absent = g.players.filter((p) => p.userId && !this.deps.host.isConnected(g, p.userId));
     if (absent.length === 0) return;
     const major = notes.filter((n) =>
       [
@@ -191,7 +189,10 @@ export class PushService {
             break;
           case 'victory':
             cat = 'endgame';
-            body = n.winner === me ? 'Victoire ! Votre nation l’emporte.' : `${nationName(n.winner)} remporte la partie.`;
+            body =
+              n.winner === me
+                ? 'Victoire ! Votre nation l’emporte.'
+                : `${nationName(n.winner)} remporte la partie.`;
             break;
           case 'nation_defeated':
             if (n.nationId === me) {
@@ -289,7 +290,9 @@ export class PushService {
         .select()
         .from(pushSubscriptions)
         .where(eq(pushSubscriptions.userId, user.id));
-      const ids = rows.filter((r) => !body.endpoint || r.endpoint === body.endpoint).map((r) => r.id);
+      const ids = rows
+        .filter((r) => !body.endpoint || r.endpoint === body.endpoint)
+        .map((r) => r.id);
       if (ids.length) {
         await this.deps.db.delete(pushSubscriptions).where(inArray(pushSubscriptions.id, ids));
       }
