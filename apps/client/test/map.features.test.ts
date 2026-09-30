@@ -219,6 +219,53 @@ describe('provinces : villes, bâtiments, renseignement', () => {
   });
 });
 
+describe('performances (coût JS par mise à jour des pions)', () => {
+  it('1 000 unités dont un tiers en mouvement : informations, regroupement, différentiel', () => {
+    let seed = 7;
+    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const owners = ['fra', 'deu', 'esp', 'rus'];
+    const units: UnitView[] = Array.from({ length: 1000 }, (_, i) => {
+      const pos: [number, number] = [-5 + rnd() * 30, 35 + rnd() * 20];
+      const moving = i % 3 === 0;
+      return unit(`u${i}`, {
+        owner: owners[i % 4]!,
+        level: i % 4 === 0 ? 'own' : 'precise',
+        pos,
+        systemId: i % 5 === 0 ? 'f16' : 'tank',
+        ...(moving
+          ? {
+              move: {
+                legs: [
+                  {
+                    from: pos,
+                    to: [pos[0] + 2, pos[1] + 1] as [number, number],
+                    t0: 0,
+                    t1: 10 * HOUR,
+                    medium: i % 5 === 0 ? ('air' as const) : ('land' as const),
+                  },
+                ],
+              },
+              status: 'moving' as const,
+            }
+          : {}),
+      });
+    });
+    const run = (t: number, zoom: number, prev: ReturnType<typeof diffFeatures>['state']) => {
+      const infos = unitInfos(units, { ...ctx, t });
+      const r = tokenFeatures(infos, { nations, zoom, group: true });
+      return diffFeatures(prev, r.tokens);
+    };
+    let state = run(HOUR, 5, new Map()).state;
+    const t0 = performance.now();
+    const N = 10;
+    for (let k = 1; k <= N; k++) state = run(HOUR + k * 60_000, 5, state).state;
+    const ms = (performance.now() - t0) / N;
+    console.log(`1 000 unités : ${ms.toFixed(1)} ms par mise à jour complète (zoom 5)`);
+    // Budget large (machine partagée) : ≈ 10-15 ms mesurés hors charge.
+    expect(ms).toBeLessThan(120);
+  });
+});
+
 describe('outils', () => {
   it('différentiel de source : ajout, retrait, déplacement, propriété', () => {
     const pt = (id: string, x: number, extra: Record<string, unknown> = {}): Feature => ({
