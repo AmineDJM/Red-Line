@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run --passWithNoTests",
-    "typecheck": "tsc -p tsconfig.json"
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.node.json",
+    "dev:mock": "REDLINE_LOCAL_DATA=1 vite",
+    "screenshots": "node scripts/screenshots.mjs"
   },
   "dependencies": {
     "@redline/engine": "workspace:*",
@@ -17,12 +19,15 @@
     "i18next": "^26.4.2",
     "maplibre-gl": "^6.11.2",
     "pmtiles": "^4.5.0",
+    "polyclip-ts": "^0.16.8",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "react-i18next": "^17.0.15",
     "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@types/geojson": "7946.0.16",
+    "@types/node": "^26.6.3",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
