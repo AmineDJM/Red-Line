@@ -1,12 +1,12 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import {
   CATEGORIES,
   DOCTRINES,
   MOVEMENT_KINDS,
   RESOURCES,
   TARGET_CLASSES,
+  WeaponSystemSchema,
   type AdminSystem,
-  type ChangeScope,
 } from '@redline/shared';
 import { useSession } from '../context';
 import {
@@ -16,27 +16,122 @@ import {
   NumberField,
   SelectField,
   TextField,
+  useFieldState,
 } from '../components/fields';
-import { Badge, Button, Dialog, ErrorBox, Frame, Spinner, useToast } from '../components/ui';
-import { WeaponCard } from '../components/WeaponCard';
+import { Dialog, useToast } from '../components/overlay';
+import { GatePicker } from '../components/pickers';
+import { SchemaFields, SchemaProvider } from '../components/SchemaForm';
+import {
+  Badge,
+  Button,
+  ErrorBox,
+  Icon,
+  PageHead,
+  SectionTitle,
+  Seg,
+  Spinner,
+  Win,
+} from '../components/term';
+import { CommitBar } from '../components/versioning';
+import { Photo, WeaponCard } from '../components/weapon';
 import { T, fmt } from '../i18n';
 import { diffObjects } from '../lib/diff';
 import { errorMessage } from '../lib/errors';
+import { hours, usd } from '../lib/format';
 import { useLoad } from '../lib/hooks';
-import { clone, setIn, type Path } from '../lib/paths';
+import { clone, getIn, setIn, type Path } from '../lib/paths';
+import { usePhotos, useResearch } from '../lib/refs';
 import { href, navigate } from '../lib/router';
+import { describe, initialValue, type SNode } from '../lib/schema';
 import { blankSystem } from '../lib/template';
 import { validateSystem } from '../lib/validation';
 
 const opts = <K extends string>(keys: readonly K[], labels: Record<K, string>) =>
-  keys.map((k) => [k, `${labels[k]}`] as const);
-const withCode = <K extends string>(keys: readonly K[], labels: Record<K, string>) =>
-  keys.map((k) => [k, `${labels[k]} (${k})`] as const);
+  keys.map((k) => [k, labels[k]] as const);
+const SHAPE = (describe(WeaponSystemSchema) as SNode & { t: 'object' }).shape;
+const BUILDINGS = (SHAPE.requiresBuilding as SNode & { t: 'enum' }).options;
+const OPTIONAL = ['air', 'sensor', 'missile', 'interceptor', 'naval', 'space'] as const;
+const fieldHelp = (k: string) => (T.fields[k] ? ([T.fields[k]] as [string]) : undefined);
+
+/** Bloc facultatif du schéma (air, capteur, missile…) : activable, retirable. */
+function OptSection({
+  name,
+  label,
+  help,
+  children,
+}: {
+  name: string;
+  label: string;
+  help: string;
+  children?: ReactNode;
+}) {
+  const { f, value, errs, changed } = useFieldState([name]);
+  const node = SHAPE[name]!;
+  const present = value !== undefined;
+  return (
+    <div className={`optsec ${present ? '' : 'absent'}`}>
+      <header>
+        <b>{label}</b>
+        {changed && <span className="c-amber tiny">●</span>}
+        {errs.length > 0 && <Badge tone="crit">{errs.length}</Badge>}
+        <span className="dim small grow ellipsis hide-m">{help}</span>
+        <Button
+          small
+          variant={present ? 'ghost' : 'default'}
+          onClick={() => f.set([name], present ? undefined : initialValue(node))}
+        >
+          {present ? (
+            T.editor.disableSection
+          ) : (
+            <>
+              <Icon name="plus" size={12} /> {T.editor.enableSection}
+            </>
+          )}
+        </Button>
+      </header>
+      {present && (
+        <div className="body">
+          {children ??
+            (node.t === 'object' && (
+              <SchemaFields node={node} path={[name]} helpKey={name} depth={3} />
+            ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function GatesField() {
+  const { f, value, changed, errs } = useFieldState(['requires']);
+  const research = useResearch().data ?? [];
+  return (
+    <div className={`field field-wide ${changed ? 'field-changed' : ''}`}>
+      <span className="field-label">{T.fields.requires}</span>
+      <small className="field-hint">{T.editor.gatesHint}</small>
+      {research.length ? (
+        <GatePicker
+          nodes={research}
+          value={(value as string[]) ?? []}
+          onChange={(v) => f.set(['requires'], v)}
+        />
+      ) : (
+        <ListField path={['requires']} label="" />
+      )}
+      {errs.map((e) => (
+        <small key={e} className="field-msg">
+          {e}
+        </small>
+      ))}
+    </div>
+  );
+}
 
 export function EditorScreen({ id }: { id: string | null }) {
-  const { api } = useSession();
+  const { api, cache } = useSession();
   const toast = useToast();
   const isNew = id === null;
+  const photos = usePhotos().data ?? {};
+  const research = useResearch().data;
   const [original, setOriginal] = useState<AdminSystem | null>(null);
   const [draft, setDraft] = useState<unknown>(() => (isNew ? blankSystem() : null));
   const load = useLoad(
@@ -54,14 +149,19 @@ export function EditorScreen({ id }: { id: string | null }) {
   const [mode, setMode] = useState<'form' | 'json'>('form');
   const [jsonText, setJsonText] = useState('');
   const [jsonError, setJsonError] = useState<string | null>(null);
-  const [message, setMessage] = useState('');
-  const [scope, setScope] = useState<ChangeScope>('new_games');
-  const [playerMessage, setPlayerMessage] = useState('');
   const [saving, setSaving] = useState(false);
   const [dupOpen, setDupOpen] = useState(false);
   const [dupId, setDupId] = useState('');
 
   const validation = useMemo(() => validateSystem(draft), [draft]);
+  const warnings = useMemo(() => {
+    const w = [...validation.warnings];
+    const req = (getIn(draft, ['requires']) as string[] | undefined) ?? [];
+    if (research)
+      for (const r of req)
+        if (!research.some((n) => n.id === r)) w.push(fmt(T.editor.warnGate, { id: r }));
+    return w;
+  }, [validation, draft, research]);
   const errors = useMemo(() => {
     const m = new Map<string, string[]>();
     for (const i of validation.issues) m.set(i.path, [...(m.get(i.path) ?? []), i.message]);
@@ -96,31 +196,39 @@ export function EditorScreen({ id }: { id: string | null }) {
     }
   };
 
-  const save = async () => {
-    if (!validation.ok) return;
+  const save = async (meta: {
+    message: string;
+    scope: 'new_games' | 'running_games';
+    playerMessage: string;
+  }) => {
+    if (!validation.ok) return false;
     setSaving(true);
     try {
       const body = {
         data: validation.value,
-        message: message.trim(),
-        scope,
-        ...(playerMessage.trim() ? { playerMessage: playerMessage.trim() } : {}),
+        message: meta.message.trim(),
+        scope: meta.scope,
+        ...(meta.playerMessage.trim() && meta.scope === 'running_games'
+          ? { playerMessage: meta.playerMessage.trim() }
+          : {}),
       };
       if (isNew) {
         const { system } = await api.createSystem(body);
+        cache.invalidate('systems');
         toast(T.editor.created);
         navigate({ name: 'system', id: system.system.id });
-        return;
+        return true;
       }
       const { system } = await api.updateSystem(id, body);
+      cache.invalidate('systems');
       setOriginal(system);
       setDraft(clone(system.system));
       if (mode === 'json') setJsonText(JSON.stringify(system.system, null, 2));
-      setMessage('');
-      setPlayerMessage('');
       toast(fmt(T.editor.saved, { n: system.revision }));
+      return true;
     } catch (e) {
       toast(errorMessage(e, T.roles.balance), 'error');
+      return false;
     } finally {
       setSaving(false);
     }
@@ -130,6 +238,7 @@ export function EditorScreen({ id }: { id: string | null }) {
     if (!id) return;
     try {
       const { system } = await api.duplicateSystem(id, dupId.trim());
+      cache.invalidate('systems');
       setDupOpen(false);
       toast(fmt(T.editor.duplicated, { id: system.system.id }));
       navigate({ name: 'system', id: system.system.id });
@@ -142,81 +251,67 @@ export function EditorScreen({ id }: { id: string | null }) {
     return <ErrorBox message={load.error} onRetry={() => void load.reload()} />;
   if (!draft) return <Spinner />;
 
-  const d = draft as Record<string, unknown>;
+  const d = draft as Record<string, unknown> & {
+    photo?: unknown;
+    unitPriceUsd?: number;
+    unitSize?: number;
+  };
+  const sysId = String(d.id ?? '');
+  const manifestPhoto = photos[sysId] ?? null;
+  const photo = (d.photo as typeof manifestPhoto) ?? manifestPhoto;
   const title = isNew ? T.editor.newTitle : String(d.name || id);
-  const canSave = validation.ok && (isNew || changes.length > 0) && !saving && !jsonError;
-
-  const status = (
-    <div className="status-line">
-      {validation.ok ? (
-        <Badge tone="ok">✓ {T.editor.valid}</Badge>
-      ) : (
-        <Badge tone="crit">✕ {fmt(T.editor.invalid, { n: validation.issues.length })}</Badge>
-      )}
-      {!isNew &&
-        (changes.length ? (
-          <Badge tone="warn">{fmt(T.editor.unsaved, { n: changes.length })}</Badge>
-        ) : (
-          <Badge tone="off">{T.editor.noChange}</Badge>
-        ))}
-    </div>
-  );
+  const price = typeof d.unitPriceUsd === 'number' ? d.unitPriceUsd : null;
 
   return (
-    <div className="editor">
-      <div className="editor-bar">
-        <a className="back" href={href({ name: 'catalog' })}>
-          ← {T.editor.back}
-        </a>
-        <div className="editor-title">
-          <h1>{title}</h1>
-          {!isNew && (
-            <span className="mono muted">
-              {id} · {fmt(T.editor.revision, { n: original?.revision ?? '—' })}
-            </span>
-          )}
-        </div>
-        <div className="editor-actions">
-          <div className="seg" role="group">
-            <button className={mode === 'form' ? 'seg-on' : ''} onClick={() => switchMode('form')}>
-              {T.editor.form}
-            </button>
-            <button className={mode === 'json' ? 'seg-on' : ''} onClick={() => switchMode('json')}>
-              {T.editor.json}
-            </button>
-          </div>
-          {!isNew && (
-            <>
-              <Button onClick={() => navigate({ name: 'history', id: id })}>
-                {T.editor.history}
-              </Button>
-              <Button
-                onClick={() => {
-                  setDupId(`${id}-copie`);
-                  setDupOpen(true);
-                }}
-              >
-                {T.editor.duplicate}
-              </Button>
-            </>
-          )}
-        </div>
-      </div>
-
-      <div className="editor-grid">
-        <div className="editor-main">
+    <>
+      <PageHead
+        crumbs={<a href={href({ name: 'catalog' })}>← {T.editor.back}</a>}
+        title={title}
+        sub={
+          !isNew ? `${id} · ${fmt(T.editor.revision, { n: original?.revision ?? '—' })}` : undefined
+        }
+        actions={
+          <>
+            <Seg
+              value={mode}
+              onChange={switchMode}
+              options={[
+                ['form', T.editor.form],
+                ['json', T.editor.json],
+              ]}
+            />
+            {!isNew && (
+              <>
+                <Button onClick={() => navigate({ name: 'history', id: id })}>
+                  <Icon name="history" size={14} /> {T.editor.history}
+                </Button>
+                <Button
+                  onClick={() => {
+                    setDupId(`${id}-copie`);
+                    setDupOpen(true);
+                  }}
+                >
+                  <Icon name="copy" size={14} /> {T.editor.duplicate}
+                </Button>
+              </>
+            )}
+          </>
+        }
+      />
+      <div className="split-side">
+        <div className="stack">
           {mode === 'json' ? (
-            <Frame title={T.editor.json}>
+            <Win title={T.editor.json} cmd={`Get-Content ${sysId || 'new'}.json`}>
               <p className="muted small">{T.editor.jsonHint}</p>
               <textarea
-                className="json-editor mono"
+                className="json-editor"
                 spellCheck={false}
                 value={jsonText}
                 onChange={(e) => onJson(e.target.value)}
                 aria-label={T.editor.json}
               />
               {jsonError && <ErrorBox message={jsonError} />}
-            </Frame>
+            </Win>
           ) : (
             <FormProvider
               draft={draft}
@@ -225,182 +320,193 @@ export function EditorScreen({ id }: { id: string | null }) {
               changed={changed}
               readOnly={isNew ? undefined : new Set(['id'])}
             >
-              <Frame title={T.editor.sections.identity}>
-                <div className="grid g3">
-                  <TextField path={['id']} mono placeholder="us.f-16" />
-                  <TextField path={['name']} />
-                  <TextField path={['origin']} mono />
-                  <SelectField path={['doctrine']} options={withCode(DOCTRINES, T.doctrines)} />
-                  <SelectField path={['category']} options={opts(CATEGORIES, T.categories)} />
-                  <SelectField
-                    path={['generation']}
-                    asNumber
-                    options={[1, 2, 3, 4, 5].map((g) => [String(g), String(g)] as const)}
-                  />
-                  <SelectField
-                    path={['targetClass']}
-                    options={opts(TARGET_CLASSES, T.targetClasses)}
-                  />
-                  <SelectField path={['movement']} options={opts(MOVEMENT_KINDS, T.movement)} />
-                  <TextField path={['icon']} mono />
-                  <ListField path={['roles']} wide />
-                  <TextField path={['illustration']} optional mono />
-                </div>
-              </Frame>
-              <Frame title={T.editor.sections.flags}>
-                <div className="grid g4 checks">
-                  <CheckField path={['enabled']} />
-                  <CheckField path={['canCapture']} />
-                  <CheckField path={['licensable']} />
-                  <CheckField path={['exportable']} />
-                </div>
-                <div className="grid g1">
-                  <ListField path={['requires']} wide />
-                </div>
-              </Frame>
-              <Frame title={T.editor.sections.economy}>
-                <div className="grid g4">
-                  <NumberField path={['cost', 'money']} />
-                  <NumberField path={['buildTimeH']} />
-                  <NumberField path={['upkeepPerDay']} />
-                  <NumberField path={['unitSize']} />
-                  {RESOURCES.map((r) => (
-                    <NumberField
-                      key={r}
-                      path={['cost', 'resources', r]}
-                      optional
-                      label={`${T.fields['cost.resources']} : ${T.resources[r].toLowerCase()}`}
+              <SchemaProvider env={{ help: fieldHelp, openDepth: 5 }}>
+                <Win title={T.editor.sections.identity} glyph="#">
+                  <div className="grid g3">
+                    <TextField path={['id']} placeholder="us.f-16" />
+                    <TextField path={['name']} />
+                    <TextField path={['origin']} />
+                    <SelectField
+                      path={['doctrine']}
+                      options={DOCTRINES.map((k) => [k, `${T.doctrines[k]} (${k})`] as const)}
                     />
-                  ))}
-                </div>
-              </Frame>
-              <Frame title={T.editor.sections.mobility}>
-                <div className="grid g3">
-                  <NumberField path={['speedKmh']} />
-                  <NumberField path={['operationalRadiusKm']} nullable />
-                  <NumberField path={['detectionRangeKm']} />
-                  <NumberField path={['weaponRangeKm', 'min']} />
-                  <NumberField path={['weaponRangeKm', 'max']} />
-                </div>
-              </Frame>
-              <Frame title={T.editor.sections.combat}>
-                <div className="grid g3">
-                  <NumberField path={['hp']} />
-                  <NumberField path={['armor']} />
-                  <NumberField path={['stealth']} />
-                </div>
-                <h3 className="sub-title">{T.editor.sections.damage}</h3>
-                <div className="damage-grid">
-                  {TARGET_CLASSES.map((c) => (
-                    <NumberField key={c} path={['damage', c]} label={T.targetClasses[c]} compact />
-                  ))}
-                </div>
-              </Frame>
-              <Frame title={T.editor.sections.ew}>
-                <div className="grid g4">
-                  <NumberField path={['ew', 'jamming']} />
-                  <NumberField path={['ew', 'jamResistance']} />
-                  <NumberField path={['payload', 'slots']} />
-                  <NumberField path={['payload', 'transport']} optional />
-                </div>
-              </Frame>
-              <Frame title={T.editor.sections.sheet}>
-                <div className="grid g3">
-                  <TextField path={['sheet', 'engine']} nullable />
-                  <TextField path={['sheet', 'speedLabel']} nullable />
-                  <NumberField path={['sheet', 'rangeKm']} nullable />
-                  <NumberField path={['sheet', 'lengthM']} nullable />
-                  <NumberField path={['sheet', 'wingspanM']} nullable />
-                  <NumberField path={['sheet', 'mtowKg']} nullable />
-                  <NumberField path={['sheet', 'warheadKg']} nullable />
-                </div>
-              </Frame>
+                    <SelectField path={['category']} options={opts(CATEGORIES, T.categories)} />
+                    <SelectField
+                      path={['generation']}
+                      asNumber
+                      options={[1, 2, 3, 4, 5].map((g) => [String(g), String(g)] as const)}
+                    />
+                    <SelectField
+                      path={['targetClass']}
+                      options={opts(TARGET_CLASSES, T.targetClasses)}
+                    />
+                    <SelectField path={['movement']} options={opts(MOVEMENT_KINDS, T.movement)} />
+                    <TextField path={['icon']} />
+                    <TextField
+                      path={['unitLabel']}
+                      optional
+                      placeholder="appareil, char, bataillon…"
+                    />
+                    <ListField path={['roles']} wide />
+                  </div>
+                </Win>
+                <Win title={T.editor.sections.economy} glyph="$">
+                  <div className="grid g4">
+                    <NumberField path={['unitPriceUsd']} optional affix={usd} />
+                    <NumberField path={['unitSize']} />
+                    <NumberField path={['cost', 'money']} affix={usd} />
+                    <NumberField path={['upkeepPerDay']} affix={usd} />
+                    <NumberField path={['buildTimeH']} affix={hours} />
+                    <SelectField
+                      path={['requiresBuilding']}
+                      optional
+                      options={BUILDINGS.map(
+                        (b) => [b, T.buildings[b as keyof typeof T.buildings] ?? b] as const,
+                      )}
+                    />
+                    {RESOURCES.map((r) => (
+                      <NumberField
+                        key={r}
+                        path={['cost', 'resources', r]}
+                        optional
+                        label={`${T.resources[r]} (coût)`}
+                      />
+                    ))}
+                  </div>
+                  {price !== null && (
+                    <div className="row" style={{ marginTop: 10 }}>
+                      <Button
+                        small
+                        onClick={() =>
+                          set(
+                            ['cost', 'money'],
+                            price * (typeof d.unitSize === 'number' ? d.unitSize : 1),
+                          )
+                        }
+                      >
+                        {T.editor.recompute}
+                      </Button>
+                    </div>
+                  )}
+                </Win>
+                <Win title={T.editor.sections.flags} glyph="⚑">
+                  <div className="grid g4">
+                    <CheckField path={['enabled']} />
+                    <CheckField path={['canCapture']} />
+                    <CheckField path={['licensable']} />
+                    <CheckField path={['exportable']} />
+                  </div>
+                  <div className="grid" style={{ marginTop: 12 }}>
+                    <GatesField />
+                  </div>
+                </Win>
+                <Win title={T.editor.sections.mobility} glyph="⇢">
+                  <div className="grid g3">
+                    <NumberField path={['speedKmh']} />
+                    <NumberField path={['operationalRadiusKm']} nullable />
+                    <NumberField path={['detectionRangeKm']} />
+                    <NumberField path={['weaponRangeKm', 'min']} />
+                    <NumberField path={['weaponRangeKm', 'max']} />
+                  </div>
+                </Win>
+                <Win title={T.editor.sections.combat} glyph="✦">
+                  <div className="grid g4">
+                    <NumberField path={['hp']} />
+                    <NumberField path={['armor']} />
+                    <NumberField path={['stealth']} />
+                    <NumberField path={['ew', 'jamming']} />
+                    <NumberField path={['ew', 'jamResistance']} />
+                    <NumberField path={['payload', 'slots']} />
+                    <NumberField path={['payload', 'transport']} optional />
+                  </div>
+                  <SectionTitle>{T.editor.sections.damage}</SectionTitle>
+                  <div className="grid g3">
+                    {TARGET_CLASSES.map((c) => (
+                      <NumberField
+                        key={c}
+                        path={['damage', c]}
+                        label={T.targetClasses[c]}
+                        compact
+                      />
+                    ))}
+                  </div>
+                </Win>
+                <Win title={T.editor.sections.specific} glyph="⚙">
+                  <div className="stack-sm">
+                    <OptSection
+                      name="era"
+                      label={T.editor.optional.era![0]}
+                      help={T.editor.optional.era![1]}
+                    />
+                    {OPTIONAL.map((k) => (
+                      <OptSection
+                        key={k}
+                        name={k}
+                        label={T.editor.optional[k]![0]}
+                        help={T.editor.optional[k]![1]}
+                      />
+                    ))}
+                  </div>
+                </Win>
+                <Win title={T.editor.sections.photo} glyph="▣">
+                  <div className="grid g2">
+                    <div className="stack-sm">
+                      <span className="field-label">{T.editor.photoManifest}</span>
+                      <Photo photo={manifestPhoto} alt={String(d.name ?? '')} />
+                      {manifestPhoto && !d.photo && (
+                        <Button
+                          small
+                          onClick={() =>
+                            set(['photo'], {
+                              file: manifestPhoto.file,
+                              credit: manifestPhoto.credit,
+                              license: manifestPhoto.license,
+                              sourceUrl: manifestPhoto.sourceUrl,
+                            })
+                          }
+                        >
+                          {T.editor.photoUseManifest}
+                        </Button>
+                      )}
+                    </div>
+                    <div className="stack-sm">
+                      <OptSection name="photo" label={T.editor.photoOverride} help="" />
+                    </div>
+                  </div>
+                </Win>
+                <Win title={T.editor.sections.sheet} glyph="≡">
+                  <div className="grid g3">
+                    <TextField path={['sheet', 'engine']} nullable />
+                    <TextField path={['sheet', 'speedLabel']} nullable />
+                    <NumberField path={['sheet', 'rangeKm']} nullable />
+                    <NumberField path={['sheet', 'lengthM']} nullable />
+                    <NumberField path={['sheet', 'wingspanM']} nullable />
+                    <NumberField path={['sheet', 'mtowKg']} nullable />
+                    <NumberField path={['sheet', 'warheadKg']} nullable />
+                  </div>
+                </Win>
+              </SchemaProvider>
             </FormProvider>
           )}
         </div>
-
-        <aside className="editor-side">
-          <Frame title={T.editor.preview} accent>
-            <WeaponCard system={d as never} />
-          </Frame>
-          <Frame title={isNew ? T.editor.create : T.editor.save} className="save-panel">
-            {status}
-            {!validation.ok && (
-              <ul className="issues">
-                {validation.issues.slice(0, 12).map((i, k) => (
-                  <li key={k}>
-                    <strong>{i.label}</strong> : {i.message}
-                  </li>
-                ))}
-                {validation.issues.length > 12 && <li>…</li>}
-              </ul>
-            )}
-            {validation.warnings.length > 0 && (
-              <div className="warnings">
-                <div className="small">{T.editor.warnings}</div>
-                <ul>
-                  {validation.warnings.map((w) => (
-                    <li key={w}>{w}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            <div className="field">
-              <label htmlFor="commit">{T.editor.commitMessage}</label>
-              <input
-                id="commit"
-                value={message}
-                maxLength={500}
-                placeholder={T.editor.commitPlaceholder}
-                onChange={(e) => setMessage(e.target.value)}
-              />
-            </div>
-            <fieldset className="field scope">
-              <legend>{T.editor.scope}</legend>
-              {(['new_games', 'running_games'] as const).map((s) => (
-                <label key={s} className="radio">
-                  <input
-                    type="radio"
-                    name="scope"
-                    checked={scope === s}
-                    onChange={() => setScope(s)}
-                  />
-                  <span className="radio-dot" aria-hidden />
-                  {T.scope[s]}
-                </label>
-              ))}
-              {scope === 'running_games' && (
-                <small className="field-warn">{T.editor.scopeRunningWarn}</small>
-              )}
-            </fieldset>
-            <div className="field">
-              <label htmlFor="pmsg">{T.editor.playerMessage}</label>
-              <textarea
-                id="pmsg"
-                rows={2}
-                maxLength={500}
-                value={playerMessage}
-                placeholder={T.editor.playerPlaceholder}
-                onChange={(e) => setPlayerMessage(e.target.value)}
-              />
-            </div>
-            <Button
-              variant="primary"
-              className="save-btn"
-              disabled={!canSave}
-              onClick={() => void save()}
-            >
-              {saving ? T.editor.saving : isNew ? T.editor.create : T.editor.save}
-            </Button>
-          </Frame>
+        <aside className="stack sticky-col">
+          <CommitBar
+            valid={validation.ok && !jsonError}
+            issues={validation.issues}
+            changes={changes.length}
+            dirty={isNew || changes.length > 0}
+            busy={saving}
+            isNew={isNew}
+            warnings={warnings}
+            saveLabel={isNew ? T.editor.create : T.editor.save}
+            onSave={save}
+            onDiscard={original ? () => setDraft(clone(original.system)) : undefined}
+            onIssueClick={(p) => document.getElementById(p)?.focus()}
+          />
+          <Win title={T.editor.preview} glyph="◆" accent>
+            <WeaponCard system={d as never} photo={photo} />
+          </Win>
         </aside>
-      </div>
-
-      <div className="save-sticky">
-        {status}
-        <Button variant="primary" disabled={!canSave} onClick={() => void save()}>
-          {saving ? T.editor.saving : isNew ? T.editor.create : T.editor.save}
-        </Button>
       </div>
 
       {dupOpen && (
@@ -424,14 +530,13 @@ export function EditorScreen({ id }: { id: string | null }) {
             <label htmlFor="dupid">{T.editor.duplicatePrompt}</label>
             <input
               id="dupid"
-              className="mono"
               value={dupId}
-              autoFocus
               onChange={(e) => setDupId(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && void duplicate()}
             />
           </div>
         </Dialog>
       )}
-    </div>
+    </>
   );
 }

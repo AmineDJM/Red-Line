@@ -1,144 +1,209 @@
+/** Métriques du serveur : tuiles d'état et courbes échantillonnées toutes les 5 s. */
 import { useState } from 'react';
 import type { Metrics } from '@redline/shared';
 import { useSession } from '../context';
-import { ErrorBox, Frame, Spinner } from '../components/ui';
-import { T, fmt, num } from '../i18n';
+import type { MetricsExtra } from '../api/types';
+import { LineChart, SERIES } from '../components/Charts';
+import { Badge, Button, ErrorBox, Icon, PageHead, Spinner, Stat, Win } from '../components/term';
+import { T, fmt } from '../i18n';
+import { bytes, num, uptime } from '../lib/format';
 import { useInterval, useLoad } from '../lib/hooks';
 
 const REFRESH_S = 5;
-const KEEP = 60;
+const KEEP = 120;
+type M = Metrics & MetricsExtra & { at: number };
 
-type Key = keyof Metrics;
-interface TileDef {
-  key: Key;
-  label: string;
-  unit?: string;
-  format?: (v: number) => string;
-  /** Seuils [élevé, critique] : un état n'est jamais signalé par la seule couleur (icône + texte). */
-  thresholds?: [number, number];
-  spark?: boolean;
+/** Kept for compatibility with earlier imports. */
+export const formatUptime = uptime;
+
+function level(v: number, [warn, crit]: [number, number]) {
+  return v >= crit ? 'crit' : v >= warn ? 'warn' : 'ok';
 }
-
-export function formatUptime(s: number): string {
-  const d = Math.floor(s / 86400);
-  const h = Math.floor((s % 86400) / 3600);
-  const m = Math.floor((s % 3600) / 60);
-  return d > 0 ? `${d} j ${h} h` : h > 0 ? `${h} h ${m} min` : `${m} min`;
-}
-
-const TILES: TileDef[] = [
-  { key: 'cpuPct', label: T.metrics.cpu, unit: '%', thresholds: [70, 90], spark: true },
-  {
-    key: 'eventLoopLagMs',
-    label: T.metrics.lag,
-    unit: 'ms',
-    thresholds: [50, 200],
-    spark: true,
-    format: (v) => v.toLocaleString('fr-FR', { maximumFractionDigits: 1 }),
-  },
-  { key: 'rssMb', label: T.metrics.rss, unit: 'Mo', thresholds: [1400, 1800], spark: true },
-  { key: 'heapMb', label: T.metrics.heap, unit: 'Mo', spark: true },
-  { key: 'eventsProcessedPerMin', label: T.metrics.events, spark: true },
-  { key: 'games', label: T.metrics.games },
-  { key: 'connectedPlayers', label: T.metrics.players },
-  { key: 'uptimeS', label: T.metrics.uptime, format: formatUptime },
-];
+const TONE = { ok: 'var(--t-green)', warn: 'var(--t-amber)', crit: 'var(--t-red)' } as const;
 
 export function MetricsScreen() {
   const { api } = useSession();
-  const [history, setHistory] = useState<Metrics[]>([]);
+  const [hist, setHist] = useState<M[]>([]);
+  const [live, setLive] = useState(true);
   const { data, error, loading, reload } = useLoad(
     () =>
       api.metrics().then((m) => {
-        setHistory((h) => [...h, m].slice(-KEEP));
-        return m;
+        const row = { ...m, at: Date.now() };
+        setHist((h) => [...h, row].slice(-KEEP));
+        return row;
       }),
     [api],
     T.roles.moderator,
   );
-  useInterval(() => void reload(true), REFRESH_S * 1000);
+  useInterval(() => live && void reload(true), REFRESH_S * 1000);
+  const times = hist.map((h) => h.at);
+  const col = (k: keyof M) => hist.map((h) => Number(h[k] ?? 0));
+  const badge = (v: number, th: [number, number]) => {
+    const l = level(v, th);
+    return (
+      <Badge tone={l}>
+        {l === 'ok'
+          ? `✓ ${T.metrics.ok}`
+          : l === 'warn'
+            ? `! ${T.metrics.warn}`
+            : `✕ ${T.metrics.crit}`}
+      </Badge>
+    );
+  };
 
   return (
-    <Frame title={T.metrics.title}>
-      {loading && !data && <Spinner />}
+    <>
+      <PageHead
+        title={T.metrics.title}
+        sub={fmt(T.metrics.sub, { n: REFRESH_S, k: hist.length })}
+        actions={
+          <Button onClick={() => setLive((v) => !v)}>
+            <Icon name={live ? 'pause' : 'play'} size={14} />{' '}
+            {live ? T.metrics.live : T.metrics.paused}
+          </Button>
+        }
+      />
       {error && <ErrorBox message={error} onRetry={() => void reload()} />}
+      {loading && !data && <Spinner />}
       {data && (
-        <div className="metric-tiles">
-          {TILES.map((t) => {
-            const v = data[t.key];
-            const level = t.thresholds
-              ? v >= t.thresholds[1]
-                ? 'crit'
-                : v >= t.thresholds[0]
-                  ? 'warn'
-                  : 'ok'
-              : null;
-            return (
-              <div key={t.key} className="tile metric">
-                <span className="tile-label">{t.label}</span>
-                <span className="tile-value">
-                  {t.format ? t.format(v) : num(v)}
-                  {t.unit && <span className="tile-unit"> {t.unit}</span>}
-                </span>
-                {level && (
-                  <span className={`tile-status status-${level}`}>
-                    {level === 'ok' ? '●' : level === 'warn' ? '▲' : '■'} {T.metrics[level]}
-                  </span>
-                )}
-                {t.spark && history.length > 1 && (
-                  <Sparkline values={history.map((h) => h[t.key])} label={t.label} unit={t.unit} />
-                )}
-              </div>
-            );
-          })}
-        </div>
+        <>
+          <div className="stats">
+            <Stat
+              k={T.metrics.cpu}
+              v={num(data.cpuPct)}
+              unit="%"
+              tone={TONE[level(data.cpuPct, [70, 90])]}
+              d={badge(data.cpuPct, [70, 90])}
+            />
+            <Stat
+              k={T.metrics.lag}
+              v={num(data.eventLoopLagMs, 1)}
+              unit="ms"
+              tone={TONE[level(data.eventLoopLagMs, [50, 200])]}
+              d={badge(data.eventLoopLagMs, [50, 200])}
+            />
+            <Stat
+              k={T.metrics.rss}
+              v={num(data.rssMb)}
+              unit="Mo"
+              tone={TONE[level(data.rssMb, [1400, 1800])]}
+              d={`${T.metrics.heap} ${num(data.heapMb)} Mo`}
+            />
+            <Stat
+              k={T.metrics.games}
+              v={data.games}
+              d={`${T.metrics.players} : ${data.connectedPlayers}${data.spectators !== undefined ? ` · ${T.metrics.spectators} : ${data.spectators}` : ''}`}
+            />
+            <Stat k={T.metrics.events} v={num(data.eventsProcessedPerMin)} />
+            <Stat k={T.metrics.uptime} v={uptime(data.uptimeS)} />
+            {data.stateBytes !== undefined && (
+              <Stat k={T.metrics.state} v={bytes(data.stateBytes)} />
+            )}
+            {data.chatMessagesPerMin !== undefined && (
+              <Stat
+                k={T.metrics.chat}
+                v={num(data.chatMessagesPerMin)}
+                d={`${T.metrics.push} : ${num(data.pushSentPerMin ?? 0)}`}
+              />
+            )}
+          </div>
+          <div className="charts">
+            <ChartCard title={T.metrics.cpu} value={`${num(data.cpuPct)} %`}>
+              <LineChart
+                title={T.metrics.cpu}
+                times={times}
+                series={[{ label: T.metrics.cpu, values: col('cpuPct') }]}
+                format={(v) => `${num(v, 0)} %`}
+              />
+            </ChartCard>
+            <ChartCard title={T.metrics.lag} value={`${num(data.eventLoopLagMs, 1)} ms`}>
+              <LineChart
+                title={T.metrics.lag}
+                times={times}
+                series={[{ label: T.metrics.lag, values: col('eventLoopLagMs') }]}
+                format={(v) => `${num(v, 1)} ms`}
+              />
+            </ChartCard>
+            <ChartCard title="Mémoire" value={`${num(data.rssMb)} Mo`}>
+              <LineChart
+                title="Mémoire"
+                times={times}
+                series={[
+                  { label: T.metrics.rss, values: col('rssMb') },
+                  { label: T.metrics.heap, values: col('heapMb') },
+                ]}
+                format={(v) => `${num(v, 0)} Mo`}
+              />
+            </ChartCard>
+            <ChartCard title={T.metrics.events} value={num(data.eventsProcessedPerMin)}>
+              <LineChart
+                title={T.metrics.events}
+                times={times}
+                series={[{ label: T.metrics.events, values: col('eventsProcessedPerMin') }]}
+                format={(v) => num(v, 0)}
+              />
+            </ChartCard>
+            {data.wsBytesOutPerMin !== undefined && (
+              <ChartCard title={T.metrics.wsBytes} value={bytes(data.wsBytesOutPerMin)}>
+                <LineChart
+                  title={T.metrics.wsBytes}
+                  times={times}
+                  series={[{ label: T.metrics.wsBytes, values: col('wsBytesOutPerMin') }]}
+                  format={(v) => bytes(v)}
+                />
+              </ChartCard>
+            )}
+            {data.wsMessagesOutPerMin !== undefined && (
+              <ChartCard title={T.metrics.wsMsgs} value={num(data.wsMessagesOutPerMin)}>
+                <LineChart
+                  title={T.metrics.wsMsgs}
+                  times={times}
+                  series={[{ label: T.metrics.wsMsgs, values: col('wsMessagesOutPerMin') }]}
+                  format={(v) => num(v, 0)}
+                />
+              </ChartCard>
+            )}
+          </div>
+          {data.gamesByStatus && (
+            <Win title={T.metrics.byStatus} glyph="▤">
+              {Object.entries(data.gamesByStatus).map(([k, v]) => {
+                const total = Math.max(1, ...Object.values(data.gamesByStatus!));
+                return (
+                  <div key={k} className="hbar">
+                    <span className="muted">
+                      {T.games.statuses[k as keyof typeof T.games.statuses] ?? k}
+                    </span>
+                    <span className="t">
+                      <span style={{ width: `${(v / total) * 100}%`, background: SERIES[0] }} />
+                    </span>
+                    <span className="r">{v}</span>
+                  </div>
+                );
+              })}
+            </Win>
+          )}
+        </>
       )}
-      {history.length > 1 && (
-        <p className="muted small">{fmt(T.metrics.history, { n: history.length })}</p>
-      )}
-    </Frame>
+    </>
   );
 }
 
-/** Courbe d'une seule série (pas de légende : le titre de la tuile la nomme). Survol : valeur au point. */
-function Sparkline({ values, label, unit }: { values: number[]; label: string; unit?: string }) {
-  const [hover, setHover] = useState<number | null>(null);
-  const w = 160;
-  const h = 36;
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  const span = max - min || 1;
-  const x = (i: number) => (i / Math.max(1, values.length - 1)) * (w - 4) + 2;
-  const y = (v: number) => h - 3 - ((v - min) / span) * (h - 6);
-  const d = values.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join('');
-  const hv = hover != null ? values[hover] : undefined;
+function ChartCard({
+  title,
+  value,
+  children,
+}: {
+  title: string;
+  value: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="spark">
-      <svg
-        viewBox={`0 0 ${w} ${h}`}
-        preserveAspectRatio="none"
-        role="img"
-        aria-label={`${label} : ${values.map((v) => num(v)).join(', ')}`}
-        onMouseLeave={() => setHover(null)}
-        onMouseMove={(e) => {
-          const r = e.currentTarget.getBoundingClientRect();
-          setHover(Math.round(((e.clientX - r.left) / r.width) * (values.length - 1)));
-        }}
-      >
-        <path d={d} className="spark-line" />
-        {hover != null && hv != null && (
-          <>
-            <line x1={x(hover)} x2={x(hover)} y1={0} y2={h} className="spark-cross" />
-            <circle cx={x(hover)} cy={y(hv)} r={3} className="spark-dot" />
-          </>
-        )}
-      </svg>
-      {hover != null && hv != null && (
-        <span className="spark-tip mono">
-          {num(hv)}
-          {unit ? ` ${unit}` : ''}
-        </span>
-      )}
+    <div className="chart-card">
+      <div className="head">
+        <span className="k">{title}</span>
+        <span className="v">{value}</span>
+      </div>
+      {children}
     </div>
   );
 }
