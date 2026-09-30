@@ -1,9 +1,16 @@
 import type { ReactNode } from 'react';
 import { HexIcon } from './HexIcon.js';
+import { UnitMarker } from './Pictogram.js';
 import type { PictogramId } from '../pictograms.js';
 
 export type LegendItem =
   | { kind: 'hex'; label: string; color: string; pictogram?: PictogramId }
+  | {
+      kind: 'unit';
+      label: string;
+      pictogram: PictogramId;
+      tone: 'own' | 'ally' | 'enemy' | 'neutral' | 'unknown';
+    }
   | {
       kind: 'line';
       label: string;
@@ -28,6 +35,8 @@ function Mark({ item }: { item: LegendItem }) {
   switch (item.kind) {
     case 'hex':
       return <HexIcon pictogram={item.pictogram} color={item.color} size={22} outline={null} />;
+    case 'unit':
+      return <UnitMarker pictogram={item.pictogram} tone={item.tone} size="sm" />;
     case 'line':
       return (
         <svg width="28" height="14" viewBox="0 0 28 14" aria-hidden>
@@ -123,7 +132,7 @@ function Mark({ item }: { item: LegendItem }) {
   }
 }
 
-/** Légende : panneau gris clair translucide, icônes hexagonales et lignes colorées. */
+/** Légende de la carte : pions, lignes, aplats et hachures, en panneau terminal. */
 export function Legend({ title, items, footer, className }: LegendProps) {
   return (
     <section className={className ? `rl-legend ${className}` : 'rl-legend'} aria-label={title}>

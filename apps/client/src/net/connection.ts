@@ -1,4 +1,5 @@
 import type {
+  ChatMessage,
   ClockState,
   GameMeta,
   GameNotification,
@@ -38,7 +39,16 @@ export interface GameConnectionEvents {
   status: ConnectionStatus;
   /** Erreur serveur (message `error`). */
   error: { code: string; message: string };
+  /** Messagerie (phase 5) : un message reçu. */
+  chat: ChatMessage;
+  /** Historique envoyé à la connexion. */
+  chatHistory: ChatMessage[];
+  /** Avis de l'administration. */
+  notice: { level: 'info' | 'warn'; text: string };
 }
+
+/** Canal de messagerie côté client. */
+export type ChatChannel = 'game' | 'alliance' | 'private';
 
 export type Listener<T> = (payload: T) => void;
 
@@ -58,6 +68,10 @@ export interface GameConnection {
   sendOrder(order: Order): Promise<OrderOutcome>;
   setSpeed(speed: number): void;
   setPaused(paused: boolean): void;
+  /** Envoie un message (salon de la partie, alliance, ou privé à une nation `to`). */
+  sendChat?(channel: ChatChannel, text: string, to?: string): void;
+  /** Accuse lecture d'un canal jusqu'au message `upTo`. */
+  markChatRead?(channel: string, upTo: number): void;
   /** Heure réelle estimée du serveur (ms epoch), pour `gameTimeAt(clock, serverNow())`. */
   serverNow(): number;
   close(): void;
