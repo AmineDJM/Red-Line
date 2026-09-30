@@ -228,3 +228,48 @@
   font-weight: 700;
   letter-spacing: 0.02em;
 }
+
+/* Salle d'attente multijoueur */
+.lobbyroom {
+  display: grid;
+  gap: 12px;
+  max-width: 880px;
+}
+.lobbyroom__players {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.lobbyroom__players li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-panel-2);
+  font-size: var(--rl-fs-sm);
+}
+.lobbyroom__link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  min-width: 0;
+}
+.lobbyroom__link code {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding: 6px 8px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-bg);
+  color: var(--rl-cyan);
+  font-size: var(--rl-fs-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

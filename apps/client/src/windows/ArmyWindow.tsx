@@ -518,12 +518,10 @@ function OperationEditor({ onDone }: { onDone: () => void }) {
                         onChange={(v) => update(s.id, { targetId: v })}
                         options={[
                           { value: '', label: t('army.ops.pickTarget') },
-                          ...enemies
-                            .slice(0, 40)
-                            .map((u) => ({
-                              value: u.id,
-                              label: `${u.id} · ${world.catalog[u.systemId ?? '']?.name ?? t('game.legend.detected')}`,
-                            })),
+                          ...enemies.slice(0, 40).map((u) => ({
+                            value: u.id,
+                            label: `${u.id} · ${world.catalog[u.systemId ?? '']?.name ?? t('game.legend.detected')}`,
+                          })),
                         ]}
                         label={t('game.orders.target')}
                       />

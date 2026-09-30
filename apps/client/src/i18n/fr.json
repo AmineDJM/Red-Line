@@ -1171,7 +1171,9 @@
       "queued": "en file",
       "available": "disponible",
       "locked": "verrouillée"
-    }
+    },
+    "enqueueChain": "Planifier avec les prérequis ({{count}} · {{cost}})",
+    "chainQueued": "{{count}} recherche(s) planifiée(s) jusqu’à : {{node}}"
   },
   "modifiers": {
     "production_speed": "Vitesse de production",
@@ -1759,7 +1761,31 @@
     "aiRest": "reste en IA",
     "joining": "Connexion…",
     "joinConfirm": "Rejoindre",
-    "joinError": "Impossible de rejoindre (nation déjà prise ?)."
+    "joinError": "Impossible de rejoindre (nation déjà prise ?).",
+    "nationTaken": "Cette nation vient d'être prise : choisissez-en une autre.",
+    "room": {
+      "title": "Salle d'attente",
+      "path": "salle-d-attente",
+      "players": "Joueurs inscrits",
+      "waiting": "en attente du lancement",
+      "aiRest": "{{count}} places libres · les autres nations sont tenues par l'IA",
+      "host": "hôte",
+      "you": "vous",
+      "invite": "Inviter",
+      "inviteHint": "Partagez ce lien : vos amis choisissent leur nation puis attendent ici le lancement.",
+      "copy": "Copier le lien",
+      "copied": "Lien copié",
+      "rules": "Règles de la partie",
+      "speed": "Vitesse ×{{speed}}",
+      "victory": "Victoire : {{share}} des provinces",
+      "hostHint": "Lancez la partie quand tout le monde est prêt ; les places libres restent ouvertes en cours de partie.",
+      "guestHint": "L'hôte lancera la partie ; vous y serez conduit automatiquement.",
+      "start": "Lancer la partie",
+      "startError": "Lancement impossible pour l'instant.",
+      "leave": "Quitter le salon",
+      "ended": "Cette partie est terminée.",
+      "notFound": "Salon introuvable."
+    }
   },
   "games": {
     "title": "Mes parties",

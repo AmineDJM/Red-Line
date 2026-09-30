@@ -118,7 +118,7 @@ function useSend() {
 }
 
 /** Recherche : arbre par branche (graphe et dépendances), recherche en cours, file, effets. */
-export function ResearchWindow({ frame, mobile }: WindowContentProps) {
+export function ResearchWindow({ win, frame, mobile }: WindowContentProps) {
   const { t } = useTranslation();
   const nodes = useWorld((s) => s.research);
   const catalog = useWorld((s) => s.catalog);
@@ -130,7 +130,19 @@ export function ResearchWindow({ frame, mobile }: WindowContentProps) {
   const all = useMemo(() => Object.values(nodes), [nodes]);
   const branches = RESEARCH_BRANCHES.filter((b) => all.some((n) => n.branch === b));
   const [branch, setBranch] = useState<ResearchBranch>('aero');
-  const [selected, setSelected] = useState<string | null>(r?.current?.id ?? null);
+  const [selected, setSelected] = useState<string | null>(
+    win.params.nodeId ?? r?.current?.id ?? null,
+  );
+  // Ouverture ciblée (fiche d'arme « R&D requise ») : branche et nœud demandés.
+  useEffect(() => {
+    const id = win.params.nodeId;
+    const n = id ? nodes[id] : undefined;
+    if (n) {
+      setSelected(n.id);
+      setBranch(n.branch);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [win.seq, win.params.nodeId, nodes]);
   useEffect(() => {
     if (!branches.includes(branch) && branches[0]) setBranch(branches[0]);
   }, [branches, branch]);
@@ -173,6 +185,36 @@ export function ResearchWindow({ frame, mobile }: WindowContentProps) {
       { kind: 'research', nodeId: n.id },
       r?.current ? t('research.queued', { node: n.name }) : t('research.started', { node: n.name }),
     );
+
+  /** Prérequis manquants (ni acquis, ni en cours, ni en file), dans l'ordre où les lancer. */
+  const chainOf = (n: ResearchNode): ResearchNode[] => {
+    const out: ResearchNode[] = [];
+    const seen = new Set<string>();
+    const visit = (id: string) => {
+      if (seen.has(id)) return;
+      seen.add(id);
+      const x = nodes[id];
+      if (!x || done.has(id) || r?.current?.id === id || r?.queue.includes(id)) return;
+      for (const q of x.requires) visit(q);
+      out.push(x);
+    };
+    visit(n.id);
+    return out;
+  };
+  const planChain = async (n: ResearchNode) => {
+    const chain = chainOf(n);
+    const toast = useUi.getState().toast;
+    for (const x of chain) {
+      const res = await useGame
+        .getState()
+        .connection?.sendOrder({ kind: 'research', nodeId: x.id });
+      if (!res?.ok) {
+        toast(res?.message || t(`game.orders.errors.${res?.error ?? 'not_allowed'}`), 'error');
+        return;
+      }
+    }
+    toast(t('research.chainQueued', { node: n.name, count: chain.length }), 'ok');
+  };
 
   if (!all.length)
     return (
@@ -480,9 +522,14 @@ export function ResearchWindow({ frame, mobile }: WindowContentProps) {
                     <Button
                       variant="subtle"
                       icon={<Icon name="plus" size={12} />}
-                      onClick={() => start(sel)}
+                      disabled={money < chainOf(sel).reduce((a, x) => a + x.cost.money, 0)}
+                      onClick={() => void planChain(sel)}
+                      data-testid="research-chain"
                     >
-                      {t('research.enqueue')}
+                      {t('research.enqueueChain', {
+                        count: chainOf(sel).length,
+                        cost: formatMoney(chainOf(sel).reduce((a, x) => a + x.cost.money, 0)),
+                      })}
                     </Button>
                   ) : null}
                   {status(sel) === 'current' || status(sel) === 'queued' ? (

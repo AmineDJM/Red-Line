@@ -25,6 +25,7 @@ import {
   formatMoney,
   type WeaponFact,
 } from '@redline/ui';
+import { getApi } from '../api/index.js';
 import { norm } from '../lib/commands.js';
 import { ownedCounts, productionStatus, researchName, systemPrice } from '../lib/game.js';
 import { photoFor, usePhotos } from '../lib/photos.js';
@@ -60,10 +61,20 @@ export function ArsenalBrowser({
   const view = useGame((s) => s.view);
   const me = useGame((s) => s.me);
   const photos = usePhotos();
-  const myDoctrine = (me && view?.nations[me]?.doctrine) as Doctrine | undefined;
+  const nationInfo = useWorld((s) => (me ? s.nationInfo[me] : undefined));
+  useEffect(() => {
+    void getApi().then((api) => useWorld.getState().loadNationInfo(api));
+  }, []);
+  const myDoctrine = ((me && view?.nations[me]?.doctrine) || nationInfo?.doctrine) as
+    Doctrine | undefined;
   const [tab, setTab] = useState<DoctrineTab>(
     () => (initialSystemId && catalog[initialSystemId]?.doctrine) || myDoctrine || 'all',
   );
+  // Doctrine connue après le chargement des fiches nationales : onglet de sa doctrine par défaut.
+  const [tabTouched, setTabTouched] = useState(!!initialSystemId);
+  useEffect(() => {
+    if (!tabTouched && myDoctrine) setTab(myDoctrine);
+  }, [myDoctrine, tabTouched]);
   const [category, setCategory] = useState<Category | 'all'>('all');
   const [gen, setGen] = useState<number | 0>(0);
   const [query, setQuery] = useState('');
@@ -108,6 +119,7 @@ export function ArsenalBrowser({
       .sort(
         (a, b) =>
           CATEGORIES.indexOf(a.category) - CATEGORIES.indexOf(b.category) ||
+          Number((owned[b.id] ?? 0) > 0) - Number((owned[a.id] ?? 0) > 0) ||
           b.generation - a.generation ||
           a.name.localeCompare(b.name),
       );
@@ -374,6 +386,7 @@ export function ArsenalBrowser({
           value={tab}
           onChange={(d) => {
             setTab(d);
+            setTabTouched(true);
             setCategory('all');
           }}
           tabs={[

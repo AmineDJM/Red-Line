@@ -273,6 +273,10 @@ export class MockApi implements Api {
     remember(nationId);
     return mockMeta();
   }
+  async lobbyGame(id: string) {
+    const list = demoLobby((await loadFixtures()).nations);
+    return list.find((g) => g.game.id === id) ?? list[0]!;
+  }
   async leaveLobby() {}
   async startLobby(): Promise<GameMeta> {
     return mockMeta();

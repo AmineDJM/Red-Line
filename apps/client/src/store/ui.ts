@@ -33,6 +33,8 @@ export interface WindowParams {
   nationId?: string;
   provinceId?: string;
   channel?: string;
+  /** Nœud de recherche à afficher. */
+  nodeId?: string;
 }
 
 export interface WindowState {

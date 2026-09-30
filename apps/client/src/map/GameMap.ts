@@ -504,8 +504,12 @@ export class GameMap {
   }
 
   private fitNation(id: NationId) {
-    const pts = Object.values(useWorld.getState().provinces)
-      .filter((p) => p.nationId === id)
+    const mine = Object.values(useWorld.getState().provinces).filter((p) => p.nationId === id);
+    // Territoire métropolitain : provinces à moins de 2 000 km de la capitale (les outre-mer de la
+    // France ou des Pays-Bas feraient sinon cadrer le monde entier).
+    const cap = mine.find((p) => p.isCapital);
+    const pts = mine
+      .filter((p) => !cap || distanceKm(p.centroid, cap.cityPoint) < 2000)
       .map((p) => p.centroid);
     if (!pts.length) return;
     const xs = pts.map((p) => p[0]);

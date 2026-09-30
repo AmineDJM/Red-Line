@@ -19,6 +19,7 @@ import {
   formatPct,
 } from '@redline/ui';
 import { getApi } from '../api/index.js';
+import { ApiError } from '../api/types.js';
 import { NationPicker } from '../components/NationPicker.js';
 import { Page } from '../components/Page.js';
 import { navigate } from '../router.js';
@@ -250,7 +251,11 @@ export function LobbyCreateScreen() {
               inactiveAiAfterH: form.inactiveAiAfterH,
               private: form.private,
             });
-            navigate(game.status === 'running' ? `/game/${encodeURIComponent(game.id)}` : '/lobby');
+            navigate(
+              game.status === 'lobby'
+                ? `/lobby/${encodeURIComponent(game.id)}/room`
+                : `/game/${encodeURIComponent(game.id)}`,
+            );
           } catch {
             setError(t('lobby.createError'));
             setBusy(false);
@@ -440,9 +445,22 @@ export function LobbyJoinScreen({ id }: { id: string }) {
           const api = await getApi();
           if (!(await api.me())) await api.guest();
           const g = await api.joinLobby(id, nationId);
-          navigate(`/game/${encodeURIComponent(g.id)}`);
-        } catch {
-          setError(t('lobby.joinError'));
+          navigate(
+            g.status === 'lobby'
+              ? `/lobby/${encodeURIComponent(g.id)}/room`
+              : `/game/${encodeURIComponent(g.id)}`,
+          );
+        } catch (e) {
+          // Déjà inscrit : retour à la salle d'attente.
+          if (e instanceof ApiError && e.code === 'already_joined') {
+            navigate(`/lobby/${encodeURIComponent(id)}/room`);
+            return;
+          }
+          setError(
+            e instanceof ApiError && e.code === 'nation_taken'
+              ? t('lobby.nationTaken')
+              : t('lobby.joinError'),
+          );
           setBusy(false);
         }
       }}

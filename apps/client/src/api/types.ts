@@ -87,6 +87,8 @@ export interface Api {
   lobby(): Promise<LobbyGame[]>;
   createLobby(body: CreateLobbyBody): Promise<GameMeta>;
   joinLobby(id: string, nationId: NationId): Promise<GameMeta>;
+  /** Salon multijoueur (salle d'attente). */
+  lobbyGame(id: string): Promise<LobbyGame>;
   leaveLobby(id: string): Promise<void>;
   startLobby(id: string): Promise<GameMeta>;
   spectate(id: string): Promise<GameMeta>;

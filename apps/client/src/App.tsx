@@ -21,6 +21,9 @@ const LobbyScreen = lazy(() =>
 const LobbyCreateScreen = lazy(() =>
   import('./screens/LobbyScreen.js').then((m) => ({ default: m.LobbyCreateScreen })),
 );
+const LobbyRoomScreen = lazy(() =>
+  import('./screens/LobbyRoomScreen.js').then((m) => ({ default: m.LobbyRoomScreen })),
+);
 const LobbyJoinScreen = lazy(() =>
   import('./screens/LobbyScreen.js').then((m) => ({ default: m.LobbyJoinScreen })),
 );
@@ -46,6 +49,7 @@ const TITLES: Partial<Record<Route['name'], string>> = {
   lobby: 'lobby.title',
   lobbyCreate: 'lobby.create',
   lobbyJoin: 'lobby.join',
+  lobbyRoom: 'lobby.room.title',
   games: 'games.title',
   shop: 'shop.title',
   rankings: 'rankings.title',
@@ -75,6 +79,7 @@ export function App() {
       {route.name === 'lobby' ? <LobbyScreen /> : null}
       {route.name === 'lobbyCreate' ? <LobbyCreateScreen /> : null}
       {route.name === 'lobbyJoin' ? <LobbyJoinScreen id={route.id} /> : null}
+      {route.name === 'lobbyRoom' ? <LobbyRoomScreen id={route.id} /> : null}
       {route.name === 'games' ? <GamesScreen /> : null}
       {route.name === 'shop' ? <ShopScreen /> : null}
       {route.name === 'rankings' ? <RankingsScreen /> : null}

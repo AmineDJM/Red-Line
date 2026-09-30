@@ -12,6 +12,7 @@ export type Route =
   | { name: 'lobby' }
   | { name: 'lobbyCreate' }
   | { name: 'lobbyJoin'; id: string }
+  | { name: 'lobbyRoom'; id: string }
   | { name: 'games' }
   | { name: 'shop' }
   | { name: 'rankings' }
@@ -47,6 +48,8 @@ export function parseRoute(pathname: string): Route {
   if (p === '/rankings') return { name: 'rankings' };
   let m = /^\/legal\/([a-z]+)$/.exec(p);
   if (m?.[1] && LEGAL.has(m[1])) return { name: 'legal', doc: m[1] as LegalDocRef['id'] };
+  m = /^\/lobby\/([^/]+)\/room$/.exec(p);
+  if (m?.[1]) return { name: 'lobbyRoom', id: decodeURIComponent(m[1]) };
   m = /^\/lobby\/([^/]+)$/.exec(p);
   if (m?.[1]) return { name: 'lobbyJoin', id: decodeURIComponent(m[1]) };
   m = /^\/game\/([^/]+)\/end$/.exec(p);

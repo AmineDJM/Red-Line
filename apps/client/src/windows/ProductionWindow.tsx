@@ -160,7 +160,7 @@ function ProduceActions({
           <Button
             variant="subtle"
             icon={<Icon name="research" size={14} />}
-            onClick={() => openWindow('research')}
+            onClick={() => openWindow('research', { nodeId: st.missing[0] })}
           >
             {t('production.goResearch', { node: researchName(st.missing[0] ?? '', research) })}
           </Button>
