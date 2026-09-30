@@ -18,7 +18,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import './map.css';
 import { Protocol } from 'pmtiles';
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
-import type { Feature, FeatureCollection, Geometry, LineString } from 'geojson';
+import type { Feature, FeatureCollection, Geometry, LineString, Point } from 'geojson';
 import {
   destination,
   distanceKm,
@@ -66,7 +66,16 @@ import type { FogRequest, FogResponse } from './fog.worker.js';
 import { isMoving, unitPosition } from './interpolation.js';
 import { useMapLayers } from './layers.js';
 import { OverlayRenderer, type OverlayContent, type RingLabel } from './overlay.js';
-import { SPRITE_RATIO, drawPion, parsePionKey, resolveSprite } from './pions.js';
+import {
+  PION_H,
+  PION_ICON_OFFSET,
+  PION_W,
+  SPRITE_RATIO,
+  drawPion,
+  parsePionKey,
+  resolveSprite,
+} from './pions.js';
+import { pionScale } from './grouping.js';
 import { SourceSync } from './sourceSync.js';
 import { SPRITES_MARK, handleMissingImage, registerSprites } from './sprites.js';
 import {
@@ -121,7 +130,6 @@ const TOUCH_RADIUS = 18;
 const MOUSE_RADIUS = 6;
 const LONG_PRESS_MS = 480;
 const HOVER_DELAY_MS = 160;
-const UNIT_LAYERS = ['focus-hex', 'units-hex', 'units-m-hex', 'missiles'];
 const CITY_LAYERS = ['cities-0', 'cities-1', 'cities-2', 'cities-3'];
 /** Au-delà de cet étalement, toucher une pile zoome dessus au lieu de la sélectionner. */
 const STACK_SPREAD_KM = 30;
@@ -201,6 +209,11 @@ export class GameMap {
   readonly resolveCount = new Map<string, number>();
   private perf = { ticks: 0, total: 0, max: 0, group: 0, groups: 0, pions: 0, skipped: 0 };
   private unitsSig = '';
+  private lastTokens: {
+    tokens: Feature<Point>[];
+    focus: Feature<Point>[];
+    missiles: Feature<Point>[];
+  } = { tokens: [], focus: [], missiles: [] };
 
   constructor(
     private readonly container: HTMLElement,
@@ -891,6 +904,7 @@ export class GameMap {
     this.syncs.units.push(r.tokens.filter((f) => !f.properties!.mv));
     this.syncs.moving.push(r.tokens.filter((f) => f.properties!.mv));
     this.syncs.focus.push(r.focus);
+    this.lastTokens = { tokens: r.tokens, focus: r.focus, missiles: r.missiles };
     this.syncs.headings.push(r.headings);
     this.syncs.missiles.push(r.missiles);
     for (const f of r.tokens) this.usedImages.add(String(f.properties!.img));
@@ -1193,14 +1207,44 @@ export class GameMap {
       .map((x) => x.f);
   }
 
+  /**
+   * Test d'atteinte des pions par leur géométrie connue (position, écartement, taille à l'échelle
+   * du zoom), sans dépendre du rendu des tuiles : fiable même juste après un saut de caméra.
+   * Renvoie les identifiants des unités du pion touché (sélection d'abord, puis le plus proche).
+   */
+  private hitPion(x: number, y: number, radius: number): string[] | null {
+    const s = pionScale(this.map.getZoom());
+    const hw = (PION_W / 2) * s + radius;
+    const hh = (PION_H / 2) * s + radius;
+    let best: { ids: string; d: number } | null = null;
+    const test = (f: Feature<Point>, bonus: number, box: boolean) => {
+      const c = f.geometry.coordinates as [number, number];
+      const p = this.map.project(c);
+      const off = (f.properties?.foff ?? (box ? f.properties?.off : [0, 0])) as number[] | undefined;
+      const base: [number, number] = f.properties?.foff ? [0, 0] : PION_ICON_OFFSET;
+      const cx = p.x + ((off?.[0] ?? 0) - (box ? base[0] : 0)) * s;
+      const cy = p.y + ((off?.[1] ?? 0) - (box ? base[1] : 0)) * s;
+      const dx = Math.abs(cx - x);
+      const dy = Math.abs(cy - y);
+      const inside = box ? dx <= hw && dy <= hh : Math.hypot(dx, dy) <= 12 + radius;
+      if (!inside) return;
+      const d = Math.hypot(dx, dy) + bonus;
+      if (!best || d < best.d) best = { ids: String(f.properties?.members ?? f.properties?.id), d };
+    };
+    for (const f of this.lastTokens.focus) test(f, -1000, true);
+    for (const f of this.lastTokens.tokens) test(f, 0, true);
+    for (const f of this.lastTokens.missiles) test(f, -5, false);
+    const b = best as { ids: string; d: number } | null;
+    return b ? b.ids.split(',').filter(Boolean) : null;
+  }
+
   private tipTargetAt(x: number, y: number, radius?: number): { key: string; target: TipTarget } | null {
-    const u = this.hitAt(x, y, UNIT_LAYERS, radius)[0];
-    if (u) {
-      const ids = String(u.properties?.members ?? u.properties?.id ?? '')
-        .split(',')
-        .filter(Boolean);
-      return { key: `u:${ids.join(',')}`, target: { kind: 'units', ids } };
-    }
+    const ids = this.hitPion(
+      x,
+      y,
+      radius ?? (this.lastPointer === 'mouse' ? MOUSE_RADIUS : TOUCH_RADIUS) - 4,
+    );
+    if (ids?.length) return { key: `u:${ids.join(',')}`, target: { kind: 'units', ids } };
     const b = this.hitAt(x, y, ['bld'], radius ?? 4)[0];
     if (b && this.map.getZoom() >= 5.8) {
       const prov = String(b.properties?.prov ?? '');
@@ -1387,12 +1431,14 @@ export class GameMap {
     }
     const ui = useUi.getState();
     const { view, me } = useGame.getState();
-    const first = this.hitAt(e.point.x, e.point.y, UNIT_LAYERS)[0];
+    const hitIds = this.hitPion(
+      e.point.x,
+      e.point.y,
+      (this.lastPointer === 'mouse' ? MOUSE_RADIUS : TOUCH_RADIUS) - 4,
+    );
     const multi = e.originalEvent.shiftKey || e.originalEvent.ctrlKey || e.originalEvent.metaKey;
-    if (first) {
-      const ids = String(first.properties?.members ?? first.properties?.id ?? '')
-        .split(',')
-        .filter((id) => !!view?.units[id]);
+    if (hitIds?.length) {
+      const ids = hitIds.filter((id) => !!view?.units[id]);
       const u = ids[0] ? view?.units[ids[0]] : undefined;
       if (!u) return;
       // Pile étalée (regroupement à petite échelle) : on zoome dessus pour la dégrouper.
