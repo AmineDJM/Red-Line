@@ -1,0 +1,468 @@
+{
+  "systems": [
+    {
+      "id": "us.m1a2-abrams",
+      "name": "M1A2 Abrams",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "tank",
+      "roles": ["main_battle_tank", "capture"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 950,
+        "resources": {
+          "oil": 20,
+          "metals": 55,
+          "electronics": 30
+        }
+      },
+      "buildTimeH": 30,
+      "upkeepPerDay": 20,
+      "speedKmh": 65,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 4
+      },
+      "damage": {
+        "infantry": 8,
+        "armor": 13,
+        "aircraft": 0,
+        "helicopter": 1,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 6
+      },
+      "hp": 44,
+      "armor": 0.7,
+      "stealth": 0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.25
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "tank",
+      "illustration": "us.m1a2-abrams.webp",
+      "sheet": {
+        "engine": "1 turbine AGT1500 (1 500 ch)",
+        "lengthM": 9.8,
+        "wingspanM": null,
+        "mtowKg": 66000,
+        "warheadKg": null,
+        "speedLabel": "67 km/h sur route",
+        "rangeKm": 430
+      },
+      "enabled": true
+    },
+    {
+      "id": "ru.t-90m",
+      "name": "T-90M",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "tank",
+      "roles": ["main_battle_tank", "capture"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 750,
+        "resources": {
+          "oil": 15,
+          "metals": 45,
+          "electronics": 25
+        }
+      },
+      "buildTimeH": 26,
+      "upkeepPerDay": 15,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 5
+      },
+      "damage": {
+        "infantry": 8,
+        "armor": 12,
+        "aircraft": 0,
+        "helicopter": 1,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 6
+      },
+      "hp": 42,
+      "armor": 0.68,
+      "stealth": 0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.25
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "tank",
+      "illustration": "ru.t-90m.webp",
+      "sheet": {
+        "engine": "1 diesel V-92S2F (1 130 ch)",
+        "lengthM": 9.6,
+        "wingspanM": null,
+        "mtowKg": 48000,
+        "warheadKg": null,
+        "speedLabel": "60 km/h sur route",
+        "rangeKm": 550
+      },
+      "enabled": true
+    },
+    {
+      "id": "cn.type-99a",
+      "name": "Type 99A",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "tank",
+      "roles": ["main_battle_tank", "capture"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 800,
+        "resources": {
+          "oil": 15,
+          "metals": 50,
+          "electronics": 25
+        }
+      },
+      "buildTimeH": 28,
+      "upkeepPerDay": 15,
+      "speedKmh": 70,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 5
+      },
+      "damage": {
+        "infantry": 8,
+        "armor": 12,
+        "aircraft": 0,
+        "helicopter": 1,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 6
+      },
+      "hp": 42,
+      "armor": 0.68,
+      "stealth": 0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.25
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "tank",
+      "illustration": "cn.type-99a.webp",
+      "sheet": {
+        "engine": "1 diesel 150HB (1 500 ch)",
+        "lengthM": 11,
+        "wingspanM": null,
+        "mtowKg": 55000,
+        "warheadKg": null,
+        "speedLabel": "70 km/h sur route",
+        "rangeKm": 450
+      },
+      "enabled": true
+    },
+    {
+      "id": "eu.leopard-2a7",
+      "name": "Leopard 2A7",
+      "doctrine": "eu",
+      "origin": "DE",
+      "category": "tank",
+      "roles": ["main_battle_tank", "capture"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 1000,
+        "resources": {
+          "oil": 20,
+          "metals": 60,
+          "electronics": 30
+        }
+      },
+      "buildTimeH": 32,
+      "upkeepPerDay": 20,
+      "speedKmh": 70,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 4
+      },
+      "damage": {
+        "infantry": 8,
+        "armor": 13,
+        "aircraft": 0,
+        "helicopter": 1,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 6
+      },
+      "hp": 44,
+      "armor": 0.7,
+      "stealth": 0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.25
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "tank",
+      "illustration": "eu.leopard-2a7.webp",
+      "sheet": {
+        "engine": "1 diesel MB 873 (1 500 ch)",
+        "lengthM": 10.9,
+        "wingspanM": null,
+        "mtowKg": 67000,
+        "warheadKg": null,
+        "speedLabel": "68 km/h sur route",
+        "rangeKm": 450
+      },
+      "enabled": true
+    },
+    {
+      "id": "eu.leclerc",
+      "name": "Leclerc",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "tank",
+      "roles": ["main_battle_tank", "capture"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 950,
+        "resources": {
+          "oil": 20,
+          "metals": 55,
+          "electronics": 30
+        }
+      },
+      "buildTimeH": 30,
+      "upkeepPerDay": 20,
+      "speedKmh": 70,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 4
+      },
+      "damage": {
+        "infantry": 8,
+        "armor": 13,
+        "aircraft": 0,
+        "helicopter": 1,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 6
+      },
+      "hp": 42,
+      "armor": 0.66,
+      "stealth": 0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.25
+      },
+      "payload": {
+        "slots": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "tank",
+      "illustration": "eu.leclerc.webp",
+      "sheet": {
+        "engine": "1 diesel V8X (1 500 ch)",
+        "lengthM": 9.9,
+        "wingspanM": null,
+        "mtowKg": 57000,
+        "warheadKg": null,
+        "speedLabel": "71 km/h sur route",
+        "rangeKm": 550
+      },
+      "enabled": true
+    },
+    {
+      "id": "us.m2-bradley",
+      "name": "M2 Bradley",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "ifv",
+      "roles": ["ifv", "capture", "anti_tank"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 500,
+        "resources": {
+          "oil": 10,
+          "metals": 25,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 18,
+      "upkeepPerDay": 10,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 4
+      },
+      "damage": {
+        "infantry": 9,
+        "armor": 7,
+        "aircraft": 0,
+        "helicopter": 3,
+        "drone": 3,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 4
+      },
+      "hp": 26,
+      "armor": 0.45,
+      "stealth": 0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.25
+      },
+      "payload": {
+        "slots": 2,
+        "transport": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "ifv",
+      "illustration": "us.m2-bradley.webp",
+      "sheet": {
+        "engine": "1 diesel VTA-903T (600 ch)",
+        "lengthM": 6.6,
+        "wingspanM": null,
+        "mtowKg": 30000,
+        "warheadKg": null,
+        "speedLabel": "66 km/h sur route",
+        "rangeKm": 400
+      },
+      "enabled": true
+    },
+    {
+      "id": "ru.bmp-3",
+      "name": "BMP-3",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "ifv",
+      "roles": ["ifv", "capture", "amphibious"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 420,
+        "resources": {
+          "oil": 10,
+          "metals": 20,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 10,
+      "speedKmh": 70,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 5
+      },
+      "damage": {
+        "infantry": 10,
+        "armor": 7,
+        "aircraft": 0,
+        "helicopter": 3,
+        "drone": 3,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 5
+      },
+      "hp": 24,
+      "armor": 0.4,
+      "stealth": 0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 2,
+        "transport": 1
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "ifv",
+      "illustration": "ru.bmp-3.webp",
+      "sheet": {
+        "engine": "1 diesel UTD-29 (500 ch)",
+        "lengthM": 7.1,
+        "wingspanM": null,
+        "mtowKg": 18700,
+        "warheadKg": null,
+        "speedLabel": "70 km/h sur route",
+        "rangeKm": 600
+      },
+      "enabled": true
+    }
+  ]
+}

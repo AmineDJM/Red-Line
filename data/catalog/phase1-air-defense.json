@@ -1,0 +1,335 @@
+{
+  "category": "air_defense",
+  "systems": [
+    {
+      "id": "us.patriot",
+      "name": "MIM-104 Patriot",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "air_defense",
+      "roles": ["long_range_sam", "missile_defense"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 1800,
+        "resources": {
+          "oil": 35,
+          "metals": 55,
+          "electronics": 110
+        }
+      },
+      "buildTimeH": 48,
+      "upkeepPerDay": 35,
+      "speedKmh": 40,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 160
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 20,
+        "helicopter": 14,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 18,
+        "building": 0
+      },
+      "hp": 22,
+      "armor": 0.15,
+      "stealth": 0,
+      "detectionRangeKm": 180,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.air-defense.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "air_defense",
+      "illustration": "us.patriot.webp",
+      "sheet": {
+        "engine": "Lanceurs sur semi-remorques",
+        "lengthM": 5.3,
+        "wingspanM": null,
+        "mtowKg": 900,
+        "warheadKg": 90,
+        "speedLabel": "Mach 4 (missile)",
+        "rangeKm": 160
+      },
+      "enabled": true
+    },
+    {
+      "id": "ru.s-400",
+      "name": "S-400 Triumf",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["long_range_sam", "missile_defense"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 2000,
+        "resources": {
+          "oil": 40,
+          "metals": 60,
+          "electronics": 120
+        }
+      },
+      "buildTimeH": 52,
+      "upkeepPerDay": 40,
+      "speedKmh": 50,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 3,
+        "max": 250
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 22,
+        "helicopter": 14,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 16,
+        "building": 0
+      },
+      "hp": 22,
+      "armor": 0.15,
+      "stealth": 0,
+      "detectionRangeKm": 300,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.air-defense.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "illustration": "ru.s-400.webp",
+      "sheet": {
+        "engine": "Lanceurs sur camions 8x8",
+        "lengthM": 7.5,
+        "wingspanM": null,
+        "mtowKg": 1800,
+        "warheadKg": 145,
+        "speedLabel": "Mach 6 (missile)",
+        "rangeKm": 250
+      },
+      "enabled": true
+    },
+    {
+      "id": "ru.pantsir-s1",
+      "name": "Pantsir-S1",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["short_range_sam", "anti_drone"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 700,
+        "resources": {
+          "oil": 15,
+          "metals": 20,
+          "electronics": 40
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 15,
+      "speedKmh": 80,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 20
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 2,
+        "aircraft": 9,
+        "helicopter": 16,
+        "drone": 16,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 10,
+        "building": 0
+      },
+      "hp": 20,
+      "armor": 0.3,
+      "stealth": 0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.air-defense.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "illustration": "ru.pantsir-s1.webp",
+      "sheet": {
+        "engine": "Camion 8x8 diesel",
+        "lengthM": 3.2,
+        "wingspanM": null,
+        "mtowKg": 75,
+        "warheadKg": 20,
+        "speedLabel": "Mach 3 (missile)",
+        "rangeKm": 20
+      },
+      "enabled": true
+    },
+    {
+      "id": "eu.mistral",
+      "name": "Mistral",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "air_defense",
+      "roles": ["short_range_sam", "manpads", "anti_drone"],
+      "generation": 4,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 250,
+        "resources": {
+          "oil": 5,
+          "metals": 10,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 5,
+      "speedKmh": 30,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 8,
+        "helicopter": 14,
+        "drone": 12,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 3,
+        "building": 0
+      },
+      "hp": 10,
+      "armor": 0.1,
+      "stealth": 0,
+      "detectionRangeKm": 15,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 2,
+      "requires": ["research.air-defense.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "air_defense",
+      "illustration": "eu.mistral.webp",
+      "sheet": {
+        "engine": "Postes de tir portables",
+        "lengthM": 1.9,
+        "wingspanM": null,
+        "mtowKg": 19,
+        "warheadKg": 3,
+        "speedLabel": "Mach 2,7 (missile)",
+        "rangeKm": 8
+      },
+      "enabled": true
+    },
+    {
+      "id": "ru.krasukha-4",
+      "name": "Krasukha-4",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "air_defense",
+      "roles": ["electronic_warfare", "jammer", "anti_drone"],
+      "generation": 4,
+      "targetClass": "armor",
+      "movement": "land",
+      "canCapture": false,
+      "cost": {
+        "money": 600,
+        "resources": {
+          "oil": 10,
+          "metals": 20,
+          "electronics": 35
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 10,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 60
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 2,
+        "building": 0
+      },
+      "hp": 14,
+      "armor": 0.1,
+      "stealth": 0,
+      "detectionRangeKm": 150,
+      "ew": {
+        "jamming": 0.8,
+        "jamResistance": 0.7
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.electronic-warfare.gen4"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "jammer",
+      "illustration": "ru.krasukha-4.webp",
+      "sheet": {
+        "engine": "Camion 8x8 diesel",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "60 km/h sur route",
+        "rangeKm": 60
+      },
+      "enabled": true
+    }
+  ]
+}

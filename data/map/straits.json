@@ -1,0 +1,154 @@
+[
+  {
+    "id": "bosphore",
+    "name": "Bosphore",
+    "seaCells": ["842d26dffffffff", "841ec99ffffffff", "841ec91ffffffff", "841ec95ffffffff"]
+  },
+  {
+    "id": "dardanelles",
+    "name": "Dardanelles",
+    "seaCells": [
+      "841ec95ffffffff",
+      "841ecb9ffffffff",
+      "841ec87ffffffff",
+      "841ecabffffffff",
+      "841eca9ffffffff",
+      "841eca1ffffffff",
+      "841eca5ffffffff",
+      "841edd3ffffffff"
+    ]
+  },
+  {
+    "id": "suez",
+    "name": "Canal de Suez",
+    "seaCells": [
+      "843e65dffffffff",
+      "843e655ffffffff",
+      "843e60bffffffff",
+      "843e603ffffffff",
+      "843e639ffffffff",
+      "843e631ffffffff",
+      "843e633ffffffff",
+      "843e459ffffffff",
+      "843e451ffffffff",
+      "843e453ffffffff",
+      "843e419ffffffff",
+      "843e41bffffffff"
+    ]
+  },
+  {
+    "id": "panama",
+    "name": "Canal de Panama",
+    "seaCells": ["8466a5dffffffff", "8466a51ffffffff", "8466a53ffffffff"]
+  },
+  {
+    "id": "gibraltar",
+    "name": "Détroit de Gibraltar",
+    "seaCells": [
+      "8439adbffffffff",
+      "84391adffffffff",
+      "84391a1ffffffff",
+      "84391abffffffff",
+      "84391bdffffffff"
+    ]
+  },
+  {
+    "id": "ormuz",
+    "name": "Détroit d'Ormuz",
+    "seaCells": [
+      "8443131ffffffff",
+      "8443137ffffffff",
+      "8443ad9ffffffff",
+      "8443ad1ffffffff",
+      "8443ad7ffffffff"
+    ]
+  },
+  {
+    "id": "bab-el-mandeb",
+    "name": "Bab-el-Mandeb",
+    "seaCells": [
+      "8452f63ffffffff",
+      "8452f05ffffffff",
+      "8452f2bffffffff",
+      "8452f3dffffffff",
+      "8452f35ffffffff",
+      "8452f37ffffffff",
+      "8452f33ffffffff"
+    ]
+  },
+  {
+    "id": "malacca",
+    "name": "Détroit de Malacca",
+    "seaCells": [
+      "84650bdffffffff",
+      "8465087ffffffff",
+      "8465085ffffffff",
+      "846508dffffffff",
+      "84650c7ffffffff",
+      "84650c5ffffffff",
+      "84650cdffffffff",
+      "846501bffffffff",
+      "84652a5ffffffff",
+      "8465053ffffffff",
+      "846505bffffffff",
+      "8465059ffffffff",
+      "8465233ffffffff",
+      "8465231ffffffff",
+      "8465239ffffffff",
+      "8465207ffffffff",
+      "8465201ffffffff",
+      "846520dffffffff",
+      "846526bffffffff",
+      "8465269ffffffff"
+    ]
+  },
+  {
+    "id": "kertch",
+    "name": "Détroit de Kertch",
+    "seaCells": ["842d747ffffffff", "842d76bffffffff", "842d761ffffffff"]
+  },
+  {
+    "id": "oresund",
+    "name": "Øresund",
+    "seaCells": ["841f23bffffffff", "841f233ffffffff", "841f059ffffffff", "841f051ffffffff"]
+  },
+  {
+    "id": "grand-belt",
+    "name": "Grand Belt",
+    "seaCells": [
+      "841f207ffffffff",
+      "841f23dffffffff",
+      "841f223ffffffff",
+      "841f049ffffffff",
+      "841f041ffffffff",
+      "841f047ffffffff",
+      "841f00dffffffff"
+    ]
+  },
+  {
+    "id": "kiel",
+    "name": "Canal de Kiel",
+    "seaCells": ["841f337ffffffff", "841f159ffffffff", "841f065ffffffff", "841f061ffffffff"]
+  },
+  {
+    "id": "messine",
+    "name": "Détroit de Messine",
+    "seaCells": ["843f26dffffffff", "843f265ffffffff"]
+  },
+  {
+    "id": "pas-de-calais",
+    "name": "Pas de Calais",
+    "seaCells": ["8419487ffffffff", "8419481ffffffff", "8419489ffffffff"]
+  },
+  {
+    "id": "tiran",
+    "name": "Détroit de Tiran et golfe d'Aqaba",
+    "seaCells": [
+      "843e6a7ffffffff",
+      "843e6a1ffffffff",
+      "843e6abffffffff",
+      "843e685ffffffff",
+      "843e68dffffffff"
+    ]
+  }
+]

@@ -1,0 +1,612 @@
+{
+ "nations": [
+  {
+   "id": "yem",
+   "iso": "YEM",
+   "name": "Yémen",
+   "kind": "state",
+   "color": "#4a7fb5",
+   "capitalProvinceId": "yem-2"
+  },
+  {
+   "id": "uzb",
+   "iso": "UZB",
+   "name": "Ouzbékistan",
+   "kind": "state",
+   "color": "#5b9a6a",
+   "capitalProvinceId": "uzb-1"
+  },
+  {
+   "id": "are",
+   "iso": "ARE",
+   "name": "Émirats arabes unis",
+   "kind": "state",
+   "color": "#b58a4a",
+   "capitalProvinceId": "are-1"
+  },
+  {
+   "id": "ukr",
+   "iso": "UKR",
+   "name": "Ukraine",
+   "kind": "state",
+   "color": "#9a5b5b",
+   "capitalProvinceId": "ukr-1"
+  },
+  {
+   "id": "tkm",
+   "iso": "TKM",
+   "name": "Turkménistan",
+   "kind": "state",
+   "color": "#4a9aa0",
+   "capitalProvinceId": "tkm-2"
+  },
+  {
+   "id": "tur",
+   "iso": "TUR",
+   "name": "Turquie",
+   "kind": "state",
+   "color": "#8a8f45",
+   "capitalProvinceId": "tur-1"
+  },
+  {
+   "id": "tun",
+   "iso": "TUN",
+   "name": "Tunisie",
+   "kind": "state",
+   "color": "#a06a95",
+   "capitalProvinceId": "tun-1"
+  },
+  {
+   "id": "tgo",
+   "iso": "TGO",
+   "name": "Togo",
+   "kind": "state",
+   "color": "#6a78b0",
+   "capitalProvinceId": "tgo-1"
+  },
+  {
+   "id": "syr",
+   "iso": "SYR",
+   "name": "Syrie",
+   "kind": "state",
+   "color": "#7aa35a",
+   "capitalProvinceId": "syr-1"
+  },
+  {
+   "id": "che",
+   "iso": "CHE",
+   "name": "Suisse",
+   "kind": "state",
+   "color": "#b07050",
+   "capitalProvinceId": "che-1"
+  },
+  {
+   "id": "sds",
+   "iso": "SDS",
+   "name": "Soudan du Sud",
+   "kind": "state",
+   "color": "#5a8f8f",
+   "capitalProvinceId": "sds-1"
+  },
+  {
+   "id": "sdn",
+   "iso": "SDN",
+   "name": "Soudan",
+   "kind": "state",
+   "color": "#9a8060",
+   "capitalProvinceId": "sdn-8"
+  },
+  {
+   "id": "esp",
+   "iso": "ESP",
+   "name": "Espagne",
+   "kind": "state",
+   "color": "#6f9a7c",
+   "capitalProvinceId": "esp-1"
+  },
+  {
+   "id": "som",
+   "iso": "SOM",
+   "name": "Somalie",
+   "kind": "state",
+   "color": "#8c6aa8",
+   "capitalProvinceId": "som-1"
+  },
+  {
+   "id": "sol",
+   "iso": "SOL",
+   "name": "Somaliland",
+   "kind": "state",
+   "color": "#a88d3c",
+   "capitalProvinceId": "sol-1"
+  },
+  {
+   "id": "svk",
+   "iso": "SVK",
+   "name": "Slovaquie",
+   "kind": "state",
+   "color": "#4a7fb5",
+   "capitalProvinceId": "svk-1"
+  },
+  {
+   "id": "svn",
+   "iso": "SVN",
+   "name": "Slovénie",
+   "kind": "state",
+   "color": "#5b9a6a",
+   "capitalProvinceId": "svn-1"
+  },
+  {
+   "id": "srb",
+   "iso": "SRB",
+   "name": "Serbie",
+   "kind": "state",
+   "color": "#b58a4a",
+   "capitalProvinceId": "srb-1"
+  },
+  {
+   "id": "sen",
+   "iso": "SEN",
+   "name": "Sénégal",
+   "kind": "state",
+   "color": "#9a5b5b",
+   "capitalProvinceId": "sen-1"
+  },
+  {
+   "id": "sau",
+   "iso": "SAU",
+   "name": "Arabie saoudite",
+   "kind": "state",
+   "color": "#4a9aa0",
+   "capitalProvinceId": "sau-9"
+  },
+  {
+   "id": "rou",
+   "iso": "ROU",
+   "name": "Roumanie",
+   "kind": "state",
+   "color": "#8a8f45",
+   "capitalProvinceId": "rou-1"
+  },
+  {
+   "id": "qat",
+   "iso": "QAT",
+   "name": "Qatar",
+   "kind": "state",
+   "color": "#a06a95",
+   "capitalProvinceId": "qat-1"
+  },
+  {
+   "id": "prt",
+   "iso": "PRT",
+   "name": "Portugal",
+   "kind": "state",
+   "color": "#6a78b0",
+   "capitalProvinceId": "prt-1"
+  },
+  {
+   "id": "omn",
+   "iso": "OMN",
+   "name": "Oman",
+   "kind": "state",
+   "color": "#7aa35a",
+   "capitalProvinceId": "omn-2"
+  },
+  {
+   "id": "nga",
+   "iso": "NGA",
+   "name": "Nigeria",
+   "kind": "state",
+   "color": "#b07050",
+   "capitalProvinceId": "nga-1"
+  },
+  {
+   "id": "ner",
+   "iso": "NER",
+   "name": "Niger",
+   "kind": "state",
+   "color": "#5a8f8f",
+   "capitalProvinceId": "ner-4"
+  },
+  {
+   "id": "mar",
+   "iso": "MAR",
+   "name": "Maroc",
+   "kind": "state",
+   "color": "#9a8060",
+   "capitalProvinceId": "mar-1"
+  },
+  {
+   "id": "esh",
+   "iso": "ESH",
+   "name": "Sahara occidental",
+   "kind": "entity",
+   "color": "#6f9a7c",
+   "capitalProvinceId": "esh-1"
+  },
+  {
+   "id": "mne",
+   "iso": "MNE",
+   "name": "Monténégro",
+   "kind": "state",
+   "color": "#8c6aa8",
+   "capitalProvinceId": "mne-1"
+  },
+  {
+   "id": "mda",
+   "iso": "MDA",
+   "name": "Moldavie",
+   "kind": "state",
+   "color": "#a88d3c",
+   "capitalProvinceId": "mda-1"
+  },
+  {
+   "id": "mrt",
+   "iso": "MRT",
+   "name": "Mauritanie",
+   "kind": "state",
+   "color": "#4a7fb5",
+   "capitalProvinceId": "mrt-5"
+  },
+  {
+   "id": "mlt",
+   "iso": "MLT",
+   "name": "Malte",
+   "kind": "state",
+   "color": "#5b9a6a",
+   "capitalProvinceId": "mlt-1"
+  },
+  {
+   "id": "mli",
+   "iso": "MLI",
+   "name": "Mali",
+   "kind": "state",
+   "color": "#b58a4a",
+   "capitalProvinceId": "mli-1"
+  },
+  {
+   "id": "mkd",
+   "iso": "MKD",
+   "name": "Macédoine du Nord",
+   "kind": "state",
+   "color": "#9a5b5b",
+   "capitalProvinceId": "mkd-1"
+  },
+  {
+   "id": "lby",
+   "iso": "LBY",
+   "name": "Libye",
+   "kind": "state",
+   "color": "#4a9aa0",
+   "capitalProvinceId": "lby-8"
+  },
+  {
+   "id": "lbn",
+   "iso": "LBN",
+   "name": "Liban",
+   "kind": "state",
+   "color": "#8a8f45",
+   "capitalProvinceId": "lbn-1"
+  },
+  {
+   "id": "kwt",
+   "iso": "KWT",
+   "name": "Koweït",
+   "kind": "state",
+   "color": "#a06a95",
+   "capitalProvinceId": "kwt-1"
+  },
+  {
+   "id": "kos",
+   "iso": "KOS",
+   "name": "Kosovo",
+   "kind": "state",
+   "color": "#6a78b0",
+   "capitalProvinceId": "kos-1"
+  },
+  {
+   "id": "kaz",
+   "iso": "KAZ",
+   "name": "Kazakhstan",
+   "kind": "state",
+   "color": "#7aa35a",
+   "capitalProvinceId": "kaz-2"
+  },
+  {
+   "id": "jor",
+   "iso": "JOR",
+   "name": "Jordanie",
+   "kind": "state",
+   "color": "#b07050",
+   "capitalProvinceId": "jor-1"
+  },
+  {
+   "id": "ita",
+   "iso": "ITA",
+   "name": "Italie",
+   "kind": "state",
+   "color": "#5a8f8f",
+   "capitalProvinceId": "ita-2"
+  },
+  {
+   "id": "isr",
+   "iso": "ISR",
+   "name": "Israël",
+   "kind": "state",
+   "color": "#9a8060",
+   "capitalProvinceId": "isr-1"
+  },
+  {
+   "id": "pse",
+   "iso": "PSE",
+   "name": "Palestine",
+   "kind": "entity",
+   "color": "#6f9a7c",
+   "capitalProvinceId": "pse-1"
+  },
+  {
+   "id": "irq",
+   "iso": "IRQ",
+   "name": "Irak",
+   "kind": "state",
+   "color": "#8c6aa8",
+   "capitalProvinceId": "irq-1"
+  },
+  {
+   "id": "irn",
+   "iso": "IRN",
+   "name": "Iran",
+   "kind": "state",
+   "color": "#a88d3c",
+   "capitalProvinceId": "irn-9"
+  },
+  {
+   "id": "hun",
+   "iso": "HUN",
+   "name": "Hongrie",
+   "kind": "state",
+   "color": "#4a7fb5",
+   "capitalProvinceId": "hun-1"
+  },
+  {
+   "id": "gnb",
+   "iso": "GNB",
+   "name": "Guinée-Bissau",
+   "kind": "state",
+   "color": "#5b9a6a",
+   "capitalProvinceId": "gnb-1"
+  },
+  {
+   "id": "gin",
+   "iso": "GIN",
+   "name": "Guinée",
+   "kind": "state",
+   "color": "#b58a4a",
+   "capitalProvinceId": "gin-1"
+  },
+  {
+   "id": "grc",
+   "iso": "GRC",
+   "name": "Grèce",
+   "kind": "state",
+   "color": "#9a5b5b",
+   "capitalProvinceId": "grc-1"
+  },
+  {
+   "id": "gha",
+   "iso": "GHA",
+   "name": "Ghana",
+   "kind": "state",
+   "color": "#4a9aa0",
+   "capitalProvinceId": "gha-1"
+  },
+  {
+   "id": "deu",
+   "iso": "DEU",
+   "name": "Allemagne",
+   "kind": "state",
+   "color": "#8a8f45",
+   "capitalProvinceId": "deu-1"
+  },
+  {
+   "id": "geo",
+   "iso": "GEO",
+   "name": "Géorgie",
+   "kind": "state",
+   "color": "#a06a95",
+   "capitalProvinceId": "geo-1"
+  },
+  {
+   "id": "gmb",
+   "iso": "GMB",
+   "name": "Gambie",
+   "kind": "state",
+   "color": "#6a78b0",
+   "capitalProvinceId": "gmb-1"
+  },
+  {
+   "id": "fra",
+   "iso": "FRA",
+   "name": "France",
+   "kind": "state",
+   "color": "#7aa35a",
+   "capitalProvinceId": "fra-1"
+  },
+  {
+   "id": "eth",
+   "iso": "ETH",
+   "name": "Éthiopie",
+   "kind": "state",
+   "color": "#b07050",
+   "capitalProvinceId": "eth-2"
+  },
+  {
+   "id": "eri",
+   "iso": "ERI",
+   "name": "Érythrée",
+   "kind": "state",
+   "color": "#5a8f8f",
+   "capitalProvinceId": "eri-1"
+  },
+  {
+   "id": "egy",
+   "iso": "EGY",
+   "name": "Égypte",
+   "kind": "state",
+   "color": "#9a8060",
+   "capitalProvinceId": "egy-4"
+  },
+  {
+   "id": "dji",
+   "iso": "DJI",
+   "name": "Djibouti",
+   "kind": "state",
+   "color": "#6f9a7c",
+   "capitalProvinceId": "dji-1"
+  },
+  {
+   "id": "cze",
+   "iso": "CZE",
+   "name": "Tchéquie",
+   "kind": "state",
+   "color": "#8c6aa8",
+   "capitalProvinceId": "cze-1"
+  },
+  {
+   "id": "cyn",
+   "iso": "CYN",
+   "name": "Chypre du Nord",
+   "kind": "state",
+   "color": "#a88d3c",
+   "capitalProvinceId": "cyn-1"
+  },
+  {
+   "id": "cyp",
+   "iso": "CYP",
+   "name": "Chypre",
+   "kind": "state",
+   "color": "#4a7fb5",
+   "capitalProvinceId": "cyp-1"
+  },
+  {
+   "id": "hrv",
+   "iso": "HRV",
+   "name": "Croatie",
+   "kind": "state",
+   "color": "#5b9a6a",
+   "capitalProvinceId": "hrv-1"
+  },
+  {
+   "id": "tcd",
+   "iso": "TCD",
+   "name": "Tchad",
+   "kind": "state",
+   "color": "#b58a4a",
+   "capitalProvinceId": "tcd-7"
+  },
+  {
+   "id": "cmr",
+   "iso": "CMR",
+   "name": "Cameroun",
+   "kind": "state",
+   "color": "#9a5b5b",
+   "capitalProvinceId": "cmr-1"
+  },
+  {
+   "id": "bfa",
+   "iso": "BFA",
+   "name": "Burkina Faso",
+   "kind": "state",
+   "color": "#4a9aa0",
+   "capitalProvinceId": "bfa-1"
+  },
+  {
+   "id": "bgr",
+   "iso": "BGR",
+   "name": "Bulgarie",
+   "kind": "state",
+   "color": "#8a8f45",
+   "capitalProvinceId": "bgr-1"
+  },
+  {
+   "id": "bih",
+   "iso": "BIH",
+   "name": "Bosnie-Herzégovine",
+   "kind": "state",
+   "color": "#a06a95",
+   "capitalProvinceId": "bih-1"
+  },
+  {
+   "id": "ben",
+   "iso": "BEN",
+   "name": "Bénin",
+   "kind": "state",
+   "color": "#6a78b0",
+   "capitalProvinceId": "ben-1"
+  },
+  {
+   "id": "bhr",
+   "iso": "BHR",
+   "name": "Bahreïn",
+   "kind": "state",
+   "color": "#7aa35a",
+   "capitalProvinceId": "bhr-1"
+  },
+  {
+   "id": "aze",
+   "iso": "AZE",
+   "name": "Azerbaïdjan",
+   "kind": "state",
+   "color": "#b07050",
+   "capitalProvinceId": "aze-1"
+  },
+  {
+   "id": "aut",
+   "iso": "AUT",
+   "name": "Autriche",
+   "kind": "state",
+   "color": "#5a8f8f",
+   "capitalProvinceId": "aut-1"
+  },
+  {
+   "id": "arm",
+   "iso": "ARM",
+   "name": "Arménie",
+   "kind": "state",
+   "color": "#9a8060",
+   "capitalProvinceId": "arm-1"
+  },
+  {
+   "id": "and",
+   "iso": "AND",
+   "name": "Andorre",
+   "kind": "state",
+   "color": "#6f9a7c",
+   "capitalProvinceId": "and-1"
+  },
+  {
+   "id": "dza",
+   "iso": "DZA",
+   "name": "Algérie",
+   "kind": "state",
+   "color": "#8c6aa8",
+   "capitalProvinceId": "dza-5"
+  },
+  {
+   "id": "alb",
+   "iso": "ALB",
+   "name": "Albanie",
+   "kind": "state",
+   "color": "#a88d3c",
+   "capitalProvinceId": "alb-1"
+  },
+  {
+   "id": "afg",
+   "iso": "AFG",
+   "name": "Afghanistan",
+   "kind": "state",
+   "color": "#4a7fb5",
+   "capitalProvinceId": "afg-1"
+  }
+ ]
+}

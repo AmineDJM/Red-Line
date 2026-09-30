@@ -1,0 +1,279 @@
+import {
+  distanceKm,
+  MINUTE,
+  type Category,
+  type LngLat,
+  type NationId,
+  type Order,
+  type ProvinceId,
+  type WeaponSystem,
+} from '@redline/shared';
+import {
+  atWar,
+  nationUnits,
+  schedule,
+  sortedKeys,
+  sysOf,
+  unitPosAt,
+  warsOf,
+} from '../state/access.js';
+import type { EngineState, Unit } from '../state/types.js';
+import { CAPTURE_RADIUS_KM, wi } from '../state/world.js';
+import { applyOrderImpl } from '../orders/orders.js';
+import { canAfford } from '../economy/economy.js';
+import { nextInt } from '../rng/rng.js';
+
+/**
+ * IA de phase 1 : règles et priorités, sans LLM. Elle ne triche pas : ses décisions ne reposent que
+ * sur ce que la nation a le droit de voir (ses unités, ses contacts, la carte politique publique)
+ * et elle agit exclusivement par `applyOrder`.
+ *
+ *  - toutes : défendre le territoire (attaquer les ennemis vus chez soi), produire des défenses ;
+ *  - 'normal' (et garnisons neutres) : contre-attaquer les provinces perdues voisines ;
+ *  - 'hard' : attaquer aussi les provinces voisines faibles d'un ennemi en guerre.
+ */
+
+/** Réglages de comportement de l'IA (heuristiques, pas de l'équilibrage de jeu). */
+const AI = {
+  /** Catégories produites pour la défense. */
+  defensive: ['infantry', 'tank', 'ifv', 'air_defense', 'artillery'] as Category[],
+  /** Distance maximale d'intervention défensive (km). */
+  defendReachKm: 1500,
+  /** Nombre d'unités d'armée maximal en paix, par province possédée (plus une base). */
+  peaceUnitsPerProvince: 0.5,
+  peaceUnitsBase: 2,
+  /** Productions simultanées maximales (paix / guerre). */
+  maxQueuePeace: 1,
+  maxQueueWar: 2,
+  /** En paix, on ne produit que si l'argent couvre ce multiple du coût. */
+  peaceReserveFactor: 2,
+  /** Contre-attaques / offensives lancées par réflexion. */
+  maxCounterPerThink: 2,
+  maxOffensivePerThink: 1,
+};
+
+export function handleAiThink(state: EngineState): void {
+  for (const n of state.nationIds) {
+    const ns = state.nations[n]!;
+    if (!ns.isAi || !ns.alive || state.winner) continue;
+    think(state, n);
+  }
+  schedule(state, {
+    k: 'ai',
+    t: state.time + state.world.balance.time.aiThinkMinutes * MINUTE,
+  });
+}
+
+interface Threat {
+  id: string;
+  owner: NationId;
+  pos: LngLat;
+  /** Système connu (niveau identifié ou mieux), sinon null. */
+  sys: WeaponSystem | null;
+}
+
+function canMove(s: WeaponSystem): boolean {
+  return s.movement !== 'static' && s.speedKmh > 0;
+}
+
+function order(state: EngineState, n: NationId, o: Order): boolean {
+  return applyOrderImpl(state, n, o).ok;
+}
+
+function think(state: EngineState, n: NationId): void {
+  const enemies = warsOf(state, n);
+  if (enemies.length === 0) {
+    produce(state, n, true);
+    return;
+  }
+  const ns = state.nations[n]!;
+  const w = wi(state.world);
+  const myUnits = nationUnits(state, n).map((id) => state.units[id]!);
+  const idle = new Set(
+    myUnits.filter((u) => !u.move && !u.target && canMove(sysOf(state, u))).map((u) => u.id),
+  );
+  const threats = perceive(state, n);
+
+  // 1. Défense : ennemis vus sur notre territoire ou près de nos villes.
+  const targeted = new Set(myUnits.map((u) => u.target).filter((t): t is string => !!t));
+  const provDet = state.world.balance.sensors.provinceDetectionKm;
+  for (const th of threats) {
+    if (targeted.has(th.id)) continue;
+    const inside = ownerAt(state, th.pos) === n || nearestOwnCityKm(state, n, th.pos) <= provDet;
+    if (!inside) continue;
+    const cand = [...idle]
+      .sort()
+      .map((id) => state.units[id]!)
+      .filter((u) => {
+        const s = sysOf(state, u);
+        if (th.sys && s.damage[th.sys.targetClass] <= 0) return false;
+        return distanceKm(unitPosAt(state, u, state.time), th.pos) <= AI.defendReachKm;
+      })
+      .sort((a, b) => dist(state, a, th.pos) - dist(state, b, th.pos) || (a.id < b.id ? -1 : 1));
+    for (const u of cand) {
+      if (order(state, n, { kind: 'attack', unitIds: [u.id], targetId: th.id })) {
+        idle.delete(u.id);
+        targeted.add(th.id);
+        break;
+      }
+    }
+  }
+
+  // 2. Contre-attaque : provinces d'origine perdues, voisines d'une province possédée.
+  if (ns.aiLevel !== 'easy') {
+    let launched = 0;
+    for (const pid of w.provsByNation.get(n) ?? []) {
+      if (launched >= AI.maxCounterPerThink) break;
+      const P = state.provinces[pid];
+      if (!P || P.owner === n || !atWar(state, n, P.owner)) continue;
+      if (!bordersOwned(state, n, pid)) continue;
+      if (launchCapture(state, n, pid, idle, myUnits)) launched++;
+    }
+  }
+
+  // 3. Offensive ('hard') : provinces voisines faibles d'un ennemi en guerre.
+  if (ns.aiLevel === 'hard') {
+    let launched = 0;
+    const seen = new Set<ProvinceId>();
+    for (const own of sortedKeys(state.provinces)) {
+      if (launched >= AI.maxOffensivePerThink) break;
+      if (state.provinces[own]!.owner !== n) continue;
+      for (const pid of [...(w.provById.get(own)?.neighbors ?? [])].sort()) {
+        if (launched >= AI.maxOffensivePerThink || seen.has(pid)) continue;
+        seen.add(pid);
+        const P = state.provinces[pid];
+        if (!P || P.owner === n || !atWar(state, n, P.owner)) continue;
+        if (!isWeak(state, n, pid, threats)) continue;
+        const capturers = [...idle].filter((id) => sysOf(state, state.units[id]!).canCapture);
+        if (capturers.length < 2) continue; // garder une réserve
+        if (launchCapture(state, n, pid, idle, myUnits)) launched++;
+      }
+    }
+  }
+
+  produce(state, n, false);
+}
+
+function dist(state: EngineState, u: Unit, p: LngLat): number {
+  return distanceKm(unitPosAt(state, u, state.time), p);
+}
+
+/** Contacts ennemis (nations en guerre) actuellement observés, tels que la vue les donne. */
+function perceive(state: EngineState, n: NationId): Threat[] {
+  const out: Threat[] = [];
+  const known = state.know[n];
+  if (!known) return out;
+  for (const id of sortedKeys(known)) {
+    const c = known[id]!;
+    const u = state.units[id];
+    if (!c.seen || !u || !atWar(state, n, c.owner)) continue;
+    out.push({
+      id,
+      owner: c.owner,
+      pos: unitPosAt(state, u, state.time),
+      sys: c.lvl >= 2 ? sysOf(state, u) : null,
+    });
+  }
+  return out;
+}
+
+function ownerAt(state: EngineState, p: LngLat): NationId | null {
+  const nav = wi(state.world).nav;
+  const pid = nav.cellProv.get(nav.cellAt(p));
+  return pid ? (state.provinces[pid]?.owner ?? null) : null;
+}
+
+function nearestOwnCityKm(state: EngineState, n: NationId, p: LngLat): number {
+  const w = wi(state.world);
+  let best = Infinity;
+  for (const pid of w.provIds) {
+    if (state.provinces[pid]?.owner !== n) continue;
+    best = Math.min(best, distanceKm(w.provById.get(pid)!.cityPoint, p));
+  }
+  return best;
+}
+
+function bordersOwned(state: EngineState, n: NationId, pid: ProvinceId): boolean {
+  const def = wi(state.world).provById.get(pid);
+  return !!def?.neighbors.some((x) => state.provinces[x]?.owner === n);
+}
+
+/** Aucune unité terrestre hostile connue près de la ville. */
+function isWeak(state: EngineState, n: NationId, pid: ProvinceId, threats: Threat[]): boolean {
+  const city = wi(state.world).provById.get(pid)!.cityPoint;
+  const radius = state.world.balance.combat.groundContactKm * 3;
+  const known = state.know[n] ?? {};
+  for (const id of sortedKeys(known)) {
+    const c = known[id]!;
+    if (!atWar(state, n, c.owner)) continue;
+    const th = threats.find((t) => t.id === id);
+    const pos = th ? th.pos : c.pos;
+    if (distanceKm(pos, city) <= radius) return false;
+  }
+  return true;
+}
+
+/** Envoie l'unité de capture libre la plus proche vers la ville, si personne n'y va déjà. */
+function launchCapture(
+  state: EngineState,
+  n: NationId,
+  pid: ProvinceId,
+  idle: Set<string>,
+  myUnits: Unit[],
+): boolean {
+  const city = wi(state.world).provById.get(pid)!.cityPoint;
+  const already = myUnits.some((u) => {
+    const legs = u.move?.legs;
+    const dest = legs ? legs[legs.length - 1]!.to : u.pos;
+    return distanceKm(dest, city) <= CAPTURE_RADIUS_KM;
+  });
+  if (already) return false;
+  const cand = [...idle]
+    .sort()
+    .map((id) => state.units[id]!)
+    .filter((u) => {
+      const s = sysOf(state, u);
+      return s.canCapture && s.movement === 'land';
+    })
+    .sort((a, b) => dist(state, a, city) - dist(state, b, city) || (a.id < b.id ? -1 : 1));
+  for (const u of cand.slice(0, 3)) {
+    if (order(state, n, { kind: 'move', unitIds: [u.id], to: city })) {
+      idle.delete(u.id);
+      return true;
+    }
+  }
+  return false;
+}
+
+/** Production défensive quand l'argent le permet. */
+function produce(state: EngineState, n: NationId, peaceful: boolean): void {
+  const ns = state.nations[n]!;
+  if (ns.production.length >= (peaceful ? AI.maxQueuePeace : AI.maxQueueWar)) return;
+  if (peaceful) {
+    const cap = AI.peaceUnitsBase + AI.peaceUnitsPerProvince * ns.provinceCount;
+    if ((state.rt.byNation.get(n)?.size ?? 0) + ns.production.length >= cap) return;
+  }
+  const w = wi(state.world);
+  const options: WeaponSystem[] = [];
+  for (const id of w.systemIds) {
+    const s = state.world.catalog.get(id)!;
+    if (!s.enabled || !AI.defensive.includes(s.category)) continue;
+    if (s.movement === 'sea') continue;
+    if (!canAfford(state, n, s)) continue;
+    if (peaceful && ns.money < s.cost.money * AI.peaceReserveFactor) continue;
+    options.push(s);
+  }
+  if (options.length === 0) return;
+  // Valeur défensive par coût, puis tirage parmi les trois meilleures.
+  const value = (s: WeaponSystem): number => {
+    const dmg = Object.values(s.damage).reduce((a, b) => a + b, 0);
+    return (s.hp * s.unitSize * (1 + s.armor) + dmg * s.unitSize) / Math.max(1, s.cost.money);
+  };
+  options.sort((a, b) => value(b) - value(a) || (a.id < b.id ? -1 : 1));
+  const pick = options[nextInt(state.rng, Math.min(3, options.length))]!;
+  const cap = w.nationById.get(n)?.capitalProvinceId;
+  let where: ProvinceId | null = cap && state.provinces[cap]?.owner === n ? cap : null;
+  if (!where) where = w.provIds.find((pid) => state.provinces[pid]?.owner === n) ?? null;
+  if (!where) return;
+  order(state, n, { kind: 'produce', provinceId: where, systemId: pick.id });
+}

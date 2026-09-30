@@ -1,0 +1,1610 @@
+[
+  {
+    "id": "afg",
+    "iso": "AFG",
+    "name": "Afghanistan",
+    "kind": "state",
+    "color": "#b5e04a",
+    "capitalProvinceId": "afg-20"
+  },
+  {
+    "id": "ago",
+    "iso": "AGO",
+    "name": "Angola",
+    "kind": "state",
+    "color": "#9debc0",
+    "capitalProvinceId": "ago-7"
+  },
+  {
+    "id": "alb",
+    "iso": "ALB",
+    "name": "Albanie",
+    "kind": "state",
+    "color": "#9debc0",
+    "capitalProvinceId": "alb-5"
+  },
+  {
+    "id": "and",
+    "iso": "AND",
+    "name": "Andorre",
+    "kind": "state",
+    "color": "#e0662e",
+    "capitalProvinceId": "and-1"
+  },
+  {
+    "id": "are",
+    "iso": "ARE",
+    "name": "Émirats arabes unis",
+    "kind": "state",
+    "color": "#44c76a",
+    "capitalProvinceId": "are-7"
+  },
+  {
+    "id": "arg",
+    "iso": "ARG",
+    "name": "Argentine",
+    "kind": "state",
+    "color": "#3f95ee",
+    "capitalProvinceId": "arg-34"
+  },
+  {
+    "id": "arm",
+    "iso": "ARM",
+    "name": "Arménie",
+    "kind": "state",
+    "color": "#ffb8a6",
+    "capitalProvinceId": "arm-5"
+  },
+  {
+    "id": "atg",
+    "iso": "ATG",
+    "name": "Antigua-et-Barbuda",
+    "kind": "state",
+    "color": "#eeeaa0",
+    "capitalProvinceId": "atg-1"
+  },
+  {
+    "id": "aus",
+    "iso": "AUS",
+    "name": "Australie",
+    "kind": "state",
+    "color": "#e0662e",
+    "capitalProvinceId": "aus-14"
+  },
+  {
+    "id": "aut",
+    "iso": "AUT",
+    "name": "Autriche",
+    "kind": "state",
+    "color": "#9debc0",
+    "capitalProvinceId": "aut-8"
+  },
+  {
+    "id": "aze",
+    "iso": "AZE",
+    "name": "Azerbaïdjan",
+    "kind": "state",
+    "color": "#ffa040",
+    "capitalProvinceId": "aze-4"
+  },
+  {
+    "id": "bdi",
+    "iso": "BDI",
+    "name": "Burundi",
+    "kind": "state",
+    "color": "#b4d6ff",
+    "capitalProvinceId": "bdi-4"
+  },
+  {
+    "id": "bel",
+    "iso": "BEL",
+    "name": "Belgique",
+    "kind": "state",
+    "color": "#44c76a",
+    "capitalProvinceId": "bel-3"
+  },
+  {
+    "id": "ben",
+    "iso": "BEN",
+    "name": "Bénin",
+    "kind": "state",
+    "color": "#ff5a4e",
+    "capitalProvinceId": "ben-6"
+  },
+  {
+    "id": "bfa",
+    "iso": "BFA",
+    "name": "Burkina Faso",
+    "kind": "state",
+    "color": "#eeeaa0",
+    "capitalProvinceId": "bfa-9"
+  },
+  {
+    "id": "bgd",
+    "iso": "BGD",
+    "name": "Bangladesh",
+    "kind": "state",
+    "color": "#44c76a",
+    "capitalProvinceId": "bgd-1"
+  },
+  {
+    "id": "bgr",
+    "iso": "BGR",
+    "name": "Bulgarie",
+    "kind": "state",
+    "color": "#eeeaa0",
+    "capitalProvinceId": "bgr-4"
+  },
+  {
+    "id": "bhr",
+    "iso": "BHR",
+    "name": "Bahreïn",
+    "kind": "state",
+    "color": "#9debc0",
+    "capitalProvinceId": "bhr-2"
+  },
+  {
+    "id": "bhs",
+    "iso": "BHS",
+    "name": "Bahamas",
+    "kind": "state",
+    "color": "#ffd84d",
+    "capitalProvinceId": "bhs-1"
+  },
+  {
+    "id": "bih",
+    "iso": "BIH",
+    "name": "Bosnie-Herzégovine",
+    "kind": "state",
+    "color": "#b4d6ff",
+    "capitalProvinceId": "bih-4"
+  },
+  {
+    "id": "blr",
+    "iso": "BLR",
+    "name": "Biélorussie",
+    "kind": "state",
+    "color": "#b5e04a",
+    "capitalProvinceId": "blr-7"
+  },
+  {
+    "id": "blz",
+    "iso": "BLZ",
+    "name": "Belize",
+    "kind": "state",
+    "color": "#ffb8a6",
+    "capitalProvinceId": "blz-2"
+  },
+  {
+    "id": "bol",
+    "iso": "BOL",
+    "name": "Bolivie",
+    "kind": "state",
+    "color": "#44c76a",
+    "capitalProvinceId": "bol-6"
+  },
+  {
+    "id": "bra",
+    "iso": "BRA",
+    "name": "Brésil",
+    "kind": "state",
+    "color": "#ffd84d",
+    "capitalProvinceId": "bra-30"
+  },
+  {
+    "id": "brb",
+    "iso": "BRB",
+    "name": "Barbade",
+    "kind": "state",
+    "color": "#2fd4b8",
+    "capitalProvinceId": "brb-1"
+  },
+  {
+    "id": "brn",
+    "iso": "BRN",
+    "name": "Brunei",
+    "kind": "state",
+    "color": "#ffa040",
+    "capitalProvinceId": "brn-2"
+  },
+  {
+    "id": "btn",
+    "iso": "BTN",
+    "name": "Bhoutan",
+    "kind": "state",
+    "color": "#62d8f5",
+    "capitalProvinceId": "btn-3"
+  },
+  {
+    "id": "bwa",
+    "iso": "BWA",
+    "name": "Botswana",
+    "kind": "state",
+    "color": "#eeeaa0",
+    "capitalProvinceId": "bwa-12"
+  },
+  {
+    "id": "caf",
+    "iso": "CAF",
+    "name": "Centrafrique",
+    "kind": "state",
+    "color": "#d39a5c",
+    "capitalProvinceId": "caf-1"
+  },
+  {
+    "id": "can",
+    "iso": "CAN",
+    "name": "Canada",
+    "kind": "state",
+    "color": "#9debc0",
+    "capitalProvinceId": "can-32"
+  },
+  {
+    "id": "che",
+    "iso": "CHE",
+    "name": "Suisse",
+    "kind": "state",
+    "color": "#eeeaa0",
+    "capitalProvinceId": "che-6"
+  },
+  {
+    "id": "chl",
+    "iso": "CHL",
+    "name": "Chili",
+    "kind": "state",
+    "color": "#2fd4b8",
+    "capitalProvinceId": "chl-9"
+  },
+  {
+    "id": "chn",
+    "iso": "CHN",
+    "name": "Chine",
+    "kind": "state",
+    "color": "#b4d6ff",
+    "capitalProvinceId": "chn-19"
+  },
+  {
+    "id": "civ",
+    "iso": "CIV",
+    "name": "Côte d'Ivoire",
+    "kind": "state",
+    "color": "#ffb8a6",
+    "capitalProvinceId": "civ-15"
+  },
+  {
+    "id": "cmr",
+    "iso": "CMR",
+    "name": "Cameroun",
+    "kind": "state",
+    "color": "#2fd4b8",
+    "capitalProvinceId": "cmr-4"
+  },
+  {
+    "id": "cod",
+    "iso": "COD",
+    "name": "RD Congo",
+    "kind": "state",
+    "color": "#ffb8a6",
+    "capitalProvinceId": "cod-12"
+  },
+  {
+    "id": "cog",
+    "iso": "COG",
+    "name": "Congo",
+    "kind": "state",
+    "color": "#b4d6ff",
+    "capitalProvinceId": "cog-11"
+  },
+  {
+    "id": "col",
+    "iso": "COL",
+    "name": "Colombie",
+    "kind": "state",
+    "color": "#ffa040",
+    "capitalProvinceId": "col-9"
+  },
+  {
+    "id": "com",
+    "iso": "COM",
+    "name": "Comores",
+    "kind": "state",
+    "color": "#44c76a",
+    "capitalProvinceId": "com-1"
+  },
+  {
+    "id": "cpv",
+    "iso": "CPV",
+    "name": "Cap-Vert",
+    "kind": "state",
+    "color": "#62d8f5",
+    "capitalProvinceId": "cpv-1"
+  },
+  {
+    "id": "cri",
+    "iso": "CRI",
+    "name": "Costa Rica",
+    "kind": "state",
+    "color": "#9debc0",
+    "capitalProvinceId": "cri-4"
+  },
+  {
+    "id": "cub",
+    "iso": "CUB",
+    "name": "Cuba",
+    "kind": "state",
+    "color": "#3f95ee",
+    "capitalProvinceId": "cub-7"
+  },
+  {
+    "id": "cyn",
+    "iso": "CYN",
+    "name": "Chypre du Nord",
+    "kind": "entity",
+    "color": "#d39a5c",
+    "capitalProvinceId": "cyn-1"
+  },
+  {
+    "id": "cyp",
+    "iso": "CYP",
+    "name": "Chypre",
+    "kind": "state",
+    "color": "#ffb8a6",
+    "capitalProvinceId": "cyp-2"
+  },
+  {
+    "id": "cze",
+    "iso": "CZE",
+    "name": "Tchéquie",
+    "kind": "state",
+    "color": "#3f95ee",
+    "capitalProvinceId": "cze-6"
+  },
+  {
+    "id": "deu",
+    "iso": "DEU",
+    "name": "Allemagne",
+    "kind": "state",
+    "color": "#d39a5c",
+    "capitalProvinceId": "deu-13"
+  },
+  {
+    "id": "dji",
+    "iso": "DJI",
+    "name": "Djibouti",
+    "kind": "state",
+    "color": "#62d8f5",
+    "capitalProvinceId": "dji-2"
+  },
+  {
+    "id": "dma",
+    "iso": "DMA",
+    "name": "Dominique",
+    "kind": "state",
+    "color": "#ffa040",
+    "capitalProvinceId": "dma-1"
+  },
+  {
+    "id": "dnk",
+    "iso": "DNK",
+    "name": "Danemark",
+    "kind": "state",
+    "color": "#b4d6ff",
+    "capitalProvinceId": "dnk-4"
+  },
+  {
+    "id": "dom",
+    "iso": "DOM",
+    "name": "République dominicaine",
+    "kind": "state",
+    "color": "#b5e04a",
+    "capitalProvinceId": "dom-7"
+  },
+  {
+    "id": "dza",
+    "iso": "DZA",
+    "name": "Algérie",
+    "kind": "state",
+    "color": "#ffd84d",
+    "capitalProvinceId": "dza-26"
+  },
+  {
+    "id": "ecu",
+    "iso": "ECU",
+    "name": "Équateur",
+    "kind": "state",
+    "color": "#b4d6ff",
+    "capitalProvinceId": "ecu-10"
+  },
+  {
+    "id": "egy",
+    "iso": "EGY",
+    "name": "Égypte",
+    "kind": "state",
+    "color": "#ff5a4e",
+    "capitalProvinceId": "egy-4"
+  },
+  {
+    "id": "eri",
+    "iso": "ERI",
+    "name": "Érythrée",
+    "kind": "state",
+    "color": "#44c76a",
+    "capitalProvinceId": "eri-2"
+  },
+  {
+    "id": "esh",
+    "iso": "ESH",
+    "name": "Sahara occidental",
+    "kind": "entity",
+    "color": "#ffb8a6",
+    "capitalProvinceId": "esh-1"
+  },
+  {
+    "id": "esp",
+    "iso": "ESP",
+    "name": "Espagne",
+    "kind": "state",
+    "color": "#b5e04a",
+    "capitalProvinceId": "esp-18"
+  },
+  {
+    "id": "est",
+    "iso": "EST",
+    "name": "Estonie",
+    "kind": "state",
+    "color": "#3f95ee",
+    "capitalProvinceId": "est-1"
+  },
+  {
+    "id": "eth",
+    "iso": "ETH",
+    "name": "Éthiopie",
+    "kind": "state",
+    "color": "#ffd84d",
+    "capitalProvinceId": "eth-12"
+  },
+  {
+    "id": "fin",
+    "iso": "FIN",
+    "name": "Finlande",
+    "kind": "state",
+    "color": "#ffd84d",
+    "capitalProvinceId": "fin-12"
+  },
+  {
+    "id": "fji",
+    "iso": "FJI",
+    "name": "Fidji",
+    "kind": "state",
+    "color": "#ff5a4e",
+    "capitalProvinceId": "fji-1"
+  },
+  {
+    "id": "fra",
+    "iso": "FRA",
+    "name": "France",
+    "kind": "state",
+    "color": "#b4d6ff",
+    "capitalProvinceId": "fra-24"
+  },
+  {
+    "id": "fsm",
+    "iso": "FSM",
+    "name": "Micronésie",
+    "kind": "state",
+    "color": "#d39a5c",
+    "capitalProvinceId": "fsm-1"
+  },
+  {
+    "id": "gab",
+    "iso": "GAB",
+    "name": "Gabon",
+    "kind": "state",
+    "color": "#d39a5c",
+    "capitalProvinceId": "gab-1"
+  },
+  {
+    "id": "gaza",
+    "iso": "GAZ",
+    "name": "Bande de Gaza",
+    "kind": "entity",
+    "color": "#62d8f5",
+    "capitalProvinceId": "gaza-1"
+  },
+  {
+    "id": "gbr",
+    "iso": "GBR",
+    "name": "Royaume-Uni",
+    "kind": "state",
+    "color": "#ff5a4e",
+    "capitalProvinceId": "gbr-15"
+  },
+  {
+    "id": "geo",
+    "iso": "GEO",
+    "name": "Géorgie",
+    "kind": "state",
+    "color": "#e0662e",
+    "capitalProvinceId": "geo-7"
+  },
+  {
+    "id": "gha",
+    "iso": "GHA",
+    "name": "Ghana",
+    "kind": "state",
+    "color": "#b5e04a",
+    "capitalProvinceId": "gha-9"
+  },
+  {
+    "id": "gin",
+    "iso": "GIN",
+    "name": "Guinée",
+    "kind": "state",
+    "color": "#62d8f5",
+    "capitalProvinceId": "gin-3"
+  },
+  {
+    "id": "gmb",
+    "iso": "GMB",
+    "name": "Gambie",
+    "kind": "state",
+    "color": "#b5e04a",
+    "capitalProvinceId": "gmb-3"
+  },
+  {
+    "id": "gnb",
+    "iso": "GNB",
+    "name": "Guinée-Bissau",
+    "kind": "state",
+    "color": "#e0662e",
+    "capitalProvinceId": "gnb-2"
+  },
+  {
+    "id": "gnq",
+    "iso": "GNQ",
+    "name": "Guinée équatoriale",
+    "kind": "state",
+    "color": "#ffd84d",
+    "capitalProvinceId": "gnq-4"
+  },
+  {
+    "id": "grc",
+    "iso": "GRC",
+    "name": "Grèce",
+    "kind": "state",
+    "color": "#2fd4b8",
+    "capitalProvinceId": "grc-2"
+  },
+  {
+    "id": "grd",
+    "iso": "GRD",
+    "name": "Grenade",
+    "kind": "state",
+    "color": "#62d8f5",
+    "capitalProvinceId": "grd-1"
+  },
+  {
+    "id": "gtm",
+    "iso": "GTM",
+    "name": "Guatemala",
+    "kind": "state",
+    "color": "#b5e04a",
+    "capitalProvinceId": "gtm-8"
+  },
+  {
+    "id": "guy",
+    "iso": "GUY",
+    "name": "Guyana",
+    "kind": "state",
+    "color": "#eeeaa0",
+    "capitalProvinceId": "guy-7"
+  },
+  {
+    "id": "hnd",
+    "iso": "HND",
+    "name": "Honduras",
+    "kind": "state",
+    "color": "#44c76a",
+    "capitalProvinceId": "hnd-3"
+  },
+  {
+    "id": "hrv",
+    "iso": "HRV",
+    "name": "Croatie",
+    "kind": "state",
+    "color": "#b5e04a",
+    "capitalProvinceId": "hrv-5"
+  },
+  {
+    "id": "hti",
+    "iso": "HTI",
+    "name": "Haïti",
+    "kind": "state",
+    "color": "#ffb8a6",
+    "capitalProvinceId": "hti-6"
+  },
+  {
+    "id": "hun",
+    "iso": "HUN",
+    "name": "Hongrie",
+    "kind": "state",
+    "color": "#62d8f5",
+    "capitalProvinceId": "hun-4"
+  },
+  {
+    "id": "idn",
+    "iso": "IDN",
+    "name": "Indonésie",
+    "kind": "state",
+    "color": "#ff5a4e",
+    "capitalProvinceId": "idn-8"
+  },
+  {
+    "id": "ind",
+    "iso": "IND",
+    "name": "Inde",
+    "kind": "state",
+    "color": "#ffb8a6",
+    "capitalProvinceId": "ind-7"
+  },
+  {
+    "id": "irl",
+    "iso": "IRL",
+    "name": "Irlande",
+    "kind": "state",
+    "color": "#44c76a",
+    "capitalProvinceId": "irl-6"
+  },
+  {
+    "id": "irn",
+    "iso": "IRN",
+    "name": "Iran",
+    "kind": "state",
+    "color": "#b4d6ff",
+    "capitalProvinceId": "irn-10"
+  },
+  {
+    "id": "irq",
+    "iso": "IRQ",
+    "name": "Irak",
+    "kind": "state",
+    "color": "#d39a5c",
+    "capitalProvinceId": "irq-8"
+  },
+  {
+    "id": "isl",
+    "iso": "ISL",
+    "name": "Islande",
+    "kind": "state",
+    "color": "#b5e04a",
+    "capitalProvinceId": "isl-1"
+  },
+  {
+    "id": "isr",
+    "iso": "ISR",
+    "name": "Israël",
+    "kind": "state",
+    "color": "#9debc0",
+    "capitalProvinceId": "isr-6"
+  },
+  {
+    "id": "ita",
+    "iso": "ITA",
+    "name": "Italie",
+    "kind": "state",
+    "color": "#ffb8a6",
+    "capitalProvinceId": "ita-8"
+  },
+  {
+    "id": "jam",
+    "iso": "JAM",
+    "name": "Jamaïque",
+    "kind": "state",
+    "color": "#9debc0",
+    "capitalProvinceId": "jam-3"
+  },
+  {
+    "id": "jor",
+    "iso": "JOR",
+    "name": "Jordanie",
+    "kind": "state",
+    "color": "#b5e04a",
+    "capitalProvinceId": "jor-3"
+  },
+  {
+    "id": "jpn",
+    "iso": "JPN",
+    "name": "Japon",
+    "kind": "state",
+    "color": "#b5e04a",
+    "capitalProvinceId": "jpn-17"
+  },
+  {
+    "id": "kaz",
+    "iso": "KAZ",
+    "name": "Kazakhstan",
+    "kind": "state",
+    "color": "#ffa040",
+    "capitalProvinceId": "kaz-28"
+  },
+  {
+    "id": "ken",
+    "iso": "KEN",
+    "name": "Kenya",
+    "kind": "state",
+    "color": "#ffa040",
+    "capitalProvinceId": "ken-4"
+  },
+  {
+    "id": "kgz",
+    "iso": "KGZ",
+    "name": "Kirghizistan",
+    "kind": "state",
+    "color": "#2fd4b8",
+    "capitalProvinceId": "kgz-1"
+  },
+  {
+    "id": "khm",
+    "iso": "KHM",
+    "name": "Cambodge",
+    "kind": "state",
+    "color": "#9debc0",
+    "capitalProvinceId": "khm-8"
+  },
+  {
+    "id": "kir",
+    "iso": "KIR",
+    "name": "Kiribati",
+    "kind": "state",
+    "color": "#eeeaa0",
+    "capitalProvinceId": "kir-1"
+  },
+  {
+    "id": "kna",
+    "iso": "KNA",
+    "name": "Saint-Christophe-et-Niévès",
+    "kind": "state",
+    "color": "#2fd4b8",
+    "capitalProvinceId": "kna-1"
+  },
+  {
+    "id": "kor",
+    "iso": "KOR",
+    "name": "Corée du Sud",
+    "kind": "state",
+    "color": "#3f95ee",
+    "capitalProvinceId": "kor-4"
+  },
+  {
+    "id": "kwt",
+    "iso": "KWT",
+    "name": "Koweït",
+    "kind": "state",
+    "color": "#2fd4b8",
+    "capitalProvinceId": "kwt-1"
+  },
+  {
+    "id": "lao",
+    "iso": "LAO",
+    "name": "Laos",
+    "kind": "state",
+    "color": "#b5e04a",
+    "capitalProvinceId": "lao-5"
+  },
+  {
+    "id": "lbn",
+    "iso": "LBN",
+    "name": "Liban",
+    "kind": "state",
+    "color": "#3f95ee",
+    "capitalProvinceId": "lbn-3"
+  },
+  {
+    "id": "lbr",
+    "iso": "LBR",
+    "name": "Liberia",
+    "kind": "state",
+    "color": "#9debc0",
+    "capitalProvinceId": "lbr-6"
+  },
+  {
+    "id": "lby",
+    "iso": "LBY",
+    "name": "Libye",
+    "kind": "state",
+    "color": "#62d8f5",
+    "capitalProvinceId": "lby-17"
+  },
+  {
+    "id": "lca",
+    "iso": "LCA",
+    "name": "Sainte-Lucie",
+    "kind": "state",
+    "color": "#e0662e",
+    "capitalProvinceId": "lca-1"
+  },
+  {
+    "id": "lie",
+    "iso": "LIE",
+    "name": "Liechtenstein",
+    "kind": "state",
+    "color": "#e0662e",
+    "capitalProvinceId": "lie-1"
+  },
+  {
+    "id": "lka",
+    "iso": "LKA",
+    "name": "Sri Lanka",
+    "kind": "state",
+    "color": "#b4d6ff",
+    "capitalProvinceId": "lka-9"
+  },
+  {
+    "id": "lso",
+    "iso": "LSO",
+    "name": "Lesotho",
+    "kind": "state",
+    "color": "#ffb8a6",
+    "capitalProvinceId": "lso-2"
+  },
+  {
+    "id": "ltu",
+    "iso": "LTU",
+    "name": "Lituanie",
+    "kind": "state",
+    "color": "#62d8f5",
+    "capitalProvinceId": "ltu-6"
+  },
+  {
+    "id": "lux",
+    "iso": "LUX",
+    "name": "Luxembourg",
+    "kind": "state",
+    "color": "#2fd4b8",
+    "capitalProvinceId": "lux-2"
+  },
+  {
+    "id": "lva",
+    "iso": "LVA",
+    "name": "Lettonie",
+    "kind": "state",
+    "color": "#ff5a4e",
+    "capitalProvinceId": "lva-6"
+  },
+  {
+    "id": "mar",
+    "iso": "MAR",
+    "name": "Maroc",
+    "kind": "state",
+    "color": "#ff5a4e",
+    "capitalProvinceId": "mar-7"
+  },
+  {
+    "id": "mco",
+    "iso": "MCO",
+    "name": "Monaco",
+    "kind": "state",
+    "color": "#eeeaa0",
+    "capitalProvinceId": "mco-1"
+  },
+  {
+    "id": "mda",
+    "iso": "MDA",
+    "name": "Moldavie",
+    "kind": "state",
+    "color": "#ffb8a6",
+    "capitalProvinceId": "mda-5"
+  },
+  {
+    "id": "mdg",
+    "iso": "MDG",
+    "name": "Madagascar",
+    "kind": "state",
+    "color": "#ffa040",
+    "capitalProvinceId": "mdg-3"
+  },
+  {
+    "id": "mdv",
+    "iso": "MDV",
+    "name": "Maldives",
+    "kind": "state",
+    "color": "#44c76a",
+    "capitalProvinceId": "mdv-1"
+  },
+  {
+    "id": "mex",
+    "iso": "MEX",
+    "name": "Mexique",
+    "kind": "state",
+    "color": "#2fd4b8",
+    "capitalProvinceId": "mex-26"
+  },
+  {
+    "id": "mhl",
+    "iso": "MHL",
+    "name": "Îles Marshall",
+    "kind": "state",
+    "color": "#b4d6ff",
+    "capitalProvinceId": "mhl-1"
+  },
+  {
+    "id": "mkd",
+    "iso": "MKD",
+    "name": "Macédoine du Nord",
+    "kind": "state",
+    "color": "#3f95ee",
+    "capitalProvinceId": "mkd-4"
+  },
+  {
+    "id": "mli",
+    "iso": "MLI",
+    "name": "Mali",
+    "kind": "state",
+    "color": "#b5e04a",
+    "capitalProvinceId": "mli-8"
+  },
+  {
+    "id": "mlt",
+    "iso": "MLT",
+    "name": "Malte",
+    "kind": "state",
+    "color": "#ff5a4e",
+    "capitalProvinceId": "mlt-1"
+  },
+  {
+    "id": "mmr",
+    "iso": "MMR",
+    "name": "Birmanie",
+    "kind": "state",
+    "color": "#3f95ee",
+    "capitalProvinceId": "mmr-3"
+  },
+  {
+    "id": "mne",
+    "iso": "MNE",
+    "name": "Monténégro",
+    "kind": "state",
+    "color": "#44c76a",
+    "capitalProvinceId": "mne-3"
+  },
+  {
+    "id": "mng",
+    "iso": "MNG",
+    "name": "Mongolie",
+    "kind": "state",
+    "color": "#3f95ee",
+    "capitalProvinceId": "mng-22"
+  },
+  {
+    "id": "moz",
+    "iso": "MOZ",
+    "name": "Mozambique",
+    "kind": "state",
+    "color": "#d39a5c",
+    "capitalProvinceId": "moz-12"
+  },
+  {
+    "id": "mrt",
+    "iso": "MRT",
+    "name": "Mauritanie",
+    "kind": "state",
+    "color": "#b4d6ff",
+    "capitalProvinceId": "mrt-6"
+  },
+  {
+    "id": "mus",
+    "iso": "MUS",
+    "name": "Maurice",
+    "kind": "state",
+    "color": "#e0662e",
+    "capitalProvinceId": "mus-2"
+  },
+  {
+    "id": "mwi",
+    "iso": "MWI",
+    "name": "Malawi",
+    "kind": "state",
+    "color": "#ffd84d",
+    "capitalProvinceId": "mwi-7"
+  },
+  {
+    "id": "mys",
+    "iso": "MYS",
+    "name": "Malaisie",
+    "kind": "state",
+    "color": "#62d8f5",
+    "capitalProvinceId": "mys-15"
+  },
+  {
+    "id": "nam",
+    "iso": "NAM",
+    "name": "Namibie",
+    "kind": "state",
+    "color": "#3f95ee",
+    "capitalProvinceId": "nam-4"
+  },
+  {
+    "id": "ner",
+    "iso": "NER",
+    "name": "Niger",
+    "kind": "state",
+    "color": "#ffa040",
+    "capitalProvinceId": "ner-11"
+  },
+  {
+    "id": "nga",
+    "iso": "NGA",
+    "name": "Nigeria",
+    "kind": "state",
+    "color": "#e0662e",
+    "capitalProvinceId": "nga-31"
+  },
+  {
+    "id": "nic",
+    "iso": "NIC",
+    "name": "Nicaragua",
+    "kind": "state",
+    "color": "#d39a5c",
+    "capitalProvinceId": "nic-8"
+  },
+  {
+    "id": "nld",
+    "iso": "NLD",
+    "name": "Pays-Bas",
+    "kind": "state",
+    "color": "#eeeaa0",
+    "capitalProvinceId": "nld-5"
+  },
+  {
+    "id": "nor",
+    "iso": "NOR",
+    "name": "Norvège",
+    "kind": "state",
+    "color": "#e0662e",
+    "capitalProvinceId": "nor-13"
+  },
+  {
+    "id": "npl",
+    "iso": "NPL",
+    "name": "Népal",
+    "kind": "state",
+    "color": "#2fd4b8",
+    "capitalProvinceId": "npl-7"
+  },
+  {
+    "id": "nru",
+    "iso": "NRU",
+    "name": "Nauru",
+    "kind": "state",
+    "color": "#ffb8a6",
+    "capitalProvinceId": "nru-1"
+  },
+  {
+    "id": "nzl",
+    "iso": "NZL",
+    "name": "Nouvelle-Zélande",
+    "kind": "state",
+    "color": "#3f95ee",
+    "capitalProvinceId": "nzl-11"
+  },
+  {
+    "id": "omn",
+    "iso": "OMN",
+    "name": "Oman",
+    "kind": "state",
+    "color": "#9debc0",
+    "capitalProvinceId": "omn-9"
+  },
+  {
+    "id": "pak",
+    "iso": "PAK",
+    "name": "Pakistan",
+    "kind": "state",
+    "color": "#ff5a4e",
+    "capitalProvinceId": "pak-6"
+  },
+  {
+    "id": "pan",
+    "iso": "PAN",
+    "name": "Panama",
+    "kind": "state",
+    "color": "#ffd84d",
+    "capitalProvinceId": "pan-4"
+  },
+  {
+    "id": "per",
+    "iso": "PER",
+    "name": "Pérou",
+    "kind": "state",
+    "color": "#ff5a4e",
+    "capitalProvinceId": "per-23"
+  },
+  {
+    "id": "phl",
+    "iso": "PHL",
+    "name": "Philippines",
+    "kind": "state",
+    "color": "#ffd84d",
+    "capitalProvinceId": "phl-20"
+  },
+  {
+    "id": "plw",
+    "iso": "PLW",
+    "name": "Palaos",
+    "kind": "state",
+    "color": "#ff5a4e",
+    "capitalProvinceId": "plw-1"
+  },
+  {
+    "id": "png",
+    "iso": "PNG",
+    "name": "Papouasie-Nouvelle-Guinée",
+    "kind": "state",
+    "color": "#ffd84d",
+    "capitalProvinceId": "png-13"
+  },
+  {
+    "id": "pol",
+    "iso": "POL",
+    "name": "Pologne",
+    "kind": "state",
+    "color": "#ffd84d",
+    "capitalProvinceId": "pol-10"
+  },
+  {
+    "id": "prk",
+    "iso": "PRK",
+    "name": "Corée du Nord",
+    "kind": "state",
+    "color": "#e0662e",
+    "capitalProvinceId": "prk-3"
+  },
+  {
+    "id": "prt",
+    "iso": "PRT",
+    "name": "Portugal",
+    "kind": "state",
+    "color": "#d39a5c",
+    "capitalProvinceId": "prt-1"
+  },
+  {
+    "id": "pry",
+    "iso": "PRY",
+    "name": "Paraguay",
+    "kind": "state",
+    "color": "#ff5a4e",
+    "capitalProvinceId": "pry-1"
+  },
+  {
+    "id": "pse",
+    "iso": "PSE",
+    "name": "Autorité palestinienne",
+    "kind": "entity",
+    "color": "#ffa040",
+    "capitalProvinceId": "pse-1"
+  },
+  {
+    "id": "qat",
+    "iso": "QAT",
+    "name": "Qatar",
+    "kind": "state",
+    "color": "#d39a5c",
+    "capitalProvinceId": "qat-1"
+  },
+  {
+    "id": "rou",
+    "iso": "ROU",
+    "name": "Roumanie",
+    "kind": "state",
+    "color": "#ff5a4e",
+    "capitalProvinceId": "rou-3"
+  },
+  {
+    "id": "rus",
+    "iso": "RUS",
+    "name": "Russie",
+    "kind": "state",
+    "color": "#d39a5c",
+    "capitalProvinceId": "rus-38"
+  },
+  {
+    "id": "rwa",
+    "iso": "RWA",
+    "name": "Rwanda",
+    "kind": "state",
+    "color": "#ff5a4e",
+    "capitalProvinceId": "rwa-5"
+  },
+  {
+    "id": "sau",
+    "iso": "SAU",
+    "name": "Arabie saoudite",
+    "kind": "state",
+    "color": "#ffd84d",
+    "capitalProvinceId": "sau-2"
+  },
+  {
+    "id": "sdn",
+    "iso": "SDN",
+    "name": "Soudan",
+    "kind": "state",
+    "color": "#e0662e",
+    "capitalProvinceId": "sdn-8"
+  },
+  {
+    "id": "sen",
+    "iso": "SEN",
+    "name": "Sénégal",
+    "kind": "state",
+    "color": "#ffa040",
+    "capitalProvinceId": "sen-5"
+  },
+  {
+    "id": "sgp",
+    "iso": "SGP",
+    "name": "Singapour",
+    "kind": "state",
+    "color": "#d39a5c",
+    "capitalProvinceId": "sgp-1"
+  },
+  {
+    "id": "slb",
+    "iso": "SLB",
+    "name": "Îles Salomon",
+    "kind": "state",
+    "color": "#62d8f5",
+    "capitalProvinceId": "slb-3"
+  },
+  {
+    "id": "sle",
+    "iso": "SLE",
+    "name": "Sierra Leone",
+    "kind": "state",
+    "color": "#2fd4b8",
+    "capitalProvinceId": "sle-2"
+  },
+  {
+    "id": "slv",
+    "iso": "SLV",
+    "name": "Salvador",
+    "kind": "state",
+    "color": "#3f95ee",
+    "capitalProvinceId": "slv-4"
+  },
+  {
+    "id": "smr",
+    "iso": "SMR",
+    "name": "Saint-Marin",
+    "kind": "state",
+    "color": "#eeeaa0",
+    "capitalProvinceId": "smr-1"
+  },
+  {
+    "id": "sol",
+    "iso": "SOL",
+    "name": "Somaliland",
+    "kind": "entity",
+    "color": "#eeeaa0",
+    "capitalProvinceId": "sol-1"
+  },
+  {
+    "id": "som",
+    "iso": "SOM",
+    "name": "Somalie",
+    "kind": "state",
+    "color": "#44c76a",
+    "capitalProvinceId": "som-7"
+  },
+  {
+    "id": "srb",
+    "iso": "SRB",
+    "name": "Serbie",
+    "kind": "state",
+    "color": "#e0662e",
+    "capitalProvinceId": "srb-7"
+  },
+  {
+    "id": "ssd",
+    "iso": "SSD",
+    "name": "Soudan du Sud",
+    "kind": "state",
+    "color": "#9debc0",
+    "capitalProvinceId": "ssd-4"
+  },
+  {
+    "id": "stp",
+    "iso": "STP",
+    "name": "Sao Tomé-et-Principe",
+    "kind": "state",
+    "color": "#2fd4b8",
+    "capitalProvinceId": "stp-1"
+  },
+  {
+    "id": "sur",
+    "iso": "SUR",
+    "name": "Suriname",
+    "kind": "state",
+    "color": "#ffb8a6",
+    "capitalProvinceId": "sur-7"
+  },
+  {
+    "id": "svk",
+    "iso": "SVK",
+    "name": "Slovaquie",
+    "kind": "state",
+    "color": "#2fd4b8",
+    "capitalProvinceId": "svk-1"
+  },
+  {
+    "id": "svn",
+    "iso": "SVN",
+    "name": "Slovénie",
+    "kind": "state",
+    "color": "#44c76a",
+    "capitalProvinceId": "svn-1"
+  },
+  {
+    "id": "swe",
+    "iso": "SWE",
+    "name": "Suède",
+    "kind": "state",
+    "color": "#62d8f5",
+    "capitalProvinceId": "swe-13"
+  },
+  {
+    "id": "swz",
+    "iso": "SWZ",
+    "name": "Eswatini",
+    "kind": "state",
+    "color": "#3f95ee",
+    "capitalProvinceId": "swz-1"
+  },
+  {
+    "id": "syc",
+    "iso": "SYC",
+    "name": "Seychelles",
+    "kind": "state",
+    "color": "#e0662e",
+    "capitalProvinceId": "syc-1"
+  },
+  {
+    "id": "syr",
+    "iso": "SYR",
+    "name": "Syrie",
+    "kind": "state",
+    "color": "#eeeaa0",
+    "capitalProvinceId": "syr-12"
+  },
+  {
+    "id": "tcd",
+    "iso": "TCD",
+    "name": "Tchad",
+    "kind": "state",
+    "color": "#9debc0",
+    "capitalProvinceId": "tcd-14"
+  },
+  {
+    "id": "tgo",
+    "iso": "TGO",
+    "name": "Togo",
+    "kind": "state",
+    "color": "#2fd4b8",
+    "capitalProvinceId": "tgo-2"
+  },
+  {
+    "id": "tha",
+    "iso": "THA",
+    "name": "Thaïlande",
+    "kind": "state",
+    "color": "#eeeaa0",
+    "capitalProvinceId": "tha-13"
+  },
+  {
+    "id": "tjk",
+    "iso": "TJK",
+    "name": "Tadjikistan",
+    "kind": "state",
+    "color": "#62d8f5",
+    "capitalProvinceId": "tjk-5"
+  },
+  {
+    "id": "tkm",
+    "iso": "TKM",
+    "name": "Turkménistan",
+    "kind": "state",
+    "color": "#44c76a",
+    "capitalProvinceId": "tkm-2"
+  },
+  {
+    "id": "tls",
+    "iso": "TLS",
+    "name": "Timor oriental",
+    "kind": "state",
+    "color": "#ffa040",
+    "capitalProvinceId": "tls-1"
+  },
+  {
+    "id": "ton",
+    "iso": "TON",
+    "name": "Tonga",
+    "kind": "state",
+    "color": "#9debc0",
+    "capitalProvinceId": "ton-1"
+  },
+  {
+    "id": "tto",
+    "iso": "TTO",
+    "name": "Trinité-et-Tobago",
+    "kind": "state",
+    "color": "#e0662e",
+    "capitalProvinceId": "tto-2"
+  },
+  {
+    "id": "tun",
+    "iso": "TUN",
+    "name": "Tunisie",
+    "kind": "state",
+    "color": "#b4d6ff",
+    "capitalProvinceId": "tun-4"
+  },
+  {
+    "id": "tur",
+    "iso": "TUR",
+    "name": "Turquie",
+    "kind": "state",
+    "color": "#ffd84d",
+    "capitalProvinceId": "tur-21"
+  },
+  {
+    "id": "tuv",
+    "iso": "TUV",
+    "name": "Tuvalu",
+    "kind": "state",
+    "color": "#ffd84d",
+    "capitalProvinceId": "tuv-1"
+  },
+  {
+    "id": "twn",
+    "iso": "TWN",
+    "name": "Taïwan",
+    "kind": "entity",
+    "color": "#44c76a",
+    "capitalProvinceId": "twn-5"
+  },
+  {
+    "id": "tza",
+    "iso": "TZA",
+    "name": "Tanzanie",
+    "kind": "state",
+    "color": "#3f95ee",
+    "capitalProvinceId": "tza-9"
+  },
+  {
+    "id": "uga",
+    "iso": "UGA",
+    "name": "Ouganda",
+    "kind": "state",
+    "color": "#b5e04a",
+    "capitalProvinceId": "uga-10"
+  },
+  {
+    "id": "ukr",
+    "iso": "UKR",
+    "name": "Ukraine",
+    "kind": "state",
+    "color": "#ffa040",
+    "capitalProvinceId": "ukr-19"
+  },
+  {
+    "id": "ury",
+    "iso": "URY",
+    "name": "Uruguay",
+    "kind": "state",
+    "color": "#d39a5c",
+    "capitalProvinceId": "ury-8"
+  },
+  {
+    "id": "usa",
+    "iso": "USA",
+    "name": "États-Unis",
+    "kind": "state",
+    "color": "#62d8f5",
+    "capitalProvinceId": "usa-84"
+  },
+  {
+    "id": "uzb",
+    "iso": "UZB",
+    "name": "Ouzbékistan",
+    "kind": "state",
+    "color": "#ffd84d",
+    "capitalProvinceId": "uzb-15"
+  },
+  {
+    "id": "vat",
+    "iso": "VAT",
+    "name": "Vatican",
+    "kind": "entity",
+    "color": "#b4d6ff",
+    "capitalProvinceId": "vat-1"
+  },
+  {
+    "id": "vct",
+    "iso": "VCT",
+    "name": "Saint-Vincent-et-les-Grenadines",
+    "kind": "state",
+    "color": "#eeeaa0",
+    "capitalProvinceId": "vct-1"
+  },
+  {
+    "id": "ven",
+    "iso": "VEN",
+    "name": "Venezuela",
+    "kind": "state",
+    "color": "#b4d6ff",
+    "capitalProvinceId": "ven-19"
+  },
+  {
+    "id": "vnm",
+    "iso": "VNM",
+    "name": "Viêt Nam",
+    "kind": "state",
+    "color": "#d39a5c",
+    "capitalProvinceId": "vnm-8"
+  },
+  {
+    "id": "vut",
+    "iso": "VUT",
+    "name": "Vanuatu",
+    "kind": "state",
+    "color": "#b4d6ff",
+    "capitalProvinceId": "vut-2"
+  },
+  {
+    "id": "wsm",
+    "iso": "WSM",
+    "name": "Samoa",
+    "kind": "state",
+    "color": "#9debc0",
+    "capitalProvinceId": "wsm-1"
+  },
+  {
+    "id": "xkx",
+    "iso": "XKX",
+    "name": "Kosovo",
+    "kind": "entity",
+    "color": "#ffb8a6",
+    "capitalProvinceId": "xkx-2"
+  },
+  {
+    "id": "yem",
+    "iso": "YEM",
+    "name": "Yémen",
+    "kind": "state",
+    "color": "#ffa040",
+    "capitalProvinceId": "yem-16"
+  },
+  {
+    "id": "zaf",
+    "iso": "ZAF",
+    "name": "Afrique du Sud",
+    "kind": "state",
+    "color": "#44c76a",
+    "capitalProvinceId": "zaf-9"
+  },
+  {
+    "id": "zmb",
+    "iso": "ZMB",
+    "name": "Zambie",
+    "kind": "state",
+    "color": "#e0662e",
+    "capitalProvinceId": "zmb-6"
+  },
+  {
+    "id": "zwe",
+    "iso": "ZWE",
+    "name": "Zimbabwe",
+    "kind": "state",
+    "color": "#ffa040",
+    "capitalProvinceId": "zwe-2"
+  }
+]

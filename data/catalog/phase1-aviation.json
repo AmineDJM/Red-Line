@@ -1,0 +1,334 @@
+{
+  "systems": [
+    {
+      "id": "us.mq-9-reaper",
+      "name": "MQ-9 Reaper",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "drone",
+      "roles": ["armed_drone", "reconnaissance"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 900,
+        "resources": {
+          "oil": 20,
+          "metals": 20,
+          "electronics": 55
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 20,
+      "speedKmh": 480,
+      "operationalRadiusKm": 900,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 11
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 0,
+        "building": 6
+      },
+      "hp": 10,
+      "armor": 0,
+      "stealth": 0,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.drones.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "illustration": "us.mq-9-reaper.webp",
+      "sheet": {
+        "engine": "1 turbopropulseur TPE331",
+        "lengthM": 11,
+        "wingspanM": 20.1,
+        "mtowKg": 4760,
+        "warheadKg": null,
+        "speedLabel": "480 km/h",
+        "rangeKm": 1850
+      },
+      "enabled": true
+    },
+    {
+      "id": "ru.orion",
+      "name": "Orion",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "drone",
+      "roles": ["armed_drone", "reconnaissance"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 450,
+        "resources": {
+          "oil": 10,
+          "metals": 10,
+          "electronics": 25
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 10,
+      "speedKmh": 200,
+      "operationalRadiusKm": 250,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 5,
+        "armor": 8,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 4
+      },
+      "hp": 8,
+      "armor": 0,
+      "stealth": 0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.drones.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "illustration": "ru.orion.webp",
+      "sheet": {
+        "engine": "1 moteur à pistons",
+        "lengthM": 8,
+        "wingspanM": 16.3,
+        "mtowKg": 1200,
+        "warheadKg": null,
+        "speedLabel": "200 km/h",
+        "rangeKm": 250
+      },
+      "enabled": true
+    },
+    {
+      "id": "other.bayraktar-tb2",
+      "name": "Bayraktar TB2",
+      "doctrine": "other",
+      "origin": "TR",
+      "category": "drone",
+      "roles": ["armed_drone", "reconnaissance"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 300,
+        "resources": {
+          "oil": 5,
+          "metals": 5,
+          "electronics": 20
+        }
+      },
+      "buildTimeH": 12,
+      "upkeepPerDay": 5,
+      "speedKmh": 220,
+      "operationalRadiusKm": 150,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 5,
+        "armor": 9,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 3
+      },
+      "hp": 8,
+      "armor": 0,
+      "stealth": 0,
+      "detectionRangeKm": 30,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.drones.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "drone",
+      "illustration": "other.bayraktar-tb2.webp",
+      "sheet": {
+        "engine": "1 moteur à pistons",
+        "lengthM": 6.5,
+        "wingspanM": 12,
+        "mtowKg": 700,
+        "warheadKg": null,
+        "speedLabel": "220 km/h",
+        "rangeKm": 300
+      },
+      "enabled": true
+    },
+    {
+      "id": "us.ah-64-apache",
+      "name": "AH-64 Apache",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "helicopter",
+      "roles": ["attack_helicopter", "anti_tank"],
+      "generation": 4,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 900,
+        "resources": {
+          "oil": 20,
+          "metals": 35,
+          "electronics": 45
+        }
+      },
+      "buildTimeH": 28,
+      "upkeepPerDay": 20,
+      "speedKmh": 290,
+      "operationalRadiusKm": 480,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 8,
+        "armor": 14,
+        "aircraft": 1,
+        "helicopter": 4,
+        "drone": 3,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 0,
+        "building": 5
+      },
+      "hp": 22,
+      "armor": 0.25,
+      "stealth": 0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.rotary.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "helicopter",
+      "illustration": "us.ah-64-apache.webp",
+      "sheet": {
+        "engine": "2 turbomoteurs T700",
+        "lengthM": 17.7,
+        "wingspanM": 14.6,
+        "mtowKg": 10400,
+        "warheadKg": null,
+        "speedLabel": "290 km/h",
+        "rangeKm": 1900
+      },
+      "enabled": true
+    },
+    {
+      "id": "ru.ka-52",
+      "name": "Ka-52 Alligator",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "helicopter",
+      "roles": ["attack_helicopter", "anti_tank"],
+      "generation": 4,
+      "targetClass": "helicopter",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 850,
+        "resources": {
+          "oil": 15,
+          "metals": 35,
+          "electronics": 45
+        }
+      },
+      "buildTimeH": 26,
+      "upkeepPerDay": 15,
+      "speedKmh": 300,
+      "operationalRadiusKm": 460,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 10
+      },
+      "damage": {
+        "infantry": 8,
+        "armor": 13,
+        "aircraft": 1,
+        "helicopter": 4,
+        "drone": 3,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 0,
+        "building": 5
+      },
+      "hp": 24,
+      "armor": 0.3,
+      "stealth": 0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.rotary.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "helicopter",
+      "illustration": "ru.ka-52.webp",
+      "sheet": {
+        "engine": "2 turbomoteurs VK-2500",
+        "lengthM": 13.5,
+        "wingspanM": 14.5,
+        "mtowKg": 10800,
+        "warheadKg": null,
+        "speedLabel": "300 km/h",
+        "rangeKm": 1100
+      },
+      "enabled": true
+    }
+  ]
+}

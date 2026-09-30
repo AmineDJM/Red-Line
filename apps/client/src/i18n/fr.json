@@ -1,0 +1,339 @@
+{
+  "app": {
+    "name": "Red Line",
+    "tagline": "Stratégie géopolitique en temps réel",
+    "loading": "Chargement…",
+    "loadingMap": "Préparation du théâtre d'opérations…",
+    "error": "Une erreur est survenue.",
+    "retry": "Réessayer",
+    "back": "Retour",
+    "close": "Fermer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "next": "Suivant",
+    "skip": "Passer",
+    "done": "Terminé",
+    "search": "Rechercher",
+    "soon": "bientôt",
+    "mockBadge": "Démonstration hors ligne",
+    "notFound": "Page introuvable."
+  },
+  "home": {
+    "title": "Red Line",
+    "subtitle": "Stratégie géopolitique en temps réel sur la vraie carte du monde",
+    "playGuest": "Jouer en invité",
+    "login": "Se connecter",
+    "register": "S'inscrire",
+    "logout": "Se déconnecter",
+    "continue": "Nouvelle partie",
+    "sandbox": "Bac à sable",
+    "welcome": "Connecté : {{name}}",
+    "guestNote": "Le compte invité est conservé sur cet appareil.",
+    "footer": "Victoire uniquement militaire. Aucun site réel n'est ciblé : bâtiments génériques par province."
+  },
+  "auth": {
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "displayName": "Nom affiché",
+    "submitLogin": "Se connecter",
+    "submitRegister": "Créer le compte",
+    "switchToRegister": "Pas encore de compte ? S'inscrire",
+    "switchToLogin": "Déjà inscrit ? Se connecter",
+    "errors": {
+      "invalid": "Identifiants incorrects.",
+      "exists": "Cette adresse est déjà utilisée.",
+      "weak": "Mot de passe trop court (8 caractères minimum).",
+      "network": "Serveur injoignable.",
+      "generic": "Échec de l'opération."
+    }
+  },
+  "newGame": {
+    "title": "Nouvelle partie",
+    "subtitle": "Choisissez votre nation",
+    "nation": "Nation",
+    "searchPlaceholder": "Rechercher une nation…",
+    "pickOnMap": "Touchez un pays sur la carte ou choisissez dans la liste.",
+    "selected": "Nation choisie",
+    "none": "Aucune nation choisie",
+    "provinces_one": "{{count}} province",
+    "provinces_other": "{{count}} provinces",
+    "scenario": "Scénario",
+    "speed": "Vitesse",
+    "difficulty": "Difficulté",
+    "levels": {
+      "easy": "Facile",
+      "normal": "Normale",
+      "hard": "Difficile"
+    },
+    "start": "Lancer la partie",
+    "creating": "Création de la partie…",
+    "entity": "entité",
+    "error": "Impossible de créer la partie."
+  },
+  "game": {
+    "bannerTitle": "{{nation}} · Situation militaire",
+    "bannerSubtitle": "{{game}} · {{scenario}}",
+    "connecting": "Connexion à la partie…",
+    "reconnecting": "Connexion perdue, reconnexion…",
+    "failed": "Connexion refusée par le serveur.",
+    "clock": {
+      "day": "J+{{day}}",
+      "paused": "En pause",
+      "pause": "Pause",
+      "play": "Reprendre",
+      "speed": "Vitesse ×{{speed}}",
+      "speedShort": "×{{speed}}"
+    },
+    "resources": {
+      "money": "Argent",
+      "oil": "Pétrole",
+      "metals": "Métaux",
+      "electronics": "Électronique",
+      "food": "Nourriture",
+      "perDay": "{{value}} / jour"
+    },
+    "toolbar": {
+      "army": "Armée",
+      "production": "Production",
+      "alerts": "Alertes",
+      "layers": "Calques",
+      "legend": "Légende",
+      "menu": "Menu",
+      "recenter": "Recentrer"
+    },
+    "layers": {
+      "title": "Calques",
+      "military": "Militaire",
+      "intel": "Renseignement",
+      "economy": "Économie",
+      "diplomacy": "Diplomatie",
+      "soon": "bientôt",
+      "fog": "Brouillard de guerre",
+      "labels": "Étiquettes"
+    },
+    "legend": {
+      "title": "Légende",
+      "ownForces": "Vos forces",
+      "enemyForces": "Forces étrangères",
+      "detected": "Contact non identifié",
+      "building": "Bâtiment stratégique",
+      "ownTerritory": "Votre territoire",
+      "range": "Portée d'arme (min. – max.)",
+      "route": "Trajectoire / ordre",
+      "launch": "Site de lancement",
+      "border": "Frontière",
+      "disputed": "Territoire disputé",
+      "fog": "Zone non couverte",
+      "capture": "Capture en cours"
+    },
+    "alerts": {
+      "title": "Centre d'alertes",
+      "empty": "Aucune alerte pour le moment.",
+      "markRead": "Tout marquer comme lu",
+      "center": "Centrer la carte",
+      "kinds": {
+        "combat_started": "Combat engagé",
+        "unit_destroyed": "Unité détruite : {{unit}}",
+        "unit_destroyed_own": "Unité perdue : {{unit}}",
+        "unit_detected": "Contact détecté",
+        "province_capture_started": "{{nation}} tente de capturer {{province}}",
+        "province_capture_started_own": "Capture de {{province}} en cours",
+        "province_capture_started_threat": "{{province}} attaquée par {{nation}}",
+        "province_captured": "{{province}} capturée par {{nation}}",
+        "province_captured_own": "{{province}} conquise",
+        "province_lost": "{{province}} perdue",
+        "production_complete": "Production terminée : {{unit}}",
+        "arrived": "Unité arrivée à destination",
+        "nation_defeated": "{{nation}} est vaincue",
+        "victory": "Victoire de {{nation}}"
+      }
+    },
+    "army": {
+      "title": "Armée",
+      "empty": "Aucune unité.",
+      "units_one": "{{count}} unité",
+      "units_other": "{{count}} unités",
+      "count": "×{{count}}",
+      "select": "Sélectionner",
+      "hp": "État"
+    },
+    "production": {
+      "title": "Production",
+      "queue": "En cours",
+      "queueEmpty": "Aucune production en cours.",
+      "catalog": "Catalogue",
+      "province": "Province de production",
+      "chooseProvince": "Choisir une province",
+      "produce": "Produire",
+      "cost": "Coût",
+      "buildTime": "Délai",
+      "hours": "{{value}} h",
+      "generation": "Gén. {{value}}",
+      "insufficient": "Fonds insuffisants",
+      "ordered": "Production lancée : {{unit}}",
+      "empty": "Aucun système disponible.",
+      "back": "Retour au catalogue",
+      "remaining": "reste {{value}}"
+    },
+    "selection": {
+      "title": "Sélection",
+      "count": "Effectif",
+      "hp": "État",
+      "status": "Statut",
+      "stance": "Posture",
+      "xp": "Expérience",
+      "stop": "Arrêter",
+      "deselect": "Désélectionner",
+      "hint": "Touchez la carte pour déplacer, une unité ennemie pour attaquer.",
+      "lastSeen": "Vu il y a {{value}}",
+      "uncertainty": "Incertitude : ±{{value}}",
+      "unknownType": "Type inconnu",
+      "owner": "Nation",
+      "multi_one": "{{count}} unité sélectionnée",
+      "multi_other": "{{count}} unités sélectionnées"
+    },
+    "orders": {
+      "moveTitle": "Ordre de déplacement",
+      "attackTitle": "Ordre d'attaque",
+      "distance": "Distance",
+      "eta": "Arrivée estimée",
+      "outOfRange": "Cible hors de portée",
+      "confirm": "Confirmer",
+      "cancel": "Annuler",
+      "sent": "Ordre transmis",
+      "destination": "Destination",
+      "target": "Cible",
+      "errors": {
+        "not_owner": "Cette unité ne vous appartient pas.",
+        "unknown_unit": "Unité inconnue.",
+        "unreachable": "Destination inaccessible.",
+        "out_of_range": "Cible hors de portée.",
+        "insufficient_funds": "Fonds insuffisants.",
+        "invalid_target": "Cible invalide.",
+        "not_allowed": "Ordre impossible.",
+        "game_over": "La partie est terminée.",
+        "disconnected": "Hors ligne : ordre non transmis.",
+        "timeout": "Pas de réponse du serveur."
+      }
+    },
+    "status": {
+      "idle": "En attente",
+      "moving": "En mouvement",
+      "combat": "Au combat",
+      "embarked": "Embarquée",
+      "destroyed": "Détruite"
+    },
+    "stance": {
+      "hold": "Tenir la position",
+      "defend": "Défensive",
+      "aggressive": "Offensive"
+    },
+    "level": {
+      "own": "Unité alliée",
+      "precise": "Précis",
+      "identified": "Identifié",
+      "detected": "Détecté"
+    },
+    "callout": {
+      "capital": "Capitale",
+      "moving": "En route · {{value}}",
+      "combat": "Au combat",
+      "capture": "Capture {{value}} %"
+    },
+    "end": {
+      "victory": "Victoire",
+      "defeat": "Défaite",
+      "victoryText": "{{nation}} impose sa domination militaire.",
+      "defeatText": "{{nation}} l'emporte. Votre nation est vaincue.",
+      "newGame": "Nouvelle partie",
+      "home": "Accueil",
+      "observe": "Continuer à observer"
+    },
+    "tutorial": {
+      "step1": "Touchez une de vos unités (hexagone violet) pour la sélectionner : sa fiche et sa portée s'affichent.",
+      "step2": "Touchez ensuite un point de la carte pour la déplacer, ou une unité ennemie pour l'attaquer.",
+      "step3": "Vérifiez la trajectoire et la distance, puis confirmez l'ordre. Trois gestes : sélectionner, ordonner, confirmer.",
+      "step4": "Gérez le temps en haut à droite : pause et vitesses. Sur ordinateur : Espace, 1 à 4, Échap.",
+      "counter": "{{index}} / {{total}}"
+    },
+    "time": {
+      "minutes": "{{value}} min",
+      "hours": "{{h}} h {{m}}",
+      "days": "{{d}} j {{h}} h"
+    }
+  },
+  "sandbox": {
+    "title": "Bac à sable",
+    "subtitle": "Moteur local · placement libre",
+    "nation": "Nation",
+    "system": "Système",
+    "placeHint": "Touchez la carte pour placer l'unité choisie.",
+    "placed_one": "{{count}} unité placée",
+    "placed_other": "{{count}} unités placées",
+    "clear": "Tout effacer",
+    "launch": "Lancer la simulation",
+    "reset": "Réinitialiser",
+    "observer": "Vue de",
+    "engineMissing": "Moteur indisponible : fonctions manquantes ({{list}}).",
+    "engineLoading": "Chargement du moteur…",
+    "dataMissing": "Données de simulation manquantes ({{list}}).",
+    "running": "Simulation en cours",
+    "count": "Effectif"
+  },
+  "categories": {
+    "fighter": "Chasseur",
+    "bomber": "Bombardier",
+    "air_support": "Appui aérien",
+    "helicopter": "Hélicoptère",
+    "drone": "Drone",
+    "tank": "Char de combat",
+    "ifv": "Véhicule de combat d'infanterie",
+    "artillery": "Artillerie",
+    "air_defense": "Défense aérienne",
+    "strike_missile": "Missile de frappe",
+    "nuclear": "Arme nucléaire",
+    "surface_ship": "Navire de surface",
+    "submarine": "Sous-marin",
+    "infantry": "Infanterie",
+    "space": "Système spatial"
+  },
+  "doctrines": {
+    "us": "États-Unis",
+    "ru": "Russie",
+    "cn": "Chine",
+    "eu": "Europe",
+    "other": "Autres"
+  },
+  "buildings": {
+    "refinery": "Raffinerie",
+    "power_plant": "Centrale électrique",
+    "port": "Port",
+    "air_base": "Base aérienne",
+    "military_base": "Base militaire",
+    "arms_factory": "Usine d'armement",
+    "research_center": "Centre de recherche"
+  },
+  "weapon": {
+    "engine": "Moteur",
+    "length": "Longueur",
+    "wingspan": "Envergure",
+    "mtow": "Masse max.",
+    "warhead": "Charge militaire",
+    "speed": "Vitesse",
+    "range": "Autonomie",
+    "weaponRange": "Portée d'arme",
+    "subtitle": "{{category}} · {{country}}",
+    "units": {
+      "m": "m",
+      "kg": "kg",
+      "km": "km"
+    }
+  },
+  "units": {
+    "km": "{{value}} km"
+  },
+  "map": {
+    "attribution": "Imagerie NASA Blue Marble · Natural Earth",
+    "noImagery": "Imagerie satellite indisponible : fond vectoriel"
+  }
+}

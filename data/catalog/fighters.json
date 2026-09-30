@@ -1,0 +1,1787 @@
+{
+  "category": "fighter",
+  "systems": [
+    {
+      "id": "us.f-5e",
+      "name": "F-5E Tiger II",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "fighter",
+      "roles": ["light_fighter", "air_superiority"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 450,
+        "resources": {
+          "oil": 10,
+          "metals": 15,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 10,
+      "speedKmh": 1700,
+      "operationalRadiusKm": 400,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 15
+      },
+      "damage": {
+        "infantry": 1,
+        "armor": 2,
+        "aircraft": 7,
+        "helicopter": 6,
+        "drone": 4,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 1,
+        "building": 3
+      },
+      "hp": 20,
+      "armor": 0.05,
+      "stealth": 0,
+      "detectionRangeKm": 45,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.15
+      },
+      "payload": {
+        "slots": 5
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen3"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "us.f-5e.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs J85",
+        "lengthM": 14.4,
+        "wingspanM": 8.1,
+        "mtowKg": 11200,
+        "warheadKg": null,
+        "speedLabel": "Mach 1,6",
+        "rangeKm": 3700
+      },
+      "enabled": true
+    },
+    {
+      "id": "us.f-16",
+      "name": "F-16 Fighting Falcon",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "fighter",
+      "roles": ["multirole", "air_superiority", "strike"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1200,
+        "resources": {
+          "oil": 20,
+          "metals": 40,
+          "electronics": 55
+        }
+      },
+      "buildTimeH": 36,
+      "upkeepPerDay": 25,
+      "speedKmh": 2100,
+      "operationalRadiusKm": 550,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 100
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 3,
+        "aircraft": 13,
+        "helicopter": 11,
+        "drone": 7,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 2,
+        "building": 6
+      },
+      "hp": 26,
+      "armor": 0.1,
+      "stealth": 0.05,
+      "detectionRangeKm": 150,
+      "ew": {
+        "jamming": 0.2,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 9
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "us.f-16.webp",
+      "sheet": {
+        "engine": "1 turboréacteur F110",
+        "lengthM": 15.1,
+        "wingspanM": 9.8,
+        "mtowKg": 19200,
+        "warheadKg": null,
+        "speedLabel": "Mach 2",
+        "rangeKm": 4200
+      },
+      "enabled": true
+    },
+    {
+      "id": "us.f-15e",
+      "name": "F-15E Strike Eagle",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "fighter",
+      "roles": ["strike", "multirole", "air_superiority"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1900,
+        "resources": {
+          "oil": 30,
+          "metals": 65,
+          "electronics": 85
+        }
+      },
+      "buildTimeH": 48,
+      "upkeepPerDay": 40,
+      "speedKmh": 2650,
+      "operationalRadiusKm": 1250,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 100
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 5,
+        "aircraft": 13,
+        "helicopter": 11,
+        "drone": 7,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 2,
+        "building": 9
+      },
+      "hp": 30,
+      "armor": 0.15,
+      "stealth": 0,
+      "detectionRangeKm": 180,
+      "ew": {
+        "jamming": 0.35,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 11
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "us.f-15e.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs F100",
+        "lengthM": 19.4,
+        "wingspanM": 13,
+        "mtowKg": 36700,
+        "warheadKg": null,
+        "speedLabel": "Mach 2,5",
+        "rangeKm": 3900
+      },
+      "enabled": true
+    },
+    {
+      "id": "us.fa-18e",
+      "name": "F/A-18E Super Hornet",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "fighter",
+      "roles": ["multirole", "anti_ship", "strike"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1800,
+        "resources": {
+          "oil": 30,
+          "metals": 60,
+          "electronics": 90
+        }
+      },
+      "buildTimeH": 46,
+      "upkeepPerDay": 35,
+      "speedKmh": 1900,
+      "operationalRadiusKm": 720,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 100
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 4,
+        "aircraft": 14,
+        "helicopter": 12,
+        "drone": 8,
+        "ship": 7,
+        "submarine": 0,
+        "missile": 2,
+        "building": 7
+      },
+      "hp": 28,
+      "armor": 0.1,
+      "stealth": 0.1,
+      "detectionRangeKm": 170,
+      "ew": {
+        "jamming": 0.35,
+        "jamResistance": 0.55
+      },
+      "payload": {
+        "slots": 11
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4plus"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "us.fa-18e.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs F414",
+        "lengthM": 18.3,
+        "wingspanM": 13.6,
+        "mtowKg": 29900,
+        "warheadKg": null,
+        "speedLabel": "Mach 1,8",
+        "rangeKm": 3300
+      },
+      "enabled": true
+    },
+    {
+      "id": "us.f-22",
+      "name": "F-22 Raptor",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "fighter",
+      "roles": ["air_superiority", "interceptor"],
+      "generation": 5,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 4200,
+        "resources": {
+          "oil": 70,
+          "metals": 140,
+          "electronics": 250
+        }
+      },
+      "buildTimeH": 96,
+      "upkeepPerDay": 85,
+      "speedKmh": 2400,
+      "operationalRadiusKm": 850,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 120
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 20,
+        "helicopter": 17,
+        "drone": 11,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 3,
+        "building": 4
+      },
+      "hp": 32,
+      "armor": 0.15,
+      "stealth": 0.85,
+      "detectionRangeKm": 220,
+      "ew": {
+        "jamming": 0.4,
+        "jamResistance": 0.75
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen5"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "fighter",
+      "illustration": "us.f-22.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs F119",
+        "lengthM": 18.9,
+        "wingspanM": 13.6,
+        "mtowKg": 38000,
+        "warheadKg": null,
+        "speedLabel": "Mach 2,25",
+        "rangeKm": 3000
+      },
+      "enabled": true
+    },
+    {
+      "id": "us.f-35",
+      "name": "F-35 Lightning II",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "fighter",
+      "roles": ["multirole", "strike", "sead"],
+      "generation": 5,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 3200,
+        "resources": {
+          "oil": 55,
+          "metals": 105,
+          "electronics": 190
+        }
+      },
+      "buildTimeH": 80,
+      "upkeepPerDay": 65,
+      "speedKmh": 1700,
+      "operationalRadiusKm": 1100,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 120
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 4,
+        "aircraft": 18,
+        "helicopter": 15,
+        "drone": 10,
+        "ship": 5,
+        "submarine": 0,
+        "missile": 3,
+        "building": 8
+      },
+      "hp": 30,
+      "armor": 0.15,
+      "stealth": 0.8,
+      "detectionRangeKm": 200,
+      "ew": {
+        "jamming": 0.5,
+        "jamResistance": 0.75
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen5"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "us.f-35.webp",
+      "sheet": {
+        "engine": "1 turboréacteur F135",
+        "lengthM": 15.7,
+        "wingspanM": 10.7,
+        "mtowKg": 31800,
+        "warheadKg": null,
+        "speedLabel": "Mach 1,6",
+        "rangeKm": 2800
+      },
+      "enabled": true
+    },
+    {
+      "id": "ru.mig-21",
+      "name": "MiG-21",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "fighter",
+      "roles": ["interceptor", "light_fighter"],
+      "generation": 2,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 350,
+        "resources": {
+          "oil": 5,
+          "metals": 10,
+          "electronics": 5
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 5,
+      "speedKmh": 2150,
+      "operationalRadiusKm": 370,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 12
+      },
+      "damage": {
+        "infantry": 1,
+        "armor": 1,
+        "aircraft": 6,
+        "helicopter": 5,
+        "drone": 3,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 1,
+        "building": 2
+      },
+      "hp": 18,
+      "armor": 0.05,
+      "stealth": 0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "ru.mig-21.webp",
+      "sheet": {
+        "engine": "1 turboréacteur R-25",
+        "lengthM": 14.7,
+        "wingspanM": 7.2,
+        "mtowKg": 10400,
+        "warheadKg": null,
+        "speedLabel": "Mach 2,05",
+        "rangeKm": 1500
+      },
+      "enabled": true
+    },
+    {
+      "id": "ru.mig-29",
+      "name": "MiG-29",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "fighter",
+      "roles": ["air_superiority", "light_fighter"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1000,
+        "resources": {
+          "oil": 15,
+          "metals": 35,
+          "electronics": 45
+        }
+      },
+      "buildTimeH": 32,
+      "upkeepPerDay": 20,
+      "speedKmh": 2400,
+      "operationalRadiusKm": 700,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 70
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 12,
+        "helicopter": 10,
+        "drone": 7,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 2,
+        "building": 4
+      },
+      "hp": 26,
+      "armor": 0.1,
+      "stealth": 0,
+      "detectionRangeKm": 100,
+      "ew": {
+        "jamming": 0.15,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "ru.mig-29.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs RD-33",
+        "lengthM": 17.3,
+        "wingspanM": 11.4,
+        "mtowKg": 18000,
+        "warheadKg": null,
+        "speedLabel": "Mach 2,25",
+        "rangeKm": 2100
+      },
+      "enabled": true
+    },
+    {
+      "id": "ru.mig-31",
+      "name": "MiG-31",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "fighter",
+      "roles": ["interceptor"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1700,
+        "resources": {
+          "oil": 30,
+          "metals": 55,
+          "electronics": 75
+        }
+      },
+      "buildTimeH": 48,
+      "upkeepPerDay": 35,
+      "speedKmh": 3000,
+      "operationalRadiusKm": 720,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 200
+      },
+      "damage": {
+        "infantry": 1,
+        "armor": 1,
+        "aircraft": 15,
+        "helicopter": 7,
+        "drone": 5,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 6,
+        "building": 2
+      },
+      "hp": 30,
+      "armor": 0.15,
+      "stealth": 0,
+      "detectionRangeKm": 250,
+      "ew": {
+        "jamming": 0.15,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "fighter",
+      "illustration": "ru.mig-31.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs D-30F6",
+        "lengthM": 22.7,
+        "wingspanM": 13.5,
+        "mtowKg": 46200,
+        "warheadKg": null,
+        "speedLabel": "Mach 2,83",
+        "rangeKm": 3300
+      },
+      "enabled": true
+    },
+    {
+      "id": "ru.su-27",
+      "name": "Su-27",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "fighter",
+      "roles": ["air_superiority"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1400,
+        "resources": {
+          "oil": 25,
+          "metals": 45,
+          "electronics": 65
+        }
+      },
+      "buildTimeH": 40,
+      "upkeepPerDay": 30,
+      "speedKmh": 2500,
+      "operationalRadiusKm": 1300,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 100
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 14,
+        "helicopter": 12,
+        "drone": 8,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 2,
+        "building": 4
+      },
+      "hp": 30,
+      "armor": 0.15,
+      "stealth": 0,
+      "detectionRangeKm": 150,
+      "ew": {
+        "jamming": 0.2,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 10
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "ru.su-27.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs AL-31F",
+        "lengthM": 21.9,
+        "wingspanM": 14.7,
+        "mtowKg": 30500,
+        "warheadKg": null,
+        "speedLabel": "Mach 2,35",
+        "rangeKm": 3500
+      },
+      "enabled": true
+    },
+    {
+      "id": "ru.su-30",
+      "name": "Su-30",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "fighter",
+      "roles": ["multirole", "air_superiority", "anti_ship"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1700,
+        "resources": {
+          "oil": 30,
+          "metals": 55,
+          "electronics": 75
+        }
+      },
+      "buildTimeH": 44,
+      "upkeepPerDay": 35,
+      "speedKmh": 2100,
+      "operationalRadiusKm": 1500,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 110
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 4,
+        "aircraft": 14,
+        "helicopter": 12,
+        "drone": 8,
+        "ship": 7,
+        "submarine": 0,
+        "missile": 2,
+        "building": 8
+      },
+      "hp": 30,
+      "armor": 0.15,
+      "stealth": 0,
+      "detectionRangeKm": 180,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.45
+      },
+      "payload": {
+        "slots": 12
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "ru.su-30.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs AL-31F",
+        "lengthM": 21.9,
+        "wingspanM": 14.7,
+        "mtowKg": 34500,
+        "warheadKg": null,
+        "speedLabel": "Mach 2",
+        "rangeKm": 3000
+      },
+      "enabled": true
+    },
+    {
+      "id": "ru.su-35",
+      "name": "Su-35",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "fighter",
+      "roles": ["air_superiority", "multirole"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 2000,
+        "resources": {
+          "oil": 35,
+          "metals": 65,
+          "electronics": 100
+        }
+      },
+      "buildTimeH": 50,
+      "upkeepPerDay": 40,
+      "speedKmh": 2400,
+      "operationalRadiusKm": 1600,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 130
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 4,
+        "aircraft": 16,
+        "helicopter": 14,
+        "drone": 9,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 3,
+        "building": 7
+      },
+      "hp": 30,
+      "armor": 0.15,
+      "stealth": 0.05,
+      "detectionRangeKm": 200,
+      "ew": {
+        "jamming": 0.4,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 12
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4plus"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "ru.su-35.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs AL-41F1S",
+        "lengthM": 21.9,
+        "wingspanM": 15.3,
+        "mtowKg": 34500,
+        "warheadKg": null,
+        "speedLabel": "Mach 2,25",
+        "rangeKm": 3600
+      },
+      "enabled": true
+    },
+    {
+      "id": "ru.su-57",
+      "name": "Su-57",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "fighter",
+      "roles": ["air_superiority", "multirole", "strike"],
+      "generation": 5,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 3500,
+        "resources": {
+          "oil": 60,
+          "metals": 115,
+          "electronics": 210
+        }
+      },
+      "buildTimeH": 84,
+      "upkeepPerDay": 70,
+      "speedKmh": 2100,
+      "operationalRadiusKm": 1500,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 160
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 4,
+        "aircraft": 18,
+        "helicopter": 15,
+        "drone": 10,
+        "ship": 5,
+        "submarine": 0,
+        "missile": 3,
+        "building": 8
+      },
+      "hp": 32,
+      "armor": 0.15,
+      "stealth": 0.55,
+      "detectionRangeKm": 210,
+      "ew": {
+        "jamming": 0.45,
+        "jamResistance": 0.65
+      },
+      "payload": {
+        "slots": 12
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen5"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "ru.su-57.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs AL-41F1",
+        "lengthM": 20.1,
+        "wingspanM": 14.1,
+        "mtowKg": 35000,
+        "warheadKg": null,
+        "speedLabel": "Mach 2",
+        "rangeKm": 3500
+      },
+      "enabled": true
+    },
+    {
+      "id": "cn.j-7",
+      "name": "J-7",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "fighter",
+      "roles": ["interceptor", "light_fighter"],
+      "generation": 2,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 320,
+        "resources": {
+          "oil": 5,
+          "metals": 10,
+          "electronics": 5
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 5,
+      "speedKmh": 2100,
+      "operationalRadiusKm": 350,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 12
+      },
+      "damage": {
+        "infantry": 1,
+        "armor": 1,
+        "aircraft": 6,
+        "helicopter": 5,
+        "drone": 3,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 1,
+        "building": 2
+      },
+      "hp": 18,
+      "armor": 0.05,
+      "stealth": 0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "cn.j-7.webp",
+      "sheet": {
+        "engine": "1 turboréacteur WP-13",
+        "lengthM": 14.9,
+        "wingspanM": 8.3,
+        "mtowKg": 9100,
+        "warheadKg": null,
+        "speedLabel": "Mach 2",
+        "rangeKm": 2200
+      },
+      "enabled": true
+    },
+    {
+      "id": "cn.j-10",
+      "name": "J-10",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "fighter",
+      "roles": ["multirole", "light_fighter"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1100,
+        "resources": {
+          "oil": 20,
+          "metals": 35,
+          "electronics": 50
+        }
+      },
+      "buildTimeH": 34,
+      "upkeepPerDay": 20,
+      "speedKmh": 2350,
+      "operationalRadiusKm": 550,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 100
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 3,
+        "aircraft": 12,
+        "helicopter": 10,
+        "drone": 7,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 2,
+        "building": 5
+      },
+      "hp": 26,
+      "armor": 0.1,
+      "stealth": 0.05,
+      "detectionRangeKm": 140,
+      "ew": {
+        "jamming": 0.2,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 11
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "cn.j-10.webp",
+      "sheet": {
+        "engine": "1 turboréacteur AL-31FN",
+        "lengthM": 16.9,
+        "wingspanM": 9.8,
+        "mtowKg": 19300,
+        "warheadKg": null,
+        "speedLabel": "Mach 2,2",
+        "rangeKm": 3000
+      },
+      "enabled": true
+    },
+    {
+      "id": "cn.j-11",
+      "name": "J-11",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "fighter",
+      "roles": ["air_superiority"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1350,
+        "resources": {
+          "oil": 25,
+          "metals": 45,
+          "electronics": 60
+        }
+      },
+      "buildTimeH": 40,
+      "upkeepPerDay": 25,
+      "speedKmh": 2500,
+      "operationalRadiusKm": 1300,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 100
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 3,
+        "aircraft": 14,
+        "helicopter": 12,
+        "drone": 8,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 2,
+        "building": 5
+      },
+      "hp": 30,
+      "armor": 0.15,
+      "stealth": 0,
+      "detectionRangeKm": 150,
+      "ew": {
+        "jamming": 0.2,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 10
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "fighter",
+      "illustration": "cn.j-11.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs WS-10",
+        "lengthM": 21.9,
+        "wingspanM": 14.7,
+        "mtowKg": 33000,
+        "warheadKg": null,
+        "speedLabel": "Mach 2,35",
+        "rangeKm": 3500
+      },
+      "enabled": true
+    },
+    {
+      "id": "cn.j-16",
+      "name": "J-16",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "fighter",
+      "roles": ["multirole", "strike", "anti_ship"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1800,
+        "resources": {
+          "oil": 30,
+          "metals": 60,
+          "electronics": 90
+        }
+      },
+      "buildTimeH": 46,
+      "upkeepPerDay": 35,
+      "speedKmh": 2100,
+      "operationalRadiusKm": 1500,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 5,
+        "aircraft": 15,
+        "helicopter": 13,
+        "drone": 8,
+        "ship": 7,
+        "submarine": 0,
+        "missile": 2,
+        "building": 9
+      },
+      "hp": 30,
+      "armor": 0.15,
+      "stealth": 0,
+      "detectionRangeKm": 200,
+      "ew": {
+        "jamming": 0.4,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 12
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4plus"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "fighter",
+      "illustration": "cn.j-16.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs WS-10",
+        "lengthM": 21.9,
+        "wingspanM": 14.7,
+        "mtowKg": 35000,
+        "warheadKg": null,
+        "speedLabel": "Mach 2",
+        "rangeKm": 3000
+      },
+      "enabled": true
+    },
+    {
+      "id": "cn.j-20",
+      "name": "J-20",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "fighter",
+      "roles": ["air_superiority", "interceptor"],
+      "generation": 5,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 3300,
+        "resources": {
+          "oil": 55,
+          "metals": 110,
+          "electronics": 200
+        }
+      },
+      "buildTimeH": 80,
+      "upkeepPerDay": 65,
+      "speedKmh": 2100,
+      "operationalRadiusKm": 1100,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 3,
+        "aircraft": 18,
+        "helicopter": 15,
+        "drone": 10,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 3,
+        "building": 5
+      },
+      "hp": 32,
+      "armor": 0.15,
+      "stealth": 0.65,
+      "detectionRangeKm": 210,
+      "ew": {
+        "jamming": 0.4,
+        "jamResistance": 0.7
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen5"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "fighter",
+      "illustration": "cn.j-20.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs WS-10C",
+        "lengthM": 20.4,
+        "wingspanM": 13,
+        "mtowKg": 37000,
+        "warheadKg": null,
+        "speedLabel": "Mach 2",
+        "rangeKm": 5500
+      },
+      "enabled": true
+    },
+    {
+      "id": "cn.j-35",
+      "name": "J-35",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "fighter",
+      "roles": ["multirole", "air_superiority"],
+      "generation": 5,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 3000,
+        "resources": {
+          "oil": 50,
+          "metals": 100,
+          "electronics": 180
+        }
+      },
+      "buildTimeH": 72,
+      "upkeepPerDay": 60,
+      "speedKmh": 1900,
+      "operationalRadiusKm": 1100,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 4,
+        "aircraft": 17,
+        "helicopter": 14,
+        "drone": 9,
+        "ship": 5,
+        "submarine": 0,
+        "missile": 3,
+        "building": 7
+      },
+      "hp": 30,
+      "armor": 0.15,
+      "stealth": 0.7,
+      "detectionRangeKm": 190,
+      "ew": {
+        "jamming": 0.4,
+        "jamResistance": 0.7
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen5"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "cn.j-35.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs",
+        "lengthM": 17.3,
+        "wingspanM": 11.5,
+        "mtowKg": 28000,
+        "warheadKg": null,
+        "speedLabel": "Mach 1,8",
+        "rangeKm": 3000
+      },
+      "enabled": true
+    },
+    {
+      "id": "eu.mirage-2000",
+      "name": "Mirage 2000",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "fighter",
+      "roles": ["air_superiority", "multirole"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1250,
+        "resources": {
+          "oil": 20,
+          "metals": 40,
+          "electronics": 55
+        }
+      },
+      "buildTimeH": 36,
+      "upkeepPerDay": 25,
+      "speedKmh": 2350,
+      "operationalRadiusKm": 700,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 70
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 3,
+        "aircraft": 12,
+        "helicopter": 10,
+        "drone": 7,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 2,
+        "building": 5
+      },
+      "hp": 26,
+      "armor": 0.1,
+      "stealth": 0.05,
+      "detectionRangeKm": 130,
+      "ew": {
+        "jamming": 0.2,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 9
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "eu.mirage-2000.webp",
+      "sheet": {
+        "engine": "1 turboréacteur M53-P2",
+        "lengthM": 14.4,
+        "wingspanM": 9.1,
+        "mtowKg": 17000,
+        "warheadKg": null,
+        "speedLabel": "Mach 2,2",
+        "rangeKm": 3300
+      },
+      "enabled": true
+    },
+    {
+      "id": "eu.tornado",
+      "name": "Tornado",
+      "doctrine": "eu",
+      "origin": "DE",
+      "category": "fighter",
+      "roles": ["strike", "anti_ship", "sead"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1300,
+        "resources": {
+          "oil": 20,
+          "metals": 45,
+          "electronics": 60
+        }
+      },
+      "buildTimeH": 38,
+      "upkeepPerDay": 25,
+      "speedKmh": 2350,
+      "operationalRadiusKm": 1300,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 20
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 4,
+        "aircraft": 9,
+        "helicopter": 8,
+        "drone": 5,
+        "ship": 6,
+        "submarine": 0,
+        "missile": 1,
+        "building": 10
+      },
+      "hp": 28,
+      "armor": 0.1,
+      "stealth": 0,
+      "detectionRangeKm": 120,
+      "ew": {
+        "jamming": 0.25,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 7
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "fighter",
+      "illustration": "eu.tornado.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs RB199",
+        "lengthM": 16.7,
+        "wingspanM": 13.9,
+        "mtowKg": 28000,
+        "warheadKg": null,
+        "speedLabel": "Mach 2,2",
+        "rangeKm": 3900
+      },
+      "enabled": true
+    },
+    {
+      "id": "eu.gripen",
+      "name": "JAS 39 Gripen",
+      "doctrine": "eu",
+      "origin": "SE",
+      "category": "fighter",
+      "roles": ["multirole", "light_fighter"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1400,
+        "resources": {
+          "oil": 25,
+          "metals": 45,
+          "electronics": 70
+        }
+      },
+      "buildTimeH": 40,
+      "upkeepPerDay": 30,
+      "speedKmh": 2100,
+      "operationalRadiusKm": 800,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 100
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 3,
+        "aircraft": 14,
+        "helicopter": 12,
+        "drone": 8,
+        "ship": 5,
+        "submarine": 0,
+        "missile": 2,
+        "building": 6
+      },
+      "hp": 26,
+      "armor": 0.1,
+      "stealth": 0.1,
+      "detectionRangeKm": 140,
+      "ew": {
+        "jamming": 0.45,
+        "jamResistance": 0.55
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4plus"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "eu.gripen.webp",
+      "sheet": {
+        "engine": "1 turboréacteur RM12",
+        "lengthM": 14.1,
+        "wingspanM": 8.4,
+        "mtowKg": 14000,
+        "warheadKg": null,
+        "speedLabel": "Mach 2",
+        "rangeKm": 3200
+      },
+      "enabled": true
+    },
+    {
+      "id": "eu.typhoon",
+      "name": "Eurofighter Typhoon",
+      "doctrine": "eu",
+      "origin": "DE",
+      "category": "fighter",
+      "roles": ["air_superiority", "multirole"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 2300,
+        "resources": {
+          "oil": 40,
+          "metals": 75,
+          "electronics": 115
+        }
+      },
+      "buildTimeH": 54,
+      "upkeepPerDay": 45,
+      "speedKmh": 2100,
+      "operationalRadiusKm": 1100,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 3,
+        "aircraft": 16,
+        "helicopter": 14,
+        "drone": 9,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 3,
+        "building": 6
+      },
+      "hp": 28,
+      "armor": 0.1,
+      "stealth": 0.1,
+      "detectionRangeKm": 180,
+      "ew": {
+        "jamming": 0.4,
+        "jamResistance": 0.55
+      },
+      "payload": {
+        "slots": 13
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4plus"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "eu.typhoon.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs EJ200",
+        "lengthM": 16,
+        "wingspanM": 11,
+        "mtowKg": 23500,
+        "warheadKg": null,
+        "speedLabel": "Mach 2",
+        "rangeKm": 3800
+      },
+      "enabled": true
+    },
+    {
+      "id": "eu.rafale",
+      "name": "Rafale",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "fighter",
+      "roles": ["multirole", "strike", "anti_ship"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 2300,
+        "resources": {
+          "oil": 40,
+          "metals": 75,
+          "electronics": 115
+        }
+      },
+      "buildTimeH": 54,
+      "upkeepPerDay": 45,
+      "speedKmh": 1900,
+      "operationalRadiusKm": 1100,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 5,
+        "aircraft": 16,
+        "helicopter": 14,
+        "drone": 9,
+        "ship": 7,
+        "submarine": 0,
+        "missile": 3,
+        "building": 9
+      },
+      "hp": 28,
+      "armor": 0.1,
+      "stealth": 0.15,
+      "detectionRangeKm": 180,
+      "ew": {
+        "jamming": 0.5,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 14
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4plus"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "eu.rafale.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs M88",
+        "lengthM": 15.3,
+        "wingspanM": 10.9,
+        "mtowKg": 24500,
+        "warheadKg": null,
+        "speedLabel": "Mach 1,8",
+        "rangeKm": 3700
+      },
+      "enabled": true
+    },
+    {
+      "id": "other.jf-17",
+      "name": "JF-17 Thunder",
+      "doctrine": "other",
+      "origin": "PK",
+      "category": "fighter",
+      "roles": ["multirole", "light_fighter"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 750,
+        "resources": {
+          "oil": 15,
+          "metals": 25,
+          "electronics": 35
+        }
+      },
+      "buildTimeH": 26,
+      "upkeepPerDay": 15,
+      "speedKmh": 1700,
+      "operationalRadiusKm": 700,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 80
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 3,
+        "aircraft": 11,
+        "helicopter": 9,
+        "drone": 6,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 1,
+        "building": 5
+      },
+      "hp": 26,
+      "armor": 0.1,
+      "stealth": 0.05,
+      "detectionRangeKm": 110,
+      "ew": {
+        "jamming": 0.15,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 7
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "other.jf-17.webp",
+      "sheet": {
+        "engine": "1 turboréacteur RD-93",
+        "lengthM": 14.9,
+        "wingspanM": 9.5,
+        "mtowKg": 12700,
+        "warheadKg": null,
+        "speedLabel": "Mach 1,6",
+        "rangeKm": 3500
+      },
+      "enabled": true
+    },
+    {
+      "id": "other.kf-21",
+      "name": "KF-21 Boramae",
+      "doctrine": "other",
+      "origin": "KR",
+      "category": "fighter",
+      "roles": ["multirole", "air_superiority"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 2000,
+        "resources": {
+          "oil": 35,
+          "metals": 65,
+          "electronics": 100
+        }
+      },
+      "buildTimeH": 52,
+      "upkeepPerDay": 40,
+      "speedKmh": 1900,
+      "operationalRadiusKm": 1000,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 4,
+        "aircraft": 15,
+        "helicopter": 13,
+        "drone": 8,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 2,
+        "building": 7
+      },
+      "hp": 28,
+      "armor": 0.1,
+      "stealth": 0.15,
+      "detectionRangeKm": 190,
+      "ew": {
+        "jamming": 0.35,
+        "jamResistance": 0.55
+      },
+      "payload": {
+        "slots": 10
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4plus"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "other.kf-21.webp",
+      "sheet": {
+        "engine": "2 turboréacteurs F414",
+        "lengthM": 16.9,
+        "wingspanM": 11.2,
+        "mtowKg": 25600,
+        "warheadKg": null,
+        "speedLabel": "Mach 1,8",
+        "rangeKm": 2900
+      },
+      "enabled": true
+    },
+    {
+      "id": "other.tejas",
+      "name": "Tejas",
+      "doctrine": "other",
+      "origin": "IN",
+      "category": "fighter",
+      "roles": ["multirole", "light_fighter"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 950,
+        "resources": {
+          "oil": 15,
+          "metals": 30,
+          "electronics": 45
+        }
+      },
+      "buildTimeH": 32,
+      "upkeepPerDay": 20,
+      "speedKmh": 1700,
+      "operationalRadiusKm": 500,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 80
+      },
+      "damage": {
+        "infantry": 2,
+        "armor": 2,
+        "aircraft": 11,
+        "helicopter": 9,
+        "drone": 6,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 1,
+        "building": 4
+      },
+      "hp": 26,
+      "armor": 0.1,
+      "stealth": 0.1,
+      "detectionRangeKm": 120,
+      "ew": {
+        "jamming": 0.2,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.gen4"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "fighter",
+      "illustration": "other.tejas.webp",
+      "sheet": {
+        "engine": "1 turboréacteur F404",
+        "lengthM": 13.2,
+        "wingspanM": 8.2,
+        "mtowKg": 13500,
+        "warheadKg": null,
+        "speedLabel": "Mach 1,6",
+        "rangeKm": 3000
+      },
+      "enabled": true
+    }
+  ]
+}

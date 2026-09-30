@@ -1,0 +1,971 @@
+{
+ "systems": [
+  {
+   "id": "us.f-16",
+   "name": "F-16 Fighting Falcon",
+   "doctrine": "us",
+   "origin": "US",
+   "category": "fighter",
+   "roles": [
+    "air_superiority",
+    "strike"
+   ],
+   "generation": 4,
+   "targetClass": "aircraft",
+   "movement": "air",
+   "canCapture": false,
+   "cost": {
+    "money": 1200,
+    "resources": {
+     "metals": 40,
+     "electronics": 60,
+     "oil": 20
+    }
+   },
+   "buildTimeH": 36,
+   "upkeepPerDay": 25,
+   "speedKmh": 2100,
+   "operationalRadiusKm": 550,
+   "weaponRangeKm": {
+    "min": 1,
+    "max": 100
+   },
+   "damage": {
+    "infantry": 4,
+    "armor": 6,
+    "aircraft": 14,
+    "helicopter": 12,
+    "drone": 10,
+    "ship": 5,
+    "submarine": 0,
+    "missile": 2,
+    "building": 8
+   },
+   "hp": 30,
+   "armor": 0.1,
+   "stealth": 0.1,
+   "detectionRangeKm": 150,
+   "ew": {
+    "jamming": 0.1,
+    "jamResistance": 0.3
+   },
+   "payload": {
+    "slots": 4
+   },
+   "unitSize": 2,
+   "requires": [],
+   "licensable": true,
+   "exportable": true,
+   "icon": "fighter",
+   "sheet": {
+    "engine": "1 turboréacteur",
+    "lengthM": 15.1,
+    "wingspanM": 9.8,
+    "mtowKg": 19200,
+    "warheadKg": null,
+    "speedLabel": "Mach 2",
+    "rangeKm": 4200
+   },
+   "enabled": true
+  },
+  {
+   "id": "ru.su-35",
+   "name": "Su-35 Flanker-E",
+   "doctrine": "ru",
+   "origin": "RU",
+   "category": "fighter",
+   "roles": [],
+   "generation": 4,
+   "targetClass": "aircraft",
+   "movement": "air",
+   "canCapture": false,
+   "cost": {
+    "money": 1350,
+    "resources": {
+     "metals": 50,
+     "electronics": 55,
+     "oil": 25
+    }
+   },
+   "buildTimeH": 40,
+   "upkeepPerDay": 28,
+   "speedKmh": 2400,
+   "operationalRadiusKm": 700,
+   "weaponRangeKm": {
+    "min": 1,
+    "max": 110
+   },
+   "damage": {
+    "infantry": 4,
+    "armor": 6,
+    "aircraft": 15,
+    "helicopter": 12,
+    "drone": 10,
+    "ship": 5,
+    "submarine": 0,
+    "missile": 2,
+    "building": 8
+   },
+   "hp": 34,
+   "armor": 0.1,
+   "stealth": 0.05,
+   "detectionRangeKm": 170,
+   "ew": {
+    "jamming": 0.1,
+    "jamResistance": 0.3
+   },
+   "payload": {
+    "slots": 4
+   },
+   "unitSize": 2,
+   "requires": [],
+   "licensable": true,
+   "exportable": true,
+   "icon": "fighter",
+   "sheet": {
+    "engine": "2 turboréacteurs",
+    "lengthM": 21.9,
+    "wingspanM": 15.3,
+    "mtowKg": 34500,
+    "warheadKg": null,
+    "speedLabel": "Mach 2,25",
+    "rangeKm": 3600
+   },
+   "enabled": true
+  },
+  {
+   "id": "eu.rafale",
+   "name": "Rafale",
+   "doctrine": "eu",
+   "origin": "FR",
+   "category": "fighter",
+   "roles": [],
+   "generation": 4,
+   "targetClass": "aircraft",
+   "movement": "air",
+   "canCapture": false,
+   "cost": {
+    "money": 1400,
+    "resources": {
+     "metals": 45,
+     "electronics": 70,
+     "oil": 20
+    }
+   },
+   "buildTimeH": 40,
+   "upkeepPerDay": 28,
+   "speedKmh": 1900,
+   "operationalRadiusKm": 650,
+   "weaponRangeKm": {
+    "min": 1,
+    "max": 120
+   },
+   "damage": {
+    "infantry": 5,
+    "armor": 7,
+    "aircraft": 15,
+    "helicopter": 13,
+    "drone": 11,
+    "ship": 7,
+    "submarine": 0,
+    "missile": 3,
+    "building": 9
+   },
+   "hp": 32,
+   "armor": 0.1,
+   "stealth": 0.2,
+   "detectionRangeKm": 160,
+   "ew": {
+    "jamming": 0.1,
+    "jamResistance": 0.3
+   },
+   "payload": {
+    "slots": 4
+   },
+   "unitSize": 2,
+   "requires": [],
+   "licensable": true,
+   "exportable": true,
+   "icon": "fighter",
+   "sheet": {
+    "engine": "2 turboréacteurs",
+    "lengthM": 15.3,
+    "wingspanM": 10.9,
+    "mtowKg": 24500,
+    "warheadKg": null,
+    "speedLabel": "Mach 1,8",
+    "rangeKm": 3700
+   },
+   "enabled": true
+  },
+  {
+   "id": "ru.tu-22m",
+   "name": "Tu-22M3",
+   "doctrine": "ru",
+   "origin": "RU",
+   "category": "bomber",
+   "roles": [],
+   "generation": 3,
+   "targetClass": "aircraft",
+   "movement": "air",
+   "canCapture": false,
+   "cost": {
+    "money": 2600,
+    "resources": {
+     "metals": 90,
+     "electronics": 60,
+     "oil": 60
+    }
+   },
+   "buildTimeH": 72,
+   "upkeepPerDay": 50,
+   "speedKmh": 2000,
+   "operationalRadiusKm": 2400,
+   "weaponRangeKm": {
+    "min": 5,
+    "max": 600
+   },
+   "damage": {
+    "infantry": 10,
+    "armor": 12,
+    "aircraft": 0,
+    "helicopter": 0,
+    "drone": 0,
+    "ship": 18,
+    "submarine": 0,
+    "missile": 0,
+    "building": 24
+   },
+   "hp": 60,
+   "armor": 0.15,
+   "stealth": 0,
+   "detectionRangeKm": 120,
+   "ew": {
+    "jamming": 0.1,
+    "jamResistance": 0.3
+   },
+   "payload": {
+    "slots": 4
+   },
+   "unitSize": 1,
+   "requires": [],
+   "licensable": true,
+   "exportable": true,
+   "icon": "bomber",
+   "sheet": {
+    "engine": "2 turboréacteurs",
+    "lengthM": 42.5,
+    "wingspanM": 34.3,
+    "mtowKg": 126000,
+    "warheadKg": 24000,
+    "speedLabel": "Mach 1,88",
+    "rangeKm": 6800
+   },
+   "enabled": true
+  },
+  {
+   "id": "us.mq-9",
+   "name": "MQ-9 Reaper",
+   "doctrine": "us",
+   "origin": "US",
+   "category": "drone",
+   "roles": [],
+   "generation": 4,
+   "targetClass": "drone",
+   "movement": "air",
+   "canCapture": false,
+   "cost": {
+    "money": 600,
+    "resources": {
+     "electronics": 40
+    }
+   },
+   "buildTimeH": 24,
+   "upkeepPerDay": 10,
+   "speedKmh": 480,
+   "operationalRadiusKm": 1800,
+   "weaponRangeKm": {
+    "min": 1,
+    "max": 30
+   },
+   "damage": {
+    "infantry": 8,
+    "armor": 6,
+    "aircraft": 0,
+    "helicopter": 2,
+    "drone": 0,
+    "ship": 3,
+    "submarine": 0,
+    "missile": 0,
+    "building": 6
+   },
+   "hp": 10,
+   "armor": 0,
+   "stealth": 0.1,
+   "detectionRangeKm": 250,
+   "ew": {
+    "jamming": 0.1,
+    "jamResistance": 0.3
+   },
+   "payload": {
+    "slots": 4
+   },
+   "unitSize": 1,
+   "requires": [],
+   "licensable": true,
+   "exportable": true,
+   "icon": "drone",
+   "sheet": {
+    "engine": "1 turbopropulseur",
+    "lengthM": 11,
+    "wingspanM": 20,
+    "mtowKg": 4760,
+    "warheadKg": null,
+    "speedLabel": "480 km/h",
+    "rangeKm": 1850
+   },
+   "enabled": true
+  },
+  {
+   "id": "ru.ka-52",
+   "name": "Ka-52 Alligator",
+   "doctrine": "ru",
+   "origin": "RU",
+   "category": "helicopter",
+   "roles": [],
+   "generation": 4,
+   "targetClass": "helicopter",
+   "movement": "air",
+   "canCapture": false,
+   "cost": {
+    "money": 800,
+    "resources": {
+     "metals": 30,
+     "electronics": 30
+    }
+   },
+   "buildTimeH": 30,
+   "upkeepPerDay": 14,
+   "speedKmh": 300,
+   "operationalRadiusKm": 460,
+   "weaponRangeKm": {
+    "min": 1,
+    "max": 10
+   },
+   "damage": {
+    "infantry": 10,
+    "armor": 14,
+    "aircraft": 2,
+    "helicopter": 6,
+    "drone": 4,
+    "ship": 4,
+    "submarine": 0,
+    "missile": 0,
+    "building": 6
+   },
+   "hp": 22,
+   "armor": 0.2,
+   "stealth": 0,
+   "detectionRangeKm": 60,
+   "ew": {
+    "jamming": 0.1,
+    "jamResistance": 0.3
+   },
+   "payload": {
+    "slots": 4
+   },
+   "unitSize": 2,
+   "requires": [],
+   "licensable": true,
+   "exportable": true,
+   "icon": "helicopter",
+   "sheet": {
+    "engine": "2 turbomoteurs",
+    "lengthM": 13.5,
+    "wingspanM": 14.5,
+    "mtowKg": 10800,
+    "warheadKg": null,
+    "speedLabel": "300 km/h",
+    "rangeKm": 460
+   },
+   "enabled": true
+  },
+  {
+   "id": "ru.t-90",
+   "name": "T-90M",
+   "doctrine": "ru",
+   "origin": "RU",
+   "category": "tank",
+   "roles": [],
+   "generation": 4,
+   "targetClass": "armor",
+   "movement": "land",
+   "canCapture": true,
+   "cost": {
+    "money": 500,
+    "resources": {
+     "metals": 40,
+     "oil": 10
+    }
+   },
+   "buildTimeH": 24,
+   "upkeepPerDay": 6,
+   "speedKmh": 60,
+   "operationalRadiusKm": null,
+   "weaponRangeKm": {
+    "min": 0,
+    "max": 4
+   },
+   "damage": {
+    "infantry": 10,
+    "armor": 14,
+    "aircraft": 0,
+    "helicopter": 3,
+    "drone": 1,
+    "ship": 2,
+    "submarine": 0,
+    "missile": 0,
+    "building": 8
+   },
+   "hp": 40,
+   "armor": 0.6,
+   "stealth": 0,
+   "detectionRangeKm": 15,
+   "ew": {
+    "jamming": 0.1,
+    "jamResistance": 0.3
+   },
+   "payload": {
+    "slots": 4
+   },
+   "unitSize": 6,
+   "requires": [],
+   "licensable": true,
+   "exportable": true,
+   "icon": "tank",
+   "sheet": {
+    "engine": "Diesel 1 130 ch",
+    "lengthM": 9.6,
+    "wingspanM": null,
+    "mtowKg": 46500,
+    "warheadKg": null,
+    "speedLabel": "60 km/h",
+    "rangeKm": 550
+   },
+   "enabled": true
+  },
+  {
+   "id": "eu.leopard-2",
+   "name": "Leopard 2A7",
+   "doctrine": "eu",
+   "origin": "DE",
+   "category": "tank",
+   "roles": [],
+   "generation": 4,
+   "targetClass": "armor",
+   "movement": "land",
+   "canCapture": true,
+   "cost": {
+    "money": 620,
+    "resources": {
+     "metals": 45,
+     "oil": 12,
+     "electronics": 10
+    }
+   },
+   "buildTimeH": 28,
+   "upkeepPerDay": 7,
+   "speedKmh": 68,
+   "operationalRadiusKm": null,
+   "weaponRangeKm": {
+    "min": 0,
+    "max": 4
+   },
+   "damage": {
+    "infantry": 10,
+    "armor": 15,
+    "aircraft": 0,
+    "helicopter": 3,
+    "drone": 1,
+    "ship": 2,
+    "submarine": 0,
+    "missile": 0,
+    "building": 8
+   },
+   "hp": 42,
+   "armor": 0.62,
+   "stealth": 0,
+   "detectionRangeKm": 16,
+   "ew": {
+    "jamming": 0.1,
+    "jamResistance": 0.3
+   },
+   "payload": {
+    "slots": 4
+   },
+   "unitSize": 6,
+   "requires": [],
+   "licensable": true,
+   "exportable": true,
+   "icon": "tank",
+   "sheet": {
+    "engine": "Diesel 1 500 ch",
+    "lengthM": 10.97,
+    "wingspanM": null,
+    "mtowKg": 64500,
+    "warheadKg": null,
+    "speedLabel": "68 km/h",
+    "rangeKm": 450
+   },
+   "enabled": true
+  },
+  {
+   "id": "ru.bmp-3",
+   "name": "BMP-3",
+   "doctrine": "ru",
+   "origin": "RU",
+   "category": "ifv",
+   "roles": [],
+   "generation": 3,
+   "targetClass": "armor",
+   "movement": "land",
+   "canCapture": true,
+   "cost": {
+    "money": 260,
+    "resources": {
+     "metals": 20,
+     "oil": 6
+    }
+   },
+   "buildTimeH": 16,
+   "upkeepPerDay": 4,
+   "speedKmh": 70,
+   "operationalRadiusKm": null,
+   "weaponRangeKm": {
+    "min": 0,
+    "max": 4
+   },
+   "damage": {
+    "infantry": 12,
+    "armor": 6,
+    "aircraft": 0,
+    "helicopter": 2,
+    "drone": 1,
+    "ship": 1,
+    "submarine": 0,
+    "missile": 0,
+    "building": 4
+   },
+   "hp": 24,
+   "armor": 0.35,
+   "stealth": 0,
+   "detectionRangeKm": 15,
+   "ew": {
+    "jamming": 0.1,
+    "jamResistance": 0.3
+   },
+   "payload": {
+    "slots": 4
+   },
+   "unitSize": 8,
+   "requires": [],
+   "licensable": true,
+   "exportable": true,
+   "icon": "ifv",
+   "sheet": {
+    "engine": "Diesel 500 ch",
+    "lengthM": 7.14,
+    "wingspanM": null,
+    "mtowKg": 18700,
+    "warheadKg": null,
+    "speedLabel": "70 km/h",
+    "rangeKm": 600
+   },
+   "enabled": true
+  },
+  {
+   "id": "eu.pzh-2000",
+   "name": "PzH 2000",
+   "doctrine": "eu",
+   "origin": "DE",
+   "category": "artillery",
+   "roles": [],
+   "generation": 4,
+   "targetClass": "armor",
+   "movement": "land",
+   "canCapture": false,
+   "cost": {
+    "money": 700,
+    "resources": {
+     "metals": 35,
+     "electronics": 15
+    }
+   },
+   "buildTimeH": 30,
+   "upkeepPerDay": 8,
+   "speedKmh": 60,
+   "operationalRadiusKm": null,
+   "weaponRangeKm": {
+    "min": 3,
+    "max": 40
+   },
+   "damage": {
+    "infantry": 14,
+    "armor": 8,
+    "aircraft": 0,
+    "helicopter": 0,
+    "drone": 0,
+    "ship": 4,
+    "submarine": 0,
+    "missile": 0,
+    "building": 12
+   },
+   "hp": 26,
+   "armor": 0.4,
+   "stealth": 0,
+   "detectionRangeKm": 20,
+   "ew": {
+    "jamming": 0.1,
+    "jamResistance": 0.3
+   },
+   "payload": {
+    "slots": 4
+   },
+   "unitSize": 4,
+   "requires": [],
+   "licensable": true,
+   "exportable": true,
+   "icon": "artillery",
+   "sheet": {
+    "engine": "Diesel 1 000 ch",
+    "lengthM": 11.7,
+    "wingspanM": null,
+    "mtowKg": 55800,
+    "warheadKg": 43,
+    "speedLabel": "60 km/h",
+    "rangeKm": 420
+   },
+   "enabled": true
+  },
+  {
+   "id": "ru.s-400",
+   "name": "S-400 Triumf",
+   "doctrine": "ru",
+   "origin": "RU",
+   "category": "air_defense",
+   "roles": [],
+   "generation": 5,
+   "targetClass": "armor",
+   "movement": "land",
+   "canCapture": false,
+   "cost": {
+    "money": 1800,
+    "resources": {
+     "electronics": 90,
+     "metals": 30
+    }
+   },
+   "buildTimeH": 60,
+   "upkeepPerDay": 30,
+   "speedKmh": 50,
+   "operationalRadiusKm": null,
+   "weaponRangeKm": {
+    "min": 3,
+    "max": 400
+   },
+   "damage": {
+    "infantry": 0,
+    "armor": 0,
+    "aircraft": 20,
+    "helicopter": 18,
+    "drone": 16,
+    "ship": 0,
+    "submarine": 0,
+    "missile": 18,
+    "building": 0
+   },
+   "hp": 28,
+   "armor": 0.3,
+   "stealth": 0,
+   "detectionRangeKm": 600,
+   "ew": {
+    "jamming": 0.1,
+    "jamResistance": 0.3
+   },
+   "payload": {
+    "slots": 4
+   },
+   "unitSize": 1,
+   "requires": [],
+   "licensable": true,
+   "exportable": true,
+   "icon": "air_defense",
+   "sheet": {
+    "engine": "Châssis 8×8",
+    "lengthM": null,
+    "wingspanM": null,
+    "mtowKg": null,
+    "warheadKg": 145,
+    "speedLabel": "Mach 14 (missile)",
+    "rangeKm": 400
+   },
+   "enabled": true
+  },
+  {
+   "id": "ru.iskander",
+   "name": "9K720 Iskander",
+   "doctrine": "ru",
+   "origin": "RU",
+   "category": "strike_missile",
+   "roles": [],
+   "generation": 4,
+   "targetClass": "armor",
+   "movement": "land",
+   "canCapture": false,
+   "cost": {
+    "money": 1500,
+    "resources": {
+     "electronics": 50,
+     "metals": 25
+    }
+   },
+   "buildTimeH": 48,
+   "upkeepPerDay": 20,
+   "speedKmh": 70,
+   "operationalRadiusKm": null,
+   "weaponRangeKm": {
+    "min": 50,
+    "max": 500
+   },
+   "damage": {
+    "infantry": 20,
+    "armor": 18,
+    "aircraft": 0,
+    "helicopter": 0,
+    "drone": 0,
+    "ship": 20,
+    "submarine": 0,
+    "missile": 0,
+    "building": 40
+   },
+   "hp": 20,
+   "armor": 0.3,
+   "stealth": 0,
+   "detectionRangeKm": 30,
+   "ew": {
+    "jamming": 0.1,
+    "jamResistance": 0.3
+   },
+   "payload": {
+    "slots": 4
+   },
+   "unitSize": 1,
+   "requires": [],
+   "licensable": true,
+   "exportable": true,
+   "icon": "missile",
+   "sheet": {
+    "engine": "Propergol solide",
+    "lengthM": 7.3,
+    "wingspanM": null,
+    "mtowKg": 3800,
+    "warheadKg": 480,
+    "speedLabel": "Mach 6",
+    "rangeKm": 500
+   },
+   "enabled": true
+  },
+  {
+   "id": "eu.fremm",
+   "name": "Frégate FREMM",
+   "doctrine": "eu",
+   "origin": "FR",
+   "category": "surface_ship",
+   "roles": [],
+   "generation": 4,
+   "targetClass": "ship",
+   "movement": "sea",
+   "canCapture": false,
+   "cost": {
+    "money": 2400,
+    "resources": {
+     "metals": 120,
+     "electronics": 80,
+     "oil": 40
+    }
+   },
+   "buildTimeH": 120,
+   "upkeepPerDay": 40,
+   "speedKmh": 50,
+   "operationalRadiusKm": null,
+   "weaponRangeKm": {
+    "min": 1,
+    "max": 250
+   },
+   "damage": {
+    "infantry": 4,
+    "armor": 6,
+    "aircraft": 14,
+    "helicopter": 12,
+    "drone": 10,
+    "ship": 16,
+    "submarine": 10,
+    "missile": 14,
+    "building": 12
+   },
+   "hp": 120,
+   "armor": 0.3,
+   "stealth": 0.1,
+   "detectionRangeKm": 300,
+   "ew": {
+    "jamming": 0.1,
+    "jamResistance": 0.3
+   },
+   "payload": {
+    "slots": 4
+   },
+   "unitSize": 1,
+   "requires": [],
+   "licensable": true,
+   "exportable": true,
+   "icon": "ship",
+   "sheet": {
+    "engine": "Propulsion CODLOG",
+    "lengthM": 142,
+    "wingspanM": null,
+    "mtowKg": 6000000,
+    "warheadKg": null,
+    "speedLabel": "27 nœuds",
+    "rangeKm": 11000
+   },
+   "enabled": true
+  },
+  {
+   "id": "ru.kilo",
+   "name": "Sous-marin classe Kilo",
+   "doctrine": "ru",
+   "origin": "RU",
+   "category": "submarine",
+   "roles": [],
+   "generation": 3,
+   "targetClass": "submarine",
+   "movement": "sea",
+   "canCapture": false,
+   "cost": {
+    "money": 1600,
+    "resources": {
+     "metals": 90,
+     "electronics": 50
+    }
+   },
+   "buildTimeH": 110,
+   "upkeepPerDay": 30,
+   "speedKmh": 37,
+   "operationalRadiusKm": null,
+   "weaponRangeKm": {
+    "min": 1,
+    "max": 50
+   },
+   "damage": {
+    "infantry": 0,
+    "armor": 0,
+    "aircraft": 0,
+    "helicopter": 0,
+    "drone": 0,
+    "ship": 22,
+    "submarine": 16,
+    "missile": 0,
+    "building": 6
+   },
+   "hp": 90,
+   "armor": 0.3,
+   "stealth": 0.6,
+   "detectionRangeKm": 80,
+   "ew": {
+    "jamming": 0.1,
+    "jamResistance": 0.3
+   },
+   "payload": {
+    "slots": 4
+   },
+   "unitSize": 1,
+   "requires": [],
+   "licensable": true,
+   "exportable": true,
+   "icon": "submarine",
+   "sheet": {
+    "engine": "Diesel-électrique",
+    "lengthM": 74,
+    "wingspanM": null,
+    "mtowKg": 3950000,
+    "warheadKg": null,
+    "speedLabel": "20 nœuds",
+    "rangeKm": 7500
+   },
+   "enabled": true
+  },
+  {
+   "id": "other.infantry",
+   "name": "Infanterie motorisée",
+   "doctrine": "other",
+   "origin": "DZ",
+   "category": "infantry",
+   "roles": [],
+   "generation": 2,
+   "targetClass": "infantry",
+   "movement": "land",
+   "canCapture": true,
+   "cost": {
+    "money": 80,
+    "resources": {
+     "food": 10
+    }
+   },
+   "buildTimeH": 8,
+   "upkeepPerDay": 2,
+   "speedKmh": 40,
+   "operationalRadiusKm": null,
+   "weaponRangeKm": {
+    "min": 0,
+    "max": 1
+   },
+   "damage": {
+    "infantry": 8,
+    "armor": 3,
+    "aircraft": 0,
+    "helicopter": 1,
+    "drone": 1,
+    "ship": 0,
+    "submarine": 0,
+    "missile": 0,
+    "building": 3
+   },
+   "hp": 12,
+   "armor": 0.05,
+   "stealth": 0,
+   "detectionRangeKm": 8,
+   "ew": {
+    "jamming": 0.1,
+    "jamResistance": 0.3
+   },
+   "payload": {
+    "slots": 4
+   },
+   "unitSize": 10,
+   "requires": [],
+   "licensable": true,
+   "exportable": true,
+   "icon": "infantry",
+   "sheet": {
+    "engine": null,
+    "lengthM": null,
+    "wingspanM": null,
+    "mtowKg": null,
+    "warheadKg": null,
+    "speedLabel": "40 km/h",
+    "rangeKm": null
+   },
+   "enabled": true
+  }
+ ]
+}

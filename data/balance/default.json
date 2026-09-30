@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "time": {
+    "speeds": [1, 2, 4, 8, 16],
+    "combatRoundMinutes": 20,
+    "captureMinutes": 90,
+    "aiThinkMinutes": 30
+  },
+  "combat": {
+    "variance": 0.2,
+    "groundContactKm": 5,
+    "defenderCityBonus": 0.25,
+    "veterancyXp": [100, 300, 700],
+    "veterancyDamageBonus": 0.1
+  },
+  "movement": {
+    "embarkedSpeedFactor": 0.6,
+    "embarkMinutes": 60
+  },
+  "sensors": {
+    "provinceDetectionKm": 60,
+    "identifiedAtFraction": 0.7,
+    "preciseAtFraction": 0.35,
+    "uncertaintyGrowthKmh": 20,
+    "forgetAfterMinutes": 720
+  },
+  "economy": {
+    "startingMoney": 6000,
+    "startingResources": { "oil": 400, "metals": 500, "electronics": 300, "food": 600 },
+    "incomeMultiplier": 1
+  },
+  "victory": {
+    "provinceShare": 0.6,
+    "allEnemyCapitals": true
+  },
+  "startingArmy": [
+    { "systemId": "other.infantry-light", "count": 3 },
+    { "systemId": "other.infantry-mech", "count": 1 },
+    { "systemId": "eu.leopard-2a7", "count": 1 },
+    { "systemId": "eu.caesar", "count": 1 },
+    { "systemId": "ru.pantsir-s1", "count": 1 },
+    { "systemId": "us.f-16", "count": 1 },
+    { "systemId": "other.bayraktar-tb2", "count": 1 }
+  ],
+  "garrisonArmy": [
+    { "systemId": "other.infantry-light", "count": 2 },
+    { "systemId": "other.infantry-mech", "count": 1 },
+    { "systemId": "eu.mistral", "count": 1 }
+  ]
+}
