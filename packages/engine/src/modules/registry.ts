@@ -101,6 +101,15 @@ export function moduleOrder(state: EngineState, n: NationId, order: Order): Orde
   return null;
 }
 
+/** Premier module qui prend en charge un ordre du cœur (interceptOrder), sinon null. */
+export function moduleIntercept(state: EngineState, n: NationId, order: Order): OrderResult | null {
+  for (const m of MODULES) {
+    const r = m.hooks?.interceptOrder?.(state, n, order);
+    if (r) return r;
+  }
+  return null;
+}
+
 export function moduleSystem(state: EngineState, cmd: SystemCommand): OrderResult | null {
   for (const m of MODULES) {
     const h = m.system?.[cmd.kind];

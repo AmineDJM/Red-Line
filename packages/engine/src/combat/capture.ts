@@ -24,7 +24,7 @@ export function evaluateCapture(state: EngineState, pid: ProvinceId): void {
     const pair = state.pairs[key];
     if (!pair) continue;
     const U = state.units[key.slice(key.indexOf('#') + 1)];
-    if (!U) continue;
+    if (!U || U.off || U.role) continue;
     const sys = sysOf(state, U);
     if (
       pair.d <= CAPTURE_RADIUS_KM &&

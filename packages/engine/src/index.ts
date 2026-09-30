@@ -3,8 +3,10 @@
 // viewFor, diffViews, notificationsFor, serializeState, deserializeState, stateHash.
 export * from './api.js';
 
+import { battleReportForImpl } from './modules/mil/battles.js';
 import type {
   ApplySystem,
+  BattleReportFor,
   GameStats,
   OwnersFrame,
   PublicView,
@@ -71,6 +73,8 @@ export const stats: Stats = (state) => {
   moduleStats(st, out);
   return out;
 };
+export const battleReportFor: BattleReportFor = (state, nationId, reportId) =>
+  battleReportForImpl(S(state), nationId, reportId);
 export type { EngineModule, ModEvent, ModuleId } from './modules/types.js';
 
 // Utilitaires géométriques exacts (réutilisables par le client et les tests).

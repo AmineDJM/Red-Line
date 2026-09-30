@@ -61,6 +61,7 @@ export function rebuildRuntime(state: EngineState): void {
   for (const uid of sortedKeys(state.units)) {
     const u = state.units[uid]!;
     addToIndex(rt.byNation, u.owner, uid);
+    if ((state.world.catalog.get(u.sys)?.ew.jamming ?? 0) > 0) addToIndex(rt.jammers, u.owner, uid);
     if (u.target) addToIndex(rt.chasers, u.target, uid);
     registerUnit(state, u);
   }

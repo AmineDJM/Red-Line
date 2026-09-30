@@ -89,6 +89,16 @@ export interface Unit {
   cv: number;
   /** Dernier dégât reçu (temps de jeu), -1 si jamais. */
   lastHit: GameTime;
+  /**
+   * Rôle particulier (module mil) : salve de missiles en vol, ou leurre. Un missile ne tire pas, ne
+   * capture pas, ne déclare pas de guerre en survolant un territoire et n'est engagé que par interception.
+   */
+  role?: 'missile' | 'decoy';
+  /**
+   * Hors carte : aéronef embarqué sur un porte-avions, satellite en orbite. Ni index spatial, ni paires,
+   * ni combat ; la position n'a pas de sens (voir le module mil).
+   */
+  off?: boolean;
 }
 
 /**

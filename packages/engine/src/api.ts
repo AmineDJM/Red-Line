@@ -6,6 +6,7 @@
 import type {
   AlertLevel,
   Balance,
+  BattleReport,
   Orbat,
   ResearchNode,
   ScenarioFile,
@@ -106,6 +107,8 @@ export interface GameStats {
       losses: number;
       spentUsd: number;
       bestUnits: { systemId: string; kills: number }[];
+      /** Victimes estimées (personnels) subies (module mil). */
+      casualties?: number;
     }
   >;
   alertLevel: AlertLevel;
@@ -156,3 +159,12 @@ export type PublicView = (state: GameState) => PlayerView;
 /** Propriétaires des provinces (timelapse). */
 export type OwnersFrame = (state: GameState) => Record<string, NationId>;
 export type Stats = (state: GameState) => GameStats;
+/**
+ * Détail d'un rapport de bataille (GET /api/games/:id/battle-reports/:rid) : null si le rapport
+ * n'existe pas ou si la nation n'y a pas pris part.
+ */
+export type BattleReportFor = (
+  state: GameState,
+  nationId: NationId,
+  reportId: string,
+) => BattleReport | null;

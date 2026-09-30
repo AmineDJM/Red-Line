@@ -4,12 +4,13 @@ import { sightLevel, sysOf, unitPosAt } from '../state/access.js';
 import type { EngineState, Unit } from '../state/types.js';
 import { declareWar } from '../state/war.js';
 import { inWeaponRange, unitPairKey } from '../encounters/pairs.js';
+import { targetClassOf, weaponRange } from '../encounters/profile.js';
 import { setMovement } from '../movement/movement.js';
 import { airCanReach, planUnitMove } from '../movement/plan-unit.js';
 import { clearTarget, setTarget } from '../combat/combat.js';
 import { startProduction } from '../economy/economy.js';
 import { cleanTop, settle } from '../sim/settle.js';
-import { callHook, moduleOrder, moduleSystem } from '../modules/registry.js';
+import { callHook, moduleIntercept, moduleOrder, moduleSystem } from '../modules/registry.js';
 import type { SystemCommand } from '../api.js';
 
 /** Commande système (serveur, administration). */
@@ -66,6 +67,7 @@ function resolveUnits(state: EngineState, n: NationId, ids: UnitId[]): Unit[] | 
     const u = state.units[id];
     if (!u) return fail('unknown_unit', `Unité inconnue : ${id}`);
     if (u.owner !== n) return fail('not_owner', `Cette unité ne vous appartient pas : ${id}`);
+    if (u.off || u.role) return fail('not_allowed', `Unité indisponible pour cet ordre : ${id}`);
     out.push(u);
   }
   return out;
@@ -75,7 +77,8 @@ function resolveUnits(state: EngineState, n: NationId, ids: UnitId[]): Unit[] | 
 export function applyOrderImpl(state: EngineState, n: NationId, order: Order): OrderResult {
   if (state.winner) return fail('game_over', 'La partie est terminée.');
   if (!state.nations[n]) return fail('not_allowed', 'Nation absente de la partie.');
-  const res = dispatchOrder(state, n, order);
+  // Un module peut prendre en charge un ordre du cœur (aéronefs à carburant, satellites…).
+  const res = moduleIntercept(state, n, order) ?? dispatchOrder(state, n, order);
   if (res.ok) callHook('onOrder', state, n, order);
   settle(state);
   cleanTop(state);
@@ -103,18 +106,26 @@ function dispatchOrder(state: EngineState, n: NationId, order: Order): OrderResu
       const units = resolveUnits(state, n, order.unitIds);
       if (!Array.isArray(units)) return units;
       const tgt = state.units[order.targetId];
-      if (!tgt || tgt.owner === n || sightLevel(state, n, tgt.id) === 0) {
+      if (
+        !tgt ||
+        tgt.owner === n ||
+        tgt.off ||
+        tgt.role === 'missile' ||
+        sightLevel(state, n, tgt.id) === 0
+      ) {
         return fail('invalid_target', 'Cible invalide ou hors de vue.');
       }
-      const tClass = sysOf(state, tgt).targetClass;
-      const able = units.filter((u) => sysOf(state, u).damage[tClass] > 0);
+      const tClass = targetClassOf(state, tgt);
+      const able = units.filter(
+        (u) => weaponRange(state, u).max > 0 && sysOf(state, u).damage[tClass] > 0,
+      );
       if (able.length === 0)
         return fail('invalid_target', 'Aucune de ces unités ne peut toucher cette cible.');
       const aim = unitPosAt(state, tgt, state.time);
       const plans = new Map<UnitId, Leg[]>();
       for (const u of able) {
         const pair = state.pairs[unitPairKey(u.id, tgt.id)];
-        if (pair && inWeaponRange(sysOf(state, u), pair.d)) continue;
+        if (pair && inWeaponRange(state, u, pair.d)) continue;
         const sys = sysOf(state, u);
         if (sys.movement === 'static' || sys.speedKmh <= 0) continue; // tirera si la cible s'approche
         if (sys.movement === 'air' && !airCanReach(state, u, aim)) {

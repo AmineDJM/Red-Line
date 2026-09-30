@@ -29,6 +29,8 @@ export interface Runtime {
   dirtyCapture: Set<ProvinceId>;
   /** Pas de notifications (création de partie). */
   silent: boolean;
+  /** Nation → unités capables de brouiller (ew.jamming > 0). */
+  jammers: Map<NationId, Set<UnitId>>;
 }
 
 export function emptyRuntime(): Runtime {
@@ -46,6 +48,7 @@ export function emptyRuntime(): Runtime {
     dirtyCombat: new Set(),
     dirtyCapture: new Set(),
     silent: false,
+    jammers: new Map(),
   };
 }
 
