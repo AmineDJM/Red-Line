@@ -54,7 +54,8 @@ export class FlagCache {
         const c = document.createElement('canvas');
         c.width = FLAG_W;
         c.height = FLAG_H;
-        const ctx = c.getContext('2d')!;
+        // Canevas logiciel : sa relecture (sprites des pions) reste instantanée, même sans GPU.
+        const ctx = c.getContext('2d', { willReadFrequently: true })!;
         ctx.imageSmoothingQuality = 'high';
         ctx.drawImage(img, 0, 0, FLAG_W, FLAG_H);
         this.entries.set(nation, { state: 'ready', canvas: c });

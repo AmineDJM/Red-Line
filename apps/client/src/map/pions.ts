@@ -18,8 +18,8 @@ import { C, MONO, REL_COLOR, alpha, type Rel } from './palette.js';
 export const SPRITE_RATIO = 2;
 
 /** Dimensions du pion (px CSS, à icon-size 1). */
-export const PION_W = 50;
-export const PION_H = 22;
+export const PION_W = 58;
+export const PION_H = 26;
 /** Marges du canevas autour du pion : cartes empilées, pastilles. */
 const M_LEFT = 6;
 const M_TOP = 8;
@@ -126,7 +126,7 @@ function canvas(w: number, h: number) {
 }
 
 function out(c: HTMLCanvasElement) {
-  const ctx = c.getContext('2d')!;
+  const ctx = c.getContext('2d', { willReadFrequently: true })!;
   const d = ctx.getImageData(0, 0, c.width, c.height);
   return { width: c.width, height: c.height, data: new Uint8Array(d.data.buffer) };
 }
@@ -230,7 +230,7 @@ function badge(ctx: CanvasRenderingContext2D, k: BadgeKind, cx: number, cy: numb
   ctx.fillStyle = BADGE_COLOR[k];
   ctx.strokeStyle = C.bg;
   ctx.lineWidth = 1.2;
-  rr(ctx, cx - 4.4, cy - 4.4, 8.8, 8.8, 2);
+  rr(ctx, cx - 5, cy - 5, 10, 10, 2.2);
   ctx.fill();
   ctx.stroke();
   drawBadgeGlyph(ctx, k, cx, cy);
@@ -251,7 +251,7 @@ export function drawPion(s: PionSpec): SpriteImage {
   // Cartes empilées derrière le pion.
   const cards = Math.min(2, Math.max(0, s.stack - 1));
   for (let i = cards; i >= 1; i--) {
-    rr(ctx, x + 3 * i, y - 3 * i, w, h, 3.5);
+    rr(ctx, x + 3.2 * i, y - 3.2 * i, w, h, 3.5);
     ctx.fillStyle = i === 2 ? '#0b1117' : '#0d141b';
     ctx.fill();
     ctx.strokeStyle = alpha(edge, i === 2 ? 0.45 : 0.7);
@@ -279,39 +279,39 @@ export function drawPion(s: PionSpec): SpriteImage {
   rr(ctx, x, y, w, h, 3.5);
   ctx.clip();
   ctx.fillStyle = edge;
-  ctx.fillRect(x, y, 2.2, h);
+  ctx.fillRect(x, y, 2.6, h);
   ctx.restore();
 
   // Drapeau, pictogramme, effectif.
-  const fh = 10;
-  const fw = 13.4;
-  const cy = y + (s.hp >= 0 ? (h - 2.5) / 2 : h / 2);
-  drawFlag(ctx, s.nation, s.color, x + 4.6, cy - fh / 2, fw, fh);
-  const gs = 15;
-  drawGlyph(ctx, s.glyph, x + 20, cy - gs / 2, gs, unknown ? C.dim : '#eef3f8');
+  const fh = 12.6;
+  const fw = 16.8;
+  const cy = y + (s.hp >= 0 ? (h - 3) / 2 : h / 2);
+  drawFlag(ctx, s.nation, s.color, x + 5, cy - fh / 2, fw, fh);
+  const gs = 18;
+  drawGlyph(ctx, s.glyph, x + 24.5, cy - gs / 2, gs, unknown ? C.dim : '#f2f6fa');
   if (s.count) {
-    ctx.font = `700 ${s.count.length > 3 ? 8.4 : 9.6}px ${MONO}`;
+    ctx.font = `700 ${s.count.length > 3 ? 9 : s.count.length > 2 ? 10 : 11}px ${MONO}`;
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = C.text;
-    ctx.fillText(s.count, x + w - 3.4, cy + 0.6);
+    ctx.fillStyle = '#eef3f8';
+    ctx.fillText(s.count, x + w - 4, cy + 0.7);
   }
 
   // Barre d'état (bas du pion).
   if (s.hp >= 0) {
-    const bx = x + 4.6;
-    const bw = w - 8;
-    const by = y + h - 3.6;
+    const bx = x + 5;
+    const bw = w - 9;
+    const by = y + h - 4.2;
     ctx.fillStyle = '#243241';
-    ctx.fillRect(bx, by, bw, 1.8);
+    ctx.fillRect(bx, by, bw, 2.2);
     const r = s.hp / 10;
     ctx.fillStyle = r > 0.6 ? C.green : r > 0.3 ? C.amber : C.red;
-    ctx.fillRect(bx, by, Math.max(1, bw * r), 1.8);
+    ctx.fillRect(bx, by, Math.max(1, bw * r), 2.2);
   }
 
   // Liseré.
   ctx.strokeStyle = edge;
-  ctx.lineWidth = s.sel ? 1.8 : 1.3;
+  ctx.lineWidth = s.sel ? 2 : 1.4;
   if (dashed) ctx.setLineDash([3, 2]);
   rr(ctx, x + 0.5, y + 0.5, w - 1, h - 1, 3.2);
   ctx.stroke();
@@ -355,11 +355,11 @@ export function drawPion(s: PionSpec): SpriteImage {
   // Nombre de piles (onglet coin supérieur droit).
   if (s.stack > 1) {
     const txt = s.stack > 99 ? '99+' : String(s.stack);
-    ctx.font = `700 7.6px ${MONO}`;
-    const tw = Math.max(9, ctx.measureText(txt).width + 5);
+    ctx.font = `700 8.4px ${MONO}`;
+    const tw = Math.max(10, ctx.measureText(txt).width + 5);
     const bx = x + w + 6 - tw / 2 - 1;
     const by = y - 6.5;
-    rr(ctx, bx - tw / 2 + 2, by - 4.2, tw, 8.4, 2);
+    rr(ctx, bx - tw / 2 + 2, by - 4.6, tw, 9.2, 2);
     ctx.fillStyle = edge;
     ctx.fill();
     ctx.strokeStyle = C.bg;
@@ -384,20 +384,31 @@ export function drawPion(s: PionSpec): SpriteImage {
 
 // ——— Bâtiments ———
 
-export type BuildingState = 'ok' | 'dmg' | 'down' | 'rep';
-export const BLD_SIZE = 15;
+export type BuildingState = 'ok' | 'dmg' | 'down' | 'rep' | 'up';
+export const BLD_SIZE = 17;
 
-export function drawBuilding(type: string, rel: Rel, state: BuildingState): SpriteImage {
-  const pad = 2;
+/**
+ * Tuile de bâtiment : pictogramme propre au type, liseré de relation (ambre endommagé, rouge hors
+ * service, tirets en réparation ou en construction), niveau 1-5 en exposant.
+ */
+export function drawBuilding(type: string, rel: Rel, state: BuildingState, level = 1): SpriteImage {
+  const pad = 3;
   const S = BLD_SIZE;
   const { c, ctx } = canvas(S + pad * 2, S + pad * 2);
-  const edge = state === 'down' ? C.red : state === 'dmg' ? C.amber : REL_COLOR[rel];
+  const edge =
+    state === 'down' ? C.red : state === 'dmg' ? C.amber : state === 'up' ? C.cyan : REL_COLOR[rel];
+  const fill = state === 'down' ? '#1c0f13' : '#0f161e';
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,0.55)';
+  ctx.shadowBlur = 2;
   rr(ctx, pad, pad, S, S, 2.5);
-  ctx.fillStyle = state === 'down' ? '#1c0f13' : '#0f161e';
+  ctx.fillStyle = fill;
   ctx.fill();
+  ctx.restore();
   ctx.strokeStyle = edge;
   ctx.lineWidth = 1.1;
-  if (state === 'rep') ctx.setLineDash([2, 1.5]);
+  if (state === 'rep' || state === 'up') ctx.setLineDash([2, 1.5]);
+  rr(ctx, pad + 0.5, pad + 0.5, S - 1, S - 1, 2.3);
   ctx.stroke();
   ctx.setLineDash([]);
   drawGlyph(
@@ -407,6 +418,7 @@ export function drawBuilding(type: string, rel: Rel, state: BuildingState): Spri
     pad + 2,
     S - 4,
     state === 'down' ? alpha(C.text, 0.4) : C.text,
+    fill,
   );
   if (state === 'down') {
     ctx.strokeStyle = C.red;
@@ -426,6 +438,19 @@ export function drawBuilding(type: string, rel: Rel, state: BuildingState): Spri
     ctx.closePath();
     ctx.fill();
   }
+  if (level > 1) {
+    const txt = String(Math.min(5, Math.round(level)));
+    const bx = pad + S - 0.5;
+    const by = pad + 0.5;
+    ctx.fillStyle = edge;
+    rr(ctx, bx - 3.6, by - 3.6, 7.2, 7.2, 1.6);
+    ctx.fill();
+    ctx.font = `700 6.4px ${MONO}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = C.bg;
+    ctx.fillText(txt, bx, by + 0.4);
+  }
   return out(c);
 }
 
@@ -442,7 +467,7 @@ export function drawCity(cls: number, rel: Rel | 'none'): SpriteImage {
     ctx.beginPath();
     ctx.arc(m, m, 6.6, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = rel === 'none' ? C.text : REL_COLOR[rel as Rel];
+    ctx.strokeStyle = rel === 'own' ? C.violet : 'rgba(214,221,230,0.85)';
     ctx.lineWidth = 1.2;
     ctx.stroke();
     ctx.fillStyle = '#ffffff';
@@ -466,6 +491,32 @@ export function drawCity(cls: number, rel: Rel | 'none'): SpriteImage {
       ctx.fillRect(m - 1, m - 1, 2, 2);
     }
   }
+  return out(c);
+}
+
+// ——— Renseignement ———
+
+export const INTEL_COLORS = ['#ff4d5e', '#ffb020', '#4cc9f0', '#3ddc84'] as const;
+
+/** Pastille du niveau de connaissance d'une province (calque « Renseignement »). */
+export function drawIntelBadge(level: number): SpriteImage {
+  const { c, ctx } = canvas(30, 12);
+  const col = INTEL_COLORS[Math.max(0, Math.min(3, level))]!;
+  rr(ctx, 1, 1, 28, 10, 2);
+  ctx.fillStyle = 'rgba(10,14,19,0.9)';
+  ctx.fill();
+  ctx.strokeStyle = col;
+  ctx.lineWidth = 0.8;
+  ctx.stroke();
+  for (let i = 0; i < 3; i++) {
+    ctx.fillStyle = i < level ? col : '#243241';
+    ctx.fillRect(4 + i * 5.2, 4, 4.2, 4);
+  }
+  ctx.font = `700 6.6px ${MONO}`;
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = col;
+  ctx.fillText(`${level}/3`, 27.4, 6.4);
   return out(c);
 }
 
@@ -519,8 +570,12 @@ export async function resolveSprite(
     return true;
   }
   if (id.startsWith('bld|')) {
-    const [, type, rel, state] = id.split('|');
-    add(id, drawBuilding(type!, rel as Rel, state as BuildingState));
+    const [, type, rel, state, level] = id.split('|');
+    add(id, drawBuilding(type!, rel as Rel, state as BuildingState, Number(level ?? 1)));
+    return true;
+  }
+  if (id.startsWith('intel|')) {
+    add(id, drawIntelBadge(Number(id.split('|')[1])));
     return true;
   }
   if (id.startsWith('city|')) {

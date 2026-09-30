@@ -10,10 +10,35 @@ export interface Glyph {
   stroke?: string[];
   /** Épaisseur du trait (unités de la boîte 24). */
   sw?: number;
+  /** Détails « découpés » : peints dans la couleur du fond. */
+  knock?: string[];
 }
 
 const circle = (cx: number, cy: number, r: number) =>
   `M${cx - r} ${cy} a${r} ${r} 0 1 0 ${2 * r} 0 a${r} ${r} 0 1 0 ${-2 * r} 0`;
+
+/** Roue dentée (industrie locale). */
+function gear(cx: number, cy: number, r: number, teeth: number, depth: number): string {
+  const pts: string[] = [];
+  const n = teeth * 4;
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2;
+    const rr = i % 4 < 2 ? r : r - depth;
+    pts.push(`${(cx + rr * Math.cos(a)).toFixed(2)} ${(cy + rr * Math.sin(a)).toFixed(2)}`);
+  }
+  return `M${pts.join(' L')} Z`;
+}
+
+/** Épi de blé (ferme). */
+function wheat(): string[] {
+  const out: string[] = [];
+  for (const y of [8.4, 12.2, 16]) {
+    out.push(`M12 ${y} C9.6 ${y - 0.4} 8.6 ${y - 2.8} 9 ${y - 4.4} C11 ${y - 3.8} 12 ${y - 2} 12 ${y} Z`);
+    out.push(`M12 ${y} C14.4 ${y - 0.4} 15.4 ${y - 2.8} 15 ${y - 4.4} C13 ${y - 3.8} 12 ${y - 2} 12 ${y} Z`);
+  }
+  out.push('M12 5.4 C10.9 4.4 11 2.8 12 1.8 C13 2.8 13.1 4.4 12 5.4 Z');
+  return out;
+}
 
 export const GLYPHS = {
   fighter: {
@@ -123,6 +148,143 @@ export const GLYPHS = {
       circle(18, 18.4, 2),
     ],
   },
+  radar: {
+    fill: ['M3 17.4 L15 17.4 L15 20 L3 20 Z', circle(12.6, 8.4, 1.2)],
+    stroke: ['M4.6 4.2 A9.4 9.4 0 0 0 16.4 15', 'M9.4 10.6 L12.6 8.4', 'M8.6 17.4 L10.4 11.6 L12.2 17.4', 'M16.8 5 A4 4 0 0 1 19.6 8.2 M17.6 1.8 A7.4 7.4 0 0 1 22.8 7.4'],
+    sw: 1.7,
+  },
+  // ——— Bâtiments (tuiles de 11 px : formes simples et très distinctes) ———
+  refinery: {
+    fill: ['M3.6 21 L3.6 9.4 L7.4 9.4 L7.4 21 Z', 'M9.4 21 L9.4 5.6 L13 5.6 L13 21 Z', circle(18.2, 16.8, 3.6)],
+    stroke: ['M2.4 21.4 L21.6 21.4', 'M11.2 5 C10.2 3.8 10.8 2.6 11.6 1.8'],
+    sw: 1.5,
+  },
+  power_plant: {
+    fill: [
+      'M3 21 C4.4 16.4 4.4 11.8 3.4 8 L11 8 C10 11.8 10 16.4 11.4 21 Z',
+      'M17.6 2.4 L13.6 11 L16.8 11 L14.4 19.6 L21 9.2 L17.6 9.2 L20 2.4 Z',
+    ],
+  },
+  port: {
+    stroke: [
+      circle(12, 4.6, 1.9),
+      'M12 6.5 L12 20.6',
+      'M8.2 9.6 L15.8 9.6',
+      'M4.6 14 C5.2 18 8.4 20.6 12 20.6 C15.6 20.6 18.8 18 19.4 14',
+    ],
+    fill: ['M3 13.2 L6.6 13.2 L4.6 16.4 Z', 'M21 13.2 L17.4 13.2 L19.4 16.4 Z'],
+    sw: 2,
+  },
+  air_base: {
+    fill: ['M8.2 21.8 L10.6 2.2 L13.4 2.2 L15.8 21.8 Z'],
+    knock: ['M11.4 4.4 L12.6 4.4 L12.6 7.4 L11.4 7.4 Z', 'M11.4 10 L12.6 10 L12.6 13 L11.4 13 Z', 'M11.4 15.6 L12.6 15.6 L12.6 18.6 L11.4 18.6 Z'],
+    stroke: ['M3 12 L7.4 12 M16.6 12 L21 12'],
+    sw: 1.6,
+  },
+  military_base: {
+    fill: [
+      'M12 2.6 L14.3 9.1 L21.2 9.3 L15.8 13.5 L17.7 20.2 L12 16.3 L6.3 20.2 L8.2 13.5 L2.8 9.3 L9.7 9.1 Z',
+    ],
+  },
+  arms_factory: {
+    fill: ['M2.4 21 L2.4 11 L7.4 14 L7.4 11 L12.4 14 L12.4 11 L17.2 14 L17.2 4.4 L21 4.4 L21 21 Z'],
+    knock: ['M8.2 21 L8.2 17.2 L11.8 17.2 L11.8 21 Z'],
+  },
+  research_center: {
+    stroke: [
+      'M3 12 a9 3.6 0 1 0 18 0 a9 3.6 0 1 0 -18 0',
+      'M7.5 4.206 a9 3.6 60 1 0 9 15.588 a9 3.6 60 1 0 -9 -15.588',
+      'M16.5 4.206 a9 3.6 120 1 0 -9 15.588 a9 3.6 120 1 0 9 -15.588',
+    ],
+    fill: [circle(12, 12, 1.8)],
+    sw: 1.5,
+  },
+  oil_field: {
+    stroke: [
+      'M2.4 21.4 L21.6 21.4',
+      'M6 21.4 L10 11.4 L14 21.4',
+      'M3.4 9 L18.4 12.6',
+      'M18.6 14.6 L18.6 21.4',
+    ],
+    fill: ['M16.4 9 C20 8.6 22 11 21 15.4 L17.6 13.2 Z', circle(10, 10.8, 1.5)],
+    sw: 1.9,
+  },
+  mine: {
+    fill: ['M2.6 9.2 L21.4 9.2 L18.8 17 L5.2 17 Z', circle(8, 19.4, 2), circle(16, 19.4, 2), circle(8.6, 7, 2.1), circle(13, 6.4, 2.4), circle(16.8, 7.4, 1.8)],
+  },
+  farm: {
+    fill: wheat(),
+    stroke: ['M12 6 L12 22'],
+    sw: 1.5,
+  },
+  electronics_plant: {
+    fill: ['M6.4 6.4 L17.6 6.4 L17.6 17.6 L6.4 17.6 Z'],
+    knock: ['M9.2 9.2 L14.8 9.2 L14.8 14.8 L9.2 14.8 Z'],
+    stroke: [
+      'M9 2.4 L9 6 M12 2.4 L12 6 M15 2.4 L15 6',
+      'M9 18 L9 21.6 M12 18 L12 21.6 M15 18 L15 21.6',
+      'M2.4 9 L6 9 M2.4 12 L6 12 M2.4 15 L6 15',
+      'M18 9 L21.6 9 M18 12 L21.6 12 M18 15 L21.6 15',
+    ],
+    sw: 1.5,
+  },
+  local_industry: {
+    fill: [gear(12, 12, 9.4, 8, 2.4)],
+    knock: [circle(12, 12, 3.4)],
+  },
+  recruiting_office: {
+    fill: [circle(9, 6.8, 3.2), 'M2.6 20.6 C2.6 14.6 5.4 12 9 12 C12.6 12 15.4 14.6 15.4 20.6 Z'],
+    stroke: ['M18.8 7.6 L18.8 14.4 M15.4 11 L22.2 11'],
+    sw: 2,
+  },
+  naval_base: {
+    stroke: ['M2.6 5 L2.6 19.8 L21.4 19.8 L21.4 5'],
+    fill: ['M5.6 12.8 L18.4 12.8 L16.6 16.6 L7.4 16.6 Z', 'M9.6 12.8 L9.6 9.8 L13.8 9.8 L13.8 12.8 Z'],
+    sw: 2,
+  },
+  bunker: {
+    fill: ['M2.4 19.6 A9.6 9.6 0 0 1 21.6 19.6 Z', 'M1.6 19.6 L22.4 19.6 L22.4 21.6 L1.6 21.6 Z'],
+    knock: ['M7.6 14.2 L16.4 14.2 L16.4 15.8 L7.6 15.8 Z'],
+  },
+  air_defense_site: {
+    fill: [
+      'M2.6 19.4 L21.4 19.4 L21.4 21.6 L2.6 21.6 Z',
+      'M5 18.6 L9.4 5.4 C9.8 4.2 10.6 4.2 10.8 5.4 L8.2 18.6 Z',
+      'M10.8 18.6 L15.2 5.4 C15.6 4.2 16.4 4.2 16.6 5.4 L14 18.6 Z',
+    ],
+    stroke: ['M18 9.4 A3.6 3.6 0 0 1 21.6 13'],
+    sw: 1.6,
+  },
+  coastal_battery: {
+    fill: ['M3 15 L3 10.6 L11.6 10.6 L12.6 15 Z', 'M10.8 11.2 L21.4 7.2 L22 8.8 L11.4 12.8 Z'],
+    stroke: ['M1.8 19.4 C3.6 17.8 5.4 17.8 7.2 19.4 C9 21 10.8 21 12.6 19.4 C14.4 17.8 16.2 17.8 18 19.4 C19.8 21 21.2 21 22.4 19.8'],
+    sw: 1.7,
+  },
+  radar_station: {
+    fill: [circle(12.4, 9, 1.4), 'M7.4 21.6 L10.2 13 L12.6 13 L15.4 21.6 Z'],
+    stroke: ['M3.4 4.4 A10.4 10.4 0 0 0 16.2 17.2', 'M9 12.6 L12.4 9', 'M16.4 3.2 A4.6 4.6 0 0 1 20.4 7.4'],
+    sw: 1.9,
+  },
+  missile_silo: {
+    fill: ['M12 2 C13.4 3.4 13.7 4.9 13.7 6.4 L13.7 16.4 L10.3 16.4 L10.3 6.4 C10.3 4.9 10.6 3.4 12 2 Z'],
+    stroke: ['M7.2 12 L7.2 21 L16.8 21 L16.8 12', 'M2.4 12 L7.2 12 M16.8 12 L21.6 12'],
+    sw: 1.8,
+  },
+  hospital: {
+    fill: ['M9.2 3.2 L14.8 3.2 L14.8 9.2 L20.8 9.2 L20.8 14.8 L14.8 14.8 L14.8 20.8 L9.2 20.8 L9.2 14.8 L3.2 14.8 L3.2 9.2 L9.2 9.2 Z'],
+  },
+  secret_lab: {
+    fill: [
+      'M9.2 2.6 L14.8 2.6 L14.8 4.4 L13.8 4.4 L13.8 9.4 L19.6 18.8 C20.4 20.2 19.6 21.6 18 21.6 L6 21.6 C4.4 21.6 3.6 20.2 4.4 18.8 L10.2 9.4 L10.2 4.4 L9.2 4.4 Z',
+    ],
+    knock: [circle(10, 17.4, 1.3), circle(14, 15.6, 1), circle(13.2, 19, 0.9)],
+  },
+  forward_base: {
+    fill: ['M6.6 3.4 L18.6 3.4 L16 6.8 L18.6 10.2 L6.6 10.2 Z', 'M9 21.6 L14.6 13.2 L20.2 21.6 Z'],
+    stroke: ['M5.8 22 L5.8 2.6'],
+    sw: 1.8,
+  },
+  city: { fill: [circle(12, 12, 4.2)] },
   unknown: {
     stroke: ['M8.6 8.4 C8.6 5.8 10.3 4.4 12 4.4 C14 4.4 15.6 5.8 15.6 7.8 C15.6 10.6 12 11 12 14.2'],
     fill: [circle(12, 18.6, 1.6)],
@@ -130,7 +292,7 @@ export const GLYPHS = {
   },
 } as const satisfies Record<string, Glyph>;
 
-export type GlyphId = keyof typeof GLYPHS | 'refinery' | 'power_plant' | 'port' | 'air_base' | 'military_base' | 'arms_factory' | 'research_center' | 'city';
+export type GlyphId = keyof typeof GLYPHS;
 
 const CATEGORY_GLYPH: Record<Category, keyof typeof GLYPHS> = {
   fighter: 'fighter',
@@ -149,6 +311,7 @@ const CATEGORY_GLYPH: Record<Category, keyof typeof GLYPHS> = {
   infantry: 'infantry',
   space: 'satellite',
   logistics: 'logistics',
+  radar: 'radar',
 };
 
 /** Pictogramme de carte d'un système d'armes. */
@@ -167,6 +330,7 @@ export function drawGlyph(
   y: number,
   size: number,
   color: string,
+  knockColor = '#0e141b',
 ) {
   const g: Glyph | undefined = (GLYPHS as Record<string, Glyph>)[id];
   ctx.save();
@@ -180,6 +344,10 @@ export function drawGlyph(
     for (const d of g.fill ?? []) ctx.fill(new Path2D(d));
     ctx.lineWidth = g.sw ?? 1.8;
     for (const d of g.stroke ?? []) ctx.stroke(new Path2D(d));
+    if (g.knock?.length) {
+      ctx.fillStyle = knockColor;
+      for (const d of g.knock) ctx.fill(new Path2D(d));
+    }
   } else if (isPictogramId(id)) {
     // Bâtiments : tracés au trait de la bibliothèque d'interface, épaissis.
     ctx.lineWidth = 2.1;

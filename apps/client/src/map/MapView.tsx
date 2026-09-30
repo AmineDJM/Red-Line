@@ -1,7 +1,14 @@
 import { useEffect, useRef } from 'react';
 import type { LngLat, NationId } from '@redline/shared';
-import { DEBUG_HOOKS, IS_MOCK } from '../config.js';
+import { DEBUG_HOOKS } from '../config.js';
 import { GameMap, type MapMode } from './GameMap.js';
+
+let active: GameMap | null = null;
+
+/** Contrôleur de la carte de jeu actuellement montée (null sinon) — pour l'interface. */
+export function getActiveGameMap(): GameMap | null {
+  return active;
+}
 
 export interface MapViewProps {
   mode: MapMode;
@@ -13,9 +20,13 @@ export interface MapViewProps {
   onPlace?: (at: LngLat) => void;
   insets?: { top: number; right: number; bottom: number; left: number };
   className?: string;
+  /** Appelé une fois le contrôleur créé (API : setLayerGroup, focusUnit, stats…). */
+  onReady?: (map: GameMap) => void;
 }
 
 const FONTS_TO_LOAD = [
+  '700 12px "JetBrains Mono"',
+  '400 12px "JetBrains Mono"',
   '700 16px "Barlow Condensed"',
   '400 12px "IBM Plex Sans"',
   'italic 400 12px "IBM Plex Sans"',
@@ -32,12 +43,13 @@ export function MapView({
   onPlace,
   insets,
   className,
+  onReady,
 }: MapViewProps) {
   const ref = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mapRef = useRef<GameMap | null>(null);
-  const cb = useRef({ onPickNation, placing, onPlace });
-  cb.current = { onPickNation, placing, onPlace };
+  const cb = useRef({ onPickNation, placing, onPlace, onReady });
+  cb.current = { onPickNation, placing, onPlace, onReady };
   const insetsRef = useRef(insets);
   insetsRef.current = insets;
   const pickedRef = useRef(pickedNation);
@@ -61,13 +73,21 @@ export function MapView({
         onPlace: (at) => cb.current.onPlace?.(at),
       });
       mapRef.current = gm;
+      if (mode !== 'picker') active = gm;
       if (insetsRef.current) gm.setInsets(insetsRef.current);
       if (pickedRef.current)
         gm.map.once('load', () => gm.setPickedNation(pickedRef.current ?? null));
-      if (DEBUG_HOOKS) (window as unknown as { __rlMap?: GameMap }).__rlMap = gm;
+      if (DEBUG_HOOKS) {
+        // Scène de démonstration chargée à la demande (jamais dans le parcours normal).
+        const dbg = gm as GameMap & { demo?: (o?: object) => Promise<unknown> };
+        dbg.demo = (o) => import('./demo.js').then((m) => m.applyDemoScene(o));
+        (window as unknown as { __rlMap?: GameMap }).__rlMap = gm;
+      }
+      cb.current.onReady?.(gm);
     });
     return () => {
       disposed = true;
+      if (active === mapRef.current) active = null;
       mapRef.current?.destroy();
       mapRef.current = null;
     };

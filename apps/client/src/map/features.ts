@@ -1,7 +1,9 @@
 /** Construction des entités GeoJSON affichées (fonctions pures, sans MapLibre). */
 import type { Feature, FeatureCollection, LineString, Point, Polygon } from 'geojson';
 import {
+  bearing,
   distanceKm,
+  legAt,
   geodesicCircle,
   greatCircleLine,
   movementEnd,
@@ -20,7 +22,7 @@ import {
 } from '@redline/shared';
 import { glyphFor, type GlyphId } from './glyphs.js';
 import { groupItems, type Group, type GroupItem } from './grouping.js';
-import { isMoving, remainingPath, unitHeading, unitPosition } from './interpolation.js';
+import { isMoving, remainingPath, unitPosition } from './interpolation.js';
 import { C, relationOf, type Rel } from './palette.js';
 import {
   BLD_SIZE,
@@ -88,17 +90,30 @@ export interface UnitInfo extends GroupItem {
 
 const STALE_MS = 10 * 60_000;
 
+const glyphCache = new WeakMap<WeaponSystem, GlyphId>();
+function cachedGlyph(sys: WeaponSystem): GlyphId {
+  let g = glyphCache.get(sys);
+  if (!g) {
+    g = glyphFor(sys);
+    glyphCache.set(sys, g);
+  }
+  return g;
+}
+
 /** Informations d'affichage de chaque unité à l'instant t (position interpolée, état, relation). */
 export function unitInfos(units: Iterable<UnitView>, ctx: UnitCtx): UnitInfo[] {
   const out: UnitInfo[] = [];
   for (const u of units) {
     if (u.status === 'destroyed') continue;
-    const pos = unitPosition(u, ctx.t);
+    const legs = u.move?.legs;
+    const moving =
+      !!legs && legs.length > 0 && legs[legs.length - 1]!.t1 > ctx.t && legs[0]!.t0 <= ctx.t;
+    const leg = moving ? legAt(u.move!, ctx.t) : undefined;
+    const pos = leg ? positionAt(u.move!, ctx.t) : unitPosition(u, ctx.t);
     const rel = relationOf(u.owner, ctx.me, ctx.nations);
     const sys = u.systemId ? ctx.catalog[u.systemId] : undefined;
     const known = u.level !== 'detected' && !!sys;
-    const moving = isMoving(u, ctx.t);
-    const air = sys?.movement === 'air' || u.move?.legs.some((l) => l.medium === 'air');
+    const air = sys?.movement === 'air' || (!!leg && leg.medium === 'air');
     const missile = !!u.missile || (!!sys && sys.category === 'strike_missile' && moving && air);
     let flags = '';
     if (u.status === 'combat') flags += 'c';
@@ -126,11 +141,16 @@ export function unitInfos(units: Iterable<UnitView>, ctx: UnitCtx): UnitInfo[] {
       u,
       sys,
       rel,
-      glyph: known ? glyphFor(sys) : 'unknown',
+      glyph: known ? cachedGlyph(sys!) : 'unknown',
       flags,
       count: u.count,
       hp: u.hpRatio,
-      heading: air && moving ? unitHeading(u, ctx.t) : null,
+      heading:
+        air && leg
+          ? Math.abs(pos[0] - leg.to[0]) + Math.abs(pos[1] - leg.to[1]) < 1e-9
+            ? bearing(leg.from, leg.to)
+            : bearing(pos, leg.to)
+          : null,
       op: stale ? Math.max(0.45, 1 - (age - STALE_MS) / (3 * 3600_000)) : 1,
       sel,
       missile,
@@ -254,7 +274,14 @@ export function tokenFeatures(
         }),
       );
       if (i.heading !== null)
-        headings.push(pointFeature(i.id, i.pos, { rot: i.heading, rel: i.rel, off: [0, 0] }));
+        headings.push(
+          pointFeature(i.id, i.pos, {
+            rot: i.heading,
+            rel: i.rel,
+            f: 1,
+            off: headingOffset(i.heading, [0, 0]),
+          }),
+        );
       continue;
     }
     free.push(i);
@@ -278,9 +305,33 @@ export function tokenFeatures(
       }),
     );
     if (g.members.length === 1 && lead.heading !== null)
-      headings.push(pointFeature(g.id, lead.pos, { rot: lead.heading, rel: lead.rel, off: g.off }));
+      headings.push(
+        pointFeature(g.id, lead.pos, {
+          rot: lead.heading,
+          rel: lead.rel,
+          f: 0,
+          off: headingOffset(lead.heading, g.off),
+        }),
+      );
   }
   return { tokens, focus, headings, missiles, groups };
+}
+
+/**
+ * Décalage de la flèche de cap : sur une ellipse autour du pion, dans la direction du cap.
+ * MapLibre applique `icon-offset` dans le repère tourné de l'icône : le décalage d'écartement de
+ * la pile est donc ramené dans ce repère (rotation inverse).
+ */
+export function headingOffset(rot: number, off: [number, number]): [number, number] {
+  const th = (rot * Math.PI) / 180;
+  const s = Math.sin(th);
+  const c = Math.cos(th);
+  const a = PION_W / 2 + 7;
+  const b = PION_H / 2 + 7;
+  const r = 1 / Math.sqrt((s / a) ** 2 + (c / b) ** 2);
+  const x = off[0] * c + off[1] * s;
+  const y = -off[0] * s + off[1] * c;
+  return [Math.round(x * 10) / 10, Math.round((y - r) * 10) / 10];
 }
 
 /**
@@ -590,32 +641,51 @@ export interface BuildingCtx {
   me: NationId | null;
   nations: Record<NationId, NationView>;
   defs: Record<string, ProvinceDef>;
+  /** Temps de jeu (vieillissement du renseignement). */
+  t?: GameTime;
 }
 
-function buildingState(p: ProvinceView, type: string): BuildingState {
+/** Au-delà de cet âge (temps de jeu), une information de renseignement est estompée. */
+export const INTEL_STALE_MS = 24 * 3600_000;
+
+function buildingState(p: ProvinceView, type: string, t: GameTime) {
   const s = p.buildingState?.find((b) => b.type === type);
-  if (!s) return 'ok';
-  if (s.repairUntil) return 'rep';
-  if (s.health <= 0.02) return 'down';
-  if (s.health < 0.95) return 'dmg';
-  return 'ok';
+  const level = s?.level ?? 1;
+  let st: BuildingState = 'ok';
+  if (s) {
+    if (s.health <= 0.02) st = 'down';
+    else if (s.repairUntil && s.repairUntil > t) st = 'rep';
+    else if (s.upgradeUntil && s.upgradeUntil > t) st = 'up';
+    else if (s.health < 0.95) st = 'dmg';
+  }
+  return { st, level };
 }
 
-/** Bâtiments génériques : petites tuiles alignées sous le marqueur de ville (zoom proche). */
+/**
+ * Bâtiments génériques : petites tuiles alignées sous le marqueur de ville (zoom proche), sur deux
+ * rangées au-delà de six. Pour une province étrangère, seuls les bâtiments révélés par le
+ * renseignement figurent dans la vue ; une connaissance ancienne est estompée (`op`).
+ */
 export function buildingFeatures(
   provinces: Iterable<ProvinceView>,
   ctx: BuildingCtx,
 ): FeatureCollection<Point> {
   const out: Feature<Point>[] = [];
   const gap = BLD_SIZE + 3;
+  const t = ctx.t ?? 0;
   for (const p of provinces) {
     if (!p.buildings.length) continue;
     const def = ctx.defs[p.id];
     if (!def) continue;
     const n = p.buildings.length;
+    const perRow = n > 6 ? Math.ceil(n / 2) : n;
     const rel = relationOf(p.owner, ctx.me, ctx.nations);
+    const old = p.intel && t - p.intel.updatedAt > INTEL_STALE_MS ? 1 : 0;
     p.buildings.forEach((b, i) => {
-      const st = buildingState(p, b);
+      const { st, level } = buildingState(p, b, t);
+      const row = Math.floor(i / perRow);
+      const inRow = row === 0 ? Math.min(perRow, n) : n - perRow;
+      const col = i - row * perRow;
       out.push({
         type: 'Feature',
         properties: {
@@ -623,10 +693,12 @@ export function buildingFeatures(
           prov: p.id,
           type: b,
           mine: p.owner === ctx.me ? 1 : 0,
-          img: `bld|${b}|${rel}|${st}`,
+          img: `bld|${b}|${rel}|${st}|${level}`,
           st,
-          // Rangée centrée sous la ville (px CSS).
-          off: [(i - (n - 1) / 2) * gap, 17],
+          op: old ? 0.5 : 1,
+          // Rangées centrées sous la ville (px CSS).
+          off: [(col - (inRow - 1) / 2) * gap, 19 + row * gap],
+          roff: [((col - (inRow - 1) / 2) * gap) / 0.62, (19 + row * gap) / 0.62],
         },
         geometry: { type: 'Point', coordinates: def.cityPoint },
       });
@@ -635,7 +707,17 @@ export function buildingFeatures(
   return fc(out);
 }
 
-/** Seuils de classe de ville (revenu) calculés une fois pour le monde. */
+/**
+ * Classe de ville (0 capitale, 1 grande, 2 moyenne, 3 petite) : `cityRank` des données de carte
+ * (1 à 4) ; à défaut, capitale ou quantiles de revenu.
+ */
+export function cityClass(d: ProvinceDef, thresholds: [number, number]): number {
+  if (d.cityRank) return d.cityRank - 1;
+  if (d.isCapital) return 0;
+  return d.income.money >= thresholds[0] ? 1 : d.income.money >= thresholds[1] ? 2 : 3;
+}
+
+/** Seuils de classe de ville (revenu) calculés une fois pour le monde (repli sans `cityRank`). */
 export function cityClassThresholds(defs: Iterable<ProvinceDef>): [number, number] {
   const incomes = [...defs].map((d) => d.income.money).sort((a, b) => b - a);
   if (!incomes.length) return [Infinity, Infinity];
@@ -654,27 +736,46 @@ export function cityFeatures(
   const out: Feature<Point>[] = [];
   for (const d of Object.values(defs)) {
     const owner = provinces?.[d.id]?.owner ?? d.nationId;
-    const nationalCapital = d.isCapital && owner === d.nationId;
-    const cls = nationalCapital
-      ? 0
-      : d.income.money >= ctx.thresholds[0]
-        ? 1
-        : d.income.money >= ctx.thresholds[1]
-          ? 2
-          : 3;
+    const cls = cityClass(d, ctx.thresholds);
     const rel = provinces ? relationOf(owner, ctx.me, ctx.nations) : 'none';
+    const pop = d.population ?? 0;
     out.push({
       type: 'Feature',
       properties: {
         id: d.id,
-        name: d.name,
+        name: d.cityName ?? d.name,
         cls,
         img: `city|${cls}|${rel}`,
         mine: owner === ctx.me ? 1 : 0,
-        // Rang de collision : capitales et grandes villes d'abord.
-        rank: cls * 10 - Math.min(9, Math.log10(1 + d.income.money)),
+        // Rang de collision : capitales et grandes villes d'abord, puis la population.
+        rank: cls * 100 - Math.min(99, Math.log10(1 + pop) * 10),
       },
       geometry: { type: 'Point', coordinates: d.cityPoint },
+    });
+  }
+  return fc(out);
+}
+
+/** Pastilles du calque « Renseignement » : niveau de connaissance des provinces étrangères. */
+export function intelFeatures(
+  provinces: Iterable<ProvinceView>,
+  defs: Record<string, ProvinceDef>,
+  t: GameTime,
+): FeatureCollection<Point> {
+  const out: Feature<Point>[] = [];
+  for (const p of provinces) {
+    if (!p.intel) continue;
+    const def = defs[p.id];
+    if (!def) continue;
+    out.push({
+      type: 'Feature',
+      properties: {
+        id: p.id,
+        img: `intel|${p.intel.level}`,
+        lvl: p.intel.level,
+        op: t - p.intel.updatedAt > INTEL_STALE_MS ? 0.55 : 1,
+      },
+      geometry: { type: 'Point', coordinates: def.centroid },
     });
   }
   return fc(out);
@@ -771,4 +872,41 @@ export function nationLabelFeatures(
     });
   }
   return fc(out);
+}
+
+/**
+ * Couverture des radars (catégorie `radar`, ou capteur radar / alerte avancée) : anneaux de portée.
+ * Forces du joueur (calque militaire) et radars étrangers identifiés (calque renseignement).
+ */
+export function radarFeatures(
+  units: Iterable<UnitView>,
+  ctx: { me: NationId | null; catalog: Record<SystemId, WeaponSystem>; t: GameTime },
+): FeatureCollection<LineString> {
+  const out: Feature<LineString>[] = [];
+  for (const u of units) {
+    if (u.status === 'destroyed' || u.level === 'detected' || !u.systemId) continue;
+    const sys = ctx.catalog[u.systemId];
+    if (!sys || !isRadarSystem(sys)) continue;
+    const r = sys.sensor?.rangeKm ?? sys.detectionRangeKm;
+    if (!r || r < 50) continue;
+    out.push({
+      type: 'Feature',
+      properties: { id: u.id, own: u.owner === ctx.me ? 1 : 0, km: Math.round(r) },
+      geometry: {
+        type: 'LineString',
+        coordinates: geodesicCircle(unitPosition(u, ctx.t), r, r > 1500 ? 160 : 96),
+      },
+    });
+  }
+  return fc(out);
+}
+
+export function isRadarSystem(sys: WeaponSystem): boolean {
+  const kind = sys.sensor?.kind;
+  return (
+    (sys.category as string) === 'radar' ||
+    kind === 'radar' ||
+    kind === 'early_warning' ||
+    kind === 'aew'
+  );
 }

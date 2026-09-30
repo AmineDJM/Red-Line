@@ -1,1 +1,126 @@
-{}
+{
+  "map": {
+    "tip": {
+      "nation": "Nation",
+      "count": "Effectif",
+      "state": "État",
+      "hp": "Intégrité",
+      "supply": "Ravit.",
+      "mission": "Mission",
+      "speed": "Vitesse",
+      "range": "Portée",
+      "seen": "Vu",
+      "seenAgo": "il y a {{value}}",
+      "seenNow": "à l'instant",
+      "uncertainty": "Position",
+      "uncertaintyValue": "± {{value}}",
+      "stack": "Pile",
+      "stackValue": "{{count}} unités",
+      "stackMore": "+ {{count}} autres",
+      "unknown": "Contact non identifié",
+      "unknownType": "Type inconnu",
+      "missile": "Missile en vol",
+      "impact": "Impact",
+      "impactIn": "dans {{value}}",
+      "city": "Ville",
+      "capital": "Capitale",
+      "population": "Population",
+      "owner": "Contrôle",
+      "buildings": "Bâtiments",
+      "intel": "Renseignement",
+      "capture": "Capture",
+      "fortification": "Fortifications",
+      "fortLevel": "niveau {{value}}",
+      "blockaded": "Blocus en cours",
+      "noFlyZone": "Zone d'exclusion aérienne",
+      "disputed": "Territoire disputé",
+      "unrest": "Tension",
+      "prompt": "inspect"
+    },
+    "rel": {
+      "own": "Vos forces",
+      "ally": "Allié",
+      "neutral": "Neutre",
+      "enemy": "Hostile"
+    },
+    "status": {
+      "idle": "En position",
+      "moving": "En mouvement",
+      "combat": "Au combat",
+      "embarked": "Embarquée",
+      "destroyed": "Détruite"
+    },
+    "supply": {
+      "supplied": "Assuré",
+      "limited": "Limité",
+      "cut": "Coupé"
+    },
+    "mission": {
+      "none": "Aucune",
+      "patrol": "Patrouille",
+      "strike": "Frappe",
+      "escort": "Escorte",
+      "refuel": "Ravitaillement en vol",
+      "awacs": "Guet aérien",
+      "recon": "Reconnaissance",
+      "blockade": "Blocus",
+      "rtb": "Retour à la base"
+    },
+    "flag": {
+      "decoy": "Leurre (visible par vous seul)",
+      "submerged": "En plongée",
+      "sonar": "Contact sonar",
+      "jamming": "Brouillage actif"
+    },
+    "intel": {
+      "0": "Inconnue",
+      "1": "Aperçu",
+      "2": "Bonne connaissance",
+      "3": "Connaissance complète",
+      "old": "information ancienne"
+    },
+    "bld": {
+      "refinery": "Raffinerie",
+      "power_plant": "Centrale électrique",
+      "port": "Port",
+      "air_base": "Base aérienne",
+      "military_base": "Base militaire",
+      "arms_factory": "Usine d'armement",
+      "research_center": "Centre de recherche",
+      "oil_field": "Champ pétrolifère",
+      "mine": "Mine",
+      "farm": "Exploitation agricole",
+      "electronics_plant": "Usine d'électronique",
+      "local_industry": "Industrie locale",
+      "recruiting_office": "Bureau de recrutement",
+      "naval_base": "Base navale",
+      "bunker": "Bunkers",
+      "air_defense_site": "Site de défense aérienne",
+      "coastal_battery": "Batterie côtière",
+      "radar_station": "Station radar",
+      "missile_silo": "Silo à missiles",
+      "hospital": "Hôpital militaire",
+      "secret_lab": "Laboratoire secret",
+      "forward_base": "Base avancée",
+      "level": "niv. {{value}}",
+      "damaged": "endommagé",
+      "down": "hors service",
+      "repair": "en réparation",
+      "upgrade": "en construction"
+    },
+    "ring": {
+      "max": "PORTÉE {{value}}",
+      "min": "MIN {{value}}",
+      "radius": "RAYON {{value}}",
+      "radar": "RADAR {{value}}",
+      "sonar": "SONAR {{value}}",
+      "sensor": "DÉTECTION {{value}}"
+    },
+    "order": {
+      "eta": "{{distance}} · {{eta}}"
+    },
+    "minimap": {
+      "label": "Mini-carte"
+    }
+  }
+}

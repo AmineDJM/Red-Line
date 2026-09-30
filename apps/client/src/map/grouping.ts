@@ -39,10 +39,10 @@ export function worldPx(p: LngLat, zoom: number): [number, number] {
 
 /** Échelle d'affichage du pion selon le zoom (même courbe que `icon-size` dans le style). */
 export const PION_SCALE_STOPS: [number, number][] = [
-  [1.5, 0.66],
-  [3.5, 0.78],
-  [6, 0.92],
-  [9, 1.02],
+  [1.5, 0.68],
+  [3.5, 0.8],
+  [6, 0.98],
+  [9, 1.12],
 ];
 
 export function pionScale(zoom: number): number {

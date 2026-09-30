@@ -1,26 +1,16 @@
 /**
- * Sprites de la carte générés au canvas à l'exécution (aucun fichier de sprite à servir) :
- * hexagone et pictogrammes en SDF (teintés par `icon-color`), flèches, triangles, hachures,
- * et, si les glyphes PBF manquent, des étiquettes rendues en image avec les polices CSS.
+ * Sprites de la carte générés au canevas à l'exécution (aucun fichier de sprite à servir) :
+ * formes SDF teintées par `icon-color` (cadre de sélection, flèches, missile, réticules), motifs de
+ * hachures, et, si les glyphes PBF manquent, des étiquettes rendues en image avec les polices CSS.
+ * Les sprites composites (pions, bâtiments, villes) sont dans pions.ts.
  */
 import type { Map as MlMap } from 'maplibre-gl';
-import { PICTOGRAMS, PICTOGRAM_IDS, PICTOGRAM_STROKE, hexPoints } from '@redline/ui';
 import { renderSdf } from './sdf.js';
+import { C, MONO } from './palette.js';
+import { PION_H, PION_W } from './pions.js';
 
 export const PIXEL_RATIO = 2;
-/** Taille commune des images d'unité (px physiques) : même centre pour hexagone et pictogramme. */
-const UNIT_W = 136;
-const UNIT_H = 124;
-/** Rayon de l'hexagone (px physiques) : 48 → 48 px CSS de large à icon-size 1. */
-export const HEX_R = 48;
-const SDF_RADIUS = 10;
-
-function hexPathOn(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number) {
-  const pts = hexPoints(cx, cy, r);
-  ctx.beginPath();
-  pts.forEach(([x, y], i) => (i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)));
-  ctx.closePath();
-}
+const SDF_RADIUS = 8;
 
 function add(
   map: MlMap,
@@ -36,53 +26,141 @@ function add(
   );
 }
 
-export function registerSprites(map: MlMap) {
-  const cx = UNIT_W / 2;
-  const cy = UNIT_H / 2;
+/** Identifiant témoin : présent quand les sprites de base sont enregistrés. */
+export const SPRITES_MARK = 'sel-frame';
 
+export function registerSprites(map: MlMap) {
+  // Cadre de sélection : crochets d'angle autour du pion (style terminal).
+  const fw = (PION_W + 12) * PIXEL_RATIO;
+  const fh = (PION_H + 12) * PIXEL_RATIO;
   add(
     map,
-    'hex',
-    renderSdf(UNIT_W, UNIT_H, SDF_RADIUS, (ctx) => {
-      hexPathOn(ctx, cx, cy, HEX_R);
-      ctx.fill();
-    }),
-    true,
-  );
-  add(
-    map,
-    'hex-sel',
-    renderSdf(UNIT_W, UNIT_H, SDF_RADIUS, (ctx) => {
-      ctx.lineWidth = 5;
-      ctx.lineJoin = 'round';
-      hexPathOn(ctx, cx, cy, HEX_R + 11);
+    'sel-frame',
+    renderSdf(fw + 16, fh + 16, SDF_RADIUS, (ctx) => {
+      const x0 = 8;
+      const y0 = 8;
+      const L = 12 * PIXEL_RATIO;
+      ctx.lineWidth = 2.2 * PIXEL_RATIO;
+      ctx.lineCap = 'square';
+      ctx.beginPath();
+      for (const [x, y, sx, sy] of [
+        [x0, y0, 1, 1],
+        [x0 + fw, y0, -1, 1],
+        [x0, y0 + fh, 1, -1],
+        [x0 + fw, y0 + fh, -1, -1],
+      ] as const) {
+        ctx.moveTo(x + sx * L, y);
+        ctx.lineTo(x, y);
+        ctx.lineTo(x, y + sy * L);
+      }
       ctx.stroke();
     }),
     true,
   );
-
-  // Pictogrammes : même canevas que l'hexagone, centrés, 60 % de sa largeur.
-  const scale = (HEX_R * 2 * 0.6) / 24;
-  for (const id of PICTOGRAM_IDS) {
-    add(
-      map,
-      `pic-${id}`,
-      renderSdf(UNIT_W, UNIT_H, SDF_RADIUS, (ctx) => {
-        ctx.translate(cx - 12 * scale, cy - 12 * scale);
-        ctx.scale(scale, scale);
-        ctx.lineWidth = PICTOGRAM_STROKE * 1.25;
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-        for (const d of PICTOGRAMS[id]) ctx.stroke(new Path2D(d));
-        if (id === 'unknown') {
-          ctx.lineWidth = PICTOGRAM_STROKE * 2.4;
-          ctx.stroke(new Path2D('M12 17.6 L12 17.7'));
-        }
-      }),
-      true,
-    );
-  }
-
+  // Réticule de cible.
+  add(
+    map,
+    'reticle',
+    renderSdf(72, 72, 6, (ctx) => {
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(36, 36, 22, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      for (const [a, b, c, d] of [
+        [36, 4, 36, 20],
+        [36, 52, 36, 68],
+        [4, 36, 20, 36],
+        [52, 36, 68, 36],
+      ] as const) {
+        ctx.moveTo(a, b);
+        ctx.lineTo(c, d);
+      }
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(36, 36, 3, 0, Math.PI * 2);
+      ctx.fill();
+    }),
+    true,
+  );
+  // Destination d'un déplacement : losange évidé.
+  add(
+    map,
+    'dest',
+    renderSdf(48, 48, 6, (ctx) => {
+      ctx.lineWidth = 3.2;
+      ctx.beginPath();
+      ctx.moveTo(24, 6);
+      ctx.lineTo(42, 24);
+      ctx.lineTo(24, 42);
+      ctx.lineTo(6, 24);
+      ctx.closePath();
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(24, 24, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+    }),
+    true,
+  );
+  // Flèche de cap (chevron) des aéronefs en vol, orbitant autour du pion.
+  add(
+    map,
+    'heading',
+    renderSdf(40, 40, 6, (ctx) => {
+      ctx.beginPath();
+      ctx.moveTo(20, 6);
+      ctx.lineTo(33, 30);
+      ctx.lineTo(20, 23);
+      ctx.lineTo(7, 30);
+      ctx.closePath();
+      ctx.fill();
+    }),
+    true,
+  );
+  // Missile en vol (silhouette orientée vers le haut).
+  add(
+    map,
+    'missile',
+    renderSdf(40, 64, 6, (ctx) => {
+      ctx.beginPath();
+      ctx.moveTo(20, 4);
+      ctx.bezierCurveTo(25, 9, 25.5, 14, 25.5, 18);
+      ctx.lineTo(25.5, 44);
+      ctx.lineTo(32, 54);
+      ctx.lineTo(32, 60);
+      ctx.lineTo(25.5, 56);
+      ctx.lineTo(14.5, 56);
+      ctx.lineTo(8, 60);
+      ctx.lineTo(8, 54);
+      ctx.lineTo(14.5, 44);
+      ctx.lineTo(14.5, 18);
+      ctx.bezierCurveTo(14.5, 14, 15, 9, 20, 4);
+      ctx.closePath();
+      ctx.fill();
+    }),
+    true,
+  );
+  // Point d'impact : croix dans un cercle en tirets.
+  add(
+    map,
+    'impact',
+    renderSdf(64, 64, 6, (ctx) => {
+      ctx.lineWidth = 3;
+      ctx.setLineDash([7, 5]);
+      ctx.beginPath();
+      ctx.arc(32, 32, 22, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.lineWidth = 3.4;
+      ctx.beginPath();
+      ctx.moveTo(24, 24);
+      ctx.lineTo(40, 40);
+      ctx.moveTo(40, 24);
+      ctx.lineTo(24, 40);
+      ctx.stroke();
+    }),
+    true,
+  );
   add(
     map,
     'arrow',
@@ -131,15 +209,35 @@ export function registerSprites(map: MlMap) {
     }),
     true,
   );
+  add(
+    map,
+    'plus',
+    renderSdf(32, 32, 6, (ctx) => {
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(16, 6);
+      ctx.lineTo(16, 26);
+      ctx.moveTo(6, 16);
+      ctx.lineTo(26, 16);
+      ctx.stroke();
+    }),
+    true,
+  );
+  add(map, 'blockade', blockadeIcon(), false);
 
-  add(map, 'hatch-fog', hatch(20, 'rgba(160, 176, 204, 0.16)', 1.2), false);
-  add(map, 'hatch-disputed', hatch(12, 'rgba(255, 214, 160, 0.55)', 2), false);
+  add(map, 'hatch-fog', hatch(16, 'rgba(150, 168, 190, 0.10)', 1), false);
+  add(map, 'hatch-disputed', hatch(12, 'rgba(255, 176, 32, 0.55)', 1.6), false);
+  add(map, 'hatch-unrest', hatch(10, 'rgba(255, 77, 94, 0.6)', 1.6), false);
+  add(map, 'hatch-veil', crossHatch(12, 'rgba(125, 139, 153, 0.34)', 1), false);
+  add(map, 'hatch-veil-light', hatch(12, 'rgba(125, 139, 153, 0.26)', 1), false);
+  add(map, 'hatch-nfz', crossHatch(14, 'rgba(255, 77, 94, 0.45)', 1.2), false);
+  add(map, 'hatch-sat', hatch(10, 'rgba(76, 201, 240, 0.35)', 1), false);
 }
 
 function hatch(size: number, color: string, width: number) {
   const c = document.createElement('canvas');
   c.width = c.height = size;
-  const ctx = c.getContext('2d')!;
+  const ctx = c.getContext('2d', { willReadFrequently: true })!;
   ctx.strokeStyle = color;
   ctx.lineWidth = width;
   ctx.beginPath();
@@ -154,10 +252,73 @@ function hatch(size: number, color: string, width: number) {
   return { width: size, height: size, data: ctx.getImageData(0, 0, size, size).data };
 }
 
+function crossHatch(size: number, color: string, width: number) {
+  const c = document.createElement('canvas');
+  c.width = c.height = size;
+  const ctx = c.getContext('2d', { willReadFrequently: true })!;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  ctx.beginPath();
+  ctx.moveTo(-2, size + 2);
+  ctx.lineTo(size + 2, -2);
+  ctx.moveTo(-2, 2);
+  ctx.lineTo(2, -2);
+  ctx.moveTo(size - 2, size + 2);
+  ctx.lineTo(size + 2, size - 2);
+  ctx.moveTo(-2, -2);
+  ctx.lineTo(size + 2, size + 2);
+  ctx.moveTo(size - 2, -2);
+  ctx.lineTo(size + 2, 2);
+  ctx.moveTo(-2, size - 2);
+  ctx.lineTo(2, size + 2);
+  ctx.stroke();
+  return { width: size, height: size, data: ctx.getImageData(0, 0, size, size).data };
+}
+
+/** Blocus : ancre barrée sur pastille rouge. */
+function blockadeIcon() {
+  const s = 18 * PIXEL_RATIO;
+  const c = document.createElement('canvas');
+  c.width = c.height = s;
+  const ctx = c.getContext('2d', { willReadFrequently: true })!;
+  ctx.scale(PIXEL_RATIO, PIXEL_RATIO);
+  ctx.fillStyle = C.red;
+  ctx.strokeStyle = C.bg;
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.roundRect(1.5, 1.5, 15, 15, 3);
+  ctx.fill();
+  ctx.stroke();
+  ctx.strokeStyle = C.bg;
+  ctx.lineWidth = 1.5;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.arc(9, 5.4, 1.4, 0, Math.PI * 2);
+  ctx.moveTo(9, 6.8);
+  ctx.lineTo(9, 14);
+  ctx.moveTo(5.4, 11);
+  ctx.quadraticCurveTo(6, 14, 9, 14);
+  ctx.quadraticCurveTo(12, 14, 12.6, 11);
+  ctx.moveTo(4, 4);
+  ctx.lineTo(14, 14);
+  ctx.stroke();
+  return { width: s, height: s, data: ctx.getImageData(0, 0, s, s).data };
+}
+
 // ——— Étiquettes en image (repli sans glyphes PBF) ———
 
 export type TextStyle =
-  'country-l' | 'country-m' | 'country-s' | 'sea-l' | 'sea-s' | 'count' | 'prov';
+  | 'country-l'
+  | 'country-m'
+  | 'country-s'
+  | 'sea-l'
+  | 'sea-s'
+  | 'count'
+  | 'prov'
+  | 'city-0'
+  | 'city-1'
+  | 'city-2'
+  | 'city-3';
 
 interface TextSpec {
   font: string;
@@ -169,54 +330,64 @@ interface TextSpec {
   upper: boolean;
 }
 
+const CITY = (size: number, weight: number, color: string, upper = false): TextSpec => ({
+  font: `${weight} {s}px "IBM Plex Sans", sans-serif`,
+  size,
+  spacing: upper ? 0.08 : 0.02,
+  color,
+  halo: 'rgba(3,6,10,0.85)',
+  haloWidth: 2.4,
+  upper,
+});
+
 const TEXT: Record<TextStyle, TextSpec> = {
   'country-l': {
     font: '700 {s}px "Barlow Condensed", "Arial Narrow", sans-serif',
     size: 19,
-    spacing: 0.22,
-    color: '#ffffff',
-    halo: 'rgba(0,0,0,0.75)',
+    spacing: 0.3,
+    color: 'rgba(255,255,255,0.9)',
+    halo: 'rgba(0,0,0,0.7)',
     haloWidth: 3,
     upper: true,
   },
   'country-m': {
     font: '700 {s}px "Barlow Condensed", "Arial Narrow", sans-serif',
     size: 15,
-    spacing: 0.2,
-    color: '#ffffff',
-    halo: 'rgba(0,0,0,0.75)',
+    spacing: 0.26,
+    color: 'rgba(255,255,255,0.88)',
+    halo: 'rgba(0,0,0,0.7)',
     haloWidth: 3,
     upper: true,
   },
   'country-s': {
     font: '700 {s}px "Barlow Condensed", "Arial Narrow", sans-serif',
     size: 12,
-    spacing: 0.16,
-    color: 'rgba(255,255,255,0.92)',
+    spacing: 0.2,
+    color: 'rgba(255,255,255,0.82)',
     halo: 'rgba(0,0,0,0.7)',
     haloWidth: 2.5,
     upper: true,
   },
   'sea-l': {
     font: 'italic 400 {s}px "IBM Plex Sans", sans-serif',
-    size: 14,
-    spacing: 0.12,
-    color: '#8d99ad',
+    size: 13,
+    spacing: 0.14,
+    color: '#6f8196',
     halo: 'rgba(0,0,0,0.5)',
     haloWidth: 2,
     upper: false,
   },
   'sea-s': {
     font: 'italic 400 {s}px "IBM Plex Sans", sans-serif',
-    size: 12,
-    spacing: 0.08,
-    color: '#8391a6',
+    size: 11.5,
+    spacing: 0.1,
+    color: '#667a90',
     halo: 'rgba(0,0,0,0.5)',
     haloWidth: 2,
     upper: false,
   },
   count: {
-    font: '600 {s}px "IBM Plex Mono", monospace',
+    font: `600 {s}px ${MONO}`,
     size: 12,
     spacing: 0,
     color: '#ffffff',
@@ -233,6 +404,10 @@ const TEXT: Record<TextStyle, TextSpec> = {
     haloWidth: 2,
     upper: false,
   },
+  'city-0': CITY(12.5, 600, '#ffffff'),
+  'city-1': CITY(11.5, 600, '#eef3f8'),
+  'city-2': CITY(10.5, 400, '#dfe6ee'),
+  'city-3': CITY(10, 400, '#b9c4cf'),
 };
 
 export const TEXT_IMAGE_PREFIX = 'txt|';
@@ -270,7 +445,7 @@ export function renderTextImage(style: TextStyle, raw: string) {
   const pr = PIXEL_RATIO;
   const size = spec.size * pr;
   const c = document.createElement('canvas');
-  const ctx = c.getContext('2d')!;
+  const ctx = c.getContext('2d', { willReadFrequently: true })!;
   ctx.font = spec.font.replace('{s}', String(size));
   const spacing = spec.spacing * size;
   const w = Math.ceil(spacedWidth(ctx, text, spacing) + spec.haloWidth * pr * 2 + 4);
@@ -290,7 +465,7 @@ export function renderTextImage(style: TextStyle, raw: string) {
   return { width: c.width, height: c.height, data: ctx.getImageData(0, 0, c.width, c.height).data };
 }
 
-/** Gestionnaire `styleimagemissing` : génère à la volée les étiquettes-images demandées. */
+/** Génère une étiquette-image demandée par le style (`txt|style|texte`). */
 export function handleMissingImage(map: MlMap, id: string) {
   if (!id.startsWith(TEXT_IMAGE_PREFIX)) return;
   const rest = id.slice(TEXT_IMAGE_PREFIX.length);
