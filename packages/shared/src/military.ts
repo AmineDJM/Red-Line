@@ -31,6 +31,20 @@ export interface MissionView {
   /** Autonomie restante (aéronefs), en heures de jeu. */
   fuelH?: number;
   baseProvinceId?: ProvinceId | null;
+  // ——— optionnels ———
+  /** `fuelH` est l'autonomie à l'instant `fuelAt` ; elle baisse d'une heure par heure de vol. */
+  fuelAt?: GameTime;
+  airborne?: boolean;
+  /** Porte-avions (ou navire porteur) d'attache, au lieu d'une province. */
+  baseUnitId?: UnitId | null;
+  /** Phase : aller, sur zone, retour, jonction avec un ravitailleur. */
+  phase?: 'out' | 'station' | 'back' | 'tanker' | null;
+  /** Retour automatique prévu (carburant). */
+  bingoAt?: GameTime | null;
+  /** Disponible à partir de (remise en œuvre après atterrissage, rechargement d'un lanceur). */
+  readyAt?: GameTime | null;
+  /** Munitions restantes : cellules de lancement ou magasin d'intercepteurs. */
+  ammo?: number | null;
 }
 
 // ——— Opérations combinées (heure H) ———

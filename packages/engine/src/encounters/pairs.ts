@@ -1,18 +1,13 @@
-import {
-  EARTH_RADIUS_KM,
-  type NationId,
-  type ProvinceId,
-  type UnitId,
-  type WeaponSystem,
-} from '@redline/shared';
+import { EARTH_RADIUS_KM, type NationId, type ProvinceId, type UnitId } from '@redline/shared';
 import { coverCap, sweepCells } from '../geo/grid.js';
 import { dotAt, nextBandChange } from '../geo/crossing.js';
 import type { Piece } from '../geo/sphere.js';
-import { schedule, sortedSet, sysOf, unitPieces } from '../state/access.js';
+import { schedule, sortedSet, unitPieces } from '../state/access.js';
 import { addToIndex, removeFromIndex } from '../state/runtime.js';
 import type { EngineState, PairState, Unit } from '../state/types.js';
 import { CAPTURE_RADIUS_KM, wi } from '../state/world.js';
 import { changeSight, detectionLevel, detectionRadii } from './sight.js';
+import { inRange, provSightRangeKm, sightRangeKm, weaponRange, zoneKm } from './profile.js';
 
 /**
  * Rencontres. Chaque paire (unité, unité étrangère) ou (province, unité) proche est surveillée : on
@@ -34,13 +29,9 @@ export function provEntity(p: ProvinceId): string {
   return `p:${p}`;
 }
 
-export function unitZoneKm(sys: WeaponSystem): number {
-  return Math.max(sys.detectionRangeKm, sys.weaponRangeKm.max);
-}
-
-export function inWeaponRange(sys: WeaponSystem, d: number): boolean {
-  const r = sys.weaponRangeKm;
-  return r.max > 0 && d <= r.max && d >= r.min;
+/** Portée d'arme effective de l'unité à la distance d (voir profile.ts). */
+export function inWeaponRange(state: EngineState, u: Unit, d: number): boolean {
+  return inRange(weaponRange(state, u), d);
 }
 
 function toCos(radii: number[]): number[] {
@@ -76,9 +67,10 @@ export function registerProvinceZone(state: EngineState, p: ProvinceId): void {
 /** (Ré)enregistre le balayage d'une unité à partir de l'instant courant. */
 export function registerUnit(state: EngineState, u: Unit): void {
   unregisterUnit(state, u.id);
+  if (u.off) return; // hors carte : ni corps ni zone
   const pieces = unitPieces(state, u);
   const body = sweepCells(pieces, state.time, 0);
-  const zr = unitZoneKm(sysOf(state, u));
+  const zr = zoneKm(state, u);
   const zone = zr > 0 ? sweepCells(pieces, state.time, zr) : [];
   state.rt.bodies.add(u.id, body);
   state.rt.zones.add(u.id, zone);
@@ -109,7 +101,7 @@ function candidateKeys(state: EngineState, u: Unit): string[] {
         continue;
       }
       const o = state.units[e];
-      if (!o || o.owner === u.owner) continue;
+      if (!o || o.owner === u.owner || o.off) continue;
       keys.add(unitPairKey(u.id, e));
     }
   }
@@ -141,20 +133,22 @@ function evalUnitPair(state: EngineState, key: string): void {
   const [ia, ib] = key.split('|') as [UnitId, UnitId];
   const A = state.units[ia];
   const B = state.units[ib];
-  if (!A || !B || A.owner === B.owner) {
+  if (!A || !B || A.owner === B.owner || A.off || B.off) {
     if (existing) removePair(state, key);
     return;
   }
   const t = state.time;
-  const sa = sysOf(state, A);
-  const sb = sysOf(state, B);
+  const rab = sightRangeKm(state, A, B);
+  const rba = sightRangeKm(state, B, A);
+  const wa = weaponRange(state, A);
+  const wb = weaponRange(state, B);
   const cosThr = toCos([
-    ...detectionRadii(state, sa.detectionRangeKm, sb.stealth),
-    ...detectionRadii(state, sb.detectionRangeKm, sa.stealth),
-    sa.weaponRangeKm.max,
-    sa.weaponRangeKm.min,
-    sb.weaponRangeKm.max,
-    sb.weaponRangeKm.min,
+    ...detectionRadii(state, rab),
+    ...detectionRadii(state, rba),
+    wa.max,
+    wa.max > 0 ? wa.min : 0,
+    wb.max,
+    wb.max > 0 ? wb.min : 0,
   ]);
   const pa = unitPieces(state, A);
   const pb = unitPieces(state, B);
@@ -165,8 +159,8 @@ function evalUnitPair(state: EngineState, key: string): void {
     if (existing) removePair(state, key);
     return;
   }
-  const la = detectionLevel(state, d, sa.detectionRangeKm, sb.stealth);
-  const lb = detectionLevel(state, d, sb.detectionRangeKm, sa.stealth);
+  const la = detectionLevel(state, d, rab);
+  const lb = detectionLevel(state, d, rba);
   const oldD = existing ? existing.d : Infinity;
   const pair: PairState = existing ?? { d, la: 0, lb: 0, obs: null, ev: 0 };
   const oldLa = pair.la;
@@ -183,8 +177,8 @@ function evalUnitPair(state: EngineState, key: string): void {
   changeSight(state, B.owner, A.id, oldLb, lb);
   if (
     !existing ||
-    inWeaponRange(sa, oldD) !== inWeaponRange(sa, d) ||
-    inWeaponRange(sb, oldD) !== inWeaponRange(sb, d)
+    inRange(wa, oldD) !== inRange(wa, d) ||
+    inRange(wb, oldD) !== inRange(wb, d)
   ) {
     state.rt.dirtyCombat.add(ia);
     state.rt.dirtyCombat.add(ib);
@@ -209,15 +203,15 @@ function evalProvPair(state: EngineState, key: string): void {
   const uid = key.slice(h + 1);
   const P = state.provinces[pid];
   const U = state.units[uid];
-  if (!P || !U) {
+  if (!P || !U || U.off) {
     if (existing) removePair(state, key);
     return;
   }
   const t = state.time;
-  const su = sysOf(state, U);
-  const provDet = state.world.balance.sensors.provinceDetectionKm;
+  const obs = P.owner;
+  const rp = obs !== U.owner ? provSightRangeKm(state, obs, U) : 0;
   const cosThr = toCos([
-    ...detectionRadii(state, provDet, su.stealth),
+    ...detectionRadii(state, rp),
     CAPTURE_RADIUS_KM,
     state.world.balance.combat.groundContactKm,
   ]);
@@ -230,8 +224,7 @@ function evalProvPair(state: EngineState, key: string): void {
     if (existing) removePair(state, key);
     return;
   }
-  const obs = P.owner;
-  const lp = obs !== U.owner ? detectionLevel(state, d, provDet, su.stealth) : 0;
+  const lp = detectionLevel(state, d, rp);
   const pair: PairState = existing ?? { d, la: 0, lb: 0, obs: null, ev: 0 };
   const oldFlags = existing ? cityFlags(state, existing.d) : -1;
   const oldObs = pair.obs;
@@ -291,14 +284,13 @@ export function removeUnitPairs(state: EngineState, uid: UnitId): void {
 
 /** Changement de propriétaire d'une province : la détection de sa ville change de camp. */
 export function provinceOwnerChanged(state: EngineState, pid: ProvinceId, to: NationId): void {
-  const provDet = state.world.balance.sensors.provinceDetectionKm;
   for (const key of sortedSet(state.rt.pairsOf.get(provEntity(pid)))) {
     const pair = state.pairs[key];
     if (!pair) continue;
     const uid = key.slice(key.indexOf('#') + 1);
     const U = state.units[uid];
     if (!U) continue;
-    const lp = U.owner !== to ? detectionLevel(state, pair.d, provDet, sysOf(state, U).stealth) : 0;
+    const lp = U.owner !== to ? detectionLevel(state, pair.d, provSightRangeKm(state, to, U)) : 0;
     if (pair.obs) changeSight(state, pair.obs, uid, pair.la, 0);
     pair.obs = to;
     pair.la = lp;

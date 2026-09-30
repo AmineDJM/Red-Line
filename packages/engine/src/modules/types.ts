@@ -1,4 +1,5 @@
 import type {
+  BuildingType,
   GameNotification,
   NationId,
   Order,
@@ -42,6 +43,21 @@ export interface ModuleHooks {
   /** Après chaque tir ayant infligé des dégâts. */
   onDamage?(state: EngineState, attacker: Unit, target: Unit, dmg: number): void;
   onUnitSpawned?(state: EngineState, u: Unit): void;
+  /** Avant le retrait d'une unité qui n'est PAS une perte (fusion, salve arrivée, leurre expiré). */
+  onUnitRemoved?(state: EngineState, u: Unit): void;
+  /** Après chaque changement de trajet d'une unité (setMovement). */
+  onMovementChanged?(state: EngineState, u: Unit): void;
+  /** Après l'arrivée d'une unité à destination. */
+  onArrived?(state: EngineState, u: Unit): void;
+  /** Au début de la réévaluation de combat d'une unité (interceptions, patrouilles…). */
+  onCombatRefresh?(state: EngineState, u: Unit): void;
+  /** Avant l'application d'un ordre de joueur (ou d'IA) ; observation seulement. */
+  onOrder?(state: EngineState, n: NationId, order: Order): void;
+  /**
+   * Prise en charge d'un ordre du cœur par un module (ex. déplacement d'un aéronef à carburant) :
+   * renvoie un résultat pour court-circuiter le cœur, ou null.
+   */
+  interceptOrder?(state: EngineState, n: NationId, order: Order): OrderResult | null;
   onProvinceCaptured?(state: EngineState, pid: ProvinceId, from: NationId, to: NationId): void;
   onWarDeclared?(state: EngineState, a: NationId, b: NationId): void;
   /** Autorisation de produire (recherche, licence, embargo, bâtiment…) : code d'erreur ou null. */
@@ -92,6 +108,13 @@ export interface SharedBoard {
   nuclearAuth: Record<NationId, true>;
   /** eco : nations en mobilisation générale. */
   mobilized: Record<NationId, true>;
+  /**
+   * eco (optionnel) : santé des bâtiments 0..1 par province. Absent = santé 1 pour les bâtiments de la
+   * carte. mil s'en sert pour les bases aériennes et les ports ; eco la tient à jour après building_hit.
+   */
+  buildingHealth?: Record<ProvinceId, Partial<Record<BuildingType, number>>>;
+  /** eco (optionnel) : bâtiments construits en cours de partie, en plus de ceux de la carte. */
+  extraBuildings?: Record<ProvinceId, BuildingType[]>;
 }
 
 export interface EngineModule {

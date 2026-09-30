@@ -1,5 +1,5 @@
 import { MINUTE, type NationId, type UnitId } from '@redline/shared';
-import { notify, sightLevel, sortedSet, sysOf, unitPosAt } from '../state/access.js';
+import { notify, sightLevel, sortedSet, unitPosAt } from '../state/access.js';
 import type { EngineState, Unit } from '../state/types.js';
 
 /**
@@ -7,13 +7,7 @@ import type { EngineState, Unit } from '../state/types.js';
  * et par unité observée, le nombre d'observateurs à chaque niveau. Le niveau effectif est le plus haut.
  * Les transitions 0 → n et n → 0 créent / figent le contact (Contact) de la nation.
  */
-export function detectionLevel(
-  state: EngineState,
-  dKm: number,
-  rangeKm: number,
-  stealth: number,
-): number {
-  const r = rangeKm * (1 - stealth);
+export function detectionLevel(state: EngineState, dKm: number, r: number): number {
   if (r <= 0 || dKm > r) return 0;
   const s = state.world.balance.sensors;
   if (dKm <= r * s.preciseAtFraction) return 3;
@@ -21,9 +15,8 @@ export function detectionLevel(
   return 1;
 }
 
-/** Rayons de détection d'un capteur contre une cible de furtivité donnée. */
-export function detectionRadii(state: EngineState, rangeKm: number, stealth: number): number[] {
-  const r = rangeKm * (1 - stealth);
+/** Rayons des trois niveaux de détection pour une portée effective (furtivité déjà comprise). */
+export function detectionRadii(state: EngineState, r: number): number[] {
   if (r <= 0) return [];
   const s = state.world.balance.sensors;
   return [r, r * s.identifiedAtFraction, r * s.preciseAtFraction];
@@ -117,6 +110,3 @@ function updateLevel(state: EngineState, nation: NationId, u: Unit, lvl: number)
   if (lvl >= 2) c.sys = u.sys;
 }
 
-export function unitStealth(state: EngineState, u: Unit): number {
-  return sysOf(state, u).stealth;
-}

@@ -1,0 +1,275 @@
+import {
+  MilitaryBalanceSchema,
+  type BuildingType,
+  type GameTime,
+  type GeneralTrait,
+  type LngLat,
+  type MilitaryBalance,
+  type MissionKind,
+  type NationId,
+  type ProvinceId,
+  type StrikeTarget,
+  type SystemId,
+  type TargetClass,
+  type UnitId,
+} from '@redline/shared';
+import type { EngineState } from '../../state/types.js';
+
+/**
+ * État sérialisable du module militaire (state.mods.mil). Uniquement des données JSON : nombres,
+ * chaînes, booléens, null, tableaux et objets. Toute itération qui influence le résultat se fait
+ * dans l'ordre trié des clés.
+ */
+
+/** Mission d'une unité (aéronef, navire, satellite). Présente pour tout aéronef à carburant. */
+export interface MissionSt {
+  /** Aéronef à carburant (fiche `air`). */
+  fa: boolean;
+  /** Base d'attache : province ('p') ou unité porteuse ('c'), ou aucune. */
+  bk: 'p' | 'c' | null;
+  base: string | null;
+  /** En vol. */
+  up: boolean;
+  /** Autonomie (heures) à l'instant `ft`. */
+  fuel: number;
+  ft: GameTime;
+  /** Version : invalide les événements de carburant et de veille déjà programmés. */
+  v: number;
+  /** Retour automatique prévu (null si aucun). */
+  bingo: GameTime | null;
+  /** Disponible à partir de (remise en œuvre). */
+  ready: GameTime;
+  mis: MissionKind;
+  ph: 'out' | 'station' | 'back' | 'tanker' | null;
+  /** Centre et rayon de patrouille, ou destination d'un simple déplacement. */
+  at: LngLat | null;
+  r: number;
+  tg: StrikeTarget | null;
+  retry: number;
+  /** Ravitailleur : carburant transférable restant (heures). */
+  give: number;
+  /** Porte-avions sur lequel l'aéronef est embarqué. */
+  emb: UnitId | null;
+  /** Ravitailleur visé pendant une jonction. */
+  tk: UnitId | null;
+}
+
+/** Salve de missiles en vol (unité de rôle 'missile'). */
+export interface MissileSt {
+  by: NationId;
+  /** Lanceur (peut avoir disparu). */
+  from: UnitId;
+  launchAt: LngLat;
+  aim: LngLat;
+  target: StrikeTarget;
+  /** Nation visée (pour les notifications et la tension), null si personne. */
+  victim: NationId | null;
+  impactAt: GameTime;
+  nuclear: boolean;
+  kind: string;
+  /** Bataille (rapport) à laquelle la salve est rattachée. */
+  battle: string | null;
+  launched: number;
+}
+
+export interface SatSt {
+  /** Zone visée (centre de la fauchée). */
+  aim: LngLat | null;
+  next: GameTime;
+  v: number;
+}
+
+export interface OpStepSt {
+  offsetMin: number;
+  label: string;
+  order: unknown;
+  status: 'pending' | 'done' | 'failed';
+  error?: string;
+}
+
+export interface OpSt {
+  id: string;
+  owner: NationId;
+  name: string;
+  hHour: GameTime;
+  status: 'planned' | 'running' | 'done' | 'cancelled' | 'failed';
+  steps: OpStepSt[];
+  createdAt: GameTime;
+}
+
+export interface BattleSideSt {
+  nations: NationId[];
+  /** systemId → effectif maximal engagé (éléments). */
+  engaged: Record<SystemId, number>;
+  losses: Record<SystemId, number>;
+  /** Valeur des pertes (dollars ou unités de coût du catalogue). */
+  lossValue: number;
+}
+
+export interface BattleSt {
+  id: string;
+  at: LngLat;
+  pid: ProvinceId | null;
+  start: GameTime;
+  last: GameTime;
+  end: GameTime | null;
+  a: BattleSideSt;
+  d: BattleSideSt;
+  /** Unités vues dans la bataille : id → [propriétaire, système]. */
+  units: Record<UnitId, [NationId, SystemId]>;
+  cm: Record<string, number>;
+  timeline: { t: GameTime; text: string }[];
+  frames: {
+    t: GameTime;
+    units: { id: UnitId; owner: NationId; systemId: SystemId; at: LngLat; hp: number }[];
+  }[];
+  shots: { t: GameTime; from: LngLat; to: LngLat; cls: TargetClass; hit: boolean }[];
+  outcome: 'attacker' | 'defender' | 'draw' | 'ongoing';
+  title: string;
+}
+
+export interface GenSt {
+  id: string;
+  owner: NationId;
+  name: string;
+  traits: GeneralTrait[];
+  units: UnitId[];
+  directive: 'defend' | 'advance' | 'harass' | null;
+  area: LngLat | null;
+  /** Version de la délégation (invalide les réflexions programmées). */
+  v: number;
+}
+
+export interface BlkSt {
+  id: string;
+  by: NationId;
+  target: { provinceId: ProvinceId } | { straitId: string };
+  at: LngLat;
+  units: UnitId[];
+  since: GameTime;
+  on: boolean;
+}
+
+export interface SfSt {
+  pid: ProvinceId;
+  mission: 'raid' | 'sabotage' | 'rescue';
+  building: BuildingType | null;
+  /** Version du trajet à l'ordre (l'opération est annulée par tout nouvel ordre). */
+  mv: number;
+}
+
+export interface StatSt {
+  kills: number;
+  losses: number;
+  /** Victimes estimées (personnels) subies. */
+  cas: number;
+  /** Victimes estimées infligées. */
+  casInf: number;
+  /** Éléments détruits par système de l'attaquant. */
+  bySys: Record<SystemId, number>;
+  missiles: number;
+  intercepted: number;
+}
+
+export interface MilState {
+  seq: number;
+  ms: Record<UnitId, MissionSt>;
+  msl: Record<UnitId, MissileSt>;
+  /** Lanceur → prêt à tirer à partir de. */
+  reload: Record<UnitId, GameTime>;
+  /** Navire → cellules de lancement restantes. */
+  cells: Record<UnitId, number>;
+  /** Intercepteur → [munitions restantes, dernier tir]. */
+  mag: Record<UnitId, [number, GameTime]>;
+  /** Intercepteur → [début de la fenêtre d'engagement, canaux utilisés]. */
+  icw: Record<UnitId, [GameTime, number]>;
+  /** "intercepteur>missile" → prochain engagement programmé. */
+  icq: Record<string, GameTime>;
+  /** Brouilleurs éteints (un brouilleur émet par défaut). */
+  jamOff: Record<UnitId, true>;
+  /** Sous-marin repéré jusqu'à (après un tir). */
+  exposed: Record<UnitId, GameTime>;
+  /** Radars d'une nation aveuglés jusqu'à (cyberattaque). */
+  blind: Record<NationId, GameTime>;
+  /** Leurre → fin de vie. */
+  decoy: Record<UnitId, GameTime>;
+  sats: Record<UnitId, SatSt>;
+  ops: Record<string, OpSt>;
+  battles: Record<string, BattleSt>;
+  /** Batailles en cours (identifiants triés). */
+  open: string[];
+  gens: Record<string, GenSt>;
+  unitGen: Record<UnitId, string>;
+  blk: Record<string, BlkSt>;
+  sf: Record<UnitId, SfSt>;
+  stats: Record<NationId, StatSt>;
+  /** Dernier niveau d'alerte notifié. */
+  lastAlert: number;
+  /** Cessez-le-feu vus en vigueur (pour réengager à leur expiration). */
+  cf: Record<string, number>;
+  /** Zones d'exclusion vues (empreinte). */
+  nf: string;
+}
+
+export function emptyMil(): MilState {
+  return {
+    seq: 0,
+    ms: {},
+    msl: {},
+    reload: {},
+    cells: {},
+    mag: {},
+    icw: {},
+    icq: {},
+    jamOff: {},
+    exposed: {},
+    blind: {},
+    decoy: {},
+    sats: {},
+    ops: {},
+    battles: {},
+    open: [],
+    gens: {},
+    unitGen: {},
+    blk: {},
+    sf: {},
+    stats: {},
+    lastAlert: 5,
+    cf: {},
+    nf: '',
+  };
+}
+
+/** État du module (créé à la volée pour les parties antérieures au module). */
+export function mil(state: EngineState): MilState {
+  const mods = state.mods as Record<string, unknown>;
+  let m = mods.mil as MilState | undefined;
+  if (!m) {
+    m = emptyMil();
+    mods.mil = m;
+  }
+  return m;
+}
+
+/** Lecture sans création (code du cœur). */
+export function milOpt(state: EngineState): MilState | undefined {
+  return (state.mods as Record<string, unknown> | undefined)?.mil as MilState | undefined;
+}
+
+const balCache = new WeakMap<object, MilitaryBalance>();
+
+/** Équilibrage militaire (section `military` de data/balance, valeurs par défaut sinon). */
+export function milBal(state: EngineState): MilitaryBalance {
+  const b = state.world.balance;
+  let r = balCache.get(b);
+  if (!r) {
+    r = MilitaryBalanceSchema.parse(b.military ?? {});
+    balCache.set(b, r);
+  }
+  return r;
+}
+
+export function nextId(state: EngineState, prefix: string): string {
+  const m = mil(state);
+  return `${prefix}${++m.seq}`;
+}

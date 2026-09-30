@@ -9,6 +9,7 @@ import { planAir, planSurface, type SurfaceSegments } from '../nav/plan.js';
 import { provincesOf, sysOf, unitPosAt } from '../state/access.js';
 import type { EngineState, Unit } from '../state/types.js';
 import { wi } from '../state/world.js';
+import { airBasePos, airRadiusKm } from '../encounters/profile.js';
 
 export type UnitPlan = { legs: Leg[] } | { error: OrderErrorCode };
 
@@ -23,10 +24,15 @@ export function nearestOwnedCityKm(state: EngineState, n: NationId, p: LngLat): 
   return best;
 }
 
-/** Vrai si un aéronef de la nation peut atteindre ce point (rayon d'action autour d'une ville possédée). */
+/**
+ * Vrai si un aéronef peut atteindre ce point : rayon d'action compté depuis sa base d'attache
+ * (aéronefs à carburant, module mil), sinon autour d'une ville possédée.
+ */
 export function airCanReach(state: EngineState, u: Unit, to: LngLat): boolean {
   const r = sysOf(state, u).operationalRadiusKm;
   if (r === null) return true;
+  const base = airBasePos(state, u);
+  if (base) return distanceKm(base, to) <= airRadiusKm(state, u);
   return nearestOwnedCityKm(state, u.owner, to) <= r;
 }
 
@@ -34,6 +40,7 @@ export function airCanReach(state: EngineState, u: Unit, to: LngLat): boolean {
 export function planUnitMove(state: EngineState, u: Unit, to: LngLat): UnitPlan {
   const sys = sysOf(state, u);
   if (sys.movement === 'static' || sys.speedKmh <= 0) return { error: 'not_allowed' };
+  if (u.off || u.role) return { error: 'not_allowed' };
   const from = unitPosAt(state, u, state.time);
   if (sys.movement === 'air') {
     if (!airCanReach(state, u, to)) return { error: 'out_of_range' };

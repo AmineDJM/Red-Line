@@ -1,5 +1,184 @@
 import { z } from 'zod';
 
+// ——— Combat complet (phase 3) : chiffres d'équilibrage du module militaire du moteur ———
+
+const num = (v: number) => z.number().min(0).default(v);
+
+/**
+ * Section `military` de data/balance (optionnelle) : chaque valeur a une valeur par défaut ; le moteur
+ * lit `MilitaryBalanceSchema.parse(balance.military ?? {})`.
+ */
+export const MilitaryBalanceSchema = z.object({
+  air: z
+    .object({
+      /** Réserve de carburant gardée pour le retour (heures). */
+      reserveH: num(0.25),
+      /** Remise en œuvre après l'atterrissage (heures) : plein refait, décollage interdit avant. */
+      turnaroundH: num(1),
+      /** Distance d'atterrissage / d'appontage autour de la base (km). */
+      landingKm: num(25),
+      /** Période de veille d'une patrouille : recherche d'intrus dans son rayon (minutes). */
+      capScanMinutes: num(10),
+      /** Distance de jonction avec un ravitailleur (km). */
+      tankerMeetKm: num(40),
+      /** Bonus de priorité des ravitailleurs et avions radar comme cibles. */
+      highValueTargetFactor: num(3),
+    })
+    .default({}),
+  strike: z
+    .object({
+      /** Une frappe aérienne vaut ce nombre de rounds de tir sur la cible. */
+      airStrikeMult: num(3),
+      /** Points de vie d'un bâtiment : dégâts / buildingHp = part de santé perdue. */
+      buildingHp: num(150),
+      /** Rayon d'effet minimal d'un impact (km). */
+      minBlastKm: num(2),
+      /** Autodirecteur : distance maximale de raccrochage d'une cible mobile (km). */
+      homingKm: num(40),
+      /** Missiles tirés par élément et par salve pour un lanceur (plafond de payload.slots). */
+      missilesPerLauncherMax: num(4),
+      /** Rechargement d'un lanceur après une salve (heures). */
+      launcherReloadH: num(8),
+      /** Missiles tirés par salve et par élément depuis des cellules de lancement (navires). */
+      cellsSalvoPerElement: num(8),
+      /** Distance à un port ami pour recharger les cellules (km). */
+      portReloadKm: num(80),
+      /** Multiplicateur des missiles antiradar contre la défense aérienne et les radars. */
+      antiRadiationBonus: num(2),
+      /** Exposition d'un sous-marin qui vient de tirer (minutes). */
+      submarineExposureMinutes: num(30),
+    })
+    .default({}),
+  intercept: z
+    .object({
+      /** Canaux de tir par élément et par fenêtre d'engagement (saturation). */
+      channelsPerElement: num(2),
+      /** Tirs au plus par missile et par engagement (tir-tir). */
+      shotsPerMissile: num(2),
+      /** Durée d'une fenêtre d'engagement ; ré-engagement ensuite si la salve est encore à portée (minutes). */
+      reengageMinutes: num(3),
+      /** Rechargement complet du magasin après ce délai sans tirer (heures). */
+      reloadHours: num(12),
+      /** Unités sans fiche `interceptor` qui touchent les missiles : pk = dégâts × ce facteur. */
+      fallbackPkPerDamage: num(0.025),
+      fallbackPkMax: num(0.5),
+      fallbackMagazine: num(4),
+      /** Probabilité de destruction d'un satellite par une arme antisatellite. */
+      asatPk: num(0.7),
+    })
+    .default({}),
+  nuclear: z
+    .object({
+      /** Rayon de destruction minimal (km). */
+      minBlastKm: num(15),
+      /** Anneau de dégâts : rayon × ce facteur, dégâts partiels (part des PV). */
+      ringFactor: num(2.5),
+      ringDamage: num(0.5),
+      /** Niveau d'alerte le moins grave (5 = calme, 1 = crise) auquel une frappe nucléaire est permise. */
+      maxAlertForStrike: z.number().int().min(1).max(5).default(2),
+      /** Niveau d'alerte le moins grave auquel on peut autoriser l'emploi du nucléaire. */
+      maxAlertForAuth: z.number().int().min(1).max(5).default(3),
+      stabilityVictim: z.number().default(-30),
+      stabilityStriker: z.number().default(-15),
+      stabilityWorld: z.number().default(-5),
+    })
+    .default({}),
+  /** Hausse de la tension mondiale (0..100) par fait militaire. */
+  tension: z
+    .object({
+      war: num(6),
+      strike: num(1.5),
+      nuclearAuth: num(12),
+      nuclear: num(60),
+      battle: num(0.5),
+      asat: num(8),
+    })
+    .default({}),
+  sensors: z
+    .object({
+      /** Portée des radars d'une nation aveuglée par une cyberattaque (facteur). */
+      blindFactor: num(0.25),
+      /** Niveau d'information d'un passage de satellite : optique 3, radar 2, SIGINT 1. */
+      satelliteOptical: num(3),
+      satelliteRadar: num(2),
+      satelliteSigint: num(1),
+      defaultSwathKm: num(300),
+      defaultRevisitH: num(12),
+    })
+    .default({}),
+  battle: z
+    .object({
+      /** Une bataille se clôt après ce délai sans tir (minutes). */
+      gapMinutes: num(90),
+      /** Rayon de regroupement des combats en une bataille (km). */
+      radiusKm: num(150),
+      maxReports: num(300),
+      frameMinutes: num(5),
+      maxFrames: num(60),
+      maxUnitsPerFrame: num(60),
+      maxShots: num(300),
+      maxTimeline: num(40),
+      /** Résumés envoyés dans la vue. */
+      viewCount: num(20),
+    })
+    .default({}),
+  generals: z
+    .object({
+      perNationMin: num(2),
+      perNationMax: num(4),
+      maxUnits: num(40),
+      /** Bonus d'un trait (+15 %). */
+      bonus: num(0.15),
+      thinkMinutes: num(30),
+      /** Rayon de la zone confiée (km). */
+      areaKm: num(200),
+    })
+    .default({}),
+  specialOps: z
+    .object({
+      baseSuccess: num(0.7),
+      /** Malus par unité terrestre ennemie près de la ville. */
+      defenderPenalty: num(0.12),
+      minSuccess: num(0.1),
+      sabotageDamage: num(0.5),
+      raidMult: num(4),
+      raidRadiusKm: num(15),
+      /** Pertes de l'équipe en cas d'échec (part des PV). */
+      failureLoss: num(0.5),
+    })
+    .default({}),
+  blockade: z.object({ radiusKm: num(80) }).default({}),
+  capture: z
+    .object({
+      /** Types de matériel récupérés en prenant une base ennemie. */
+      maxSystems: num(2),
+      /** Part des effectifs ennemis présents récupérée. */
+      fraction: num(0.34),
+    })
+    .default({}),
+  decoys: z.object({ hours: num(48), spreadKm: num(15) }).default({}),
+  /** Victimes estimées par élément perdu, par catégorie (statistiques). */
+  casualties: z.record(z.string(), z.number().min(0)).default({
+    infantry: 600,
+    tank: 4,
+    ifv: 8,
+    artillery: 6,
+    air_defense: 6,
+    strike_missile: 4,
+    nuclear: 4,
+    fighter: 1,
+    bomber: 4,
+    air_support: 3,
+    helicopter: 3,
+    drone: 0,
+    surface_ship: 250,
+    submarine: 100,
+    space: 0,
+    logistics: 5,
+  }),
+});
+export type MilitaryBalance = z.infer<typeof MilitaryBalanceSchema>;
+
 /** Chiffres d'équilibrage globaux (data/balance/*.json). Tout est réglable par l'admin. */
 export const BalanceSchema = z.object({
   version: z.number().int(),
@@ -158,6 +337,8 @@ export const BalanceSchema = z.object({
       revoltThreshold: z.number().min(0).max(100).default(30),
     })
     .optional(),
+  /** Combat complet (phase 3) : voir MilitaryBalanceSchema (valeurs par défaut documentées). */
+  military: MilitaryBalanceSchema.optional(),
   /** Armée de départ par nation jouable, posée autour de la capitale (repli si pas d'ORBAT). */
   startingArmy: z.array(z.object({ systemId: z.string(), count: z.number().int().min(1) })),
   /** Armée de départ réduite pour les nations non jouées (IA neutres). */

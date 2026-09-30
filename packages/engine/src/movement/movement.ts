@@ -13,6 +13,8 @@ import { refreshUnitPairs, registerUnit } from '../encounters/pairs.js';
 import { declareWar } from '../state/war.js';
 import { requestChase } from '../combat/combat.js';
 import type { GameEvent } from '../queue/events.js';
+import { callHook } from '../modules/registry.js';
+import { board } from '../modules/kit.js';
 
 /**
  * Change le trajet d'une unité à l'instant courant (null = arrêt sur place). Invalide tous ses
@@ -37,7 +39,8 @@ export function setMovement(
     const ls = u.move.legs;
     if (ls.length > 1) schedule(state, { k: 'leg', t: ls[0]!.t1, u: u.id, v: u.mv, i: 0 });
     schedule(state, { k: 'arr', t: ls[ls.length - 1]!.t1, u: u.id, v: u.mv });
-    if (sysOf(state, u).movement !== 'sea') {
+    // Les missiles en vol ne déclarent pas de guerre en survolant un territoire.
+    if (sysOf(state, u).movement !== 'sea' && u.role !== 'missile') {
       const cross = computeCrossings(state, u.pos, ls);
       if (cross.length > 0) {
         u.cross = cross;
@@ -51,6 +54,7 @@ export function setMovement(
   for (const c of sortedSet(state.rt.chasers.get(u.id))) requestChase(state, c, delay);
   markNearCities(state, u);
   state.rt.dirtyCombat.add(u.id);
+  callHook('onMovementChanged', state, u);
 }
 
 /** Les villes proches de l'unité réévaluent leur capture (arrêt / départ d'un capteur). */
@@ -87,9 +91,12 @@ export function handleArrival(state: EngineState, ev: Extract<GameEvent, { k: 'a
   state.rt.geom.delete(u.id);
   // Même géométrie qu'avant (point final) : on réduit seulement le balayage indexé.
   registerUnit(state, u);
-  notify(state, { kind: 'arrived', time: state.time, at: dest, unitId: u.id }, [u.owner]);
+  if (!u.role) {
+    notify(state, { kind: 'arrived', time: state.time, at: dest, unitId: u.id }, [u.owner]);
+  }
   markNearCities(state, u);
   state.rt.dirtyCombat.add(u.id);
+  callHook('onArrived', state, u);
 }
 
 export function handleTerritory(state: EngineState, ev: Extract<GameEvent, { k: 'terr' }>): void {
@@ -100,6 +107,15 @@ export function handleTerritory(state: EngineState, ev: Extract<GameEvent, { k: 
     const P = state.provinces[c.p];
     if (P && P.owner !== u.owner && !atWar(state, u.owner, P.owner)) {
       declareWar(state, u.owner, P.owner);
+    }
+    // Entrée dans une zone d'exclusion aérienne : le propriétaire peut engager l'aéronef.
+    if (P && board(state).noFly[c.p]) {
+      state.rt.dirtyCombat.add(u.id);
+      for (const key of sortedSet(state.rt.pairsOf.get(u.id))) {
+        if (key.includes('#')) continue;
+        const [a, b] = key.split('|') as [string, string];
+        state.rt.dirtyCombat.add(a === u.id ? b : a);
+      }
     }
   }
   const next = u.cross![ev.i + 1];

@@ -2,10 +2,8 @@ import { callHook, modifier, unitModifier } from '../modules/registry.js';
 import { MINUTE, positionAt, type UnitId } from '@redline/shared';
 import { nextFloat } from '../rng/rng.js';
 import {
-  atWar,
   currentLeg,
   isEmbarked,
-  nationUnits,
   notify,
   schedule,
   sightLevel,
@@ -18,7 +16,9 @@ import {
 } from '../state/access.js';
 import { addToIndex, removeFromIndex } from '../state/runtime.js';
 import type { EngineState, Unit } from '../state/types.js';
-import { inWeaponRange, otherOf, removeUnitPairs } from '../encounters/pairs.js';
+import { otherOf, removeUnitPairs } from '../encounters/pairs.js';
+import { hostile, inRange, isEmitting, targetClassOf, weaponRange } from '../encounters/profile.js';
+import { milBal } from '../modules/mil/state.js';
 import { vecDistKm } from '../geo/sphere.js';
 import { setMovement } from '../movement/movement.js';
 import { planUnitMove } from '../movement/plan-unit.js';
@@ -26,9 +26,11 @@ import type { GameEvent } from '../queue/events.js';
 
 /**
  * Combat par rounds. Une unité « engagée » tire à chaque round (balance.time.combatRoundMinutes) sur
- * une cible valide : nation en guerre, à portée d'arme (min..max), visible par sa nation, dégâts non
- * nuls contre sa classe, et autorisée par la posture ('hold' ne tire que sur sa cible d'ordre).
- * Les contre-mesures découlent de la matrice de dégâts et du brouillage.
+ * une cible valide : nation hostile (guerre sans cessez-le-feu, ou violation d'une zone d'exclusion),
+ * à portée d'arme effective (min..max), visible par sa nation, dégâts non nuls contre sa classe
+ * effective, et autorisée par la posture ('hold' ne tire que sur sa cible d'ordre). Les missiles en
+ * vol ne sont engagés que par interception (module mil) ; les contre-mesures découlent de la matrice
+ * de dégâts, du brouillage et de la furtivité.
  */
 
 function roundMs(state: EngineState): number {
@@ -41,25 +43,32 @@ interface TargetCand {
 }
 
 function validTargets(state: EngineState, u: Unit): TargetCand[] {
-  const sys = sysOf(state, u);
-  if (sys.weaponRangeKm.max <= 0) return [];
+  if (u.off || u.role) return [];
+  const w = weaponRange(state, u);
+  if (w.max <= 0) return [];
   if (isEmbarked(state, u, state.time)) return [];
+  const sys = sysOf(state, u);
   const out: TargetCand[] = [];
   for (const key of sortedSet(state.rt.pairsOf.get(u.id))) {
     if (key.includes('#')) continue;
     const pair = state.pairs[key];
     if (!pair) continue;
+    if (!inRange(w, pair.d)) continue;
     const o = state.units[otherOf(key, u.id)];
-    if (!o) continue;
-    if (!atWar(state, u.owner, o.owner)) continue;
-    if (!inWeaponRange(sys, pair.d)) continue;
-    const os = sysOf(state, o);
-    if (sys.damage[os.targetClass] <= 0) continue;
+    if (!o || o.off || o.role === 'missile') continue;
+    if (sys.damage[targetClassOf(state, o)] <= 0) continue;
     if (sightLevel(state, u.owner, o.id) === 0) continue;
     if (u.stance === 'hold' && u.target !== o.id) continue;
+    if (!hostile(state, u, o)) continue;
     out.push({ unit: o, d: pair.d });
   }
   return out;
+}
+
+/** Cible de grande valeur (ravitailleur, avion radar) : priorité de tir. */
+export function isHighValue(state: EngineState, o: Unit): boolean {
+  const s = sysOf(state, o);
+  return (s.air?.tankerFuelH ?? 0) > 0 || s.sensor?.kind === 'aew';
 }
 
 function chooseTarget(state: EngineState, u: Unit, list: TargetCand[]): Unit | null {
@@ -69,11 +78,13 @@ function chooseTarget(state: EngineState, u: Unit, list: TargetCand[]): Unit | n
     if (t) return t.unit;
   }
   const sys = sysOf(state, u);
+  const hv = milBal(state).air.highValueTargetFactor;
   let best: Unit | null = null;
   let bestScore = -Infinity;
   for (const c of list) {
     const os = sysOf(state, c.unit);
-    const score = sys.damage[os.targetClass] * (1 - os.armor);
+    let score = sys.damage[targetClassOf(state, c.unit)] * (1 - os.armor);
+    if (isHighValue(state, c.unit)) score *= hv;
     if (score > bestScore) {
       bestScore = score;
       best = c.unit;
@@ -99,7 +110,7 @@ export function clearTarget(state: EngineState, u: Unit): void {
 
 function canMove(state: EngineState, u: Unit): boolean {
   const s = sysOf(state, u);
-  return s.movement !== 'static' && s.speedKmh > 0;
+  return s.movement !== 'static' && s.speedKmh > 0 && !u.off && !u.role;
 }
 
 /** Réévalue la situation de combat d'une unité (appelé via l'ensemble « dirty »). */
@@ -107,6 +118,9 @@ export function refreshCombat(state: EngineState, uid: UnitId): void {
   const u = state.units[uid];
   if (!u) return;
   if (u.target && !state.units[u.target]) clearTarget(state, u);
+  // Modules : interceptions de missiles, patrouilles…
+  callHook('onCombatRefresh', state, u);
+  if (!state.units[uid]) return;
   const list = validTargets(state, u);
   const pick = chooseTarget(state, u, list);
   if (pick) {
@@ -210,13 +224,17 @@ export function roundDamage(state: EngineState, u: Unit, tgt: Unit, varianceRoll
   const ts = sysOf(state, tgt);
   const vet = veterancyLevel(state, u.xp);
   let dmg =
-    sys.damage[ts.targetClass] * u.count * (1 + vet * b.veterancyDamageBonus) * varianceRoll;
+    sys.damage[targetClassOf(state, tgt)] *
+    u.count *
+    (1 + vet * b.veterancyDamageBonus) *
+    varianceRoll;
   dmg *= modifier(state, u.owner, 'combat.damage') / modifier(state, tgt.owner, 'combat.armor');
   dmg *= unitModifier(state, u, 'combat.damage') / unitModifier(state, tgt, 'combat.armor');
   dmg *= 1 - ts.armor;
   if (inOwnCity(state, tgt)) dmg /= 1 + b.defenderCityBonus;
   const jam = jammingFor(state, tgt);
-  dmg *= 1 - jam * (1 - sys.ew.jamResistance);
+  const res = Math.min(1, sys.ew.jamResistance * modifier(state, u.owner, 'ew.jamResistance'));
+  dmg *= 1 - jam * (1 - res);
   return Math.max(0, dmg);
 }
 
@@ -225,17 +243,29 @@ function fire(state: EngineState, u: Unit, tgt: Unit): void {
   const roll = 1 + v * (2 * nextFloat(state.rng) - 1);
   const dmg = roundDamage(state, u, tgt, roll);
   if (dmg <= 0) return;
+  inflict(state, u, tgt, dmg);
+}
+
+/**
+ * Inflige des dégâts (tir, frappe, impact) : PV, effectif, expérience de l'attaquant, crochet
+ * onDamage, destruction éventuelle. Renvoie vrai si la cible est détruite.
+ */
+export function inflict(state: EngineState, by: Unit | null, tgt: Unit, dmg: number): boolean {
+  if (!(dmg > 0) || !state.units[tgt.id]) return false;
   const ts = sysOf(state, tgt);
   tgt.hp -= dmg;
   tgt.lastHit = state.time;
-  u.xp += dmg;
-  callHook('onDamage', state, u, tgt, dmg);
+  if (by) {
+    by.xp += dmg;
+    callHook('onDamage', state, by, tgt, dmg);
+  }
   if (tgt.hp <= 1e-6) {
-    destroyUnit(state, tgt, u);
-    return;
+    destroyUnit(state, tgt, by);
+    return true;
   }
   tgt.count = Math.max(1, Math.ceil(tgt.hp / ts.hp - 1e-9));
   state.rt.dirtyCombat.add(tgt.id);
+  return false;
 }
 
 /** Le défenseur est-il dans une ville de sa nation (≤ groundContactKm du point de ville) ? */
@@ -251,22 +281,29 @@ export function inOwnCity(state: EngineState, u: Unit): boolean {
   return false;
 }
 
-/** Brouillage : le plus fort brouilleur allié dont la portée de détection couvre l'unité. */
+/** Brouillage : le plus fort brouilleur allié en émission dont la zone d'effet couvre l'unité. */
 export function jammingFor(state: EngineState, u: Unit): number {
+  const set = state.rt.jammers.get(u.owner);
+  if (!set || set.size === 0) return 0;
   let best = 0;
-  const here = unitVecAt(state, u, state.time);
-  for (const id of nationUnits(state, u.owner)) {
-    const j = state.units[id]!;
+  let here: ReturnType<typeof unitVecAt> | null = null;
+  for (const id of [...set].sort()) {
+    const j = state.units[id];
+    if (!j) continue;
     const s = sysOf(state, j);
-    if (s.ew.jamming <= best) continue;
+    const level = Math.min(0.95, s.ew.jamming * modifier(state, j.owner, 'ew.jamming'));
+    if (level <= best || !isEmitting(state, j)) continue;
+    here ??= unitVecAt(state, u, state.time);
     const d = id === u.id ? 0 : vecDistKm(here, unitVecAt(state, j, state.time));
-    if (d <= s.detectionRangeKm) best = s.ew.jamming;
+    if (d <= s.detectionRangeKm) best = level;
   }
   return best;
 }
 
 export function destroyUnit(state: EngineState, u: Unit, killer: Unit | null): void {
+  if (!state.units[u.id]) return;
   callHook('onUnitDestroyed', state, u, killer);
+  if (!state.units[u.id]) return;
   const t = state.time;
   const at = unitPosAt(state, u, t);
   const seers: string[] = [];
@@ -276,10 +313,27 @@ export function destroyUnit(state: EngineState, u: Unit, killer: Unit | null): v
     { kind: 'unit_destroyed', time: t, at, unitId: u.id, owner: u.owner, systemId: u.sys },
     [u.owner, ...(killer ? [killer.owner] : []), ...seers],
   );
+  purgeUnit(state, u, seers);
+}
+
+/**
+ * Retire une unité sans que ce soit une perte (fusion de piles, salve arrivée au but, leurre expiré,
+ * lanceur vidé) : pas de notification de destruction ; crochet onUnitRemoved.
+ */
+export function retireUnit(state: EngineState, u: Unit): void {
+  if (!state.units[u.id]) return;
+  callHook('onUnitRemoved', state, u);
+  if (!state.units[u.id]) return;
+  const seers: string[] = [];
+  for (const n of sortedKeys(state.sight)) if (sightLevel(state, n, u.id) > 0) seers.push(n);
+  purgeUnit(state, u, seers);
+}
+
+function purgeUnit(state: EngineState, u: Unit, seers: string[]): void {
   removeUnitPairs(state, u.id);
-  for (const n of seers) {
-    const k = state.know[n];
-    if (k) {
+  for (const n of sortedKeys(state.know)) {
+    const k = state.know[n]!;
+    if (k[u.id] && (seers.includes(n) || u.role === 'missile' || u.role === 'decoy')) {
       delete k[u.id];
       if (Object.keys(k).length === 0) delete state.know[n];
     }
@@ -301,6 +355,7 @@ export function destroyUnit(state: EngineState, u: Unit, killer: Unit | null): v
   state.rt.chasers.delete(u.id);
   if (u.target) removeFromIndex(state.rt.chasers, u.target, u.id);
   removeFromIndex(state.rt.byNation, u.owner, u.id);
+  removeFromIndex(state.rt.jammers, u.owner, u.id);
   state.rt.geom.delete(u.id);
   state.rt.dirtyCombat.delete(u.id);
   delete state.units[u.id];
