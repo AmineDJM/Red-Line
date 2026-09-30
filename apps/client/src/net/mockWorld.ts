@@ -19,6 +19,7 @@ import {
   type CouncilView,
   type DepartmentView,
   type DiplomacyView,
+  type EconomyDetailView,
   type GameNotification,
   type GameTime,
   type GeneralView,
@@ -36,7 +37,6 @@ import {
   type UnitView,
   type WeaponSystem,
 } from '@redline/shared';
-import type { EconomyDetails } from '../lib/economy.js';
 
 export interface WorldCtx {
   me: NationId;
@@ -279,90 +279,82 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
       },
     ];
   }
-  const hist = (base: number, drift: number, n = 21) =>
-    Array.from({ length: n }, (_, i) =>
-      Math.round(base * (1 - (drift * (n - 1 - i)) / n + (rnd() - 0.5) * 0.04)),
-    );
-  const details: EconomyDetails = {
-    annualBudget: budget,
+  const flow = (stock: number, production: number, consumption: number, shortage = false) => {
+    const net = production - consumption;
+    return {
+      stock,
+      production,
+      consumption,
+      net,
+      shortage,
+      daysLeft: net < 0 ? Math.round((stock / -net) * 10) / 10 : null,
+    };
+  };
+  const national = perDay * 0.5;
+  const provincial = perDay * 0.46;
+  const upkeep = {
+    fighter: 6.2e6,
+    tank: 3.1e6,
+    air_defense: 2.4e6,
+    infantry: 4.8e6,
+    surface_ship: 2.2e6,
+    helicopter: 1.1e6,
+    artillery: 0.9e6,
+    submarine: 0.8e6,
+  };
+  const upkeepTotal = Object.values(upkeep).reduce((a, b) => a + b, 0);
+  const incomeTotal = national + provincial - 1.2e6;
+  const net = incomeTotal - upkeepTotal;
+  const detail: EconomyDetailView = {
+    budgetUsdPerYear: budget,
     income: {
-      budget: perDay * 0.5,
-      provinces: perDay * 0.46,
-      trade: 3.1e6,
-      licences: 0.4e6,
-      alliance: 0.9e6,
-    },
-    expenses: {
-      upkeep: 21.5e6,
-      production: 14.2e6,
-      research: 6.8e6,
-      intel: 5.5e6,
-      construction: 3.9e6,
-      imports: 2.1e6,
+      national,
+      provincial,
+      trade: -1.2e6,
       mobilization: 0,
+      modifiers: 0,
+      total: incomeTotal,
     },
+    upkeep,
+    upkeepTotal,
+    lastDay: {
+      budgetNational: national,
+      budgetProvincial: provincial,
+      trade: -1.2e6,
+      upkeep: -upkeepTotal,
+      production: -14.2e6,
+      research: -6.8e6,
+      buildings: -3.9e6,
+      imports: -2.1e6,
+      marketSales: 3.1e6,
+      other: -5.5e6,
+    },
+    today: {},
+    tradeBalance: 3.1e6 - 2.1e6,
     resources: {
-      oil: {
-        stock: 12_400,
-        production: 1_820,
-        consumption: 1_360,
-        history: hist(12_400, -0.3, 14),
-      },
-      metals: { stock: 8_600, production: 950, consumption: 1_010, history: hist(8_600, 0.08, 14) },
-      electronics: {
-        stock: 1_320,
-        production: 240,
-        consumption: 410,
-        shortage: true,
-        history: hist(1_320, 0.45, 14),
-      },
-      food: {
-        stock: 21_150,
-        production: 2_600,
-        consumption: 2_380,
-        history: hist(21_150, -0.05, 14),
-      },
+      oil: flow(12_400, 1_820, 1_360),
+      metals: flow(8_600, 950, 1_010),
+      electronics: flow(1_320, 240, 410, true),
+      food: flow(21_150, 2_600, 2_380),
     },
-    history: hist(3.42e9, -0.18),
-    construction: cap
-      ? [
-          {
-            id: 'c1',
-            provinceId: cap.id,
-            building: 'air_defense_site',
-            level: 3,
-            startedAt: now - 6 * HOUR,
-            completesAt: now + 18 * HOUR,
-            kind: 'upgrade',
-          },
-          {
-            id: 'c2',
-            provinceId: (ctx.threatened ?? cap).id,
-            building: 'bunker',
-            level: 2,
-            startedAt: now - 2 * HOUR,
-            completesAt: now + 10 * HOUR,
-            kind: 'build',
-          },
-          {
-            id: 'c3',
-            provinceId: (mine[2] ?? cap).id,
-            building: 'refinery',
-            level: 2,
-            startedAt: now - 1 * HOUR,
-            completesAt: now + 22 * HOUR,
-            kind: 'repair',
-          },
-        ]
-      : [],
+    forecast: { netPerDay: net, money7d: 3.42e9 + 7 * net, money30d: 3.42e9 + 30 * net },
+    population: mine.reduce((s2, p) => s2 + (p.population ?? 0), 0),
+    morale: 68,
+    provinces: mine.map((p, i) => ({
+      id: p.id,
+      population: p.population ?? 0,
+      morale: 55 + ((i * 7) % 40),
+      income: Math.round(provincial / Math.max(1, mine.length)) * (p.id === cap?.id ? 3 : 1),
+      resources: { oil: (i * 13) % 90, food: 20 + ((i * 11) % 60) },
+    })),
   };
   view.economy = {
     ...view.economy,
     money: 3.42e9,
     resources: { oil: 12_400, metals: 8_600, electronics: 1_320, food: 21_150 },
-    incomePerDay: { money: perDay, oil: 1_820, metals: 950, electronics: 240, food: 2_600 },
+    incomePerDay: { money: net, oil: 460, metals: -60, electronics: -170, food: 220 },
+    detail,
   };
-  (view.economy as typeof view.economy & { details: EconomyDetails }).details = details;
 
   // ——— Bâtiments des provinces du joueur (niveaux 1-5) ———
   const extra: BuildingType[] = [
@@ -1129,16 +1121,14 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
     invitations: ['al-east'],
     reputation: 62,
     disputed,
-    neutrals: neutralNear
-      .slice(0, 5)
-      .map((id, i) => ({
-        nationId: id,
-        leaning: {
-          [alliance.id]: [0.62, 0.35, 0.18, 0.51, 0.44][i]!,
-          'al-atl': [0.2, 0.48, 0.66, 0.3, 0.28][i]!,
-          'al-east': [0.1, 0.12, 0.08, 0.15, 0.22][i]!,
-        },
-      })),
+    neutrals: neutralNear.slice(0, 5).map((id, i) => ({
+      nationId: id,
+      leaning: {
+        [alliance.id]: [0.62, 0.35, 0.18, 0.51, 0.44][i]!,
+        'al-atl': [0.2, 0.48, 0.66, 0.3, 0.28][i]!,
+        'al-east': [0.1, 0.12, 0.08, 0.15, 0.22][i]!,
+      },
+    })),
   };
   for (const r of relations) {
     const nv = view.nations[r.nationId];

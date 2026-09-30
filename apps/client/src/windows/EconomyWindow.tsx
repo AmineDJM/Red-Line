@@ -36,7 +36,7 @@ import {
 } from '@redline/ui';
 import { NationTag } from '../components/Common.js';
 import { BuildingRow } from '../components/Buildings.js';
-import { economySummary, resourceFlows } from '../lib/economy.js';
+import { constructionSites, economySummary, ledgerRows, resourceFlows } from '../lib/economy.js';
 import { norm } from '../lib/commands.js';
 import { provinceName } from '../lib/game.js';
 import { photoFor, usePhotos } from '../lib/photos.js';
@@ -102,20 +102,48 @@ function ItemLabel({ item }: { item: TradeItem }) {
   }
 }
 
+function FlowRow({ label, amount, max }: { label: string; amount: number; max: number }) {
+  const out = amount < 0;
+  return (
+    <li>
+      <span className="flows__label" title={label}>
+        {label}
+      </span>
+      <span className="flows__bar">
+        <span
+          className={out ? 'flows__fill flows__fill--out' : 'flows__fill flows__fill--in'}
+          style={{ width: `${Math.min(100, (Math.abs(amount) / max) * 100)}%` }}
+        />
+      </span>
+      <span className={out ? 'flows__value rl-tone-red' : 'flows__value rl-tone-green'}>
+        {formatMoney(amount, { signed: true })}
+      </span>
+    </li>
+  );
+}
+
 function Dashboard() {
   const { t } = useTranslation();
   const view = useGame((s) => s.view);
-  const me = useGame((s) => s.me);
-  const catalog = useWorld((s) => s.catalog);
+  const focusOn = useUi((s) => s.focusOn);
+  const selectProvince = useUi((s) => s.selectProvince);
+  const defs = useWorld((s) => s.provinces);
   const now = useGameTime(2000);
-  const sum = economySummary(view, me, catalog);
+  const [allProv, setAllProv] = useState(false);
+  const sum = economySummary(view);
   const eco = view?.economy;
-  const d = sum.details;
+  const d = sum.detail;
+  const sites = constructionSites(view, now);
   const maxFlow = Math.max(
     1,
-    ...sum.income.map((x) => x.amount),
-    ...sum.expenses.map((x) => x.amount),
+    ...sum.income.map((x) => Math.abs(x.amount)),
+    ...sum.upkeep.map((x) => x.amount),
+    sum.intel,
   );
+  const useToday = !d?.lastDay || !Object.keys(d.lastDay).length;
+  const ledger = ledgerRows(useToday ? d?.today : d?.lastDay);
+  const ledgerMax = Math.max(1, ...ledger.map((x) => Math.abs(x.amount)));
+  const provinces = [...(d?.provinces ?? [])].sort((a, b) => b.income - a.income);
   return (
     <div className="vstack">
       <div className="kpis">
@@ -124,14 +152,17 @@ function Dashboard() {
           value={<Money value={eco?.money ?? 0} />}
           tone="amber"
           sub={
-            d.history ? (
-              <Sparkline values={d.history} tone="amber" width={120} label={t('economy.trend')} />
-            ) : null
+            d
+              ? t('economy.forecast', {
+                  d7: formatMoney(d.forecast.money7d),
+                  d30: formatMoney(d.forecast.money30d),
+                })
+              : null
           }
         />
         <Stat
           label={t('economy.annualBudget')}
-          value={d.annualBudget ? formatMoney(d.annualBudget) : '—'}
+          value={d?.budgetUsdPerYear ? formatMoney(d.budgetUsdPerYear) : '—'}
           sub={t('economy.budgetSource')}
         />
         <Stat
@@ -152,53 +183,73 @@ function Dashboard() {
           tone={sum.balance >= 0 ? 'green' : 'red'}
           sub={
             sum.balance < 0 && eco
-              ? t('economy.runway', { days: Math.floor(eco.money / -sum.balance) })
+              ? t('economy.runway', { days: Math.max(0, Math.floor(eco.money / -sum.balance)) })
               : t('economy.perDay')
           }
         />
       </div>
-      {sum.estimated ? <p className="hint">{t('economy.estimated')}</p> : null}
+      {sum.balance < 0 && eco && eco.money / -sum.balance < 30 ? (
+        <p className="hint hint--warn">
+          <Icon name="warning" size={13} /> {t('economy.deficitHint')}
+        </p>
+      ) : null}
       <div className="cols2">
         <Panel title={t('economy.incomeDetail')} meta={formatMoney(sum.totalIncome)}>
           <ul className="flows">
             {sum.income.map((x) => (
-              <li key={x.key}>
-                <span className="flows__label">{t(`economy.incomeKeys.${x.key}`)}</span>
-                <span className="flows__bar">
-                  <span
-                    className="flows__fill flows__fill--in"
-                    style={{ width: `${(x.amount / maxFlow) * 100}%` }}
-                  />
-                </span>
-                <span className="flows__value rl-tone-green">
-                  {formatMoney(x.amount, { signed: true })}
-                </span>
-              </li>
+              <FlowRow
+                key={x.key}
+                label={t(`economy.incomeKeys.${x.key}`)}
+                amount={x.amount}
+                max={maxFlow}
+              />
             ))}
           </ul>
         </Panel>
         <Panel title={t('economy.expenseDetail')} meta={formatMoney(sum.totalExpenses)}>
           <ul className="flows">
-            {sum.expenses.map((x) => (
-              <li key={x.key}>
-                <span className="flows__label">{t(`economy.expenseKeys.${x.key}`)}</span>
-                <span className="flows__bar">
-                  <span
-                    className="flows__fill flows__fill--out"
-                    style={{ width: `${(x.amount / maxFlow) * 100}%` }}
-                  />
-                </span>
-                <span className="flows__value rl-tone-red">{formatMoney(-x.amount)}</span>
-              </li>
+            {sum.upkeep.map((x) => (
+              <FlowRow
+                key={x.key}
+                label={t(`categories.${x.key}`, { defaultValue: x.key })}
+                amount={-x.amount}
+                max={maxFlow}
+              />
             ))}
+            {sum.intel > 0 ? (
+              <FlowRow label={t('economy.intelBudget')} amount={-sum.intel} max={maxFlow} />
+            ) : null}
           </ul>
         </Panel>
       </div>
-      <Panel title={t('economy.construction')} meta={String(d.construction?.length ?? 0)} flush>
-        {d.construction?.length ? (
+      {d ? (
+        <Panel
+          title={useToday ? t('economy.ledgerToday') : t('economy.ledgerTitle')}
+          meta={t('economy.tradeBalance', {
+            value: formatMoney(d.tradeBalance, { signed: true }),
+          })}
+        >
+          {ledger.length ? (
+            <ul className="flows">
+              {ledger.map((x) => (
+                <FlowRow
+                  key={x.key}
+                  label={t(`economy.ledger.${x.key}`)}
+                  amount={x.amount}
+                  max={ledgerMax}
+                />
+              ))}
+            </ul>
+          ) : (
+            <p className="muted small">{t('economy.ledgerEmpty')}</p>
+          )}
+        </Panel>
+      ) : null}
+      <Panel title={t('economy.construction')} meta={String(sites.length)} flush>
+        {sites.length ? (
           <Table
             label={t('economy.construction')}
-            rows={d.construction}
+            rows={sites}
             rowKey={(c) => c.id}
             columns={[
               {
@@ -221,17 +272,6 @@ function Dashboard() {
                 ),
               },
               {
-                key: 'pr',
-                header: t('economy.cols.progress'),
-                width: '26%',
-                render: (c) => (
-                  <ProgressBar
-                    value={(now - c.startedAt) / Math.max(1, c.completesAt - c.startedAt)}
-                    size="sm"
-                  />
-                ),
-              },
-              {
                 key: 'e',
                 header: t('economy.cols.eta'),
                 align: 'right',
@@ -240,9 +280,81 @@ function Dashboard() {
             ]}
           />
         ) : (
-          <EmptyState compact icon="building" title={t('economy.noConstruction')} />
+          <EmptyState
+            compact
+            icon="building"
+            title={t('economy.noConstruction')}
+            text={t('economy.constructionHint')}
+          />
         )}
       </Panel>
+      {d && provinces.length ? (
+        <Panel
+          title={t('economy.provincesTitle')}
+          meta={t('economy.populationMorale', {
+            pop: formatCompact(d.population),
+            morale: formatNumber(d.morale, 0),
+          })}
+          flush
+        >
+          <Table
+            label={t('economy.provincesTitle')}
+            rows={allProv ? provinces : provinces.slice(0, 8)}
+            rowKey={(p) => p.id}
+            onRowClick={(p) => {
+              selectProvince(p.id);
+              const def = defs[p.id];
+              if (def) focusOn(def.cityPoint, 6.5);
+            }}
+            columns={[
+              {
+                key: 'n',
+                header: t('economy.cols.province'),
+                render: (p) => <b>{provinceName(p.id)}</b>,
+              },
+              {
+                key: 'pop',
+                header: t('economy.cols.population'),
+                align: 'right',
+                hideOnMobile: true,
+                render: (p) => formatCompact(p.population),
+              },
+              {
+                key: 'm',
+                header: t('economy.cols.morale'),
+                width: '22%',
+                hideOnMobile: true,
+                render: (p) => (
+                  <ProgressBar
+                    value={p.morale / 100}
+                    tone="auto"
+                    size="xs"
+                    trailing={formatNumber(p.morale, 0)}
+                    label={t('economy.cols.morale')}
+                  />
+                ),
+              },
+              {
+                key: 'i',
+                header: t('economy.cols.income'),
+                align: 'right',
+                render: (p) => (
+                  <span className="rl-tone-green">{formatMoney(p.income, { signed: true })}</span>
+                ),
+              },
+            ]}
+          />
+          {provinces.length > 8 ? (
+            <div className="win-pad win-pad--tight">
+              <Button size="sm" variant="ghost" onClick={() => setAllProv(!allProv)}>
+                {allProv
+                  ? t('economy.showLess')
+                  : t('economy.showAll', { count: provinces.length })}
+              </Button>
+            </div>
+          ) : null}
+        </Panel>
+      ) : null}
     </div>
   );
 }
@@ -252,89 +364,84 @@ function Resources() {
   const view = useGame((s) => s.view);
   const flows = resourceFlows(view);
   return (
-    <Table
-      label={t('economy.tabs.resources')}
-      rows={[...RESOURCES]}
-      rowKey={(r) => r}
-      columns={[
-        {
-          key: 'name',
-          header: t('economy.cols.resource'),
-          render: (r: Resource) => (
-            <span className="titem">
-              <span className={flows[r].shortage ? 'titem__icon titem__icon--red' : 'titem__icon'}>
-                <Icon name={RESOURCE_ICON[r]} size={14} />
+    <div className="vstack">
+      <Table
+        label={t('economy.tabs.resources')}
+        rows={[...RESOURCES]}
+        rowKey={(r) => r}
+        columns={[
+          {
+            key: 'name',
+            header: t('economy.cols.resource'),
+            render: (r: Resource) => (
+              <span className="titem">
+                <span
+                  className={flows[r].shortage ? 'titem__icon titem__icon--red' : 'titem__icon'}
+                >
+                  <Icon name={RESOURCE_ICON[r]} size={14} />
+                </span>
+                <b>{t(`game.resources.${r}`)}</b>
+                {flows[r].shortage ? <Badge tone="red">{t('economy.shortage')}</Badge> : null}
               </span>
-              <b>{t(`game.resources.${r}`)}</b>
-              {flows[r].shortage ? <Badge tone="red">{t('economy.shortage')}</Badge> : null}
-            </span>
-          ),
-        },
-        {
-          key: 'stock',
-          header: t('economy.cols.stock'),
-          align: 'right',
-          render: (r) => formatNumber(flows[r].stock, 0),
-          sort: (a, b) => flows[a].stock - flows[b].stock,
-        },
-        {
-          key: 'prod',
-          header: t('economy.cols.production'),
-          align: 'right',
-          render: (r) => (
-            <span className="rl-tone-green">+{formatNumber(flows[r].production, 0)}</span>
-          ),
-        },
-        {
-          key: 'cons',
-          header: t('economy.cols.consumption'),
-          align: 'right',
-          render: (r) => (
-            <span className="rl-tone-red">−{formatNumber(flows[r].consumption, 0)}</span>
-          ),
-        },
-        {
-          key: 'net',
-          header: t('economy.cols.net'),
-          align: 'right',
-          render: (r) => {
-            const n = flows[r].production - flows[r].consumption;
-            return (
-              <b
-                className={n >= 0 ? 'rl-tone-green' : 'rl-tone-amber'}
-              >{`${n >= 0 ? '+' : '−'}${formatNumber(Math.abs(n), 0)}`}</b>
-            );
-          },
-        },
-        {
-          key: 'days',
-          header: t('economy.cols.autonomy'),
-          align: 'right',
-          hideOnMobile: true,
-          render: (r) => {
-            const n = flows[r].production - flows[r].consumption;
-            return n >= 0 ? '∞' : t('economy.days', { count: Math.floor(flows[r].stock / -n) });
-          },
-        },
-        {
-          key: 'trend',
-          header: t('economy.cols.trend'),
-          align: 'right',
-          hideOnMobile: true,
-          render: (r) =>
-            flows[r].history ? (
-              <Sparkline
-                values={flows[r].history!}
-                tone={flows[r].shortage ? 'red' : 'cyan'}
-                width={110}
-                height={22}
-              />
-            ) : (
-              '—'
             ),
-        },
-      ]}
-    />
+          },
+          {
+            key: 'stock',
+            header: t('economy.cols.stock'),
+            align: 'right',
+            render: (r) => formatNumber(flows[r].stock, 0),
+            sort: (a, b) => flows[a].stock - flows[b].stock,
+          },
+          {
+            key: 'prod',
+            header: t('economy.cols.production'),
+            align: 'right',
+            render: (r) => (
+              <span className="rl-tone-green">+{formatNumber(flows[r].production, 0)}</span>
+            ),
+          },
+          {
+            key: 'cons',
+            header: t('economy.cols.consumption'),
+            align: 'right',
+            hideOnMobile: true,
+            render: (r) => (
+              <span className="rl-tone-red">−{formatNumber(flows[r].consumption, 0)}</span>
+            ),
+          },
+          {
+            key: 'net',
+            header: t('economy.cols.net'),
+            align: 'right',
+            render: (r) => {
+              const n = flows[r].net;
+              return (
+                <b
+                  className={n >= 0 ? 'rl-tone-green' : 'rl-tone-amber'}
+                >{`${n >= 0 ? '+' : '−'}${formatNumber(Math.abs(n), 0)}`}</b>
+              );
+            },
+          },
+          {
+            key: 'days',
+            header: t('economy.cols.autonomy'),
+            align: 'right',
+            hideOnMobile: true,
+            render: (r) => {
+              const dl = flows[r].daysLeft;
+              return dl === null ? (
+                <span className="muted">∞</span>
+              ) : (
+                <span className={dl < 7 ? 'rl-tone-red' : 'rl-tone-amber'}>
+                  {t('economy.days', { count: Math.floor(dl) })}
+                </span>
+              );
+            },
+          },
+        ]}
+      />
+      <p className="hint">{t('economy.resourcesHint')}</p>
+    </div>
   );
 }
 

@@ -1,5 +1,7 @@
 import {
+  BUILDING_TYPES,
   MODIFIER_KEYS,
+  type BuildOptionView,
   type BuildingType,
   type BuildingView,
   type DeliveryView,
@@ -8,11 +10,13 @@ import {
   type ModifierKey,
   type NationId,
   type PlayerView,
+  type ProvinceId,
 } from '@redline/shared';
 import { provincesOf } from '../../state/access.js';
 import type { EngineState } from '../../state/types.js';
 import { board } from '../kit.js';
-import { buildingsOf, depotsOf, health, levelOf } from './buildings.js';
+import { buildingsOf, depotsOf, health, levelOf, power } from './buildings.js';
+import { cfg, effect } from './config.js';
 import { economyDetail } from './detail.js';
 import { researchModifier } from './research.js';
 import { eco, ecoNation, sortedIds } from './state.js';
@@ -30,6 +34,30 @@ function publicParts(state: EngineState, view: PlayerView): void {
     const pv = view.provinces[pid];
     if (pv) pv.blockaded = true;
   }
+}
+
+/**
+ * Devis d'un chantier (même formule que `buildOrder`) : coût × croissance^(niveau − 1), durée ×
+ * (1 + croissance × (niveau − 1)) ÷ vitesse des chantiers de la province (industrie locale).
+ */
+function quote(
+  state: EngineState,
+  pid: ProvinceId,
+  kind: string,
+  lvl: number,
+): { cost: number; hours: number } {
+  const c = cfg(state.world).buildings;
+  const speed =
+    1 +
+    effect(state.world, 'local_industry', 'buildSpeedPerLevel', 0) *
+      power(state, pid, 'local_industry');
+  return {
+    cost: Math.round((c.buildCostUsd[kind] ?? 0) * Math.pow(c.levelCostGrowth, lvl - 1)),
+    hours:
+      Math.round(
+        (((c.buildHours[kind] ?? 24) * (1 + c.levelTimeGrowth * (lvl - 1))) / speed) * 100,
+      ) / 100,
+  };
 }
 
 export function ecoView(state: EngineState, me: NationId, view: PlayerView): void {
@@ -102,6 +130,8 @@ export function ecoView(state: EngineState, me: NationId, view: PlayerView): voi
     if (!l) jobsByProv.set(j.pid, (l = []));
     l.push({ kind: j.kind, t: j.completesAt, lvl: j.lvl });
   }
+  const maxLevel = cfg(state.world).buildings.maxLevel;
+  const maxFort = effect(state.world, 'fortification', 'maxLevel', 3);
   for (const pid of provincesOf(state, me)) {
     const pv = view.provinces[pid];
     if (!pv) continue;
@@ -109,17 +139,33 @@ export function ecoView(state: EngineState, me: NationId, view: PlayerView): voi
     const present = buildingsOf(state, pid);
     const list: BuildingView[] = [];
     for (const b of present) {
-      const bv: BuildingView = {
-        type: b,
-        level: levelOf(state, pid, b),
-        health: health(state, pid, b),
-      };
+      const level = levelOf(state, pid, b);
+      const bv: BuildingView = { type: b, level, health: health(state, pid, b) };
       const rep = es.bld[pid]?.[b]?.rep;
       if (rep !== undefined && rep !== null) bv.repairUntil = rep;
       const up = jobs.find((j) => j.kind === b);
       if (up) bv.upgradeUntil = up.t;
+      bv.next = level >= maxLevel ? null : { level: level + 1, ...quote(state, pid, b, level + 1) };
       list.push(bv);
     }
+    // Options de construction : bâtiments absents (niveau 1) et fortification.
+    const options: BuildOptionView[] = [];
+    for (const b of BUILDING_TYPES) {
+      if (present.includes(b)) continue;
+      const o: BuildOptionView = { type: b, level: 1, ...quote(state, pid, b, 1) };
+      if (jobs.some((j) => j.kind === b)) o.blocked = 'in_progress';
+      options.push(o);
+    }
+    const fort = (es.forts[pid] ?? 0) + 1;
+    const fo: BuildOptionView = {
+      type: 'fortification',
+      level: Math.min(fort, maxFort),
+      ...quote(state, pid, 'fortification', Math.min(fort, maxFort)),
+    };
+    if (fort > maxFort) fo.blocked = 'max_level';
+    else if (jobs.some((j) => j.kind === 'fortification')) fo.blocked = 'in_progress';
+    options.push(fo);
+    pv.buildOptions = options;
     for (const j of jobs) {
       if (j.kind === 'fortification' || present.includes(j.kind as BuildingType)) continue;
       list.push({

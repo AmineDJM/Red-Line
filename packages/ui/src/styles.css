@@ -531,7 +531,9 @@
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  background: var(--rl-glass);
+  /* Fenêtre quasi opaque, sans flou d'arrière-plan : un flou sur une grande surface posée sur la carte
+     WebGL coûte cher à chaque image ; l'opacité garde la lecture nette. */
+  background: var(--rl-glass-strong);
   border: 1px solid var(--rl-line);
   border-radius: var(--rl-radius);
   box-shadow: var(--rl-shadow);
@@ -539,8 +541,6 @@
   font-family: var(--rl-font-mono);
   font-size: var(--rl-fs);
   overflow: hidden;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   animation: rl-win-in 160ms var(--rl-ease);
 }
 @keyframes rl-win-in {
@@ -736,7 +736,6 @@
   border-radius: var(--rl-radius);
   background: var(--rl-glass);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   box-shadow: var(--rl-shadow-sm);
 }
 .rl-panel--accent-cyan {

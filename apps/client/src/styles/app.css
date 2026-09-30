@@ -677,6 +677,9 @@ code {
   font-size: var(--rl-fs-xs);
   font-weight: 600;
 }
+.topstat__delta--neg {
+  color: var(--rl-red);
+}
 .topstat__unit {
   margin-left: 2px;
   color: var(--rl-text-dim);
@@ -1473,6 +1476,9 @@ code {
 .buildmenu__cost span {
   color: var(--rl-text-dim);
   font-weight: 400;
+}
+.buildmenu__cost--poor {
+  color: var(--rl-red);
 }
 
 /* Barre de confirmation d'ordre */

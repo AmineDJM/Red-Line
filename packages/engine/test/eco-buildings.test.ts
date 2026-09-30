@@ -60,6 +60,28 @@ describe('bâtiments : santé, niveaux, effets', () => {
     expect(oil()).toBeCloseTo(o0 - 20, 9);
   });
 
+  it('la vue publie le devis exact des chantiers (prochain niveau, options de construction)', () => {
+    const s = ecoGame();
+    const pv = () => viewFor(s, 'aaa').provinces['aaa-3']!;
+    const opt = pv().buildOptions!.find((o) => o.type === 'mine')!;
+    expect(opt).toMatchObject({ level: 1, cost: 6e8, hours: 240 });
+    expect(pv().buildOptions!.some((o) => o.type === 'fortification')).toBe(true);
+    const m0 = s.nations.aaa!.money;
+    expect(applyOrder(s, 'aaa', { kind: 'build', provinceId: 'aaa-3', building: 'mine' }).ok).toBe(
+      true,
+    );
+    expect(m0 - s.nations.aaa!.money).toBeCloseTo(opt.cost, 0);
+    expect(pv().buildOptions!.find((o) => o.type === 'mine')!.blocked).toBe('in_progress');
+    advanceTo(s, 240 * HOUR);
+    const next = pv().buildingState!.find((b) => b.type === 'mine')!.next!;
+    expect(next).toMatchObject({ level: 2, cost: 6e8 * 1.6, hours: 240 * 1.25 });
+    const m1 = s.nations.aaa!.money;
+    applyOrder(s, 'aaa', { kind: 'build', provinceId: 'aaa-3', building: 'mine' });
+    expect(m1 - s.nations.aaa!.money).toBeCloseTo(next.cost, 0);
+    const up = pv().buildingState!.find((b) => b.type === 'mine')!.upgradeUntil!;
+    expect(up - s.time).toBeCloseTo(next.hours * HOUR, -2);
+  });
+
   it('construction puis amélioration par niveau (coût × 1,6, durée × 1,25)', () => {
     const s = ecoGame();
     const m0 = s.nations.aaa!.money;

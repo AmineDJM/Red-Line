@@ -418,9 +418,20 @@
     "knownBuildings": "Bâtiments connus",
     "moreUnknown": "Autres bâtiments non révélés…",
     "unknownHint": "Aucun renseignement sur cette province. Lancez une mission de reconnaissance pour révéler ses bâtiments et ses défenses.",
-    "recon": "Mission de reconnaissance",
+    "recon": "Reco. militaire",
     "listen": "Écoute SIGINT",
-    "reconStarted": "Reconnaissance lancée sur {{province}}"
+    "morale": "Moral",
+    "fortifyLevel": "Fortifier (N{{level}})",
+    "fortifyStarted": "Fortification lancée à {{province}}",
+    "reconEco": "Reco. économique",
+    "reconRunning": "Mission en cours…",
+    "reconMilitaryTip": "Renseignement militaire (SIGINT) : révèle progressivement les bases, défenses et sites militaires de la province.",
+    "reconEconomicTip": "Renseignement extérieur (HUMINT) : révèle progressivement les installations économiques de la province.",
+    "opStarted": {
+      "recon_military": "Reconnaissance militaire lancée sur {{province}}",
+      "recon_economic": "Reconnaissance économique lancée sur {{province}}",
+      "listen_area": "Écoute lancée autour de {{province}}"
+    }
   },
   "console": {
     "title": "Console de commande",
@@ -675,7 +686,8 @@
       "missile_silo": "Lancement de missiles balistiques",
       "hospital": "Rétablissement plus rapide des unités",
       "secret_lab": "Recherche avancée plus rapide",
-      "forward_base": "Dépôt logistique du front"
+      "forward_base": "Dépôt logistique du front",
+      "fortification": "Fortifications de campagne : blindage des défenseurs de la province (niveaux 1 à 3)."
     },
     "ui": {
       "build": "Construire",
@@ -689,9 +701,17 @@
       "coastalOnly": "Province côtière uniquement",
       "costTip": "Coût {{cost}} · durée {{time}}",
       "buildStarted": "Construction lancée : {{name}}",
-      "upgradeStarted": "Amélioration lancée : {{name}}",
-      "repairStarted": "Réparation lancée : {{name}}"
-    }
+      "upgradeStarted": "Amélioration lancée : {{name}} (N{{level}})",
+      "repairStarted": "Réparation lancée : {{name}}",
+      "constructing": "En construction",
+      "maxLevel": "Niveau max.",
+      "blocked": {
+        "in_progress": "Chantier déjà en cours",
+        "damaged": "Réparer d'abord",
+        "max_level": "Niveau maximal atteint"
+      }
+    },
+    "fortification": "Fortifications"
   },
   "weapon": {
     "engine": "Moteur",
@@ -857,7 +877,9 @@
       "plant_fake_report": "Intoxication : faux rapport",
       "deploy_decoys": "Déployer des leurres",
       "fake_radio_traffic": "Faux trafic radio",
-      "counterintel_sweep": "Contre-espionnage"
+      "counterintel_sweep": "Contre-espionnage",
+      "recon_economic": "Reconnaissance économique",
+      "recon_military": "Reconnaissance militaire"
     },
     "opsHelp": {
       "infiltrate_spy": "Implante un agent dans le pays cible : révèle progressivement ses provinces, bâtiments et intentions.",
@@ -878,8 +900,16 @@
       "plant_fake_report": "Fait parvenir un faux rapport au service adverse.",
       "deploy_decoys": "Déploie des leurres qui trompent la reconnaissance adverse.",
       "fake_radio_traffic": "Simule un trafic radio pour masquer vos mouvements.",
-      "counterintel_sweep": "Traque les agents étrangers sur votre territoire."
-    }
+      "counterintel_sweep": "Traque les agents étrangers sur votre territoire.",
+      "recon_economic": "Révèle progressivement les installations économiques (raffineries, usines, centrales…) d'une province ou de toute une nation. Chaque succès améliore la connaissance.",
+      "recon_military": "Révèle progressivement les bases, sites de défense aérienne, radars et silos d'une province ou de toute une nation, visibles ensuite sur la carte."
+    },
+    "targetProvince": "Province visée",
+    "targetArea": "Zone (autour de la ville)",
+    "targetUnit": "Unité visée",
+    "wholeNation": "Toute la nation",
+    "unknownContact": "contact non identifié",
+    "noContacts": "Aucune unité étrangère détectée : rapprochez vos radars ou lancez une reconnaissance."
   },
   "arsenal": {
     "title": "Arsenal",
@@ -969,7 +999,12 @@
     "cancelled": "Production annulée",
     "noLicences": "Aucune licence de production.",
     "licenceHint": "Une licence permet de produire un système étranger sans la R&D, avec une remise de production.",
-    "acquired": "acquise il y a {{value}} j"
+    "acquired": "acquise il y a {{value}} j",
+    "importTotal": "Importation",
+    "source": {
+      "import": "importation",
+      "black_market": "marché noir"
+    }
   },
   "shop": {
     "accelerated": "Accélération appliquée · solde {{balance}}",
@@ -1180,34 +1215,21 @@
       "logistics": "Logistique"
     },
     "treasury": "Trésor",
-    "trend": "Évolution de la trésorerie",
     "annualBudget": "Budget annuel",
-    "budgetSource": "défense, SIPRI 2024",
+    "budgetSource": "défense, versé chaque jour",
     "income": "Revenus",
     "expenses": "Dépenses",
     "balance": "Balance",
     "perDay": "par jour",
     "runway": "réserves : {{days}} j",
-    "estimated": "Chiffres estimés à partir de la vue (détails économiques non publiés par le serveur).",
-    "incomeDetail": "Revenus par jour",
-    "expenseDetail": "Dépenses par jour",
+    "incomeDetail": "Revenus / jour",
+    "expenseDetail": "Entretien et services / jour",
     "incomeKeys": {
-      "budget": "Budget national",
-      "provinces": "Provinces",
-      "trade": "Commerce",
-      "licences": "Licences",
-      "alliance": "Alliance",
-      "other": "Autres"
-    },
-    "expenseKeys": {
-      "upkeep": "Entretien",
-      "production": "Production",
-      "research": "Recherche",
-      "intel": "Renseignement",
-      "construction": "Construction",
+      "trade": "Commerce (sanctions, blocus)",
+      "national": "Budget national",
+      "provincial": "Part des provinces",
       "mobilization": "Mobilisation",
-      "imports": "Importations",
-      "other": "Autres"
+      "modifiers": "Recherche et bonus"
     },
     "construction": "Chantiers",
     "noConstruction": "Aucun chantier en cours.",
@@ -1220,7 +1242,6 @@
       "building": "Bâtiment",
       "province": "Province",
       "work": "Travaux",
-      "progress": "Avancement",
       "eta": "Reste",
       "resource": "Ressource",
       "stock": "Stock",
@@ -1228,13 +1249,15 @@
       "consumption": "Consommation / j",
       "net": "Net / j",
       "autonomy": "Autonomie",
-      "trend": "Tendance",
       "seller": "Vendeur",
       "item": "Article",
       "price": "Prix",
       "expires": "Expire",
       "from": "Provenance",
-      "range": "Rayon"
+      "range": "Rayon",
+      "population": "Population",
+      "morale": "Moral",
+      "income": "Revenu / j"
     },
     "shortage": "pénurie",
     "days_one": "{{count}} jour",
@@ -1279,7 +1302,39 @@
     "depots": "Dépôts et bases avancées",
     "noDepots": "Aucun dépôt.",
     "show": "Voir",
-    "blockades": "Blocus"
+    "blockades": "Blocus",
+    "forecast": "7 j : {{d7}} · 30 j : {{d30}}",
+    "deficitHint": "Déficit : l'entretien de vos forces dépasse vos revenus. Conquérez des provinces, réduisez les budgets du renseignement ou démobilisez pour éviter la banqueroute.",
+    "intelBudget": "Renseignement",
+    "ledgerTitle": "Flux réels · dernières 24 h",
+    "ledgerEmpty": "Aucun flux enregistré pour l'instant : le grand livre se remplit au premier jour de jeu.",
+    "tradeBalance": "balance commerciale {{value}}",
+    "ledger": {
+      "budgetNational": "Budget national",
+      "budgetProvincial": "Part des provinces",
+      "trade": "Commerce",
+      "mobilization": "Mobilisation",
+      "modifiers": "Bonus",
+      "upkeep": "Entretien des forces",
+      "production": "Production",
+      "imports": "Importations",
+      "research": "Recherche",
+      "buildings": "Chantiers",
+      "licences": "Licences",
+      "blackMarket": "Marché noir",
+      "marketPurchases": "Achats au marché",
+      "marketSales": "Ventes au marché",
+      "transfersIn": "Cessions reçues",
+      "transfersOut": "Cessions accordées",
+      "other": "Autres (renseignement, alliance…)"
+    },
+    "constructionHint": "Améliorez un bâtiment ou construisez-en un nouveau depuis l'onglet Bâtiments ou le panneau d'une province.",
+    "provincesTitle": "Provinces",
+    "populationMorale": "{{pop}} habitants · moral {{morale}}",
+    "showAll": "Afficher les {{count}} provinces",
+    "showLess": "Réduire",
+    "resourcesHint": "Les ressources sont produites par les provinces et leurs bâtiments (puits, mines, fermes, usines d'électronique, raffineries) et consommées par vos unités. Une pénurie ralentit la production ; la nourriture pèse sur le moral.",
+    "ledgerToday": "Flux réels · aujourd'hui"
   },
   "army": {
     "supply": {
@@ -1430,14 +1485,15 @@
     "pending": "Propositions reçues",
     "filter": "Filtre",
     "filters": {
-      "known": "Relations actives"
+      "known": "Voisins et relations"
     },
     "cols": {
       "nation": "Nation",
       "relation": "Relation",
       "since": "Depuis",
       "alliance": "Alliance",
-      "stability": "Stabilité"
+      "stability": "Stabilité",
+      "leaning": "Inclinaison"
     },
     "proposal": {
       "peace": "propose la paix",
@@ -1507,11 +1563,16 @@
     "trend": "Tendance",
     "coupRisk": "Risque de coup d'État",
     "coupHint": "sous 15 % de stabilité : danger",
-    "factors": "Facteurs"
+    "factors": "Facteurs",
+    "noRelations": "Aucune nation dans ce filtre.",
+    "noRelationsHint": "Vous êtes en paix avec toutes les nations. Choisissez « Tout » pour déclarer la guerre ou proposer une alliance.",
+    "neutralsNeedAlliance": "Courtiser un neutre exige d'appartenir à une alliance : créez-en une ou rejoignez-en une dans l'onglet Alliances.",
+    "noLeaning": "aucune inclinaison",
+    "moreNeutrals": "… et {{count}} autres : affinez la recherche."
   },
   "council": {
     "unavailable": "Conseil de sécurité indisponible.",
-    "permanent": "Membres permanents",
+    "permanent": "Sièges permanents",
     "rotating": "Sièges tournants",
     "majority": {
       "simple": "Majorité simple",
@@ -1569,7 +1630,9 @@
       "no": "Contre",
       "abstain": "Abstention",
       "none": "n'a pas voté"
-    }
+    },
+    "noPermanent": "aucun (pas encore d'alliance)",
+    "votingIn": "Ouverture du vote dans"
   },
   "news": {
     "filter": "Catégories",

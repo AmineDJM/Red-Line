@@ -10,6 +10,7 @@
   --rl-panel-2: #121a23; /* en-têtes, lignes alternées, champs */
   --rl-panel-3: #17212c; /* survol */
   --rl-glass: rgba(14, 20, 27, 0.94); /* panneau posé sur la carte */
+  --rl-glass-strong: rgba(14, 20, 27, 0.985); /* grandes fenêtres (sans flou) */
   --rl-scrim: rgba(5, 8, 11, 0.72); /* voile des fenêtres modales */
   --rl-line: #1e2a36; /* filets 1 px */
   --rl-line-strong: #2c3b4a; /* filets accentués, bordures de champs */

@@ -75,6 +75,25 @@
   font-size: var(--rl-fs-xs);
   line-height: 1.5;
 }
+.hint--warn {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--rl-amber-dim);
+  border-left: 2px solid var(--rl-amber);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-amber-dim);
+  color: var(--rl-text);
+}
+.hint--warn svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--rl-amber);
+}
+.win-pad--tight {
+  padding: 8px 12px;
+}
 .nat {
   display: inline-flex;
   align-items: center;
@@ -267,6 +286,15 @@
 .produce__total .rl-money {
   font-size: var(--rl-fs-lg);
   letter-spacing: 0;
+}
+.produce__delay {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--rl-text);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
 }
 .produce__buttons {
   display: flex;

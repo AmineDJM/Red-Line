@@ -4,6 +4,7 @@ import {
   DEPARTMENTS,
   type Department,
   type IntelOpKind,
+  type IntelOpTarget,
   type IntelReport,
   type IntelSource,
   type NationId,
@@ -36,11 +37,12 @@ import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 
-/** Opérations proposées par département et par source (affichage ; le moteur décide). */
+/** Opérations proposées par département et par source (identique à OP_META du moteur). */
 export const OPS_BY_DEPT: Record<Department, Record<IntelSource, IntelOpKind[]>> = {
-  interior: { humint: ['counterintel_sweep', 'turn_agent', 'plant_fake_report'], sigint: [] },
+  interior: { humint: ['counterintel_sweep', 'turn_agent'], sigint: [] },
   exterior: {
     humint: [
+      'recon_economic',
       'infiltrate_spy',
       'recruit_source',
       'steal_research',
@@ -48,21 +50,54 @@ export const OPS_BY_DEPT: Record<Department, Record<IntelSource, IntelOpKind[]>>
       'fund_rebels',
       'exfiltrate',
       'leak_plans',
+      'disinformation',
+      'plant_fake_report',
     ],
-    sigint: ['cyber_production', 'disinformation'],
+    sigint: [],
   },
   military: {
-    humint: ['deploy_decoys'],
+    humint: [],
     sigint: [
+      'recon_military',
       'listen_area',
       'intercept_army',
       'jam_area',
       'cyber_radar',
+      'cyber_production',
       'cyber_orders',
+      'deploy_decoys',
       'fake_radio_traffic',
     ],
   },
 };
+
+/** Nature de la cible attendue par le moteur pour chaque opération. */
+type TargetKind = 'none' | 'nation' | 'province' | 'area' | 'ownArea' | 'unit';
+const TARGET_KIND: Record<IntelOpKind, TargetKind> = {
+  infiltrate_spy: 'nation',
+  recruit_source: 'nation',
+  turn_agent: 'nation',
+  exfiltrate: 'nation',
+  steal_research: 'nation',
+  sabotage_factory: 'province',
+  fund_rebels: 'province',
+  listen_area: 'area',
+  intercept_army: 'unit',
+  jam_area: 'area',
+  cyber_radar: 'nation',
+  cyber_production: 'nation',
+  cyber_orders: 'nation',
+  disinformation: 'nation',
+  leak_plans: 'nation',
+  plant_fake_report: 'nation',
+  deploy_decoys: 'ownArea',
+  fake_radio_traffic: 'area',
+  counterintel_sweep: 'none',
+  recon_economic: 'province',
+  recon_military: 'province',
+};
+/** Opérations de reconnaissance : la cible peut être une province ou toute la nation. */
+const WHOLE_NATION_OK = new Set<IntelOpKind>(['recon_economic', 'recon_military']);
 
 const DEPT_ICON: Record<Department, IconName> = {
   interior: 'shield',
@@ -232,27 +267,38 @@ const ACTION_ICON: Record<IntelReport['actions'][number]['kind'], IconName> = {
   open_province: 'mapPin',
 };
 
-function LaunchDialog({
+export function LaunchDialog({
   dept,
   source,
   onClose,
+  initialOp,
+  initialNation,
+  initialProvince,
 }: {
   dept: Department;
   source: IntelSource;
   onClose: () => void;
+  initialOp?: IntelOpKind;
+  initialNation?: NationId;
+  initialProvince?: string;
 }) {
   const { t } = useTranslation();
   const view = useGame((s) => s.view);
   const me = useGame((s) => s.me);
   const balance = useWorld((s) => s.balance);
   const nations = useWorld((s) => s.nations);
+  const defs = useWorld((s) => s.provinces);
+  const catalog = useWorld((s) => s.catalog);
   const send = useSend();
   const ops = OPS_BY_DEPT[dept][source];
-  const [op, setOp] = useState<IntelOpKind>(ops[0] ?? 'infiltrate_spy');
+  const [op, setOp] = useState<IntelOpKind>(
+    initialOp && ops.includes(initialOp) ? initialOp : (ops[0] ?? 'infiltrate_spy'),
+  );
+  const kind = TARGET_KIND[op];
   const enemies = useMemo(
     () =>
       Object.values(nations)
-        .filter((n) => n.id !== me)
+        .filter((n) => n.id !== me && view?.nations[n.id]?.alive !== false)
         .sort((a, b) => {
           const ra = view?.nations[a.id]?.relation === 'war' ? 0 : 1;
           const rb = view?.nations[b.id]?.relation === 'war' ? 0 : 1;
@@ -260,11 +306,55 @@ function LaunchDialog({
         }),
     [nations, me, view?.nations],
   );
-  const [target, setTarget] = useState<NationId>(
-    op === 'counterintel_sweep' ? (me ?? '') : (enemies[0]?.id ?? ''),
+  const [nation, setNation] = useState<NationId>(initialNation ?? enemies[0]?.id ?? '');
+  const provincesOf = (n: NationId | null) =>
+    Object.values(view?.provinces ?? {})
+      .filter((p) => p.owner === n)
+      .map((p) => ({ id: p.id, name: provinceName(p.id), capital: !!defs[p.id]?.isCapital }))
+      .sort((a, b) => Number(b.capital) - Number(a.capital) || a.name.localeCompare(b.name, 'fr'));
+  const targetProvinces = provincesOf(kind === 'ownArea' ? me : nation);
+  const [province, setProvince] = useState<string>(initialProvince ?? '');
+  const pid =
+    targetProvinces.find((p) => p.id === province)?.id ??
+    (WHOLE_NATION_OK.has(op) ? '' : (targetProvinces[0]?.id ?? ''));
+  const contacts = useMemo(
+    () =>
+      Object.values(view?.units ?? {})
+        .filter((u) => u.owner !== me && u.level !== 'own')
+        .slice(0, 200),
+    [view?.units, me],
   );
+  const [unitId, setUnitId] = useState<string>('');
+  const uid = contacts.find((u) => u.id === unitId)?.id ?? contacts[0]?.id ?? '';
   const cost = balance?.intel?.ops[op];
-  const selfTarget = op === 'counterintel_sweep' || op === 'plant_fake_report';
+  const target: IntelOpTarget = (() => {
+    switch (kind) {
+      case 'none':
+        return {};
+      case 'nation':
+        return { nationId: nation };
+      case 'province':
+        return pid ? { provinceId: pid } : { nationId: nation };
+      case 'area':
+      case 'ownArea': {
+        const at = pid ? defs[pid]?.cityPoint : undefined;
+        return {
+          ...(at ? { at } : {}),
+          ...(kind === 'area' ? { nationId: nation } : {}),
+        };
+      }
+      case 'unit':
+        return { unitId: uid };
+    }
+  })();
+  const ready =
+    kind === 'none' ||
+    (kind === 'nation' && !!nation) ||
+    (kind === 'province' && (!!pid || !!nation)) ||
+    ((kind === 'area' || kind === 'ownArea') && !!target.at) ||
+    (kind === 'unit' && !!uid);
+  const pickNation = kind === 'nation' || kind === 'province' || kind === 'area';
+  const pickProvince = kind === 'province' || kind === 'area' || kind === 'ownArea';
   return (
     <Dialog
       open
@@ -280,14 +370,13 @@ function LaunchDialog({
           <Button
             variant="primary"
             icon={<Icon name="play" size={12} />}
+            disabled={!ready}
             onClick={() => {
               void send(
-                {
-                  kind: 'intelOp',
-                  op,
-                  target: { nationId: selfTarget ? (me ?? undefined) : target },
-                },
-                t('intel.opLaunched', { op: t(`intel.ops.${op}`) }),
+                { kind: 'intelOp', op, target },
+                t('intel.opLaunched', {
+                  op: t(`intel.ops.${op}`),
+                }),
               );
               onClose();
             }}
@@ -304,19 +393,60 @@ function LaunchDialog({
             value={op}
             onChange={(v) => setOp(v as IntelOpKind)}
             options={ops.map((o) => ({ value: o, label: t(`intel.ops.${o}`) }))}
+            data-testid="intel-op-select"
           />
         </Field>
         <p className="hint">{t(`intel.opsHelp.${op}`)}</p>
-        {!selfTarget ? (
+        {pickNation ? (
           <Field label={t('intel.target')}>
             <Select
-              value={target}
-              onChange={setTarget}
+              value={nation}
+              onChange={(v) => {
+                setNation(v);
+                setProvince('');
+              }}
               options={enemies.map((n) => ({
                 value: n.id,
                 label: `${view?.nations[n.id]?.relation === 'war' ? '⚔ ' : ''}${n.name}`,
               }))}
+              data-testid="intel-target-nation"
             />
+          </Field>
+        ) : null}
+        {pickProvince ? (
+          <Field label={kind === 'province' ? t('intel.targetProvince') : t('intel.targetArea')}>
+            <Select
+              value={pid}
+              onChange={setProvince}
+              options={[
+                ...(WHOLE_NATION_OK.has(op) ? [{ value: '', label: t('intel.wholeNation') }] : []),
+                ...targetProvinces.map((p) => ({
+                  value: p.id,
+                  label: `${p.capital ? '★ ' : ''}${p.name}`,
+                })),
+              ]}
+              data-testid="intel-target-province"
+            />
+          </Field>
+        ) : null}
+        {kind === 'unit' ? (
+          <Field label={t('intel.targetUnit')}>
+            {contacts.length ? (
+              <Select
+                value={uid}
+                onChange={setUnitId}
+                options={contacts.map((u) => ({
+                  value: u.id,
+                  label: `${nationName(u.owner)} · ${
+                    u.systemId
+                      ? (catalog[u.systemId]?.name ?? u.systemId)
+                      : t('intel.unknownContact')
+                  }`,
+                }))}
+              />
+            ) : (
+              <p className="hint">{t('intel.noContacts')}</p>
+            )}
           </Field>
         ) : null}
         <dl className="opcost">
@@ -364,7 +494,8 @@ function DeptColumn({
   const reports = intel.reports.filter((r) => r.dept === dept && r.source === source);
   const ops = intel.operations.filter((o) => o.dept === dept);
   const canLaunch = OPS_BY_DEPT[dept][source].length > 0;
-  const step = 250_000;
+  // Pas de réglage : 10 % du budget courant (au moins 50 k$).
+  const step = Math.max(50_000, Math.round((d?.budgetPerDay ?? 0) * 0.1));
   return (
     <section className={`dept dept--${dept}`} aria-label={t(`intel.depts.${dept}`)}>
       <header className="dept__head">

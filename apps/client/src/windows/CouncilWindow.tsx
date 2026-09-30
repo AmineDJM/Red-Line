@@ -249,8 +249,12 @@ export function CouncilWindow({ frame }: WindowContentProps) {
         <EmptyState icon="council" title={t('council.unavailable')} />
       </Window>
     );
-  const voters = [...council.members, ...council.rotatingSeats];
+  // `members` contient tous les sièges : chefs d'alliance (permanents) et sièges tournants.
+  const rotating = new Set(council.rotatingSeats);
+  const permanent = council.members.filter((m) => !rotating.has(m));
+  const voters = [...new Set([...council.members, ...council.rotatingSeats])];
   const s = council.session;
+  const voting = s?.phase === 'voting';
   return (
     <Window
       {...frame}
@@ -259,9 +263,11 @@ export function CouncilWindow({ frame }: WindowContentProps) {
         <div className="council__bar">
           <div className="council__seats">
             <span className="dept__label">{t('council.permanent')}</span>
-            {council.members.map((m) => (
-              <NationTag key={m} id={m} size={10} />
-            ))}
+            {permanent.length ? (
+              permanent.map((m) => <NationTag key={m} id={m} size={10} />)
+            ) : (
+              <span className="muted small">{t('council.noPermanent')}</span>
+            )}
           </div>
           <div className="council__seats">
             <span className="dept__label">{t('council.rotating')}</span>
@@ -291,10 +297,12 @@ export function CouncilWindow({ frame }: WindowContentProps) {
                 </span>
               </div>
               <span className="grow" />
-              <span className="dept__label">{t('council.closesIn')}</span>
+              <span className="dept__label">
+                {voting ? t('council.closesIn') : t('council.votingIn')}
+              </span>
               <Countdown
-                ms={s.votingEndsAt - now}
-                total={s.votingEndsAt - s.opensAt}
+                ms={(voting ? s.votingEndsAt : s.opensAt) - now}
+                total={voting ? s.votingEndsAt - s.opensAt : undefined}
                 urgentBelowMs={3_600_000}
                 dayUnit={t('time.dayUnit')}
               />
@@ -325,7 +333,7 @@ export function CouncilWindow({ frame }: WindowContentProps) {
               key={r.id}
               r={r}
               voters={voters}
-              permanent={council.rule.veto ? council.members : []}
+              permanent={council.rule.veto ? permanent : []}
             />
           ))
         ) : (

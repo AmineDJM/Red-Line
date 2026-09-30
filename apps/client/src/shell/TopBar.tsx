@@ -10,7 +10,7 @@ import {
   type IconName,
 } from '@redline/ui';
 import { fmtClock } from '../i18n/index.js';
-import { resourceFlows } from '../lib/economy.js';
+import { netPerDay, resourceFlows } from '../lib/economy.js';
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useGameTime } from './helpers.js';
@@ -129,9 +129,11 @@ function ClockControl({ compact }: { compact: boolean }) {
 
 function Budget({ compact }: { compact: boolean }) {
   const { t } = useTranslation();
-  const eco = useGame((s) => s.view?.economy);
+  const view = useGame((s) => s.view);
   const openWindow = useUi((s) => s.openWindow);
+  const eco = view?.economy;
   if (!eco) return null;
+  const net = netPerDay(view);
   return (
     <button
       type="button"
@@ -142,8 +144,8 @@ function Budget({ compact }: { compact: boolean }) {
       <span className="topstat__label">{t('game.topbar.treasury')}</span>
       <span className="topstat__value">{formatMoney(eco.money)}</span>
       {!compact ? (
-        <span className="topstat__delta">
-          {formatMoney(eco.incomePerDay.money, { signed: true })}
+        <span className={net < 0 ? 'topstat__delta topstat__delta--neg' : 'topstat__delta'}>
+          {formatMoney(net, { signed: true })}
           <span className="topstat__unit">{t('game.topbar.perDay')}</span>
         </span>
       ) : null}
@@ -161,7 +163,7 @@ function Resources() {
     <div className="topres" role="group" aria-label={t('game.topbar.resources')}>
       {RESOURCES.map((r) => {
         const f = flows[r];
-        const net = f.production - f.consumption;
+        const net = f.net;
         return (
           <button
             key={r}

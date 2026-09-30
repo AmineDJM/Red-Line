@@ -30,7 +30,8 @@ export function NewGameScreen() {
         .scenarios()
         .then((s) => {
           setScenarios(s);
-          if (s[0]) setScenarioId(s[0].id);
+          // Par défaut : le monde actuel (arsenaux 2025), sinon le premier scénario disponible.
+          setScenarioId((cur) => (s.some((x) => x.id === cur) ? cur : (s[0]?.id ?? cur)));
         })
         .catch(() => setScenarios([]));
     });

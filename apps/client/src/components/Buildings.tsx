@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import {
   BUILDING_TYPES,
   type Balance,
+  type BuildOptionView,
   type BuildingType,
   type BuildingView,
   type ProvinceId,
@@ -24,8 +25,10 @@ import { useWorld } from '../store/world.js';
 
 export const MAX_BUILDING_LEVEL = 5;
 
+type BuildKind = BuildingType | 'fortification';
+
 /** Familles de bâtiments (menu « Construire »). */
-export const BUILDING_GROUPS: { id: string; types: BuildingType[] }[] = [
+export const BUILDING_GROUPS: { id: string; types: BuildKind[] }[] = [
   {
     id: 'resources',
     types: ['oil_field', 'refinery', 'mine', 'farm', 'electronics_plant', 'power_plant'],
@@ -45,24 +48,36 @@ export const BUILDING_GROUPS: { id: string; types: BuildingType[] }[] = [
   },
   {
     id: 'defense',
-    types: ['bunker', 'air_defense_site', 'coastal_battery', 'radar_station', 'missile_silo'],
+    types: [
+      'fortification',
+      'bunker',
+      'air_defense_site',
+      'coastal_battery',
+      'radar_station',
+      'missile_silo',
+    ],
   },
 ];
 
-const COASTAL_ONLY = new Set<BuildingType>(['port', 'naval_base', 'coastal_battery']);
+const COASTAL_ONLY = new Set<BuildKind>(['port', 'naval_base', 'coastal_battery']);
 
-/** Coût et durée d'une construction ou amélioration (data/balance ; × niveau visé). */
+/**
+ * Devis d'un chantier à partir de data/balance (repli quand le moteur ne publie pas `next` /
+ * `buildOptions`) : coût × croissance^(niveau − 1), durée × (1 + croissance × (niveau − 1)).
+ */
 export function buildCost(
   balance: Balance | null,
-  type: BuildingType,
+  type: BuildKind,
   level: number,
 ): { money: number | null; hours: number | null } {
   const b = balance?.buildings;
   const money = b?.buildCostUsd[type];
   const hours = b?.buildHours[type];
+  const g = b?.levelCostGrowth ?? 1.6;
+  const tg = b?.levelTimeGrowth ?? 0.25;
   return {
-    money: money !== undefined ? money * level : null,
-    hours: hours !== undefined ? hours * level : null,
+    money: money !== undefined ? money * Math.pow(g, level - 1) : null,
+    hours: hours !== undefined ? hours * (1 + tg * (level - 1)) : null,
   };
 }
 
@@ -74,6 +89,28 @@ function LevelPips({ level }: { level: number }) {
       ))}
     </span>
   );
+}
+
+function picto(type: BuildKind) {
+  return pictogramForBuilding(type === 'fortification' ? 'bunker' : type);
+}
+
+/** Envoie un ordre de chantier avec retour visuel (toast). */
+function useBuildOrder() {
+  const { t } = useTranslation();
+  const toast = useUi((s) => s.toast);
+  return async (
+    order:
+      | { kind: 'build'; provinceId: ProvinceId; building: BuildKind }
+      | { kind: 'repair'; provinceId: ProvinceId; building: BuildingType },
+    ok: string,
+  ) => {
+    const res = await useGame.getState().connection?.sendOrder(order);
+    if (res?.ok) toast(ok, 'ok');
+    else if (res)
+      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    return !!res?.ok;
+  };
 }
 
 /** Ligne de bâtiment : pictogramme, niveau 1-5, état, amélioration/réparation. */
@@ -91,42 +128,38 @@ export function BuildingRow({
   compact?: boolean;
 }) {
   const { t } = useTranslation();
-  const conn = useGame((s) => s.connection);
   const money = useGame((s) => s.view?.economy.money ?? 0);
   const balance = useWorld((s) => s.balance);
-  const toast = useUi((s) => s.toast);
+  const send = useBuildOrder();
   const level = b.level ?? 1;
-  const upgrading = b.upgradeUntil && b.upgradeUntil > now;
-  const repairing = b.repairUntil && b.repairUntil > now;
-  const next = buildCost(balance, b.type, level + 1);
-  const send = async (kind: 'build' | 'repair') => {
-    const res = await conn?.sendOrder(
-      kind === 'build'
-        ? { kind: 'build', provinceId, building: b.type }
-        : { kind: 'repair', provinceId, building: b.type },
-    );
-    if (res?.ok)
-      toast(
-        t(kind === 'build' ? 'buildings.ui.upgradeStarted' : 'buildings.ui.repairStarted', {
-          name: t(`buildings.${b.type}`),
-        }),
-        'ok',
-      );
-    else if (res)
-      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
-  };
+  const building = !!(b.buildUntil && b.buildUntil > now);
+  const upgrading = !building && !!(b.upgradeUntil && b.upgradeUntil > now);
+  const repairing = !!(b.repairUntil && b.repairUntil > now);
+  const fallback = buildCost(balance, b.type, level + 1);
+  const next =
+    b.next !== undefined
+      ? b.next
+      : level >= MAX_BUILDING_LEVEL
+        ? null
+        : { level: level + 1, cost: fallback.money, hours: fallback.hours };
+  const name = t(`buildings.${b.type}`);
   return (
-    <li className={compact ? 'bldg bldg--compact' : 'bldg'}>
-      <span className={b.health < 0.5 ? 'bldg__icon bldg__icon--hit' : 'bldg__icon'}>
-        <Pictogram id={pictogramForBuilding(b.type)} size={18} />
+    <li className={compact ? 'bldg bldg--compact' : 'bldg'} data-building={b.type}>
+      <span className={b.health < 0.5 && !building ? 'bldg__icon bldg__icon--hit' : 'bldg__icon'}>
+        <Pictogram id={picto(b.type)} size={18} />
       </span>
       <span className="bldg__main">
         <span className="bldg__name">
-          {t(`buildings.${b.type}`)}
-          <LevelPips level={level} />
+          {name}
+          {!building ? <LevelPips level={level} /> : null}
         </span>
         <span className="bldg__state">
-          {upgrading ? (
+          {building ? (
+            <>
+              <Badge tone="cyan">{t('buildings.ui.constructing')}</Badge>
+              <Countdown ms={b.buildUntil! - now} dayUnit={t('time.dayUnit')} />
+            </>
+          ) : upgrading ? (
             <>
               <Badge tone="cyan">{t('buildings.ui.upgrading', { level: level + 1 })}</Badge>
               <Countdown ms={b.upgradeUntil! - now} dayUnit={t('time.dayUnit')} />
@@ -149,38 +182,54 @@ export function BuildingRow({
           )}
         </span>
       </span>
-      {editable ? (
+      {editable && !building ? (
         <span className="bldg__actions">
           {b.health < 1 && !repairing ? (
             <Button
               size="sm"
               variant="subtle"
               icon={<Icon name="wrench" size={12} />}
-              onClick={() => void send('repair')}
+              onClick={() =>
+                void send(
+                  { kind: 'repair', provinceId, building: b.type },
+                  t('buildings.ui.repairStarted', { name }),
+                )
+              }
             >
               {t('buildings.ui.repair')}
             </Button>
           ) : null}
-          {level < MAX_BUILDING_LEVEL && !upgrading ? (
+          {next && !upgrading && b.health >= 1 ? (
             <Button
               size="sm"
               icon={<Icon name="arrowUp" size={12} />}
-              disabled={next.money !== null && money < next.money}
+              disabled={next.cost !== null && money < next.cost}
               title={
-                next.money !== null
+                next.cost !== null
                   ? t('buildings.ui.costTip', {
-                      cost: formatMoney(next.money),
+                      cost: formatMoney(next.cost),
                       time: next.hours ? formatHours(next.hours, t('time.dayUnit')) : '—',
                     })
                   : undefined
               }
-              onClick={() => void send('build')}
+              onClick={() =>
+                void send(
+                  { kind: 'build', provinceId, building: b.type },
+                  t('buildings.ui.upgradeStarted', { name, level: next.level }),
+                )
+              }
+              data-testid={`upgrade-${b.type}`}
             >
-              {compact ? `N${level + 1}` : t('buildings.ui.upgrade', { level: level + 1 })}
-              {next.money !== null && !compact ? (
-                <span className="bldg__cost">{formatMoney(next.money)}</span>
+              {compact ? `N${next.level}` : t('buildings.ui.upgrade', { level: next.level })}
+              {next.cost !== null ? (
+                <span className="bldg__cost">{formatMoney(next.cost)}</span>
               ) : null}
             </Button>
+          ) : null}
+          {!next && !upgrading ? (
+            <Badge tone="neutral" variant="outline">
+              {t('buildings.ui.maxLevel')}
+            </Badge>
           ) : null}
         </span>
       ) : null}
@@ -188,29 +237,28 @@ export function BuildingRow({
   );
 }
 
-/** Menu de construction d'un nouveau bâtiment dans une province. */
+/** Menu de construction d'un nouveau bâtiment (ou fortification) dans une province. */
 export function BuildMenu({
   provinceId,
   existing,
   coastal,
+  options,
+  onDone,
 }: {
   provinceId: ProvinceId;
   existing: BuildingType[];
   coastal: boolean;
+  /** Options publiées par le moteur (coût et durée exacts). */
+  options?: BuildOptionView[];
+  onDone?: () => void;
 }) {
   const { t } = useTranslation();
-  const conn = useGame((s) => s.connection);
   const money = useGame((s) => s.view?.economy.money ?? 0);
   const balance = useWorld((s) => s.balance);
-  const toast = useUi((s) => s.toast);
+  const send = useBuildOrder();
   const [group, setGroup] = useState(BUILDING_GROUPS[0]!.id);
   const g = BUILDING_GROUPS.find((x) => x.id === group)!;
-  const build = async (type: BuildingType) => {
-    const res = await conn?.sendOrder({ kind: 'build', provinceId, building: type });
-    if (res?.ok) toast(t('buildings.ui.buildStarted', { name: t(`buildings.${type}`) }), 'ok');
-    else if (res)
-      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
-  };
+  const byType = new Map(options?.map((o) => [o.type, o]));
   return (
     <div className="buildmenu">
       <div className="buildmenu__groups" role="tablist" aria-label={t('buildings.ui.build')}>
@@ -231,34 +279,51 @@ export function BuildMenu({
       </div>
       <ul className="buildmenu__list">
         {g.types
-          .filter((type) => BUILDING_TYPES.includes(type))
+          .filter((type) => type === 'fortification' || BUILDING_TYPES.includes(type))
           .map((type) => {
-            const has = existing.includes(type);
-            const blocked = COASTAL_ONLY.has(type) && !coastal;
-            const c = buildCost(balance, type, 1);
+            const opt = byType.get(type);
+            const has = type !== 'fortification' && existing.includes(type);
+            const blockedCoast = COASTAL_ONLY.has(type) && !coastal;
+            const est = buildCost(balance, type, opt?.level ?? 1);
+            const cost = opt ? opt.cost : est.money;
+            const hours = opt ? opt.hours : est.hours;
+            const reason = has
+              ? t('buildings.ui.already')
+              : blockedCoast
+                ? t('buildings.ui.coastalOnly')
+                : opt?.blocked
+                  ? t(`buildings.ui.blocked.${opt.blocked}`)
+                  : null;
+            const poor = cost !== null && money < cost;
             return (
               <li key={type}>
                 <button
                   type="button"
                   className="buildmenu__item"
-                  disabled={has || blocked || (c.money !== null && money < c.money)}
-                  onClick={() => void build(type)}
+                  disabled={!!reason || poor}
+                  onClick={() =>
+                    void send(
+                      { kind: 'build', provinceId, building: type },
+                      t('buildings.ui.buildStarted', { name: t(`buildings.${type}`) }),
+                    ).then((ok) => ok && onDone?.())
+                  }
                   title={t(`buildings.effects.${type}`, { defaultValue: '' })}
+                  data-testid={`build-${type}`}
                 >
-                  <Pictogram id={pictogramForBuilding(type)} size={18} />
+                  <Pictogram id={picto(type)} size={18} />
                   <span className="buildmenu__name">
-                    {t(`buildings.${type}`)}
+                    {type === 'fortification' && opt
+                      ? `${t('buildings.fortification')} · N${opt.level}`
+                      : t(`buildings.${type}`)}
                     <span className="buildmenu__desc">
-                      {has
-                        ? t('buildings.ui.already')
-                        : blocked
-                          ? t('buildings.ui.coastalOnly')
-                          : t(`buildings.effects.${type}`, { defaultValue: '' })}
+                      {reason ?? t(`buildings.effects.${type}`, { defaultValue: '' })}
                     </span>
                   </span>
-                  <span className="buildmenu__cost">
-                    {c.money !== null ? formatMoney(c.money) : '—'}
-                    <span>{c.hours !== null ? formatHours(c.hours, t('time.dayUnit')) : ''}</span>
+                  <span
+                    className={poor ? 'buildmenu__cost buildmenu__cost--poor' : 'buildmenu__cost'}
+                  >
+                    {cost !== null ? formatMoney(cost) : '—'}
+                    <span>{hours !== null ? formatHours(hours, t('time.dayUnit')) : ''}</span>
                   </span>
                 </button>
               </li>

@@ -2,6 +2,7 @@ import type { GameTime, LngLat, NationId, ProvinceId, RealTime, SystemId, UnitId
 import type { MovementKind, Resource } from './catalog.js';
 import type { BuildingType } from './map.js';
 import type {
+  BuildOptionView,
   BuildingView,
   EconomyDetailView,
   LicenceView,
@@ -99,6 +100,8 @@ export interface ProvinceView {
   // ——— Phases 2+ (optionnels) ———
   /** État des bâtiments (propriétaire, ou connu par le renseignement). */
   buildingState?: BuildingView[];
+  /** Constructions possibles (provinces possédées) : bâtiments absents et fortification. */
+  buildOptions?: BuildOptionView[];
   fortification?: FortificationView | null;
   /** Zone disputée à laquelle appartient la province. */
   disputedId?: string | null;

@@ -99,6 +99,26 @@ export interface BuildingView {
   repairUntil?: GameTime | null;
   /** Construction en cours (bâtiment pas encore opérationnel). */
   buildUntil?: GameTime | null;
+  /**
+   * Prochain niveau (provinces possédées) : coût en dollars et durée en heures de jeu, calculés par le
+   * moteur (croissance par niveau, industrie locale). `null` au niveau maximal.
+   */
+  next?: { level: number; cost: number; hours: number } | null;
+}
+
+/** Pourquoi un chantier est impossible pour l'instant (hors trésorerie). */
+export type BuildBlock = 'in_progress' | 'damaged' | 'max_level';
+
+/** Option de construction d'une province possédée (bâtiment absent ou fortification). */
+export interface BuildOptionView {
+  type: BuildingType | 'fortification';
+  /** Niveau visé. */
+  level: number;
+  /** Coût en dollars. */
+  cost: number;
+  /** Durée en heures de jeu. */
+  hours: number;
+  blocked?: BuildBlock;
 }
 
 /** Effets des bâtiments (data/balance) : production, ressources, bases, recherche. */

@@ -9,7 +9,7 @@
 }
 .flows li {
   display: grid;
-  grid-template-columns: 17ch 1fr 10ch;
+  grid-template-columns: minmax(12ch, 26ch) 1fr 10ch;
   align-items: center;
   gap: 10px;
   font-size: var(--rl-fs-xs);

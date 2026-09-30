@@ -11,6 +11,7 @@ import {
   Pictogram,
   ProgressBar,
   formatCompact,
+  formatHours,
   formatMoney,
   pictogramForBuilding,
 } from '@redline/ui';
@@ -47,16 +48,31 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
     ? (now - capture.startedAt) / Math.max(1, capture.completesAt - capture.startedAt)
     : 0;
 
-  const intelOp = async (op: 'infiltrate_spy' | 'listen_area') => {
+  const ecoProv = own ? view.economy.detail?.provinces.find((x) => x.id === id) : undefined;
+  const fortOpt = p.buildOptions?.find((o) => o.type === 'fortification');
+  const busyOps = new Set(
+    (view.intel?.operations ?? [])
+      .filter((o) => o.status === 'running' && o.target.provinceId === id)
+      .map((o) => o.kind),
+  );
+
+  const intelOp = async (op: 'recon_military' | 'recon_economic' | 'listen_area') => {
     const res = await conn?.sendOrder({
       kind: 'intelOp',
       op,
       target:
         op === 'listen_area'
           ? { at: def.cityPoint, radiusKm: 80, nationId: p.owner }
-          : { provinceId: id, nationId: p.owner },
+          : { provinceId: id },
     });
-    if (res?.ok) toast(t('province.reconStarted', { province: def.cityName ?? def.name }), 'ok');
+    if (res?.ok) toast(t(`province.opStarted.${op}`, { province: def.cityName ?? def.name }), 'ok');
+    else if (res)
+      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+  };
+
+  const fortify = async () => {
+    const res = await conn?.sendOrder({ kind: 'build', provinceId: id, building: 'fortification' });
+    if (res?.ok) toast(t('province.fortifyStarted', { province: def.cityName ?? def.name }), 'ok');
     else if (res)
       toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
   };
@@ -121,9 +137,12 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
                 : []),
               {
                 label: t('province.income'),
-                value: formatMoney(def.income.money),
+                value: formatMoney(ecoProv?.income ?? def.income.money),
                 tone: 'amber' as const,
               },
+              ...(ecoProv
+                ? [{ label: t('province.morale'), value: `${Math.round(ecoProv.morale)} / 100` }]
+                : []),
               ...(p.fortification
                 ? [
                     {
@@ -160,7 +179,13 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
             ) : null}
           </div>
           {building && own ? (
-            <BuildMenu provinceId={id} existing={p.buildings} coastal={def.coastal} />
+            <BuildMenu
+              provinceId={id}
+              existing={p.buildings}
+              coastal={def.coastal}
+              options={p.buildOptions}
+              onDone={() => setBuilding(false)}
+            />
           ) : (
             <ul className="bldgs">
               {state.map((b) => (
@@ -189,11 +214,25 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
                 size="sm"
                 variant="ghost"
                 icon={<Icon name="shield" size={13} />}
-                onClick={() =>
-                  void conn?.sendOrder({ kind: 'build', provinceId: id, building: 'fortification' })
+                disabled={
+                  !!fortOpt?.blocked || (fortOpt ? view.economy.money < fortOpt.cost : false)
                 }
+                title={
+                  fortOpt
+                    ? fortOpt.blocked
+                      ? t(`buildings.ui.blocked.${fortOpt.blocked}`)
+                      : t('buildings.ui.costTip', {
+                          cost: formatMoney(fortOpt.cost),
+                          time: formatHours(fortOpt.hours, t('time.dayUnit')),
+                        })
+                    : undefined
+                }
+                onClick={() => void fortify()}
+                data-testid="fortify-button"
               >
-                {t('province.fortify')}
+                {fortOpt && !fortOpt.blocked
+                  ? t('province.fortifyLevel', { level: fortOpt.level })
+                  : t('province.fortify')}
               </Button>
             </div>
           ) : null}
@@ -259,13 +298,26 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
               size="sm"
               variant="primary"
               icon={<Icon name="spy" size={13} />}
-              onClick={() => void intelOp('infiltrate_spy')}
+              disabled={busyOps.has('recon_military')}
+              onClick={() => void intelOp('recon_military')}
               data-testid="recon-button"
+              title={t('province.reconMilitaryTip')}
             >
-              {t('province.recon')}
+              {busyOps.has('recon_military') ? t('province.reconRunning') : t('province.recon')}
             </Button>
             <Button
               size="sm"
+              icon={<Icon name="economy" size={13} />}
+              disabled={busyOps.has('recon_economic')}
+              onClick={() => void intelOp('recon_economic')}
+              data-testid="recon-eco-button"
+              title={t('province.reconEconomicTip')}
+            >
+              {busyOps.has('recon_economic') ? t('province.reconRunning') : t('province.reconEco')}
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
               icon={<Icon name="radio" size={13} />}
               onClick={() => void intelOp('listen_area')}
             >

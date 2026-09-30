@@ -14,6 +14,7 @@ import {
   Tabs,
   Window,
   WeaponPhoto,
+  formatHours,
   formatMoney,
 } from '@redline/ui';
 import { getApi } from '../api/index.js';
@@ -86,8 +87,19 @@ function ProduceActions({
     [view?.provinces, me, need, defs],
   );
   const prov = mine.find((p) => p.id === provinceId) ?? mine[0];
-  const total = s.cost.money * count;
   const money = view?.economy.money ?? 0;
+  const ind = balance?.industry;
+  // Même calcul que le moteur (eco/production) : modificateur de coût de la recherche, remise de
+  // licence ; importation au prix × importPriceFactor, livrée après fabrication + délai de transport.
+  const costMod = view?.research?.modifiers['production.cost'] ?? 1;
+  const discount = st.licensed ? 1 - (balance?.licences?.productionDiscount ?? 0.3) : 1;
+  const importing = !st.producible && st.importable;
+  const total = importing
+    ? s.cost.money * count * (ind?.importPriceFactor ?? 1.3)
+    : s.cost.money * count * costMod * discount;
+  const batchH = s.buildTimeH * (1 + (ind?.batchTimeFactor ?? 0.25) * (count - 1));
+  const speed = view?.research?.modifiers['production.speed'] ?? 1;
+  const delayH = importing ? batchH + (ind?.importDeliveryHours ?? 72) : batchH / speed;
   const licencePrice = (s.unitPriceUsd ?? s.cost.money) * (balance?.licences?.priceFactor ?? 20);
   return (
     <div className="produce">
@@ -121,8 +133,11 @@ function ProduceActions({
         </p>
       ) : null}
       <div className="produce__total">
-        <span>{t('production.total')}</span>
+        <span>{importing ? t('production.importTotal') : t('production.total')}</span>
         <Money value={total} />
+        <span className="produce__delay">
+          <Icon name="clock" size={12} /> {formatHours(delayH, t('time.dayUnit'))}
+        </span>
         {money < total ? <Badge tone="red">{t('production.insufficient')}</Badge> : null}
       </div>
       <div className="produce__buttons">
@@ -231,8 +246,16 @@ function Queue() {
               <span className="qrow">
                 {s ? <WeaponPhoto system={s} photo={photoFor(s, photos)} variant="mini" /> : null}
                 <span>
-                  <b>{s?.name ?? p.systemId}</b>
-                  <span className="qrow__sub">{s ? t(`categories.${s.category}`) : ''}</span>
+                  <b>
+                    {(p.count ?? 1) > 1 ? `${p.count} × ` : ''}
+                    {s?.name ?? p.systemId}
+                  </b>
+                  <span className="qrow__sub">
+                    {s ? t(`categories.${s.category}`) : ''}
+                    {p.source && p.source !== 'factory'
+                      ? ` · ${t(`production.source.${p.source}`)}`
+                      : ''}
+                  </span>
                 </span>
               </span>
             );

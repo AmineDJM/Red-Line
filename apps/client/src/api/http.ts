@@ -73,13 +73,15 @@ async function optionalGeoJSON(url: string): Promise<FeatureCollection | null> {
 }
 
 export async function loadBasemap(): Promise<BasemapData> {
-  const [land, coastline, seas, countries, cities] = await Promise.all(
-    (['land', 'coastline', 'seas', 'countries', 'cities'] as const).map((k) =>
+  // Pas de couche « land » : les terres viennent de l'imagerie et des provinces (data/basemap n'en
+  // fournit pas ; la demander produisait un 404 à chaque chargement).
+  const [coastline, seas, countries, cities] = await Promise.all(
+    (['coastline', 'seas', 'countries', 'cities'] as const).map((k) =>
       optionalGeoJSON(`/basemap/${BASEMAP_FILES[k]}`),
     ),
   );
   return {
-    land: land ?? null,
+    land: null,
     coastline: coastline ?? null,
     seas: seas ?? null,
     countries: countries ?? null,

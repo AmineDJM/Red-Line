@@ -60,6 +60,21 @@ function Relations() {
   const [war, setWar] = useState<NationId | null>(null);
   const dip = view?.diplomacy;
   const known = new Map((dip?.relations ?? []).map((r) => [r.nationId, r]));
+  const defs = useWorld((s) => s.provinces);
+  // Nations frontalières (provinces voisines des nôtres), toujours listées avec les relations actives.
+  const neighbors = useMemo(() => {
+    const out = new Set<NationId>();
+    if (!view || !me) return out;
+    for (const p of Object.values(view.provinces)) {
+      if (p.owner !== me) continue;
+      for (const nb of defs[p.id]?.neighbors ?? []) {
+        const o = view.provinces[nb]?.owner;
+        if (o && o !== me) out.add(o);
+      }
+    }
+    return out;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [view?.provinces, me, defs]);
   const rows = useMemo(
     () =>
       Object.values(nations)
@@ -68,13 +83,13 @@ function Relations() {
           filter === 'all'
             ? true
             : filter === 'known'
-              ? known.has(n.id)
+              ? known.has(n.id) || neighbors.has(n.id)
               : relationOf(view, n.id) === filter,
         )
         .filter((n) => !q || norm(n.name).includes(norm(q)))
         .map((n) => ({ id: n.id, rel: known.get(n.id) })),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [nations, me, filter, q, dip, view?.nations],
+    [nations, me, filter, q, dip, view?.nations, neighbors],
   );
   const order: Record<Relation, number> = { war: 0, ceasefire: 1, ally: 2, peace: 3 };
   const relationActions = (r: (typeof rows)[number]) => {
@@ -194,6 +209,14 @@ function Relations() {
         label={t('diplomacy.tabs.relations')}
         rows={rows}
         rowKey={(r) => r.id}
+        empty={
+          <EmptyState
+            compact
+            icon="diplomacy"
+            title={t('diplomacy.noRelations')}
+            text={t('diplomacy.noRelationsHint')}
+          />
+        }
         defaultSort={{ key: 'rel', dir: 'asc' }}
         rowClass={(r) => (r.rel?.pending && r.rel.pending.from !== me ? 'tr-attn' : undefined)}
         columns={[
@@ -576,14 +599,40 @@ function Alliances() {
 function Neutrals() {
   const { t } = useTranslation();
   const dip = useGame((s) => s.view?.diplomacy);
+  const money = useGame((s) => s.view?.economy.money ?? 0);
   const send = useSend();
   const [aid, setAid] = useState(200e6);
+  const [q, setQ] = useState('');
   if (!dip?.neutrals.length) return <EmptyState icon="globe" title={t('diplomacy.noNeutrals')} />;
   const alliances = dip.alliances;
+  const inAlliance = !!dip.myAllianceId;
+  const rows = dip.neutrals
+    .filter((n) => !q || norm(nationName(n.nationId)).includes(norm(q)))
+    .map((n) => ({
+      ...n,
+      mine: dip.myAllianceId ? (n.leaning[dip.myAllianceId] ?? 0) : 0,
+      top: Object.entries(n.leaning).sort((a, b) => b[1] - a[1])[0] ?? null,
+    }))
+    .sort(
+      (a, b) => b.mine - a.mine || nationName(a.nationId).localeCompare(nationName(b.nationId)),
+    );
   return (
     <div className="vstack">
-      <div className="row row--between">
+      {!inAlliance ? (
+        <p className="hint hint--warn">
+          <Icon name="warning" size={13} /> {t('diplomacy.neutralsNeedAlliance')}
+        </p>
+      ) : (
         <p className="hint">{t('diplomacy.neutralsHelp')}</p>
+      )}
+      <div className="row row--between">
+        <SearchInput
+          value={q}
+          onChange={setQ}
+          label={t('app.search')}
+          placeholder={t('newGame.searchPlaceholder')}
+          className="army-search"
+        />
         <Segmented
           size="sm"
           label={t('diplomacy.aid')}
@@ -592,52 +641,60 @@ function Neutrals() {
           options={[100e6, 200e6, 500e6, 1e9].map((v) => ({ value: v, label: formatMoney(v) }))}
         />
       </div>
-      {dip.neutrals.map((n) => (
-        <Panel
-          key={n.nationId}
-          title={<NationTag id={n.nationId} strong />}
-          actions={
-            <Button
-              size="sm"
-              variant="primary"
-              onClick={() =>
-                void send(
-                  { kind: 'courtNeutral', nationId: n.nationId, aid },
-                  t('diplomacy.courted', { nation: nationName(n.nationId) }),
-                )
-              }
-            >
-              {t('diplomacy.court', { amount: formatMoney(aid) })}
-            </Button>
-          }
-        >
-          <ul className="leaning">
-            {Object.entries(n.leaning)
-              .sort((a, b) => b[1] - a[1])
-              .map(([al, v]) => {
-                const a = alliances.find((x) => x.id === al);
-                return (
-                  <li key={al}>
-                    <span
-                      className={
-                        al === dip.myAllianceId
-                          ? 'leaning__name leaning__name--mine'
-                          : 'leaning__name'
-                      }
-                    >
-                      {a ? `[${a.flag}] ${a.name}` : al}
-                    </span>
-                    <ProgressBar
-                      value={v}
-                      tone={al === dip.myAllianceId ? 'green' : 'blue'}
-                      trailing={formatPct(v)}
-                    />
-                  </li>
-                );
-              })}
-          </ul>
-        </Panel>
-      ))}
+      <Table
+        label={t('diplomacy.tabs.neutrals')}
+        rows={rows.slice(0, 60)}
+        rowKey={(r) => r.nationId}
+        columns={[
+          {
+            key: 'n',
+            header: t('diplomacy.cols.nation'),
+            render: (r) => <NationTag id={r.nationId} strong />,
+          },
+          {
+            key: 'l',
+            header: t('diplomacy.cols.leaning'),
+            width: '40%',
+            render: (r) => {
+              if (!r.top) return <span className="muted small">{t('diplomacy.noLeaning')}</span>;
+              const a = alliances.find((x) => x.id === r.top![0]);
+              const mine = r.top[0] === dip.myAllianceId;
+              return (
+                <ProgressBar
+                  value={r.top[1]}
+                  size="xs"
+                  tone={mine ? 'green' : 'blue'}
+                  trailing={`${a ? `[${a.flag}] ` : ''}${formatPct(r.top[1])}`}
+                  label={t('diplomacy.cols.leaning')}
+                />
+              );
+            },
+          },
+          {
+            key: 'a',
+            header: '',
+            align: 'right',
+            render: (r) => (
+              <Button
+                size="sm"
+                variant="subtle"
+                disabled={!inAlliance || money < aid}
+                onClick={() =>
+                  void send(
+                    { kind: 'courtNeutral', nationId: r.nationId, aid },
+                    t('diplomacy.courted', { nation: nationName(r.nationId) }),
+                  )
+                }
+              >
+                {t('diplomacy.court', { amount: formatMoney(aid) })}
+              </Button>
+            ),
+          },
+        ]}
+      />
+      {rows.length > 60 ? (
+        <p className="hint">{t('diplomacy.moreNeutrals', { count: rows.length - 60 })}</p>
+      ) : null}
     </div>
   );
 }
