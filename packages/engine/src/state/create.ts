@@ -1,4 +1,4 @@
-import { MODULES, placeStartingForces } from '../modules/registry.js';
+import { MODULES, board, placeStartingForces } from '../modules/registry.js';
 import {
   DAY,
   MINUTE,
@@ -105,6 +105,7 @@ export function createGameImpl(world: World, setup: GameSetup): EngineState {
     addToIndex(state.rt.provsOf, state.provinces[pid]!.owner, pid);
   }
 
+  board(state);
   for (const m of MODULES) m.init?.(state, setup);
 
   if (setup.units) {

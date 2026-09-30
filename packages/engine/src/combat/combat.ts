@@ -1,4 +1,4 @@
-import { callHook, modifier } from '../modules/registry.js';
+import { callHook, modifier, unitModifier } from '../modules/registry.js';
 import { MINUTE, positionAt, type UnitId } from '@redline/shared';
 import { nextFloat } from '../rng/rng.js';
 import {
@@ -212,6 +212,7 @@ export function roundDamage(state: EngineState, u: Unit, tgt: Unit, varianceRoll
   let dmg =
     sys.damage[ts.targetClass] * u.count * (1 + vet * b.veterancyDamageBonus) * varianceRoll;
   dmg *= modifier(state, u.owner, 'combat.damage') / modifier(state, tgt.owner, 'combat.armor');
+  dmg *= unitModifier(state, u, 'combat.damage') / unitModifier(state, tgt, 'combat.armor');
   dmg *= 1 - ts.armor;
   if (inOwnCity(state, tgt)) dmg /= 1 + b.defenderCityBonus;
   const jam = jammingFor(state, tgt);

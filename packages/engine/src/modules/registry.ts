@@ -14,7 +14,7 @@ export function moduleById(id: ModuleId): EngineModule | undefined {
   return MODULES.find((m) => m.id === id);
 }
 
-export { modState, scheduleMod } from './kit.js';
+export { board, modState, scheduleMod } from './kit.js';
 
 type HookName = keyof ModuleHooks;
 type HookArgs<K extends HookName> = Parameters<NonNullable<ModuleHooks[K]>>;
@@ -46,6 +46,33 @@ export function modifier(state: EngineState, n: NationId, key: string): number {
     if (typeof v === 'number' && Number.isFinite(v)) f *= v;
   }
   return f;
+}
+
+/** Produit des multiplicateurs par unité. */
+export function unitModifier(
+  state: EngineState,
+  u: Parameters<NonNullable<ModuleHooks['unitModifier']>>[1],
+  key: string,
+): number {
+  let f = 1;
+  for (const m of MODULES) {
+    const v = m.hooks?.unitModifier?.(state, u, key);
+    if (typeof v === 'number' && Number.isFinite(v)) f *= v;
+  }
+  return f;
+}
+
+export function canImport(state: EngineState, n: NationId, systemId: string) {
+  for (const m of MODULES) {
+    const r = m.hooks?.canImport?.(state, n, systemId);
+    if (r) return r;
+  }
+  return null;
+}
+
+/** Émet un signal vers tous les modules (ordre fixe). */
+export function signal(state: EngineState, name: string, data: Record<string, unknown>): void {
+  for (const m of MODULES) m.hooks?.onSignal?.(state, name, data);
 }
 
 export function placeStartingForces(state: EngineState, n: NationId): boolean {

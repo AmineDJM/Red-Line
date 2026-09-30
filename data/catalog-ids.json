@@ -3040,6 +3040,30 @@
       "doctrine": "other",
       "origin": "IN",
       "status": "planned"
+    },
+    {
+      "id": "other.supply-convoy",
+      "name": "Convoi logistique",
+      "category": "logistics",
+      "doctrine": "other",
+      "origin": "XX",
+      "status": "planned"
+    },
+    {
+      "id": "other.cargo-ship",
+      "name": "Cargo",
+      "category": "logistics",
+      "doctrine": "other",
+      "origin": "XX",
+      "status": "planned"
+    },
+    {
+      "id": "other.cargo-aircraft",
+      "name": "Avion cargo affrété",
+      "category": "logistics",
+      "doctrine": "other",
+      "origin": "XX",
+      "status": "planned"
     }
   ]
 }

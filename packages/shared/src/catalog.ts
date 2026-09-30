@@ -34,6 +34,8 @@ export const CATEGORIES = [
   'submarine',
   'infantry',
   'space',
+  /** Convois et cargos (livraisons du marché, ravitaillement) : génériques, non combattants. */
+  'logistics',
 ] as const;
 export type Category = (typeof CATEGORIES)[number];
 

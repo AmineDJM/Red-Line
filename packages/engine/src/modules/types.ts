@@ -53,6 +53,12 @@ export interface ModuleHooks {
   ): OrderErrorCode | null;
   /** Multiplicateur (clés MODIFIER_KEYS de shared) ; le cœur multiplie les résultats des modules. */
   modifier?(state: EngineState, n: NationId, key: string): number;
+  /** Multiplicateur propre à une unité (ravitaillement, fortification, général, vétérance…). */
+  unitModifier?(state: EngineState, u: Unit, key: string): number;
+  /** Autorisation d'importer (achat au catalogue d'un fournisseur) : embargo, alerte… */
+  canImport?(state: EngineState, n: NationId, systemId: string): OrderErrorCode | null;
+  /** Bus de signaux entre modules (voir SIGNALS dans docs/agents-brief-v2.md). */
+  onSignal?(state: EngineState, name: string, data: Record<string, unknown>): void;
   /** Place les forces de départ d'une nation ; renvoie true si le module s'en est chargé (ORBAT). */
   placeStartingForces?(state: EngineState, n: NationId): boolean;
   /** Réflexion IA propre au module, appelée à chaque réflexion des IA pour chaque nation IA. */
@@ -60,6 +66,32 @@ export interface ModuleHooks {
   /** Destinataires d'une notification inconnue du cœur (après désérialisation). */
   audience?(state: EngineState, nation: NationId, note: GameNotification): boolean | undefined;
   stats?(state: EngineState, out: GameStats): void;
+}
+
+/**
+ * Tableau partagé entre modules (state.mods.board), lu par tous, écrit par le module propriétaire indiqué.
+ * Données sérialisables uniquement.
+ */
+export interface SharedBoard {
+  /** mil : niveau d'alerte mondial 5 (calme) → 1 (crise nucléaire) et tension sous-jacente 0..100. */
+  alertLevel: 1 | 2 | 3 | 4 | 5;
+  tension: number;
+  /** diplo : nations sous embargo sur les armes (achats au catalogue interdits). */
+  embargoed: Record<NationId, true>;
+  /** diplo : multiplicateur de revenus commerciaux (sanctions), 1 = aucune. */
+  sanctions: Record<NationId, number>;
+  /** diplo : provinces sous zone d'exclusion aérienne. */
+  noFly: Record<ProvinceId, true>;
+  /** diplo : cessez-le-feu en vigueur, clé "a|b" (a < b) → fin. */
+  ceasefires: Record<string, number>;
+  /** diplo : stabilité 0..100 par nation. */
+  stability: Record<NationId, number>;
+  /** diplo : alliances, nation → identifiant d'alliance. */
+  allianceOf: Record<NationId, string>;
+  /** mil : nations ayant autorisé l'emploi du nucléaire. */
+  nuclearAuth: Record<NationId, true>;
+  /** eco : nations en mobilisation générale. */
+  mobilized: Record<NationId, true>;
 }
 
 export interface EngineModule {
