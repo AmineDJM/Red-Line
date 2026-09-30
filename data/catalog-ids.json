@@ -3064,6 +3064,190 @@
       "doctrine": "other",
       "origin": "XX",
       "status": "planned"
+    },
+    {
+      "id": "us.an-tpy-2",
+      "name": "AN/TPY-2",
+      "category": "radar",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.an-fps-132-uewr",
+      "name": "AN/FPS-132 UEWR",
+      "category": "radar",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.an-tps-80-g-ator",
+      "name": "AN/TPS-80 G/ATOR",
+      "category": "radar",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "us.an-tps-75",
+      "name": "AN/TPS-75",
+      "category": "radar",
+      "doctrine": "us",
+      "origin": "US",
+      "status": "planned"
+    },
+    {
+      "id": "ru.rezonans-ne",
+      "name": "Rezonans-NE",
+      "category": "radar",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.nebo-m",
+      "name": "Nebo-M",
+      "category": "radar",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.voronezh-dm",
+      "name": "Voronezh-DM",
+      "category": "radar",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.container-29b6",
+      "name": "Container 29B6",
+      "category": "radar",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.podsolnukh-e",
+      "name": "Podsolnukh-E",
+      "category": "radar",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.protivnik-ge",
+      "name": "Protivnik-GE",
+      "category": "radar",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "ru.p-18",
+      "name": "P-18",
+      "category": "radar",
+      "doctrine": "ru",
+      "origin": "RU",
+      "status": "planned"
+    },
+    {
+      "id": "cn.jy-27a",
+      "name": "JY-27A",
+      "category": "radar",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.ylc-8b",
+      "name": "YLC-8B",
+      "category": "radar",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.jy-26",
+      "name": "JY-26",
+      "category": "radar",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "cn.type-7010-lpar",
+      "name": "Type 7010 LPAR",
+      "category": "radar",
+      "doctrine": "cn",
+      "origin": "CN",
+      "status": "planned"
+    },
+    {
+      "id": "eu.ground-master-400",
+      "name": "Ground Master 400",
+      "category": "radar",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.smart-l-ewc",
+      "name": "SMART-L EWC",
+      "category": "radar",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "eu.trml-4d",
+      "name": "TRML-4D",
+      "category": "radar",
+      "doctrine": "eu",
+      "origin": "FR",
+      "status": "planned"
+    },
+    {
+      "id": "other.el-m-2084",
+      "name": "EL/M-2084",
+      "category": "radar",
+      "doctrine": "other",
+      "origin": "IL",
+      "status": "planned"
+    },
+    {
+      "id": "other.el-m-2080-green-pine",
+      "name": "EL/M-2080 Green Pine",
+      "category": "radar",
+      "doctrine": "other",
+      "origin": "IL",
+      "status": "planned"
+    },
+    {
+      "id": "other.ghadir-oth",
+      "name": "Ghadir OTH",
+      "category": "radar",
+      "doctrine": "other",
+      "origin": "IR",
+      "status": "planned"
+    },
+    {
+      "id": "other.sepehr-oth",
+      "name": "Sepehr OTH",
+      "category": "radar",
+      "doctrine": "other",
+      "origin": "IR",
+      "status": "planned"
+    },
+    {
+      "id": "other.swordfish-lrtr",
+      "name": "Swordfish LRTR",
+      "category": "radar",
+      "doctrine": "other",
+      "origin": "IN",
+      "status": "planned"
     }
   ]
 }
