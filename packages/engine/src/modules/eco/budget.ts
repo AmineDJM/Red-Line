@@ -268,7 +268,7 @@ export function healDaily(state: EngineState): void {
           if (Math.abs(x.pt[0] - u.pos[0]) < 0.5 && Math.abs(x.pt[1] - u.pos[1]) < 0.5)
             rate = Math.max(rate, naval * x.p);
       } else {
-        const pid = w.nav.cellProv.get(w.nav.cellAt(u.pos));
+        const pid = w.nav.cellProv.get(w.nav.cellOfPos(u.pos));
         if (pid && state.provinces[pid]?.owner === n) rate = hosp * power(state, pid, 'hospital');
       }
       if (rate > 0) u.hp = Math.min(cap, u.hp + rate * u.count * sys.hp);

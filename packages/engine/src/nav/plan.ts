@@ -1,7 +1,6 @@
 import {
   distanceKm,
   HOUR,
-  interpolate,
   MINUTE,
   EARTH_RADIUS_KM,
   type Balance,
@@ -11,6 +10,7 @@ import {
 } from '@redline/shared';
 import { gridDisk } from 'h3-js';
 import { astar } from './astar.js';
+import { interpolator } from '../geo/sphere.js';
 import type { NavGraph } from './graph.js';
 
 export type PlanResult = { legs: Leg[] } | { error: 'unreachable' | 'not_allowed' };
@@ -193,8 +193,10 @@ function smoothRun(g: NavGraph, pts: LngLat[], allowed: (cell: string) => boolea
     const b = pts[j]!;
     const d = distanceKm(a, b);
     const n = Math.ceil(d / stepKm);
+    if (n <= 1) return true;
+    const at = interpolator(a, b);
     for (let k = 1; k < n; k++) {
-      const p = interpolate(a, b, k / n);
+      const p = at(k / n);
       const c = g.cellAt(p);
       if (!fixed.has(c) && !allowed(c)) return false;
     }

@@ -1,5 +1,5 @@
 import { MINUTE, type NationId, type UnitId } from '@redline/shared';
-import { notify, sightLevel, sortedSet, unitPosAt } from '../state/access.js';
+import { notify, sightLevel, unitPosAt } from '../state/access.js';
 import type { EngineState, Unit } from '../state/types.js';
 
 /**
@@ -49,11 +49,13 @@ export function changeSight(
   else if (after === 0) lose(state, nation, u);
   else updateLevel(state, nation, u, after);
   if ((before === 0) !== (after === 0)) {
-    // La permission de tir des unités de `nation` sur `uid` change.
-    for (const key of sortedSet(state.rt.pairsOf.get(uid))) {
+    // La permission de tir des unités de `nation` sur `uid` change. Ajouts à un ensemble retraité
+    // dans l'ordre trié par settle : pas de tri ici.
+    for (const key of state.rt.pairsOf.get(uid) ?? []) {
       if (key.includes('#')) continue;
-      const [a, b] = key.split('|') as [UnitId, UnitId];
-      const other = a === uid ? b : a;
+      const h = key.indexOf('|');
+      const a = key.slice(0, h);
+      const other = a === uid ? key.slice(h + 1) : a;
       if (state.units[other]?.owner === nation) state.rt.dirtyCombat.add(other);
     }
   }

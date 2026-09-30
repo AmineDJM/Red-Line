@@ -34,8 +34,39 @@ export function isAsat(s: WeaponSystem): boolean {
   return s.category === 'space' && (s.roles.includes('asat') || /(^|[.-])asat($|-)/.test(s.id));
 }
 
+const earlyWarning = new WeakMap<WeaponSystem, boolean>();
+
 export function isEarlyWarning(s: WeaponSystem): boolean {
-  return s.sensor?.kind === 'early_warning' || /early-warning/.test(s.id);
+  let v = earlyWarning.get(s);
+  if (v === undefined) {
+    v = s.sensor?.kind === 'early_warning' || /early-warning/.test(s.id);
+    earlyWarning.set(s, v);
+  }
+  return v;
+}
+
+/**
+ * Unités d'alerte avancée de la partie (index d'exécution, jamais sérialisé) : construit au premier
+ * usage par un parcours de toutes les unités, puis tenu à jour par les crochets d'apparition et de
+ * retrait (trackEarlyWarning). Les propriétaires et systèmes des unités ne changent jamais.
+ */
+const ewUnits = new WeakMap<EngineState, Set<string>>();
+
+export function earlyWarningUnits(state: EngineState): Set<string> {
+  let set = ewUnits.get(state);
+  if (!set) {
+    set = new Set();
+    for (const id in state.units) if (isEarlyWarning(sysOf(state, state.units[id]!))) set.add(id);
+    ewUnits.set(state, set);
+  }
+  return set;
+}
+
+export function trackEarlyWarning(state: EngineState, u: Unit, present: boolean): void {
+  const set = ewUnits.get(state);
+  if (!set) return;
+  if (!present) set.delete(u.id);
+  else if (isEarlyWarning(sysOf(state, u))) set.add(u.id);
 }
 
 /** Satellite : type de capteur (optique, radar, écoute, alerte avancée). */
@@ -96,7 +127,7 @@ export function cityOf(state: EngineState, pid: ProvinceId): LngLat | null {
 
 export function provinceAt(state: EngineState, p: LngLat): ProvinceId | null {
   const nav = wi(state.world).nav;
-  const pid = nav.cellProv.get(nav.cellAt(p));
+  const pid = nav.cellProv.get(nav.cellOfPos(p));
   return pid && state.provinces[pid] ? pid : null;
 }
 
@@ -146,18 +177,29 @@ export function nearestProvince(
   return best;
 }
 
-/** Unités sur la carte dans un rayon (index spatial des trajets), triées par identifiant. */
-export function unitsNear(state: EngineState, at: LngLat, rKm: number): Unit[] {
+/**
+ * Unités sur la carte dans un rayon (index spatial des trajets), triées par identifiant. `pre` : filtre
+ * pur (sans effet) appliqué avant le calcul de distance — même résultat que filtrer ensuite.
+ */
+export function unitsNear(
+  state: EngineState,
+  at: LngLat,
+  rKm: number,
+  pre?: (u: Unit) => boolean,
+): Unit[] {
   const cells = new Set<number>();
   coverCap(at, rKm + 1, cells);
   const ids = new Set<string>();
   state.rt.bodies.collect([...cells], ids);
+  // Filtres purs d'abord, tri des seules unités retenues (même ordre que le parcours trié).
   const out: Unit[] = [];
-  for (const id of [...ids].sort()) {
+  for (const id of ids) {
     const u = state.units[id];
     if (!u || u.off) continue;
+    if (pre && !pre(u)) continue;
     if (distanceKm(unitPosAt(state, u, state.time), at) <= rKm) out.push(u);
   }
+  if (out.length > 1) out.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   return out;
 }
 

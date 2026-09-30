@@ -1,13 +1,26 @@
-import { EARTH_RADIUS_KM, type NationId, type ProvinceId, type UnitId } from '@redline/shared';
+import {
+  EARTH_RADIUS_KM,
+  type NationId,
+  type ProvinceId,
+  type UnitId,
+  type Vec3,
+} from '@redline/shared';
 import { coverCap, sweepCells } from '../geo/grid.js';
 import { dotAt, nextBandChange } from '../geo/crossing.js';
-import type { Piece } from '../geo/sphere.js';
+import { pieceIndexAt, vecAngle, type Piece } from '../geo/sphere.js';
 import { schedule, sortedSet, unitPieces } from '../state/access.js';
 import { addToIndex, removeFromIndex } from '../state/runtime.js';
 import type { EngineState, PairState, Unit } from '../state/types.js';
 import { CAPTURE_RADIUS_KM, wi } from '../state/world.js';
 import { changeSight, detectionLevel, detectionRadii } from './sight.js';
-import { inRange, provSightRangeKm, sightRangeKm, weaponRange, zoneKm } from './profile.js';
+import {
+  inRange,
+  provSightRangeKm,
+  sightRangeKm,
+  weaponRange,
+  withSightMemo,
+  zoneKm,
+} from './profile.js';
 
 /**
  * Rencontres. Chaque paire (unité, unité étrangère) ou (province, unité) proche est surveillée : on
@@ -34,15 +47,93 @@ export function inWeaponRange(state: EngineState, u: Unit, d: number): boolean {
   return inRange(weaponRange(state, u), d);
 }
 
+/** Rayons strictement positifs, triés, sans doublons, convertis en cosinus (seuils de bande). */
 function toCos(radii: number[]): number[] {
   const out: number[] = [];
   for (const r of radii) if (r > 0) out.push(r);
-  out.sort((a, b) => a - b);
+  // Tri par insertion (≤ 10 valeurs) : même résultat que sort((a, b) => a - b), sans rappel.
+  for (let i = 1; i < out.length; i++) {
+    const x = out[i]!;
+    let j = i - 1;
+    while (j >= 0 && out[j]! > x) {
+      out[j + 1] = out[j]!;
+      j--;
+    }
+    out[j + 1] = x;
+  }
   let w = 0;
   for (let i = 0; i < out.length; i++) if (w === 0 || out[i] !== out[w - 1]) out[w++] = out[i]!;
   out.length = w;
   for (let i = 0; i < w; i++) out[i] = Math.cos(out[i]! / EARTH_RADIUS_KM);
   return out;
+}
+
+/** Plus grand rayon strictement positif (0 si aucun). */
+function maxPositive(radii: number[]): number {
+  let m = 0;
+  for (const r of radii) if (r > m) m = r;
+  return m;
+}
+
+/**
+ * Calotte (centre, rayon angulaire) qui contient toute la trajectoire à partir de l'instant t.
+ * Mise en cache par tableau de morceaux (celui d'une unité ne change pas tant que son trajet ne change
+ * pas) et par instant.
+ */
+interface Cap {
+  t: number;
+  c: Vec3;
+  r: number;
+}
+const capCache = new WeakMap<Piece[], Cap>();
+
+function trajCap(P: Piece[], t: number): Cap {
+  const hit = capCache.get(P);
+  if (hit && hit.t === t) return hit;
+  let c: Vec3 | null = null;
+  let r = 0;
+  for (let i = pieceIndexAt(P, t); i < P.length; i++) {
+    const p = P[i]!;
+    let ci: Vec3;
+    let ri: number;
+    if (p.s) {
+      ci = p.v;
+      ri = 0;
+    } else {
+      let th0 = p.w * (t - p.t0);
+      if (th0 < 0) th0 = 0;
+      else if (th0 > p.len) th0 = p.len;
+      const tm = (th0 + p.len) / 2;
+      const co = Math.cos(tm);
+      const si = Math.sin(tm);
+      ci = [p.p0[0] * co + p.u[0] * si, p.p0[1] * co + p.u[1] * si, p.p0[2] * co + p.u[2] * si];
+      ri = (p.len - th0) / 2;
+    }
+    if (!c) {
+      c = ci;
+      r = ri;
+    } else {
+      const d = vecAngle(c, ci) + ri;
+      if (d > r) r = d;
+    }
+  }
+  const cap: Cap = { t, c: c ?? [1, 0, 0], r };
+  capCache.set(P, cap);
+  return cap;
+}
+
+/** Marge angulaire (rad, ≈ 6 m) qui absorbe les erreurs d'arrondi du filtre ci-dessous. */
+const CAP_MARGIN = 1e-6;
+
+/**
+ * Vrai si les deux trajectoires restent, à partir de t, à plus de rKm l'une de l'autre (preuve par
+ * calottes englobantes et inégalité triangulaire). Alors aucun seuil ≤ rKm n'est jamais franchi :
+ * nextBandChange renverrait null et la paire n'est pas en relation. Filtre exact (conservateur).
+ */
+function neverWithin(A: Piece[], B: Piece[], t: number, rKm: number): boolean {
+  const a = trajCap(A, t);
+  const b = trajCap(B, t);
+  return vecAngle(a.c, b.c) - a.r - b.r > rKm / EARTH_RADIUS_KM + CAP_MARGIN;
 }
 
 function maxRadius(cosThr: number[]): number {
@@ -117,7 +208,10 @@ function candidateKeys(state: EngineState, u: Unit): string[] {
 /** Après un changement de trajet (ou une apparition) : réindexe et recalcule toutes les paires de l'unité. */
 export function refreshUnitPairs(state: EngineState, u: Unit): void {
   registerUnit(state, u);
-  for (const key of candidateKeys(state, u)) evalPair(state, key);
+  const keys = candidateKeys(state, u);
+  withSightMemo(() => {
+    for (const key of keys) evalPair(state, key);
+  });
 }
 
 /* ------------------------------------------------------------------------------------------------ */
@@ -136,7 +230,9 @@ function indexPair(state: EngineState, key: string, a: string, b: string): void 
 
 function evalUnitPair(state: EngineState, key: string): void {
   const existing = state.pairs[key];
-  const [ia, ib] = key.split('|') as [UnitId, UnitId];
+  const h = key.indexOf('|');
+  const ia: UnitId = key.slice(0, h);
+  const ib: UnitId = key.slice(h + 1);
   const A = state.units[ia];
   const B = state.units[ib];
   if (!A || !B || A.owner === B.owner || A.off || B.off) {
@@ -148,16 +244,19 @@ function evalUnitPair(state: EngineState, key: string): void {
   const rba = sightRangeKm(state, B, A);
   const wa = weaponRange(state, A);
   const wb = weaponRange(state, B);
-  const cosThr = toCos([
-    ...detectionRadii(state, rab),
-    ...detectionRadii(state, rba),
-    wa.max,
-    wa.max > 0 ? wa.min : 0,
-    wb.max,
-    wb.max > 0 ? wb.min : 0,
-  ]);
+  const radii = detectionRadii(state, rab);
+  for (const r of detectionRadii(state, rba)) radii.push(r);
+  radii.push(wa.max, wa.max > 0 ? wa.min : 0, wb.max, wb.max > 0 ? wb.min : 0);
   const pa = unitPieces(state, A);
   const pb = unitPieces(state, B);
+  // Paire candidate de l'index spatial mais hors de portée pour toujours : rien à faire (cas le plus
+  // fréquent, sans calcul de franchissement).
+  const rMax = maxPositive(radii);
+  if (rMax <= 0 || neverWithin(pa, pb, t, rMax)) {
+    if (existing) removePair(state, key);
+    return;
+  }
+  const cosThr = toCos(radii);
   const { d } = distKm(pa, pb, t);
   const next = nextBandChange(pa, pb, cosThr, t);
   const inRel = d <= maxRadius(cosThr);
@@ -187,9 +286,14 @@ function evalUnitPair(state: EngineState, key: string): void {
   }
 }
 
+/** Trajectoire immobile du point de ville (partagée : le vecteur de la ville est une donnée du monde). */
+const cityPieces = new WeakMap<Vec3, Piece[]>();
+
 function provPieces(state: EngineState, p: ProvinceId): Piece[] {
   const v = wi(state.world).cityVec.get(p)!;
-  return [{ t0: -Infinity, t1: Infinity, s: true, v }];
+  let pieces = cityPieces.get(v);
+  if (!pieces) cityPieces.set(v, (pieces = [{ t0: -Infinity, t1: Infinity, s: true, v }]));
+  return pieces;
 }
 
 function cityFlags(state: EngineState, d: number): number {
@@ -212,13 +316,16 @@ function evalProvPair(state: EngineState, key: string): void {
   const t = state.time;
   const obs = P.owner;
   const rp = obs !== U.owner ? provSightRangeKm(state, obs, U) : 0;
-  const cosThr = toCos([
-    ...detectionRadii(state, rp),
-    CAPTURE_RADIUS_KM,
-    state.world.balance.combat.groundContactKm,
-  ]);
+  const radii = detectionRadii(state, rp);
+  radii.push(CAPTURE_RADIUS_KM, state.world.balance.combat.groundContactKm);
   const pp = provPieces(state, pid);
   const pu = unitPieces(state, U);
+  const rMax = maxPositive(radii);
+  if (rMax <= 0 || neverWithin(pp, pu, t, rMax)) {
+    if (existing) removePair(state, key);
+    return;
+  }
+  const cosThr = toCos(radii);
   const { d } = distKm(pp, pu, t);
   const next = nextBandChange(pp, pu, cosThr, t);
   const inRel = d <= maxRadius(cosThr);
@@ -265,7 +372,9 @@ export function removePair(state: EngineState, key: string): void {
     if (state.units[uid]) state.rt.dirtyCombat.add(uid);
     return;
   }
-  const [ia, ib] = key.split('|') as [UnitId, UnitId];
+  const bar = key.indexOf('|');
+  const ia: UnitId = key.slice(0, bar);
+  const ib: UnitId = key.slice(bar + 1);
   removeFromIndex(state.rt.pairsOf, ia, key);
   removeFromIndex(state.rt.pairsOf, ib, key);
   const A = state.units[ia];
@@ -311,6 +420,11 @@ export function pairsOfUnit(state: EngineState, uid: UnitId): { key: string; pai
 }
 
 export function otherOf(key: string, uid: UnitId): string {
-  const [a, b] = key.split('|') as [string, string];
-  return a === uid ? b : a;
+  const h = key.indexOf('|');
+  if (h < 0) {
+    const [a, b] = key.split('|') as [string, string];
+    return a === uid ? b : a;
+  }
+  const a = key.slice(0, h);
+  return a === uid ? key.slice(h + 1) : a;
 }

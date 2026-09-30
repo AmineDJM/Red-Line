@@ -29,6 +29,8 @@ import { disputedOf } from '../modules/diplo/unrest.js';
 import { elide } from '../modules/diplo/news.js';
 import {
   estimateForce,
+  invalidateForceMemo,
+  withForceMemo,
   lostTo,
   mutualAllies,
   neighborNations,
@@ -195,7 +197,9 @@ export function captureFailures(state: EngineState, n: NationId): Record<string,
 }
 
 function order(state: EngineState, n: NationId, o: Order): boolean {
-  return applyOrderImpl(state, n, o).ok;
+  const ok = applyOrderImpl(state, n, o).ok;
+  invalidateForceMemo();
+  return ok;
 }
 
 /** Contexte calculé une fois par réflexion pour toutes les nations (budget de calcul). */
@@ -254,6 +258,10 @@ export function isHot(
 /** Réactions (chaque réflexion) : propositions de paix, invitations, votes d'alliance et du Conseil. */
 export function reactiveThink(state: EngineState, n: NationId, ctx: ThinkContext): void {
   if (!ds(state) || !ctx.pending.has(n)) return;
+  withForceMemo(() => reactive(state, n));
+}
+
+function reactive(state: EngineState, n: NationId): void {
   const ns = state.nations[n]!;
   const P = PROFILES[ns.aiLevel];
   const mine = ownForce(state, n);
@@ -415,6 +423,10 @@ function councilVote(state: EngineState, n: NationId, r: Resolution): 'yes' | 'n
 /** Réflexion stratégique complète (espacée dans le temps). */
 export function strategicThink(state: EngineState, n: NationId, neighbors: NationId[]): void {
   if (!ds(state)) return;
+  withForceMemo(() => strategic(state, n, neighbors));
+}
+
+function strategic(state: EngineState, n: NationId, neighbors: NationId[]): void {
   const ns = state.nations[n]!;
   const P = PROFILES[ns.aiLevel];
   const m = memory(state, n);

@@ -67,7 +67,7 @@ import {
   scheduleInterceptions,
 } from './strike.js';
 import { milPublicView, milView } from './view.js';
-import { carrierCapacity, isAsat, isSatellite, schedule } from './util.js';
+import { carrierCapacity, isAsat, isSatellite, schedule, trackEarlyWarning } from './util.js';
 import { battleReportForImpl } from './battles.js';
 import { destroyUnit, jammingFor } from '../../combat/combat.js';
 
@@ -152,6 +152,7 @@ function handleTick(state: EngineState): void {
 }
 
 function onSpawn(state: EngineState, u: Unit): void {
+  trackEarlyWarning(state, u, true);
   if (u.role) return;
   const s = sysOf(state, u);
   if (isSatellite(s) && !isAsat(s)) {
@@ -163,6 +164,7 @@ function onSpawn(state: EngineState, u: Unit): void {
 }
 
 function onGone(state: EngineState, u: Unit): void {
+  trackEarlyWarning(state, u, false);
   const m = mil(state);
   if (u.role === 'missile') forgetMissile(state, u.id);
   // Aéronefs embarqués : perdus avec leur porteur (parcours seulement pour une unité porteuse).

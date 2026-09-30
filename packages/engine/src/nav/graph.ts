@@ -57,6 +57,22 @@ export class NavGraph {
     return latLngToCell(p[1], p[0], this.res);
   }
 
+  /** Cache de cellAt par tableau de coordonnées (les LngLat ne sont jamais modifiés en place). */
+  private readonly posCells = new WeakMap<LngLat, string>();
+
+  /**
+   * cellAt pour un point durable (position d'unité immobile, contact) : même résultat, mis en cache
+   * par identité du tableau. À réserver aux tableaux réutilisés (inutile pour des points éphémères).
+   */
+  cellOfPos(p: LngLat): string {
+    let c = this.posCells.get(p);
+    if (c === undefined) {
+      c = latLngToCell(p[1], p[0], this.res);
+      this.posCells.set(p, c);
+    }
+    return c;
+  }
+
   isLandCell(cell: string): boolean {
     return this.cellProv.has(cell);
   }
