@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { BattleReport, NationId } from '@redline/shared';
 import { Icon, Segmented, Slider } from '@redline/ui';
@@ -21,12 +21,36 @@ export function BattleReplay({ report, height = 260 }: { report: BattleReport; h
   const ref = useRef<HTMLCanvasElement>(null);
   const geo = useWorld((s) => s.provincesGeo);
   const me = useGame((s) => s.me);
-  const colorOf = useOwnerColor();
+  const colorOf = useOwnerColor(undefined, 0.3);
   const [progress, setProgress] = useState(0);
   const [playing, setPlaying] = useState(true);
   const [speed, setSpeed] = useState(1);
   const attackers = new Set<NationId>(report.attacker.nations);
   const { frames, shots, t0, t1 } = report.replay;
+  // Cadrage : toutes les positions échantillonnées et tous les tirs (marge de 20 %, 15 km minimum).
+  const view = useMemo(() => {
+    let x0 = report.at[0],
+      x1 = report.at[0],
+      y0 = report.at[1],
+      y1 = report.at[1];
+    const add = (p: [number, number]) => {
+      if (p[0] < x0) x0 = p[0];
+      if (p[0] > x1) x1 = p[0];
+      if (p[1] < y0) y0 = p[1];
+      if (p[1] > y1) y1 = p[1];
+    };
+    for (const f of frames) for (const u of f.units) add(u.at);
+    for (const s of shots) {
+      add(s.from);
+      add(s.to);
+    }
+    const center: [number, number] = [(x0 + x1) / 2, (y0 + y1) / 2];
+    const cos = Math.max(0.2, Math.cos((center[1] * Math.PI) / 180));
+    const halfW = ((x1 - x0) / 2) * 111.32 * cos;
+    // Le canevas est environ 3 fois plus large que haut : la demi-hauteur compte triple.
+    const halfH = ((y1 - y0) / 2) * 111.32 * 3;
+    return { center, spanKm: Math.max(15, Math.max(halfW, halfH) * 1.2) };
+  }, [frames, shots, report.at]);
 
   useEffect(() => {
     if (!playing) return;
@@ -63,7 +87,7 @@ export function BattleReplay({ report, height = 260 }: { report: BattleReport; h
       markers.push({
         at,
         color: own ? '#9b6bff' : attackers.has(u.owner) ? '#ff4d5e' : '#4cc9f0',
-        size: 3.5,
+        size: 4,
         shape: 'square',
       });
     }
@@ -80,14 +104,12 @@ export function BattleReplay({ report, height = 260 }: { report: BattleReport; h
       });
       if (s.hit) markers.push({ at: s.to, color: '#ffb020', size: 5, shape: 'ring' });
     }
-    markers.push({
-      at: report.at,
-      color: 'rgba(214, 221, 230, 0.35)',
-      radiusKm: 30,
-      size: 0.1,
-      shape: 'ring',
+    drawMiniMap(c, shapesOf(geo), colorOf, {
+      center: view.center,
+      spanKm: view.spanKm,
+      markers,
+      lines,
     });
-    drawMiniMap(c, shapesOf(geo), colorOf, { center: report.at, spanKm: 55, markers, lines });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress, geo, report]);
 

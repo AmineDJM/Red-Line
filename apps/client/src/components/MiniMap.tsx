@@ -234,7 +234,7 @@ export function tint(hex: string, f = 0.55): string {
   return `rgb(${r}, ${g}, ${b})`;
 }
 
-export function useOwnerColor(owners?: Record<string, NationId>) {
+export function useOwnerColor(owners?: Record<string, NationId>, strength = 0.5) {
   const view = useGame((s) => s.view);
   const me = useGame((s) => s.me);
   const nations = useWorld((s) => s.nations);
@@ -242,8 +242,8 @@ export function useOwnerColor(owners?: Record<string, NationId>) {
   return (pid: string) => {
     const owner = owners?.[pid] ?? view?.provinces[pid]?.owner ?? provinces[pid]?.nationId;
     if (!owner) return '#151c24';
-    if (owner === me) return '#5b3fa8';
-    return tint(view?.nations[owner]?.color ?? nations[owner]?.color ?? '#3a4252', 0.5);
+    if (owner === me) return tint('#9b6bff', strength * 1.2);
+    return tint(view?.nations[owner]?.color ?? nations[owner]?.color ?? '#3a4252', strength);
   };
 }
 

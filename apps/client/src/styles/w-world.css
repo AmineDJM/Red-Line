@@ -573,8 +573,31 @@
 }
 .battle__sides {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 12px;
+}
+.battle__sides > * {
+  min-width: 0;
+}
+.battle__sides .rl-table {
+  width: 100%;
+  table-layout: fixed;
+}
+.battle__sides .rl-table th:nth-child(n + 2),
+.battle__sides .rl-table td:nth-child(n + 2) {
+  width: 9ch;
+  white-space: nowrap;
+}
+.battle__sides .qrow {
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+}
+.battle__sides .qrow b {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .battle__head {
   display: flex;
