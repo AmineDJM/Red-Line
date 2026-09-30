@@ -9,7 +9,7 @@
 
 ```
                  ┌────────────────────────┐        ┌────────────────────────┐
-  Navigateur ──► │ redline-client (static)│        │ redline-admin (static) │ ◄── Admins
+  Navigateur ──► │ client (build statique)│        │ admin (build statique) │ ◄── Admins
   mobile / PC    │ React + Vite + MapLibre│        │ React + Vite           │
                  └───────────┬────────────┘        └───────────┬────────────┘
                    HTTPS (REST) + WebSocket                    │ HTTPS (REST /admin/api)
@@ -210,7 +210,7 @@ Le cahier demande de signaler les choix qui me semblent mauvais. Les voici, avec
 
 ### 6.1 Offre Render : il faut une instance payante dès le départ
 
-Les services web gratuits de Render **s'endorment après 15 minutes sans trafic** : les minuteurs de partie s'arrêteraient et les parties persistantes seraient impossibles. La base PostgreSQL gratuite est, elle, **temporaire** (elle expire au bout de quelques semaines ; délai exact à revérifier sur la grille tarifaire). → **Recommandation** : serveur en offre _Starter_, PostgreSQL en offre payante la plus basse, client et admin en _Static Sites_ (gratuits). L'environnement de test peut rester sur les offres gratuites.
+Les services web gratuits de Render **s'endorment après 15 minutes sans trafic** : les minuteurs de partie s'arrêteraient et les parties persistantes seraient impossibles. La base PostgreSQL gratuite est, elle, **temporaire** (elle expire au bout de quelques semaines ; délai exact à revérifier sur la grille tarifaire). → **Recommandation** : serveur en offre _Starter_, PostgreSQL en offre payante la plus basse ; client et admin servis par ce même service (voir §8). L'environnement de test peut rester sur les offres gratuites.
 
 ### 6.2 Imagerie satellite : pas de précision « ville » avec une source libre
 
@@ -402,8 +402,8 @@ Les valeurs sont des **valeurs de jeu**, fondées sur des ordres de grandeur pub
 
 ## 8. Déploiement (`render.yaml`)
 
-- `redline-server` : Web Service Node, `pnpm --filter server build`, contrôle de santé sur `/healthz`, disque persistant monté sur `/data/tiles`.
-- `redline-client`, `redline-admin` : Static Sites, avec réécriture SPA vers `index.html`.
+- `redline-server` : Web Service Node, contrôle de santé sur `/healthz`, disque persistant monté sur `/var/data/tiles`. Il sert **aussi** le client (`/`) et le back-office (`/admin/`), en builds statiques.
+  - **Décision (validée en phase 1)** : pas de Static Sites séparés. Deux sous-domaines `onrender.com` distincts comptent comme deux sites différents, car `onrender.com` figure sur la liste des suffixes publics. Le cookie de session deviendrait un cookie tiers, bloqué par Safari. Servir tout depuis la même origine supprime aussi CORS.
 - `redline-db` : PostgreSQL Render.
 - Deux environnements : **staging** (branche `staging`, offres gratuites ou minimales) et **production** (branche `main`), séparés par des suffixes dans le même Blueprint, ou via les _Environments_ d'un projet Render.
 - Migrations Drizzle exécutées en `preDeployCommand`. Le catalogue JSON est chargé en base au démarrage, uniquement pour les fiches absentes ou marquées comme plus récentes dans le dépôt, pour ne jamais écraser une modification faite dans le back-office.
