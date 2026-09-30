@@ -167,6 +167,7 @@ const CATEGORY_PICTOGRAM: Record<Category, PictogramId> = {
   submarine: 'submarine',
   infantry: 'infantry',
   space: 'satellite',
+  logistics: 'ifv',
 };
 
 export function isPictogramId(id: string): id is PictogramId {
