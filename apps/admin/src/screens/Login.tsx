@@ -1,9 +1,16 @@
 import { useState, type FormEvent } from 'react';
 import { hasRole, type PublicUser } from '@redline/shared';
 import { ApiError, type Api } from '../api/client';
-import { Button, ErrorBox, Frame } from '../components/ui';
+import { Button, ErrorBox, Win } from '../components/term';
 import { T, fmt } from '../i18n';
 import { errorMessage } from '../lib/errors';
+
+const BANNER = String.raw`
+ ____  _____ ____    _     ___ _   _ _____
+|  _ \| ____|  _ \  | |   |_ _| \ | | ____|
+| |_) |  _| | | | | | |    | ||  \| |  _|
+|  _ <| |___| |_| | | |___ | || |\  | |___
+|_| \_\_____|____/  |_____|___|_| \_|_____|`;
 
 export function LoginScreen(props: {
   api: Api;
@@ -44,56 +51,54 @@ export function LoginScreen(props: {
 
   return (
     <div className="login-page">
-      <div className="login-brand">
-        <svg viewBox="0 0 32 32" width="56" height="56" aria-hidden>
-          <polygon
-            points="16,2 29,9 29,23 16,30 3,23 3,9"
-            fill="var(--rl-panel-solid)"
-            stroke="var(--rl-orange)"
-            strokeWidth="1.6"
-          />
-          <rect x="8" y="14.5" width="16" height="3" fill="var(--rl-red)" />
-        </svg>
-        <div>
-          <div className="login-name">{T.app.name}</div>
-          <div className="login-section">{T.app.section}</div>
-        </div>
+      <div className="login-box">
+        <pre className="login-banner" aria-hidden>
+          {BANNER}
+        </pre>
+        <Win title={T.login.title} cmd="Connect-RedLineAdmin" accent>
+          <div className="login-lines">
+            <div>
+              <span className="ok">[ OK ]</span> {T.login.boot1}
+            </div>
+            <div>
+              <span className="ok">[ OK ]</span> {T.login.boot2}
+            </div>
+            <div className="dim">{T.login.subtitle}</div>
+          </div>
+          {props.deniedUser && (
+            <ErrorBox message={fmt(T.login.forbidden, { role: T.roles[props.deniedUser.role] })} />
+          )}
+          <form onSubmit={submit} className="login-form">
+            <div className="field">
+              <label htmlFor="email">{T.login.email}</label>
+              <input
+                id="email"
+                type="email"
+                autoComplete="username"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="field">
+              <label htmlFor="password">{T.login.password}</label>
+              <input
+                id="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            {error && <ErrorBox message={error} />}
+            <Button type="submit" variant="primary" disabled={busy}>
+              {busy ? T.login.submitting : T.login.submit}
+            </Button>
+            {props.mock && <p className="c-amber small">● {T.login.mockHint}</p>}
+          </form>
+        </Win>
       </div>
-      <Frame title={T.login.title} accent className="login-frame">
-        <p className="muted">{T.login.subtitle}</p>
-        {props.deniedUser && (
-          <ErrorBox message={fmt(T.login.forbidden, { role: T.roles[props.deniedUser.role] })} />
-        )}
-        <form onSubmit={submit} className="login-form">
-          <div className="field">
-            <label htmlFor="email">{T.login.email}</label>
-            <input
-              id="email"
-              type="email"
-              autoComplete="username"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="field">
-            <label htmlFor="password">{T.login.password}</label>
-            <input
-              id="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          {error && <ErrorBox message={error} />}
-          <Button type="submit" variant="primary" disabled={busy}>
-            {busy ? T.login.submitting : T.login.submit}
-          </Button>
-          {props.mock && <p className="muted small">{T.login.mockHint}</p>}
-        </form>
-      </Frame>
     </div>
   );
 }

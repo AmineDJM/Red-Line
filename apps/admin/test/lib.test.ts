@@ -48,7 +48,7 @@ describe('validation lisible', () => {
     const r = validateSystem(s);
     const msg = Object.fromEntries(r.issues.map((i) => [i.path, `${i.label} : ${i.message}`]));
     expect(msg.armor).toBe('Blindage (0 à 0,9) : doit être inférieur ou égal à 0,9');
-    expect(msg['cost.money']).toBe('Coût (argent) : doit être supérieur ou égal à 0');
+    expect(msg['cost.money']).toBe('Coût (dollars) : doit être supérieur ou égal à 0');
     expect(msg.hp).toBe('Points de vie par élément : champ obligatoire');
   });
   it('avertissements de cohérence', () => {

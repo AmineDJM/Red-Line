@@ -1,36 +1,48 @@
 import { useState } from 'react';
 import type { CatalogChange } from '@redline/shared';
 import { useSession } from '../context';
-import { Badge, Button, Dialog, ErrorBox, Frame, Spinner, useToast } from '../components/ui';
-import { T, date, fmt } from '../i18n';
-import { diffObjects, formatValue } from '../lib/diff';
+import { useConfirm, useToast } from '../components/overlay';
+import { Badge, Button, Empty, ErrorBox, Icon, PageHead, Spinner, Win } from '../components/term';
+import { DiffTable } from '../components/versioning';
+import { T, fmt } from '../i18n';
+import { diffObjects } from '../lib/diff';
 import { errorMessage } from '../lib/errors';
+import { ago, dateLong } from '../lib/format';
 import { useLoad } from '../lib/hooks';
 import { href } from '../lib/router';
 import { fieldLabel } from '../lib/validation';
 
+/** Historique d'une fiche d'arme : chaque modification, son diff et le retour à l'état d'avant. */
 export function HistoryScreen({ id }: { id: string }) {
-  const { api } = useSession();
+  const { api, cache } = useSession();
   const toast = useToast();
+  const confirm = useConfirm();
   const { data, error, loading, reload } = useLoad(
     () =>
       Promise.all([api.getSystem(id), api.history(id)]).then(([s, h]) => ({
         system: s.system,
-        changes: sortChanges(h.changes),
+        changes: [...h.changes].sort((a, b) => b.id - a.id),
       })),
     [api, id],
     T.roles.balance,
   );
   const [selected, setSelected] = useState<number | null>(null);
-  const [confirm, setConfirm] = useState<CatalogChange | null>(null);
   const [busy, setBusy] = useState(false);
 
   const revert = async (c: CatalogChange) => {
+    if (
+      !(await confirm({
+        title: T.history.revert,
+        message: fmt(T.history.revertConfirm, { n: c.revision }),
+        confirm: T.history.revert,
+      }))
+    )
+      return;
     setBusy(true);
     try {
       const { system } = await api.revert(id, c.id);
+      cache.invalidate('systems');
       toast(fmt(T.history.reverted, { n: system.revision }));
-      setConfirm(null);
       setSelected(null);
       await reload(true);
     } catch (e) {
@@ -47,119 +59,89 @@ export function HistoryScreen({ id }: { id: string }) {
   const diff = current ? diffObjects(current.before, current.after) : [];
 
   return (
-    <div className="editor">
-      <div className="editor-bar">
-        <a className="back" href={href({ name: 'system', id })}>
-          ← {data.system.system.name}
-        </a>
-        <div className="editor-title">
-          <h1>
-            {T.history.title} — {data.system.system.name}
-          </h1>
-          <span className="mono muted">
-            {id} · {fmt(T.editor.revision, { n: data.system.revision })}
-          </span>
-        </div>
-      </div>
-      <div className="history-grid">
-        <Frame title={T.history.title}>
-          {data.changes.length === 0 && <p className="muted">{T.history.empty}</p>}
-          <ol className="changes">
-            {data.changes.map((c) => {
-              const n = diffObjects(c.before, c.after).length;
-              return (
-                <li key={c.id}>
-                  <button
-                    className={`change ${current?.id === c.id ? 'change-on' : ''}`}
-                    onClick={() => setSelected(c.id)}
-                  >
-                    <span className="change-top">
-                      <strong className="mono">{fmt(T.history.revision, { n: c.revision })}</strong>
-                      <span className="muted">{date(c.createdAt)}</span>
-                    </span>
-                    <span className="change-msg">{c.message || '—'}</span>
-                    <span className="change-meta">
-                      <span className="muted">{fmt(T.history.by, { author: c.author })}</span>
-                      {!c.before ? (
-                        <Badge tone="info">{T.history.created}</Badge>
-                      ) : !c.after ? (
-                        <Badge tone="crit">{T.history.deleted}</Badge>
-                      ) : (
-                        <Badge tone="off">{fmt(T.history.changes, { n })}</Badge>
-                      )}
-                      {c.scope === 'running_games' && (
-                        <Badge tone="warn">{T.scope.running_games}</Badge>
-                      )}
-                    </span>
-                  </button>
-                </li>
-              );
-            })}
-          </ol>
-        </Frame>
-        <Frame
+    <>
+      <PageHead
+        crumbs={
+          <>
+            <a href={href({ name: 'catalog' })}>{T.nav.catalog}</a> /{' '}
+            <a href={href({ name: 'system', id })}>{data.system.system.name}</a>
+          </>
+        }
+        title={`${T.history.title} — ${data.system.system.name}`}
+        sub={`${id} · ${fmt(T.editor.revision, { n: data.system.revision })}`}
+      />
+      <div className="split-list">
+        <Win title={T.history.title} cmd={`Get-History ${id}`} flush>
+          {data.changes.length === 0 ? (
+            <Empty>{T.history.empty}</Empty>
+          ) : (
+            <ol
+              className="revs"
+              style={{ padding: 10, maxHeight: 'calc(100vh - 220px)', overflow: 'auto' }}
+            >
+              {data.changes.map((c, i) => {
+                const n = diffObjects(c.before, c.after).length;
+                return (
+                  <li key={c.id}>
+                    <div
+                      className={`rev ${current?.id === c.id ? 'on' : ''} ${i === 0 ? 'current' : ''}`}
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setSelected(c.id)}
+                      onKeyDown={(e) => e.key === 'Enter' && setSelected(c.id)}
+                    >
+                      <span />
+                      <div>
+                        <div className="rev-top">
+                          <b className="c-cyan">{fmt(T.history.revision, { n: c.revision })}</b>
+                          <span className="muted" title={dateLong(c.createdAt)}>
+                            {ago(c.createdAt)}
+                          </span>
+                        </div>
+                        <div className="rev-msg">{c.message || '—'}</div>
+                        <div className="rev-meta">
+                          <span>{fmt(T.history.by, { author: c.author })}</span>
+                          {!c.before ? (
+                            <Badge tone="info">{T.history.created}</Badge>
+                          ) : !c.after ? (
+                            <Badge tone="crit">{T.history.deleted}</Badge>
+                          ) : (
+                            <Badge tone="off">{fmt(T.history.changes, { n })}</Badge>
+                          )}
+                          {c.scope === 'running_games' && (
+                            <Badge tone="warn">{T.scopeShort.running_games}</Badge>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          )}
+        </Win>
+        <Win
           title={
             current
               ? `${fmt(T.history.revision, { n: current.revision })} · ${current.message || '—'}`
               : T.history.title
           }
+          glyph="Δ"
           actions={
             current?.before ? (
-              <Button variant="danger" onClick={() => setConfirm(current)}>
-                ↶ {T.history.revert}
+              <Button small variant="danger" disabled={busy} onClick={() => void revert(current)}>
+                <Icon name="undo" size={13} /> {T.history.revert}
               </Button>
             ) : undefined
           }
         >
-          {!current && <p className="muted">{T.history.select}</p>}
-          {current && diff.length === 0 && <p className="muted">{T.history.noDiff}</p>}
-          {current && diff.length > 0 && (
-            <table className="diff">
-              <thead>
-                <tr>
-                  <th>{T.history.field}</th>
-                  <th>{T.history.before}</th>
-                  <th>{T.history.after}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {diff.map((c) => (
-                  <tr key={c.path}>
-                    <td>
-                      <div className="diff-field">
-                        <span>{fieldLabel(c.path)}</span>
-                        <span className="mono muted small">{c.path}</span>
-                      </div>
-                    </td>
-                    <td className="mono diff-before">{formatValue(c.before)}</td>
-                    <td className="mono diff-after">{formatValue(c.after)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          {!current ? (
+            <Empty>{T.history.select}</Empty>
+          ) : (
+            <DiffTable changes={diff} labelFor={fieldLabel} />
           )}
-        </Frame>
+        </Win>
       </div>
-      {confirm && (
-        <Dialog
-          title={T.history.revert}
-          onClose={() => setConfirm(null)}
-          actions={
-            <>
-              <Button onClick={() => setConfirm(null)}>{T.app.cancel}</Button>
-              <Button variant="danger" disabled={busy} onClick={() => void revert(confirm)}>
-                {T.app.confirm}
-              </Button>
-            </>
-          }
-        >
-          <p>{fmt(T.history.revertConfirm, { n: confirm.revision })}</p>
-        </Dialog>
-      )}
-    </div>
+    </>
   );
-}
-
-function sortChanges(c: CatalogChange[]): CatalogChange[] {
-  return [...c].sort((a, b) => b.revision - a.revision || b.id - a.id);
 }

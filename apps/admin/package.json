@@ -10,10 +10,13 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
+    "@fontsource/jetbrains-mono": "^5.3.0",
     "@redline/shared": "workspace:*",
     "@redline/ui": "workspace:*",
+    "maplibre-gl": "^6.11.2",
     "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react-dom": "^19.3.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@types/react": "^19.3.0",
