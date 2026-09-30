@@ -1,0 +1,143 @@
+{
+  "nationId": "yem",
+  "year": 2025,
+  "doctrine": "other",
+  "defenseBudgetUsd": 1500000000,
+  "activePersonnel": 70000,
+  "inventory": [
+    {
+      "systemId": "ru.t-72",
+      "count": 60,
+      "variant": "T-72",
+      "note": "estimation"
+    },
+    {
+      "systemId": "ru.t-62",
+      "count": 60,
+      "variant": "T-62",
+      "note": "estimation"
+    },
+    {
+      "systemId": "ru.t-55",
+      "count": 100,
+      "variant": "T-54/T-55",
+      "note": "estimation"
+    },
+    {
+      "systemId": "ru.bmp-2",
+      "count": 60,
+      "variant": "BMP-2",
+      "note": "estimation"
+    },
+    {
+      "systemId": "ru.btr-80",
+      "count": 100,
+      "variant": "BTR-60/80",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 200,
+      "variant": "obusiers remorqués",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 50,
+      "variant": "BM-21"
+    },
+    {
+      "systemId": "ru.2k12-kub",
+      "count": 2,
+      "variant": "2K12 Kub",
+      "note": "≈ 10 lanceurs  soit 2 batteries ; estimation"
+    },
+    {
+      "systemId": "ru.igla",
+      "count": 25,
+      "variant": "Igla / Strela",
+      "note": "≈ 100 postes de tir  soit 25 sections"
+    },
+    {
+      "systemId": "ru.scud-b",
+      "count": 100,
+      "variant": "Burkan, Zulfiqar (dérivés du Qiam)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "other.shahab-3",
+      "count": 20,
+      "variant": "Toufan (dérivé du Ghadr)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "other.kheibar-shekan",
+      "count": 10,
+      "variant": "Palestine-2",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.kalibr",
+      "count": 50,
+      "variant": "Quds-1/2/3",
+      "note": "missiles de croisière, modèle le plus proche"
+    },
+    {
+      "systemId": "other.fateh-110",
+      "count": 50,
+      "variant": "Asef, Tankil",
+      "note": "antinavires balistiques, modèle le plus proche"
+    },
+    {
+      "systemId": "cn.c-802",
+      "count": 50,
+      "variant": "Al-Mandab, Sayyad",
+      "note": "antinavires, modèle le plus proche"
+    },
+    {
+      "systemId": "other.shahed-136",
+      "count": 300,
+      "variant": "Samad-3, Waid",
+      "note": "drones d'attaque (estimation)"
+    },
+    {
+      "systemId": "other.infantry-light",
+      "count": 104,
+      "note": "infanterie légère : ≈ 62,6 k personnes / 600 ; forces gouvernementales et forces houthies (Ansar Allah), qui contrôlent Sanaa et le détroit de Bab el-Mandeb"
+    },
+    {
+      "systemId": "other.infantry-mech",
+      "count": 6,
+      "note": "infanterie mécanisée / motorisée : ≈ 3,4 k personnes / 600"
+    },
+    {
+      "systemId": "other.special-forces",
+      "count": 3,
+      "note": "forces spéciales : ≈ 2 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.drones1",
+    "research.cyber.l1",
+    "research.industry.l1",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.interior2",
+    "research.land.gen1",
+    "research.missiles.ballistic1",
+    "research.missiles.antiship",
+    "research.missiles.cruise1",
+    "research.naval.gen1",
+    "research.sensors.radar1"
+  ],
+  "licences": [],
+  "sources": [
+    "Estimation (forces gouvernementales et houthies ; SIPRI sans donnée)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "Wikipedia (en), « 2026 Iran war » (état au 30 septembre 2026)",
+    "CSIS Missile Threat (arsenal houthi)"
+  ],
+  "confidence": "low"
+}

@@ -1,0 +1,37 @@
+{
+  "nationId": "xkx",
+  "year": 2025,
+  "doctrine": "us",
+  "defenseBudgetUsd": 235000000,
+  "activePersonnel": 5000,
+  "inventory": [
+    {
+      "systemId": "other.bayraktar-tb2",
+      "count": 5,
+      "variant": "Bayraktar TB2"
+    },
+    {
+      "systemId": "us.infantry-light",
+      "count": 8,
+      "note": "infanterie légère : ≈ 4,5 k personnes / 600"
+    },
+    {
+      "systemId": "us.infantry-mech",
+      "count": 1,
+      "note": "infanterie mécanisée / motorisée : ≈ 0,5 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.cyber.l1",
+    "research.industry.l1",
+    "research.intel.interior1",
+    "research.land.gen1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "SIPRI",
+    "Force de sécurité du Kosovo"
+  ],
+  "confidence": "medium"
+}

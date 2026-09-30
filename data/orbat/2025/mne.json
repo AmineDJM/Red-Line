@@ -1,0 +1,31 @@
+{
+  "nationId": "mne",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 177000000,
+  "activePersonnel": 2350,
+  "inventory": [
+    {
+      "systemId": "us.uh-1-huey",
+      "count": 3,
+      "variant": "Bell 412"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 2,
+      "note": "infanterie légère : ≈ 1,5 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.cyber.l1",
+    "research.industry.l1",
+    "research.intel.interior1",
+    "research.land.gen1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "medium"
+}

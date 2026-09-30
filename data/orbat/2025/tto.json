@@ -1,0 +1,26 @@
+{
+  "nationId": "tto",
+  "year": 2025,
+  "doctrine": "us",
+  "defenseBudgetUsd": 230000000,
+  "activePersonnel": 4650,
+  "inventory": [
+    {
+      "systemId": "us.infantry-light",
+      "count": 5,
+      "note": "infanterie légère : ≈ 3 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.industry.l1",
+    "research.intel.interior1",
+    "research.land.gen1",
+    "research.naval.gen1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "medium"
+}

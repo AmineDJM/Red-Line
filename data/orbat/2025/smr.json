@@ -1,0 +1,22 @@
+{
+  "nationId": "smr",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 5000000,
+  "activePersonnel": 80,
+  "inventory": [
+    {
+      "systemId": "eu.infantry-light",
+      "count": 1,
+      "variant": "Gendarmerie et corps militaires (≈ 200)",
+      "note": "pas d'armée opérationnelle"
+    }
+  ],
+  "research": ["research.intel.interior1"],
+  "licences": [],
+  "sources": [
+    "Estimation (corps militaires cérémoniels et gendarmerie)",
+    "Gouvernement de Saint-Marin"
+  ],
+  "confidence": "low"
+}

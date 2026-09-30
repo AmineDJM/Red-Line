@@ -1,0 +1,31 @@
+{
+  "nationId": "lux",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 855000000,
+  "activePersonnel": 950,
+  "inventory": [
+    {
+      "systemId": "eu.a400m-atlas",
+      "count": 1,
+      "variant": "A400M (unité belgo-luxembourgeoise)"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 2,
+      "note": "infanterie légère : ≈ 0,9 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.cyber.l1",
+    "research.industry.l1",
+    "research.intel.interior1",
+    "research.land.gen1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "high"
+}

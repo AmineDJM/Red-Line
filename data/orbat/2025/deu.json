@@ -1,0 +1,260 @@
+{
+  "nationId": "deu",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 113586000000,
+  "activePersonnel": 181600,
+  "inventory": [
+    {
+      "systemId": "eu.typhoon",
+      "count": 138,
+      "variant": "Eurofighter Typhoon"
+    },
+    {
+      "systemId": "eu.tornado",
+      "count": 85,
+      "variant": "Tornado IDS/ECR"
+    },
+    {
+      "systemId": "eu.a400m-atlas",
+      "count": 48,
+      "variant": "A400M"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 6,
+      "variant": "C-130J / KC-130J (escadre franco-allemande)"
+    },
+    {
+      "systemId": "us.p-8-poseidon",
+      "count": 2,
+      "variant": "P-8A",
+      "note": "livraisons en cours (8 commandés)"
+    },
+    {
+      "systemId": "eu.tigre",
+      "count": 51,
+      "variant": "Tiger UHT"
+    },
+    {
+      "systemId": "eu.nh90",
+      "count": 100,
+      "variant": "NH90 TTH / NFH Sea Lion"
+    },
+    {
+      "systemId": "us.ch-47-chinook",
+      "count": 60,
+      "variant": "CH-53G/GA/GS",
+      "note": "modèle le plus proche ; 60 CH-47F commandés"
+    },
+    {
+      "systemId": "other.heron-tp",
+      "count": 5,
+      "variant": "Heron TP (location)"
+    },
+    {
+      "systemId": "eu.leopard-2a7",
+      "count": 313,
+      "variant": "Leopard 2A6/A7/A7V/A7A1"
+    },
+    {
+      "systemId": "eu.puma",
+      "count": 350,
+      "variant": "Puma"
+    },
+    {
+      "systemId": "eu.puma",
+      "count": 250,
+      "variant": "Marder 1A3/1A5",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.boxer",
+      "count": 400,
+      "variant": "Boxer"
+    },
+    {
+      "systemId": "eu.vab",
+      "count": 700,
+      "variant": "TPz Fuchs",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.pzh-2000",
+      "count": 110,
+      "variant": "PzH 2000"
+    },
+    {
+      "systemId": "us.m270-mlrs",
+      "count": 36,
+      "variant": "MARS II (M270)"
+    },
+    {
+      "systemId": "us.patriot",
+      "count": 8,
+      "variant": "Patriot PAC-2/PAC-3",
+      "note": "≈ 45 lanceurs  soit 8 batteries ; après cessions à l'Ukraine"
+    },
+    {
+      "systemId": "eu.iris-t-slm",
+      "count": 3,
+      "variant": "IRIS-T SLM",
+      "note": "≈ 9 lanceurs  soit 3 batteries ; 3 unités de tir"
+    },
+    {
+      "systemId": "us.stinger",
+      "count": 25,
+      "variant": "Stinger (LeFlaSys)",
+      "note": "≈ 100 postes de tir  soit 25 sections"
+    },
+    {
+      "systemId": "eu.taurus-kepd-350",
+      "count": 500,
+      "variant": "Taurus KEPD 350",
+      "note": "stock (≈ 150 immédiatement opérationnels)"
+    },
+    {
+      "systemId": "eu.nsm",
+      "count": 40,
+      "variant": "NSM"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 40,
+      "variant": "Harpoon Block II"
+    },
+    {
+      "systemId": "eu.horizon",
+      "count": 3,
+      "variant": "F124 Sachsen",
+      "note": "frégate de défense aérienne, modèle le plus proche"
+    },
+    {
+      "systemId": "eu.meko-a-200",
+      "count": 4,
+      "variant": "F123 Brandenburg",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.fremm",
+      "count": 4,
+      "variant": "F125 Baden-Württemberg",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.gowind",
+      "count": 10,
+      "variant": "K130 Braunschweig",
+      "note": "corvettes, modèle le plus proche"
+    },
+    {
+      "systemId": "eu.type-212",
+      "count": 6,
+      "variant": "U212A"
+    },
+    {
+      "systemId": "eu.radar-satellite",
+      "count": 6,
+      "variant": "SARah, SAR-Lupe"
+    },
+    {
+      "systemId": "eu.trml-4d",
+      "count": 9,
+      "variant": "TRML-4D (IRIS-T SLM)"
+    },
+    {
+      "systemId": "eu.smart-l-ewc",
+      "count": 3,
+      "variant": "SMART-L (frégates F124)"
+    },
+    {
+      "systemId": "us.an-tps-75",
+      "count": 10,
+      "variant": "HADR",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 42,
+      "note": "infanterie légère : ≈ 25 k personnes / 600"
+    },
+    {
+      "systemId": "eu.infantry-mech",
+      "count": 53,
+      "note": "infanterie mécanisée / motorisée : ≈ 32 k personnes / 600"
+    },
+    {
+      "systemId": "eu.airborne",
+      "count": 9,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 5,1 k personnes / 600"
+    },
+    {
+      "systemId": "eu.special-forces",
+      "count": 3,
+      "note": "forces spéciales : ≈ 1,9 k personnes / 600"
+    },
+    {
+      "systemId": "eu.marines",
+      "count": 1,
+      "note": "infanterie de marine : ≈ 0,8 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.drones1",
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.transport",
+    "research.aero.gen3",
+    "research.aero.helo2",
+    "research.aero.gen4",
+    "research.aero.helo3",
+    "research.aero.gen4plus",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.industry.l3",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.gen3",
+    "research.land.composite-armor",
+    "research.land.ew",
+    "research.land.gen4",
+    "research.land.active-protection",
+    "research.land.gen5",
+    "research.missiles.ballistic1",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.missiles.cruise1",
+    "research.missiles.sam2",
+    "research.missiles.cruise2",
+    "research.missiles.sam3",
+    "research.missiles.sam4",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.naval.gen3",
+    "research.naval.sub2",
+    "research.naval.gen4",
+    "research.naval.sub3",
+    "research.sensors.radar1",
+    "research.sensors.radar2",
+    "research.sensors.space1",
+    "research.sensors.radar3",
+    "research.sensors.space2"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
+    "Bundeswehr, chiffres officiels 2025"
+  ],
+  "confidence": "high"
+}

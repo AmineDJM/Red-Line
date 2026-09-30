@@ -1,0 +1,332 @@
+{
+  "nationId": "twn",
+  "year": 2025,
+  "doctrine": "us",
+  "defenseBudgetUsd": 18188000000,
+  "activePersonnel": 169000,
+  "inventory": [
+    {
+      "systemId": "us.f-16",
+      "count": 139,
+      "variant": "F-16V (Block 70 standard, A/B modernisés)"
+    },
+    {
+      "systemId": "us.f-16",
+      "count": 8,
+      "variant": "F-16 Block 70",
+      "note": "premières livraisons"
+    },
+    {
+      "systemId": "eu.mirage-2000",
+      "count": 54,
+      "variant": "Mirage 2000-5EI/DI"
+    },
+    {
+      "systemId": "us.f-16",
+      "count": 127,
+      "variant": "AIDC F-CK-1 Ching-kuo",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.f-5e",
+      "count": 30,
+      "variant": "F-5E/F"
+    },
+    {
+      "systemId": "us.e-2d-hawkeye",
+      "count": 4,
+      "variant": "E-2D Hawkeye"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 19,
+      "variant": "C-130H"
+    },
+    {
+      "systemId": "us.p-8-poseidon",
+      "count": 12,
+      "variant": "P-3C Orion",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.ah-64-apache",
+      "count": 29,
+      "variant": "AH-64E"
+    },
+    {
+      "systemId": "us.ah-1-cobra",
+      "count": 60,
+      "variant": "AH-1W SuperCobra"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 45,
+      "variant": "UH-60M"
+    },
+    {
+      "systemId": "us.ch-47-chinook",
+      "count": 9,
+      "variant": "CH-47SD"
+    },
+    {
+      "systemId": "us.mh-60r-seahawk",
+      "count": 18,
+      "variant": "S-70C(M)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m1a2-abrams",
+      "count": 108,
+      "variant": "M1A2T"
+    },
+    {
+      "systemId": "us.m60-patton",
+      "count": 450,
+      "variant": "M60A3"
+    },
+    {
+      "systemId": "us.m60-patton",
+      "count": 450,
+      "variant": "CM-11 / CM-12",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.stryker",
+      "count": 650,
+      "variant": "CM-32 Clouded Leopard",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 650,
+      "variant": "CM-21",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 400,
+      "variant": "M113, AAV-7"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 225,
+      "variant": "M109A2/A5"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 70,
+      "variant": "M110A2",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m777",
+      "count": 900,
+      "variant": "M114, M59, T-65",
+      "note": "obusiers remorqués, modèle le plus proche"
+    },
+    {
+      "systemId": "us.m142-himars",
+      "count": 29,
+      "variant": "M142 HIMARS"
+    },
+    {
+      "systemId": "us.m270-mlrs",
+      "count": 80,
+      "variant": "RT-2000 Thunderbolt",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.atacms",
+      "count": 84,
+      "variant": "ATACMS"
+    },
+    {
+      "systemId": "us.atacms",
+      "count": 50,
+      "variant": "Tien Chi",
+      "note": "SRBM, modèle le plus proche"
+    },
+    {
+      "systemId": "us.patriot",
+      "count": 12,
+      "variant": "Patriot PAC-2/PAC-3",
+      "note": "≈ 70 lanceurs  soit 12 batteries"
+    },
+    {
+      "systemId": "us.patriot",
+      "count": 17,
+      "variant": "Tien Kung II/III",
+      "note": "≈ 100 lanceurs  soit 17 batteries ; modèle le plus proche"
+    },
+    {
+      "systemId": "us.nasams",
+      "count": 2,
+      "variant": "NASAMS",
+      "note": "≈ 6 lanceurs  soit 2 batteries ; premières livraisons"
+    },
+    {
+      "systemId": "us.avenger",
+      "count": 100,
+      "variant": "Avenger / Antelope"
+    },
+    {
+      "systemId": "us.mim-23-hawk",
+      "count": 8,
+      "variant": "Improved Hawk",
+      "note": "≈ 50 lanceurs  soit 8 batteries"
+    },
+    {
+      "systemId": "us.stinger",
+      "count": 125,
+      "variant": "Stinger",
+      "note": "≈ 500 postes de tir  soit 125 sections"
+    },
+    {
+      "systemId": "us.tomahawk",
+      "count": 150,
+      "variant": "Hsiung Feng IIE",
+      "note": "missile de croisière, modèle le plus proche"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 400,
+      "variant": "Hsiung Feng II/III",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 100,
+      "variant": "Harpoon (système côtier HCDS)"
+    },
+    {
+      "systemId": "us.jassm-er",
+      "count": 100,
+      "variant": "AGM-84K SLAM-ER",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.arleigh-burke",
+      "count": 4,
+      "variant": "Kee Lung (Kidd)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.meko-a-200",
+      "count": 8,
+      "variant": "Cheng Kung (FFG-7)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.gowind",
+      "count": 6,
+      "variant": "Kang Ding (La Fayette)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.lcs",
+      "count": 7,
+      "variant": "Tuo Chiang",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.type-022",
+      "count": 31,
+      "variant": "Kuang Hua VI",
+      "note": "vedettes lance-missiles, modèle le plus proche"
+    },
+    {
+      "systemId": "eu.type-209",
+      "count": 2,
+      "variant": "Hai Lung (Zwaardvis)",
+      "note": "modèle le plus proche ; Hai Kun en essais"
+    },
+    {
+      "systemId": "other.optical-recon-satellite",
+      "count": 1,
+      "variant": "Formosat-5"
+    },
+    {
+      "systemId": "us.an-fps-132-uewr",
+      "count": 1,
+      "variant": "Pave Paws (Leshan)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.an-tps-75",
+      "count": 10,
+      "variant": "AN/TPS-75, AN/FPS-117",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.infantry-light",
+      "count": 100,
+      "note": "infanterie légère : ≈ 60,2 k personnes / 600"
+    },
+    {
+      "systemId": "us.infantry-mech",
+      "count": 47,
+      "note": "infanterie mécanisée / motorisée : ≈ 28,2 k personnes / 600"
+    },
+    {
+      "systemId": "us.airborne",
+      "count": 5,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 2,8 k personnes / 600"
+    },
+    {
+      "systemId": "us.special-forces",
+      "count": 5,
+      "note": "forces spéciales : ≈ 2,8 k personnes / 600"
+    },
+    {
+      "systemId": "us.marines",
+      "count": 17,
+      "note": "infanterie de marine : ≈ 10 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.drones1",
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.gen3",
+    "research.aero.gen4",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.cyber.l3",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.intel.military3",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.gen3",
+    "research.land.ew",
+    "research.missiles.ballistic1",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.missiles.cruise1",
+    "research.missiles.sam2",
+    "research.missiles.cruise2",
+    "research.missiles.sam3",
+    "research.missiles.sam4",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.naval.gen3",
+    "research.sensors.radar1",
+    "research.sensors.radar2",
+    "research.sensors.space1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
+    "Ministère de la Défense nationale (Taipei), rapport QDR 2025"
+  ],
+  "confidence": "high"
+}

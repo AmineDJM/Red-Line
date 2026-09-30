@@ -1,0 +1,21 @@
+{
+  "nationId": "gnb",
+  "year": 2025,
+  "doctrine": "ru",
+  "defenseBudgetUsd": 22000000,
+  "activePersonnel": 4450,
+  "inventory": [
+    {
+      "systemId": "ru.infantry-light",
+      "count": 7,
+      "note": "infanterie légère : ≈ 4 k personnes / 600"
+    }
+  ],
+  "research": ["research.intel.interior1", "research.land.gen1"],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low"
+}

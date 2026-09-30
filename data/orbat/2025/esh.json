@@ -1,0 +1,39 @@
+{
+  "nationId": "esh",
+  "year": 2025,
+  "doctrine": "other",
+  "defenseBudgetUsd": 50000000,
+  "activePersonnel": 7000,
+  "inventory": [
+    {
+      "systemId": "ru.t-55",
+      "count": 30,
+      "variant": "T-55",
+      "note": "estimation"
+    },
+    {
+      "systemId": "ru.bmp-1",
+      "count": 30,
+      "variant": "BMP-1",
+      "note": "estimation"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 20,
+      "variant": "BM-21",
+      "note": "estimation"
+    },
+    {
+      "systemId": "other.infantry-light",
+      "count": 12,
+      "note": "infanterie légère : ≈ 7 k personnes / 600"
+    }
+  ],
+  "research": ["research.intel.interior1", "research.land.gen1"],
+  "licences": [],
+  "sources": [
+    "Estimation (Front Polisario ; SIPRI sans donnée)",
+    "Estimations publiques (Armée populaire de libération sahraouie)"
+  ],
+  "confidence": "low"
+}

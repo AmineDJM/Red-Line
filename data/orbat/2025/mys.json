@@ -1,0 +1,196 @@
+{
+  "nationId": "mys",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 4933000000,
+  "activePersonnel": 113000,
+  "inventory": [
+    {
+      "systemId": "ru.su-30",
+      "count": 18,
+      "variant": "Su-30MKM"
+    },
+    {
+      "systemId": "us.fa-18e",
+      "count": 8,
+      "variant": "F/A-18D Hornet",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.hawk",
+      "count": 12,
+      "variant": "Hawk 108/208"
+    },
+    {
+      "systemId": "eu.alpha-jet",
+      "count": 7,
+      "variant": "MB-339CM",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.a400m-atlas",
+      "count": 4,
+      "variant": "A400M"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 12,
+      "variant": "C-130H"
+    },
+    {
+      "systemId": "eu.c-295",
+      "count": 8,
+      "variant": "CN-235",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.sa-330-puma",
+      "count": 12,
+      "variant": "EC725"
+    },
+    {
+      "systemId": "eu.gazelle",
+      "count": 6,
+      "variant": "AS555 Fennec",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.scaneagle",
+      "count": 6,
+      "variant": "ScanEagle"
+    },
+    {
+      "systemId": "other.pt-91-twardy",
+      "count": 48,
+      "variant": "PT-91M"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 250,
+      "variant": "ACV-300 Adnan",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.stryker",
+      "count": 250,
+      "variant": "AV8 Gempita (Pars 8x8)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.vab",
+      "count": 350,
+      "variant": "Condor, Sibmas",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m777",
+      "count": 60,
+      "variant": "G5 Mk3, LG1",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m270-mlrs",
+      "count": 36,
+      "variant": "ASTROS II",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.crotale",
+      "count": 12,
+      "variant": "Jernas (Rapier)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.mistral",
+      "count": 25,
+      "variant": "Starstreak, Igla, Anza",
+      "note": "≈ 100 postes de tir  soit 25 sections ; modèle le plus proche"
+    },
+    {
+      "systemId": "eu.exocet",
+      "count": 60,
+      "variant": "Exocet MM40"
+    },
+    {
+      "systemId": "eu.nsm",
+      "count": 20,
+      "variant": "NSM"
+    },
+    {
+      "systemId": "eu.meko-a-200",
+      "count": 2,
+      "variant": "Lekiu",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.meko-a-200",
+      "count": 6,
+      "variant": "Kedah (MEKO 100)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.gowind",
+      "count": 6,
+      "variant": "Kasturi, Keris (LMS)",
+      "note": "modèle le plus proche ; Maharaja Lela (Gowind) pas encore livrée"
+    },
+    {
+      "systemId": "eu.scorpene",
+      "count": 2,
+      "variant": "Tunku Abdul Rahman (Scorpène)"
+    },
+    {
+      "systemId": "eu.ground-master-400",
+      "count": 4,
+      "variant": "GM403"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 96,
+      "note": "infanterie légère : ≈ 57,6 k personnes / 600"
+    },
+    {
+      "systemId": "eu.infantry-mech",
+      "count": 27,
+      "note": "infanterie mécanisée / motorisée : ≈ 16 k personnes / 600"
+    },
+    {
+      "systemId": "eu.airborne",
+      "count": 7,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 4 k personnes / 600"
+    },
+    {
+      "systemId": "eu.special-forces",
+      "count": 4,
+      "note": "forces spéciales : ≈ 2,4 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.gen3",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.missiles.sam1",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.sensors.radar1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,19 @@
+{
+  "nationId": "dma",
+  "year": 2025,
+  "doctrine": "other",
+  "defenseBudgetUsd": 5000000,
+  "activePersonnel": 0,
+  "inventory": [
+    {
+      "systemId": "other.infantry-light",
+      "count": 1,
+      "variant": "Commonwealth of Dominica Police Force",
+      "note": "police, pas d'armée"
+    }
+  ],
+  "research": ["research.intel.interior1"],
+  "licences": [],
+  "sources": ["Estimation (police ; pas d'armée)", "Police de la Dominique"],
+  "confidence": "medium"
+}

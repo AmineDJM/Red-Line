@@ -1,0 +1,807 @@
+{
+  "nationId": "rus",
+  "year": 2025,
+  "doctrine": "ru",
+  "defenseBudgetUsd": 190417000000,
+  "activePersonnel": 1134000,
+  "inventory": [
+    {
+      "systemId": "ru.su-57",
+      "count": 32,
+      "variant": "Su-57",
+      "note": "livraisons en cours"
+    },
+    {
+      "systemId": "ru.su-35",
+      "count": 110,
+      "variant": "Su-35S"
+    },
+    {
+      "systemId": "ru.su-30",
+      "count": 120,
+      "variant": "Su-30SM/SM2/M2 (VKS et aéronavale)"
+    },
+    {
+      "systemId": "ru.su-27",
+      "count": 100,
+      "variant": "Su-27SM/SM3/P"
+    },
+    {
+      "systemId": "ru.su-27",
+      "count": 15,
+      "variant": "Su-33 (embarqué)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.mig-31",
+      "count": 110,
+      "variant": "MiG-31BM/BSM/K"
+    },
+    {
+      "systemId": "ru.mig-29",
+      "count": 60,
+      "variant": "MiG-29SMT/UB"
+    },
+    {
+      "systemId": "ru.mig-29",
+      "count": 20,
+      "variant": "MiG-29KR/KUBR (embarqué)"
+    },
+    {
+      "systemId": "ru.mig-29",
+      "count": 6,
+      "variant": "MiG-35S",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.su-34",
+      "count": 115,
+      "variant": "Su-34/Su-34M",
+      "note": "après pertes en Ukraine"
+    },
+    {
+      "systemId": "ru.su-25",
+      "count": 150,
+      "variant": "Su-25SM/SM3"
+    },
+    {
+      "systemId": "ru.su-24",
+      "count": 70,
+      "variant": "Su-24M/M2/MR"
+    },
+    {
+      "systemId": "ru.tu-160",
+      "count": 15,
+      "variant": "Tu-160/Tu-160M"
+    },
+    {
+      "systemId": "ru.tu-95ms",
+      "count": 45,
+      "variant": "Tu-95MS/MSM",
+      "note": "pertes de l'opération « Toile d'araignée » (juin 2025) déduites"
+    },
+    {
+      "systemId": "ru.tu-22m3",
+      "count": 50,
+      "variant": "Tu-22M3/M3M"
+    },
+    {
+      "systemId": "ru.a-50",
+      "count": 7,
+      "variant": "A-50/A-50U",
+      "note": "2 abattus en 2024"
+    },
+    {
+      "systemId": "ru.il-78",
+      "count": 18,
+      "variant": "Il-78/Il-78M"
+    },
+    {
+      "systemId": "ru.il-76",
+      "count": 115,
+      "variant": "Il-76MD/MD-90A"
+    },
+    {
+      "systemId": "ru.an-26",
+      "count": 110,
+      "variant": "An-12, An-26, An-72, An-140",
+      "note": "transport tactique (regroupés)"
+    },
+    {
+      "systemId": "ru.yak-130",
+      "count": 120,
+      "variant": "Yak-130"
+    },
+    {
+      "systemId": "other.l-39-albatros",
+      "count": 150,
+      "variant": "L-39C",
+      "note": "entraînement"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 700,
+      "variant": "Mi-8AMTSh/MTV-5/Mi-171"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 30,
+      "variant": "Mi-26",
+      "note": "transport lourd, modèle le plus proche"
+    },
+    {
+      "systemId": "ru.mi-24",
+      "count": 280,
+      "variant": "Mi-24P/V, Mi-35M"
+    },
+    {
+      "systemId": "ru.mi-28nm",
+      "count": 100,
+      "variant": "Mi-28N/NM"
+    },
+    {
+      "systemId": "ru.ka-52",
+      "count": 110,
+      "variant": "Ka-52/Ka-52M",
+      "note": "après pertes"
+    },
+    {
+      "systemId": "ru.ka-27",
+      "count": 80,
+      "variant": "Ka-27/28/29/31 (aéronavale)"
+    },
+    {
+      "systemId": "ru.mi-2",
+      "count": 70,
+      "variant": "Mi-2, Ansat, Ka-226",
+      "note": "hélicoptères légers"
+    },
+    {
+      "systemId": "ru.orion",
+      "count": 30,
+      "variant": "Kronshtadt Orion (Inokhodets)"
+    },
+    {
+      "systemId": "ru.forpost",
+      "count": 30,
+      "variant": "Forpost-R"
+    },
+    {
+      "systemId": "ru.orlan-10",
+      "count": 1000,
+      "variant": "Orlan-10/30",
+      "note": "estimation"
+    },
+    {
+      "systemId": "ru.lancet",
+      "count": 1500,
+      "variant": "ZALA Lancet",
+      "note": "munitions rôdeuses en stock (estimation)"
+    },
+    {
+      "systemId": "ru.geran-2",
+      "count": 2000,
+      "variant": "Geran-2 (Shahed-136 produit à Alabouga)",
+      "note": "stock courant (estimation, production ≈ 2 500/mois)"
+    },
+    {
+      "systemId": "ru.t-90m",
+      "count": 620,
+      "variant": "T-90M Proryv"
+    },
+    {
+      "systemId": "ru.t-90m",
+      "count": 100,
+      "variant": "T-90A/S",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.t-72b3",
+      "count": 470,
+      "variant": "T-72B3/B3M"
+    },
+    {
+      "systemId": "ru.t-72",
+      "count": 1000,
+      "variant": "T-72A/AV/B/BA"
+    },
+    {
+      "systemId": "ru.t-72",
+      "count": 50,
+      "variant": "T-64",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.t-80bvm",
+      "count": 350,
+      "variant": "T-80BVM"
+    },
+    {
+      "systemId": "ru.t-80bvm",
+      "count": 250,
+      "variant": "T-80BV/U",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.t-62",
+      "count": 600,
+      "variant": "T-62M/MV"
+    },
+    {
+      "systemId": "ru.t-55",
+      "count": 120,
+      "variant": "T-54/T-55"
+    },
+    {
+      "systemId": "ru.t-14-armata",
+      "count": 20,
+      "variant": "T-14 Armata",
+      "note": "pré-série, non engagée"
+    },
+    {
+      "systemId": "ru.bmp-3",
+      "count": 650,
+      "variant": "BMP-3/BMP-3M"
+    },
+    {
+      "systemId": "ru.bmp-3",
+      "count": 300,
+      "variant": "BMD-4M (VDV)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bmp-2",
+      "count": 550,
+      "variant": "BMP-2/BMP-2M"
+    },
+    {
+      "systemId": "ru.bmp-2",
+      "count": 500,
+      "variant": "BMD-2/BMD-3, BTR-MDM (VDV)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bmp-1",
+      "count": 750,
+      "variant": "BMP-1/BMP-1AM"
+    },
+    {
+      "systemId": "ru.btr-82a",
+      "count": 700,
+      "variant": "BTR-82A/AM"
+    },
+    {
+      "systemId": "ru.btr-80",
+      "count": 500,
+      "variant": "BTR-80"
+    },
+    {
+      "systemId": "ru.btr-80",
+      "count": 1000,
+      "variant": "BTR-60/BTR-70",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.mt-lb",
+      "count": 2500,
+      "variant": "MT-LB"
+    },
+    {
+      "systemId": "ru.brdm-2",
+      "count": 300,
+      "variant": "BRDM-2, BRM-1K"
+    },
+    {
+      "systemId": "ru.2s19-msta",
+      "count": 450,
+      "variant": "2S19/2S19M1/M2 Msta-S"
+    },
+    {
+      "systemId": "ru.2s19-msta",
+      "count": 120,
+      "variant": "2S5 Giatsint-S, 2S43 Malva",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.2s35-koalitsiya",
+      "count": 8,
+      "variant": "2S35 Koalitsiya-SV"
+    },
+    {
+      "systemId": "ru.2s3-akatsiya",
+      "count": 600,
+      "variant": "2S3/2S3M Akatsiya"
+    },
+    {
+      "systemId": "ru.2s1-gvozdika",
+      "count": 400,
+      "variant": "2S1 Gvozdika"
+    },
+    {
+      "systemId": "ru.2s7-pion",
+      "count": 125,
+      "variant": "2S7/2S7M Malka"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 200,
+      "variant": "D-30 (2A18)"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 470,
+      "variant": "2A65 Msta-B, 2A36 Giatsint-B, D-20, M-46",
+      "note": "obusiers remorqués, modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 650,
+      "variant": "BM-21 Grad"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 200,
+      "variant": "9A53-G Tornado-G"
+    },
+    {
+      "systemId": "ru.bm-27-uragan",
+      "count": 175,
+      "variant": "BM-27 Uragan"
+    },
+    {
+      "systemId": "ru.bm-30-smerch",
+      "count": 100,
+      "variant": "BM-30 Smerch"
+    },
+    {
+      "systemId": "ru.tornado-s",
+      "count": 40,
+      "variant": "9K515 Tornado-S"
+    },
+    {
+      "systemId": "ru.tos-1a",
+      "count": 45,
+      "variant": "TOS-1A / TOS-2"
+    },
+    {
+      "systemId": "ru.s-400",
+      "count": 50,
+      "variant": "S-400 Triumf",
+      "note": "≈ 400 lanceurs  soit 50 divisions"
+    },
+    {
+      "systemId": "ru.s-500",
+      "count": 1,
+      "variant": "S-500 Prometey",
+      "note": "≈ 8 lanceurs  soit 1 division ; premières unités"
+    },
+    {
+      "systemId": "ru.s-300pmu2",
+      "count": 31,
+      "variant": "S-300PS/PM1/PM2 (VKS)",
+      "note": "≈ 250 lanceurs  soit 31 divisions ; modèle le plus proche"
+    },
+    {
+      "systemId": "ru.s-300pmu2",
+      "count": 5,
+      "variant": "S-300V4 (armée de terre)",
+      "note": "≈ 40 lanceurs  soit 5 divisions ; modèle le plus proche"
+    },
+    {
+      "systemId": "ru.pantsir-s1",
+      "count": 250,
+      "variant": "Pantsir-S1/S2/SM"
+    },
+    {
+      "systemId": "ru.tor-m2",
+      "count": 150,
+      "variant": "Tor-M1/M2"
+    },
+    {
+      "systemId": "ru.buk-m3",
+      "count": 50,
+      "variant": "Buk-M1-2/M2/M3",
+      "note": "≈ 300 lanceurs  soit 50 batteries"
+    },
+    {
+      "systemId": "ru.9k33-osa",
+      "count": 100,
+      "variant": "9K33 Osa"
+    },
+    {
+      "systemId": "ru.strela-10",
+      "count": 300,
+      "variant": "Strela-10M3/MN"
+    },
+    {
+      "systemId": "ru.zsu-23-4-shilka",
+      "count": 190,
+      "variant": "2K22 Tunguska",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.igla",
+      "count": 500,
+      "variant": "Igla/Igla-S/Verba",
+      "note": "≈ 2 000 postes de tir  soit 500 sections"
+    },
+    {
+      "systemId": "ru.krasukha-4",
+      "count": 40,
+      "variant": "Krasukha-2/-4, Borisoglebsk-2, Leer-3",
+      "note": "guerre électronique (estimation)"
+    },
+    {
+      "systemId": "ru.iskander-m",
+      "count": 600,
+      "variant": "9K720 Iskander-M",
+      "note": "missiles 9M723 (≈ 160 lanceurs)"
+    },
+    {
+      "systemId": "ru.kalibr",
+      "count": 450,
+      "variant": "3M-14 Kalibr",
+      "note": "stock (estimation)"
+    },
+    {
+      "systemId": "ru.kh-101",
+      "count": 400,
+      "variant": "Kh-101/Kh-102",
+      "note": "stock (estimation)"
+    },
+    {
+      "systemId": "ru.kinzhal",
+      "count": 80,
+      "variant": "Kh-47M2 Kinzhal",
+      "note": "stock (estimation)"
+    },
+    {
+      "systemId": "ru.zircon",
+      "count": 50,
+      "variant": "3M22 Zircon",
+      "note": "stock (estimation)"
+    },
+    {
+      "systemId": "ru.p-800-oniks",
+      "count": 400,
+      "variant": "P-800 Oniks / Bastion-P",
+      "note": "stock (estimation)"
+    },
+    {
+      "systemId": "ru.tochka-u",
+      "count": 100,
+      "variant": "OTR-21 Tochka-U",
+      "note": "missiles (≈ 50 lanceurs)"
+    },
+    {
+      "systemId": "ru.yars",
+      "count": 200,
+      "variant": "RS-24 Yars (mobiles et silos)",
+      "note": "ICBM déployés (FAS)"
+    },
+    {
+      "systemId": "ru.yars",
+      "count": 60,
+      "variant": "RS-12M2 Topol-M",
+      "note": "modèle le plus proche (FAS)"
+    },
+    {
+      "systemId": "ru.sarmat",
+      "count": 34,
+      "variant": "R-36M2 Voevoda (SS-18)",
+      "note": "ICBM lourd en attente du Sarmat, modèle le plus proche (FAS)"
+    },
+    {
+      "systemId": "ru.sarmat",
+      "count": 12,
+      "variant": "UR-100NUTTKh / Avangard",
+      "note": "modèle le plus proche (FAS)"
+    },
+    {
+      "systemId": "ru.bulava",
+      "count": 128,
+      "variant": "R-30 Bulava",
+      "note": "8 SSBN Borei × 16 (FAS)"
+    },
+    {
+      "systemId": "ru.bulava",
+      "count": 80,
+      "variant": "R-29RMU2 Sineva/Layner",
+      "note": "5 SSBN Delta IV × 16, modèle le plus proche"
+    },
+    {
+      "systemId": "ru.admiral-kuznetsov",
+      "count": 1,
+      "variant": "Admiral Kuznetsov",
+      "note": "en réparation prolongée"
+    },
+    {
+      "systemId": "ru.kirov",
+      "count": 2,
+      "variant": "Admiral Nakhimov, Pyotr Velikiy"
+    },
+    {
+      "systemId": "ru.slava",
+      "count": 2,
+      "variant": "Marshal Ustinov, Varyag"
+    },
+    {
+      "systemId": "ru.udaloy",
+      "count": 7,
+      "variant": "Udaloy I/II"
+    },
+    {
+      "systemId": "ru.udaloy",
+      "count": 1,
+      "variant": "Sovremenny (Admiral Ushakov)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.admiral-gorshkov",
+      "count": 3,
+      "variant": "Projet 22350 Admiral Gorshkov"
+    },
+    {
+      "systemId": "ru.admiral-gorshkov",
+      "count": 3,
+      "variant": "Projet 11356R Admiral Grigorovich",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.steregushchiy",
+      "count": 12,
+      "variant": "Projets 20380/20385"
+    },
+    {
+      "systemId": "ru.karakurt",
+      "count": 10,
+      "variant": "Projet 22800 Karakurt"
+    },
+    {
+      "systemId": "ru.buyan-m",
+      "count": 12,
+      "variant": "Projet 21631 Buyan-M"
+    },
+    {
+      "systemId": "ru.buyan-m",
+      "count": 20,
+      "variant": "Nanuchka III, Tarantul III",
+      "note": "corvettes lance-missiles, modèle le plus proche"
+    },
+    {
+      "systemId": "ru.gepard-class",
+      "count": 2,
+      "variant": "Gepard (Caspienne)"
+    },
+    {
+      "systemId": "ru.gepard-class",
+      "count": 6,
+      "variant": "Projet 22160 Vasily Bykov",
+      "note": "patrouilleurs, modèle le plus proche"
+    },
+    {
+      "systemId": "ru.gepard-class",
+      "count": 20,
+      "variant": "Grisha, Parchim",
+      "note": "corvettes ASM, modèle le plus proche"
+    },
+    {
+      "systemId": "ru.yasen-m",
+      "count": 6,
+      "variant": "Projet 885/885M Yasen"
+    },
+    {
+      "systemId": "ru.yasen-m",
+      "count": 5,
+      "variant": "Projet 949A Oscar II (SSGN)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.yasen-m",
+      "count": 8,
+      "variant": "Akula, Sierra, Victor III (SSN)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.borei",
+      "count": 8,
+      "variant": "Projet 955/955A Borei"
+    },
+    {
+      "systemId": "ru.delta-iv",
+      "count": 5,
+      "variant": "Projet 667BDRM Delta IV"
+    },
+    {
+      "systemId": "ru.kilo",
+      "count": 22,
+      "variant": "Projets 877/636.3 Kilo"
+    },
+    {
+      "systemId": "ru.kilo",
+      "count": 3,
+      "variant": "Projet 677 Lada",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.optical-recon-satellite",
+      "count": 6,
+      "variant": "Bars-M, Persona, Razdan",
+      "note": "estimation publique"
+    },
+    {
+      "systemId": "ru.radar-satellite",
+      "count": 2,
+      "variant": "Kondor-FKA"
+    },
+    {
+      "systemId": "ru.sigint-satellite",
+      "count": 8,
+      "variant": "Lotos-S1, Pion-NKS"
+    },
+    {
+      "systemId": "ru.early-warning-satellite",
+      "count": 7,
+      "variant": "EKS Tundra"
+    },
+    {
+      "systemId": "ru.asat",
+      "count": 4,
+      "variant": "A-235 Nudol",
+      "note": "lanceurs (estimation) ; satellites inspecteurs non comptés"
+    },
+    {
+      "systemId": "ru.voronezh-dm",
+      "count": 11,
+      "variant": "Voronezh-M/DM/VP/SM",
+      "note": "alerte avancée antimissile"
+    },
+    {
+      "systemId": "ru.voronezh-dm",
+      "count": 1,
+      "variant": "Don-2N (défense antimissile de Moscou)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.container-29b6",
+      "count": 1,
+      "variant": "Container 29B6 (transhorizon, Kovylkino)"
+    },
+    {
+      "systemId": "ru.podsolnukh-e",
+      "count": 10,
+      "variant": "Podsolnukh",
+      "note": "transhorizon côtier"
+    },
+    {
+      "systemId": "ru.rezonans-ne",
+      "count": 10,
+      "variant": "Rezonans-N"
+    },
+    {
+      "systemId": "ru.nebo-m",
+      "count": 50,
+      "variant": "Nebo-M / Nebo-SVU / Nebo-U",
+      "note": "estimation"
+    },
+    {
+      "systemId": "ru.protivnik-ge",
+      "count": 20,
+      "variant": "Protivnik-G",
+      "note": "estimation"
+    },
+    {
+      "systemId": "ru.p-18",
+      "count": 100,
+      "variant": "P-18, 1L117, 55Zh6 Nebo",
+      "note": "radars de surveillance anciens (estimation)"
+    },
+    {
+      "systemId": "ru.infantry-light",
+      "count": 537,
+      "note": "infanterie légère : ≈ 322 k personnes / 600 ; forces terrestres, VDV et spetsnaz ; effectifs gonflés par la guerre en Ukraine"
+    },
+    {
+      "systemId": "ru.infantry-mech",
+      "count": 525,
+      "note": "infanterie mécanisée / motorisée : ≈ 315 k personnes / 600"
+    },
+    {
+      "systemId": "ru.vdv-airborne",
+      "count": 76,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 45,5 k personnes / 600"
+    },
+    {
+      "systemId": "ru.spetsnaz",
+      "count": 29,
+      "note": "forces spéciales : ≈ 17,5 k personnes / 600"
+    },
+    {
+      "systemId": "ru.naval-infantry",
+      "count": 58,
+      "note": "infanterie de marine : ≈ 35 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.drones1",
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.transport",
+    "research.aero.bomber1",
+    "research.aero.drones2",
+    "research.aero.gen3",
+    "research.aero.helo2",
+    "research.aero.tanker",
+    "research.aero.aew",
+    "research.aero.bomber2",
+    "research.aero.gen4",
+    "research.aero.helo3",
+    "research.aero.gen4plus",
+    "research.aero.stealth-materials",
+    "research.aero.gen5",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.cyber.l3",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.industry.l3",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.intel.exterior3",
+    "research.intel.interior3",
+    "research.intel.military3",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.gen3",
+    "research.land.mlrs",
+    "research.land.composite-armor",
+    "research.land.ew",
+    "research.land.gen4",
+    "research.land.active-protection",
+    "research.land.gen5",
+    "research.missiles.ballistic1",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.missiles.ballistic2",
+    "research.missiles.cruise1",
+    "research.missiles.sam2",
+    "research.missiles.ballistic3",
+    "research.missiles.cruise2",
+    "research.missiles.sam3",
+    "research.nuclear.weapons",
+    "research.missiles.hypersonic",
+    "research.missiles.sam4",
+    "research.nuclear.icbm",
+    "research.nuclear.slbm",
+    "research.missiles.abm",
+    "research.missiles.sam5",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.naval.gen3",
+    "research.naval.sub2",
+    "research.naval.gen4",
+    "research.naval.ssbn",
+    "research.naval.sub3",
+    "research.sensors.radar1",
+    "research.sensors.radar2",
+    "research.sensors.space1",
+    "research.sensors.radar3",
+    "research.sensors.space2",
+    "research.sensors.asat"
+  ],
+  "licences": ["other.shahed-136"],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
+    "FAS, Status of World Nuclear Forces 2025 (vecteurs nucléaires)",
+    "Oryx (pertes documentées en Ukraine, recoupement)",
+    "Estimations publiques de production (Geran-2, Lancet, missiles)"
+  ],
+  "confidence": "medium"
+}

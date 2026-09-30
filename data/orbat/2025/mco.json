@@ -1,0 +1,22 @@
+{
+  "nationId": "mco",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 20000000,
+  "activePersonnel": 120,
+  "inventory": [
+    {
+      "systemId": "eu.infantry-light",
+      "count": 1,
+      "variant": "Compagnie des carabiniers du Prince (≈ 120) et sûreté publique",
+      "note": "défense assurée par la France"
+    }
+  ],
+  "research": ["research.intel.interior1"],
+  "licences": [],
+  "sources": [
+    "Estimation (Compagnie des carabiniers du Prince et sûreté publique)",
+    "Gouvernement princier de Monaco"
+  ],
+  "confidence": "medium"
+}

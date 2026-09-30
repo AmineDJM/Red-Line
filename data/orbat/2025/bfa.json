@@ -1,0 +1,52 @@
+{
+  "nationId": "bfa",
+  "year": 2025,
+  "doctrine": "other",
+  "defenseBudgetUsd": 892000000,
+  "activePersonnel": 11200,
+  "inventory": [
+    {
+      "systemId": "other.a-29-super-tucano",
+      "count": 3,
+      "variant": "A-29 Super Tucano"
+    },
+    {
+      "systemId": "ru.mi-24",
+      "count": 2,
+      "variant": "Mi-24"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 4,
+      "variant": "Mi-17"
+    },
+    {
+      "systemId": "other.bayraktar-tb2",
+      "count": 6,
+      "variant": "Bayraktar TB2"
+    },
+    {
+      "systemId": "other.akinci",
+      "count": 2,
+      "variant": "Bayraktar Akıncı"
+    },
+    {
+      "systemId": "other.infantry-light",
+      "count": 18,
+      "note": "infanterie légère : ≈ 11 k personnes / 600 ; volontaires pour la défense de la patrie (milice) non comptés"
+    }
+  ],
+  "research": [
+    "research.aero.helo1",
+    "research.industry.l1",
+    "research.intel.interior1",
+    "research.intel.interior2",
+    "research.land.gen1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low"
+}

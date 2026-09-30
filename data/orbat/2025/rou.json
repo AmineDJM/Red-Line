@@ -1,0 +1,187 @@
+{
+  "nationId": "rou",
+  "year": 2025,
+  "doctrine": "us",
+  "defenseBudgetUsd": 9725000000,
+  "activePersonnel": 69900,
+  "inventory": [
+    {
+      "systemId": "us.f-16",
+      "count": 49,
+      "variant": "F-16AM/BM (ex-Portugal, ex-Norvège)"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 3,
+      "variant": "C-130B/H"
+    },
+    {
+      "systemId": "eu.c-295",
+      "count": 7,
+      "variant": "C-27J Spartan",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.sa-330-puma",
+      "count": 60,
+      "variant": "IAR-330 Puma SOCAT"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 10,
+      "variant": "S-70 Black Hawk"
+    },
+    {
+      "systemId": "ru.t-55",
+      "count": 100,
+      "variant": "TR-85M1 / TR-85",
+      "note": "modèle le plus proche ; M1A2 commandés"
+    },
+    {
+      "systemId": "eu.patria-amv",
+      "count": 150,
+      "variant": "Piranha V",
+      "note": "production locale, modèle le plus proche"
+    },
+    {
+      "systemId": "eu.patria-amv",
+      "count": 30,
+      "variant": "Piranha IIIC",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bmp-1",
+      "count": 100,
+      "variant": "MLI-84M",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.btr-80",
+      "count": 400,
+      "variant": "TAB-71/77/79, B33 Zimbru",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m142-himars",
+      "count": 18,
+      "variant": "M142 HIMARS"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 36,
+      "variant": "LAROM",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 200,
+      "variant": "obusiers remorqués M-85, M-81",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.patriot",
+      "count": 4,
+      "variant": "Patriot PAC-3",
+      "note": "≈ 24 lanceurs  soit 4 batteries ; après cession d'un système à l'Ukraine"
+    },
+    {
+      "systemId": "us.mim-23-hawk",
+      "count": 3,
+      "variant": "Hawk XXI",
+      "note": "≈ 16 lanceurs  soit 3 batteries"
+    },
+    {
+      "systemId": "ru.2k12-kub",
+      "count": 3,
+      "variant": "2K12 Kub",
+      "note": "≈ 12 lanceurs  soit 3 batteries"
+    },
+    {
+      "systemId": "eu.skynex",
+      "count": 4,
+      "variant": "Skynex / Oerlikon GDF",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.igla",
+      "count": 12,
+      "variant": "Piorun",
+      "note": "≈ 50 postes de tir  soit 12 sections ; modèle le plus proche"
+    },
+    {
+      "systemId": "eu.nsm",
+      "count": 24,
+      "variant": "NSM (défense côtière)"
+    },
+    {
+      "systemId": "eu.meko-a-200",
+      "count": 3,
+      "variant": "Regele Ferdinand, Regina Maria (Type 22), Mărășești",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.gowind",
+      "count": 4,
+      "variant": "Tetal",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.buyan-m",
+      "count": 3,
+      "variant": "Zborul (Tarantul)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.infantry-light",
+      "count": 31,
+      "note": "infanterie légère : ≈ 18,5 k personnes / 600"
+    },
+    {
+      "systemId": "us.infantry-mech",
+      "count": 24,
+      "note": "infanterie mécanisée / motorisée : ≈ 14,2 k personnes / 600"
+    },
+    {
+      "systemId": "us.airborne",
+      "count": 3,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 1,8 k personnes / 600"
+    },
+    {
+      "systemId": "us.special-forces",
+      "count": 2,
+      "note": "forces spéciales : ≈ 1,1 k personnes / 600"
+    },
+    {
+      "systemId": "us.marines",
+      "count": 1,
+      "note": "infanterie de marine : ≈ 0,5 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.helo2",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.missiles.sam1",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.sensors.radar1"
+  ],
+  "licences": ["eu.patria-amv", "eu.sa-330-puma"],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "high"
+}

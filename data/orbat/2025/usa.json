@@ -1,0 +1,657 @@
+{
+  "nationId": "usa",
+  "year": 2025,
+  "doctrine": "us",
+  "defenseBudgetUsd": 954387000000,
+  "activePersonnel": 1316000,
+  "inventory": [
+    {
+      "systemId": "us.f-16",
+      "count": 762,
+      "variant": "F-16C/D Block 30-52 (USAF, ANG, AFRC)"
+    },
+    {
+      "systemId": "us.f-16",
+      "count": 22,
+      "variant": "F-16A/B/C/D (US Navy, plastrons)"
+    },
+    {
+      "systemId": "us.f-15e",
+      "count": 218,
+      "variant": "F-15E Strike Eagle"
+    },
+    {
+      "systemId": "us.f-15e",
+      "count": 20,
+      "variant": "F-15EX Eagle II",
+      "note": "nouvelles livraisons 2024-2026"
+    },
+    {
+      "systemId": "us.f-15e",
+      "count": 60,
+      "variant": "F-15C/D Eagle",
+      "note": "air-supériorité, retrait en cours (ANG) ; modèle le plus proche du catalogue"
+    },
+    {
+      "systemId": "us.fa-18e",
+      "count": 549,
+      "variant": "F/A-18E/F Super Hornet"
+    },
+    {
+      "systemId": "us.fa-18e",
+      "count": 150,
+      "variant": "F/A-18C/D Hornet (USMC)",
+      "note": "modèle le plus proche du catalogue"
+    },
+    {
+      "systemId": "us.f-22",
+      "count": 183,
+      "variant": "F-22A Raptor"
+    },
+    {
+      "systemId": "us.f-35",
+      "count": 380,
+      "variant": "F-35A Lightning II (USAF)"
+    },
+    {
+      "systemId": "us.f-35",
+      "count": 130,
+      "variant": "F-35B Lightning II (USMC)"
+    },
+    {
+      "systemId": "us.f-35",
+      "count": 75,
+      "variant": "F-35C Lightning II (US Navy, USMC)"
+    },
+    {
+      "systemId": "us.f-5e",
+      "count": 43,
+      "variant": "F-5N/F Tiger II",
+      "note": "plastrons (Navy, USMC)"
+    },
+    {
+      "systemId": "us.a-10c-thunderbolt-ii",
+      "count": 162,
+      "variant": "A-10C Thunderbolt II",
+      "note": "retrait envisagé"
+    },
+    {
+      "systemId": "us.ea-18g-growler",
+      "count": 153,
+      "variant": "EA-18G Growler"
+    },
+    {
+      "systemId": "us.b-52h-stratofortress",
+      "count": 76,
+      "variant": "B-52H"
+    },
+    {
+      "systemId": "us.b-1b-lancer",
+      "count": 40,
+      "variant": "B-1B Lancer"
+    },
+    {
+      "systemId": "us.b-2-spirit",
+      "count": 20,
+      "variant": "B-2A Spirit",
+      "note": "3 B-21 Raider en essais non comptés"
+    },
+    {
+      "systemId": "us.e-3-sentry",
+      "count": 15,
+      "variant": "E-3B/G Sentry"
+    },
+    {
+      "systemId": "us.e-2d-hawkeye",
+      "count": 83,
+      "variant": "E-2C/D Hawkeye"
+    },
+    {
+      "systemId": "us.kc-135-stratotanker",
+      "count": 376,
+      "variant": "KC-135R/T"
+    },
+    {
+      "systemId": "us.kc-46-pegasus",
+      "count": 90,
+      "variant": "KC-46A Pegasus"
+    },
+    {
+      "systemId": "us.c-17-globemaster-iii",
+      "count": 219,
+      "variant": "C-17A Globemaster III"
+    },
+    {
+      "systemId": "us.c-17-globemaster-iii",
+      "count": 52,
+      "variant": "C-5M Super Galaxy",
+      "note": "transport stratégique, modèle le plus proche"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 330,
+      "variant": "C-130H/J Hercules (USAF, Navy, garde-côtes)"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 69,
+      "variant": "KC-130J (USMC, ravitailleur tactique)"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 137,
+      "variant": "AC/MC/HC/WC-130J (opérations spéciales, sauvetage)"
+    },
+    {
+      "systemId": "us.p-8-poseidon",
+      "count": 118,
+      "variant": "P-8A Poseidon"
+    },
+    {
+      "systemId": "us.ah-64-apache",
+      "count": 824,
+      "variant": "AH-64D/E Apache"
+    },
+    {
+      "systemId": "us.ah-1z-viper",
+      "count": 189,
+      "variant": "AH-1Z Viper"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 2000,
+      "variant": "UH-60A/L/M Black Hawk (US Army)",
+      "note": "estimation IISS"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 256,
+      "variant": "MH-60S Knighthawk (US Navy)"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 180,
+      "variant": "HH-60G/W, MH-60K/L, MH-60T (USAF, SOCOM, garde-côtes)"
+    },
+    {
+      "systemId": "us.mh-60r-seahawk",
+      "count": 270,
+      "variant": "MH-60R Seahawk"
+    },
+    {
+      "systemId": "us.ch-47-chinook",
+      "count": 510,
+      "variant": "CH-47F / MH-47G Chinook"
+    },
+    {
+      "systemId": "us.ch-47-chinook",
+      "count": 144,
+      "variant": "CH-53E/K Super/King Stallion",
+      "note": "transport lourd, modèle le plus proche"
+    },
+    {
+      "systemId": "us.ch-47-chinook",
+      "count": 359,
+      "variant": "MV-22B / CV-22B / CMV-22B Osprey",
+      "note": "convertible, modèle le plus proche"
+    },
+    {
+      "systemId": "us.uh-1-huey",
+      "count": 223,
+      "variant": "UH-1Y Venom / UH-1N"
+    },
+    {
+      "systemId": "us.mq-9-reaper",
+      "count": 160,
+      "variant": "MQ-9A Reaper (USAF, USMC, CBP)",
+      "note": "≈ 25 % perdus pendant la guerre d'Iran de 2026"
+    },
+    {
+      "systemId": "us.rq-4-global-hawk",
+      "count": 29,
+      "variant": "RQ-4B Global Hawk / MQ-4C Triton"
+    },
+    {
+      "systemId": "us.mq-1c-gray-eagle",
+      "count": 150,
+      "variant": "MQ-1C Gray Eagle"
+    },
+    {
+      "systemId": "us.scaneagle",
+      "count": 300,
+      "variant": "ScanEagle / RQ-21 Blackjack"
+    },
+    {
+      "systemId": "us.switchblade-600",
+      "count": 500,
+      "variant": "Switchblade 600",
+      "note": "munitions rôdeuses en stock (estimation)"
+    },
+    {
+      "systemId": "us.m1a2-abrams",
+      "count": 2640,
+      "variant": "M1A2 SEPv2/SEPv3",
+      "note": "≈ 3 700 M1A1/A2 supplémentaires en stock non comptés"
+    },
+    {
+      "systemId": "us.m2-bradley",
+      "count": 3700,
+      "variant": "M2A3/M2A4, M3A3, M7 Bradley"
+    },
+    {
+      "systemId": "us.stryker",
+      "count": 3400,
+      "variant": "M1126 Stryker (toutes versions)"
+    },
+    {
+      "systemId": "us.stryker",
+      "count": 650,
+      "variant": "LAV-25 / ACV (USMC)",
+      "note": "véhicules à roues de l'USMC, modèle le plus proche"
+    },
+    {
+      "systemId": "us.ampv",
+      "count": 800,
+      "variant": "M1283 AMPV"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 2500,
+      "variant": "M113A2/A3",
+      "note": "remplacement par l'AMPV en cours"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 400,
+      "variant": "AAV-7A1 (USMC)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 690,
+      "variant": "M109A6/A7 Paladin"
+    },
+    {
+      "systemId": "us.m777",
+      "count": 850,
+      "variant": "M777A2 (Army, USMC)"
+    },
+    {
+      "systemId": "us.m142-himars",
+      "count": 480,
+      "variant": "M142 HIMARS (Army, USMC)"
+    },
+    {
+      "systemId": "us.m270-mlrs",
+      "count": 200,
+      "variant": "M270A1/A2"
+    },
+    {
+      "systemId": "us.patriot",
+      "count": 60,
+      "variant": "M902/M903 Patriot PAC-2 GEM-T / PAC-3 MSE",
+      "note": "15 bataillons, ≈ 480 lanceurs"
+    },
+    {
+      "systemId": "us.thaad",
+      "count": 8,
+      "variant": "THAAD",
+      "note": "8 batteries de 6 lanceurs ; ≈ 80 % des intercepteurs consommés en 2026"
+    },
+    {
+      "systemId": "us.nasams",
+      "count": 2,
+      "variant": "NASAMS (défense de Washington)"
+    },
+    {
+      "systemId": "us.avenger",
+      "count": 350,
+      "variant": "M1097 Avenger / M-SHORAD (Stryker)"
+    },
+    {
+      "systemId": "us.stinger",
+      "count": 300,
+      "variant": "FIM-92 Stinger",
+      "note": "≈ 1 200 postes de tir  soit 300 sections"
+    },
+    {
+      "systemId": "us.ew-jammer",
+      "count": 40,
+      "variant": "systèmes de guerre électronique terrestre (TLS, MFEW)",
+      "note": "estimation"
+    },
+    {
+      "systemId": "us.tomahawk",
+      "count": 2000,
+      "variant": "BGM-109 Tomahawk Block IV/V",
+      "note": "stock après la guerre d'Iran de 2026 (près de la moitié consommée, Reuters août 2026)"
+    },
+    {
+      "systemId": "us.jassm-er",
+      "count": 2500,
+      "variant": "AGM-158B JASSM-ER",
+      "note": "stock (estimation, consommation de 2026 incluse)"
+    },
+    {
+      "systemId": "us.atacms",
+      "count": 50,
+      "variant": "MGM-140/168 ATACMS",
+      "note": "stock presque épuisé (Ukraine, guerre d'Iran de 2026)"
+    },
+    {
+      "systemId": "us.prsm",
+      "count": 20,
+      "variant": "PrSM Increment 1",
+      "note": "stock presque épuisé en 2026 (Reuters)"
+    },
+    {
+      "systemId": "us.agm-88-harm",
+      "count": 2500,
+      "variant": "AGM-88B/C/E HARM/AARGM",
+      "note": "stock (estimation)"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 1000,
+      "variant": "RGM/AGM-84 Harpoon",
+      "note": "stock (estimation)"
+    },
+    {
+      "systemId": "us.minuteman-iii",
+      "count": 400,
+      "variant": "LGM-30G Minuteman III",
+      "note": "ICBM déployés (FAS)"
+    },
+    {
+      "systemId": "us.trident-ii-d5",
+      "count": 230,
+      "variant": "UGM-133A Trident II D5LE",
+      "note": "SLBM déployés (FAS), ≈ 280 tubes"
+    },
+    {
+      "systemId": "us.b61-12",
+      "count": 480,
+      "variant": "B61-12",
+      "note": "bombes nucléaires (production achevée en 2025)"
+    },
+    {
+      "systemId": "us.gerald-r-ford",
+      "count": 1,
+      "variant": "CVN-78 Gerald R. Ford"
+    },
+    {
+      "systemId": "us.nimitz",
+      "count": 10,
+      "variant": "CVN-68 à CVN-77 Nimitz"
+    },
+    {
+      "systemId": "us.america",
+      "count": 2,
+      "variant": "LHA-6 America"
+    },
+    {
+      "systemId": "us.america",
+      "count": 7,
+      "variant": "LHD-1 Wasp",
+      "note": "porte-aéronefs d'assaut, modèle le plus proche ; 13 LPD San Antonio et 9 LSD non comptés"
+    },
+    {
+      "systemId": "us.ticonderoga",
+      "count": 6,
+      "variant": "CG-47 Ticonderoga"
+    },
+    {
+      "systemId": "us.arleigh-burke",
+      "count": 75,
+      "variant": "DDG-51 Arleigh Burke (Flight I/II/IIA/III)"
+    },
+    {
+      "systemId": "us.arleigh-burke",
+      "count": 2,
+      "variant": "DDG-1000 Zumwalt",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.lcs",
+      "count": 27,
+      "variant": "LCS Freedom / Independence"
+    },
+    {
+      "systemId": "us.virginia",
+      "count": 26,
+      "variant": "SSN-774 Virginia"
+    },
+    {
+      "systemId": "us.virginia",
+      "count": 18,
+      "variant": "SSN-688i Los Angeles",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.seawolf",
+      "count": 3,
+      "variant": "SSN-21 Seawolf"
+    },
+    {
+      "systemId": "us.ohio",
+      "count": 14,
+      "variant": "SSBN Ohio"
+    },
+    {
+      "systemId": "us.ohio",
+      "count": 3,
+      "variant": "SSGN Ohio (154 Tomahawk chacun)"
+    },
+    {
+      "systemId": "us.optical-recon-satellite",
+      "count": 60,
+      "variant": "KH-11 et constellation proliférée du NRO",
+      "note": "estimation publique"
+    },
+    {
+      "systemId": "us.radar-satellite",
+      "count": 20,
+      "variant": "satellites radar (Topaz et successeurs)",
+      "note": "estimation"
+    },
+    {
+      "systemId": "us.sigint-satellite",
+      "count": 30,
+      "variant": "satellites d'écoute (Orion/Mentor, Trumpet, Intruder)",
+      "note": "estimation"
+    },
+    {
+      "systemId": "us.early-warning-satellite",
+      "count": 12,
+      "variant": "SBIRS GEO/HEO, DSP",
+      "note": "alerte avancée"
+    },
+    {
+      "systemId": "us.asat",
+      "count": 16,
+      "variant": "Counter Communications System / SM-3",
+      "note": "capacités antisatellites (estimation)"
+    },
+    {
+      "systemId": "us.an-tpy-2",
+      "count": 13,
+      "variant": "AN/TPY-2",
+      "note": "batteries THAAD et radars avancés (Japon, Turquie, Israël) opérés par les États-Unis"
+    },
+    {
+      "systemId": "us.an-fps-132-uewr",
+      "count": 4,
+      "variant": "AN/FPS-132 UEWR (Beale, Cape Cod, Clear, Pituffik)"
+    },
+    {
+      "systemId": "us.an-fps-132-uewr",
+      "count": 1,
+      "variant": "LRDR (Clear, Alaska)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.an-tps-80-g-ator",
+      "count": 45,
+      "variant": "AN/TPS-80 G/ATOR (USMC)"
+    },
+    {
+      "systemId": "us.an-tps-75",
+      "count": 60,
+      "variant": "AN/TPS-75, AN/TPY-4, AN/FPS-117",
+      "note": "radars de surveillance aérienne (estimation)"
+    },
+    {
+      "systemId": "us.infantry-light",
+      "count": 340,
+      "note": "infanterie légère : ≈ 203,7 k personnes / 600"
+    },
+    {
+      "systemId": "us.infantry-mech",
+      "count": 272,
+      "note": "infanterie mécanisée / motorisée : ≈ 163 k personnes / 600"
+    },
+    {
+      "systemId": "us.airborne",
+      "count": 91,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 54,3 k personnes / 600"
+    },
+    {
+      "systemId": "us.special-forces",
+      "count": 53,
+      "note": "forces spéciales : ≈ 31,7 k personnes / 600"
+    },
+    {
+      "systemId": "us.marines",
+      "count": 225,
+      "note": "infanterie de marine : ≈ 135 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.drones1",
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.transport",
+    "research.aero.bomber1",
+    "research.aero.drones2",
+    "research.aero.gen3",
+    "research.aero.helo2",
+    "research.aero.tanker",
+    "research.aero.aew",
+    "research.aero.bomber2",
+    "research.aero.engines",
+    "research.aero.gen4",
+    "research.aero.helo3",
+    "research.aero.gen4plus",
+    "research.aero.predictive-maintenance",
+    "research.aero.stealth-materials",
+    "research.aero.drones3",
+    "research.aero.gen5",
+    "research.aero.stealth-bomber",
+    "research.aero.supercruise",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.cyber.soc",
+    "research.cyber.ics-attack",
+    "research.cyber.l3",
+    "research.cyber.zero-days",
+    "research.cyber.ai-defense",
+    "research.cyber.hardened-comms",
+    "research.industry.agriculture",
+    "research.industry.l1",
+    "research.industry.mining",
+    "research.industry.oil-extraction",
+    "research.industry.l2",
+    "research.industry.military-logistics",
+    "research.industry.national-labs",
+    "research.industry.semiconductors",
+    "research.industry.war-economy",
+    "research.industry.automation",
+    "research.industry.l3",
+    "research.industry.additive-manufacturing",
+    "research.industry.ai-research",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.analysis",
+    "research.intel.counterintelligence",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.intel.strategic-communication",
+    "research.intel.exterior3",
+    "research.intel.interior3",
+    "research.intel.military3",
+    "research.intel.osint",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.gen3",
+    "research.land.mlrs",
+    "research.land.mobile-logistics",
+    "research.land.night-vision",
+    "research.land.composite-armor",
+    "research.land.ew",
+    "research.land.fire-control",
+    "research.land.gen4",
+    "research.land.active-protection",
+    "research.land.gen5",
+    "research.missiles.ballistic1",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.missiles.ballistic2",
+    "research.missiles.cruise1",
+    "research.missiles.sam2",
+    "research.missiles.ballistic3",
+    "research.missiles.cruise2",
+    "research.missiles.gps-guidance",
+    "research.missiles.sam3",
+    "research.nuclear.weapons",
+    "research.missiles.hypersonic",
+    "research.missiles.imaging-seekers",
+    "research.missiles.integrated-air-defense",
+    "research.missiles.sam4",
+    "research.nuclear.icbm",
+    "research.nuclear.slbm",
+    "research.missiles.abm",
+    "research.missiles.sam5",
+    "research.missiles.hit-to-kill",
+    "research.naval.gen1",
+    "research.naval.damage-control",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.naval.dockyards",
+    "research.naval.gen3",
+    "research.naval.sub2",
+    "research.naval.towed-sonar",
+    "research.naval.carrier",
+    "research.naval.combat-system",
+    "research.naval.gen4",
+    "research.naval.ssbn",
+    "research.naval.sub3",
+    "research.naval.gen5",
+    "research.sensors.radar1",
+    "research.sensors.ecm",
+    "research.sensors.radar2",
+    "research.sensors.space1",
+    "research.sensors.eccm",
+    "research.sensors.ground-stations",
+    "research.sensors.over-the-horizon",
+    "research.sensors.radar3",
+    "research.sensors.space2",
+    "research.sensors.vhf-radar",
+    "research.sensors.asat",
+    "research.sensors.constellations",
+    "research.sensors.data-fusion",
+    "research.sensors.passive-detection",
+    "research.sensors.cognitive-ew"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
+    "FAS, Status of World Nuclear Forces 2025 (vecteurs nucléaires)",
+    "US Navy, Naval Vessel Register (flotte en service)",
+    "NRO / Space Force (satellites, estimations publiques)"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,184 @@
+{
+  "nationId": "fin",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 8082000000,
+  "activePersonnel": 24000,
+  "inventory": [
+    {
+      "systemId": "us.fa-18e",
+      "count": 62,
+      "variant": "F/A-18C/D Hornet",
+      "note": "modèle le plus proche ; F-35A attendus à partir de 2026"
+    },
+    {
+      "systemId": "eu.hawk",
+      "count": 30,
+      "variant": "Hawk Mk51/66"
+    },
+    {
+      "systemId": "eu.c-295",
+      "count": 3,
+      "variant": "C-295M"
+    },
+    {
+      "systemId": "eu.nh90",
+      "count": 20,
+      "variant": "NH90 TTH"
+    },
+    {
+      "systemId": "eu.leopard-2a7",
+      "count": 100,
+      "variant": "Leopard 2A6",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.leopard-2a7",
+      "count": 100,
+      "variant": "Leopard 2A4",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.cv90",
+      "count": 102,
+      "variant": "CV9030FIN"
+    },
+    {
+      "systemId": "ru.bmp-2",
+      "count": 110,
+      "variant": "BMP-2M"
+    },
+    {
+      "systemId": "eu.patria-amv",
+      "count": 210,
+      "variant": "Patria AMV / Patria 6x6"
+    },
+    {
+      "systemId": "eu.patria-amv",
+      "count": 400,
+      "variant": "XA-180/185/203",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.mt-lb",
+      "count": 200,
+      "variant": "MT-LBV"
+    },
+    {
+      "systemId": "other.k9-thunder",
+      "count": 96,
+      "variant": "K9 Moukari"
+    },
+    {
+      "systemId": "ru.2s1-gvozdika",
+      "count": 30,
+      "variant": "2S1 (122 PSH 74)"
+    },
+    {
+      "systemId": "us.m270-mlrs",
+      "count": 34,
+      "variant": "M270 (298 RSRAKH 06)"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 500,
+      "variant": "obusiers remorqués 122/130/152/155 mm",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.nasams",
+      "count": 6,
+      "variant": "NASAMS II",
+      "note": "≈ 24 lanceurs  soit 6 batteries"
+    },
+    {
+      "systemId": "eu.crotale",
+      "count": 20,
+      "variant": "Crotale NG"
+    },
+    {
+      "systemId": "eu.mistral",
+      "count": 25,
+      "variant": "ASRAD / RBS 70",
+      "note": "≈ 100 postes de tir  soit 25 sections ; modèle le plus proche"
+    },
+    {
+      "systemId": "us.jassm-er",
+      "count": 70,
+      "variant": "AGM-158 JASSM"
+    },
+    {
+      "systemId": "eu.exocet",
+      "count": 40,
+      "variant": "Gabriel V",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.gowind",
+      "count": 8,
+      "variant": "Hamina, Rauma",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.ground-master-400",
+      "count": 12,
+      "variant": "GM403"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 17,
+      "note": "infanterie légère : ≈ 10,3 k personnes / 600 ; effectifs incluant les conscrits"
+    },
+    {
+      "systemId": "eu.infantry-mech",
+      "count": 10,
+      "note": "infanterie mécanisée / motorisée : ≈ 6,3 k personnes / 600"
+    },
+    {
+      "systemId": "eu.airborne",
+      "count": 2,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 0,9 k personnes / 600"
+    },
+    {
+      "systemId": "eu.special-forces",
+      "count": 1,
+      "note": "forces spéciales : ≈ 0,5 k personnes / 600"
+    },
+    {
+      "systemId": "eu.marines",
+      "count": 2,
+      "note": "infanterie de marine : ≈ 1 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.gen3",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.gen3",
+    "research.missiles.sam1",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.gen3",
+    "research.sensors.radar1",
+    "research.sensors.radar2"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "high"
+}

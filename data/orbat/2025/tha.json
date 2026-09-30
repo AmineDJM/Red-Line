@@ -1,0 +1,279 @@
+{
+  "nationId": "tha",
+  "year": 2025,
+  "doctrine": "us",
+  "defenseBudgetUsd": 5984000000,
+  "activePersonnel": 360850,
+  "inventory": [
+    {
+      "systemId": "us.f-16",
+      "count": 50,
+      "variant": "F-16A/B"
+    },
+    {
+      "systemId": "eu.gripen",
+      "count": 11,
+      "variant": "JAS 39C/D Gripen",
+      "note": "Gripen E commandés"
+    },
+    {
+      "systemId": "us.f-5e",
+      "count": 30,
+      "variant": "F-5E/F (F-5TH)"
+    },
+    {
+      "systemId": "other.fa-50",
+      "count": 14,
+      "variant": "T-50TH",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.alpha-jet",
+      "count": 10,
+      "variant": "Alpha Jet"
+    },
+    {
+      "systemId": "eu.globaleye",
+      "count": 2,
+      "variant": "Saab 340 Erieye",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 12,
+      "variant": "C-130H"
+    },
+    {
+      "systemId": "us.ah-1-cobra",
+      "count": 7,
+      "variant": "AH-1F"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 20,
+      "variant": "UH-60L/M"
+    },
+    {
+      "systemId": "us.uh-1-huey",
+      "count": 60,
+      "variant": "Bell 212 / UH-1H"
+    },
+    {
+      "systemId": "us.ch-47-chinook",
+      "count": 5,
+      "variant": "CH-47D"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 5,
+      "variant": "Mi-17V5"
+    },
+    {
+      "systemId": "eu.sa-330-puma",
+      "count": 12,
+      "variant": "EC725"
+    },
+    {
+      "systemId": "eu.nh90",
+      "count": 5,
+      "variant": "AW149",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.mh-60r-seahawk",
+      "count": 8,
+      "variant": "S-70B, MH-60S",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m60-patton",
+      "count": 150,
+      "variant": "M60A1/A3"
+    },
+    {
+      "systemId": "us.m60-patton",
+      "count": 100,
+      "variant": "M48A5",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.vt4",
+      "count": 60,
+      "variant": "VT-4"
+    },
+    {
+      "systemId": "ru.t-80bvm",
+      "count": 49,
+      "variant": "T-84 Oplot-M",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.btr-82a",
+      "count": 220,
+      "variant": "BTR-3E1",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 400,
+      "variant": "M113A1/A3"
+    },
+    {
+      "systemId": "us.stryker",
+      "count": 160,
+      "variant": "M1126 Stryker"
+    },
+    {
+      "systemId": "cn.zbl-08",
+      "count": 70,
+      "variant": "VN1",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.type-63",
+      "count": 300,
+      "variant": "Type 85",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 20,
+      "variant": "M109A5"
+    },
+    {
+      "systemId": "eu.caesar",
+      "count": 24,
+      "variant": "CAESAR, ATMOS 2000",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m777",
+      "count": 400,
+      "variant": "M198, M101, GHN-45",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.phl-03",
+      "count": 12,
+      "variant": "DTI-1 (WS-1B)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.hq-16",
+      "count": 1,
+      "variant": "KS-1C",
+      "note": "≈ 4 lanceurs  soit 1 batterie ; modèle le plus proche"
+    },
+    {
+      "systemId": "eu.crotale",
+      "count": 8,
+      "variant": "Aspide / Skyguard",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.mistral",
+      "count": 25,
+      "variant": "Starstreak, RBS 70, QW-18",
+      "note": "≈ 100 postes de tir  soit 25 sections ; modèle le plus proche"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 50,
+      "variant": "Harpoon"
+    },
+    {
+      "systemId": "cn.c-802",
+      "count": 50,
+      "variant": "C-802"
+    },
+    {
+      "systemId": "eu.mistral-class",
+      "count": 1,
+      "variant": "Chakri Naruebet (porte-hélicoptères)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.meko-a-200",
+      "count": 1,
+      "variant": "Bhumibol Adulyadej (DW3000F)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.type-054a",
+      "count": 2,
+      "variant": "Naresuan (Type 025T)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.type-056",
+      "count": 4,
+      "variant": "Chao Phraya (Type 053HT)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.gowind",
+      "count": 9,
+      "variant": "Pattani, Krabi, Rattanakosin, Khamronsin",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.an-tps-75",
+      "count": 4,
+      "variant": "AN/FPS-117, Thales",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.infantry-light",
+      "count": 323,
+      "note": "infanterie légère : ≈ 193,5 k personnes / 600"
+    },
+    {
+      "systemId": "us.infantry-mech",
+      "count": 61,
+      "note": "infanterie mécanisée / motorisée : ≈ 36,8 k personnes / 600"
+    },
+    {
+      "systemId": "us.airborne",
+      "count": 12,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 7,3 k personnes / 600"
+    },
+    {
+      "systemId": "us.special-forces",
+      "count": 12,
+      "note": "forces spéciales : ≈ 7,3 k personnes / 600"
+    },
+    {
+      "systemId": "us.marines",
+      "count": 38,
+      "note": "infanterie de marine : ≈ 23 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.drones1",
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.gen3",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.missiles.sam1",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.sensors.radar1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "medium"
+}

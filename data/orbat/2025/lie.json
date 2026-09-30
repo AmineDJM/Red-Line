@@ -1,0 +1,22 @@
+{
+  "nationId": "lie",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 40000000,
+  "activePersonnel": 0,
+  "inventory": [
+    {
+      "systemId": "eu.infantry-light",
+      "count": 1,
+      "variant": "Landespolizei (≈ 125)",
+      "note": "police, pas d'armée"
+    }
+  ],
+  "research": ["research.intel.interior1"],
+  "licences": [],
+  "sources": [
+    "Estimation (budget de la police nationale ; pas d'armée depuis 1868)",
+    "Landespolizei du Liechtenstein"
+  ],
+  "confidence": "medium"
+}

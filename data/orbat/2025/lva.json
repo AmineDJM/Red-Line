@@ -1,0 +1,85 @@
+{
+  "nationId": "lva",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 1732000000,
+  "activePersonnel": 7500,
+  "inventory": [
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 4,
+      "variant": "UH-60M"
+    },
+    {
+      "systemId": "eu.cv90",
+      "count": 120,
+      "variant": "CVR(T) Scimitar/Spartan",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.patria-amv",
+      "count": 100,
+      "variant": "Patria 6x6",
+      "note": "livraisons en cours"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 47,
+      "variant": "M109A5Ö"
+    },
+    {
+      "systemId": "us.m142-himars",
+      "count": 6,
+      "variant": "M142 HIMARS"
+    },
+    {
+      "systemId": "eu.mistral",
+      "count": 15,
+      "variant": "RBS 70, Stinger",
+      "note": "≈ 60 postes de tir  soit 15 sections ; modèle le plus proche"
+    },
+    {
+      "systemId": "eu.nsm",
+      "count": 8,
+      "variant": "NSM (défense côtière)"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 5,
+      "note": "infanterie légère : ≈ 3,3 k personnes / 600 ; effectifs incluant les conscrits"
+    },
+    {
+      "systemId": "eu.infantry-mech",
+      "count": 4,
+      "note": "infanterie mécanisée / motorisée : ≈ 2,4 k personnes / 600"
+    },
+    {
+      "systemId": "eu.special-forces",
+      "count": 1,
+      "note": "forces spéciales : ≈ 0,3 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.land.gen1",
+    "research.missiles.sam1",
+    "research.naval.gen1",
+    "research.sensors.radar1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026"
+  ],
+  "confidence": "high"
+}

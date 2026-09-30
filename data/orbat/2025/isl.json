@@ -1,0 +1,34 @@
+{
+  "nationId": "isl",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 90000000,
+  "activePersonnel": 250,
+  "inventory": [
+    {
+      "systemId": "eu.gowind",
+      "count": 2,
+      "variant": "Þór, Freyja (patrouilleurs des garde-côtes)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.sa-330-puma",
+      "count": 3,
+      "variant": "H225 (garde-côtes)",
+      "note": "modèle le plus proche"
+    }
+  ],
+  "research": [
+    "research.cyber.l1",
+    "research.industry.l1",
+    "research.intel.interior1",
+    "research.naval.gen1"
+  ],
+  "licences": [],
+  "sources": [
+    "Estimation (garde-côtes et dépenses de défense ; l'Islande n'a pas d'armée)",
+    "Garde-côtes islandais",
+    "Gouvernement islandais, budget 2025"
+  ],
+  "confidence": "medium"
+}

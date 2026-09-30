@@ -1,0 +1,31 @@
+{
+  "nationId": "mdv",
+  "year": 2025,
+  "doctrine": "other",
+  "defenseBudgetUsd": 120000000,
+  "activePersonnel": 4000,
+  "inventory": [
+    {
+      "systemId": "other.bayraktar-tb2",
+      "count": 3,
+      "variant": "Bayraktar TB2"
+    },
+    {
+      "systemId": "other.infantry-light",
+      "count": 2,
+      "note": "infanterie légère : ≈ 1,5 k personnes / 600"
+    },
+    {
+      "systemId": "other.marines",
+      "count": 2,
+      "note": "infanterie de marine : ≈ 1,5 k personnes / 600"
+    }
+  ],
+  "research": ["research.intel.interior1", "research.land.gen1", "research.naval.gen1"],
+  "licences": [],
+  "sources": [
+    "Estimation (Maldives National Defence Force ; SIPRI sans donnée)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low"
+}

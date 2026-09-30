@@ -1,0 +1,21 @@
+{
+  "nationId": "gaza",
+  "year": 2025,
+  "doctrine": "other",
+  "defenseBudgetUsd": 100000000,
+  "activePersonnel": 20000,
+  "inventory": [
+    {
+      "systemId": "other.infantry-light",
+      "count": 33,
+      "note": "infanterie légère : ≈ 20 k personnes / 600 ; forces paramilitaires ; aucun matériel lourd attribué"
+    }
+  ],
+  "research": ["research.intel.interior1", "research.land.gen1"],
+  "licences": [],
+  "sources": [
+    "Estimation (financement extérieur des Brigades Izz al-Din al-Qassam et d'autres factions)",
+    "Estimations publiques des effectifs des factions armées après la guerre de 2023-2025 (cessez-le-feu d'octobre 2025)"
+  ],
+  "confidence": "low"
+}

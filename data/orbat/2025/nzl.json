@@ -1,0 +1,98 @@
+{
+  "nationId": "nzl",
+  "year": 2025,
+  "doctrine": "us",
+  "defenseBudgetUsd": 2856000000,
+  "activePersonnel": 9300,
+  "inventory": [
+    {
+      "systemId": "us.p-8-poseidon",
+      "count": 4,
+      "variant": "P-8A"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 5,
+      "variant": "C-130J-30"
+    },
+    {
+      "systemId": "eu.nh90",
+      "count": 8,
+      "variant": "NH90"
+    },
+    {
+      "systemId": "us.mh-60r-seahawk",
+      "count": 8,
+      "variant": "SH-2G(I) Seasprite",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.stryker",
+      "count": 70,
+      "variant": "NZLAV",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m777",
+      "count": 24,
+      "variant": "L119",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.mistral",
+      "count": 3,
+      "variant": "Mistral",
+      "note": "≈ 12 postes de tir  soit 3 sections"
+    },
+    {
+      "systemId": "eu.meko-a-200",
+      "count": 2,
+      "variant": "Anzac"
+    },
+    {
+      "systemId": "eu.gowind",
+      "count": 2,
+      "variant": "Protector",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.infantry-light",
+      "count": 5,
+      "note": "infanterie légère : ≈ 2,9 k personnes / 600"
+    },
+    {
+      "systemId": "us.infantry-mech",
+      "count": 2,
+      "note": "infanterie mécanisée / motorisée : ≈ 1,4 k personnes / 600"
+    },
+    {
+      "systemId": "us.special-forces",
+      "count": 1,
+      "note": "forces spéciales : ≈ 0,2 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.helo1",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.land.gen1",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.sensors.radar1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026"
+  ],
+  "confidence": "high"
+}
