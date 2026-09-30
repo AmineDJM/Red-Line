@@ -32,7 +32,8 @@ describe('renseignement : connaissance progressive des provinces étrangères', 
     // Province limitrophe (bbb-4 touche aaa-1) : aperçu.
     expect(v.provinces['bbb-4']!.intel).toMatchObject({ level: 1, economic: true, military: true });
     // Le propriétaire, lui, voit tout.
-    expect(viewFor(s, 'bbb').provinces['bbb-2']!.buildings).toEqual(BBB2);
+    // L'ordre des bâtiments dépend du module eco (tri) : comparaison d'ensembles.
+    expect([...viewFor(s, 'bbb').provinces['bbb-2']!.buildings].sort()).toEqual([...BBB2].sort());
   });
 
   it('missions ciblées : les installations militaires apparaissent progressivement, pas les économiques', () => {
@@ -145,6 +146,6 @@ describe('renseignement : connaissance progressive des provinces étrangères', 
     s.provinces['bbb-2']!.owner = 'ccc';
     const pv = viewFor(s, 'bbb').provinces['bbb-2']!;
     expect(pv.intel).toMatchObject({ level: 3, economic: true, military: true, updatedAt: 0 });
-    expect(pv.buildings).toEqual(BBB2);
+    expect([...pv.buildings].sort()).toEqual([...BBB2].sort());
   });
 });

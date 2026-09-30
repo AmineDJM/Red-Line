@@ -43,7 +43,12 @@ export function intelWorld(): World {
         ? { ...p, buildings: [...BBB5] }
         : p,
   );
-  const balance = BalanceSchema.parse({ ...BALANCE, intel: { flashBorderKm: 300 } });
+  // Répartition des bâtiments de ressources du module eco désactivée : listes de bâtiments exactes.
+  const balance = BalanceSchema.parse({
+    ...BALANCE,
+    intel: { flashBorderKm: 300 },
+    buildings: { distribute: false },
+  });
   cached = buildWorld({ ...map, provinces }, CATALOG, balance);
   return cached;
 }
