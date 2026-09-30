@@ -1,0 +1,24 @@
+{
+  "nationId": "mus",
+  "year": 2025,
+  "doctrine": "other",
+  "defenseBudgetUsd": 24000000,
+  "activePersonnel": 0,
+  "inventory": [
+    {
+      "systemId": "other.infantry-light",
+      "count": 2,
+      "variant": "Special Mobile Force (≈ 1 500)",
+      "note": "police paramilitaire, pas d'armée"
+    }
+  ],
+  "research": ["research.intel.interior1", "research.land.gen1", "research.naval.gen1"],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Police de Maurice (Special Mobile Force)"
+  ],
+  "confidence": "medium",
+  "description": "Maurice est un État insulaire de l'océan Indien sans armée. Sa sécurité repose sur la Special Mobile Force, une unité de police paramilitaire. Son garde-côtes surveille une vaste zone économique maritime.",
+  "doctrineText": "Aucune force armée : police paramilitaire."
+}

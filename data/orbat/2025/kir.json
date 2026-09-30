@@ -1,0 +1,24 @@
+{
+  "nationId": "kir",
+  "year": 2025,
+  "doctrine": "other",
+  "defenseBudgetUsd": 5000000,
+  "activePersonnel": 0,
+  "inventory": [
+    {
+      "systemId": "other.infantry-light",
+      "count": 1,
+      "variant": "Kiribati Police Service",
+      "note": "police, pas d'armée"
+    }
+  ],
+  "research": ["research.intel.interior1"],
+  "licences": [],
+  "sources": [
+    "Estimation (budget de la police ; pas d'armée)",
+    "Estimation (forces de police nationales)"
+  ],
+  "confidence": "low",
+  "description": "Les Kiribati sont un État d'atolls dispersés sur le Pacifique central. Elles n'ont pas d'armée. Leur zone économique maritime est l'une des plus vastes du Pacifique.",
+  "doctrineText": "Aucune force armée : police."
+}

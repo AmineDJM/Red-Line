@@ -1,0 +1,272 @@
+{
+  "nationId": "are",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 23000000000,
+  "activePersonnel": 63000,
+  "inventory": [
+    {
+      "systemId": "us.f-16",
+      "count": 78,
+      "variant": "F-16E/F Block 60"
+    },
+    {
+      "systemId": "eu.mirage-2000",
+      "count": 59,
+      "variant": "Mirage 2000-9"
+    },
+    {
+      "systemId": "eu.globaleye",
+      "count": 5,
+      "variant": "GlobalEye"
+    },
+    {
+      "systemId": "eu.globaleye",
+      "count": 2,
+      "variant": "Saab 340 Erieye",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.a330-mrtt",
+      "count": 3,
+      "variant": "A330 MRTT"
+    },
+    {
+      "systemId": "us.c-17-globemaster-iii",
+      "count": 8,
+      "variant": "C-17A"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 5,
+      "variant": "C-130H/J"
+    },
+    {
+      "systemId": "us.ah-64-apache",
+      "count": 28,
+      "variant": "AH-64D/E"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 100,
+      "variant": "UH-60L/M"
+    },
+    {
+      "systemId": "us.ch-47-chinook",
+      "count": 20,
+      "variant": "CH-47F"
+    },
+    {
+      "systemId": "cn.wing-loong-ii",
+      "count": 25,
+      "variant": "Wing Loong I/II"
+    },
+    {
+      "systemId": "eu.leclerc",
+      "count": 340,
+      "variant": "Leclerc"
+    },
+    {
+      "systemId": "ru.bmp-3",
+      "count": 400,
+      "variant": "BMP-3"
+    },
+    {
+      "systemId": "us.stryker",
+      "count": 400,
+      "variant": "Rabdan",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.btr-82a",
+      "count": 90,
+      "variant": "BTR-3U",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.caesar",
+      "count": 78,
+      "variant": "G6 Rhino",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 80,
+      "variant": "M109A3"
+    },
+    {
+      "systemId": "us.m142-himars",
+      "count": 20,
+      "variant": "M142 HIMARS"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 48,
+      "variant": "Jobaria",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bm-30-smerch",
+      "count": 6,
+      "variant": "BM-30 Smerch"
+    },
+    {
+      "systemId": "us.atacms",
+      "count": 100,
+      "variant": "ATACMS"
+    },
+    {
+      "systemId": "us.thaad",
+      "count": 2,
+      "variant": "THAAD",
+      "note": "≈ 12 lanceurs  soit 2 batteries ; 2 batteries"
+    },
+    {
+      "systemId": "us.patriot",
+      "count": 7,
+      "variant": "Patriot PAC-3",
+      "note": "≈ 40 lanceurs  soit 7 batteries"
+    },
+    {
+      "systemId": "ru.pantsir-s1",
+      "count": 50,
+      "variant": "Pantsir-S1"
+    },
+    {
+      "systemId": "us.nasams",
+      "count": 2,
+      "variant": "KM-SAM Cheongung II",
+      "note": "≈ 10 lanceurs  soit 2 batteries ; modèle le plus proche"
+    },
+    {
+      "systemId": "us.mim-23-hawk",
+      "count": 3,
+      "variant": "Improved Hawk",
+      "note": "≈ 20 lanceurs  soit 3 batteries"
+    },
+    {
+      "systemId": "eu.crotale",
+      "count": 20,
+      "variant": "Crotale"
+    },
+    {
+      "systemId": "eu.mistral",
+      "count": 25,
+      "variant": "Mistral",
+      "note": "≈ 100 postes de tir  soit 25 sections"
+    },
+    {
+      "systemId": "eu.scalp-storm-shadow",
+      "count": 100,
+      "variant": "Black Shaheen"
+    },
+    {
+      "systemId": "eu.exocet",
+      "count": 50,
+      "variant": "Exocet MM40"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 50,
+      "variant": "Harpoon"
+    },
+    {
+      "systemId": "eu.gowind",
+      "count": 6,
+      "variant": "Baynunah",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.gowind",
+      "count": 3,
+      "variant": "Bani Yas (Gowind), Abu Dhabi"
+    },
+    {
+      "systemId": "eu.optical-recon-satellite",
+      "count": 1,
+      "variant": "FalconEye"
+    },
+    {
+      "systemId": "us.an-tpy-2",
+      "count": 2,
+      "variant": "AN/TPY-2 (THAAD)"
+    },
+    {
+      "systemId": "eu.ground-master-400",
+      "count": 4,
+      "variant": "GM400",
+      "note": "estimation"
+    },
+    {
+      "systemId": "other.el-m-2084",
+      "count": 2,
+      "variant": "EL/M-2084",
+      "note": "estimation"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 44,
+      "note": "infanterie légère : ≈ 26,3 k personnes / 600 ; armée de terre et Garde présidentielle"
+    },
+    {
+      "systemId": "eu.infantry-mech",
+      "count": 42,
+      "note": "infanterie mécanisée / motorisée : ≈ 25,2 k personnes / 600"
+    },
+    {
+      "systemId": "eu.airborne",
+      "count": 3,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 1,7 k personnes / 600"
+    },
+    {
+      "systemId": "eu.special-forces",
+      "count": 5,
+      "note": "forces spéciales : ≈ 2,8 k personnes / 600"
+    },
+    {
+      "systemId": "eu.marines",
+      "count": 2,
+      "note": "infanterie de marine : ≈ 1 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.drones1",
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.drones2",
+    "research.aero.gen3",
+    "research.aero.gen4",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.cyber.l3",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.intel.interior3",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.missiles.ballistic1",
+    "research.missiles.sam1",
+    "research.missiles.sam2",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.gen3",
+    "research.sensors.radar1",
+    "research.sensors.radar2",
+    "research.sensors.space1"
+  ],
+  "licences": [],
+  "sources": [
+    "Estimation IISS (SIPRI sans donnée publique depuis 2014)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "medium",
+  "description": "Fédération de sept émirats sur la rive sud du golfe Persique, les Émirats arabes unis disposent de l'une des armées les plus modernes et les plus expérimentées du monde arabe. Ils contrôlent une façade sur le golfe d'Oman qui permet de contourner le détroit d'Ormuz. Leur industrie de défense se développe rapidement. Ils ont été visés par des frappes iraniennes lors de la guerre de 2026.",
+  "doctrineText": "Arsenal occidental moderne (F-16 Block 60, Mirage 2000-9, Leclerc, THAAD, GlobalEye) complété par des matériels russes et chinois. Doctrine de défense aérienne et de projection régionale."
+}

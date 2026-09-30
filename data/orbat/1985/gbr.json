@@ -1,0 +1,294 @@
+{
+  "nationId": "gbr",
+  "year": 1985,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 26032000000,
+  "activePersonnel": 327100,
+  "inventory": [
+    {
+      "systemId": "eu.tornado",
+      "count": 220,
+      "variant": "Tornado GR1/F2"
+    },
+    {
+      "systemId": "us.f-4-phantom-ii",
+      "count": 120,
+      "variant": "Phantom FGR2/FG1"
+    },
+    {
+      "systemId": "us.av-8b-harrier-ii",
+      "count": 100,
+      "variant": "Harrier GR3, Sea Harrier FRS1"
+    },
+    {
+      "systemId": "eu.tornado",
+      "count": 90,
+      "variant": "SEPECAT Jaguar GR1",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.tornado",
+      "count": 60,
+      "variant": "Buccaneer S2",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.hawk",
+      "count": 170,
+      "variant": "Hawk T1"
+    },
+    {
+      "systemId": "us.e-3-sentry",
+      "count": 6,
+      "variant": "Shackleton AEW2",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.kc-135-stratotanker",
+      "count": 30,
+      "variant": "Victor K2, VC10 K2/K3",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 60,
+      "variant": "Hercules C1/C3"
+    },
+    {
+      "systemId": "eu.gazelle",
+      "count": 160,
+      "variant": "Gazelle AH1"
+    },
+    {
+      "systemId": "eu.gazelle",
+      "count": 150,
+      "variant": "Lynx AH1/HAS2",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.sa-330-puma",
+      "count": 40,
+      "variant": "Puma HC1"
+    },
+    {
+      "systemId": "us.ch-47-chinook",
+      "count": 30,
+      "variant": "Chinook HC1"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 100,
+      "variant": "Sea King HAS5/HC4",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.uh-1-huey",
+      "count": 80,
+      "variant": "Wessex",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.leopard-1",
+      "count": 900,
+      "variant": "Chieftain Mk5",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.leopard-2a7",
+      "count": 200,
+      "variant": "Challenger 1",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 2500,
+      "variant": "FV432",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.amx-30",
+      "count": 300,
+      "variant": "Scorpion, Scimitar",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 300,
+      "variant": "M109A2, Abbot, M110",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 70,
+      "variant": "FH-70",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.tochka-u",
+      "count": 12,
+      "variant": "MGM-52 Lance",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.crotale",
+      "count": 400,
+      "variant": "Rapier",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.mim-23-hawk",
+      "count": 11,
+      "variant": "Bloodhound Mk2",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.stinger",
+      "count": 200,
+      "variant": "Blowpipe, Javelin",
+      "note": "≈ 800 postes de tir  soit 200 sections ; modèle le plus proche"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 200,
+      "variant": "Sea Eagle, Harpoon, Exocet",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.trident-ii-d5",
+      "count": 64,
+      "variant": "Polaris A3TK (Chevaline)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.b61-12",
+      "count": 150,
+      "variant": "WE.177",
+      "note": "bombes nucléaires | modèle le plus proche"
+    },
+    {
+      "systemId": "us.nimitz",
+      "count": 3,
+      "variant": "Invincible, Illustrious, Ark Royal",
+      "note": "modèle le plus proche (porte-aéronefs ADAV)"
+    },
+    {
+      "systemId": "ru.udaloy",
+      "count": 14,
+      "variant": "Type 42, County",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.udaloy",
+      "count": 40,
+      "variant": "Type 22, Type 21, Leander",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.delta-iv",
+      "count": 4,
+      "variant": "Resolution (SSBN)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.type-209",
+      "count": 13,
+      "variant": "Oberon",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.type-209",
+      "count": 14,
+      "variant": "Swiftsure, Trafalgar, Churchill (SSN)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.an-fps-132-uewr",
+      "count": 1,
+      "variant": "BMEWS (Fylingdales)"
+    },
+    {
+      "systemId": "us.an-tps-75",
+      "count": 10,
+      "variant": "radars UKADGE",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 159,
+      "note": "infanterie légère : ≈ 95,6 k personnes / 600"
+    },
+    {
+      "systemId": "eu.infantry-mech",
+      "count": 95,
+      "note": "infanterie mécanisée / motorisée : ≈ 56,7 k personnes / 600"
+    },
+    {
+      "systemId": "eu.airborne",
+      "count": 14,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 8,1 k personnes / 600"
+    },
+    {
+      "systemId": "eu.special-forces",
+      "count": 3,
+      "note": "forces spéciales : ≈ 1,6 k personnes / 600"
+    },
+    {
+      "systemId": "eu.marines",
+      "count": 13,
+      "note": "infanterie de marine : ≈ 7,8 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.transport",
+    "research.aero.bomber1",
+    "research.aero.gen3",
+    "research.aero.helo2",
+    "research.aero.tanker",
+    "research.aero.gen4",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.intel.exterior3",
+    "research.intel.interior3",
+    "research.intel.military3",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.gen3",
+    "research.land.composite-armor",
+    "research.land.ew",
+    "research.land.gen4",
+    "research.missiles.ballistic1",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.missiles.ballistic2",
+    "research.missiles.sam2",
+    "research.missiles.ballistic3",
+    "research.missiles.sam3",
+    "research.nuclear.weapons",
+    "research.nuclear.slbm",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.naval.gen3",
+    "research.naval.sub2",
+    "research.naval.carrier",
+    "research.naval.ssbn",
+    "research.sensors.radar1",
+    "research.sensors.radar2",
+    "research.sensors.space1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 1985, dollars courants)",
+    "IISS, The Military Balance 1985-1986 (ordres de grandeur)",
+    "SIPRI Military Expenditure Database (dépenses 1985, dollars courants)"
+  ],
+  "confidence": "medium"
+}

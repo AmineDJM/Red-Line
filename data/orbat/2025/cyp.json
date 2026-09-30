@@ -1,0 +1,113 @@
+{
+  "nationId": "cyp",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 663000000,
+  "activePersonnel": 12000,
+  "inventory": [
+    {
+      "systemId": "ru.t-80bvm",
+      "count": 82,
+      "variant": "T-80U",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.amx-30",
+      "count": 50,
+      "variant": "AMX-30B2"
+    },
+    {
+      "systemId": "ru.bmp-3",
+      "count": 43,
+      "variant": "BMP-3"
+    },
+    {
+      "systemId": "eu.vab",
+      "count": 100,
+      "variant": "VAB"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 150,
+      "variant": "Leonidas",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.caesar",
+      "count": 12,
+      "variant": "Zuzana",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 18,
+      "variant": "BM-21"
+    },
+    {
+      "systemId": "ru.tor-m2",
+      "count": 6,
+      "variant": "Tor-M1",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "other.davids-sling",
+      "count": 1,
+      "variant": "Barak MX",
+      "note": "≈ 4 lanceurs  soit 1 batterie ; modèle le plus proche"
+    },
+    {
+      "systemId": "eu.crotale",
+      "count": 12,
+      "variant": "Aspide",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.mistral",
+      "count": 12,
+      "variant": "Mistral",
+      "note": "≈ 50 postes de tir  soit 12 sections"
+    },
+    {
+      "systemId": "eu.exocet",
+      "count": 24,
+      "variant": "Exocet MM40 (défense côtière)"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 11,
+      "note": "infanterie légère : ≈ 6,6 k personnes / 600 ; Garde nationale, conscrits compris"
+    },
+    {
+      "systemId": "eu.infantry-mech",
+      "count": 6,
+      "note": "infanterie mécanisée / motorisée : ≈ 3,3 k personnes / 600"
+    },
+    {
+      "systemId": "eu.special-forces",
+      "count": 2,
+      "note": "forces spéciales : ≈ 1,1 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.helo1",
+    "research.cyber.l1",
+    "research.industry.l1",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.interior2",
+    "research.land.gen1",
+    "research.missiles.sam1",
+    "research.naval.gen1",
+    "research.sensors.radar1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026"
+  ],
+  "confidence": "medium",
+  "description": "Troisième île de la Méditerranée, Chypre est divisée depuis 1974 entre la République de Chypre, membre de l'Union européenne, et une partie nord administrée par une entité soutenue par la Turquie. Sa Garde nationale repose sur la conscription. Elle accueille deux bases souveraines britanniques.",
+  "doctrineText": "Arsenal d'origines russe et occidentale (T-80U, BMP-3, Tor, Barak MX). Doctrine de défense de l'île en attendant des renforts."
+}

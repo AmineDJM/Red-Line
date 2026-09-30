@@ -1,0 +1,292 @@
+{
+  "nationId": "idn",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 15025000000,
+  "activePersonnel": 404500,
+  "inventory": [
+    {
+      "systemId": "us.f-16",
+      "count": 33,
+      "variant": "F-16C/D, F-16A/B"
+    },
+    {
+      "systemId": "ru.su-30",
+      "count": 11,
+      "variant": "Su-30MK/MK2"
+    },
+    {
+      "systemId": "ru.su-27",
+      "count": 5,
+      "variant": "Su-27SK/SKM"
+    },
+    {
+      "systemId": "eu.rafale",
+      "count": 6,
+      "variant": "Rafale",
+      "note": "premières livraisons (42 commandés)"
+    },
+    {
+      "systemId": "eu.hawk",
+      "count": 20,
+      "variant": "Hawk 109/209"
+    },
+    {
+      "systemId": "other.fa-50",
+      "count": 13,
+      "variant": "T-50i",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "other.a-29-super-tucano",
+      "count": 15,
+      "variant": "EMB-314 Super Tucano"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 30,
+      "variant": "C-130B/H/J"
+    },
+    {
+      "systemId": "eu.c-295",
+      "count": 20,
+      "variant": "C-295 / CN-235"
+    },
+    {
+      "systemId": "eu.a400m-atlas",
+      "count": 1,
+      "variant": "A400M",
+      "note": "premières livraisons"
+    },
+    {
+      "systemId": "us.ah-64-apache",
+      "count": 8,
+      "variant": "AH-64E"
+    },
+    {
+      "systemId": "ru.mi-24",
+      "count": 7,
+      "variant": "Mi-35P"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 20,
+      "variant": "Mi-17V5"
+    },
+    {
+      "systemId": "us.uh-1-huey",
+      "count": 40,
+      "variant": "Bell 412 / NBell 412"
+    },
+    {
+      "systemId": "eu.sa-330-puma",
+      "count": 30,
+      "variant": "AS332, H225M Caracal"
+    },
+    {
+      "systemId": "eu.gazelle",
+      "count": 20,
+      "variant": "AS550 Fennec",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.ch-4",
+      "count": 6,
+      "variant": "CH-4B"
+    },
+    {
+      "systemId": "eu.leopard-2a7",
+      "count": 103,
+      "variant": "Leopard 2A4 / 2RI",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.amx-30",
+      "count": 150,
+      "variant": "AMX-13 / Scorpion",
+      "note": "chars légers, modèle le plus proche"
+    },
+    {
+      "systemId": "eu.puma",
+      "count": 50,
+      "variant": "Marder 1A3",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bmp-3",
+      "count": 55,
+      "variant": "BMP-3F (infanterie de marine)"
+    },
+    {
+      "systemId": "ru.btr-80",
+      "count": 100,
+      "variant": "BTR-4, BTR-50, BTR-80A",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.vab",
+      "count": 400,
+      "variant": "Pindad Anoa",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.caesar",
+      "count": 73,
+      "variant": "CAESAR"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 36,
+      "variant": "M109A4"
+    },
+    {
+      "systemId": "us.m777",
+      "count": 150,
+      "variant": "obusiers remorqués 105/155 mm",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m270-mlrs",
+      "count": 36,
+      "variant": "ASTROS II",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 20,
+      "variant": "RM-70",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.nasams",
+      "count": 2,
+      "variant": "NASAMS",
+      "note": "≈ 6 lanceurs  soit 2 batteries"
+    },
+    {
+      "systemId": "eu.mistral",
+      "count": 25,
+      "variant": "Mistral, QW-3, Starstreak",
+      "note": "≈ 100 postes de tir  soit 25 sections ; modèle le plus proche"
+    },
+    {
+      "systemId": "eu.skynex",
+      "count": 6,
+      "variant": "Oerlikon Skyshield",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.exocet",
+      "count": 60,
+      "variant": "Exocet MM40"
+    },
+    {
+      "systemId": "cn.c-802",
+      "count": 60,
+      "variant": "C-705 / C-802"
+    },
+    {
+      "systemId": "ru.p-800-oniks",
+      "count": 30,
+      "variant": "Yakhont (défense côtière)"
+    },
+    {
+      "systemId": "eu.gowind",
+      "count": 2,
+      "variant": "Martadinata (SIGMA 10514)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.gowind",
+      "count": 7,
+      "variant": "Diponegoro (SIGMA 9113), Bung Tomo",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.meko-a-200",
+      "count": 4,
+      "variant": "Ahmad Yani (Van Speijk)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.fremm",
+      "count": 2,
+      "variant": "Brawijaya (PPA)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.type-022",
+      "count": 20,
+      "variant": "KCR-40/60, Clurit",
+      "note": "vedettes lance-missiles, modèle le plus proche"
+    },
+    {
+      "systemId": "eu.type-209",
+      "count": 4,
+      "variant": "Nagapasa (Chang Bogo), Cakra"
+    },
+    {
+      "systemId": "eu.ground-master-400",
+      "count": 20,
+      "variant": "GM403, Master-T",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 405,
+      "note": "infanterie légère : ≈ 243 k personnes / 600"
+    },
+    {
+      "systemId": "eu.infantry-mech",
+      "count": 60,
+      "note": "infanterie mécanisée / motorisée : ≈ 36 k personnes / 600"
+    },
+    {
+      "systemId": "eu.airborne",
+      "count": 25,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 15 k personnes / 600"
+    },
+    {
+      "systemId": "eu.special-forces",
+      "count": 10,
+      "note": "forces spéciales : ≈ 6 k personnes / 600"
+    },
+    {
+      "systemId": "eu.marines",
+      "count": 33,
+      "note": "infanterie de marine : ≈ 20 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.drones1",
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.gen3",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.missiles.sam1",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.naval.gen3",
+    "research.sensors.radar1"
+  ],
+  "licences": ["eu.c-295", "other.kf-21"],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "medium",
+  "description": "Plus grand archipel du monde avec plus de 17 000 îles, l'Indonésie contrôle des détroits essentiels au commerce mondial, dont Malacca et la Sonde. Quatrième pays le plus peuplé, elle dispose d'une armée de terre nombreuse répartie sur tout le territoire. Elle modernise sa marine et son aviation avec des Rafale et des sous-marins. Elle pratique une politique étrangère de non-alignement.",
+  "doctrineText": "Arsenal très diversifié (américain, russe, européen, sud-coréen), en cours de modernisation. Doctrine de défense archipélagique et de sécurité des détroits."
+}

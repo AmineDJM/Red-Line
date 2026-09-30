@@ -1,0 +1,70 @@
+{
+  "nationId": "rwa",
+  "year": 2025,
+  "doctrine": "ru",
+  "defenseBudgetUsd": 191000000,
+  "activePersonnel": 33000,
+  "inventory": [
+    {
+      "systemId": "ru.mi-8",
+      "count": 6,
+      "variant": "Mi-17"
+    },
+    {
+      "systemId": "ru.mi-24",
+      "count": 5,
+      "variant": "Mi-24/35"
+    },
+    {
+      "systemId": "ru.t-55",
+      "count": 24,
+      "variant": "T-54/T-55"
+    },
+    {
+      "systemId": "ru.brdm-2",
+      "count": 20,
+      "variant": "BRDM-2"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 30,
+      "variant": "D-30"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 5,
+      "variant": "RM-70",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.infantry-light",
+      "count": 49,
+      "note": "infanterie légère : ≈ 29,4 k personnes / 600"
+    },
+    {
+      "systemId": "ru.infantry-mech",
+      "count": 2,
+      "note": "infanterie mécanisée / motorisée : ≈ 1 k personnes / 600"
+    },
+    {
+      "systemId": "ru.spetsnaz",
+      "count": 3,
+      "note": "forces spéciales : ≈ 1,6 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.helo1",
+    "research.industry.l1",
+    "research.intel.interior1",
+    "research.intel.interior2",
+    "research.land.gen1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low",
+  "description": "Le Rwanda est un petit pays enclavé et densément peuplé de la région des Grands Lacs. Son armée, très disciplinée, est engagée dans plusieurs pays africains. Ses troupes sont déployées au Mozambique et en Centrafrique.",
+  "doctrineText": "Forces légères aguerries. Doctrine d'intervention régionale."
+}

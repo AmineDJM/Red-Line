@@ -1,0 +1,53 @@
+{
+  "nationId": "nam",
+  "year": 2025,
+  "doctrine": "cn",
+  "defenseBudgetUsd": 411000000,
+  "activePersonnel": 9900,
+  "inventory": [
+    {
+      "systemId": "cn.k-8-karakorum",
+      "count": 4,
+      "variant": "K-8"
+    },
+    {
+      "systemId": "cn.j-7",
+      "count": 6,
+      "variant": "F-7NM"
+    },
+    {
+      "systemId": "cn.z-9",
+      "count": 2,
+      "variant": "Z-9"
+    },
+    {
+      "systemId": "ru.t-55",
+      "count": 10,
+      "variant": "T-54/T-55"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 12,
+      "variant": "D-30"
+    },
+    {
+      "systemId": "cn.infantry-light",
+      "count": 15,
+      "note": "infanterie légère : ≈ 9 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.helo1",
+    "research.industry.l1",
+    "research.intel.interior1",
+    "research.land.gen1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low",
+  "description": "La Namibie borde l'Atlantique en Afrique australe et comprend le désert du Namib. Ses forces armées sont réduites et équipées de matériel chinois. Sa côte atlantique abrite le port en eau profonde de Walvis Bay.",
+  "doctrineText": "Forces légères d'origine chinoise. Doctrine de défense territoriale."
+}

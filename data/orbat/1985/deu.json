@@ -1,0 +1,216 @@
+{
+  "nationId": "deu",
+  "year": 1985,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 18666000000,
+  "activePersonnel": 478000,
+  "inventory": [
+    {
+      "systemId": "us.f-4-phantom-ii",
+      "count": 260,
+      "variant": "F-4F, RF-4E"
+    },
+    {
+      "systemId": "eu.tornado",
+      "count": 250,
+      "variant": "Tornado IDS (Luftwaffe, Marineflieger)"
+    },
+    {
+      "systemId": "eu.alpha-jet",
+      "count": 175,
+      "variant": "Alpha Jet A"
+    },
+    {
+      "systemId": "us.f-5e",
+      "count": 150,
+      "variant": "F-104G Starfighter",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 85,
+      "variant": "C-160 Transall",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.gazelle",
+      "count": 210,
+      "variant": "Bo 105 PAH-1",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.uh-1-huey",
+      "count": 200,
+      "variant": "UH-1D"
+    },
+    {
+      "systemId": "us.ch-47-chinook",
+      "count": 110,
+      "variant": "CH-53G",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 22,
+      "variant": "Sea King Mk41",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.leopard-2a7",
+      "count": 1800,
+      "variant": "Leopard 2A1-A4",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.leopard-1",
+      "count": 2400,
+      "variant": "Leopard 1A1-A4"
+    },
+    {
+      "systemId": "us.m60-patton",
+      "count": 650,
+      "variant": "M48A2GA2",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m2-bradley",
+      "count": 2100,
+      "variant": "Marder 1",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 4000,
+      "variant": "M113"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 600,
+      "variant": "M109A3G"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 200,
+      "variant": "M110A2",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 200,
+      "variant": "FH-70, M101",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.tochka-u",
+      "count": 26,
+      "variant": "MGM-52 Lance",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.gepard",
+      "count": 420,
+      "variant": "Gepard"
+    },
+    {
+      "systemId": "eu.crotale",
+      "count": 140,
+      "variant": "Roland",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.mim-23-hawk",
+      "count": 36,
+      "variant": "Improved Hawk"
+    },
+    {
+      "systemId": "us.mim-23-hawk",
+      "count": 24,
+      "variant": "Nike Hercules",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.stinger",
+      "count": 75,
+      "variant": "Redeye, Stinger",
+      "note": "≈ 300 postes de tir  soit 75 sections"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 150,
+      "variant": "Harpoon, Kormoran",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.udaloy",
+      "count": 11,
+      "variant": "Lütjens, Hamburg, Bremen",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.type-209",
+      "count": 24,
+      "variant": "Type 205/206",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 246,
+      "note": "infanterie légère : ≈ 147,6 k personnes / 600 ; République fédérale d'Allemagne"
+    },
+    {
+      "systemId": "eu.infantry-mech",
+      "count": 280,
+      "note": "infanterie mécanisée / motorisée : ≈ 167,8 k personnes / 600"
+    },
+    {
+      "systemId": "eu.airborne",
+      "count": 28,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 16,8 k personnes / 600"
+    },
+    {
+      "systemId": "eu.special-forces",
+      "count": 6,
+      "note": "forces spéciales : ≈ 3,4 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.transport",
+    "research.aero.gen3",
+    "research.aero.helo2",
+    "research.aero.gen4",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.gen3",
+    "research.land.composite-armor",
+    "research.land.ew",
+    "research.land.gen4",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.missiles.sam2",
+    "research.missiles.sam3",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.naval.gen3",
+    "research.naval.sub2",
+    "research.sensors.radar1",
+    "research.sensors.radar2"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 1985, dollars courants)",
+    "IISS, The Military Balance 1985-1986 (ordres de grandeur)",
+    "SIPRI Military Expenditure Database (dépenses 1985, dollars courants)"
+  ],
+  "confidence": "medium"
+}

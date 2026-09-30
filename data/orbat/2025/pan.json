@@ -1,0 +1,37 @@
+{
+  "nationId": "pan",
+  "year": 2025,
+  "doctrine": "other",
+  "defenseBudgetUsd": 800000000,
+  "activePersonnel": 0,
+  "inventory": [
+    {
+      "systemId": "other.infantry-light",
+      "count": 7,
+      "variant": "SENAFRONT, SENAN (≈ 4 000)",
+      "note": "forces de sécurité, pas d'armée"
+    },
+    {
+      "systemId": "us.uh-1-huey",
+      "count": 10,
+      "variant": "UH-1H, Bell 412, AW139",
+      "note": "modèle le plus proche"
+    }
+  ],
+  "research": [
+    "research.aero.helo1",
+    "research.industry.l1",
+    "research.intel.interior1",
+    "research.intel.interior2",
+    "research.land.gen1",
+    "research.naval.gen1"
+  ],
+  "licences": [],
+  "sources": [
+    "Estimation (forces publiques : SENAFRONT, SENAN ; pas d'armée depuis 1990)",
+    "Ministère de la Sécurité publique du Panama"
+  ],
+  "confidence": "medium",
+  "description": "Le Panama contrôle le canal reliant l'Atlantique au Pacifique. Il n'a plus d'armée depuis 1990 ; sa sécurité est assurée par des forces publiques de police, de frontière et de garde-côtes. Le canal est un axe stratégique pour la marine et le commerce mondiaux.",
+  "doctrineText": "Aucune force armée : forces de sécurité publique."
+}

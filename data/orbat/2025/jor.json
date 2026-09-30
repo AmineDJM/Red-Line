@@ -1,0 +1,157 @@
+{
+  "nationId": "jor",
+  "year": 2025,
+  "doctrine": "us",
+  "defenseBudgetUsd": 2555000000,
+  "activePersonnel": 100500,
+  "inventory": [
+    {
+      "systemId": "us.f-16",
+      "count": 45,
+      "variant": "F-16AM/BM"
+    },
+    {
+      "systemId": "us.f-16",
+      "count": 4,
+      "variant": "F-16 Block 70",
+      "note": "premières livraisons"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 5,
+      "variant": "C-130E/H"
+    },
+    {
+      "systemId": "eu.c-295",
+      "count": 3,
+      "variant": "C-295"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 30,
+      "variant": "UH-60A/L/M"
+    },
+    {
+      "systemId": "eu.challenger-2",
+      "count": 180,
+      "variant": "Al-Hussein (Challenger 1)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m60-patton",
+      "count": 100,
+      "variant": "M60A3 Phoenix"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 600,
+      "variant": "M113A1/A2"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 450,
+      "variant": "YPR-765",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.puma",
+      "count": 50,
+      "variant": "Marder 1A3",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 250,
+      "variant": "M109A2/A5, M110A2"
+    },
+    {
+      "systemId": "us.m142-himars",
+      "count": 12,
+      "variant": "M142 HIMARS"
+    },
+    {
+      "systemId": "us.patriot",
+      "count": 3,
+      "variant": "Patriot PAC-2",
+      "note": "≈ 16 lanceurs  soit 3 batteries"
+    },
+    {
+      "systemId": "us.mim-23-hawk",
+      "count": 3,
+      "variant": "Improved Hawk",
+      "note": "≈ 20 lanceurs  soit 3 batteries"
+    },
+    {
+      "systemId": "ru.9k33-osa",
+      "count": 40,
+      "variant": "9K33 Osa"
+    },
+    {
+      "systemId": "ru.strela-10",
+      "count": 50,
+      "variant": "Strela-10"
+    },
+    {
+      "systemId": "ru.igla",
+      "count": 25,
+      "variant": "Igla",
+      "note": "≈ 100 postes de tir  soit 25 sections"
+    },
+    {
+      "systemId": "us.an-tps-75",
+      "count": 6,
+      "variant": "AN/TPS-77, AN/FPS-117",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.infantry-light",
+      "count": 89,
+      "note": "infanterie légère : ≈ 53,3 k personnes / 600"
+    },
+    {
+      "systemId": "us.infantry-mech",
+      "count": 43,
+      "note": "infanterie mécanisée / motorisée : ≈ 25,8 k personnes / 600"
+    },
+    {
+      "systemId": "us.airborne",
+      "count": 4,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 2,6 k personnes / 600"
+    },
+    {
+      "systemId": "us.special-forces",
+      "count": 7,
+      "note": "forces spéciales : ≈ 4,3 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.gen3",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.intel.interior3",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.missiles.sam1",
+    "research.naval.gen1",
+    "research.sensors.radar1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "medium",
+  "description": "La Jordanie occupe une position charnière entre Israël, la Syrie, l'Irak et l'Arabie saoudite. Son armée professionnelle est réputée pour sa discipline et ses forces spéciales. Elle accueille des forces alliées et a été visée par des frappes en 2026.",
+  "doctrineText": "Arsenal américain et britannique (F-16, Challenger 1, M60, Patriot). Doctrine de défense des frontières et de sécurité régionale."
+}

@@ -1,0 +1,28 @@
+{
+  "nationId": "caf",
+  "year": 2025,
+  "doctrine": "ru",
+  "defenseBudgetUsd": 74000000,
+  "activePersonnel": 9150,
+  "inventory": [
+    {
+      "systemId": "ru.brdm-2",
+      "count": 10,
+      "variant": "BRDM-2"
+    },
+    {
+      "systemId": "ru.infantry-light",
+      "count": 15,
+      "note": "infanterie légère : ≈ 9 k personnes / 600 ; instructeurs et paramilitaires russes (Africa Corps) non comptés"
+    }
+  ],
+  "research": ["research.intel.interior1", "research.land.gen1"],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low",
+  "description": "La Centrafrique est un pays enclavé d'Afrique centrale en proie à des conflits armés prolongés. Ses forces armées sont appuyées par des paramilitaires russes. Une mission de maintien de la paix des Nations unies y est déployée depuis 2014.",
+  "doctrineText": "Forces légères. Doctrine de sécurité intérieure."
+}

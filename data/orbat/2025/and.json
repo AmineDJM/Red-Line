@@ -1,0 +1,24 @@
+{
+  "nationId": "and",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 30000000,
+  "activePersonnel": 240,
+  "inventory": [
+    {
+      "systemId": "eu.infantry-light",
+      "count": 1,
+      "variant": "Cos de Policia (≈ 240)",
+      "note": "police, pas d'armée"
+    }
+  ],
+  "research": ["research.intel.interior1"],
+  "licences": [],
+  "sources": [
+    "Estimation (budget de la police ; Andorre n'a pas d'armée)",
+    "Cos de Policia d'Andorra"
+  ],
+  "confidence": "medium",
+  "description": "Andorre est une principauté pyrénéenne enclavée entre la France et l'Espagne. Elle n'a pas d'armée, sa défense étant assurée par ses deux voisins. Seule sa police dispose de moyens de sécurité.",
+  "doctrineText": "Aucune force armée : police nationale uniquement."
+}

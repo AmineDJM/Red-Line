@@ -1,0 +1,288 @@
+{
+  "nationId": "aus",
+  "year": 2025,
+  "doctrine": "us",
+  "defenseBudgetUsd": 35327000000,
+  "activePersonnel": 58600,
+  "inventory": [
+    {
+      "systemId": "us.f-35",
+      "count": 72,
+      "variant": "F-35A"
+    },
+    {
+      "systemId": "us.fa-18e",
+      "count": 24,
+      "variant": "F/A-18F Super Hornet"
+    },
+    {
+      "systemId": "us.ea-18g-growler",
+      "count": 11,
+      "variant": "EA-18G Growler"
+    },
+    {
+      "systemId": "eu.hawk",
+      "count": 33,
+      "variant": "Hawk 127"
+    },
+    {
+      "systemId": "us.e-7-wedgetail",
+      "count": 6,
+      "variant": "E-7A Wedgetail"
+    },
+    {
+      "systemId": "eu.a330-mrtt",
+      "count": 7,
+      "variant": "KC-30A"
+    },
+    {
+      "systemId": "us.c-17-globemaster-iii",
+      "count": 8,
+      "variant": "C-17A"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 12,
+      "variant": "C-130J-30"
+    },
+    {
+      "systemId": "eu.c-295",
+      "count": 10,
+      "variant": "C-27J Spartan",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.p-8-poseidon",
+      "count": 14,
+      "variant": "P-8A"
+    },
+    {
+      "systemId": "us.rq-4-global-hawk",
+      "count": 3,
+      "variant": "MQ-4C Triton"
+    },
+    {
+      "systemId": "us.ah-64-apache",
+      "count": 10,
+      "variant": "AH-64E",
+      "note": "livraisons en cours (29 commandés)"
+    },
+    {
+      "systemId": "eu.tigre",
+      "count": 22,
+      "variant": "Tiger ARH",
+      "note": "retrait en cours"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 40,
+      "variant": "UH-60M"
+    },
+    {
+      "systemId": "us.ch-47-chinook",
+      "count": 14,
+      "variant": "CH-47F"
+    },
+    {
+      "systemId": "us.mh-60r-seahawk",
+      "count": 26,
+      "variant": "MH-60R"
+    },
+    {
+      "systemId": "us.m1a2-abrams",
+      "count": 75,
+      "variant": "M1A2 SEPv3"
+    },
+    {
+      "systemId": "us.m1a2-abrams",
+      "count": 40,
+      "variant": "M1A1 AIM",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.boxer",
+      "count": 150,
+      "variant": "Boxer CRV"
+    },
+    {
+      "systemId": "us.stryker",
+      "count": 150,
+      "variant": "ASLAV",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 400,
+      "variant": "M113AS4"
+    },
+    {
+      "systemId": "us.m2-bradley",
+      "count": 20,
+      "variant": "AS21 Redback",
+      "note": "premières livraisons, modèle le plus proche"
+    },
+    {
+      "systemId": "us.m777",
+      "count": 54,
+      "variant": "M777A2"
+    },
+    {
+      "systemId": "other.k9-thunder",
+      "count": 10,
+      "variant": "AS9 Huntsman",
+      "note": "premières livraisons"
+    },
+    {
+      "systemId": "us.m142-himars",
+      "count": 26,
+      "variant": "M142 HIMARS"
+    },
+    {
+      "systemId": "us.nasams",
+      "count": 2,
+      "variant": "NASAMS",
+      "note": "≈ 6 lanceurs  soit 2 batteries ; premières livraisons"
+    },
+    {
+      "systemId": "eu.mistral",
+      "count": 8,
+      "variant": "RBS 70",
+      "note": "≈ 30 postes de tir  soit 8 sections ; modèle le plus proche"
+    },
+    {
+      "systemId": "us.tomahawk",
+      "count": 50,
+      "variant": "Tomahawk Block V"
+    },
+    {
+      "systemId": "us.jassm-er",
+      "count": 200,
+      "variant": "AGM-158B JASSM-ER"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 100,
+      "variant": "Harpoon"
+    },
+    {
+      "systemId": "eu.nsm",
+      "count": 40,
+      "variant": "NSM"
+    },
+    {
+      "systemId": "us.prsm",
+      "count": 10,
+      "variant": "PrSM",
+      "note": "premières livraisons"
+    },
+    {
+      "systemId": "eu.horizon",
+      "count": 3,
+      "variant": "Hobart (AWD)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.meko-a-200",
+      "count": 7,
+      "variant": "Anzac (MEKO 200)"
+    },
+    {
+      "systemId": "eu.mistral-class",
+      "count": 2,
+      "variant": "Canberra (LHD)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.gowind",
+      "count": 2,
+      "variant": "Arafura",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "other.soryu",
+      "count": 6,
+      "variant": "Collins",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.container-29b6",
+      "count": 3,
+      "variant": "JORN (radar transhorizon)",
+      "note": "fonction identique, modèle le plus proche"
+    },
+    {
+      "systemId": "us.an-tps-75",
+      "count": 6,
+      "variant": "AN/TPS-77",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.infantry-light",
+      "count": 22,
+      "note": "infanterie légère : ≈ 13,4 k personnes / 600"
+    },
+    {
+      "systemId": "us.infantry-mech",
+      "count": 17,
+      "note": "infanterie mécanisée / motorisée : ≈ 10 k personnes / 600"
+    },
+    {
+      "systemId": "us.airborne",
+      "count": 5,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 2,9 k personnes / 600"
+    },
+    {
+      "systemId": "us.special-forces",
+      "count": 4,
+      "note": "forces spéciales : ≈ 2,3 k personnes / 600"
+    },
+    {
+      "systemId": "us.marines",
+      "count": 1,
+      "note": "infanterie de marine : ≈ 0,7 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.drones1",
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.drones2",
+    "research.aero.gen3",
+    "research.aero.gen4",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.cyber.l3",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.missiles.ballistic1",
+    "research.missiles.sam1",
+    "research.missiles.cruise1",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.naval.gen3",
+    "research.naval.sub2",
+    "research.sensors.radar1",
+    "research.sensors.radar2",
+    "research.sensors.space1",
+    "research.sensors.radar3"
+  ],
+  "licences": ["eu.boxer", "eu.meko-a-200"],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
+    "Department of Defence, Portfolio Budget Statements 2025-26"
+  ],
+  "confidence": "high",
+  "description": "Pays-continent de l'hémisphère sud, l'Australie dispose d'immenses espaces peu peuplés et d'une vaste zone maritime entre les océans Indien et Pacifique. Alliée étroite des États-Unis, elle participe au partenariat AUKUS qui doit lui fournir des sous-marins nucléaires d'attaque. Son armée est professionnelle, compacte et très moderne. Ses radars transhorizon surveillent les approches du nord.",
+  "doctrineText": "Arsenal majoritairement américain (F-35, P-8, E-7, Abrams, HIMARS) et européen (Boxer, frégates). Doctrine de défense des approches maritimes et de frappe à longue portée."
+}

@@ -1,0 +1,182 @@
+{
+  "nationId": "tkm",
+  "year": 2025,
+  "doctrine": "ru",
+  "defenseBudgetUsd": 700000000,
+  "activePersonnel": 36500,
+  "inventory": [
+    {
+      "systemId": "ru.mig-29",
+      "count": 20,
+      "variant": "MiG-29"
+    },
+    {
+      "systemId": "ru.su-25",
+      "count": 20,
+      "variant": "Su-25"
+    },
+    {
+      "systemId": "ru.yak-130",
+      "count": 4,
+      "variant": "M-346",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.c-295",
+      "count": 2,
+      "variant": "C-27J",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.mi-24",
+      "count": 10,
+      "variant": "Mi-24"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 10,
+      "variant": "Mi-17"
+    },
+    {
+      "systemId": "other.bayraktar-tb2",
+      "count": 10,
+      "variant": "Bayraktar TB2"
+    },
+    {
+      "systemId": "ru.t-72",
+      "count": 650,
+      "variant": "T-72 / T-72UMG"
+    },
+    {
+      "systemId": "ru.t-90m",
+      "count": 10,
+      "variant": "T-90S",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bmp-1",
+      "count": 500,
+      "variant": "BMP-1"
+    },
+    {
+      "systemId": "ru.bmp-2",
+      "count": 400,
+      "variant": "BMP-2"
+    },
+    {
+      "systemId": "ru.btr-80",
+      "count": 800,
+      "variant": "BTR-60/70/80",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.brdm-2",
+      "count": 100,
+      "variant": "BRDM-2"
+    },
+    {
+      "systemId": "ru.2s1-gvozdika",
+      "count": 40,
+      "variant": "2S1"
+    },
+    {
+      "systemId": "ru.2s3-akatsiya",
+      "count": 16,
+      "variant": "2S3"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 180,
+      "variant": "D-30"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 60,
+      "variant": "BM-21"
+    },
+    {
+      "systemId": "ru.bm-27-uragan",
+      "count": 54,
+      "variant": "BM-27"
+    },
+    {
+      "systemId": "ru.bm-30-smerch",
+      "count": 12,
+      "variant": "BM-30"
+    },
+    {
+      "systemId": "cn.hq-9b",
+      "count": 1,
+      "variant": "FD-2000",
+      "note": "≈ 4 lanceurs  soit 1 batterie ; modèle le plus proche"
+    },
+    {
+      "systemId": "cn.hq-16",
+      "count": 1,
+      "variant": "KS-1A",
+      "note": "≈ 4 lanceurs  soit 1 batterie ; modèle le plus proche"
+    },
+    {
+      "systemId": "ru.s-125-neva",
+      "count": 3,
+      "variant": "S-125 Pechora-2M",
+      "note": "≈ 12 lanceurs  soit 3 batteries"
+    },
+    {
+      "systemId": "ru.igla",
+      "count": 25,
+      "variant": "Igla",
+      "note": "≈ 100 postes de tir  soit 25 sections"
+    },
+    {
+      "systemId": "eu.gowind",
+      "count": 1,
+      "variant": "Deniz Han",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.buyan-m",
+      "count": 2,
+      "variant": "Molniya",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.infantry-light",
+      "count": 37,
+      "note": "infanterie légère : ≈ 22,1 k personnes / 600"
+    },
+    {
+      "systemId": "ru.infantry-mech",
+      "count": 16,
+      "note": "infanterie mécanisée / motorisée : ≈ 9,9 k personnes / 600"
+    },
+    {
+      "systemId": "ru.spetsnaz",
+      "count": 2,
+      "note": "forces spéciales : ≈ 1 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.cyber.l1",
+    "research.industry.l1",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.interior2",
+    "research.intel.interior3",
+    "research.land.gen1",
+    "research.missiles.sam1",
+    "research.naval.gen1",
+    "research.sensors.radar1"
+  ],
+  "licences": [],
+  "sources": [
+    "Estimation (≈ 1 % du PIB ; SIPRI sans donnée)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low",
+  "description": "Le Turkménistan borde la mer Caspienne et possède d'importantes réserves de gaz. Il se déclare officiellement neutre. Son armée est de taille moyenne et mêle matériel soviétique, turc et chinois.",
+  "doctrineText": "Arsenal soviétique complété par des achats turcs, chinois et italiens. Doctrine de neutralité défensive."
+}

@@ -1,0 +1,189 @@
+{
+  "nationId": "jpn",
+  "year": 1985,
+  "doctrine": "us",
+  "defenseBudgetUsd": 13088000000,
+  "activePersonnel": 243000,
+  "inventory": [
+    {
+      "systemId": "other.f-14-tomcat",
+      "count": 130,
+      "variant": "F-15J/DJ (Mitsubishi)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.f-4-phantom-ii",
+      "count": 150,
+      "variant": "F-4EJ"
+    },
+    {
+      "systemId": "us.f-5e",
+      "count": 50,
+      "variant": "F-104J",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.a-10c-thunderbolt-ii",
+      "count": 70,
+      "variant": "Mitsubishi F-1",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.e-3-sentry",
+      "count": 8,
+      "variant": "E-2C Hawkeye",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 30,
+      "variant": "C-1, C-130H",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.ah-1-cobra",
+      "count": 40,
+      "variant": "AH-1S"
+    },
+    {
+      "systemId": "us.uh-1-huey",
+      "count": 150,
+      "variant": "UH-1B/H"
+    },
+    {
+      "systemId": "us.ch-47-chinook",
+      "count": 30,
+      "variant": "CH-47J"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 90,
+      "variant": "HSS-2 (Sea King), SH-60J",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m60-patton",
+      "count": 350,
+      "variant": "Type 74",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m60-patton",
+      "count": 450,
+      "variant": "Type 61",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 400,
+      "variant": "Type 73, Type 60",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 250,
+      "variant": "Type 75, M110",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 500,
+      "variant": "pièces remorquées",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.mim-23-hawk",
+      "count": 32,
+      "variant": "Improved Hawk"
+    },
+    {
+      "systemId": "us.mim-23-hawk",
+      "count": 18,
+      "variant": "Nike-J",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.crotale",
+      "count": 50,
+      "variant": "Type 81 Tan-SAM",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 100,
+      "variant": "Harpoon, SSM-1",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.udaloy",
+      "count": 50,
+      "variant": "Hatakaze, Hatsuyuki, Shirane, Haruna, Takatsuki",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.type-209",
+      "count": 14,
+      "variant": "Yūshio, Uzushio",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.infantry-light",
+      "count": 196,
+      "note": "infanterie légère : ≈ 117,8 k personnes / 600"
+    },
+    {
+      "systemId": "us.infantry-mech",
+      "count": 52,
+      "note": "infanterie mécanisée / motorisée : ≈ 31 k personnes / 600"
+    },
+    {
+      "systemId": "us.airborne",
+      "count": 8,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 4,7 k personnes / 600"
+    },
+    {
+      "systemId": "us.special-forces",
+      "count": 3,
+      "note": "forces spéciales : ≈ 1,6 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.gen3",
+    "research.aero.helo2",
+    "research.aero.gen4",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.gen3",
+    "research.land.composite-armor",
+    "research.land.ew",
+    "research.land.gen4",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.missiles.sam2",
+    "research.missiles.sam3",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.naval.gen3",
+    "research.naval.sub2",
+    "research.sensors.radar1",
+    "research.sensors.radar2"
+  ],
+  "licences": ["us.f-4-phantom-ii", "us.uh-1-huey", "us.mim-23-hawk"],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 1985, dollars courants)",
+    "IISS, The Military Balance 1985-1986 (ordres de grandeur)",
+    "SIPRI Military Expenditure Database (dépenses 1985, dollars courants)"
+  ],
+  "confidence": "medium"
+}

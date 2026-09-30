@@ -1,0 +1,364 @@
+{
+  "nationId": "prk",
+  "year": 2025,
+  "doctrine": "ru",
+  "defenseBudgetUsd": 4500000000,
+  "activePersonnel": 1280000,
+  "inventory": [
+    {
+      "systemId": "ru.mig-29",
+      "count": 35,
+      "variant": "MiG-29"
+    },
+    {
+      "systemId": "ru.mig-23",
+      "count": 56,
+      "variant": "MiG-23ML/P"
+    },
+    {
+      "systemId": "ru.mig-21",
+      "count": 150,
+      "variant": "MiG-21 / J-7"
+    },
+    {
+      "systemId": "ru.mig-21",
+      "count": 150,
+      "variant": "Shenyang J-5/J-6 (MiG-17/19)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.su-25",
+      "count": 34,
+      "variant": "Su-25"
+    },
+    {
+      "systemId": "ru.su-22",
+      "count": 18,
+      "variant": "Su-7",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.su-24",
+      "count": 80,
+      "variant": "Harbin H-5 (Il-28)",
+      "note": "bombardier léger ancien, modèle le plus proche"
+    },
+    {
+      "systemId": "ru.a-50",
+      "count": 1,
+      "variant": "Il-76 de guet aérien (2025)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.il-76",
+      "count": 3,
+      "variant": "Il-76"
+    },
+    {
+      "systemId": "ru.an-26",
+      "count": 200,
+      "variant": "An-2 / Y-5",
+      "note": "infiltration, modèle le plus proche"
+    },
+    {
+      "systemId": "ru.mi-24",
+      "count": 20,
+      "variant": "Mi-24D"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 30,
+      "variant": "Mi-8/Mi-17"
+    },
+    {
+      "systemId": "ru.mi-2",
+      "count": 140,
+      "variant": "Mi-2"
+    },
+    {
+      "systemId": "ru.orion",
+      "count": 3,
+      "variant": "Saetbyol-4 / Saetbyol-9",
+      "note": "copies de Global Hawk et Reaper, modèle le plus proche"
+    },
+    {
+      "systemId": "ru.lancet",
+      "count": 100,
+      "variant": "drones kamikazes",
+      "note": "estimation"
+    },
+    {
+      "systemId": "ru.t-62",
+      "count": 1000,
+      "variant": "T-62 / Chonma-ho"
+    },
+    {
+      "systemId": "ru.t-55",
+      "count": 1500,
+      "variant": "T-54/T-55 / Type 59"
+    },
+    {
+      "systemId": "ru.t-72",
+      "count": 800,
+      "variant": "Pokpung-ho",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.t-72b3",
+      "count": 50,
+      "variant": "Chonma-20",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bmp-1",
+      "count": 300,
+      "variant": "BMP-1 / VTT-323 (chenillé)"
+    },
+    {
+      "systemId": "ru.btr-80",
+      "count": 1500,
+      "variant": "BTR-60, VTT-323, M-2010",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.btr-82a",
+      "count": 200,
+      "variant": "M-2010 (8x8)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.2s7-pion",
+      "count": 500,
+      "variant": "M-1989 Koksan (170 mm)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.2s1-gvozdika",
+      "count": 2000,
+      "variant": "canons automoteurs 122 mm",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.2s3-akatsiya",
+      "count": 1000,
+      "variant": "canons automoteurs 152 mm",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 3500,
+      "variant": "pièces remorquées 122/130/152 mm",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 3000,
+      "variant": "lance-roquettes 107/122 mm",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bm-27-uragan",
+      "count": 700,
+      "variant": "M-1985/M-1991 (240 mm)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bm-30-smerch",
+      "count": 100,
+      "variant": "KN-09 (300 mm)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.tornado-s",
+      "count": 50,
+      "variant": "KN-25 (600 mm)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.s-75-dvina",
+      "count": 30,
+      "variant": "S-75 (SA-2)",
+      "note": "≈ 180 lanceurs  soit 30 batteries"
+    },
+    {
+      "systemId": "ru.s-75-dvina",
+      "count": 7,
+      "variant": "S-200 (SA-5)",
+      "note": "≈ 40 lanceurs  soit 7 batteries ; modèle le plus proche"
+    },
+    {
+      "systemId": "ru.s-125-neva",
+      "count": 32,
+      "variant": "S-125 (SA-3)",
+      "note": "≈ 130 lanceurs  soit 32 batteries"
+    },
+    {
+      "systemId": "ru.s-300pmu2",
+      "count": 2,
+      "variant": "Pongae-5 (KN-06)",
+      "note": "≈ 20 lanceurs  soit 2 divisions ; modèle le plus proche"
+    },
+    {
+      "systemId": "ru.zsu-23-4-shilka",
+      "count": 200,
+      "variant": "ZSU-23-4, ZSU-57-2"
+    },
+    {
+      "systemId": "ru.igla",
+      "count": 250,
+      "variant": "Strela-2, Igla",
+      "note": "≈ 1 000 postes de tir  soit 250 sections"
+    },
+    {
+      "systemId": "ru.scud-b",
+      "count": 400,
+      "variant": "Hwasong-5/6 (Scud-B/C/ER)",
+      "note": "missiles (≈ 100 lanceurs)"
+    },
+    {
+      "systemId": "other.shahab-3",
+      "count": 200,
+      "variant": "Hwasong-7 (Nodong)",
+      "note": "modèle le plus proche (le Shahab-3 en dérive)"
+    },
+    {
+      "systemId": "other.shahab-3",
+      "count": 20,
+      "variant": "Hwasong-12 / Hwasong-16B (IRBM)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "other.kn-23",
+      "count": 200,
+      "variant": "KN-23/KN-24 (Hwasong-11)",
+      "note": "après cessions à la Russie (estimation)"
+    },
+    {
+      "systemId": "ru.kalibr",
+      "count": 50,
+      "variant": "Hwasal-1/2",
+      "note": "missiles de croisière, modèle le plus proche"
+    },
+    {
+      "systemId": "other.hwasong-17",
+      "count": 25,
+      "variant": "Hwasong-15/17/18/19",
+      "note": "ICBM (≈ 50 ogives au total, FAS)"
+    },
+    {
+      "systemId": "ru.admiral-gorshkov",
+      "count": 2,
+      "variant": "Choe Hyon (2025)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.gepard-class",
+      "count": 2,
+      "variant": "Najin",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.buyan-m",
+      "count": 30,
+      "variant": "Osa, Soju, Nampo",
+      "note": "vedettes lance-missiles, modèle le plus proche"
+    },
+    {
+      "systemId": "ru.kilo",
+      "count": 20,
+      "variant": "Romeo (Type 033)",
+      "note": "modèle le plus proche ; ≈ 40 sous-marins de poche non comptés"
+    },
+    {
+      "systemId": "ru.kilo",
+      "count": 1,
+      "variant": "Sinpo-C / Hero Kim Kun Ok (lanceur de SLBM)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "other.optical-recon-satellite",
+      "count": 1,
+      "variant": "Malligyong-1"
+    },
+    {
+      "systemId": "ru.p-18",
+      "count": 100,
+      "variant": "P-18, P-19, P-35/37, JY-8",
+      "note": "radars anciens (estimation)"
+    },
+    {
+      "systemId": "ru.infantry-light",
+      "count": 1283,
+      "note": "infanterie légère : ≈ 770 k personnes / 600 ; armée de terre et forces spéciales (≈ 200 000)"
+    },
+    {
+      "systemId": "ru.infantry-mech",
+      "count": 220,
+      "note": "infanterie mécanisée / motorisée : ≈ 132 k personnes / 600"
+    },
+    {
+      "systemId": "ru.vdv-airborne",
+      "count": 55,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 33 k personnes / 600"
+    },
+    {
+      "systemId": "ru.spetsnaz",
+      "count": 275,
+      "note": "forces spéciales : ≈ 165 k personnes / 600"
+    },
+    {
+      "systemId": "ru.naval-infantry",
+      "count": 17,
+      "note": "infanterie de marine : ≈ 10 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.drones1",
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.cyber.l3",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.intel.interior3",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.gen3",
+    "research.land.mlrs",
+    "research.land.ew",
+    "research.missiles.ballistic1",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.missiles.ballistic2",
+    "research.missiles.cruise1",
+    "research.missiles.sam2",
+    "research.missiles.ballistic3",
+    "research.missiles.sam3",
+    "research.nuclear.weapons",
+    "research.nuclear.icbm",
+    "research.nuclear.slbm",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.sensors.radar1",
+    "research.sensors.space1"
+  ],
+  "licences": [],
+  "sources": [
+    "Estimation (US State Dept, WMEAT ≈ 3,6 Md$ ; 20 à 25 % du PIB) ; SIPRI sans donnée",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
+    "FAS, Status of World Nuclear Forces 2025 (vecteurs nucléaires)",
+    "Ministère sud-coréen de la Défense, Livre blanc 2024",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026"
+  ],
+  "confidence": "low",
+  "description": "La Corée du Nord occupe la moitié nord de la péninsule coréenne et vit sous un régime fermé qui consacre une part considérable de ses ressources à l'armée. Elle aligne plus d'un million de soldats d'active et une artillerie massive déployée près de la zone démilitarisée. Elle a développé l'arme nucléaire et des missiles intercontinentaux. Elle a fourni munitions, missiles et troupes à la Russie depuis 2023.",
+  "doctrineText": "Arsenal ancien d'origine soviétique et chinoise, compensé par la masse, une artillerie à longue portée, des forces spéciales très nombreuses et un arsenal balistique et nucléaire en expansion."
+}

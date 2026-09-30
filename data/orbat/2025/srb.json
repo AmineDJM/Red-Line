@@ -1,0 +1,186 @@
+{
+  "nationId": "srb",
+  "year": 2025,
+  "doctrine": "ru",
+  "defenseBudgetUsd": 2781000000,
+  "activePersonnel": 28150,
+  "inventory": [
+    {
+      "systemId": "ru.mig-29",
+      "count": 14,
+      "variant": "MiG-29",
+      "note": "Rafale commandés"
+    },
+    {
+      "systemId": "ru.su-25",
+      "count": 12,
+      "variant": "J-22 Orao",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "other.l-39-albatros",
+      "count": 20,
+      "variant": "G-4 Super Galeb",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.an-26",
+      "count": 3,
+      "variant": "An-26"
+    },
+    {
+      "systemId": "eu.c-295",
+      "count": 2,
+      "variant": "C-295"
+    },
+    {
+      "systemId": "ru.mi-24",
+      "count": 11,
+      "variant": "Mi-35M/P"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 12,
+      "variant": "Mi-17V5"
+    },
+    {
+      "systemId": "cn.ch-4",
+      "count": 6,
+      "variant": "CH-92A",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.t-72",
+      "count": 200,
+      "variant": "M-84",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.t-72b3",
+      "count": 30,
+      "variant": "T-72MS",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bmp-1",
+      "count": 320,
+      "variant": "BVP M-80",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.btr-82a",
+      "count": 50,
+      "variant": "Lazar 3",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.brdm-2",
+      "count": 50,
+      "variant": "BRDM-2"
+    },
+    {
+      "systemId": "eu.caesar",
+      "count": 50,
+      "variant": "Nora B-52",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.2s1-gvozdika",
+      "count": 70,
+      "variant": "2S1"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 200,
+      "variant": "obusiers remorqués",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 60,
+      "variant": "M-77 Oganj",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.hq-9b",
+      "count": 1,
+      "variant": "HQ-22 (FK-3)",
+      "note": "≈ 6 lanceurs  soit 1 batterie ; modèle le plus proche"
+    },
+    {
+      "systemId": "ru.pantsir-s1",
+      "count": 6,
+      "variant": "Pantsir-S1"
+    },
+    {
+      "systemId": "ru.s-125-neva",
+      "count": 3,
+      "variant": "S-125 Neva-M1T",
+      "note": "≈ 12 lanceurs  soit 3 batteries"
+    },
+    {
+      "systemId": "ru.2k12-kub",
+      "count": 3,
+      "variant": "2K12 Kub",
+      "note": "≈ 12 lanceurs  soit 3 batteries"
+    },
+    {
+      "systemId": "ru.strela-10",
+      "count": 12,
+      "variant": "Strela-10"
+    },
+    {
+      "systemId": "ru.igla",
+      "count": 25,
+      "variant": "Igla",
+      "note": "≈ 100 postes de tir  soit 25 sections"
+    },
+    {
+      "systemId": "ru.infantry-light",
+      "count": 10,
+      "note": "infanterie légère : ≈ 6 k personnes / 600"
+    },
+    {
+      "systemId": "ru.infantry-mech",
+      "count": 10,
+      "note": "infanterie mécanisée / motorisée : ≈ 6 k personnes / 600"
+    },
+    {
+      "systemId": "ru.vdv-airborne",
+      "count": 1,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 0,7 k personnes / 600"
+    },
+    {
+      "systemId": "ru.spetsnaz",
+      "count": 1,
+      "note": "forces spéciales : ≈ 0,7 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.cyber.l1",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.gen3",
+    "research.land.mlrs",
+    "research.missiles.sam1",
+    "research.sensors.radar1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "medium",
+  "description": "Pays enclavé au cœur des Balkans, la Serbie pratique une neutralité militaire entre l'OTAN et la Russie. Elle achète du matériel russe et chinois tout en commandant des Rafale français. Son industrie d'armement produit de l'artillerie et des munitions.",
+  "doctrineText": "Arsenal d'origine soviétique et yougoslave complété par des achats russes, chinois et bientôt français. Doctrine de neutralité armée."
+}

@@ -1,0 +1,434 @@
+{
+  "nationId": "dza",
+  "year": 2025,
+  "doctrine": "ru",
+  "defenseBudgetUsd": 25439000000,
+  "activePersonnel": 139000,
+  "inventory": [
+    {
+      "systemId": "ru.su-30",
+      "count": 72,
+      "variant": "Su-30MKA"
+    },
+    {
+      "systemId": "ru.su-35",
+      "count": 9,
+      "variant": "Su-35",
+      "note": "6 supplémentaires commandés"
+    },
+    {
+      "systemId": "ru.su-57",
+      "count": 2,
+      "variant": "Su-57E",
+      "note": "4 commandés ; aucune capacité de production nationale"
+    },
+    {
+      "systemId": "ru.mig-29",
+      "count": 46,
+      "variant": "MiG-29S/M/M2"
+    },
+    {
+      "systemId": "ru.su-34",
+      "count": 14,
+      "variant": "Su-34E/Su-34M"
+    },
+    {
+      "systemId": "ru.su-24",
+      "count": 42,
+      "variant": "Su-24MK2 / MRK2"
+    },
+    {
+      "systemId": "ru.yak-130",
+      "count": 18,
+      "variant": "Yak-130"
+    },
+    {
+      "systemId": "other.l-39-albatros",
+      "count": 54,
+      "variant": "L-39C/ZA"
+    },
+    {
+      "systemId": "ru.il-78",
+      "count": 4,
+      "variant": "Il-78"
+    },
+    {
+      "systemId": "ru.il-76",
+      "count": 11,
+      "variant": "Il-76TD/MD"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 15,
+      "variant": "C-130H/H-30, C-130J-30"
+    },
+    {
+      "systemId": "eu.c-295",
+      "count": 5,
+      "variant": "C-295M"
+    },
+    {
+      "systemId": "ru.mi-24",
+      "count": 32,
+      "variant": "Mi-24 Super Hind Mk.III"
+    },
+    {
+      "systemId": "ru.mi-28nm",
+      "count": 42,
+      "variant": "Mi-28NE"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 141,
+      "variant": "Mi-8AMTSh, Mi-171Sh"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 14,
+      "variant": "Mi-26T2",
+      "note": "transport lourd, modèle le plus proche"
+    },
+    {
+      "systemId": "eu.aw101",
+      "count": 2,
+      "variant": "AW101"
+    },
+    {
+      "systemId": "ru.mi-2",
+      "count": 22,
+      "variant": "Mi-2"
+    },
+    {
+      "systemId": "eu.gazelle",
+      "count": 14,
+      "variant": "AS355 Écureuil",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.wing-loong-ii",
+      "count": 24,
+      "variant": "Wing Loong II"
+    },
+    {
+      "systemId": "cn.ch-4",
+      "count": 20,
+      "variant": "CH-3/CH-4"
+    },
+    {
+      "systemId": "cn.ch-5",
+      "count": 4,
+      "variant": "WJ-700",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.t-90m",
+      "count": 600,
+      "variant": "T-90SA",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.t-72",
+      "count": 325,
+      "variant": "T-72M1"
+    },
+    {
+      "systemId": "ru.t-62",
+      "count": 290,
+      "variant": "T-62"
+    },
+    {
+      "systemId": "ru.t-55",
+      "count": 270,
+      "variant": "T-55AMV"
+    },
+    {
+      "systemId": "ru.bmp-2",
+      "count": 760,
+      "variant": "BMP-2M Berezhok"
+    },
+    {
+      "systemId": "ru.bmp-2",
+      "count": 220,
+      "variant": "BMP-2"
+    },
+    {
+      "systemId": "ru.bmp-3",
+      "count": 39,
+      "variant": "BMPT-72 / BMPT-62",
+      "note": "véhicules d'appui, modèle le plus proche"
+    },
+    {
+      "systemId": "eu.vab",
+      "count": 1034,
+      "variant": "TPz Fuchs 2 (production nationale)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.btr-80",
+      "count": 150,
+      "variant": "BTR-80"
+    },
+    {
+      "systemId": "ru.btr-80",
+      "count": 400,
+      "variant": "BTR-60, OT-64 SKOT",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.brdm-2",
+      "count": 26,
+      "variant": "BRDM-2"
+    },
+    {
+      "systemId": "cn.plz-05",
+      "count": 54,
+      "variant": "PLZ-45",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.2s1-gvozdika",
+      "count": 140,
+      "variant": "2S1"
+    },
+    {
+      "systemId": "ru.2s3-akatsiya",
+      "count": 30,
+      "variant": "2S3"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 375,
+      "variant": "D-30, M-30, D-74, M-46, ML-20, WA-021",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.tos-1a",
+      "count": 52,
+      "variant": "TOS-1A"
+    },
+    {
+      "systemId": "cn.phl-03",
+      "count": 70,
+      "variant": "SR-5",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bm-30-smerch",
+      "count": 18,
+      "variant": "BM-30 Smerch"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 48,
+      "variant": "BM-21"
+    },
+    {
+      "systemId": "ru.iskander-m",
+      "count": 100,
+      "variant": "Iskander-E",
+      "note": "missiles (48 lanceurs)"
+    },
+    {
+      "systemId": "ru.s-400",
+      "count": 2,
+      "variant": "S-400",
+      "note": "≈ 16 lanceurs  soit 2 divisions ; livraison non confirmée officiellement (estimation basse)"
+    },
+    {
+      "systemId": "ru.s-300pmu2",
+      "count": 4,
+      "variant": "S-300PMU2",
+      "note": "≈ 32 lanceurs  soit 4 divisions"
+    },
+    {
+      "systemId": "ru.buk-m3",
+      "count": 8,
+      "variant": "Buk-M2E",
+      "note": "≈ 48 lanceurs  soit 8 batteries ; modèle le plus proche"
+    },
+    {
+      "systemId": "ru.buk-m3",
+      "count": 2,
+      "variant": "S-350 Vityaz",
+      "note": "≈ 10 lanceurs  soit 2 batteries ; estimation, modèle le plus proche"
+    },
+    {
+      "systemId": "ru.pantsir-s1",
+      "count": 108,
+      "variant": "Pantsir-S1/SM"
+    },
+    {
+      "systemId": "ru.tor-m2",
+      "count": 48,
+      "variant": "Tor-M2"
+    },
+    {
+      "systemId": "ru.s-125-neva",
+      "count": 9,
+      "variant": "S-125",
+      "note": "≈ 36 lanceurs  soit 9 batteries"
+    },
+    {
+      "systemId": "ru.2k12-kub",
+      "count": 5,
+      "variant": "2K12 Kub",
+      "note": "≈ 20 lanceurs  soit 5 batteries"
+    },
+    {
+      "systemId": "ru.strela-10",
+      "count": 20,
+      "variant": "Strela-1",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.zsu-23-4-shilka",
+      "count": 225,
+      "variant": "ZSU-23-4"
+    },
+    {
+      "systemId": "ru.igla",
+      "count": 125,
+      "variant": "Igla / Igla-S",
+      "note": "≈ 500 postes de tir  soit 125 sections"
+    },
+    {
+      "systemId": "ru.kalibr",
+      "count": 30,
+      "variant": "3M-14E Club-S (sous-marins)"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 50,
+      "variant": "Kh-35 Uran",
+      "note": "antinavire subsonique, modèle le plus proche"
+    },
+    {
+      "systemId": "eu.meko-a-200",
+      "count": 2,
+      "variant": "Erradii (MEKO A-200AN)"
+    },
+    {
+      "systemId": "cn.type-056",
+      "count": 3,
+      "variant": "Adhafer (C28A)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.gepard-class",
+      "count": 3,
+      "variant": "Mourad Rais (Koni)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.buyan-m",
+      "count": 3,
+      "variant": "Rais Hamidou (Nanuchka II)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.kilo",
+      "count": 6,
+      "variant": "Kilo 636M / 877EKM"
+    },
+    {
+      "systemId": "ru.rezonans-ne",
+      "count": 2,
+      "variant": "Rezonans-NE",
+      "note": "acquisition rapportée"
+    },
+    {
+      "systemId": "ru.nebo-m",
+      "count": 4,
+      "variant": "Nebo-M",
+      "note": "acquisition rapportée"
+    },
+    {
+      "systemId": "ru.p-18",
+      "count": 5,
+      "variant": "Kasta-2E2",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.p-18",
+      "count": 30,
+      "variant": "P-18, P-37, ST-68",
+      "note": "radars anciens (estimation)"
+    },
+    {
+      "systemId": "cn.jy-27a",
+      "count": 2,
+      "variant": "JY-27A",
+      "note": "acquisition rapportée (estimation)"
+    },
+    {
+      "systemId": "ru.infantry-light",
+      "count": 84,
+      "note": "infanterie légère : ≈ 50,6 k personnes / 600"
+    },
+    {
+      "systemId": "ru.infantry-mech",
+      "count": 82,
+      "note": "infanterie mécanisée / motorisée : ≈ 49,5 k personnes / 600"
+    },
+    {
+      "systemId": "ru.vdv-airborne",
+      "count": 9,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 5,5 k personnes / 600"
+    },
+    {
+      "systemId": "ru.spetsnaz",
+      "count": 7,
+      "note": "forces spéciales : ≈ 4,4 k personnes / 600"
+    },
+    {
+      "systemId": "ru.naval-infantry",
+      "count": 2,
+      "note": "infanterie de marine : ≈ 1 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.drones1",
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.drones2",
+    "research.aero.gen3",
+    "research.aero.helo2",
+    "research.aero.gen4",
+    "research.aero.gen4plus",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.intel.interior3",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.gen3",
+    "research.land.ew",
+    "research.missiles.ballistic1",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.missiles.sam2",
+    "research.missiles.sam3",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.sensors.radar1",
+    "research.sensors.radar2"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
+    "Wikipedia (en), « Algerian Air Force » et « List of equipment of the Algerian People's National Army »"
+  ],
+  "confidence": "medium",
+  "description": "Plus grand pays d'Afrique, l'Algérie s'étend de la Méditerranée au cœur du Sahara. Elle dispose de l'une des armées les mieux équipées du continent, financée par ses exportations d'hydrocarbures. Sa défense aérienne est l'une des plus denses d'Afrique. Elle a reçu ses premiers chasseurs furtifs Su-57 mais ne dispose pas de la capacité industrielle de les produire.",
+  "doctrineText": "Arsenal majoritairement russe (Su-30MKA, T-90SA, S-300, Pantsir, sous-marins Kilo). Doctrine de défense du territoire et de dissuasion régionale."
+}

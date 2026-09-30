@@ -1,0 +1,24 @@
+{
+  "nationId": "vct",
+  "year": 2025,
+  "doctrine": "other",
+  "defenseBudgetUsd": 10000000,
+  "activePersonnel": 0,
+  "inventory": [
+    {
+      "systemId": "other.infantry-light",
+      "count": 1,
+      "variant": "Royal SVG Police Force, Special Services Unit",
+      "note": "police, pas d'armée"
+    }
+  ],
+  "research": ["research.intel.interior1"],
+  "licences": [],
+  "sources": [
+    "Estimation (police ; pas d'armée)",
+    "Royal Saint Vincent and the Grenadines Police Force"
+  ],
+  "confidence": "medium",
+  "description": "Saint-Vincent-et-les-Grenadines est un archipel des Petites Antilles. Il n'a pas d'armée ; sa police assure la sécurité. Sa défense relève du système de sécurité régional des Caraïbes orientales.",
+  "doctrineText": "Aucune force armée : police."
+}

@@ -1,0 +1,196 @@
+{
+  "nationId": "ita",
+  "year": 1985,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 8253000000,
+  "activePersonnel": 385100,
+  "inventory": [
+    {
+      "systemId": "eu.tornado",
+      "count": 100,
+      "variant": "Tornado IDS"
+    },
+    {
+      "systemId": "us.f-5e",
+      "count": 180,
+      "variant": "F-104S/G Starfighter",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.hawk",
+      "count": 100,
+      "variant": "MB-339",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.mirage-5",
+      "count": 80,
+      "variant": "Fiat G.91",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 40,
+      "variant": "C-130H, G.222",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.ah-1-cobra",
+      "count": 60,
+      "variant": "A129 Mangusta (premières unités), AB-205 armés",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.uh-1-huey",
+      "count": 300,
+      "variant": "AB-204/205/212"
+    },
+    {
+      "systemId": "us.ch-47-chinook",
+      "count": 30,
+      "variant": "CH-47C"
+    },
+    {
+      "systemId": "eu.leopard-1",
+      "count": 900,
+      "variant": "Leopard 1A2"
+    },
+    {
+      "systemId": "us.m60-patton",
+      "count": 700,
+      "variant": "M60A1, M47",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 4000,
+      "variant": "M113, VCC-1/2"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 280,
+      "variant": "M109G/L"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 300,
+      "variant": "FH-70, M114",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.tochka-u",
+      "count": 6,
+      "variant": "MGM-52 Lance",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.mim-23-hawk",
+      "count": 12,
+      "variant": "Improved Hawk"
+    },
+    {
+      "systemId": "us.mim-23-hawk",
+      "count": 12,
+      "variant": "Nike Hercules",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.gepard",
+      "count": 150,
+      "variant": "SIDAM 25",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.crotale",
+      "count": 50,
+      "variant": "Spada, Skyguard/Aspide",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 200,
+      "variant": "Otomat Mk2, Teseo",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.nimitz",
+      "count": 1,
+      "variant": "Giuseppe Garibaldi (porte-aéronefs léger)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.udaloy",
+      "count": 20,
+      "variant": "Audace, Maestrale, Lupo, Vittorio Veneto",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.type-209",
+      "count": 10,
+      "variant": "Sauro, Toti",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 266,
+      "note": "infanterie légère : ≈ 159,3 k personnes / 600"
+    },
+    {
+      "systemId": "eu.infantry-mech",
+      "count": 158,
+      "note": "infanterie mécanisée / motorisée : ≈ 94,5 k personnes / 600"
+    },
+    {
+      "systemId": "eu.airborne",
+      "count": 22,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 13,5 k personnes / 600"
+    },
+    {
+      "systemId": "eu.special-forces",
+      "count": 4,
+      "note": "forces spéciales : ≈ 2,7 k personnes / 600"
+    },
+    {
+      "systemId": "eu.marines",
+      "count": 2,
+      "note": "infanterie de marine : ≈ 1 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.transport",
+    "research.aero.gen3",
+    "research.aero.helo2",
+    "research.aero.gen4",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.gen3",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.missiles.sam2",
+    "research.missiles.sam3",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.naval.gen3",
+    "research.naval.sub2",
+    "research.sensors.radar1",
+    "research.sensors.radar2"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 1985, dollars courants)",
+    "IISS, The Military Balance 1985-1986 (ordres de grandeur)",
+    "SIPRI Military Expenditure Database (dépenses 1985, dollars courants)"
+  ],
+  "confidence": "medium"
+}

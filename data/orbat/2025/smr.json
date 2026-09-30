@@ -1,0 +1,24 @@
+{
+  "nationId": "smr",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 5000000,
+  "activePersonnel": 80,
+  "inventory": [
+    {
+      "systemId": "eu.infantry-light",
+      "count": 1,
+      "variant": "Gendarmerie et corps militaires (≈ 200)",
+      "note": "pas d'armée opérationnelle"
+    }
+  ],
+  "research": ["research.intel.interior1"],
+  "licences": [],
+  "sources": [
+    "Estimation (corps militaires cérémoniels et gendarmerie)",
+    "Gouvernement de Saint-Marin"
+  ],
+  "confidence": "low",
+  "description": "Saint-Marin est une petite république enclavée dans l'Italie, l'un des plus anciens États du monde. Elle n'a pas d'armée opérationnelle. Ses corps militaires sont essentiellement cérémoniels.",
+  "doctrineText": "Aucune force armée opérationnelle : corps cérémoniels et gendarmerie."
+}

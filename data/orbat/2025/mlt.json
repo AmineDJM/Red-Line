@@ -1,0 +1,35 @@
+{
+  "nationId": "mlt",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 125000000,
+  "activePersonnel": 2000,
+  "inventory": [
+    {
+      "systemId": "eu.gowind",
+      "count": 1,
+      "variant": "P62 (patrouilleur hauturier)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 2,
+      "note": "infanterie légère : ≈ 1,5 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.cyber.l1",
+    "research.industry.l1",
+    "research.intel.interior1",
+    "research.land.gen1",
+    "research.naval.gen1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "medium",
+  "description": "Malte est un archipel au centre de la Méditerranée, entre la Sicile et l'Afrique du Nord. Neutre, elle dispose de forces armées réduites, principalement tournées vers la surveillance maritime. Son port de La Valette occupe une position clé sur les routes maritimes méditerranéennes.",
+  "doctrineText": "Forces légères et patrouilleurs. Doctrine de neutralité et de surveillance maritime."
+}

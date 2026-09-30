@@ -1,0 +1,29 @@
+{
+  "nationId": "cri",
+  "year": 2025,
+  "doctrine": "other",
+  "defenseBudgetUsd": 500000000,
+  "activePersonnel": 0,
+  "inventory": [
+    {
+      "systemId": "other.infantry-light",
+      "count": 3,
+      "variant": "Unités d'intervention de la Force publique et police des frontières",
+      "note": "police, pas d'armée"
+    }
+  ],
+  "research": [
+    "research.industry.l1",
+    "research.intel.interior1",
+    "research.intel.interior2",
+    "research.land.gen1"
+  ],
+  "licences": [],
+  "sources": [
+    "Estimation (budget de la sécurité publique ; pas d'armée depuis 1948)",
+    "Ministère de la Sécurité publique du Costa Rica"
+  ],
+  "confidence": "medium",
+  "description": "Le Costa Rica a aboli son armée en 1948 et consacre ses ressources à l'éducation et à la santé. Sa sécurité est assurée par la Force publique, un corps de police. Il est l'un des rares États au monde à ne disposer d'aucune force militaire.",
+  "doctrineText": "Aucune force armée : Force publique (police)."
+}

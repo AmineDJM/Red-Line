@@ -1,0 +1,108 @@
+{
+  "nationId": "syr",
+  "year": 2025,
+  "doctrine": "ru",
+  "defenseBudgetUsd": 1000000000,
+  "activePersonnel": 150000,
+  "inventory": [
+    {
+      "systemId": "ru.mi-8",
+      "count": 10,
+      "variant": "Mi-8/Mi-17",
+      "note": "reliquat après les frappes israéliennes de décembre 2024"
+    },
+    {
+      "systemId": "ru.t-72",
+      "count": 150,
+      "variant": "T-72",
+      "note": "reliquat (estimation)"
+    },
+    {
+      "systemId": "ru.t-62",
+      "count": 100,
+      "variant": "T-62",
+      "note": "reliquat (estimation)"
+    },
+    {
+      "systemId": "ru.t-55",
+      "count": 150,
+      "variant": "T-54/T-55",
+      "note": "reliquat (estimation)"
+    },
+    {
+      "systemId": "ru.bmp-1",
+      "count": 200,
+      "variant": "BMP-1",
+      "note": "reliquat (estimation)"
+    },
+    {
+      "systemId": "ru.btr-80",
+      "count": 100,
+      "variant": "BTR-60",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 300,
+      "variant": "obusiers remorqués",
+      "note": "reliquat (estimation)"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 60,
+      "variant": "BM-21"
+    },
+    {
+      "systemId": "ru.zsu-23-4-shilka",
+      "count": 30,
+      "variant": "ZSU-23-4"
+    },
+    {
+      "systemId": "ru.igla",
+      "count": 50,
+      "variant": "Igla / Strela",
+      "note": "≈ 200 postes de tir  soit 50 sections"
+    },
+    {
+      "systemId": "ru.p-18",
+      "count": 4,
+      "variant": "P-18",
+      "note": "reliquat (estimation)"
+    },
+    {
+      "systemId": "ru.infantry-light",
+      "count": 222,
+      "note": "infanterie légère : ≈ 133,4 k personnes / 600 ; nouvelle armée syrienne en reconstitution (factions intégrées, FDS incluses depuis août 2026)"
+    },
+    {
+      "systemId": "ru.infantry-mech",
+      "count": 12,
+      "note": "infanterie mécanisée / motorisée : ≈ 7,2 k personnes / 600"
+    },
+    {
+      "systemId": "ru.spetsnaz",
+      "count": 7,
+      "note": "forces spéciales : ≈ 4,3 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.helo1",
+    "research.cyber.l1",
+    "research.industry.l1",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.interior2",
+    "research.land.gen1",
+    "research.sensors.radar1"
+  ],
+  "licences": [],
+  "sources": [
+    "Estimation (gouvernement de transition ; SIPRI sans donnée depuis 2011)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "Wikipedia (en), « Syrian Army » (restructuration post-Assad, 2025-2026)"
+  ],
+  "confidence": "low",
+  "description": "La Syrie occupe le cœur du Levant, entre la Méditerranée, la Turquie, l'Irak et Israël. Après la chute du régime de Bachar al-Assad en décembre 2024, une nouvelle armée est en cours de constitution à partir des anciennes factions rebelles et des Forces démocratiques syriennes. Des frappes israéliennes ont détruit l'essentiel de l'aviation, de la marine et des stocks de l'ancienne armée.",
+  "doctrineText": "Reliquat de matériel soviétique et russe, en cours de réorganisation avec l'aide de la Turquie. Doctrine de sécurité intérieure et de reconstruction."
+}

@@ -1,0 +1,23 @@
+{
+  "nationId": "lso",
+  "year": 2025,
+  "doctrine": "other",
+  "defenseBudgetUsd": 40000000,
+  "activePersonnel": 2000,
+  "inventory": [
+    {
+      "systemId": "other.infantry-light",
+      "count": 3,
+      "note": "infanterie légère : ≈ 2 k personnes / 600"
+    }
+  ],
+  "research": ["research.intel.interior1", "research.land.gen1"],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low",
+  "description": "Le Lesotho est un royaume montagneux entièrement enclavé dans l'Afrique du Sud. Ses forces armées sont très réduites. Son relief de hauts plateaux le rend difficilement accessible.",
+  "doctrineText": "Forces légères."
+}

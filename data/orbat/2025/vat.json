@@ -1,0 +1,20 @@
+{
+  "nationId": "vat",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 10000000,
+  "activePersonnel": 135,
+  "inventory": [
+    {
+      "systemId": "eu.infantry-light",
+      "count": 1,
+      "variant": "Garde suisse pontificale (135) et Gendarmerie (≈ 130)"
+    }
+  ],
+  "research": ["research.intel.interior1"],
+  "licences": [],
+  "sources": ["Estimation (Garde suisse pontificale et Gendarmerie vaticane)", "Saint-Siège"],
+  "confidence": "medium",
+  "description": "Le Vatican est le plus petit État du monde, enclavé dans Rome. Sa sécurité est assurée par la Garde suisse pontificale et la Gendarmerie vaticane. Il ne dispose d'aucune force militaire.",
+  "doctrineText": "Aucune force armée : Garde suisse et gendarmerie."
+}

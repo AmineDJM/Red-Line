@@ -1,0 +1,143 @@
+{
+  "nationId": "pak",
+  "year": 1985,
+  "doctrine": "us",
+  "defenseBudgetUsd": 2144000000,
+  "activePersonnel": 482800,
+  "inventory": [
+    {
+      "systemId": "us.f-16",
+      "count": 30,
+      "variant": "F-16A/B"
+    },
+    {
+      "systemId": "eu.mirage-5",
+      "count": 100,
+      "variant": "Mirage III/5"
+    },
+    {
+      "systemId": "cn.j-7",
+      "count": 150,
+      "variant": "F-6 (J-6), F-7P",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.su-22",
+      "count": 40,
+      "variant": "Nanchang A-5C",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 12,
+      "variant": "C-130B/E"
+    },
+    {
+      "systemId": "us.ah-1-cobra",
+      "count": 20,
+      "variant": "AH-1S"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 30,
+      "variant": "Mi-8"
+    },
+    {
+      "systemId": "cn.type-59",
+      "count": 1100,
+      "variant": "Type 59 / Type 69"
+    },
+    {
+      "systemId": "us.m60-patton",
+      "count": 250,
+      "variant": "M47/M48",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 800,
+      "variant": "M113"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 150,
+      "variant": "M109, M110",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 1000,
+      "variant": "pièces remorquées",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.crotale",
+      "count": 30,
+      "variant": "Crotale"
+    },
+    {
+      "systemId": "ru.udaloy",
+      "count": 8,
+      "variant": "Gearing, Leander",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.type-209",
+      "count": 11,
+      "variant": "Agosta, Daphné",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.infantry-light",
+      "count": 668,
+      "note": "infanterie légère : ≈ 400,5 k personnes / 600"
+    },
+    {
+      "systemId": "us.infantry-mech",
+      "count": 60,
+      "note": "infanterie mécanisée / motorisée : ≈ 36 k personnes / 600"
+    },
+    {
+      "systemId": "us.airborne",
+      "count": 8,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 4,5 k personnes / 600"
+    },
+    {
+      "systemId": "us.special-forces",
+      "count": 15,
+      "note": "forces spéciales : ≈ 9 k personnes / 600"
+    },
+    {
+      "systemId": "us.marines",
+      "count": 1,
+      "note": "infanterie de marine : ≈ 0,5 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.industry.l1",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.intel.interior3",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.sensors.radar1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 1985, dollars courants)",
+    "IISS, The Military Balance 1985-1986 (ordres de grandeur)",
+    "SIPRI Military Expenditure Database (dépenses 1985, dollars courants)"
+  ],
+  "confidence": "medium"
+}

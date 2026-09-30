@@ -1,0 +1,303 @@
+{
+  "nationId": "gbr",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 88977000000,
+  "activePersonnel": 141100,
+  "inventory": [
+    {
+      "systemId": "eu.typhoon",
+      "count": 107,
+      "variant": "Typhoon FGR4 (Tranche 2/3)"
+    },
+    {
+      "systemId": "us.f-35",
+      "count": 40,
+      "variant": "F-35B Lightning"
+    },
+    {
+      "systemId": "eu.hawk",
+      "count": 60,
+      "variant": "Hawk T1/T2"
+    },
+    {
+      "systemId": "eu.a400m-atlas",
+      "count": 22,
+      "variant": "A400M Atlas C1"
+    },
+    {
+      "systemId": "us.c-17-globemaster-iii",
+      "count": 8,
+      "variant": "C-17A"
+    },
+    {
+      "systemId": "eu.a330-mrtt",
+      "count": 14,
+      "variant": "Voyager KC2/KC3"
+    },
+    {
+      "systemId": "us.e-7-wedgetail",
+      "count": 2,
+      "variant": "E-7A Wedgetail",
+      "note": "entrée en service"
+    },
+    {
+      "systemId": "us.p-8-poseidon",
+      "count": 9,
+      "variant": "P-8A Poseidon MRA1"
+    },
+    {
+      "systemId": "us.mq-9-reaper",
+      "count": 16,
+      "variant": "Protector RG1 (MQ-9B)"
+    },
+    {
+      "systemId": "us.ah-64-apache",
+      "count": 50,
+      "variant": "AH-64E Apache"
+    },
+    {
+      "systemId": "us.ch-47-chinook",
+      "count": 51,
+      "variant": "Chinook HC4/HC5/HC6"
+    },
+    {
+      "systemId": "eu.aw101",
+      "count": 55,
+      "variant": "Merlin HC4 / HM2"
+    },
+    {
+      "systemId": "eu.nh90",
+      "count": 62,
+      "variant": "AW159 Wildcat AH1/HMA2",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.challenger-2",
+      "count": 213,
+      "variant": "Challenger 2",
+      "note": "288 au total, conversion de 148 en Challenger 3"
+    },
+    {
+      "systemId": "eu.cv90",
+      "count": 400,
+      "variant": "FV510 Warrior",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.cv90",
+      "count": 142,
+      "variant": "Ajax",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.boxer",
+      "count": 100,
+      "variant": "Boxer",
+      "note": "livraisons en cours"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 600,
+      "variant": "FV432 Bulldog",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.archer",
+      "count": 14,
+      "variant": "Archer",
+      "note": "intérim après cession des AS-90 à l'Ukraine"
+    },
+    {
+      "systemId": "us.m777",
+      "count": 126,
+      "variant": "L118/L119 Light Gun (105 mm)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m270-mlrs",
+      "count": 43,
+      "variant": "M270A2"
+    },
+    {
+      "systemId": "eu.iris-t-slm",
+      "count": 3,
+      "variant": "Sky Sabre (CAMM)",
+      "note": "3 batteries, modèle le plus proche"
+    },
+    {
+      "systemId": "eu.mistral",
+      "count": 50,
+      "variant": "Starstreak LML / Stormer HVM",
+      "note": "≈ 198 postes de tir  soit 50 sections ; modèle le plus proche"
+    },
+    {
+      "systemId": "eu.scalp-storm-shadow",
+      "count": 400,
+      "variant": "Storm Shadow",
+      "note": "stock (estimation)"
+    },
+    {
+      "systemId": "eu.nsm",
+      "count": 40,
+      "variant": "NSM",
+      "note": "stock (estimation)"
+    },
+    {
+      "systemId": "us.tomahawk",
+      "count": 65,
+      "variant": "Tomahawk Block IV/V",
+      "note": "stock (estimation)"
+    },
+    {
+      "systemId": "us.trident-ii-d5",
+      "count": 48,
+      "variant": "Trident II D5",
+      "note": "3 SNLE × 8 missiles en patrouille (FAS)"
+    },
+    {
+      "systemId": "eu.queen-elizabeth",
+      "count": 2,
+      "variant": "Queen Elizabeth, Prince of Wales"
+    },
+    {
+      "systemId": "eu.type-45",
+      "count": 6,
+      "variant": "Type 45 Daring"
+    },
+    {
+      "systemId": "eu.fremm",
+      "count": 7,
+      "variant": "Type 23 Duke",
+      "note": "modèle le plus proche ; Type 26 et 31 pas encore en service"
+    },
+    {
+      "systemId": "eu.gowind",
+      "count": 8,
+      "variant": "River (patrouilleurs)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.astute",
+      "count": 6,
+      "variant": "Astute"
+    },
+    {
+      "systemId": "eu.vanguard",
+      "count": 4,
+      "variant": "Vanguard"
+    },
+    {
+      "systemId": "eu.optical-recon-satellite",
+      "count": 1,
+      "variant": "Tyche"
+    },
+    {
+      "systemId": "us.an-fps-132-uewr",
+      "count": 1,
+      "variant": "UEWR (RAF Fylingdales)"
+    },
+    {
+      "systemId": "us.an-tps-75",
+      "count": 8,
+      "variant": "AN/TPS-77 (Type 92/101)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.smart-l-ewc",
+      "count": 6,
+      "variant": "S1850M (Type 45)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 65,
+      "note": "infanterie légère : ≈ 39,1 k personnes / 600"
+    },
+    {
+      "systemId": "eu.infantry-mech",
+      "count": 42,
+      "note": "infanterie mécanisée / motorisée : ≈ 25,4 k personnes / 600"
+    },
+    {
+      "systemId": "eu.airborne",
+      "count": 10,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 5,8 k personnes / 600"
+    },
+    {
+      "systemId": "eu.special-forces",
+      "count": 4,
+      "note": "forces spéciales : ≈ 2,2 k personnes / 600"
+    },
+    {
+      "systemId": "eu.marines",
+      "count": 11,
+      "note": "infanterie de marine : ≈ 6,5 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.drones1",
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.gen3",
+    "research.aero.helo2",
+    "research.aero.gen4",
+    "research.aero.gen4plus",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.cyber.l3",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.industry.l3",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.intel.exterior3",
+    "research.intel.interior3",
+    "research.intel.military3",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.gen3",
+    "research.land.composite-armor",
+    "research.land.ew",
+    "research.land.gen4",
+    "research.missiles.ballistic1",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.missiles.ballistic2",
+    "research.missiles.cruise1",
+    "research.missiles.sam2",
+    "research.missiles.ballistic3",
+    "research.missiles.cruise2",
+    "research.missiles.sam3",
+    "research.nuclear.weapons",
+    "research.nuclear.slbm",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.naval.gen3",
+    "research.naval.sub2",
+    "research.naval.carrier",
+    "research.naval.gen4",
+    "research.naval.ssbn",
+    "research.naval.sub3",
+    "research.sensors.radar1",
+    "research.sensors.radar2",
+    "research.sensors.space1",
+    "research.sensors.radar3"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
+    "FAS, Status of World Nuclear Forces 2025 (vecteurs nucléaires)",
+    "UK MoD, Quarterly Service Personnel Statistics 2025"
+  ],
+  "confidence": "high",
+  "description": "Archipel de l'Atlantique Nord, le Royaume-Uni est une puissance nucléaire et un membre permanent du Conseil de sécurité des Nations unies. Sa marine met en œuvre deux porte-avions et des sous-marins nucléaires d'attaque et lanceurs d'engins. Pilier de l'OTAN, il entretient une coopération militaire très étroite avec les États-Unis. Ses forces terrestres sont réduites mais professionnelles et projetables.",
+  "doctrineText": "Arsenal mêlant production nationale et européenne (Typhoon, Challenger, Astute) et matériel américain (F-35B, Apache, P-8, missiles Trident). Doctrine expéditionnaire et maritime, intégrée à l'OTAN."
+}

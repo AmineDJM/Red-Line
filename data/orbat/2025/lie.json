@@ -1,0 +1,24 @@
+{
+  "nationId": "lie",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 40000000,
+  "activePersonnel": 0,
+  "inventory": [
+    {
+      "systemId": "eu.infantry-light",
+      "count": 1,
+      "variant": "Landespolizei (≈ 125)",
+      "note": "police, pas d'armée"
+    }
+  ],
+  "research": ["research.intel.interior1"],
+  "licences": [],
+  "sources": [
+    "Estimation (budget de la police nationale ; pas d'armée depuis 1868)",
+    "Landespolizei du Liechtenstein"
+  ],
+  "confidence": "medium",
+  "description": "Le Liechtenstein est une principauté alpine enclavée entre la Suisse et l'Autriche. Il a aboli son armée en 1868. Seule sa police nationale assure la sécurité du territoire.",
+  "doctrineText": "Aucune force armée : police nationale uniquement."
+}

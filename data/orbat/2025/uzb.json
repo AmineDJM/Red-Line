@@ -1,0 +1,190 @@
+{
+  "nationId": "uzb",
+  "year": 2025,
+  "doctrine": "ru",
+  "defenseBudgetUsd": 1800000000,
+  "activePersonnel": 48000,
+  "inventory": [
+    {
+      "systemId": "ru.mig-29",
+      "count": 30,
+      "variant": "MiG-29"
+    },
+    {
+      "systemId": "ru.su-27",
+      "count": 20,
+      "variant": "Su-27"
+    },
+    {
+      "systemId": "ru.su-25",
+      "count": 20,
+      "variant": "Su-25"
+    },
+    {
+      "systemId": "ru.su-24",
+      "count": 10,
+      "variant": "Su-24"
+    },
+    {
+      "systemId": "other.l-39-albatros",
+      "count": 15,
+      "variant": "L-39"
+    },
+    {
+      "systemId": "eu.c-295",
+      "count": 4,
+      "variant": "C-295W"
+    },
+    {
+      "systemId": "ru.an-26",
+      "count": 10,
+      "variant": "An-26"
+    },
+    {
+      "systemId": "ru.mi-24",
+      "count": 30,
+      "variant": "Mi-24/35"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 50,
+      "variant": "Mi-8/Mi-17"
+    },
+    {
+      "systemId": "cn.wing-loong-ii",
+      "count": 6,
+      "variant": "Wing Loong II"
+    },
+    {
+      "systemId": "ru.t-72",
+      "count": 70,
+      "variant": "T-72"
+    },
+    {
+      "systemId": "ru.t-72",
+      "count": 100,
+      "variant": "T-64",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.t-62",
+      "count": 170,
+      "variant": "T-62"
+    },
+    {
+      "systemId": "ru.bmp-2",
+      "count": 270,
+      "variant": "BMP-2"
+    },
+    {
+      "systemId": "ru.bmp-1",
+      "count": 120,
+      "variant": "BMD-1",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.btr-80",
+      "count": 200,
+      "variant": "BTR-80"
+    },
+    {
+      "systemId": "ru.mt-lb",
+      "count": 50,
+      "variant": "MT-LB"
+    },
+    {
+      "systemId": "ru.2s1-gvozdika",
+      "count": 20,
+      "variant": "2S1"
+    },
+    {
+      "systemId": "ru.2s3-akatsiya",
+      "count": 20,
+      "variant": "2S3"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 60,
+      "variant": "D-30"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 60,
+      "variant": "BM-21"
+    },
+    {
+      "systemId": "ru.bm-27-uragan",
+      "count": 48,
+      "variant": "BM-27"
+    },
+    {
+      "systemId": "ru.s-300pmu2",
+      "count": 2,
+      "variant": "S-300PS",
+      "note": "≈ 20 lanceurs  soit 2 divisions ; modèle le plus proche"
+    },
+    {
+      "systemId": "ru.s-125-neva",
+      "count": 5,
+      "variant": "S-125",
+      "note": "≈ 20 lanceurs  soit 5 batteries"
+    },
+    {
+      "systemId": "ru.s-75-dvina",
+      "count": 3,
+      "variant": "S-75",
+      "note": "≈ 20 lanceurs  soit 3 batteries"
+    },
+    {
+      "systemId": "ru.igla",
+      "count": 25,
+      "variant": "Igla",
+      "note": "≈ 100 postes de tir  soit 25 sections"
+    },
+    {
+      "systemId": "ru.infantry-light",
+      "count": 24,
+      "note": "infanterie légère : ≈ 14,7 k personnes / 600"
+    },
+    {
+      "systemId": "ru.infantry-mech",
+      "count": 12,
+      "note": "infanterie mécanisée / motorisée : ≈ 7,3 k personnes / 600"
+    },
+    {
+      "systemId": "ru.vdv-airborne",
+      "count": 2,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 1,2 k personnes / 600"
+    },
+    {
+      "systemId": "ru.spetsnaz",
+      "count": 2,
+      "note": "forces spéciales : ≈ 1,2 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.intel.interior3",
+    "research.land.gen1",
+    "research.missiles.sam1",
+    "research.sensors.radar1"
+  ],
+  "licences": [],
+  "sources": [
+    "Estimation (≈ 2 % du PIB ; SIPRI sans donnée)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low",
+  "description": "Pays le plus peuplé d'Asie centrale, l'Ouzbékistan est doublement enclavé et borde l'Afghanistan. Son armée est la plus nombreuse de la région après celle du Kazakhstan. Il pratique une politique de non-appartenance aux alliances militaires.",
+  "doctrineText": "Arsenal d'origine soviétique complété par du matériel russe et chinois. Doctrine de sécurité des frontières et de lutte antiterroriste."
+}

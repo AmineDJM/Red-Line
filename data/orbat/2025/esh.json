@@ -1,0 +1,41 @@
+{
+  "nationId": "esh",
+  "year": 2025,
+  "doctrine": "other",
+  "defenseBudgetUsd": 50000000,
+  "activePersonnel": 7000,
+  "inventory": [
+    {
+      "systemId": "ru.t-55",
+      "count": 30,
+      "variant": "T-55",
+      "note": "estimation"
+    },
+    {
+      "systemId": "ru.bmp-1",
+      "count": 30,
+      "variant": "BMP-1",
+      "note": "estimation"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 20,
+      "variant": "BM-21",
+      "note": "estimation"
+    },
+    {
+      "systemId": "other.infantry-light",
+      "count": 12,
+      "note": "infanterie légère : ≈ 7 k personnes / 600"
+    }
+  ],
+  "research": ["research.intel.interior1", "research.land.gen1"],
+  "licences": [],
+  "sources": [
+    "Estimation (Front Polisario ; SIPRI sans donnée)",
+    "Estimations publiques (Armée populaire de libération sahraouie)"
+  ],
+  "confidence": "low",
+  "description": "Le Sahara occidental est un territoire désertique au statut non résolu, administré en grande partie par le Maroc et revendiqué par le Front Polisario. Les forces du Polisario, basées dans l'est du territoire et en Algérie, sont peu nombreuses et faiblement équipées. Un mur de sable de plus de 2 700 km sépare les zones contrôlées par le Maroc et par le Polisario.",
+  "doctrineText": "Forces légères équipées de matériel soviétique ancien fourni par l'Algérie. Doctrine de guérilla dans le désert."
+}

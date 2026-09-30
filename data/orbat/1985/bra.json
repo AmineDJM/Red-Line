@@ -1,0 +1,159 @@
+{
+  "nationId": "bra",
+  "year": 1985,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 2687000000,
+  "activePersonnel": 276000,
+  "inventory": [
+    {
+      "systemId": "eu.mirage-5",
+      "count": 16,
+      "variant": "Mirage IIIEBR"
+    },
+    {
+      "systemId": "us.f-5e",
+      "count": 50,
+      "variant": "F-5E/B"
+    },
+    {
+      "systemId": "eu.hawk",
+      "count": 120,
+      "variant": "AT-26 Xavante (MB-326)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 15,
+      "variant": "C-130E/H, KC-130H"
+    },
+    {
+      "systemId": "ru.an-26",
+      "count": 80,
+      "variant": "EMB-110 Bandeirante, C-115 Buffalo",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.uh-1-huey",
+      "count": 60,
+      "variant": "UH-1H, Bell 206"
+    },
+    {
+      "systemId": "eu.sa-330-puma",
+      "count": 10,
+      "variant": "SA330 Puma"
+    },
+    {
+      "systemId": "us.m60-patton",
+      "count": 200,
+      "variant": "M41",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 700,
+      "variant": "M113, EE-9, EE-11",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 50,
+      "variant": "M108/M109"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 400,
+      "variant": "pièces remorquées",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 20,
+      "variant": "ASTROS II",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.crotale",
+      "count": 4,
+      "variant": "Roland",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.exocet",
+      "count": 50,
+      "variant": "Exocet"
+    },
+    {
+      "systemId": "us.nimitz",
+      "count": 1,
+      "variant": "Minas Gerais (porte-avions)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.udaloy",
+      "count": 16,
+      "variant": "Niterói, Garcia, Gearing, Sumner",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.type-209",
+      "count": 7,
+      "variant": "Oberon, Guppy",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 262,
+      "note": "infanterie légère : ≈ 157,4 k personnes / 600"
+    },
+    {
+      "systemId": "eu.infantry-mech",
+      "count": 30,
+      "note": "infanterie mécanisée / motorisée : ≈ 18,3 k personnes / 600"
+    },
+    {
+      "systemId": "eu.airborne",
+      "count": 9,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 5,5 k personnes / 600"
+    },
+    {
+      "systemId": "eu.special-forces",
+      "count": 3,
+      "note": "forces spéciales : ≈ 1,8 k personnes / 600"
+    },
+    {
+      "systemId": "eu.marines",
+      "count": 25,
+      "note": "infanterie de marine : ≈ 15 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.transport",
+    "research.aero.gen3",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.mlrs",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.sensors.radar1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 1985, dollars courants)",
+    "IISS, The Military Balance 1985-1986 (ordres de grandeur)",
+    "SIPRI Military Expenditure Database (dépenses 1985, dollars courants)"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,673 @@
+{
+  "nationId": "chn",
+  "year": 2025,
+  "doctrine": "cn",
+  "defenseBudgetUsd": 335524000000,
+  "activePersonnel": 2035000,
+  "inventory": [
+    {
+      "systemId": "cn.j-20",
+      "count": 300,
+      "variant": "J-20/J-20A",
+      "note": "estimation (production ≈ 100/an)"
+    },
+    {
+      "systemId": "cn.j-35",
+      "count": 30,
+      "variant": "J-35/J-35A",
+      "note": "entrée en service 2025"
+    },
+    {
+      "systemId": "cn.j-16",
+      "count": 380,
+      "variant": "J-16"
+    },
+    {
+      "systemId": "cn.j-16",
+      "count": 20,
+      "variant": "J-16D (guerre électronique)"
+    },
+    {
+      "systemId": "cn.j-11",
+      "count": 245,
+      "variant": "J-11A/B/BS/BG (armée de l'air)"
+    },
+    {
+      "systemId": "cn.j-11",
+      "count": 50,
+      "variant": "J-11B/BS (aéronavale)"
+    },
+    {
+      "systemId": "cn.j-11",
+      "count": 70,
+      "variant": "J-15/J-15T (embarqué)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.j-10",
+      "count": 600,
+      "variant": "J-10A/C/S"
+    },
+    {
+      "systemId": "cn.j-7",
+      "count": 200,
+      "variant": "J-7G/JJ-7",
+      "note": "retrait en cours"
+    },
+    {
+      "systemId": "cn.j-7",
+      "count": 40,
+      "variant": "J-8F/H",
+      "note": "modèle le plus proche ; retrait en cours"
+    },
+    {
+      "systemId": "ru.su-30",
+      "count": 97,
+      "variant": "Su-30MKK/MK2"
+    },
+    {
+      "systemId": "ru.su-35",
+      "count": 24,
+      "variant": "Su-35"
+    },
+    {
+      "systemId": "ru.su-27",
+      "count": 32,
+      "variant": "Su-27SK/UBK"
+    },
+    {
+      "systemId": "ru.su-24",
+      "count": 200,
+      "variant": "JH-7A Flying Leopard",
+      "note": "chasseur-bombardier, modèle le plus proche"
+    },
+    {
+      "systemId": "cn.h-6k",
+      "count": 230,
+      "variant": "H-6K/J/N"
+    },
+    {
+      "systemId": "cn.kj-500",
+      "count": 60,
+      "variant": "KJ-500/KJ-500A"
+    },
+    {
+      "systemId": "cn.kj-500",
+      "count": 13,
+      "variant": "KJ-200 / KJ-600",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.kj-2000",
+      "count": 4,
+      "variant": "KJ-2000"
+    },
+    {
+      "systemId": "cn.y-20",
+      "count": 55,
+      "variant": "Y-20"
+    },
+    {
+      "systemId": "cn.yy-20",
+      "count": 40,
+      "variant": "YY-20A (ravitailleur)"
+    },
+    {
+      "systemId": "ru.il-76",
+      "count": 20,
+      "variant": "Il-76MD"
+    },
+    {
+      "systemId": "ru.il-78",
+      "count": 3,
+      "variant": "Il-78"
+    },
+    {
+      "systemId": "cn.y-9",
+      "count": 160,
+      "variant": "Y-8/Y-9 (transport, patrouille, missions spéciales)"
+    },
+    {
+      "systemId": "cn.k-8-karakorum",
+      "count": 350,
+      "variant": "JL-8 (K-8)"
+    },
+    {
+      "systemId": "ru.yak-130",
+      "count": 80,
+      "variant": "JL-10 (L-15)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.z-10",
+      "count": 200,
+      "variant": "Z-10/Z-10ME"
+    },
+    {
+      "systemId": "cn.z-19",
+      "count": 120,
+      "variant": "Z-19/Z-19E"
+    },
+    {
+      "systemId": "cn.z-20",
+      "count": 220,
+      "variant": "Z-20/Z-20T/Z-20S/Z-20F"
+    },
+    {
+      "systemId": "cn.z-9",
+      "count": 155,
+      "variant": "Z-9WZ/Z-9C (armée, marine)"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 230,
+      "variant": "Mi-17/Mi-171"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 140,
+      "variant": "Z-8/Z-18",
+      "note": "transport lourd, modèle le plus proche"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 19,
+      "variant": "S-70C2",
+      "note": "acquis dans les années 1980"
+    },
+    {
+      "systemId": "ru.ka-27",
+      "count": 20,
+      "variant": "Ka-28/Ka-31"
+    },
+    {
+      "systemId": "cn.wing-loong-ii",
+      "count": 60,
+      "variant": "GJ-2 (Wing Loong II) / GJ-1"
+    },
+    {
+      "systemId": "cn.ch-5",
+      "count": 30,
+      "variant": "WZ-7 / WZ-8 / WZ-10",
+      "note": "HALE, modèle le plus proche"
+    },
+    {
+      "systemId": "cn.gj-11",
+      "count": 10,
+      "variant": "GJ-11 Sharp Sword",
+      "note": "UCAV furtif, entrée en service"
+    },
+    {
+      "systemId": "cn.type-99a",
+      "count": 600,
+      "variant": "ZTZ-99A"
+    },
+    {
+      "systemId": "cn.type-99a",
+      "count": 600,
+      "variant": "ZTZ-99",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.type-96b",
+      "count": 2500,
+      "variant": "ZTZ-96/96A/96B"
+    },
+    {
+      "systemId": "cn.type-59",
+      "count": 400,
+      "variant": "ZTZ-59/ZTZ-88",
+      "note": "en réserve partielle"
+    },
+    {
+      "systemId": "cn.type-15",
+      "count": 500,
+      "variant": "ZTQ-15"
+    },
+    {
+      "systemId": "cn.type-15",
+      "count": 300,
+      "variant": "ZTD-05 (infanterie de marine)",
+      "note": "char amphibie, modèle le plus proche"
+    },
+    {
+      "systemId": "cn.zbd-04a",
+      "count": 1600,
+      "variant": "ZBD-04/04A"
+    },
+    {
+      "systemId": "cn.zbd-04a",
+      "count": 800,
+      "variant": "ZBD-05 (amphibie)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.zbd-04a",
+      "count": 400,
+      "variant": "ZBD-03 (aéroporté)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.zbl-08",
+      "count": 3000,
+      "variant": "ZBL-08/09"
+    },
+    {
+      "systemId": "cn.zbl-08",
+      "count": 500,
+      "variant": "ZSL-92",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bmp-1",
+      "count": 500,
+      "variant": "ZBD-86",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.type-63",
+      "count": 1500,
+      "variant": "ZSD-63/ZSD-89"
+    },
+    {
+      "systemId": "cn.plz-05",
+      "count": 400,
+      "variant": "PLZ-05"
+    },
+    {
+      "systemId": "cn.plz-05",
+      "count": 2000,
+      "variant": "PCL-181/PCL-161/PCL-171",
+      "note": "obusiers sur camion, modèle le plus proche"
+    },
+    {
+      "systemId": "cn.plz-05",
+      "count": 1000,
+      "variant": "PLZ-07/PLZ-89 (122 mm)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 1500,
+      "variant": "PL-96, PL-66",
+      "note": "obusiers remorqués, modèle le plus proche"
+    },
+    {
+      "systemId": "cn.phl-03",
+      "count": 175,
+      "variant": "PHL-03"
+    },
+    {
+      "systemId": "cn.phl-16",
+      "count": 250,
+      "variant": "PHL-16 (PCH-191)"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 1200,
+      "variant": "PHL-11/PHZ-11/PHZ-89 (122 mm)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.hq-9b",
+      "count": 88,
+      "variant": "HQ-9/HQ-9B",
+      "note": "≈ 700 lanceurs  soit 88 batteries"
+    },
+    {
+      "systemId": "ru.s-400",
+      "count": 4,
+      "variant": "S-400",
+      "note": "≈ 32 lanceurs  soit 4 divisions"
+    },
+    {
+      "systemId": "ru.s-300pmu2",
+      "count": 19,
+      "variant": "S-300PMU/PMU1/PMU2",
+      "note": "≈ 150 lanceurs  soit 19 divisions ; retrait progressif"
+    },
+    {
+      "systemId": "cn.hq-16",
+      "count": 75,
+      "variant": "HQ-16/16B",
+      "note": "≈ 300 lanceurs  soit 75 batteries"
+    },
+    {
+      "systemId": "cn.hq-17",
+      "count": 250,
+      "variant": "HQ-17/17A"
+    },
+    {
+      "systemId": "cn.hq-7",
+      "count": 200,
+      "variant": "HQ-7/HQ-7B"
+    },
+    {
+      "systemId": "ru.igla",
+      "count": 250,
+      "variant": "QW-1/QW-2, FN-6",
+      "note": "≈ 1 000 postes de tir  soit 250 sections ; modèle le plus proche"
+    },
+    {
+      "systemId": "cn.ew-jammer",
+      "count": 100,
+      "variant": "systèmes de guerre électronique terrestre",
+      "note": "estimation"
+    },
+    {
+      "systemId": "cn.df-15",
+      "count": 900,
+      "variant": "DF-11A/DF-15B/DF-16",
+      "note": "SRBM, missiles (DoD)"
+    },
+    {
+      "systemId": "cn.df-17",
+      "count": 300,
+      "variant": "DF-17",
+      "note": "planeur hypersonique, missiles (estimation)"
+    },
+    {
+      "systemId": "cn.df-21d",
+      "count": 500,
+      "variant": "DF-21C/D/E",
+      "note": "MRBM, missiles (estimation)"
+    },
+    {
+      "systemId": "cn.df-26",
+      "count": 500,
+      "variant": "DF-26",
+      "note": "IRBM, missiles (DoD)"
+    },
+    {
+      "systemId": "cn.cj-10",
+      "count": 400,
+      "variant": "CJ-10/CJ-100",
+      "note": "missiles de croisière (DoD)"
+    },
+    {
+      "systemId": "cn.yj-18",
+      "count": 800,
+      "variant": "YJ-18 / YJ-12",
+      "note": "antinavires (estimation)"
+    },
+    {
+      "systemId": "cn.c-802",
+      "count": 800,
+      "variant": "YJ-83 / C-802",
+      "note": "antinavires (estimation)"
+    },
+    {
+      "systemId": "cn.df-41",
+      "count": 100,
+      "variant": "DF-41",
+      "note": "ICBM (FAS)"
+    },
+    {
+      "systemId": "cn.df-41",
+      "count": 130,
+      "variant": "DF-31A/AG",
+      "note": "modèle le plus proche (FAS)"
+    },
+    {
+      "systemId": "cn.df-41",
+      "count": 40,
+      "variant": "DF-5A/B/C",
+      "note": "ICBM en silo, modèle le plus proche (FAS)"
+    },
+    {
+      "systemId": "cn.jl-3",
+      "count": 72,
+      "variant": "JL-3 / JL-2",
+      "note": "6 SSBN × 12 (FAS)"
+    },
+    {
+      "systemId": "cn.liaoning",
+      "count": 1,
+      "variant": "Liaoning (Type 001)"
+    },
+    {
+      "systemId": "cn.shandong",
+      "count": 1,
+      "variant": "Shandong (Type 002)"
+    },
+    {
+      "systemId": "cn.type-003-fujian",
+      "count": 1,
+      "variant": "Fujian (Type 003)",
+      "note": "mis en service fin 2025"
+    },
+    {
+      "systemId": "cn.type-075",
+      "count": 4,
+      "variant": "Type 075"
+    },
+    {
+      "systemId": "cn.type-075",
+      "count": 1,
+      "variant": "Type 076 Sichuan",
+      "note": "modèle le plus proche ; 8 LPD Type 071 non comptés"
+    },
+    {
+      "systemId": "cn.type-055",
+      "count": 10,
+      "variant": "Type 055"
+    },
+    {
+      "systemId": "cn.type-052d",
+      "count": 27,
+      "variant": "Type 052D"
+    },
+    {
+      "systemId": "cn.type-052d",
+      "count": 10,
+      "variant": "Type 052C, 051C, Sovremenny",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.type-054a",
+      "count": 33,
+      "variant": "Type 054A"
+    },
+    {
+      "systemId": "cn.type-054a",
+      "count": 3,
+      "variant": "Type 054B",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.type-056",
+      "count": 50,
+      "variant": "Type 056/056A"
+    },
+    {
+      "systemId": "cn.type-022",
+      "count": 60,
+      "variant": "Type 022 Houbei"
+    },
+    {
+      "systemId": "cn.type-094",
+      "count": 6,
+      "variant": "Type 094/094A"
+    },
+    {
+      "systemId": "cn.type-093",
+      "count": 7,
+      "variant": "Type 093/093A/093B"
+    },
+    {
+      "systemId": "cn.type-039",
+      "count": 34,
+      "variant": "Type 039/039A/039B/039C (Song, Yuan)"
+    },
+    {
+      "systemId": "ru.kilo",
+      "count": 12,
+      "variant": "Kilo (877EKM/636)"
+    },
+    {
+      "systemId": "cn.optical-recon-satellite",
+      "count": 110,
+      "variant": "Yaogan, Gaofen militarisés",
+      "note": "estimation (US Space Force)"
+    },
+    {
+      "systemId": "cn.radar-satellite",
+      "count": 60,
+      "variant": "Yaogan SAR",
+      "note": "estimation"
+    },
+    {
+      "systemId": "cn.sigint-satellite",
+      "count": 90,
+      "variant": "Yaogan (triplets), TJS",
+      "note": "estimation"
+    },
+    {
+      "systemId": "cn.early-warning-satellite",
+      "count": 4,
+      "variant": "Huoyan-1 (TJS)",
+      "note": "estimation"
+    },
+    {
+      "systemId": "cn.asat",
+      "count": 10,
+      "variant": "SC-19 / DN-2 / DN-3",
+      "note": "lanceurs (estimation)"
+    },
+    {
+      "systemId": "cn.type-7010-lpar",
+      "count": 4,
+      "variant": "LPAR d'alerte avancée",
+      "note": "estimation"
+    },
+    {
+      "systemId": "cn.jy-27a",
+      "count": 30,
+      "variant": "JY-27A",
+      "note": "estimation"
+    },
+    {
+      "systemId": "cn.ylc-8b",
+      "count": 40,
+      "variant": "YLC-8B",
+      "note": "estimation"
+    },
+    {
+      "systemId": "cn.jy-26",
+      "count": 30,
+      "variant": "JY-26",
+      "note": "estimation"
+    },
+    {
+      "systemId": "cn.infantry-light",
+      "count": 653,
+      "note": "infanterie légère : ≈ 391,9 k personnes / 600 ; armée de terre de l'APL et corps aéroporté"
+    },
+    {
+      "systemId": "cn.infantry-mech",
+      "count": 921,
+      "note": "infanterie mécanisée / motorisée : ≈ 552,8 k personnes / 600"
+    },
+    {
+      "systemId": "cn.airborne",
+      "count": 67,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 40,2 k personnes / 600"
+    },
+    {
+      "systemId": "cn.special-forces",
+      "count": 34,
+      "note": "forces spéciales : ≈ 20,1 k personnes / 600"
+    },
+    {
+      "systemId": "cn.marines",
+      "count": 67,
+      "note": "infanterie de marine : ≈ 40 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.drones1",
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.transport",
+    "research.aero.bomber1",
+    "research.aero.drones2",
+    "research.aero.gen3",
+    "research.aero.helo2",
+    "research.aero.tanker",
+    "research.aero.aew",
+    "research.aero.bomber2",
+    "research.aero.gen4",
+    "research.aero.helo3",
+    "research.aero.gen4plus",
+    "research.aero.stealth-materials",
+    "research.aero.drones3",
+    "research.aero.gen5",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.cyber.l3",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.industry.l3",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.intel.exterior3",
+    "research.intel.interior3",
+    "research.intel.military3",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.gen3",
+    "research.land.mlrs",
+    "research.land.composite-armor",
+    "research.land.ew",
+    "research.land.gen4",
+    "research.land.active-protection",
+    "research.land.gen5",
+    "research.missiles.ballistic1",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.missiles.ballistic2",
+    "research.missiles.cruise1",
+    "research.missiles.sam2",
+    "research.missiles.ballistic3",
+    "research.missiles.cruise2",
+    "research.missiles.sam3",
+    "research.nuclear.weapons",
+    "research.missiles.hypersonic",
+    "research.missiles.sam4",
+    "research.nuclear.icbm",
+    "research.nuclear.slbm",
+    "research.missiles.abm",
+    "research.missiles.sam5",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.naval.sub1",
+    "research.naval.gen3",
+    "research.naval.sub2",
+    "research.naval.carrier",
+    "research.naval.gen4",
+    "research.naval.ssbn",
+    "research.naval.sub3",
+    "research.naval.gen5",
+    "research.sensors.radar1",
+    "research.sensors.radar2",
+    "research.sensors.space1",
+    "research.sensors.radar3",
+    "research.sensors.space2",
+    "research.sensors.asat"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
+    "FAS, Status of World Nuclear Forces 2025 (vecteurs nucléaires)",
+    "US DoD, Military and Security Developments Involving the PRC 2024 (forces de missiles)"
+  ],
+  "confidence": "medium",
+  "description": "Deuxième puissance économique mondiale, la Chine dispose de l'armée la plus nombreuse en effectifs d'active et de la première marine du monde par le nombre de navires. Sa façade maritime ouvre sur les mers de Chine orientale et méridionale, où se concentrent ses priorités stratégiques, notamment autour de Taïwan. Son industrie de défense produit désormais des avions furtifs, des porte-avions et des missiles hypersoniques. Son arsenal nucléaire est en forte croissance depuis le début des années 2020.",
+  "doctrineText": "Arsenal presque entièrement national, orienté vers le déni d'accès : missiles balistiques et de croisière antinavires, défense aérienne intégrée, aviation de combat moderne et marine de haute mer en expansion rapide."
+}

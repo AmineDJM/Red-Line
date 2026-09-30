@@ -1,0 +1,35 @@
+{
+  "nationId": "jam",
+  "year": 2025,
+  "doctrine": "us",
+  "defenseBudgetUsd": 287000000,
+  "activePersonnel": 6000,
+  "inventory": [
+    {
+      "systemId": "us.uh-1-huey",
+      "count": 6,
+      "variant": "Bell 412"
+    },
+    {
+      "systemId": "us.infantry-light",
+      "count": 8,
+      "note": "infanterie légère : ≈ 5 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.helo1",
+    "research.cyber.l1",
+    "research.industry.l1",
+    "research.intel.interior1",
+    "research.land.gen1",
+    "research.naval.gen1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "medium",
+  "description": "La Jamaïque est une île des Grandes Antilles. Sa force de défense, réduite, appuie la police dans la lutte contre la criminalité. Elle participe au système de sécurité régional des Caraïbes.",
+  "doctrineText": "Forces légères. Doctrine de sécurité intérieure et maritime."
+}

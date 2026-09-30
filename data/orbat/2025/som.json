@@ -1,0 +1,28 @@
+{
+  "nationId": "som",
+  "year": 2025,
+  "doctrine": "other",
+  "defenseBudgetUsd": 199000000,
+  "activePersonnel": 13900,
+  "inventory": [
+    {
+      "systemId": "other.infantry-light",
+      "count": 21,
+      "note": "infanterie légère : ≈ 12,3 k personnes / 600"
+    },
+    {
+      "systemId": "other.special-forces",
+      "count": 1,
+      "note": "forces spéciales : ≈ 0,7 k personnes / 600"
+    }
+  ],
+  "research": ["research.intel.interior1", "research.land.gen1"],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low",
+  "description": "La Somalie borde l'océan Indien et le golfe d'Aden. Son armée nationale, soutenue par l'Union africaine et la Turquie, combat les Chabab. Sa longue côte borde des routes maritimes exposées à la piraterie.",
+  "doctrineText": "Forces légères. Doctrine de contre-insurrection."
+}

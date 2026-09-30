@@ -1,0 +1,23 @@
+{
+  "nationId": "dji",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 120000000,
+  "activePersonnel": 10450,
+  "inventory": [
+    {
+      "systemId": "eu.infantry-light",
+      "count": 13,
+      "note": "infanterie légère : ≈ 8 k personnes / 600"
+    }
+  ],
+  "research": ["research.intel.interior1", "research.land.gen1"],
+  "licences": [],
+  "sources": [
+    "Estimation (≈ 3 % du PIB ; SIPRI sans donnée)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low",
+  "description": "Djibouti contrôle la rive africaine du détroit de Bab el-Mandeb et accueille des bases militaires française, américaine, chinoise, japonaise et italienne. Ses propres forces armées sont réduites. Sa position à l'entrée de la mer Rouge en fait l'un des territoires les plus stratégiques de la région.",
+  "doctrineText": "Forces légères, sécurité assurée par la présence de bases étrangères."
+}

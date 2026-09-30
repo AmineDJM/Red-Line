@@ -1,0 +1,23 @@
+{
+  "nationId": "cpv",
+  "year": 2025,
+  "doctrine": "other",
+  "defenseBudgetUsd": 20000000,
+  "activePersonnel": 1200,
+  "inventory": [
+    {
+      "systemId": "other.infantry-light",
+      "count": 2,
+      "note": "infanterie légère : ≈ 1,2 k personnes / 600"
+    }
+  ],
+  "research": ["research.intel.interior1", "research.land.gen1"],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low",
+  "description": "Le Cap-Vert est un archipel de l'Atlantique au large du Sénégal. Ses forces armées sont très réduites. Sa position atlantique en fait un point de passage des routes maritimes entre l'Europe, l'Afrique et l'Amérique.",
+  "doctrineText": "Forces légères et garde-côtes."
+}

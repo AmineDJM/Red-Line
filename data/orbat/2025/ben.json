@@ -1,0 +1,23 @@
+{
+  "nationId": "ben",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 217000000,
+  "activePersonnel": 12300,
+  "inventory": [
+    {
+      "systemId": "eu.infantry-light",
+      "count": 13,
+      "note": "infanterie légère : ≈ 8 k personnes / 600"
+    }
+  ],
+  "research": ["research.industry.l1", "research.intel.interior1", "research.land.gen1"],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low",
+  "description": "Le Bénin est un pays côtier du golfe de Guinée confronté à des incursions djihadistes au nord. Ses forces armées sont réduites. Son armée participe à une opération régionale contre les groupes armés du Sahel.",
+  "doctrineText": "Forces légères."
+}

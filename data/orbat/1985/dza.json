@@ -1,0 +1,168 @@
+{
+  "nationId": "dza",
+  "year": 1985,
+  "doctrine": "ru",
+  "defenseBudgetUsd": 953000000,
+  "activePersonnel": 170000,
+  "inventory": [
+    {
+      "systemId": "ru.mig-21",
+      "count": 90,
+      "variant": "MiG-21"
+    },
+    {
+      "systemId": "ru.mig-23",
+      "count": 90,
+      "variant": "MiG-23"
+    },
+    {
+      "systemId": "ru.mig-31",
+      "count": 20,
+      "variant": "MiG-25",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.su-22",
+      "count": 40,
+      "variant": "Su-7/Su-20"
+    },
+    {
+      "systemId": "ru.mi-24",
+      "count": 30,
+      "variant": "Mi-24"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 40,
+      "variant": "Mi-8"
+    },
+    {
+      "systemId": "ru.t-72",
+      "count": 200,
+      "variant": "T-72"
+    },
+    {
+      "systemId": "ru.t-62",
+      "count": 300,
+      "variant": "T-62"
+    },
+    {
+      "systemId": "ru.t-55",
+      "count": 400,
+      "variant": "T-54/T-55"
+    },
+    {
+      "systemId": "ru.bmp-1",
+      "count": 700,
+      "variant": "BMP-1"
+    },
+    {
+      "systemId": "ru.mt-lb",
+      "count": 500,
+      "variant": "BTR-50/60",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.2s1-gvozdika",
+      "count": 40,
+      "variant": "2S1"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 500,
+      "variant": "pièces remorquées"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 100,
+      "variant": "BM-21"
+    },
+    {
+      "systemId": "ru.tochka-u",
+      "count": 10,
+      "variant": "FROG-7",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.s-75-dvina",
+      "count": 10,
+      "variant": "S-75",
+      "note": "≈ 60 lanceurs  soit 10 batteries"
+    },
+    {
+      "systemId": "ru.s-125-neva",
+      "count": 10,
+      "variant": "S-125",
+      "note": "≈ 40 lanceurs  soit 10 batteries"
+    },
+    {
+      "systemId": "ru.2k12-kub",
+      "count": 8,
+      "variant": "2K12 Kub",
+      "note": "≈ 30 lanceurs  soit 8 batteries"
+    },
+    {
+      "systemId": "ru.zsu-23-4-shilka",
+      "count": 100,
+      "variant": "ZSU-23-4"
+    },
+    {
+      "systemId": "ru.udaloy",
+      "count": 2,
+      "variant": "Koni",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.kilo",
+      "count": 2,
+      "variant": "Romeo",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.infantry-light",
+      "count": 165,
+      "note": "infanterie légère : ≈ 99 k personnes / 600"
+    },
+    {
+      "systemId": "ru.infantry-mech",
+      "count": 75,
+      "note": "infanterie mécanisée / motorisée : ≈ 45 k personnes / 600"
+    },
+    {
+      "systemId": "ru.vdv-airborne",
+      "count": 5,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 3 k personnes / 600"
+    },
+    {
+      "systemId": "ru.spetsnaz",
+      "count": 5,
+      "note": "forces spéciales : ≈ 3 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.industry.l1",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.intel.interior3",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.missiles.sam2",
+    "research.naval.gen1",
+    "research.sensors.radar1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 1985, dollars courants)",
+    "IISS, The Military Balance 1985-1986 (ordres de grandeur)",
+    "SIPRI Military Expenditure Database (dépenses 1985, dollars courants)"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,79 @@
+{
+  "nationId": "tza",
+  "year": 2025,
+  "doctrine": "cn",
+  "defenseBudgetUsd": 1030000000,
+  "activePersonnel": 27000,
+  "inventory": [
+    {
+      "systemId": "cn.j-7",
+      "count": 10,
+      "variant": "J-7"
+    },
+    {
+      "systemId": "cn.k-8-karakorum",
+      "count": 6,
+      "variant": "K-8"
+    },
+    {
+      "systemId": "cn.type-59",
+      "count": 45,
+      "variant": "Type 59, Type 62"
+    },
+    {
+      "systemId": "cn.zbl-08",
+      "count": 20,
+      "variant": "Type 92",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 100,
+      "variant": "D-30, Type 54",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 60,
+      "variant": "BM-21, Type 63",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.s-125-neva",
+      "count": 2,
+      "variant": "S-125",
+      "note": "≈ 6 lanceurs  soit 2 batteries"
+    },
+    {
+      "systemId": "cn.infantry-light",
+      "count": 35,
+      "note": "infanterie légère : ≈ 21,2 k personnes / 600"
+    },
+    {
+      "systemId": "cn.infantry-mech",
+      "count": 2,
+      "note": "infanterie mécanisée / motorisée : ≈ 1,1 k personnes / 600"
+    },
+    {
+      "systemId": "cn.special-forces",
+      "count": 1,
+      "note": "forces spéciales : ≈ 0,7 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.helo1",
+    "research.cyber.l1",
+    "research.industry.l1",
+    "research.intel.interior1",
+    "research.intel.interior2",
+    "research.land.gen1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low",
+  "description": "La Tanzanie borde l'océan Indien et les grands lacs d'Afrique de l'Est. Ses forces armées sont principalement équipées de matériel chinois. Elle participe aux opérations de maintien de la paix, notamment en République démocratique du Congo.",
+  "doctrineText": "Arsenal léger d'origine chinoise. Doctrine de défense territoriale."
+}

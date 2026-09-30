@@ -1,0 +1,28 @@
+{
+  "nationId": "btn",
+  "year": 2025,
+  "doctrine": "other",
+  "defenseBudgetUsd": 40000000,
+  "activePersonnel": 8000,
+  "inventory": [
+    {
+      "systemId": "other.infantry-light",
+      "count": 13,
+      "note": "infanterie légère : ≈ 8 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.cyber.l1",
+    "research.industry.l1",
+    "research.intel.interior1",
+    "research.land.gen1"
+  ],
+  "licences": [],
+  "sources": [
+    "Estimation (Royal Bhutan Army ; SIPRI sans donnée)",
+    "Estimation (effectifs de la Royal Bhutan Army)"
+  ],
+  "confidence": "low",
+  "description": "Royaume himalayen enclavé entre l'Inde et la Chine, le Bhoutan dispose d'une petite armée d'infanterie. Sa défense repose largement sur sa coopération avec l'Inde. Le relief himalayen et les cols frontaliers constituent l'essentiel de sa défense naturelle.",
+  "doctrineText": "Forces d'infanterie légère, formées et appuyées par l'Inde."
+}

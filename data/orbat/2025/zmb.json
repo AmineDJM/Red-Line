@@ -1,0 +1,80 @@
+{
+  "nationId": "zmb",
+  "year": 2025,
+  "doctrine": "cn",
+  "defenseBudgetUsd": 406000000,
+  "activePersonnel": 15100,
+  "inventory": [
+    {
+      "systemId": "cn.k-8-karakorum",
+      "count": 14,
+      "variant": "K-8"
+    },
+    {
+      "systemId": "ru.yak-130",
+      "count": 6,
+      "variant": "L-15",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "cn.z-9",
+      "count": 4,
+      "variant": "Z-9"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 6,
+      "variant": "Mi-17"
+    },
+    {
+      "systemId": "ru.t-55",
+      "count": 30,
+      "variant": "T-55"
+    },
+    {
+      "systemId": "cn.type-59",
+      "count": 20,
+      "variant": "Type 59"
+    },
+    {
+      "systemId": "ru.btr-80",
+      "count": 20,
+      "variant": "BTR-60",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 20,
+      "variant": "D-30"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 30,
+      "variant": "BM-21"
+    },
+    {
+      "systemId": "cn.infantry-light",
+      "count": 21,
+      "note": "infanterie légère : ≈ 12,8 k personnes / 600"
+    },
+    {
+      "systemId": "cn.infantry-mech",
+      "count": 1,
+      "note": "infanterie mécanisée / motorisée : ≈ 0,7 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.helo1",
+    "research.industry.l1",
+    "research.intel.interior1",
+    "research.land.gen1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low",
+  "description": "La Zambie est un pays enclavé d'Afrique australe riche en cuivre. Ses forces armées sont modestes et équipées de matériel chinois. Elle participe aux opérations de maintien de la paix.",
+  "doctrineText": "Arsenal léger d'origine chinoise. Doctrine de défense territoriale."
+}

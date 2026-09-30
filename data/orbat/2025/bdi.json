@@ -1,0 +1,33 @@
+{
+  "nationId": "bdi",
+  "year": 2025,
+  "doctrine": "ru",
+  "defenseBudgetUsd": 227000000,
+  "activePersonnel": 30000,
+  "inventory": [
+    {
+      "systemId": "ru.brdm-2",
+      "count": 30,
+      "variant": "BRDM-2"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 18,
+      "variant": "D-30"
+    },
+    {
+      "systemId": "ru.infantry-light",
+      "count": 50,
+      "note": "infanterie légère : ≈ 30 k personnes / 600"
+    }
+  ],
+  "research": ["research.intel.interior1", "research.land.gen1"],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low",
+  "description": "Le Burundi est un petit pays enclavé de la région des Grands Lacs. Ses forces armées sont modestes et engagées dans des opérations régionales. Ses troupes ont servi en Somalie et dans l'est de la République démocratique du Congo.",
+  "doctrineText": "Forces légères. Doctrine de sécurité intérieure."
+}

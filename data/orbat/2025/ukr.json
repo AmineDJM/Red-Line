@@ -1,0 +1,498 @@
+{
+  "nationId": "ukr",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 84109000000,
+  "activePersonnel": 730000,
+  "inventory": [
+    {
+      "systemId": "us.f-16",
+      "count": 39,
+      "variant": "F-16AM/BM",
+      "note": "livrés par le Danemark, les Pays-Bas, la Norvège et la Belgique, après pertes"
+    },
+    {
+      "systemId": "eu.mirage-2000",
+      "count": 6,
+      "variant": "Mirage 2000-5F"
+    },
+    {
+      "systemId": "ru.mig-29",
+      "count": 45,
+      "variant": "MiG-29 / MiG-29MU2"
+    },
+    {
+      "systemId": "ru.su-27",
+      "count": 23,
+      "variant": "Su-27P1M/S1M"
+    },
+    {
+      "systemId": "ru.su-24",
+      "count": 13,
+      "variant": "Su-24M/MR"
+    },
+    {
+      "systemId": "ru.su-25",
+      "count": 17,
+      "variant": "Su-25M1"
+    },
+    {
+      "systemId": "ru.il-76",
+      "count": 3,
+      "variant": "Il-76MD"
+    },
+    {
+      "systemId": "ru.an-26",
+      "count": 10,
+      "variant": "An-26"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 60,
+      "variant": "Mi-8 / Mi-17"
+    },
+    {
+      "systemId": "ru.mi-24",
+      "count": 25,
+      "variant": "Mi-24P/V"
+    },
+    {
+      "systemId": "ru.mi-2",
+      "count": 20,
+      "variant": "Mi-2"
+    },
+    {
+      "systemId": "other.bayraktar-tb2",
+      "count": 10,
+      "variant": "Bayraktar TB2"
+    },
+    {
+      "systemId": "other.shahed-136",
+      "count": 1500,
+      "variant": "Liutyi, FP-1 et autres drones d'attaque à longue portée",
+      "note": "stock courant, fonction identique (estimation) ; drones FPV non comptés"
+    },
+    {
+      "systemId": "ru.t-72",
+      "count": 500,
+      "variant": "T-64BV/BM Bulat",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.t-72",
+      "count": 350,
+      "variant": "T-72A/B/M1/EA (dons et prises)"
+    },
+    {
+      "systemId": "ru.t-80bvm",
+      "count": 100,
+      "variant": "T-80BV/U",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.leopard-2a7",
+      "count": 60,
+      "variant": "Leopard 2A4/2A6",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.leopard-1",
+      "count": 100,
+      "variant": "Leopard 1A5"
+    },
+    {
+      "systemId": "us.m1a2-abrams",
+      "count": 50,
+      "variant": "M1A1 SA / AIM",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.challenger-2",
+      "count": 10,
+      "variant": "Challenger 2"
+    },
+    {
+      "systemId": "other.pt-91-twardy",
+      "count": 40,
+      "variant": "PT-91"
+    },
+    {
+      "systemId": "ru.t-55",
+      "count": 20,
+      "variant": "M-55S",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.bmp-1",
+      "count": 300,
+      "variant": "BMP-1/1AK"
+    },
+    {
+      "systemId": "ru.bmp-2",
+      "count": 300,
+      "variant": "BMP-2"
+    },
+    {
+      "systemId": "us.m2-bradley",
+      "count": 250,
+      "variant": "M2A2 ODS Bradley"
+    },
+    {
+      "systemId": "eu.puma",
+      "count": 100,
+      "variant": "Marder 1A3",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.cv90",
+      "count": 60,
+      "variant": "CV9040C"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 900,
+      "variant": "M113"
+    },
+    {
+      "systemId": "us.m113",
+      "count": 200,
+      "variant": "YPR-765",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.stryker",
+      "count": 180,
+      "variant": "M1126 Stryker"
+    },
+    {
+      "systemId": "ru.btr-80",
+      "count": 400,
+      "variant": "BTR-4, BTR-80, BTR-70",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.mt-lb",
+      "count": 500,
+      "variant": "MT-LB"
+    },
+    {
+      "systemId": "eu.vbci",
+      "count": 30,
+      "variant": "AMX-10RC",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 200,
+      "variant": "M109A3/A4/A5/L"
+    },
+    {
+      "systemId": "us.m109-paladin",
+      "count": 30,
+      "variant": "AS-90",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.pzh-2000",
+      "count": 50,
+      "variant": "PzH 2000"
+    },
+    {
+      "systemId": "eu.caesar",
+      "count": 80,
+      "variant": "CAESAR"
+    },
+    {
+      "systemId": "eu.caesar",
+      "count": 150,
+      "variant": "2S22 Bohdana",
+      "note": "production nationale, modèle le plus proche"
+    },
+    {
+      "systemId": "eu.caesar",
+      "count": 30,
+      "variant": "Zuzana 2, Dana",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "other.k9-thunder",
+      "count": 80,
+      "variant": "AHS Krab",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.archer",
+      "count": 8,
+      "variant": "Archer"
+    },
+    {
+      "systemId": "ru.2s1-gvozdika",
+      "count": 200,
+      "variant": "2S1"
+    },
+    {
+      "systemId": "ru.2s3-akatsiya",
+      "count": 150,
+      "variant": "2S3"
+    },
+    {
+      "systemId": "ru.2s19-msta",
+      "count": 30,
+      "variant": "2S19"
+    },
+    {
+      "systemId": "ru.2s7-pion",
+      "count": 40,
+      "variant": "2S7"
+    },
+    {
+      "systemId": "us.m777",
+      "count": 150,
+      "variant": "M777"
+    },
+    {
+      "systemId": "ru.d-30",
+      "count": 800,
+      "variant": "D-30, D-20, 2A36, 2A65, FH-70",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.m142-himars",
+      "count": 40,
+      "variant": "M142 HIMARS"
+    },
+    {
+      "systemId": "us.m270-mlrs",
+      "count": 20,
+      "variant": "M270 / MARS II"
+    },
+    {
+      "systemId": "ru.bm-21-grad",
+      "count": 250,
+      "variant": "BM-21, RM-70"
+    },
+    {
+      "systemId": "ru.bm-27-uragan",
+      "count": 50,
+      "variant": "BM-27"
+    },
+    {
+      "systemId": "ru.bm-30-smerch",
+      "count": 60,
+      "variant": "BM-30 Smerch"
+    },
+    {
+      "systemId": "ru.bm-30-smerch",
+      "count": 30,
+      "variant": "Vilkha",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.patriot",
+      "count": 7,
+      "variant": "Patriot PAC-2/PAC-3",
+      "note": "≈ 40 lanceurs  soit 7 batteries"
+    },
+    {
+      "systemId": "eu.samp-t",
+      "count": 2,
+      "variant": "SAMP/T",
+      "note": "≈ 8 lanceurs  soit 2 batteries"
+    },
+    {
+      "systemId": "eu.iris-t-slm",
+      "count": 10,
+      "variant": "IRIS-T SLM/SLS",
+      "note": "≈ 30 lanceurs  soit 10 batteries"
+    },
+    {
+      "systemId": "us.nasams",
+      "count": 8,
+      "variant": "NASAMS",
+      "note": "≈ 30 lanceurs  soit 8 batteries"
+    },
+    {
+      "systemId": "us.mim-23-hawk",
+      "count": 3,
+      "variant": "Hawk Phase III",
+      "note": "≈ 20 lanceurs  soit 3 batteries"
+    },
+    {
+      "systemId": "ru.s-300pmu2",
+      "count": 12,
+      "variant": "S-300PS/PT",
+      "note": "≈ 100 lanceurs  soit 12 divisions ; modèle le plus proche"
+    },
+    {
+      "systemId": "ru.buk-m3",
+      "count": 8,
+      "variant": "Buk-M1",
+      "note": "≈ 50 lanceurs  soit 8 batteries ; modèle le plus proche"
+    },
+    {
+      "systemId": "ru.9k33-osa",
+      "count": 40,
+      "variant": "9K33 Osa"
+    },
+    {
+      "systemId": "ru.tor-m2",
+      "count": 8,
+      "variant": "Tor-M1",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "ru.s-125-neva",
+      "count": 5,
+      "variant": "S-125",
+      "note": "≈ 20 lanceurs  soit 5 batteries"
+    },
+    {
+      "systemId": "eu.gepard",
+      "count": 60,
+      "variant": "Gepard"
+    },
+    {
+      "systemId": "us.avenger",
+      "count": 10,
+      "variant": "Avenger"
+    },
+    {
+      "systemId": "eu.skynex",
+      "count": 6,
+      "variant": "Skynex"
+    },
+    {
+      "systemId": "eu.crotale",
+      "count": 4,
+      "variant": "Crotale NG"
+    },
+    {
+      "systemId": "us.stinger",
+      "count": 200,
+      "variant": "Stinger, Piorun, Mistral",
+      "note": "≈ 800 postes de tir  soit 200 sections"
+    },
+    {
+      "systemId": "ru.igla",
+      "count": 175,
+      "variant": "Igla / Strela",
+      "note": "≈ 700 postes de tir  soit 175 sections"
+    },
+    {
+      "systemId": "eu.scalp-storm-shadow",
+      "count": 50,
+      "variant": "Storm Shadow / SCALP",
+      "note": "stock (estimation)"
+    },
+    {
+      "systemId": "eu.scalp-storm-shadow",
+      "count": 90,
+      "variant": "Long Neptune, FP-5 Flamingo",
+      "note": "missiles de croisière nationaux, modèle le plus proche"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 60,
+      "variant": "R-360 Neptune",
+      "note": "antinavire national, modèle le plus proche"
+    },
+    {
+      "systemId": "us.harpoon",
+      "count": 20,
+      "variant": "Harpoon (défense côtière)"
+    },
+    {
+      "systemId": "us.atacms",
+      "count": 20,
+      "variant": "ATACMS",
+      "note": "stock (estimation)"
+    },
+    {
+      "systemId": "ru.tochka-u",
+      "count": 20,
+      "variant": "OTR-21 Tochka-U"
+    },
+    {
+      "systemId": "ru.p-18",
+      "count": 50,
+      "variant": "P-18, 36D6, 80K6 Iskra",
+      "note": "radars soviétiques et nationaux (estimation)"
+    },
+    {
+      "systemId": "eu.trml-4d",
+      "count": 10,
+      "variant": "TRML-4D (IRIS-T SLM)"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 503,
+      "note": "infanterie légère : ≈ 301,6 k personnes / 600 ; forces terrestres, défense territoriale et troupes d'assaut aérien, en guerre"
+    },
+    {
+      "systemId": "eu.infantry-mech",
+      "count": 260,
+      "note": "infanterie mécanisée / motorisée : ≈ 156 k personnes / 600"
+    },
+    {
+      "systemId": "eu.airborne",
+      "count": 87,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 52 k personnes / 600"
+    },
+    {
+      "systemId": "eu.special-forces",
+      "count": 17,
+      "note": "forces spéciales : ≈ 10,4 k personnes / 600"
+    },
+    {
+      "systemId": "eu.marines",
+      "count": 50,
+      "note": "infanterie de marine : ≈ 30 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.drones1",
+    "research.aero.gen2",
+    "research.aero.helo1",
+    "research.aero.drones2",
+    "research.aero.gen3",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.cyber.l3",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.exterior2",
+    "research.intel.interior2",
+    "research.intel.military2",
+    "research.intel.interior3",
+    "research.intel.military3",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.land.gen3",
+    "research.land.mlrs",
+    "research.land.ew",
+    "research.missiles.ballistic1",
+    "research.missiles.sam1",
+    "research.missiles.antiship",
+    "research.missiles.cruise1",
+    "research.missiles.sam2",
+    "research.missiles.cruise2",
+    "research.naval.gen1",
+    "research.sensors.radar1",
+    "research.sensors.radar2",
+    "research.sensors.space1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
+    "Oryx (pertes et livraisons documentées)",
+    "Kiel Institute, Ukraine Support Tracker"
+  ],
+  "confidence": "low",
+  "description": "Deuxième pays d'Europe par la superficie, l'Ukraine s'étend des Carpates à la mer d'Azov et borde la mer Noire. Elle résiste depuis février 2022 à une invasion russe à grande échelle qui occupe une partie de son territoire. Son armée, devenue l'une des plus expérimentées d'Europe, combine matériel soviétique et occidental. Elle a développé une industrie massive de drones et de missiles de croisière.",
+  "doctrineText": "Arsenal mixte en pleine transformation : héritage soviétique (T-64, BMP, S-300) et matériel occidental (F-16, Leopard, Bradley, HIMARS, Patriot). Doctrine de guerre de haute intensité fondée sur les drones, les frappes dans la profondeur et la défense aérienne."
+}

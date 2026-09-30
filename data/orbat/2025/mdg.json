@@ -1,0 +1,23 @@
+{
+  "nationId": "mdg",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 120000000,
+  "activePersonnel": 13500,
+  "inventory": [
+    {
+      "systemId": "eu.infantry-light",
+      "count": 21,
+      "note": "infanterie légère : ≈ 12,5 k personnes / 600"
+    }
+  ],
+  "research": ["research.industry.l1", "research.intel.interior1", "research.land.gen1"],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "low",
+  "description": "Madagascar est la quatrième île du monde, dans l'océan Indien. Ses forces armées sont réduites. Sa position dans le canal du Mozambique lui donne un intérêt stratégique pour les routes maritimes.",
+  "doctrineText": "Forces légères."
+}

@@ -1,0 +1,82 @@
+{
+  "nationId": "brn",
+  "year": 2025,
+  "doctrine": "eu",
+  "defenseBudgetUsd": 560000000,
+  "activePersonnel": 7200,
+  "inventory": [
+    {
+      "systemId": "eu.c-295",
+      "count": 1,
+      "variant": "CN-235",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 16,
+      "variant": "S-70i Black Hawk"
+    },
+    {
+      "systemId": "us.uh-1-huey",
+      "count": 10,
+      "variant": "Bell 212"
+    },
+    {
+      "systemId": "eu.vab",
+      "count": 40,
+      "variant": "VAB"
+    },
+    {
+      "systemId": "eu.mistral",
+      "count": 3,
+      "variant": "Mistral",
+      "note": "≈ 12 postes de tir  soit 3 sections"
+    },
+    {
+      "systemId": "eu.exocet",
+      "count": 32,
+      "variant": "Exocet MM40"
+    },
+    {
+      "systemId": "eu.gowind",
+      "count": 4,
+      "variant": "Darussalam",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.infantry-light",
+      "count": 6,
+      "note": "infanterie légère : ≈ 3,7 k personnes / 600"
+    },
+    {
+      "systemId": "eu.infantry-mech",
+      "count": 2,
+      "note": "infanterie mécanisée / motorisée : ≈ 1 k personnes / 600"
+    },
+    {
+      "systemId": "eu.special-forces",
+      "count": 1,
+      "note": "forces spéciales : ≈ 0,2 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.helo1",
+    "research.cyber.l1",
+    "research.industry.l1",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.interior2",
+    "research.land.gen1",
+    "research.naval.gen1",
+    "research.sensors.radar1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2024, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)"
+  ],
+  "confidence": "medium",
+  "description": "Petit sultanat pétrolier du nord de Bornéo, Brunei revendique une partie de la mer de Chine méridionale. Ses forces armées sont réduites mais bien financées et encadrées par des accords avec le Royaume-Uni et Singapour. Les revenus des hydrocarbures financent l'essentiel de son budget de défense.",
+  "doctrineText": "Arsenal léger européen et américain. Doctrine de protection du territoire et des installations pétrolières."
+}

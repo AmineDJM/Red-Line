@@ -1,0 +1,118 @@
+{
+  "nationId": "mex",
+  "year": 2025,
+  "doctrine": "us",
+  "defenseBudgetUsd": 13648000000,
+  "activePersonnel": 216000,
+  "inventory": [
+    {
+      "systemId": "us.f-5e",
+      "count": 3,
+      "variant": "F-5E/F"
+    },
+    {
+      "systemId": "us.c-130-hercules",
+      "count": 5,
+      "variant": "C-130K/E"
+    },
+    {
+      "systemId": "eu.c-295",
+      "count": 12,
+      "variant": "C-295, C-27J"
+    },
+    {
+      "systemId": "us.uh-60-black-hawk",
+      "count": 30,
+      "variant": "UH-60M"
+    },
+    {
+      "systemId": "ru.mi-8",
+      "count": 25,
+      "variant": "Mi-17"
+    },
+    {
+      "systemId": "us.uh-1-huey",
+      "count": 40,
+      "variant": "Bell 412"
+    },
+    {
+      "systemId": "eu.sa-330-puma",
+      "count": 12,
+      "variant": "EC725"
+    },
+    {
+      "systemId": "other.hermes-900",
+      "count": 5,
+      "variant": "Hermes 450/900"
+    },
+    {
+      "systemId": "us.m777",
+      "count": 100,
+      "variant": "M101, M-56 (105 mm)",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "eu.mistral",
+      "count": 5,
+      "variant": "RBS 70",
+      "note": "≈ 20 postes de tir  soit 5 sections ; modèle le plus proche"
+    },
+    {
+      "systemId": "eu.gowind",
+      "count": 13,
+      "variant": "Reformador (SIGMA), Oaxaca, Durango",
+      "note": "modèle le plus proche"
+    },
+    {
+      "systemId": "us.infantry-light",
+      "count": 228,
+      "note": "infanterie légère : ≈ 137 k personnes / 600 ; armée de terre (Garde nationale non comptée)"
+    },
+    {
+      "systemId": "us.infantry-mech",
+      "count": 13,
+      "note": "infanterie mécanisée / motorisée : ≈ 7,9 k personnes / 600"
+    },
+    {
+      "systemId": "us.airborne",
+      "count": 8,
+      "note": "troupes aéroportées / d'assaut aérien : ≈ 4,7 k personnes / 600"
+    },
+    {
+      "systemId": "us.special-forces",
+      "count": 13,
+      "note": "forces spéciales : ≈ 7,9 k personnes / 600"
+    },
+    {
+      "systemId": "us.marines",
+      "count": 36,
+      "note": "infanterie de marine : ≈ 21,5 k personnes / 600"
+    }
+  ],
+  "research": [
+    "research.aero.helo1",
+    "research.cyber.l1",
+    "research.cyber.l2",
+    "research.industry.l1",
+    "research.industry.l2",
+    "research.intel.exterior1",
+    "research.intel.interior1",
+    "research.intel.military1",
+    "research.intel.interior2",
+    "research.intel.interior3",
+    "research.land.gen1",
+    "research.land.gen2",
+    "research.naval.gen1",
+    "research.naval.gen2",
+    "research.sensors.radar1"
+  ],
+  "licences": [],
+  "sources": [
+    "SIPRI Military Expenditure Database 2026 (dépenses 2025, dollars courants)",
+    "IISS, The Military Balance 2025 (effectifs et ordres de grandeur)",
+    "Wikipedia (en), listes d'équipements et d'aéronefs en service, consultées en septembre 2026"
+  ],
+  "confidence": "medium",
+  "description": "Le Mexique s'étend entre les États-Unis et l'Amérique centrale et borde le Pacifique et le golfe du Mexique. Ses forces armées sont principalement engagées dans la sécurité intérieure et la lutte contre les cartels. Il ne dispose ni de chars ni d'aviation de combat moderne.",
+  "doctrineText": "Arsenal léger orienté vers la sécurité intérieure (hélicoptères, patrouilleurs, véhicules légers). Doctrine de sécurité intérieure et de surveillance maritime."
+}
