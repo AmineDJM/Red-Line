@@ -1,14 +1,18 @@
 import { create } from 'zustand';
 import type { FeatureCollection } from 'geojson';
 import type {
+  Balance,
   NationDef,
   NationId,
+  NationInfo,
   ProvinceDef,
   ProvinceId,
+  ResearchNode,
   SystemId,
   WeaponSystem,
 } from '@redline/shared';
 import type { Api, BasemapData, TilesInfo } from '../api/types.js';
+import { bundledBalance } from '../lib/staticData.js';
 
 /** Données statiques de la carte et du catalogue (chargées une fois). */
 export interface WorldState {
@@ -21,7 +25,16 @@ export interface WorldState {
   tiles: TilesInfo | null;
   basemap: BasemapData | null;
   glyphs: boolean;
+  /** Arbre technologique (chargé après la carte, non bloquant). */
+  research: Record<string, ResearchNode>;
+  /** Équilibrage embarqué (coûts des bâtiments, opérations…), null si indisponible. */
+  balance: Balance | null;
+  /** Fiches nations (écran de sélection), chargées à la demande. */
+  nationInfo: Record<NationId, NationInfo>;
+  extras: 'idle' | 'loading' | 'ready';
   load(api: Api): Promise<void>;
+  loadExtras(api: Api): Promise<void>;
+  loadNationInfo(api: Api): Promise<void>;
 }
 
 const byId = <T extends { id: string }>(list: T[]): Record<string, T> =>
@@ -37,7 +50,26 @@ export const useWorld = create<WorldState>((set, get) => ({
   tiles: null,
   basemap: null,
   glyphs: false,
+  research: {},
+  balance: null,
+  nationInfo: {},
+  extras: 'idle',
+  async loadExtras(api) {
+    if (get().extras !== 'idle') return;
+    set({ extras: 'loading' });
+    const [nodes, balance] = await Promise.all([
+      api.researchNodes().catch(() => []),
+      bundledBalance().catch(() => null),
+    ]);
+    set({ research: byId(nodes), balance, extras: 'ready' });
+  },
+  async loadNationInfo(api) {
+    if (Object.keys(get().nationInfo).length) return;
+    const list = await api.nationsInfo().catch(() => []);
+    set({ nationInfo: byId(list) });
+  },
   async load(api) {
+    void get().loadExtras(api);
     if (get().status === 'ready' || get().status === 'loading') return;
     set({ status: 'loading', error: null });
     try {

@@ -3,33 +3,106 @@
     "name": "Red Line",
     "tagline": "Stratégie géopolitique en temps réel",
     "loading": "Chargement…",
+    "loadingPath": "chargement",
+    "errorPath": "erreur",
     "loadingMap": "Préparation du théâtre d'opérations…",
     "error": "Une erreur est survenue.",
     "retry": "Réessayer",
     "back": "Retour",
     "close": "Fermer",
+    "clear": "Effacer",
     "cancel": "Annuler",
     "confirm": "Confirmer",
     "next": "Suivant",
+    "previous": "Précédent",
     "skip": "Passer",
     "done": "Terminé",
     "search": "Rechercher",
+    "maximize": "Agrandir",
     "soon": "bientôt",
+    "yes": "oui",
+    "no": "non",
+    "all": "Tout",
+    "none": "Aucun",
     "mockBadge": "Démonstration hors ligne",
     "notFound": "Page introuvable."
   },
+  "keys": {
+    "space": "Espace",
+    "enter": "Entrée",
+    "escape": "Échap"
+  },
+  "time": {
+    "dayUnit": "j",
+    "ago": "il y a {{value}}",
+    "in": "dans {{value}}"
+  },
+  "sections": {
+    "army": "Armée",
+    "production": "Production",
+    "research": "Recherche",
+    "economy": "Économie",
+    "intel": "Renseignement",
+    "diplomacy": "Diplomatie",
+    "council": "Conseil de sécurité",
+    "news": "Actualité",
+    "battles": "Rapports de bataille",
+    "encyclopedia": "Encyclopédie",
+    "chat": "Messagerie",
+    "shop": "Boutique",
+    "settings": "Réglages",
+    "path": {
+      "army": "Armée",
+      "production": "Arsenal",
+      "research": "R&D",
+      "economy": "Économie",
+      "intel": "Renseignement",
+      "diplomacy": "Diplomatie",
+      "council": "ONU\\Conseil",
+      "news": "Dépêches",
+      "battles": "Batailles",
+      "encyclopedia": "Encyclopédie",
+      "chat": "Messagerie",
+      "shop": "Boutique",
+      "settings": "Réglages"
+    }
+  },
   "home": {
     "title": "Red Line",
-    "subtitle": "Stratégie géopolitique en temps réel sur la vraie carte du monde",
+    "path": "accueil",
+    "menu": "Menu principal",
+    "subtitle": "Stratégie géopolitique en temps réel sur la vraie carte du monde. Arsenaux réels, budgets réels, victoire uniquement militaire.",
     "playGuest": "Jouer en invité",
     "login": "Se connecter",
     "register": "S'inscrire",
     "logout": "Se déconnecter",
     "continue": "Nouvelle partie",
+    "multi": "Multijoueur",
+    "resume": "Reprendre une partie",
+    "rankings": "Classements",
+    "shop": "Boutique",
     "sandbox": "Bac à sable",
+    "guest": "invité",
+    "notConnected": "Non connecté",
     "welcome": "Connecté : {{name}}",
     "guestNote": "Le compte invité est conservé sur cet appareil.",
-    "footer": "Victoire uniquement militaire. Aucun site réel n'est ciblé : bâtiments génériques par province."
+    "footer": "Victoire uniquement militaire. Aucun site réel n'est ciblé : bâtiments génériques par province.",
+    "hints": {
+      "guest": "Partie solo immédiate, sans inscription",
+      "solo": "Solo contre l'IA, sur la carte du monde",
+      "multi": "Jusqu'à 64 joueurs, les autres nations en IA",
+      "resume": "Vos parties en cours et terminées",
+      "rankings": "Saisons et classement mondial",
+      "shop": "Monnaie premium, cosmétiques, accélérations",
+      "sandbox": "Placement libre et moteur local"
+    },
+    "boot": {
+      "link": "Liaison satellite établie",
+      "map": "Cartographie : 2 567 provinces · 201 nations",
+      "catalog": "Catalogue : 406 systèmes d'armes",
+      "engine": "Moteur de simulation synchronisé",
+      "ready": "Poste de commandement prêt."
+    }
   },
   "auth": {
     "email": "Adresse e-mail",
@@ -37,8 +110,8 @@
     "displayName": "Nom affiché",
     "submitLogin": "Se connecter",
     "submitRegister": "Créer le compte",
-    "switchToRegister": "Pas encore de compte ? S'inscrire",
-    "switchToLogin": "Déjà inscrit ? Se connecter",
+    "switchToRegister": "Créer un compte",
+    "switchToLogin": "Déjà inscrit ?",
     "errors": {
       "invalid": "Identifiants incorrects.",
       "exists": "Cette adresse est déjà utilisée.",
@@ -49,14 +122,21 @@
   },
   "newGame": {
     "title": "Nouvelle partie",
+    "path": "nouvelle-partie",
     "subtitle": "Choisissez votre nation",
     "nation": "Nation",
     "searchPlaceholder": "Rechercher une nation…",
-    "pickOnMap": "Touchez un pays sur la carte ou choisissez dans la liste.",
-    "selected": "Nation choisie",
-    "none": "Aucune nation choisie",
+    "pickOnMap": "Cliquez sur un pays de la carte ou choisissez dans la liste.",
+    "pickHint": "Touchez un pays sur la carte, ou choisissez dans la liste.",
+    "selected": "Nation sélectionnée",
+    "none": "Aucune nation",
     "provinces_one": "{{count}} province",
     "provinces_other": "{{count}} provinces",
+    "count_one": "{{count}} nation",
+    "count_other": "{{count}} nations",
+    "taken_one": "{{count}} prise",
+    "taken_other": "{{count}} prises",
+    "human": "joueur",
     "scenario": "Scénario",
     "speed": "Vitesse",
     "difficulty": "Difficulté",
@@ -65,25 +145,50 @@
       "normal": "Normale",
       "hard": "Difficile"
     },
+    "budget": "Budget défense",
+    "personnel": "Effectifs",
+    "doctrine": "Doctrine",
+    "highlights": "Principaux systèmes",
+    "loadingInfo": "Chargement de la fiche…",
+    "random": "Nation au hasard",
     "start": "Lancer la partie",
     "creating": "Création de la partie…",
     "entity": "entité",
     "error": "Impossible de créer la partie."
   },
   "game": {
-    "bannerTitle": "{{nation}} · Situation militaire",
-    "bannerSubtitle": "{{game}}",
     "connecting": "Connexion à la partie…",
     "reconnecting": "Connexion perdue, reconnexion…",
     "failed": "Connexion refusée par le serveur.",
+    "spectator": "Spectateur",
+    "exit": "Quitter vers l'accueil",
     "clock": {
       "day": "J+{{day}}",
-      "paused": "En pause",
+      "paused": "Pause",
       "pause": "Pause",
       "play": "Reprendre",
       "speed": "Vitesse ×{{speed}}",
       "speedShort": "×{{speed}}",
       "nextSpeed": "Changer de vitesse (actuelle ×{{speed}})"
+    },
+    "topbar": {
+      "treasury": "Trésor",
+      "perDay": "/j",
+      "budgetTip": "Trésorerie et revenu net par jour — ouvrir l'économie",
+      "resources": "Ressources",
+      "resourceTip": "{{name}} : stock {{stock}}, {{net}} par jour"
+    },
+    "alertLevel": {
+      "title": "Alerte",
+      "short": "AL",
+      "tooltip": "Niveau d'alerte mondial {{level}} — {{label}}",
+      "labels": {
+        "1": "crise nucléaire",
+        "2": "guerre généralisée",
+        "3": "tensions armées",
+        "4": "vigilance",
+        "5": "calme"
+      }
     },
     "resources": {
       "money": "Argent",
@@ -99,7 +204,10 @@
       "alerts": "Alertes",
       "layers": "Calques",
       "legend": "Légende",
-      "menu": "Menu",
+      "menu": "Navigation",
+      "map": "Carte",
+      "more": "Plus",
+      "allSections": "Tous les domaines",
       "recenter": "Recentrer"
     },
     "layers": {
@@ -115,7 +223,8 @@
     "legend": {
       "title": "Légende",
       "ownForces": "Vos forces",
-      "enemyForces": "Forces étrangères",
+      "allyForces": "Forces alliées",
+      "enemyForces": "Forces ennemies",
       "detected": "Contact non identifié",
       "building": "Bâtiment stratégique",
       "ownTerritory": "Votre territoire",
@@ -132,9 +241,14 @@
       "empty": "Aucune alerte pour le moment.",
       "markRead": "Tout marquer comme lu",
       "center": "Centrer la carte",
+      "filter": "Filtre",
+      "filters": {
+        "all": "Toutes",
+        "critical": "Critiques"
+      },
       "kinds": {
         "combat_started": "Combat engagé",
-        "unit_destroyed": "Unité détruite : {{unit}}",
+        "unit_destroyed": "Unité ennemie détruite : {{unit}}",
         "unit_destroyed_own": "Unité perdue : {{unit}}",
         "unit_detected": "Contact détecté",
         "province_capture_started": "{{nation}} tente de capturer {{province}}",
@@ -146,35 +260,24 @@
         "production_complete": "Production terminée : {{unit}}",
         "arrived": "Unité arrivée à destination",
         "nation_defeated": "{{nation}} est vaincue",
-        "victory": "Victoire de {{nation}}"
+        "victory": "Victoire de {{nation}}",
+        "research_complete": "Recherche terminée : {{node}}",
+        "war_declared": "{{a}} déclare la guerre à {{b}}",
+        "peace_signed": "Paix signée entre {{a}} et {{b}}",
+        "missile_launch": "Tir de missile détecté",
+        "building_hit": "{{building}} touché à {{province}} ({{health}} %)",
+        "delivery_arrived": "Livraison arrivée",
+        "delivery_intercepted": "Livraison interceptée",
+        "intel_report": "Nouveau rapport de renseignement",
+        "battle_report": "Nouveau rapport de bataille",
+        "battle_report_named": "Rapport : {{title}}",
+        "operation": "Opération combinée : {{status}}",
+        "alert_level": "Niveau d'alerte mondial : {{level}}",
+        "news": "Nouvelle dépêche"
       }
     },
     "army": {
-      "title": "Armée",
-      "empty": "Aucune unité.",
-      "units_one": "{{count}} unité",
-      "units_other": "{{count}} unités",
-      "count": "×{{count}}",
-      "select": "Sélectionner",
-      "hp": "État"
-    },
-    "production": {
-      "title": "Production",
-      "queue": "En cours",
-      "queueEmpty": "Aucune production en cours.",
-      "catalog": "Catalogue",
-      "province": "Province de production",
-      "chooseProvince": "Choisir une province",
-      "produce": "Produire",
-      "cost": "Coût",
-      "buildTime": "Délai",
-      "hours": "{{value}} h",
-      "generation": "Gén. {{value}}",
-      "insufficient": "Fonds insuffisants",
-      "ordered": "Production lancée : {{unit}}",
-      "empty": "Aucun système disponible.",
-      "back": "Retour au catalogue",
-      "remaining": "reste {{value}}"
+      "count": "×{{count}}"
     },
     "selection": {
       "title": "Sélection",
@@ -182,22 +285,29 @@
       "hp": "État",
       "status": "Statut",
       "stance": "Posture",
+      "supply": "Ravitaillement",
+      "mission": "Mission",
+      "general": "Général",
       "xp": "Expérience",
       "stop": "Arrêter",
+      "sheet": "Fiche",
       "deselect": "Désélectionner",
-      "hint": "Touchez la carte pour déplacer, une unité ennemie pour attaquer.",
+      "hint": "Touchez la carte pour déplacer, une unité ennemie pour attaquer. Console : Ctrl+K.",
       "lastSeen": "Vu il y a {{value}}",
+      "lastSeenLabel": "Dernière observation",
       "uncertainty": "Incertitude : ±{{value}}",
+      "uncertaintyLabel": "Incertitude",
       "unknownType": "Type inconnu",
       "owner": "Nation",
-      "multi_one": "{{count}} unité sélectionnée",
-      "multi_other": "{{count}} unités sélectionnées"
+      "multi_one": "{{count}} sélectionnée",
+      "multi_other": "{{count}} sélectionnées"
     },
     "orders": {
       "moveTitle": "Ordre de déplacement",
       "attackTitle": "Ordre d'attaque",
       "distance": "Distance",
-      "eta": "Arrivée estimée",
+      "eta": "Arrivée",
+      "warning": "Attention",
       "outOfRange": "Cible hors de portée",
       "confirm": "Confirmer",
       "cancel": "Annuler",
@@ -213,6 +323,12 @@
         "invalid_target": "Cible invalide.",
         "not_allowed": "Ordre impossible.",
         "game_over": "La partie est terminée.",
+        "unknown": "Ordre non reconnu.",
+        "locked": "Action bloquée (alerte, résolution ou embargo).",
+        "research_required": "Recherche requise.",
+        "capacity": "Capacité maximale atteinte.",
+        "cooldown": "Action en recharge.",
+        "insufficient_resources": "Ressources insuffisantes.",
         "disconnected": "Hors ligne : ordre non transmis.",
         "timeout": "Pas de réponse du serveur."
       }
@@ -225,7 +341,7 @@
       "destroyed": "Détruite"
     },
     "stance": {
-      "hold": "Tenir la position",
+      "hold": "Tenir",
       "defend": "Défensive",
       "aggressive": "Offensive"
     },
@@ -248,25 +364,207 @@
       "defeatText": "{{nation}} l'emporte. Votre nation est vaincue.",
       "newGame": "Nouvelle partie",
       "home": "Accueil",
+      "stats": "Bilan de la partie",
       "observe": "Continuer à observer"
-    },
-    "tutorial": {
-      "step1": "Touchez une de vos unités (hexagone violet) pour la sélectionner : sa fiche et sa portée s'affichent.",
-      "step2": "Touchez ensuite un point de la carte pour la déplacer, ou une unité ennemie pour l'attaquer.",
-      "step3": "Vérifiez la trajectoire et la distance, puis confirmez l'ordre. Trois gestes : sélectionner, ordonner, confirmer.",
-      "step4": "Gérez le temps en haut à droite : pause et vitesses. Sur ordinateur : Espace, 1 à 4, Échap.",
-      "counter": "{{index}} / {{total}}"
     },
     "time": {
       "minutes": "{{value}} min",
       "hours": "{{h}} h {{m}}",
       "days": "{{d}} j {{h}} h"
+    }
+  },
+  "province": {
+    "title": "Province",
+    "population": "Population",
+    "income": "Revenu / jour",
+    "fortification": "Fortification",
+    "level": "niveau {{level}}",
+    "unrest": "Tension locale",
+    "buildings": "Bâtiments",
+    "noBuildings": "Aucun bâtiment.",
+    "produceHere": "Produire ici",
+    "fortify": "Fortifier",
+    "capture": "Capture",
+    "captureOwn": "Capture en cours par vos forces",
+    "captureBy": "Capture en cours par {{nation}}",
+    "knowledge": "Connaissance",
+    "intelLevel": {
+      "0": "inconnue",
+      "1": "aperçu",
+      "2": "bonne",
+      "3": "complète"
     },
-    "bannerTitleShort": "{{nation}}",
-    "bannerSubtitleShort": "Situation militaire · {{game}}"
+    "updated": "Mise à jour",
+    "ago": "il y a {{value}}",
+    "economicIntel": "Renseignement économique",
+    "militaryIntel": "Renseignement militaire",
+    "knownBuildings": "Bâtiments connus",
+    "moreUnknown": "Autres bâtiments non révélés…",
+    "unknownHint": "Aucun renseignement sur cette province. Lancez une mission de reconnaissance pour révéler ses bâtiments et ses défenses.",
+    "recon": "Mission de reconnaissance",
+    "listen": "Écoute SIGINT",
+    "reconStarted": "Reconnaissance lancée sur {{province}}"
+  },
+  "console": {
+    "title": "Console de commande",
+    "open": "Console",
+    "path": "console",
+    "placeholder": "move sel alger · produce 4 rafale · research aero.gen5 · help",
+    "examples": "Exemples :",
+    "selection_one": "{{count}} unité",
+    "selection_other": "{{count}} unités",
+    "hints": {
+      "complete": "compléter",
+      "run": "exécuter",
+      "close": "fermer",
+      "navigate": "choisir"
+    },
+    "kinds": {
+      "cmd": "cmd",
+      "unit": "unité",
+      "target": "cible",
+      "system": "système",
+      "place": "lieu",
+      "nation": "nation",
+      "node": "R&D",
+      "op": "op.",
+      "window": "fenêtre",
+      "value": "valeur"
+    },
+    "args": {
+      "units": "unités",
+      "place": "lieu",
+      "target": "cible",
+      "count": "n",
+      "system": "système",
+      "node": "nœud",
+      "speed": "vitesse",
+      "op": "opération",
+      "nation": "nation",
+      "window": "fenêtre",
+      "onoff": "on|off"
+    },
+    "help": {
+      "move": "Déplacer des unités vers un lieu",
+      "attack": "Attaquer une unité ennemie",
+      "stop": "Arrêter des unités",
+      "produce": "Produire un système dans une province",
+      "research": "Lancer une recherche",
+      "goto": "Centrer la carte sur un lieu",
+      "speed": "Changer la vitesse (solo)",
+      "pause": "Mettre en pause (solo)",
+      "resume": "Reprendre (solo)",
+      "intel": "Lancer une opération de renseignement",
+      "peace": "Proposer la paix",
+      "ceasefire": "Proposer un cessez-le-feu",
+      "war": "Déclarer la guerre",
+      "open": "Ouvrir une fenêtre",
+      "select": "Sélectionner des unités",
+      "mobilize": "Mobilisation générale",
+      "help": "Afficher l'aide",
+      "clear": "Effacer le journal"
+    },
+    "errors": {
+      "empty": "Commande vide.",
+      "unknown": "Commande inconnue : {{cmd}}. Tapez « help ».",
+      "units": "Aucune unité correspondante (identifiant, « sel » ou nom de système).",
+      "place": "Lieu introuvable : {{place}}",
+      "target": "Cible introuvable : {{target}}",
+      "system": "Système introuvable : {{system}}",
+      "province": "Aucune de vos provinces ne correspond : {{place}}",
+      "node": "Recherche introuvable : {{node}}",
+      "op": "Opération inconnue : {{op}}",
+      "nation": "Nation introuvable : {{nation}}",
+      "speed": "Vitesse invalide.",
+      "window": "Fenêtre inconnue."
+    },
+    "done": {
+      "goto": "Carte centrée sur {{place}}.",
+      "select_one": "{{count}} unité sélectionnée.",
+      "select_other": "{{count}} unités sélectionnées.",
+      "stop_one": "{{count}} unité arrêtée.",
+      "stop_other": "{{count}} unités arrêtées.",
+      "move_one": "{{count}} unité en route vers {{place}}.",
+      "move_other": "{{count}} unités en route vers {{place}}.",
+      "attack_one": "{{count}} unité engage {{target}}.",
+      "attack_other": "{{count}} unités engagent {{target}}.",
+      "produce": "Production lancée : {{count}} × {{system}} à {{place}}.",
+      "research": "Recherche lancée : {{node}}.",
+      "intel": "Opération « {{op}} » lancée contre {{target}}.",
+      "peace": "Proposition de paix envoyée à {{nation}}.",
+      "ceasefire": "Proposition de cessez-le-feu envoyée à {{nation}}.",
+      "war": "Guerre déclarée à {{nation}}.",
+      "speed": "Vitesse ×{{speed}}.",
+      "pause": "Partie en pause.",
+      "resume": "Partie reprise.",
+      "mobilizeOn": "Mobilisation générale décrétée.",
+      "mobilizeOff": "Fin de la mobilisation générale."
+    }
+  },
+  "shortcuts": {
+    "title": "Raccourcis clavier",
+    "console": "Console de commande",
+    "pause": "Pause / reprise",
+    "speed": "Vitesses",
+    "windows": "Armée, Production, Recherche, Économie, Renseignement…",
+    "escape": "Annuler l'ordre, désélectionner, fermer",
+    "confirm": "Confirmer l'ordre",
+    "legend": "Légende",
+    "news": "Actualité",
+    "help": "Cette aide"
+  },
+  "tutorial": {
+    "title": "Tutoriel",
+    "path": "tutoriel",
+    "skip": "Quitter le tutoriel",
+    "skipStep": "Passer l'étape",
+    "waiting": "En attente de votre action…",
+    "steps": {
+      "welcome": {
+        "title": "Bienvenue au poste de commandement",
+        "text": "Vous dirigez les forces armées de votre nation sur la vraie carte du monde. Arsenal réel, budget réel en dollars, victoire uniquement militaire."
+      },
+      "select": {
+        "title": "Sélectionnez une unité",
+        "text": "Touchez un de vos pions violets sur la carte : sa fiche, son état et sa portée s'affichent."
+      },
+      "order": {
+        "title": "Donnez un ordre",
+        "text": "Touchez un point de la carte pour vous déplacer, ou une unité ennemie pour l'attaquer."
+      },
+      "confirm": {
+        "title": "Confirmez",
+        "text": "Vérifiez la trajectoire, la distance et l'heure d'arrivée, puis confirmez. Trois gestes : sélectionner, ordonner, confirmer."
+      },
+      "production": {
+        "title": "Produisez des forces",
+        "text": "Ouvrez la Production : l'arsenal de votre doctrine et des fournisseurs, avec photos, prix et conditions de R&D."
+      },
+      "research": {
+        "title": "Investissez dans la recherche",
+        "text": "Posséder un système ne suffit pas à savoir le produire : la R&D débloque la production des générations supérieures."
+      },
+      "console": {
+        "title": "Tout au clavier",
+        "text": "La console de commande permet de tout faire au clavier (move, produce, research, goto…). Ouvrez-la avec"
+      },
+      "time": {
+        "title": "Maîtrisez le temps",
+        "text": "En solo : pause et vitesses en haut de l'écran, ou Espace et 1 à 5."
+      },
+      "alerts": {
+        "title": "Restez informé",
+        "text": "Le centre d'alertes regroupe combats, rapports de renseignement, votes du Conseil et livraisons. Un clic centre la carte ou ouvre le rapport."
+      },
+      "end": {
+        "title": "À vous de jouer",
+        "text": "Contrôlez 60 % des provinces du monde ou toutes les capitales ennemies. Le tutoriel reste accessible dans les Réglages."
+      }
+    }
   },
   "sandbox": {
     "title": "Bac à sable",
+    "path": "bac-a-sable",
     "subtitle": "Moteur local · placement libre",
     "nation": "Nation",
     "system": "Système",
@@ -316,7 +614,67 @@
     "air_base": "Base aérienne",
     "military_base": "Base militaire",
     "arms_factory": "Usine d'armement",
-    "research_center": "Centre de recherche"
+    "research_center": "Centre de recherche",
+    "oil_field": "Champ pétrolier",
+    "mine": "Mine",
+    "farm": "Exploitation agricole",
+    "electronics_plant": "Usine d'électronique",
+    "local_industry": "Industrie locale",
+    "recruiting_office": "Bureau de recrutement",
+    "naval_base": "Base navale",
+    "bunker": "Bunkers",
+    "air_defense_site": "Site de défense aérienne",
+    "coastal_battery": "Batterie côtière",
+    "radar_station": "Station radar",
+    "missile_silo": "Silo de missiles",
+    "hospital": "Hôpital militaire",
+    "secret_lab": "Laboratoire secret",
+    "forward_base": "Base avancée",
+    "groups": {
+      "resources": "Ressources",
+      "industry": "Industrie",
+      "military": "Militaire",
+      "defense": "Défense"
+    },
+    "effects": {
+      "refinery": "Produit du pétrole raffiné",
+      "power_plant": "Accélère production et recherche",
+      "port": "Production navale et commerce maritime",
+      "air_base": "Production et base des aéronefs",
+      "military_base": "Production terrestre, dépôt, garnison",
+      "arms_factory": "Armement lourd : blindés, artillerie, missiles",
+      "research_center": "Points de recherche",
+      "oil_field": "Extraction de pétrole",
+      "mine": "Extraction de métaux",
+      "farm": "Production de nourriture",
+      "electronics_plant": "Composants électroniques",
+      "local_industry": "Revenus et vitesse de construction",
+      "recruiting_office": "Infanterie, mobilisation plus rapide",
+      "naval_base": "Production et réparation navales",
+      "bunker": "Forte protection des défenseurs",
+      "air_defense_site": "Engage aéronefs et missiles",
+      "coastal_battery": "Défense antinavire",
+      "radar_station": "Détection aérienne étendue",
+      "missile_silo": "Lancement de missiles balistiques",
+      "hospital": "Rétablissement plus rapide des unités",
+      "secret_lab": "Recherche avancée plus rapide",
+      "forward_base": "Dépôt logistique du front"
+    },
+    "ui": {
+      "build": "Construire",
+      "upgrade": "Niveau {{level}}",
+      "upgrading": "Amélioration N{{level}}",
+      "repair": "Réparer",
+      "repairing": "Réparation",
+      "health": "État du bâtiment",
+      "operational": "Opérationnel",
+      "already": "Déjà construit",
+      "coastalOnly": "Province côtière uniquement",
+      "costTip": "Coût {{cost}} · durée {{time}}",
+      "buildStarted": "Construction lancée : {{name}}",
+      "upgradeStarted": "Amélioration lancée : {{name}}",
+      "repairStarted": "Réparation lancée : {{name}}"
+    }
   },
   "weapon": {
     "engine": "Moteur",
@@ -328,6 +686,10 @@
     "range": "Autonomie",
     "weaponRange": "Portée d'arme",
     "subtitle": "{{category}} · {{country}}",
+    "photo": "Photo",
+    "noPhoto": "Photo indisponible",
+    "gen": "Gén.",
+    "sheet": "Fiche technique",
     "units": {
       "m": "m",
       "kg": "kg",
@@ -341,5 +703,14 @@
   "map": {
     "attribution": "Imagerie NASA Blue Marble · Natural Earth",
     "noImagery": "Imagerie satellite indisponible : fond vectoriel"
+  },
+  "legal": {
+    "title": "Mentions légales",
+    "docs": {
+      "cgu": "Conditions d'utilisation",
+      "cgv": "Conditions de vente",
+      "privacy": "Confidentialité",
+      "withdrawal": "Rétractation"
+    }
   }
 }

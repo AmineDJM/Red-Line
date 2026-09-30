@@ -1,14 +1,30 @@
 import type { FeatureCollection } from 'geojson';
 import type {
+  BattleReport,
+  CosmeticItem,
   CreateGameBody,
+  CreateLobbyBody,
   GameMeta,
+  GameStatsView,
+  LegalDoc,
+  LegalDocRef,
+  LobbyGame,
+  MyGame,
   NationDef,
   NationId,
+  NationInfo,
   ProvinceDef,
   PublicUser,
+  RankingEntry,
+  ResearchNode,
   ScenarioSummary,
+  SeasonView,
+  ShopPack,
+  TimelapseView,
+  WalletEntry,
   WeaponSystem,
 } from '@redline/shared';
+import { bundledResearch } from '../lib/staticData.js';
 import { BASEMAP_FILES, FALLBACK_TILES, FONTS } from '../config.js';
 import {
   ApiError,
@@ -142,4 +158,110 @@ export class HttpApi implements Api {
   async game(id: string): Promise<{ game: GameMeta; me: NationId }> {
     return request<{ game: GameMeta; me: NationId }>('GET', `/api/games/${encodeURIComponent(id)}`);
   }
+
+  // ——— Phases 2+ ———
+  async researchNodes(): Promise<ResearchNode[]> {
+    try {
+      const r = await request<{ nodes: ResearchNode[] }>('GET', '/api/research');
+      if (r.nodes?.length) return r.nodes;
+    } catch {
+      /* route absente : repli sur data/research embarqué */
+    }
+    return bundledResearch();
+  }
+  async nationsInfo(): Promise<NationInfo[]> {
+    return (await request<{ nations: NationInfo[] }>('GET', '/api/nations/info')).nations;
+  }
+  async myGames(): Promise<MyGame[]> {
+    return (await request<{ games: MyGame[] }>('GET', '/api/games')).games;
+  }
+  async lobby(): Promise<LobbyGame[]> {
+    return (await request<{ games: LobbyGame[] }>('GET', '/api/lobby')).games;
+  }
+  async createLobby(body: CreateLobbyBody): Promise<GameMeta> {
+    return (await request<{ game: GameMeta }>('POST', '/api/lobby', body)).game;
+  }
+  async joinLobby(id: string, nationId: NationId): Promise<GameMeta> {
+    return (await request<{ game: GameMeta }>('POST', `/api/lobby/${enc(id)}/join`, { nationId })).game;
+  }
+  async leaveLobby(id: string): Promise<void> {
+    await request('POST', `/api/lobby/${enc(id)}/leave`, {});
+  }
+  async startLobby(id: string): Promise<GameMeta> {
+    return (await request<{ game: GameMeta }>('POST', `/api/lobby/${enc(id)}/start`, {})).game;
+  }
+  async spectate(id: string): Promise<GameMeta> {
+    return (await request<{ game: GameMeta }>('GET', `/api/games/${enc(id)}/spectate`)).game;
+  }
+  async stats(id: string): Promise<GameStatsView> {
+    return request<GameStatsView>('GET', `/api/games/${enc(id)}/stats`);
+  }
+  async timelapse(id: string): Promise<TimelapseView> {
+    return request<TimelapseView>('GET', `/api/games/${enc(id)}/timelapse`);
+  }
+  async battleReport(gameId: string, reportId: string): Promise<BattleReport> {
+    return (
+      await request<{ report: BattleReport }>(
+        'GET',
+        `/api/games/${enc(gameId)}/battle-reports/${enc(reportId)}`,
+      )
+    ).report;
+  }
+  async pushKey(): Promise<string | null> {
+    try {
+      return (await request<{ publicKey: string }>('GET', '/api/push/key')).publicKey || null;
+    } catch {
+      return null;
+    }
+  }
+  async pushSubscribe(sub: PushSubscriptionJSON): Promise<void> {
+    await request('POST', '/api/push/subscribe', sub);
+  }
+  async pushUnsubscribe(): Promise<void> {
+    await request('DELETE', '/api/push/subscribe');
+  }
+  async shopPacks(): Promise<ShopPack[]> {
+    return (await request<{ packs: ShopPack[] }>('GET', '/api/shop/packs')).packs;
+  }
+  async wallet(): Promise<{ balance: number; history: WalletEntry[] }> {
+    return request('GET', '/api/shop/wallet');
+  }
+  async checkout(packId: string): Promise<{ url: string }> {
+    return request('POST', '/api/shop/checkout', { packId });
+  }
+  async accelerate(
+    gameId: string,
+    target: { type: 'production' | 'research' | 'build' | 'repair'; id: string },
+    hours: number,
+  ): Promise<{ ok: boolean; balance: number }> {
+    return request('POST', `/api/games/${enc(gameId)}/accelerate`, { target, hours });
+  }
+  async cosmetics(): Promise<{ items: CosmeticItem[]; owned: string[] }> {
+    return request('GET', '/api/shop/cosmetics');
+  }
+  async buyCosmetic(id: string): Promise<{ ok: boolean; balance: number }> {
+    return request('POST', `/api/shop/cosmetics/${enc(id)}/buy`, {});
+  }
+  async rankings(season?: string): Promise<{ season: SeasonView; entries: RankingEntry[] }> {
+    return request('GET', `/api/rankings${season ? `?season=${enc(season)}` : ''}`);
+  }
+  async seasons(): Promise<SeasonView[]> {
+    return (await request<{ seasons: SeasonView[] }>('GET', '/api/seasons')).seasons;
+  }
+  async legal(doc: LegalDocRef['id']): Promise<LegalDoc> {
+    return (await request<{ doc: LegalDoc }>('GET', `/api/legal/${doc}`)).doc;
+  }
+  async acceptLegal(docs: LegalDocRef[]): Promise<void> {
+    await request('POST', '/api/legal/accept', { docs });
+  }
+  async legalPending(): Promise<LegalDocRef[]> {
+    try {
+      const r = await request<{ legal?: { needsAcceptance?: LegalDocRef[] } }>('GET', '/api/me');
+      return r.legal?.needsAcceptance ?? [];
+    } catch {
+      return [];
+    }
+  }
 }
+
+const enc = encodeURIComponent;

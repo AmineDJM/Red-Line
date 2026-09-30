@@ -1,12 +1,27 @@
 import type { FeatureCollection } from 'geojson';
 import type {
+  BattleReport,
+  CosmeticItem,
   CreateGameBody,
+  CreateLobbyBody,
   GameMeta,
+  GameStatsView,
+  LegalDoc,
+  LegalDocRef,
+  LobbyGame,
+  MyGame,
   NationDef,
   NationId,
+  NationInfo,
   ProvinceDef,
   PublicUser,
+  RankingEntry,
+  ResearchNode,
   ScenarioSummary,
+  SeasonView,
+  ShopPack,
+  TimelapseView,
+  WalletEntry,
   WeaponSystem,
 } from '@redline/shared';
 
@@ -57,6 +72,46 @@ export interface Api {
   scenarios(): Promise<ScenarioSummary[]>;
   createGame(body: CreateGameBody): Promise<GameMeta>;
   game(id: string): Promise<{ game: GameMeta; me: NationId }>;
+
+  // ——— Phases 2+ (données statiques) ———
+  /** Arbre technologique (GET /api/research, repli : data/research embarqué). */
+  researchNodes(): Promise<ResearchNode[]>;
+  /** Fiches nations de l'écran de sélection (GET /api/nations/info). */
+  nationsInfo(): Promise<NationInfo[]>;
+
+  // ——— Phase 5 : multijoueur ———
+  myGames(): Promise<MyGame[]>;
+  lobby(): Promise<LobbyGame[]>;
+  createLobby(body: CreateLobbyBody): Promise<GameMeta>;
+  joinLobby(id: string, nationId: NationId): Promise<GameMeta>;
+  leaveLobby(id: string): Promise<void>;
+  startLobby(id: string): Promise<GameMeta>;
+  spectate(id: string): Promise<GameMeta>;
+  stats(id: string): Promise<GameStatsView>;
+  timelapse(id: string): Promise<TimelapseView>;
+  battleReport(gameId: string, reportId: string): Promise<BattleReport>;
+  /** Clé VAPID publique (null si le serveur ne propose pas Web Push). */
+  pushKey(): Promise<string | null>;
+  pushSubscribe(sub: PushSubscriptionJSON): Promise<void>;
+  pushUnsubscribe(): Promise<void>;
+
+  // ——— Phase 6 : boutique, classements, légal ———
+  shopPacks(): Promise<ShopPack[]>;
+  wallet(): Promise<{ balance: number; history: WalletEntry[] }>;
+  checkout(packId: string): Promise<{ url: string }>;
+  accelerate(
+    gameId: string,
+    target: { type: 'production' | 'research' | 'build' | 'repair'; id: string },
+    hours: number,
+  ): Promise<{ ok: boolean; balance: number }>;
+  cosmetics(): Promise<{ items: CosmeticItem[]; owned: string[] }>;
+  buyCosmetic(id: string): Promise<{ ok: boolean; balance: number }>;
+  rankings(season?: string): Promise<{ season: SeasonView; entries: RankingEntry[] }>;
+  seasons(): Promise<SeasonView[]>;
+  legal(doc: LegalDocRef['id']): Promise<LegalDoc>;
+  acceptLegal(docs: LegalDocRef[]): Promise<void>;
+  /** Documents légaux à (re)accepter (champ `legal` de GET /api/me). */
+  legalPending(): Promise<LegalDocRef[]>;
 }
 
 export class ApiError extends Error {

@@ -1,11 +1,21 @@
 import { useSyncExternalStore } from 'react';
+import type { LegalDocRef } from '@redline/shared';
 import { IS_MOCK } from './config.js';
 
-/** Routeur minimal (History API) : /, /new, /game/:id, /sandbox. */
+/** Routeur minimal (History API). */
 export type Route =
   | { name: 'home' }
   | { name: 'new' }
   | { name: 'game'; id: string }
+  | { name: 'spectate'; id: string }
+  | { name: 'end'; id: string }
+  | { name: 'lobby' }
+  | { name: 'lobbyCreate' }
+  | { name: 'lobbyJoin'; id: string }
+  | { name: 'games' }
+  | { name: 'shop' }
+  | { name: 'rankings' }
+  | { name: 'legal'; doc: LegalDocRef['id'] }
   | { name: 'sandbox' }
   | { name: 'notFound' };
 
@@ -23,12 +33,27 @@ function snapshot(): string {
   return window.location.pathname + window.location.search;
 }
 
+const LEGAL = new Set(['cgu', 'cgv', 'privacy', 'withdrawal']);
+
 export function parseRoute(pathname: string): Route {
   const p = pathname.replace(/\/+$/, '') || '/';
   if (p === '/') return { name: 'home' };
   if (p === '/new') return { name: 'new' };
   if (p === '/sandbox') return { name: 'sandbox' };
-  const m = /^\/game\/([^/]+)$/.exec(p);
+  if (p === '/lobby') return { name: 'lobby' };
+  if (p === '/lobby/new') return { name: 'lobbyCreate' };
+  if (p === '/games') return { name: 'games' };
+  if (p === '/shop') return { name: 'shop' };
+  if (p === '/rankings') return { name: 'rankings' };
+  let m = /^\/legal\/([a-z]+)$/.exec(p);
+  if (m?.[1] && LEGAL.has(m[1])) return { name: 'legal', doc: m[1] as LegalDocRef['id'] };
+  m = /^\/lobby\/([^/]+)$/.exec(p);
+  if (m?.[1]) return { name: 'lobbyJoin', id: decodeURIComponent(m[1]) };
+  m = /^\/game\/([^/]+)\/end$/.exec(p);
+  if (m?.[1]) return { name: 'end', id: decodeURIComponent(m[1]) };
+  m = /^\/spectate\/([^/]+)$/.exec(p);
+  if (m?.[1]) return { name: 'spectate', id: decodeURIComponent(m[1]) };
+  m = /^\/game\/([^/]+)$/.exec(p);
   if (m?.[1]) return { name: 'game', id: decodeURIComponent(m[1]) };
   return { name: 'notFound' };
 }
