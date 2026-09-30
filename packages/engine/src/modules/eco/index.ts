@@ -123,8 +123,18 @@ function accelerate(state: EngineState, cmd: SystemCommand): OrderResult {
   let ok = false;
   if (type === 'production') ok = shiftProduction(state, n, id, ms);
   else if (type === 'research') ok = accelerateResearch(state, n, id, ms);
-  else if (type === 'build') ok = eco(state).jobs[id]?.n === n && accelerateJob(state, id, ms);
-  else if (type === 'repair') {
+  else if (type === 'build') {
+    // Identifiant du chantier, ou "<province>:<bâtiment>" (ce que voit l'interface).
+    const es = eco(state);
+    let jid: string | undefined = id;
+    if (!es.jobs[id] && id.includes(':')) {
+      const i = id.lastIndexOf(':');
+      jid = Object.keys(es.jobs)
+        .sort()
+        .find((k) => es.jobs[k]!.pid === id.slice(0, i) && es.jobs[k]!.kind === id.slice(i + 1));
+    }
+    ok = !!jid && es.jobs[jid]?.n === n && accelerateJob(state, jid, ms);
+  } else if (type === 'repair') {
     const pid = id.slice(0, id.lastIndexOf(':'));
     ok = state.provinces[pid]?.owner === n && accelerateRepair(state, id, ms);
   }

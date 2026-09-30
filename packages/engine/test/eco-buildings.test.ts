@@ -85,12 +85,11 @@ describe('bâtiments : santé, niveaux, effets', () => {
     expect(row.resources.metals).toBeCloseTo(5 * 2, 9);
     // Accélération d'un chantier (commande système).
     applyOrder(s, 'aaa', { kind: 'build', provinceId: 'aaa-3', building: 'mine' });
-    const job = Object.values((s.mods.eco as { jobs: Record<string, { id: string }> }).jobs)[0]!;
     expect(
       applySystem(s, {
         kind: 'accelerate',
         nationId: 'aaa',
-        target: { type: 'build', id: job.id },
+        target: { type: 'build', id: 'aaa-3:mine' },
         hours: 1e4,
       }).ok,
     ).toBe(true);
