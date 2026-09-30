@@ -48,6 +48,7 @@ export const CATEGORY_LABEL: Record<Category, string> = {
   infantry: "bataillons d'infanterie",
   space: 'satellites',
   logistics: 'convois logistiques',
+  radar: 'stations radar',
 };
 
 const CODENAMES = [
