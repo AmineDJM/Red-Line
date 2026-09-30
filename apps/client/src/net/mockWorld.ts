@@ -482,11 +482,11 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
       : [],
     invites: neutralNear.slice(0, 1),
   };
-  const west = ['usa', 'gbr', 'fra', 'deu', 'ita', 'pol', 'can'].filter((x) => has(x) && x !== me);
+  const west = ['usa', 'gbr', 'fra', 'deu', 'ita', 'pol', 'can'].filter((x) => has(x) && x !== me && !allies.includes(x));
   const alliances: AllianceView[] = [
     alliance,
     { id: 'al-atl', name: 'Coalition atlantique', flag: 'CA', leader: west[0] ?? others[5]!, members: west.slice(0, 5), charter: { mutualDefense: true, intelSharing: true, passage: true }, treasury: 12.5e9, createdAt: now - 3 * DAY, votes: [], invites: [] },
-    { id: 'al-east', name: 'Axe continental', flag: 'AC', leader: bigFive[1] ?? others[6]!, members: ['rus', 'blr', 'prk'].filter(has), charter: { mutualDefense: true, intelSharing: false, passage: true }, treasury: 4.1e9, createdAt: now - 1 * DAY, votes: [], invites: [] },
+    { id: 'al-east', name: 'Axe continental', flag: 'AC', leader: bigFive[1] ?? others[6]!, members: ['rus', 'blr', 'prk'].filter((x) => has(x) && x !== me && !allies.includes(x)), charter: { mutualDefense: true, intelSharing: false, passage: true }, treasury: 4.1e9, createdAt: now - 1 * DAY, votes: [], invites: [] },
   ];
   const relations: DiplomacyView['relations'] = [
     ...(h0 ? [{ nationId: h0, relation: 'war' as const, since: now - 30 * HOUR, pending: null }] : []),

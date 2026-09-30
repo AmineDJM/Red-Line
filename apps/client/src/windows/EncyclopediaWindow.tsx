@@ -1,10 +1,14 @@
-import { EmptyState, Window } from '@redline/ui';
+import { useTranslation } from 'react-i18next';
+import { Window } from '@redline/ui';
+import { ArsenalBrowser } from '../components/ArsenalBrowser.js';
 import type { WindowContentProps } from '../shell/WindowHost.js';
 
-export function EncyclopediaWindow({ frame }: WindowContentProps) {
+/** Encyclopédie de l'arsenal : toutes les fiches, avec photos, crédits et caractéristiques. */
+export function EncyclopediaWindow({ win, frame, mobile }: WindowContentProps) {
+  const { t } = useTranslation();
   return (
-    <Window {...frame}>
-      <EmptyState title="Encyclopedia" />
+    <Window {...frame} path={[t('sections.path.encyclopedia')]} flush>
+      <ArsenalBrowser mode="encyclopedia" mobile={mobile} initialSystemId={win.params.systemId} />
     </Window>
   );
 }

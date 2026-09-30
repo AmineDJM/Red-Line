@@ -949,7 +949,44 @@
   "shop": {
     "accelerated": "Accélération appliquée · solde {{balance}}",
     "notEnough": "Solde de monnaie premium insuffisant.",
-    "unavailable": "Boutique indisponible."
+    "unavailable": "Boutique indisponible.",
+    "title": "Boutique",
+    "path": "boutique",
+    "unavailableHint": "Le serveur de paiement ne répond pas.",
+    "balance": "Solde",
+    "currency": "crédits de commandement",
+    "policy": "Achats dans cette partie",
+    "policies": {
+      "open": "Autorisés",
+      "limited": "Limités",
+      "disabled": "Désactivés"
+    },
+    "cap": "plafond : {{cap}} crédits par joueur",
+    "policyHint": "définis par le créateur de la partie",
+    "fair": "Aucune loot box : chaque achat indique exactement ce qu'il contient. Les parties compétitives peuvent désactiver les achats.",
+    "packs": "Crédits de commandement",
+    "best": "Meilleure offre",
+    "bonus": "+{{value}} offerts",
+    "credited": "Crédits ajoutés à votre solde",
+    "cosmetics": "Cosmétiques",
+    "owned": "Possédé",
+    "cosmeticBought": "Cosmétique débloqué",
+    "kinds": {
+      "unit_skin": "Pions",
+      "flag": "Drapeau",
+      "map_theme": "Carte",
+      "terminal_theme": "Terminal"
+    },
+    "accelerations": "Accélérations",
+    "accelerationsHelp": "Réduisez la durée d'une production, d'une recherche, d'une construction ou d'une réparation depuis la file correspondante (bouton « −6 h »), si la politique de la partie l'autorise.",
+    "history": "Historique",
+    "reasons": {
+      "purchase": "Achat",
+      "accelerate": "Accélération",
+      "cosmetic": "Cosmétique",
+      "refund": "Remboursement",
+      "admin": "Crédit administrateur"
+    }
   },
   "researchNodes": {
     "aero_gen2": "Chasseurs de 2e génération",
@@ -1344,5 +1381,244 @@
         "failed": "échec"
       }
     }
+  },
+  "diplomacy": {
+    "unavailable": "Diplomatie indisponible dans cette partie.",
+    "tabs": {
+      "relations": "Relations",
+      "alliances": "Alliances",
+      "neutrals": "Neutres",
+      "disputed": "Territoires disputés",
+      "stability": "Stabilité"
+    },
+    "relation": {
+      "war": "Guerre",
+      "peace": "Paix",
+      "ceasefire": "Cessez-le-feu",
+      "ally": "Allié"
+    },
+    "reputation": "Réputation",
+    "reputationHint": "influence les votes et les neutres",
+    "atWar": "En guerre",
+    "allies": "Alliés",
+    "pending": "Propositions reçues",
+    "filter": "Filtre",
+    "filters": {
+      "known": "Relations actives"
+    },
+    "cols": {
+      "nation": "Nation",
+      "relation": "Relation",
+      "since": "Depuis",
+      "alliance": "Alliance",
+      "stability": "Stabilité"
+    },
+    "proposal": {
+      "peace": "propose la paix",
+      "ceasefire": "propose un cessez-le-feu"
+    },
+    "accept": "Accepter",
+    "refuse": "Refuser",
+    "accepted": "Proposition acceptée",
+    "refused": "Proposition refusée",
+    "sent": "proposition envoyée",
+    "ceasefire": "Cessez-le-feu",
+    "peace": "Paix",
+    "declareWar": "Déclarer la guerre",
+    "warTitle": "Déclaration de guerre",
+    "warText": "Déclarer la guerre à {{nation}} ? Vos alliés liés par la défense mutuelle pourront être entraînés, la tension mondiale augmentera et votre réputation baissera.",
+    "members_one": "{{count}} membre",
+    "members_other": "{{count}} membres",
+    "yourAlliance": "Votre alliance",
+    "leader": "Chef :",
+    "charter": {
+      "mutualDefense": "Défense mutuelle",
+      "intelSharing": "Partage du renseignement",
+      "passage": "Droit de passage"
+    },
+    "charterHelp": {
+      "mutualDefense": "Une attaque contre un membre engage tous les membres.",
+      "intelSharing": "Les rapports de renseignement sont partagés automatiquement.",
+      "passage": "Les forces des membres traversent librement vos provinces."
+    },
+    "treasury": "Trésor commun",
+    "deposited": "Versement de {{amount}} au trésor de l'alliance",
+    "votes": {
+      "replace_leader": "Remplacer le chef par {{nation}}",
+      "skip_mutual_defense": "Dispenser {{nation}} de défense mutuelle",
+      "expel": "Exclure {{nation}}"
+    },
+    "yes": "Pour",
+    "no": "Contre",
+    "voted": "Vote enregistré",
+    "hasVoted": "a voté",
+    "invited": "Invitations envoyées :",
+    "allianceChat": "Salon de l'alliance",
+    "leave": "Quitter l'alliance",
+    "left": "Vous avez quitté l'alliance",
+    "create": "Fonder une alliance",
+    "allianceName": "Nom",
+    "allianceFlag": "Sigle (4 lettres)",
+    "createBtn": "Fonder l'alliance",
+    "created": "Alliance fondée : {{name}}",
+    "invitation": "Invitation à rejoindre « {{name}} »",
+    "joined": "Vous avez rejoint {{name}}",
+    "noNeutrals": "Aucune nation neutre à courtiser.",
+    "neutralsHelp": "Aide économique pour rapprocher une nation neutre de votre alliance.",
+    "aid": "Montant de l'aide",
+    "court": "Aider · {{amount}}",
+    "courted": "Aide envoyée à {{nation}}",
+    "noDisputed": "Aucun territoire disputé.",
+    "provinces_one": "{{count}} province",
+    "provinces_other": "{{count}} provinces",
+    "holder": "Détenteur",
+    "claimants": "Revendications",
+    "tension": "Tension",
+    "fundRebels": "Financer les rebelles",
+    "rebelsFunded": "Financement des rebelles engagé",
+    "noStability": "Stabilité non publiée.",
+    "stability": "Stabilité",
+    "trend": "Tendance",
+    "coupRisk": "Risque de coup d'État",
+    "coupHint": "sous 15 % de stabilité : danger",
+    "factors": "Facteurs"
+  },
+  "council": {
+    "unavailable": "Conseil de sécurité indisponible.",
+    "permanent": "Membres permanents",
+    "rotating": "Sièges tournants",
+    "majority": {
+      "simple": "Majorité simple",
+      "two_thirds": "Majorité des deux tiers"
+    },
+    "veto": "Droit de veto",
+    "phase": {
+      "proposals": "Dépôt des propositions",
+      "voting": "Vote en cours",
+      "closed": "Séance close"
+    },
+    "recess": "Hors session",
+    "agenda_one": "{{count}} résolution à l'ordre du jour",
+    "agenda_other": "{{count}} résolutions à l'ordre du jour",
+    "closesIn": "Clôture dans",
+    "nextSession": "Prochaine séance",
+    "propose": "Proposer une résolution",
+    "noResolutions": "Aucune résolution à l'ordre du jour.",
+    "inForce": "Résolutions en vigueur",
+    "until": "jusqu'à",
+    "zone": "zone de {{km}} km",
+    "proposer": "Proposée par",
+    "duration": "Durée d'effet : {{days}} j",
+    "waiting_one": "{{count}} en attente",
+    "waiting_other": "{{count}} en attente",
+    "vetoThreat": "Veto : {{nations}}",
+    "yourVote": "Votre vote",
+    "voted": "Vote enregistré",
+    "type": "Type",
+    "target": "Nation visée",
+    "pickTarget": "Choisir…",
+    "text": "Texte de la résolution",
+    "textHint": "10 à 500 caractères, style résolution.",
+    "textPlaceholder": "Le Conseil de sécurité, préoccupé par…",
+    "submit": "Déposer",
+    "proposed": "Résolution déposée",
+    "types": {
+      "arms_embargo": "Embargo sur les armes",
+      "economic_sanctions": "Sanctions économiques",
+      "ceasefire": "Cessez-le-feu",
+      "no_fly_zone": "Zone d'exclusion aérienne",
+      "peacekeeping": "Maintien de la paix",
+      "condemnation": "Condamnation"
+    },
+    "status": {
+      "proposed": "déposée",
+      "voting": "au vote",
+      "passed": "adoptée",
+      "rejected": "rejetée",
+      "vetoed": "veto",
+      "expired": "expirée"
+    },
+    "votes": {
+      "yes": "Pour",
+      "no": "Contre",
+      "abstain": "Abstention",
+      "none": "n'a pas voté"
+    }
+  },
+  "news": {
+    "filter": "Catégories",
+    "empty": "Aucune dépêche.",
+    "urgent": "URGENT",
+    "source": "RED LINE PRESSE",
+    "locate": "Localiser",
+    "cats": {
+      "strike": "Frappe",
+      "war": "Guerre",
+      "peace": "Paix",
+      "council": "ONU",
+      "leak": "Fuite",
+      "revolt": "Révolte",
+      "coup": "Coup d'État",
+      "alliance": "Alliance",
+      "economy": "Économie",
+      "nuclear": "Nucléaire",
+      "capture": "Conquête",
+      "refugees": "Réfugiés",
+      "event": "Événement"
+    }
+  },
+  "battles": {
+    "empty": "Aucun rapport de bataille.",
+    "back": "Tous les rapports",
+    "losses": "pertes",
+    "lasted": "durée {{value}}",
+    "noDetail": "Détail du rapport indisponible.",
+    "attacker": "Attaquant",
+    "defender": "Défenseur",
+    "you": "Vous",
+    "system": "Système",
+    "engaged": "Engagés",
+    "lost": "Perdus",
+    "total": "Total",
+    "countermeasures": "Contre-mesures",
+    "timeline": "Chronologie",
+    "replay": "Replay de la bataille",
+    "scrub": "Position dans le replay",
+    "speed": "Vitesse du replay",
+    "outcome": {
+      "victory": "Victoire",
+      "defeat": "Défaite",
+      "draw": "Indécis",
+      "ongoing": "En cours"
+    }
+  },
+  "chat": {
+    "game": "Salon de la partie",
+    "alliance": "Alliance · {{name}}",
+    "channels": "Canaux",
+    "newPrivate": "Message privé",
+    "pickNation": "Choisir une nation…",
+    "empty": "Aucun message.",
+    "hidden": "Message masqué par la modération.",
+    "placeholder": "Écrire à : {{channel}}",
+    "message": "Message",
+    "send": "Envoyer"
+  },
+  "settings": {
+    "display": "Affichage",
+    "legend": "Légende de la carte",
+    "legendHelp": "Panneau en bas à droite (touche L).",
+    "notifications": "Notifications",
+    "browserNotifications": "Notifications du navigateur",
+    "notifHelp": "Alertes critiques quand l'onglet est en arrière-plan ; Web Push si le serveur le propose.",
+    "notif": {
+      "push": "Notifications Web Push activées",
+      "local": "Notifications locales activées",
+      "denied": "Autorisation refusée par le navigateur",
+      "unsupported": "Notifications non prises en charge par ce navigateur"
+    },
+    "help": "Aide",
+    "restartTutorial": "Relancer le tutoriel",
+    "game": "Partie"
   }
 }

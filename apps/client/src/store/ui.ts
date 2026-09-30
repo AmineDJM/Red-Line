@@ -128,9 +128,9 @@ const WINDOW_SIZE: Record<WindowId, { w: number; h: number }> = {
   diplomacy: { w: 1000, h: 680 },
   council: { w: 920, h: 680 },
   news: { w: 620, h: 700 },
-  battles: { w: 1000, h: 680 },
+  battles: { w: 1120, h: 720 },
   encyclopedia: { w: 1280, h: 760 },
-  chat: { w: 560, h: 620 },
+  chat: { w: 780, h: 620 },
   shop: { w: 900, h: 640 },
   settings: { w: 520, h: 560 },
 };
