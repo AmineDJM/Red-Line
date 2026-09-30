@@ -251,13 +251,11 @@ export function announce(
  */
 export function filterProvinces(state: EngineState, n: NationId, view: PlayerView): void {
   const staleMs = cfg(state).provinceStaleH * HOUR;
-  const w = wi(state.world);
   for (const pid of sortedKeys(view.provinces)) {
     const pv = view.provinces[pid]!;
     const k = knowledge(state, n, pid);
     if (!k) continue;
-    const all = w.provById.get(pid)?.buildings ?? pv.buildings;
-    const shown = revealed(pid, all, k);
+    const shown = revealed(pid, pv.buildings, k);
     pv.buildings = shown;
     if (pv.buildingState) {
       const fresh = k.t > 0 && state.time - k.t <= staleMs;
