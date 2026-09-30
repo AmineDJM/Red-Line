@@ -1,0 +1,12 @@
+{
+  "id": "cold-war-1985",
+  "name": "Guerre froide (1985)",
+  "description": "1985 : les arsenaux et les technologies de la fin de la guerre froide sur la carte actuelle. Pas de furtivité opérationnelle ni de drones armés ; chars, chasseurs de 3e et 4e générations et missiles nucléaires en masse.",
+  "playableNations": "all",
+  "year": 1985,
+  "orbatSet": "1985",
+  "camera": {
+    "center": [20, 45],
+    "zoom": 1.8
+  }
+}

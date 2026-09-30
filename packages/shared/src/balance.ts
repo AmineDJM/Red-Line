@@ -113,6 +113,25 @@ export const BalanceSchema = z.object({
       repairHours: z.number().positive().default(48),
       buildHours: z.record(z.string(), z.number()).default({}),
       buildCostUsd: z.record(z.string(), z.number()).default({}),
+      /**
+       * Niveaux 1 à 5 par type (façon Conflict of Nations) : coût et durée pour atteindre ce niveau, effets
+       * (valeurs absolues, non cumulées) une fois le niveau atteint. Le niveau 1 reprend effects/buildHours/buildCostUsd.
+       */
+      levels: z
+        .record(
+          z.string(),
+          z
+            .array(
+              z.object({
+                level: z.number().int().min(1).max(5),
+                costUsd: z.number().min(0),
+                buildHours: z.number().positive(),
+                effects: z.record(z.string(), z.number()).default({}),
+              }),
+            )
+            .max(5),
+        )
+        .default({}),
     })
     .optional(),
   alert: z
