@@ -2,7 +2,7 @@
 """
 Red Line — imagerie satellite sombre en PMTiles.
 
-Source : NASA Blue Marble Next Generation, « topography and bathymetry », décembre 2004
+Source : NASA Blue Marble Next Generation, « topography and bathymetry », juillet 2004
 (domaine public, voir README.md). Traitement : masque terre/mer Natural Earth, désaturation et
 assombrissement vers des gris bleu nuit (le relief ombré de la source reste lisible), mers
 presque noires ; reprojection Web Mercator ; tuiles WebP 256 px ; archive PMTiles v3.
@@ -34,12 +34,13 @@ Image.MAX_IMAGE_PIXELS = None
 
 HERE = Path(__file__).resolve().parent
 CACHE = HERE / ".cache"
-NASA = "https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73909"
-BM = "world.topo.bathy.200412.3x{}"
-LAND_URL = (
-    "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_land.geojson"
-)
-GRADE_VERSION = 3  # à incrémenter quand la fonction de couleur change (invalide le cache)
+# Juillet 2004 : couvert neigeux minimal dans l'hémisphère nord (décembre = 73909 / 200412).
+NASA = "https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73751"
+BM = "world.topo.bathy.200407.3x{}"
+NE_GEOJSON = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson"
+# terres + plates-formes glaciaires antarctiques (rendues comme de la terre)
+MASK_LAYERS = ["ne_10m_land", "ne_10m_antarctic_ice_shelves_polys"]
+GRADE_VERSION = 7  # à incrémenter quand la fonction de couleur change (invalide le cache)
 TILE = 256
 WEBP_QUALITY = 80
 MAX_LAT = 85.05112878
@@ -66,15 +67,16 @@ def fetch(url: str, dest: Path) -> Path:
 
 def land_polygons() -> list[list[list[tuple[float, float]]]]:
     """Polygones terrestres Natural Earth 1:10 m (anneaux extérieurs et trous)."""
-    map_cache = HERE.parent / "map" / ".cache" / "ne_10m_land.geojson"
-    path = map_cache if map_cache.exists() else fetch(LAND_URL, CACHE / "ne_10m_land.geojson")
-    data = json.loads(path.read_text())
     polys = []
-    for f in data["features"]:
-        g = f["geometry"]
-        parts = [g["coordinates"]] if g["type"] == "Polygon" else g["coordinates"]
-        for p in parts:
-            polys.append([[(x, y) for x, y in ring] for ring in p])
+    for layer in MASK_LAYERS:
+        map_cache = HERE.parent / "map" / ".cache" / f"{layer}.geojson"
+        path = map_cache if map_cache.exists() else fetch(f"{NE_GEOJSON}/{layer}.geojson", CACHE / f"{layer}.geojson")
+        data = json.loads(path.read_text())
+        for f in data["features"]:
+            g = f["geometry"]
+            parts = [g["coordinates"]] if g["type"] == "Polygon" else g["coordinates"]
+            for p in parts:
+                polys.append([[(x, y) for x, y in ring] for ring in p])
     return polys
 
 
@@ -82,23 +84,38 @@ def land_polygons() -> list[list[list[tuple[float, float]]]]:
 # Étalonnage des couleurs
 # ----------------------------------------------------------------------------------------------
 
-LAND_TINT = np.array([0.80, 0.87, 1.00], dtype=np.float32)
+LAND_TINT = np.array([0.78, 0.86, 1.00], dtype=np.float32)
+RELIEF_RADIUS = 3.0
+RELIEF_GAIN = 0.9
+RELIEF_MARGIN = 12
 SEA_BASE = np.array([0.018, 0.030, 0.062], dtype=np.float32)
 SEA_GAIN = np.array([0.030, 0.052, 0.105], dtype=np.float32)
 
 
-def grade(rgb: np.ndarray, land: np.ndarray) -> np.ndarray:
-    """rgb uint8 (h, w, 3), land float32 (h, w) dans [0, 1] → uint8 (h, w, 3)."""
+def grade(rgb: np.ndarray, land: np.ndarray, lat: np.ndarray, margin: int = 0) -> np.ndarray:
+    """
+    rgb uint8 (h + 2·margin, w, 3), land float32 (h, w) dans [0, 1] → uint8 (h, w, 3).
+    Les `margin` lignes au-dessus et au-dessous ne servent qu'au filtre de relief.
+    `lat` (h,) : latitude de chaque ligne (réservé aux réglages par latitude).
+    """
     c = rgb.astype(np.float32) / 255.0
-    lum = c[..., 0] * 0.2126 + c[..., 1] * 0.7152 + c[..., 2] * 0.0722
-    # Terre : désaturée (20 % de la couleur d'origine), courbe sombre, teinte gris-bleu.
+    lum_full = c[..., 0] * 0.2126 + c[..., 1] * 0.7152 + c[..., 2] * 0.0722
+    # relief : passe-haut de la luminance (l'ombrage de la source), renforcé après compression
+    blur = Image.fromarray(np.clip(lum_full * 255, 0, 255).astype(np.uint8)).filter(
+        ImageFilter.GaussianBlur(RELIEF_RADIUS)
+    )
+    detail_full = lum_full - np.asarray(blur, dtype=np.float32) / 255.0
+    sl = slice(margin, c.shape[0] - margin) if margin else slice(None)
+    c, lum, detail = c[sl], lum_full[sl], detail_full[sl]
+    smooth = np.asarray(blur, dtype=np.float32)[sl] / 255.0
+    # Terre : désaturée (15 % de la couleur d'origine), tons compressés (log), teinte gris-bleu.
     gray = lum[..., None]
-    desat = gray + 0.20 * (c - gray)
-    t = np.clip(desat, 0.0, 1.0)
-    t = 0.045 + 0.62 * np.power(t, 1.25) - 0.12 * np.power(t, 3.0)
-    land_rgb = t * LAND_TINT
+    desat = np.clip(gray + 0.15 * (c - gray), 0.0, 1.0)
+    t = 0.085 + 0.30 * np.log1p(8.0 * desat) / math.log(9.0)
+    t = t + RELIEF_GAIN * detail[..., None]
+    land_rgb = np.clip(t, 0.0, 1.0) * LAND_TINT
     # Mer : presque noire, bleu très sombre, bathymétrie à peine perceptible.
-    sea_rgb = SEA_BASE + np.power(lum, 1.3)[..., None] * SEA_GAIN
+    sea_rgb = SEA_BASE + np.power(smooth, 1.3)[..., None] * SEA_GAIN
     a = land[..., None]
     out = land_rgb * a + sea_rgb * (1.0 - a)
     return np.clip(out * 255.0 + 0.5, 0, 255).astype(np.uint8)
@@ -149,9 +166,11 @@ def graded_base(maxzoom: int) -> np.ndarray:
         dpp = 360.0 / width
         for y in range(0, shape[0], step):
             h = min(step, shape[0] - y)
-            strip = np.asarray(img.crop((0, y, width, y + h)))
+            mg = RELIEF_MARGIN
+            strip = np.asarray(img.crop((0, y - mg, width, y + h + mg)))  # hors image = noir
             m = land_mask(polys, -180.0, 90.0 - y * dpp, dpp, width, h)
-            out[y : y + h] = grade(strip, m)
+            lat = 90.0 - (y + np.arange(h) + 0.5) * dpp
+            out[y : y + h] = grade(strip, m, lat, mg)
         out.flush()
         del out
         cache.with_suffix(".tmp").rename(cache)
@@ -174,11 +193,13 @@ def graded_base(maxzoom: int) -> np.ndarray:
         y0 = (row - 1) * 21600
         step = 1350
         for y in range(0, 21600, step):
-            strip = np.asarray(img.crop((0, y, 21600, y + step)))
+            mg = RELIEF_MARGIN
+            strip = np.asarray(img.crop((0, y - mg, 21600, y + step + mg)))
             lon0 = -180.0 + x0 * dpp
             lat0 = 90.0 - (y0 + y) * dpp
             m = land_mask(polys, lon0, lat0, dpp, 21600, step)
-            out[y0 + y : y0 + y + step, x0 : x0 + 21600] = grade(strip, m)
+            lat = lat0 - (np.arange(step) + 0.5) * dpp
+            out[y0 + y : y0 + y + step, x0 : x0 + 21600] = grade(strip, m, lat, mg)
         del img
     out.flush()
     del out
@@ -319,7 +340,7 @@ def build(maxzoom: int, out_path: Path, procs: int) -> None:
             },
             {
                 "name": "Red Line — imagerie sombre",
-                "description": "NASA Blue Marble Next Generation (topographie et bathymétrie, déc. 2004), "
+                "description": "NASA Blue Marble Next Generation (topographie et bathymétrie, juillet 2004), "
                 "assombrie et désaturée pour Red Line.",
                 "attribution": "Imagerie : NASA Earth Observatory (Blue Marble NG, domaine public) ; "
                 "côtes : Natural Earth",

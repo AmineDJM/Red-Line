@@ -117,13 +117,19 @@ export class MockGameConnection extends Emitter implements GameConnection {
     };
     const { view, notes } = this.build(start);
     this.view = view;
-    queueMicrotask(() => {
-      this.emit('status', 'open');
-      this.emit('welcome', { game: this.meta, me: opts.me, clock: this.clock, view: this.view });
-      this.emit('notify', notes);
-      this.timer = setInterval(() => this.tick(), opts.tickMs ?? 1000);
-      if (opts.liveEvents !== false) this.eventTimer = setInterval(() => this.randomEvent(), 14_000);
-    });
+    this.initialNotes = notes;
+  }
+
+  private initialNotes: GameNotification[];
+
+  start() {
+    if (this.timer) return;
+    this.clock = { ...this.clock, anchorReal: Date.now() };
+    this.emit('status', 'open');
+    this.emit('welcome', { game: this.meta, me: this.opts.me, clock: this.clock, view: this.view });
+    this.emit('notify', this.initialNotes);
+    this.timer = setInterval(() => this.tick(), this.opts.tickMs ?? 1000);
+    if (this.opts.liveEvents !== false) this.eventTimer = setInterval(() => this.randomEvent(), 14_000);
   }
 
   // ——— Construction de la vue initiale ———

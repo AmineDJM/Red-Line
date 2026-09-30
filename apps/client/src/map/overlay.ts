@@ -5,7 +5,7 @@
  */
 import type { Map as MlMap } from 'maplibre-gl';
 import type { LngLat } from '@redline/shared';
-import { placeCallouts, type CalloutInput, type PlacedCallout, type Rect } from './callouts.js';
+import { placeCallouts, type CalloutInput, type PlacedCallout, type Point, type Rect } from './callouts.js';
 
 export interface CalloutContent {
   id: string;
@@ -33,6 +33,8 @@ export interface OverlayContent {
   callouts: CalloutContent[];
   routes: RouteLabel[];
   badges: LaunchBadge[];
+  /** Positions d'icônes (unités) que les étiquettes ne doivent pas recouvrir. */
+  icons?: LngLat[];
 }
 
 const TITLE_FONT = '700 13px "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -94,9 +96,9 @@ export class OverlayRenderer {
     const ctx = this.ctx;
     ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     ctx.clearRect(0, 0, this.w, this.h);
-    this.drawRoutes(content.routes);
+    const segments = this.drawRoutes(content.routes);
     this.drawBadges(content.badges);
-    this.drawCallouts(content.callouts);
+    this.drawCallouts(content.callouts, segments, content.icons ?? []);
   }
 
   private project(p: LngLat) {
@@ -104,7 +106,7 @@ export class OverlayRenderer {
     return { x: pt.x, y: pt.y };
   }
 
-  private drawCallouts(list: CalloutContent[]) {
+  private drawCallouts(list: CalloutContent[], segments: [Point, Point][], icons: LngLat[]) {
     if (!list.length) {
       this.previous.clear();
       return;
@@ -123,9 +125,17 @@ export class OverlayRenderer {
       w: Math.max(0, this.w - this.insets.left - this.insets.right - 8),
       h: Math.max(0, this.h - this.insets.top - this.insets.bottom - 8),
     };
+    const iconRects: Rect[] = [];
+    for (const ic of icons) {
+      const p = this.project(ic);
+      if (p.x < -20 || p.y < -20 || p.x > this.w + 20 || p.y > this.h + 20) continue;
+      iconRects.push({ x: p.x - 11, y: p.y - 10, w: 22, h: 20 });
+      if (iconRects.length > 400) break;
+    }
     const placed = placeCallouts(inputs, {
       bounds,
-      obstacles: this.obstacles,
+      obstacles: [...this.obstacles, ...iconRects],
+      avoidSegments: segments,
       previous: this.previous,
       max: this.maxCallouts,
       anchorBox: 24,
@@ -190,11 +200,13 @@ export class OverlayRenderer {
     });
   }
 
-  private drawRoutes(routes: RouteLabel[]) {
+  private drawRoutes(routes: RouteLabel[]): [Point, Point][] {
     const ctx = this.ctx;
+    const segments: [Point, Point][] = [];
     for (const r of routes) {
       if (r.coords.length < 2) continue;
       const pts = r.coords.map((c) => this.project(c));
+      for (let k = 1; k < pts.length; k++) segments.push([pts[k - 1]!, pts[k]!]);
       // Milieu en longueur écran.
       let total = 0;
       const seg: number[] = [];
@@ -228,16 +240,23 @@ export class OverlayRenderer {
       ctx.fillStyle = '#ffffff';
       ctx.fillText(r.text, 0, -6);
       ctx.restore();
+      // Zone de l'étiquette de distance, à ne pas recouvrir non plus.
+      segments.push([
+        { x: mx - 40, y: my - 22 },
+        { x: mx + 40, y: my - 22 },
+      ]);
     }
     ctx.textAlign = 'left';
+    return segments;
   }
 
   private drawBadges(badges: LaunchBadge[]) {
     const ctx = this.ctx;
     for (const b of badges) {
       const p = this.project(b.at);
-      const x = p.x + 11;
-      const y = p.y - 13;
+      // Pastille à droite du triangle de lancement (dessiné sous l'icône de l'unité).
+      const x = p.x + 13;
+      const y = p.y + 14;
       ctx.fillStyle = '#e5343a';
       ctx.strokeStyle = 'rgba(0,0,0,0.6)';
       ctx.lineWidth = 1;

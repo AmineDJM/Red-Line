@@ -8,6 +8,7 @@ export const NE_BASE =
 
 export const NE_FILES = {
   admin0: 'ne_10m_admin_0_countries',
+  mapUnits: 'ne_10m_admin_0_map_units',
   admin1: 'ne_10m_admin_1_states_provinces',
   places: 'ne_10m_populated_places',
   marine: 'ne_10m_geography_marine_polys',
@@ -190,7 +191,7 @@ export const ADM1_NAME_OVERRIDE: Record<string, string> = {
 };
 
 /** Simplification de la géométrie publiée. */
-export const SIMPLIFY = { percentage: '9%', precision: 0.001 };
+export const SIMPLIFY = { percentage: '15%', precision: 0.001 };
 
 /** Revenus (par jour de jeu). Voir economy.ts. */
 export const ECONOMY = {

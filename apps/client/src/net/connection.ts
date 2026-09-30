@@ -49,6 +49,8 @@ export type Listener<T> = (payload: T) => void;
 export interface GameConnection {
   readonly kind: 'ws' | 'local' | 'mock';
   on<K extends keyof GameConnectionEvents>(event: K, fn: Listener<GameConnectionEvents[K]>): () => void;
+  /** Démarre la connexion (à appeler après s'être abonné aux événements). Idempotent. */
+  start(): void;
   /** Envoie un ordre ; la promesse se résout avec le résultat (orderResult). */
   sendOrder(order: Order): Promise<OrderOutcome>;
   setSpeed(speed: number): void;

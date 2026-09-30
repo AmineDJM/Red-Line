@@ -1,0 +1,213 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import type { LngLat, NationId, NationView, PlayerView, ProvinceView, UnitView } from '@redline/shared';
+import { Button, Drawer, HexIcon, pictogramFor } from '@redline/ui';
+import { getApi } from '../api/index.js';
+import { GameHud } from '../hud/GameHud.js';
+import { Icons } from '../hud/icons.js';
+import { loadEngine, LocalGameConnection } from '../net/local.js';
+import { loadSimulationData } from '../sandbox/simulationData.js';
+import { bindConnection, useGame } from '../store/game.js';
+import { useUi } from '../store/ui.js';
+import { useWorld } from '../store/world.js';
+import { ErrorScreen, LoadingScreen } from './Loading.js';
+
+interface Placement {
+  owner: NationId;
+  systemId: string;
+  pos: [number, number];
+  count?: number;
+}
+
+/** Vue synthétique avant lancement : les unités placées apparaissent sur la carte. */
+function previewView(placements: Placement[], observer: NationId): PlayerView {
+  const w = useWorld.getState();
+  const nations: Record<string, NationView> = {};
+  for (const n of Object.values(w.nations)) {
+    nations[n.id] = { id: n.id, name: n.name, color: n.color, isAi: false, isPlayer: n.id === observer, alive: true, provinceCount: 0 };
+  }
+  const provinces: Record<string, ProvinceView> = {};
+  for (const p of Object.values(w.provinces)) provinces[p.id] = { id: p.id, owner: p.nationId, capture: null, buildings: p.buildings };
+  const units: Record<string, UnitView> = {};
+  placements.forEach((p, i) => {
+    const id = `ghost${i}`;
+    units[id] = { id, owner: p.owner, level: 'own', pos: p.pos, lastSeen: 0, uncertaintyKm: 0, systemId: p.systemId, count: p.count ?? w.catalog[p.systemId]?.unitSize, status: 'idle' };
+  });
+  return {
+    time: 0,
+    me: observer,
+    nations,
+    provinces,
+    units,
+    economy: { money: 0, resources: { oil: 0, metals: 0, electronics: 0, food: 0 }, incomePerDay: { money: 0 }, production: [] },
+    victory: { provinceShareTarget: 1, leader: null, winner: null },
+  };
+}
+
+export function SandboxScreen() {
+  const { t } = useTranslation();
+  const world = useWorld();
+  const [placements, setPlacements] = useState<Placement[]>([]);
+  const [nation, setNation] = useState<NationId>('');
+  const [systemId, setSystemId] = useState('');
+  const [placing, setPlacing] = useState(true);
+  const [running, setRunning] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const unbind = useRef<(() => void) | null>(null);
+  const drawer = useUi((s) => s.drawer);
+  const openDrawer = useUi((s) => s.openDrawer);
+
+  useEffect(() => {
+    void getApi().then((api) => world.load(api));
+    useGame.getState().reset();
+    useUi.getState().openDrawer('sandbox');
+    return () => {
+      unbind.current?.();
+      useGame.getState().reset();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const nations = useMemo(() => Object.values(world.nations).sort((a, b) => a.name.localeCompare(b.name, 'fr')), [world.nations]);
+  const systems = useMemo(() => Object.values(world.catalog).sort((a, b) => a.category.localeCompare(b.category) || a.name.localeCompare(b.name)), [world.catalog]);
+
+  useEffect(() => {
+    if (!nation && nations[0]) setNation(nations.find((n) => n.id === 'fra')?.id ?? nations[0].id);
+    if (!systemId && systems[0]) setSystemId(systems[0].id);
+  }, [nations, systems, nation, systemId]);
+
+  // Aperçu avant lancement.
+  useEffect(() => {
+    if (running || world.status !== 'ready' || !nation) return;
+    const observer = placements[0]?.owner ?? nation;
+    useGame.setState((s) => ({
+      view: previewView(placements, observer),
+      me: observer,
+      meta: { id: 'sandbox', name: t('sandbox.title'), mode: 'solo', scenarioId: 'sandbox', status: 'lobby', speeds: [1, 2, 4, 8, 16, 32] },
+      clock: { anchorGame: 0, anchorReal: Date.now(), speed: 1, paused: true },
+      viewVersion: s.viewVersion + 1,
+    }));
+  }, [placements, running, world.status, nation, t]);
+
+  if (world.status === 'error') return <ErrorScreen message={world.error ?? ''} />;
+  if (world.status !== 'ready') return <LoadingScreen />;
+
+  const place = (at: LngLat) => {
+    if (running || !nation || !systemId) return;
+    setPlacements((p) => [...p, { owner: nation, systemId, pos: [at[0], at[1]] }]);
+  };
+
+  const launch = async () => {
+    setMessage(t('sandbox.engineLoading'));
+    const { engine, missing } = await loadEngine();
+    if (!engine) {
+      setMessage(t('sandbox.engineMissing', { list: missing.join(', ') }));
+      return;
+    }
+    const sim = await loadSimulationData();
+    if (!sim.cells || !sim.balance) {
+      setMessage(t('sandbox.dataMissing', { list: sim.missing.join(', ') }));
+      return;
+    }
+    try {
+      const w = useWorld.getState();
+      const built = engine.buildWorld(
+        { nations: Object.values(w.nations), provinces: Object.values(w.provinces), cells: sim.cells, straits: sim.straits, disputed: sim.disputed },
+        Object.values(w.catalog),
+        sim.balance,
+      );
+      const involved = [...new Set(placements.map((p) => p.owner))];
+      const observer = involved[0] ?? nation;
+      const conn = new LocalGameConnection(
+        engine,
+        built,
+        { seed: 1, players: involved.map((n) => ({ nationId: n, isAi: false })), units: placements },
+        { observer, godView: true, name: t('sandbox.title') },
+      );
+      unbind.current?.();
+      unbind.current = bindConnection(conn);
+      setRunning(true);
+      setPlacing(false);
+      setMessage(null);
+    } catch (e) {
+      setMessage(e instanceof Error ? e.message : String(e));
+    }
+  };
+
+  const reset = () => {
+    unbind.current?.();
+    unbind.current = null;
+    setRunning(false);
+    setPlacing(true);
+    useUi.getState().clearSelection();
+  };
+
+  return (
+    <GameHud
+      mode="sandbox"
+      fog={false}
+      tutorial={false}
+      title={t('sandbox.title')}
+      subtitle={running ? t('sandbox.running') : t('sandbox.subtitle')}
+      placing={placing && !running}
+      onPlace={place}
+      extraTools={[{ id: 'sandbox', label: t('sandbox.title'), icon: Icons.sandbox() }]}
+    >
+      <Drawer open={drawer === 'sandbox'} onClose={() => openDrawer(null)} title={t('sandbox.title')} closeLabel={t('app.close')} width={340}>
+        <div className="stack">
+          <label className="field">
+            <span className="field__label">{t('sandbox.nation')}</span>
+            <select className="select" value={nation} disabled={running} onChange={(e) => setNation(e.target.value)}>
+              {nations.map((n) => (
+                <option key={n.id} value={n.id}>
+                  {n.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="field">
+            <span className="field__label">{t('sandbox.system')}</span>
+            <select className="select" value={systemId} disabled={running} onChange={(e) => setSystemId(e.target.value)}>
+              {systems.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {t(`categories.${s.category}`)} — {s.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          {!running ? <p className="muted small">{t('sandbox.placeHint')}</p> : null}
+          <ul className="army-list">
+            {placements.map((p, i) => {
+              const s = world.catalog[p.systemId];
+              return (
+                <li key={i} className="army-row">
+                  <HexIcon pictogram={pictogramFor(s)} color={world.nations[p.owner]?.color} size={26} />
+                  <span className="army-row__main">
+                    <span className="army-row__name">{s?.name ?? p.systemId}</span>
+                    <span className="army-row__sub">{world.nations[p.owner]?.name}</span>
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+          <p className="muted small">{t('sandbox.placed', { count: placements.length })}</p>
+          {message ? <p className="error-text">{message}</p> : null}
+          {running ? (
+            <Button block onClick={reset}>
+              {t('sandbox.reset')}
+            </Button>
+          ) : (
+            <>
+              <Button variant="primary" size="lg" block disabled={!placements.length} onClick={() => void launch()}>
+                {t('sandbox.launch')}
+              </Button>
+              <Button block disabled={!placements.length} onClick={() => setPlacements([])}>
+                {t('sandbox.clear')}
+              </Button>
+            </>
+          )}
+        </div>
+      </Drawer>
+    </GameHud>
+  );
+}

@@ -188,7 +188,7 @@ export function buildingFeatures(provinces: Iterable<ProvinceView>, ctx: Buildin
           id: `${p.id}:${b}`,
           prov: p.id,
           mine: p.owner === ctx.me ? 1 : 0,
-          color: nationColor(p.owner, ctx),
+          color: p.owner === ctx.me ? '#4d2ea8' : nationColor(p.owner, ctx),
           pic: pictogramForBuilding(b),
           // Décalage en unités d'icône (multiplié par icon-size) : rangée centrée sous la ville.
           off: [(i - (n - 1) / 2) * 104, 70],
@@ -228,8 +228,10 @@ export function nationLabelFeatures(defs: Iterable<ProvinceDef>, names: Record<N
     }
     // Si le barycentre tombe dans une province de la nation (distance faible), on le garde.
     const pt = bd < Math.sqrt(best.areaKm2) * 0.6 ? c : best.centroid;
-    const rank = a.w > 900_000 ? 'l' : a.w > 150_000 ? 'm' : 's';
-    out.push({ type: 'Feature', properties: { id, name, rank, area: a.w }, geometry: { type: 'Point', coordinates: pt } });
+    // Même schéma que basemap/countries.geojson : rang et zoom d'apparition selon la superficie.
+    const minzoom = a.w > 1_500_000 ? 1.7 : a.w > 400_000 ? 2.5 : a.w > 60_000 ? 3.5 : 5;
+    const rank = a.w > 1_500_000 ? 2 : a.w > 400_000 ? 3 : a.w > 60_000 ? 4 : 6;
+    out.push({ type: 'Feature', properties: { id, name, rank, minzoom }, geometry: { type: 'Point', coordinates: pt } });
   }
   return fc(out);
 }

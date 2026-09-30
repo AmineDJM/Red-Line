@@ -1,0 +1,11 @@
+{
+  "name": "@redline/tools-tiles",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:lowzoom": "sh run.sh --maxzoom 5 --out ../../data/tiles/satellite-lowzoom.pmtiles",
+    "build:full": "sh run.sh --maxzoom 8 --out ../../data/tiles/satellite.pmtiles",
+    "preview": "sh run.sh --preview"
+  }
+}

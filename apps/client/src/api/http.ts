@@ -48,6 +48,13 @@ async function optionalGeoJSON(url: string): Promise<FeatureCollection | null> {
   }
 }
 
+export async function loadBasemap(): Promise<BasemapData> {
+  const [land, coastline, seas, countries, cities] = await Promise.all(
+    (['land', 'coastline', 'seas', 'countries', 'cities'] as const).map((k) => optionalGeoJSON(`/basemap/${BASEMAP_FILES[k]}`)),
+  );
+  return { land: land ?? null, coastline: coastline ?? null, seas: seas ?? null, countries: countries ?? null, cities: cities ?? null };
+}
+
 /** Vérifie qu'une ressource binaire existe (et n'est pas la page SPA de repli). */
 export async function probeBinary(url: string, range = false): Promise<boolean> {
   try {
@@ -105,12 +112,7 @@ export class HttpApi implements Api {
     }
   }
   async basemap(): Promise<BasemapData> {
-    const [land, coastline, seas] = await Promise.all([
-      optionalGeoJSON(`/basemap/${BASEMAP_FILES.land}`),
-      optionalGeoJSON(`/basemap/${BASEMAP_FILES.coastline}`),
-      optionalGeoJSON(`/basemap/${BASEMAP_FILES.seas}`),
-    ]);
-    return { land, coastline, seas };
+    return loadBasemap();
   }
   glyphsAvailable(): Promise<boolean> {
     return probeBinary(`/glyphs/${encodeURIComponent(FONTS.title)}/0-255.pbf`);

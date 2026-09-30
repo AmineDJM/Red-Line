@@ -103,6 +103,7 @@ export function bindConnection(conn: GameConnection): () => void {
     conn.on('clock', (c) => useGame.getState().setClock(c)),
     conn.on('notify', (items) => useGame.getState().notify(items)),
   ];
+  conn.start();
   return () => {
     offs.forEach((off) => off());
     conn.close();

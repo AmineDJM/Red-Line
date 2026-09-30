@@ -24,6 +24,49 @@ export function localData(dataDir: string, tilesDir = path.join(dataDir, 'tiles'
     name: 'redline-local-data',
     apply: 'serve',
     configureServer(server) {
+      // Mini-API en lecture seule pour le mode démonstration (?mock=1), uniquement sur demande explicite
+      // (en-tête x-redline-mock) : n'interfère jamais avec le vrai serveur.
+      server.middlewares.use((req, res, next) => {
+        if (!req.headers['x-redline-mock'] || !req.url?.startsWith('/api/')) return next();
+        const url = req.url.split('?')[0];
+        const readJson = (f: string): unknown => JSON.parse(fs.readFileSync(path.join(dataDir, f), 'utf8'));
+        const list = (v: unknown, key: string) => (Array.isArray(v) ? v : ((v as Record<string, unknown>)?.[key] ?? []));
+        const send = (body: unknown) => {
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(body));
+        };
+        try {
+          if (url === '/api/map/nations') return send({ nations: list(readJson('map/nations.json'), 'nations') });
+          if (url === '/api/map/provinces') return send({ provinces: list(readJson('map/provinces.json'), 'provinces') });
+          if (url === '/api/map/provinces.geojson') {
+            res.setHeader('Content-Type', 'application/geo+json');
+            fs.createReadStream(path.join(dataDir, 'map/provinces.geojson')).pipe(res);
+            return;
+          }
+          if (url === '/api/scenarios') {
+            const dir = path.join(dataDir, 'scenarios');
+            const scenarios = fs
+              .readdirSync(dir)
+              .filter((f) => f.endsWith('.json'))
+              .map((f) => readJson(`scenarios/${f}`) as Record<string, unknown>)
+              .map((x) => ({ id: x.id, name: x.name, description: x.description ?? '', playableNations: x.playableNations ?? 'all' }));
+            return send({ scenarios });
+          }
+          if (url === '/api/catalog') {
+            const dir = path.join(dataDir, 'catalog');
+            const systems = fs
+              .readdirSync(dir)
+              .filter((f) => f.endsWith('.json'))
+              .flatMap((f) => list(readJson(`catalog/${f}`), 'systems') as { enabled?: boolean }[])
+              .filter((s) => s.enabled !== false);
+            return send({ systems });
+          }
+        } catch {
+          res.statusCode = 404;
+          return send({ error: 'not_found' });
+        }
+        return next();
+      });
       server.middlewares.use((req, res, next) => {
         const url = decodeURIComponent((req.url ?? '').split('?')[0] ?? '');
         const root = roots.find(([prefix]) => url.startsWith(prefix));

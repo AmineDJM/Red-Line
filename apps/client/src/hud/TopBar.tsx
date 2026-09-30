@@ -53,9 +53,9 @@ export function ClockControl({ compact }: { compact: boolean; label?: string }) 
   const speeds = (meta?.speeds ?? []).slice(0, compact ? 4 : 5);
 
   return (
-    <div className="clock" data-map-avoid>
+    <div className={compact ? 'clock clock--compact' : 'clock'} data-map-avoid>
       <div className="clock__time" aria-live="off">
-        <span className="clock__day rl-mono">{c.day}</span>
+        {compact ? null : <span className="clock__day rl-mono">{c.day}</span>}
         <span className="clock__hm rl-mono">{c.time}</span>
         {paused ? <span className="clock__paused">{t('game.clock.paused')}</span> : null}
       </div>
@@ -70,7 +70,23 @@ export function ClockControl({ compact }: { compact: boolean; label?: string }) 
           >
             {paused ? Icons.play(16) : Icons.pause(16)}
           </button>
-          {speeds.map((s) => (
+          {compact ? (
+            <button
+              type="button"
+              className="clock__btn clock__btn--on rl-mono"
+              onClick={() => {
+                const all = meta?.speeds ?? [1];
+                const i = all.indexOf(clock?.speed ?? 1);
+                conn?.setSpeed(all[(i + 1) % all.length] ?? 1);
+                if (paused) conn?.setPaused(false);
+              }}
+              aria-label={t('game.clock.nextSpeed', { speed: clock?.speed ?? 1 })}
+              title={t('game.clock.nextSpeed', { speed: clock?.speed ?? 1 })}
+            >
+              {t('game.clock.speedShort', { speed: clock?.speed ?? 1 })}
+            </button>
+          ) : null}
+          {(compact ? [] : speeds).map((s) => (
             <button
               key={s}
               type="button"

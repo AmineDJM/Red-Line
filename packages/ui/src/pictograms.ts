@@ -170,10 +170,23 @@ export function isPictogramId(id: string): id is PictogramId {
   return Object.prototype.hasOwnProperty.call(PICTOGRAMS, id);
 }
 
+/** Noms d'icônes du catalogue sans pictogramme propre. */
+const ICON_ALIASES: Record<string, PictogramId> = {
+  infantry_mech: 'ifv',
+  jammer: 'air_defense',
+  sam: 'air_defense',
+  mbt: 'tank',
+  frigate: 'ship',
+  destroyer: 'ship',
+  carrier: 'ship',
+  uav: 'drone',
+};
+
 /** Pictogramme d'un système d'armes : son champ `icon` s'il est connu, sinon celui de sa catégorie. */
 export function pictogramFor(system: { icon?: string; category: Category } | undefined): PictogramId {
   if (!system) return 'unknown';
   if (system.icon && isPictogramId(system.icon)) return system.icon;
+  if (system.icon && ICON_ALIASES[system.icon]) return ICON_ALIASES[system.icon]!;
   return CATEGORY_PICTOGRAM[system.category] ?? 'unknown';
 }
 

@@ -97,10 +97,13 @@ export class GameMap {
   ) {
     setupMapLibre();
     const w = useWorld.getState();
-    const labels = nationLabelFeatures(
-      Object.values(w.provinces),
-      Object.fromEntries(Object.values(w.nations).map((n) => [n.id, n.name])),
-    );
+    // Points d'étiquette des pays : fond vectoriel s'il existe, sinon calculés depuis les provinces.
+    const labels =
+      w.basemap?.countries ??
+      nationLabelFeatures(
+        Object.values(w.provinces),
+        Object.fromEntries(Object.values(w.nations).map((n) => [n.id, n.name])),
+      );
     this.map = new MlMap({
       container,
       style: buildStyle({
@@ -126,7 +129,14 @@ export class GameMap {
     });
     this.map.touchZoomRotate.disableRotation();
     this.map.keyboard.disableRotation();
-    this.map.on('styleimagemissing', (e: { id: string }) => handleMissingImage(this.map, e.id));
+    // Sprites et étiquettes-images générés à la demande (MapLibre v6 : résolveur d'images manquantes).
+    this.map.setMissingStyleImageResolver((id) => {
+      if (!this.map.hasImage('hex')) registerSprites(this.map);
+      handleMissingImage(this.map, id);
+    });
+    this.map.on('style.load', () => {
+      if (!this.map.hasImage('hex')) registerSprites(this.map);
+    });
     this.map.on('error', (e) => {
       // Tuiles ou fichiers facultatifs absents : jamais bloquant.
       console.warn('[carte]', e.error?.message ?? e);
@@ -147,7 +157,7 @@ export class GameMap {
   // ——— Initialisation ———
 
   private onLoad() {
-    registerSprites(this.map);
+    if (!this.map.hasImage('hex')) registerSprites(this.map);
     this.ready = true;
     this.map.on('click', (e) => this.onClick(e));
     this.map.on('mousemove', (e) => this.onHover(e));
@@ -449,8 +459,14 @@ export class GameMap {
     if (!view) return;
     const ui = useUi.getState();
     const w = useWorld.getState();
+    const icons: LngLat[] = [];
+    for (const u of this.units) {
+      const p = this.positions.get(u.id);
+      if (p) icons.push(p);
+    }
     this.overlayContent = {
       ...this.overlayContent,
+      icons,
       callouts: buildCallouts({
         view,
         me,
@@ -462,6 +478,10 @@ export class GameMap {
         positions: this.positions,
         zoom: this.map.getZoom(),
         t: gameNow(),
+        inView: (() => {
+          const b = this.map.getBounds();
+          return (p: LngLat) => b.contains(p as [number, number]);
+        })(),
       }),
     };
     this.map.triggerRepaint();

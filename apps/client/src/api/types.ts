@@ -17,9 +17,16 @@ export interface TilesInfo {
 
 /** Fond vectoriel (chaque couche est facultative : absente = non affichée). */
 export interface BasemapData {
+  /** Terres émergées (polygones). */
   land: FeatureCollection | null;
+  /** Traits de côte (lignes). */
   coastline: FeatureCollection | null;
+  /** Étiquettes des mers (points : name, rank, minzoom). */
   seas: FeatureCollection | null;
+  /** Points d'étiquette des pays (points : id, name, rank, minzoom). */
+  countries: FeatureCollection | null;
+  /** Villes (points : name, rank, minzoom, capital, nation). */
+  cities: FeatureCollection | null;
 }
 
 export interface Credentials {

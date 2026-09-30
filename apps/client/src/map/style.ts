@@ -81,6 +81,7 @@ export function buildStyle(i: StyleInput): StyleSpecification {
     'basemap-land': geo(i.basemap?.land ?? null),
     'basemap-coast': geo(i.basemap?.coastline ?? null),
     'basemap-seas': geo(i.basemap?.seas ?? null),
+    'basemap-cities': geo(i.basemap?.cities ?? null),
     'nation-labels': geo(i.nationLabels),
     borders: geo(),
     'my-border': geo(),
@@ -98,7 +99,7 @@ export function buildStyle(i: StyleInput): StyleSpecification {
       i.clusterUnits
         ? {
             cluster: true,
-            clusterMaxZoom: 4,
+            clusterMaxZoom: 3,
             clusterRadius: 34,
             clusterProperties: { mine: ['+', ['get', 'mine']] },
           }
@@ -160,8 +161,8 @@ export function buildStyle(i: StyleInput): StyleSpecification {
       filter: ['has', 'disputed'],
       paint: { 'fill-pattern': 'hatch-disputed', 'fill-opacity': 0.7 },
     },
-    { id: 'fog', type: 'fill', source: 'fog', paint: { 'fill-color': '#01030a', 'fill-opacity': 0.42, 'fill-antialias': false } },
-    { id: 'fog-hatch', type: 'fill', source: 'fog', paint: { 'fill-pattern': 'hatch-fog', 'fill-opacity': 0.8 } },
+    { id: 'fog', type: 'fill', source: 'fog', paint: { 'fill-color': '#01030a', 'fill-opacity': 0.38, 'fill-antialias': false } },
+    { id: 'fog-hatch', type: 'fill', source: 'fog', paint: { 'fill-pattern': 'hatch-fog', 'fill-opacity': ['interpolate', ['linear'], ['zoom'], 2, 0.35, 6, 0.7] } },
     {
       id: 'prov-line',
       type: 'line',
@@ -231,7 +232,7 @@ export function buildStyle(i: StyleInput): StyleSpecification {
   );
 
   // ——— Étiquettes ———
-  const seas = (rank: number, style: TextStyle, size: number, minzoom: number): LayerSpecification => {
+  const seaLayer = (id: string, filter: FilterSpecification, style: TextStyle, size: number, minzoom: number): LayerSpecification => {
     const l = label(i.glyphs, ['get', 'name'], {
       style,
       font: FONTS.italic,
@@ -241,20 +242,59 @@ export function buildStyle(i: StyleInput): StyleSpecification {
       halo: 'rgba(0,0,0,0.5)',
       haloWidth: 1,
     });
-    return {
-      id: `sea-labels-${rank}`,
-      type: 'symbol',
-      source: 'basemap-seas',
-      minzoom,
-      filter: rank === 1 ? ['<=', ['coalesce', ['get', 'rank'], 1], 1] : ['>', ['coalesce', ['get', 'rank'], 1], 1],
-      layout: l.layout!,
-      paint: l.paint!,
-    } as LayerSpecification;
+    return { id, type: 'symbol', source: 'basemap-seas', minzoom, filter, layout: l.layout!, paint: l.paint! } as LayerSpecification;
   };
-  layers.push(seas(1, 'sea-l', 14, 1.5), seas(2, 'sea-s', 12, 3.2));
-  const country = (rank: 'l' | 'm' | 's', size: number, minzoom: number, maxzoom: number): LayerSpecification => {
+  const rank: ExpressionSpecification = ['coalesce', ['get', 'rank'], 1];
+  layers.push(
+    seaLayer('sea-labels-0', ['<=', rank, 1], 'sea-l', 14, 1.5),
+    seaLayer('sea-labels-1', ['all', ['>', rank, 1], ['<=', rank, 3]], 'sea-s', 12, 3),
+    seaLayer('sea-labels-2', ['all', ['>', rank, 3], ['<=', rank, 5]], 'sea-s', 12, 4.5),
+    seaLayer('sea-labels-3', ['>', rank, 5], 'sea-s', 12, 5.5),
+  );
+
+  // Villes : capitales dès le zoom régional, les autres plus tard.
+  const capital: ExpressionSpecification = ['==', ['coalesce', ['get', 'capital'], 0], 1];
+  const cityMz: ExpressionSpecification = ['coalesce', ['get', 'minzoom'], 9];
+  const cityFilters: [string, number, FilterSpecification][] = [
+    ['capitals', 3.4, capital],
+    ['cities-a', 5, ['all', ['!', capital], ['<=', cityMz, 5]]],
+    ['cities-b', 6.2, ['all', ['!', capital], ['>', cityMz, 5], ['<=', cityMz, 6]]],
+  ];
+  for (const [id, minzoom, filter] of cityFilters) {
+    const isCap = id === 'capitals';
+    layers.push({
+      id: `${id}-dot`,
+      type: 'circle',
+      source: 'basemap-cities',
+      minzoom,
+      filter,
+      paint: {
+        'circle-radius': isCap ? 3 : 2,
+        'circle-color': isCap ? '#ffffff' : 'rgba(230,236,245,0.85)',
+        'circle-stroke-color': 'rgba(0,0,0,0.6)',
+        'circle-stroke-width': 1,
+      },
+    });
     const l = label(i.glyphs, ['get', 'name'], {
-      style: `country-${rank}`,
+      style: 'prov',
+      font: isCap ? FONTS.semibold : FONTS.regular,
+      size: isCap ? 11.5 : 10.5,
+      spacing: 0.02,
+      color: 'rgba(235,240,250,0.9)',
+      halo: 'rgba(0,0,0,0.75)',
+      haloWidth: 1.2,
+    });
+    const layout = i.glyphs
+      ? { ...l.layout!, 'text-anchor': 'left', 'text-offset': [0.55, 0], 'text-max-width': 8 }
+      : { ...l.layout!, 'icon-anchor': 'left', 'icon-offset': [5, 0] };
+    layers.push({ id: `${id}-label`, type: 'symbol', source: 'basemap-cities', minzoom: minzoom + 0.3, filter, layout, paint: l.paint! } as LayerSpecification);
+  }
+
+  // Pays : capitales blanches espacées avec ombre, par paliers de zoom.
+  const labelMz: ExpressionSpecification = ['coalesce', ['get', 'minzoom'], 3];
+  const country = (id: string, filter: FilterSpecification, style: TextStyle, size: number, minzoom: number): LayerSpecification => {
+    const l = label(i.glyphs, ['get', 'name'], {
+      style,
       font: FONTS.title,
       size,
       spacing: 0.2,
@@ -264,17 +304,22 @@ export function buildStyle(i: StyleInput): StyleSpecification {
       upper: true,
     });
     return {
-      id: `country-labels-${rank}`,
+      id,
       type: 'symbol',
       source: 'nation-labels',
       minzoom,
-      maxzoom,
-      filter: ['==', ['get', 'rank'], rank],
-      layout: { ...l.layout!, 'symbol-sort-key': ['-', 0, ['get', 'area']] },
+      maxzoom: 8.5,
+      filter,
+      layout: { ...l.layout!, 'symbol-sort-key': ['coalesce', ['get', 'rank'], 5] },
       paint: l.paint!,
     } as LayerSpecification;
   };
-  layers.push(country('l', 19, 1.5, 8), country('m', 15, 2.6, 8.5), country('s', 12, 4, 9));
+  layers.push(
+    country('country-labels-l', ['<=', labelMz, 2], 'country-l', 18, 1.5),
+    country('country-labels-m', ['all', ['>', labelMz, 2], ['<=', labelMz, 3]], 'country-m', 15, 2.5),
+    country('country-labels-s', ['all', ['>', labelMz, 3], ['<=', labelMz, 4.5]], 'country-s', 13, 3.5),
+    country('country-labels-xs', ['>', labelMz, 4.5], 'country-s', 12, 4.8),
+  );
 
   if (i.mode !== 'picker') {
     layers.push(
@@ -372,8 +417,8 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         paint: { 'icon-color': ORANGE, 'icon-halo-color': 'rgba(0,0,0,0.6)', 'icon-halo-width': 1 },
       },
       // ——— Bâtiments ———
-      ...buildingLayers('mine', 3, ['==', ['get', 'mine'], 1]),
-      ...buildingLayers('other', 5, ['==', ['get', 'mine'], 0]),
+      ...buildingLayers('mine', 4.8, ['==', ['get', 'mine'], 1]),
+      ...buildingLayers('other', 5.5, ['==', ['get', 'mine'], 0]),
       // ——— Unités ———
       {
         id: 'cluster-hex',
@@ -443,7 +488,7 @@ export function buildStyle(i: StyleInput): StyleSpecification {
 }
 
 function buildingLayers(kind: 'mine' | 'other', minzoom: number, filter: FilterSpecification): LayerSpecification[] {
-  const size: ExpressionSpecification = ['interpolate', ['linear'], ['zoom'], minzoom, 0.34, 8, 0.48];
+  const size: ExpressionSpecification = ['interpolate', ['linear'], ['zoom'], minzoom, 0.3, 8, 0.44];
   return [
     {
       id: `bld-${kind}-hex`,
@@ -458,7 +503,13 @@ function buildingLayers(kind: 'mine' | 'other', minzoom: number, filter: FilterS
         'icon-allow-overlap': true,
         'icon-ignore-placement': true,
       },
-      paint: { 'icon-color': ['get', 'color'], 'icon-halo-color': 'rgba(255,255,255,0.7)', 'icon-halo-width': 1 },
+      // Bâtiments : même teinte, plus sombre et plus petits que les unités (hiérarchie visuelle).
+      paint: {
+        'icon-color': ['get', 'color'],
+        'icon-opacity': 0.85,
+        'icon-halo-color': 'rgba(10,14,26,0.85)',
+        'icon-halo-width': 1.2,
+      },
     },
     {
       id: `bld-${kind}-pic`,

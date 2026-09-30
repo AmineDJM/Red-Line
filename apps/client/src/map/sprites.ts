@@ -123,7 +123,7 @@ export function registerSprites(map: MlMap) {
     true,
   );
 
-  add(map, 'hatch-fog', hatch(16, 'rgba(160, 176, 204, 0.20)', 1.4), false);
+  add(map, 'hatch-fog', hatch(20, 'rgba(160, 176, 204, 0.16)', 1.2), false);
   add(map, 'hatch-disputed', hatch(12, 'rgba(255, 214, 160, 0.55)', 2), false);
 }
 

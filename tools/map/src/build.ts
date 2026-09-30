@@ -21,7 +21,6 @@ import {
 } from '@redline/shared';
 import * as basemap from './basemap.js';
 import {
-  allCells,
   cellCenter,
   cellOf,
   cellsInMulti,
@@ -94,7 +93,7 @@ async function main() {
 
   log('Sources Natural Earth');
   const admin0 = await loadNE(NE_FILES.admin0);
-  const mapUnits = await loadNE('ne_10m_admin_0_map_units');
+  const mapUnits = await loadNE(NE_FILES.mapUnits);
   const admin1 = await loadNE(NE_FILES.admin1);
   const placesFc = await loadNE(NE_FILES.places);
   const marine = await loadNE(NE_FILES.marine);
@@ -421,7 +420,6 @@ async function main() {
     `Argent/jour : min ${money[0]} médiane ${money[money.length >> 1]} max ${money[money.length - 1]}`,
   );
   for (const [n, s] of sizes) console.log(`  ${n.padEnd(28)} ${(s / 1e6).toFixed(2)} Mo`);
-  void allCells;
 }
 
 function cmpId(a: string, b: string): number {

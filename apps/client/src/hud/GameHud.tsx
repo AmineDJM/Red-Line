@@ -8,7 +8,7 @@ import { ResourceBar } from './ResourceBar.js';
 import { SelectionPanel } from './SelectionPanel.js';
 import { TopBar } from './TopBar.js';
 import { useIsMobile } from './useMedia.js';
-import type { DrawerId } from '../store/ui.js';
+import { useUi, type DrawerId } from '../store/ui.js';
 import type { LngLat } from '@redline/shared';
 
 export interface GameHudProps {
@@ -29,6 +29,8 @@ export interface GameHudProps {
 export function GameHud({ title, subtitle, mode, fog, tutorial, children, extraTools, placing, onPlace, badge }: GameHudProps) {
   const mobile = useIsMobile();
   useKeyboardShortcuts();
+  const hasSelection = useUi((s) => s.selection.length > 0 || s.inspected !== null);
+  const pending = useUi((s) => s.pendingOrder !== null);
   const insets = mobile ? { top: 112, right: 0, bottom: 72, left: 0 } : { top: 104, right: 0, bottom: 0, left: 72 };
   return (
     <div className={mobile ? 'game game--mobile' : 'game game--desktop'}>
@@ -42,12 +44,17 @@ export function GameHud({ title, subtitle, mode, fog, tutorial, children, extraT
       </div>
       <ConnectionBanner />
       <Toolbar mobile={mobile} extra={extraTools} />
-      <div className="hud-bottom-left">
-        <SelectionPanel compact={mobile} />
-      </div>
-      <div className="hud-bottom-right">
-        <LegendPanel fog={fog} />
-      </div>
+      {/* Sur mobile, l'ordre en attente remplace la fiche, et la légende cède la place à la sélection. */}
+      {!(mobile && pending) ? (
+        <div className="hud-bottom-left">
+          <SelectionPanel compact={mobile} />
+        </div>
+      ) : null}
+      {!(mobile && (hasSelection || pending)) ? (
+        <div className="hud-bottom-right">
+          <LegendPanel fog={fog} />
+        </div>
+      ) : null}
       <OrderBar />
       <ArmyDrawer />
       <ProductionDrawer />

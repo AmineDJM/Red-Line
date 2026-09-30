@@ -9,6 +9,7 @@ import { bindConnection, useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { LoadingScreen, ErrorScreen } from './Loading.js';
+import { useIsMobile } from '../hud/useMedia.js';
 
 /** Crée la connexion à la partie : WebSocket, ou simulée en mode ?mock=1. */
 async function connect(gameId: string): Promise<GameConnection> {
@@ -26,9 +27,19 @@ export function GameScreen({ id }: { id: string }) {
   const meta = useGame((s) => s.meta);
   const me = useGame((s) => s.me);
   const [error, setError] = useState<string | null>(null);
+  const [scenarioNames, setScenarioNames] = useState<Record<string, string>>({});
+  const mobile = useIsMobile();
 
   useEffect(() => {
-    void getApi().then((api) => world.load(api));
+    // Crochets de test (mode démonstration uniquement) pour les captures automatisées.
+    if (IS_MOCK) (window as unknown as { __rl?: unknown }).__rl = { game: useGame, ui: useUi, world: useWorld };
+    void getApi().then((api) => {
+      void world.load(api);
+      api
+        .scenarios()
+        .then((list) => setScenarioNames(Object.fromEntries(list.map((x) => [x.id, x.name]))))
+        .catch(() => undefined);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -57,8 +68,14 @@ export function GameScreen({ id }: { id: string }) {
       mode="game"
       fog
       tutorial
-      title={nationName ? t('game.bannerTitle', { nation: nationName }) : t('app.name')}
-      subtitle={meta ? t('game.bannerSubtitle', { game: meta.name, scenario: meta.scenarioId === 'world-today' ? t('newGame.scenario') : meta.scenarioId }) : t('game.connecting')}
+      title={nationName ? t(mobile ? 'game.bannerTitleShort' : 'game.bannerTitle', { nation: nationName }) : t('app.name')}
+      subtitle={
+        meta
+          ? mobile
+            ? t('game.bannerSubtitleShort', { game: meta.name })
+            : t('game.bannerSubtitle', { game: meta.name, scenario: scenarioNames[meta.scenarioId] ?? meta.scenarioId })
+          : t('game.connecting')
+      }
       badge={IS_MOCK ? <span className="mock-badge">{t('app.mockBadge')}</span> : null}
     />
   );

@@ -26,6 +26,8 @@ export const BASEMAP_FILES = {
   land: 'land.geojson',
   coastline: 'coastline.geojson',
   seas: 'seas.geojson',
+  countries: 'countries.geojson',
+  cities: 'cities.geojson',
 } as const;
 
 /** Fontstacks exacts des glyphes MapLibre (voir docs/agents-brief.md). */

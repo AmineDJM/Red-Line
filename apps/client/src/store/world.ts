@@ -40,7 +40,7 @@ export const useWorld = create<WorldState>((set, get) => ({
         api.provincesGeoJSON(),
         api.catalog(),
         api.tiles().catch(() => null),
-        api.basemap().catch(() => ({ land: null, coastline: null, seas: null })),
+        api.basemap().catch(() => ({ land: null, coastline: null, seas: null, countries: null, cities: null })),
         api.glyphsAvailable().catch(() => false),
       ]);
       set({

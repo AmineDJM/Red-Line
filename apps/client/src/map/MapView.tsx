@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { LngLat, NationId } from '@redline/shared';
+import { IS_MOCK } from '../config.js';
 import { GameMap, type MapMode } from './GameMap.js';
 
 export interface MapViewProps {
@@ -50,7 +51,7 @@ export function MapView({ mode, fog = false, pickedNation, onPickNation, placing
       mapRef.current = gm;
       if (insetsRef.current) gm.setInsets(insetsRef.current);
       if (pickedRef.current) gm.map.once('load', () => gm.setPickedNation(pickedRef.current ?? null));
-      (window as unknown as { __rlMap?: GameMap }).__rlMap = gm;
+      if (IS_MOCK) (window as unknown as { __rlMap?: GameMap }).__rlMap = gm;
     });
     return () => {
       disposed = true;

@@ -42,6 +42,8 @@ export interface PlacementOptions {
   margin?: number;
   previous?: Map<string, number>;
   max?: number;
+  /** Segments à ne pas recouvrir (trajectoires affichées). */
+  avoidSegments?: [Point, Point][];
 }
 
 const OFFSETS: [number, number][] = [
@@ -122,6 +124,7 @@ export function placeCallouts(items: CalloutInput[], opts: PlacementOptions): Pl
   const valid = (rect: Rect, leader: [Point, Point, Point]): boolean => {
     if (!inside(rect, opts.bounds)) return false;
     for (const o of blocked) if (rectsOverlap(rect, o)) return false;
+    for (const [a, b] of opts.avoidSegments ?? []) if (segIntersectsRect(a, b, rect)) return false;
     for (const p of placed) {
       if (rectsOverlap(rect, p.rect, margin)) return false;
       // Le nouveau filet ne traverse pas une étiquette posée, et inversement.

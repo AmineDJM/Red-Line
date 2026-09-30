@@ -54,8 +54,13 @@ export class WsGameConnection extends Emitter implements GameConnection {
       pingIntervalMs: opts.pingIntervalMs ?? 15_000,
       random: opts.random ?? Math.random,
     };
-    // Laisse aux appelants le temps de s'abonner avant le premier événement.
-    queueMicrotask(() => this.connect());
+  }
+
+  private started = false;
+  start() {
+    if (this.started) return;
+    this.started = true;
+    this.connect();
   }
 
   private connect() {

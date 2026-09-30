@@ -104,11 +104,13 @@ export class LocalGameConnection extends Emitter implements GameConnection {
       speeds: opts.speeds ?? world.balance.time.speeds,
     };
     this.view = this.computeView();
-    queueMicrotask(() => {
-      this.emit('status', 'open');
-      this.emit('welcome', { game: this.meta, me: this.opts.observer, clock: this.clock, view: this.view });
-      this.timer = setInterval(() => this.tick(), this.opts.tickMs ?? 100);
-    });
+  }
+
+  start() {
+    if (this.timer) return;
+    this.emit('status', 'open');
+    this.emit('welcome', { game: this.meta, me: this.opts.observer, clock: this.clock, view: this.view });
+    this.timer = setInterval(() => this.tick(), this.opts.tickMs ?? 100);
   }
 
   private computeView(): PlayerView {

@@ -1,6 +1,6 @@
 /** Téléchargement des sources Natural Earth avec cache local (tools/map/.cache, ignoré par git). */
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { NE_BASE } from './config.js';
@@ -38,7 +38,7 @@ export async function download(url: string, file: string): Promise<void> {
     execFileSync('curl', ['-sSfL', '--retry', '3', '-o', `${file}.part`, url], {
       stdio: 'inherit',
     });
-    execFileSync('mv', [`${file}.part`, file]);
+    renameSync(`${file}.part`, file);
     return;
   } catch {
     // repli sur fetch

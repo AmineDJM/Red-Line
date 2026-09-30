@@ -3,9 +3,9 @@
  * Chargé paresseusement (jamais inclus dans le parcours normal).
  */
 import type { FeatureCollection } from 'geojson';
-import type { CreateGameBody, GameMeta, NationDef, NationId, ProvinceDef, PublicUser, WeaponSystem } from '@redline/shared';
+import type { CreateGameBody, GameMeta, NationDef, NationId, ProvinceDef, PublicUser, ScenarioSummary, WeaponSystem } from '@redline/shared';
 import { FALLBACK_TILES, FONTS } from '../config.js';
-import { probeBinary } from './http.js';
+import { loadBasemap, probeBinary } from './http.js';
 import type { Api, BasemapData, Credentials, RegisterInput, TilesInfo } from './types.js';
 
 export const MOCK_GAME_ID = 'demo';
@@ -23,34 +23,66 @@ function mockMeta(): GameMeta {
   };
 }
 
-let fixtures: Promise<{
+export interface MockWorld {
   nations: NationDef[];
   provinces: ProvinceDef[];
   geo: FeatureCollection;
   catalog: WeaponSystem[];
-  land: FeatureCollection;
-  seas: FeatureCollection;
-}> | null = null;
+  basemap: BasemapData;
+  /** Vraies données de data/ (greffon de dev) ou fixtures minimales. */
+  source: 'data' | 'fixtures';
+}
 
-export function loadFixtures() {
-  fixtures ??= (async () => {
-    const [n, p, g, c, l, s] = await Promise.all([
-      import('../../test-fixtures/nations.json'),
-      import('../../test-fixtures/provinces.json'),
-      import('../../test-fixtures/provinces.geojson?raw'),
-      import('../../test-fixtures/catalog.json'),
-      import('../../test-fixtures/basemap-land.geojson?raw'),
-      import('../../test-fixtures/basemap-seas.geojson?raw'),
+let fixtures: Promise<MockWorld> | null = null;
+
+const MOCK_HEADER = { 'x-redline-mock': '1' };
+
+async function getJson<T>(url: string): Promise<T> {
+  const res = await fetch(url, { headers: MOCK_HEADER });
+  const type = res.headers.get('content-type') ?? '';
+  if (!res.ok || !type.includes('json')) throw new Error(`${url}: ${res.status}`);
+  return (await res.json()) as T;
+}
+
+/** Vraies données servies par le greffon de dev (REDLINE_LOCAL_DATA=1), sinon null. */
+async function loadRealData(): Promise<MockWorld | null> {
+  try {
+    const [n, p, geo, c] = await Promise.all([
+      getJson<{ nations: NationDef[] }>('/api/map/nations'),
+      getJson<{ provinces: ProvinceDef[] }>('/api/map/provinces'),
+      getJson<FeatureCollection>('/api/map/provinces.geojson'),
+      getJson<{ systems: WeaponSystem[] }>('/api/catalog'),
     ]);
-    return {
-      nations: n.default.nations as NationDef[],
-      provinces: p.default.provinces as unknown as ProvinceDef[],
-      geo: JSON.parse(g.default) as FeatureCollection,
-      catalog: c.default.systems as unknown as WeaponSystem[],
-      land: JSON.parse(l.default) as FeatureCollection,
-      seas: JSON.parse(s.default) as FeatureCollection,
-    };
-  })();
+    if (!n.nations.length || !p.provinces.length) return null;
+    return { nations: n.nations, provinces: p.provinces, geo, catalog: c.systems, basemap: await loadBasemap(), source: 'data' };
+  } catch {
+    return null;
+  }
+}
+
+async function loadMinimalFixtures(): Promise<MockWorld> {
+  const [n, p, g, c, l, s] = await Promise.all([
+    import('../../test-fixtures/nations.json'),
+    import('../../test-fixtures/provinces.json'),
+    import('../../test-fixtures/provinces.geojson?raw'),
+    import('../../test-fixtures/catalog.json'),
+    import('../../test-fixtures/basemap-land.geojson?raw'),
+    import('../../test-fixtures/basemap-seas.geojson?raw'),
+  ]);
+  return {
+    nations: n.default.nations as NationDef[],
+    provinces: p.default.provinces as unknown as ProvinceDef[],
+    geo: JSON.parse(g.default) as FeatureCollection,
+    catalog: c.default.systems as unknown as WeaponSystem[],
+    basemap: { land: JSON.parse(l.default) as FeatureCollection, coastline: null, seas: JSON.parse(s.default) as FeatureCollection, countries: null, cities: null },
+    source: 'fixtures',
+  };
+}
+
+/** Données du mode démonstration : vraies données si disponibles (?fixtures=1 force les fixtures). */
+export function loadFixtures(): Promise<MockWorld> {
+  const forceFixtures = new URLSearchParams(window.location.search).get('fixtures') === '1';
+  fixtures ??= (async () => (forceFixtures ? null : await loadRealData()) ?? loadMinimalFixtures())();
   return fixtures;
 }
 
@@ -96,14 +128,19 @@ export class MockApi implements Api {
     return (await probeBinary(FALLBACK_TILES.satellite, true)) ? { ...FALLBACK_TILES } : null;
   }
   async basemap(): Promise<BasemapData> {
-    const f = await loadFixtures();
-    return { land: f.land, coastline: null, seas: f.seas };
+    return (await loadFixtures()).basemap;
   }
   glyphsAvailable() {
     return probeBinary(`/glyphs/${encodeURIComponent(FONTS.title)}/0-255.pbf`);
   }
   async scenarios() {
-    return [{ id: 'world-today', name: 'Monde actuel', description: 'Démonstration hors ligne', playableNations: 'all' as const }];
+    try {
+      const res = await fetch('/api/scenarios', { headers: MOCK_HEADER });
+      if (res.ok && (res.headers.get('content-type') ?? '').includes('json')) return ((await res.json()) as { scenarios: ScenarioSummary[] }).scenarios;
+    } catch {
+      /* repli */
+    }
+    return [{ id: 'world-today', name: 'Le monde aujourd’hui', description: '', playableNations: 'all' as const }];
   }
   async createGame(body: CreateGameBody): Promise<GameMeta> {
     try {

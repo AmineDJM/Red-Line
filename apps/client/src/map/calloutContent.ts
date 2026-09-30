@@ -14,6 +14,9 @@ import { fmtKm, t } from '../i18n/index.js';
 import type { PendingOrder } from '../store/ui.js';
 import type { CalloutContent } from './overlay.js';
 
+/** Nombre maximal d'étiquettes de sites (le reste : icônes seules). */
+const MAX_BUILDING_CALLOUTS = 10;
+
 export interface CalloutArgs {
   view: PlayerView;
   me: NationId | null;
@@ -25,6 +28,8 @@ export interface CalloutArgs {
   positions: ReadonlyMap<UnitId, LngLat>;
   zoom: number;
   t: GameTime;
+  /** Filtre de visibilité (étendue de la carte) pour les étiquettes de sites. */
+  inView?: (p: LngLat) => boolean;
 }
 
 /** Sous-ensemble limité d'éléments qui méritent une étiquette cartouche (critique 6.4). */
@@ -62,6 +67,7 @@ export function buildCallouts(a: CalloutArgs): CalloutContent[] {
     }
   }
 
+  const buildings: CalloutContent[] = [];
   for (const p of Object.values(a.view.provinces)) {
     const def = a.defs[p.id];
     if (!def) continue;
@@ -79,8 +85,9 @@ export function buildCallouts(a: CalloutArgs): CalloutContent[] {
       });
       continue;
     }
-    if (a.zoom >= 3.8 && p.owner === a.me && p.buildings.length) {
-      out.push({
+    // Sites principaux seulement : capitale dès le zoom régional, les autres de près (critique 6.4).
+    if (p.owner === a.me && p.buildings.length && (a.zoom >= 5.2 || (def.isCapital && a.zoom >= 3.6)) && (!a.inView || a.inView(def.cityPoint))) {
+      buildings.push({
         id: `bld:${p.id}`,
         at: def.cityPoint,
         title: def.isCapital ? `${def.name} · ${t('game.callout.capital')}` : def.name,
@@ -89,5 +96,7 @@ export function buildCallouts(a: CalloutArgs): CalloutContent[] {
       });
     }
   }
+  buildings.sort((x, y) => y.priority - x.priority);
+  out.push(...buildings.slice(0, MAX_BUILDING_CALLOUTS));
   return out;
 }

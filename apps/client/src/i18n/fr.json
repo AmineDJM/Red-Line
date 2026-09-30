@@ -82,7 +82,8 @@
       "pause": "Pause",
       "play": "Reprendre",
       "speed": "Vitesse ×{{speed}}",
-      "speedShort": "×{{speed}}"
+      "speedShort": "×{{speed}}",
+      "nextSpeed": "Changer de vitesse (actuelle ×{{speed}})"
     },
     "resources": {
       "money": "Argent",
@@ -260,7 +261,9 @@
       "minutes": "{{value}} min",
       "hours": "{{h}} h {{m}}",
       "days": "{{d}} j {{h}} h"
-    }
+    },
+    "bannerTitleShort": "{{nation}}",
+    "bannerSubtitleShort": "Situation militaire · {{game}}"
   },
   "sandbox": {
     "title": "Bac à sable",
