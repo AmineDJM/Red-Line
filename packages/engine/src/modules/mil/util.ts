@@ -45,6 +45,30 @@ export function isEarlyWarning(s: WeaponSystem): boolean {
   return v;
 }
 
+/**
+ * Unités d'alerte avancée de la partie (index d'exécution, jamais sérialisé) : construit au premier
+ * usage par un parcours de toutes les unités, puis tenu à jour par les crochets d'apparition et de
+ * retrait (trackEarlyWarning). Les propriétaires et systèmes des unités ne changent jamais.
+ */
+const ewUnits = new WeakMap<EngineState, Set<string>>();
+
+export function earlyWarningUnits(state: EngineState): Set<string> {
+  let set = ewUnits.get(state);
+  if (!set) {
+    set = new Set();
+    for (const id in state.units) if (isEarlyWarning(sysOf(state, state.units[id]!))) set.add(id);
+    ewUnits.set(state, set);
+  }
+  return set;
+}
+
+export function trackEarlyWarning(state: EngineState, u: Unit, present: boolean): void {
+  const set = ewUnits.get(state);
+  if (!set) return;
+  if (!present) set.delete(u.id);
+  else if (isEarlyWarning(sysOf(state, u))) set.add(u.id);
+}
+
 /** Satellite : type de capteur (optique, radar, écoute, alerte avancée). */
 export function satKind(s: WeaponSystem): 'optical' | 'radar' | 'sigint' | 'early_warning' | null {
   if (!isSatellite(s) || isAsat(s)) return null;

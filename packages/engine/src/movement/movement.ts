@@ -1,11 +1,4 @@
-import {
-  distanceKm,
-  interpolate,
-  MINUTE,
-  type Leg,
-  type LngLat,
-  type ProvinceId,
-} from '@redline/shared';
+import { distanceKm, MINUTE, type Leg, type LngLat, type ProvinceId } from '@redline/shared';
 import { atWar, notify, schedule, sortedSet, sysOf, unitPosAt } from '../state/access.js';
 import type { Crossing, EngineState, Unit } from '../state/types.js';
 import { CAPTURE_RADIUS_KM, wi } from '../state/world.js';
@@ -15,6 +8,7 @@ import { requestChase } from '../combat/combat.js';
 import type { GameEvent } from '../queue/events.js';
 import { callHook } from '../modules/registry.js';
 import { board } from '../modules/kit.js';
+import { interpolator } from '../geo/sphere.js';
 
 /**
  * Change le trajet d'une unité à l'instant courant (null = arrêt sur place). Invalide tous ses
@@ -208,8 +202,8 @@ function crossingsOf(
     const d = distanceKm(leg.from, leg.to);
     if (d < 1e-6 || leg.t1 <= leg.t0) continue;
     const n = Math.max(1, Math.ceil(d / step));
-    const at = (t: number): LngLat =>
-      interpolate(leg.from, leg.to, (t - leg.t0) / (leg.t1 - leg.t0));
+    const along = interpolator(leg.from, leg.to);
+    const at = (t: number): LngLat => along((t - leg.t0) / (leg.t1 - leg.t0));
     let tPrev = leg.t0;
     for (let k = 1; k <= n; k++) {
       const tk = leg.t0 + ((leg.t1 - leg.t0) * k) / n;

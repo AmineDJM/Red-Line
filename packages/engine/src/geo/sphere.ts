@@ -1,5 +1,7 @@
 import {
   EARTH_RADIUS_KM,
+  centralAngle,
+  fromVec,
   toVec,
   type Leg,
   type LngLat,
@@ -77,6 +79,23 @@ export function piecePos(p: Piece, t: number): Vec3 {
   const c = Math.cos(th);
   const s = Math.sin(th);
   return [p.p0[0] * c + p.u[0] * s, p.p0[1] * c + p.u[1] * s, p.p0[2] * c + p.u[2] * s];
+}
+
+/**
+ * interpolate(a, b, f) de @redline/shared avec les calculs qui ne dépendent que de (a, b) faits une
+ * seule fois : mêmes opérations flottantes dans le même ordre, donc résultats identiques bit à bit.
+ */
+export function interpolator(a: LngLat, b: LngLat): (f: number) => LngLat {
+  const d = centralAngle(a, b);
+  if (d < 1e-12) return () => [a[0], a[1]];
+  const s = Math.sin(d);
+  const va = toVec(a);
+  const vb = toVec(b);
+  return (f) => {
+    const k1 = Math.sin((1 - f) * d) / s;
+    const k2 = Math.sin(f * d) / s;
+    return fromVec([k1 * va[0] + k2 * vb[0], k1 * va[1] + k2 * vb[1], k1 * va[2] + k2 * vb[2]]);
+  };
 }
 
 /** Découpe une position + trajet en morceaux couvrant ]−∞, +∞[. */

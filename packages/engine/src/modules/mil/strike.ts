@@ -45,6 +45,7 @@ import {
   generic,
   interceptClass,
   isAsat,
+  earlyWarningUnits,
   isEarlyWarning,
   isSatellite,
   launchCells,
@@ -387,9 +388,11 @@ function warnLaunch(state: EngineState, M: Unit, st: MissileSt): void {
   const aud = new Set<NationId>([M.owner]);
   const cls = st.cls;
   if (cls === 'ballistic' || cls === 'hypersonic') {
-    // Construction d'un ensemble (trié ensuite) : l'ordre de parcours est sans effet.
-    for (const id in state.units) {
-      const u = state.units[id]!;
+    // Construction d'un ensemble (trié ensuite) : l'ordre de parcours est sans effet. Seules les
+    // unités d'alerte avancée sont parcourues (index d'exécution).
+    for (const id of earlyWarningUnits(state)) {
+      const u = state.units[id];
+      if (!u) continue;
       if (u.owner === M.owner || u.role) continue;
       const s = sysOf(state, u);
       if (!isEarlyWarning(s)) continue;

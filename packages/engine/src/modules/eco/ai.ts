@@ -75,9 +75,10 @@ function thinkResearch(state: EngineState, n: NationId, atWar: boolean): void {
   const money = state.nations[n]!.money;
   const order = atWar ? AI.warBranches : AI.peaceBranches;
   let best: { id: string; score: number } | null = null;
+  const done = new Set(en.done);
   for (const id of tree.keys()) {
     const node = nodeOf(state, id);
-    if (!node || en.done.includes(id)) continue;
+    if (!node || done.has(id)) continue;
     if (!node.requires.every((r) => hasGate(state, n, r))) continue;
     if (node.cost.money > money * AI.researchSpendShare) continue;
     const bi = order.indexOf(node.branch);

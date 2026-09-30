@@ -166,15 +166,19 @@ function think(state: EngineState, n: NationId): void {
     if (targeted.has(th.id)) continue;
     const inside = ownerAt(state, th.pos) === n || ownCityWithin(state, n, th.pos, provDet);
     if (!inside) continue;
+    // Distances calculées une fois (mêmes valeurs que dans le comparateur d'origine).
+    const dOf = new Map<string, number>();
     const cand = [...idle]
       .sort()
       .map((id) => state.units[id]!)
       .filter((u) => {
         const s = sysOf(state, u);
         if (th.sys && s.damage[th.sys.targetClass] <= 0) return false;
-        return distanceKm(unitPosAt(state, u, state.time), th.pos) <= AI.defendReachKm;
+        const d = dist(state, u, th.pos);
+        dOf.set(u.id, d);
+        return d <= AI.defendReachKm;
       })
-      .sort((a, b) => dist(state, a, th.pos) - dist(state, b, th.pos) || (a.id < b.id ? -1 : 1));
+      .sort((a, b) => dOf.get(a.id)! - dOf.get(b.id)! || (a.id < b.id ? -1 : 1));
     for (const u of cand.slice(0, 4)) {
       if (violatesNeutral(state, n, u, th.pos)) continue;
       if (order(state, n, { kind: 'attack', unitIds: [u.id], targetId: th.id })) {
@@ -211,7 +215,7 @@ function think(state: EngineState, n: NationId): void {
     let threatById: Map<string, Threat> | undefined;
     for (const own of provincesOf(state, n)) {
       if (launched >= AI.maxOffensivePerThink) break;
-      for (const pid of [...(w.provById.get(own)?.neighbors ?? [])].sort()) {
+      for (const pid of sortedNeighbors(state, own)) {
         if (launched >= AI.maxOffensivePerThink || seen.has(pid)) continue;
         seen.add(pid);
         const P = state.provinces[pid];
@@ -306,14 +310,17 @@ function launchCapture(
     return distanceKm(dest, city) <= CAPTURE_RADIUS_KM;
   });
   if (already) return false;
+  const dOf = new Map<string, number>();
   const cand = [...idle]
     .sort()
     .map((id) => state.units[id]!)
     .filter((u) => {
       const s = sysOf(state, u);
-      return s.canCapture && s.movement === 'land';
+      if (!(s.canCapture && s.movement === 'land')) return false;
+      dOf.set(u.id, dist(state, u, city));
+      return true;
     })
-    .sort((a, b) => dist(state, a, city) - dist(state, b, city) || (a.id < b.id ? -1 : 1));
+    .sort((a, b) => dOf.get(a.id)! - dOf.get(b.id)! || (a.id < b.id ? -1 : 1));
   if (cand.length === 0) return false;
   budget.left--;
   for (const u of cand.slice(0, 3)) {
@@ -327,6 +334,43 @@ function launchCapture(
   return false;
 }
 
+/** Valeur défensive par coût d'un système (statique). */
+function defensiveValue(s: WeaponSystem): number {
+  const dmg = Object.values(s.damage).reduce((a, b) => a + b, 0);
+  return (s.hp * s.unitSize * (1 + s.armor) + dmg * s.unitSize) / Math.max(1, s.cost.money);
+}
+
+/** Systèmes produits pour la défense, triés par valeur décroissante puis identifiant (par monde). */
+const defensiveCache = new WeakMap<object, WeaponSystem[]>();
+
+function defensiveCatalog(state: EngineState): WeaponSystem[] {
+  let list = defensiveCache.get(state.world);
+  if (!list) {
+    list = [];
+    for (const id of wi(state.world).systemIds) {
+      const s = state.world.catalog.get(id)!;
+      if (!s.enabled || !AI.defensive.includes(s.category)) continue;
+      if (s.movement === 'sea') continue;
+      list.push(s);
+    }
+    const value = new Map(list.map((s) => [s.id, defensiveValue(s)]));
+    list.sort((a, b) => value.get(b.id)! - value.get(a.id)! || (a.id < b.id ? -1 : 1));
+    defensiveCache.set(state.world, list);
+  }
+  return list;
+}
+
+/** Voisins d'une province, triés (carte statique, par monde). */
+const neighborCache = new WeakMap<object, Map<ProvinceId, ProvinceId[]>>();
+
+function sortedNeighbors(state: EngineState, pid: ProvinceId): ProvinceId[] {
+  let m = neighborCache.get(state.world);
+  if (!m) neighborCache.set(state.world, (m = new Map()));
+  let list = m.get(pid);
+  if (!list) m.set(pid, (list = [...(wi(state.world).provById.get(pid)?.neighbors ?? [])].sort()));
+  return list;
+}
+
 /** Production défensive quand l'argent le permet. */
 function produce(state: EngineState, n: NationId, peaceful: boolean): void {
   const ns = state.nations[n]!;
@@ -336,22 +380,16 @@ function produce(state: EngineState, n: NationId, peaceful: boolean): void {
     : AI.warUnitsBase + AI.warUnitsPerProvince * ns.provinceCount;
   if ((state.rt.byNation.get(n)?.size ?? 0) + ns.production.length >= maxUnits) return;
   const w = wi(state.world);
+  // Valeur défensive par coût, puis tirage parmi les trois meilleures : la liste triée (statique) est
+  // parcourue jusqu'aux trois premières options abordables (même résultat que trier les abordables).
   const options: WeaponSystem[] = [];
-  for (const id of w.systemIds) {
-    const s = state.world.catalog.get(id)!;
-    if (!s.enabled || !AI.defensive.includes(s.category)) continue;
-    if (s.movement === 'sea') continue;
+  for (const s of defensiveCatalog(state)) {
     if (!canAfford(state, n, s)) continue;
     if (peaceful && ns.money < s.cost.money * AI.peaceReserveFactor) continue;
     options.push(s);
+    if (options.length >= 3) break;
   }
   if (options.length === 0) return;
-  // Valeur défensive par coût, puis tirage parmi les trois meilleures.
-  const value = (s: WeaponSystem): number => {
-    const dmg = Object.values(s.damage).reduce((a, b) => a + b, 0);
-    return (s.hp * s.unitSize * (1 + s.armor) + dmg * s.unitSize) / Math.max(1, s.cost.money);
-  };
-  options.sort((a, b) => value(b) - value(a) || (a.id < b.id ? -1 : 1));
   const pick = options[nextInt(state.rng, Math.min(3, options.length))]!;
   const cap = w.nationById.get(n)?.capitalProvinceId;
   let where: ProvinceId | null = cap && state.provinces[cap]?.owner === n ? cap : null;

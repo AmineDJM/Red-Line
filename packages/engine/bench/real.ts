@@ -29,7 +29,7 @@ import { unitPosAt } from '../src/state/access.js';
 import { nextFloat, seedRng } from '../src/rng/rng.js';
 import { loadRealData } from './load.js';
 
-/** BENCH_SAVE=<dossier> : instantanés J1 (après les ordres) et J3, pour profiler une étape isolée. */
+/** BENCH_SAVE=<dossier> : instantanés J0, J1 (après les ordres), J3 et fin, pour profiler une étape isolée. */
 const SAVE = process.env.BENCH_SAVE;
 function save(name: string): void {
   if (!SAVE) return;
@@ -94,6 +94,7 @@ row(
 row('mémoire (tas de la partie)', null, `${mib(h1 - h0)} (tas total ${mib(h1)})`);
 metrics.heapMiB = Math.round(((h1 - h0) / 1048576) * 10) / 10;
 console.log('  empreinte initiale', stateHash(s));
+save('j0');
 
 // ——— Jour calme ———
 t = now();
@@ -223,6 +224,7 @@ row(
 );
 metrics.dayMax = Math.round(Math.max(...perDay, 0));
 const hashEnd = stateHash(s);
+save('jend');
 console.log('  empreinte finale', hashEnd);
 
 // ——— Vues ———
