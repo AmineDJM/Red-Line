@@ -106,6 +106,19 @@ export interface ProvinceView {
   blockaded?: boolean;
   /** Zone d'exclusion aérienne en vigueur. */
   noFlyZone?: boolean;
+  /**
+   * Connaissance d'une province étrangère par le renseignement (absent = province du joueur ou alliée).
+   * Pour une province étrangère, `buildings`/`buildingState` ne contiennent QUE ce qui a été révélé
+   * (missions du renseignement extérieur, satellites, reconnaissance), progressivement.
+   */
+  intel?: {
+    /** 0 inconnue, 1 aperçu, 2 bonne connaissance, 3 connaissance complète. */
+    level: 0 | 1 | 2 | 3;
+    economic: boolean;
+    military: boolean;
+    /** Dernière mise à jour (temps de jeu) ; au-delà d'un certain âge l'information vieillit. */
+    updatedAt: GameTime;
+  } | null;
 }
 
 export interface NationView {

@@ -36,6 +36,8 @@ export const CATEGORIES = [
   'space',
   /** Convois et cargos (livraisons du marché, ravitaillement) : génériques, non combattants. */
   'logistics',
+  /** Radars terrestres de toutes portées (veille aérienne, alerte avancée, transhorizon…). */
+  'radar',
 ] as const;
 export type Category = (typeof CATEGORIES)[number];
 
