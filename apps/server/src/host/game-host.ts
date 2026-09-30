@@ -104,6 +104,8 @@ export interface HostedGame {
    */
   flushQueue: string[] | null;
   flushNotes: GameNotification[];
+  /** Une diffusion a été demandée pendant la diffusion en cours. */
+  flushAgain: boolean;
   /** Coût CPU (ms) de la dernière diffusion complète : espace les diffusions suivantes (adaptatif). */
   flushCostMs: number;
   /** Simulation en retard sur l'horloge (rattrapage découpé en tranches). */
@@ -467,6 +469,7 @@ export class GameHost {
       lastFlush: 0,
       flushQueue: null,
       flushNotes: [],
+      flushAgain: false,
       flushCostMs: 0,
       behind: false,
       idleSince: Date.now(),
@@ -829,6 +832,11 @@ export class GameHost {
       g.pendingNotes = [];
       return;
     }
+    if (g.flushQueue) {
+      // Diffusion en cours : la suivante sera programmée à sa fin, d'après son coût complet.
+      g.flushAgain = true;
+      return;
+    }
     if (g.flushDue === null) {
       // Part maximale du processeur consacrée aux diffusions d'une partie : écart = coût × (1 − p) / p.
       const share = this.d.options.flushCpuShare ?? DEFAULT_FLUSH_SHARE;
@@ -897,7 +905,7 @@ export class GameHost {
     if (g.flushQueue) {
       // Diffusion déjà en cours : les nouvelles notifications partiront avec la suivante.
       g.pendingNotes = notes.concat(g.pendingNotes);
-      this.requestFlush(g, now);
+      g.flushAgain = true;
       return;
     }
     const keys = new Set<string>();
@@ -923,6 +931,10 @@ export class GameHost {
       g.flushNotes = [];
       g.lastFlush = Date.now();
       this.d.metrics.recordFlush(g.flushCostMs);
+      if (g.flushAgain || g.pendingNotes.length > 0) {
+        g.flushAgain = false;
+        this.requestFlush(g, g.lastFlush);
+      }
     }
   }
 
@@ -1375,6 +1387,7 @@ export class GameHost {
       lastFlush: 0,
       flushQueue: null,
       flushNotes: [],
+      flushAgain: false,
       flushCostMs: 0,
       behind: false,
       idleSince: Date.now(),
