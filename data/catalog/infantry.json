@@ -1,0 +1,1780 @@
+{
+  "category": "infantry",
+  "systems": [
+    {
+      "id": "us.infantry-light",
+      "name": "Infanterie légère (États-Unis)",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "anti_tank"],
+      "generation": 4,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 20000000,
+        "resources": {
+          "oil": 10,
+          "metals": 20,
+          "electronics": 10,
+          "food": 60
+        }
+      },
+      "buildTimeH": 8,
+      "upkeepPerDay": 120000,
+      "speedKmh": 30,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 12,
+        "aircraft": 0,
+        "helicopter": 8,
+        "drone": 5,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 8
+      },
+      "hp": 30,
+      "armor": 0.1,
+      "stealth": 0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": [],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Camions tactiques",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "30 km/h (motorisée)",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 20000000,
+      "era": {
+        "introduced": 1950
+      }
+    },
+    {
+      "id": "us.infantry-mech",
+      "name": "Infanterie mécanisée (États-Unis)",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "anti_tank"],
+      "generation": 4,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 45000000,
+        "resources": {
+          "oil": 20,
+          "metals": 30,
+          "electronics": 20,
+          "food": 95
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 120000,
+      "speedKmh": 50,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 4
+      },
+      "damage": {
+        "infantry": 18,
+        "armor": 15,
+        "aircraft": 0,
+        "helicopter": 8,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 10
+      },
+      "hp": 42,
+      "armor": 0.3,
+      "stealth": 0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry_mech",
+      "sheet": {
+        "engine": "Transports de troupes blindés",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "50 km/h sur route",
+        "rangeKm": 600
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 45000000,
+      "era": {
+        "introduced": 1960
+      }
+    },
+    {
+      "id": "ru.infantry-light",
+      "name": "Infanterie légère (Russie)",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "anti_tank"],
+      "generation": 3,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 8000000,
+        "resources": {
+          "oil": 7,
+          "metals": 10,
+          "electronics": 7,
+          "food": 35
+        }
+      },
+      "buildTimeH": 8,
+      "upkeepPerDay": 36000,
+      "speedKmh": 30,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 8,
+        "drone": 5,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 8
+      },
+      "hp": 30,
+      "armor": 0.1,
+      "stealth": 0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": [],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Camions tactiques",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "30 km/h (motorisée)",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 8000000,
+      "era": {
+        "introduced": 1950
+      }
+    },
+    {
+      "id": "ru.infantry-mech",
+      "name": "Infanterie mécanisée (Russie)",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "anti_tank"],
+      "generation": 3,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 20000000,
+        "resources": {
+          "oil": 10,
+          "metals": 20,
+          "electronics": 10,
+          "food": 60
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 37000,
+      "speedKmh": 50,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 4
+      },
+      "damage": {
+        "infantry": 18,
+        "armor": 12,
+        "aircraft": 0,
+        "helicopter": 8,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 10
+      },
+      "hp": 42,
+      "armor": 0.3,
+      "stealth": 0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry_mech",
+      "sheet": {
+        "engine": "Transports de troupes blindés",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "50 km/h sur route",
+        "rangeKm": 600
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 20000000,
+      "era": {
+        "introduced": 1960
+      }
+    },
+    {
+      "id": "cn.infantry-light",
+      "name": "Infanterie légère (Chine)",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "anti_tank"],
+      "generation": 3,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 7000000,
+        "resources": {
+          "oil": 6,
+          "metals": 10,
+          "electronics": 6,
+          "food": 30
+        }
+      },
+      "buildTimeH": 8,
+      "upkeepPerDay": 35000,
+      "speedKmh": 30,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 8,
+        "drone": 5,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 8
+      },
+      "hp": 30,
+      "armor": 0.1,
+      "stealth": 0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": [],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Camions tactiques",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "30 km/h (motorisée)",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 7000000,
+      "era": {
+        "introduced": 1950
+      }
+    },
+    {
+      "id": "cn.infantry-mech",
+      "name": "Infanterie mécanisée (Chine)",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "anti_tank"],
+      "generation": 3,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 18000000,
+        "resources": {
+          "oil": 10,
+          "metals": 15,
+          "electronics": 10,
+          "food": 55
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 37000,
+      "speedKmh": 50,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 4
+      },
+      "damage": {
+        "infantry": 18,
+        "armor": 12,
+        "aircraft": 0,
+        "helicopter": 8,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 10
+      },
+      "hp": 42,
+      "armor": 0.3,
+      "stealth": 0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry_mech",
+      "sheet": {
+        "engine": "Transports de troupes blindés",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "50 km/h sur route",
+        "rangeKm": 600
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 18000000,
+      "era": {
+        "introduced": 1960
+      }
+    },
+    {
+      "id": "eu.infantry-light",
+      "name": "Infanterie légère (Europe)",
+      "doctrine": "eu",
+      "origin": "EU",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "anti_tank"],
+      "generation": 4,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 18000000,
+        "resources": {
+          "oil": 10,
+          "metals": 15,
+          "electronics": 10,
+          "food": 55
+        }
+      },
+      "buildTimeH": 8,
+      "upkeepPerDay": 95000,
+      "speedKmh": 30,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 12,
+        "aircraft": 0,
+        "helicopter": 8,
+        "drone": 5,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 8
+      },
+      "hp": 30,
+      "armor": 0.1,
+      "stealth": 0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": [],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Camions tactiques",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "30 km/h (motorisée)",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 18000000,
+      "era": {
+        "introduced": 1950
+      }
+    },
+    {
+      "id": "eu.infantry-mech",
+      "name": "Infanterie mécanisée (Europe)",
+      "doctrine": "eu",
+      "origin": "EU",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "anti_tank"],
+      "generation": 4,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 40000000,
+        "resources": {
+          "oil": 20,
+          "metals": 25,
+          "electronics": 20,
+          "food": 90
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 98000,
+      "speedKmh": 50,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 4
+      },
+      "damage": {
+        "infantry": 18,
+        "armor": 15,
+        "aircraft": 0,
+        "helicopter": 8,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 10
+      },
+      "hp": 42,
+      "armor": 0.3,
+      "stealth": 0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry_mech",
+      "sheet": {
+        "engine": "Transports de troupes blindés",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "50 km/h sur route",
+        "rangeKm": 600
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 1960
+      }
+    },
+    {
+      "id": "other.infantry-light",
+      "name": "Infanterie légère (générique)",
+      "doctrine": "other",
+      "origin": "XX",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "anti_tank"],
+      "generation": 2,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 5000000,
+        "resources": {
+          "oil": 5,
+          "metals": 8,
+          "electronics": 5,
+          "food": 25
+        }
+      },
+      "buildTimeH": 8,
+      "upkeepPerDay": 35000,
+      "speedKmh": 30,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 12,
+        "armor": 8,
+        "aircraft": 0,
+        "helicopter": 8,
+        "drone": 5,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 8
+      },
+      "hp": 30,
+      "armor": 0.1,
+      "stealth": 0,
+      "detectionRangeKm": 10,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": [],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Camions tactiques",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "30 km/h (motorisée)",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 5000000,
+      "era": {
+        "introduced": 1950
+      }
+    },
+    {
+      "id": "other.infantry-mech",
+      "name": "Infanterie mécanisée (générique)",
+      "doctrine": "other",
+      "origin": "XX",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "anti_tank"],
+      "generation": 2,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 12000000,
+        "resources": {
+          "oil": 9,
+          "metals": 15,
+          "electronics": 9,
+          "food": 45
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 36000,
+      "speedKmh": 50,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 4
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 8,
+        "drone": 8,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 10
+      },
+      "hp": 42,
+      "armor": 0.3,
+      "stealth": 0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.land.gen2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry_mech",
+      "sheet": {
+        "engine": "Transports de troupes blindés",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "50 km/h sur route",
+        "rangeKm": 600
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 12000000,
+      "era": {
+        "introduced": 1960
+      }
+    },
+    {
+      "id": "us.marines",
+      "name": "Infanterie de marine (États-Unis)",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "amphibious", "anti_tank"],
+      "generation": 4,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 35000000,
+        "resources": {
+          "oil": 15,
+          "metals": 25,
+          "electronics": 15,
+          "food": 85
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 120000,
+      "speedKmh": 30,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 16,
+        "armor": 11,
+        "aircraft": 0,
+        "helicopter": 8,
+        "drone": 6,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 9
+      },
+      "hp": 34,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Véhicules amphibies et camions",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "30 km/h",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 35000000,
+      "era": {
+        "introduced": 1950
+      }
+    },
+    {
+      "id": "us.special-forces",
+      "name": "Forces spéciales (États-Unis)",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "infantry",
+      "roles": ["special_forces", "capture", "sabotage", "reconnaissance"],
+      "generation": 4,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 40000000,
+        "resources": {
+          "oil": 20,
+          "metals": 25,
+          "electronics": 20,
+          "food": 90
+        }
+      },
+      "buildTimeH": 22,
+      "upkeepPerDay": 120000,
+      "speedKmh": 40,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 16,
+        "armor": 8,
+        "aircraft": 0,
+        "helicopter": 6,
+        "drone": 4,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 16
+      },
+      "hp": 24,
+      "armor": 0.1,
+      "stealth": 0.5,
+      "detectionRangeKm": 25,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.intel.military1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Véhicules légers et moyens aériens",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "40 km/h",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 1960
+      }
+    },
+    {
+      "id": "us.airborne",
+      "name": "Troupes aéroportées (États-Unis)",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "airborne", "anti_tank"],
+      "generation": 4,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 30000000,
+        "resources": {
+          "oil": 15,
+          "metals": 25,
+          "electronics": 15,
+          "food": 75
+        }
+      },
+      "buildTimeH": 18,
+      "upkeepPerDay": 120000,
+      "speedKmh": 35,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 9,
+        "aircraft": 0,
+        "helicopter": 7,
+        "drone": 5,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 8
+      },
+      "hp": 30,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.transport"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Véhicules légers aérolargables",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "35 km/h",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 30000000,
+      "era": {
+        "introduced": 1950
+      }
+    },
+    {
+      "id": "ru.naval-infantry",
+      "name": "Infanterie de marine (Russie)",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "amphibious", "anti_tank"],
+      "generation": 3,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 12000000,
+        "resources": {
+          "oil": 9,
+          "metals": 15,
+          "electronics": 9,
+          "food": 45
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 36000,
+      "speedKmh": 30,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 14,
+        "armor": 9,
+        "aircraft": 0,
+        "helicopter": 7,
+        "drone": 5,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 8
+      },
+      "hp": 34,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Véhicules amphibies et camions",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "30 km/h",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 12000000,
+      "era": {
+        "introduced": 1950
+      }
+    },
+    {
+      "id": "ru.spetsnaz",
+      "name": "Spetsnaz (Russie)",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "infantry",
+      "roles": ["special_forces", "capture", "sabotage", "reconnaissance"],
+      "generation": 3,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 15000000,
+        "resources": {
+          "oil": 10,
+          "metals": 15,
+          "electronics": 10,
+          "food": 50
+        }
+      },
+      "buildTimeH": 22,
+      "upkeepPerDay": 37000,
+      "speedKmh": 40,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 14,
+        "armor": 7,
+        "aircraft": 0,
+        "helicopter": 5,
+        "drone": 3,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 14
+      },
+      "hp": 24,
+      "armor": 0.1,
+      "stealth": 0.5,
+      "detectionRangeKm": 25,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.intel.military1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Véhicules légers et moyens aériens",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "40 km/h",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 15000000,
+      "era": {
+        "introduced": 1960
+      }
+    },
+    {
+      "id": "ru.vdv-airborne",
+      "name": "Troupes aéroportées VDV (Russie)",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "airborne", "anti_tank"],
+      "generation": 3,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 25000000,
+        "resources": {
+          "oil": 15,
+          "metals": 20,
+          "electronics": 15,
+          "food": 70
+        }
+      },
+      "buildTimeH": 18,
+      "upkeepPerDay": 38000,
+      "speedKmh": 60,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 4
+      },
+      "damage": {
+        "infantry": 13,
+        "armor": 9,
+        "aircraft": 0,
+        "helicopter": 6,
+        "drone": 4,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 7
+      },
+      "hp": 34,
+      "armor": 0.2,
+      "stealth": 0.0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.transport"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Véhicules aérolargables BMD-4M",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "60 km/h",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 25000000,
+      "era": {
+        "introduced": 1950
+      }
+    },
+    {
+      "id": "cn.marines",
+      "name": "Infanterie de marine (Chine)",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "amphibious", "anti_tank"],
+      "generation": 3,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 10000000,
+        "resources": {
+          "oil": 8,
+          "metals": 10,
+          "electronics": 8,
+          "food": 40
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 36000,
+      "speedKmh": 30,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 14,
+        "armor": 9,
+        "aircraft": 0,
+        "helicopter": 7,
+        "drone": 5,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 8
+      },
+      "hp": 34,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Véhicules amphibies et camions",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "30 km/h",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 10000000,
+      "era": {
+        "introduced": 1950
+      }
+    },
+    {
+      "id": "cn.special-forces",
+      "name": "Forces spéciales (Chine)",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "infantry",
+      "roles": ["special_forces", "capture", "sabotage", "reconnaissance"],
+      "generation": 3,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 12000000,
+        "resources": {
+          "oil": 9,
+          "metals": 15,
+          "electronics": 9,
+          "food": 45
+        }
+      },
+      "buildTimeH": 22,
+      "upkeepPerDay": 36000,
+      "speedKmh": 40,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 14,
+        "armor": 7,
+        "aircraft": 0,
+        "helicopter": 5,
+        "drone": 3,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 14
+      },
+      "hp": 24,
+      "armor": 0.1,
+      "stealth": 0.5,
+      "detectionRangeKm": 25,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.intel.military1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Véhicules légers et moyens aériens",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "40 km/h",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 12000000,
+      "era": {
+        "introduced": 1960
+      }
+    },
+    {
+      "id": "cn.airborne",
+      "name": "Troupes aéroportées (Chine)",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "airborne", "anti_tank"],
+      "generation": 3,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 12000000,
+        "resources": {
+          "oil": 9,
+          "metals": 15,
+          "electronics": 9,
+          "food": 45
+        }
+      },
+      "buildTimeH": 18,
+      "upkeepPerDay": 36000,
+      "speedKmh": 35,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 13,
+        "armor": 8,
+        "aircraft": 0,
+        "helicopter": 6,
+        "drone": 4,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 7
+      },
+      "hp": 30,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.transport"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Véhicules légers aérolargables",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "35 km/h",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 12000000,
+      "era": {
+        "introduced": 1950
+      }
+    },
+    {
+      "id": "eu.marines",
+      "name": "Infanterie de marine (Europe)",
+      "doctrine": "eu",
+      "origin": "EU",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "amphibious", "anti_tank"],
+      "generation": 4,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 25000000,
+        "resources": {
+          "oil": 15,
+          "metals": 20,
+          "electronics": 15,
+          "food": 70
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 95000,
+      "speedKmh": 30,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 8,
+        "drone": 6,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 9
+      },
+      "hp": 34,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Véhicules amphibies et camions",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "30 km/h",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 25000000,
+      "era": {
+        "introduced": 1950
+      }
+    },
+    {
+      "id": "eu.special-forces",
+      "name": "Forces spéciales (Europe)",
+      "doctrine": "eu",
+      "origin": "EU",
+      "category": "infantry",
+      "roles": ["special_forces", "capture", "sabotage", "reconnaissance"],
+      "generation": 4,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 30000000,
+        "resources": {
+          "oil": 15,
+          "metals": 25,
+          "electronics": 15,
+          "food": 75
+        }
+      },
+      "buildTimeH": 22,
+      "upkeepPerDay": 96000,
+      "speedKmh": 40,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 8,
+        "aircraft": 0,
+        "helicopter": 6,
+        "drone": 4,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 15
+      },
+      "hp": 24,
+      "armor": 0.1,
+      "stealth": 0.5,
+      "detectionRangeKm": 25,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.intel.military1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Véhicules légers et moyens aériens",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "40 km/h",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 30000000,
+      "era": {
+        "introduced": 1960
+      }
+    },
+    {
+      "id": "eu.airborne",
+      "name": "Troupes aéroportées (Europe)",
+      "doctrine": "eu",
+      "origin": "EU",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "airborne", "anti_tank"],
+      "generation": 4,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 22000000,
+        "resources": {
+          "oil": 15,
+          "metals": 20,
+          "electronics": 15,
+          "food": 65
+        }
+      },
+      "buildTimeH": 18,
+      "upkeepPerDay": 95000,
+      "speedKmh": 35,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 14,
+        "armor": 9,
+        "aircraft": 0,
+        "helicopter": 7,
+        "drone": 5,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 8
+      },
+      "hp": 30,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.transport"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Véhicules légers aérolargables",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "35 km/h",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 22000000,
+      "era": {
+        "introduced": 1950
+      }
+    },
+    {
+      "id": "other.marines",
+      "name": "Infanterie de marine (générique)",
+      "doctrine": "other",
+      "origin": "XX",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "amphibious", "anti_tank"],
+      "generation": 3,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 7000000,
+        "resources": {
+          "oil": 6,
+          "metals": 10,
+          "electronics": 6,
+          "food": 30
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 35000,
+      "speedKmh": 30,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 11,
+        "armor": 8,
+        "aircraft": 0,
+        "helicopter": 6,
+        "drone": 4,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 6
+      },
+      "hp": 34,
+      "armor": 0.15,
+      "stealth": 0.0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.gen2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Véhicules amphibies et camions",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "30 km/h",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 7000000,
+      "era": {
+        "introduced": 1950
+      }
+    },
+    {
+      "id": "other.special-forces",
+      "name": "Forces spéciales (générique)",
+      "doctrine": "other",
+      "origin": "XX",
+      "category": "infantry",
+      "roles": ["special_forces", "capture", "sabotage", "reconnaissance"],
+      "generation": 3,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 8000000,
+        "resources": {
+          "oil": 7,
+          "metals": 10,
+          "electronics": 7,
+          "food": 35
+        }
+      },
+      "buildTimeH": 22,
+      "upkeepPerDay": 36000,
+      "speedKmh": 40,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 11,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 4,
+        "drone": 3,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 11
+      },
+      "hp": 24,
+      "armor": 0.1,
+      "stealth": 0.5,
+      "detectionRangeKm": 25,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.intel.military1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Véhicules légers et moyens aériens",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "40 km/h",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 8000000,
+      "era": {
+        "introduced": 1960
+      }
+    },
+    {
+      "id": "other.airborne",
+      "name": "Troupes aéroportées (générique)",
+      "doctrine": "other",
+      "origin": "XX",
+      "category": "infantry",
+      "roles": ["infantry", "capture", "airborne", "anti_tank"],
+      "generation": 3,
+      "targetClass": "infantry",
+      "movement": "land",
+      "canCapture": true,
+      "cost": {
+        "money": 7000000,
+        "resources": {
+          "oil": 6,
+          "metals": 10,
+          "electronics": 6,
+          "food": 30
+        }
+      },
+      "buildTimeH": 18,
+      "upkeepPerDay": 35000,
+      "speedKmh": 35,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 3
+      },
+      "damage": {
+        "infantry": 10,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 5,
+        "drone": 4,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 6
+      },
+      "hp": 30,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 12,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.1
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.transport"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "infantry",
+      "sheet": {
+        "engine": "Véhicules légers aérolargables",
+        "lengthM": null,
+        "wingspanM": null,
+        "mtowKg": null,
+        "warheadKg": null,
+        "speedLabel": "35 km/h",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "bataillon",
+      "unitPriceUsd": 7000000,
+      "era": {
+        "introduced": 1950
+      }
+    }
+  ]
+}

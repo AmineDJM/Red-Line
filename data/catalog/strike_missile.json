@@ -1,0 +1,2315 @@
+{
+  "category": "strike_missile",
+  "systems": [
+    {
+      "id": "us.tomahawk",
+      "name": "BGM-109 Tomahawk",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "strike_missile",
+      "roles": ["land_attack", "cruise_missile", "antiship"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 2000000,
+        "resources": {
+          "oil": 3,
+          "metals": 6,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 8,
+      "upkeepPerDay": 110,
+      "speedKmh": 880,
+      "operationalRadiusKm": 1600,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 1600
+      },
+      "damage": {
+        "infantry": 12,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 15,
+        "submarine": 0,
+        "missile": 0,
+        "building": 40
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.1,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.cruise1"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 turboréacteur F107 (+ accélérateur)",
+        "lengthM": 5.56,
+        "wingspanM": 2.67,
+        "mtowKg": 1510,
+        "warheadKg": 450,
+        "speedLabel": "880 km/h",
+        "rangeKm": 1600
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 2000000,
+      "era": {
+        "introduced": 1983
+      },
+      "missile": {
+        "kind": "cruise",
+        "speedKmh": 880,
+        "warhead": "conventional",
+        "evasion": 0.25,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "us.jassm-er",
+      "name": "AGM-158B JASSM-ER",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "strike_missile",
+      "roles": ["land_attack", "cruise_missile", "stealth", "air_launched"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1500000,
+        "resources": {
+          "oil": 3,
+          "metals": 5,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 8,
+      "upkeepPerDay": 82,
+      "speedKmh": 900,
+      "operationalRadiusKm": 925,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 925
+      },
+      "damage": {
+        "infantry": 12,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 15,
+        "submarine": 0,
+        "missile": 0,
+        "building": 40
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.5,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.cruise2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 turbosoufflante F107-WR-105",
+        "lengthM": 4.27,
+        "wingspanM": 2.4,
+        "mtowKg": 1020,
+        "warheadKg": 450,
+        "speedLabel": "900 km/h",
+        "rangeKm": 925
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 1500000,
+      "era": {
+        "introduced": 2014
+      },
+      "missile": {
+        "kind": "cruise",
+        "speedKmh": 900,
+        "warhead": "conventional",
+        "evasion": 0.45,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "us.atacms",
+      "name": "MGM-140 ATACMS",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "strike_missile",
+      "roles": ["ballistic_missile", "precision_strike"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1500000,
+        "resources": {
+          "oil": 3,
+          "metals": 5,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 8,
+      "upkeepPerDay": 82,
+      "speedKmh": 3700,
+      "operationalRadiusKm": 300,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 300
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 5,
+        "submarine": 0,
+        "missile": 0,
+        "building": 36
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.ballistic2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 moteur-fusée à propergol solide",
+        "lengthM": 3.98,
+        "wingspanM": null,
+        "mtowKg": 1670,
+        "warheadKg": 230,
+        "speedLabel": "Mach 3",
+        "rangeKm": 300
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 1500000,
+      "era": {
+        "introduced": 1991
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 3700,
+        "warhead": "conventional",
+        "evasion": 0.6,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "us.prsm",
+      "name": "PrSM",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "strike_missile",
+      "roles": ["ballistic_missile", "precision_strike", "antiship"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1600000,
+        "resources": {
+          "oil": 3,
+          "metals": 5,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 88,
+      "speedKmh": 4500,
+      "operationalRadiusKm": 500,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 500
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 5,
+        "submarine": 0,
+        "missile": 0,
+        "building": 36
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.ballistic2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 moteur-fusée à propergol solide",
+        "lengthM": 3.96,
+        "wingspanM": null,
+        "mtowKg": 1800,
+        "warheadKg": 90,
+        "speedLabel": "Mach 3+",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 1600000,
+      "era": {
+        "introduced": 2023
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 4500,
+        "warhead": "conventional",
+        "evasion": 0.65,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "us.agm-88-harm",
+      "name": "AGM-88 HARM",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "strike_missile",
+      "roles": ["antiradiation", "sead", "air_launched"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 900000,
+        "resources": {
+          "oil": 2,
+          "metals": 4,
+          "electronics": 7
+        }
+      },
+      "buildTimeH": 6,
+      "upkeepPerDay": 49,
+      "speedKmh": 2250,
+      "operationalRadiusKm": 150,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 22,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 5,
+        "submarine": 0,
+        "missile": 0,
+        "building": 10
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.cruise1"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 moteur-fusée Thiokol SR113",
+        "lengthM": 4.17,
+        "wingspanM": 1.12,
+        "mtowKg": 361,
+        "warheadKg": 66,
+        "speedLabel": "Mach 2",
+        "rangeKm": 150
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 900000,
+      "era": {
+        "introduced": 1985
+      },
+      "missile": {
+        "kind": "antiradiation",
+        "speedKmh": 2250,
+        "warhead": "conventional",
+        "evasion": 0.5,
+        "blastKm": 0.05
+      }
+    },
+    {
+      "id": "us.harpoon",
+      "name": "RGM-84 Harpoon",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "strike_missile",
+      "roles": ["antiship", "sea_skimming"],
+      "generation": 3,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1500000,
+        "resources": {
+          "oil": 3,
+          "metals": 5,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 6,
+      "upkeepPerDay": 82,
+      "speedKmh": 860,
+      "operationalRadiusKm": 150,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 45,
+        "submarine": 0,
+        "missile": 0,
+        "building": 15
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.1,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.antiship"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 turboréacteur J402",
+        "lengthM": 4.6,
+        "wingspanM": 0.91,
+        "mtowKg": 690,
+        "warheadKg": 221,
+        "speedLabel": "860 km/h",
+        "rangeKm": 150
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 1500000,
+      "era": {
+        "introduced": 1977
+      },
+      "missile": {
+        "kind": "antiship",
+        "speedKmh": 860,
+        "warhead": "conventional",
+        "evasion": 0.25,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "ru.kalibr",
+      "name": "3M-14 Kalibr",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "strike_missile",
+      "roles": ["land_attack", "cruise_missile", "antiship"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1200000,
+        "resources": {
+          "oil": 2,
+          "metals": 4,
+          "electronics": 9
+        }
+      },
+      "buildTimeH": 8,
+      "upkeepPerDay": 66,
+      "speedKmh": 900,
+      "operationalRadiusKm": 1500,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 1500
+      },
+      "damage": {
+        "infantry": 12,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 15,
+        "submarine": 0,
+        "missile": 0,
+        "building": 40
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.1,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.cruise1"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 turboréacteur TRDD-50",
+        "lengthM": 6.2,
+        "wingspanM": 3.1,
+        "mtowKg": 1770,
+        "warheadKg": 450,
+        "speedLabel": "900 km/h",
+        "rangeKm": 1500
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 1200000,
+      "era": {
+        "introduced": 2012
+      },
+      "missile": {
+        "kind": "cruise",
+        "speedKmh": 900,
+        "warhead": "conventional",
+        "evasion": 0.3,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "ru.iskander-m",
+      "name": "9K720 Iskander-M",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "strike_missile",
+      "roles": ["ballistic_missile", "precision_strike"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 3000000,
+        "resources": {
+          "oil": 4,
+          "metals": 8,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 160,
+      "speedKmh": 7000,
+      "operationalRadiusKm": 500,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 500
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 5,
+        "submarine": 0,
+        "missile": 0,
+        "building": 36
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.ballistic2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 moteur-fusée à propergol solide (9M723)",
+        "lengthM": 7.3,
+        "wingspanM": null,
+        "mtowKg": 3800,
+        "warheadKg": 480,
+        "speedLabel": "Mach 6",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 3000000,
+      "era": {
+        "introduced": 2006
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 7000,
+        "warhead": "conventional",
+        "evasion": 0.75,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "ru.kh-101",
+      "name": "Kh-101",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "strike_missile",
+      "roles": ["land_attack", "cruise_missile", "air_launched"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 13000000,
+        "resources": {
+          "oil": 9,
+          "metals": 20,
+          "electronics": 35
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 710,
+      "speedKmh": 700,
+      "operationalRadiusKm": 2500,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 2500
+      },
+      "damage": {
+        "infantry": 12,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 15,
+        "submarine": 0,
+        "missile": 0,
+        "building": 40
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.4,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.cruise2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 turbosoufflante TRDD-50A",
+        "lengthM": 7.45,
+        "wingspanM": 3,
+        "mtowKg": 2400,
+        "warheadKg": 450,
+        "speedLabel": "700 km/h",
+        "rangeKm": 2500
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 13000000,
+      "era": {
+        "introduced": 2013
+      },
+      "missile": {
+        "kind": "cruise",
+        "speedKmh": 700,
+        "warhead": "conventional",
+        "evasion": 0.45,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "ru.kinzhal",
+      "name": "Kh-47M2 Kinzhal",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "strike_missile",
+      "roles": ["hypersonic", "air_launched", "antiship"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 10000000,
+        "resources": {
+          "oil": 8,
+          "metals": 15,
+          "electronics": 30
+        }
+      },
+      "buildTimeH": 20,
+      "upkeepPerDay": 550,
+      "speedKmh": 10000,
+      "operationalRadiusKm": 2000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 2000
+      },
+      "damage": {
+        "infantry": 12,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 45,
+        "submarine": 0,
+        "missile": 0,
+        "building": 45
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.hypersonic"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 moteur-fusée à propergol solide",
+        "lengthM": 7.2,
+        "wingspanM": null,
+        "mtowKg": 4300,
+        "warheadKg": 480,
+        "speedLabel": "Mach 10 (pointe)",
+        "rangeKm": 2000
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 10000000,
+      "era": {
+        "introduced": 2017
+      },
+      "missile": {
+        "kind": "hypersonic",
+        "speedKmh": 10000,
+        "warhead": "conventional",
+        "evasion": 0.85,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "ru.zircon",
+      "name": "3M22 Zircon",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "strike_missile",
+      "roles": ["hypersonic", "antiship"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 10000000,
+        "resources": {
+          "oil": 8,
+          "metals": 15,
+          "electronics": 30
+        }
+      },
+      "buildTimeH": 22,
+      "upkeepPerDay": 550,
+      "speedKmh": 9000,
+      "operationalRadiusKm": 1000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 1000
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 8,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 55,
+        "submarine": 0,
+        "missile": 0,
+        "building": 30
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.hypersonic", "research.missiles.antiship"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 superstatoréacteur + accélérateur",
+        "lengthM": 9,
+        "wingspanM": null,
+        "mtowKg": 3000,
+        "warheadKg": 300,
+        "speedLabel": "Mach 8",
+        "rangeKm": 1000
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 10000000,
+      "era": {
+        "introduced": 2023
+      },
+      "missile": {
+        "kind": "hypersonic",
+        "speedKmh": 9000,
+        "warhead": "conventional",
+        "evasion": 0.9,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "ru.p-800-oniks",
+      "name": "P-800 Oniks",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "strike_missile",
+      "roles": ["antiship", "supersonic"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 3000000,
+        "resources": {
+          "oil": 4,
+          "metals": 8,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 160,
+      "speedKmh": 2700,
+      "operationalRadiusKm": 600,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 600
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 48,
+        "submarine": 0,
+        "missile": 0,
+        "building": 18
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.antiship"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 statoréacteur + accélérateur",
+        "lengthM": 8.9,
+        "wingspanM": 1.7,
+        "mtowKg": 3000,
+        "warheadKg": 250,
+        "speedLabel": "Mach 2,5",
+        "rangeKm": 600
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 3000000,
+      "era": {
+        "introduced": 2002
+      },
+      "missile": {
+        "kind": "antiship",
+        "speedKmh": 2700,
+        "warhead": "conventional",
+        "evasion": 0.6,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "ru.tochka-u",
+      "name": "OTR-21 Tochka-U",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "strike_missile",
+      "roles": ["ballistic_missile"],
+      "generation": 3,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 800000,
+        "resources": {
+          "oil": 2,
+          "metals": 3,
+          "electronics": 7
+        }
+      },
+      "buildTimeH": 6,
+      "upkeepPerDay": 44,
+      "speedKmh": 4000,
+      "operationalRadiusKm": 120,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 120
+      },
+      "damage": {
+        "infantry": 14,
+        "armor": 8,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 0,
+        "building": 30
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.ballistic1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 moteur-fusée à propergol solide",
+        "lengthM": 6.4,
+        "wingspanM": null,
+        "mtowKg": 2010,
+        "warheadKg": 482,
+        "speedLabel": "Mach 3,5",
+        "rangeKm": 120
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 800000,
+      "era": {
+        "introduced": 1975
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 4000,
+        "warhead": "conventional",
+        "evasion": 0.45,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "ru.scud-b",
+      "name": "R-17 Scud-B",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "strike_missile",
+      "roles": ["ballistic_missile"],
+      "generation": 2,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1000000,
+        "resources": {
+          "oil": 2,
+          "metals": 4,
+          "electronics": 8
+        }
+      },
+      "buildTimeH": 8,
+      "upkeepPerDay": 55,
+      "speedKmh": 5400,
+      "operationalRadiusKm": 300,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 300
+      },
+      "damage": {
+        "infantry": 14,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 32
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.ballistic1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 moteur-fusée à ergols liquides",
+        "lengthM": 11.25,
+        "wingspanM": null,
+        "mtowKg": 5900,
+        "warheadKg": 985,
+        "speedLabel": "Mach 5",
+        "rangeKm": 300
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 1000000,
+      "era": {
+        "introduced": 1964
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 5400,
+        "warhead": "conventional",
+        "evasion": 0.35,
+        "blastKm": 0.3
+      }
+    },
+    {
+      "id": "cn.cj-10",
+      "name": "CJ-10",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "strike_missile",
+      "roles": ["land_attack", "cruise_missile"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1500000,
+        "resources": {
+          "oil": 3,
+          "metals": 5,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 8,
+      "upkeepPerDay": 82,
+      "speedKmh": 800,
+      "operationalRadiusKm": 1500,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 1500
+      },
+      "damage": {
+        "infantry": 12,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 15,
+        "submarine": 0,
+        "missile": 0,
+        "building": 40
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.1,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.cruise1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 turbosoufflante",
+        "lengthM": 6.4,
+        "wingspanM": null,
+        "mtowKg": 1800,
+        "warheadKg": 500,
+        "speedLabel": "800 km/h",
+        "rangeKm": 1500
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 1500000,
+      "era": {
+        "introduced": 2009
+      },
+      "missile": {
+        "kind": "cruise",
+        "speedKmh": 800,
+        "warhead": "conventional",
+        "evasion": 0.3,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "cn.df-15",
+      "name": "DF-15",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "strike_missile",
+      "roles": ["ballistic_missile"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1500000,
+        "resources": {
+          "oil": 3,
+          "metals": 5,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 82,
+      "speedKmh": 6500,
+      "operationalRadiusKm": 600,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 600
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 5,
+        "submarine": 0,
+        "missile": 0,
+        "building": 36
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.ballistic2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 moteur-fusée à propergol solide",
+        "lengthM": 9.1,
+        "wingspanM": null,
+        "mtowKg": 6200,
+        "warheadKg": 500,
+        "speedLabel": "Mach 6",
+        "rangeKm": 600
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 1500000,
+      "era": {
+        "introduced": 1990
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 6500,
+        "warhead": "conventional",
+        "evasion": 0.6,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "cn.df-17",
+      "name": "DF-17",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "strike_missile",
+      "roles": ["hypersonic", "ballistic_missile"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 10000000,
+        "resources": {
+          "oil": 8,
+          "metals": 15,
+          "electronics": 30
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 550,
+      "speedKmh": 11000,
+      "operationalRadiusKm": 1800,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 1800
+      },
+      "damage": {
+        "infantry": 12,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 35,
+        "submarine": 0,
+        "missile": 0,
+        "building": 45
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.hypersonic"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "Propergol solide + planeur hypersonique DF-ZF",
+        "lengthM": 11,
+        "wingspanM": null,
+        "mtowKg": 15000,
+        "warheadKg": null,
+        "speedLabel": "Mach 10",
+        "rangeKm": 1800
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 10000000,
+      "era": {
+        "introduced": 2019
+      },
+      "missile": {
+        "kind": "hypersonic",
+        "speedKmh": 11000,
+        "warhead": "conventional",
+        "evasion": 0.9,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "cn.df-21d",
+      "name": "DF-21D",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "strike_missile",
+      "roles": ["antiship_ballistic_missile"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 10000000,
+        "resources": {
+          "oil": 8,
+          "metals": 15,
+          "electronics": 30
+        }
+      },
+      "buildTimeH": 20,
+      "upkeepPerDay": 550,
+      "speedKmh": 12000,
+      "operationalRadiusKm": 1500,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 1500
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 55,
+        "submarine": 0,
+        "missile": 0,
+        "building": 30
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.ballistic3", "research.missiles.antiship"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "Missile balistique antinavire à 2 étages",
+        "lengthM": 10.7,
+        "wingspanM": null,
+        "mtowKg": 14700,
+        "warheadKg": 600,
+        "speedLabel": "Mach 10",
+        "rangeKm": 1500
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 10000000,
+      "era": {
+        "introduced": 2010
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 12000,
+        "warhead": "conventional",
+        "evasion": 0.8,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "cn.df-26",
+      "name": "DF-26",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "strike_missile",
+      "roles": ["ballistic_missile", "antiship", "irbm"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 12000000,
+        "resources": {
+          "oil": 9,
+          "metals": 20,
+          "electronics": 35
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 660,
+      "speedKmh": 15000,
+      "operationalRadiusKm": 4000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 4000
+      },
+      "damage": {
+        "infantry": 14,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 40,
+        "submarine": 0,
+        "missile": 0,
+        "building": 45
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.ballistic3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "Missile balistique à 2 étages, propergol solide",
+        "lengthM": 14,
+        "wingspanM": null,
+        "mtowKg": 20000,
+        "warheadKg": 1200,
+        "speedLabel": "Mach 18",
+        "rangeKm": 4000
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 12000000,
+      "era": {
+        "introduced": 2016
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 15000,
+        "warhead": "conventional",
+        "evasion": 0.8,
+        "blastKm": 0.3
+      }
+    },
+    {
+      "id": "cn.yj-18",
+      "name": "YJ-18",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "strike_missile",
+      "roles": ["antiship", "supersonic_terminal"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 2500000,
+        "resources": {
+          "oil": 3,
+          "metals": 7,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 12,
+      "upkeepPerDay": 140,
+      "speedKmh": 1200,
+      "operationalRadiusKm": 540,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 540
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 50,
+        "submarine": 0,
+        "missile": 0,
+        "building": 15
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.1,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.antiship"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 turboréacteur + étage terminal à propergol",
+        "lengthM": 8.9,
+        "wingspanM": null,
+        "mtowKg": 2000,
+        "warheadKg": 300,
+        "speedLabel": "Mach 0,8 puis Mach 3",
+        "rangeKm": 540
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 2500000,
+      "era": {
+        "introduced": 2015
+      },
+      "missile": {
+        "kind": "antiship",
+        "speedKmh": 1200,
+        "warhead": "conventional",
+        "evasion": 0.6,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "cn.c-802",
+      "name": "C-802",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "strike_missile",
+      "roles": ["antiship", "sea_skimming"],
+      "generation": 3,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 800000,
+        "resources": {
+          "oil": 2,
+          "metals": 3,
+          "electronics": 7
+        }
+      },
+      "buildTimeH": 6,
+      "upkeepPerDay": 44,
+      "speedKmh": 1000,
+      "operationalRadiusKm": 120,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 120
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 5,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 38,
+        "submarine": 0,
+        "missile": 0,
+        "building": 12
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.05,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.antiship"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 turboréacteur",
+        "lengthM": 6.4,
+        "wingspanM": 1.2,
+        "mtowKg": 715,
+        "warheadKg": 165,
+        "speedLabel": "Mach 0,9",
+        "rangeKm": 120
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 800000,
+      "era": {
+        "introduced": 1994
+      },
+      "missile": {
+        "kind": "antiship",
+        "speedKmh": 1000,
+        "warhead": "conventional",
+        "evasion": 0.2,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "eu.scalp-storm-shadow",
+      "name": "SCALP / Storm Shadow",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "strike_missile",
+      "roles": ["land_attack", "cruise_missile", "stealth", "air_launched"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 2500000,
+        "resources": {
+          "oil": 3,
+          "metals": 7,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 140,
+      "speedKmh": 1000,
+      "operationalRadiusKm": 560,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 560
+      },
+      "damage": {
+        "infantry": 12,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 15,
+        "submarine": 0,
+        "missile": 0,
+        "building": 40
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.4,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.cruise2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 turboréacteur Microturbo TRI 60-30",
+        "lengthM": 5.1,
+        "wingspanM": 3,
+        "mtowKg": 1300,
+        "warheadKg": 450,
+        "speedLabel": "Mach 0,8",
+        "rangeKm": 560
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 2500000,
+      "era": {
+        "introduced": 2002
+      },
+      "missile": {
+        "kind": "cruise",
+        "speedKmh": 1000,
+        "warhead": "conventional",
+        "evasion": 0.45,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "eu.exocet",
+      "name": "Exocet MM40",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "strike_missile",
+      "roles": ["antiship", "sea_skimming"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 2500000,
+        "resources": {
+          "oil": 3,
+          "metals": 7,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 8,
+      "upkeepPerDay": 140,
+      "speedKmh": 1100,
+      "operationalRadiusKm": 180,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 180
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 45,
+        "submarine": 0,
+        "missile": 0,
+        "building": 15
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.1,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.antiship"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 turboréacteur Microturbo TR40 (Block 3)",
+        "lengthM": 5.8,
+        "wingspanM": 1.1,
+        "mtowKg": 870,
+        "warheadKg": 165,
+        "speedLabel": "Mach 0,9",
+        "rangeKm": 180
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 2500000,
+      "era": {
+        "introduced": 1975
+      },
+      "missile": {
+        "kind": "antiship",
+        "speedKmh": 1100,
+        "warhead": "conventional",
+        "evasion": 0.3,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "eu.taurus-kepd-350",
+      "name": "Taurus KEPD 350",
+      "doctrine": "eu",
+      "origin": "DE",
+      "category": "strike_missile",
+      "roles": ["land_attack", "cruise_missile", "bunker_buster", "air_launched"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1500000,
+        "resources": {
+          "oil": 3,
+          "metals": 5,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 82,
+      "speedKmh": 1000,
+      "operationalRadiusKm": 500,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 500
+      },
+      "damage": {
+        "infantry": 12,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 12,
+        "submarine": 0,
+        "missile": 0,
+        "building": 44
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.4,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.cruise2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 turbosoufflante Williams P8300-15",
+        "lengthM": 5.1,
+        "wingspanM": 2.06,
+        "mtowKg": 1400,
+        "warheadKg": 481,
+        "speedLabel": "Mach 0,8",
+        "rangeKm": 500
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 1500000,
+      "era": {
+        "introduced": 2005
+      },
+      "missile": {
+        "kind": "cruise",
+        "speedKmh": 1000,
+        "warhead": "conventional",
+        "evasion": 0.45,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "eu.nsm",
+      "name": "Naval Strike Missile",
+      "doctrine": "eu",
+      "origin": "NO",
+      "category": "strike_missile",
+      "roles": ["antiship", "stealth", "land_attack"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 2200000,
+        "resources": {
+          "oil": 3,
+          "metals": 6,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 8,
+      "upkeepPerDay": 120,
+      "speedKmh": 1100,
+      "operationalRadiusKm": 185,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 185
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 46,
+        "submarine": 0,
+        "missile": 0,
+        "building": 18
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.4,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.antiship"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 turboréacteur Microturbo TRI 40",
+        "lengthM": 3.95,
+        "wingspanM": 1.4,
+        "mtowKg": 410,
+        "warheadKg": 125,
+        "speedLabel": "Mach 0,9",
+        "rangeKm": 185
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 2200000,
+      "era": {
+        "introduced": 2012
+      },
+      "missile": {
+        "kind": "antiship",
+        "speedKmh": 1100,
+        "warhead": "conventional",
+        "evasion": 0.5,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "other.brahmos",
+      "name": "BrahMos",
+      "doctrine": "other",
+      "origin": "IN",
+      "category": "strike_missile",
+      "roles": ["antiship", "supersonic", "land_attack"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 3500000,
+        "resources": {
+          "oil": 4,
+          "metals": 8,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 12,
+      "upkeepPerDay": 190,
+      "speedKmh": 3000,
+      "operationalRadiusKm": 450,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 450
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 50,
+        "submarine": 0,
+        "missile": 0,
+        "building": 20
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.antiship"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 statoréacteur + accélérateur",
+        "lengthM": 8.4,
+        "wingspanM": 1.7,
+        "mtowKg": 3000,
+        "warheadKg": 250,
+        "speedLabel": "Mach 2,8",
+        "rangeKm": 450
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 3500000,
+      "era": {
+        "introduced": 2006
+      },
+      "missile": {
+        "kind": "antiship",
+        "speedKmh": 3000,
+        "warhead": "conventional",
+        "evasion": 0.65,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "other.fateh-110",
+      "name": "Fateh-110",
+      "doctrine": "other",
+      "origin": "IR",
+      "category": "strike_missile",
+      "roles": ["ballistic_missile", "precision_strike"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 500000,
+        "resources": {
+          "oil": 1,
+          "metals": 3,
+          "electronics": 5
+        }
+      },
+      "buildTimeH": 8,
+      "upkeepPerDay": 27,
+      "speedKmh": 4000,
+      "operationalRadiusKm": 300,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 300
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 5,
+        "submarine": 0,
+        "missile": 0,
+        "building": 36
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.ballistic2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 moteur-fusée à propergol solide",
+        "lengthM": 8.86,
+        "wingspanM": null,
+        "mtowKg": 3450,
+        "warheadKg": 450,
+        "speedLabel": "Mach 3,5",
+        "rangeKm": 300
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 500000,
+      "era": {
+        "introduced": 2002
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 4000,
+        "warhead": "conventional",
+        "evasion": 0.5,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "other.kheibar-shekan",
+      "name": "Kheibar Shekan",
+      "doctrine": "other",
+      "origin": "IR",
+      "category": "strike_missile",
+      "roles": ["ballistic_missile", "mrbm"],
+      "generation": 5,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 1500000,
+        "resources": {
+          "oil": 3,
+          "metals": 5,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 82,
+      "speedKmh": 12000,
+      "operationalRadiusKm": 1450,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 1450
+      },
+      "damage": {
+        "infantry": 14,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 10,
+        "submarine": 0,
+        "missile": 0,
+        "building": 40
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.ballistic3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "Propergol solide, véhicule de rentrée manœuvrant",
+        "lengthM": 10.5,
+        "wingspanM": null,
+        "mtowKg": 7000,
+        "warheadKg": 500,
+        "speedLabel": "Mach 10+",
+        "rangeKm": 1450
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 1500000,
+      "era": {
+        "introduced": 2022
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 12000,
+        "warhead": "conventional",
+        "evasion": 0.7,
+        "blastKm": 0.2
+      }
+    },
+    {
+      "id": "other.shahab-3",
+      "name": "Shahab-3",
+      "doctrine": "other",
+      "origin": "IR",
+      "category": "strike_missile",
+      "roles": ["ballistic_missile", "mrbm"],
+      "generation": 3,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 2000000,
+        "resources": {
+          "oil": 3,
+          "metals": 6,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 110,
+      "speedKmh": 11000,
+      "operationalRadiusKm": 1300,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 1300
+      },
+      "damage": {
+        "infantry": 14,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 0,
+        "building": 40
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.ballistic3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 moteur-fusée à ergols liquides",
+        "lengthM": 16.58,
+        "wingspanM": null,
+        "mtowKg": 17410,
+        "warheadKg": 760,
+        "speedLabel": "Mach 7",
+        "rangeKm": 1300
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 2000000,
+      "era": {
+        "introduced": 2003
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 11000,
+        "warhead": "conventional",
+        "evasion": 0.45,
+        "blastKm": 0.3
+      }
+    },
+    {
+      "id": "other.kn-23",
+      "name": "KN-23 (Hwasong-11)",
+      "doctrine": "other",
+      "origin": "KP",
+      "category": "strike_missile",
+      "roles": ["ballistic_missile", "precision_strike"],
+      "generation": 4,
+      "targetClass": "missile",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 2000000,
+        "resources": {
+          "oil": 3,
+          "metals": 6,
+          "electronics": 10
+        }
+      },
+      "buildTimeH": 10,
+      "upkeepPerDay": 110,
+      "speedKmh": 7000,
+      "operationalRadiusKm": 690,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 690
+      },
+      "damage": {
+        "infantry": 15,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 5,
+        "submarine": 0,
+        "missile": 0,
+        "building": 36
+      },
+      "hp": 4,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 20,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.missiles.ballistic2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "missile",
+      "sheet": {
+        "engine": "1 moteur-fusée à propergol solide",
+        "lengthM": 7.5,
+        "wingspanM": null,
+        "mtowKg": 3400,
+        "warheadKg": 500,
+        "speedLabel": "Mach 6",
+        "rangeKm": 690
+      },
+      "enabled": true,
+      "unitLabel": "missile",
+      "unitPriceUsd": 2000000,
+      "era": {
+        "introduced": 2019
+      },
+      "missile": {
+        "kind": "ballistic",
+        "speedKmh": 7000,
+        "warhead": "conventional",
+        "evasion": 0.75,
+        "blastKm": 0.2
+      }
+    }
+  ]
+}

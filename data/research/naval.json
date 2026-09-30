@@ -1,0 +1,264 @@
+{
+  "nodes": [
+    {
+      "id": "research.naval.gen1",
+      "name": "Navires de 1re génération",
+      "description": "Escorteurs à canons et premières vedettes lance-missiles.",
+      "branch": "naval",
+      "tier": 1,
+      "cost": {
+        "money": 300000000,
+        "resources": {
+          "metals": 5,
+          "electronics": 2
+        }
+      },
+      "durationH": 48,
+      "requires": [],
+      "effects": {},
+      "eraYear": 1945
+    },
+    {
+      "id": "research.naval.damage-control",
+      "name": "Sécurité et lutte contre les avaries",
+      "description": "Compartimentage et équipes de sécurité.",
+      "branch": "naval",
+      "tier": 2,
+      "cost": {
+        "money": 400000000,
+        "resources": {
+          "metals": 10,
+          "electronics": 5
+        }
+      },
+      "durationH": 48,
+      "requires": ["research.naval.gen1"],
+      "effects": {
+        "combat.armor": 1.03
+      },
+      "eraYear": 1960
+    },
+    {
+      "id": "research.naval.gen2",
+      "name": "Navires de 2e génération",
+      "description": "Frégates à missiles antinavires et surface-air, hélicoptère embarqué.",
+      "branch": "naval",
+      "tier": 2,
+      "cost": {
+        "money": 1000000000,
+        "resources": {
+          "metals": 20,
+          "electronics": 10
+        }
+      },
+      "durationH": 96,
+      "requires": ["research.naval.gen1"],
+      "effects": {},
+      "eraYear": 1960
+    },
+    {
+      "id": "research.naval.sub1",
+      "name": "Sous-marins classiques",
+      "description": "Sous-marins diesel-électriques.",
+      "branch": "naval",
+      "tier": 2,
+      "cost": {
+        "money": 1000000000,
+        "resources": {
+          "metals": 20,
+          "electronics": 10
+        }
+      },
+      "durationH": 96,
+      "requires": ["research.naval.gen1"],
+      "effects": {},
+      "eraYear": 1950
+    },
+    {
+      "id": "research.naval.dockyards",
+      "name": "Chantiers navals modernes",
+      "description": "Construction modulaire en grands blocs.",
+      "branch": "naval",
+      "tier": 3,
+      "cost": {
+        "money": 1500000000,
+        "resources": {
+          "metals": 30,
+          "electronics": 15
+        }
+      },
+      "durationH": 120,
+      "requires": ["research.naval.gen2", "research.industry.l1"],
+      "effects": {
+        "production.speed": 1.05
+      },
+      "eraYear": 1970
+    },
+    {
+      "id": "research.naval.gen3",
+      "name": "Navires de 3e génération",
+      "description": "Croiseurs et destroyers à lancement vertical (Kirov, Ticonderoga).",
+      "branch": "naval",
+      "tier": 3,
+      "cost": {
+        "money": 3000000000,
+        "resources": {
+          "metals": 60,
+          "electronics": 30
+        }
+      },
+      "durationH": 168,
+      "requires": ["research.naval.gen2", "research.sensors.radar1"],
+      "effects": {},
+      "eraYear": 1975
+    },
+    {
+      "id": "research.naval.sub2",
+      "name": "Sous-marins modernes",
+      "description": "Propulsion anaérobie, sous-marins nucléaires d’attaque de 2e génération.",
+      "branch": "naval",
+      "tier": 3,
+      "cost": {
+        "money": 4000000000,
+        "resources": {
+          "metals": 80,
+          "electronics": 40
+        }
+      },
+      "durationH": 216,
+      "requires": ["research.naval.sub1", "research.naval.gen2"],
+      "effects": {},
+      "eraYear": 1970
+    },
+    {
+      "id": "research.naval.towed-sonar",
+      "name": "Sonars remorqués",
+      "description": "Antennes linéaires remorquées : lutte anti-sous-marine à longue distance.",
+      "branch": "naval",
+      "tier": 3,
+      "cost": {
+        "money": 1000000000,
+        "resources": {
+          "metals": 20,
+          "electronics": 10
+        }
+      },
+      "durationH": 96,
+      "requires": ["research.naval.sub1"],
+      "effects": {
+        "naval.sonar": 1.15
+      },
+      "eraYear": 1975
+    },
+    {
+      "id": "research.naval.carrier",
+      "name": "Porte-avions",
+      "description": "Groupe aéronaval : catapultes, brins d’arrêt, aviation embarquée.",
+      "branch": "naval",
+      "tier": 4,
+      "cost": {
+        "money": 10000000000,
+        "resources": {
+          "metals": 200,
+          "electronics": 100
+        }
+      },
+      "durationH": 480,
+      "requires": ["research.naval.gen1", "research.aero.gen2"],
+      "effects": {},
+      "eraYear": 1955
+    },
+    {
+      "id": "research.naval.combat-system",
+      "name": "Système de combat intégré",
+      "description": "Radar multifonction et conduite de tir centralisée (Aegis).",
+      "branch": "naval",
+      "tier": 4,
+      "cost": {
+        "money": 2000000000,
+        "resources": {
+          "metals": 40,
+          "electronics": 20
+        }
+      },
+      "durationH": 168,
+      "requires": ["research.naval.gen3", "research.sensors.radar2"],
+      "effects": {
+        "missiles.interception": 1.1
+      },
+      "eraYear": 1983
+    },
+    {
+      "id": "research.naval.gen4",
+      "name": "Navires de 4e génération",
+      "description": "Radars à antenne active, formes furtives (Arleigh Burke, FREMM, 052D).",
+      "branch": "naval",
+      "tier": 4,
+      "cost": {
+        "money": 6000000000,
+        "resources": {
+          "metals": 120,
+          "electronics": 60
+        }
+      },
+      "durationH": 264,
+      "requires": ["research.naval.gen3", "research.sensors.radar2"],
+      "effects": {},
+      "eraYear": 1990
+    },
+    {
+      "id": "research.naval.ssbn",
+      "name": "Sous-marins lanceurs d’engins",
+      "description": "Sous-marins nucléaires porteurs de missiles balistiques.",
+      "branch": "naval",
+      "tier": 4,
+      "cost": {
+        "money": 8000000000,
+        "resources": {
+          "metals": 160,
+          "electronics": 80
+        }
+      },
+      "durationH": 360,
+      "requires": ["research.naval.sub1", "research.nuclear.slbm"],
+      "effects": {},
+      "eraYear": 1965
+    },
+    {
+      "id": "research.naval.sub3",
+      "name": "Sous-marins nucléaires d’attaque avancés",
+      "description": "Coques silencieuses, sonars conformes (Virginia, Iassen).",
+      "branch": "naval",
+      "tier": 4,
+      "cost": {
+        "money": 10000000000,
+        "resources": {
+          "metals": 200,
+          "electronics": 100
+        }
+      },
+      "durationH": 432,
+      "requires": ["research.naval.sub2", "research.industry.l2"],
+      "effects": {},
+      "eraYear": 1990
+    },
+    {
+      "id": "research.naval.gen5",
+      "name": "Navires de 5e génération",
+      "description": "Grands destroyers multimissions, propulsion électrique (Type 055, Constellation).",
+      "branch": "naval",
+      "tier": 5,
+      "cost": {
+        "money": 12000000000,
+        "resources": {
+          "metals": 240,
+          "electronics": 120
+        }
+      },
+      "durationH": 432,
+      "requires": ["research.naval.gen4", "research.sensors.radar3", "research.industry.l2"],
+      "effects": {},
+      "eraYear": 2015
+    }
+  ]
+}

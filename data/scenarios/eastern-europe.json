@@ -1,0 +1,38 @@
+{
+  "id": "eastern-europe",
+  "name": "Europe de l'Est",
+  "description": "De la Baltique à la mer Noire : la Russie et la Biélorussie face à l'Ukraine et au flanc est de l'OTAN. Artillerie, drones et défense aérienne décident de la guerre terrestre.",
+  "playableNations": "all",
+  "nationIds": [
+    "rus",
+    "blr",
+    "ukr",
+    "mda",
+    "pol",
+    "ltu",
+    "lva",
+    "est",
+    "fin",
+    "swe",
+    "nor",
+    "dnk",
+    "deu",
+    "cze",
+    "svk",
+    "hun",
+    "rou",
+    "bgr",
+    "srb",
+    "geo",
+    "arm",
+    "aze",
+    "kaz",
+    "tur"
+  ],
+  "year": 2025,
+  "orbatSet": "2025",
+  "camera": {
+    "center": [32, 52],
+    "zoom": 3.2
+  }
+}

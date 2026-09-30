@@ -13,7 +13,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 450,
+        "money": 12000000,
         "resources": {
           "oil": 10,
           "metals": 15,
@@ -21,7 +21,7 @@
         }
       },
       "buildTimeH": 14,
-      "upkeepPerDay": 10,
+      "upkeepPerDay": 4700,
       "speedKmh": 1700,
       "operationalRadiusKm": 400,
       "weaponRangeKm": {
@@ -65,7 +65,17 @@
         "speedLabel": "Mach 1,6",
         "rangeKm": 3700
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 12000000,
+      "era": {
+        "introduced": 1972
+      },
+      "air": {
+        "fuelH": 1.8,
+        "refuelable": false,
+        "carrierCapable": false
+      }
     },
     {
       "id": "us.f-16",
@@ -79,7 +89,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 1200,
+        "money": 64000000,
         "resources": {
           "oil": 20,
           "metals": 40,
@@ -87,7 +97,7 @@
         }
       },
       "buildTimeH": 36,
-      "upkeepPerDay": 25,
+      "upkeepPerDay": 13000,
       "speedKmh": 2100,
       "operationalRadiusKm": 550,
       "weaponRangeKm": {
@@ -131,7 +141,17 @@
         "speedLabel": "Mach 2",
         "rangeKm": 4200
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 64000000,
+      "era": {
+        "introduced": 1978
+      },
+      "air": {
+        "fuelH": 3.5,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     },
     {
       "id": "us.f-15e",
@@ -145,7 +165,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 1900,
+        "money": 97000000,
         "resources": {
           "oil": 30,
           "metals": 65,
@@ -153,7 +173,7 @@
         }
       },
       "buildTimeH": 48,
-      "upkeepPerDay": 40,
+      "upkeepPerDay": 19000,
       "speedKmh": 2650,
       "operationalRadiusKm": 1250,
       "weaponRangeKm": {
@@ -197,7 +217,17 @@
         "speedLabel": "Mach 2,5",
         "rangeKm": 3900
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 97000000,
+      "era": {
+        "introduced": 1988
+      },
+      "air": {
+        "fuelH": 5,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     },
     {
       "id": "us.fa-18e",
@@ -211,7 +241,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 1800,
+        "money": 67000000,
         "resources": {
           "oil": 30,
           "metals": 60,
@@ -219,7 +249,7 @@
         }
       },
       "buildTimeH": 46,
-      "upkeepPerDay": 35,
+      "upkeepPerDay": 14000,
       "speedKmh": 1900,
       "operationalRadiusKm": 720,
       "weaponRangeKm": {
@@ -263,7 +293,17 @@
         "speedLabel": "Mach 1,8",
         "rangeKm": 3300
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 67000000,
+      "era": {
+        "introduced": 1999
+      },
+      "air": {
+        "fuelH": 3.2,
+        "refuelable": true,
+        "carrierCapable": true
+      }
     },
     {
       "id": "us.f-22",
@@ -277,7 +317,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 4200,
+        "money": 190000000,
         "resources": {
           "oil": 70,
           "metals": 140,
@@ -285,7 +325,7 @@
         }
       },
       "buildTimeH": 96,
-      "upkeepPerDay": 85,
+      "upkeepPerDay": 34000,
       "speedKmh": 2400,
       "operationalRadiusKm": 850,
       "weaponRangeKm": {
@@ -329,7 +369,17 @@
         "speedLabel": "Mach 2,25",
         "rangeKm": 3000
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 190000000,
+      "era": {
+        "introduced": 2005
+      },
+      "air": {
+        "fuelH": 3.5,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     },
     {
       "id": "us.f-35",
@@ -343,7 +393,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 3200,
+        "money": 82000000,
         "resources": {
           "oil": 55,
           "metals": 105,
@@ -351,7 +401,7 @@
         }
       },
       "buildTimeH": 80,
-      "upkeepPerDay": 65,
+      "upkeepPerDay": 16000,
       "speedKmh": 1700,
       "operationalRadiusKm": 1100,
       "weaponRangeKm": {
@@ -395,7 +445,17 @@
         "speedLabel": "Mach 1,6",
         "rangeKm": 2800
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 82000000,
+      "era": {
+        "introduced": 2015
+      },
+      "air": {
+        "fuelH": 3.5,
+        "refuelable": true,
+        "carrierCapable": true
+      }
     },
     {
       "id": "ru.mig-21",
@@ -409,7 +469,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 350,
+        "money": 5000000,
         "resources": {
           "oil": 5,
           "metals": 10,
@@ -417,7 +477,7 @@
         }
       },
       "buildTimeH": 10,
-      "upkeepPerDay": 5,
+      "upkeepPerDay": 1600,
       "speedKmh": 2150,
       "operationalRadiusKm": 370,
       "weaponRangeKm": {
@@ -461,7 +521,17 @@
         "speedLabel": "Mach 2,05",
         "rangeKm": 1500
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 5000000,
+      "era": {
+        "introduced": 1959
+      },
+      "air": {
+        "fuelH": 1.3,
+        "refuelable": false,
+        "carrierCapable": false
+      }
     },
     {
       "id": "ru.mig-29",
@@ -475,7 +545,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 1000,
+        "money": 25000000,
         "resources": {
           "oil": 15,
           "metals": 35,
@@ -483,7 +553,7 @@
         }
       },
       "buildTimeH": 32,
-      "upkeepPerDay": 20,
+      "upkeepPerDay": 4900,
       "speedKmh": 2400,
       "operationalRadiusKm": 700,
       "weaponRangeKm": {
@@ -527,7 +597,17 @@
         "speedLabel": "Mach 2,25",
         "rangeKm": 2100
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 25000000,
+      "era": {
+        "introduced": 1983
+      },
+      "air": {
+        "fuelH": 2.3,
+        "refuelable": false,
+        "carrierCapable": false
+      }
     },
     {
       "id": "ru.mig-31",
@@ -541,7 +621,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 1700,
+        "money": 40000000,
         "resources": {
           "oil": 30,
           "metals": 55,
@@ -549,7 +629,7 @@
         }
       },
       "buildTimeH": 48,
-      "upkeepPerDay": 35,
+      "upkeepPerDay": 7400,
       "speedKmh": 3000,
       "operationalRadiusKm": 720,
       "weaponRangeKm": {
@@ -593,7 +673,17 @@
         "speedLabel": "Mach 2,83",
         "rangeKm": 3300
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 1981
+      },
+      "air": {
+        "fuelH": 3.3,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     },
     {
       "id": "ru.su-27",
@@ -607,7 +697,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 1400,
+        "money": 30000000,
         "resources": {
           "oil": 25,
           "metals": 45,
@@ -615,7 +705,7 @@
         }
       },
       "buildTimeH": 40,
-      "upkeepPerDay": 30,
+      "upkeepPerDay": 5800,
       "speedKmh": 2500,
       "operationalRadiusKm": 1300,
       "weaponRangeKm": {
@@ -659,7 +749,17 @@
         "speedLabel": "Mach 2,35",
         "rangeKm": 3500
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 30000000,
+      "era": {
+        "introduced": 1985
+      },
+      "air": {
+        "fuelH": 4.5,
+        "refuelable": false,
+        "carrierCapable": false
+      }
     },
     {
       "id": "ru.su-30",
@@ -673,7 +773,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 1700,
+        "money": 40000000,
         "resources": {
           "oil": 30,
           "metals": 55,
@@ -681,7 +781,7 @@
         }
       },
       "buildTimeH": 44,
-      "upkeepPerDay": 35,
+      "upkeepPerDay": 7400,
       "speedKmh": 2100,
       "operationalRadiusKm": 1500,
       "weaponRangeKm": {
@@ -725,7 +825,17 @@
         "speedLabel": "Mach 2",
         "rangeKm": 3000
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 1996
+      },
+      "air": {
+        "fuelH": 4.5,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     },
     {
       "id": "ru.su-35",
@@ -739,7 +849,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 2000,
+        "money": 38000000,
         "resources": {
           "oil": 35,
           "metals": 65,
@@ -747,7 +857,7 @@
         }
       },
       "buildTimeH": 50,
-      "upkeepPerDay": 40,
+      "upkeepPerDay": 7100,
       "speedKmh": 2400,
       "operationalRadiusKm": 1600,
       "weaponRangeKm": {
@@ -791,7 +901,17 @@
         "speedLabel": "Mach 2,25",
         "rangeKm": 3600
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 38000000,
+      "era": {
+        "introduced": 2014
+      },
+      "air": {
+        "fuelH": 4.5,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     },
     {
       "id": "ru.su-57",
@@ -805,7 +925,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 3500,
+        "money": 40000000,
         "resources": {
           "oil": 60,
           "metals": 115,
@@ -813,7 +933,7 @@
         }
       },
       "buildTimeH": 84,
-      "upkeepPerDay": 70,
+      "upkeepPerDay": 7400,
       "speedKmh": 2100,
       "operationalRadiusKm": 1500,
       "weaponRangeKm": {
@@ -857,7 +977,17 @@
         "speedLabel": "Mach 2",
         "rangeKm": 3500
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 2020
+      },
+      "air": {
+        "fuelH": 4.5,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     },
     {
       "id": "cn.j-7",
@@ -871,7 +1001,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 320,
+        "money": 4000000,
         "resources": {
           "oil": 5,
           "metals": 10,
@@ -879,7 +1009,7 @@
         }
       },
       "buildTimeH": 10,
-      "upkeepPerDay": 5,
+      "upkeepPerDay": 1500,
       "speedKmh": 2100,
       "operationalRadiusKm": 350,
       "weaponRangeKm": {
@@ -923,7 +1053,17 @@
         "speedLabel": "Mach 2",
         "rangeKm": 2200
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 4000000,
+      "era": {
+        "introduced": 1966
+      },
+      "air": {
+        "fuelH": 1.5,
+        "refuelable": false,
+        "carrierCapable": false
+      }
     },
     {
       "id": "cn.j-10",
@@ -937,7 +1077,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 1100,
+        "money": 40000000,
         "resources": {
           "oil": 20,
           "metals": 35,
@@ -945,7 +1085,7 @@
         }
       },
       "buildTimeH": 34,
-      "upkeepPerDay": 20,
+      "upkeepPerDay": 7400,
       "speedKmh": 2350,
       "operationalRadiusKm": 550,
       "weaponRangeKm": {
@@ -989,7 +1129,17 @@
         "speedLabel": "Mach 2,2",
         "rangeKm": 3000
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 40000000,
+      "era": {
+        "introduced": 2005
+      },
+      "air": {
+        "fuelH": 3,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     },
     {
       "id": "cn.j-11",
@@ -1003,7 +1153,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 1350,
+        "money": 35000000,
         "resources": {
           "oil": 25,
           "metals": 45,
@@ -1011,7 +1161,7 @@
         }
       },
       "buildTimeH": 40,
-      "upkeepPerDay": 25,
+      "upkeepPerDay": 6600,
       "speedKmh": 2500,
       "operationalRadiusKm": 1300,
       "weaponRangeKm": {
@@ -1055,7 +1205,17 @@
         "speedLabel": "Mach 2,35",
         "rangeKm": 3500
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 35000000,
+      "era": {
+        "introduced": 1998
+      },
+      "air": {
+        "fuelH": 4.5,
+        "refuelable": false,
+        "carrierCapable": false
+      }
     },
     {
       "id": "cn.j-16",
@@ -1069,7 +1229,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 1800,
+        "money": 60000000,
         "resources": {
           "oil": 30,
           "metals": 60,
@@ -1077,7 +1237,7 @@
         }
       },
       "buildTimeH": 46,
-      "upkeepPerDay": 35,
+      "upkeepPerDay": 11000,
       "speedKmh": 2100,
       "operationalRadiusKm": 1500,
       "weaponRangeKm": {
@@ -1121,7 +1281,17 @@
         "speedLabel": "Mach 2",
         "rangeKm": 3000
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 60000000,
+      "era": {
+        "introduced": 2015
+      },
+      "air": {
+        "fuelH": 4.5,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     },
     {
       "id": "cn.j-20",
@@ -1135,7 +1305,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 3300,
+        "money": 110000000,
         "resources": {
           "oil": 55,
           "metals": 110,
@@ -1143,7 +1313,7 @@
         }
       },
       "buildTimeH": 80,
-      "upkeepPerDay": 65,
+      "upkeepPerDay": 19000,
       "speedKmh": 2100,
       "operationalRadiusKm": 1100,
       "weaponRangeKm": {
@@ -1187,7 +1357,17 @@
         "speedLabel": "Mach 2",
         "rangeKm": 5500
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 110000000,
+      "era": {
+        "introduced": 2017
+      },
+      "air": {
+        "fuelH": 4.5,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     },
     {
       "id": "cn.j-35",
@@ -1201,7 +1381,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 3000,
+        "money": 70000000,
         "resources": {
           "oil": 50,
           "metals": 100,
@@ -1209,7 +1389,7 @@
         }
       },
       "buildTimeH": 72,
-      "upkeepPerDay": 60,
+      "upkeepPerDay": 12000,
       "speedKmh": 1900,
       "operationalRadiusKm": 1100,
       "weaponRangeKm": {
@@ -1253,7 +1433,17 @@
         "speedLabel": "Mach 1,8",
         "rangeKm": 3000
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 70000000,
+      "era": {
+        "introduced": 2025
+      },
+      "air": {
+        "fuelH": 3.5,
+        "refuelable": true,
+        "carrierCapable": true
+      }
     },
     {
       "id": "eu.mirage-2000",
@@ -1267,7 +1457,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 1250,
+        "money": 55000000,
         "resources": {
           "oil": 20,
           "metals": 40,
@@ -1275,7 +1465,7 @@
         }
       },
       "buildTimeH": 36,
-      "upkeepPerDay": 25,
+      "upkeepPerDay": 11000,
       "speedKmh": 2350,
       "operationalRadiusKm": 700,
       "weaponRangeKm": {
@@ -1319,7 +1509,17 @@
         "speedLabel": "Mach 2,2",
         "rangeKm": 3300
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 55000000,
+      "era": {
+        "introduced": 1984
+      },
+      "air": {
+        "fuelH": 3,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     },
     {
       "id": "eu.tornado",
@@ -1333,7 +1533,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 1300,
+        "money": 60000000,
         "resources": {
           "oil": 20,
           "metals": 45,
@@ -1341,7 +1541,7 @@
         }
       },
       "buildTimeH": 38,
-      "upkeepPerDay": 25,
+      "upkeepPerDay": 12000,
       "speedKmh": 2350,
       "operationalRadiusKm": 1300,
       "weaponRangeKm": {
@@ -1385,7 +1585,17 @@
         "speedLabel": "Mach 2,2",
         "rangeKm": 3900
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 60000000,
+      "era": {
+        "introduced": 1979
+      },
+      "air": {
+        "fuelH": 3.5,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     },
     {
       "id": "eu.gripen",
@@ -1399,7 +1609,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 1400,
+        "money": 85000000,
         "resources": {
           "oil": 25,
           "metals": 45,
@@ -1407,7 +1617,7 @@
         }
       },
       "buildTimeH": 40,
-      "upkeepPerDay": 30,
+      "upkeepPerDay": 16000,
       "speedKmh": 2100,
       "operationalRadiusKm": 800,
       "weaponRangeKm": {
@@ -1451,7 +1661,17 @@
         "speedLabel": "Mach 2",
         "rangeKm": 3200
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 85000000,
+      "era": {
+        "introduced": 1996
+      },
+      "air": {
+        "fuelH": 3,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     },
     {
       "id": "eu.typhoon",
@@ -1465,7 +1685,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 2300,
+        "money": 125000000,
         "resources": {
           "oil": 40,
           "metals": 75,
@@ -1473,7 +1693,7 @@
         }
       },
       "buildTimeH": 54,
-      "upkeepPerDay": 45,
+      "upkeepPerDay": 23000,
       "speedKmh": 2100,
       "operationalRadiusKm": 1100,
       "weaponRangeKm": {
@@ -1517,7 +1737,17 @@
         "speedLabel": "Mach 2",
         "rangeKm": 3800
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 125000000,
+      "era": {
+        "introduced": 2003
+      },
+      "air": {
+        "fuelH": 3.5,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     },
     {
       "id": "eu.rafale",
@@ -1531,7 +1761,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 2300,
+        "money": 115000000,
         "resources": {
           "oil": 40,
           "metals": 75,
@@ -1539,7 +1769,7 @@
         }
       },
       "buildTimeH": 54,
-      "upkeepPerDay": 45,
+      "upkeepPerDay": 21000,
       "speedKmh": 1900,
       "operationalRadiusKm": 1100,
       "weaponRangeKm": {
@@ -1583,7 +1813,17 @@
         "speedLabel": "Mach 1,8",
         "rangeKm": 3700
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 115000000,
+      "era": {
+        "introduced": 2001
+      },
+      "air": {
+        "fuelH": 3.5,
+        "refuelable": true,
+        "carrierCapable": true
+      }
     },
     {
       "id": "other.jf-17",
@@ -1597,7 +1837,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 750,
+        "money": 30000000,
         "resources": {
           "oil": 15,
           "metals": 25,
@@ -1605,7 +1845,7 @@
         }
       },
       "buildTimeH": 26,
-      "upkeepPerDay": 15,
+      "upkeepPerDay": 5800,
       "speedKmh": 1700,
       "operationalRadiusKm": 700,
       "weaponRangeKm": {
@@ -1649,7 +1889,17 @@
         "speedLabel": "Mach 1,6",
         "rangeKm": 3500
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 30000000,
+      "era": {
+        "introduced": 2007
+      },
+      "air": {
+        "fuelH": 3,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     },
     {
       "id": "other.kf-21",
@@ -1663,7 +1913,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 2000,
+        "money": 70000000,
         "resources": {
           "oil": 35,
           "metals": 65,
@@ -1671,7 +1921,7 @@
         }
       },
       "buildTimeH": 52,
-      "upkeepPerDay": 40,
+      "upkeepPerDay": 12000,
       "speedKmh": 1900,
       "operationalRadiusKm": 1000,
       "weaponRangeKm": {
@@ -1715,7 +1965,17 @@
         "speedLabel": "Mach 1,8",
         "rangeKm": 2900
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 70000000,
+      "era": {
+        "introduced": 2026
+      },
+      "air": {
+        "fuelH": 3.5,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     },
     {
       "id": "other.tejas",
@@ -1729,7 +1989,7 @@
       "movement": "air",
       "canCapture": false,
       "cost": {
-        "money": 950,
+        "money": 42000000,
         "resources": {
           "oil": 15,
           "metals": 30,
@@ -1737,7 +1997,7 @@
         }
       },
       "buildTimeH": 32,
-      "upkeepPerDay": 20,
+      "upkeepPerDay": 7700,
       "speedKmh": 1700,
       "operationalRadiusKm": 500,
       "weaponRangeKm": {
@@ -1781,7 +2041,17 @@
         "speedLabel": "Mach 1,6",
         "rangeKm": 3000
       },
-      "enabled": true
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 42000000,
+      "era": {
+        "introduced": 2016
+      },
+      "air": {
+        "fuelH": 2.5,
+        "refuelable": true,
+        "carrierCapable": false
+      }
     }
   ]
 }

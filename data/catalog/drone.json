@@ -1,0 +1,1928 @@
+{
+  "category": "drone",
+  "systems": [
+    {
+      "id": "us.mq-9-reaper",
+      "name": "MQ-9 Reaper",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "drone",
+      "roles": ["armed_drone", "reconnaissance"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 30000000,
+        "resources": {
+          "oil": 10,
+          "metals": 15,
+          "electronics": 45
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 7100,
+      "speedKmh": 480,
+      "operationalRadiusKm": 900,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 11
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 0,
+        "building": 6
+      },
+      "hp": 10,
+      "armor": 0,
+      "stealth": 0,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "illustration": "us.mq-9-reaper.webp",
+      "sheet": {
+        "engine": "1 turbopropulseur TPE331",
+        "lengthM": 11,
+        "wingspanM": 20.1,
+        "mtowKg": 4760,
+        "warheadKg": null,
+        "speedLabel": "480 km/h",
+        "rangeKm": 1850
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 30000000,
+      "era": {
+        "introduced": 2007
+      },
+      "sensor": {
+        "kind": "optical",
+        "rangeKm": 60,
+        "stealthDetect": 0.0
+      },
+      "air": {
+        "fuelH": 27,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.orion",
+      "name": "Orion",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "drone",
+      "roles": ["armed_drone", "reconnaissance"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 6000000,
+        "resources": {
+          "oil": 4,
+          "metals": 6,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 1500,
+      "speedKmh": 200,
+      "operationalRadiusKm": 250,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 5,
+        "armor": 8,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 4
+      },
+      "hp": 8,
+      "armor": 0,
+      "stealth": 0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "illustration": "ru.orion.webp",
+      "sheet": {
+        "engine": "1 moteur à pistons",
+        "lengthM": 8,
+        "wingspanM": 16.3,
+        "mtowKg": 1200,
+        "warheadKg": null,
+        "speedLabel": "200 km/h",
+        "rangeKm": 250
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 6000000,
+      "era": {
+        "introduced": 2020
+      },
+      "sensor": {
+        "kind": "optical",
+        "rangeKm": 40,
+        "stealthDetect": 0.0
+      },
+      "air": {
+        "fuelH": 24,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "other.bayraktar-tb2",
+      "name": "Bayraktar TB2",
+      "doctrine": "other",
+      "origin": "TR",
+      "category": "drone",
+      "roles": ["armed_drone", "reconnaissance"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 5000000,
+        "resources": {
+          "oil": 4,
+          "metals": 5,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 12,
+      "upkeepPerDay": 1300,
+      "speedKmh": 220,
+      "operationalRadiusKm": 150,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 5,
+        "armor": 9,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 3
+      },
+      "hp": 8,
+      "armor": 0,
+      "stealth": 0,
+      "detectionRangeKm": 30,
+      "ew": {
+        "jamming": 0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "drone",
+      "illustration": "other.bayraktar-tb2.webp",
+      "sheet": {
+        "engine": "1 moteur à pistons",
+        "lengthM": 6.5,
+        "wingspanM": 12,
+        "mtowKg": 700,
+        "warheadKg": null,
+        "speedLabel": "220 km/h",
+        "rangeKm": 300
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 5000000,
+      "era": {
+        "introduced": 2014
+      },
+      "sensor": {
+        "kind": "optical",
+        "rangeKm": 30,
+        "stealthDetect": 0.0
+      },
+      "air": {
+        "fuelH": 27,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "us.rq-4-global-hawk",
+      "name": "RQ-4 Global Hawk",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "drone",
+      "roles": ["reconnaissance", "hale", "sigint"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 130000000,
+        "resources": {
+          "oil": 30,
+          "metals": 35,
+          "electronics": 110
+        }
+      },
+      "buildTimeH": 60,
+      "upkeepPerDay": 29000,
+      "speedKmh": 570,
+      "operationalRadiusKm": 4000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 16,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 200,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 turbosoufflante AE 3007H",
+        "lengthM": 14.5,
+        "wingspanM": 39.9,
+        "mtowKg": 14628,
+        "warheadKg": null,
+        "speedLabel": "575 km/h",
+        "rangeKm": 22780
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 130000000,
+      "era": {
+        "introduced": 2001
+      },
+      "air": {
+        "fuelH": 34,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "optical",
+        "rangeKm": 200,
+        "stealthDetect": 0.1
+      }
+    },
+    {
+      "id": "us.mq-1c-gray-eagle",
+      "name": "MQ-1C Gray Eagle",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "drone",
+      "roles": ["armed_drone", "reconnaissance"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 21000000,
+        "resources": {
+          "oil": 9,
+          "metals": 10,
+          "electronics": 35
+        }
+      },
+      "buildTimeH": 20,
+      "upkeepPerDay": 5200,
+      "speedKmh": 280,
+      "operationalRadiusKm": 400,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 5,
+        "armor": 9,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 5
+      },
+      "hp": 8,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 50,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 moteur diesel Thielert (carburant lourd)",
+        "lengthM": 8.5,
+        "wingspanM": 17,
+        "mtowKg": 1633,
+        "warheadKg": null,
+        "speedLabel": "280 km/h",
+        "rangeKm": 400
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 21000000,
+      "era": {
+        "introduced": 2009
+      },
+      "air": {
+        "fuelH": 25,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "optical",
+        "rangeKm": 50,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "us.switchblade-600",
+      "name": "Switchblade 600",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "drone",
+      "roles": ["loitering_munition", "anti_tank"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 120000,
+        "resources": {
+          "oil": 1,
+          "metals": 1,
+          "electronics": 2
+        }
+      },
+      "buildTimeH": 2,
+      "upkeepPerDay": 6.6,
+      "speedKmh": 185,
+      "operationalRadiusKm": 40,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 40
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 18,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 3
+      },
+      "hp": 2,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 15,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones1"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 moteur électrique",
+        "lengthM": 1.3,
+        "wingspanM": null,
+        "mtowKg": 54.4,
+        "warheadKg": null,
+        "speedLabel": "185 km/h",
+        "rangeKm": 40
+      },
+      "enabled": true,
+      "unitLabel": "munition",
+      "unitPriceUsd": 120000,
+      "era": {
+        "introduced": 2021
+      },
+      "air": {
+        "fuelH": 0.7,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "missile": {
+        "kind": "cruise",
+        "speedKmh": 185,
+        "warhead": "conventional",
+        "evasion": 0.15,
+        "blastKm": 0.02
+      }
+    },
+    {
+      "id": "us.scaneagle",
+      "name": "ScanEagle",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "drone",
+      "roles": ["reconnaissance", "tactical_drone"],
+      "generation": 3,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 200000,
+        "resources": {
+          "oil": 1,
+          "metals": 1,
+          "electronics": 2
+        }
+      },
+      "buildTimeH": 3,
+      "upkeepPerDay": 590,
+      "speedKmh": 110,
+      "operationalRadiusKm": 100,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 2,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 25,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 moteur à pistons",
+        "lengthM": 1.55,
+        "wingspanM": 3.11,
+        "mtowKg": 22,
+        "warheadKg": null,
+        "speedLabel": "148 km/h",
+        "rangeKm": 100
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 200000,
+      "era": {
+        "introduced": 2005
+      },
+      "air": {
+        "fuelH": 20,
+        "refuelable": false,
+        "carrierCapable": true
+      },
+      "sensor": {
+        "kind": "optical",
+        "rangeKm": 25,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "ru.forpost",
+      "name": "Forpost",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "drone",
+      "roles": ["armed_drone", "reconnaissance"],
+      "generation": 3,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 5000000,
+        "resources": {
+          "oil": 4,
+          "metals": 5,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 1300,
+      "speedKmh": 200,
+      "operationalRadiusKm": 250,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 6
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 7,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 3
+      },
+      "hp": 7,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 2
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 moteur à pistons",
+        "lengthM": 5.85,
+        "wingspanM": 8.55,
+        "mtowKg": 500,
+        "warheadKg": null,
+        "speedLabel": "200 km/h",
+        "rangeKm": 250
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 5000000,
+      "era": {
+        "introduced": 2012
+      },
+      "air": {
+        "fuelH": 17,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "optical",
+        "rangeKm": 40,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "ru.s-70-okhotnik",
+      "name": "S-70 Okhotnik",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "drone",
+      "roles": ["ucav", "stealth", "strike"],
+      "generation": 5,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 80000000,
+        "resources": {
+          "oil": 20,
+          "metals": 25,
+          "electronics": 80
+        }
+      },
+      "buildTimeH": 72,
+      "upkeepPerDay": 18000,
+      "speedKmh": 1000,
+      "operationalRadiusKm": 1500,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 40
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 7,
+        "aircraft": 2,
+        "helicopter": 2,
+        "drone": 2,
+        "ship": 5,
+        "submarine": 0,
+        "missile": 0,
+        "building": 12
+      },
+      "hp": 18,
+      "armor": 0.05,
+      "stealth": 0.65,
+      "detectionRangeKm": 80,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 turbosoufflante AL-31F",
+        "lengthM": 14,
+        "wingspanM": 19,
+        "mtowKg": 20000,
+        "warheadKg": null,
+        "speedLabel": "1 000 km/h",
+        "rangeKm": 6000
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 80000000,
+      "era": {
+        "introduced": 2024
+      },
+      "air": {
+        "fuelH": 5,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.lancet",
+      "name": "Lancet",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "drone",
+      "roles": ["loitering_munition", "anti_tank"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 35000,
+        "resources": {
+          "oil": 1,
+          "metals": 1,
+          "electronics": 1
+        }
+      },
+      "buildTimeH": 2,
+      "upkeepPerDay": 1.9,
+      "speedKmh": 110,
+      "operationalRadiusKm": 40,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 40
+      },
+      "damage": {
+        "infantry": 5,
+        "armor": 16,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 3
+      },
+      "hp": 2,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 15,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones1"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 moteur électrique",
+        "lengthM": 1.65,
+        "wingspanM": 1.0,
+        "mtowKg": 12,
+        "warheadKg": 3,
+        "speedLabel": "110 km/h (300 en piqué)",
+        "rangeKm": 40
+      },
+      "enabled": true,
+      "unitLabel": "munition",
+      "unitPriceUsd": 35000,
+      "era": {
+        "introduced": 2019
+      },
+      "air": {
+        "fuelH": 0.7,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "missile": {
+        "kind": "cruise",
+        "speedKmh": 110,
+        "warhead": "conventional",
+        "evasion": 0.15,
+        "blastKm": 0.02
+      }
+    },
+    {
+      "id": "ru.geran-2",
+      "name": "Geran-2",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "drone",
+      "roles": ["loitering_munition", "long_range_strike"],
+      "generation": 3,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 80000,
+        "resources": {
+          "oil": 1,
+          "metals": 1,
+          "electronics": 1
+        }
+      },
+      "buildTimeH": 3,
+      "upkeepPerDay": 4.4,
+      "speedKmh": 185,
+      "operationalRadiusKm": 2000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 2000
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 5,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 0,
+        "building": 12
+      },
+      "hp": 3,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 5,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones1"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 moteur à pistons MD-550",
+        "lengthM": 3.5,
+        "wingspanM": 2.5,
+        "mtowKg": 200,
+        "warheadKg": 50,
+        "speedLabel": "185 km/h",
+        "rangeKm": 2000
+      },
+      "enabled": true,
+      "unitLabel": "munition",
+      "unitPriceUsd": 80000,
+      "era": {
+        "introduced": 2022
+      },
+      "air": {
+        "fuelH": 11,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "missile": {
+        "kind": "cruise",
+        "speedKmh": 185,
+        "warhead": "conventional",
+        "evasion": 0.1,
+        "blastKm": 0.05
+      }
+    },
+    {
+      "id": "ru.orlan-10",
+      "name": "Orlan-10",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "drone",
+      "roles": ["reconnaissance", "artillery_spotting", "tactical_drone"],
+      "generation": 3,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 100000,
+        "resources": {
+          "oil": 1,
+          "metals": 1,
+          "electronics": 1
+        }
+      },
+      "buildTimeH": 2,
+      "upkeepPerDay": 190,
+      "speedKmh": 110,
+      "operationalRadiusKm": 120,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 3,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 25,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones1"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 moteur à pistons",
+        "lengthM": 1.8,
+        "wingspanM": 3.1,
+        "mtowKg": 18,
+        "warheadKg": null,
+        "speedLabel": "150 km/h",
+        "rangeKm": 120
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 100000,
+      "era": {
+        "introduced": 2010
+      },
+      "air": {
+        "fuelH": 16,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "optical",
+        "rangeKm": 25,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "cn.wing-loong-ii",
+      "name": "Wing Loong II",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "drone",
+      "roles": ["armed_drone", "reconnaissance"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 2000000,
+        "resources": {
+          "oil": 2,
+          "metals": 3,
+          "electronics": 9
+        }
+      },
+      "buildTimeH": 14,
+      "upkeepPerDay": 600,
+      "speedKmh": 370,
+      "operationalRadiusKm": 1000,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 10
+      },
+      "damage": {
+        "infantry": 5,
+        "armor": 9,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 5
+      },
+      "hp": 8,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 50,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 turbopropulseur",
+        "lengthM": 11,
+        "wingspanM": 20.5,
+        "mtowKg": 4200,
+        "warheadKg": null,
+        "speedLabel": "370 km/h",
+        "rangeKm": 4000
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 2000000,
+      "era": {
+        "introduced": 2017
+      },
+      "air": {
+        "fuelH": 32,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "optical",
+        "rangeKm": 50,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "cn.ch-4",
+      "name": "CH-4",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "drone",
+      "roles": ["armed_drone", "reconnaissance"],
+      "generation": 3,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 4000000,
+        "resources": {
+          "oil": 3,
+          "metals": 5,
+          "electronics": 15
+        }
+      },
+      "buildTimeH": 12,
+      "upkeepPerDay": 1000,
+      "speedKmh": 235,
+      "operationalRadiusKm": 700,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 5,
+        "armor": 8,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 4
+      },
+      "hp": 7,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 moteur à pistons",
+        "lengthM": 8.5,
+        "wingspanM": 18,
+        "mtowKg": 1330,
+        "warheadKg": null,
+        "speedLabel": "235 km/h",
+        "rangeKm": 3500
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 4000000,
+      "era": {
+        "introduced": 2014
+      },
+      "air": {
+        "fuelH": 30,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "optical",
+        "rangeKm": 40,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "cn.ch-5",
+      "name": "CH-5",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "drone",
+      "roles": ["armed_drone", "reconnaissance"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 12000000,
+        "resources": {
+          "oil": 7,
+          "metals": 9,
+          "electronics": 25
+        }
+      },
+      "buildTimeH": 18,
+      "upkeepPerDay": 2800,
+      "speedKmh": 300,
+      "operationalRadiusKm": 1000,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 10
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 0,
+        "building": 6
+      },
+      "hp": 9,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 50,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 8
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 moteur à pistons (turbocompressé)",
+        "lengthM": 11,
+        "wingspanM": 21,
+        "mtowKg": 3300,
+        "warheadKg": null,
+        "speedLabel": "300 km/h",
+        "rangeKm": 6500
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 12000000,
+      "era": {
+        "introduced": 2017
+      },
+      "air": {
+        "fuelH": 35,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "optical",
+        "rangeKm": 50,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "cn.gj-11",
+      "name": "GJ-11",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "drone",
+      "roles": ["ucav", "stealth", "strike"],
+      "generation": 5,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 60000000,
+        "resources": {
+          "oil": 15,
+          "metals": 25,
+          "electronics": 70
+        }
+      },
+      "buildTimeH": 64,
+      "upkeepPerDay": 13000,
+      "speedKmh": 900,
+      "operationalRadiusKm": 1500,
+      "weaponRangeKm": {
+        "min": 1,
+        "max": 40
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 7,
+        "aircraft": 2,
+        "helicopter": 2,
+        "drone": 2,
+        "ship": 5,
+        "submarine": 0,
+        "missile": 0,
+        "building": 12
+      },
+      "hp": 16,
+      "armor": 0.05,
+      "stealth": 0.7,
+      "detectionRangeKm": 80,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 turbosoufflante WS-13",
+        "lengthM": 10,
+        "wingspanM": 14,
+        "mtowKg": 10000,
+        "warheadKg": null,
+        "speedLabel": "900 km/h",
+        "rangeKm": 4000
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 60000000,
+      "era": {
+        "introduced": 2019
+      },
+      "air": {
+        "fuelH": 5,
+        "refuelable": false,
+        "carrierCapable": true
+      }
+    },
+    {
+      "id": "eu.patroller",
+      "name": "Patroller",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "drone",
+      "roles": ["reconnaissance", "tactical_drone"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 15000000,
+        "resources": {
+          "oil": 8,
+          "metals": 10,
+          "electronics": 30
+        }
+      },
+      "buildTimeH": 16,
+      "upkeepPerDay": 3700,
+      "speedKmh": 200,
+      "operationalRadiusKm": 150,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 0
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 0,
+        "submarine": 0,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 8,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 moteur à pistons Rotax 914",
+        "lengthM": 8.5,
+        "wingspanM": 18,
+        "mtowKg": 1000,
+        "warheadKg": null,
+        "speedLabel": "200 km/h",
+        "rangeKm": 180
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 15000000,
+      "era": {
+        "introduced": 2024
+      },
+      "air": {
+        "fuelH": 20,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "optical",
+        "rangeKm": 60,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "eu.eurodrone",
+      "name": "Eurodrone",
+      "doctrine": "eu",
+      "origin": "DE",
+      "category": "drone",
+      "roles": ["armed_drone", "reconnaissance"],
+      "generation": 5,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 80000000,
+        "resources": {
+          "oil": 20,
+          "metals": 25,
+          "electronics": 80
+        }
+      },
+      "buildTimeH": 48,
+      "upkeepPerDay": 18000,
+      "speedKmh": 500,
+      "operationalRadiusKm": 1500,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 10
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 10,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 0,
+        "building": 6
+      },
+      "hp": 14,
+      "armor": 0.05,
+      "stealth": 0.0,
+      "detectionRangeKm": 150,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "2 turbopropulseurs Avio Catalyst",
+        "lengthM": 16,
+        "wingspanM": 26,
+        "mtowKg": 11000,
+        "warheadKg": null,
+        "speedLabel": "500 km/h",
+        "rangeKm": 8000
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 80000000,
+      "era": {
+        "introduced": 2025
+      },
+      "air": {
+        "fuelH": 40,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 150,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "other.akinci",
+      "name": "Akinci",
+      "doctrine": "other",
+      "origin": "TR",
+      "category": "drone",
+      "roles": ["armed_drone", "reconnaissance", "strike"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 15000000,
+        "resources": {
+          "oil": 8,
+          "metals": 10,
+          "electronics": 30
+        }
+      },
+      "buildTimeH": 20,
+      "upkeepPerDay": 3500,
+      "speedKmh": 360,
+      "operationalRadiusKm": 1000,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 30
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 10,
+        "aircraft": 2,
+        "helicopter": 2,
+        "drone": 1,
+        "ship": 4,
+        "submarine": 0,
+        "missile": 0,
+        "building": 8
+      },
+      "hp": 12,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 80,
+      "ew": {
+        "jamming": 0.1,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 9
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "2 turbopropulseurs AI-450T",
+        "lengthM": 12.2,
+        "wingspanM": 20,
+        "mtowKg": 6000,
+        "warheadKg": null,
+        "speedLabel": "360 km/h",
+        "rangeKm": 7500
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 15000000,
+      "era": {
+        "introduced": 2021
+      },
+      "air": {
+        "fuelH": 24,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 80,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "other.heron-tp",
+      "name": "Heron TP",
+      "doctrine": "other",
+      "origin": "IL",
+      "category": "drone",
+      "roles": ["armed_drone", "reconnaissance", "sigint"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 35000000,
+        "resources": {
+          "oil": 15,
+          "metals": 15,
+          "electronics": 50
+        }
+      },
+      "buildTimeH": 24,
+      "upkeepPerDay": 7800,
+      "speedKmh": 370,
+      "operationalRadiusKm": 1000,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 5,
+        "armor": 8,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 5
+      },
+      "hp": 12,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 120,
+      "ew": {
+        "jamming": 0.15,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 turbopropulseur PT6A-67A",
+        "lengthM": 14,
+        "wingspanM": 26,
+        "mtowKg": 5670,
+        "warheadKg": null,
+        "speedLabel": "370 km/h",
+        "rangeKm": 7400
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 35000000,
+      "era": {
+        "introduced": 2010
+      },
+      "air": {
+        "fuelH": 36,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "radar",
+        "rangeKm": 120,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "other.harop",
+      "name": "Harop",
+      "doctrine": "other",
+      "origin": "IL",
+      "category": "drone",
+      "roles": ["loitering_munition", "sead", "antiradiation"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 800000,
+        "resources": {
+          "oil": 1,
+          "metals": 2,
+          "electronics": 5
+        }
+      },
+      "buildTimeH": 4,
+      "upkeepPerDay": 44,
+      "speedKmh": 185,
+      "operationalRadiusKm": 500,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 500
+      },
+      "damage": {
+        "infantry": 3,
+        "armor": 16,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 0,
+        "building": 6
+      },
+      "hp": 3,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 30,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.3
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones1"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 moteur à pistons",
+        "lengthM": 2.5,
+        "wingspanM": 3,
+        "mtowKg": 135,
+        "warheadKg": 23,
+        "speedLabel": "185 km/h (417 en piqué)",
+        "rangeKm": 1000
+      },
+      "enabled": true,
+      "unitLabel": "munition",
+      "unitPriceUsd": 800000,
+      "era": {
+        "introduced": 2009
+      },
+      "air": {
+        "fuelH": 6,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "missile": {
+        "kind": "antiradiation",
+        "speedKmh": 185,
+        "warhead": "conventional",
+        "evasion": 0.2,
+        "blastKm": 0.03
+      }
+    },
+    {
+      "id": "other.hermes-900",
+      "name": "Hermes 900",
+      "doctrine": "other",
+      "origin": "IL",
+      "category": "drone",
+      "roles": ["armed_drone", "reconnaissance"],
+      "generation": 4,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 20000000,
+        "resources": {
+          "oil": 9,
+          "metals": 10,
+          "electronics": 35
+        }
+      },
+      "buildTimeH": 18,
+      "upkeepPerDay": 4500,
+      "speedKmh": 220,
+      "operationalRadiusKm": 400,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 5,
+        "armor": 8,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 2,
+        "submarine": 0,
+        "missile": 0,
+        "building": 4
+      },
+      "hp": 8,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.05,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 moteur à pistons Rotax 914",
+        "lengthM": 8.3,
+        "wingspanM": 15,
+        "mtowKg": 1180,
+        "warheadKg": null,
+        "speedLabel": "220 km/h",
+        "rangeKm": 1000
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 20000000,
+      "era": {
+        "introduced": 2012
+      },
+      "air": {
+        "fuelH": 36,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "optical",
+        "rangeKm": 60,
+        "stealthDetect": 0.0
+      }
+    },
+    {
+      "id": "other.shahed-136",
+      "name": "Shahed-136",
+      "doctrine": "other",
+      "origin": "IR",
+      "category": "drone",
+      "roles": ["loitering_munition", "long_range_strike"],
+      "generation": 3,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 50000,
+        "resources": {
+          "oil": 1,
+          "metals": 1,
+          "electronics": 1
+        }
+      },
+      "buildTimeH": 3,
+      "upkeepPerDay": 2.7,
+      "speedKmh": 185,
+      "operationalRadiusKm": 2000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 2000
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 5,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 3,
+        "submarine": 0,
+        "missile": 0,
+        "building": 12
+      },
+      "hp": 3,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 5,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.2
+      },
+      "payload": {
+        "slots": 0
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 moteur à pistons MD-550",
+        "lengthM": 3.5,
+        "wingspanM": 2.5,
+        "mtowKg": 200,
+        "warheadKg": 40,
+        "speedLabel": "185 km/h",
+        "rangeKm": 2500
+      },
+      "enabled": true,
+      "unitLabel": "munition",
+      "unitPriceUsd": 50000,
+      "era": {
+        "introduced": 2021
+      },
+      "air": {
+        "fuelH": 13,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "missile": {
+        "kind": "cruise",
+        "speedKmh": 185,
+        "warhead": "conventional",
+        "evasion": 0.1,
+        "blastKm": 0.05
+      }
+    },
+    {
+      "id": "other.mohajer-6",
+      "name": "Mohajer-6",
+      "doctrine": "other",
+      "origin": "IR",
+      "category": "drone",
+      "roles": ["armed_drone", "reconnaissance"],
+      "generation": 3,
+      "targetClass": "drone",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 2000000,
+        "resources": {
+          "oil": 2,
+          "metals": 3,
+          "electronics": 9
+        }
+      },
+      "buildTimeH": 12,
+      "upkeepPerDay": 600,
+      "speedKmh": 200,
+      "operationalRadiusKm": 500,
+      "weaponRangeKm": {
+        "min": 0.5,
+        "max": 8
+      },
+      "damage": {
+        "infantry": 4,
+        "armor": 7,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 1,
+        "submarine": 0,
+        "missile": 0,
+        "building": 4
+      },
+      "hp": 6,
+      "armor": 0.0,
+      "stealth": 0.0,
+      "detectionRangeKm": 40,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.25
+      },
+      "payload": {
+        "slots": 4
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.drones2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "drone",
+      "sheet": {
+        "engine": "1 moteur à pistons",
+        "lengthM": 5.7,
+        "wingspanM": 10,
+        "mtowKg": 670,
+        "warheadKg": null,
+        "speedLabel": "200 km/h",
+        "rangeKm": 2000
+      },
+      "enabled": true,
+      "unitLabel": "drone",
+      "unitPriceUsd": 2000000,
+      "era": {
+        "introduced": 2018
+      },
+      "air": {
+        "fuelH": 12,
+        "refuelable": false,
+        "carrierCapable": false
+      },
+      "sensor": {
+        "kind": "optical",
+        "rangeKm": 40,
+        "stealthDetect": 0.0
+      }
+    }
+  ]
+}

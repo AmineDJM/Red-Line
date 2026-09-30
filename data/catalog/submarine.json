@@ -1,0 +1,1787 @@
+{
+  "category": "submarine",
+  "systems": [
+    {
+      "id": "us.virginia",
+      "name": "Virginia",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "submarine",
+      "roles": ["attack_submarine", "nuclear_powered", "land_attack"],
+      "generation": 5,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 3400000000,
+        "resources": {
+          "oil": 195,
+          "metals": 780,
+          "electronics": 780
+        }
+      },
+      "buildTimeH": 720,
+      "upkeepPerDay": 180000,
+      "speedKmh": 59,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 60
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 28,
+        "submarine": 20,
+        "missile": 0,
+        "building": 16
+      },
+      "hp": 130,
+      "armor": 0.2,
+      "stealth": 0.9,
+      "detectionRangeKm": 90,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.sub3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "1 réacteur nucléaire S9G",
+        "lengthM": 115,
+        "wingspanM": 10.4,
+        "mtowKg": 7900,
+        "warheadKg": null,
+        "speedLabel": "25+ nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 3400000000,
+      "era": {
+        "introduced": 2004
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 90,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.9,
+        "aircraftCapacity": 0,
+        "launchCells": 12
+      }
+    },
+    {
+      "id": "us.ohio",
+      "name": "Ohio",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "submarine",
+      "roles": ["ssbn", "nuclear_powered", "nuclear_deterrent"],
+      "generation": 4,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 4000000000,
+        "resources": {
+          "oil": 215,
+          "metals": 860,
+          "electronics": 860
+        }
+      },
+      "buildTimeH": 960,
+      "upkeepPerDay": 210000,
+      "speedKmh": 46,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 50
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 12,
+        "submarine": 12,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 170,
+      "armor": 0.2,
+      "stealth": 0.88,
+      "detectionRangeKm": 70,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.ssbn"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "1 réacteur nucléaire S8G",
+        "lengthM": 170.7,
+        "wingspanM": 12.8,
+        "mtowKg": 18750,
+        "warheadKg": null,
+        "speedLabel": "20+ nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 4000000000,
+      "era": {
+        "introduced": 1981
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 70,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.7,
+        "aircraftCapacity": 0,
+        "launchCells": 20
+      }
+    },
+    {
+      "id": "us.columbia",
+      "name": "Columbia",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "submarine",
+      "roles": ["ssbn", "nuclear_powered", "nuclear_deterrent"],
+      "generation": 5,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 9000000000,
+        "resources": {
+          "oil": 350,
+          "metals": 1400,
+          "electronics": 1400
+        }
+      },
+      "buildTimeH": 1000,
+      "upkeepPerDay": 410000,
+      "speedKmh": 46,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 50
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 12,
+        "submarine": 12,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 180,
+      "armor": 0.2,
+      "stealth": 0.92,
+      "detectionRangeKm": 80,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.ssbn"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "1 réacteur nucléaire, propulsion électrique",
+        "lengthM": 171,
+        "wingspanM": 13,
+        "mtowKg": 21000,
+        "warheadKg": null,
+        "speedLabel": "20+ nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 9000000000,
+      "era": {
+        "introduced": 2025
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 80,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.75,
+        "aircraftCapacity": 0,
+        "launchCells": 16
+      }
+    },
+    {
+      "id": "us.seawolf",
+      "name": "Seawolf",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "submarine",
+      "roles": ["attack_submarine", "nuclear_powered", "hunter_killer"],
+      "generation": 5,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 5500000000,
+        "resources": {
+          "oil": 260,
+          "metals": 1040,
+          "electronics": 1040
+        }
+      },
+      "buildTimeH": 760,
+      "upkeepPerDay": 260000,
+      "speedKmh": 65,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 60
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 30,
+        "submarine": 22,
+        "missile": 0,
+        "building": 12
+      },
+      "hp": 140,
+      "armor": 0.2,
+      "stealth": 0.92,
+      "detectionRangeKm": 100,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.sub3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "1 réacteur nucléaire S6W",
+        "lengthM": 107.6,
+        "wingspanM": 12.2,
+        "mtowKg": 9138,
+        "warheadKg": null,
+        "speedLabel": "35 nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 5500000000,
+      "era": {
+        "introduced": 1997
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 100,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.95,
+        "aircraftCapacity": 0,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "ru.yasen-m",
+      "name": "Iassen-M",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "submarine",
+      "roles": ["cruise_missile_submarine", "nuclear_powered", "land_attack"],
+      "generation": 5,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 1600000000,
+        "resources": {
+          "oil": 125,
+          "metals": 495,
+          "electronics": 495
+        }
+      },
+      "buildTimeH": 720,
+      "upkeepPerDay": 71000,
+      "speedKmh": 65,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 150
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 30,
+        "submarine": 18,
+        "missile": 0,
+        "building": 16
+      },
+      "hp": 140,
+      "armor": 0.2,
+      "stealth": 0.85,
+      "detectionRangeKm": 90,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.sub3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "1 réacteur nucléaire OK-650KPM",
+        "lengthM": 130,
+        "wingspanM": 13,
+        "mtowKg": 13800,
+        "warheadKg": null,
+        "speedLabel": "35 nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 1600000000,
+      "era": {
+        "introduced": 2014
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 90,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.85,
+        "aircraftCapacity": 0,
+        "launchCells": 32
+      }
+    },
+    {
+      "id": "ru.borei",
+      "name": "Boreï",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "submarine",
+      "roles": ["ssbn", "nuclear_powered", "nuclear_deterrent"],
+      "generation": 5,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 900000000,
+        "resources": {
+          "oil": 90,
+          "metals": 350,
+          "electronics": 350
+        }
+      },
+      "buildTimeH": 900,
+      "upkeepPerDay": 46000,
+      "speedKmh": 54,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 50
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 10,
+        "submarine": 10,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 170,
+      "armor": 0.2,
+      "stealth": 0.85,
+      "detectionRangeKm": 70,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.ssbn"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "1 réacteur nucléaire OK-650V",
+        "lengthM": 170,
+        "wingspanM": 13.5,
+        "mtowKg": 24000,
+        "warheadKg": null,
+        "speedLabel": "29 nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 900000000,
+      "era": {
+        "introduced": 2013
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 70,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.7,
+        "aircraftCapacity": 0,
+        "launchCells": 16
+      }
+    },
+    {
+      "id": "ru.kilo",
+      "name": "Kilo (projet 636.3)",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "submarine",
+      "roles": ["attack_submarine", "diesel_electric"],
+      "generation": 3,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 350000000,
+        "resources": {
+          "oil": 50,
+          "metals": 200,
+          "electronics": 200
+        }
+      },
+      "buildTimeH": 360,
+      "upkeepPerDay": 19000,
+      "speedKmh": 37,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 60
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 22,
+        "submarine": 14,
+        "missile": 0,
+        "building": 8
+      },
+      "hp": 80,
+      "armor": 0.2,
+      "stealth": 0.82,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.sub1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "Diesel-électrique (2 diesels, 1 moteur électrique)",
+        "lengthM": 74,
+        "wingspanM": 9.9,
+        "mtowKg": 3950,
+        "warheadKg": null,
+        "speedLabel": "20 nœuds",
+        "rangeKm": 12000
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 350000000,
+      "era": {
+        "introduced": 1980
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 60,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.7,
+        "aircraftCapacity": 0,
+        "launchCells": 4
+      }
+    },
+    {
+      "id": "ru.delta-iv",
+      "name": "Delta IV",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "submarine",
+      "roles": ["ssbn", "nuclear_powered", "nuclear_deterrent"],
+      "generation": 3,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 2000000000,
+        "resources": {
+          "oil": 140,
+          "metals": 570,
+          "electronics": 570
+        }
+      },
+      "buildTimeH": 900,
+      "upkeepPerDay": 93000,
+      "speedKmh": 44,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 50
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 10,
+        "submarine": 8,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 160,
+      "armor": 0.2,
+      "stealth": 0.7,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.ssbn"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "2 réacteurs nucléaires VM-4SG",
+        "lengthM": 167,
+        "wingspanM": 11.7,
+        "mtowKg": 18200,
+        "warheadKg": null,
+        "speedLabel": "24 nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 2000000000,
+      "era": {
+        "introduced": 1985
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 60,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.5,
+        "aircraftCapacity": 0,
+        "launchCells": 16
+      }
+    },
+    {
+      "id": "cn.type-093",
+      "name": "Type 093",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "submarine",
+      "roles": ["attack_submarine", "nuclear_powered"],
+      "generation": 4,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 1500000000,
+        "resources": {
+          "oil": 120,
+          "metals": 480,
+          "electronics": 480
+        }
+      },
+      "buildTimeH": 640,
+      "upkeepPerDay": 70000,
+      "speedKmh": 56,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 60
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 24,
+        "submarine": 16,
+        "missile": 0,
+        "building": 10
+      },
+      "hp": 120,
+      "armor": 0.2,
+      "stealth": 0.75,
+      "detectionRangeKm": 75,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.sub2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "1 réacteur nucléaire",
+        "lengthM": 110,
+        "wingspanM": 11,
+        "mtowKg": 7000,
+        "warheadKg": null,
+        "speedLabel": "30 nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 1500000000,
+      "era": {
+        "introduced": 2006
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 75,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.7,
+        "aircraftCapacity": 0,
+        "launchCells": 12
+      }
+    },
+    {
+      "id": "cn.type-094",
+      "name": "Type 094",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "submarine",
+      "roles": ["ssbn", "nuclear_powered", "nuclear_deterrent"],
+      "generation": 4,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 2000000000,
+        "resources": {
+          "oil": 140,
+          "metals": 570,
+          "electronics": 570
+        }
+      },
+      "buildTimeH": 900,
+      "upkeepPerDay": 92000,
+      "speedKmh": 37,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 50
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 10,
+        "submarine": 8,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 160,
+      "armor": 0.2,
+      "stealth": 0.7,
+      "detectionRangeKm": 65,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.ssbn"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "1 réacteur nucléaire",
+        "lengthM": 135,
+        "wingspanM": 12.5,
+        "mtowKg": 11000,
+        "warheadKg": null,
+        "speedLabel": "20 nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 2000000000,
+      "era": {
+        "introduced": 2007
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 65,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.5,
+        "aircraftCapacity": 0,
+        "launchCells": 12
+      }
+    },
+    {
+      "id": "cn.type-039",
+      "name": "Type 039 (Song/Yuan)",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "submarine",
+      "roles": ["attack_submarine", "diesel_electric", "aip"],
+      "generation": 4,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 500000000,
+        "resources": {
+          "oil": 60,
+          "metals": 245,
+          "electronics": 245
+        }
+      },
+      "buildTimeH": 380,
+      "upkeepPerDay": 25000,
+      "speedKmh": 37,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 60
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 22,
+        "submarine": 14,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 80,
+      "armor": 0.2,
+      "stealth": 0.85,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.sub2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "Diesel-électrique avec propulsion anaérobie (Stirling)",
+        "lengthM": 77.6,
+        "wingspanM": 8.4,
+        "mtowKg": 3600,
+        "warheadKg": null,
+        "speedLabel": "20 nœuds",
+        "rangeKm": 14000
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 500000000,
+      "era": {
+        "introduced": 2006
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 60,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.7,
+        "aircraftCapacity": 0,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "eu.suffren",
+      "name": "Suffren (Barracuda)",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "submarine",
+      "roles": ["attack_submarine", "nuclear_powered", "land_attack"],
+      "generation": 5,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 1700000000,
+        "resources": {
+          "oil": 130,
+          "metals": 515,
+          "electronics": 515
+        }
+      },
+      "buildTimeH": 700,
+      "upkeepPerDay": 84000,
+      "speedKmh": 46,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 60
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 28,
+        "submarine": 20,
+        "missile": 0,
+        "building": 14
+      },
+      "hp": 130,
+      "armor": 0.2,
+      "stealth": 0.9,
+      "detectionRangeKm": 90,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.sub3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "1 réacteur nucléaire K15 (propulsion hybride)",
+        "lengthM": 99.5,
+        "wingspanM": 8.8,
+        "mtowKg": 5300,
+        "warheadKg": null,
+        "speedLabel": "25+ nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 1700000000,
+      "era": {
+        "introduced": 2020
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 90,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.9,
+        "aircraftCapacity": 0,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "eu.astute",
+      "name": "Astute",
+      "doctrine": "eu",
+      "origin": "GB",
+      "category": "submarine",
+      "roles": ["attack_submarine", "nuclear_powered", "land_attack"],
+      "generation": 5,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 2400000000,
+        "resources": {
+          "oil": 160,
+          "metals": 635,
+          "electronics": 635
+        }
+      },
+      "buildTimeH": 720,
+      "upkeepPerDay": 120000,
+      "speedKmh": 56,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 60
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 28,
+        "submarine": 20,
+        "missile": 0,
+        "building": 14
+      },
+      "hp": 130,
+      "armor": 0.2,
+      "stealth": 0.9,
+      "detectionRangeKm": 100,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.sub3"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "1 réacteur nucléaire PWR2",
+        "lengthM": 97,
+        "wingspanM": 11.3,
+        "mtowKg": 7400,
+        "warheadKg": null,
+        "speedLabel": "30 nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 2400000000,
+      "era": {
+        "introduced": 2010
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 100,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.92,
+        "aircraftCapacity": 0,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "eu.type-212",
+      "name": "Type 212",
+      "doctrine": "eu",
+      "origin": "DE",
+      "category": "submarine",
+      "roles": ["attack_submarine", "diesel_electric", "aip"],
+      "generation": 5,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 700000000,
+        "resources": {
+          "oil": 75,
+          "metals": 300,
+          "electronics": 300
+        }
+      },
+      "buildTimeH": 380,
+      "upkeepPerDay": 35000,
+      "speedKmh": 37,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 50
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 22,
+        "submarine": 16,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 70,
+      "armor": 0.2,
+      "stealth": 0.93,
+      "detectionRangeKm": 70,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.sub2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "Diesel-électrique avec propulsion anaérobie (piles à combustible)",
+        "lengthM": 56,
+        "wingspanM": 7,
+        "mtowKg": 1830,
+        "warheadKg": null,
+        "speedLabel": "20 nœuds",
+        "rangeKm": 14800
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 700000000,
+      "era": {
+        "introduced": 2005
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 70,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.8,
+        "aircraftCapacity": 0,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "eu.scorpene",
+      "name": "Scorpène",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "submarine",
+      "roles": ["attack_submarine", "diesel_electric"],
+      "generation": 4,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 600000000,
+        "resources": {
+          "oil": 70,
+          "metals": 275,
+          "electronics": 275
+        }
+      },
+      "buildTimeH": 380,
+      "upkeepPerDay": 31000,
+      "speedKmh": 37,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 50
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 22,
+        "submarine": 14,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 70,
+      "armor": 0.2,
+      "stealth": 0.88,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.sub2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "Diesel-électrique (AIP MESMA en option)",
+        "lengthM": 66,
+        "wingspanM": 6.2,
+        "mtowKg": 1870,
+        "warheadKg": null,
+        "speedLabel": "20 nœuds",
+        "rangeKm": 12000
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 600000000,
+      "era": {
+        "introduced": 2005
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 60,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.75,
+        "aircraftCapacity": 0,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "eu.triomphant",
+      "name": "Le Triomphant",
+      "doctrine": "eu",
+      "origin": "FR",
+      "category": "submarine",
+      "roles": ["ssbn", "nuclear_powered", "nuclear_deterrent"],
+      "generation": 5,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 3500000000,
+        "resources": {
+          "oil": 200,
+          "metals": 795,
+          "electronics": 795
+        }
+      },
+      "buildTimeH": 960,
+      "upkeepPerDay": 170000,
+      "speedKmh": 46,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 50
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 12,
+        "submarine": 12,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 170,
+      "armor": 0.2,
+      "stealth": 0.88,
+      "detectionRangeKm": 80,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.ssbn"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "1 réacteur nucléaire K15",
+        "lengthM": 138,
+        "wingspanM": 12.5,
+        "mtowKg": 14335,
+        "warheadKg": null,
+        "speedLabel": "25 nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 3500000000,
+      "era": {
+        "introduced": 1997
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 80,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.7,
+        "aircraftCapacity": 0,
+        "launchCells": 16
+      }
+    },
+    {
+      "id": "eu.type-209",
+      "name": "Type 209",
+      "doctrine": "eu",
+      "origin": "DE",
+      "category": "submarine",
+      "roles": ["attack_submarine", "diesel_electric"],
+      "generation": 3,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 350000000,
+        "resources": {
+          "oil": 50,
+          "metals": 200,
+          "electronics": 200
+        }
+      },
+      "buildTimeH": 320,
+      "upkeepPerDay": 22000,
+      "speedKmh": 41,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 40
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 18,
+        "submarine": 12,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 60,
+      "armor": 0.2,
+      "stealth": 0.75,
+      "detectionRangeKm": 50,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.sub1"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "Diesel-électrique (4 diesels MTU)",
+        "lengthM": 62,
+        "wingspanM": 6.2,
+        "mtowKg": 1586,
+        "warheadKg": null,
+        "speedLabel": "22 nœuds",
+        "rangeKm": 11000
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 350000000,
+      "era": {
+        "introduced": 1971
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 50,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.6,
+        "aircraftCapacity": 0,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "eu.type-214",
+      "name": "Type 214",
+      "doctrine": "eu",
+      "origin": "DE",
+      "category": "submarine",
+      "roles": ["attack_submarine", "diesel_electric", "aip"],
+      "generation": 5,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 500000000,
+        "resources": {
+          "oil": 60,
+          "metals": 245,
+          "electronics": 245
+        }
+      },
+      "buildTimeH": 380,
+      "upkeepPerDay": 26000,
+      "speedKmh": 37,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 130
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 22,
+        "submarine": 15,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 70,
+      "armor": 0.2,
+      "stealth": 0.9,
+      "detectionRangeKm": 65,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.sub2"],
+      "licensable": true,
+      "exportable": true,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "Diesel-électrique avec propulsion anaérobie (piles à combustible)",
+        "lengthM": 65,
+        "wingspanM": 6.3,
+        "mtowKg": 1860,
+        "warheadKg": null,
+        "speedLabel": "20 nœuds",
+        "rangeKm": 19300
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 500000000,
+      "era": {
+        "introduced": 2007
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 65,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.78,
+        "aircraftCapacity": 0,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "eu.vanguard",
+      "name": "Vanguard",
+      "doctrine": "eu",
+      "origin": "GB",
+      "category": "submarine",
+      "roles": ["ssbn", "nuclear_powered", "nuclear_deterrent"],
+      "generation": 4,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 3200000000,
+        "resources": {
+          "oil": 190,
+          "metals": 755,
+          "electronics": 755
+        }
+      },
+      "buildTimeH": 960,
+      "upkeepPerDay": 160000,
+      "speedKmh": 46,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 50
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 12,
+        "submarine": 12,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 170,
+      "armor": 0.2,
+      "stealth": 0.85,
+      "detectionRangeKm": 90,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.ssbn"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "1 réacteur nucléaire PWR2",
+        "lengthM": 149.9,
+        "wingspanM": 12.8,
+        "mtowKg": 15900,
+        "warheadKg": null,
+        "speedLabel": "25 nœuds",
+        "rangeKm": null
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 3200000000,
+      "era": {
+        "introduced": 1993
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 90,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.7,
+        "aircraftCapacity": 0,
+        "launchCells": 16
+      }
+    },
+    {
+      "id": "other.soryu",
+      "name": "Soryu",
+      "doctrine": "other",
+      "origin": "JP",
+      "category": "submarine",
+      "roles": ["attack_submarine", "diesel_electric", "aip"],
+      "generation": 5,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 550000000,
+        "resources": {
+          "oil": 65,
+          "metals": 260,
+          "electronics": 260
+        }
+      },
+      "buildTimeH": 400,
+      "upkeepPerDay": 28000,
+      "speedKmh": 37,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 130
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 22,
+        "submarine": 16,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 80,
+      "armor": 0.2,
+      "stealth": 0.9,
+      "detectionRangeKm": 70,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.sub2"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "Diesel-électrique, AIP Stirling ou batteries lithium-ion",
+        "lengthM": 84,
+        "wingspanM": 9.1,
+        "mtowKg": 4200,
+        "warheadKg": null,
+        "speedLabel": "20 nœuds",
+        "rangeKm": 11000
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 550000000,
+      "era": {
+        "introduced": 2009
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 70,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.8,
+        "aircraftCapacity": 0,
+        "launchCells": 0
+      }
+    },
+    {
+      "id": "other.dolphin",
+      "name": "Dolphin",
+      "doctrine": "other",
+      "origin": "DE",
+      "category": "submarine",
+      "roles": ["attack_submarine", "diesel_electric", "aip", "land_attack"],
+      "generation": 5,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 600000000,
+        "resources": {
+          "oil": 70,
+          "metals": 275,
+          "electronics": 275
+        }
+      },
+      "buildTimeH": 400,
+      "upkeepPerDay": 28000,
+      "speedKmh": 37,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 60
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 22,
+        "submarine": 14,
+        "missile": 0,
+        "building": 10
+      },
+      "hp": 70,
+      "armor": 0.2,
+      "stealth": 0.88,
+      "detectionRangeKm": 60,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.sub2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "Diesel-électrique (AIP à piles à combustible sur Dolphin 2)",
+        "lengthM": 68.6,
+        "wingspanM": 6.8,
+        "mtowKg": 2400,
+        "warheadKg": null,
+        "speedLabel": "20 nœuds",
+        "rangeKm": 8000
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin",
+      "unitPriceUsd": 600000000,
+      "era": {
+        "introduced": 1999
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 60,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.75,
+        "aircraftCapacity": 0,
+        "launchCells": 4
+      }
+    },
+    {
+      "id": "other.ghadir",
+      "name": "Ghadir",
+      "doctrine": "other",
+      "origin": "IR",
+      "category": "submarine",
+      "roles": ["midget_submarine", "coastal"],
+      "generation": 3,
+      "targetClass": "submarine",
+      "movement": "sea",
+      "canCapture": false,
+      "cost": {
+        "money": 30000000,
+        "resources": {
+          "oil": 10,
+          "metals": 45,
+          "electronics": 45
+        }
+      },
+      "buildTimeH": 120,
+      "upkeepPerDay": 2700,
+      "speedKmh": 20,
+      "operationalRadiusKm": null,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 20
+      },
+      "damage": {
+        "infantry": 0,
+        "armor": 0,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 14,
+        "submarine": 4,
+        "missile": 0,
+        "building": 0
+      },
+      "hp": 30,
+      "armor": 0.2,
+      "stealth": 0.8,
+      "detectionRangeKm": 25,
+      "ew": {
+        "jamming": 0.0,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 6
+      },
+      "unitSize": 1,
+      "requires": ["research.naval.sub1"],
+      "licensable": false,
+      "exportable": true,
+      "icon": "submarine",
+      "sheet": {
+        "engine": "Diesel-électrique",
+        "lengthM": 29,
+        "wingspanM": 2.75,
+        "mtowKg": 120,
+        "warheadKg": null,
+        "speedLabel": "11 nœuds",
+        "rangeKm": 1000
+      },
+      "enabled": true,
+      "unitLabel": "sous-marin de poche",
+      "unitPriceUsd": 30000000,
+      "era": {
+        "introduced": 2007
+      },
+      "sensor": {
+        "kind": "sonar",
+        "rangeKm": 25,
+        "stealthDetect": 0.0
+      },
+      "naval": {
+        "submerged": true,
+        "asw": 0.2,
+        "aircraftCapacity": 0,
+        "launchCells": 0
+      }
+    }
+  ]
+}

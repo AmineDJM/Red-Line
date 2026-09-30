@@ -1,0 +1,680 @@
+{
+  "category": "bomber",
+  "systems": [
+    {
+      "id": "us.b-52h-stratofortress",
+      "name": "B-52H Stratofortress",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "bomber",
+      "roles": ["strategic_bomber", "standoff_strike"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 100000000,
+        "resources": {
+          "oil": 30,
+          "metals": 55,
+          "electronics": 80
+        }
+      },
+      "buildTimeH": 120,
+      "upkeepPerDay": 49000,
+      "speedKmh": 1000,
+      "operationalRadiusKm": 7200,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 300
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 5,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 8,
+        "submarine": 0,
+        "missile": 0,
+        "building": 30
+      },
+      "hp": 70,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 150,
+      "ew": {
+        "jamming": 0.35,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 20
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.bomber1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "8 turboréacteurs TF33",
+        "lengthM": 48.5,
+        "wingspanM": 56.4,
+        "mtowKg": 219600,
+        "warheadKg": 31500,
+        "speedLabel": "Mach 0,86",
+        "rangeKm": 14200
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 100000000,
+      "era": {
+        "introduced": 1961
+      },
+      "air": {
+        "fuelH": 16,
+        "refuelable": true,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "us.b-1b-lancer",
+      "name": "B-1B Lancer",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "bomber",
+      "roles": ["strategic_bomber", "standoff_strike", "antiship"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 500000000,
+        "resources": {
+          "oil": 80,
+          "metals": 145,
+          "electronics": 205
+        }
+      },
+      "buildTimeH": 180,
+      "upkeepPerDay": 82000,
+      "speedKmh": 1500,
+      "operationalRadiusKm": 2900,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 370
+      },
+      "damage": {
+        "infantry": 7,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 12,
+        "submarine": 0,
+        "missile": 0,
+        "building": 34
+      },
+      "hp": 60,
+      "armor": 0.1,
+      "stealth": 0.2,
+      "detectionRangeKm": 150,
+      "ew": {
+        "jamming": 0.45,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 24
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.bomber2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbosoufflantes F101",
+        "lengthM": 44.5,
+        "wingspanM": 41.8,
+        "mtowKg": 216400,
+        "warheadKg": 34000,
+        "speedLabel": "Mach 1,25",
+        "rangeKm": 11900
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 500000000,
+      "era": {
+        "introduced": 1986
+      },
+      "air": {
+        "fuelH": 12,
+        "refuelable": true,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "us.b-2-spirit",
+      "name": "B-2 Spirit",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "bomber",
+      "roles": ["strategic_bomber", "stealth", "penetration"],
+      "generation": 5,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 2100000000,
+        "resources": {
+          "oil": 195,
+          "metals": 340,
+          "electronics": 485
+        }
+      },
+      "buildTimeH": 240,
+      "upkeepPerDay": 210000,
+      "speedKmh": 1000,
+      "operationalRadiusKm": 5500,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 30
+      },
+      "damage": {
+        "infantry": 7,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 8,
+        "submarine": 0,
+        "missile": 0,
+        "building": 36
+      },
+      "hp": 60,
+      "armor": 0.1,
+      "stealth": 0.9,
+      "detectionRangeKm": 160,
+      "ew": {
+        "jamming": 0.4,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 16
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.stealth-bomber"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbosoufflantes F118",
+        "lengthM": 21,
+        "wingspanM": 52.4,
+        "mtowKg": 170600,
+        "warheadKg": 23000,
+        "speedLabel": "Mach 0,95",
+        "rangeKm": 11100
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 2100000000,
+      "era": {
+        "introduced": 1997
+      },
+      "air": {
+        "fuelH": 14,
+        "refuelable": true,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "us.b-21-raider",
+      "name": "B-21 Raider",
+      "doctrine": "us",
+      "origin": "US",
+      "category": "bomber",
+      "roles": ["strategic_bomber", "stealth", "penetration"],
+      "generation": 5,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 800000000,
+        "resources": {
+          "oil": 110,
+          "metals": 190,
+          "electronics": 275
+        }
+      },
+      "buildTimeH": 220,
+      "upkeepPerDay": 110000,
+      "speedKmh": 1000,
+      "operationalRadiusKm": 4800,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 30
+      },
+      "damage": {
+        "infantry": 7,
+        "armor": 6,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 8,
+        "submarine": 0,
+        "missile": 0,
+        "building": 36
+      },
+      "hp": 58,
+      "armor": 0.1,
+      "stealth": 0.95,
+      "detectionRangeKm": 180,
+      "ew": {
+        "jamming": 0.45,
+        "jamResistance": 0.7
+      },
+      "payload": {
+        "slots": 12
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.stealth-bomber"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "2 turbosoufflantes (non publiées)",
+        "lengthM": 16,
+        "wingspanM": 40,
+        "mtowKg": 100000,
+        "warheadKg": 13600,
+        "speedLabel": "Mach 0,9 (estimé)",
+        "rangeKm": 9600
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 800000000,
+      "era": {
+        "introduced": 2025
+      },
+      "air": {
+        "fuelH": 12,
+        "refuelable": true,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.tu-95ms",
+      "name": "Tu-95MS",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "bomber",
+      "roles": ["strategic_bomber", "standoff_strike"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 120000000,
+        "resources": {
+          "oil": 35,
+          "metals": 60,
+          "electronics": 85
+        }
+      },
+      "buildTimeH": 120,
+      "upkeepPerDay": 22000,
+      "speedKmh": 830,
+      "operationalRadiusKm": 6500,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 300
+      },
+      "damage": {
+        "infantry": 5,
+        "armor": 4,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 6,
+        "submarine": 0,
+        "missile": 0,
+        "building": 30
+      },
+      "hp": 70,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 150,
+      "ew": {
+        "jamming": 0.25,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 16
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.bomber1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbopropulseurs NK-12MP",
+        "lengthM": 49.5,
+        "wingspanM": 50,
+        "mtowKg": 188000,
+        "warheadKg": 15000,
+        "speedLabel": "830 km/h",
+        "rangeKm": 15000
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 120000000,
+      "era": {
+        "introduced": 1981
+      },
+      "air": {
+        "fuelH": 16,
+        "refuelable": true,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.tu-22m3",
+      "name": "Tu-22M3",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "bomber",
+      "roles": ["bomber", "antiship", "standoff_strike"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 80000000,
+        "resources": {
+          "oil": 25,
+          "metals": 50,
+          "electronics": 70
+        }
+      },
+      "buildTimeH": 140,
+      "upkeepPerDay": 19000,
+      "speedKmh": 2000,
+      "operationalRadiusKm": 2400,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 400
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 5,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 18,
+        "submarine": 0,
+        "missile": 0,
+        "building": 30
+      },
+      "hp": 55,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 150,
+      "ew": {
+        "jamming": 0.3,
+        "jamResistance": 0.4
+      },
+      "payload": {
+        "slots": 12
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.bomber2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "2 turbosoufflantes NK-25",
+        "lengthM": 42.5,
+        "wingspanM": 34.3,
+        "mtowKg": 126000,
+        "warheadKg": 24000,
+        "speedLabel": "Mach 1,88",
+        "rangeKm": 6800
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 80000000,
+      "era": {
+        "introduced": 1983
+      },
+      "air": {
+        "fuelH": 7,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "ru.tu-160",
+      "name": "Tu-160",
+      "doctrine": "ru",
+      "origin": "RU",
+      "category": "bomber",
+      "roles": ["strategic_bomber", "standoff_strike"],
+      "generation": 4,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 270000000,
+        "resources": {
+          "oil": 55,
+          "metals": 100,
+          "electronics": 140
+        }
+      },
+      "buildTimeH": 200,
+      "upkeepPerDay": 35000,
+      "speedKmh": 2200,
+      "operationalRadiusKm": 6000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 300
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 5,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 10,
+        "submarine": 0,
+        "missile": 0,
+        "building": 34
+      },
+      "hp": 65,
+      "armor": 0.1,
+      "stealth": 0.1,
+      "detectionRangeKm": 160,
+      "ew": {
+        "jamming": 0.4,
+        "jamResistance": 0.5
+      },
+      "payload": {
+        "slots": 24
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.bomber2"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbosoufflantes NK-32",
+        "lengthM": 54.1,
+        "wingspanM": 55.7,
+        "mtowKg": 275000,
+        "warheadKg": 40000,
+        "speedLabel": "Mach 2,05",
+        "rangeKm": 12300
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 270000000,
+      "era": {
+        "introduced": 1987
+      },
+      "air": {
+        "fuelH": 15,
+        "refuelable": true,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "cn.h-6k",
+      "name": "H-6K",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "bomber",
+      "roles": ["bomber", "antiship", "standoff_strike"],
+      "generation": 3,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 45000000,
+        "resources": {
+          "oil": 20,
+          "metals": 35,
+          "electronics": 50
+        }
+      },
+      "buildTimeH": 100,
+      "upkeepPerDay": 16000,
+      "speedKmh": 1000,
+      "operationalRadiusKm": 3000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 300
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 5,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 15,
+        "submarine": 0,
+        "missile": 0,
+        "building": 28
+      },
+      "hp": 55,
+      "armor": 0.1,
+      "stealth": 0.0,
+      "detectionRangeKm": 150,
+      "ew": {
+        "jamming": 0.25,
+        "jamResistance": 0.35
+      },
+      "payload": {
+        "slots": 10
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.bomber1"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "2 turbosoufflantes D-30KP-2",
+        "lengthM": 34.8,
+        "wingspanM": 33,
+        "mtowKg": 79000,
+        "warheadKg": 12000,
+        "speedLabel": "Mach 0,85",
+        "rangeKm": 6000
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 45000000,
+      "era": {
+        "introduced": 2011
+      },
+      "air": {
+        "fuelH": 9,
+        "refuelable": false,
+        "carrierCapable": false
+      }
+    },
+    {
+      "id": "cn.h-20",
+      "name": "H-20",
+      "doctrine": "cn",
+      "origin": "CN",
+      "category": "bomber",
+      "roles": ["strategic_bomber", "stealth", "penetration"],
+      "generation": 5,
+      "targetClass": "aircraft",
+      "movement": "air",
+      "canCapture": false,
+      "cost": {
+        "money": 450000000,
+        "resources": {
+          "oil": 75,
+          "metals": 135,
+          "electronics": 195
+        }
+      },
+      "buildTimeH": 220,
+      "upkeepPerDay": 49000,
+      "speedKmh": 1000,
+      "operationalRadiusKm": 4000,
+      "weaponRangeKm": {
+        "min": 0,
+        "max": 30
+      },
+      "damage": {
+        "infantry": 6,
+        "armor": 5,
+        "aircraft": 0,
+        "helicopter": 0,
+        "drone": 0,
+        "ship": 8,
+        "submarine": 0,
+        "missile": 0,
+        "building": 34
+      },
+      "hp": 56,
+      "armor": 0.1,
+      "stealth": 0.85,
+      "detectionRangeKm": 160,
+      "ew": {
+        "jamming": 0.4,
+        "jamResistance": 0.6
+      },
+      "payload": {
+        "slots": 12
+      },
+      "unitSize": 1,
+      "requires": ["research.aero.stealth-bomber"],
+      "licensable": false,
+      "exportable": false,
+      "icon": "bomber",
+      "sheet": {
+        "engine": "4 turbosoufflantes (estimé)",
+        "lengthM": 20,
+        "wingspanM": 45,
+        "mtowKg": 150000,
+        "warheadKg": 20000,
+        "speedLabel": "Mach 0,9 (estimé)",
+        "rangeKm": 8500
+      },
+      "enabled": true,
+      "unitLabel": "appareil",
+      "unitPriceUsd": 450000000,
+      "era": {
+        "introduced": 2025
+      },
+      "air": {
+        "fuelH": 12,
+        "refuelable": true,
+        "carrierCapable": false
+      }
+    }
+  ]
+}
