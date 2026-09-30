@@ -102,7 +102,7 @@ export function knowledge(
 export function revealed(pid: ProvinceId, all: readonly BuildingType[], k: ProvinceKnowledge) {
   return all.filter((b, i) => {
     const lvl = axisOf(b) === 'm' ? k.m : k.e;
-    return lvl >= 3 || hash01('pk', pid, b, i) < lvl / 3;
+    return lvl >= 3 || (lvl > 0 && hash01('pk', pid, b, i) < lvl / 3);
   });
 }
 
@@ -251,7 +251,8 @@ export function announce(
  */
 export function filterProvinces(state: EngineState, n: NationId, view: PlayerView): void {
   const staleMs = cfg(state).provinceStaleH * HOUR;
-  for (const pid of sortedKeys(view.provinces)) {
+  // Ordre indifférent : chaque province est traitée indépendamment, sans écriture dans l'état.
+  for (const pid of Object.keys(view.provinces)) {
     const pv = view.provinces[pid]!;
     const k = knowledge(state, n, pid);
     if (!k) continue;

@@ -7,6 +7,7 @@ import {
   type IntelView,
   type NationId,
   type PlayerView,
+  type ReportAction,
 } from '@redline/shared';
 import type { EngineState } from '../../state/types.js';
 import { sortedKeys } from '../../state/access.js';
@@ -21,6 +22,24 @@ import { ist, type Agent, type StoredOp, type StoredReport } from './state.js';
  * (intoxication `fk`, victime et agent d'une opération, état réel d'un agent retourné, leurres des
  * autres) ne sortent jamais du moteur. Aucune écriture dans l'état (la vue ne doit rien modifier).
  */
+/** Copie d'une action avec un ordre de clés fixe (vue identique avant et après sérialisation). */
+function actionView(a: ReportAction): ReportAction {
+  switch (a.kind) {
+    case 'plan_strike':
+    case 'send_recon': {
+      const out: ReportAction = { kind: a.kind, at: [a.at[0], a.at[1]] } as ReportAction;
+      if (a.kind === 'plan_strike' && a.unitId) (out as { unitId?: string }).unitId = a.unitId;
+      return out;
+    }
+    case 'share':
+      return { kind: 'share', reportId: a.reportId };
+    case 'open_unit':
+      return { kind: 'open_unit', unitId: a.unitId };
+    case 'open_province':
+      return { kind: 'open_province', provinceId: a.provinceId };
+  }
+}
+
 export function reportView(state: EngineState, r: StoredReport): IntelReport {
   const c = cfg(state);
   const ageH = Math.max(0, (state.time - r.time) / HOUR);
@@ -41,7 +60,7 @@ export function reportView(state: EngineState, r: StoredReport): IntelReport {
       r.at && moving
         ? Math.round(r.radiusKm + Math.floor(ageH) * c.reportUncertaintyKmh)
         : r.radiusKm,
-    actions: r.actions.map((a) => ({ ...a })),
+    actions: r.actions.map(actionView),
   };
   if (r.subject) {
     const s: NonNullable<IntelReport['subject']> = {};

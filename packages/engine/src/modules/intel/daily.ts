@@ -1,12 +1,13 @@
 import {
   HOUR,
   distanceKm,
+  type Department,
   movementDestination,
   type LngLat,
   type NationId,
   type UnitId,
 } from '@redline/shared';
-import type { EngineState } from '../../state/types.js';
+import type { EngineState, Unit } from '../../state/types.js';
 import {
   nationUnits,
   provincesOf,
@@ -69,11 +70,54 @@ export interface Concentration {
  * les autres sont déduites avec une probabilité ∝ qualité (tirage haché, sans consommer le PRNG).
  * Balayage borné par la boîte englobante de nos villes.
  */
+export interface PoolEntry {
+  uid: UnitId;
+  u: Unit;
+  /** Boîte englobante (lon/lat) du trajet, marge comprise ; null si le trajet franchit l'antiméridien. */
+  box: [number, number, number, number] | null;
+  /** Position courante, calculée à la demande puis partagée entre observateurs. */
+  pos?: LngLat;
+}
+
+/**
+ * Unités du monde triées, avec la boîte englobante de leur trajet : la position exacte (coûteuse) n'est
+ * calculée que pour les unités dont le trajet approche le territoire d'un observateur, une seule fois
+ * par balayage (elle ne dépend pas de l'observateur).
+ */
+export function unitPool(state: EngineState, movingOnly: boolean): PoolEntry[] {
+  const out: PoolEntry[] = [];
+  for (const uid of sortedKeys(state.units)) {
+    const u = state.units[uid]!;
+    if (movingOnly && !u.move) continue;
+    let x0 = u.pos[0];
+    let x1 = x0;
+    let y0 = u.pos[1];
+    let y1 = y0;
+    for (const l of u.move?.legs ?? []) {
+      for (const p of [l.from, l.to]) {
+        x0 = Math.min(x0, p[0]);
+        x1 = Math.max(x1, p[0]);
+        y0 = Math.min(y0, p[1]);
+        y1 = Math.max(y1, p[1]);
+      }
+    }
+    // Un grand cercle s'écarte de la droite lon/lat vers le pôle : marge en latitude.
+    const m = 0.5 + (x1 - x0) * 0.15;
+    out.push({ uid, u, box: x1 - x0 > 180 ? null : [x0 - 0.5, y0 - m, x1 + 0.5, y1 + m] });
+  }
+  return out;
+}
+
+function posOf(state: EngineState, e: PoolEntry): LngLat {
+  return (e.pos ??= unitPosAt(state, e.u, state.time));
+}
+
 export function concentrations(
   state: EngineState,
   n: NationId,
   movingOnly: boolean,
   q: number,
+  pool: PoolEntry[] = unitPool(state, movingOnly),
 ): Concentration[] {
   const c = cfg(state);
   const w = wi(state.world);
@@ -96,13 +140,15 @@ export function concentrations(
     NationId,
     { c: Concentration; sx: number; sy: number; hx: number; hy: number; hn: number }
   >();
-  for (const uid of sortedKeys(state.units)) {
-    const u = state.units[uid]!;
-    if (allied(state, n, u.owner)) continue;
+  for (const e of pool) {
+    const { uid, u, box } = e;
     if (movingOnly && !u.move) continue;
-    const pos = unitPosAt(state, u, state.time);
+    if (box && (box[2] < x0 - padX || box[0] > x1 + padX || box[3] < y0 - pad || box[1] > y1 + pad))
+      continue;
+    const pos = posOf(state, e);
     if (pos[0] < x0 - padX || pos[0] > x1 + padX || pos[1] < y0 - pad || pos[1] > y1 + pad)
       continue;
+    if (allied(state, n, u.owner)) continue;
     if (!cities.some((p) => distanceKm(p, pos) <= c.flashBorderKm)) continue;
     const seen = sightLevel(state, n, uid) > 0;
     if (!seen && (jammedFor(state, n, pos) || hash01('inf', n, uid, bucket) >= q * 0.7)) continue;
@@ -151,10 +197,13 @@ export function concentrations(
 /** Balayage périodique : rapport flash sur mouvement important près de la frontière. */
 export function scan(state: EngineState): void {
   const c = cfg(state);
-  for (const n of readers(state)) {
+  const who = readers(state);
+  if (who.length === 0) return;
+  const pool = unitPool(state, true);
+  for (const n of who) {
     const q = quality(state, n, 'military');
     const ni = nat(state, n);
-    for (const g of concentrations(state, n, true, q)) {
+    for (const g of concentrations(state, n, true, q, pool)) {
       if (g.units < c.flashMinUnits) continue;
       const key = `move:${g.owner}`;
       const last = ni.flash[key];
@@ -186,15 +235,24 @@ export function scan(state: EngineState): void {
 // ——— Notes quotidiennes ———
 
 export function dailyNotes(state: EngineState): void {
-  for (const n of readers(state)) {
+  const who = readers(state);
+  if (who.length === 0) return;
+  const pool = unitPool(state, false);
+  for (const n of who) {
     interiorNote(state, n);
     exteriorNote(state, n);
-    militaryNote(state, n);
+    militaryNote(state, n, pool);
   }
 }
 
 function plural(k: number, one: string, many: string): string {
   return `${k} ${k > 1 ? many : one}`;
+}
+
+/** Ligne de compteur : opérations du département en cours. */
+function opsLine(state: EngineState, n: NationId, dept: Department): string {
+  const k = nat(state, n).ops.filter((o) => o.status === 'running' && o.dept === dept).length;
+  return `Opérations en cours : ${k}.`;
 }
 
 function interiorNote(state: EngineState, n: NationId): void {
@@ -219,6 +277,7 @@ function interiorNote(state: EngineState, n: NationId): void {
   if (doubles) lines.push(`${plural(doubles, 'agent double actif', 'agents doubles actifs')}.`);
   const stab = board(state).stability[n];
   if (stab !== undefined) lines.push(`Stabilité : ${Math.round(stab)}/100.`);
+  lines.push(opsLine(state, n, 'interior'));
   ni.log = { sabotage: 0, cyber: 0, rebels: 0, caught: 0, strikes: 0, found: ni.log.found };
   publish(state, n, {
     dept: 'interior',
@@ -297,6 +356,7 @@ function exteriorNote(state: EngineState, n: NationId): void {
     );
     ni.log.found = 0;
   }
+  lines.push(opsLine(state, n, 'exterior'));
   const q = focus.length ? sumQ / focus.length : base;
   publish(state, n, {
     dept: 'exterior',
@@ -312,7 +372,7 @@ function exteriorNote(state: EngineState, n: NationId): void {
   });
 }
 
-function militaryNote(state: EngineState, n: NationId): void {
+function militaryNote(state: EngineState, n: NationId, pool: PoolEntry[]): void {
   const q = quality(state, n, 'military');
   const lines = [pick(state, OPENINGS.military)];
   for (const x of focusNations(state, n, 2)) {
@@ -332,7 +392,7 @@ function militaryNote(state: EngineState, n: NationId): void {
       `• ${nationName(state, x)} : ${top.length ? top.join(', ') : 'aucune force identifiée'}.`,
     );
   }
-  const conc = concentrations(state, n, false, q).sort((a, b) => b.units - a.units)[0];
+  const conc = concentrations(state, n, false, q, pool).sort((a, b) => b.units - a.units)[0];
   let at: LngLat | null = null;
   if (conc && conc.units >= 2) {
     at = conc.at;
@@ -340,8 +400,13 @@ function militaryNote(state: EngineState, n: NationId): void {
       `Présence frontalière : ${approx(state, conc.units, q)} unités de ${nationName(state, conc.owner)}, ${sectorOf(state, conc.at)}.`,
     );
   }
-  const known = Object.values(state.know[n] ?? {}).filter((c) => c.seen).length;
-  lines.push(`Contacts suivis : ${known}.`);
+  const contacts = Object.values(state.know[n] ?? {});
+  const known = contacts.filter((c) => c.seen).length;
+  lines.push(
+    `Contacts suivis : ${known}` +
+      (contacts.length > known ? ` (et ${contacts.length - known} position(s) ancienne(s)).` : '.'),
+  );
+  lines.push(opsLine(state, n, 'military'));
   publish(state, n, {
     dept: 'military',
     source: 'sigint',

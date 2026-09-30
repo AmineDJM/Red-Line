@@ -248,6 +248,8 @@ function resolveTarget(
       return { victim: v, target: { nationId: v } };
     }
     default:
+      // Faux rapport : une zone donnée en fait un faux mouvement de forces (sinon de fausses intentions).
+      if (kind === 'plant_fake_report' && target.at) t.at = target.at;
       return { victim: t.nationId!, target: t };
   }
 }
