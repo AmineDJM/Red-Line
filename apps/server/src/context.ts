@@ -4,10 +4,18 @@ import type { Config } from './config.js';
 import type { Db } from './db/client.js';
 import type { Engine } from './engine.js';
 import type { GameData } from './data/loader.js';
+import type { DataStore } from './data/store.js';
 import type { WorldRegistry } from './host/worlds.js';
 import type { GameHost } from './host/game-host.js';
 import type { Auth } from './auth/auth.js';
 import type { ProcessMetrics } from './metrics.js';
+import type { ShopConfig } from './shop/config.js';
+import type { PaymentProvider } from './shop/payments.js';
+import type { LegalService } from './legal/legal.js';
+import type { Fingerprints } from './security/fingerprints.js';
+import type { ChatService } from './chat/chat.js';
+import type { PushService } from './push/push.js';
+import type { RankingService } from './rank/rankings.js';
 
 export interface RuntimeOptions {
   /** Requêtes d'authentification par minute et par IP. */
@@ -18,6 +26,11 @@ export interface RuntimeOptions {
   /** Intervalle minimal entre deux diffs d'une partie (ms). */
   flushIntervalMs: number;
   keepSnapshots: number;
+  /** Messagerie : messages par seconde (recharge) et rafale, par joueur et par partie. */
+  chatPerSecond: number;
+  chatBurst: number;
+  /** Notifications push : délai minimal entre deux alertes de même catégorie (par joueur et partie). */
+  pushThrottleMs: number;
 }
 
 export interface AppContext {
@@ -27,10 +40,21 @@ export interface AppContext {
   sql: postgres.Sql;
   engine: Engine | null;
   engineMissing: string[];
+  /** Données du dépôt (data/). */
   data: GameData;
+  /** Données effectives (dépôt + modifications versionnées du back-office). */
+  store: DataStore;
   worlds: WorldRegistry;
   host: GameHost;
   auth: Auth;
   metrics: ProcessMetrics;
   log: FastifyBaseLogger;
+  shop: ShopConfig;
+  /** null = paiements indisponibles (clés Stripe absentes). */
+  payments: PaymentProvider | null;
+  legal: LegalService;
+  fingerprints: Fingerprints;
+  chat: ChatService;
+  push: PushService;
+  rankings: RankingService;
 }

@@ -89,6 +89,10 @@ export async function authRoutes(app: FastifyInstance, ctx: AppContext): Promise
   app.get('/api/me', async (req, reply) => {
     const state = await auth.authenticate(req, reply);
     if (!state) throw new HttpError(401, 'unauthorized', 'Non connecté');
-    return { user: toPublicUser(state.user) };
+    return {
+      user: toPublicUser(state.user),
+      legal: { needsAcceptance: await ctx.legal.needsAcceptance(state.user.id) },
+      premiumBalance: state.user.premiumBalance,
+    };
   });
 }
