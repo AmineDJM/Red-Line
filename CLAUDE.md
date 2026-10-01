@@ -37,6 +37,11 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
   cercle ; entrée dans les zones circulaires calculée exactement ; croisements mobiles par recherche bornée.
 - Navigation sur grille H3 résolution 4 ; `cells.json.impassable` = terres sans propriétaire (Antarctique, zones
   tampons), infranchissables. Le terrain n'influence jamais le combat.
+- **Réseau de routes** (`data/map/routes.json`, `pnpm --filter @redline/tools-map routes`, graphe `RoadNet` de
+  `packages/shared`) : les unités terrestres ne circulent que sur les routes (villes = points de capture, centres,
+  ports, passages de frontière, carrefours) ; destination accrochée à moins de `movement.roadSnapKm`, sinon ordre
+  refusé (`off_road`) ; traversées de port à port sur la grille navale. Air et mer : trajets libres inchangés.
+  Unité hors réseau (ancienne sauvegarde) : termine son trajet, puis rejoint la route la plus proche.
 - Guerre déclarée automatiquement par un ordre d'attaque ou l'entrée dans une province étrangère.
 - Persistance : instantanés compressés + journal d'ordres ; reprise = instantané + rejeu. Bail de partie en base
   (colonnes `lease_owner`/`lease_until`) ; ne jamais fixer `INSTANCE_ID` à une constante sur Render.

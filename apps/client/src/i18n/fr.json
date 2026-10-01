@@ -354,6 +354,7 @@
         "capacity": "Capacité maximale atteinte.",
         "cooldown": "Action en recharge.",
         "insufficient_resources": "Ressources insuffisantes.",
+        "off_road": "Hors du réseau de routes : visez une ville, un nœud ou une route.",
         "disconnected": "Hors ligne : ordre non transmis.",
         "timeout": "Pas de réponse du serveur."
       }

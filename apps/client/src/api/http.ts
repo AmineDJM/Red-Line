@@ -24,6 +24,7 @@ import type {
   TimelapseView,
   WalletEntry,
   WeaponSystem,
+  RoutesFile,
 } from '@redline/shared';
 import { bundledResearch } from '../lib/staticData.js';
 import { BASEMAP_FILES, FALLBACK_TILES, FONTS } from '../config.js';
@@ -138,6 +139,13 @@ export class HttpApi implements Api {
   }
   async provincesGeoJSON(): Promise<FeatureCollection> {
     return request<FeatureCollection>('GET', '/api/map/provinces.geojson');
+  }
+  async routes(): Promise<RoutesFile | null> {
+    try {
+      return await request<RoutesFile>('GET', '/api/map/routes');
+    } catch {
+      return null;
+    }
   }
   async tiles(): Promise<TilesInfo | null> {
     try {

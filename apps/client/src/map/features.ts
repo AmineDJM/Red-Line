@@ -6,6 +6,7 @@ import {
   legAt,
   geodesicCircle,
   greatCircleLine,
+  unwrapLngs,
   movementEnd,
   positionAt,
   type GameTime,
@@ -621,14 +622,17 @@ export interface PreviewInput {
   kind: 'move' | 'attack';
   from: LngLat[];
   to: LngLat;
+  /** Trajet réel par unité (routes des unités terrestres) ; absent ou null : grand cercle. */
+  paths?: ({ pts: LngLat[]; km: number } | null)[];
 }
 
-/** Aperçu d'un ordre : lignes en grand cercle, flèche orientée à l'arrivée, triangles de lancement. */
+/** Aperçu d'un ordre : trajets (routes ou grand cercle), flèche orientée à l'arrivée, triangles de lancement. */
 export function previewFeatures(p: PreviewInput) {
   const lines: Feature<LineString>[] = [];
   const pts: Feature<Point>[] = [];
   p.from.forEach((f, i) => {
-    const coords = greatCircleLine(f, p.to, 40);
+    const path = p.paths?.[i];
+    const coords = path ? unwrapLngs(path.pts) : greatCircleLine(f, p.to, 40);
     if (coords.length < 2) return;
     lines.push({
       type: 'Feature',
@@ -678,7 +682,7 @@ export function previewFeatures(p: PreviewInput) {
   return {
     lines: fc(lines),
     points: fc(pts),
-    distanceKm: p.from[0] ? distanceKm(p.from[0], p.to) : 0,
+    distanceKm: p.paths?.[0] ? p.paths[0].km : p.from[0] ? distanceKm(p.from[0], p.to) : 0,
   };
 }
 

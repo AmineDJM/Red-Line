@@ -75,6 +75,29 @@ describe('réseau de routes', () => {
     expect(bad).toEqual([]);
   });
 
+  it('pays tiers : une route ne traverse que les nations de ses extrémités (sauf enclaves)', () => {
+    const nationOf = new Map(provinces.map((p) => [p.id, p.nationId]));
+    const nationAt = (p: LngLat) => nationOf.get(land.get(cellOf(p, res)) ?? '') ?? '';
+    const bad: string[] = [];
+    routes.edges.forEach((e, i) => {
+      const ok = new Set(
+        [routes.nodes[e.a]!.province, routes.nodes[e.b]!.province].map((p) => nationOf.get(p)),
+      );
+      const pts = line(i);
+      const seen = new Set<string>();
+      for (let k = 0; k + 1 < pts.length; k++) {
+        const n = Math.max(1, Math.ceil(distanceKm(pts[k]!, pts[k + 1]!) / ROUTES.sampleKm));
+        for (let j = 1; j < n; j++) {
+          const x = nationAt(interpolate(pts[k]!, pts[k + 1]!, j / n));
+          if (x && !ok.has(x)) seen.add(x);
+        }
+      }
+      if (seen.size) bad.push(`${routes.nodes[e.a]!.id} → ${routes.nodes[e.b]!.id} : ${[...seen]}`);
+    });
+    // Enclaves, exclaves et frontières découpées (Nakhitchevan, Neum…) : quelques cas inévitables.
+    expect(bad.length, bad.join('\n')).toBeLessThanOrEqual(30);
+  });
+
   it('ports : au bord d’une mer navigable', () => {
     const ports = routes.nodes.filter((n) => n.port);
     expect(ports.length).toBeGreaterThan(800);
@@ -151,8 +174,9 @@ describe('réseau de routes', () => {
           )
             crossings.add(`${Math.min(A[0], B[0])}|${Math.max(A[0], B[0])}`);
         }
-    // Tolérance : quelques croisements dus à l'arrondi des points de passage.
-    expect(crossings.size).toBeLessThanOrEqual(5);
+    // Tolérance : quelques croisements sans carrefour possible (le carrefour sortirait des nations
+    // reliées ou de la terre praticable).
+    expect(crossings.size).toBeLessThanOrEqual(15);
   });
 
   it('graphe partagé : plus court chemin Paris → Lyon le long des routes', () => {

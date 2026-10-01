@@ -42,6 +42,8 @@ export function localData(dataDir: string, tilesDir = path.join(dataDir, 'tiles'
             return send({ nations: list(readJson('map/nations.json'), 'nations') });
           if (url === '/api/map/provinces')
             return send({ provinces: list(readJson('map/provinces.json'), 'provinces') });
+          if (url === '/api/map/routes' && fs.existsSync(path.join(dataDir, 'map/routes.json')))
+            return send(readJson('map/routes.json'));
           if (url === '/api/map/provinces.geojson') {
             res.setHeader('Content-Type', 'application/geo+json');
             fs.createReadStream(path.join(dataDir, 'map/provinces.geojson')).pipe(res);

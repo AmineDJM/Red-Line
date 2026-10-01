@@ -31,7 +31,7 @@ export const ROUTES = {
   /** Un centre de province devient un nœud s'il est au moins à cette distance de la ville. */
   centerMinKm: 70,
   /** Pas d'échantillonnage de la vérification « toujours sur la terre praticable ». */
-  sampleKm: 4,
+  sampleKm: 2,
   /** Élagage : une liaison est retirée si un détour par un voisin commun n'est pas plus long que ×. */
   detourRatio: 1.22,
   /** Taille minimale d'une étendue d'eau pour qu'un port y donne accès (en cellules). */
@@ -46,6 +46,8 @@ export const ROUTES = {
   simplifyKm: 1.6,
   /** Coût d'une cellule hors des provinces reliées (A*). */
   foreignCost: 3,
+  /** Coût d'une cellule d'une nation tierce (traverser un pays tiers déclarerait la guerre). */
+  thirdNationCost: 40,
   maxExpand: 60000,
 } as const;
 
@@ -220,6 +222,7 @@ export function generateRoutes(input: RoutesInput): { file: RoutesFile; stats: R
     to: Cell,
     home: Set<string> | null,
     comp: number,
+    nations: Set<string>,
   ): Cell[] | null => {
     if (from === to) return [from];
     const g = new Map<Cell, number>([[from, 0]]);
@@ -278,7 +281,15 @@ export function generateRoutes(input: RoutesInput): { file: RoutesFile; stats: R
       const gc = g.get(c)!;
       for (const n of nb(c)) {
         if (closed.has(n) || !land.has(n) || landComp.get(n) !== comp) continue;
-        const w = home && !home.has(land.get(n)!) ? ROUTES.foreignCost : 1;
+        const pn = land.get(n)!;
+        const w =
+          home && home.has(pn)
+            ? 1
+            : !nations.has(nationOf(pn))
+              ? ROUTES.thirdNationCost
+              : home
+                ? ROUTES.foreignCost
+                : 1;
         const t = gc + distanceKm(center(c), center(n)) * w;
         if (t < (g.get(n) ?? Infinity)) {
           g.set(n, t);
@@ -407,11 +418,15 @@ export function generateRoutes(input: RoutesInput): { file: RoutesFile; stats: R
   ): { pts: LngLat[]; scale: number } | null => {
     const comp = compOfNode(a);
     if (comp < 0 || comp !== compOfNode(b)) return null;
-    const cells = cellPath(nodeCell[a]!, nodeCell[b]!, home, comp);
+    const nations = new Set([nationOf(nodes[a]!.province), nationOf(nodes[b]!.province)]);
+    const cells = cellPath(nodeCell[a]!, nodeCell[b]!, home, comp, nations);
     if (!cells) return null;
     const used = new Set(cells);
     const ok = (c: Cell) =>
-      used.has(c) || (land.has(c) && landComp.get(c) === comp && (!home || home.has(land.get(c)!)));
+      used.has(c) ||
+      (land.has(c) &&
+        landComp.get(c) === comp &&
+        (home ? home.has(land.get(c)!) : nations.has(nationOf(land.get(c)!))));
     const pa = nodes[a]!.pos;
     const pb = nodes[b]!.pos;
     const raw: LngLat[] = [pa, ...cells.map(center), pb];
@@ -675,7 +690,8 @@ export function generateRoutes(input: RoutesInput): { file: RoutesFile; stats: R
       }
       if (!hit || !land.has(cellOf(hit.p, res))) continue;
       // Le carrefour dévie un peu les deux tracés : ils doivent rester sur la terre praticable.
-      const onLand = (c: Cell) => land.has(c);
+      const allowed = new Set([...A.nations, ...B.nations]);
+      const onLand = (c: Cell) => land.has(c) && allowed.has(nationOf(land.get(c)!));
       const p = hit.p;
       const bent = [
         [A.pts[hit.ia]!, p, A.pts[hit.ia + 1]!],

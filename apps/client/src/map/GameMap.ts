@@ -67,6 +67,15 @@ import { isMoving, unitPosition } from './interpolation.js';
 import { useMapLayers } from './layers.js';
 import { OverlayRenderer, type OverlayContent, type RingLabel } from './overlay.js';
 import {
+  RoadLayer,
+  magnetKm,
+  roadPath,
+  roadPathMs,
+  snapToRoads,
+  type RoadPath,
+  type RoadSnap,
+} from './routes.js';
+import {
   PION_H,
   PION_ICON_OFFSET,
   PION_W,
@@ -211,6 +220,9 @@ export class GameMap {
   private box: { x0: number; y0: number; el: HTMLDivElement } | null = null;
   private domListeners: [EventTarget, string, EventListener, AddEventListenerOptions?][] = [];
   private cityThresholds: [number, number] = [Infinity, Infinity];
+  /** Couche « routes » (réseau des unités terrestres) et trajets d'aperçu en cache. */
+  private roadLayer: RoadLayer | null = null;
+  private roadPaths = new Map<string, RoadPath | null>();
   /** Diagnostic : nombre de résolutions demandées par image. */
   readonly resolveCount = new Map<string, number>();
   private perf = { ticks: 0, total: 0, max: 0, group: 0, groups: 0, pions: 0, skipped: 0 };
@@ -392,7 +404,10 @@ export class GameMap {
     this.ready = true;
     this.map.on('click', (e) => this.onClick(e));
     this.map.on('mousemove', (e) => this.onHover(e));
-    this.map.on('mouseout', () => this.clearHover());
+    this.map.on('mouseout', () => {
+      this.clearHover();
+      this.roadLayer?.marker(null, true);
+    });
     this.listen(
       this.container,
       'pointerdown',
@@ -418,6 +433,16 @@ export class GameMap {
       return;
     }
     if (this.opts.fog) this.startFog();
+    this.roadLayer = new RoadLayer(this.map, 'radar-foreign');
+    this.roadLayer.attach(useWorld.getState().roads);
+    this.unsubs.push(
+      useWorld.subscribe((s, prev) => {
+        if (s.roads === prev.roads) return;
+        this.roadLayer?.attach(s.roads);
+        this.roadPaths.clear();
+        this.refreshSelection();
+      }),
+    );
 
     this.unsubs.push(
       useGame.subscribe((s, prev) => {
@@ -462,6 +487,42 @@ export class GameMap {
 
   private src(id: string): GeoJSONSource | undefined {
     return this.map.getSource(id) as GeoJSONSource | undefined;
+  }
+
+  /** La sélection compte-t-elle une unité terrestre (déplacements sur le réseau de routes) ? */
+  private landSelected(ids: UnitId[] = useUi.getState().selection): boolean {
+    const { view } = useGame.getState();
+    const catalog = useWorld.getState().catalog;
+    return ids.some((id) => {
+      const s = view?.units[id]?.systemId;
+      return !!s && catalog[s]?.movement === 'land';
+    });
+  }
+
+  /**
+   * Destination accrochée au réseau de routes pour la sélection : undefined si l'accrochage ne
+   * s'applique pas (aucune unité terrestre, réseau absent), null si le point est hors du réseau.
+   */
+  private roadTarget(at: LngLat): RoadSnap | null | undefined {
+    const w = useWorld.getState();
+    if (!w.roads || !this.landSelected()) return undefined;
+    return snapToRoads(w.roads, at, {
+      ...magnetKm(at[1], this.map.getZoom(), this.lastPointer),
+      maxKm: w.balance?.movement.roadSnapKm,
+    });
+  }
+
+  /** Trajet d'aperçu le long des routes (mis en cache : recalculé ~4 Hz pendant les mouvements). */
+  private roadPathFor(from: LngLat, to: LngLat): RoadPath | null {
+    const w = useWorld.getState();
+    if (!w.roads) return null;
+    const key = `${from[0].toFixed(4)},${from[1].toFixed(4)}>${to[0]},${to[1]}`;
+    const hit = this.roadPaths.get(key);
+    if (hit !== undefined) return hit;
+    const p = roadPath(w.roads, from, to, w.balance?.movement.embarkedSpeedFactor);
+    if (this.roadPaths.size > 64) this.roadPaths.clear();
+    this.roadPaths.set(key, p);
+    return p;
   }
 
   private emptySources = new Set<string>();
@@ -1062,20 +1123,31 @@ export class GameMap {
     }
 
     const pending = ui.pendingOrder;
+    this.roadLayer?.emphasize(this.landSelected(pending?.unitIds ?? ui.selection));
+    if (!ui.selection.length) this.roadLayer?.marker(null, true);
     if (pending && view) {
-      const from = pending.unitIds
-        .map(
-          (id) =>
+      const placed = pending.unitIds
+        .map((id) => ({
+          id,
+          at:
             this.positions.get(id) ??
             (view.units[id] ? unitPosition(view.units[id], gameNow()) : undefined),
-        )
-        .filter((p): p is LngLat => !!p);
+        }))
+        .filter((x): x is { id: UnitId; at: LngLat } => !!x.at);
+      const from = placed.map((x) => x.at);
       const target =
         pending.kind === 'move'
           ? pending.to
           : (this.positions.get(pending.targetId) ?? view.units[pending.targetId]?.pos);
       if (from.length && target) {
-        const pv = previewFeatures({ kind: pending.kind, from, to: target });
+        // Unités terrestres : trajet réel le long des routes (traversée par les ports si besoin).
+        const paths =
+          pending.kind === 'move'
+            ? placed.map(({ id, at }) =>
+                this.landSelected([id]) ? this.roadPathFor(at, target) : null,
+              )
+            : undefined;
+        const pv = previewFeatures({ kind: pending.kind, from, to: target, paths });
         this.set('preview', pv.lines);
         this.set('preview-pts', pv.points);
         this.animState.preview = true;
@@ -1086,8 +1158,15 @@ export class GameMap {
           .map((s) => (s ? catalog[s]?.speedKmh : undefined))
           .filter((v): v is number => !!v && v > 0);
         if (pending.kind === 'move' && speeds.length) {
-          const eta = (pv.distanceKm / Math.min(...speeds)) * 3600_000;
-          text = t('map.order.eta', { distance: text, eta: fmtDuration(eta) });
+          const road = paths?.[0];
+          const bal = useWorld.getState().balance?.movement;
+          const eta = road
+            ? roadPathMs(road, Math.min(...speeds), bal?.embarkedSpeedFactor, bal?.embarkMinutes)
+            : (pv.distanceKm / Math.min(...speeds)) * 3600_000;
+          text = t(road?.seaKm ? 'map.order.etaSea' : 'map.order.eta', {
+            distance: text,
+            eta: fmtDuration(eta),
+          });
         }
         if (main)
           routes.push({
@@ -1333,11 +1412,18 @@ export class GameMap {
     }
     const hit = this.tipTargetAt(e.point.x, e.point.y);
     const onUnit = hit?.key.startsWith('u:');
+    // Unités terrestres sélectionnées : accrochage magnétique au réseau de routes sous le pointeur.
+    const at: LngLat = [e.lngLat.lng, e.lngLat.lat];
+    const snap = !onUnit && useUi.getState().selection.length ? this.roadTarget(at) : undefined;
+    if (snap === undefined) this.roadLayer?.marker(null, true);
+    else this.roadLayer?.marker(snap ? snap.pos : at, !!snap);
     this.map.getCanvas().style.cursor = onUnit
       ? 'pointer'
-      : useUi.getState().selection.length
-        ? 'crosshair'
-        : '';
+      : snap === null
+        ? 'not-allowed'
+        : useUi.getState().selection.length
+          ? 'crosshair'
+          : '';
     if (!hit) {
       this.clearHover();
       return;
@@ -1540,7 +1626,15 @@ export class GameMap {
       return;
     }
     if (ui.selection.length) {
-      ui.setPending({ kind: 'move', unitIds: ui.selection, to: at });
+      // Unités terrestres : destination accrochée au réseau de routes (ville, nœud ou route).
+      const snap = this.roadTarget(at);
+      if (snap === null) {
+        this.roadLayer?.marker(at, false);
+        ui.toast(t('game.orders.errors.off_road'), 'error');
+        return;
+      }
+      this.roadLayer?.marker(null, true);
+      ui.setPending({ kind: 'move', unitIds: ui.selection, to: snap ? snap.pos : at });
       return;
     }
     // Aucune sélection : sélection de la province (production), fin d'inspection.
