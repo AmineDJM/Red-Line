@@ -2,7 +2,7 @@ import { hostname } from 'node:os';
 import { randomBytes } from 'node:crypto';
 import { isAbsolute, join, resolve } from 'node:path';
 import { z } from 'zod';
-import { REPO_ROOT, SERVER_ROOT } from './paths.js';
+import { REPO_ROOT } from './paths.js';
 
 const boolish = z
   .union([z.boolean(), z.string()])
@@ -39,8 +39,14 @@ const EnvSchema = z.object({
   VAPID_PUBLIC_KEY: z.string().min(1).optional(),
   VAPID_PRIVATE_KEY: z.string().min(1).optional(),
   VAPID_SUBJECT: z.string().min(1).optional(),
-  /** Dossier des documents légaux (défaut : apps/server/legal). */
+  /** Dossier des documents légaux faisant foi (défaut : apps/site/content/fr/legal). */
   LEGAL_DIR: z.string().optional(),
+  /** Pages publiques prérendues (défaut : apps/site/dist). */
+  SITE_DIST: z.string().optional(),
+  /** Contenus par langue du site (traductions des documents légaux ; défaut : apps/site/content). */
+  SITE_CONTENT_DIR: z.string().optional(),
+  /** E-mail de contact légal par défaut (sinon contact@<domaine de PUBLIC_URL>) ; modifiable au back-office. */
+  LEGAL_CONTACT_EMAIL: z.string().email().optional(),
   /**
    * En-tête portant l'IP réelle du client, posé par le proxy de confiance (Render + Cloudflare :
    * cf-connecting-ip). Absent : adresse de la connexion (X-Forwarded-For de gauche, falsifiable).
@@ -80,6 +86,9 @@ export interface Config {
   vapid: { publicKey: string; privateKey: string } | null;
   vapidSubject: string;
   legalDir: string;
+  siteDist: string;
+  siteContentDir: string;
+  legalContactEmail: string | null;
   /** En-tête (minuscules) de l'IP réelle du client, ou null. */
   clientIpHeader: string | null;
 }
@@ -154,7 +163,10 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
         : null,
     vapidSubject:
       e.VAPID_SUBJECT ?? (e.PUBLIC_URL ? e.PUBLIC_URL : 'mailto:noreply@redline.invalid'),
-    legalDir: abs(e.LEGAL_DIR ?? join(SERVER_ROOT, 'legal')),
+    legalDir: abs(e.LEGAL_DIR ?? join(REPO_ROOT, 'apps/site/content/fr/legal')),
+    siteDist: abs(e.SITE_DIST ?? join(REPO_ROOT, 'apps/site/dist')),
+    siteContentDir: abs(e.SITE_CONTENT_DIR ?? join(REPO_ROOT, 'apps/site/content')),
+    legalContactEmail: e.LEGAL_CONTACT_EMAIL?.toLowerCase() ?? null,
     clientIpHeader: e.CLIENT_IP_HEADER?.toLowerCase() ?? null,
   };
 }

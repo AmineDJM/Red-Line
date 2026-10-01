@@ -26,6 +26,9 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
 - `apps/server` : Fastify + WebSocket + PostgreSQL (Drizzle) ; sert aussi `apps/client/dist` (`/`) et
   `apps/admin/dist` (`/admin/`).
 - `apps/client` : jeu (React, Vite, MapLibre, Zustand, i18next). `apps/admin` : back-office.
+- `apps/site` : pages publiques prérendues au build (SEO : accueil, guide, nations, arsenal, FAQ, légal), contenus
+  par langue dans `apps/site/content/<langue>/` (site.json + legal/*.md, le français fait foi), servies sous
+  `/<langue>/…` par `apps/server/src/http/site.ts` (jetons `{{origin}}` = `PUBLIC_URL`, `{{legal.*}}` = back-office).
 - `data/` : catalogue, équilibrage, scénarios, carte (générée), fond de carte, glyphes, tuiles satellite.
 - `tools/map`, `tools/tiles`, `tools/glyphs` : pipelines reproductibles qui produisent `data/`.
 - `e2e/` : Playwright contre le vrai serveur. `docs/` : architecture, déploiement, bilans.

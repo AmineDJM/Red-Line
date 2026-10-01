@@ -176,6 +176,17 @@ export const SCREENS: ScreenDef[] = [
     role: 'moderator',
   },
   {
+    id: 'legal',
+    route: { name: 'legal' },
+    match: ['legal'],
+    label: T.nav.legal,
+    ps: 'Reglages\\Legal',
+    alias: 'legal',
+    icon: 'legal',
+    group: 'system',
+    role: 'moderator',
+  },
+  {
     id: 'data',
     route: { name: 'data' },
     match: ['data'],

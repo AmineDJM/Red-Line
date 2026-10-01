@@ -31,6 +31,10 @@ import { RankingService } from './rank/rankings.js';
 import { lobbyRoutes } from './multi/lobby.js';
 import { gameExtraRoutes } from './http/games-extra.js';
 import { clientIp, registerSecurity } from './http/security.js';
+import { publicOrigin } from './http/origin.js';
+import { SitePages, siteRoutes } from './http/site.js';
+import { LegalSettingsService } from './legal/settings.js';
+import { adminSettingsRoutes } from './admin/settings-routes.js';
 
 export interface BuildAppOptions {
   config: Config;
@@ -165,7 +169,10 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
       payments = null;
       log.warn('STRIPE_SECRET_KEY / STRIPE_WEBHOOK_SECRET absentes : paiements indisponibles');
     }
-    const legal = new LegalService(dbh.db, config.legalDir, log);
+    const legal = new LegalService(dbh.db, config.legalDir, log, config.siteContentDir);
+    const legalSettings = new LegalSettingsService(dbh.db, log, config.legalContactEmail);
+    await legalSettings.init();
+    const site = new SitePages(config.siteDist, legalSettings, log);
     const chat = new ChatService({
       db: dbh.db,
       host,
@@ -265,15 +272,22 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
     await app.register(async (scope) => lobbyRoutes(scope, ctx));
     await app.register(async (scope) => shopRoutes(scope, ctx));
     await app.register(async (scope) =>
-      legalRoutes(scope, { legal, auth, hashIp: (ip) => fingerprints.hashIp(ip) }),
+      legalRoutes(scope, {
+        legal,
+        auth,
+        hashIp: (ip) => fingerprints.hashIp(ip),
+        tokens: (req) => site.tokens(publicOrigin(config, req)),
+      }),
     );
+    await app.register(async (scope) => siteRoutes(scope, ctx, site));
+    await app.register(async (scope) => adminSettingsRoutes(scope, ctx, legalSettings));
     await app.register(async (scope) => push.routes(scope, auth));
     await app.register(async (scope) => rankings.routes(scope));
     await app.register(async (scope) => adminRoutes(scope, ctx));
     await app.register(async (scope) => adminDataRoutes(scope, ctx));
     await app.register(async (scope) => adminOpsRoutes(scope, ctx));
     await app.register(async (scope) => wsGateway(scope, ctx));
-    await staticRoutes(app, ctx);
+    await staticRoutes(app, ctx, site);
 
     // Arrêt propre : instantanés + libération des baux, puis fermeture de la base.
     app.addHook('onClose', async () => {

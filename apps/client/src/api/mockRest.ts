@@ -696,6 +696,18 @@ Données traitées : identifiant de compte, adresse e-mail (comptes inscrits), h
 
 Le contenu numérique fourni immédiatement après l’achat entraîne, avec votre accord exprès, la renonciation au droit de rétractation de quatorze jours.`,
   ],
+  mentions: [
+    'Mentions légales',
+    `# Mentions légales
+
+**Version de démonstration.** Éditeur, hébergeur et crédits : voir la page publique.`,
+  ],
+  cookies: [
+    'Cookies et stockage local',
+    `# Cookies
+
+**Version de démonstration.** Un seul cookie strictement nécessaire (session), aucun traceur publicitaire.`,
+  ],
 };
 
 export function demoLegal(id: LegalDoc['id']): LegalDoc {

@@ -120,6 +120,47 @@
     },
     "flash": {
       "game_deleted": "Cette partie a été supprimée : vous êtes revenu à l'accueil."
+    },
+    "info": {
+      "title": "Le jeu en bref",
+      "about": "Découvrir le jeu",
+      "figures": {
+        "nations": "nations jouables",
+        "provinces": "provinces",
+        "systems": "matériels réels",
+        "players": "joueurs par partie"
+      },
+      "live": {
+        "games_one": "{{n}} partie en cours",
+        "games_other": "{{n}} parties en cours",
+        "players_one": "{{n}} joueur en ligne",
+        "players_other": "{{n}} joueurs en ligne"
+      },
+      "blocks": {
+        "map": {
+          "title": "Temps réel, vraie carte",
+          "text": "Imagerie satellite, 2 567 provinces, trajets en grand cercle. Le monde continue quand vous êtes déconnecté."
+        },
+        "arsenal": {
+          "title": "Arsenaux et budgets réels",
+          "text": "Ordres de bataille 2025, budgets de défense en dollars, 406 matériels réels produits selon votre R&D."
+        },
+        "intel": {
+          "title": "Renseignement et diplomatie",
+          "text": "Espions, satellites et brouillard de guerre ; alliances, licences et votes au Conseil de sécurité."
+        },
+        "multi": {
+          "title": "Solo ou jusqu'à 64 joueurs",
+          "text": "Seul contre plus de deux cents IA, ou en partie persistante multijoueur. Classements par saison."
+        }
+      },
+      "links": {
+        "howto": "Comment jouer",
+        "features": "Fonctionnalités",
+        "nations": "Nations",
+        "arsenal": "Arsenal",
+        "faq": "FAQ"
+      }
     }
   },
   "auth": {
@@ -803,12 +844,14 @@
     "noImagery": "Imagerie satellite indisponible : fond vectoriel"
   },
   "legal": {
-    "title": "Mentions légales",
+    "title": "Informations légales",
     "docs": {
       "cgu": "Conditions d'utilisation",
       "cgv": "Conditions de vente",
       "privacy": "Confidentialité",
-      "withdrawal": "Rétractation"
+      "withdrawal": "Rétractation",
+      "mentions": "Mentions légales",
+      "cookies": "Cookies"
     },
     "path": "legal",
     "version": "Version {{version}} · mise à jour le {{date}}",
@@ -1072,6 +1115,14 @@
     }
   },
   "shop": {
+    "consent": {
+      "title": "Confirmer l'achat",
+      "summary": "{{label}} :",
+      "cgv": "J'ai lu et j'accepte les",
+      "waiver": "Je demande la fourniture immédiate de la monnaie premium et je renonce expressément à mon droit de rétractation dès sa livraison (art. L221-28 13° du Code de la consommation).",
+      "pay": "Commander avec obligation de paiement · {{price}}",
+      "error": "Impossible d'ouvrir le paiement. Réessayez."
+    },
     "accelerated": "Accélération appliquée · solde {{balance}}",
     "notEnough": "Solde de monnaie premium insuffisant.",
     "unavailable": "Boutique indisponible.",

@@ -197,7 +197,7 @@ export interface Metrics {
  *   GET  /api/seasons                             → { seasons: SeasonView[] }
  *
  * Légal (textes à faire valider par un professionnel)
- *   GET  /api/legal/:doc      doc ∈ cgu|cgv|privacy|withdrawal → { doc: LegalDoc }
+ *   GET  /api/legal/:doc?lang= doc ∈ cgu|cgv|privacy|withdrawal|mentions|cookies → { doc: LegalDoc }
  *   POST /api/legal/accept     { docs: {id, version}[] } → { ok }
  *   GET  /api/me → { user, legal: { needsAcceptance: LegalDocRef[] } }   (champ ajouté)
  *
@@ -341,13 +341,16 @@ export interface TimelapseView {
 }
 
 export interface LegalDocRef {
-  id: 'cgu' | 'cgv' | 'privacy' | 'withdrawal';
+  /** mentions et cookies : informatifs, jamais soumis à acceptation. */
+  id: 'cgu' | 'cgv' | 'privacy' | 'withdrawal' | 'mentions' | 'cookies';
   version: number;
 }
 export interface LegalDoc extends LegalDocRef {
   title: string;
   markdown: string;
   updatedAt: string;
+  /** Langue du texte renvoyé (la version française fait foi). */
+  lang?: string;
 }
 
 export const WorldEventBodySchema = z.object({

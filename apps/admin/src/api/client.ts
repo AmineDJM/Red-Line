@@ -11,6 +11,7 @@ import type {
   ChangeScope,
   DisputedArea,
   ImportBodySchema,
+  LegalSettings,
   Metrics,
   NationDef,
   Orbat,
@@ -49,6 +50,16 @@ import type {
 } from './types';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
+/** GET/PUT /admin/api/settings/legal (apps/server/src/admin/settings-routes.ts). */
+export interface LegalSettingsView {
+  settings: LegalSettings;
+  stored: Partial<LegalSettings>;
+  defaults: LegalSettings;
+  effective: { contactEmail: string };
+  publicUrl: string | null;
+  envContactEmail: string | null;
+}
 
 /** Corps exacts attendus par le serveur (types de sortie des schémas zod partagés). */
 export type SaveSystemBody = ReturnType<(typeof SaveSystemBodySchema)['parse']>;
@@ -312,6 +323,11 @@ export function createApi(t: Transport, onUnauthorized?: () => void) {
       req<{ purchases: Purchase[] }>('GET', `/admin/api/purchases${query(q)}`),
     refund: (id: string) =>
       req<{ ok: boolean; balance: number }>('POST', `/admin/api/purchases/${enc(id)}/refund`),
+
+    // ——— Réglages › Légal
+    legalSettings: () => req<LegalSettingsView>('GET', '/admin/api/settings/legal'),
+    saveLegalSettings: (b: LegalSettings) =>
+      req<LegalSettingsView>('PUT', '/admin/api/settings/legal', b),
 
     // ——— Journal
     audit: (limit = 300) =>

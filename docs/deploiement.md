@@ -100,6 +100,63 @@ notifications exigent que le joueur ait ajouté Red Line à l'écran d'accueil.
 3. Mettre `PUBLIC_URL` à la nouvelle adresse, et mettre à jour l'URL du webhook Stripe (étape 4).
 4. Le jeu, le back-office et l'API restent sur **la même adresse** : c'est voulu (cookies de session acceptés par
    tous les navigateurs, Safari compris). Ne pas séparer le back-office sur un autre sous-domaine.
+5. **`PUBLIC_URL` est aussi l'adresse de référence pour les moteurs de recherche** : URL canoniques, balises
+   `hreflang`, sitemap, images de partage (Open Graph, Twitter) et e-mail de contact par défaut
+   (`contact@<domaine>`) en dépendent. Sans elle, ces adresses sont déduites de chaque requête (acceptable en
+   essai, à éviter en production : l'adresse `onrender.com` serait indexée en double).
+
+## 6 bis. Référencement (Google, Bing) et informations légales
+
+Les pages publiques sont **prérendues au build** (`apps/site`, aucune action manuelle) et servies par le serveur :
+
+| Adresse                                                                                                      | Contenu                                                       |
+| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------- |
+| `/`                                                                                                          | le jeu (en-tête SEO, JSON-LD `VideoGame`, image de partage)   |
+| `/fr/`, `/en/`                                                                                               | accueil public par langue                                     |
+| `/fr/comment-jouer/`, `/en/how-to-play/`                                                                     | guide du débutant                                             |
+| `/fr/fonctionnalites/`, `/fr/nations/`, `/fr/faq/`                                                           | fonctionnalités, 201 nations et budgets 2025, FAQ (`FAQPage`) |
+| `/fr/arsenal/` + 6 familles                                                                                  | les 406 matériels, photos créditées, prix unitaires           |
+| `/fr/mentions-legales/`, `/fr/confidentialite/`, `/fr/cookies/`, `/fr/cgu/`, `/fr/cgv/`, `/fr/retractation/` | documents légaux (et leurs versions anglaises)                |
+| `/sitemap.xml`, `/robots.txt`                                                                                | plan du site (avec `hreflang`) et consignes d'exploration     |
+
+**Avant d'ouvrir au public**
+
+1. Back-office → **Réglages › Légal** : vérifier l'éditeur (pré-rempli), renseigner le **médiateur de la
+   consommation** et l'**e-mail de contact** (vide = `LEGAL_CONTACT_EMAIL`, sinon `contact@<domaine>` : créer
+   cette boîte, ou une redirection, chez le registraire). Les pages sont mises à jour aussitôt.
+2. Variable facultative `LEGAL_CONTACT_EMAIL` (Render → **Environment**) : adresse de contact par défaut.
+3. Ouvrir `https://<domaine>/fr/mentions-legales/` et `…/sitemap.xml` : les adresses doivent commencer par le
+   domaine définitif.
+
+**Google Search Console** (search.google.com/search-console)
+
+1. **Ajouter une propriété** → type **Domaine** → saisir `votre-domaine.fr` → Google affiche un enregistrement
+   DNS `TXT` (`google-site-verification=…`) : l'ajouter chez le registraire, puis **Valider** (quelques minutes à
+   quelques heures). Le type « Domaine » couvre `www`, `https` et tous les sous-domaines.
+2. Menu **Sitemaps** → saisir `sitemap.xml` → **Envoyer**. L'état passe à « Opération effectuée » ; les pages
+   apparaissent dans **Pages** sous quelques jours.
+3. **Inspection de l'URL** → coller `https://<domaine>/fr/` → **Demander l'indexation** (à refaire pour `/en/`).
+4. Contrôles utiles : **Améliorations › Fil d'Ariane** et **FAQ** (données structurées détectées),
+   **Signaux Web essentiels** (après quelques semaines de trafic), outil
+   [Résultats enrichis](https://search.google.com/test/rich-results) sur `/fr/` (VideoGame) et `/fr/faq/`.
+
+**Bing Webmaster Tools** (bing.com/webmasters ; sert aussi Yahoo, DuckDuckGo, Ecosia)
+
+1. **Se connecter** → **Importer depuis Google Search Console** (le plus simple : propriété et sitemap repris), ou
+   **Ajouter un site** → vérification par enregistrement DNS `CNAME`.
+2. **Sitemaps** → **Envoyer un sitemap** → `https://<domaine>/sitemap.xml`.
+3. Facultatif : **IndexNow** n'est pas nécessaire (le sitemap suffit à ce volume de pages).
+
+**Langues** : seules les langues dont `apps/site/content/<langue>/site.json` existe sont construites (français et
+anglais aujourd'hui). Pour en ajouter une : copier `content/en/site.json` (et `content/en/legal/*.md`,
+facultatif) dans `content/<langue>/`, traduire les textes (les clés absentes reprennent l'anglais), puis ajouter la
+langue à `apps/client/src/lib/publicPages.ts`. Les `hreflang`, le sélecteur de langue et le sitemap suivent
+d'eux-mêmes. Les documents légaux traduits ne sont publiés que si leur `version` est celle du texte français, qui
+seul fait foi.
+
+**Image de partage et capture** : `apps/site/static/og/og-<langue>.jpg` et `static/shots/` viennent d'une vraie
+partie ; pour les refaire (après une évolution visible de l'interface) : serveur lancé puis
+`node apps/site/scripts/capture.mjs http://localhost:3000 France`, et committer les fichiers.
 
 ## 7. Sauvegardes de la base
 
@@ -172,23 +229,24 @@ parties non classées.
 
 ## Référence : variables d'environnement
 
-| Variable                                                          | Rôle                                                                     |
-| ----------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| `DATABASE_URL`                                                    | Connexion PostgreSQL (obligatoire)                                       |
-| `SESSION_SECRET`                                                  | Signature des cookies, 32 caractères minimum en production               |
-| `ADMIN_EMAIL`/`ADMIN_PASSWORD`                                    | Super-admin créé ou mis à jour au démarrage                              |
-| `PUBLIC_URL`                                                      | Adresse publique (retours de Stripe Checkout, contact VAPID)             |
-| `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET`                       | Boutique (les deux ensemble)                                             |
-| `CLIENT_IP_HEADER`                                                | En-tête de l'IP réelle posé par le proxy (`cf-connecting-ip` sur Render) |
-| `NODE_OPTIONS`                                                    | Taille du tas JavaScript (`--max-old-space-size=384` en Starter)         |
-| `PORT`                                                            | Fourni par Render                                                        |
-| `MIGRATE_ON_START`                                                | Migrations au démarrage (staging gratuit, sans pré-déploiement)          |
-| `SNAPSHOT_INTERVAL_S`                                             | Fréquence des instantanés de parties (60 s)                              |
-| `LEASE_TTL_S`                                                     | Durée du bail d'une partie (30 s)                                        |
-| `INSTANCE_ID`                                                     | **Laisser vide** (un identifiant unique par instance est généré)         |
-| `VAPID_PUBLIC_KEY`/`VAPID_PRIVATE_KEY`/`VAPID_SUBJECT`            | Facultatif : clés Web Push imposées                                      |
-| `DATA_DIR`, `TILES_DIR`, `CLIENT_DIST`, `ADMIN_DIST`, `LEGAL_DIR` | Chemins ; les valeurs par défaut conviennent                             |
-| `REDLINE_EXTRA_SPEEDS`                                            | Tests uniquement — **refusé en production**                              |
+| Variable                                                                                           | Rôle                                                                        |
+| -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `DATABASE_URL`                                                                                     | Connexion PostgreSQL (obligatoire)                                          |
+| `SESSION_SECRET`                                                                                   | Signature des cookies, 32 caractères minimum en production                  |
+| `ADMIN_EMAIL`/`ADMIN_PASSWORD`                                                                     | Super-admin créé ou mis à jour au démarrage                                 |
+| `PUBLIC_URL`                                                                                       | Adresse publique (retours de Stripe Checkout, contact VAPID)                |
+| `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET`                                                        | Boutique (les deux ensemble)                                                |
+| `CLIENT_IP_HEADER`                                                                                 | En-tête de l'IP réelle posé par le proxy (`cf-connecting-ip` sur Render)    |
+| `NODE_OPTIONS`                                                                                     | Taille du tas JavaScript (`--max-old-space-size=384` en Starter)            |
+| `PORT`                                                                                             | Fourni par Render                                                           |
+| `MIGRATE_ON_START`                                                                                 | Migrations au démarrage (staging gratuit, sans pré-déploiement)             |
+| `SNAPSHOT_INTERVAL_S`                                                                              | Fréquence des instantanés de parties (60 s)                                 |
+| `LEASE_TTL_S`                                                                                      | Durée du bail d'une partie (30 s)                                           |
+| `INSTANCE_ID`                                                                                      | **Laisser vide** (un identifiant unique par instance est généré)            |
+| `VAPID_PUBLIC_KEY`/`VAPID_PRIVATE_KEY`/`VAPID_SUBJECT`                                             | Facultatif : clés Web Push imposées                                         |
+| `LEGAL_CONTACT_EMAIL`                                                                              | Facultatif : e-mail de contact légal par défaut (sinon `contact@<domaine>`) |
+| `DATA_DIR`, `TILES_DIR`, `CLIENT_DIST`, `ADMIN_DIST`, `LEGAL_DIR`, `SITE_DIST`, `SITE_CONTENT_DIR` | Chemins ; les valeurs par défaut conviennent                                |
+| `REDLINE_EXTRA_SPEEDS`                                                                             | Tests uniquement — **refusé en production**                                 |
 
 ## Annexes techniques
 
@@ -201,8 +259,10 @@ parties non classées.
 - **Imagerie** : `data/tiles/satellite.pmtiles` (zoom 0 à 8) est dans le dépôt ; pour la régénérer :
   `tools/tiles/README.md`. Au-delà de 100 Mio par fichier (limite GitHub), passer par un stockage objet et
   `TILES_DIR`.
-- **Documents légaux** (`apps/server/legal/*.md`) : modèles **à faire valider par un professionnel** ; incrémenter
-  `version` dans l'en-tête d'un document pour le faire réaccepter par les joueurs.
+- **Documents légaux** (`apps/site/content/fr/legal/*.md`, la version française fait foi ; traductions dans
+  `content/<langue>/legal/`) : **à faire valider par un professionnel** ; incrémenter `version` dans l'en-tête
+  d'un document (et de ses traductions) pour faire réaccepter les CGU, la confidentialité ou les CGV. Les
+  informations de l'éditeur (`{{legal.*}}`) se règlent au back-office (**Réglages › Légal**).
 - **Données du back-office** (règles, recherche, ORBAT, scénarios, carte) : versionnées en base
   (`data_revisions`) ; une partie garde la version de sa création, sauf modification « parties en cours ».
 - Simulation locale d'un déploiement de zéro : clone frais, installation et build ci-dessus, base vide,
