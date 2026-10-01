@@ -22,6 +22,13 @@
       "when": 1790805245080,
       "tag": "0002_admin_ai",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1790848067675,
+      "tag": "0003_unlimited",
+      "breakpoints": true
     }
   ]
 }

@@ -830,6 +830,8 @@ export function createMockTransport(opts: { role?: Role; latencyMs?: number } = 
     if (patch.role) u.role = patch.role;
     if (patch.displayName) u.displayName = patch.displayName;
     if (patch.chatMutedUntil !== undefined) u.chatMutedUntil = patch.chatMutedUntil;
+    const unlimitedChanged = patch.unlimited !== undefined && patch.unlimited !== !!u.unlimited;
+    if (patch.unlimited !== undefined) u.unlimited = patch.unlimited;
     if (patch.banned === true) {
       u.bannedAt = now();
       u.banReason = patch.banReason ?? null;
@@ -837,7 +839,7 @@ export function createMockTransport(opts: { role?: Role; latencyMs?: number } = 
       u.bannedAt = null;
       u.banReason = null;
     }
-    log('user.update', `user:${id}`, before, u);
+    log(unlimitedChanged ? 'user.unlimited' : 'user.update', `user:${id}`, before, u);
     return { user: clone(u) };
   });
 

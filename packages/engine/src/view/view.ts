@@ -142,6 +142,7 @@ export function viewForImpl(state: EngineState, me: NationId): PlayerView {
       alive: n.alive,
       provinceCount: n.provinceCount,
     };
+    if (state.unl?.[id]) nations[id]!.unlimited = true;
   }
   const provinces: Record<string, ProvinceView> = {};
   for (const pid of w.provIds) {
@@ -174,6 +175,7 @@ export function viewForImpl(state: EngineState, me: NationId): PlayerView {
     incomePerDay: { money: inc.money - inc.upkeep, ...incomeRes },
     production: ns.production.map((it) => ({ ...it })),
   };
+  if (state.unl?.[me]) economy.unlimited = true;
   const view: PlayerView = {
     time: state.time,
     me,
@@ -207,6 +209,7 @@ export function publicViewImpl(state: EngineState): PlayerView {
       alive: n.alive,
       provinceCount: n.provinceCount,
     };
+    if (state.unl?.[id]) nations[id]!.unlimited = true;
   }
   const provinces: Record<string, ProvinceView> = {};
   for (const pid of sortedKeys(state.provinces)) {

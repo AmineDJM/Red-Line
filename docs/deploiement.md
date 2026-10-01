@@ -116,7 +116,37 @@ notifications exigent que le joueur ait ajouté Red Line à l'écran d'accueil.
   temporairement son adresse IP dans `redline-db` → **Networking**, puis la retirer.
 - La base gratuite du staging n'est **pas** sauvegardée et disparaît au bout de 30 jours.
 
-## 8. Surveiller et grandir
+## 8. Compte illimité (administrateur)
+
+Le compte d'`ADMIN_EMAIL` / `ADMIN_PASSWORD` est en **mode illimité d'office** : rien d'autre à faire sur
+Render. Il suffit de jouer avec ce compte (se connecter dans le jeu avec le même e-mail et le même mot de passe
+que pour le back-office) :
+
+- **en partie** (solo ou multijoueur) : argent et ressources jamais limitants. La barre du haut affiche « ∞ » et
+  un badge « ILLIMITÉ » ; aucune production, importation, licence, construction, recherche, opération de
+  renseignement ou mobilisation n'est refusée faute de fonds. La **recherche reste nécessaire** pour produire un
+  matériel (elle n'est simplement jamais bloquée par l'argent) ;
+- **monnaie premium** illimitée : accélérations et cosmétiques sans débit ni passage par Stripe ;
+- **aucun quota** de parties (10 parties solo en cours pour les autres joueurs) ;
+- **équité** : une partie multijoueur où joue un compte illimité devient **non classée** (aucun point de
+  classement), et un avis public le signale à tous les joueurs (« Mode illimité actif pour France — partie non
+  classée ») ainsi que dans le salon. En solo, rien n'est signalé.
+
+Pour l'activer ou le retirer à **n'importe quel compte** : back-office → **Utilisateurs** → choisir le compte →
+**Mode illimité** → _Activer_ / _Retirer_ (confirmation demandée). Seul le rôle **superadmin** peut le faire ;
+chaque changement est inscrit au **journal d'audit** (`user.unlimited`). L'effet est immédiat dans les parties
+en cours du joueur (sinon à leur prochain chargement ou à sa prochaine connexion). En retirant le mode, la nation
+retrouve la réserve qu'elle avait avant l'activation. Une IA qui remplace le joueur (inactivité, départ,
+décision de l'administration) n'en profite jamais. Le choix fait dans le back-office est conservé : un
+redémarrage du serveur ne réactive pas le mode illimité retiré au compte administrateur.
+
+Détails techniques : colonne `users.unlimited` (migration `0003_unlimited`), commande système journalisée
+`{ kind: 'unlimited', nationId, on }` rejouée à la reprise ; le moteur gèle la réserve de la nation aux plafonds
+`unlimited` de `data/balance/default.json` (10¹⁵ $ et 10¹² unités de chaque ressource) après chaque événement,
+ordre et commande ; les dépenses restent comptées dans les statistiques. Colonne `games.unranked` pour les
+parties non classées.
+
+## 9. Surveiller et grandir
 
 - `/healthz` : état du service et de la base (Render le surveille et redémarre le service si besoin).
 - Back-office → **Métriques** : CPU, mémoire, latence de la boucle (99e centile et pire), diffusions (nombre et

@@ -496,6 +496,8 @@ export function seedUsers(): AdminUser[] {
             .replace(/[^a-z0-9]/g, '')}@exemple.fr`,
       role,
       isGuest: guest,
+      // Le compte administrateur initial (ADMIN_EMAIL) est en mode illimité d'office.
+      unlimited: i === 0,
       premiumBalance: (i * 137) % 2400,
       createdAt: iso((200 - i * 7) * 24 * H),
       lastSeenAt: iso(i * 1.7 * H),

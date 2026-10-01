@@ -31,8 +31,9 @@ export function pointsFor(
 
 /**
  * Classements par saison : résultats de fin de partie (moteur.stats), points, récompenses cosmétiques
- * attribuées à la clôture de la saison. Seules les parties multijoueurs avec au moins
- * `points.minHumanPlayers` joueurs humains rapportent des points (pas de points en solo contre l'IA).
+ * attribuées à la clôture de la saison. Seules les parties multijoueurs classées avec au moins
+ * `points.minHumanPlayers` joueurs humains rapportent des points (pas de points en solo contre l'IA, ni
+ * dans une partie où un joueur en mode illimité a joué).
  */
 export class RankingService {
   private timer: NodeJS.Timeout | null = null;
@@ -131,7 +132,11 @@ export class RankingService {
   async onGameEnded(g: HostedGame, stats: GameStats | null): Promise<void> {
     const humans = g.players.filter((p) => p.userId);
     if (humans.length === 0) return;
-    const ranked = g.meta.mode === 'multi' && humans.length >= this.cfg.points.minHumanPlayers;
+    // Partie non classée (un joueur en mode illimité y a joué) : résultats enregistrés, aucun point.
+    const ranked =
+      g.meta.mode === 'multi' &&
+      !g.meta.unranked &&
+      humans.length >= this.cfg.points.minHumanPlayers;
     const season = ranked ? await this.current() : null;
     for (const p of humans) {
       const won = g.winner === p.nationId;

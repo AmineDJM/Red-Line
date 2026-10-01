@@ -26,6 +26,7 @@ import {
   type PlayerView,
   type ProvinceDef,
   type ProvinceView,
+  type Resource,
   type UnitView,
   type ViewDiff,
   type WeaponSystem,
@@ -98,6 +99,15 @@ function onLand(p: LngLat, geo: FeatureCollection | null | undefined): boolean {
     }
   }
   return false;
+}
+
+/** Démo du mode illimité (?unlimited=1). */
+function mockUnlimited(): boolean {
+  try {
+    return new URLSearchParams(window.location.search).get('unlimited') === '1';
+  } catch {
+    return false;
+  }
 }
 
 export class MockGameConnection extends Emitter implements GameConnection {
@@ -401,6 +411,14 @@ export class MockGameConnection extends Emitter implements GameConnection {
       },
       victory: { provinceShareTarget: 0.6, leader: me, winner: null },
     };
+    // ?mock=1&unlimited=1 : nation en mode illimité (compte administrateur).
+    if (mockUnlimited()) {
+      view.economy.unlimited = true;
+      view.economy.money = 1e15;
+      for (const r of Object.keys(view.economy.resources) as Resource[])
+        view.economy.resources[r] = 1e12;
+      nations[me]!.unlimited = true;
+    }
 
     const notes: GameNotification[] = [];
     const firstEnemy = Object.values(units).find((u) => u.owner !== me);

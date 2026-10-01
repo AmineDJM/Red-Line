@@ -173,6 +173,11 @@ export interface StateData {
   winner: NationId | null;
   /** États des modules (phases 2+), par identifiant de module. Données sérialisables uniquement. */
   mods: Record<string, unknown>;
+  /**
+   * Nations en mode illimité (compte administrateur) → réserve réelle au moment de l'activation.
+   * Absent si aucune (les anciennes sauvegardes restent identiques).
+   */
+  unl?: Record<NationId, { money: number; res: Record<Resource, number> }>;
 }
 
 export interface EngineState extends GameState, StateData {

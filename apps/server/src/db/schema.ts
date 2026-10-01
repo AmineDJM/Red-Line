@@ -48,6 +48,12 @@ export const users = pgTable(
     chatMutedUntil: tz('chat_muted_until'),
     /** Activité par heure UTC (24 compteurs) : détection des multi-comptes. */
     activityHours: jsonb('activity_hours').$type<number[]>(),
+    /**
+     * Mode illimité (compte administrateur) : argent et ressources jamais limitants dans ses parties,
+     * monnaie premium illimitée, aucun quota de création ; ses parties multijoueurs sont non classées.
+     * Modifiable par un superadmin seulement.
+     */
+    unlimited: boolean('unlimited').notNull().default(false),
   },
   (t) => [
     uniqueIndex('users_email_key').on(sql`lower(${t.email})`),
@@ -162,6 +168,8 @@ export const games = pgTable(
     finalStats: jsonb('final_stats').$type<Record<string, unknown> | null>(),
     /** Taille du dernier instantané (octets compressés), pour les métriques. */
     stateBytes: integer('state_bytes').notNull().default(0),
+    /** Partie non classée (un joueur en mode illimité y a joué) : aucun point de classement. */
+    unranked: boolean('unranked').notNull().default(false),
   },
   (t) => [
     index('games_status_idx').on(t.status),

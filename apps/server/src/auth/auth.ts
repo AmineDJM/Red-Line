@@ -28,6 +28,7 @@ export function toPublicUser(u: UserRow): PublicUser {
     email: u.email,
     role: u.role,
     isGuest: u.isGuest,
+    ...(u.unlimited ? { unlimited: true } : {}),
   };
 }
 
@@ -193,14 +194,23 @@ export class Auth {
     return u ?? null;
   }
 
-  /** Crée ou met à jour le super-admin (ADMIN_EMAIL / ADMIN_PASSWORD). */
+  /**
+   * Crée ou met à jour le super-admin (ADMIN_EMAIL / ADMIN_PASSWORD). Le compte est en mode illimité
+   * d'office à sa création ou à sa promotion ; ensuite, seul un superadmin le change (back-office), et
+   * un redémarrage ne revient pas sur ce choix.
+   */
   async ensureSuperAdmin(email: string, password: string): Promise<void> {
     const existing = await this.findByEmail(email);
     const passwordHash = await hashPassword(password);
     if (existing) {
       await this.db
         .update(users)
-        .set({ passwordHash, role: 'superadmin', isGuest: false })
+        .set({
+          passwordHash,
+          role: 'superadmin',
+          isGuest: false,
+          ...(existing.role !== 'superadmin' ? { unlimited: true } : {}),
+        })
         .where(eq(users.id, existing.id));
     } else {
       await this.db.insert(users).values({
@@ -209,6 +219,7 @@ export class Auth {
         displayName: 'Administrateur',
         role: 'superadmin',
         isGuest: false,
+        unlimited: true,
       });
     }
   }

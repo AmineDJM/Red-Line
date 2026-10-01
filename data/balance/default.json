@@ -1443,6 +1443,10 @@
     "coupThreshold": 15,
     "revoltThreshold": 30
   },
+  "unlimited": {
+    "moneyUsd": 1000000000000000,
+    "resources": 1000000000000
+  },
   "startingArmy": [
     {
       "systemId": "other.infantry-light",

@@ -3,6 +3,7 @@ import type { GameEvent } from '../queue/events.js';
 import type { EngineState } from '../state/types.js';
 import { refreshCombat } from '../combat/combat.js';
 import { evaluateCapture } from '../combat/capture.js';
+import { refillUnlimited } from '../state/unlimited.js';
 
 /** Un événement est-il encore d'actualité (invalidation paresseuse par version) ? */
 export function isValid(state: EngineState, ev: GameEvent): boolean {
@@ -59,4 +60,6 @@ export function settle(state: EngineState): void {
     rt.dirtyCapture.clear();
     for (const p of provs) evaluateCapture(state, p);
   }
+  // Mode illimité : réserve remise au plafond après chaque événement, ordre ou commande système.
+  if (state.unl) refillUnlimited(state);
 }

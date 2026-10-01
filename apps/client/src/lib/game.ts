@@ -17,6 +17,19 @@ import { t } from '../i18n/index.js';
 import { useGame } from '../store/game.js';
 import { useWorld } from '../store/world.js';
 
+/**
+ * Avis d'équité d'une partie multijoueur (salon) : nations en mode illimité, partie non classée.
+ * null si rien à signaler.
+ */
+export function unrankedNotice(
+  g: { game: { unranked?: boolean }; unlimitedNations?: NationId[] },
+  t: (key: string, opts?: Record<string, unknown>) => string,
+): string | null {
+  const n = g.unlimitedNations ?? [];
+  if (n.length) return t('lobby.unlimited', { nations: n.map((x) => nationName(x)).join(', ') });
+  return g.game.unranked ? t('lobby.unranked') : null;
+}
+
 export function nationName(id: NationId | null | undefined): string {
   if (!id) return '—';
   return (

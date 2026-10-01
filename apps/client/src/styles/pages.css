@@ -84,6 +84,9 @@
   color: var(--rl-text-dim);
   font-size: var(--rl-fs-2xs);
 }
+.lobbyname span.lobbyname__unl {
+  color: var(--rl-amber);
+}
 /* Nom de partie : il occupe la place restante et s'abrège à droite (jamais de débordement). */
 .games-table td:first-child {
   width: 100%;

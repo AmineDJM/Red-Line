@@ -240,7 +240,7 @@ export class HttpApi implements Api {
   async shopPacks(): Promise<ShopPack[]> {
     return (await request<{ packs: ShopPack[] }>('GET', '/api/shop/packs')).packs;
   }
-  async wallet(): Promise<{ balance: number; history: WalletEntry[] }> {
+  async wallet(): Promise<{ balance: number; history: WalletEntry[]; unlimited?: boolean }> {
     return request('GET', '/api/shop/wallet');
   }
   async checkout(packId: string): Promise<{ url: string }> {
@@ -250,7 +250,7 @@ export class HttpApi implements Api {
     gameId: string,
     target: { type: 'production' | 'research' | 'build' | 'repair'; id: string },
     hours: number,
-  ): Promise<{ ok: boolean; balance: number }> {
+  ): Promise<{ ok: boolean; balance: number; unlimited?: boolean }> {
     return request('POST', `/api/games/${enc(gameId)}/accelerate`, { target, hours });
   }
   async cosmetics(): Promise<{ items: CosmeticItem[]; owned: string[] }> {

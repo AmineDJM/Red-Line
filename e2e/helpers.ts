@@ -20,6 +20,12 @@ declare global {
 
 export const isMobile = (info: TestInfo) => info.project.name === 'mobile';
 
+/** Super-admin de la base d'essai (ADMIN_EMAIL du serveur lancé par playwright.config.ts). */
+export const E2E_ADMIN = {
+  email: process.env.E2E_ADMIN_EMAIL ?? 'admin@redline.test',
+  password: process.env.E2E_ADMIN_PASSWORD ?? 'motdepasse-e2e-admin',
+};
+
 /** Prépare une page : diagnostic actif, tutoriel déjà vu, erreurs collectées, CGU acceptées. */
 export async function preparePage(page: Page, opts: { tutorial?: boolean } = {}) {
   await page.addInitScript((tuto) => {

@@ -29,6 +29,8 @@ interface WsIdentity {
   nationId: NationId;
   gameId: string;
   spectator: boolean;
+  /** Compte en mode illimité (lu à chaque connexion : vaut aussi pour les autres instances). */
+  unlimited: boolean;
 }
 
 let nextConnId = 1;
@@ -36,6 +38,7 @@ let nextConnId = 1;
 class WsConnection implements Connection {
   readonly id = nextConnId++;
   lastView: PlayerView | null = null;
+  unlimited?: boolean;
   alive = true;
   private tokens: number;
   private lastRefill = Date.now();
@@ -200,6 +203,7 @@ export async function wsGateway(app: FastifyInstance, ctx: AppContext): Promise<
           nationId,
           gameId: q.data.gameId,
           spectator,
+          unlimited: state.user.unlimited,
         };
       },
     },
@@ -214,6 +218,7 @@ export async function wsGateway(app: FastifyInstance, ctx: AppContext): Promise<
         { perSecond: ctx.options.wsMessagesPerSecond, burst: ctx.options.wsBurst },
         ctx.metrics,
       );
+      conn.unlimited = ident.unlimited;
       sockets.add(conn);
       let game: HostedGame | null = null;
       let closed = false;

@@ -746,6 +746,8 @@ export const fr = {
     selected: '{n} sélectionnée(s)',
   },
   games: {
+    unranked: 'non classée',
+    unrankedHelp: 'Un joueur en mode illimité y joue : aucun point de classement.',
     title: 'Parties en direct',
     sub: '{n} parties non terminées · actualisation toutes les {s} s',
     empty: 'Aucune partie en cours.',
@@ -910,6 +912,20 @@ export const fr = {
     none: 'Aucun.',
     hits: 'connexions',
     selfLock: 'Vous ne pouvez pas vous retirer vos propres droits.',
+    unlimited: 'illimité',
+    unlimitedTitle: 'Mode illimité',
+    unlimitedHelp:
+      'Argent et ressources jamais limitants dans ses parties (la recherche reste nécessaire pour produire), monnaie premium illimitée, aucun quota de parties. Ses parties multijoueurs deviennent non classées, avec un avis public.',
+    unlimitedOn: 'Activer le mode illimité',
+    unlimitedOff: 'Retirer le mode illimité',
+    unlimitedOnConfirm:
+      'Activer le mode illimité pour {name} ? Ses parties en cours en profitent aussitôt ; ses parties multijoueurs deviennent définitivement non classées.',
+    unlimitedOffConfirm:
+      'Retirer le mode illimité à {name} ? Ses nations retrouvent la réserve qu’elles avaient avant l’activation.',
+    unlimitedOnDone: 'Mode illimité activé pour {name}.',
+    unlimitedOffDone: 'Mode illimité retiré à {name}.',
+    unlimitedState: 'Actif',
+    unlimitedNone: 'Inactif',
   },
   shop: {
     title: 'Boutique',

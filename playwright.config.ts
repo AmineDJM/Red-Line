@@ -58,6 +58,9 @@ export default defineConfig({
       LOG_LEVEL: 'warn',
       // Vitesse d'essai (1 h réelle = 3 600 h de jeu), refusée par le serveur en production.
       REDLINE_EXTRA_SPEEDS: '3600',
+      // Super-admin de la base d'essai, en mode illimité d'office (e2e/unlimited.spec.ts, E2E_ADMIN).
+      ADMIN_EMAIL: process.env.E2E_ADMIN_EMAIL ?? 'admin@redline.test',
+      ADMIN_PASSWORD: process.env.E2E_ADMIN_PASSWORD ?? 'motdepasse-e2e-admin',
     },
   },
 });

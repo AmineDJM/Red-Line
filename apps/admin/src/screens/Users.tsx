@@ -42,6 +42,11 @@ function statusBadges(u: AdminUser) {
         <Badge tone="warn">{T.users.muted}</Badge>
       )}
       {u.isGuest && <Badge tone="off">{T.users.guest}</Badge>}
+      {u.unlimited && (
+        <Badge tone="warn" title={T.users.unlimitedTitle}>
+          ∞ {T.users.unlimited}
+        </Badge>
+      )}
     </>
   );
 }
@@ -111,7 +116,9 @@ export function UsersScreen({ id }: { id?: string }) {
                 align: 'right',
                 hideM: true,
                 sort: (u) => u.premiumBalance,
-                render: (u) => <span className="val">{num(u.premiumBalance)}</span>,
+                render: (u) => (
+                  <span className="val">{u.unlimited ? '∞' : num(u.premiumBalance)}</span>
+                ),
               },
               {
                 key: 's',
@@ -208,7 +215,11 @@ function UserDetailPane({ id, onChanged }: { id: string; onChanged: () => void }
           <dt>{T.users.lastSeen}</dt>
           <dd>{ago(u.lastSeenAt)}</dd>
           <dt>{T.users.premium}</dt>
-          <dd className="c-amber">{num(u.premiumBalance)}</dd>
+          <dd className="c-amber">{u.unlimited ? '∞' : num(u.premiumBalance)}</dd>
+          <dt>{T.users.unlimitedTitle}</dt>
+          <dd className={u.unlimited ? 'c-amber' : 'dim'}>
+            {u.unlimited ? T.users.unlimitedState : T.users.unlimitedNone}
+          </dd>
           {u.bannedAt && (
             <>
               <dt>{T.users.banned}</dt>
@@ -357,6 +368,39 @@ function UserDetailPane({ id, onChanged }: { id: string; onChanged: () => void }
                 </Button>
               </div>
             )}
+          </div>
+        </div>
+        <div className="field" style={{ marginTop: 12 }}>
+          <label>{T.users.unlimitedTitle}</label>
+          <p className="dim small" style={{ margin: '0 0 8px' }}>
+            {T.users.unlimitedHelp}
+          </p>
+          <div>
+            <Button
+              variant={u.unlimited ? 'ghost' : undefined}
+              disabled={busy || me.role !== 'superadmin'}
+              onClick={async () => {
+                const on = !u.unlimited;
+                if (
+                  await confirm({
+                    title: T.users.unlimitedTitle,
+                    message: fmt(on ? T.users.unlimitedOnConfirm : T.users.unlimitedOffConfirm, {
+                      name: u.displayName,
+                    }),
+                    confirm: on ? T.users.unlimitedOn : T.users.unlimitedOff,
+                    danger: on,
+                  })
+                )
+                  void patch(
+                    { unlimited: on },
+                    fmt(on ? T.users.unlimitedOnDone : T.users.unlimitedOffDone, {
+                      name: u.displayName,
+                    }),
+                  );
+              }}
+            >
+              ∞ {u.unlimited ? T.users.unlimitedOff : T.users.unlimitedOn}
+            </Button>
           </div>
         </div>
         {data.activityHours.length === 24 && (

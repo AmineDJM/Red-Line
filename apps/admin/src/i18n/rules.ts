@@ -74,6 +74,10 @@ export const RULE_SECTIONS: Record<string, [label: string, help: string]> = {
     'Stabilité',
     'Stabilité nationale : coups d’État, révoltes, lassitude de la guerre, réfugiés.',
   ],
+  unlimited: [
+    'Mode illimité',
+    'Plafonds auxquels la réserve d’une nation en mode illimité (compte administrateur) est gelée.',
+  ],
   startingArmy: [
     'Armée de départ',
     'Repli si la nation jouable n’a pas d’ORBAT : unités posées autour de la capitale.',
@@ -576,6 +580,8 @@ export const RULE_HELP: Record<string, HelpEntry> = {
     'Système des rebelles, mercenaires et casques bleus (défaut : infanterie).',
   ],
   'diplomacy.newsKeep': ['Dépêches conservées', undefined, 'n'],
+  'unlimited.moneyUsd': ['Réserve en dollars', 'Trésor gelé d’une nation illimitée.', '$'],
+  'unlimited.resources': ['Stock de ressources', 'Stock gelé de chaque ressource.', 'n'],
   'stability.start': ['Stabilité initiale', undefined, 'pts'],
   'stability.coupThreshold': ['Seuil de coup d’État', undefined, 'pts'],
   'stability.revoltThreshold': ['Seuil de révolte', undefined, 'pts'],

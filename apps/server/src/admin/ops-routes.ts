@@ -51,6 +51,8 @@ const UserPatchSchema = z.object({
   banReason: z.string().max(500).optional(),
   chatMutedUntil: z.string().datetime({ offset: true }).nullable().optional(),
   displayName: z.string().min(2).max(40).optional(),
+  /** Mode illimité (ressources, monnaie premium, quotas) : superadmin seulement (route superadmin). */
+  unlimited: z.boolean().optional(),
 });
 
 export async function adminOpsRoutes(app: FastifyInstance, ctx: AppContext): Promise<void> {
@@ -186,6 +188,7 @@ export async function adminOpsRoutes(app: FastifyInstance, ctx: AppContext): Pro
 
   const userView = (u: typeof users.$inferSelect) => ({
     ...toPublicUser(u),
+    unlimited: u.unlimited,
     premiumBalance: u.premiumBalance,
     createdAt: u.createdAt.toISOString(),
     lastSeenAt: u.lastSeenAt.toISOString(),
@@ -280,6 +283,7 @@ export async function adminOpsRoutes(app: FastifyInstance, ctx: AppContext): Pro
     const patch: Partial<typeof users.$inferInsert> = {};
     if (body.role) patch.role = body.role;
     if (body.displayName) patch.displayName = body.displayName;
+    if (body.unlimited !== undefined) patch.unlimited = body.unlimited;
     if (body.chatMutedUntil !== undefined) {
       patch.chatMutedUntil = body.chatMutedUntil ? new Date(body.chatMutedUntil) : null;
     }
@@ -295,7 +299,16 @@ export async function adminOpsRoutes(app: FastifyInstance, ctx: AppContext): Pro
       await ctx.auth.revokeAll(id);
       host.kickUser(id, 'Compte suspendu');
     }
-    await audit(req, 'user.update', `user:${id}`, userView(before), userView(after!));
+    const unlimitedChanged = body.unlimited !== undefined && body.unlimited !== before.unlimited;
+    // Parties chargées ici : mode illimité appliqué ou retiré tout de suite (commande journalisée).
+    if (unlimitedChanged) host.setUserUnlimited(id, body.unlimited!);
+    await audit(
+      req,
+      unlimitedChanged ? 'user.unlimited' : 'user.update',
+      `user:${id}`,
+      userView(before),
+      userView(after!),
+    );
     return { user: userView(after!) };
   });
 

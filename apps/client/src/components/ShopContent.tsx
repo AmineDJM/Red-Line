@@ -26,7 +26,11 @@ export function ShopContent({ policy }: { policy?: ShopPolicy | null }) {
   const { t } = useTranslation();
   const toast = useUi((s) => s.toast);
   const [packs, setPacks] = useState<ShopPack[] | null>(null);
-  const [wallet, setWallet] = useState<{ balance: number; history: WalletEntry[] } | null>(null);
+  const [wallet, setWallet] = useState<{
+    balance: number;
+    history: WalletEntry[];
+    unlimited?: boolean;
+  } | null>(null);
   const [cosm, setCosm] = useState<{ items: CosmeticItem[]; owned: string[] } | null>(null);
   const [error, setError] = useState(false);
   const reload = () =>
@@ -66,11 +70,12 @@ export function ShopContent({ policy }: { policy?: ShopPolicy | null }) {
           label={t('shop.balance')}
           value={
             <span className="gems">
-              <Icon name="gem" size={18} /> {formatInt(wallet.balance)}
+              <Icon name="gem" size={18} />{' '}
+              {wallet.unlimited ? t('game.unlimited.value') : formatInt(wallet.balance)}
             </span>
           }
           tone="cyan"
-          sub={t('shop.currency')}
+          sub={wallet.unlimited ? t('shop.unlimitedHint') : t('shop.currency')}
         />
         <Stat
           label={t('shop.policy')}
@@ -141,7 +146,7 @@ export function ShopContent({ policy }: { policy?: ShopPolicy | null }) {
                 ) : (
                   <Button
                     size="sm"
-                    disabled={wallet.balance < c.price}
+                    disabled={!wallet.unlimited && wallet.balance < c.price}
                     onClick={() => void buyCosm(c.id)}
                   >
                     <Icon name="gem" size={12} /> {formatInt(c.price)}

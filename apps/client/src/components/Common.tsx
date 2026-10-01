@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import type { InfoCredibility, NationId, SourceReliability } from '@redline/shared';
-import { Badge, Flag } from '@redline/ui';
+import { Badge, Flag, Money } from '@redline/ui';
 import { fmtDuration } from '../i18n/index.js';
 import { nationName } from '../lib/game.js';
 import { useGame } from '../store/game.js';
@@ -25,6 +25,18 @@ export function NationTag({
       </span>
     </span>
   );
+}
+
+/** Trésorerie : montant en dollars, ou « ∞ » pour une nation en mode illimité (compte administrateur). */
+export function Treasury({ value, unlimited }: { value: number; unlimited?: boolean }) {
+  const { t } = useTranslation();
+  if (unlimited)
+    return (
+      <span className="rl-money rl-money--inf" title={t('game.unlimited.tip')}>
+        {t('game.unlimited.value')}
+      </span>
+    );
+  return <Money value={value} />;
 }
 
 /** Cotation OTAN d'un rapport (fiabilité A-F, crédibilité 1-6). */

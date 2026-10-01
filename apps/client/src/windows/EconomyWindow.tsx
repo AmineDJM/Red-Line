@@ -34,7 +34,7 @@ import {
   formatNumber,
   formatPct,
 } from '@redline/ui';
-import { NationTag } from '../components/Common.js';
+import { NationTag, Treasury } from '../components/Common.js';
 import { BuildingRow } from '../components/Buildings.js';
 import { constructionSites, economySummary, ledgerRows, resourceFlows } from '../lib/economy.js';
 import { norm } from '../lib/commands.js';
@@ -132,6 +132,7 @@ function Dashboard() {
   const [allProv, setAllProv] = useState(false);
   const sum = economySummary(view);
   const eco = view?.economy;
+  const unlimited = !!eco?.unlimited;
   const d = sum.detail;
   const sites = constructionSites(view, now);
   const maxFlow = Math.max(
@@ -149,15 +150,17 @@ function Dashboard() {
       <div className="kpis">
         <Stat
           label={t('economy.treasury')}
-          value={<Money value={eco?.money ?? 0} />}
+          value={<Treasury value={eco?.money ?? 0} unlimited={unlimited} />}
           tone="amber"
           sub={
-            d
-              ? t('economy.forecast', {
-                  d7: formatMoney(d.forecast.money7d),
-                  d30: formatMoney(d.forecast.money30d),
-                })
-              : null
+            unlimited
+              ? t('game.unlimited.reserve')
+              : d
+                ? t('economy.forecast', {
+                    d7: formatMoney(d.forecast.money7d),
+                    d30: formatMoney(d.forecast.money30d),
+                  })
+                : null
           }
         />
         <Stat
@@ -182,13 +185,13 @@ function Dashboard() {
           value={formatMoney(sum.balance, { signed: true })}
           tone={sum.balance >= 0 ? 'green' : 'red'}
           sub={
-            sum.balance < 0 && eco
+            sum.balance < 0 && eco && !unlimited
               ? t('economy.runway', { days: Math.max(0, Math.floor(eco.money / -sum.balance)) })
               : t('economy.perDay')
           }
         />
       </div>
-      {sum.balance < 0 && eco && eco.money / -sum.balance < 30 ? (
+      {sum.balance < 0 && eco && !unlimited && eco.money / -sum.balance < 30 ? (
         <p className="hint hint--warn">
           <Icon name="warning" size={13} /> {t('economy.deficitHint')}
         </p>
@@ -363,6 +366,8 @@ function Resources() {
   const { t } = useTranslation();
   const view = useGame((s) => s.view);
   const flows = resourceFlows(view);
+  // Mode illimité : stocks « ∞ », jamais de pénurie.
+  const unlimited = !!view?.economy.unlimited;
   return (
     <div className="vstack">
       <Table
@@ -376,12 +381,16 @@ function Resources() {
             render: (r: Resource) => (
               <span className="titem">
                 <span
-                  className={flows[r].shortage ? 'titem__icon titem__icon--red' : 'titem__icon'}
+                  className={
+                    flows[r].shortage && !unlimited ? 'titem__icon titem__icon--red' : 'titem__icon'
+                  }
                 >
                   <Icon name={RESOURCE_ICON[r]} size={14} />
                 </span>
                 <b>{t(`game.resources.${r}`)}</b>
-                {flows[r].shortage ? <Badge tone="red">{t('economy.shortage')}</Badge> : null}
+                {flows[r].shortage && !unlimited ? (
+                  <Badge tone="red">{t('economy.shortage')}</Badge>
+                ) : null}
               </span>
             ),
           },
@@ -389,7 +398,12 @@ function Resources() {
             key: 'stock',
             header: t('economy.cols.stock'),
             align: 'right',
-            render: (r) => formatNumber(flows[r].stock, 0),
+            render: (r) =>
+              unlimited ? (
+                <b className="rl-tone-amber">{t('game.unlimited.value')}</b>
+              ) : (
+                formatNumber(flows[r].stock, 0)
+              ),
             sort: (a, b) => flows[a].stock - flows[b].stock,
           },
           {
@@ -428,7 +442,7 @@ function Resources() {
             align: 'right',
             hideOnMobile: true,
             render: (r) => {
-              const dl = flows[r].daysLeft;
+              const dl = unlimited ? null : flows[r].daysLeft;
               return dl === null ? (
                 <span className="muted">∞</span>
               ) : (
@@ -993,7 +1007,8 @@ export function EconomyWindow({ win, frame }: WindowContentProps) {
       }
       headerExtra={
         <span className="win-meta">
-          <span>{t('economy.treasury')}</span> <Money value={view?.economy.money ?? 0} />
+          <span>{t('economy.treasury')}</span>{' '}
+          <Treasury value={view?.economy.money ?? 0} unlimited={view?.economy.unlimited} />
         </span>
       }
     >

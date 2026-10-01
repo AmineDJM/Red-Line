@@ -134,12 +134,27 @@ function Budget({ compact }: { compact: boolean }) {
   const eco = view?.economy;
   if (!eco) return null;
   const net = netPerDay(view);
+  // Mode illimité : « ∞ », sans solde journalier ni alerte de déficit.
+  if (eco.unlimited)
+    return (
+      <button
+        type="button"
+        className="topstat topstat--money topstat--inf"
+        onClick={() => openWindow('economy')}
+        title={t('game.unlimited.budgetTip')}
+        data-testid="treasury"
+      >
+        <span className="topstat__label">{t('game.topbar.treasury')}</span>
+        <span className="topstat__value">{t('game.unlimited.value')}</span>
+      </button>
+    );
   return (
     <button
       type="button"
       className="topstat topstat--money"
       onClick={() => openWindow('economy')}
       title={t('game.topbar.budgetTip')}
+      data-testid="treasury"
     >
       <span className="topstat__label">{t('game.topbar.treasury')}</span>
       <span className="topstat__value">{formatMoney(eco.money)}</span>
@@ -159,11 +174,25 @@ function Resources() {
   const openWindow = useUi((s) => s.openWindow);
   if (!view) return null;
   const flows = resourceFlows(view);
+  const unlimited = !!view.economy.unlimited;
   return (
     <div className="topres" role="group" aria-label={t('game.topbar.resources')}>
       {RESOURCES.map((r) => {
         const f = flows[r];
         const net = f.net;
+        if (unlimited)
+          return (
+            <button
+              key={r}
+              type="button"
+              className="topres__item topres__item--inf"
+              onClick={() => openWindow('economy', { tab: 'resources' })}
+              title={t('game.unlimited.stockTip', { name: t(`game.resources.${r}`) })}
+            >
+              <Icon name={RESOURCE_ICON[r]} size={14} />
+              <span className="topres__value">{t('game.unlimited.value')}</span>
+            </button>
+          );
         return (
           <button
             key={r}
@@ -188,6 +217,16 @@ function Resources() {
         );
       })}
     </div>
+  );
+}
+
+/** Badge discret du mode illimité (compte administrateur). */
+function UnlimitedBadge() {
+  const { t } = useTranslation();
+  return (
+    <span className="topbar__unl" title={t('game.unlimited.tip')} data-testid="unlimited-badge">
+      {t('game.unlimited.badge')}
+    </span>
   );
 }
 
@@ -233,6 +272,7 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
           <span className="topbar__nation">
             {me ? <Flag nationId={me} size={14} title={nation?.name} /> : null}
             <span className="topbar__nation-name">{nation?.name ?? t('app.name')}</span>
+            {view?.economy.unlimited ? <UnlimitedBadge /> : null}
             {view?.spectator ? <span className="topbar__spect">{t('game.spectator')}</span> : null}
           </span>
           <ClockControl compact />
@@ -253,6 +293,7 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
       <span className="topbar__nation">
         {me ? <Flag nationId={me} size={16} title={nation?.name} /> : null}
         <span className="topbar__nation-name">{nation?.name ?? t('app.name')}</span>
+        {view?.economy.unlimited ? <UnlimitedBadge /> : null}
         {alliance ? (
           <span className="topbar__alliance" title={alliance.name}>
             [{alliance.flag}]

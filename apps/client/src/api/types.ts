@@ -104,13 +104,13 @@ export interface Api {
 
   // ——— Phase 6 : boutique, classements, légal ———
   shopPacks(): Promise<ShopPack[]>;
-  wallet(): Promise<{ balance: number; history: WalletEntry[] }>;
+  wallet(): Promise<{ balance: number; history: WalletEntry[]; unlimited?: boolean }>;
   checkout(packId: string): Promise<{ url: string }>;
   accelerate(
     gameId: string,
     target: { type: 'production' | 'research' | 'build' | 'repair'; id: string },
     hours: number,
-  ): Promise<{ ok: boolean; balance: number }>;
+  ): Promise<{ ok: boolean; balance: number; unlimited?: boolean }>;
   cosmetics(): Promise<{ items: CosmeticItem[]; owned: string[] }>;
   buyCosmetic(id: string): Promise<{ ok: boolean; balance: number }>;
   rankings(season?: string): Promise<{ season: SeasonView; entries: RankingEntry[] }>;

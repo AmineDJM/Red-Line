@@ -3,6 +3,7 @@ import type {
   ApplyOrder,
   ApplySystem,
   IsDormant,
+  UnlimitedNations,
   BuildWorld,
   CreateGame,
   DeserializeState,
@@ -56,6 +57,8 @@ export interface Engine {
   stateStats?: (state: GameState) => { unitCount: number; queueSize: number };
   /** IA lointaines en veille (commande système 'dormancy'), lu à la reprise d'une partie. */
   isDormant?: IsDormant;
+  /** Nations en mode illimité (commande système 'unlimited'). */
+  unlimitedNations?: UnlimitedNations;
 }
 
 export const ENGINE_FUNCTIONS = [
@@ -80,6 +83,7 @@ export const OPTIONAL_ENGINE_FUNCTIONS = [
   'battleReportFor',
   'stateStats',
   'isDormant',
+  'unlimitedNations',
 ] as const satisfies readonly (keyof Engine)[];
 
 /** Construit l'objet Engine à partir d'un module ; renvoie la liste des fonctions manquantes sinon. */

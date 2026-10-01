@@ -607,6 +607,18 @@ export const BalanceSchema = z.object({
     .optional(),
   /** Combat complet (phase 3) : voir MilitaryBalanceSchema (valeurs par défaut documentées). */
   military: MilitaryBalanceSchema.optional(),
+  /**
+   * Mode illimité (compte administrateur) : la réserve d'une nation illimitée est gelée à ces plafonds
+   * et remise à niveau après chaque événement ou ordre (aucune dépense n'est refusée faute de fonds).
+   */
+  unlimited: z
+    .object({
+      /** Réserve de dollars gelée. */
+      moneyUsd: z.number().positive().default(1e15),
+      /** Stock gelé de chaque ressource. */
+      resources: z.number().positive().default(1e12),
+    })
+    .optional(),
   /** Armée de départ par nation jouable, posée autour de la capitale (repli si pas d'ORBAT). */
   startingArmy: z.array(z.object({ systemId: z.string(), count: z.number().int().min(1) })),
   /** Armée de départ réduite pour les nations non jouées (IA neutres). */

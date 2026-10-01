@@ -150,6 +150,8 @@ export interface NationView {
   sanctioned?: boolean;
   /** Doctrine principale de l'arsenal (affichage). */
   doctrine?: string;
+  /** Mode illimité (compte administrateur) : argent et ressources jamais limitants, partie non classée. */
+  unlimited?: boolean;
 }
 
 export interface ProductionItem {
@@ -173,6 +175,8 @@ export interface EconomyView {
   production: ProductionItem[];
   /** Tableau de bord économique détaillé (économie réelle, propre nation). */
   detail?: EconomyDetailView;
+  /** Mode illimité : afficher « ∞ » au lieu des montants, aucune alerte de déficit ni de pénurie. */
+  unlimited?: boolean;
 }
 
 export interface VictoryView {

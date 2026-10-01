@@ -15,6 +15,7 @@ import {
 import { getApi } from '../api/index.js';
 import { ApiError } from '../api/types.js';
 import { Page } from '../components/Page.js';
+import { unrankedNotice } from '../lib/game.js';
 import { navigate } from '../router.js';
 import { useWorld } from '../store/world.js';
 
@@ -127,6 +128,11 @@ export function LobbyRoomScreen({ id }: { id: string }) {
       ) : (
         <div className="lobbyroom">
           {error ? <p className="hint hint--warn">{error}</p> : null}
+          {unrankedNotice(game, t) ? (
+            <p className="hint hint--warn" data-testid="lobby-unlimited">
+              <Icon name="warning" size={13} /> {unrankedNotice(game, t)}
+            </p>
+          ) : null}
           <Panel
             title={t('lobby.room.players')}
             meta={`${players.length}/${max}`}

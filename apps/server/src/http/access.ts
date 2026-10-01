@@ -59,7 +59,8 @@ export async function assertCreationQuota(
   auth: AuthState,
   mode: 'solo' | 'multi',
 ): Promise<void> {
-  if (hasRole(auth.user.role, 'moderator')) return;
+  // Modérateurs et comptes en mode illimité : aucun quota.
+  if (hasRole(auth.user.role, 'moderator') || auth.user.unlimited) return;
   const max =
     mode === 'solo' ? ctx.options.maxActiveSoloPerUser : ctx.options.maxActiveMultiPerUser;
   const [r] = await ctx.db

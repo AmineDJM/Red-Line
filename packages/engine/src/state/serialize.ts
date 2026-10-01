@@ -29,6 +29,8 @@ const DATA_KEYS: (keyof StateData)[] = [
   'winner',
   // États des modules (phases 2+) : sans cette clé, rien n'était sauvegardé ni rejoué.
   'mods',
+  // Mode illimité (absent si aucune nation : sérialisation inchangée).
+  'unl',
 ];
 
 /** MessagePack canonique (clés triées) de tout l'état, hors monde et index dérivés. */

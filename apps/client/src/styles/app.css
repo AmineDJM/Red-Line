@@ -740,6 +740,32 @@ code {
 .topres__item--short .topres__value {
   color: var(--rl-red);
 }
+/* Mode illimité (compte administrateur) : « ∞ » au lieu des montants, badge discret. */
+.topbar__unl {
+  padding: 1px 5px;
+  border: 1px solid rgba(255, 176, 32, 0.45);
+  border-radius: 3px;
+  background: var(--rl-amber-dim);
+  color: var(--rl-amber);
+  font-size: var(--rl-fs-2xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+.topstat--inf .topstat__value {
+  font-size: var(--rl-fs-lg);
+  line-height: 1;
+}
+.topres__item--inf .topres__value {
+  color: var(--rl-amber);
+  font-weight: 700;
+}
+.rl-money--inf {
+  font-size: 1.2em;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+}
 .alertlvl {
   display: inline-flex;
   align-items: center;

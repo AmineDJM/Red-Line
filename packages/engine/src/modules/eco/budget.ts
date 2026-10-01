@@ -210,7 +210,10 @@ export function economyDaily(state: EngineState): void {
     for (const k of Object.keys(en.today)) known += en.today[k]!;
     const other = ns.money - en.lastMoney - known;
     en.lastDay = { ...en.today };
-    if (Math.abs(other) > Math.max(1e-3, 1e-12 * Math.abs(ns.money))) en.lastDay.other = other;
+    // Nation illimitée : la remise à niveau de la réserve n'est pas un flux du grand livre.
+    if (!state.unl?.[n] && Math.abs(other) > Math.max(1e-3, 1e-12 * Math.abs(ns.money))) {
+      en.lastDay.other = other;
+    }
     en.today = {};
     en.lastMoney = ns.money;
   }

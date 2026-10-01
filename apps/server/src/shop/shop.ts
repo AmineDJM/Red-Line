@@ -235,7 +235,11 @@ export async function shopRoutes(app: FastifyInstance, ctx: AppContext): Promise
       .where(eq(walletLedger.userId, user.id))
       .orderBy(desc(walletLedger.id))
       .limit(100);
-    return { balance: user.premiumBalance, history: history.map(toWalletEntry) };
+    return {
+      balance: user.premiumBalance,
+      history: history.map(toWalletEntry),
+      ...(user.unlimited ? { unlimited: true } : {}),
+    };
   });
 
   app.post(
@@ -365,18 +369,21 @@ export async function shopRoutes(app: FastifyInstance, ctx: AppContext): Promise
         .from(userCosmetics)
         .where(and(eq(userCosmetics.userId, user.id), eq(userCosmetics.cosmeticId, id)));
       if (owned) throw new HttpError(409, 'already_owned', 'Article déjà possédé');
-      const b = await moveWallet(tx, {
-        userId: user.id,
-        delta: -item.price,
-        reason: 'cosmetic',
-        ref: item.id,
-      });
+      // Mode illimité : solde premium illimité, rien n'est débité.
+      const b = user.unlimited
+        ? user.premiumBalance
+        : await moveWallet(tx, {
+            userId: user.id,
+            delta: -item.price,
+            reason: 'cosmetic',
+            ref: item.id,
+          });
       await tx
         .insert(userCosmetics)
         .values({ userId: user.id, cosmeticId: id, source: 'purchase' });
       return b;
     });
-    return { ok: true, balance };
+    return { ok: true, balance, ...(user.unlimited ? { unlimited: true } : {}) };
   });
 
   // ─────────── Accélérations ───────────
@@ -401,8 +408,10 @@ export async function shopRoutes(app: FastifyInstance, ctx: AppContext): Promise
       const g = await ctx.host.ensureLoaded(gameId);
       if (!g) throw new HttpError(409, 'game_unavailable', 'Partie momentanément indisponible');
       const balance = await db.transaction(async (tx) => {
+        const unlimited = auth.user.unlimited;
         await lockUser(tx, auth.user.id);
-        if (policy.mode === 'limited') {
+        // Mode illimité : ni plafond de partie ni débit (la partie multijoueur est déjà non classée).
+        if (policy.mode === 'limited' && !unlimited) {
           const [s] = await tx
             .select({ spent: sql<number>`coalesce(-sum(${walletLedger.delta}), 0)::int` })
             .from(walletLedger)
@@ -422,13 +431,15 @@ export async function shopRoutes(app: FastifyInstance, ctx: AppContext): Promise
             );
           }
         }
-        const b = await moveWallet(tx, {
-          userId: auth.user.id,
-          delta: -cost,
-          reason: 'accelerate',
-          ref: `${body.target.type}:${body.target.id}:${body.hours}h`,
-          gameId,
-        });
+        const b = unlimited
+          ? auth.user.premiumBalance
+          : await moveWallet(tx, {
+              userId: auth.user.id,
+              delta: -cost,
+              reason: 'accelerate',
+              ref: `${body.target.type}:${body.target.id}:${body.hours}h`,
+              gameId,
+            });
         // Le moteur refuse (cible inconnue…) : exception → la transaction annule le débit.
         const r = await ctx.host.system(gameId, {
           kind: 'accelerate',
@@ -445,7 +456,12 @@ export async function shopRoutes(app: FastifyInstance, ctx: AppContext): Promise
         }
         return b;
       });
-      return { ok: true, balance, cost };
+      return {
+        ok: true,
+        balance,
+        cost: auth.user.unlimited ? 0 : cost,
+        ...(auth.user.unlimited ? { unlimited: true } : {}),
+      };
     },
   );
 }

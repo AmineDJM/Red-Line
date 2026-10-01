@@ -93,6 +93,7 @@ export async function authRoutes(app: FastifyInstance, ctx: AppContext): Promise
       user: toPublicUser(state.user),
       legal: { needsAcceptance: await ctx.legal.needsAcceptance(state.user.id) },
       premiumBalance: state.user.premiumBalance,
+      ...(state.user.unlimited ? { premiumUnlimited: true } : {}),
     };
   });
 }

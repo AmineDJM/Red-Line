@@ -400,6 +400,14 @@
       "minutes": "{{value}} min",
       "hours": "{{h}} h {{m}}",
       "days": "{{d}} j {{h}} h"
+    },
+    "unlimited": {
+      "badge": "ILLIMITÉ",
+      "value": "∞",
+      "tip": "Mode illimité : argent et ressources jamais limitants. La R&D reste nécessaire pour produire.",
+      "reserve": "Réserve illimitée",
+      "stockTip": "{{name}} : stock illimité",
+      "budgetTip": "Trésor illimité — ouvrir l’économie"
     }
   },
   "province": {
@@ -1104,7 +1112,10 @@
       "refund": "Remboursement",
       "admin": "Crédit administrateur"
     },
-    "subtitle": "Crédits de commandement, cosmétiques et accélérations. Aucune loot box."
+    "subtitle": "Crédits de commandement, cosmétiques et accélérations. Aucune loot box.",
+    "unlimited": "Solde illimité",
+    "unlimitedHint": "Compte en mode illimité : rien n’est débité.",
+    "acceleratedUnlimited": "Accélération appliquée (solde illimité)"
   },
   "researchNodes": {
     "aero_gen2": "Chasseurs de 2e génération",
@@ -1852,7 +1863,9 @@
       "ended": "Cette partie est terminée.",
       "notFound": "Salon introuvable.",
       "shop": "Achats en jeu : {{policy}}"
-    }
+    },
+    "unlimited": "Mode illimité actif pour {{nations}} — partie non classée",
+    "unranked": "Partie non classée"
   },
   "games": {
     "title": "Mes parties",

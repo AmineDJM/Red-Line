@@ -113,6 +113,8 @@ export interface AdminUser {
   email: string | null;
   role: Role;
   isGuest: boolean;
+  /** Mode illimité : ressources en partie, monnaie premium et quotas (superadmin seulement). */
+  unlimited?: boolean;
   premiumBalance: number;
   createdAt: string;
   lastSeenAt: string;
@@ -151,6 +153,7 @@ export interface UserPatch {
   banReason?: string;
   chatMutedUntil?: string | null;
   displayName?: string;
+  unlimited?: boolean;
 }
 
 export interface AdminPack {

@@ -59,6 +59,11 @@ export interface PublicUser {
   email: string | null;
   role: Role;
   isGuest: boolean;
+  /**
+   * Mode illimité (compte administrateur) : argent et ressources jamais limitants en partie, monnaie
+   * premium illimitée, aucun quota de création. Absent = non.
+   */
+  unlimited?: boolean;
 }
 
 export const RegisterBodySchema = z.object({
@@ -208,7 +213,7 @@ export interface Metrics {
  *   GET      /admin/api/chat?gameId=&q=           moderator
  *   POST     /admin/api/chat/:messageId/hide      moderator
  *   GET      /admin/api/security/suspicious       moderator (multi-comptes, anomalies)
- *   GET/PUT  /admin/api/users[/:id]               superadmin (rôle, bannissement)
+ *   GET/PUT  /admin/api/users[/:id]               superadmin (rôle, bannissement, mode illimité)
  *   GET/POST/PUT /admin/api/shop/packs[/:id]      superadmin
  *   GET/POST/PUT /admin/api/shop/promotions[/:id] superadmin
  *   GET      /admin/api/purchases                 superadmin
@@ -223,6 +228,8 @@ export interface LobbyGame {
   takenBy?: Record<NationId, string>;
   creator: string;
   speed: number;
+  /** Nations tenues par un joueur en mode illimité : partie non classée (avis affiché dans le salon). */
+  unlimitedNations?: NationId[];
 }
 
 export const CreateLobbyBodySchema = z.object({
@@ -258,6 +265,13 @@ export interface ShopPack {
   priceCents: number;
   currency: 'eur' | 'usd';
   promo?: { label: string; percentOff: number; until: string } | null;
+}
+
+/** GET /api/shop/wallet. `unlimited` : solde premium illimité (compte en mode illimité), rien n'est débité. */
+export interface WalletView {
+  balance: number;
+  history: WalletEntry[];
+  unlimited?: boolean;
 }
 
 export interface WalletEntry {

@@ -19,6 +19,7 @@ import {
 } from '@redline/ui';
 import { getApi } from '../api/index.js';
 import { ArsenalBrowser } from '../components/ArsenalBrowser.js';
+import { Treasury } from '../components/Common.js';
 import { productionStatus, provinceName, requiredBuilding, researchName } from '../lib/game.js';
 import { photoFor, usePhotos } from '../lib/photos.js';
 import { useGameTime } from '../shell/helpers.js';
@@ -306,7 +307,11 @@ function Queue() {
                     )
                     .then((r) =>
                       toast(
-                        r.ok ? t('shop.accelerated', { balance: r.balance }) : t('shop.notEnough'),
+                        r.ok
+                          ? r.unlimited
+                            ? t('shop.acceleratedUnlimited')
+                            : t('shop.accelerated', { balance: r.balance })
+                          : t('shop.notEnough'),
                         r.ok ? 'ok' : 'error',
                       ),
                     )
@@ -424,7 +429,8 @@ export function ProductionWindow({ win, frame, mobile }: WindowContentProps) {
       headerExtra={
         !mobile ? (
           <span className="win-meta">
-            <span>{t('production.treasury')}</span> <Money value={view?.economy.money ?? 0} />
+            <span>{t('production.treasury')}</span>{' '}
+            <Treasury value={view?.economy.money ?? 0} unlimited={view?.economy.unlimited} />
             <span className="win-meta__sep" />
             <span>{t('production.sites', { count: mine })}</span>
           </span>

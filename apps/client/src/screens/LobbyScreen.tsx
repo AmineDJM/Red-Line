@@ -21,6 +21,7 @@ import {
 import { getApi } from '../api/index.js';
 import { ApiError } from '../api/types.js';
 import { NationPicker } from '../components/NationPicker.js';
+import { unrankedNotice } from '../lib/game.js';
 import { Page } from '../components/Page.js';
 import { navigate } from '../router.js';
 import { useWorld } from '../store/world.js';
@@ -103,6 +104,9 @@ export function LobbyScreen() {
                   <span>
                     {g.scenarioName} · {t('lobby.by', { name: g.creator })}
                   </span>
+                  {unrankedNotice(g, t) ? (
+                    <span className="lobbyname__unl">∞ {unrankedNotice(g, t)}</span>
+                  ) : null}
                 </span>
               ),
             },

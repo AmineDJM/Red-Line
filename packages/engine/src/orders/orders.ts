@@ -13,6 +13,7 @@ import { cleanTop, settle } from '../sim/settle.js';
 import { callHook, moduleIntercept, moduleOrder, moduleSystem } from '../modules/registry.js';
 import type { SystemCommand } from '../api.js';
 import { board } from '../modules/kit.js';
+import { setUnlimited } from '../state/unlimited.js';
 
 /** Commande système (serveur, administration). */
 export function applySystemImpl(state: EngineState, cmd: SystemCommand): OrderResult {
@@ -47,10 +48,18 @@ function coreSystem(state: EngineState, cmd: SystemCommand): OrderResult | null 
     case 'grant': {
       const ns = state.nations[cmd.nationId];
       if (!ns) return fail('invalid_target', 'Nation absente de la partie.');
-      ns.money += cmd.money ?? 0;
+      // Nation illimitée : la dotation va à sa réserve réelle (rendue à la désactivation).
+      const target = state.unl?.[cmd.nationId] ?? ns;
+      target.money += cmd.money ?? 0;
       for (const [r, v] of Object.entries(cmd.resources ?? {})) {
-        if (r in ns.res) ns.res[r as keyof typeof ns.res] += v;
+        if (r in target.res) target.res[r as keyof typeof target.res] += v;
       }
+      return { ok: true };
+    }
+    case 'unlimited': {
+      if (!state.nations[cmd.nationId])
+        return fail('invalid_target', 'Nation absente de la partie.');
+      setUnlimited(state, cmd.nationId, cmd.on);
       return { ok: true };
     }
     case 'dormancy': {

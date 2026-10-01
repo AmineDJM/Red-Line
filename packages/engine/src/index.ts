@@ -7,6 +7,7 @@ import { battleReportForImpl } from './modules/mil/battles.js';
 import type {
   ApplySystem,
   IsDormant,
+  UnlimitedNations,
   BattleReportFor,
   GameStats,
   OwnersFrame,
@@ -56,6 +57,7 @@ export const stateHash: StateHash = (state) => stateHashImpl(S(state));
 // ——— Phases 2+ ———
 export const applySystem: ApplySystem = (state, cmd) => applySystemImpl(S(state), cmd);
 export const isDormant: IsDormant = (state) => !!board(S(state)).dormancy;
+export const unlimitedNations: UnlimitedNations = (state) => Object.keys(S(state).unl ?? {}).sort();
 export const publicView: PublicView = (state) => publicViewImpl(S(state));
 export const ownersFrame: OwnersFrame = (state) => ownersFrameImpl(S(state));
 export const stats: Stats = (state) => {

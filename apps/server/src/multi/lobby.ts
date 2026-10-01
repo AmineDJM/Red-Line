@@ -50,7 +50,7 @@ export async function lobbyRoutes(app: FastifyInstance, ctx: AppContext): Promis
     if (rows.length === 0) return [];
     const ids = rows.map((r) => r.id);
     const players = await db
-      .select({ p: gamePlayers, name: users.displayName })
+      .select({ p: gamePlayers, name: users.displayName, unlimited: users.unlimited })
       .from(gamePlayers)
       .leftJoin(users, eq(users.id, gamePlayers.userId))
       .where(inArray(gamePlayers.gameId, ids));
@@ -65,8 +65,15 @@ export async function lobbyRoutes(app: FastifyInstance, ctx: AppContext): Promis
       const mine = players.filter((x) => x.p.gameId === r.id && x.p.userId);
       const takenBy: Record<NationId, string> = {};
       for (const x of mine) takenBy[x.p.nationId] = x.name ?? '?';
+      // Équité : joueurs en mode illimité (avis dans le salon), partie non classée.
+      const unlimitedNations = mine
+        .filter((x) => x.unlimited && !x.p.isAiReplacement)
+        .map((x) => x.p.nationId)
+        .sort();
+      const meta = host.games.get(r.id)?.meta ?? metaOf(r, mine.length);
       return {
-        game: host.games.get(r.id)?.meta ?? metaOf(r, mine.length),
+        game: unlimitedNations.length && !meta.unranked ? { ...meta, unranked: true } : meta,
+        ...(unlimitedNations.length ? { unlimitedNations } : {}),
         scenarioName: scenarioOf(r.scenarioId)?.name ?? r.scenarioId,
         takenNations: mine.map((x) => x.p.nationId),
         takenBy,

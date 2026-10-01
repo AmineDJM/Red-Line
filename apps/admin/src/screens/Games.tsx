@@ -345,7 +345,19 @@ function GameDetail({
         <div className="stats" style={{ marginBottom: 12 }}>
           <Stat
             k={T.games.status}
-            v={<Badge tone={STATUS_TONE[g.game.status]}>{T.games.statuses[g.game.status]}</Badge>}
+            v={
+              <>
+                <Badge tone={STATUS_TONE[g.game.status]}>{T.games.statuses[g.game.status]}</Badge>
+                {g.game.unranked && (
+                  <>
+                    {' '}
+                    <Badge tone="warn" title={T.games.unrankedHelp}>
+                      {T.games.unranked}
+                    </Badge>
+                  </>
+                )}
+              </>
+            }
           />
           <Stat k={T.games.time} v={formatGameTime(g.gameTime)} />
           <Stat k={T.games.units} v={num(g.unitCount)} />

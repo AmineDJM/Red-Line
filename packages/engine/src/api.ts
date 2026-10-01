@@ -96,7 +96,13 @@ export type SystemCommand =
     }
   | { kind: 'grant'; nationId: NationId; money?: number; resources?: Record<string, number> }
   /** Présence des joueurs humains : `on` = plus aucun connecté (IA lointaines en veille). */
-  | { kind: 'dormancy'; on: boolean };
+  | { kind: 'dormancy'; on: boolean }
+  /**
+   * Mode illimité (compte administrateur) : argent et ressources jamais limitants pour la nation
+   * (réserve gelée au plafond `balance.unlimited`) ; `on: false` rend la réserve d'avant l'activation.
+   * La recherche reste nécessaire pour produire.
+   */
+  | { kind: 'unlimited'; nationId: NationId; on: boolean };
 
 export interface GameStats {
   nations: Record<
@@ -158,6 +164,8 @@ export type StateHash = (state: GameState) => string;
 export type ApplySystem = (state: GameState, cmd: SystemCommand) => OrderResult;
 /** Vrai si les IA lointaines sont en veille (commande système 'dormancy'). */
 export type IsDormant = (state: GameState) => boolean;
+/** Nations en mode illimité (commande système 'unlimited'), triées. */
+export type UnlimitedNations = (state: GameState) => NationId[];
 /** Vue publique (spectateur) : carte, frontières, unités visibles de tous, actualité ; aucun secret. */
 export type PublicView = (state: GameState) => PlayerView;
 /** Propriétaires des provinces (timelapse). */

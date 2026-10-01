@@ -50,6 +50,8 @@ export interface Connection {
   /** Spectateur : vue publique, lecture seule. */
   readonly spectator?: boolean;
   readonly userName?: string;
+  /** Compte en mode illimité (lu en base à l'ouverture de la connexion). */
+  readonly unlimited?: boolean;
   /** Dernière vue envoyée à ce joueur (base des diffs). */
   lastView: PlayerView | null;
   send(msg: ServerMessage): void;
@@ -126,6 +128,8 @@ export interface HostedGame {
   lastFrame: Record<string, NationId> | null;
   /** Taille du dernier instantané compressé (octets). */
   stateBytes: number;
+  /** Comptes en mode illimité parmi les joueurs (users.unlimited) : nations illimitées dans le moteur. */
+  unlimitedUsers: Set<string>;
 }
 
 export interface HostOptions {
@@ -238,6 +242,7 @@ export function metaOf(r: GameRow, playerCount?: number): GameMeta {
     ...(r.status === 'ended'
       ? { endReason: r.pauseReason === 'abandoned' ? ('abandoned' as const) : ('victory' as const) }
       : {}),
+    ...(r.unranked ? { unranked: true } : {}),
   };
 }
 
@@ -371,6 +376,8 @@ export class GameHost {
       const g = await this.restore(gameId);
       if (this.stopped) return null;
       this.games.set(gameId, g);
+      // Mode illimité modifié pendant que la partie n'était pas chargée.
+      await this.refreshUnlimited(g);
       this.reschedule(g);
       this.log.info({ gameId, time: g.state.time, orders: g.orderSeq }, 'partie chargée');
       return g;
@@ -502,6 +509,7 @@ export class GameHost {
       lastFrameDay: frames.at(-1)?.day ?? -1,
       lastFrame,
       stateBytes: row.stateBytes,
+      unlimitedUsers: new Set(),
     };
     // Rattrapage du temps écoulé pendant l'arrêt (aucun joueur connecté : pas de notification),
     // par tranches pour ne pas bloquer les autres parties ni les requêtes. En pause, l'horloge vaut
@@ -1091,6 +1099,12 @@ export class GameHost {
       ) {
         g.dormant = false;
       }
+      // Mode illimité du compte (lu à la connexion : changé ailleurs, sur une autre instance…).
+      if (conn.unlimited !== undefined && conn.unlimited !== g.unlimitedUsers.has(conn.userId)) {
+        if (conn.unlimited) g.unlimitedUsers.add(conn.userId);
+        else g.unlimitedUsers.delete(conn.userId);
+      }
+      this.syncUnlimited(g);
     }
     const ok = this.safely(g, () => {
       // Rattrapage borné ; les autres connexions recevront leur diff par la diffusion groupée.
@@ -1120,6 +1134,12 @@ export class GameHost {
     }
     g.connections.add(conn);
     this.reschedule(g);
+    // Équité multijoueur : avis rappelé à chaque arrivée tant qu'une nation est illimitée.
+    if (g.meta.mode === 'multi') {
+      for (const n of this.unlimitedNationsOf(g)) {
+        conn.send({ t: 'notice', level: 'warn', text: this.unlimitedNotice(n) });
+      }
+    }
     return g;
   }
 
@@ -1177,6 +1197,7 @@ export class GameHost {
     });
     this.notice(g, `${this.nationName(p.nationId)} : le joueur a repris le contrôle de sa nation.`);
     this.log.info({ gameId: g.id, nation: p.nationId }, 'joueur de retour : IA retirée');
+    this.syncUnlimited(g);
   }
 
   private nationName(id: NationId): string {
@@ -1212,6 +1233,8 @@ export class GameHost {
         if (!r.ok && r.error !== 'unsupported') continue;
         p.isAi = true;
         replaced++;
+        // Une IA ne profite jamais du mode illimité de son joueur.
+        this.syncUnlimited(g);
         const slot = p.slot;
         await this.chain(g, 'remplacement IA', async () => {
           await this.d.db
@@ -1392,6 +1415,7 @@ export class GameHost {
     p.isAi = ai;
     p.aiForced = ai;
     if (!ai) p.lastActiveAt = now;
+    this.syncUnlimited(g);
     const slot = p.slot;
     await this.chain(g, 'IA (administration)', async () => {
       await this.d.db
@@ -1414,6 +1438,91 @@ export class GameHost {
     );
     this.log.info({ gameId, nation: nationId, ai }, 'IA imposée ou retirée par l’administration');
     return { nationId, userId: p.userId, isAi: ai, aiForced: ai };
+  }
+
+  // ───────────────────────────── Mode illimité ─────────────────────────────
+
+  /** Nations illimitées d'après le moteur (vide si le moteur ne gère pas la commande). */
+  private unlimitedNationsOf(g: HostedGame): NationId[] {
+    try {
+      return this.d.engine?.unlimitedNations?.(g.state) ?? [];
+    } catch {
+      return [];
+    }
+  }
+
+  private unlimitedNotice(n: NationId): string {
+    return `Mode illimité actif pour ${this.nationName(n)} — partie non classée.`;
+  }
+
+  /** Relit en base les comptes illimités parmi les joueurs, puis synchronise le moteur. */
+  async refreshUnlimited(g: HostedGame): Promise<void> {
+    const ids = [...new Set(g.players.map((p) => p.userId).filter((x): x is string => !!x))];
+    const rows = ids.length
+      ? await this.d.db
+          .select({ id: users.id })
+          .from(users)
+          .where(and(inArray(users.id, ids), eq(users.unlimited, true)))
+      : [];
+    g.unlimitedUsers = new Set(rows.map((r) => r.id));
+    this.syncUnlimited(g);
+  }
+
+  /**
+   * Met le moteur en accord avec les comptes : une nation est illimitée si et seulement si un joueur
+   * humain en mode illimité la tient (pas une IA de remplacement). Commandes système journalisées,
+   * donc rejouées à la reprise. En multijoueur, la première activation rend la partie non classée et
+   * l'annonce publiquement.
+   */
+  syncUnlimited(g: HostedGame): void {
+    const engine = this.d.engine;
+    if (!engine?.unlimitedNations || !engine.applySystem) return;
+    if (g.errored || g.meta.status === 'ended') return;
+    const want = new Set<NationId>();
+    for (const p of g.players) {
+      if (p.userId && !p.isAi && g.unlimitedUsers.has(p.userId)) want.add(p.nationId);
+    }
+    const have = new Set(this.unlimitedNationsOf(g));
+    for (const n of [...want].sort()) {
+      if (have.has(n)) continue;
+      if (!this.applySystemNow(g, { kind: 'unlimited', nationId: n, on: true }).ok) continue;
+      this.log.info({ gameId: g.id, nation: n }, 'mode illimité activé');
+      if (g.meta.mode === 'multi') {
+        this.markUnranked(g);
+        this.notice(g, this.unlimitedNotice(n), 'warn');
+      }
+    }
+    for (const n of [...have].sort()) {
+      if (want.has(n)) continue;
+      if (this.applySystemNow(g, { kind: 'unlimited', nationId: n, on: false }).ok) {
+        this.log.info({ gameId: g.id, nation: n }, 'mode illimité désactivé');
+      }
+    }
+  }
+
+  /** Partie non classée, définitivement (même si le mode illimité est retiré ensuite). */
+  private markUnranked(g: HostedGame): void {
+    if (g.meta.unranked) return;
+    g.meta.unranked = true;
+    void this.chain(g, 'partie non classée', async () => {
+      await this.d.db.update(games).set({ unranked: true }).where(eq(games.id, g.id));
+    });
+  }
+
+  /**
+   * Administration : mode illimité d'un compte activé ou retiré. Les parties chargées ici sont mises à
+   * jour tout de suite ; les autres le seront à leur chargement ou à la prochaine connexion du joueur.
+   */
+  setUserUnlimited(userId: string, on: boolean): number {
+    let n = 0;
+    for (const g of this.games.values()) {
+      if (!g.players.some((p) => p.userId === userId)) continue;
+      if (on) g.unlimitedUsers.add(userId);
+      else g.unlimitedUsers.delete(userId);
+      this.syncUnlimited(g);
+      n++;
+    }
+    return n;
   }
 
   /** Ferme les connexions d'un utilisateur (bannissement). */
@@ -1514,6 +1623,7 @@ export class GameHost {
       lastFrameDay: -1,
       lastFrame: null,
       stateBytes: 0,
+      unlimitedUsers: new Set(),
     };
     this.games.set(opts.id, g);
     this.recordFrame(g, g.state.time, true);
@@ -1601,6 +1711,8 @@ export class GameHost {
       ],
       clock,
     });
+    const hosted = this.games.get(id);
+    if (hosted) await this.refreshUnlimited(hosted);
     return { meta: this.games.get(id)?.meta ?? metaOf(row, 1), nationId: body.nationId };
   }
 
@@ -1676,6 +1788,8 @@ export class GameHost {
       })),
       clock,
     });
+    const hosted = this.games.get(gameId);
+    if (hosted) await this.refreshUnlimited(hosted);
     this.log.info({ gameId, players: players.length }, 'partie multijoueur démarrée');
     return this.games.get(gameId)?.meta ?? metaOf(row, players.length);
   }
@@ -1725,6 +1839,7 @@ export class GameHost {
     }
     g.meta.playerCount = g.players.filter((p) => p.userId).length;
     this.notice(g, `Un nouveau joueur prend la tête ${this.nationDe(nationId)}.`);
+    await this.refreshUnlimited(g);
     return g.meta;
   }
 
@@ -1745,6 +1860,7 @@ export class GameHost {
     p.userId = null;
     p.isAi = true;
     p.aiForced = false;
+    this.syncUnlimited(g);
     await this.d.db
       .update(gamePlayers)
       .set({ userId: null, isAiReplacement: true, aiForced: false, aiSince: new Date() })
