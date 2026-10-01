@@ -210,15 +210,18 @@ export function initI18n(): Promise<void> {
       const f = loaderFor(files, l);
       return f ? f().catch(() => undefined) : undefined;
     };
-    const [core, en, data, placeNames] = await Promise.all([
+    const [core, en, data, enData, placeNames] = await Promise.all([
       load(coreFiles, lang),
       lang === 'en' ? undefined : load(coreFiles, 'en'),
       load(dataFiles, lang),
+      lang === 'en' ? undefined : load(dataFiles, 'en'),
       load(nameFiles, lang),
       load(fontFiles, lang),
     ]);
     if (en) i18next.addResourceBundle('en', 'translation', fillPlurals(en, 'en'), true, true);
     if (core) i18next.addResourceBundle(lang, 'translation', fillPlurals(core, lang), true, true);
+    // Données (recherche, fiches techniques…) : langue choisie, sinon anglais, sinon français.
+    indexTexts(enData, dataTexts);
     indexTexts(data, dataTexts);
     names = placeNames ?? {};
     await i18next.changeLanguage(lang);
@@ -249,8 +252,10 @@ let nationLoad: Promise<void> | null = null;
 export function loadNationTexts(): Promise<void> {
   if (isFrench) return Promise.resolve();
   nationLoad ??= (async () => {
-    const f = loaderFor(nationFiles, lang);
-    indexTexts(f ? await f().catch(() => undefined) : undefined, nationTexts);
+    const get = (l: Locale) => loaderFor(nationFiles, l)?.().catch(() => undefined);
+    const [mine, en] = await Promise.all([get(lang), lang === 'en' ? undefined : get('en')]);
+    indexTexts(en, nationTexts); // repli anglais, puis français
+    indexTexts(mine, nationTexts);
   })();
   return nationLoad;
 }
