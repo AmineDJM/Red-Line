@@ -42,6 +42,7 @@ import {
 import { news } from './news.js';
 import { mutualDefense, openExpelVote } from './alliances.js';
 import { autoResolution } from './council.js';
+import { noteLoc } from '../../state/loc.js';
 
 const FOREVER = Number.MAX_SAFE_INTEGER;
 
@@ -202,6 +203,7 @@ export function endWar(
         title: 'Cessez-le-feu',
         text: `Cessez-le-feu en vigueur : ${nationName(state, a)} / ${nationName(state, b)}.`,
         severity: 'info',
+        loc: noteLoc('ceasefire', { a: { nation: a }, b: { nation: b } }),
       },
       null,
     );
@@ -381,6 +383,9 @@ export function orderProposePeace(
       title: kind === 'peace' ? 'Proposition de paix' : 'Proposition de cessez-le-feu',
       text: `${natLe(state, n, true)} ${natAgree(state, n, 'propose', 'proposent')} ${kind === 'peace' ? 'la paix' : 'un cessez-le-feu'}.`,
       severity: 'info',
+      loc: noteLoc(kind === 'peace' ? 'peaceProposal' : 'ceasefireProposal', {
+        nation: { nation: n },
+      }),
     },
     [target],
   );
@@ -434,6 +439,7 @@ export function orderAnswerPeace(
         title: 'Proposition refusée',
         text: `${natLe(state, n, true)} ${natAgree(state, n, 'refuse', 'refusent')} votre proposition.`,
         severity: 'info',
+        loc: noteLoc('proposalRefused', { nation: { nation: n } }),
       },
       [from],
     );

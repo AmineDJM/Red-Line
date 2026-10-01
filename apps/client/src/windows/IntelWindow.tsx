@@ -32,13 +32,14 @@ import {
 import { Ago, Cotation, NationTag, isLowCotation } from '../components/Common.js';
 import { MiniMap } from '../components/MiniMap.js';
 import { NationRecon, reconNationCost } from '../components/NationRecon.js';
-import { fmtDuration } from '../i18n/index.js';
+import { compareNames, fmtDuration } from '../i18n/index.js';
 import { nationForms, nationName, provinceName } from '../lib/game.js';
 import { useGameTime } from '../shell/helpers.js';
 import type { WindowContentProps } from '../shell/WindowHost.js';
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
+import { orderError, reportTitle } from '../lib/loc.js';
 
 /** Opérations proposées par département et par source (identique à OP_META du moteur). */
 export const OPS_BY_DEPT: Record<Department, Record<IntelSource, IntelOpKind[]>> = {
@@ -115,7 +116,7 @@ function useSend() {
     const res = await useGame.getState().connection?.sendOrder(order);
     if (res?.ok) toast(ok, 'ok');
     else if (res)
-      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+      toast(orderError(res), 'error');
   };
 }
 
@@ -202,7 +203,7 @@ function ReportCard({
             ) : null}
             <Ago from={r.time} now={now} />
           </span>
-          <span className="report__title">{r.title}</span>
+          <span className="report__title">{reportTitle(r)}</span>
         </span>
         <Icon name={open ? 'chevronUp' : 'chevronDown'} size={14} className="report__chev" />
       </button>
@@ -305,7 +306,7 @@ export function LaunchDialog({
         .sort((a, b) => {
           const ra = view?.nations[a.id]?.relation === 'war' ? 0 : 1;
           const rb = view?.nations[b.id]?.relation === 'war' ? 0 : 1;
-          return ra - rb || a.name.localeCompare(b.name, 'fr');
+          return ra - rb || compareNames(a.name, b.name);
         }),
     [nations, me, view?.nations],
   );
@@ -314,7 +315,7 @@ export function LaunchDialog({
     Object.values(view?.provinces ?? {})
       .filter((p) => p.owner === n)
       .map((p) => ({ id: p.id, name: provinceName(p.id), capital: !!defs[p.id]?.isCapital }))
-      .sort((a, b) => Number(b.capital) - Number(a.capital) || a.name.localeCompare(b.name, 'fr'));
+      .sort((a, b) => Number(b.capital) - Number(a.capital) || compareNames(a.name, b.name));
   const targetProvinces = provincesOf(kind === 'ownArea' ? me : nation);
   const [province, setProvince] = useState<string>(initialProvince ?? '');
   // Reconnaissance : sur tout le pays (par défaut) ou sur une seule province.

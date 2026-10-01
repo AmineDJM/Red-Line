@@ -8,6 +8,7 @@ import type { Map as MlMap } from 'maplibre-gl';
 import { renderSdf } from './sdf.js';
 import { C, MONO } from './palette.js';
 import { PION_H, PION_W } from './pions.js';
+import { upper } from '../i18n/index.js';
 
 export const PIXEL_RATIO = 2;
 const SDF_RADIUS = 8;
@@ -460,7 +461,7 @@ function drawSpaced(
 
 export function renderTextImage(style: TextStyle, raw: string) {
   const spec = TEXT[style];
-  const text = spec.upper ? raw.toLocaleUpperCase('fr') : raw;
+  const text = spec.upper ? upper(raw) : raw;
   const pr = PIXEL_RATIO;
   const size = spec.size * pr;
   const c = document.createElement('canvas');

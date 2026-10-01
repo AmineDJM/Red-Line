@@ -91,7 +91,7 @@
 .rl-prompt__ps {
   color: var(--rl-cyan);
   font-weight: 700;
-  margin-right: 0.6ch;
+  margin-inline-end: 0.6ch;
 }
 .rl-prompt__host {
   color: var(--rl-text-dim);
@@ -108,13 +108,13 @@
 }
 .rl-prompt__gt {
   color: var(--rl-cyan);
-  margin-left: 0.2ch;
+  margin-inline-start: 0.2ch;
 }
 .rl-caret {
   display: inline-block;
   width: 0.62em;
   height: 1.05em;
-  margin-left: 0.5ch;
+  margin-inline-start: 0.5ch;
   transform: translateY(0.18em);
   background: var(--rl-cyan);
   opacity: 0.85;
@@ -289,7 +289,7 @@
   opacity: 0.8;
 }
 .rl-btn__kbd {
-  margin-left: 2px;
+  margin-inline-start: 2px;
 }
 @media (pointer: coarse) {
   .rl-btn {
@@ -364,7 +364,7 @@
 .rl-iconbtn__badge {
   position: absolute;
   top: 2px;
-  right: 2px;
+  inset-inline-end: 2px;
   min-width: 15px;
   height: 15px;
   padding: 0 4px;
@@ -646,7 +646,7 @@
   flex: none;
 }
 .rl-win__kbd {
-  margin-right: 4px;
+  margin-inline-end: 4px;
 }
 .rl-win__btn {
   display: inline-flex;
@@ -713,6 +713,7 @@
 }
 .rl-win__resize {
   position: absolute;
+  /* Physique : le redimensionnement (JS) agrandit vers la droite, y compris en arabe. */
   right: 0;
   bottom: 0;
   width: 16px;
@@ -883,7 +884,7 @@
 }
 .rl-kv dd {
   margin: 0;
-  text-align: right;
+  text-align: end;
   font-weight: 600;
   font-size: var(--rl-fs-sm);
   font-variant-numeric: tabular-nums;
@@ -998,8 +999,8 @@
 .rl-tabs--line .rl-tab::after {
   content: '';
   position: absolute;
-  left: 8px;
-  right: 8px;
+  inset-inline-start: 8px;
+  inset-inline-end: 8px;
   bottom: -1px;
   height: 2px;
   background: transparent;
@@ -1216,7 +1217,7 @@
   background: transparent;
   color: var(--rl-text);
   font: inherit;
-  text-align: left;
+  text-align: start;
   box-shadow: inset 2px 0 0 transparent;
   transition: background var(--rl-dur) var(--rl-ease);
 }
@@ -1404,7 +1405,7 @@
   font-weight: 700;
   font-size: var(--rl-fs-sm);
   font-variant-numeric: tabular-nums;
-  text-align: right;
+  text-align: end;
 }
 
 .rl-spark__line {
@@ -1455,7 +1456,7 @@
   color: var(--rl-red);
 }
 .rl-money__suffix {
-  margin-left: 0.4ch;
+  margin-inline-start: 0.4ch;
   color: var(--rl-text-dim);
   font-weight: 400;
 }
@@ -1554,13 +1555,13 @@
 }
 .rl-input-wrap__prompt {
   position: absolute;
-  left: 10px;
+  inset-inline-start: 10px;
   color: var(--rl-cyan);
   font-weight: 700;
   pointer-events: none;
 }
 .rl-input-wrap--prompt .rl-input {
-  padding-left: 24px;
+  padding-inline-start: 24px;
 }
 .rl-search {
   position: relative;
@@ -1570,20 +1571,20 @@
 }
 .rl-search__icon {
   position: absolute;
-  left: 10px;
+  inset-inline-start: 10px;
   color: var(--rl-text-dim);
   pointer-events: none;
 }
 .rl-search__input {
-  padding-left: 32px;
-  padding-right: 34px;
+  padding-inline-start: 32px;
+  padding-inline-end: 34px;
 }
 .rl-search__input::-webkit-search-cancel-button {
   display: none;
 }
 .rl-search__clear {
   position: absolute;
-  right: 4px;
+  inset-inline-end: 4px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1603,7 +1604,7 @@
 }
 .rl-search__kbd {
   position: absolute;
-  right: 8px;
+  inset-inline-end: 8px;
   pointer-events: none;
 }
 .rl-select {
@@ -1613,7 +1614,7 @@
 }
 .rl-select select {
   appearance: none;
-  padding-right: 30px;
+  padding-inline-end: 30px;
   cursor: pointer;
 }
 .rl-select select option {
@@ -1622,7 +1623,7 @@
 }
 .rl-select__chev {
   position: absolute;
-  right: 9px;
+  inset-inline-end: 9px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--rl-text-dim);
@@ -1654,7 +1655,7 @@
 .rl-toggle__knob {
   position: absolute;
   top: 2px;
-  left: 2px;
+  inset-inline-start: 2px;
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -1670,6 +1671,9 @@
 .rl-toggle__sw--on .rl-toggle__knob {
   transform: translateX(14px);
   background: var(--rl-cyan);
+}
+[dir='rtl'] .rl-toggle__sw--on .rl-toggle__knob {
+  transform: translateX(-14px);
 }
 .rl-toggle__text {
   display: flex;
@@ -1740,7 +1744,7 @@
 }
 .rl-slider__value {
   min-width: 7ch;
-  text-align: right;
+  text-align: end;
   color: var(--rl-amber);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
@@ -1849,19 +1853,19 @@
   transform: translateX(-50%);
 }
 .rl-tip--right > .rl-tip__bubble {
-  left: calc(100% + 8px);
+  inset-inline-start: calc(100% + 8px);
   top: 50%;
   transform: translateY(-50%);
 }
 .rl-tip--left > .rl-tip__bubble {
-  right: calc(100% + 8px);
+  inset-inline-end: calc(100% + 8px);
   top: 50%;
   transform: translateY(-50%);
 }
 
 .rl-toasts {
   position: fixed;
-  right: 16px;
+  inset-inline-end: 16px;
   bottom: 16px;
   z-index: 90;
   display: flex;
@@ -2096,8 +2100,8 @@
 }
 .rl-unit__hp {
   position: absolute;
-  left: 3px;
-  right: 3px;
+  inset-inline-start: 3px;
+  inset-inline-end: 3px;
   bottom: -4px;
   height: 2px;
   background: rgba(0, 0, 0, 0.6);
@@ -2175,8 +2179,8 @@
   position: absolute;
   z-index: 1;
   top: 6px;
-  left: 6px;
-  right: 6px;
+  inset-inline-start: 6px;
+  inset-inline-end: 6px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2308,7 +2312,7 @@
   background: var(--rl-panel);
   color: var(--rl-text);
   font: inherit;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   overflow: hidden;
   transition:
@@ -2439,7 +2443,7 @@
 }
 .rl-palette__line-prompt {
   color: var(--rl-cyan);
-  margin-right: 1ch;
+  margin-inline-end: 1ch;
 }
 .rl-palette__input {
   display: flex;
@@ -2643,11 +2647,11 @@
     border-radius: var(--rl-radius);
   }
   .rl-drawer--left {
-    left: 64px;
+    inset-inline-start: 64px;
     transform: translateX(-12px);
   }
   .rl-drawer--right {
-    right: 12px;
+    inset-inline-end: 12px;
     transform: translateX(12px);
   }
   .rl-drawer--open {
@@ -2656,8 +2660,8 @@
 }
 @media (max-width: 767px) {
   .rl-drawer {
-    left: 0;
-    right: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
     bottom: 0;
     max-height: 78dvh;
     border-radius: 8px 8px 0 0;
@@ -2748,4 +2752,15 @@
   .rl-badge__dot--pulse {
     animation: none;
   }
+}
+
+/* ——— Écriture de droite à gauche (arabe) ———
+   Mise en page en propriétés logiques (start/end) ; icônes orientées retournées ; la carte et les
+   canevas restent en gauche-à-droite (géographie non inversée). */
+[dir='rtl'] .rl-icon--dir {
+  transform: scaleX(-1);
+}
+[dir='rtl'] .maplibregl-map,
+[dir='rtl'] canvas {
+  direction: ltr;
 }

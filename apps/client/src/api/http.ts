@@ -1,5 +1,6 @@
 import type { FeatureCollection } from 'geojson';
 import type {
+  Locale,
   Balance,
   BattleReport,
   CosmeticItem,
@@ -126,6 +127,9 @@ export class HttpApi implements Api {
   }
   async logout() {
     await request('POST', '/api/auth/logout', {});
+  }
+  async setLocale(locale: Locale) {
+    await request('PATCH', '/api/me', { locale });
   }
   async catalog(): Promise<WeaponSystem[]> {
     return (await request<{ systems: WeaponSystem[] }>('GET', '/api/catalog')).systems;

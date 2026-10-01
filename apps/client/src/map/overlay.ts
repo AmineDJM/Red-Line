@@ -14,6 +14,7 @@ import {
   type Rect,
 } from './callouts.js';
 import { C, MONO } from './palette.js';
+import { upper } from '../i18n/index.js';
 
 export type CalloutTone = 'amber' | 'cyan' | 'red' | 'green';
 
@@ -113,7 +114,7 @@ export class OverlayRenderer {
     if (hit) return hit;
     const ctx = this.ctx;
     ctx.font = TITLE_FONT;
-    let w = ctx.measureText(`› ${c.title.toLocaleUpperCase('fr')}`).width;
+    let w = ctx.measureText(`› ${upper(c.title)}`).width;
     ctx.font = LINE_FONT;
     for (const l of c.lines) w = Math.max(w, ctx.measureText(l).width + 10);
     const m = {
@@ -244,7 +245,7 @@ export class OverlayRenderer {
     ctx.fillStyle = tone;
     ctx.fillText('›', r.x + PAD_X, ty);
     ctx.fillStyle = C.text;
-    ctx.fillText(c.title.toLocaleUpperCase('fr'), r.x + PAD_X + 10, ty);
+    ctx.fillText(upper(c.title), r.x + PAD_X + 10, ty);
     let y = r.y + PAD_Y + TITLE_H;
     if (c.progress !== undefined) {
       const bx = r.x + PAD_X;

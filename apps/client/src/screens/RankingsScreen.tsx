@@ -15,6 +15,7 @@ import {
 } from '@redline/ui';
 import { getApi } from '../api/index.js';
 import { Page } from '../components/Page.js';
+import { fmtDate } from '../i18n/index.js';
 
 /** Classements et saisons. */
 export function RankingsScreen() {
@@ -76,7 +77,7 @@ export function RankingsScreen() {
               value={s?.name ?? '—'}
               sub={
                 s
-                  ? `${new Date(s.startsAt).toLocaleDateString('fr-FR')} → ${new Date(s.endsAt).toLocaleDateString('fr-FR')}`
+                  ? `${fmtDate(s.startsAt)} → ${fmtDate(s.endsAt)}`
                   : ''
               }
             />

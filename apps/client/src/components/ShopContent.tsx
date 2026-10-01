@@ -4,6 +4,7 @@ import type { CosmeticItem, ShopPack, ShopPolicy, WalletEntry } from '@redline/s
 import { Badge, Button, EmptyState, Icon, Panel, Spinner, Stat, formatInt } from '@redline/ui';
 import { getApi } from '../api/index.js';
 import { useUi } from '../store/ui.js';
+import { LOCALE, fmtDate } from '../i18n/index.js';
 
 const PREVIEW: Record<string, string[]> = {
   amber: ['#1c1300', '#ffb020', '#ffd27a'],
@@ -15,7 +16,7 @@ const PREVIEW: Record<string, string[]> = {
 };
 
 function euros(cents: number, currency: string): string {
-  return new Intl.NumberFormat('fr-FR', {
+  return new Intl.NumberFormat(LOCALE, {
     style: 'currency',
     currency: currency.toUpperCase(),
   }).format(cents / 100);
@@ -165,7 +166,7 @@ export function ShopContent({ policy }: { policy?: ShopPolicy | null }) {
           <tbody>
             {wallet.history.map((h) => (
               <tr key={h.id}>
-                <td>{new Date(h.createdAt).toLocaleDateString('fr-FR')}</td>
+                <td>{fmtDate(h.createdAt)}</td>
                 <td>{t(`shop.reasons.${h.reason}`)}</td>
                 <td className="muted">{h.ref ?? ''}</td>
                 <td

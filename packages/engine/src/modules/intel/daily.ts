@@ -46,6 +46,7 @@ import {
   natLe,
   sectorOf,
 } from './text.js';
+import { loc } from '@redline/shared';
 
 /**
  * Notes quotidiennes et rapports flash. Textes courts et génériques, construits à partir de l'état du
@@ -229,6 +230,7 @@ export function scan(state: EngineState): void {
         source: 'sigint',
         kind: 'flash',
         title: `FLASH — Mouvement de forces ${natDe(state, g.owner)}`,
+        titleLoc: loc('engine.intel.flashMovement', { nation: { nation: g.owner } }),
         lines,
         at: g.at,
         radiusKm: 30 + (1 - qq) * 120,
@@ -292,6 +294,7 @@ function interiorNote(state: EngineState, n: NationId): void {
     source: 'humint',
     kind: 'daily',
     title: 'Note quotidienne — Sécurité intérieure',
+    titleLoc: loc('engine.intel.dailyInterior'),
     lines,
     at: null,
     radiusKm: 0,
@@ -370,6 +373,7 @@ function exteriorNote(state: EngineState, n: NationId): void {
     source: 'humint',
     kind: 'daily',
     title: 'Note quotidienne — Renseignement extérieur',
+    titleLoc: loc('engine.intel.dailyForeign'),
     lines,
     at: null,
     radiusKm: 0,
@@ -419,6 +423,7 @@ function militaryNote(state: EngineState, n: NationId, pool: PoolEntry[]): void 
     source: 'sigint',
     kind: 'daily',
     title: 'Note quotidienne — Renseignement militaire',
+    titleLoc: loc('engine.intel.dailyMilitary'),
     lines,
     at,
     radiusKm: at ? 60 + (1 - q) * 100 : 0,

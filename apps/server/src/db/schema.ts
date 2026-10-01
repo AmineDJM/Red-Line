@@ -17,7 +17,7 @@ import {
   uniqueIndex,
   uuid,
 } from 'drizzle-orm/pg-core';
-import type { Balance, ChangeScope, Role, ShopPolicy, WeaponSystem } from '@redline/shared';
+import type { Balance, ChangeScope, Locale, Role, ShopPolicy, WeaponSystem } from '@redline/shared';
 
 const bytea = customType<{ data: Buffer; driverData: Buffer }>({
   dataType() {
@@ -54,6 +54,8 @@ export const users = pgTable(
      * Modifiable par un superadmin seulement.
      */
     unlimited: boolean('unlimited').notNull().default(false),
+    /** Langue de l'interface (fr, en, ar…) : notifications push dans cette langue. Null = inconnue. */
+    locale: text('locale').$type<Locale>(),
   },
   (t) => [
     uniqueIndex('users_email_key').on(sql`lower(${t.email})`),

@@ -115,6 +115,8 @@ export interface AdminUser {
   isGuest: boolean;
   /** Mode illimité : ressources en partie, monnaie premium et quotas (superadmin seulement). */
   unlimited?: boolean;
+  /** Langue de l'interface choisie par le joueur (fr, en, ar…), absente si inconnue. */
+  locale?: string;
   premiumBalance: number;
   createdAt: string;
   lastSeenAt: string;

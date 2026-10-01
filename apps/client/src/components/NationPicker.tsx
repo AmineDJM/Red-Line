@@ -18,6 +18,7 @@ import { norm } from '../lib/commands.js';
 import { photoFor, usePhotos } from '../lib/photos.js';
 import { useIsMobile } from '../shell/useMedia.js';
 import { useWorld } from '../store/world.js';
+import { compareNames } from '../i18n/index.js';
 
 export interface NationPickerProps {
   /** Chemin de l'invite (`nouvelle-partie`, `lobby\partie`). */
@@ -81,7 +82,7 @@ export function NationPicker({
     () =>
       Object.values(world.nations)
         .filter((n) => (counts.get(n.id) ?? 0) > 0 && (!playable || playable(n.id)))
-        .sort((a, b) => a.name.localeCompare(b.name, 'fr')),
+        .sort((a, b) => compareNames(a.name, b.name)),
     [world.nations, counts, playable],
   );
   const list = useMemo(() => {

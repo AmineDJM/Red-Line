@@ -1,0 +1,2575 @@
+{
+  "app": {
+    "name": "Red Line",
+    "tagline": "Geopolitische Echtzeitstrategie",
+    "loading": "Wird geladen…",
+    "loadingPath": "laden",
+    "errorPath": "fehler",
+    "loadingMap": "Einsatzgebiet wird vorbereitet…",
+    "error": "Ein Fehler ist aufgetreten.",
+    "retry": "Erneut versuchen",
+    "back": "Zurück",
+    "close": "Schließen",
+    "clear": "Löschen",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "skip": "Überspringen",
+    "done": "Fertig",
+    "search": "Suchen",
+    "maximize": "Maximieren",
+    "soon": "bald",
+    "yes": "ja",
+    "no": "nein",
+    "all": "Alle",
+    "none": "Keine",
+    "mockBadge": "Offline-Demo",
+    "notFound": "Seite nicht gefunden."
+  },
+  "keys": {
+    "space": "Leertaste",
+    "enter": "Eingabe",
+    "escape": "Esc"
+  },
+  "time": {
+    "dayUnit": "T",
+    "ago": "vor {{value}}",
+    "in": "in {{value}}"
+  },
+  "sections": {
+    "army": "Armee",
+    "production": "Produktion",
+    "research": "Forschung",
+    "economy": "Wirtschaft",
+    "intel": "Nachrichtendienst",
+    "diplomacy": "Diplomatie",
+    "council": "Sicherheitsrat",
+    "news": "Nachrichten",
+    "battles": "Gefechtsberichte",
+    "encyclopedia": "Enzyklopädie",
+    "chat": "Chat",
+    "shop": "Shop",
+    "settings": "Einstellungen",
+    "short": {
+      "army": "Armee",
+      "production": "Arsenal",
+      "research": "F&E",
+      "economy": "Wirtschaft",
+      "intel": "ND",
+      "diplomacy": "Diplo.",
+      "council": "Rat",
+      "news": "News",
+      "battles": "Gefechte",
+      "encyclopedia": "Enzykl.",
+      "chat": "Chat",
+      "shop": "Shop",
+      "settings": "Optionen"
+    },
+    "path": {
+      "army": "Armee",
+      "production": "Arsenal",
+      "research": "F&E",
+      "economy": "Wirtschaft",
+      "intel": "Nachrichtendienst",
+      "diplomacy": "Diplomatie",
+      "council": "UNO\\Rat",
+      "news": "Meldungen",
+      "battles": "Gefechte",
+      "encyclopedia": "Enzyklopädie",
+      "chat": "Chat",
+      "shop": "Shop",
+      "settings": "Einstellungen"
+    }
+  },
+  "home": {
+    "title": "Red Line",
+    "path": "start",
+    "menu": "Hauptmenü",
+    "subtitle": "Geopolitische Echtzeitstrategie auf der echten Weltkarte. Echte Arsenale, echte Budgets, nur militärischer Sieg.",
+    "playGuest": "Als Gast spielen",
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "logout": "Abmelden",
+    "continue": "Neues Spiel",
+    "multi": "Mehrspieler",
+    "resume": "Spiel fortsetzen",
+    "rankings": "Ranglisten",
+    "shop": "Shop",
+    "sandbox": "Sandbox",
+    "guest": "Gast",
+    "notConnected": "Nicht angemeldet",
+    "welcome": "Angemeldet: {{name}}",
+    "guestNote": "Das Gastkonto bleibt auf diesem Gerät gespeichert.",
+    "footer": "Nur militärischer Sieg. Kein realer Ort wird angegriffen: generische Gebäude pro Provinz.",
+    "hints": {
+      "guest": "Sofortiges Einzelspiel, ohne Registrierung",
+      "solo": "Einzelspiel gegen die KI auf der Weltkarte",
+      "multi": "Bis zu 64 Spieler, übrige Nationen durch KI",
+      "resume": "Ihre laufenden und beendeten Spiele",
+      "rankings": "Saisons und Weltrangliste",
+      "shop": "Premiumwährung, Kosmetik, Beschleunigungen",
+      "sandbox": "Freie Platzierung und lokale Engine"
+    },
+    "boot": {
+      "link": "Satellitenverbindung hergestellt",
+      "map": "Kartografie: 2.567 Provinzen · 201 Nationen",
+      "catalog": "Katalog: 406 Waffensysteme",
+      "engine": "Simulationsengine synchronisiert",
+      "ready": "Gefechtsstand bereit."
+    },
+    "flash": {
+      "game_deleted": "Dieses Spiel wurde gelöscht: Sie sind zurück auf der Startseite."
+    }
+  },
+  "auth": {
+    "email": "E-Mail-Adresse",
+    "password": "Passwort",
+    "displayName": "Anzeigename",
+    "submitLogin": "Anmelden",
+    "submitRegister": "Konto erstellen",
+    "switchToRegister": "Ein Konto erstellen",
+    "switchToLogin": "Bereits registriert?",
+    "errors": {
+      "invalid": "Ungültige Zugangsdaten.",
+      "exists": "Diese Adresse wird bereits verwendet.",
+      "weak": "Passwort zu kurz (mindestens 8 Zeichen).",
+      "network": "Server nicht erreichbar.",
+      "generic": "Vorgang fehlgeschlagen."
+    }
+  },
+  "newGame": {
+    "title": "Neues Spiel",
+    "path": "neues-spiel",
+    "subtitle": "Wählen Sie Ihre Nation",
+    "nation": "Nation",
+    "searchPlaceholder": "Nation suchen…",
+    "pickOnMap": "Klicken Sie auf ein Land auf der Karte oder wählen Sie es aus der Liste.",
+    "pickHint": "Tippen Sie auf ein Land auf der Karte oder wählen Sie es aus der Liste.",
+    "selected": "Ausgewählte Nation",
+    "none": "Keine Nation",
+    "provinces_one": "{{count}} Provinz",
+    "provinces_other": "{{count}} Provinzen",
+    "count_one": "{{count}} Nation",
+    "count_other": "{{count}} Nationen",
+    "taken_one": "{{count}} vergeben",
+    "taken_other": "{{count}} vergeben",
+    "human": "Spieler",
+    "scenario": "Szenario",
+    "speed": "Geschwindigkeit",
+    "difficulty": "Schwierigkeit",
+    "levels": {
+      "easy": "Leicht",
+      "normal": "Normal",
+      "hard": "Schwer"
+    },
+    "budget": "Verteidigungsbudget",
+    "personnel": "Personalstärke",
+    "doctrine": "Doktrin",
+    "highlights": "Hauptsysteme",
+    "loadingInfo": "Profil wird geladen…",
+    "random": "Zufällige Nation",
+    "start": "Spiel starten",
+    "creating": "Spiel wird erstellt…",
+    "entity": "Gebiet",
+    "error": "Spiel kann nicht erstellt werden.",
+    "mapLabel": "Weltkarte: Klicken Sie auf eine Nation, um sie zu wählen",
+    "tooMany": "Sie haben bereits 10 laufende Einzelspiele: Setzen Sie eines fort oder löschen Sie eines.",
+    "manageGames": "Meine Spiele verwalten"
+  },
+  "game": {
+    "connecting": "Verbindung zum Spiel…",
+    "reconnecting": "Verbindung verloren, neuer Versuch…",
+    "failed": "Verbindung vom Server abgelehnt.",
+    "spectator": "Zuschauer",
+    "exit": "Zur Startseite",
+    "clock": {
+      "day": "T+{{day}}",
+      "paused": "Pause",
+      "pause": "Pause",
+      "play": "Fortsetzen",
+      "speed": "Tempo ×{{speed}}",
+      "speedShort": "×{{speed}}",
+      "nextSpeed": "Tempo ändern (aktuell ×{{speed}})"
+    },
+    "topbar": {
+      "treasury": "Staatskasse",
+      "perDay": "/T",
+      "budgetTip": "Kasse und Nettoeinkommen pro Tag — Wirtschaft öffnen",
+      "resources": "Ressourcen",
+      "resourceTip": "{{name}}: Bestand {{stock}}, {{net}} pro Tag"
+    },
+    "alertLevel": {
+      "title": "Alarm",
+      "short": "AS",
+      "tooltip": "Weltweite Alarmstufe {{level}} — {{label}}",
+      "labels": {
+        "1": "Nuklearkrise",
+        "2": "allgemeiner Krieg",
+        "3": "bewaffnete Spannungen",
+        "4": "Wachsamkeit",
+        "5": "Ruhe"
+      }
+    },
+    "resources": {
+      "money": "Geld",
+      "oil": "Öl",
+      "metals": "Metalle",
+      "electronics": "Elektronik",
+      "food": "Nahrung",
+      "perDay": "{{value}} / Tag"
+    },
+    "toolbar": {
+      "army": "Armee",
+      "production": "Produktion",
+      "alerts": "Meldungen",
+      "layers": "Ebenen",
+      "legend": "Legende",
+      "menu": "Navigation",
+      "map": "Karte",
+      "more": "Mehr",
+      "allSections": "Alle Bereiche",
+      "recenter": "Zentrieren"
+    },
+    "layers": {
+      "title": "Ebenen",
+      "military": "Militär",
+      "intel": "Nachrichtendienst",
+      "economy": "Wirtschaft",
+      "diplomacy": "Diplomatie",
+      "soon": "bald",
+      "fog": "Nebel des Krieges",
+      "labels": "Beschriftungen"
+    },
+    "legend": {
+      "title": "Legende",
+      "ownForces": "Ihre Streitkräfte",
+      "allyForces": "Verbündete Kräfte",
+      "enemyForces": "Feindliche Kräfte (im Krieg)",
+      "detected": "Unidentifizierter Kontakt",
+      "building": "Strategisches Gebäude",
+      "ownTerritory": "Ihr Territorium",
+      "range": "Waffenreichweite (min. – max.)",
+      "route": "Route / Befehl",
+      "launch": "Startplatz",
+      "border": "Grenze",
+      "disputed": "Umstrittenes Gebiet",
+      "fog": "Nicht abgedeckte Zone",
+      "capture": "Eroberung läuft",
+      "neutralForces": "Neutrale Kräfte"
+    },
+    "alerts": {
+      "title": "Meldezentrale",
+      "empty": "Derzeit keine Meldungen.",
+      "markRead": "Alle als gelesen markieren",
+      "center": "Karte zentrieren",
+      "filter": "Filter",
+      "filters": {
+        "all": "Alle",
+        "critical": "Kritisch"
+      },
+      "kinds": {
+        "combat_started": "Gefecht begonnen",
+        "unit_destroyed": "Feindliche Einheit zerstört: {{unit}}",
+        "unit_destroyed_own": "Einheit verloren: {{unit}}",
+        "unit_detected": "Kontakt erfasst",
+        "unit_detected_known": "Kontakt: {{unit}} · {{nation}}",
+        "province_capture_started": "{{province}}: Eroberungsversuch durch {{nationLe}}",
+        "province_capture_started_own": "Eroberung von {{province}} läuft",
+        "province_capture_started_threat": "{{province}} angegriffen von {{nationLe}}",
+        "province_captured": "{{province}} erobert von {{nationLe}}",
+        "province_captured_own": "{{province}} erobert",
+        "province_lost": "{{province}} verloren",
+        "production_complete": "Produktion abgeschlossen: {{unit}}",
+        "arrived": "Einheit am Ziel angekommen",
+        "nation_defeated": "Nation besiegt: {{nation}}",
+        "victory": "Sieg für {{deNation}}",
+        "research_complete": "Forschung abgeschlossen: {{node}}",
+        "war_declared": "Kriegserklärung von {{aDe}} an {{bA}}",
+        "peace_signed": "Frieden zwischen {{aLe}} und {{bLe}} unterzeichnet",
+        "missile_launch": "Raketenstart erfasst",
+        "building_hit": "{{building}} in {{province}} getroffen ({{health}} %)",
+        "delivery_arrived": "Lieferung eingetroffen",
+        "delivery_intercepted": "Lieferung abgefangen",
+        "intel_report": "Neuer Geheimdienstbericht",
+        "battle_report": "Neuer Gefechtsbericht",
+        "battle_report_named": "Bericht: {{title}}",
+        "operation": "Kombinierte Operation: {{status}}",
+        "alert_level": "Weltweite Alarmstufe: {{level}}",
+        "news": "Neue Meldung"
+      },
+      "titled": "{{title}}: {{text}}"
+    },
+    "army": {
+      "count": "×{{count}}"
+    },
+    "selection": {
+      "title": "Auswahl",
+      "count": "Stärke",
+      "hp": "Zustand",
+      "status": "Status",
+      "stance": "Haltung",
+      "supply": "Versorgung",
+      "mission": "Mission",
+      "general": "General",
+      "xp": "Erfahrung",
+      "stop": "Halt",
+      "sheet": "Profil",
+      "deselect": "Abwählen",
+      "hint": "Tippen Sie auf die Karte, um zu bewegen, auf eine feindliche Einheit, um anzugreifen. Konsole: Strg+K.",
+      "lastSeen": "Gesehen vor {{value}}",
+      "lastSeenLabel": "Letzte Sichtung",
+      "uncertainty": "Unsicherheit: ±{{value}}",
+      "uncertaintyLabel": "Unsicherheit",
+      "unknownType": "Unbekannter Typ",
+      "owner": "Nation",
+      "multi_one": "{{count}} ausgewählt",
+      "multi_other": "{{count}} ausgewählt",
+      "ready": "Verfügbar in",
+      "ammo": "Munition"
+    },
+    "orders": {
+      "moveTitle": "Marschbefehl",
+      "attackTitle": "Angriffsbefehl",
+      "distance": "Entfernung",
+      "eta": "Ankunft",
+      "warning": "Achtung",
+      "outOfRange": "Ziel außer Reichweite",
+      "confirm": "Bestätigen",
+      "cancel": "Abbrechen",
+      "sent": "Befehl übermittelt",
+      "destination": "Ziel",
+      "target": "Ziel",
+      "errors": {
+        "not_owner": "Diese Einheit gehört Ihnen nicht.",
+        "unknown_unit": "Unbekannte Einheit.",
+        "unreachable": "Ziel unerreichbar.",
+        "out_of_range": "Ziel außer Reichweite.",
+        "insufficient_funds": "Unzureichende Mittel.",
+        "invalid_target": "Ungültiges Ziel.",
+        "not_allowed": "Befehl nicht möglich.",
+        "game_over": "Das Spiel ist beendet.",
+        "unknown": "Unbekannter Befehl.",
+        "locked": "Aktion blockiert (Alarm, Resolution oder Embargo).",
+        "research_required": "Forschung erforderlich.",
+        "capacity": "Maximale Kapazität erreicht.",
+        "cooldown": "Aktion lädt nach.",
+        "insufficient_resources": "Unzureichende Ressourcen.",
+        "disconnected": "Offline: Befehl nicht übermittelt.",
+        "timeout": "Keine Antwort vom Server."
+      }
+    },
+    "status": {
+      "idle": "Bereit",
+      "moving": "In Bewegung",
+      "combat": "Im Gefecht",
+      "embarked": "Eingeschifft",
+      "destroyed": "Zerstört"
+    },
+    "stance": {
+      "hold": "Halten",
+      "defend": "Defensiv",
+      "aggressive": "Offensiv"
+    },
+    "level": {
+      "own": "Verbündete Einheit",
+      "precise": "Genau",
+      "identified": "Identifiziert",
+      "detected": "Erfasst"
+    },
+    "callout": {
+      "capital": "Hauptstadt",
+      "moving": "Unterwegs · {{value}}",
+      "combat": "Im Gefecht",
+      "capture": "Eroberung {{value}} %"
+    },
+    "end": {
+      "victory": "Sieg",
+      "defeat": "Niederlage",
+      "victoryText": "Ihre Nation setzt ihre militärische Vorherrschaft durch.",
+      "defeatText": "Sieg für {{deNation}}. Ihre Nation ist besiegt.",
+      "defeatTextAlone": "Ihre Nation ist kampfunfähig. Der Krieg geht ohne Sie weiter.",
+      "newGame": "Neues Spiel",
+      "home": "Startseite",
+      "stats": "Spielbilanz",
+      "observe": "Weiter beobachten",
+      "abandoned": "Aufgegeben",
+      "kickerEnded": "Spiel beendet",
+      "abandonedText": "Keine Verbindung seit 48 h (Einzelspiel) oder 24 h (Mehrspieler): Das Spiel wurde geschlossen."
+    },
+    "time": {
+      "minutes": "{{value}} min",
+      "hours": "{{h}} h {{m}}",
+      "days": "{{d}} T {{h}} h"
+    },
+    "unlimited": {
+      "badge": "UNBEGRENZT",
+      "value": "∞",
+      "tip": "Unbegrenzter Modus: Geld und Ressourcen gehen nie aus. F&E bleibt für die Produktion nötig.",
+      "reserve": "Unbegrenzte Reserve",
+      "stockTip": "{{name}}: unbegrenzter Bestand",
+      "budgetTip": "Unbegrenzte Kasse — Wirtschaft öffnen"
+    }
+  },
+  "province": {
+    "title": "Provinz",
+    "population": "Bevölkerung",
+    "income": "Einkommen / Tag",
+    "fortification": "Befestigung",
+    "level": "Stufe {{level}}",
+    "unrest": "Lokale Spannung",
+    "buildings": "Gebäude",
+    "noBuildings": "Keine Gebäude.",
+    "produceHere": "Hier produzieren",
+    "fortify": "Befestigen",
+    "capture": "Eroberung",
+    "captureOwn": "Eroberung durch Ihre Kräfte läuft",
+    "captureBy": "Eroberung durch {{nationLe}} läuft",
+    "knowledge": "Kenntnis",
+    "intelLevel": {
+      "0": "unbekannt",
+      "1": "Überblick",
+      "2": "gut",
+      "3": "vollständig"
+    },
+    "updated": "Aktualisiert",
+    "ago": "vor {{value}}",
+    "economicIntel": "Wirtschaftsaufklärung",
+    "militaryIntel": "Militärische Aufklärung",
+    "knownBuildings": "Bekannte Gebäude",
+    "moreUnknown": "Weitere Gebäude nicht aufgedeckt…",
+    "unknownHint": "Keine Erkenntnisse über diese Provinz. Starten Sie eine Aufklärungsmission, um Gebäude und Verteidigung aufzudecken.",
+    "recon": "Mil. Aufklärung",
+    "listen": "SIGINT-Abhören",
+    "morale": "Moral",
+    "fortifyLevel": "Befestigen (S{{level}})",
+    "fortifyStarted": "Befestigung in {{province}} begonnen",
+    "reconEco": "Wirt. Aufklärung",
+    "reconRunning": "Mission läuft…",
+    "reconMilitaryTip": "Militärischer Nachrichtendienst (SIGINT): deckt nach und nach Stützpunkte, Verteidigung und militärische Anlagen der Provinz auf.",
+    "reconEconomicTip": "Auslandsnachrichtendienst (HUMINT): deckt nach und nach die Wirtschaftsanlagen der Provinz auf.",
+    "opStarted": {
+      "recon_military": "Militärische Aufklärung über {{province}} gestartet",
+      "recon_economic": "Wirtschaftliche Aufklärung über {{province}} gestartet",
+      "listen_area": "Abhören um {{province}} gestartet"
+    }
+  },
+  "nationRecon": {
+    "title": "Erkenntnisse über {{nationLe}}",
+    "aria": "Erkenntnisse über {{nationLe}}",
+    "provinces_one": "{{count}} Provinz",
+    "provinces_other": "{{count}} Provinzen",
+    "ops": {
+      "recon_military": "Mil. Aufklärung",
+      "recon_economic": "Wirt. Aufklärung"
+    },
+    "phase": "Phase {{done}}/{{waves}}",
+    "covered_one": "{{count}} Provinz abgedeckt",
+    "covered_other": "{{count}} Provinzen abgedeckt",
+    "priority": "Priorität: Hauptstadt und Großstädte",
+    "remaining_one": "Noch {{count}} Provinz aufzudecken",
+    "remaining_other": "Noch {{count}} Provinzen aufzudecken",
+    "complete": "Alle Provinzen aufgedeckt",
+    "revealedAria": "Aufgedeckte Provinzen: {{known}} von {{total}}",
+    "launch": "Starten",
+    "running": "Läuft",
+    "capacity": "Kapazität der Abteilung erreicht",
+    "started": {
+      "recon_military": "Militärische Aufklärung über {{nationLe}} gestartet",
+      "recon_economic": "Wirtschaftliche Aufklärung über {{nationLe}} gestartet"
+    },
+    "tips": {
+      "recon_military": "Deckt in Phasen Stützpunkte, Verteidigung, Radare, Silos und Bunker von {{deNation}} auf: zuerst Hauptstadt und Großstädte, dann der Rest des Landes.",
+      "recon_economic": "Deckt in Phasen Produktion, Ressourcen und Industrie von {{deNation}} auf: zuerst Hauptstadt und Großstädte, dann der Rest des Landes."
+    }
+  },
+  "console": {
+    "title": "Befehlskonsole",
+    "open": "Konsole",
+    "path": "konsole",
+    "placeholder": "move sel alger · produce 4 rafale · research aero.gen5 · help",
+    "examples": "Beispiele:",
+    "selection_one": "{{count}} Einheit",
+    "selection_other": "{{count}} Einheiten",
+    "hints": {
+      "complete": "vervollständigen",
+      "run": "ausführen",
+      "close": "schließen",
+      "navigate": "wählen"
+    },
+    "kinds": {
+      "cmd": "Befehl",
+      "unit": "Einheit",
+      "target": "Ziel",
+      "system": "System",
+      "place": "Ort",
+      "nation": "Nation",
+      "node": "F&E",
+      "op": "Op.",
+      "window": "Fenster",
+      "value": "Wert"
+    },
+    "args": {
+      "units": "Einheiten",
+      "place": "Ort",
+      "target": "Ziel",
+      "count": "n",
+      "system": "System",
+      "node": "Knoten",
+      "speed": "Tempo",
+      "op": "Operation",
+      "nation": "Nation",
+      "window": "Fenster",
+      "onoff": "on|off"
+    },
+    "help": {
+      "move": "Einheiten zu einem Ort verlegen",
+      "attack": "Eine feindliche Einheit angreifen",
+      "stop": "Einheiten anhalten",
+      "produce": "Ein System in einer Provinz produzieren",
+      "research": "Eine Forschung starten",
+      "goto": "Karte auf einen Ort zentrieren",
+      "speed": "Tempo ändern (Einzelspiel)",
+      "pause": "Pausieren (Einzelspiel)",
+      "resume": "Fortsetzen (Einzelspiel)",
+      "intel": "Eine Geheimdienstoperation starten",
+      "peace": "Frieden vorschlagen",
+      "ceasefire": "Waffenstillstand vorschlagen",
+      "war": "Krieg erklären",
+      "open": "Ein Fenster öffnen",
+      "select": "Einheiten auswählen",
+      "mobilize": "Generalmobilmachung",
+      "help": "Hilfe anzeigen",
+      "clear": "Protokoll löschen"
+    },
+    "errors": {
+      "empty": "Leerer Befehl.",
+      "unknown": "Unbekannter Befehl: {{cmd}}. Geben Sie „help“ ein.",
+      "units": "Keine passende Einheit (Kennung, „sel“ oder Systemname).",
+      "place": "Ort nicht gefunden: {{place}}",
+      "target": "Ziel nicht gefunden: {{target}}",
+      "system": "System nicht gefunden: {{system}}",
+      "province": "Keine Ihrer Provinzen passt: {{place}}",
+      "node": "Forschung nicht gefunden: {{node}}",
+      "op": "Unbekannte Operation: {{op}}",
+      "nation": "Nation nicht gefunden: {{nation}}",
+      "speed": "Ungültiges Tempo.",
+      "window": "Unbekanntes Fenster."
+    },
+    "done": {
+      "goto": "Karte auf {{place}} zentriert.",
+      "select_one": "{{count}} Einheit ausgewählt.",
+      "select_other": "{{count}} Einheiten ausgewählt.",
+      "stop_one": "{{count}} Einheit angehalten.",
+      "stop_other": "{{count}} Einheiten angehalten.",
+      "move_one": "{{count}} Einheit unterwegs nach {{place}}.",
+      "move_other": "{{count}} Einheiten unterwegs nach {{place}}.",
+      "attack_one": "{{count}} Einheit greift {{target}} an.",
+      "attack_other": "{{count}} Einheiten greifen {{target}} an.",
+      "produce": "Produktion gestartet: {{count}} × {{system}} in {{place}}.",
+      "research": "Forschung gestartet: {{node}}.",
+      "intel": "Operation „{{op}}“ gegen {{target}} gestartet.",
+      "peace": "Friedensvorschlag an {{aNation}} gesendet.",
+      "ceasefire": "Waffenstillstandsvorschlag an {{aNation}} gesendet.",
+      "war": "Krieg an {{aNation}} erklärt.",
+      "speed": "Tempo ×{{speed}}.",
+      "pause": "Spiel pausiert.",
+      "resume": "Spiel fortgesetzt.",
+      "mobilizeOn": "Generalmobilmachung angeordnet.",
+      "mobilizeOff": "Generalmobilmachung beendet."
+    }
+  },
+  "shortcuts": {
+    "title": "Tastenkürzel",
+    "console": "Befehlskonsole",
+    "pause": "Pause / Fortsetzen",
+    "speed": "Tempostufen",
+    "windows": "Armee, Produktion, Forschung, Wirtschaft, Nachrichtendienst…",
+    "escape": "Befehl abbrechen, abwählen, schließen",
+    "confirm": "Befehl bestätigen",
+    "legend": "Legende",
+    "news": "Nachrichten",
+    "help": "Diese Hilfe"
+  },
+  "tutorial": {
+    "title": "Tutorial",
+    "path": "tutorial",
+    "skip": "Tutorial beenden",
+    "skipStep": "Schritt überspringen",
+    "waiting": "Warte auf Ihre Aktion…",
+    "steps": {
+      "welcome": {
+        "title": "Willkommen im Gefechtsstand",
+        "text": "Sie führen die Streitkräfte Ihrer Nation auf der echten Weltkarte. Echtes Arsenal, echtes Budget in Dollar, nur militärischer Sieg."
+      },
+      "select": {
+        "title": "Wählen Sie eine Einheit",
+        "text": "Tippen Sie auf eine Ihrer Spielmarken (grüner Rand) auf der Karte: Profil, Zustand und Reichweite werden angezeigt."
+      },
+      "order": {
+        "title": "Geben Sie einen Befehl",
+        "text": "Tippen Sie auf einen Punkt der Karte, um sich zu bewegen, oder auf eine feindliche Einheit, um sie anzugreifen."
+      },
+      "confirm": {
+        "title": "Bestätigen Sie",
+        "text": "Prüfen Sie Route, Entfernung und Ankunftszeit und bestätigen Sie dann. Drei Schritte: auswählen, befehlen, bestätigen."
+      },
+      "production": {
+        "title": "Produzieren Sie Streitkräfte",
+        "text": "Öffnen Sie die Produktion: das Arsenal Ihrer Doktrin und der Lieferanten, mit Fotos, Preisen und F&E-Voraussetzungen."
+      },
+      "research": {
+        "title": "Investieren Sie in Forschung",
+        "text": "Ein System zu besitzen reicht nicht, um es zu produzieren: F&E schaltet die Produktion höherer Generationen frei."
+      },
+      "console": {
+        "title": "Alles per Tastatur",
+        "text": "Mit der Befehlskonsole erledigen Sie alles per Tastatur (move, produce, research, goto…). Öffnen mit"
+      },
+      "time": {
+        "title": "Beherrschen Sie die Zeit",
+        "text": "Im Einzelspiel: Pause und Tempo oben auf dem Bildschirm oder Leertaste und 1 bis 5."
+      },
+      "alerts": {
+        "title": "Bleiben Sie informiert",
+        "text": "Die Meldezentrale bündelt Gefechte, Geheimdienstberichte, Abstimmungen des Rates und Lieferungen. Ein Klick zentriert die Karte oder öffnet den Bericht."
+      },
+      "end": {
+        "title": "Sie sind dran",
+        "text": "Kontrollieren Sie 60 % der Provinzen der Welt oder alle feindlichen Hauptstädte. Das Tutorial bleibt in den Einstellungen verfügbar."
+      },
+      "province": {
+        "title": "Ihre Provinzen",
+        "text": "Tippen Sie auf eine Provinz: Gebäude und Stufen (1 bis 5), Bauvorhaben zu exakten Kosten, Befestigungen. Bei einem Nachbarn starten Sie eine Aufklärung, um seine Anlagen aufzudecken."
+      }
+    }
+  },
+  "sandbox": {
+    "title": "Sandbox",
+    "path": "sandbox",
+    "subtitle": "Lokale Engine · freie Platzierung",
+    "nation": "Nation",
+    "system": "System",
+    "placeHint": "Tippen Sie auf die Karte, um die gewählte Einheit zu platzieren.",
+    "placed_one": "{{count}} Einheit platziert",
+    "placed_other": "{{count}} Einheiten platziert",
+    "clear": "Alles löschen",
+    "launch": "Simulation starten",
+    "reset": "Zurücksetzen",
+    "observer": "Ansicht von",
+    "engineMissing": "Engine nicht verfügbar: fehlende Funktionen ({{list}}).",
+    "engineLoading": "Engine wird geladen…",
+    "dataMissing": "Fehlende Simulationsdaten ({{list}}).",
+    "running": "Simulation läuft",
+    "count": "Stärke"
+  },
+  "categories": {
+    "fighter": "Jäger",
+    "bomber": "Bomber",
+    "air_support": "Luftunterstützung",
+    "helicopter": "Hubschrauber",
+    "drone": "Drohne",
+    "tank": "Kampfpanzer",
+    "ifv": "Schützenpanzer",
+    "artillery": "Artillerie",
+    "air_defense": "Luftabwehr",
+    "strike_missile": "Angriffsrakete",
+    "nuclear": "Kernwaffe",
+    "surface_ship": "Überwasserschiff",
+    "submarine": "U-Boot",
+    "infantry": "Infanterie",
+    "space": "Weltraumsystem",
+    "logistics": "Logistik",
+    "radar": "Radare"
+  },
+  "doctrines": {
+    "us": "Vereinigte Staaten",
+    "ru": "Russland",
+    "cn": "China",
+    "eu": "Europa",
+    "other": "Andere"
+  },
+  "buildings": {
+    "refinery": "Raffinerie",
+    "power_plant": "Kraftwerk",
+    "port": "Hafen",
+    "air_base": "Luftwaffenstützpunkt",
+    "military_base": "Militärstützpunkt",
+    "arms_factory": "Rüstungsfabrik",
+    "research_center": "Forschungszentrum",
+    "oil_field": "Ölfeld",
+    "mine": "Bergwerk",
+    "farm": "Landwirtschaftsbetrieb",
+    "electronics_plant": "Elektronikwerk",
+    "local_industry": "Lokale Industrie",
+    "recruiting_office": "Rekrutierungsbüro",
+    "naval_base": "Marinestützpunkt",
+    "bunker": "Bunker",
+    "air_defense_site": "Luftabwehrstellung",
+    "coastal_battery": "Küstenbatterie",
+    "radar_station": "Radarstation",
+    "missile_silo": "Raketensilo",
+    "hospital": "Militärkrankenhaus",
+    "secret_lab": "Geheimlabor",
+    "forward_base": "Vorgeschobene Basis",
+    "groups": {
+      "resources": "Ressourcen",
+      "industry": "Industrie",
+      "military": "Militär",
+      "defense": "Verteidigung"
+    },
+    "effects": {
+      "refinery": "Produziert raffiniertes Öl",
+      "power_plant": "Beschleunigt Produktion und Forschung",
+      "port": "Marineproduktion und Seehandel",
+      "air_base": "Produktion und Basis von Luftfahrzeugen",
+      "military_base": "Landproduktion, Depot, Garnison",
+      "arms_factory": "Schwere Waffen: Panzer, Artillerie, Raketen",
+      "research_center": "Forschungspunkte",
+      "oil_field": "Ölförderung",
+      "mine": "Metallförderung",
+      "farm": "Nahrungsproduktion",
+      "electronics_plant": "Elektronische Bauteile",
+      "local_industry": "Einkommen und Baugeschwindigkeit",
+      "recruiting_office": "Infanterie, schnellere Mobilmachung",
+      "naval_base": "Marineproduktion und -reparatur",
+      "bunker": "Starker Schutz der Verteidiger",
+      "air_defense_site": "Bekämpft Luftfahrzeuge und Raketen",
+      "coastal_battery": "Seezielabwehr",
+      "radar_station": "Erweiterte Lufterfassung",
+      "missile_silo": "Start ballistischer Raketen",
+      "hospital": "Schnellere Erholung der Einheiten",
+      "secret_lab": "Schnellere Spitzenforschung",
+      "forward_base": "Logistikdepot an der Front",
+      "fortification": "Feldbefestigungen: Panzerung der Verteidiger der Provinz (Stufen 1 bis 3)."
+    },
+    "ui": {
+      "build": "Bauen",
+      "upgrade": "Stufe {{level}}",
+      "upgrading": "Ausbau S{{level}}",
+      "repair": "Reparieren",
+      "repairing": "Reparatur",
+      "health": "Gebäudezustand",
+      "operational": "Einsatzbereit",
+      "already": "Bereits gebaut",
+      "coastalOnly": "Nur Küstenprovinz",
+      "costTip": "Kosten {{cost}} · Dauer {{time}}",
+      "buildStarted": "Bau gestartet: {{name}}",
+      "upgradeStarted": "Ausbau gestartet: {{name}} (S{{level}})",
+      "repairStarted": "Reparatur gestartet: {{name}}",
+      "constructing": "Im Bau",
+      "maxLevel": "Max. Stufe",
+      "blocked": {
+        "in_progress": "Baustelle bereits aktiv",
+        "damaged": "Zuerst reparieren",
+        "max_level": "Höchste Stufe erreicht"
+      }
+    },
+    "fortification": "Befestigungen"
+  },
+  "weapon": {
+    "engine": "Antrieb",
+    "length": "Länge",
+    "wingspan": "Spannweite",
+    "mtow": "Max. Masse",
+    "warhead": "Gefechtskopf",
+    "speed": "Geschwindigkeit",
+    "range": "Reichweite",
+    "weaponRange": "Waffenreichweite",
+    "subtitle": "{{category}} · {{country}}",
+    "subtitleDoctrine": "{{category}} · Doktrin {{doctrine}}",
+    "doctrineAdj": {
+      "us": "amerikanisch",
+      "ru": "russisch",
+      "cn": "chinesisch",
+      "eu": "europäisch",
+      "other": "generisch"
+    },
+    "photo": "Foto",
+    "noPhoto": "Foto nicht verfügbar",
+    "gen": "Gen.",
+    "sheet": "Datenblatt",
+    "units": {
+      "m": "m",
+      "kg": "kg",
+      "km": "km"
+    },
+    "genericOrigin": "Generisch"
+  },
+  "units": {
+    "km": "{{value}} km"
+  },
+  "map": {
+    "attribution": "Bilder NASA Blue Marble · Natural Earth",
+    "noImagery": "Satellitenbilder nicht verfügbar: Vektorkarte",
+    "tip": {
+      "nation": "Nation",
+      "count": "Stärke",
+      "state": "Zustand",
+      "hp": "Integrität",
+      "supply": "Vers.",
+      "mission": "Mission",
+      "speed": "Tempo",
+      "range": "Reichweite",
+      "seen": "Gesehen",
+      "seenAgo": "vor {{value}}",
+      "seenNow": "gerade eben",
+      "uncertainty": "Position",
+      "uncertaintyValue": "± {{value}}",
+      "stack": "Stapel",
+      "stackValue": "{{count}} Einheiten",
+      "stackMore": "+ {{count}} weitere",
+      "unknown": "Unidentifizierter Kontakt",
+      "unknownType": "Unbekannter Typ",
+      "missile": "Rakete im Flug",
+      "impact": "Einschlag",
+      "impactIn": "in {{value}}",
+      "city": "Stadt",
+      "capital": "Hauptstadt",
+      "population": "Bevölkerung",
+      "owner": "Kontrolle",
+      "buildings": "Gebäude",
+      "intel": "Nachrichtendienst",
+      "capture": "Eroberung",
+      "fortification": "Befestigungen",
+      "fortLevel": "Stufe {{value}}",
+      "blockaded": "Blockade aktiv",
+      "noFlyZone": "Flugverbotszone",
+      "disputed": "Umstrittenes Gebiet",
+      "unrest": "Spannung",
+      "prompt": "inspect"
+    },
+    "rel": {
+      "own": "Ihre Streitkräfte",
+      "ally": "Verbündet",
+      "neutral": "Neutral",
+      "enemy": "Feindlich"
+    },
+    "status": {
+      "idle": "In Stellung",
+      "moving": "In Bewegung",
+      "combat": "Im Gefecht",
+      "embarked": "Eingeschifft",
+      "destroyed": "Zerstört"
+    },
+    "supply": {
+      "supplied": "Gesichert",
+      "limited": "Eingeschränkt",
+      "cut": "Unterbrochen"
+    },
+    "mission": {
+      "none": "Keine",
+      "patrol": "Patrouille",
+      "strike": "Schlag",
+      "escort": "Eskorte",
+      "refuel": "Luftbetankung",
+      "awacs": "Luftraumüberwachung",
+      "recon": "Aufklärung",
+      "blockade": "Blockade",
+      "rtb": "Rückkehr zur Basis"
+    },
+    "flag": {
+      "decoy": "Attrappe (nur für Sie sichtbar)",
+      "submerged": "Getaucht",
+      "sonar": "Sonarkontakt",
+      "jamming": "Aktive Störung"
+    },
+    "intel": {
+      "0": "Unbekannt",
+      "1": "Überblick",
+      "2": "Gute Kenntnis",
+      "3": "Vollständige Kenntnis",
+      "old": "veraltete Information"
+    },
+    "bld": {
+      "refinery": "Raffinerie",
+      "power_plant": "Kraftwerk",
+      "port": "Hafen",
+      "air_base": "Luftwaffenstützpunkt",
+      "military_base": "Militärstützpunkt",
+      "arms_factory": "Rüstungsfabrik",
+      "research_center": "Forschungszentrum",
+      "oil_field": "Ölfeld",
+      "mine": "Bergwerk",
+      "farm": "Landwirtschaftsbetrieb",
+      "electronics_plant": "Elektronikwerk",
+      "local_industry": "Lokale Industrie",
+      "recruiting_office": "Rekrutierungsbüro",
+      "naval_base": "Marinestützpunkt",
+      "bunker": "Bunker",
+      "air_defense_site": "Luftabwehrstellung",
+      "coastal_battery": "Küstenbatterie",
+      "radar_station": "Radarstation",
+      "missile_silo": "Raketensilo",
+      "hospital": "Militärkrankenhaus",
+      "secret_lab": "Geheimlabor",
+      "forward_base": "Vorgeschobene Basis",
+      "level": "St. {{value}}",
+      "damaged": "beschädigt",
+      "down": "außer Betrieb",
+      "repair": "in Reparatur",
+      "upgrade": "im Bau"
+    },
+    "ring": {
+      "max": "REICHWEITE {{value}}",
+      "min": "MIN {{value}}",
+      "radius": "RADIUS {{value}}",
+      "radar": "RADAR {{value}}",
+      "sonar": "SONAR {{value}}",
+      "sensor": "ERFASSUNG {{value}}",
+      "sat": "SAT · Überflug in {{value}}"
+    },
+    "order": {
+      "eta": "{{distance}} · {{eta}}"
+    },
+    "minimap": {
+      "label": "Minikarte",
+      "km": "{{value}} km"
+    },
+    "pion": {
+      "decoy": "ATTRAPPE"
+    }
+  },
+  "legal": {
+    "title": "Impressum",
+    "docs": {
+      "cgu": "Nutzungsbedingungen",
+      "cgv": "Verkaufsbedingungen",
+      "privacy": "Datenschutz",
+      "withdrawal": "Widerruf"
+    },
+    "path": "legal",
+    "version": "Version {{version}} · aktualisiert am {{date}}",
+    "error": "Dokument nicht verfügbar.",
+    "gateTitle": "Nutzungsbedingungen",
+    "gateText": "Bitte lesen und akzeptieren Sie vor dem Spielen unsere Nutzungsbedingungen und Datenschutzrichtlinie (oder deren neue Fassung).",
+    "read": "Dokumente lesen",
+    "checkbox": "Ich habe die obigen Dokumente gelesen und akzeptiere sie.",
+    "accept": "Akzeptieren und fortfahren"
+  },
+  "intel": {
+    "flash": "FLASH",
+    "title": "Nachrichtendienst",
+    "sources": "Quellen",
+    "humint": "HUMINT",
+    "sigint": "SIGINT",
+    "departments": "Abteilungen",
+    "totalBudget": "Gesamtbudget",
+    "unavailable": "Nachrichtendienst nicht verfügbar.",
+    "unavailableHint": "Das Geheimdienstmodul ist in diesem Spiel nicht aktiv.",
+    "depts": {
+      "interior": "Innere Sicherheit",
+      "exterior": "Auslandsnachrichtendienst",
+      "military": "Militärischer Nachrichtendienst"
+    },
+    "deptsShort": {
+      "interior": "Inland",
+      "exterior": "Ausland",
+      "military": "Militär"
+    },
+    "level": "S{{level}}",
+    "budget": "Budget",
+    "budgetUp": "Budget erhöhen",
+    "budgetDown": "Budget senken",
+    "budgetSet": "Budget der Abteilung angepasst",
+    "capacity": "Operationen",
+    "noReports": "Keine Berichte für diese Quelle.",
+    "operations": "Operationen",
+    "launch": "Operation starten",
+    "launchShort": "Starten",
+    "operation": "Operation",
+    "target": "Ziel",
+    "cost": "Kosten",
+    "duration": "Dauer",
+    "success": "Erfolg",
+    "exposure": "Risiko",
+    "estimate": "Geschätzte Erfolgswahrscheinlichkeit",
+    "progress": "Fortschritt",
+    "zone": "Zone von {{km}} km",
+    "opLaunched": "Operation gestartet: {{op}}",
+    "opCancelled": "Operation abgebrochen",
+    "reconSent": "Abhören der Zone gestartet",
+    "shared": "Bericht mit {{nationLe}} geteilt",
+    "sharedBy": "geteilt von {{nationLe}}",
+    "subject": "Betreff:",
+    "minimap": "Berichtszone",
+    "lowCotation": "Niedrige Bewertung: unbestätigte Information, mögliche Desinformation. Vor dem Handeln überprüfen.",
+    "cotationTip": "Zuverlässigkeit der Quelle: {{r}} · Glaubwürdigkeit der Information: {{c}}",
+    "agents": "Agenten",
+    "caught": "Enttarnte feindliche Agenten",
+    "caughtAgent": "UNBEKANNT",
+    "turned": "Umgedreht",
+    "turn": "Umdrehen",
+    "turnedOk": "Agent zum Doppelagenten umgedreht",
+    "reliability": {
+      "A": "A — zuverlässig",
+      "B": "B — meist zuverlässig",
+      "C": "C — ziemlich zuverlässig",
+      "D": "D — wenig zuverlässig",
+      "E": "E — unzuverlässig",
+      "F": "F — nicht beurteilbar"
+    },
+    "credibility": {
+      "1": "1 — bestätigt",
+      "2": "2 — wahrscheinlich",
+      "3": "3 — möglich",
+      "4": "4 — zweifelhaft",
+      "5": "5 — unwahrscheinlich",
+      "6": "6 — nicht beurteilbar"
+    },
+    "kinds": {
+      "daily": "Tagesbericht",
+      "flash": "Flash",
+      "order_of_battle": "Gefechtsgliederung",
+      "intentions": "Absichten",
+      "counterintel": "Spionageabwehr",
+      "leak": "Leck",
+      "cyber": "Cyber",
+      "result": "Operationsergebnis"
+    },
+    "actions": {
+      "plan_strike": "Schlag planen",
+      "send_recon": "Aufklärung entsenden",
+      "share": "Teilen",
+      "open_unit": "Einheit anzeigen",
+      "open_province": "Provinz anzeigen"
+    },
+    "opStatus": {
+      "running": "läuft",
+      "success": "erfolgreich",
+      "failed": "gescheitert",
+      "compromised": "kompromittiert"
+    },
+    "agentStatus": {
+      "active": "aktiv",
+      "burned": "verbrannt",
+      "double": "Doppelagent",
+      "exfiltrated": "exfiltriert",
+      "captured": "gefangen"
+    },
+    "ops": {
+      "infiltrate_spy": "Spion einschleusen",
+      "recruit_source": "Quelle anwerben",
+      "turn_agent": "Agenten umdrehen",
+      "exfiltrate": "Agenten exfiltrieren",
+      "steal_research": "Forschung stehlen",
+      "sabotage_factory": "Fabrik sabotieren",
+      "fund_rebels": "Rebellen finanzieren",
+      "listen_area": "Zone abhören",
+      "intercept_army": "Funkverkehr abfangen",
+      "jam_area": "Zone stören",
+      "cyber_radar": "Cyberangriff: Radare",
+      "cyber_production": "Cyberangriff: Produktion",
+      "cyber_orders": "Cyberangriff: Befehle",
+      "disinformation": "Desinformation",
+      "leak_plans": "Pläne durchsickern lassen",
+      "plant_fake_report": "Täuschung: falscher Bericht",
+      "deploy_decoys": "Attrappen ausbringen",
+      "fake_radio_traffic": "Falscher Funkverkehr",
+      "counterintel_sweep": "Spionageabwehr",
+      "recon_economic": "Wirtschaftsaufklärung",
+      "recon_military": "Militärische Aufklärung"
+    },
+    "opsHelp": {
+      "infiltrate_spy": "Schleust einen Agenten ins Zielland ein: deckt nach und nach Provinzen, Gebäude und Absichten auf.",
+      "recruit_source": "Wirbt eine lokale Quelle an: regelmäßige Berichte über Absichten, variable Bewertung.",
+      "turn_agent": "Dreht einen enttarnten feindlichen Agenten um, um dessen Dienst zu täuschen.",
+      "exfiltrate": "Holt einen gefährdeten Agenten vor seiner Festnahme zurück.",
+      "steal_research": "Stiehlt Forschungsarbeiten: beschleunigt oder schaltet einen Knoten frei.",
+      "sabotage_factory": "Beschädigt ein Industriegebäude des Ziels.",
+      "fund_rebels": "Finanziert einen Aufstand in einer Provinz: senkt die Stabilität.",
+      "listen_area": "Funkaufklärung über einer Zone: deckt vorhandene Einheiten auf.",
+      "intercept_army": "Verfolgt den Funkverkehr einer Armee: Befehle und Bewegungen.",
+      "jam_area": "Stört Kommunikation und Radare einer Zone.",
+      "cyber_radar": "Blendet vorübergehend die Radare des Ziels.",
+      "cyber_production": "Verlangsamt die Industrieproduktion des Ziels.",
+      "cyber_orders": "Verzögert die Ausführung der Befehle des Ziels.",
+      "disinformation": "Desinformationskampagne: senkt die Stabilität des Ziels.",
+      "leak_plans": "Veröffentlicht gestohlene Pläne im weltweiten Nachrichtenticker.",
+      "plant_fake_report": "Spielt dem gegnerischen Dienst einen falschen Bericht zu.",
+      "deploy_decoys": "Bringt Attrappen aus, die die gegnerische Aufklärung täuschen.",
+      "fake_radio_traffic": "Simuliert Funkverkehr, um Ihre Bewegungen zu verschleiern.",
+      "counterintel_sweep": "Jagt ausländische Agenten auf Ihrem Territorium.",
+      "recon_economic": "Deckt in Phasen die Wirtschaftsanlagen (Produktion, Ressourcen, Industrie) eines ganzen Landes auf — zuerst Hauptstadt und Großstädte, dann der Rest — oder einer einzelnen Provinz.",
+      "recon_military": "Deckt in Phasen Stützpunkte, Luftabwehr, Radare, Silos und Bunker eines ganzen Landes auf — zuerst Hauptstadt und Großstädte, dann der Rest — oder einer einzelnen Provinz. Danach auf der Karte sichtbar."
+    },
+    "targetProvince": "Zielprovinz",
+    "targetArea": "Zone (um die Stadt)",
+    "targetUnit": "Zieleinheit",
+    "wholeNation": "Ganze Nation",
+    "scope": "Umfang",
+    "scopeNation": "Ganzes Land",
+    "scopeProvince": "Eine Provinz",
+    "reconPhase": "Phase {{done}}/{{waves}} · {{provinces}} Prov.",
+    "unknownContact": "unidentifizierter Kontakt",
+    "noContacts": "Keine fremde Einheit erfasst: Bringen Sie Ihre Radare näher heran oder starten Sie eine Aufklärung."
+  },
+  "arsenal": {
+    "title": "Arsenal",
+    "doctrines": "Doktrinen und Lieferanten",
+    "all": "Alle",
+    "search": "System suchen…",
+    "category": "Kategorie",
+    "allCategories": "Alle Kategorien",
+    "allGen": "Alle",
+    "producible": "Produzierbar",
+    "importable": "Importierbar",
+    "import": "Import",
+    "ownedFilter": "Im Besitz",
+    "rdRequired": "F&E erforderlich",
+    "licence": "Lizenz",
+    "count_one": "{{count}} System",
+    "count_other": "{{count}} Systeme",
+    "layout": "Anzeige",
+    "grid": "Raster",
+    "list": "Liste",
+    "empty": "Kein System entspricht den Filtern.",
+    "emptyHint": "Erweitern Sie die Suche oder wechseln Sie die Doktrin.",
+    "pick": "Wählen Sie ein System",
+    "pickHint": "Das ausführliche Datenblatt, das Foto und die Produktionsbedingungen erscheinen hier.",
+    "back": "Zurück zum Arsenal",
+    "price": "Preis",
+    "unitPrice": "Stückpreis",
+    "elements": "Elemente",
+    "upkeep": "Unterhalt",
+    "perDay": "/ Tag",
+    "buildTime": "Produktionsdauer",
+    "owned": "Im Besitz",
+    "ownedShort": "Im Besitz: {{count}}",
+    "producibleLabel": "Produzierbar",
+    "yesLicence": "ja (unter Lizenz)",
+    "noResearch": "nein (F&E erforderlich: {{nodes}})",
+    "importLabel": "Import",
+    "importPossible": "möglich",
+    "embargo": "unmöglich (Embargo)",
+    "notExportable": "nicht exportierbar",
+    "licenceLabel": "Produktionslizenz",
+    "licenceOwned": "vorhanden",
+    "licenceAvailable": "verfügbar",
+    "licenceNone": "nicht angeboten",
+    "stealth": "Tarnkappe",
+    "cols": {
+      "name": "System",
+      "category": "Kategorie",
+      "owned": "Im Besitz",
+      "status": "Status"
+    }
+  },
+  "production": {
+    "tabs": {
+      "arsenal": "Arsenal",
+      "queue": "Produktionswarteschlange",
+      "licences": "Lizenzen"
+    },
+    "treasury": "Staatskasse",
+    "sites_one": "{{count}} Provinz",
+    "sites_other": "{{count}} Provinzen",
+    "site": "Produktionsstandort",
+    "quantity": "Menge",
+    "total": "Gesamtkosten",
+    "insufficient": "Unzureichende Mittel",
+    "produce": "Produzieren",
+    "import": "Importieren",
+    "buyLicence": "Lizenz · {{price}}",
+    "blackMarket": "Schwarzmarkt",
+    "blackMarketOrdered": "Bestellung auf dem Schwarzmarkt aufgegeben",
+    "goResearch": "F&E: {{node}}",
+    "needBuilding": "Dieser Standort hat kein(e) {{building}}: Produktion langsamer oder unmöglich.",
+    "ordered": "Produktion gestartet: {{count}} × {{unit}}",
+    "imported": "Import bestellt: {{count}} × {{unit}}",
+    "licenceBought": "Lizenz gekauft: {{unit}}",
+    "queue": "Produktionswarteschlange",
+    "queueEmpty": "Keine laufende Produktion.",
+    "queueHint": "Wählen Sie ein System im Arsenal und einen Produktionsstandort.",
+    "cols": {
+      "unit": "System",
+      "progress": "Fortschritt",
+      "eta": "Rest"
+    },
+    "accelerate": "Beschleunigen (Premiumwährung)",
+    "accelerateShort": "−6 h",
+    "cancel": "Produktion abbrechen",
+    "cancelled": "Produktion abgebrochen",
+    "noLicences": "Keine Produktionslizenz.",
+    "licenceHint": "Eine Lizenz erlaubt die Produktion eines ausländischen Systems ohne F&E, mit Produktionsrabatt.",
+    "acquired": "erworben vor {{value}} T",
+    "importTotal": "Import",
+    "source": {
+      "import": "Import",
+      "black_market": "Schwarzmarkt"
+    }
+  },
+  "shop": {
+    "accelerated": "Beschleunigung angewendet · Guthaben {{balance}}",
+    "notEnough": "Guthaben an Premiumwährung unzureichend.",
+    "unavailable": "Shop nicht verfügbar.",
+    "title": "Shop",
+    "path": "shop",
+    "unavailableHint": "Der Zahlungsserver antwortet nicht.",
+    "balance": "Guthaben",
+    "currency": "Kommando-Credits",
+    "policy": "Käufe in diesem Spiel",
+    "policies": {
+      "open": "Erlaubt",
+      "limited": "Begrenzt",
+      "disabled": "Deaktiviert"
+    },
+    "cap": "Obergrenze: {{cap}} Credits pro Spieler",
+    "policyHint": "vom Ersteller des Spiels festgelegt",
+    "fair": "Keine Lootboxen: Jeder Kauf gibt genau an, was er enthält. Kompetitive Spiele können Käufe deaktivieren.",
+    "packs": "Kommando-Credits",
+    "best": "Bestes Angebot",
+    "bonus": "+{{value}} gratis",
+    "credited": "Credits Ihrem Guthaben gutgeschrieben",
+    "cosmetics": "Kosmetik",
+    "owned": "Im Besitz",
+    "cosmeticBought": "Kosmetik freigeschaltet",
+    "kinds": {
+      "unit_skin": "Spielmarken",
+      "flag": "Flagge",
+      "map_theme": "Karte",
+      "terminal_theme": "Terminal"
+    },
+    "accelerations": "Beschleunigungen",
+    "accelerationsHelp": "Verkürzen Sie die Dauer einer Produktion, Forschung, eines Baus oder einer Reparatur in der jeweiligen Warteschlange (Schaltfläche „−6 h“), sofern die Spielregeln es erlauben.",
+    "history": "Verlauf",
+    "reasons": {
+      "purchase": "Kauf",
+      "accelerate": "Beschleunigung",
+      "cosmetic": "Kosmetik",
+      "refund": "Erstattung",
+      "admin": "Administrator-Gutschrift"
+    },
+    "subtitle": "Kommando-Credits, Kosmetik und Beschleunigungen. Keine Lootboxen.",
+    "unlimited": "Unbegrenztes Guthaben",
+    "unlimitedHint": "Konto im unbegrenzten Modus: Es wird nichts abgebucht.",
+    "acceleratedUnlimited": "Beschleunigung angewendet (unbegrenztes Guthaben)"
+  },
+  "researchNodes": {
+    "aero_gen2": "Jäger der 2. Generation",
+    "aero_gen3": "Jäger der 3. Generation",
+    "aero_gen4": "Jäger der 4. Generation",
+    "aero_gen4plus": "Jäger der Generation 4+",
+    "aero_gen5": "Jäger der 5. Generation",
+    "aero_bomber1": "Unterschallbomber",
+    "aero_bomber2": "Überschallbomber",
+    "aero_stealth-bomber": "Tarnkappenbomber",
+    "aero_helo1": "Transporthubschrauber",
+    "aero_helo2": "Kampfhubschrauber",
+    "aero_helo3": "Moderne Kampfhubschrauber",
+    "aero_drones1": "Taktische Drohnen",
+    "aero_drones2": "Bewaffnete MALE- und HALE-Drohnen",
+    "aero_drones3": "Tarnkappen-Kampfdrohnen",
+    "aero_aew": "Luftgestützte Frühwarnung",
+    "aero_tanker": "Luftbetankung",
+    "aero_transport": "Strategischer Lufttransport",
+    "land_gen1": "Panzer der 1. Generation",
+    "land_gen2": "Panzer der 2. Generation",
+    "land_gen3": "Panzer der 3. Generation",
+    "land_gen4": "Panzer der 4. Generation",
+    "land_gen5": "Panzer der 5. Generation",
+    "land_mlrs": "Schwere Raketenwerfer",
+    "land_ew": "Elektronische Kampfführung Land",
+    "naval_gen1": "Schiffe der 1. Generation",
+    "naval_gen2": "Schiffe der 2. Generation",
+    "naval_gen3": "Schiffe der 3. Generation",
+    "naval_gen4": "Schiffe der 4. Generation",
+    "naval_gen5": "Schiffe der 5. Generation",
+    "naval_carrier": "Flugzeugträger",
+    "naval_sub1": "Konventionelle U-Boote",
+    "naval_sub2": "Moderne U-Boote (AIP)",
+    "naval_sub3": "Atom-Jagd-U-Boote",
+    "naval_ssbn": "Raketen-U-Boote",
+    "missiles_sam1": "Luftabwehr kurzer Reichweite",
+    "missiles_sam2": "Luftabwehr mittlerer Reichweite",
+    "missiles_sam3": "Luftabwehr großer Reichweite",
+    "missiles_sam4": "Mehrschichtige Luftabwehr",
+    "missiles_sam5": "Luftabwehr der neuen Generation",
+    "missiles_abm": "Abwehr ballistischer Raketen",
+    "missiles_cruise1": "Marschflugkörper",
+    "missiles_cruise2": "Tarnkappen-Marschflugkörper",
+    "missiles_antiship": "Seezielflugkörper",
+    "missiles_ballistic1": "Taktische ballistische Raketen",
+    "missiles_ballistic2": "Ballistische Mittelstreckenraketen",
+    "missiles_ballistic3": "Ballistische Raketen mittlerer Reichweite (IRBM)",
+    "missiles_hypersonic": "Hyperschallwaffen",
+    "nuclear_weapons": "Kernwaffe",
+    "nuclear_icbm": "Interkontinentalraketen",
+    "nuclear_slbm": "U-Boot-gestützte ballistische Raketen",
+    "sensors_radar1": "Überwachungsradare",
+    "sensors_radar2": "Radare mit aktiver Antenne",
+    "sensors_radar3": "Überhorizont- und Anti-Tarnkappen-Radare",
+    "sensors_space1": "Beobachtungssatelliten",
+    "sensors_space2": "Aufklärungskonstellationen",
+    "sensors_asat": "Antisatellitenwaffen",
+    "cyber_l1": "Cyberabwehr",
+    "cyber_l2": "Offensiver Cyberangriff",
+    "cyber_l3": "Fortgeschrittene Cyberkriegsführung",
+    "intel_interior1": "Innere Sicherheit S1",
+    "intel_interior2": "Innere Sicherheit S2",
+    "intel_interior3": "Innere Sicherheit S3",
+    "intel_exterior1": "Auslandsnachrichtendienst S1",
+    "intel_exterior2": "Auslandsnachrichtendienst S2",
+    "intel_exterior3": "Auslandsnachrichtendienst S3",
+    "intel_military1": "Militärischer Nachrichtendienst S1",
+    "intel_military2": "Militärischer Nachrichtendienst S2",
+    "intel_military3": "Militärischer Nachrichtendienst S3",
+    "industry_l1": "Rüstungsindustrie S1",
+    "industry_l2": "Rüstungsindustrie S2",
+    "industry_l3": "Rüstungsindustrie S3",
+    "desc": {
+      "aero": "Kampfflugzeuge, Unterstützung und Drohnen.",
+      "land": "Panzer, Artillerie und mechanisierte Infanterie.",
+      "naval": "Überwasserflotte und U-Boote.",
+      "missiles": "Luftabwehr, Schlag, Raketenabwehr.",
+      "nuclear": "Nukleare Abschreckung und strategische Träger.",
+      "sensors": "Radare, Satelliten, elektronische Kampfführung.",
+      "cyber": "Cyberabwehr und Cyberangriff.",
+      "intel": "Stufen der Nachrichtendienste.",
+      "industry": "Produktion, Logistik und Kosten."
+    }
+  },
+  "research": {
+    "branchesLabel": "Forschungszweige",
+    "branches": {
+      "aero": "Luftfahrt",
+      "land": "Land",
+      "naval": "Marine",
+      "missiles": "Raketen",
+      "sensors": "Sensoren",
+      "cyber": "Cyber",
+      "intel": "Nachrichtendienst",
+      "industry": "Industrie"
+    },
+    "current": "Laufende Forschung",
+    "progress": "Fortschritt",
+    "idle": "Keine laufende Forschung.",
+    "queue": "Warteschlange",
+    "queueEmpty": "Warteschlange leer.",
+    "remove": "Aus der Warteschlange entfernen",
+    "removed": "Forschung entfernt",
+    "effects": "Kumulierte Effekte",
+    "requires": "Voraussetzungen",
+    "unlocks": "Schaltet Produktion frei",
+    "cost": "Kosten",
+    "duration": "Dauer",
+    "start": "Forschung starten",
+    "enqueue": "Zur Warteschlange hinzufügen",
+    "cancel": "Abbrechen",
+    "started": "Forschung gestartet: {{node}}",
+    "queued": "Zur Warteschlange hinzugefügt: {{node}}",
+    "pick": "Wählen Sie einen Knoten im Baum.",
+    "noTree": "Technologiebaum nicht verfügbar.",
+    "noTreeHint": "Die Forschungsdaten (data/research) sind noch nicht geladen.",
+    "status": {
+      "done": "erforscht",
+      "current": "läuft",
+      "queued": "in Warteschlange",
+      "available": "verfügbar",
+      "locked": "gesperrt"
+    },
+    "enqueueChain": "Mit Voraussetzungen planen ({{count}} · {{cost}})",
+    "chainQueued": "{{count}} Forschung(en) geplant bis: {{node}}"
+  },
+  "modifiers": {
+    "production_speed": "Produktionsgeschwindigkeit",
+    "production_cost": "Produktionskosten",
+    "research_speed": "Forschungsgeschwindigkeit",
+    "income_money": "Einkommen",
+    "income_oil": "Öl",
+    "income_metals": "Metalle",
+    "income_electronics": "Elektronik",
+    "income_food": "Nahrung",
+    "upkeep": "Unterhalt",
+    "supply_range": "Logistikreichweite",
+    "combat_damage": "Schaden",
+    "combat_armor": "Panzerung",
+    "air_range": "Einsatzradius Luft",
+    "air_fuel": "Flugausdauer",
+    "sensors_radarRange": "Radarreichweite",
+    "sensors_stealthDetect": "Tarnkappenerfassung",
+    "sensors_satellitePasses": "Satellitenüberflüge",
+    "ew_jamming": "Störung",
+    "ew_jamResistance": "Störfestigkeit",
+    "missiles_accuracy": "Raketenpräzision",
+    "missiles_interception": "Abfangen",
+    "naval_sonar": "Sonar",
+    "cyber_attack": "Cyberangriff",
+    "cyber_defense": "Cyberabwehr",
+    "intel_interior_level": "Innere Sicherheit (Stufe)",
+    "intel_exterior_level": "Auslandsnachrichtendienst (Stufe)",
+    "intel_military_level": "Militärischer Nachrichtendienst (Stufe)",
+    "intel_capacity": "Geheimdienstkapazität",
+    "stability_recovery": "Stabilitätserholung"
+  },
+  "economy": {
+    "tabs": {
+      "dashboard": "Übersicht",
+      "resources": "Ressourcen",
+      "buildings": "Gebäude",
+      "market": "Markt",
+      "deliveries": "Lieferungen",
+      "black": "Schwarzmarkt",
+      "logistics": "Logistik"
+    },
+    "treasury": "Staatskasse",
+    "annualBudget": "Jahresbudget",
+    "budgetSource": "Verteidigung, täglich ausgezahlt",
+    "income": "Einnahmen",
+    "expenses": "Ausgaben",
+    "balance": "Saldo",
+    "perDay": "pro Tag",
+    "runway": "Reserven: {{days}} T",
+    "incomeDetail": "Einnahmen / Tag",
+    "expenseDetail": "Unterhalt und Dienste / Tag",
+    "upkeepAdjusted": "Unterhalt an lokale Kosten angepasst: ×{{factor}} des Katalogpreises ({{catalog}} / Tag), Kostenindex {{index}}.",
+    "upkeepAdjustedHelp": "Älteres Material ist günstiger im Unterhalt, und der lokale Anteil (Sold, Treibstoff, Arbeitskraft) folgt dem Preisniveau des Landes; zu Beginn übersteigt der Unterhalt der realen Armee nie einen realistischen Anteil des Verteidigungsbudgets.",
+    "incomeKeys": {
+      "trade": "Handel (Sanktionen, Blockaden)",
+      "national": "Nationales Budget",
+      "provincial": "Anteil der Provinzen",
+      "mobilization": "Mobilmachung",
+      "modifiers": "Forschung und Boni"
+    },
+    "construction": "Baustellen",
+    "noConstruction": "Keine laufenden Baustellen.",
+    "work": {
+      "build": "Bau S{{level}}",
+      "upgrade": "Ausbau S{{level}}",
+      "repair": "Reparatur"
+    },
+    "cols": {
+      "building": "Gebäude",
+      "province": "Provinz",
+      "work": "Arbeiten",
+      "eta": "Rest",
+      "resource": "Ressource",
+      "stock": "Bestand",
+      "production": "Produktion / T",
+      "consumption": "Verbrauch / T",
+      "net": "Netto / T",
+      "autonomy": "Reichweite",
+      "seller": "Verkäufer",
+      "item": "Artikel",
+      "price": "Preis",
+      "expires": "Läuft ab",
+      "from": "Herkunft",
+      "range": "Radius",
+      "population": "Bevölkerung",
+      "morale": "Moral",
+      "income": "Einkommen / T"
+    },
+    "shortage": "Mangel",
+    "days_one": "{{count}} Tag",
+    "days_other": "{{count}} Tage",
+    "searchProvince": "Provinz suchen…",
+    "filter": "Filter",
+    "damaged": "Beschädigt",
+    "works": "Arbeiten",
+    "buildingsCount_one": "{{count}} Gebäude",
+    "buildingsCount_other": "{{count}} Gebäude",
+    "noProvince": "Keine Provinz passt.",
+    "items": {
+      "units": "Material",
+      "resource": "Ressourcen",
+      "licence": "Lizenzen"
+    },
+    "licenceOf": "Lizenz: {{name}}",
+    "embargoed": "Unter Embargo",
+    "noOffers": "Keine Angebote auf dem Markt.",
+    "reserved": "reserviert",
+    "withdraw": "Zurückziehen",
+    "offerCancelled": "Angebot zurückgezogen",
+    "buy": "Kaufen",
+    "bought": "Kauf abgeschlossen: Lieferung unterwegs",
+    "sell": "Zum Verkauf anbieten",
+    "quantity": "Menge",
+    "priceM": "Preis (Mio. $)",
+    "post": "Angebot veröffentlichen",
+    "offerPosted": "Angebot auf dem Markt veröffentlicht",
+    "noDeliveries": "Keine laufende Lieferung.",
+    "unknownSeller": "Anonymer Verkäufer",
+    "covert": "verdeckt",
+    "official": "offiziell",
+    "track": "Verfolgen",
+    "blackTitle": "Schwarzmarkt",
+    "blackText": "Preise mal {{factor}}, verdeckte Lieferung, Entdeckungsrisiko {{risk}} (diplomatischer Zwischenfall bei Entdeckung).",
+    "mobilization": "Generalmobilmachung",
+    "mobilized": "Mobilmachung in Kraft",
+    "notMobilized": "Friedenszeit",
+    "mobilizeHelp": "+{{inf}} Infanteriebataillon pro Provinz, Einnahmen −{{penalty}}, Stabilität {{stab}} / Tag.",
+    "since": "seit {{value}} h",
+    "depots": "Depots und vorgeschobene Basen",
+    "noDepots": "Kein Depot.",
+    "show": "Anzeigen",
+    "blockades": "Blockaden",
+    "forecast": "7 T: {{d7}} · 30 T: {{d30}}",
+    "deficitHint": "Defizit: Der Unterhalt Ihrer Streitkräfte übersteigt Ihre Einnahmen. Erobern Sie Provinzen, kürzen Sie Geheimdienstbudgets oder demobilisieren Sie, um den Bankrott zu vermeiden.",
+    "intelBudget": "Nachrichtendienst",
+    "ledgerTitle": "Tatsächliche Flüsse · letzte 24 h",
+    "ledgerEmpty": "Noch keine Flüsse erfasst: Das Hauptbuch füllt sich am ersten Spieltag.",
+    "tradeBalance": "Handelsbilanz {{value}}",
+    "ledger": {
+      "budgetNational": "Nationales Budget",
+      "budgetProvincial": "Anteil der Provinzen",
+      "trade": "Handel",
+      "mobilization": "Mobilmachung",
+      "modifiers": "Boni",
+      "upkeep": "Unterhalt der Streitkräfte",
+      "production": "Produktion",
+      "imports": "Importe",
+      "research": "Forschung",
+      "buildings": "Baustellen",
+      "licences": "Lizenzen",
+      "blackMarket": "Schwarzmarkt",
+      "marketPurchases": "Marktkäufe",
+      "marketSales": "Marktverkäufe",
+      "transfersIn": "Erhaltene Abtretungen",
+      "transfersOut": "Gewährte Abtretungen",
+      "other": "Sonstiges (Nachrichtendienst, Allianz…)"
+    },
+    "constructionHint": "Bauen Sie ein Gebäude aus oder errichten Sie ein neues über den Reiter Gebäude oder das Provinzfenster.",
+    "provincesTitle": "Provinzen",
+    "populationMorale": "{{pop}} Einwohner · Moral {{morale}}",
+    "showAll": "Alle {{count}} Provinzen anzeigen",
+    "showLess": "Einklappen",
+    "resourcesHint": "Ressourcen werden von den Provinzen und ihren Gebäuden (Bohrlöcher, Bergwerke, Höfe, Elektronikwerke, Raffinerien) erzeugt und von Ihren Einheiten verbraucht. Mangel verlangsamt die Produktion; Nahrung beeinflusst die Moral.",
+    "ledgerToday": "Tatsächliche Flüsse · heute"
+  },
+  "army": {
+    "supply": {
+      "supplied": "Versorgt",
+      "limited": "Eingeschränkte Versorgung",
+      "cut": "Abgeschnitten"
+    },
+    "tabs": {
+      "units": "Einheiten",
+      "generals": "Generäle",
+      "operations": "Operationen"
+    },
+    "units": "Einheiten",
+    "empty": "Keine Einheiten.",
+    "search": "Einheit suchen…",
+    "domain": "Bereich",
+    "domains": {
+      "all": "Alle",
+      "land": "Land",
+      "air": "Luft",
+      "sea": "See",
+      "static": "Ortsfest"
+    },
+    "cols": {
+      "unit": "Einheit",
+      "count": "Stärke",
+      "position": "Position",
+      "hp": "Zustand",
+      "status": "Status",
+      "supply": "Versorgung",
+      "mission": "Mission",
+      "general": "General"
+    },
+    "summary": "{{units}} Einheiten · {{elements}} Elemente",
+    "loc": {
+      "near": "{{city}} · {{km}} km",
+      "sea": "Auf See",
+      "air": "In der Luft",
+      "embarked": "Eingeschifft",
+      "center": "Karte auf die Einheit zentrieren",
+      "title": "Nächste Stadt: {{city}} ({{km}} km) · klicken, um die Karte zu zentrieren"
+    },
+    "supplyState": {
+      "supplied": "versorgt",
+      "limited": "eingeschränkt",
+      "cut": "abgeschnitten"
+    },
+    "mission": {
+      "none": "keine",
+      "patrol": "Patrouille",
+      "strike": "Schlag",
+      "escort": "Eskorte",
+      "refuel": "Betankung",
+      "awacs": "Luftraumüberwachung",
+      "recon": "Aufklärung",
+      "blockade": "Blockade",
+      "rtb": "Rückkehr zur Basis"
+    },
+    "fuel": "{{value}} h Treibstoff",
+    "veterancy": "Veteran",
+    "jamming": "Störung",
+    "rtb": "Rückkehr zur Basis",
+    "unitsCount_one": "{{count}} Einheit",
+    "unitsCount_other": "{{count}} Einheiten",
+    "delegated": "An die KI delegiert",
+    "noGenerals": "Kein General verfügbar.",
+    "directive": "Weisung",
+    "directives": {
+      "none": "Manuell",
+      "defend": "Verteidigen",
+      "advance": "Vorrücken",
+      "harass": "Bedrängen"
+    },
+    "traits": {
+      "offensive": "Offensiv",
+      "defender": "Verteidiger",
+      "logistician": "Logistiker",
+      "aviator": "Flieger",
+      "admiral": "Admiral"
+    },
+    "delegationOn": "Kommando an {{name}} delegiert",
+    "delegationOff": "Kommando übernommen",
+    "selectGroup": "Gruppe auswählen",
+    "assignSelection_one": "Auswahl zuweisen ({{count}})",
+    "assignSelection_other": "Auswahl zuweisen ({{count}})",
+    "assigned": "Einheiten {{name}} zugewiesen",
+    "ops": {
+      "help": "Planen Sie synchronisierte Schritte um eine Stunde X (vorbereitende Schläge, Störung, Angriff, Ausnutzung).",
+      "new": "Neue Operation",
+      "none": "Keine Operation geplant.",
+      "defaultName": "Operation Sturm",
+      "name": "Name der Operation",
+      "hHour": "Stunde X",
+      "hHourHint": "in {{value}} (Spielzeit)",
+      "offset": "Versatz in Minuten",
+      "kind": "Befehlsart",
+      "label": "Bezeichnung des Schritts",
+      "useSelection_one": "Auswahl ({{count}})",
+      "useSelection_other": "Auswahl ({{count}})",
+      "unitsCount_one": "{{count}} Einheit",
+      "unitsCount_other": "{{count}} Einheiten",
+      "noUnits": "keine Einheit",
+      "pickTarget": "Ziel wählen…",
+      "place": "Ort (Stadt, Provinz, „lat,lng“)",
+      "removeStep": "Schritt löschen",
+      "addStep": "Schritt hinzufügen",
+      "plan": "Planen",
+      "planned": "Operation geplant: {{name}}",
+      "cancelled": "Operation abgebrochen",
+      "invalid": "Jeder Schritt braucht Einheiten und ein gültiges Ziel (erkannter Ort oder feindliche Einheit).",
+      "examples": {
+        "prep": "Vorbereitender Schlag",
+        "assault": "Angriff"
+      },
+      "kinds": {
+        "move": "Verlegung",
+        "attack": "Angriff",
+        "strike": "Schlag",
+        "patrol": "Patrouille",
+        "jam": "Störung",
+        "stop": "Halt",
+        "rtb": "Rückkehr zur Basis"
+      },
+      "status": {
+        "planned": "geplant",
+        "running": "läuft",
+        "done": "abgeschlossen",
+        "cancelled": "abgebrochen",
+        "failed": "gescheitert"
+      },
+      "stepStatus": {
+        "pending": "ausstehend",
+        "done": "ausgeführt",
+        "failed": "gescheitert"
+      }
+    }
+  },
+  "diplomacy": {
+    "unavailable": "Diplomatie in diesem Spiel nicht verfügbar.",
+    "tabs": {
+      "relations": "Beziehungen",
+      "alliances": "Allianzen",
+      "neutrals": "Neutrale",
+      "disputed": "Umstrittene Gebiete",
+      "stability": "Stabilität"
+    },
+    "relation": {
+      "war": "Krieg",
+      "peace": "Frieden",
+      "ceasefire": "Waffenstillstand",
+      "ally": "Verbündet"
+    },
+    "reputation": "Ansehen",
+    "reputationHint": "beeinflusst Abstimmungen und Neutrale",
+    "atWar": "Im Krieg",
+    "allies": "Verbündete",
+    "pending": "Erhaltene Vorschläge",
+    "filter": "Filter",
+    "filters": {
+      "known": "Nachbarn und Beziehungen"
+    },
+    "cols": {
+      "nation": "Nation",
+      "relation": "Beziehung",
+      "since": "Seit",
+      "alliance": "Allianz",
+      "stability": "Stabilität",
+      "leaning": "Neigung"
+    },
+    "proposal": {
+      "peace": "schlägt Frieden vor",
+      "ceasefire": "schlägt einen Waffenstillstand vor"
+    },
+    "accept": "Annehmen",
+    "refuse": "Ablehnen",
+    "accepted": "Vorschlag angenommen",
+    "refused": "Vorschlag abgelehnt",
+    "sent": "Vorschlag gesendet",
+    "ceasefire": "Waffenstillstand",
+    "peace": "Frieden",
+    "declareWar": "Krieg erklären",
+    "warTitle": "Kriegserklärung",
+    "warText": "{{aNation}} den Krieg erklären? Durch gegenseitige Verteidigung gebundene Verbündete können hineingezogen werden, die weltweite Spannung steigt und Ihr Ansehen sinkt.",
+    "members_one": "{{count}} Mitglied",
+    "members_other": "{{count}} Mitglieder",
+    "yourAlliance": "Ihre Allianz",
+    "leader": "Führung:",
+    "charter": {
+      "mutualDefense": "Gegenseitige Verteidigung",
+      "intelSharing": "Austausch von Erkenntnissen",
+      "passage": "Durchmarschrecht"
+    },
+    "charterHelp": {
+      "mutualDefense": "Ein Angriff auf ein Mitglied verpflichtet alle Mitglieder.",
+      "intelSharing": "Geheimdienstberichte werden automatisch geteilt.",
+      "passage": "Die Streitkräfte der Mitglieder durchqueren Ihre Provinzen frei."
+    },
+    "treasury": "Gemeinsame Kasse",
+    "deposited": "Einzahlung von {{amount}} in die Allianzkasse",
+    "votes": {
+      "replace_leader": "Führung durch {{nationLe}} ersetzen",
+      "skip_mutual_defense": "{{nationLe}} von der gegenseitigen Verteidigung befreien",
+      "expel": "{{nationLe}} ausschließen"
+    },
+    "yes": "Dafür",
+    "no": "Dagegen",
+    "voted": "Stimme erfasst",
+    "hasVoted": "hat abgestimmt",
+    "invited": "Gesendete Einladungen:",
+    "allianceChat": "Allianzkanal",
+    "leave": "Allianz verlassen",
+    "left": "Sie haben die Allianz verlassen",
+    "create": "Allianz gründen",
+    "allianceName": "Name",
+    "allianceFlag": "Kürzel (4 Buchstaben)",
+    "createBtn": "Allianz gründen",
+    "created": "Allianz gegründet: {{name}}",
+    "invitation": "Einladung, „{{name}}“ beizutreten",
+    "joined": "Sie sind {{name}} beigetreten",
+    "noNeutrals": "Keine neutrale Nation zum Umwerben.",
+    "neutralsHelp": "Wirtschaftshilfe, um eine neutrale Nation Ihrer Allianz näherzubringen.",
+    "aid": "Betrag der Hilfe",
+    "court": "Helfen · {{amount}}",
+    "courted": "Hilfe an {{aNation}} gesendet",
+    "noDisputed": "Kein umstrittenes Gebiet.",
+    "provinces_one": "{{count}} Provinz",
+    "provinces_other": "{{count}} Provinzen",
+    "holder": "Besitzer",
+    "claimants": "Ansprüche",
+    "tension": "Spannung",
+    "fundRebels": "Rebellen finanzieren",
+    "rebelsFunded": "Finanzierung der Rebellen eingeleitet",
+    "noStability": "Stabilität nicht veröffentlicht.",
+    "stability": "Stabilität",
+    "trend": "Tendenz",
+    "coupRisk": "Putschrisiko",
+    "coupHint": "unter 15 % Stabilität: Gefahr",
+    "factors": "Faktoren",
+    "noRelations": "Keine Nation in diesem Filter.",
+    "noRelationsHint": "Sie sind mit allen Nationen im Frieden. Wählen Sie „Alle“, um Krieg zu erklären oder eine Allianz vorzuschlagen.",
+    "neutralsNeedAlliance": "Um einen Neutralen zu umwerben, müssen Sie einer Allianz angehören: Gründen Sie eine oder treten Sie einer im Reiter Allianzen bei.",
+    "noLeaning": "keine Neigung",
+    "moreNeutrals": "… und {{count}} weitere: Suche verfeinern."
+  },
+  "council": {
+    "unavailable": "Sicherheitsrat nicht verfügbar.",
+    "permanent": "Ständige Sitze",
+    "rotating": "Wechselnde Sitze",
+    "majority": {
+      "simple": "Einfache Mehrheit",
+      "two_thirds": "Zweidrittelmehrheit"
+    },
+    "veto": "Vetorecht",
+    "phase": {
+      "proposals": "Einreichung der Vorschläge",
+      "voting": "Abstimmung läuft",
+      "closed": "Sitzung geschlossen"
+    },
+    "recess": "Außerhalb der Sitzung",
+    "agenda_one": "{{count}} Resolution auf der Tagesordnung",
+    "agenda_other": "{{count}} Resolutionen auf der Tagesordnung",
+    "closesIn": "Schluss in",
+    "nextSession": "Nächste Sitzung",
+    "propose": "Resolution vorschlagen",
+    "noResolutions": "Keine Resolution auf der Tagesordnung.",
+    "inForce": "Geltende Resolutionen",
+    "until": "bis",
+    "zone": "Zone von {{km}} km",
+    "proposer": "Vorgeschlagen von",
+    "duration": "Wirkungsdauer: {{days}} T",
+    "waiting_one": "{{count}} ausstehend",
+    "waiting_other": "{{count}} ausstehend",
+    "vetoThreat": "Veto: {{nations}}",
+    "yourVote": "Ihre Stimme",
+    "voted": "Stimme erfasst",
+    "type": "Art",
+    "target": "Zielnation",
+    "pickTarget": "Wählen…",
+    "text": "Text der Resolution",
+    "textHint": "10 bis 500 Zeichen, im Stil einer Resolution.",
+    "textPlaceholder": "Der Sicherheitsrat, besorgt über…",
+    "submit": "Einreichen",
+    "proposed": "Resolution eingereicht",
+    "types": {
+      "arms_embargo": "Waffenembargo",
+      "economic_sanctions": "Wirtschaftssanktionen",
+      "ceasefire": "Waffenstillstand",
+      "no_fly_zone": "Flugverbotszone",
+      "peacekeeping": "Friedenssicherung",
+      "condemnation": "Verurteilung"
+    },
+    "status": {
+      "proposed": "eingereicht",
+      "voting": "in Abstimmung",
+      "passed": "angenommen",
+      "rejected": "abgelehnt",
+      "vetoed": "Veto",
+      "expired": "abgelaufen"
+    },
+    "votes": {
+      "yes": "Dafür",
+      "no": "Dagegen",
+      "abstain": "Enthaltung",
+      "none": "hat nicht abgestimmt"
+    },
+    "noPermanent": "keine (noch keine Allianz)",
+    "votingIn": "Abstimmung beginnt in"
+  },
+  "news": {
+    "filter": "Kategorien",
+    "empty": "Keine Meldungen.",
+    "urgent": "EILMELDUNG",
+    "source": "RED LINE PRESSE",
+    "locate": "Lokalisieren",
+    "cats": {
+      "strike": "Schlag",
+      "war": "Krieg",
+      "peace": "Frieden",
+      "council": "UNO",
+      "leak": "Leck",
+      "revolt": "Aufruhr",
+      "coup": "Putsch",
+      "alliance": "Allianz",
+      "economy": "Wirtschaft",
+      "nuclear": "Nuklear",
+      "capture": "Eroberung",
+      "refugees": "Flüchtlinge",
+      "event": "Ereignis"
+    },
+    "war": {
+      "h0": "{{A}} / {{B}}: Die Feindseligkeiten haben begonnen",
+      "h1": "Offener Krieg: {{A}} gegen {{B}}",
+      "h2": "{{A}} überschreitet die rote Linie: Kriegszustand mit {{B}}",
+      "h3": "Völliger diplomatischer Bruch: {{A}} / {{B}}",
+      "b0": "Die Außenministerien bestätigen den Kriegszustand. Benannter Aggressor: {{A}}.",
+      "b1": "Erste Truppenbewegungen gemeldet. {{B}} verurteilt eine Aggression durch {{A}}.",
+      "b2": "Nach Eröffnung der Feindseligkeiten durch {{A}} mehren sich die Aufrufe zur Ruhe."
+    },
+    "war_alliance": {
+      "h0": "{{X}}: {{A}} zieht im Namen der gegenseitigen Verteidigung gegen {{B}} in den Krieg",
+      "h1": "Gegenseitige Verteidigung ausgelöst: {{A}} tritt gegen {{B}} in den Konflikt ein",
+      "h2": "Bündnissolidarität: {{A}} erklärt {{B}} den Krieg",
+      "b0": "{{A}} hält nach dem Angriff auf ein Mitglied die Charta der Allianz {{X}} ein.",
+      "b1": "Die Beistandsklausel der Allianz {{X}} weitet den Konflikt aus."
+    },
+    "peace": {
+      "h0": "{{A}} / {{B}}: Ein Friedensvertrag wird unterzeichnet",
+      "h1": "Ende der Feindseligkeiten zwischen {{A}} und {{B}}",
+      "h2": "Frieden geschlossen: {{A}} / {{B}}",
+      "b0": "Die Delegationen haben das Abkommen paraphiert. Die Truppen haben eine Frist für den Rückzug.",
+      "b1": "Der Vertrag sieht den Rückzug der auf gegnerischem Gebiet eingesetzten Kräfte vor."
+    },
+    "ceasefire": {
+      "h0": "{{A}} / {{B}}: Waffenstillstand in Kraft",
+      "h1": "Die Waffen schweigen: Waffenruhe zwischen {{A}} und {{B}}",
+      "h2": "Waffenstillstand vereinbart: {{A}} / {{B}}",
+      "b0": "Die Waffenruhe friert die Frontlinien ein. Jeder Verstoß würde Sanktionen nach sich ziehen.",
+      "b1": "Internationale Beobachter begrüßen einen ersten Schritt. Vorgesehene Dauer: {{X}} Tage."
+    },
+    "ceasefire_violated": {
+      "h0": "{{A}} bricht den Waffenstillstand mit {{B}}",
+      "h1": "Waffenruhe gebrochen: {{A}} nimmt die Feindseligkeiten gegen {{B}} wieder auf",
+      "h2": "Bruch des Waffenstillstands: {{A}} belastet",
+      "b0": "Die internationale Gemeinschaft verurteilt den Bruch der Waffenruhe. Eine Abstimmung über Sanktionen läuft.",
+      "b1": "Der Sicherheitsrat wird automatisch mit dem Verstoß durch {{A}} befasst."
+    },
+    "alliance_created": {
+      "h0": "Neue Allianz: {{X}}, unter Führung von {{A}}",
+      "h1": "{{A}} gründet die Allianz {{X}}",
+      "h2": "Strategische Neuordnung: Gründung von {{X}}",
+      "b0": "Charta: {{Y}}.",
+      "b1": "Der neue Block wird von {{A}} geführt. Charta: {{Y}}."
+    },
+    "alliance_joined": {
+      "h0": "{{A}} tritt der Allianz {{X}} bei",
+      "h1": "{{X}} wächst: Beitritt von {{A}}",
+      "h2": "Beitritt: {{A}} / {{X}}",
+      "b0": "Die Allianz zählt nun {{Y}} Mitglieder.",
+      "b1": "{{A}} unterzeichnet die Charta von {{X}}."
+    },
+    "alliance_left": {
+      "h0": "{{A}} verlässt die Allianz {{X}}",
+      "h1": "Spektakulärer Austritt: {{A}} / {{X}}",
+      "h2": "{{X}} verliert ein Mitglied: {{A}}",
+      "b0": "Der Austritt von {{A}} schwächt {{X}}.",
+      "b1": "Die Partner von {{A}} nehmen den Austritt zur Kenntnis."
+    },
+    "alliance_expelled": {
+      "h0": "{{X}} schließt {{A}} aus",
+      "h1": "Ausschluss: {{A}} ist kein Mitglied von {{X}} mehr",
+      "b0": "Die Mitglieder von {{X}} haben für den Ausschluss von {{A}} gestimmt."
+    },
+    "leader_replaced": {
+      "h0": "{{X}}: {{A}} übernimmt die Führung der Allianz",
+      "h1": "Führungswechsel an der Spitze von {{X}}",
+      "b0": "Die Mitglieder von {{X}} haben {{A}} zum neuen Allianzführer bestimmt."
+    },
+    "mutual_skipped": {
+      "h0": "{{X}} verzichtet auf gegenseitige Verteidigung gegenüber {{A}}",
+      "h1": "Gegenseitige Verteidigung ausgesetzt: {{X}} / {{A}}",
+      "b0": "Die Mitglieder von {{X}} haben die Befreiung beschlossen: kein automatischer Kriegseintritt gegen {{A}}."
+    },
+    "council_open": {
+      "h0": "Sicherheitsrat: Eröffnung der Sitzung",
+      "h1": "Der Sicherheitsrat tritt zusammen",
+      "h2": "Sitzung des Sicherheitsrats: {{X}} Text(e) zur Abstimmung",
+      "b0": "{{X}} Resolutionsentwurf/-entwürfe zur Abstimmung gestellt. Mitglieder: {{Y}}.",
+      "b1": "Die Delegationen haben das Abstimmungsfenster, um über {{X}} Text(e) zu entscheiden."
+    },
+    "emergency_council": {
+      "h0": "Dringlichkeitssitzung des Sicherheitsrats",
+      "h1": "Sicherheitsrat zu Dringlichkeitssitzung einberufen",
+      "b0": "{{X}}",
+      "b1": "Der Vorsitz beruft die Mitglieder unverzüglich ein. {{X}}"
+    },
+    "resolution_passed": {
+      "h0": "Sicherheitsrat: {{X}} gegen {{A}} angenommen",
+      "h1": "Resolution angenommen: {{X}} ({{A}})",
+      "h2": "Resolution gegen {{A}}: {{X}}",
+      "b0": "Der Text tritt für {{Y}} Tag(e) in Kraft.",
+      "b1": "Abstimmung: {{Y}}."
+    },
+    "resolution_zone_passed": {
+      "h0": "Sicherheitsrat: {{X}} angenommen",
+      "h1": "Resolution angenommen: {{X}}",
+      "b0": "Betroffene Zone: {{Y}}.",
+      "b1": "Die Maßnahme umfasst: {{Y}}."
+    },
+    "resolution_rejected": {
+      "h0": "Sicherheitsrat: {{X}} abgelehnt",
+      "h1": "Keine Mehrheit für {{X}}",
+      "b0": "Der von {{A}} eingebrachte Entwurf hat die nötige Mehrheit verfehlt."
+    },
+    "resolution_vetoed": {
+      "h0": "Veto im Sicherheitsrat: {{X}} blockiert",
+      "h1": "{{A}} legt sein Veto ein: {{X}}",
+      "b0": "Das Veto von {{A}} verhindert die Annahme des Textes."
+    },
+    "strike": {
+      "h0": "{{X}}angriffe von {{A}} nahe {{P}} gemeldet",
+      "h1": "{{B}}: {{X}}angriffe nahe {{P}}",
+      "h2": "{{A}} / {{B}}: neue {{X}}angriffe",
+      "b0": "Nahe {{P}} waren Explosionen zu hören. {{B}} beschuldigt {{A}}.",
+      "b1": "Bilanz wird noch ermittelt nach {{X}}angriffen nahe {{P}}."
+    },
+    "nuclear": {
+      "h0": "Nukleare Detonation nahe {{P}}",
+      "h1": "Das nukleare Tabu ist gebrochen: {{A}} greift {{B}} an",
+      "h2": "Nuklearschlag: Die Welt unter Schock",
+      "b0": "{{A}} hat nahe {{P}} eine Kernwaffe eingesetzt. Weltweit gilt die höchste Alarmstufe.",
+      "b1": "Die Hauptstädte verurteilen einhellig den Einsatz der Atomwaffe durch {{A}}."
+    },
+    "battle": {
+      "h0": "Heftige Kämpfe nahe {{P}}",
+      "h1": "Schlacht nahe {{P}}: {{A}} setzt sich durch",
+      "h2": "Front: {{P}}",
+      "b0": "Kriegsparteien: {{X}}.",
+      "b1": "In den Kämpfen standen sich {{X}} gegenüber. Vorteil: {{A}}."
+    },
+    "capital": {
+      "h0": "Die Hauptstadt von {{B}} fällt in die Hände von {{A}}",
+      "h1": "{{P}}: Die Hauptstadt von {{B}} wird von {{A}} eingenommen",
+      "h2": "Paukenschlag: {{A}} nimmt {{P}} ein",
+      "b0": "Die Regierung von {{B}} soll {{P}} verlassen haben.",
+      "b1": "Der Fall von {{P}} markiert einen Wendepunkt im Konflikt."
+    },
+    "capture": {
+      "h0": "{{A}} übernimmt die Kontrolle über {{P}}",
+      "h1": "{{P}} gerät unter die Kontrolle von {{A}}",
+      "b0": "{{B}} verliert die Provinz {{P}}."
+    },
+    "agent_caught": {
+      "h0": "Spionageaffäre: {{B}} beschuldigt {{A}}",
+      "h1": "Ein Agent von {{A}} von {{B}} festgenommen",
+      "h2": "Spionage: diplomatischer Zwischenfall zwischen {{A}} und {{B}}",
+      "b0": "{{B}} prangert eine von {{A}} auf seinem Boden durchgeführte Geheimdienstoperation an."
+    },
+    "blockade": {
+      "h0": "Blockade: {{A}} riegelt {{P}} ab",
+      "h1": "Seeverkehr gestört: Blockade von {{P}}",
+      "b0": "Der Handel um {{P}} ist stark verlangsamt."
+    },
+    "blockade_lifted": {
+      "h0": "Aufhebung der Blockade von {{P}}",
+      "b0": "Der Verkehr um {{P}} kommt allmählich wieder in Gang."
+    },
+    "revolt": {
+      "h0": "Unruhen in {{P}}: Proteste gegen die Regierung von {{B}}",
+      "h1": "{{B}}: Krawalle in {{P}}",
+      "h2": "Unruhe in {{P}}",
+      "b0": "Tausende Demonstranten trotzen den Behörden von {{B}}.",
+      "b1": "Die Sicherheitskräfte von {{B}} werden in {{P}} eingesetzt."
+    },
+    "revolt_disputed": {
+      "h0": "{{X}}: Aufstand in {{P}} gegen {{B}}",
+      "h1": "Umstrittenes Gebiet: Volksaufstand in {{P}}",
+      "h2": "{{X}}: Die Spannung in {{P}} steigt",
+      "b0": "In diesem von {{Y}} beanspruchten Gebiet stellt die Bevölkerung die Autorität von {{B}} infrage.",
+      "b1": "Die Region {{X}} versinkt erneut in Gewalt. Besitzer: {{B}}."
+    },
+    "uprising": {
+      "h0": "Bewaffneter Aufstand in {{P}}",
+      "h1": "{{B}}: Bewaffnete Gruppen greifen in {{P}} zu den Waffen",
+      "h2": "Aufstand in {{P}}",
+      "b0": "Rebellenkämpfer trotzen der Armee von {{B}}.",
+      "b1": "Die Aufständischen sollen mehrere Verkehrsachsen um {{P}} kontrollieren."
+    },
+    "rallied": {
+      "h0": "{{P}}: Die Aufständischen schließen sich {{A}} an",
+      "h1": "Umstrittenes Gebiet: {{P}} gerät unter die Kontrolle von {{A}}",
+      "b0": "Nach dem Sturz der Behörden von {{B}} haben die Aufständischen ihren Anschluss an {{A}} verkündet."
+    },
+    "coup": {
+      "h0": "Putsch: {{A}}",
+      "h1": "{{A}}: Das Militär übernimmt die Macht",
+      "h2": "{{A}}: Die Regierung gestürzt",
+      "b0": "Eine Junta verkündet die Aussetzung der Institutionen. Die Außenpolitik von {{A}} ändert den Kurs.",
+      "b1": "Nach Wochen der Instabilität ergreift das Militär die Macht."
+    },
+    "refugees": {
+      "h0": "Flüchtlingsstrom aus {{A}}",
+      "h1": "Humanitäre Krise: Zivilisten fliehen aus {{A}}",
+      "h2": "Exodus: {{A}}",
+      "b0": "Aufnahmeländer unter Druck: {{X}}.",
+      "b1": "Nachbarländer erleben den Zustrom von Familien auf der Flucht vor den Kämpfen: {{X}}."
+    },
+    "embargo_import_blocked": {
+      "h0": "Embargo: Rüstungskäufe für {{A}} verboten",
+      "b0": "Die Lieferanten halten sich an die Resolution des Rates."
+    },
+    "black_market": {
+      "h0": "Waffenhandel: {{A}} belastet",
+      "h1": "Schwarzmarkt: Ein Schmuggelnetz nach {{A}} zerschlagen",
+      "b0": "Illegale Lieferungen mit Ziel {{A}} wurden entdeckt."
+    },
+    "peacekeepers": {
+      "h0": "Einsatz von Blauhelmen: {{P}}",
+      "h1": "Friedenstruppe in {{P}} stationiert",
+      "b0": "Die Blauhelme beziehen Stellung. Ein Angriff auf sie käme einer Verurteilung gleich."
+    },
+    "peacekeepers_attacked": {
+      "h0": "Blauhelme angegriffen: {{A}} belastet",
+      "h1": "{{A}} eröffnet das Feuer auf die Blauhelme",
+      "b0": "Der Sicherheitsrat ist befasst. Sanktionen werden zur Abstimmung gestellt."
+    },
+    "oil_crisis": {
+      "h0": "Ölschock: Die Preise explodieren",
+      "h1": "Weltweite Ölkrise",
+      "b0": "{{X}}",
+      "b1": "Die von Kohlenwasserstoffen abhängigen Volkswirtschaften leiden. {{X}}"
+    },
+    "market_crash": {
+      "h0": "Weltweiter Börsencrash",
+      "h1": "Die Märkte brechen ein",
+      "b0": "{{X}}",
+      "b1": "Die öffentlichen Haushalte stehen unter Druck. {{X}}"
+    },
+    "pandemic": {
+      "h0": "Pandemie: Gesundheitsalarm ausgelöst",
+      "h1": "Weltweite Epidemie: Die Industrie verlangsamt sich",
+      "b0": "{{X}}",
+      "b1": "Die Produktionsketten laufen auf Sparflamme. {{X}}"
+    },
+    "arms_fair": {
+      "h0": "Internationale Rüstungsmesse",
+      "h1": "Große Verteidigungsmesse: Die Preise sinken",
+      "b0": "{{X}}",
+      "b1": "Die Hersteller überbieten sich mit Sonderangeboten. {{X}}"
+    },
+    "ultimatum": {
+      "h0": "Ultimatum von {{A}} an {{B}}",
+      "h1": "{{A}} stellt {{B}} ein Ultimatum",
+      "h2": "Äußerste Spannung: {{A}} droht {{B}}",
+      "b0": "{{A}} fordert binnen {{X}} Stunden Zugeständnisse, andernfalls droht eine militärische Intervention. An der Grenze sind Truppen zusammengezogen.",
+      "b1": "Truppenkonzentrationen von {{A}} nahe {{B}} gemeldet. Frist: {{X}} Stunden."
+    },
+    "deescalation": {
+      "h0": "{{A}} verzichtet auf das Ultimatum an {{B}}",
+      "h1": "Deeskalation: {{A}} / {{B}}",
+      "b0": "Das Kräfteverhältnis hat sich verschoben: Die an der Grenze zusammengezogenen Truppen kehren in ihre Kasernen zurück.",
+      "b1": "Die Außenministerien begrüßen den Rückzieher von {{A}}: Die Drohung wurde nicht wahr gemacht."
+    },
+    "mercenaries": {
+      "h0": "Private Militärfirmen in {{P}} gemeldet",
+      "b0": "Vertragskämpfer sollen von {{A}} angeworben worden sein."
+    }
+  },
+  "battles": {
+    "empty": "Keine Gefechtsberichte.",
+    "back": "Alle Berichte",
+    "losses": "Verluste",
+    "lasted": "Dauer {{value}}",
+    "noDetail": "Berichtsdetails nicht verfügbar.",
+    "attacker": "Angreifer",
+    "defender": "Verteidiger",
+    "you": "Sie",
+    "system": "System",
+    "engaged": "Eingesetzt",
+    "lost": "Verloren",
+    "total": "Gesamt",
+    "countermeasures": "Gegenmaßnahmen",
+    "timeline": "Chronologie",
+    "replay": "Wiederholung der Schlacht",
+    "scrub": "Position in der Wiederholung",
+    "speed": "Wiedergabetempo",
+    "outcome": {
+      "victory": "Sieg",
+      "defeat": "Niederlage",
+      "draw": "Unentschieden",
+      "ongoing": "Läuft"
+    },
+    "titleAt": "Schlacht bei {{place}}",
+    "titleSea": "Seeschlacht"
+  },
+  "chat": {
+    "game": "Spielkanal",
+    "alliance": "Allianz · {{name}}",
+    "channels": "Kanäle",
+    "newPrivate": "Privatnachricht",
+    "pickNation": "Nation wählen…",
+    "empty": "Keine Nachrichten.",
+    "hidden": "Nachricht von der Moderation ausgeblendet.",
+    "placeholder": "Schreiben an: {{channel}}",
+    "message": "Nachricht",
+    "send": "Senden"
+  },
+  "settings": {
+    "display": "Anzeige",
+    "legend": "Kartenlegende",
+    "legendHelp": "Fenster unten rechts (Taste L).",
+    "notifications": "Benachrichtigungen",
+    "browserNotifications": "Browser-Benachrichtigungen",
+    "notifHelp": "Kritische Meldungen, wenn der Tab im Hintergrund ist; Web Push, falls der Server es anbietet.",
+    "notif": {
+      "push": "Web-Push-Benachrichtigungen aktiviert",
+      "local": "Lokale Benachrichtigungen aktiviert",
+      "denied": "Berechtigung vom Browser verweigert",
+      "unsupported": "Benachrichtigungen werden von diesem Browser nicht unterstützt"
+    },
+    "help": "Hilfe",
+    "restartTutorial": "Tutorial neu starten",
+    "game": "Spiel"
+  },
+  "lobby": {
+    "title": "Mehrspieler",
+    "path": "lobby",
+    "subtitle": "Bis zu 64 menschliche Spieler pro Spiel; alle anderen Nationen werden von der KI geführt.",
+    "create": "Spiel erstellen",
+    "createPath": "neu",
+    "createSubtitle": "Spieleinstellungen, dann Wahl Ihrer Nation.",
+    "join": "Spiel beitreten",
+    "filter": "Filter",
+    "openOnly": "Freie Plätze",
+    "aiNote": "Nicht gewählte Nationen: KI · inaktiver Spieler wird durch die KI ersetzt",
+    "error": "Lobby nicht verfügbar.",
+    "empty": "Keine offenen Spiele.",
+    "by": "von {{name}}",
+    "capitals": "Hauptstädte",
+    "spectate": "Zuschauen",
+    "cols": {
+      "game": "Spiel",
+      "players": "Spieler",
+      "speed": "Tempo",
+      "victory": "Sieg",
+      "shop": "Käufe"
+    },
+    "defaultName": "Neuer Weltkrieg",
+    "worldToday": "Die Welt heute",
+    "sections": {
+      "game": "Spiel",
+      "victory": "Siegbedingungen",
+      "rules": "Regeln"
+    },
+    "name": "Name des Spiels",
+    "maxPlayers": "Menschliche Spieler",
+    "maxPlayersHint": "Höchstens 64; die übrigen Nationen sind KI.",
+    "private": "Privates Spiel",
+    "privateHint": "Nur per Link zugänglich.",
+    "provinceShare": "Anteil der zu kontrollierenden Provinzen der Welt",
+    "capitalsToggle": "Oder alle feindlichen Hauptstädte einnehmen",
+    "shopPolicy": "In-Game-Käufe",
+    "shopHint": "Deaktivieren Sie sie für ein kompetitives Spiel.",
+    "cap": "Credit-Obergrenze pro Spieler",
+    "inactive": "Inaktiver Spieler wird durch die KI ersetzt nach",
+    "next": "Meine Nation wählen",
+    "pickNation": "Wählen Sie Ihre Nation",
+    "createConfirm": "Spiel erstellen",
+    "createError": "Spiel kann nicht erstellt werden.",
+    "humans": "Spieler",
+    "aiRest": "Rest als KI",
+    "joining": "Verbinden…",
+    "joinConfirm": "Beitreten",
+    "joinError": "Beitritt nicht möglich (Nation bereits vergeben?).",
+    "nationTaken": "Diese Nation wurde gerade vergeben: Wählen Sie eine andere.",
+    "room": {
+      "title": "Warteraum",
+      "path": "warteraum",
+      "players": "Angemeldete Spieler",
+      "waiting": "warten auf den Start",
+      "aiRest": "{{count}} freie Plätze · die übrigen Nationen werden von der KI geführt",
+      "host": "Gastgeber",
+      "you": "Sie",
+      "invite": "Einladen",
+      "inviteHint": "Teilen Sie diesen Link: Ihre Freunde wählen ihre Nation und warten hier auf den Start.",
+      "copy": "Link kopieren",
+      "copied": "Link kopiert",
+      "rules": "Spielregeln",
+      "speed": "Tempo ×{{speed}}",
+      "victory": "Sieg: {{share}} der Provinzen",
+      "hostHint": "Starten Sie das Spiel, wenn alle bereit sind; freie Plätze bleiben während des Spiels offen.",
+      "guestHint": "Der Gastgeber startet das Spiel; Sie werden automatisch weitergeleitet.",
+      "start": "Spiel starten",
+      "startError": "Start derzeit nicht möglich.",
+      "leave": "Raum verlassen",
+      "ended": "Dieses Spiel ist beendet.",
+      "notFound": "Raum nicht gefunden.",
+      "shop": "In-Game-Käufe: {{policy}}"
+    },
+    "unlimited": "Unbegrenzter Modus aktiv für {{nations}} — Spiel ohne Wertung",
+    "unranked": "Spiel ohne Wertung"
+  },
+  "games": {
+    "title": "Meine Spiele",
+    "path": "spiele",
+    "subtitle": "Setzen Sie ein laufendes Spiel fort oder sehen Sie die Bilanz eines beendeten Spiels.",
+    "error": "Ihre Spiele können nicht geladen werden.",
+    "empty": "Noch keine Spiele.",
+    "cols": {
+      "game": "Spiel",
+      "nation": "Nation",
+      "players": "Spieler",
+      "status": "Status"
+    },
+    "mode": {
+      "solo": "Einzelspiel",
+      "multi": "Mehrspieler"
+    },
+    "status": {
+      "lobby": "wartend",
+      "running": "läuft",
+      "paused": "pausiert",
+      "ended": "beendet",
+      "abandoned": "beendet · aufgegeben"
+    },
+    "resume": "Fortsetzen",
+    "stats": "Bilanz",
+    "delete": {
+      "action": "Spiel löschen",
+      "title": "Spiel löschen",
+      "text": "Dieses Spiel endgültig löschen? „{{name}}“ und der gesamte Fortschritt werden gelöscht; dies kann nicht rückgängig gemacht werden.",
+      "confirm": "Endgültig löschen",
+      "busy": "Das Spiel läuft auf einem anderen Server: Versuchen Sie es gleich erneut.",
+      "error": "Löschen derzeit nicht möglich."
+    }
+  },
+  "rankings": {
+    "title": "Ranglisten",
+    "path": "ranglisten",
+    "subtitle": "In Mehrspielerpartien erzielte Saisonpunkte.",
+    "season": "Saison",
+    "error": "Rangliste nicht verfügbar.",
+    "remaining": "Saisonende",
+    "days_one": "{{count}} Tag",
+    "days_other": "{{count}} Tage",
+    "players": "Gewertet",
+    "rewards": "Saisonbelohnungen",
+    "top": "Top {{rank}}",
+    "cols": {
+      "player": "Spieler",
+      "points": "Punkte",
+      "wins": "Siege",
+      "games": "Spiele",
+      "rate": "Quote"
+    }
+  },
+  "endgame": {
+    "title": "Spielbilanz",
+    "path": "spielende",
+    "error": "Statistiken nicht verfügbar.",
+    "winner": "Sieger: {{nation}}",
+    "ended": "Spiel beendet",
+    "noWinner": "Kein Sieger",
+    "noStats": "Ausführliche Bilanz nicht gespeichert: Das Spiel wurde offline geschlossen. Die Chronologie der Grenzen bleibt verfügbar.",
+    "days_one": "{{count}} Tag",
+    "days_other": "{{count}} Tage",
+    "day": "T+{{day}}",
+    "provincesHeld_one": "{{count}} Provinz",
+    "provincesHeld_other": "{{count}} Provinzen",
+    "timelapse": "Entwicklung der Grenzen",
+    "provinces": "Provinzen",
+    "conquered": "Eroberungen",
+    "kills": "Abschüsse",
+    "losses": "Verluste",
+    "spent": "Ausgaben",
+    "bestUnits": "Beste Einheiten",
+    "killsCount_one": "{{count}} Abschuss",
+    "killsCount_other": "{{count}} Abschüsse",
+    "table": "Statistiken nach Nation",
+    "cols": {
+      "nation": "Nation",
+      "player": "Spieler",
+      "provinces": "Provinzen",
+      "conquered": "Eroberungen",
+      "kills": "Abschüsse",
+      "losses": "Verluste",
+      "spent": "Ausgaben"
+    }
+  },
+  "format": {
+    "k": "Tsd.",
+    "M": "Mio.",
+    "B": "Mrd."
+  },
+  "language": {
+    "label": "Sprache",
+    "choose": "Sprache der Oberfläche wählen",
+    "help": "Oberfläche, Meldungen und Ortsnamen. Die Seite wird neu geladen.",
+    "current": "Aktuelle Sprache: {{name}}",
+    "machine": "Automatisch erzeugte Übersetzungen, militärische Begriffe geprüft.",
+    "fallback": "Einige Texte bleiben auf Französisch."
+  },
+  "engine": {
+    "place": {
+      "sea": "auf See"
+    },
+    "sector": {
+      "at": "Sektor {{province}}",
+      "near": "{{km}} km von {{province}}",
+      "unknown": "unbekannter Sektor"
+    },
+    "strikeKind": {
+      "missile": "Raketen",
+      "air": "Luft",
+      "artillery": "Artillerie"
+    },
+    "resolution": {
+      "arms_embargo": "Waffenembargo",
+      "economic_sanctions": "Wirtschaftssanktionen",
+      "ceasefire": "Waffenstillstand",
+      "no_fly_zone": "Flugverbotszone",
+      "peacekeeping": "Friedenstruppe",
+      "condemnation": "Verurteilung"
+    },
+    "vote": {
+      "yes": "{{nation}} dafür",
+      "no": "{{nation}} dagegen",
+      "abstain": "{{nation}} Enthaltung"
+    },
+    "charter": {
+      "mutualDefense": "gegenseitige Verteidigung",
+      "intelSharing": "Austausch von Erkenntnissen",
+      "passage": "Durchmarschrecht",
+      "simple": "einfache Zusammenarbeit"
+    },
+    "mission": {
+      "raid": "Überfall",
+      "sabotage": "Sabotage",
+      "rescue": "Rettung"
+    },
+    "intelOp": {
+      "infiltrate_spy": "Einschleusung eines Agenten",
+      "recruit_source": "Anwerbung einer Quelle",
+      "turn_agent": "Umdrehen eines Agenten",
+      "exfiltrate": "Exfiltration",
+      "steal_research": "Forschungsdiebstahl",
+      "sabotage_factory": "Industriesabotage",
+      "fund_rebels": "Rebellenfinanzierung",
+      "listen_area": "Abhören einer Zone",
+      "intercept_army": "Abfangen von Kommunikation",
+      "jam_area": "Störung einer Zone",
+      "cyber_radar": "Cyberangriff (Radare)",
+      "cyber_production": "Cyberangriff (Industrie)",
+      "cyber_orders": "Cyberangriff (Führung)",
+      "disinformation": "Desinformationskampagne",
+      "leak_plans": "Gezieltes Leck",
+      "plant_fake_report": "Täuschung (falscher Bericht)",
+      "deploy_decoys": "Ausbringen von Attrappen",
+      "fake_radio_traffic": "Falscher Funkverkehr",
+      "counterintel_sweep": "Spionageabwehroperation",
+      "recon_economic": "Wirtschaftsaufklärung",
+      "recon_military": "Militärische Aufklärung"
+    },
+    "council": {
+      "open_one": "Sitzung des Sicherheitsrats eröffnet: {{count}} Resolution zur Abstimmung.",
+      "open_other": "Sitzung des Sicherheitsrats eröffnet: {{count}} Resolutionen zur Abstimmung.",
+      "closed": "Sitzung geschlossen: {{passed}} von {{count}} Resolution(en) angenommen."
+    },
+    "news": {
+      "nuclear": {
+        "headline": "Nukleare Detonation: {{place}}",
+        "body": "Eine von {{nation}} abgefeuerte Kernwaffe ist explodiert: {{place}}."
+      }
+    },
+    "intel": {
+      "failed": "gescheitert",
+      "compromised": "kompromittiert",
+      "agentExposed": "Agent von {{nation}} enttarnt",
+      "agentCompromised": "Agent {{codename}} kompromittiert",
+      "agentArrest": "Festnahme eines Agenten von {{nation}}",
+      "agentArrested": "Agent {{codename}} festgenommen",
+      "listening": "Abhören — {{sector}}",
+      "interception": "Abfangen — {{nation}}",
+      "decoysIdentified": "Attrappen erkannt",
+      "flashMovement": "FLASH — Truppenbewegung von {{nation}}",
+      "flashMassive": "FLASH — Massive Truppenbewegung von {{nation}}",
+      "dailyInterior": "Tagesbericht — Innere Sicherheit",
+      "dailyForeign": "Tagesbericht — Auslandsnachrichtendienst",
+      "dailyMilitary": "Tagesbericht — Militärischer Nachrichtendienst",
+      "opCompromised": "{{op}} — kompromittiert",
+      "opOutcome": "{{op}} — {{outcome}}",
+      "opAttributed": "{{op}} {{nation}} zugeschrieben",
+      "opSuccess": "{{op}} — Erfolg",
+      "sweepReport": "Spionageabwehroperation — Bilanz",
+      "radioSuspect": "Verdächtiger Funkverkehr",
+      "intoxFoiled": "Täuschungsversuch vereitelt",
+      "intentions": "Absichten von {{nation}}",
+      "strikeSuffered": {
+        "missile": "FLASH — Raketenangriff erlitten",
+        "air": "FLASH — Luftangriff erlitten",
+        "artillery": "FLASH — Artilleriebeschuss erlitten",
+        "other": "FLASH — Angriff erlitten"
+      },
+      "flashNuclear": "FLASH — Nukleare Detonation",
+      "sabotage": "Sabotage",
+      "cyber": "Cyberangriff",
+      "rebelsFunded": "Bewaffnete Gruppen finanziert",
+      "programDone": "Programm abgeschlossen — {{nation}}",
+      "blackMarket": "Schwarzmarkt — {{nation}}",
+      "imagery": "Bildaufklärung — {{nation}}"
+    },
+    "note": {
+      "allianceInvite": {
+        "title": "Allianzeinladung",
+        "text": "Die Allianz {{alliance}} lädt Sie zum Beitritt ein."
+      },
+      "inviteDeclined": {
+        "title": "Einladung abgelehnt",
+        "text": "{{nation}} lehnt die Einladung ab."
+      },
+      "allianceVote": {
+        "title": "Allianzabstimmung",
+        "replace_leader": "{{alliance}}: Ersetzung der Führung durch {{nation}}.",
+        "expel": "{{alliance}}: Ausschluss von {{nation}}.",
+        "skip_mutual_defense": "{{alliance}}: Befreiung von der gegenseitigen Verteidigung gegenüber {{nation}}."
+      },
+      "strikeNoEffect": {
+        "title": "Schlag ohne Wirkung",
+        "text": "{{system}}: Ziel nicht erreicht."
+      },
+      "asatHit": {
+        "title": "Satellit zerstört",
+        "text": "{{system}} ({{owner}})"
+      },
+      "asatMiss": {
+        "title": "Antisatellitenschuss verfehlt",
+        "text": "{{system}} ({{owner}})"
+      },
+      "radarsBlinded": {
+        "title": "Radare geblendet",
+        "text": "Ein Cyberangriff stört unsere Radare."
+      },
+      "satPass": {
+        "title": "Satellitenüberflug",
+        "text_one": "{{system}}: {{count}} Kontakt im Erfassungsstreifen.",
+        "text_other": "{{system}}: {{count}} Kontakte im Erfassungsstreifen."
+      },
+      "nuclearRevoked": {
+        "title": "Nukleare Freigabe aufgehoben",
+        "text": "Die Nuklearstreitkräfte kehren zur normalen Kontrolle zurück."
+      },
+      "nuclearAuthorized": {
+        "title": "Nukleareinsatz freigegeben",
+        "text": "Nuklearschläge sind möglich, solange die Alarmstufe es zulässt."
+      },
+      "nuclearDetonation": {
+        "title": "Nukleare Detonation",
+        "text": "Nuklearschlag: {{place}}."
+      },
+      "fuelLost": {
+        "title": "Luftfahrzeug verloren",
+        "text": "{{system}}: Treibstoff vor der Rückkehr zur Basis aufgebraucht."
+      },
+      "specialOk": {
+        "title": "Spezialoperation erfolgreich",
+        "text": "{{mission}}: {{place}}."
+      },
+      "specialEnemy": {
+        "title": "Aktion von Spezialkräften",
+        "text": "Feindlicher {{mission}}: {{place}}."
+      },
+      "specialFailed": {
+        "title": "Spezialoperation gescheitert",
+        "text": "{{mission}}: {{place}}."
+      },
+      "blockadeOn": {
+        "title": "Blockade wirksam",
+        "text": "{{place}} ({{nation}})"
+      },
+      "blockadeOff": {
+        "title": "Blockade aufgehoben",
+        "text": "{{place}} ({{nation}})"
+      },
+      "captured": {
+        "title": "Material erbeutet",
+        "text": "{{place}}: {{items}}.",
+        "item": "{{count}} {{system}}"
+      },
+      "generalReleased": {
+        "title": "Kommando zurückgenommen",
+        "text": "{{general}} gibt das direkte Kommando über seine Gruppe zurück."
+      },
+      "coup": {
+        "title": "Putsch",
+        "text": "{{nation}}: Das Militär hat die Macht übernommen."
+      },
+      "ceasefire": {
+        "title": "Waffenstillstand",
+        "text": "Waffenstillstand in Kraft: {{a}} / {{b}}."
+      },
+      "peaceProposal": {
+        "title": "Friedensvorschlag",
+        "text": "{{nation}} schlägt Frieden vor."
+      },
+      "ceasefireProposal": {
+        "title": "Waffenstillstandsvorschlag",
+        "text": "{{nation}} schlägt einen Waffenstillstand vor."
+      },
+      "proposalRefused": {
+        "title": "Vorschlag abgelehnt",
+        "text": "{{nation}} lehnt Ihren Vorschlag ab."
+      },
+      "agentCaught": {
+        "title": "Agent enttarnt",
+        "text": "{{host}} meldet die Festnahme eines Agenten von {{owner}}."
+      }
+    }
+  }
+}

@@ -22,6 +22,7 @@ import type { WindowContentProps } from '../shell/WindowHost.js';
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
+import { battleTitle } from '../lib/loc.js';
 
 function outcomeFor(
   b: BattleReportSummary,
@@ -130,7 +131,7 @@ function Detail({ summary }: { summary: BattleReportSummary }) {
           <Badge tone={o.tone} variant="solid">
             {t(`battles.outcome.${o.key}`)}
           </Badge>
-          <h3>{summary.title}</h3>
+          <h3>{battleTitle(summary)}</h3>
           <span className="muted small">
             {fmtClock(summary.startedAt).day} {fmtClock(summary.startedAt).time}
             {summary.endedAt
@@ -220,7 +221,7 @@ export function BattlesWindow({ win, frame, mobile }: WindowContentProps) {
                         </Badge>
                         <Ago from={b.startedAt} now={now} />
                       </span>
-                      <span className="bitem__title">{b.title}</span>
+                      <span className="bitem__title">{battleTitle(b)}</span>
                       <span className="bitem__loss">
                         <span className="rl-tone-red">−{lossCount(b.attacker)}</span> /{' '}
                         <span className="rl-tone-red">−{lossCount(b.defender)}</span>

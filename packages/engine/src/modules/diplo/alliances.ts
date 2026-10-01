@@ -1,4 +1,4 @@
-import { DAY, HOUR, type AllianceCharter, type NationId } from '@redline/shared';
+import { DAY, HOUR, type AllianceCharter, type LocParam, type LocText, type NationId } from '@redline/shared';
 import type { OrderResult } from '../../api.js';
 import type { EngineState } from '../../state/types.js';
 import { atWar, notify, sortedKeys } from '../../state/access.js';
@@ -20,6 +20,7 @@ import {
   type AllianceVote,
 } from './state.js';
 import { news } from './news.js';
+import { noteLoc } from '../../state/loc.js';
 import {
   OK,
   capitalPoint,
@@ -37,16 +38,35 @@ function charterText(c: AllianceCharter): string {
   return parts.length > 0 ? parts.join(', ') : 'coopération simple';
 }
 
+/** Charte localisable : liste de clés `engine.charter.*`. */
+function charterLoc(c: AllianceCharter): LocParam {
+  const parts: LocParam[] = [];
+  if (c.mutualDefense) parts.push({ key: 'engine.charter.mutualDefense' });
+  if (c.intelSharing) parts.push({ key: 'engine.charter.intelSharing' });
+  if (c.passage) parts.push({ key: 'engine.charter.passage' });
+  return parts.length > 0 ? { list: parts } : { key: 'engine.charter.simple' };
+}
+
 function genericNote(
   state: EngineState,
   aud: NationId[],
   title: string,
   text: string,
   category = 'alliance',
+  locText?: { title: LocText; text: LocText },
 ): void {
   notify(
     state,
-    { kind: 'generic', time: state.time, at: null, category, title, text, severity: 'info' },
+    {
+      kind: 'generic',
+      time: state.time,
+      at: null,
+      category,
+      title,
+      text,
+      severity: 'info',
+      ...(locText ? { loc: locText } : {}),
+    },
     aud,
   );
 }
@@ -84,7 +104,7 @@ export function orderCreateAlliance(
   news(
     state,
     'alliance_created',
-    { A: n, X: clean, Y: charterText(charter) },
+    { A: n, X: clean, Y: charterText(charter), loc: { Y: charterLoc(charter) } },
     capitalPoint(state, n),
     [n],
   );
@@ -108,6 +128,8 @@ export function orderInvite(state: EngineState, n: NationId, target: NationId): 
     [target],
     "Invitation d'alliance",
     `L'alliance ${A.name} vous invite à la rejoindre.`,
+    'alliance',
+    noteLoc('allianceInvite', { alliance: A.name }),
   );
   return OK;
 }
@@ -144,6 +166,8 @@ export function orderAnswerInvite(
       [A.leader],
       'Invitation déclinée',
       `${natLe(state, n, true)} ${natAgree(state, n, 'décline', 'déclinent')} l'invitation.`,
+      'alliance',
+      noteLoc('inviteDeclined', { nation: { nation: n } }),
     );
     return OK;
   }
@@ -236,7 +260,14 @@ export function openVote(
       : kind === 'expel'
         ? `Exclusion ${natDe(state, subject)}`
         : `Dispense de défense mutuelle face ${natA(state, subject)}`;
-  genericNote(state, A.members, "Vote d'alliance", `${A.name} : ${label}.`, 'alliance_vote');
+  genericNote(
+    state,
+    A.members,
+    "Vote d'alliance",
+    `${A.name} : ${label}.`,
+    'alliance_vote',
+    noteLoc('allianceVote', { alliance: A.name, nation: { nation: subject } }, kind),
+  );
   return v;
 }
 

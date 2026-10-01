@@ -19,6 +19,7 @@ import {
   formatPct,
 } from '@redline/ui';
 import { getApi } from '../api/index.js';
+import { localizeScenarios } from '../lib/localize.js';
 import { ApiError } from '../api/types.js';
 import { NationPicker } from '../components/NationPicker.js';
 import { unrankedNotice } from '../lib/game.js';
@@ -211,6 +212,7 @@ export function LobbyCreateScreen() {
       void world.load(api);
       api
         .scenarios()
+        .then(localizeScenarios)
         .then(setScenarios)
         .catch(() => undefined);
     });

@@ -1,6 +1,6 @@
 /** Utilisateurs : recherche, rôles, bannissement, sourdine, empreintes, parties et achats. */
 import { useEffect, useState, type CSSProperties } from 'react';
-import { ROLES, type Role } from '@redline/shared';
+import { LOCALE_NAMES, ROLES, isLocale, type Role } from '@redline/shared';
 import { useSession } from '../context';
 import type { AdminUser, UserDetail } from '../api/types';
 import { DataTable } from '../components/DataTable';
@@ -33,6 +33,15 @@ const ROLE_TONE: Record<Role, 'off' | 'info' | 'blue' | 'violet'> = {
   balance: 'blue',
   superadmin: 'violet',
 };
+
+/** Nom d'une langue d'interface en français (« anglais »), sinon son code. */
+function localeName(code: string): string {
+  try {
+    return new Intl.DisplayNames(['fr'], { type: 'language' }).of(code) ?? code;
+  } catch {
+    return isLocale(code) ? LOCALE_NAMES[code] : code;
+  }
+}
 
 function statusBadges(u: AdminUser) {
   return (
@@ -216,6 +225,10 @@ function UserDetailPane({ id, onChanged }: { id: string; onChanged: () => void }
           <dd>{ago(u.lastSeenAt)}</dd>
           <dt>{T.users.premium}</dt>
           <dd className="c-amber">{u.unlimited ? '∞' : num(u.premiumBalance)}</dd>
+          <dt>{T.users.locale}</dt>
+          <dd className={u.locale ? undefined : 'dim'} data-testid="user-locale">
+            {u.locale ? `${localeName(u.locale)} (${u.locale})` : T.users.localeUnknown}
+          </dd>
           <dt>{T.users.unlimitedTitle}</dt>
           <dd className={u.unlimited ? 'c-amber' : 'dim'}>
             {u.unlimited ? T.users.unlimitedState : T.users.unlimitedNone}

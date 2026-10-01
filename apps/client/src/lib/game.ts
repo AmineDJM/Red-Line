@@ -13,7 +13,7 @@ import type {
   UnitView,
   WeaponSystem,
 } from '@redline/shared';
-import { t } from '../i18n/index.js';
+import { isFrench, localNationName, t } from '../i18n/index.js';
 import { useGame } from '../store/game.js';
 import { useWorld } from '../store/world.js';
 
@@ -32,11 +32,12 @@ export function unrankedNotice(
 
 export function nationName(id: NationId | null | undefined): string {
   if (!id) return '—';
-  return (
+  const name =
     useGame.getState().view?.nations[id]?.name ??
     useWorld.getState().nations[id]?.name ??
-    id.toUpperCase()
-  );
+    id.toUpperCase();
+  // La vue du moteur porte le nom français : nom localisé pour les autres langues.
+  return isFrench ? name : localNationName(id, name);
 }
 
 /**
@@ -44,9 +45,16 @@ export function nationName(id: NationId | null | undefined): string {
  * `{{nationLe}}` (le Maroc), `{{NationLe}}` (Le Maroc), `{{deNation}}` (du Maroc), `{{aNation}}`
  * (au Maroc). L'article vient des données de carte (`NationDef.article`).
  */
+/** Formes d'un nom de pays : grammaire française, ou nom seul dans les autres langues. */
+export function formsOf(name: string, article?: string | null): FrNationForms {
+  if (!isFrench) return { nation: name, nationLe: name, NationLe: name, deNation: name, aNation: name };
+  return frForms(name, article ?? '');
+}
+
 export function nationForms(id: NationId | null | undefined): FrNationForms {
   if (!id) return frForms('—', '');
-  return frForms(nationName(id), useWorld.getState().nations[id]?.article ?? '');
+  // Hors français, toutes les formes valent le nom seul (les gabarits traduits n'ont pas d'article).
+  return formsOf(nationName(id), useWorld.getState().nations[id]?.article);
 }
 
 /** Formes de deux nations, préfixées (`aLe`, `bA`…) pour les gabarits à deux pays. */

@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from 'react';
 import type { LegalDocRef } from '@redline/shared';
 import { IS_MOCK } from './config.js';
+import { localeFromPath, stripLocalePrefix } from './i18n/index.js';
 
 /** Routeur minimal (History API). */
 export type Route =
@@ -37,7 +38,8 @@ function snapshot(): string {
 const LEGAL = new Set(['cgu', 'cgv', 'privacy', 'withdrawal']);
 
 export function parseRoute(pathname: string): Route {
-  const p = pathname.replace(/\/+$/, '') || '/';
+  // Préfixe de langue facultatif (`/en/game/42`, pages indexables par langue).
+  const p = stripLocalePrefix(pathname).replace(/\/+$/, '') || '/';
   if (p === '/') return { name: 'home' };
   if (p === '/new') return { name: 'new' };
   if (p === '/sandbox') return { name: 'sandbox' };
@@ -68,6 +70,10 @@ export function useRoute(): Route {
 
 export function navigate(to: string, opts: { replace?: boolean } = {}) {
   const url = new URL(to, window.location.origin);
+  // Navigation interne : le préfixe de langue de l'adresse courante est conservé.
+  const prefix = localeFromPath(window.location.pathname);
+  if (prefix && !localeFromPath(url.pathname))
+    url.pathname = `/${prefix}${url.pathname === '/' ? '' : url.pathname}`;
   if (IS_MOCK && !url.searchParams.has('mock')) url.searchParams.set('mock', '1');
   const target = url.pathname + url.search;
   if (opts.replace) window.history.replaceState(null, '', target);

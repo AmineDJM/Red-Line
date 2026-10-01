@@ -33,6 +33,7 @@ import type { WindowContentProps } from '../shell/WindowHost.js';
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
+import { orderError } from '../lib/loc.js';
 
 type Tab = 'relations' | 'alliances' | 'neutrals' | 'disputed' | 'stability';
 
@@ -43,7 +44,7 @@ function useSend() {
     const res = await useGame.getState().connection?.sendOrder(order);
     if (res?.ok) toast(ok, 'ok');
     else if (res)
-      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+      toast(orderError(res), 'error');
     return !!res?.ok;
   };
 }

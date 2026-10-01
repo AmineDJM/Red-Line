@@ -11,3 +11,4 @@ export * from './military.js';
 export * from './intel.js';
 export * from './diplomacy.js';
 export * from './french.js';
+export * from './i18n.js';

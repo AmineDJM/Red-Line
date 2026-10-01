@@ -7,6 +7,8 @@ import {
   type NewsCategory,
   type Order,
   type OrderErrorCode,
+  type LocParam,
+  type LocText,
 } from '@redline/shared';
 import type { GameSetup, OrderResult, SystemCommand } from '../../api.js';
 import type { EngineState } from '../../state/types.js';
@@ -17,7 +19,7 @@ import type { EngineModule, ModEvent } from '../types.js';
 import { board, signal } from '../registry.js';
 import { worldConfig } from './config.js';
 import { addReputation, addStability, ds, isRegular, natList, type DiploState } from './state.js';
-import { news, pushNews, throttled } from './news.js';
+import { locNations, news, pushNews, throttled } from './news.js';
 import {
   onCeasefireEnd,
   onGraceEnd,
@@ -245,6 +247,16 @@ function lngLat(x: unknown): LngLat | null {
     : null;
 }
 
+/** Lieu localisable : province (nom traduit par le client) ou zone maritime. */
+function placeLoc(state: EngineState, at: LngLat | null, pid?: unknown): LocParam {
+  const w = wi(state.world);
+  if (typeof pid === 'string' && w.provById.get(pid)) return { province: pid };
+  if (!at) return '—';
+  const nav = w.nav;
+  const p = nav.cellProv.get(nav.cellAt(at));
+  return p && w.provById.get(p) ? { province: p } : { key: 'engine.place.sea' };
+}
+
 function placeName(state: EngineState, at: LngLat | null, pid?: unknown): string {
   const w = wi(state.world);
   if (typeof pid === 'string' && w.provById.get(pid)) return w.provById.get(pid)!.name;
@@ -285,6 +297,8 @@ function onSignal(state: EngineState, name: string, x: Record<string, unknown>):
       const nations = Array.isArray(x.nations)
         ? x.nations.filter((n): n is string => typeof n === 'string')
         : [];
+      // Texte localisable éventuel (signal interne au moteur : forme déjà vérifiée à l'émission).
+      const l = x.loc as { headline?: LocText; body?: LocText } | undefined;
       pushNews(
         state,
         NEWS_CATEGORIES.has(cat) ? cat : 'event',
@@ -292,6 +306,7 @@ function onSignal(state: EngineState, name: string, x: Record<string, unknown>):
         str(x.body),
         lngLat(x.at),
         nations,
+        l?.headline && l.body ? { headline: l.headline, body: l.body } : undefined,
       );
       return;
     }
@@ -304,7 +319,16 @@ function onSignal(state: EngineState, name: string, x: Record<string, unknown>):
       news(
         state,
         'strike',
-        { A: by, B: victim, X: STRIKE_LABEL[str(x.kind)] ?? '', P: placeName(state, at) },
+        {
+          A: by,
+          B: victim,
+          X: STRIKE_LABEL[str(x.kind)] ?? '',
+          P: placeName(state, at),
+          loc: {
+            X: STRIKE_LABEL[str(x.kind)] ? { key: `engine.strikeKind.${str(x.kind)}` } : '',
+            P: placeLoc(state, at),
+          },
+        },
         at,
         [by, victim],
       );
@@ -318,7 +342,7 @@ function onSignal(state: EngineState, name: string, x: Record<string, unknown>):
       news(
         state,
         'nuclear',
-        { A: by, B: victim, P: placeName(state, at, x.pid) },
+        { A: by, B: victim, P: placeName(state, at, x.pid), loc: { P: placeLoc(state, at, x.pid) } },
         at,
         [by, victim].filter(Boolean),
       );
@@ -334,7 +358,12 @@ function onSignal(state: EngineState, name: string, x: Record<string, unknown>):
       news(
         state,
         'battle',
-        { A: winner, P: placeName(state, at), X: natList(state, nations) },
+        {
+          A: winner,
+          P: placeName(state, at),
+          X: natList(state, nations),
+          loc: { P: placeLoc(state, at), X: locNations(nations) },
+        },
         at,
         nations,
       );
@@ -370,7 +399,7 @@ function onSignal(state: EngineState, name: string, x: Record<string, unknown>):
       news(
         state,
         x.on === false ? 'blockade_lifted' : 'blockade',
-        { A: by, P },
+        { A: by, P, ...(pid ? { loc: { P: placeLoc(state, null, pid) } } : {}) },
         null,
         by ? [by] : [],
       );

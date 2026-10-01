@@ -1,0 +1,261 @@
+{
+  "news": {
+    "war": {
+      "h0": "{{A}} / {{B}} : les hostilités sont ouvertes",
+      "h1": "Guerre ouverte : {{A}} contre {{B}}",
+      "h2": "{{A}} franchit la ligne rouge : état de guerre avec {{B}}",
+      "h3": "Rupture diplomatique totale : {{A}} / {{B}}",
+      "b0": "Les chancelleries confirment l'état de guerre. Agresseur désigné : {{A}}.",
+      "b1": "Premiers mouvements de troupes signalés. {{B}} dénonce une agression de {{A}}.",
+      "b2": "Les appels au calme se multiplient après l'ouverture des hostilités par {{A}}."
+    },
+    "war_alliance": {
+      "h0": "{{X}} : {{A}} entre en guerre contre {{B}} au nom de la défense mutuelle",
+      "h1": "Défense mutuelle activée : {{A}} rejoint le conflit face à {{B}}",
+      "h2": "Solidarité d'alliance : {{A}} déclare la guerre à {{B}}",
+      "b0": "{{A}} honore la charte de l'alliance {{X}} après l'agression d'un membre.",
+      "b1": "La clause de défense mutuelle de l'alliance {{X}} élargit le conflit."
+    },
+    "peace": {
+      "h0": "{{A}} / {{B}} : un traité de paix est signé",
+      "h1": "Fin des hostilités entre {{A}} et {{B}}",
+      "h2": "Paix conclue : {{A}} / {{B}}",
+      "b0": "Les délégations ont paraphé l'accord. Les troupes disposent d'un délai pour se retirer.",
+      "b1": "Le traité prévoit le retrait des forces engagées sur le territoire adverse."
+    },
+    "ceasefire": {
+      "h0": "{{A}} / {{B}} : cessez-le-feu en vigueur",
+      "h1": "Les armes se taisent : trêve entre {{A}} et {{B}}",
+      "h2": "Cessez-le-feu conclu : {{A}} / {{B}}",
+      "b0": "La trêve gèle les lignes de front. Toute violation exposerait son auteur à des sanctions.",
+      "b1": "Les observateurs internationaux saluent un premier pas. Durée prévue : {{X}} jours."
+    },
+    "ceasefire_violated": {
+      "h0": "{{A}} viole le cessez-le-feu avec {{B}}",
+      "h1": "Trêve rompue : {{A}} reprend les hostilités contre {{B}}",
+      "h2": "Violation du cessez-le-feu : mise en cause de {{A}}",
+      "b0": "La communauté internationale condamne la rupture de la trêve. Un vote de sanctions est engagé.",
+      "b1": "Le Conseil de sécurité est saisi automatiquement de la violation commise par {{A}}."
+    },
+    "alliance_created": {
+      "h0": "Nouvelle alliance : {{X}}, sous la conduite de {{A}}",
+      "h1": "{{A}} fonde l’alliance {{X}}",
+      "h2": "Recomposition stratégique : naissance de {{X}}",
+      "b0": "Charte : {{Y}}.",
+      "b1": "Le nouveau bloc est dirigé par {{A}}. Charte : {{Y}}."
+    },
+    "alliance_joined": {
+      "h0": "{{A}} rejoint l’alliance {{X}}",
+      "h1": "{{X}} s’élargit : adhésion de {{A}}",
+      "h2": "Adhésion : {{A}} / {{X}}",
+      "b0": "L'alliance compte désormais {{Y}} membres.",
+      "b1": "{{A}} signe la charte de {{X}}."
+    },
+    "alliance_left": {
+      "h0": "{{A}} quitte l’alliance {{X}}",
+      "h1": "Départ fracassant : {{A}} / {{X}}",
+      "h2": "{{X}} perd un membre : {{A}}",
+      "b0": "Le retrait de {{A}} fragilise {{X}}.",
+      "b1": "Les partenaires de {{A}} prennent acte de son départ."
+    },
+    "alliance_expelled": {
+      "h0": "{{X}} exclut {{A}}",
+      "h1": "Exclusion : {{A}} n’est plus membre de {{X}}",
+      "b0": "Les membres de {{X}} ont voté l'exclusion de {{A}}."
+    },
+    "leader_replaced": {
+      "h0": "{{X}} : {{A}} prend la tête de l’alliance",
+      "h1": "Changement de direction à la tête de {{X}}",
+      "b0": "Les membres de {{X}} ont désigné {{A}} comme nouveau chef de l'alliance."
+    },
+    "mutual_skipped": {
+      "h0": "{{X}} renonce à la défense mutuelle face à {{A}}",
+      "h1": "Défense mutuelle suspendue : {{X}} / {{A}}",
+      "b0": "Les membres de {{X}} ont voté la dispense : aucune entrée en guerre automatique contre {{A}}."
+    },
+    "council_open": {
+      "h0": "Conseil de sécurité : ouverture de la séance",
+      "h1": "Le Conseil de sécurité se réunit",
+      "h2": "Séance du Conseil de sécurité : {{X}} texte(s) au vote",
+      "b0": "{{X}} projet(s) de résolution soumis au vote. Membres : {{Y}}.",
+      "b1": "Les délégations disposent de la fenêtre de vote pour se prononcer sur {{X}} texte(s)."
+    },
+    "emergency_council": {
+      "h0": "Réunion d’urgence du Conseil de sécurité",
+      "h1": "Le Conseil de sécurité convoqué en urgence",
+      "b0": "{{X}}",
+      "b1": "La présidence convoque les membres sans délai. {{X}}"
+    },
+    "resolution_passed": {
+      "h0": "Conseil de sécurité : {{X}} adopté(e) contre {{A}}",
+      "h1": "Résolution adoptée : {{X}} ({{A}})",
+      "h2": "Résolution visant {{A}} : {{X}}",
+      "b0": "Le texte entre en vigueur pour {{Y}} jour(s).",
+      "b1": "Vote : {{Y}}."
+    },
+    "resolution_zone_passed": {
+      "h0": "Conseil de sécurité : {{X}} adopté(e)",
+      "h1": "Résolution adoptée : {{X}}",
+      "b0": "Zone concernée : {{Y}}.",
+      "b1": "Le dispositif couvre : {{Y}}."
+    },
+    "resolution_rejected": {
+      "h0": "Conseil de sécurité : {{X}} rejeté(e)",
+      "h1": "Pas de majorité pour {{X}}",
+      "b0": "Le projet présenté par {{A}} n’a pas recueilli la majorité requise."
+    },
+    "resolution_vetoed": {
+      "h0": "Veto au Conseil de sécurité : {{X}} bloqué(e)",
+      "h1": "{{A}} oppose son veto : {{X}}",
+      "b0": "Le veto de {{A}} empêche l’adoption du texte."
+    },
+    "strike": {
+      "h0": "Frappes {{X}} de {{A}} signalées près de {{P}}",
+      "h1": "{{B}} : frappes {{X}} près de {{P}}",
+      "h2": "{{A}} / {{B}} : nouvelles frappes {{X}}",
+      "b0": "Des explosions ont été entendues près de {{P}}. {{B}} accuse {{A}}.",
+      "b1": "Bilan en cours d’évaluation après des frappes {{X}} près de {{P}}."
+    },
+    "nuclear": {
+      "h0": "Détonation nucléaire près de {{P}}",
+      "h1": "Le tabou nucléaire est brisé : {{A}} frappe {{B}}",
+      "h2": "Frappe nucléaire : le monde sous le choc",
+      "b0": "Une arme nucléaire a été employée par {{A}} près de {{P}}. L'alerte mondiale est maximale.",
+      "b1": "Les capitales condamnent unanimement l’emploi de l’arme atomique par {{A}}."
+    },
+    "battle": {
+      "h0": "Combats violents près de {{P}}",
+      "h1": "Bataille près de {{P}} : {{A}} l’emporte",
+      "h2": "Front : {{P}}",
+      "b0": "Belligérants : {{X}}.",
+      "b1": "Les combats ont opposé {{X}}. Avantage : {{A}}."
+    },
+    "capital": {
+      "h0": "La capitale de {{B}} tombe aux mains de {{A}}",
+      "h1": "{{P}} : la capitale de {{B}} est prise par {{A}}",
+      "h2": "Coup de tonnerre : {{A}} s’empare de {{P}}",
+      "b0": "Le gouvernement de {{B}} aurait quitté {{P}}.",
+      "b1": "La chute de {{P}} marque un tournant dans le conflit."
+    },
+    "capture": {
+      "h0": "{{A}} prend le contrôle de {{P}}",
+      "h1": "{{P}} passe sous le contrôle de {{A}}",
+      "b0": "{{B}} perd la province de {{P}}."
+    },
+    "agent_caught": {
+      "h0": "Affaire d’espionnage : {{B}} accuse {{A}}",
+      "h1": "Un agent de {{A}} arrêté par {{B}}",
+      "h2": "Espionnage : incident diplomatique entre {{A}} et {{B}}",
+      "b0": "{{B}} dénonce une opération de renseignement menée par {{A}} sur son sol."
+    },
+    "blockade": {
+      "h0": "Blocus : {{A}} verrouille {{P}}",
+      "h1": "Le trafic maritime perturbé : blocus de {{P}}",
+      "b0": "Les échanges commerciaux sont fortement ralentis autour de {{P}}."
+    },
+    "blockade_lifted": {
+      "h0": "Levée du blocus de {{P}}",
+      "b0": "Le trafic reprend progressivement autour de {{P}}."
+    },
+    "revolt": {
+      "h0": "Troubles à {{P}} : manifestations contre le pouvoir de {{B}}",
+      "h1": "{{B}} : émeutes à {{P}}",
+      "h2": "Agitation à {{P}}",
+      "b0": "Des milliers de manifestants défient les autorités de {{B}}.",
+      "b1": "Les forces de l’ordre de {{B}} sont déployées à {{P}}."
+    },
+    "revolt_disputed": {
+      "h0": "{{X}} : révolte à {{P}} contre {{B}}",
+      "h1": "Territoire disputé : soulèvement populaire à {{P}}",
+      "h2": "{{X}} : la tension monte à {{P}}",
+      "b0": "Dans ce territoire revendiqué par {{Y}}, la population conteste l’autorité de {{B}}.",
+      "b1": "La région de {{X}} renoue avec la violence. Détenteur : {{B}}."
+    },
+    "uprising": {
+      "h0": "Soulèvement armé à {{P}}",
+      "h1": "{{B}} : des groupes armés prennent les armes à {{P}}",
+      "h2": "Insurrection à {{P}}",
+      "b0": "Des combattants rebelles défient l’armée de {{B}}.",
+      "b1": "Les insurgés contrôleraient plusieurs axes autour de {{P}}."
+    },
+    "rallied": {
+      "h0": "{{P}} : les insurgés se rallient à {{A}}",
+      "h1": "Territoire disputé : {{P}} passe sous le contrôle de {{A}}",
+      "b0": "Après la chute des autorités de {{B}}, les insurgés ont proclamé leur ralliement à {{A}}."
+    },
+    "coup": {
+      "h0": "Coup d’État : {{A}}",
+      "h1": "{{A}} : l’armée prend le pouvoir",
+      "h2": "{{A}} : le gouvernement renversé",
+      "b0": "Une junte annonce la suspension des institutions. La politique étrangère de {{A}} change de cap.",
+      "b1": "Après des semaines d’instabilité, les militaires s’emparent du pouvoir."
+    },
+    "refugees": {
+      "h0": "Afflux de réfugiés fuyant {{A}}",
+      "h1": "Crise humanitaire : les civils fuient {{A}}",
+      "h2": "Exode : {{A}}",
+      "b0": "Pays d’accueil sous pression : {{X}}.",
+      "b1": "Les pays voisins voient affluer des familles fuyant les combats : {{X}}."
+    },
+    "embargo_import_blocked": {
+      "h0": "Embargo : achats d’armement interdits à {{A}}",
+      "b0": "Les fournisseurs se conforment à la résolution du Conseil."
+    },
+    "black_market": {
+      "h0": "Trafic d’armes : mise en cause de {{A}}",
+      "h1": "Marché noir : une filière vers {{A}} démantelée",
+      "b0": "Des livraisons illicites à destination de {{A}} ont été repérées."
+    },
+    "peacekeepers": {
+      "h0": "Déploiement de casques bleus : {{P}}",
+      "h1": "Force de maintien de la paix déployée à {{P}}",
+      "b0": "Les casques bleus prennent position. Les attaquer vaudrait condamnation."
+    },
+    "peacekeepers_attacked": {
+      "h0": "Casques bleus attaqués : mise en cause de {{A}}",
+      "h1": "{{A}} ouvre le feu sur les casques bleus",
+      "b0": "Le Conseil de sécurité est saisi. Des sanctions sont mises au vote."
+    },
+    "oil_crisis": {
+      "h0": "Choc pétrolier : les cours s’envolent",
+      "h1": "Crise pétrolière mondiale",
+      "b0": "{{X}}",
+      "b1": "Les économies dépendantes des hydrocarbures accusent le coup. {{X}}"
+    },
+    "market_crash": {
+      "h0": "Krach boursier mondial",
+      "h1": "Les marchés s’effondrent",
+      "b0": "{{X}}",
+      "b1": "Les budgets publics sont sous pression. {{X}}"
+    },
+    "pandemic": {
+      "h0": "Pandémie : l’alerte sanitaire est déclenchée",
+      "h1": "Épidémie mondiale : les industries ralentissent",
+      "b0": "{{X}}",
+      "b1": "Les chaînes de production tournent au ralenti. {{X}}"
+    },
+    "arms_fair": {
+      "h0": "Salon international de l’armement",
+      "h1": "Grand salon de défense : les prix baissent",
+      "b0": "{{X}}",
+      "b1": "Les industriels multiplient les offres promotionnelles. {{X}}"
+    },
+    "ultimatum": {
+      "h0": "Ultimatum de {{A}} à {{B}}",
+      "h1": "{{A}} adresse un ultimatum à {{B}}",
+      "h2": "Tension extrême : {{A}} menace {{B}}",
+      "b0": "{{A}} exige des concessions sous {{X}} heures, sous peine d'intervention militaire. Des troupes sont massées à la frontière.",
+      "b1": "Des concentrations de troupes de {{A}} sont signalées près de {{B}}. Échéance : {{X}} heures."
+    },
+    "deescalation": {
+      "h0": "{{A}} renonce à l'ultimatum adressé à {{B}}",
+      "h1": "Désescalade : {{A}} / {{B}}",
+      "b0": "Le rapport de force a changé : les troupes massées à la frontière regagnent leurs casernes.",
+      "b1": "Les chancelleries saluent le recul de {{A}} : la menace n'a pas été mise à exécution."
+    },
+    "mercenaries": {
+      "h0": "Des sociétés militaires privées signalées à {{P}}",
+      "b0": "Des combattants sous contrat auraient été engagés par {{A}}."
+    }
+  }
+}

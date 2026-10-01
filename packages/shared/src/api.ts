@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { LocaleSchema, type Locale } from './i18n.js';
 import type { GameId, NationId, UserId } from './ids.js';
 import type { GameMeta } from './protocol.js';
 import type { WeaponSystem } from './catalog.js';
@@ -64,7 +65,12 @@ export interface PublicUser {
    * premium illimitée, aucun quota de création. Absent = non.
    */
   unlimited?: boolean;
+  /** Langue de l'interface choisie par le joueur (notifications push). Absent = non renseignée. */
+  locale?: Locale;
 }
+
+/** PATCH /api/me : préférences du compte. */
+export const UpdateMeBodySchema = z.object({ locale: LocaleSchema });
 
 export const RegisterBodySchema = z.object({
   email: z.string().email().max(200),

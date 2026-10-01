@@ -21,6 +21,7 @@ import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { useGameTime, weaponLabels, weaponSubtitle } from './helpers.js';
 import { ProvincePanel } from './ProvincePanel.js';
+import { orderError } from '../lib/loc.js';
 
 const STANCES: UnitStance[] = ['hold', 'defend', 'aggressive'];
 
@@ -51,7 +52,7 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
   const send = async (order: Parameters<NonNullable<typeof conn>['sendOrder']>[0]) => {
     const res = await conn?.sendOrder(order);
     if (res && !res.ok)
-      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+      toast(orderError(res), 'error');
   };
 
   const rows: {

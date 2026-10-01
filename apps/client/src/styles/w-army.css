@@ -131,12 +131,12 @@
   align-items: start;
   padding: 8px;
   border: 1px solid var(--rl-line);
-  border-left: 2px solid var(--rl-cyan);
+  border-inline-start: 2px solid var(--rl-cyan);
   border-radius: 3px;
   background: var(--rl-bg);
 }
 .opstep--invalid {
-  border-left-color: var(--rl-amber);
+  border-inline-start-color: var(--rl-amber);
 }
 .opstep__time {
   display: flex;
@@ -210,7 +210,7 @@
 .optimeline__step::before {
   content: '';
   position: absolute;
-  left: calc(8ch + 16px);
+  inset-inline-start: calc(8ch + 16px);
   top: 0;
   bottom: 0;
   width: 1px;
@@ -225,7 +225,7 @@
 .optimeline__t {
   color: var(--rl-amber);
   font-weight: 700;
-  text-align: right;
+  text-align: end;
   font-variant-numeric: tabular-nums;
 }
 .optimeline__dot {
@@ -233,7 +233,7 @@
   z-index: 1;
   width: 10px;
   height: 10px;
-  margin-left: 2px;
+  margin-inline-start: 2px;
   border-radius: 50%;
   border: 2px solid var(--rl-line-strong);
   background: var(--rl-panel);

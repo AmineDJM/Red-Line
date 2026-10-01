@@ -16,6 +16,7 @@ import { decoyView } from './contacts.js';
 import { capacity, level, researchDone } from './levels.js';
 import { filterProvinces } from './provinces.js';
 import { ist, type Agent, type StoredOp, type StoredReport } from './state.js';
+import { canonical } from '../../state/loc.js';
 
 /**
  * Vue du renseignement d'une nation. Construite champ par champ (liste blanche) : les données internes
@@ -72,6 +73,7 @@ export function reportView(state: EngineState, r: StoredReport): IntelReport {
   }
   if (r.sharedBy) out.sharedBy = r.sharedBy;
   if (ageH > c.staleAfterH) out.stale = true;
+  if (r.loc) out.loc = canonical(r.loc);
   return out;
 }
 

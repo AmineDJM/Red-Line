@@ -18,6 +18,7 @@ import { useGameTime } from '../shell/helpers.js';
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
+import { orderError } from '../lib/loc.js';
 
 /** Département qui mène chaque reconnaissance (identique à OP_META du moteur). */
 export const RECON_DEPT: Record<ReconOpKind, Department> = {
@@ -105,7 +106,7 @@ export function NationRecon({
     const res = await conn?.sendOrder({ kind: 'intelOp', op, target: { nationId } });
     if (res?.ok) toast(t(`nationRecon.started.${op}`, forms), 'ok');
     else if (res)
-      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+      toast(orderError(res), 'error');
   };
 
   return (

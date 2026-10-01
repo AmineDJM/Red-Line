@@ -1,0 +1,24 @@
+{
+  "format": {
+    "k": "k",
+    "M": "M",
+    "B": "Md"
+  },
+  "language": {
+    "label": "Langue",
+    "choose": "Choisir la langue de l'interface",
+    "help": "Interface, dépêches et noms de lieux. La page se recharge.",
+    "current": "Langue actuelle : {{name}}",
+    "machine": "Traductions générées automatiquement, relues sur les termes militaires.",
+    "fallback": "Certains textes restent en français."
+  },
+  "game": {
+    "alerts": {
+      "titled": "{{title}} : {{text}}"
+    }
+  },
+  "battles": {
+    "titleAt": "Bataille de {{place}}",
+    "titleSea": "Bataille en mer"
+  }
+}

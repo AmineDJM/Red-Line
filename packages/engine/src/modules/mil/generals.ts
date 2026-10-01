@@ -14,7 +14,15 @@ import { atWar, sortedKeys, sysOf } from '../../state/access.js';
 import type { EngineState, Unit } from '../../state/types.js';
 import { wi } from '../../state/world.js';
 import { mil, milBal, nextId, type GenSt } from './state.js';
-import { OK, fail, generic, posOf, roll, schedule } from './util.js';
+import {
+  OK,
+  fail,
+  generic,
+  posOf,
+  roll,
+  schedule,
+  noteLoc,
+} from './util.js';
 
 /**
  * Généraux. Chaque nation active en reçoit 2 à 4 à la création de la partie (noms fictifs, 1 ou 2
@@ -218,6 +226,8 @@ export function releaseOnOrder(state: EngineState, n: NationId, o: Order): void 
       'Reprise en main',
       `${g.name} rend le commandement direct de son groupe.`,
       'info',
+      null,
+      noteLoc('generalReleased', { general: g.name }),
     );
   }
 }

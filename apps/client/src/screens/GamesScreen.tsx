@@ -17,6 +17,7 @@ import { ApiError } from '../api/types.js';
 import { Page } from '../components/Page.js';
 import { navigate } from '../router.js';
 import { useWorld } from '../store/world.js';
+import { fmtDate } from '../i18n/index.js';
 
 /** Mes parties : reprendre, bilan, spectateur. */
 export function GamesScreen() {
@@ -121,7 +122,7 @@ export function GamesScreen() {
                   </b>
                   <span>
                     {t(`games.mode.${g.game.mode}`)} ·{' '}
-                    {new Date(g.createdAt).toLocaleDateString('fr-FR')}
+                    {fmtDate(g.createdAt)}
                     <span className="rl-only-mobile"> · {statusLabel(g)}</span>
                   </span>
                 </span>

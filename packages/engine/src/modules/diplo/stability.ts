@@ -17,10 +17,11 @@ import {
   stabDetail,
   stabilityOf,
 } from './state.js';
-import { news, throttled } from './news.js';
+import { locNations, news, throttled } from './news.js';
 import { capitalPoint, orderProposePeace, ownerAt, regularEnemies } from './relations.js';
 import { removeMember } from './alliances.js';
 import { disbanding } from './unrest.js';
+import { noteLoc } from '../../state/loc.js';
 
 /** Unité détruite : pertes (stabilité) et combats sur son propre sol (réfugiés). */
 export function onUnitLost(state: EngineState, u: Unit): void {
@@ -54,9 +55,11 @@ export function onProvinceLost(
   if (isRegular(state, to)) addStability(state, to, c.provinceGained, 'Territoire conquis');
   if (!isRegular(state, to) || !isRegular(state, from)) return;
   const def = w.provById.get(pid)!;
-  if (capital) news(state, 'capital', { A: to, B: from, P: def.name }, def.cityPoint, [to, from]);
+  const P = def.name;
+  const loc = { P: { province: def.id } };
+  if (capital) news(state, 'capital', { A: to, B: from, P, loc }, def.cityPoint, [to, from]);
   else if (!throttled(state, `cap|${to}|${from}`, 12 * 3_600_000))
-    news(state, 'capture', { A: to, B: from, P: def.name }, def.cityPoint, [to, from]);
+    news(state, 'capture', { A: to, B: from, P, loc }, def.cityPoint, [to, from]);
 }
 
 /** Frappe nucléaire : choc mondial. */
@@ -119,6 +122,7 @@ export function stabilityDaily(state: EngineState): void {
             .slice(0, 4)
             .map((y) => nationName(state, y))
             .join(', '),
+          loc: { X: locNations(hosts.slice(0, 4)) },
         },
         capitalPoint(state, x),
         [x, ...hosts],
@@ -229,6 +233,7 @@ export function coup(state: EngineState, n: NationId): void {
       title: "Coup d'État",
       text: `${nationName(state, n)} : l'armée a pris le pouvoir.`,
       severity: 'critical',
+      loc: noteLoc('coup', { nation: { nation: n } }),
     },
     null,
   );

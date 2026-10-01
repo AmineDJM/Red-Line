@@ -29,6 +29,7 @@ export function toPublicUser(u: UserRow): PublicUser {
     role: u.role,
     isGuest: u.isGuest,
     ...(u.unlimited ? { unlimited: true } : {}),
+    ...(u.locale ? { locale: u.locale } : {}),
   };
 }
 

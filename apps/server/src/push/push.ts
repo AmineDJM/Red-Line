@@ -2,9 +2,16 @@ import { eq, inArray } from 'drizzle-orm';
 import type { FastifyBaseLogger, FastifyInstance } from 'fastify';
 import webpush from 'web-push';
 import { z } from 'zod';
-import { frForms, frPlural, type GameNotification, type NationId } from '@redline/shared';
+import {
+  frForms,
+  frPlural,
+  type GameNotification,
+  type Locale,
+  type NationId,
+} from '@redline/shared';
 import type { Db } from '../db/client.js';
-import { pushSubscriptions, serverSettings } from '../db/schema.js';
+import { pushSubscriptions, serverSettings, users } from '../db/schema.js';
+import { accountLocale, placeName, serverT } from '../i18n/index.js';
 import type { Engine } from '../engine.js';
 import type { GameHost, HostedGame } from '../host/game-host.js';
 import type { DataStore } from '../data/store.js';
@@ -160,18 +167,23 @@ export class PushService {
     );
     if (major.length === 0) return;
     const data = this.deps.store.current();
-    // Noms accordés : « Le Maroc vous déclare la guerre », « Les États-Unis attaquent… ».
+    // Français : noms accordés (« Le Maroc vous déclare la guerre », « Les États-Unis attaquent… »).
     const nation = (id: string) => {
       const d = data.nationsById.get(id);
       return { ...frForms(d?.name ?? id, d?.article), pl: frPlural(d?.article) };
     };
-    const provinceName = (id: string) => data.map?.provinces.find((p) => p.id === id)?.name ?? id;
+    const provinceFr = (id: string) => data.map?.provinces.find((p) => p.id === id)?.name ?? id;
+    // Autres langues : gabarits traduits (apps/server/src/i18n) et noms localisés.
+    const nationIn = (l: Locale, id: string) =>
+      placeName(l, 'nations', id, data.nationsById.get(id)?.name ?? id);
+    const provinceIn = (l: Locale, id: string) => placeName(l, 'provinces', id, provinceFr(id));
     let owners: Record<string, NationId> | null = null;
     const ownerOf = (pid: string) => {
       if (!engine.ownersFrame) return null;
       owners ??= engine.ownersFrame(g.state);
       return owners[pid] ?? null;
     };
+    const out: { userId: string; cat: PushCategory; body: (l: Locale) => string }[] = [];
     for (const p of absent) {
       const me = p.nationId;
       let mine: GameNotification[];
@@ -182,68 +194,107 @@ export class PushService {
       }
       for (const n of mine) {
         let cat: PushCategory | null = null;
-        let body = '';
+        let body: ((l: Locale) => string) | null = null;
         switch (n.kind) {
           case 'war_declared':
             if (n.against === me) {
               cat = 'attack';
-              body = `${nation(n.by).NationLe} ${nation(n.by).pl ? 'vous déclarent' : 'vous déclare'} la guerre.`;
+              body = (l) =>
+                l === 'fr'
+                  ? `${nation(n.by).NationLe} ${nation(n.by).pl ? 'vous déclarent' : 'vous déclare'} la guerre.`
+                  : serverT(l, 'push.war', { nation: nationIn(l, n.by) });
             }
             break;
           case 'province_capture_started':
             if (n.by !== me && ownerOf(n.provinceId) === me) {
               cat = 'attack';
-              body = `${nation(n.by).NationLe} ${nation(n.by).pl ? 'attaquent' : 'attaque'} ${provinceName(n.provinceId)}.`;
+              body = (l) =>
+                l === 'fr'
+                  ? `${nation(n.by).NationLe} ${nation(n.by).pl ? 'attaquent' : 'attaque'} ${provinceFr(n.provinceId)}.`
+                  : serverT(l, 'push.attack', {
+                      nation: nationIn(l, n.by),
+                      province: provinceIn(l, n.provinceId),
+                    });
             }
             break;
           case 'unit_destroyed':
             if (n.owner === me) {
               cat = 'attack';
-              body = 'Vos forces subissent des pertes.';
+              body = (l) => serverT(l, 'push.losses');
             }
             break;
           case 'province_captured':
             if (n.from === me) {
               cat = 'capture';
-              body = `${provinceName(n.provinceId)} : capture par ${nation(n.by).nationLe}.`;
+              body = (l) =>
+                l === 'fr'
+                  ? `${provinceFr(n.provinceId)} : capture par ${nation(n.by).nationLe}.`
+                  : serverT(l, 'push.provinceLost', {
+                      nation: nationIn(l, n.by),
+                      province: provinceIn(l, n.provinceId),
+                    });
             } else if (n.by === me) {
               cat = 'capture';
-              body = `Vos troupes ont pris ${provinceName(n.provinceId)}.`;
+              body = (l) =>
+                serverT(l, 'push.provinceTaken', { province: provinceIn(l, n.provinceId) });
             }
             break;
           case 'intel_report':
             if (n.flash) {
               cat = 'intel';
-              body = 'Flash de renseignement : un rapport urgent vous attend.';
+              body = (l) => serverT(l, 'push.flash');
             }
             break;
           case 'council':
             cat = 'council';
-            body = `Conseil de sécurité : ${n.text}`.slice(0, 180);
+            body = (l) =>
+              l === 'fr'
+                ? `Conseil de sécurité : ${n.text}`.slice(0, 180)
+                : serverT(l, 'push.council');
             break;
           case 'victory':
             cat = 'endgame';
-            body =
+            body = (l) =>
               n.winner === me
-                ? 'Victoire ! Votre nation l’emporte.'
-                : `Victoire ${nation(n.winner).deNation}. La partie est terminée.`;
+                ? serverT(l, 'push.victory')
+                : l === 'fr'
+                  ? `Victoire ${nation(n.winner).deNation}. La partie est terminée.`
+                  : serverT(l, 'push.victoryOf', { nation: nationIn(l, n.winner) });
             break;
           case 'nation_defeated':
             if (n.nationId === me) {
               cat = 'endgame';
-              body = 'Votre nation a été vaincue.';
+              body = (l) => serverT(l, 'push.defeated');
             }
             break;
         }
-        if (!cat) continue;
-        void this.notifyUser(p.userId!, {
-          title: `Red Line — ${g.meta.name}`,
-          body,
-          gameId: g.id,
-          category: cat,
-          url: `/?partie=${g.id}`,
-        });
+        if (cat && body) out.push({ userId: p.userId!, cat, body });
       }
+    }
+    if (out.length) void this.sendLocalized(g, out);
+  }
+
+  /** Rédige chaque alerte dans la langue du compte destinataire, puis l'envoie. */
+  private async sendLocalized(
+    g: HostedGame,
+    out: { userId: string; cat: PushCategory; body: (l: Locale) => string }[],
+  ): Promise<void> {
+    const ids = [...new Set(out.map((o) => o.userId))];
+    const rows = await this.deps.db
+      .select({ id: users.id, locale: users.locale })
+      .from(users)
+      .where(inArray(users.id, ids))
+      .catch(() => []);
+    const localeOf = new Map(rows.map((r) => [r.id, accountLocale(r.locale)]));
+    for (const o of out) {
+      const l = localeOf.get(o.userId) ?? 'fr';
+      void this.notifyUser(o.userId, {
+        title: serverT(l, 'push.title', { game: g.meta.name }),
+        body: o.body(l),
+        gameId: g.id,
+        category: o.cat,
+        url: `/?partie=${g.id}`,
+      });
     }
   }
 

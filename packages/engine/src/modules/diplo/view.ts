@@ -25,6 +25,7 @@ import {
 } from './state.js';
 import { relationOf } from './relations.js';
 import { stabilityView } from './stability.js';
+import { canonical } from '../../state/loc.js';
 
 const RECENT_NEWS = 50;
 
@@ -163,9 +164,12 @@ function recentNews(state: EngineState) {
         body: n.body,
         at: n.at,
         nations: [...n.nations],
+        ...(n.loc ? { loc: canonical(n.loc) } : {}),
       }))
   );
 }
+
+
 
 /** Champs publics des nations, provinces et unités (communs à la vue joueur et spectateur). */
 function decorate(state: EngineState, view: PlayerView, me: NationId | null): void {

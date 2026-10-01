@@ -4,6 +4,9 @@ import {
   frCap,
   frDe,
   frLe,
+  loc,
+  type LocParam,
+  type LocText,
   type LngLat,
   type NationId,
   type NewsCategory,
@@ -419,6 +422,28 @@ export interface NewsVars {
   P?: string;
   X?: string;
   Y?: string;
+  /**
+   * Équivalents structurés de P, X, Y pour la dépêche localisée (`NewsItem.loc`) : province, liste
+   * de nations, libellé traduit… À défaut, la chaîne française est transmise telle quelle.
+   */
+  loc?: { P?: LocParam; X?: LocParam; Y?: LocParam };
+}
+
+/** Liste de nations (paramètre localisable). */
+export function locNations(ns: readonly NationId[]): LocParam {
+  return { list: ns.map((n) => ({ nation: n })) };
+}
+
+/** Paramètres de la dépêche localisée (gabarit `news.<type>.h<n>` du client). */
+function locParams(v: NewsVars): Record<string, LocParam> {
+  const p: Record<string, LocParam> = {};
+  if (v.A) p.A = { nation: v.A };
+  if (v.B) p.B = { nation: v.B };
+  for (const k of ['P', 'X', 'Y'] as const) {
+    const val = v.loc?.[k] ?? v[k];
+    if (val !== undefined) p[k] = val;
+  }
+  return p;
 }
 
 /** Élision devant une voyelle (« de Ukraine » → « d’Ukraine »), sans toucher au h aspiré. */
@@ -478,9 +503,15 @@ export function news(
   const d = ds(state);
   const seq = d.newsSeq + 1;
   const hh = hash(`${kind}:${seq}`);
-  const headline = fill(t.h[hh % t.h.length]!, state, vars);
-  const body = fill(t.b[(hh >>> 8) % t.b.length]!, state, vars).trim();
-  return pushNews(state, t.cat, headline, body, at, nations);
+  const hi = hh % t.h.length;
+  const bi = (hh >>> 8) % t.b.length;
+  const headline = fill(t.h[hi]!, state, vars);
+  const body = fill(t.b[bi]!, state, vars).trim();
+  const params = locParams(vars);
+  return pushNews(state, t.cat, headline, body, at, nations, {
+    headline: loc(`news.${kind}.h${hi}`, params),
+    body: loc(`news.${kind}.b${bi}`, params),
+  });
 }
 
 /** Ajoute une dépêche déjà rédigée (signal `news`, fuite). */
@@ -491,6 +522,7 @@ export function pushNews(
   body: string,
   at: LngLat | null,
   nations: NationId[],
+  locText?: { headline: LocText; body: LocText },
 ): NewsItem {
   const d = ds(state);
   const item: NewsItem = {
@@ -501,6 +533,7 @@ export function pushNews(
     body,
     at: at ? [at[0], at[1]] : null,
     nations: [...new Set(nations)].sort(),
+    ...(locText ? { loc: locText } : {}),
   };
   d.news.push(item);
   const keep = cfg(state).newsKeep;
