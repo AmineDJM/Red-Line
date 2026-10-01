@@ -1,6 +1,7 @@
 /** Registre des écrans : barre latérale, invite de commande, palette et contrôle des rôles. */
 import type { Role } from '@redline/shared';
 import { T } from '../i18n';
+import { O } from '../i18n/fr-ops';
 import type { Route, RouteName } from './router';
 
 export type Group = 'data' | 'ops' | 'system';
@@ -186,6 +187,51 @@ export const SCREENS: ScreenDef[] = [
     group: 'system',
     role: 'balance',
   },
+  // ——— Économie du service et gestion complète
+  {
+    id: 'economy',
+    route: { name: 'economy', tab: 'dashboard' },
+    match: ['economy'],
+    label: O.nav.economy,
+    ps: 'Economie',
+    alias: 'economie',
+    icon: 'coin',
+    group: 'ops',
+    role: 'superadmin',
+  },
+  {
+    id: 'archive',
+    route: { name: 'archive' },
+    match: ['archive'],
+    label: O.nav.archive,
+    ps: 'Archives',
+    alias: 'archives',
+    icon: 'history',
+    group: 'ops',
+    role: 'moderator',
+  },
+  {
+    id: 'announcements',
+    route: { name: 'announcements' },
+    match: ['announcements'],
+    label: O.nav.announcements,
+    ps: 'Annonces',
+    alias: 'annonces',
+    icon: 'megaphone',
+    group: 'ops',
+    role: 'superadmin',
+  },
+  {
+    id: 'settings',
+    route: { name: 'settings' },
+    match: ['settings'],
+    label: O.nav.settings,
+    ps: 'Parametres',
+    alias: 'parametres',
+    icon: 'gear',
+    group: 'system',
+    role: 'moderator',
+  },
 ];
 
 export const GROUPS: Group[] = ['data', 'ops', 'system'];
@@ -226,6 +272,8 @@ export function promptPath(r: Route): string {
     case 'users':
       return r.id ? `${base}\\${r.id.slice(0, 8)}` : base;
     case 'shop':
+      return `${base}\\${r.tab}`;
+    case 'economy':
       return `${base}\\${r.tab}`;
     default:
       return base;

@@ -31,6 +31,12 @@ import { RankingService } from './rank/rankings.js';
 import { lobbyRoutes } from './multi/lobby.js';
 import { gameExtraRoutes } from './http/games-extra.js';
 import { clientIp, registerSecurity } from './http/security.js';
+import { UsageMeter } from './costs/usage.js';
+import { CostService } from './costs/service.js';
+import { meteredPayments } from './costs/payments.js';
+import { AnnouncementService, RuntimeSettingsStore } from './ops/ops.js';
+import { adminEconomyRoutes } from './admin/economy-routes.js';
+import { adminManageRoutes } from './admin/manage-routes.js';
 
 export interface BuildAppOptions {
   config: Config;
@@ -131,7 +137,11 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
     const worlds = new WorldRegistry(dbh.db, opts.engine, store);
     await worlds.init();
     const metrics = new ProcessMetrics();
+    const costs = new CostService(dbh.db, log);
+    await costs.init();
+    const usage = new UsageMeter({ db: dbh.db, log, settings: () => costs.settings() });
     const host = new GameHost({
+      usage,
       engine: opts.engine,
       db: dbh.db,
       sql: dbh.sql,
@@ -165,6 +175,8 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
       payments = null;
       log.warn('STRIPE_SECRET_KEY / STRIPE_WEBHOOK_SECRET absentes : paiements indisponibles');
     }
+    // Appels à l'API Stripe comptés (comptabilité des coûts).
+    if (payments) payments = meteredPayments(payments, usage);
     const legal = new LegalService(dbh.db, config.legalDir, log);
     const chat = new ChatService({
       db: dbh.db,
@@ -185,12 +197,31 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
       subject: config.vapidSubject,
       envKeys: config.vapid,
       throttleMs: options.pushThrottleMs,
+      usage,
     });
     await push.init();
     const rankings = new RankingService(dbh.db, shop, log);
     await rankings.maintain();
     host.listeners.notes.push((g, notes) => push.onNotes(g, notes));
     host.listeners.ended.push((g, stats) => rankings.onGameEnded(g, stats));
+    const announcements = new AnnouncementService(dbh.db, host);
+    const runtimeSettings = new RuntimeSettingsStore(dbh.db, options, host, log);
+    await runtimeSettings.init();
+    usage.setSources({
+      games: () => host.meteredGames(),
+      connectedPlayers: () => host.connectedPlayers(),
+    });
+    costs.live = () => {
+      const m = metrics.snapshot();
+      return {
+        cpuPct: m.cpuPct,
+        rssMb: m.rssMb,
+        eventLoopP99Ms: m.eventLoopP99Ms,
+        connectedPlayers: host.connectedPlayers(),
+        games: host.games.size,
+        gamesBehind: host.hostStats().behind,
+      };
+    };
 
     const ctx: AppContext = {
       config,
@@ -213,10 +244,25 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
       chat,
       push,
       rankings,
+      usage,
+      costs,
+      announcements,
+      runtimeSettings,
     };
 
     await app.register(fastifyCookie, { secret: config.sessionSecret });
     registerSecurity(app, config);
+    // Octets HTTP réellement écrits (réponse complète, en-têtes compris), par différence sur la socket
+    // (connexions persistantes : plusieurs réponses par socket). Imputés à l'utilisateur s'il est connu.
+    const written = new WeakMap<object, number>();
+    app.addHook('onResponse', async (req) => {
+      const sock = req.raw.socket as { bytesWritten?: number } | null;
+      if (!sock || sock.bytesWritten === undefined) return;
+      const prev = written.get(sock) ?? 0;
+      written.set(sock, sock.bytesWritten);
+      const auth = (req as unknown as { _auth?: { user: { id: string } } | null })._auth;
+      usage.http(auth?.user.id ?? null, sock.bytesWritten - prev);
+    });
     await app.register(fastifyRateLimit, { global: false, keyGenerator: clientIp });
     await app.register(fastifyWebsocket, {
       options: {
@@ -272,12 +318,15 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
     await app.register(async (scope) => adminRoutes(scope, ctx));
     await app.register(async (scope) => adminDataRoutes(scope, ctx));
     await app.register(async (scope) => adminOpsRoutes(scope, ctx));
+    await app.register(async (scope) => adminEconomyRoutes(scope, ctx));
+    await app.register(async (scope) => adminManageRoutes(scope, ctx));
     await app.register(async (scope) => wsGateway(scope, ctx));
     await staticRoutes(app, ctx);
 
     // Arrêt propre : instantanés + libération des baux, puis fermeture de la base.
     app.addHook('onClose', async () => {
       await host.stop();
+      await usage.stop();
       rankings.stop();
       metrics.stop();
       await dbh.close();
@@ -285,6 +334,7 @@ export async function buildApp(opts: BuildAppOptions): Promise<BuiltApp> {
 
     await host.start();
     rankings.start();
+    usage.start();
     return { app, ctx };
   } catch (err) {
     await dbh.close().catch(() => {});

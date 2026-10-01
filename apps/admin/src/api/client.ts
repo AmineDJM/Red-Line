@@ -49,6 +49,7 @@ import type {
   WorldEventBody,
   WriteResult,
 } from './types';
+import { opsApi } from './ops';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -324,6 +325,9 @@ export function createApi(t: Transport, onUnauthorized?: () => void) {
     // ——— Journal
     audit: (limit = 300) =>
       req<{ entries: AuditEntry[] }>('GET', `/admin/api/audit${query({ limit })}`),
+
+    // ——— Économie du service, annonces, paramètres, gestion des comptes et des parties
+    ...opsApi(req),
   };
 }
 

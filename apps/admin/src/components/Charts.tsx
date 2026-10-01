@@ -30,6 +30,8 @@ export function LineChart(p: {
   format: (v: number) => string;
   title: string;
   min?: number;
+  /** Libellé d'un horodatage (défaut : heure:minute:seconde). */
+  timeLabel?: (t: number) => string;
 }) {
   const [hover, setHover] = useState<number | null>(null);
   const gid = useId();
@@ -44,6 +46,7 @@ export function LineChart(p: {
     vals.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join('');
   const hi = hover ?? n - 1;
   const at = (t: number) =>
+    p.timeLabel?.(t) ??
     new Date(t).toLocaleTimeString('fr-FR', {
       hour: '2-digit',
       minute: '2-digit',

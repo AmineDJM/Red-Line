@@ -13,6 +13,8 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
   seules les IA lointaines (> `time.dormancyRadiusKm`) et en paix avec les joueurs mettent leurs décisions en
   veille (commande système `dormancy`). **Fin pour abandon** et fermeture après **48 h** sans connexion (solo) ou
   **24 h** sans aucun humain (multijoueur). Quota : 10 parties solo en cours, suppressibles par le joueur.
+- Économie du service (coûts mesurés par partie et par joueur, attribution, recettes, alertes) et gestion
+  complète du back-office (comptes, RGPD, parties, annonces, paramètres serveur) : `docs/couts.md`.
 - Exigences d'Amine prioritaires : **dollars réels** (prix unitaires réels, budgets de défense réels), **arsenaux
   réels** au départ (ORBAT), production soumise à la R&D, **vraies photos** des matériels, interface **terminal
   moderne extrêmement propre** et carte au niveau de **Conflict of Nations**.

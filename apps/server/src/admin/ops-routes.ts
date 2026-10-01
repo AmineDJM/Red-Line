@@ -1,4 +1,4 @@
-import { and, desc, eq, ilike, or, sql, type SQL } from 'drizzle-orm';
+import { and, desc, eq, gte, ilike, isNotNull, like, lte, or, sql, type SQL } from 'drizzle-orm';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import { RESOURCES, ROLES, WorldEventBodySchema, type Role } from '@redline/shared';
@@ -214,6 +214,8 @@ export async function adminOpsRoutes(app: FastifyInstance, ctx: AppContext): Pro
     lastSeenAt: u.lastSeenAt.toISOString(),
     bannedAt: u.bannedAt?.toISOString() ?? null,
     banReason: u.banReason,
+    bannedUntil: u.bannedUntil?.toISOString() ?? null,
+    deletedAt: u.deletedAt?.toISOString() ?? null,
     chatMutedUntil: u.chatMutedUntil?.toISOString() ?? null,
   });
 
@@ -221,15 +223,38 @@ export async function adminOpsRoutes(app: FastifyInstance, ctx: AppContext): Pro
     const q = parseBody(
       z.object({
         q: z.string().max(200).optional(),
-        limit: z.coerce.number().int().min(1).max(500).default(100),
+        /** Filtre : comptes bannis, invités, équipe (rôle ≠ joueur), illimités, payants, supprimés. */
+        filter: z.enum(['banned', 'guest', 'staff', 'unlimited', 'paying', 'deleted']).optional(),
+        limit: z.coerce.number().int().min(1).max(1000).default(100),
       }),
       req.query,
     );
-    const like = q.q ? `%${q.q.replace(/[%_\\]/g, (c) => `\\${c}`)}%` : null;
+    const pattern = q.q ? `%${q.q.replace(/[%_\\]/g, (c) => `\\${c}`)}%` : null;
+    const conds: SQL[] = [];
+    if (pattern) {
+      const byId = z.string().uuid().safeParse(q.q?.trim());
+      conds.push(
+        or(
+          ilike(users.displayName, pattern),
+          ilike(users.email, pattern),
+          ...(byId.success ? [eq(users.id, byId.data)] : []),
+        )!,
+      );
+    }
+    if (q.filter === 'banned') conds.push(isNotNull(users.bannedAt));
+    if (q.filter === 'guest') conds.push(eq(users.isGuest, true));
+    if (q.filter === 'staff') conds.push(sql`${users.role} <> 'player'`);
+    if (q.filter === 'unlimited') conds.push(eq(users.unlimited, true));
+    if (q.filter === 'deleted') conds.push(isNotNull(users.deletedAt));
+    if (q.filter === 'paying') {
+      conds.push(
+        sql`EXISTS (SELECT 1 FROM purchases p WHERE p.user_id = ${users.id} AND p.status = 'paid')`,
+      );
+    }
     const rows = await db
       .select()
       .from(users)
-      .where(like ? or(ilike(users.displayName, like), ilike(users.email, like)) : undefined)
+      .where(conds.length ? and(...conds) : undefined)
       .orderBy(desc(users.lastSeenAt))
       .limit(q.limit);
     return { users: rows.map(userView) };
@@ -310,9 +335,11 @@ export async function adminOpsRoutes(app: FastifyInstance, ctx: AppContext): Pro
     if (body.banned === true) {
       patch.bannedAt = new Date();
       patch.banReason = body.banReason ?? null;
+      patch.bannedUntil = null;
     } else if (body.banned === false) {
       patch.bannedAt = null;
       patch.banReason = null;
+      patch.bannedUntil = null;
     }
     const [after] = await db.update(users).set(patch).where(eq(users.id, id)).returning();
     if (body.banned === true) {
@@ -485,13 +512,31 @@ export async function adminOpsRoutes(app: FastifyInstance, ctx: AppContext): Pro
 
   app.get('/admin/api/audit', superadmin, async (req) => {
     const q = parseBody(
-      z.object({ limit: z.coerce.number().int().min(1).max(1000).default(200) }),
+      z.object({
+        limit: z.coerce.number().int().min(1).max(5000).default(200),
+        /** Préfixe d'action (« user. », « game.end »), administrateur, cible (préfixe), dates. */
+        action: z.string().max(80).optional(),
+        adminId: z.string().uuid().optional(),
+        target: z.string().max(200).optional(),
+        from: z.string().datetime({ offset: true }).optional(),
+        to: z.string().datetime({ offset: true }).optional(),
+        before: z.coerce.number().int().positive().optional(),
+      }),
       req.query,
     );
+    const esc = (v: string) => v.replace(/[%_\\]/g, (c) => `\\${c}`);
+    const conds: SQL[] = [];
+    if (q.action) conds.push(like(adminAudit.action, `${esc(q.action)}%`));
+    if (q.adminId) conds.push(eq(adminAudit.adminId, q.adminId));
+    if (q.target) conds.push(like(adminAudit.target, `${esc(q.target)}%`));
+    if (q.from) conds.push(gte(adminAudit.createdAt, new Date(q.from)));
+    if (q.to) conds.push(lte(adminAudit.createdAt, new Date(q.to)));
+    if (q.before) conds.push(sql`${adminAudit.id} < ${q.before}`);
     const rows = await db
       .select({ a: adminAudit, name: users.displayName })
       .from(adminAudit)
       .leftJoin(users, eq(users.id, adminAudit.adminId))
+      .where(conds.length ? and(...conds) : undefined)
       .orderBy(desc(adminAudit.id))
       .limit(q.limit);
     return {

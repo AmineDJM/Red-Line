@@ -32,6 +32,11 @@ export function toPublicUser(u: UserRow): PublicUser {
   };
 }
 
+/** Compte banni (définitivement, ou suspendu jusqu'à `bannedUntil`). */
+export function isBanned(u: UserRow, now = Date.now()): boolean {
+  return !!u.bannedAt && (!u.bannedUntil || u.bannedUntil.getTime() > now);
+}
+
 export function hashPassword(pw: string): Promise<string> {
   return argonHash(pw);
 }
@@ -118,7 +123,7 @@ export class Auth {
         .limit(1);
       const row = rows[0];
       // Compte banni : traité comme non connecté (ses sessions sont aussi supprimées au bannissement).
-      if (row && !row.u.bannedAt) {
+      if (row && !isBanned(row.u)) {
         state = { user: row.u, sessionId: row.s.id };
         (request as FastifyRequest & { _sessionCreatedAt?: Date })._sessionCreatedAt =
           row.s.createdAt;
@@ -159,8 +164,14 @@ export class Auth {
 
   /** Nouvelle session pour un utilisateur (connexion) : l'ancienne session de la requête est supprimée. */
   async login(request: FastifyRequest, reply: FastifyReply, user: UserRow): Promise<void> {
-    if (user.bannedAt) {
-      throw new HttpError(403, 'banned', 'Ce compte est suspendu');
+    if (isBanned(user)) {
+      throw new HttpError(
+        403,
+        'banned',
+        user.bannedUntil
+          ? `Ce compte est suspendu jusqu'au ${user.bannedUntil.toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}`
+          : 'Ce compte est suspendu',
+      );
     }
     const old = this.tokenFrom(request);
     if (old) await this.db.delete(sessions).where(eq(sessions.id, sessionIdOf(old)));

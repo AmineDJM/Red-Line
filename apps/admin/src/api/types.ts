@@ -122,6 +122,10 @@ export interface AdminUser {
   bannedAt: string | null;
   banReason: string | null;
   chatMutedUntil: string | null;
+  /** Suspension temporaire : fin du bannissement (null = définitif). */
+  bannedUntil?: string | null;
+  /** Compte supprimé (RGPD) : données personnelles effacées. */
+  deletedAt?: string | null;
 }
 
 export interface UserDetail {

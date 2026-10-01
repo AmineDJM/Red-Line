@@ -55,6 +55,7 @@ import {
   seedShop,
   seedUsers,
 } from './mock/seed';
+import { registerOpsMock } from './mock/ops';
 
 const now = () => new Date().toISOString();
 const clone = <T>(v: T): T => (v === undefined ? v : (JSON.parse(JSON.stringify(v)) as T));
@@ -779,11 +780,25 @@ export function createMockTransport(opts: { role?: Role; latencyMs?: number } = 
   on('GET', '/admin/api/users', (_p, _b, q) => {
     need('superadmin');
     const t = (q.get('q') ?? '').toLowerCase();
+    const f = q.get('filter');
+    const keep = (u: (typeof users)[number]) =>
+      !f ||
+      (f === 'banned' && !!u.bannedAt) ||
+      (f === 'guest' && u.isGuest) ||
+      (f === 'staff' && u.role !== 'player') ||
+      (f === 'unlimited' && !!u.unlimited) ||
+      (f === 'deleted' && !!u.deletedAt) ||
+      (f === 'paying' && shop.purchases.some((p) => p.userId === u.id && p.status === 'paid'));
     return {
       users: clone(
         users
           .filter(
-            (u) => !t || u.displayName.toLowerCase().includes(t) || (u.email ?? '').includes(t),
+            (u) =>
+              keep(u) &&
+              (!t ||
+                u.id === t ||
+                u.displayName.toLowerCase().includes(t) ||
+                (u.email ?? '').includes(t)),
           )
           .sort((a, b) => b.lastSeenAt.localeCompare(a.lastSeenAt))
           .slice(0, Number(q.get('limit') ?? 100)),
@@ -1028,8 +1043,31 @@ export function createMockTransport(opts: { role?: Role; latencyMs?: number } = 
   // ——— Journal
   on('GET', '/admin/api/audit', (_p, _b, q) => {
     need('superadmin');
-    return { entries: clone(audit.slice(0, Number(q.get('limit') ?? 200))) };
+    const action = q.get('action');
+    const target = q.get('target');
+    const from = q.get('from');
+    const to = q.get('to');
+    const before = Number(q.get('before') ?? 0);
+    const adminId = q.get('adminId');
+    return {
+      entries: clone(
+        audit
+          .filter(
+            (e) =>
+              (!action || e.action.startsWith(action)) &&
+              (!target || (e.target ?? '').startsWith(target)) &&
+              (!adminId || e.adminId === adminId) &&
+              (!from || e.createdAt >= from) &&
+              (!to || e.createdAt <= to) &&
+              (!before || e.id < before),
+          )
+          .slice(0, Number(q.get('limit') ?? 200)),
+      ),
+    };
   });
+
+  // ——— Économie du service, annonces, paramètres, gestion des comptes et des parties
+  registerOpsMock({ on, need, log, users, games, purchases: shop.purchases });
 
   async function handle(method: HttpMethod, path: string, body: Body): Promise<unknown> {
     const [p, qs] = path.split('?') as [string, string | undefined];
