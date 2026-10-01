@@ -62,6 +62,7 @@ import {
   popLabel,
   previewFeatures,
   provinceLabelFeatures,
+  shiftPionProps,
   provinceMarkerFeatures,
   radarFeatures,
   rangeRing,
@@ -209,7 +210,6 @@ export class GameMap {
   private hoverProv: string | null = null;
   private hoverToken: string | null = null;
   private hoverCallout: OverlayContent['callouts'][number] | null = null;
-  private lastAmbient = 0;
   private recentFx: { at: LngLat; t: number }[] = [];
   private sprites = new Map<string, number>();
   private usedImages = new Set<string>();
@@ -375,6 +375,7 @@ export class GameMap {
         this.map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
     }
     if (group === 'intel') this.refreshIntelLayer();
+    if (group === 'units') this.syncPulses();
   }
 
   /**
@@ -384,6 +385,7 @@ export class GameMap {
   setAnimations(on: boolean) {
     this.animationsOn = on;
     if (!on) this.fx.system.clear();
+    if (this.ready) this.syncPulses();
   }
 
   /** Anime les effets (combats) : animations actives et carte prête. */
@@ -775,6 +777,7 @@ export class GameMap {
     if (key === this.battlesKey) return;
     this.battlesKey = key;
     this.set('battles', f);
+    this.syncPulses();
     // Bataille inspectée terminée : le panneau se ferme de lui-même.
     const sel = useMapSel.getState().battle;
     if (
@@ -784,6 +787,24 @@ export class GameMap {
       const rep = sel.reportId && view.battleReports?.some((r) => r.id === sel.reportId);
       if (!rep) useMapSel.getState().selectBattle(null);
     }
+  }
+
+  /**
+   * Ondes des batailles actives : animées sur le canevas des effets (animations actives), sinon
+   * cercles fixes de la carte (calques battle-pulse).
+   */
+  private syncPulses() {
+    const on = this.animationsOn && !!this.groupVisible.units;
+    this.fx.setPulses(
+      on ? this.battles.filter((b) => b.heat >= 0.5).map((b) => ({ at: b.at, heat: b.heat })) : [],
+    );
+    for (const id of ['battle-pulse', 'battle-pulse-2'])
+      if (this.map.getLayer(id))
+        this.map.setLayoutProperty(
+          id,
+          'visibility',
+          !on && this.groupVisible.units !== false ? 'visible' : 'none',
+        );
   }
 
   /** Le point est-il à l'écran (marge en px) ? */
@@ -1192,7 +1213,7 @@ export class GameMap {
       );
     }
     const key = sig.join(';');
-    if (key === this.unitsSig) {
+    if (key === this.unitsSig && !this.smoothing) {
       this.perf.skipped++;
       // Missiles en vol : seuls leur marqueur et leur traînée avancent.
       if (missiles) this.updateMissiles(tNow, me);
@@ -1204,7 +1225,11 @@ export class GameMap {
       nations,
       zoom: this.groupZoom,
       group: this.opts.mode === 'game',
+      prev: this.groupOf,
     });
+    this.groupOf = new Map();
+    for (const g of r.groups) for (const m of g.members) this.groupOf.set(m.id, g.id);
+    this.smoothTokens(r.tokens);
     this.perf.group += performance.now() - g0;
     this.perf.groups++;
     this.perf.pions = r.tokens.length + r.focus.length;
@@ -1219,6 +1244,44 @@ export class GameMap {
     for (const f of r.tokens) this.usedImages.add(String(f.properties!.img));
     for (const f of r.focus) this.usedImages.add(String(f.properties!.img));
     this.updateMissiles(tNow, me);
+  }
+
+  /** Pile d'appartenance de chaque unité au dernier regroupement (hystérésis). */
+  private groupOf = new Map<string, string>();
+  /** Décalage affiché de chaque pion (glissement vers l'écartement voulu). */
+  private dispOff = new Map<string, [number, number]>();
+  private smoothing = false;
+
+  /**
+   * Piles écartées côte à côte : quand l'écartement change (une pile arrive ou part), les pions
+   * glissent vers leur nouvelle place en quelques images au lieu de sauter.
+   */
+  private smoothTokens(tokens: Feature<Point>[]) {
+    const next = new Map<string, [number, number]>();
+    let moving = false;
+    const on = this.animationsOn;
+    for (const f of tokens) {
+      const p = f.properties!;
+      const id = String(p.id);
+      const target = p.off as number[];
+      const prev = this.dispOff.get(id);
+      if (on && prev) {
+        const dx = target[0]! - prev[0];
+        const dy = target[1]! - prev[1];
+        if ((Math.abs(dx) > 0.6 || Math.abs(dy) > 0.6) && Math.hypot(dx, dy) < 260) {
+          const nx = prev[0] + dx * 0.42;
+          const ny = prev[1] + dy * 0.42;
+          shiftPionProps(p, nx - target[0]!, ny - target[1]!);
+          next.set(id, [nx, ny]);
+          moving = true;
+          continue;
+        }
+      }
+      next.set(id, [target[0]!, target[1]!]);
+    }
+    this.dispOff = next;
+    this.smoothing = moving;
+    if (moving) this.unitsDirty = true;
   }
 
   /** Traînées des aéronefs et missiles en vol, trajectoire prévue, impacts. */
@@ -1486,28 +1549,12 @@ export class GameMap {
     if (!this.ready || document.hidden || !this.animationsOn) return;
     const a = this.animState;
     const reveal = this.revealIds.length > 0;
-    const battles = this.battles.length > 0;
-    if (!a.paths && !a.preview && !a.capture && !a.orbits && !a.missiles && !reveal && !battles)
-      return;
+    if (!a.paths && !a.preview && !a.capture && !a.orbits && !a.missiles && !reveal) return;
     const k = this.animStep++;
     const set = (id: string, prop: string, v: unknown) => {
       if (this.map.getLayer(id)) this.map.setPaintProperty(id, prop as never, v as never);
     };
-    if (battles) {
-      // Deux ondes décalées qui s'élargissent et s'estompent (intensité : `heat`).
-      const now = performance.now();
-      const wave = (off: number) => ((now + off) % 1800) / 1800;
-      const p1 = wave(0);
-      const p2 = wave(900);
-      const z = this.map.getZoom();
-      const base = z < 4 ? 9 : z < 6 ? 13 : 17;
-      // Valeurs constantes seulement : une propriété dépendant des données relancerait la mise en
-      // page de la source (et le placement de toutes les étiquettes) à chaque image.
-      set('battle-pulse', 'circle-radius', base + 22 * p1);
-      set('battle-pulse', 'circle-stroke-opacity', 0.8 * (1 - p1));
-      set('battle-pulse-2', 'circle-radius', base + 22 * p2);
-      set('battle-pulse-2', 'circle-stroke-opacity', 0.8 * (1 - p2));
-    }
+
     if (a.paths) set('paths', 'line-dasharray', PATH_DASH[k % PATH_DASH.length]);
     if (a.preview) set('preview', 'line-dasharray', PREVIEW_DASH[k % PREVIEW_DASH.length]);
     if (a.orbits) set('orbits', 'line-dasharray', ORBIT_DASH[(k >> 1) % ORBIT_DASH.length]);
@@ -1804,6 +1851,11 @@ export class GameMap {
       this.map.getCanvas().style.cursor = hit ? 'pointer' : '';
       return;
     }
+    // Menu de pile ouvert : pas d'infobulle par-dessus (le menu dit déjà tout).
+    if (useStackMenu.getState().open) {
+      this.clearHover();
+      return;
+    }
     const battle = this.hitBattle(e.point.x, e.point.y);
     const hit = battle ? null : this.tipTargetAt(e.point.x, e.point.y);
     const onUnit = hit?.key.startsWith('u:');
@@ -1969,7 +2021,8 @@ export class GameMap {
 
   private onClick(e: MapMouseEvent) {
     if (performance.now() < this.suppressClickUntil) return;
-    this.tooltip.hide();
+    // Annule aussi une infobulle en attente (survol juste avant le clic).
+    this.clearHover();
     const at: LngLat = [e.lngLat.lng, e.lngLat.lat];
     if (this.opts.mode === 'picker') {
       const f = this.map.queryRenderedFeatures(e.point, { layers: ['prov-fill'] })[0];
@@ -2068,7 +2121,7 @@ export class GameMap {
     let spread = 0;
     for (const p of pts) spread = Math.max(spread, distanceKm(pts[0]!, p));
     const picked = ids.filter((id) => view.units[id]!.level === 'own' && !view.units[id]!.missile);
-    this.tooltip.hide();
+    this.clearHover();
     useStackMenu.getState().show(
       {
         ids,

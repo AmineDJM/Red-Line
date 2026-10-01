@@ -303,7 +303,13 @@ function shadowFeature(i: UnitInfo, off: [number, number], lift: number): Featur
  */
 export function tokenFeatures(
   infos: UnitInfo[],
-  ctx: { nations: Record<NationId, NationView>; zoom: number; group: boolean },
+  ctx: {
+    nations: Record<NationId, NationView>;
+    zoom: number;
+    group: boolean;
+    /** Pile précédente de chaque unité (hystérésis du regroupement). */
+    prev?: ReadonlyMap<string, string>;
+  },
 ): TokenResult {
   const free: UnitInfo[] = [];
   const selected: UnitInfo[] = [];
@@ -361,7 +367,7 @@ export function tokenFeatures(
       );
   }
   const groups: Group<UnitInfo>[] = ctx.group
-    ? groupItems(free, { zoom: ctx.zoom, w: PION_W, h: PION_H })
+    ? groupItems(free, { zoom: ctx.zoom, w: PION_W, h: PION_H, prev: ctx.prev })
     : free.map((i) => ({ id: i.id, leader: i, members: [i], off: [0, 0] as [number, number] }));
   const tokens: Feature<Point>[] = [];
   for (const g of groups) {
@@ -432,6 +438,25 @@ export function pionProps(spec: PionSpec, off: [number, number]) {
       r((off[1] + PION_PARTS.stack[1]) / STACK_TEXT),
     ],
   };
+}
+
+/**
+ * Décale toutes les parties d'un pion (image, effectif, barre d'état, numéro de pile) de (dx, dy)
+ * px CSS : glissement progressif d'une pile écartée vers sa nouvelle place (pas de saut).
+ */
+export function shiftPionProps(p: Record<string, unknown>, dx: number, dy: number) {
+  const r = (v: number) => Math.round(v * 100) / 100;
+  const add = (k: string, kx: number) => {
+    const v = p[k] as number[] | undefined;
+    if (Array.isArray(v)) p[k] = [r(v[0]! + dx * kx), r(v[1]! + dy * kx)];
+  };
+  add('off', 1);
+  add('hoff', 1);
+  add('foff', 1);
+  add('toff', 1 / COUNT_TEXT);
+  add('soff', 1 / STACK_TEXT);
+  add('tpx', 12 / COUNT_TEXT);
+  add('spx', 12 / STACK_TEXT);
 }
 
 /**

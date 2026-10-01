@@ -14,13 +14,15 @@ import {
   airLift,
   missileFeatures,
   pathFeatures,
+  pionProps,
   popLabel,
   provinceLabelFeatures,
+  shiftPionProps,
   tokenFeatures,
   truncatePath,
   unitInfos,
 } from '../src/map/features.js';
-import { groupItems } from '../src/map/grouping.js';
+import { groupItems, pionScale, worldPx } from '../src/map/grouping.js';
 import { PION_H, PION_W } from '../src/map/pions.js';
 import { CityIndex } from '../src/map/unitCat.js';
 
@@ -203,6 +205,50 @@ describe('retranchement et piles écartées', () => {
     expect(a.cluster).toBeDefined();
     expect(a.cluster).toBe(b.cluster);
     expect(g.find((x) => x.id === 'c')!.cluster).toBeUndefined();
+  });
+});
+
+describe('stabilité des piles', () => {
+  it('hystérésis : une unité reste dans sa pile un peu au-delà du seuil', () => {
+    const zoom = 8;
+    const s = pionScale(zoom);
+    // Écart horizontal = 1,1 × le seuil de regroupement (sans hystérésis : deux piles).
+    const tx = PION_W * s * 0.92;
+    const [x0, y0] = worldPx([2, 48], zoom);
+    const scale = 512 * Math.pow(2, zoom);
+    const lng = ((x0 + tx * 1.1) / scale) * 360 - 180;
+    const items = [
+      { id: 'a', pos: [2, 48] as LngLat, key: 'fra', priority: 2 },
+      { id: 'b', pos: [lng, 48] as LngLat, key: 'fra', priority: 1 },
+    ];
+    void y0;
+    const o = { zoom, w: PION_W, h: PION_H };
+    expect(groupItems(items, o)).toHaveLength(2);
+    const sticky = groupItems(items, { ...o, prev: new Map([['b', 'a']]) });
+    expect(sticky).toHaveLength(1);
+    expect(sticky[0]!.members.map((m) => m.id)).toEqual(['a', 'b']);
+  });
+
+  it('glissement : toutes les parties du pion décalées ensemble', () => {
+    const spec = {
+      nation: 'fra',
+      color: '#336699',
+      glyph: 'tank' as const,
+      rel: 'own' as const,
+      count: '12',
+      hp: 8,
+      stack: 2,
+      flags: '',
+    };
+    const a = pionProps(spec, [0, 0]) as Record<string, unknown>;
+    const b = pionProps(spec, [10, -4]) as Record<string, unknown>;
+    shiftPionProps(a, 10, -4);
+    for (const k of ['off', 'hoff', 'toff', 'soff', 'tpx', 'spx']) {
+      const x = a[k] as number[];
+      const y = b[k] as number[];
+      expect(x[0]).toBeCloseTo(y[0]!, 1);
+      expect(x[1]).toBeCloseTo(y[1]!, 1);
+    }
   });
 });
 

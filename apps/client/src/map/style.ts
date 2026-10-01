@@ -1598,8 +1598,11 @@ function cityLayers(i: StyleInput): LayerSpecification[] {
           'icon-image': icon,
           'icon-allow-overlap': true,
           'text-optional': true,
-          'text-anchor': 'left',
-          'text-offset': [cls === 0 ? 0.95 : 0.7, 0],
+          // Nom au-dessus du marqueur (une garnison posée sur la ville masquerait un nom à droite) ;
+          // à gauche ou à droite seulement s'il entre en collision avec une autre étiquette.
+          'text-variable-anchor': ['bottom', 'left', 'right'],
+          'text-radial-offset': cls === 0 ? 1.55 : 1.45,
+          'text-justify': 'auto',
           'text-max-width': 9,
           'symbol-sort-key': ['get', 'rank'],
         }

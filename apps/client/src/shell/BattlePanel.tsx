@@ -42,10 +42,8 @@ function SideCol({
             <Flag key={n} nationId={n} size={12} />
           ))}
         </span>
-        <span className="btp__sidelabel">
-          {label}
-          {mine ? <em> · {t('map.battle.you')}</em> : null}
-        </span>
+        <span className="btp__sidelabel">{label}</span>
+        {mine ? <em className="btp__you">{t('map.battle.you')}</em> : null}
       </div>
       <div className="btp__loss">
         <b>−{formatInt(los)}</b>

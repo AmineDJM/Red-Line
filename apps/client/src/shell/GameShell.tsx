@@ -16,6 +16,7 @@ import {
   Toasts,
 } from './Overlays.js';
 import { useMapSel } from '../map/mapSel.js';
+import { useStackMenu } from '../map/stackMenu.js';
 import { SelectionPanel } from './SelectionPanel.js';
 import { StackMenu } from './StackMenu.js';
 import { useShortcuts } from './shortcuts.js';
@@ -55,6 +56,7 @@ export function GameShell({
   useShortcuts(toggleHelp);
   const pending = useUi((s) => s.pendingOrder !== null);
   const battle = useMapSel((s) => s.battle !== null);
+  const stackOpen = useStackMenu((s) => s.open !== null);
   const hasSelection =
     useUi((s) => s.selection.length > 0 || s.inspected !== null || s.selectedProvince !== null) ||
     battle;
@@ -70,7 +72,7 @@ export function GameShell({
       {mobile ? <MobileNav /> : <SideNav />}
       {!mobile ? <AlertTicker /> : null}
       <ConnectionBanner />
-      {!sheetOpen && !(mobile && pending) ? (
+      {!sheetOpen && !(mobile && (pending || stackOpen)) ? (
         <div className="game__sel">
           <SelectionPanel compact={mobile} />
         </div>

@@ -257,13 +257,29 @@ export class FxRenderer {
     if (this.lastFrame) this.ema = this.ema * 0.9 + (now - this.lastFrame) * 0.1;
     this.lastFrame = now;
     this.system.update(now);
-    if (this.ema < 30 || now - this.lastDraw >= 50 || !this.system.list.length) {
+    // Ondes seules (aucun effet) : 30 images par seconde suffisent à une pulsation lente.
+    const minGap = this.system.list.length ? (this.ema < 30 ? 0 : 50) : this.ema < 30 ? 33 : 66;
+    if (now - this.lastDraw >= minGap || (!this.system.list.length && !this.pulsing)) {
       this.lastDraw = now;
       this.draw(now);
     }
-    if (this.system.busy) this.raf = requestAnimationFrame(this.frame);
+    if (this.system.busy || this.pulsing) this.raf = requestAnimationFrame(this.frame);
     else this.lastFrame = 0;
   };
+  /** Combats en cours à signaler par des ondes (position, intensité 0..1). */
+  private pulses: { at: LngLat; heat: number }[] = [];
+  private get pulsing() {
+    return this.pulses.length > 0;
+  }
+
+  /**
+   * Ondes des batailles actives (deux cercles qui s'élargissent et s'estompent), dessinées ici
+   * plutôt que par la carte : aucune image complète de la carte n'est recalculée pour les animer.
+   */
+  setPulses(list: { at: LngLat; heat: number }[]) {
+    this.pulses = list;
+    if (list.length) this.wake();
+  }
   private ema = 16;
   private lastFrame = 0;
   private lastDraw = 0;
@@ -295,17 +311,42 @@ export class FxRenderer {
     }
   }
 
+  private drawPulses(now: number, zoom: number) {
+    const ctx = this.ctx;
+    const base = zoom < 4 ? 9 : zoom < 6 ? 13 : 17;
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = '#ff4d5e';
+    for (const pl of this.pulses) {
+      const q = this.map.project(pl.at as [number, number]);
+      if (q.x < -60 || q.y < -60 || q.x > this.w + 60 || q.y > this.h + 60) continue;
+      for (const off of [0, 900]) {
+        const p = ((now + off) % 1800) / 1800;
+        const r = base + 22 * p;
+        ctx.globalAlpha = 0.8 * (1 - p) * pl.heat;
+        ctx.lineWidth = off ? 1 : 1.4;
+        ctx.beginPath();
+        ctx.arc(q.x, q.y, r, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      this.mark(q.x - base - 26, q.y - base - 26, q.x + base + 26, q.y + base + 26);
+    }
+  }
+
   private draw(now: number) {
     this.clear();
     const list = this.system.list;
-    if (!list.length) return;
+    if (!list.length && !this.pulses.length) return;
     const zoom = this.map.getZoom();
-    // Invisibles à l'échelle du monde (des milliers de km par écran) : les marqueurs suffisent.
-    if (zoom < 3.4) return;
-    const s = Math.max(0.55, Math.min(1.35, 0.35 + zoom * 0.12));
     const ctx = this.ctx;
     ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     this.ink = true;
+    if (this.pulses.length) this.drawPulses(now, zoom);
+    // Invisibles à l'échelle du monde (des milliers de km par écran) : les marqueurs suffisent.
+    if (zoom < 3.4 || !list.length) {
+      ctx.globalAlpha = 1;
+      return;
+    }
+    const s = Math.max(0.55, Math.min(1.35, 0.35 + zoom * 0.12));
     this.frames++;
     const m = 60;
     for (const fx of list) {
@@ -508,6 +549,7 @@ export class FxRenderer {
   destroy() {
     if (this.raf) cancelAnimationFrame(this.raf);
     this.raf = 0;
+    this.pulses = [];
     this.system.clear();
   }
 }
