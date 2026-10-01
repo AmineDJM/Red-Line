@@ -24,7 +24,10 @@ import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { useGameTime } from './helpers.js';
 
-/** Fiche de province : bâtiments (niveaux, construction) si elle est à nous, connaissance sinon. */
+/**
+ * Fiche de province : bâtiments (niveaux, construction) si elle est à nous, connaissance sinon.
+ * Province étrangère ou alliée : accès direct à la fiche du pays (diplomatie, message, renseignement).
+ */
 export function ProvincePanel({ id, compact }: { id: string; compact: boolean }) {
   const { t } = useTranslation();
   const view = useGame((s) => s.view);
@@ -112,6 +115,20 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
           <Icon name="close" size={15} />
         </button>
       </header>
+
+      {!own ? (
+        <button
+          type="button"
+          className="provpanel__country"
+          onClick={() => openWindow('diplomacy', { tab: 'nation', nationId: p.owner })}
+          title={t('diplomacy.country.openTip')}
+          data-testid="province-country"
+        >
+          <Flag nationId={p.owner} size={14} />
+          <span>{t('diplomacy.country.open', { nation: nationName(p.owner) })}</span>
+          <Icon name="chevronRight" size={13} />
+        </button>
+      ) : null}
 
       {capture ? (
         <div className="provpanel__capture">

@@ -262,7 +262,7 @@ export function describeNotification(
         major: true,
         at: null,
         icon: 'clock',
-        open: { id: 'army', params: { tab: 'operations' } },
+        open: { id: 'armies', params: { tab: 'operations' } },
       };
     case 'alert_level':
       return {
