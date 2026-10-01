@@ -27,7 +27,8 @@ export type Route =
   | { name: 'economy'; tab: EconomyTab }
   | { name: 'announcements' }
   | { name: 'settings' }
-  | { name: 'archive' };
+  | { name: 'archive' }
+  | { name: 'legal' };
 
 export type RouteName = Route['name'];
 
@@ -70,6 +71,8 @@ export function parseHash(hash: string): Route {
       return b ? { name: 'users', id: b } : { name: 'users' };
     case 'shop':
       return { name: 'shop', tab: SHOP_TABS.includes(b as ShopTab) ? (b as ShopTab) : 'packs' };
+    case 'legal':
+      return { name: 'legal' };
     case 'security':
     case 'audit':
     case 'metrics':

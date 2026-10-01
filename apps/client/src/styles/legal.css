@@ -1,0 +1,56 @@
+/* Documents légaux dans le jeu : tableaux, citations, listes numérotées, liens. */
+.md ol {
+  margin: 0 0 12px;
+  padding-inline-start: 22px;
+  color: var(--rl-text);
+}
+.md li + li {
+  margin-top: 4px;
+}
+.md a {
+  color: var(--rl-cyan);
+  text-underline-offset: 3px;
+}
+.md code {
+  padding: 1px 5px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-panel-2);
+  font-size: 0.92em;
+}
+.md blockquote {
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border-inline-start: 2px solid var(--rl-amber);
+  background: var(--rl-amber-dim);
+}
+.md__table {
+  margin: 0 0 14px;
+  overflow-x: auto;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius);
+}
+.md__table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--rl-fs-sm);
+  line-height: 1.5;
+}
+.md__table th,
+.md__table td {
+  padding: 8px 10px;
+  text-align: start;
+  vertical-align: top;
+  border-bottom: 1px solid var(--rl-line);
+}
+.md__table th {
+  background: var(--rl-panel-2);
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.md__table tbody tr:last-child td {
+  border-bottom: 0;
+}

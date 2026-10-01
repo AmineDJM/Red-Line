@@ -378,6 +378,9 @@ export class MockApi implements Api {
   async legal(doc: LegalDocRef['id']) {
     return demoLegal(doc);
   }
+  async publicStats() {
+    return { nations: 201, provinces: 2567, systems: 406, gamesRunning: 37, playersOnline: 112 };
+  }
   async acceptLegal() {
     try {
       localStorage.setItem(LEGAL_KEY, '3');

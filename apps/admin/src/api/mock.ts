@@ -6,6 +6,8 @@
 import {
   BalanceSchema,
   DisputedAreaSchema,
+  LEGAL_DEFAULTS,
+  LegalSettingsSchema,
   NationDefSchema,
   OrbatSchema,
   ProvinceDefSchema,
@@ -20,6 +22,7 @@ import {
   type AdminSystem,
   type CatalogChange,
   type ChangeScope,
+  type LegalSettings,
   type Metrics,
   type NationDef,
   type ProvinceDef,
@@ -1038,6 +1041,29 @@ export function createMockTransport(opts: { role?: Role; latencyMs?: number } = 
     if (u) u.premiumBalance = Math.max(0, u.premiumBalance - p.credits);
     log('shop.refund', `purchase:${id}`);
     return { ok: true, balance: u?.premiumBalance ?? 0 };
+  });
+
+  // ——— Réglages › Légal
+  let legalSettings: LegalSettings = { ...LEGAL_DEFAULTS };
+  const legalView = () => ({
+    settings: clone(legalSettings),
+    stored: clone(legalSettings),
+    defaults: clone(LEGAL_DEFAULTS),
+    effective: { contactEmail: legalSettings.contactEmail || 'contact@redline.example' },
+    publicUrl: null,
+    envContactEmail: null,
+  });
+  on('GET', '/admin/api/settings/legal', () => {
+    need('moderator');
+    return legalView();
+  });
+  on('PUT', '/admin/api/settings/legal', (_p, b) => {
+    need('superadmin');
+    const r = LegalSettingsSchema.safeParse(b);
+    if (!r.success) throw new ApiError(400, zodMessage(r.error.issues), 'invalid_body');
+    log('settings.legal', 'settings:legal', legalSettings, r.data);
+    legalSettings = r.data;
+    return legalView();
   });
 
   // ——— Journal

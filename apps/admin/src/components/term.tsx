@@ -357,6 +357,7 @@ const PATHS: Record<string, string> = {
   shop: 'M4 5h2l2 11h10l2-8H7M10 20h0M17 20h0',
   audit: 'M7 3h8l4 4v14H7zM15 3v4h4M10 12h6M10 16h6M10 8h2',
   metrics: 'M3 12h4l2-6 4 12 2-6h6',
+  legal: 'M12 4v16M5 20h14M4 8h16M7 8l-3 6h6zM17 8l-3 6h6z',
   data: 'M12 4c4.4 0 8 1.3 8 3s-3.6 3-8 3-8-1.3-8-3 3.6-3 8-3zM4 7v10c0 1.7 3.6 3 8 3s8-1.3 8-3V7M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3',
   menu: 'M4 7h16M4 12h16M4 17h16',
   search: 'M11 5a6 6 0 100 12 6 6 0 000-12zM20 20l-4.5-4.5',

@@ -1,0 +1,21 @@
+{
+  "name": "@redline/site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Pages publiques prérendues de Red Line (SEO) : accueil, guide, fonctionnalités, nations, arsenal, FAQ, pages légales.",
+  "scripts": {
+    "build": "tsx src/build.ts",
+    "world": "tsx src/world-cli.ts",
+    "capture": "node scripts/capture.mjs",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3"
+  }
+}

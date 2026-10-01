@@ -31,6 +31,7 @@ import { EconomyScreen } from './screens/Economy';
 import { AnnouncementsScreen } from './screens/Announcements';
 import { ServerSettingsScreen } from './screens/ServerSettings';
 import { ArchiveScreen } from './screens/Archive';
+import { LegalSettingsScreen } from './screens/LegalSettings';
 
 // La carte embarque MapLibre (≈ 1 Mo) : chargée seulement quand on ouvre l'écran.
 const MapScreen = lazy(() => import('./screens/MapScreen').then((m) => ({ default: m.MapScreen })));
@@ -215,6 +216,9 @@ function Shell({ onLogout }: { onLogout: () => void }) {
       break;
     case 'archive':
       screen = <ArchiveScreen />;
+      break;
+    case 'legal':
+      screen = <LegalSettingsScreen />;
       break;
   }
 

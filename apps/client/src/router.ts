@@ -34,7 +34,7 @@ function snapshot(): string {
   return window.location.pathname + window.location.search;
 }
 
-const LEGAL = new Set(['cgu', 'cgv', 'privacy', 'withdrawal']);
+const LEGAL = new Set(['cgu', 'cgv', 'privacy', 'withdrawal', 'mentions', 'cookies']);
 
 export function parseRoute(pathname: string): Route {
   const p = pathname.replace(/\/+$/, '') || '/';

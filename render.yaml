@@ -44,8 +44,12 @@ services:
         sync: false
       - key: ADMIN_PASSWORD
         sync: false
-      # URL publique (retours de Stripe Checkout, contact VAPID), ex. https://redline.onrender.com
+      # URL publique (retours de Stripe Checkout, contact VAPID, URL canoniques, sitemap, partage),
+      # ex. https://redline.onrender.com puis le domaine définitif.
       - key: PUBLIC_URL
+        sync: false
+      # Contact légal par défaut (facultatif ; sinon contact@<domaine de PUBLIC_URL>), modifiable au back-office.
+      - key: LEGAL_CONTACT_EMAIL
         sync: false
       # Boutique (facultatif : sans ces deux clés, la boutique affiche « paiements indisponibles »).
       - key: STRIPE_SECRET_KEY
