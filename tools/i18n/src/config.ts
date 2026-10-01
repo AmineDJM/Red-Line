@@ -53,6 +53,7 @@ export const DOMAINS: Domain[] = [
       join(CLIENT_I18N, 'fr.json'),
       join(CLIENT_I18N, 'fr.map.json'),
       join(CLIENT_I18N, 'fr.features.json'),
+      join(CLIENT_I18N, 'fr.audio.json'),
       join(CLIENT_I18N, 'fr.locale.json'),
       join(CLIENT_I18N, 'fr.engine.json'),
       join(CLIENT_I18N, 'fr.news.json'),

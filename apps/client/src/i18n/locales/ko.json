@@ -38,7 +38,8 @@
     "in": "{{value}} 후"
   },
   "sections": {
-    "army": "군대",
+    "armies": "내 군대",
+    "army": "전쟁 무기고",
     "production": "생산",
     "research": "연구",
     "economy": "경제",
@@ -47,13 +48,13 @@
     "council": "안전보장이사회",
     "news": "뉴스",
     "battles": "전투 보고서",
-    "encyclopedia": "백과사전",
     "chat": "메시지",
     "shop": "상점",
     "settings": "설정",
     "short": {
-      "army": "군대",
-      "production": "무기고",
+      "armies": "군대",
+      "army": "무기고",
+      "production": "생산",
       "research": "R&D",
       "economy": "경제",
       "intel": "정보",
@@ -61,14 +62,14 @@
       "council": "안보리",
       "news": "뉴스",
       "battles": "전투",
-      "encyclopedia": "백과",
       "chat": "메시지",
       "shop": "상점",
       "settings": "설정"
     },
     "path": {
-      "army": "군대",
-      "production": "무기고",
+      "armies": "내 군대",
+      "army": "전쟁 무기고",
+      "production": "생산",
       "research": "R&D",
       "economy": "경제",
       "intel": "정보",
@@ -76,7 +77,6 @@
       "council": "UN\\안보리",
       "news": "속보",
       "battles": "전투",
-      "encyclopedia": "백과사전",
       "chat": "메시지",
       "shop": "상점",
       "settings": "설정"
@@ -120,6 +120,45 @@
     },
     "flash": {
       "game_deleted": "이 게임은 삭제되었습니다: 홈으로 돌아왔습니다."
+    },
+    "info": {
+      "title": "게임 한눈에 보기",
+      "about": "게임 알아보기",
+      "figures": {
+        "nations": "플레이 가능 국가",
+        "provinces": "개 속주",
+        "systems": "실제 무기 체계",
+        "players": "게임당 플레이어"
+      },
+      "live": {
+        "games_other": "진행 중인 게임 {{n}}개",
+        "players_other": "접속 중인 플레이어 {{n}}명"
+      },
+      "blocks": {
+        "map": {
+          "title": "실시간, 실제 지도",
+          "text": "위성 영상, 2,567개 속주, 대권 항로. 접속하지 않아도 세계는 계속 흘러갑니다."
+        },
+        "arsenal": {
+          "title": "실제 무기고와 예산",
+          "text": "2025년 전투서열, 달러 기준 국방 예산, 연구 진행에 따라 생산되는 실제 무기 체계 406종."
+        },
+        "intel": {
+          "title": "정보와 외교",
+          "text": "첩보원, 위성, 전장의 안개. 동맹, 라이선스, 안전보장이사회 표결."
+        },
+        "multi": {
+          "title": "솔로 또는 최대 64명",
+          "text": "200개가 넘는 AI를 상대로 혼자서, 또는 지속형 멀티플레이 게임에서. 시즌별 순위."
+        }
+      },
+      "links": {
+        "howto": "플레이 방법",
+        "features": "기능",
+        "nations": "국가",
+        "arsenal": "무기고",
+        "faq": "자주 묻는 질문"
+      }
     }
   },
   "auth": {
@@ -217,7 +256,7 @@
       "perDay": "{{value}} / 일"
     },
     "toolbar": {
-      "army": "군대",
+      "army": "내 군대",
       "production": "생산",
       "alerts": "경보",
       "layers": "레이어",
@@ -572,7 +611,7 @@
     "console": "지휘 콘솔",
     "pause": "일시정지 / 재개",
     "speed": "속도",
-    "windows": "군대, 생산, 연구, 경제, 정보…",
+    "windows": "내 군대, 전쟁 무기고, 생산, 연구, 경제, 정보…",
     "escape": "명령 취소, 선택 해제, 닫기",
     "confirm": "명령 확인",
     "legend": "범례",
@@ -923,7 +962,9 @@
       "cgu": "이용 약관",
       "cgv": "판매 약관",
       "privacy": "개인정보",
-      "withdrawal": "청약 철회"
+      "withdrawal": "청약 철회",
+      "mentions": "법적 고지",
+      "cookies": "쿠키"
     },
     "path": "법적-고지",
     "version": "버전 {{version}} · {{date}} 업데이트",
@@ -934,12 +975,79 @@
     "checkbox": "위 문서를 읽었으며 동의합니다.",
     "accept": "동의하고 계속"
   },
+  "interior": {
+    "unavailable": "내부 보안을 사용할 수 없음",
+    "kpi": {
+      "threat": "내부 위협",
+      "quality": "서비스 품질",
+      "level": "{{level}}단계 · 예산 포함",
+      "foiled": "저지한 작전",
+      "alerts": "발령한 경보 {{count}}건",
+      "caught": "적발한 요원",
+      "doubles": "이 중 {{count}}명 포섭"
+    },
+    "grades": {
+      "low": "낮음",
+      "moderate": "보통",
+      "high": "높음",
+      "critical": "위급"
+    },
+    "focusTitle": "부서 우선순위",
+    "focusSet": "우선순위: {{name}}",
+    "focus": {
+      "balanced": {
+        "name": "균형",
+        "desc": "방첩, 시설 보호, 소요 감시에 노력을 분배합니다."
+      },
+      "counterintel": {
+        "name": "방첩",
+        "desc": "외국 요원과 준비 중인 작전을 추적: 탐지력이 크게 향상됩니다."
+      },
+      "protection": {
+        "name": "보호",
+        "desc": "민감 시설 경비: 보호 시설 2곳 추가, 적의 파괴 공작과 정찰을 방해합니다."
+      },
+      "surveillance": {
+        "name": "감시",
+        "desc": "반군 조직과 동요를 감시: 소요 위험이 크게 줄어듭니다."
+      }
+    },
+    "budget": "부서 예산",
+    "budgetSet": "내부 보안 예산을 변경했습니다",
+    "metricsTitle": "측정 가능한 효과",
+    "metricsMeta": "단계 × 예산 × 우선순위",
+    "metrics": {
+      "agentDetect": "요원 적발(일일)",
+      "agentDetectHint": "활동 중인 외국 요원 1명당 기본 일일 확률",
+      "opDetect": "준비 중인 작전 포착",
+      "opDetectHint": "평가된 경보; 적의 성공률 절반",
+      "protection": "민감 시설 보호",
+      "protectionHint": "파괴 공작과 정찰의 성공률을 낮춤",
+      "unrestReduction": "소요 감소",
+      "unrestReductionHint": "반란, 시위, 내부 파괴 공작"
+    },
+    "threatsTitle": "속주별 위협",
+    "protectedCount": "보호 시설: {{n}} / {{max}}",
+    "noThreat": "확인된 위협 없음",
+    "protectedShort": "보호 중",
+    "cols": {
+      "threat": "위협",
+      "factors": "요인"
+    },
+    "protect": "보호",
+    "unprotect": "해제",
+    "protectedOk": "{{name}}: 시설을 보호 대상으로 지정했습니다",
+    "unprotected": "{{name}}: 보호를 해제했습니다",
+    "reportsTitle": "내부 보고서",
+    "noReports": "내부 보고서 없음"
+  },
   "intel": {
     "flash": "FLASH",
     "title": "정보",
     "sources": "출처",
     "humint": "HUMINT",
     "sigint": "SIGINT",
+    "interiorTab": "내부",
     "departments": "부서",
     "totalBudget": "총예산",
     "unavailable": "정보 기관을 사용할 수 없습니다.",
@@ -1091,13 +1199,48 @@
     "unknownContact": "미확인 접촉",
     "noContacts": "탐지된 외국 유닛 없음: 레이더를 가까이 두거나 정찰을 개시하세요."
   },
+  "sheet": {
+    "path": "제원",
+    "catalog": "카탈로그에서 보기",
+    "pile": "스택 {{id}}"
+  },
   "arsenal": {
     "title": "무기고",
     "doctrines": "교리와 공급국",
     "all": "전체",
     "search": "체계 검색…",
     "category": "분류",
-    "allCategories": "모든 분류",
+    "categories": "장비 범주",
+    "allCategories": "전체 무기고",
+    "searchAll_other": "전체 무기고 검색: 결과 {{count}}건",
+    "emptyCategory": "이 교리와 필터에서는 「{{category}}」 범주에 체계가 없습니다.",
+    "groups": {
+      "air": "공중",
+      "land": "지상",
+      "defense": "방어와 탐지",
+      "strike": "타격과 전략",
+      "sea": "해상",
+      "support": "지원"
+    },
+    "cats": {
+      "fighter": "전투기",
+      "bomber": "폭격기",
+      "air_support": "항공 지원",
+      "helicopter": "헬리콥터",
+      "drone": "드론",
+      "tank": "전차",
+      "ifv": "장갑차(보병전투차)",
+      "artillery": "포병",
+      "infantry": "보병",
+      "air_defense": "방공",
+      "radar": "레이더",
+      "strike_missile": "타격 미사일",
+      "nuclear": "핵",
+      "space": "우주",
+      "surface_ship": "수상 함대",
+      "submarine": "잠수함",
+      "logistics": "군수"
+    },
     "allGen": "전체",
     "producible": "생산 가능",
     "importable": "수입 가능",
@@ -1185,6 +1328,14 @@
     }
   },
   "shop": {
+    "consent": {
+      "title": "구매 확인",
+      "summary": "{{label}}:",
+      "cgv": "다음을 읽고 동의합니다:",
+      "waiver": "프리미엄 화폐의 즉시 제공을 요청하며, 인도 시점부터 청약 철회권을 명시적으로 포기합니다(프랑스 소비법전 L221-28조 13호).",
+      "pay": "결제 의무가 있는 주문 · {{price}}",
+      "error": "결제를 열 수 없습니다. 다시 시도하세요."
+    },
     "accelerated": "가속 적용 · 잔액 {{balance}}",
     "notEnough": "프리미엄 화폐 잔액이 부족합니다.",
     "unavailable": "상점을 사용할 수 없습니다.",
@@ -1223,12 +1374,39 @@
       "accelerate": "가속",
       "cosmetic": "꾸미기",
       "refund": "환불",
-      "admin": "관리자 지급"
+      "admin": "관리자 지급",
+      "resources": "게임 내 자원"
     },
     "subtitle": "지휘 크레딧, 꾸미기, 가속. 랜덤 박스 없음.",
     "unlimited": "무제한 잔액",
     "unlimitedHint": "무제한 모드 계정: 아무것도 차감되지 않습니다.",
-    "acceleratedUnlimited": "가속 적용(무제한 잔액)"
+    "acceleratedUnlimited": "가속 적용(무제한 잔액)",
+    "resources": {
+      "title": "자원",
+      "help": "지휘 크레딧을 게임 내 달러나 자원으로 교환하면 이 게임의 내 국가에 즉시 인도됩니다.",
+      "dollars": "달러",
+      "price": "가격",
+      "buy": "구매",
+      "short": "잔액 부족",
+      "free": "무료(무제한 계정)",
+      "after": "구매 후 잔액: {{value}}",
+      "balanceAfter": "구매 후 잔액",
+      "delivered": "인도 완료",
+      "confirmTitle": "구매 확인",
+      "confirm": "{{price}} 크레딧 결제",
+      "confirmHelp": "진행 중인 게임에 즉시 인도됩니다. 구매는 확정이며 크레딧으로 환불되지 않습니다.",
+      "done": "{{name}} 인도 완료 · 잔액 {{balance}}",
+      "doneUnlimited": "{{name}} 인도 완료(무제한 계정)",
+      "capUsed": "이 게임에서 {{spent}} / {{cap}} 크레딧 사용",
+      "disabled": "이 게임에서는 구매가 비활성화되어 있습니다(경쟁 서버).",
+      "unavailable": "상품을 사용할 수 없습니다.",
+      "errors": {
+        "cap_reached": "게임 지출 한도에 도달했습니다.",
+        "shop_disabled": "이 게임에서는 구매가 비활성화되어 있습니다.",
+        "insufficient_premium": "크레딧 잔액이 부족합니다.",
+        "generic": "구매할 수 없습니다."
+      }
+    }
   },
   "researchNodes": {
     "aero_gen2": "2세대 전투기",
@@ -1387,6 +1565,86 @@
     "intel_capacity": "정보 역량",
     "stability_recovery": "안정도 회복"
   },
+  "domestic": {
+    "unavailable": "내정 관리를 사용할 수 없음",
+    "unavailableHint": "게임 서버가 아직 이 데이터를 게시하지 않습니다.",
+    "kpi": {
+      "stability": "안정도",
+      "stabilityHint": "치안과 신뢰",
+      "trend": "추세 {{value}} / 일",
+      "morale": "사기",
+      "moraleHint": "속주 평균",
+      "moraleShift": "목표 {{value}}(정책)",
+      "warSupport": "전쟁 지지",
+      "warSupportTarget": "목표 {{value}} · 전쟁 피로 ×{{factor}}",
+      "unrest": "소요 위험",
+      "unrestFactor": "정책과 내부 보안: {{value}}"
+    },
+    "strike": "파업 진행 중: 생산이 {{wait}} 더 둔화됩니다.",
+    "policiesTitle": "내정 정책",
+    "activeCount": "{{count}}건 시행 중",
+    "active": "시행 중",
+    "inForce": "시행 중",
+    "suspended": "중지됨",
+    "locked": "{{wait}} 후 변경 가능",
+    "enabled": "정책 「{{name}}」을(를) 선포했습니다",
+    "disabled": "정책 「{{name}}」을(를) 해제했습니다",
+    "excludes": "병행 불가: {{list}}",
+    "policies": {
+      "propaganda": {
+        "name": "선전",
+        "desc": "국영 매체 동원: 사기와 전쟁 지지 상승, 경제에 부담."
+      },
+      "conscription": {
+        "name": "징병",
+        "desc": "의무 병역: 보병 양성이 빨라지지만 노동력이 경제에서 빠져나갑니다."
+      },
+      "war_economy": {
+        "name": "전시 체제",
+        "desc": "산업 징발: 생산 가속, 안정도와 사기 저하, 파업 증가."
+      },
+      "austerity": {
+        "name": "긴축",
+        "desc": "민간 지출 삭감: 예산과 유지비 경감, 사기 저하, 파업과 소요."
+      },
+      "stimulus": {
+        "name": "경기 부양",
+        "desc": "국민 지원책: 사기와 안정도 상승, 수입 감소."
+      },
+      "martial_law": {
+        "name": "계엄령",
+        "desc": "군대가 거리에: 안정도 회복과 소요 진압, 사기와 지지 급락."
+      }
+    },
+    "fx": {
+      "income": "수입",
+      "production": "생산",
+      "infantry": "보병",
+      "research": "연구",
+      "upkeep": "유지비",
+      "stability": "안정도",
+      "perDay": "/일",
+      "morale": "사기",
+      "moraleTarget": "목표 사기",
+      "warSupport": "지지",
+      "unrest": "소요",
+      "strikes": "파업"
+    },
+    "totalsTitle": "누적 효과",
+    "eventsTitle": "내정 사건",
+    "noEvents": "최근 사건 없음",
+    "ago": "{{value}} 전",
+    "riskTitle": "속주별 소요 위험",
+    "riskMeta": "동요, 점령, 안정도",
+    "noRisk": "위험에 노출된 속주 없음",
+    "occupied": "점령됨",
+    "protected": "보호 중",
+    "cols": {
+      "risk": "위험",
+      "unrest": "동요"
+    },
+    "help": "사기가 떨어지면 파업, 안정도가 떨어지면 시위와 폭동, 동요한 속주에서는 반군 조직의 파괴 공작이 발생합니다. 내부 보안(정보 › 내부)이 이러한 위험을 줄입니다."
+  },
   "economy": {
     "tabs": {
       "dashboard": "대시보드",
@@ -1395,7 +1653,8 @@
       "market": "시장",
       "deliveries": "인도",
       "black": "암시장",
-      "logistics": "군수"
+      "logistics": "군수",
+      "interior": "내부"
     },
     "treasury": "국고",
     "annualBudget": "연간 예산",
@@ -1519,39 +1778,139 @@
     "resourcesHint": "자원은 주와 그 건물(유정, 광산, 농장, 전자 공장, 정유소)에서 생산되고 유닛이 소비합니다. 부족하면 생산이 느려지고, 식량은 사기에 영향을 줍니다.",
     "ledgerToday": "실제 흐름 · 오늘"
   },
+  "armies": {
+    "tabs": {
+      "armies": "군대",
+      "generals": "장군",
+      "operations": "작전"
+    },
+    "name": {
+      "land": "제{{n}}군",
+      "air": "제{{n}}항공단",
+      "sea": "제{{n}}함대"
+    },
+    "kpi": {
+      "armies": "군대",
+      "armiesSub": "전투 중 {{combat}} · 이동 중 {{moving}}",
+      "land": "지상",
+      "air": "공중",
+      "sea": "해상",
+      "static": "고정 시설",
+      "piles_other": "스택 {{count}}개",
+      "value": "가치",
+      "valueSub": "카탈로그 가격 기준"
+    },
+    "domain": "영역",
+    "domains": {
+      "all": "전체",
+      "land": "지상",
+      "air": "공중",
+      "sea": "해상"
+    },
+    "state": {
+      "combat": "전투 중",
+      "moving": "이동 중",
+      "resupply": "보급 중",
+      "embarked": "승선 중",
+      "idle": "대기 중"
+    },
+    "stateFilter": "상태",
+    "allStates": "모든 상태",
+    "sort": "정렬 기준",
+    "sortBy": {
+      "state": "정렬: 전투 중 우선",
+      "elements": "정렬: 병력",
+      "hp": "정렬: 건강도",
+      "name": "정렬: 이름"
+    },
+    "search": "군대, 장비, 도시…",
+    "empty": "지도에 군대가 없습니다.",
+    "noMatch": "필터에 맞는 군대가 없습니다.",
+    "pick": "군대 선택",
+    "pickHint": "편성, 상태, 위치, 명령이 여기에 표시되며 직접 조작할 수 있습니다.",
+    "back": "군대 목록으로",
+    "cols": {
+      "army": "군대",
+      "strength": "병력",
+      "hp": "건강도",
+      "state": "상태",
+      "location": "위치",
+      "orders": "진행 중인 명령",
+      "general": "장군"
+    },
+    "elements_other": "요소 {{count}}개",
+    "piles_other": "스택 {{count}}개",
+    "supply": "보급",
+    "veterancy": "숙련도",
+    "composition": "편성",
+    "order": {
+      "move": "{{place}}(으)로 · {{eta}} 후 도착",
+      "attack": "공격: {{target}}",
+      "delegated": "장군에게 위임: {{directive}}",
+      "none": "명령 대기 중"
+    },
+    "rename": "군대 이름 변경",
+    "save": "확인",
+    "actions": {
+      "center": "중앙으로",
+      "select": "선택",
+      "move": "이동",
+      "stop": "정지",
+      "patrol": "지역 순찰",
+      "merge": "스택 병합",
+      "split": "스택을 둘로 분할",
+      "selectPile": "스택 선택"
+    },
+    "mergeNone": "10km 이내에 정지 중인 같은 장비의 스택이 없습니다.",
+    "moveHint": "{{name}} 선택됨: 지도를 눌러 목적지를 지정하세요.",
+    "done": {
+      "stop": "정지 명령을 전달했습니다",
+      "patrol": "순찰을 시작했습니다",
+      "rtb": "기지 복귀를 명령했습니다",
+      "merge": "스택을 병합했습니다",
+      "split": "스택을 분할했습니다"
+    }
+  },
+  "inventory": {
+    "tabs": {
+      "inventory": "보유 장비",
+      "catalog": "카탈로그"
+    },
+    "kpi": {
+      "elements": "운용 중",
+      "systems_other": "서로 다른 장비 {{count}}종",
+      "value": "보유 장비 가치",
+      "upkeep": "유지비 {{value}} / 일",
+      "available": "가용성",
+      "availableSub": "{{available}} 가용 · {{engaged}} 전투 중",
+      "production": "생산 중",
+      "productionSub_other": "진행 중인 주문 {{count}}건",
+      "losses": "손실",
+      "lossesSub": "전투 보고서 기준"
+    },
+    "search": "장비 검색…",
+    "toProduction": "생산",
+    "empty": "운용 중인 장비가 없습니다.",
+    "noMatch": "이 범주에 장비가 없습니다.",
+    "mobileLine": "{{n}} 운용 · {{available}} 가용 · {{value}}",
+    "cols": {
+      "system": "장비",
+      "inService": "운용 중",
+      "available": "가용",
+      "engaged": "전투 · 전개",
+      "hp": "상태",
+      "production": "생산 중",
+      "losses": "손실",
+      "value": "가치"
+    },
+    "hint": "가용: 정지 상태이며 전투 중이 아니고 준비 완료. 전개: 이동 중, 임무 중, 승선 중 또는 재정비 중. 행을 눌러 제원을 엽니다."
+  },
   "army": {
     "supply": {
       "supplied": "보급 원활",
       "limited": "보급 제한",
       "cut": "보급 차단"
     },
-    "tabs": {
-      "units": "유닛",
-      "generals": "장군",
-      "operations": "작전"
-    },
-    "units": "유닛",
-    "empty": "유닛이 없습니다.",
-    "search": "유닛 검색…",
-    "domain": "영역",
-    "domains": {
-      "all": "전체",
-      "land": "지상",
-      "air": "공중",
-      "sea": "해상",
-      "static": "고정"
-    },
-    "cols": {
-      "unit": "유닛",
-      "count": "병력",
-      "position": "위치",
-      "hp": "상태",
-      "status": "현황",
-      "supply": "보급",
-      "mission": "임무",
-      "general": "장군"
-    },
-    "summary": "유닛 {{units}}개 · 요소 {{elements}}개",
     "loc": {
       "near": "{{city}} · {{km}} km",
       "sea": "해상",
@@ -1653,7 +2012,42 @@
   },
   "diplomacy": {
     "unavailable": "이 게임에서는 외교를 사용할 수 없습니다.",
+    "country": {
+      "pick": "국가 선택…",
+      "none": "선택한 국가 없음",
+      "noneHint": "지도에서 외국 속주를 누르고 「국가」를 선택하거나, 아래에서 국가를 고르세요.",
+      "open": "국가: {{nation}}",
+      "openTip": "관계, 협정, 외교 행동, 메시지, 정보",
+      "player": "사람 플레이어",
+      "ai": "AI가 지휘",
+      "embargoed": "금수 조치 중",
+      "sanctioned": "제재 대상",
+      "mobilized": "동원 중",
+      "relation": "관계와 협정",
+      "pending": "제안",
+      "pendingMine": "{{kind}} 발송됨",
+      "pendingTheirs": "{{kind}} 수신됨",
+      "passage": "통과권",
+      "mutualDefense": "상호 방위",
+      "intelSharing": "정보 공유",
+      "no": "없음",
+      "profile": "프로필",
+      "provinces": "속주",
+      "budget": "국방 예산",
+      "personnel": "현역 인원",
+      "doctrine": "교리",
+      "actions": "행동",
+      "invite": "동맹에 초대",
+      "invited": "{{aNation}}에 초대를 보냈습니다",
+      "sanctions": "제재 제안(이사회)",
+      "sanctionsClosed": "안전보장이사회 제안을 받고 있지 않습니다.",
+      "sanctionsText": "{{nationLe}}에 대한 경제 제재.",
+      "sanctionsProposed": "제재 결의안을 이사회에 제출했습니다",
+      "message": "메시지 보내기",
+      "intel": "정보"
+    },
     "tabs": {
+      "nation": "국가",
       "relations": "관계",
       "alliances": "동맹",
       "neutrals": "중립국",
@@ -2313,6 +2707,20 @@
       "losses": "손실",
       "spent": "지출"
     }
+  },
+  "audio": {
+    "title": "사운드",
+    "mute": "음소거",
+    "muteHelp": "음소거 중에는 아무것도 다운로드되지 않습니다. 설정은 이 기기에 저장됩니다.",
+    "levels": {
+      "master": "마스터 볼륨",
+      "music": "음악과 분위기음",
+      "sfx": "효과음",
+      "ui": "인터페이스"
+    },
+    "reduced": "사운드 축소",
+    "reducedHelp": "전투 분위기음 없음, 부드러운 신호음, 느린 전환(시스템이 애니메이션 축소를 요청하면 자동으로 켜집니다).",
+    "credits": "사운드와 음악은 ElevenLabs로 Red Line을 위해 생성되었습니다."
   },
   "format": {
     "k": "K",

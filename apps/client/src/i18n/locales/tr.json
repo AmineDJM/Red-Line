@@ -38,7 +38,8 @@
     "in": "{{value}} içinde"
   },
   "sections": {
-    "army": "Ordu",
+    "armies": "Ordularım",
+    "army": "Savaş cephaneliği",
     "production": "Üretim",
     "research": "Araştırma",
     "economy": "Ekonomi",
@@ -47,13 +48,13 @@
     "council": "Güvenlik Konseyi",
     "news": "Haberler",
     "battles": "Muharebe raporları",
-    "encyclopedia": "Ansiklopedi",
     "chat": "Mesajlar",
     "shop": "Mağaza",
     "settings": "Ayarlar",
     "short": {
-      "army": "Ordu",
-      "production": "Cephanelik",
+      "armies": "Ordular",
+      "army": "Cephanelik",
+      "production": "Üretim",
       "research": "Ar-Ge",
       "economy": "Ekonomi",
       "intel": "İstih.",
@@ -61,14 +62,14 @@
       "council": "Konsey",
       "news": "Haberler",
       "battles": "Muharebeler",
-      "encyclopedia": "Ansikl.",
       "chat": "Mesajlar",
       "shop": "Mağaza",
       "settings": "Ayarlar"
     },
     "path": {
-      "army": "Ordu",
-      "production": "Cephanelik",
+      "armies": "Ordularım",
+      "army": "Savaş cephaneliği",
+      "production": "Üretim",
       "research": "Ar-Ge",
       "economy": "Ekonomi",
       "intel": "İstihbarat",
@@ -76,7 +77,6 @@
       "council": "BM\\Konsey",
       "news": "Bültenler",
       "battles": "Muharebeler",
-      "encyclopedia": "Ansiklopedi",
       "chat": "Mesajlar",
       "shop": "Mağaza",
       "settings": "Ayarlar"
@@ -120,6 +120,47 @@
     },
     "flash": {
       "game_deleted": "Bu oyun silindi: ana sayfaya döndünüz."
+    },
+    "info": {
+      "title": "Oyuna kısa bakış",
+      "about": "Oyunu keşfet",
+      "figures": {
+        "nations": "oynanabilir ulus",
+        "provinces": "il",
+        "systems": "gerçek silah sistemi",
+        "players": "oyun başına oyuncu"
+      },
+      "live": {
+        "games_one": "{{n}} oyun sürüyor",
+        "games_other": "{{n}} oyun sürüyor",
+        "players_one": "{{n}} oyuncu çevrimiçi",
+        "players_other": "{{n}} oyuncu çevrimiçi"
+      },
+      "blocks": {
+        "map": {
+          "title": "Gerçek zamanlı, gerçek harita",
+          "text": "Uydu görüntüleri, 2.567 il, büyük daire rotaları. Siz çevrimdışıyken dünya akmaya devam eder."
+        },
+        "arsenal": {
+          "title": "Gerçek cephanelikler ve bütçeler",
+          "text": "2025 savaş düzenleri, dolar cinsinden savunma bütçeleri, Ar-Ge'nize göre üretilen 406 gerçek silah sistemi."
+        },
+        "intel": {
+          "title": "İstihbarat ve diplomasi",
+          "text": "Casuslar, uydular ve savaş sisi; ittifaklar, lisanslar ve Güvenlik Konseyi oylamaları."
+        },
+        "multi": {
+          "title": "Tek başına veya 64 oyuncuya kadar",
+          "text": "İki yüzden fazla yapay zekâya karşı tek başınıza ya da kalıcı çok oyunculu bir oyunda. Sezonluk sıralamalar."
+        }
+      },
+      "links": {
+        "howto": "Nasıl oynanır",
+        "features": "Özellikler",
+        "nations": "Uluslar",
+        "arsenal": "Cephanelik",
+        "faq": "SSS"
+      }
     }
   },
   "auth": {
@@ -220,7 +261,7 @@
       "perDay": "{{value}} / gün"
     },
     "toolbar": {
-      "army": "Ordu",
+      "army": "Ordularım",
       "production": "Üretim",
       "alerts": "Uyarılar",
       "layers": "Katmanlar",
@@ -584,7 +625,7 @@
     "console": "Komuta konsolu",
     "pause": "Duraklat / devam et",
     "speed": "Hızlar",
-    "windows": "Ordu, Üretim, Araştırma, Ekonomi, İstihbarat…",
+    "windows": "Ordularım, Savaş cephaneliği, Üretim, Araştırma, Ekonomi, İstihbarat…",
     "escape": "Emri iptal et, seçimi kaldır, kapat",
     "confirm": "Emri onayla",
     "legend": "Lejant",
@@ -931,12 +972,14 @@
     }
   },
   "legal": {
-    "title": "Yasal bildirimler",
+    "title": "Yasal bilgiler",
     "docs": {
       "cgu": "Kullanım koşulları",
       "cgv": "Satış koşulları",
       "privacy": "Gizlilik",
-      "withdrawal": "Cayma"
+      "withdrawal": "Cayma",
+      "mentions": "Yasal uyarı",
+      "cookies": "Çerezler"
     },
     "path": "legal",
     "version": "Sürüm {{version}} · güncelleme {{date}}",
@@ -947,12 +990,79 @@
     "checkbox": "Yukarıdaki belgeleri okudum ve kabul ediyorum.",
     "accept": "Kabul et ve devam et"
   },
+  "interior": {
+    "unavailable": "İç güvenlik kullanılamıyor",
+    "kpi": {
+      "threat": "İç tehdit",
+      "quality": "Hizmet kalitesi",
+      "level": "seviye {{level}} · bütçe dahil",
+      "foiled": "Engellenen operasyonlar",
+      "alerts": "{{count}} uyarı verildi",
+      "caught": "Ortaya çıkarılan ajanlar",
+      "doubles": "{{count}} tanesi çevrildi"
+    },
+    "grades": {
+      "low": "Düşük",
+      "moderate": "Orta",
+      "high": "Yüksek",
+      "critical": "Kritik"
+    },
+    "focusTitle": "Daire önceliği",
+    "focusSet": "Öncelik: {{name}}",
+    "focus": {
+      "balanced": {
+        "name": "Dengeli",
+        "desc": "Çaba; karşı istihbarat, tesislerin korunması ve huzursuzluk gözetimi arasında paylaştırılır."
+      },
+      "counterintel": {
+        "name": "Karşı istihbarat",
+        "desc": "Yabancı ajanların ve hazırlanan operasyonların avı: tespit belirgin biçimde artar."
+      },
+      "protection": {
+        "name": "Koruma",
+        "desc": "Hassas tesisler korunur: iki tesis daha korunur, düşman sabotaj ve keşifleri engellenir."
+      },
+      "surveillance": {
+        "name": "Gözetim",
+        "desc": "İsyancı ağlar ve huzursuzluk gözetim altında: huzursuzluk riski büyük ölçüde azalır."
+      }
+    },
+    "budget": "Daire bütçesi",
+    "budgetSet": "İç güvenlik bütçesi değiştirildi",
+    "metricsTitle": "Ölçülebilir etkiler",
+    "metricsMeta": "seviye × bütçe × öncelik",
+    "metrics": {
+      "agentDetect": "Bir ajanı ortaya çıkarma (günlük)",
+      "agentDetectHint": "etkin yabancı ajan başına temel günlük şans",
+      "opDetect": "Hazırlanan bir operasyonu fark etme",
+      "opDetectHint": "puanlanmış uyarı; düşmanın başarısı yarıya iner",
+      "protection": "Hassas bir tesisin korunması",
+      "protectionHint": "sabotaj ve keşiflerin başarısını azaltır",
+      "unrestReduction": "Huzursuzluğun azaltılması",
+      "unrestReductionHint": "isyanlar, protestolar, iç sabotajlar"
+    },
+    "threatsTitle": "İl başına tehdit",
+    "protectedCount": "korunan tesisler: {{n}} / {{max}}",
+    "noThreat": "Belirlenmiş tehdit yok",
+    "protectedShort": "korunuyor",
+    "cols": {
+      "threat": "Tehdit",
+      "factors": "Etkenler"
+    },
+    "protect": "Koru",
+    "unprotect": "Kaldır",
+    "protectedOk": "{{name}}: tesis koruma altına alındı",
+    "unprotected": "{{name}}: koruma kaldırıldı",
+    "reportsTitle": "İç raporlar",
+    "noReports": "İç rapor yok"
+  },
   "intel": {
     "flash": "FLAŞ",
     "title": "İstihbarat",
     "sources": "Kaynaklar",
     "humint": "HUMINT",
     "sigint": "SIGINT",
+    "interiorTab": "İç",
     "departments": "Birimler",
     "totalBudget": "Toplam bütçe",
     "unavailable": "İstihbarat servisi kullanılamıyor.",
@@ -1104,13 +1214,49 @@
     "unknownContact": "tanımlanmamış temas",
     "noContacts": "Yabancı birlik tespit edilmedi: radarlarınızı yaklaştırın veya keşif başlatın."
   },
+  "sheet": {
+    "path": "Künye",
+    "catalog": "Katalogda gör",
+    "pile": "Yığın {{id}}"
+  },
   "arsenal": {
     "title": "Cephanelik",
     "doctrines": "Doktrinler ve tedarikçiler",
     "all": "Tümü",
     "search": "Sistem ara…",
     "category": "Kategori",
-    "allCategories": "Tüm kategoriler",
+    "categories": "Teçhizat kategorileri",
+    "allCategories": "Tüm cephanelik",
+    "searchAll_one": "Tüm cephanelikte arama: {{count}} sonuç",
+    "searchAll_other": "Tüm cephanelikte arama: {{count}} sonuç",
+    "emptyCategory": "Bu doktrin ve bu filtreler için «{{category}}» kategorisinde sistem yok.",
+    "groups": {
+      "air": "Hava",
+      "land": "Kara",
+      "defense": "Savunma ve tespit",
+      "strike": "Vuruş ve stratejik",
+      "sea": "Deniz",
+      "support": "Destek"
+    },
+    "cats": {
+      "fighter": "Avcı uçakları",
+      "bomber": "Bombardıman uçakları",
+      "air_support": "Hava desteği",
+      "helicopter": "Helikopterler",
+      "drone": "İHA'lar",
+      "tank": "Tanklar",
+      "ifv": "Zırhlılar (piyade savaş araçları)",
+      "artillery": "Topçu",
+      "infantry": "Piyade",
+      "air_defense": "Hava savunma",
+      "radar": "Radarlar",
+      "strike_missile": "Vuruş füzeleri",
+      "nuclear": "Nükleer",
+      "space": "Uzay",
+      "surface_ship": "Yüzey filosu",
+      "submarine": "Denizaltılar",
+      "logistics": "Lojistik"
+    },
     "allGen": "Tümü",
     "producible": "Üretilebilir",
     "importable": "İthal edilebilir",
@@ -1200,6 +1346,14 @@
     }
   },
   "shop": {
+    "consent": {
+      "title": "Satın alımı onayla",
+      "summary": "{{label}}:",
+      "cgv": "Okudum ve kabul ediyorum:",
+      "waiver": "Premium para biriminin derhal teslimini talep ediyorum ve teslimi anından itibaren cayma hakkımdan açıkça feragat ediyorum (Fransız Tüketici Kanunu m. L221-28 13°).",
+      "pay": "Ödeme yükümlülüğüyle sipariş ver · {{price}}",
+      "error": "Ödeme açılamadı. Lütfen tekrar deneyin."
+    },
     "accelerated": "Hızlandırma uygulandı · bakiye {{balance}}",
     "notEnough": "Premium para bakiyesi yetersiz.",
     "unavailable": "Mağaza kullanılamıyor.",
@@ -1238,12 +1392,39 @@
       "accelerate": "Hızlandırma",
       "cosmetic": "Kozmetik",
       "refund": "İade",
-      "admin": "Yönetici kredisi"
+      "admin": "Yönetici kredisi",
+      "resources": "Oyun içi kaynaklar"
     },
     "subtitle": "Komuta kredileri, kozmetikler ve hızlandırmalar. Ganimet kutusu yok.",
     "unlimited": "Sınırsız bakiye",
     "unlimitedHint": "Sınırsız moddaki hesap: hiçbir şey düşülmez.",
-    "acceleratedUnlimited": "Hızlandırma uygulandı (sınırsız bakiye)"
+    "acceleratedUnlimited": "Hızlandırma uygulandı (sınırsız bakiye)",
+    "resources": {
+      "title": "Kaynaklar",
+      "help": "Komuta kredilerini oyun dolarlarıyla veya kaynaklarla takas edin; bu oyunda ulusunuza anında teslim edilir.",
+      "dollars": "dolar",
+      "price": "Fiyat",
+      "buy": "Satın al",
+      "short": "Yetersiz bakiye",
+      "free": "Ücretsiz (sınırsız hesap)",
+      "after": "sonraki bakiye: {{value}}",
+      "balanceAfter": "Satın alma sonrası bakiye",
+      "delivered": "Teslim edildi",
+      "confirmTitle": "Satın alımı onayla",
+      "confirm": "{{price}} kredi öde",
+      "confirmHelp": "Mevcut oyunda anında teslimat. Kesin satın alma, kredi iadesi yoktur.",
+      "done": "{{name}} teslim edildi · bakiye {{balance}}",
+      "doneUnlimited": "{{name}} teslim edildi (sınırsız hesap)",
+      "capUsed": "Bu oyunda {{spent}} / {{cap}} kredi harcandı",
+      "disabled": "Bu oyunda satın alımlar kapalı (rekabetçi sunucu).",
+      "unavailable": "Teklifler kullanılamıyor.",
+      "errors": {
+        "cap_reached": "Oyunun harcama sınırına ulaşıldı.",
+        "shop_disabled": "Bu oyunda satın alımlar kapalı.",
+        "insufficient_premium": "Kredi bakiyesi yetersiz.",
+        "generic": "Satın alma yapılamıyor."
+      }
+    }
   },
   "researchNodes": {
     "aero_gen2": "2. nesil avcı uçakları",
@@ -1402,6 +1583,86 @@
     "intel_capacity": "İstihbarat kapasitesi",
     "stability_recovery": "İstikrarın toparlanması"
   },
+  "domestic": {
+    "unavailable": "İç yönetim kullanılamıyor",
+    "unavailableHint": "Oyun sunucusu bu verileri henüz yayımlamıyor.",
+    "kpi": {
+      "stability": "İstikrar",
+      "stabilityHint": "kamu düzeni ve güven",
+      "trend": "eğilim {{value}} / gün",
+      "morale": "Moral",
+      "moraleHint": "illerin ortalaması",
+      "moraleShift": "hedef {{value}} (politikalar)",
+      "warSupport": "Savaş desteği",
+      "warSupportTarget": "hedef {{value}} · yorgunluk ×{{factor}}",
+      "unrest": "Huzursuzluk riski",
+      "unrestFactor": "politikalar ve iç güvenlik: {{value}}"
+    },
+    "strike": "Grev sürüyor: üretim {{wait}} daha yavaş.",
+    "policiesTitle": "İç politikalar",
+    "activeCount": "{{count}} yürürlükte",
+    "active": "Yürürlükte",
+    "inForce": "Yürürlükte",
+    "suspended": "Askıya alındı",
+    "locked": "{{wait}} sonra değiştirilebilir",
+    "enabled": "«{{name}}» politikası ilan edildi",
+    "disabled": "«{{name}}» politikası kaldırıldı",
+    "excludes": "Şunlarla bağdaşmaz: {{list}}",
+    "policies": {
+      "propaganda": {
+        "name": "Propaganda",
+        "desc": "Devlet medyası seferber edildi: moral ve savaş desteği artar, ekonomiye maliyeti olur."
+      },
+      "conscription": {
+        "name": "Zorunlu askerlik",
+        "desc": "Zorunlu askerlik hizmeti: piyade daha hızlı yetişir, iş gücü ekonomiden çekilir."
+      },
+      "war_economy": {
+        "name": "Savaş çabası",
+        "desc": "Sanayi el konuldu: üretim hızlanır, istikrar ve moral aşınır, grevler sıklaşır."
+      },
+      "austerity": {
+        "name": "Kemer sıkma",
+        "desc": "Sivil harcamalar kısıldı: bütçe ve bakım yükü hafifler, moral düşer, grevler ve huzursuzluk artar."
+      },
+      "stimulus": {
+        "name": "Teşvik",
+        "desc": "Halka destek paketi: moral ve istikrar artar, gelir azalır."
+      },
+      "martial_law": {
+        "name": "Sıkıyönetim",
+        "desc": "Ordu sokaklarda: istikrar yeniden sağlanır ve huzursuzluk bastırılır, moral ve destek çöker."
+      }
+    },
+    "fx": {
+      "income": "Gelir",
+      "production": "Üretim",
+      "infantry": "Piyade",
+      "research": "Araştırma",
+      "upkeep": "Bakım",
+      "stability": "İstikrar",
+      "perDay": "/gün",
+      "morale": "Moral",
+      "moraleTarget": "Hedef moral",
+      "warSupport": "Destek",
+      "unrest": "Huzursuzluk",
+      "strikes": "Grevler"
+    },
+    "totalsTitle": "Toplam etkiler",
+    "eventsTitle": "İç olaylar",
+    "noEvents": "Yakın zamanda olay yok",
+    "ago": "{{value}} önce",
+    "riskTitle": "İl başına huzursuzluk riski",
+    "riskMeta": "kaynaşma, işgal, istikrar",
+    "noRisk": "Risk altında il yok",
+    "occupied": "İşgal altında",
+    "protected": "Korunuyor",
+    "cols": {
+      "risk": "Risk",
+      "unrest": "Huzursuzluk"
+    },
+    "help": "Moral zayıflarsa grevler, istikrar düşerse protestolar ve ayaklanmalar, huzursuz illerde isyancı ağların sabotajları. İç güvenlik (İstihbarat › İç) bu riskleri azaltır."
+  },
   "economy": {
     "tabs": {
       "dashboard": "Pano",
@@ -1410,7 +1671,8 @@
       "market": "Pazar",
       "deliveries": "Teslimatlar",
       "black": "Kara borsa",
-      "logistics": "Lojistik"
+      "logistics": "Lojistik",
+      "interior": "İç"
     },
     "treasury": "Hazine",
     "annualBudget": "Yıllık bütçe",
@@ -1536,39 +1798,144 @@
     "resourcesHint": "Kaynaklar iller ve binaları (kuyular, madenler, çiftlikler, elektronik fabrikaları, rafineriler) tarafından üretilir ve birlikleriniz tarafından tüketilir. Kıtlık üretimi yavaşlatır; gıda morali etkiler.",
     "ledgerToday": "Gerçek akışlar · bugün"
   },
+  "armies": {
+    "tabs": {
+      "armies": "Ordular",
+      "generals": "Generaller",
+      "operations": "Operasyonlar"
+    },
+    "name": {
+      "land": "{{n}}. Ordu",
+      "air": "{{n}}. Hava Filosu",
+      "sea": "{{n}}. Donanma"
+    },
+    "kpi": {
+      "armies": "Ordular",
+      "armiesSub": "{{combat}} çatışmada · {{moving}} yolda",
+      "land": "Kara",
+      "air": "Hava",
+      "sea": "Deniz",
+      "static": "Sabit tesisler",
+      "piles_one": "{{count}} yığın",
+      "piles_other": "{{count}} yığın",
+      "value": "Değer",
+      "valueSub": "katalog fiyatıyla"
+    },
+    "domain": "Ortam",
+    "domains": {
+      "all": "Tümü",
+      "land": "Kara",
+      "air": "Hava",
+      "sea": "Deniz"
+    },
+    "state": {
+      "combat": "Çatışmada",
+      "moving": "Hareket halinde",
+      "resupply": "İkmal alıyor",
+      "embarked": "Gemide",
+      "idle": "Beklemede"
+    },
+    "stateFilter": "Durum",
+    "allStates": "Tüm durumlar",
+    "sort": "Sırala",
+    "sortBy": {
+      "state": "Sıra: önce çatışma",
+      "elements": "Sıra: mevcut güç",
+      "hp": "Sıra: sağlık",
+      "name": "Sıra: ad"
+    },
+    "search": "Ordu, teçhizat, şehir…",
+    "empty": "Haritada ordu yok.",
+    "noMatch": "Filtrelere uyan ordu yok.",
+    "pick": "Bir ordu seçin",
+    "pickHint": "Bileşim, durum, konum ve emirler burada, doğrudan eylemlerle birlikte görünür.",
+    "back": "Ordulara dön",
+    "cols": {
+      "army": "Ordu",
+      "strength": "Mevcut güç",
+      "hp": "Sağlık",
+      "state": "Durum",
+      "location": "Konum",
+      "orders": "Süren emirler",
+      "general": "General"
+    },
+    "elements_one": "{{count}} unsur",
+    "elements_other": "{{count}} unsur",
+    "piles_one": "{{count}} yığın",
+    "piles_other": "{{count}} yığın",
+    "supply": "İkmal",
+    "veterancy": "Tecrübe",
+    "composition": "Bileşim",
+    "order": {
+      "move": "{{place}} yönüne · varış {{eta}} içinde",
+      "attack": "Saldırı: {{target}}",
+      "delegated": "Generale devredildi: {{directive}}",
+      "none": "Emir bekliyor"
+    },
+    "rename": "Ordunun adını değiştir",
+    "save": "Onayla",
+    "actions": {
+      "center": "Ortala",
+      "select": "Seç",
+      "move": "Taşı",
+      "stop": "Durdur",
+      "patrol": "Bölgede devriye",
+      "merge": "Yığınları birleştir",
+      "split": "Yığını ikiye böl",
+      "selectPile": "Yığını seç"
+    },
+    "mergeNone": "10 km içinde duran aynı teçhizattan yığın yok.",
+    "moveHint": "{{name}} seçildi: hedefi belirlemek için haritaya dokunun.",
+    "done": {
+      "stop": "Durdurma emri iletildi",
+      "patrol": "Devriye başladı",
+      "rtb": "Üsse dönüş emredildi",
+      "merge": "Yığınlar birleştirildi",
+      "split": "Yığın bölündü"
+    }
+  },
+  "inventory": {
+    "tabs": {
+      "inventory": "Envanter",
+      "catalog": "Katalog"
+    },
+    "kpi": {
+      "elements": "Hizmette",
+      "systems_one": "{{count}} farklı sistem",
+      "systems_other": "{{count}} farklı sistem",
+      "value": "Envanter değeri",
+      "upkeep": "bakım {{value}} / gün",
+      "available": "Hazır bulunma",
+      "availableSub": "{{available}} hazır · {{engaged}} çatışmada",
+      "production": "Üretimde",
+      "productionSub_one": "{{count}} sipariş sürüyor",
+      "productionSub_other": "{{count}} sipariş sürüyor",
+      "losses": "Kayıplar",
+      "lossesSub": "muharebe raporlarına göre"
+    },
+    "search": "Bir teçhizat ara…",
+    "toProduction": "Üretim",
+    "empty": "Hizmette teçhizat yok.",
+    "noMatch": "Bu kategoride teçhizat yok.",
+    "mobileLine": "{{n}} hizmette · {{available}} hazır · {{value}}",
+    "cols": {
+      "system": "Teçhizat",
+      "inService": "Hizmette",
+      "available": "Hazır",
+      "engaged": "Çatışma · konuşlu",
+      "hp": "Durum",
+      "production": "Üretimde",
+      "losses": "Kayıplar",
+      "value": "Değer"
+    },
+    "hint": "Hazır: durmakta, çatışma dışında ve hazır. Konuşlu: hareket halinde, görevde, gemide veya yeniden hazırlanmakta. Künyeyi açmak için bir satıra dokunun."
+  },
   "army": {
     "supply": {
       "supplied": "İkmal edilen",
       "limited": "Kısıtlı ikmal",
       "cut": "Kuşatılmış"
     },
-    "tabs": {
-      "units": "Birlikler",
-      "generals": "Generaller",
-      "operations": "Harekâtlar"
-    },
-    "units": "Birlikler",
-    "empty": "Birlik yok.",
-    "search": "Birlik ara…",
-    "domain": "Ortam",
-    "domains": {
-      "all": "Tümü",
-      "land": "Kara",
-      "air": "Hava",
-      "sea": "Deniz",
-      "static": "Sabit"
-    },
-    "cols": {
-      "unit": "Birlik",
-      "count": "Mevcut",
-      "position": "Konum",
-      "hp": "Durum",
-      "status": "Statü",
-      "supply": "İkmal",
-      "mission": "Görev",
-      "general": "General"
-    },
-    "summary": "{{units}} birlik · {{elements}} unsur",
     "loc": {
       "near": "{{city}} · {{km}} km",
       "sea": "Denizde",
@@ -1674,7 +2041,42 @@
   },
   "diplomacy": {
     "unavailable": "Bu oyunda diplomasi kullanılamıyor.",
+    "country": {
+      "pick": "Bir ülke seçin…",
+      "none": "Seçili ülke yok",
+      "noneHint": "Haritada yabancı bir ile dokunup «Ülke»yi seçin ya da aşağıdan bir ülke seçin.",
+      "open": "Ülke: {{nation}}",
+      "openTip": "İlişkiler, anlaşmalar, diplomatik eylemler, mesaj, istihbarat",
+      "player": "İnsan oyuncu",
+      "ai": "Yapay zekâ yönetiyor",
+      "embargoed": "Ambargo altında",
+      "sanctioned": "Yaptırım uygulanmış",
+      "mobilized": "Seferber",
+      "relation": "İlişki ve anlaşmalar",
+      "pending": "Teklif",
+      "pendingMine": "{{kind}} gönderildi",
+      "pendingTheirs": "{{kind}} alındı",
+      "passage": "Geçiş hakkı",
+      "mutualDefense": "Karşılıklı savunma",
+      "intelSharing": "İstihbarat paylaşımı",
+      "no": "hayır",
+      "profile": "Profil",
+      "provinces": "İller",
+      "budget": "Savunma bütçesi",
+      "personnel": "Muvazzaf personel",
+      "doctrine": "Doktrin",
+      "actions": "Eylemler",
+      "invite": "İttifaka davet et",
+      "invited": "{{aNation}} ülkesine davet gönderildi",
+      "sanctions": "Yaptırım öner (Konsey)",
+      "sanctionsClosed": "Güvenlik Konseyi'ne teklifler açık değil.",
+      "sanctionsText": "{{nationLe}} aleyhine ekonomik yaptırımlar.",
+      "sanctionsProposed": "Yaptırım kararı Konsey'e sunuldu",
+      "message": "Mesaj gönder",
+      "intel": "İstihbarat"
+    },
     "tabs": {
+      "nation": "Ülke",
       "relations": "İlişkiler",
       "alliances": "İttifaklar",
       "neutrals": "Tarafsızlar",
@@ -2342,6 +2744,20 @@
       "losses": "Kayıplar",
       "spent": "Harcamalar"
     }
+  },
+  "audio": {
+    "title": "Ses",
+    "mute": "Sesi kapat",
+    "muteHelp": "Ses kapalıyken hiçbir şey indirilmez. Ayarlar bu cihazda saklanır.",
+    "levels": {
+      "master": "Ana ses düzeyi",
+      "music": "Müzik ve ortam sesleri",
+      "sfx": "Efektler",
+      "ui": "Arayüz"
+    },
+    "reduced": "Azaltılmış ses",
+    "reducedHelp": "Savaş ortamı yok, daha yumuşak vurgular, daha yavaş geçişler (sistem animasyonların azaltılmasını isterse kendiliğinden etkinleşir).",
+    "credits": "Sesler ve müzikler Red Line için ElevenLabs ile üretildi."
   },
   "format": {
     "k": "B",
