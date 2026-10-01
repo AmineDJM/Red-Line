@@ -50,7 +50,7 @@ export async function resetDb(): Promise<void> {
   try {
     await sql`TRUNCATE users, sessions, weapon_systems, catalog_releases, catalog_changes, games,
       game_players, game_snapshots, game_orders, admin_audit, chat_messages, chat_reads,
-      server_settings, push_subscriptions, timelapse_frames, wallet_ledger, shop_packs, shop_promotions,
+      server_settings, push_subscriptions, timelapse_frames, wallet_ledger, shop_packs, shop_resource_offers, shop_promotions,
       purchases, stripe_events, cosmetics, user_cosmetics, seasons, rankings, game_results,
       legal_acceptances, user_fingerprints, data_revisions RESTART IDENTITY CASCADE`;
   } finally {

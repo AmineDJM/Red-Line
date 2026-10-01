@@ -14,6 +14,7 @@ import type { RngState } from '../../rng/rng.js';
 import { board, modState } from '../kit.js';
 import { wi } from '../../state/world.js';
 import { worldConfig, type DiploConfig } from './config.js';
+import type { DomNation } from './domestic.js';
 
 /** Vote interne d'une alliance. `subject` : nouveau chef proposé, nation dispensée, ou membre à exclure. */
 export interface AllianceVote {
@@ -160,6 +161,8 @@ export interface DiploState {
   ownerV: number;
   /** Pertes en territoire depuis le dernier tick (réfugiés). */
   hurt: Record<NationId, number>;
+  /** Gestion intérieure par nation (politiques, soutien à la guerre, événements) ; absent des anciennes sauvegardes. */
+  dom?: Record<NationId, DomNation>;
 }
 
 export const PK_NATION = 'onu';

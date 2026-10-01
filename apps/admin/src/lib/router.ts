@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 export type MapTab = 'nations' | 'provinces' | 'disputed';
-export type ShopTab = 'packs' | 'promotions' | 'purchases';
+export type ShopTab = 'packs' | 'resources' | 'promotions' | 'purchases';
 
 export type Route =
   | { name: 'catalog' }
@@ -27,7 +27,7 @@ export type Route =
 export type RouteName = Route['name'];
 
 const MAP_TABS: MapTab[] = ['nations', 'provinces', 'disputed'];
-const SHOP_TABS: ShopTab[] = ['packs', 'promotions', 'purchases'];
+const SHOP_TABS: ShopTab[] = ['packs', 'resources', 'promotions', 'purchases'];
 
 export function parseHash(hash: string): Route {
   const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);

@@ -20,6 +20,8 @@ import type {
   Balance,
   ScenarioSummary,
   SeasonView,
+  ResourceBuyResult,
+  ResourceOffer,
   ShopPack,
   TimelapseView,
   WalletEntry,
@@ -112,6 +114,10 @@ export interface Api {
     hours: number,
   ): Promise<{ ok: boolean; balance: number; unlimited?: boolean }>;
   cosmetics(): Promise<{ items: CosmeticItem[]; owned: string[] }>;
+  /** Offres de ressources en jeu (monnaie premium → dollars du jeu et ressources). */
+  resourceOffers(): Promise<ResourceOffer[]>;
+  /** Achat d'une offre de ressources dans une partie en cours (politique de la partie). */
+  buyResources(gameId: string, offerId: string): Promise<ResourceBuyResult>;
   buyCosmetic(id: string): Promise<{ ok: boolean; balance: number }>;
   rankings(season?: string): Promise<{ season: SeasonView; entries: RankingEntry[] }>;
   seasons(): Promise<SeasonView[]>;

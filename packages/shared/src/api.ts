@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { GameId, NationId, UserId } from './ids.js';
 import type { GameMeta } from './protocol.js';
-import type { WeaponSystem } from './catalog.js';
+import type { Resource, WeaponSystem } from './catalog.js';
 
 /**
  * Contrat REST. Client et admin sont servis par le même service que l'API (même origine),
@@ -189,6 +189,9 @@ export interface Metrics {
  *   POST /api/shop/checkout    { packId }         → { url }            (redirection Stripe Checkout)
  *   POST /api/stripe/webhook   (brut, signature Stripe-Signature)
  *   POST /api/games/:id/accelerate AccelerateBody → { ok, balance }   (dépense premium ; politique de la partie)
+ *   GET  /api/shop/resources                      → { offers: ResourceOffer[] }
+ *   POST /api/games/:id/shop/resources ResourceBuyBody → ResourceBuyResult (monnaie premium → dollars / ressources,
+ *        politique de la partie, commande système `grant` journalisée)
  *   GET  /api/shop/cosmetics                      → { items: CosmeticItem[], owned: string[] }
  *   POST /api/shop/cosmetics/:id/buy              → { ok, balance }
  *
@@ -277,7 +280,7 @@ export interface WalletView {
 export interface WalletEntry {
   id: number;
   delta: number;
-  reason: 'purchase' | 'accelerate' | 'cosmetic' | 'refund' | 'admin';
+  reason: 'purchase' | 'accelerate' | 'cosmetic' | 'refund' | 'admin' | 'resources';
   ref: string | null;
   createdAt: string;
 }
@@ -293,6 +296,33 @@ export const AccelerateBodySchema = z.object({
     .positive()
     .max(24 * 30),
 });
+
+/** Offre de ressources en jeu : monnaie premium contre dollars du jeu et/ou ressources. */
+export interface ResourceOffer {
+  id: string;
+  name: string;
+  /** Dollars du jeu crédités à la nation. */
+  money: number;
+  /** Ressources créditées (pétrole, métaux, électronique, nourriture). */
+  resources: Partial<Record<Resource, number>>;
+  /** Prix en monnaie premium. */
+  price: number;
+}
+
+export const ResourceBuyBodySchema = z.object({ offerId: z.string().min(1).max(64) });
+export type ResourceBuyBody = z.infer<typeof ResourceBuyBodySchema>;
+
+/** POST /api/games/:id/shop/resources. `cost` = 0 et `unlimited` pour un compte illimité. */
+export interface ResourceBuyResult {
+  ok: true;
+  balance: number;
+  cost: number;
+  granted: { money: number; resources: Partial<Record<Resource, number>> };
+  unlimited?: boolean;
+  /** Mode « limité » : dépense de la partie après l'achat et plafond. */
+  spent?: number;
+  cap?: number;
+}
 
 export interface CosmeticItem {
   id: string;

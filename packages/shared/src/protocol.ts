@@ -6,6 +6,7 @@ import { RESOURCES } from './catalog.js';
 import { BUILDING_TYPES } from './map.js';
 import { DEPARTMENTS } from './intel.js';
 import { RESOLUTION_TYPES } from './diplomacy.js';
+import { DOMESTIC_POLICIES, INTERIOR_FOCUS } from './domestic.js';
 
 /** Opérations de renseignement (voir IntelOpKind). */
 export const INTEL_OPS = [
@@ -109,6 +110,12 @@ const BASE_ORDERS = [
     covert: z.boolean().default(false),
   }),
   z.object({ kind: z.literal('mobilize'), on: z.boolean() }),
+  /** Gestion intérieure : active ou suspend une politique. */
+  z.object({
+    kind: z.literal('domesticPolicy'),
+    policy: z.enum(DOMESTIC_POLICIES),
+    on: z.boolean(),
+  }),
   // ——— Phase 3 : combat complet ———
   z.object({
     kind: z.literal('strike'),
@@ -158,6 +165,10 @@ const BASE_ORDERS = [
   }),
   z.object({ kind: z.literal('shareReport'), reportId: id, to: id }),
   z.object({ kind: z.literal('turnAgent'), agentId: id }),
+  /** Renseignement intérieur : priorité du département. */
+  z.object({ kind: z.literal('interiorFocus'), focus: z.enum(INTERIOR_FOCUS) }),
+  /** Renseignement intérieur : protection d'un site sensible (province). */
+  z.object({ kind: z.literal('protectSite'), provinceId: id, on: z.boolean() }),
   // ——— Phase 4 : diplomatie ———
   z.object({ kind: z.literal('declareWar'), nationId: id }),
   z.object({ kind: z.literal('proposePeace'), nationId: id, type: z.enum(['peace', 'ceasefire']) }),
