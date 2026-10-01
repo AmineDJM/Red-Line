@@ -197,7 +197,7 @@ for (const sys of systems) {
         () => true,
         () => false,
       );
-      png = await keepBox(await cutoutFor(sel), src.cutoutBox);
+      png = await keepBox(await cutoutFor(sel), src.cutoutBox, src.cutoutErase);
       if (!had) calls++;
     } catch (e) {
       console.warn(`✗ ${sys.id} : détourage impossible (${(e as Error).message})`);
@@ -208,7 +208,11 @@ for (const sys of systems) {
     const stats = await alphaStats(png);
     const refused = autoCheck(stats);
     const coverage = Math.round(stats.coverage * 1000) / 1000;
-    const extra = { coverage, ...(src.cutoutBox ? { box: src.cutoutBox } : {}) };
+    const extra = {
+      coverage,
+      ...(src.cutoutBox ? { box: src.cutoutBox } : {}),
+      ...(src.cutoutErase ? { erase: src.cutoutErase } : {}),
+    };
     if (src.cutout === true)
       decision = {
         title,

@@ -15,12 +15,13 @@ Textes des licences : [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/),
 [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/),
 [Licence Ouverte](https://www.etalab.gouv.fr/licence-ouverte-open-licence/) (État français) et
 [OGL v3](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/) (Royaume-Uni), toutes deux
-compatibles CC BY et utilisées seulement faute de photo CC ou domaine public.
+compatibles CC BY et utilisées seulement faute de photo CC ou domaine public, et
+[GODL-India](https://data.gov.in/government-open-data-license-india) (Inde, Agni-V seulement).
 
 ## Licences étendues (validées par Amine le 2026-10-01)
 
-Les photos sous Licence Ouverte (Etalab 2.0) et sous Open Government Licence v3.0 ont été validées par Amine
-le 2026-10-01. Mentions exigées :
+Les photos sous Licence Ouverte (Etalab 2.0), sous Open Government Licence v3.0 et sous GODL-India ont été
+validées par Amine le 2026-10-01. Mentions exigées :
 
 - **Licence Ouverte 2.0** : mention de la paternité (« Ministère des Armées » ou l’auteur indiqué) et de la
   date de dernière mise à jour, avec lien vers la source ; modifications signalées (recadrage, étalonnage,
@@ -29,8 +30,15 @@ le 2026-10-01. Mentions exigées :
   avec l’attribution fournie par la source (« UK MOD © Crown copyright »). L’OGL n’autorise pas l’usage
   des insignes militaires (cadrage excluant tout insigne mis en avant) ni n’implique l’approbation du
   fournisseur des données.
+- **GODL-India** (Government Open Data License – India, Gazette of India, février 2017), admise **pour
+  l’Agni-V seulement** (validation d’Amine le 2026-10-01) : licence mondiale, gratuite et non exclusive
+  d’utilisation, d’adaptation et de publication à toutes fins licites, commerciales comprises. Attribution
+  exigée (fournisseur, source, licence et URL, déclaration d’attribution ci-dessous) ; interdiction de laisser
+  entendre que le fournisseur approuve l’usage ou l’utilisateur (aucune approbation implicite de la DRDO ni du
+  gouvernement indien) ; la licence ne couvre ni les noms, écussons, logos et symboles officiels du
+  fournisseur, ni les marques, ni les insignes militaires : le cadre exclut tout emblème officiel.
 
-Généré par `tools/art` (382 photos, dont 242 détourées). Ne pas modifier à la main.
+Généré par `tools/art` (386 photos, dont 243 détourées). Ne pas modifier à la main.
 
 Format : **système** (`identifiant`) — auteur — licence — fichier source sur Commons.
 
@@ -265,6 +273,7 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 - **HQ-16** (`cn.hq-16`) — Tyg728 — CC BY-SA 4.0 — [HQ-16A Surface-to-air missiles 20170919.jpg](https://commons.wikimedia.org/wiki/File:HQ-16A_Surface-to-air_missiles_20170919.jpg)
 - **HQ-17** (`cn.hq-17`) — Srđan Popović — CC BY-SA 4.0 — [Zastava 2024 - HQ-17AE - 02.jpg](https://commons.wikimedia.org/wiki/File:Zastava_2024_-_HQ-17AE_-_02.jpg)
 - **HQ-7** (`cn.hq-7`) — Shadman Samee from Dhaka, Bangladesh — CC BY-SA 2.0 — [Bangladesh Air Force FM-90 Crotale SAM (31545368571).jpg](<https://commons.wikimedia.org/wiki/File:Bangladesh_Air_Force_FM-90_Crotale_SAM_(31545368571).jpg>)
+- **EW jammer** (`cn.ew-jammer`) — 中国新闻社 — CC BY 4.0 — [PLA Cyber 2025 V-J Parade CNS.png](https://commons.wikimedia.org/wiki/File:PLA_Cyber_2025_V-J_Parade_CNS.png) — _photo représentative ; Véhicules à antennes de la Force de soutien à l’information / du cyberespace de l’APL (défilé de Pékin, 3 septembre 2025) : moyens de guerre de l’information chinois, pas un brouilleur identifié_
 - **SAMP/T** (`eu.samp-t`) — Kevin.B — CC BY-SA 4.0 — [Système SAMP-T (14 juillet 2021) (2).jpg](<https://commons.wikimedia.org/wiki/File:Syst%C3%A8me_SAMP-T_(14_juillet_2021)_(2).jpg>)
 - **IRIS-T SLM** (`eu.iris-t-slm`) — Air Command "West" of the Air Forces of the Armed Forces of Ukraine — CC BY 4.0 — [Iris-t slm 11th aam brigade field.jpg](https://commons.wikimedia.org/wiki/File:Iris-t_slm_11th_aam_brigade_field.jpg)
 - **Skynex** (`eu.skynex`) — Повітряне командування "Захід" Повітряних Сил ЗС України — CC BY 4.0 — [Skynex AC West.jpg](https://commons.wikimedia.org/wiki/File:Skynex_AC_West.jpg)
@@ -308,8 +317,11 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 - **B61-12** (`us.b61-12`) — Los Alamos National Laboratory — Domaine public — [F-35 B61-12 trial.jpg](https://commons.wikimedia.org/wiki/File:F-35_B61-12_trial.jpg)
 - **Yars** (`ru.yars`) — Vitaly V. Kuzmin — CC BY-SA 4.0 — [April 9th rehearsal in Alabino of 2014 Victory Day Parade (558-59).jpg](<https://commons.wikimedia.org/wiki/File:April_9th_rehearsal_in_Alabino_of_2014_Victory_Day_Parade_(558-59).jpg>)
 - **Sarmat** (`ru.sarmat`) — Ministry of Defence of the Russian Federation — CC BY 4.0 — [Sarmat-launch.webm](https://commons.wikimedia.org/wiki/File:Sarmat-launch.webm) — _Image extraite de la vidéo officielle du lancement d'essai (Plessetsk, 20 avril 2022), ministère russe de la Défense_
+- **Bulava** (`ru.bulava`) — Vitaly V. Kuzmin — CC BY-SA 4.0 — [Army2016-501.jpg](https://commons.wikimedia.org/wiki/File:Army2016-501.jpg) — _Transporteur-chargeur 3F30-9 du complexe D-30 Bulava, missile dans son conteneur (forum Armée-2016) ; les seules photos libres du tir font 550 px_
 - **DF-41** (`cn.df-41`) — 中国新闻社 — CC BY 4.0 — [120秒看大阅兵震撼瞬间！1.png](https://commons.wikimedia.org/wiki/File:120%E7%A7%92%E7%9C%8B%E5%A4%A7%E9%98%85%E5%85%B5%E9%9C%87%E6%92%BC%E7%9E%AC%E9%97%B4%EF%BC%811.png) — _Image extraite d'un reportage vidéo de China News Service (défilé du 1er octobre 2019), recadrée pour exclure logo et sous-titres_
 - **ASMP-A** (`eu.asmp-a`) — User:Thomas Boucajay — CC BY 3.0 — [SG1059332.JPG](https://commons.wikimedia.org/wiki/File:SG1059332.JPG)
+- **Agni-V** (`other.agni-v`) — DRDO / Ministry of Defence, Government of India — GODL-India — [Agni V Ballistic missile successfully launched on 15 September 2013 (7).jpg](<https://commons.wikimedia.org/wiki/File:Agni_V_Ballistic_missile_successfully_launched_on_15_September_2013_(7).jpg>) — _Deuxième tir d’essai de l’Agni-V, île Wheeler, 15 septembre 2013 (photo DRDO, aucun emblème dans le cadre) ; licence validée par Amine le 2026-10-01_
+  - Déclaration d’attribution : Defence Research and Development Organisation (DRDO), Ministry of Defence, Government of India, 2013, « Agni V Ballistic missile successfully launched on 15 September 2013 », drdo.gov.in (http://www.drdo.gov.in/drdo/English/index.jsp?pg=agni_5_2.jsp) via Wikimedia Commons, 15/09, https://commons.wikimedia.org/wiki/File:Agni_V_Ballistic_missile_successfully_launched_on_15_September_2013_(7).jpg. Published under Government Open Data License – India: https://data.gov.in/government-open-data-license-india. Image recadrée et étalonnée ; ni la DRDO ni le gouvernement indien n’approuvent ce jeu.
 - **Hwasong-17** (`other.hwasong-17`) — North Korea Public Relationships — CC BY 4.0 — [Hwasong17-20201010-KORN Pyonyang-N323-2.jpg](https://commons.wikimedia.org/wiki/File:Hwasong17-20201010-KORN_Pyonyang-N323-2.jpg)
 - **Arleigh Burke** (`us.arleigh-burke`) — U.S. Navy photo by Mass Communication Specialist 2nd Class Jason R. Zalasky — Domaine public — [US Navy 080906-N-1082Z-067 The guided-missile destroyer USS Roosevelt (DDG 80) transits the Atlantic Ocean.jpg](<https://commons.wikimedia.org/wiki/File:US_Navy_080906-N-1082Z-067_The_guided-missile_destroyer_USS_Roosevelt_(DDG_80)_transits_the_Atlantic_Ocean.jpg>)
 - **Gerald R. Ford** (`us.gerald-r-ford`) — U.S. Navy photo by Mass Communication Specialist 2nd Class Ridge Leoni — Domaine public — [Bow view of USS Gerald R. Ford (CVN-78) underway on 8 April 2017.JPG](<https://commons.wikimedia.org/wiki/File:Bow_view_of_USS_Gerald_R._Ford_(CVN-78)_underway_on_8_April_2017.JPG>)
@@ -396,6 +408,7 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 - **Radar satellite** (`cn.radar-satellite`) — Institute of High Energy Physics, Chinese Academy of Sciences — CC BY 4.0 — [HXMT launch.jpg](https://commons.wikimedia.org/wiki/File:HXMT_launch.jpg) — _photo représentative_
 - **SIGINT satellite** (`cn.sigint-satellite`) — 中国新闻网 — CC BY 4.0 — [Shenzhou 12 launch.jpg](https://commons.wikimedia.org/wiki/File:Shenzhou_12_launch.jpg) — _photo représentative_
 - **Early warning satellite** (`cn.early-warning-satellite`) — 中国新闻社 — CC BY 4.0 — [Shenzhou 22 CZ-2F Y22 launch 10.png](https://commons.wikimedia.org/wiki/File:Shenzhou_22_CZ-2F_Y22_launch_10.png) — _photo représentative_
+- **ASAT** (`cn.asat`) — 中国新闻社 — CC BY 4.0 — [HQ29 2025 V-J Parade CNS.png](https://commons.wikimedia.org/wiki/File:HQ29_2025_V-J_Parade_CNS.png) — _photo représentative ; Lanceurs de l’intercepteur exoatmosphérique HQ-29, présenté comme capable de missions antisatellites (défilé de Pékin, 3 septembre 2025) : le SC-19 / DN-3 n’a jamais été montré_
 - **Optical recon satellite** (`eu.optical-recon-satellite`) — ESA\_events — CC BY-SA 2.0 — [Sentinel-2A liftoff (18882549998).jpg](<https://commons.wikimedia.org/wiki/File:Sentinel-2A_liftoff_(18882549998).jpg>) — _photo représentative_
 - **Radar satellite** (`eu.radar-satellite`) — U.S. Air Force/Brian Webb — Domaine public — [Launch of Delta II rocket carrying COSMO-2 (071208-F-9876C-001).jpg](<https://commons.wikimedia.org/wiki/File:Launch_of_Delta_II_rocket_carrying_COSMO-2_(071208-F-9876C-001).jpg>) — _photo représentative_
 - **SIGINT satellite** (`eu.sigint-satellite`) — ESA\_events — CC BY-SA 2.0 — [Vega VV05 assembled in ELV.jpg](https://commons.wikimedia.org/wiki/File:Vega_VV05_assembled_in_ELV.jpg) — _photo représentative_
@@ -420,26 +433,22 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 ## Systèmes sans photo
 
 - `cn.h-20` (H-20) : appareil jamais montré publiquement : aucune photo réelle (pas de vue d'artiste substituée)
-- `cn.ew-jammer` (EW jammer) : aucune photo libre identifiable d'un brouilleur chinois
-- `cn.yj-18` (YJ-18) : aucune photo libre identifiable du missile (missiles YJ du défilé 2025 non identifiés comme YJ-18)
-- `other.kn-23` (KN-23) : aucune photo libre du missile sur Commons (seulement des schémas)
-- `ru.bulava` (Bulava) : photos officielles en 550 px seulement ; dans les vidéos libres, le missile n'est qu'une flamme dans la brume
-- `cn.jl-3` (JL-3) : aucune photo libre du missile (seule image sur Commons : une sculpture de glace, refusée)
-- `eu.m51` (M51) : aucune photo libre (seulement des schémas)
-- `other.agni-v` (Agni-V) : photos DRDO sous licence GODL-India, à valider par Amine (voir rapport) ; la seule photo CC est un schéma
-- `other.shaheen-iii` (Shaheen-III) : aucune photo libre de cette version
-- `other.jericho-iii` (Jericho III) : aucune photo libre du missile (programme non montré publiquement)
-- `cn.type-093` (Type 093) : aucune photo libre de ce sous-marin (seulement une silhouette dessinée)
-- `cn.special-forces` (Special forces) : aucune photo libre identifiable des forces spéciales chinoises
-- `cn.asat` (ASAT) : aucune photo libre d'un antisatellite chinois (SC-19/DN-3 jamais montrés hors vidéos non libres)
-- `other.optical-recon-satellite` (Optical recon satellite) : photos ISRO sous licence GODL-India (non retenue)
-- `ru.rezonans-ne` (Rezonans-NE) : aucune photo libre trouvée
-- `ru.container-29b6` (Container 29B6) : seule photo libre (ministère russe de la Défense) en 550 px, trop petite
-- `ru.podsolnukh-e` (Podsolnukh-E) : aucune photo libre trouvée
-- `cn.jy-27a` (JY-27A) : aucune photo libre trouvée sur Commons
-- `cn.ylc-8b` (YLC-8B) : aucune photo libre trouvée sur Commons
-- `cn.jy-26` (JY-26) : aucune photo libre trouvée sur Commons
-- `cn.type-7010-lpar` (Type 7010 LPAR) : aucune photo libre trouvée sur Commons
-- `other.el-m-2080-green-pine` (EL/M-2080 Green Pine) : seule image « CC BY-SA » : copie basse définition (825 px) d'une image de constructeur, licence douteuse
-- `other.sepehr-oth` (Sepehr OTH) : aucune photo libre trouvée
-- `other.swordfish-lrtr` (Swordfish LRTR) : aucune photo libre trouvée
+- `cn.yj-18` (YJ-18) : aucune photo libre identifiable du missile (catégorie Commons YJ-18 vide ; missiles YJ du défilé 2025 non identifiés comme YJ-18) — recherche du 2026-10-01
+- `other.kn-23` (KN-23) : aucune photo libre nette du missile ni de son lanceur : la catégorie Commons KN-23 ne contient que des schémas, les photos du ministère japonais de la Défense montrent des débris non identifiables en 600 px — recherche du 2026-10-01
+- `cn.jl-3` (JL-3) : aucune photo libre du missile (seule image sur Commons : une sculpture de glace, refusée ; aucune photo China News Service du JL-3 au défilé de 2025) — recherche du 2026-10-01
+- `eu.m51` (M51) : aucune photo libre du missile : sur Commons, seulement une vue éclatée dessinée, un schéma de SNLE et les radars de suivi des essais (Penmarc'h) — recherche du 2026-10-01
+- `other.shaheen-iii` (Shaheen-III) : aucune photo libre de cette version : la catégorie Commons Shaheen-III ne contient qu'une carte de portée — recherche du 2026-10-01
+- `other.jericho-iii` (Jericho III) : aucune photo libre du missile (programme non montré publiquement) — recherche du 2026-10-01
+- `cn.type-093` (Type 093) : aucune photo libre de ce sous-marin : la catégorie Commons « Type 09III submarines » ne contient qu'un dessin — recherche du 2026-10-01
+- `cn.special-forces` (Special forces) : aucune photo libre identifiable des forces spéciales chinoises (catégorie Commons sans photo, seulement des insignes ; photos mil.ru d'exercices sino-russes sans forces spéciales) — recherche du 2026-10-01
+- `other.optical-recon-satellite` (Optical recon satellite) : photos ISRO sous licence GODL-India seulement (non validée pour ce système) : candidates à valider par Amine, voir le rapport — recherche du 2026-10-01
+- `ru.rezonans-ne` (Rezonans-NE) : aucune photo libre du radar (photos mil.ru des troupes radiotechniques examinées : autres radars) — recherche du 2026-10-01
+- `ru.container-29b6` (Container 29B6) : seule photo libre (ministère russe de la Défense) en 550 px, trop petite — recherche du 2026-10-01
+- `ru.podsolnukh-e` (Podsolnukh-E) : aucune photo libre du radar (les fichiers « Podsolnukh » de Commons sont des bateaux de croisière) — recherche du 2026-10-01
+- `cn.jy-27a` (JY-27A) : aucune photo libre : ni catégorie ni fichier Commons — recherche du 2026-10-01
+- `cn.ylc-8b` (YLC-8B) : aucune photo libre : ni catégorie ni fichier Commons — recherche du 2026-10-01
+- `cn.jy-26` (JY-26) : aucune photo libre : ni catégorie ni fichier Commons — recherche du 2026-10-01
+- `cn.type-7010-lpar` (Type 7010 LPAR) : aucune photo libre trouvée sur Commons — recherche du 2026-10-01
+- `other.el-m-2080-green-pine` (EL/M-2080 Green Pine) : seule image « CC BY-SA » : copie basse définition (825 px) d'une image de constructeur, licence douteuse ; la vue aérienne PikiWiki d'Ein Shemer (CC BY 2.5) ne laisse pas distinguer le radar — recherche du 2026-10-01
+- `other.sepehr-oth` (Sepehr OTH) : aucune photo libre (catégorie Commons des radars iraniens sans le Sepehr) — recherche du 2026-10-01
+- `other.swordfish-lrtr` (Swordfish LRTR) : aucune photo trouvée, même sous licence gouvernementale indienne — recherche du 2026-10-01

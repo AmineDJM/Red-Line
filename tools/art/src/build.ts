@@ -30,6 +30,7 @@ import {
   writeJson,
 } from './lib.js';
 
+const GODL_URL = 'https://data.gov.in/government-open-data-license-india';
 const FULL = { width: 1280, height: 800, quality: 76 };
 const THUMB = { width: 400, height: 250, quality: 74 };
 
@@ -117,7 +118,7 @@ async function render(
         `${sel.systemId} : découpe absente du cache, lancer d'abord « pnpm --filter @redline/tools-art cutout »`,
       );
     }
-    const subject = await prepareSubject(await keepBox(png, cut.box));
+    const subject = await prepareSubject(await keepBox(png, cut.box, cut.erase));
     const full = await webp(await composeCutout(subject, FULL.width, FULL.height), FULL.quality);
     const thumb = await webp(
       await composeCutout(subject, THUMB.width, THUMB.height),
@@ -223,12 +224,13 @@ const lines = [
   '[CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/),',
   '[Licence Ouverte](https://www.etalab.gouv.fr/licence-ouverte-open-licence/) (État français) et',
   '[OGL v3](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/) (Royaume-Uni), toutes deux',
-  'compatibles CC BY et utilisées seulement faute de photo CC ou domaine public.',
+  'compatibles CC BY et utilisées seulement faute de photo CC ou domaine public, et',
+  `[GODL-India](${GODL_URL}) (Inde, Agni-V seulement).`,
   '',
   '## Licences étendues (validées par Amine le 2026-10-01)',
   '',
-  'Les photos sous Licence Ouverte (Etalab 2.0) et sous Open Government Licence v3.0 ont été validées par Amine',
-  'le 2026-10-01. Mentions exigées :',
+  'Les photos sous Licence Ouverte (Etalab 2.0), sous Open Government Licence v3.0 et sous GODL-India ont été',
+  'validées par Amine le 2026-10-01. Mentions exigées :',
   '',
   '- **Licence Ouverte 2.0** : mention de la paternité (« Ministère des Armées » ou l’auteur indiqué) et de la',
   '  date de dernière mise à jour, avec lien vers la source ; modifications signalées (recadrage, étalonnage,',
@@ -237,6 +239,13 @@ const lines = [
   '  avec l’attribution fournie par la source (« UK MOD © Crown copyright »). L’OGL n’autorise pas l’usage',
   '  des insignes militaires (cadrage excluant tout insigne mis en avant) ni n’implique l’approbation du',
   '  fournisseur des données.',
+  '- **GODL-India** (Government Open Data License – India, Gazette of India, février 2017), admise **pour',
+  '  l’Agni-V seulement** (validation d’Amine le 2026-10-01) : licence mondiale, gratuite et non exclusive',
+  '  d’utilisation, d’adaptation et de publication à toutes fins licites, commerciales comprises. Attribution',
+  '  exigée (fournisseur, source, licence et URL, déclaration d’attribution ci-dessous) ; interdiction de laisser',
+  '  entendre que le fournisseur approuve l’usage ou l’utilisateur (aucune approbation implicite de la DRDO ni du',
+  '  gouvernement indien) ; la licence ne couvre ni les noms, écussons, logos et symboles officiels du',
+  '  fournisseur, ni les marques, ni les insignes militaires : le cadre exclut tout emblème officiel.',
   '',
   `Généré par \`tools/art\` (${Object.keys(manifest).length} photos, dont ${detoured} détourées). Ne pas modifier à la main.`,
   '',
@@ -245,14 +254,22 @@ const lines = [
 ];
 const md = (s: string) => s.replace(/([\\`*_[\]<>])/g, '\\$1');
 const ogl = 'Contains public sector information licensed under the Open Government Licence v3.0.';
+const VALIDATED = new Set(['Licence Ouverte', 'OGL v3', 'GODL-India']);
+/** Déclaration d'attribution exigée par la licence (sources.json `attribution`, obligatoire pour la GODL). */
+const attribution = (id: string, e: ManifestEntry) => {
+  const a = sources[id]?.attribution;
+  if (!a && e.license === 'GODL-India')
+    throw new Error(
+      `${id} : GODL-India sans déclaration d'attribution (sources.json « attribution »)`,
+    );
+  return a ?? '';
+};
 for (const [id, e] of Object.entries(manifest)) {
   const extra = [
     e.generic ? 'photo représentative' : '',
     e.note ?? '',
     e.license === 'OGL v3' ? ogl : '',
-    e.license === 'Licence Ouverte' || e.license === 'OGL v3'
-      ? 'licence validée par Amine le 2026-10-01'
-      : '',
+    VALIDATED.has(e.license) ? 'licence validée par Amine le 2026-10-01' : '',
   ]
     .filter(Boolean)
     .join(' ; ');
@@ -260,6 +277,9 @@ for (const [id, e] of Object.entries(manifest)) {
     `- **${md(names.get(id) ?? id)}** (\`${id}\`) — ${md(e.credit)} — ${e.license} — ` +
       `[${md(e.title)}](<${e.sourceUrl}>)${extra ? ` — _${md(extra)}_` : ''}`,
   );
+  // Déclaration exigée par la licence, telle quelle (URL comprises) sur une ligne à part.
+  const statement = attribution(id, e);
+  if (statement) lines.push(`  - Déclaration d’attribution : ${statement}`);
 }
 if (missing.length) {
   lines.push('', '## Systèmes sans photo', '');

@@ -2030,6 +2030,16 @@
     "title": "Bangladesh Air Force FM-90 Crotale SAM (31545368571).jpg",
     "cutout": true
   },
+  "cn.ew-jammer": {
+    "file": "/art/photos/cn.ew-jammer.webp",
+    "thumb": "/art/photos/cn.ew-jammer.thumb.webp",
+    "credit": "中国新闻社",
+    "license": "CC BY 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:PLA_Cyber_2025_V-J_Parade_CNS.png",
+    "title": "PLA Cyber 2025 V-J Parade CNS.png",
+    "generic": true,
+    "note": "Véhicules à antennes de la Force de soutien à l’information / du cyberespace de l’APL (défilé de Pékin, 3 septembre 2025) : moyens de guerre de l’information chinois, pas un brouilleur identifié"
+  },
   "eu.samp-t": {
     "file": "/art/photos/eu.samp-t.webp",
     "thumb": "/art/photos/eu.samp-t.thumb.webp",
@@ -2395,6 +2405,16 @@
     "title": "Sarmat-launch.webm",
     "note": "Image extraite de la vidéo officielle du lancement d'essai (Plessetsk, 20 avril 2022), ministère russe de la Défense"
   },
+  "ru.bulava": {
+    "file": "/art/photos/ru.bulava.webp",
+    "thumb": "/art/photos/ru.bulava.thumb.webp",
+    "credit": "Vitaly V. Kuzmin",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Army2016-501.jpg",
+    "title": "Army2016-501.jpg",
+    "note": "Transporteur-chargeur 3F30-9 du complexe D-30 Bulava, missile dans son conteneur (forum Armée-2016) ; les seules photos libres du tir font 550 px",
+    "cutout": true
+  },
   "cn.df-41": {
     "file": "/art/photos/cn.df-41.webp",
     "thumb": "/art/photos/cn.df-41.thumb.webp",
@@ -2412,6 +2432,15 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:SG1059332.JPG",
     "title": "SG1059332.JPG",
     "cutout": true
+  },
+  "other.agni-v": {
+    "file": "/art/photos/other.agni-v.webp",
+    "thumb": "/art/photos/other.agni-v.thumb.webp",
+    "credit": "DRDO / Ministry of Defence, Government of India",
+    "license": "GODL-India",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Agni_V_Ballistic_missile_successfully_launched_on_15_September_2013_(7).jpg",
+    "title": "Agni V Ballistic missile successfully launched on 15 September 2013 (7).jpg",
+    "note": "Deuxième tir d’essai de l’Agni-V, île Wheeler, 15 septembre 2013 (photo DRDO, aucun emblème dans le cadre)"
   },
   "other.hwasong-17": {
     "file": "/art/photos/other.hwasong-17.webp",
@@ -3181,6 +3210,16 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shenzhou_22_CZ-2F_Y22_launch_10.png",
     "title": "Shenzhou 22 CZ-2F Y22 launch 10.png",
     "generic": true
+  },
+  "cn.asat": {
+    "file": "/art/photos/cn.asat.webp",
+    "thumb": "/art/photos/cn.asat.thumb.webp",
+    "credit": "中国新闻社",
+    "license": "CC BY 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:HQ29_2025_V-J_Parade_CNS.png",
+    "title": "HQ29 2025 V-J Parade CNS.png",
+    "generic": true,
+    "note": "Lanceurs de l’intercepteur exoatmosphérique HQ-29, présenté comme capable de missions antisatellites (défilé de Pékin, 3 septembre 2025) : le SC-19 / DN-3 n’a jamais été montré"
   },
   "eu.optical-recon-satellite": {
     "file": "/art/photos/eu.optical-recon-satellite.webp",

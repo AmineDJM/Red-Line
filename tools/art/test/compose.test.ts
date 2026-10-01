@@ -52,6 +52,13 @@ describe('composition des fiches détourées', () => {
     const subject = await prepareSubject(boxed);
     expect(subject.w).toBe(100);
   });
+
+  it('keepBox retire les zones `erase` (reste de décor collé au sujet)', async () => {
+    // Sujet de x = 100 à 300 sur 400 px : on retire sa moitié droite (x ≥ 200).
+    const erased = await keepBox(await fakeCutout(), undefined, [[0.5, 0, 1, 1]]);
+    const subject = await prepareSubject(erased);
+    expect(subject.w).toBe(100);
+  });
 });
 
 describe('décisions de détourage (cutouts.json)', () => {

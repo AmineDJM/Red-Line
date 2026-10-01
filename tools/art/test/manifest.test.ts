@@ -27,6 +27,15 @@ describe('acceptLicense', () => {
     expect(acceptLicense('', 'Licence Ouverte', true)).toBe('Licence Ouverte');
     expect(acceptLicense('ogl-3', 'OGL 3', true)).toBe('OGL v3');
   });
+
+  it("n'admet la GODL-India que pour une surcharge qui la cite (validation au cas par cas)", () => {
+    expect(acceptLicense('', 'GODL-India', true)).toBeNull();
+    expect(acceptLicense('', 'GODL-India', true, ['GODL-India'])).toBe('GODL-India');
+    expect(acceptLicense('', 'Government Open Data License - India', true, ['GODL-India'])).toBe(
+      'GODL-India',
+    );
+    expect(acceptLicense('cc-by-nc-4.0', 'CC BY-NC 4.0', true, ['GODL-India'])).toBeNull();
+  });
 });
 
 describe('stripHtml', () => {
@@ -66,8 +75,10 @@ describe('manifeste data/art/photos.json', () => {
       expect(existsSync(resolve(REPO, 'apps/client/public', e.thumb.slice(1))), e.thumb).toBe(true);
       expect(e.credit.length, id).toBeGreaterThan(0);
       expect(e.sourceUrl, id).toMatch(/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
+      // Licence gouvernementale indienne : validée par Amine pour l'Agni-V seulement.
+      if (e.license === 'GODL-India') expect(id).toBe('other.agni-v');
       expect(e.license, id).toMatch(
-        /^(Domaine public|CC0 1\.0|CC BY(-SA)? \d\.\d|Licence Ouverte|OGL v3)$/,
+        /^(Domaine public|CC0 1\.0|CC BY(-SA)? \d\.\d|Licence Ouverte|OGL v3|GODL-India)$/,
       );
     }
   });
