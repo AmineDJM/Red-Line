@@ -35,8 +35,8 @@ describe.skipIf(!hasDb)('exploitation : IA imposée, nations, sécurité, quotas
       runtime: {
         maxActiveSoloPerUser: 2,
         dormancyDelayMs: 60_000,
-        multiIdlePauseMs: 3_600_000,
-        soloIdlePauseMs: 7_200_000,
+        multiAbandonMs: 3_600_000,
+        soloAbandonMs: 7_200_000,
         idleUnloadMs: 120_000,
       },
     });
@@ -201,7 +201,7 @@ describe.skipIf(!hasDb)('exploitation : IA imposée, nations, sécurité, quotas
     expect(third.json().error).toBe('too_many_games');
   });
 
-  it('partie solo sans joueur : elle continue, IA lointaines en veille, réveil au retour', async () => {
+  it('partie solo sans joueur : elle continue (IA lointaines en veille), fin pour abandon', async () => {
     const host = built.ctx.host;
     const u = await guest(built.app);
     const id = await createGame(built.app, u.cookie, { nationId: 'fra', speed: 1000 });
@@ -216,31 +216,31 @@ describe.skipIf(!hasDb)('exploitation : IA imposée, nations, sécurité, quotas
     await host.manageIdle(t0 + 61_000);
     expect(g.dormant).toBe(true);
     expect(fakeState(g.state).sys.at(-1)).toEqual({ kind: 'dormancy', on: true });
-    // Pas de pause avant le délai solo (ici 2 h, 48 h en production) : la partie continue la nuit.
+    // Avant le délai d'abandon (ici 2 h, 48 h en production) : la partie continue la nuit.
     await host.manageIdle(t0 + 7_199_000);
     expect(host.games.get(id)).toBe(g);
     expect(g.meta.status).toBe('running');
-    expect(g.clock.paused).toBe(false);
 
+    // Retour du joueur : réveil des IA.
     const back = await WsClient.connect(port, id, u.cookie);
-    const w = await back.next('welcome');
-    expect(w.clock.paused).toBe(false);
+    expect((await back.next('welcome')).clock.paused).toBe(false);
     expect(g.dormant).toBe(false);
     expect(fakeState(g.state).sys.at(-1)).toEqual({ kind: 'dormancy', on: false });
     await back.close();
 
-    // Joueur absent au-delà du délai solo : pause, reprise à son retour.
+    // Nouvelle absence au-delà du délai : fin de partie pour abandon et fermeture.
     await until(() => g.idleSince !== null, 'nouveau départ');
-    const t1 = Date.now();
-    await host.manageIdle(t1 + 7_201_000);
-    expect(g.meta.status).toBe('paused');
-    expect(g.pauseReason).toBe('idle');
-    const again = await WsClient.connect(port, id, u.cookie);
-    expect((await again.next('welcome')).clock.paused).toBe(false);
-    await again.close();
+    await host.manageIdle(Date.now() + 7_201_000);
+    expect(host.games.has(id)).toBe(false);
+    const [row] = await sqlQuery(
+      (sql) => sql`SELECT status, pause_reason, lease_owner FROM games WHERE id = ${id}`,
+    );
+    expect(row).toMatchObject({ status: 'ended', pause_reason: 'abandoned', lease_owner: null });
+    const meta = await api(built.app, u.cookie)('GET', `/api/games/${id}`);
+    expect(meta.json().game).toMatchObject({ status: 'ended', endReason: 'abandoned' });
   });
 
-  it('multijoueur sans aucun joueur connecté pendant 24 h : pause, déchargement, reprise', async () => {
+  it('multijoueur sans aucun joueur connecté pendant 24 h : fin pour abandon', async () => {
     const host = built.ctx.host;
     const u = await guest(built.app);
     const id = await createGame(built.app, u.cookie, { nationId: 'fra', speed: 1000 });
@@ -254,21 +254,48 @@ describe.skipIf(!hasDb)('exploitation : IA imposée, nations, sécurité, quotas
     await host.manageIdle(t0 + 3_599_000);
     expect(g.meta.status).toBe('running');
     await host.manageIdle(t0 + 3_601_000);
-    expect(g.meta.status).toBe('paused');
-    expect(g.pauseReason).toBe('idle');
-    await host.manageIdle(t0 + 3_601_000 + 121_000);
     expect(host.games.has(id)).toBe(false);
     const [row] = await sqlQuery(
-      (sql) => sql`SELECT status, pause_reason, lease_owner FROM games WHERE id = ${id}`,
+      (sql) => sql`SELECT status, pause_reason FROM games WHERE id = ${id}`,
     );
-    expect(row).toMatchObject({ status: 'paused', pause_reason: 'idle', lease_owner: null });
-    await host.beat();
-    expect(host.games.has(id)).toBe(false);
+    expect(row).toMatchObject({ status: 'ended', pause_reason: 'abandoned' });
+  });
 
-    const back = await WsClient.connect(port, id, u.cookie);
-    const w = await back.next('welcome');
-    expect(w.clock.paused).toBe(false);
-    expect(w.game.status).toBe('running');
-    await back.close();
+  it('partie mise en pause puis déchargée : terminée en base après le délai', async () => {
+    const host = built.ctx.host;
+    const u = await guest(built.app);
+    const id = await createGame(built.app, u.cookie, { nationId: 'fra', speed: 1000 });
+    const ws = await WsClient.connect(port, id, u.cookie);
+    await ws.next('welcome');
+    ws.send({ t: 'control', paused: true });
+    await ws.next('clock', (m) => m.clock.paused);
+    await ws.close();
+    await until(() => host.games.get(id)?.idleSince !== null, 'départ du joueur');
+    await host.manageIdle(Date.now() + 121_000);
+    expect(host.games.has(id)).toBe(false);
+    expect(await host.abandonUnloaded(Date.now() + 3_600_000)).toBe(0);
+    expect(await host.abandonUnloaded(Date.now() + 7_300_000)).toBe(1);
+    const [row] = await sqlQuery(
+      (sql) => sql`SELECT status, pause_reason FROM games WHERE id = ${id}`,
+    );
+    expect(row).toMatchObject({ status: 'ended', pause_reason: 'abandoned' });
+  });
+
+  it('suppression d’une partie solo par son joueur (et quota libéré)', async () => {
+    const u = await guest(built.app);
+    const other = await guest(built.app);
+    const id = await createGame(built.app, u.cookie, { nationId: 'fra', speed: 1000 });
+    const ws = await WsClient.connect(port, id, u.cookie);
+    await ws.next('welcome');
+    expect((await api(built.app, other.cookie)('DELETE', `/api/games/${id}`)).statusCode).toBe(403);
+    const r = await api(built.app, u.cookie)('DELETE', `/api/games/${id}`);
+    expect(r.statusCode).toBe(200);
+    expect(r.json()).toEqual({ ok: true });
+    expect((await ws.next('error')).code).toBe('game_deleted');
+    expect(built.ctx.host.games.has(id)).toBe(false);
+    const rows = await sqlQuery((sql) => sql`SELECT id FROM games WHERE id = ${id}`);
+    expect(rows).toHaveLength(0);
+    expect((await api(built.app, u.cookie)('DELETE', `/api/games/${id}`)).statusCode).toBe(404);
+    await ws.close().catch(() => {});
   });
 });

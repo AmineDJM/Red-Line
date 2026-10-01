@@ -268,6 +268,8 @@ export interface GameMeta {
   victory?: { provinceShare: number; allEnemyCapitals: boolean; capitals?: number };
   createdAt?: string;
   startedAt?: string | null;
+  /** Partie terminée : victoire militaire ou abandon (aucun joueur connecté depuis 48 h solo / 24 h multi). */
+  endReason?: 'victory' | 'abandoned';
 }
 
 export interface ShopPolicy {

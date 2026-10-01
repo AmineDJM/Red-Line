@@ -86,13 +86,15 @@ reçoivent ~2,5 à 3,6 Mo/min de WebSocket au total (≈ 40 à 55 Kio/min par jo
    (aucune ville à moins de `time.dormancyRadiusKm` = 2 000 km d'une ville d'un joueur humain) **et en paix
    avec lui** mettent leurs décisions en veille (commande système `dormancy`, journalisée : le rejeu reste
    identique) ; elles se réveillent dès le retour d'un joueur. Les voisins et tout pays en guerre avec un
-   joueur continuent de jouer. Une partie **multijoueur** sans aucun joueur humain connecté depuis **24 h**,
-   ou une partie **solo** dont le joueur ne s'est pas connecté depuis **48 h**, est mise en pause (reprise
-   au retour d'un joueur). Toute partie en pause sans connexion depuis 10 min est
+   joueur continuent de jouer. Une partie **solo** dont le joueur ne s'est pas connecté depuis **48 h**,
+   ou une partie **multijoueur** sans aucun joueur humain connecté depuis **24 h**, est **terminée pour
+   abandon et fermée** (`pause_reason = 'abandoned'`, `GameMeta.endReason`) ; les parties déjà déchargées
+   (mises en pause par le joueur) sont terminées directement en base. Toute partie en pause sans connexion depuis 10 min est
    déchargée de la mémoire. Au redémarrage, seules les parties **en cours** sont adoptées (les autres sont
    chargées à la demande).
-8. **Quotas de création** : 20 parties solo et 5 parties multijoueur non terminées par joueur, 10 créations par
-   minute et par IP (une création coûte ~1,5 s de calcul).
+8. **Quotas de création** : 10 parties solo et 5 parties multijoueur non terminées par joueur, 10 créations par
+   minute et par IP (une création coûte ~1,5 s de calcul). Le joueur peut **supprimer** ses parties solo
+   (`DELETE /api/games/:id`), ce qui libère son quota.
 9. **Compression** : WebSocket permessage-deflate (au-delà de 2 Kio, sans contexte conservé : pas de mémoire
    zlib par connexion) ; fichiers statiques précompressés au build (Brotli + gzip : 14,4 Mio → 2,8 Mio).
 10. **Déterminisme** : `stabilityView` (module diplo) créait une entrée dans l'état à la lecture ; les parties

@@ -112,8 +112,11 @@ export const catalogChanges = pgTable(
 // ───────────────────────────── Parties ─────────────────────────────
 
 export type GameStatus = 'lobby' | 'running' | 'paused' | 'ended';
-/** 'idle' : partie solo mise en pause automatiquement en l'absence du joueur (reprise à son retour). */
-export type PauseReason = 'player' | 'admin' | 'error' | 'idle';
+/**
+ * 'idle' : ancienne pause automatique (parties créées avant la fin pour abandon), reprise au retour.
+ * 'abandoned' : partie terminée faute de joueur (48 h en solo, 24 h en multijoueur) — statut 'ended'.
+ */
+export type PauseReason = 'player' | 'admin' | 'error' | 'idle' | 'abandoned';
 
 export const games = pgTable(
   'games',

@@ -146,10 +146,10 @@ export interface HostOptions {
    * paix avec eux) mettent leurs décisions en veille jusqu'au retour d'un joueur. La partie continue.
    */
   dormancyDelayMs?: number;
-  /** Partie multijoueur sans aucun joueur humain connecté depuis ce délai : pause (reprise au retour). */
-  multiIdlePauseMs?: number;
-  /** Partie solo dont le joueur n'est pas revenu depuis ce délai : pause (reprise à son retour). */
-  soloIdlePauseMs?: number;
+  /** Partie multijoueur sans aucun joueur humain connecté depuis ce délai : terminée et fermée. */
+  multiAbandonMs?: number;
+  /** Partie solo dont le joueur ne s'est pas connecté depuis ce délai : terminée et fermée. */
+  soloAbandonMs?: number;
   /** Partie en pause sans aucune connexion depuis ce délai : déchargée de la mémoire (instantané). */
   idleUnloadMs?: number;
 }
@@ -177,8 +177,8 @@ const DEFAULT_FLUSH_SHARE = 0.35;
 /** Au-delà, un travail synchrone est journalisé (latence ressentie par tous les joueurs). */
 const SLOW_MS = 250;
 const DEFAULT_DORMANCY_DELAY_MS = 5 * 60_000;
-const DEFAULT_MULTI_IDLE_PAUSE_MS = 24 * 3_600_000;
-const DEFAULT_SOLO_IDLE_PAUSE_MS = 48 * 3_600_000;
+const DEFAULT_MULTI_ABANDON_MS = 24 * 3_600_000;
+const DEFAULT_SOLO_ABANDON_MS = 48 * 3_600_000;
 const DEFAULT_IDLE_UNLOAD_MS = 10 * 60_000;
 /** Clé de vue des spectateurs (vue publique commune). */
 const SPECTATOR_KEY = '\u0000spectator';
@@ -234,6 +234,9 @@ export function metaOf(r: GameRow, playerCount?: number): GameMeta {
     ...(r.victory ? { victory: r.victory } : {}),
     createdAt: r.createdAt.toISOString(),
     startedAt: r.startedAt?.toISOString() ?? null,
+    ...(r.status === 'ended'
+      ? { endReason: r.pauseReason === 'abandoned' ? ('abandoned' as const) : ('victory' as const) }
+      : {}),
   };
 }
 
@@ -483,7 +486,12 @@ export class GameHost {
       flushAgain: false,
       flushCostMs: 0,
       behind: false,
-      idleSince: Date.now(),
+      // Délai d'abandon compté depuis la dernière connexion d'un joueur (survit aux redémarrages).
+      idleSince:
+        Math.max(
+          0,
+          ...players.filter((p) => p.userId).map((p) => p.lastActiveAt?.getTime() ?? 0),
+        ) || (row.startedAt ?? row.createdAt).getTime(),
       dormant: engine.isDormant?.(state) ?? false,
       writes: Promise.resolve(),
       errored: false,
@@ -528,6 +536,7 @@ export class GameHost {
         // Révisions de données écrites par une autre instance (back-office servi ailleurs).
         await this.d.store.refreshIfStale();
         await this.checkInactive(now);
+        await this.abandonUnloaded(now);
       }
     } catch (err) {
       this.log.error({ err }, 'battement de cœur des baux en échec');
@@ -540,14 +549,12 @@ export class GameHost {
    * Gestion des parties sans joueur. Une partie continue toujours en l'absence de ses joueurs
    * (constructions, attaques nocturnes, guerres en cours) : après `dormancyDelayMs` sans joueur humain
    * connecté, seules les IA lointaines et en paix avec les joueurs suspendent leurs décisions (moteur,
-   * commande 'dormancy'). Sans aucun humain connecté depuis `multiIdlePauseMs` (multijoueur, 24 h) ou
-   * `soloIdlePauseMs` (solo, 48 h), la partie est mise en pause (raison 'idle', reprise au retour). Une partie terminée, ou en
-   * pause sans connexion depuis `idleUnloadMs`, est déchargée (instantané, bail libéré).
+   * commande 'dormancy'). Sans aucune connexion humaine depuis `soloAbandonMs` (solo, 48 h) ou
+   * `multiAbandonMs` (multijoueur, 24 h), la partie est terminée pour abandon et fermée. Une partie
+   * terminée, ou en pause sans connexion depuis `idleUnloadMs`, est déchargée (instantané, bail libéré).
    */
   async manageIdle(now: number): Promise<void> {
     const dormancyMs = this.d.options.dormancyDelayMs ?? DEFAULT_DORMANCY_DELAY_MS;
-    const multiPauseMs = this.d.options.multiIdlePauseMs ?? DEFAULT_MULTI_IDLE_PAUSE_MS;
-    const soloPauseMs = this.d.options.soloIdlePauseMs ?? DEFAULT_SOLO_IDLE_PAUSE_MS;
     const unloadMs = this.d.options.idleUnloadMs ?? DEFAULT_IDLE_UNLOAD_MS;
     for (const g of [...this.games.values()]) {
       if (this.stopped) return;
@@ -557,25 +564,98 @@ export class GameHost {
       }
       if (g.idleSince === null || g.errored) continue;
       const idle = now - g.idleSince;
+      const imposed = g.pauseReason === 'admin' || g.pauseReason === 'error';
+      if (g.meta.status !== 'ended' && !imposed && idle >= this.abandonMs(g.meta.mode)) {
+        await this.abandon(g, now);
+        continue;
+      }
       if (g.meta.status === 'running' && !g.dormant && idle >= dormancyMs) {
         if (this.applySystemNow(g, { kind: 'dormancy', on: true }).ok) {
           g.dormant = true;
           this.log.info({ gameId: g.id }, 'aucun joueur connecté : IA lointaines en veille');
         }
       }
-      const pauseMs = g.meta.mode === 'solo' ? soloPauseMs : multiPauseMs;
-      if (g.meta.status === 'running' && idle >= pauseMs) {
-        this.setClock(g, { paused: true }, 'idle');
-        this.log.info(
-          { gameId: g.id, mode: g.meta.mode },
-          'partie en pause : aucun joueur connecté',
-        );
-      }
       if (g.meta.status === 'paused' && g.connections.size === 0 && idle >= unloadMs) {
         this.log.info({ gameId: g.id }, 'partie en pause inactive déchargée de la mémoire');
         await this.unload(g, true);
       }
     }
+  }
+
+  private abandonMs(mode: 'solo' | 'multi'): number {
+    return mode === 'solo'
+      ? (this.d.options.soloAbandonMs ?? DEFAULT_SOLO_ABANDON_MS)
+      : (this.d.options.multiAbandonMs ?? DEFAULT_MULTI_ABANDON_MS);
+  }
+
+  /** Fin de partie pour abandon (aucun joueur connecté depuis le délai), puis fermeture. */
+  private async abandon(g: HostedGame, now: number): Promise<void> {
+    this.safely(g, () => {
+      if (!g.clock.paused) this.advance(g, now);
+    });
+    if (g.meta.status === 'ended') return; // victoire atteinte pendant le rattrapage
+    g.ended = true;
+    this.endGame(g, now, 'abandoned');
+    this.log.info({ gameId: g.id, mode: g.meta.mode }, 'partie terminée : abandon (aucun joueur)');
+    for (const c of g.connections) c.close(1000, 'Partie terminée');
+    g.connections.clear();
+    await this.unload(g, true);
+  }
+
+  /**
+   * Parties absentes de la mémoire (en pause, déchargées) dont aucun joueur ne s'est connecté depuis le
+   * délai d'abandon : terminées directement en base. Les pauses imposées (administration, erreur) sont
+   * laissées à l'administration.
+   */
+  async abandonUnloaded(now = Date.now()): Promise<number> {
+    const loaded = [...this.games.keys()];
+    const rows = await this.d.sql<{ id: string }[]>`
+      UPDATE games g SET status = 'ended', pause_reason = 'abandoned', ended_at = now()
+      WHERE g.status IN ('running', 'paused')
+        AND (g.pause_reason IS NULL OR g.pause_reason IN ('player', 'idle'))
+        AND (g.lease_owner IS NULL OR g.lease_until < now())
+        AND NOT (g.id = ANY(${loaded}::uuid[]))
+        AND COALESCE(
+          (SELECT max(p.last_active_at) FROM game_players p
+            WHERE p.game_id = g.id AND p.user_id IS NOT NULL),
+          g.started_at, g.created_at
+        ) < ${new Date(now).toISOString()}::timestamptz
+          - make_interval(secs => CASE WHEN g.mode = 'solo' THEN ${this.abandonMs('solo') / 1000}::float8 ELSE ${this.abandonMs('multi') / 1000}::float8 END)
+      RETURNING g.id`;
+    for (const r of rows) this.log.info({ gameId: r.id }, 'partie déchargée terminée : abandon');
+    return rows.length;
+  }
+
+  /**
+   * Suppression définitive d'une partie solo par son créateur (journal, instantanés, résultats : tout
+   * part en cascade). Refusée si la partie est simulée par une autre instance.
+   */
+  async deleteSoloGame(
+    gameId: string,
+    userId: string,
+  ): Promise<'ok' | 'not_found' | 'not_allowed' | 'busy'> {
+    const [row] = await this.d.db.select().from(games).where(eq(games.id, gameId)).limit(1);
+    if (!row) return 'not_found';
+    if (row.mode !== 'solo' || row.createdBy !== userId) return 'not_allowed';
+    const g = this.games.get(gameId);
+    if (g) {
+      this.scheduler.delete(g.id);
+      this.games.delete(g.id);
+      for (const c of g.connections) {
+        c.send({ t: 'error', code: 'game_deleted', message: 'La partie a été supprimée.' });
+        c.close(1000, 'Partie supprimée');
+      }
+      g.connections.clear();
+      await g.writes.catch(() => {});
+    }
+    const owner = this.d.instanceId;
+    const deleted = await this.d.sql`
+      DELETE FROM games WHERE id = ${gameId}::uuid
+        AND (lease_owner IS NULL OR lease_owner = ${owner} OR lease_until < now())
+      RETURNING id`;
+    if (deleted.length === 0) return 'busy';
+    this.log.info({ gameId }, 'partie solo supprimée par son joueur');
+    return 'ok';
   }
 
   /** Force un battement (tests). */
@@ -711,10 +791,11 @@ export class GameHost {
     }
   }
 
-  private endGame(g: HostedGame, now: number): void {
+  private endGame(g: HostedGame, now: number, reason: 'victory' | 'abandoned' = 'victory'): void {
     g.meta.status = 'ended';
+    g.meta.endReason = reason;
     g.clock = reanchor(g.clock, now, g.state.time, { paused: true });
-    g.pauseReason = null;
+    g.pauseReason = reason === 'abandoned' ? 'abandoned' : null;
     g.dirty = true;
     this.recordFrame(g, g.state.time, true);
     this.persistClock(g, { ended: true });
@@ -1002,7 +1083,11 @@ export class GameHost {
         this.setClock(g, { paused: false }, 'player');
       }
       // Retour d'un joueur : toutes les IA reprennent leurs décisions.
-      if (g.dormant && this.applySystemNow(g, { kind: 'dormancy', on: false }).ok) {
+      if (
+        g.dormant &&
+        g.meta.status !== 'ended' &&
+        this.applySystemNow(g, { kind: 'dormancy', on: false }).ok
+      ) {
         g.dormant = false;
       }
     }
