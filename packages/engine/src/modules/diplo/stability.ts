@@ -21,6 +21,7 @@ import { news, throttled } from './news.js';
 import { capitalPoint, orderProposePeace, ownerAt, regularEnemies } from './relations.js';
 import { removeMember } from './alliances.js';
 import { disbanding } from './unrest.js';
+import { wearinessFactor } from './domestic.js';
 
 /** Unité détruite : pertes (stabilité) et combats sur son propre sol (réfugiés). */
 export function onUnitLost(state: EngineState, u: Unit): void {
@@ -151,7 +152,13 @@ export function stabilityDaily(state: EngineState): void {
       negative = true;
     }
     const wars = regularEnemies(state, n).length;
-    if (wars > 0) addStability(state, n, -c.warWearinessPerDay * wars, 'Lassitude de guerre');
+    if (wars > 0)
+      addStability(
+        state,
+        n,
+        -c.warWearinessPerDay * wars * wearinessFactor(state, n),
+        'Lassitude de guerre',
+      );
     const start = c.stabilityStart;
     const now = stabilityOf(state, n);
     if (!negative && now < start) {

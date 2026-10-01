@@ -1,0 +1,127 @@
+{
+  "$comment": "Langues des pages publiques. Une langue n'est construite que si content/<code>/site.json existe (les clés absentes reprennent l'anglais). hreflang : code publié dans les balises alternate et le sitemap ; locale : Open Graph ; intl : formats de nombres et de dates.",
+  "default": "fr",
+  "xDefault": "en",
+  "languages": [
+    {
+      "code": "fr",
+      "name": "Français",
+      "hreflang": "fr",
+      "locale": "fr_FR",
+      "intl": "fr-FR",
+      "dir": "ltr"
+    },
+    {
+      "code": "en",
+      "name": "English",
+      "hreflang": "en",
+      "locale": "en_US",
+      "intl": "en-US",
+      "dir": "ltr"
+    },
+    {
+      "code": "es",
+      "name": "Español",
+      "hreflang": "es",
+      "locale": "es_ES",
+      "intl": "es-ES",
+      "dir": "ltr"
+    },
+    {
+      "code": "de",
+      "name": "Deutsch",
+      "hreflang": "de",
+      "locale": "de_DE",
+      "intl": "de-DE",
+      "dir": "ltr"
+    },
+    {
+      "code": "it",
+      "name": "Italiano",
+      "hreflang": "it",
+      "locale": "it_IT",
+      "intl": "it-IT",
+      "dir": "ltr"
+    },
+    {
+      "code": "pt",
+      "name": "Português",
+      "hreflang": "pt",
+      "locale": "pt_BR",
+      "intl": "pt-BR",
+      "dir": "ltr"
+    },
+    {
+      "code": "pl",
+      "name": "Polski",
+      "hreflang": "pl",
+      "locale": "pl_PL",
+      "intl": "pl-PL",
+      "dir": "ltr"
+    },
+    {
+      "code": "tr",
+      "name": "Türkçe",
+      "hreflang": "tr",
+      "locale": "tr_TR",
+      "intl": "tr-TR",
+      "dir": "ltr"
+    },
+    {
+      "code": "ru",
+      "name": "Русский",
+      "hreflang": "ru",
+      "locale": "ru_RU",
+      "intl": "ru-RU",
+      "dir": "ltr"
+    },
+    {
+      "code": "ar",
+      "name": "العربية",
+      "hreflang": "ar",
+      "locale": "ar_AR",
+      "intl": "ar",
+      "dir": "rtl"
+    },
+    {
+      "code": "hi",
+      "name": "हिन्दी",
+      "hreflang": "hi",
+      "locale": "hi_IN",
+      "intl": "hi-IN",
+      "dir": "ltr"
+    },
+    {
+      "code": "id",
+      "name": "Bahasa Indonesia",
+      "hreflang": "id",
+      "locale": "id_ID",
+      "intl": "id-ID",
+      "dir": "ltr"
+    },
+    {
+      "code": "zh",
+      "name": "中文",
+      "hreflang": "zh-Hans",
+      "locale": "zh_CN",
+      "intl": "zh-CN",
+      "dir": "ltr"
+    },
+    {
+      "code": "ja",
+      "name": "日本語",
+      "hreflang": "ja",
+      "locale": "ja_JP",
+      "intl": "ja-JP",
+      "dir": "ltr"
+    },
+    {
+      "code": "ko",
+      "name": "한국어",
+      "hreflang": "ko",
+      "locale": "ko_KR",
+      "intl": "ko-KR",
+      "dir": "ltr"
+    }
+  ]
+}

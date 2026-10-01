@@ -154,6 +154,12 @@ export interface SharedBoard {
   >;
   /** diplo : conditions de victoire propres à la partie (setup.victory), sinon balance.victory. */
   victory?: { provinceShare: number; allEnemyCapitals: boolean };
+  /** diplo : décalage du moral visé des provinces par les politiques intérieures (points), par nation. */
+  moraleShift?: Record<NationId, number>;
+  /** eco : moral moyen des provinces d'une nation (pondéré par la population) ; absent = moral de départ. */
+  moraleAvg?: Record<NationId, number>;
+  /** intel : sites sensibles protégés par le renseignement intérieur, province → nation protectrice. */
+  protectedSites?: Record<ProvinceId, NationId>;
 }
 
 export interface StaticSite {

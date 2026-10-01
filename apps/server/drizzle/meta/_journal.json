@@ -29,6 +29,20 @@
       "when": 1790848067675,
       "tag": "0003_unlimited",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790864764035,
+      "tag": "0004_shop_resources",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790865389949,
+      "tag": "0005_costs",
+      "breakpoints": true
     }
   ]
 }

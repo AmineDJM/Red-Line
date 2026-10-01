@@ -27,6 +27,7 @@ async function connect(gameId: string, spectate: boolean): Promise<GameConnectio
     { me, meta: spectate ? { ...game, spectator: true } : undefined },
   );
   mockApi.mockSession.battle = (id) => conn.battleReport(id);
+  mockApi.mockSession.grant = (money, resources) => conn.grant(money, resources);
   return conn;
 }
 

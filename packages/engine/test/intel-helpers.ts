@@ -87,7 +87,11 @@ export function runOp(
   if (!r.ok) throw new Error(`${op} refusée : ${r.message}`);
   const ops = ist(s).nations[n]!.ops;
   const o = ops[ops.length - 1]!;
-  if (outcome !== 'natural') o.estimate = outcome === 'success' ? 1 : 0;
+  if (outcome !== 'natural') {
+    o.estimate = outcome === 'success' ? 1 : 0;
+    // Issue fixée : la détection éventuelle par la sécurité intérieure adverse ne la modifie pas.
+    delete o.dt;
+  }
   advanceTo(s, o.completesAt);
   return o.id;
 }

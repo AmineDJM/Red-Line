@@ -7,6 +7,7 @@ import { signal } from '../registry.js';
 import { cfg, clamp } from './config.js';
 import { budgetFactor, level, quality, roll } from './levels.js';
 import { publish } from './reports.js';
+import { addIncident, agentDetectFactor } from './interior.js';
 import { ist, nat, nextId, type Agent } from './state.js';
 import { codename, fmtTime, nationName, natAgree, natDe, natLe } from './text.js';
 
@@ -47,6 +48,7 @@ export function detectionChance(state: EngineState, a: Agent, bonus = 1): number
       (0.5 + 0.5 * lh) *
       (0.5 + budgetFactor(state, a.host, 'interior')) *
       (a.kind === 'source' ? 0.6 : 1) *
+      agentDetectFactor(state, a.host) *
       bonus) /
     (1 + 0.3 * lo);
   return clamp(p, 0, 0.9);
@@ -75,6 +77,7 @@ export function catchQuietly(state: EngineState, a: Agent): void {
   a.state = 'caught';
   a.caughtAt = state.time;
   nat(state, a.host).log.caught++;
+  addIncident(state, a.host, wi(state.world).nationById.get(a.host)?.capitalProvinceId, 'agent');
   const until = state.time + c.caughtGraceH * HOUR;
   publish(state, a.host, {
     dept: 'interior',

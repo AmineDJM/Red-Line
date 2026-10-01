@@ -1,5 +1,6 @@
 import type { FeatureCollection } from 'geojson';
 import type {
+  PublicStats,
   Balance,
   BattleReport,
   CosmeticItem,
@@ -20,6 +21,8 @@ import type {
   ResearchNode,
   ScenarioSummary,
   SeasonView,
+  ResourceBuyResult,
+  ResourceOffer,
   ShopPack,
   TimelapseView,
   WalletEntry,
@@ -256,6 +259,12 @@ export class HttpApi implements Api {
   async cosmetics(): Promise<{ items: CosmeticItem[]; owned: string[] }> {
     return request('GET', '/api/shop/cosmetics');
   }
+  async resourceOffers(): Promise<ResourceOffer[]> {
+    return (await request<{ offers: ResourceOffer[] }>('GET', '/api/shop/resources')).offers;
+  }
+  async buyResources(gameId: string, offerId: string): Promise<ResourceBuyResult> {
+    return request('POST', `/api/games/${enc(gameId)}/shop/resources`, { offerId });
+  }
   async buyCosmetic(id: string): Promise<{ ok: boolean; balance: number }> {
     return request('POST', `/api/shop/cosmetics/${enc(id)}/buy`, {});
   }
@@ -265,8 +274,12 @@ export class HttpApi implements Api {
   async seasons(): Promise<SeasonView[]> {
     return (await request<{ seasons: SeasonView[] }>('GET', '/api/seasons')).seasons;
   }
-  async legal(doc: LegalDocRef['id']): Promise<LegalDoc> {
-    return (await request<{ doc: LegalDoc }>('GET', `/api/legal/${doc}`)).doc;
+  async legal(doc: LegalDocRef['id'], lang?: string): Promise<LegalDoc> {
+    const q = lang && lang !== 'fr' ? `?lang=${enc(lang)}` : '';
+    return (await request<{ doc: LegalDoc }>('GET', `/api/legal/${doc}${q}`)).doc;
+  }
+  async publicStats(): Promise<PublicStats> {
+    return request('GET', '/api/public/stats');
   }
   async acceptLegal(docs: LegalDocRef[]): Promise<void> {
     await request('POST', '/api/legal/accept', { docs });

@@ -15,6 +15,8 @@ import type {
   ProvinceDef,
   PublicUser,
   ResearchNode,
+  Resource,
+  ResourceBuyResult,
   ScenarioSummary,
   WeaponSystem,
 } from '@redline/shared';
@@ -25,6 +27,7 @@ import { demoCatalog, demoResearch } from './mockCatalog.js';
 import {
   DEMO_COSMETICS,
   DEMO_PACKS,
+  DEMO_RESOURCE_OFFERS,
   DEMO_SEASONS,
   demoBattleReport,
   demoLegal,
@@ -37,7 +40,14 @@ import {
   demoWallet,
   withDemoBuildings,
 } from './mockRest.js';
-import type { Api, BasemapData, Credentials, RegisterInput, TilesInfo } from './types.js';
+import {
+  ApiError,
+  type Api,
+  type BasemapData,
+  type Credentials,
+  type RegisterInput,
+  type TilesInfo,
+} from './types.js';
 
 export const MOCK_GAME_ID = 'demo';
 const NATION_KEY = 'rl.mock.nation';
@@ -143,6 +153,8 @@ export async function loadDemoResearch(): Promise<ResearchNode[]> {
 /** Accès à la partie simulée en cours (rapports de bataille détaillés). */
 export const mockSession: {
   battle?: (id: string) => BattleReport | null;
+  /** Dotation de la partie de démonstration (achat de ressources). */
+  grant?: (money: number, resources: Partial<Record<Resource, number>>) => void;
 } = {};
 
 const WALLET = { balance: 1080 };
@@ -329,6 +341,23 @@ export class MockApi implements Api {
   async cosmetics() {
     return { items: DEMO_COSMETICS, owned: [...OWNED] };
   }
+  async resourceOffers() {
+    return DEMO_RESOURCE_OFFERS;
+  }
+  async buyResources(_gameId: string, offerId: string): Promise<ResourceBuyResult> {
+    const o = DEMO_RESOURCE_OFFERS.find((x) => x.id === offerId);
+    if (!o) throw new ApiError(404, 'not_found', 'Offre introuvable');
+    if (WALLET.balance < o.price)
+      throw new ApiError(402, 'insufficient_premium', 'Solde de monnaie premium insuffisant');
+    WALLET.balance -= o.price;
+    mockSession.grant?.(o.money, o.resources);
+    return {
+      ok: true,
+      balance: WALLET.balance,
+      cost: o.price,
+      granted: { money: o.money, resources: { ...o.resources } },
+    };
+  }
   async buyCosmetic(id: string) {
     const c = DEMO_COSMETICS.find((x) => x.id === id);
     if (!c || WALLET.balance < c.price || OWNED.has(id))
@@ -348,6 +377,9 @@ export class MockApi implements Api {
   }
   async legal(doc: LegalDocRef['id']) {
     return demoLegal(doc);
+  }
+  async publicStats() {
+    return { nations: 201, provinces: 2567, systems: 406, gamesRunning: 37, playersOnline: 112 };
   }
   async acceptLegal() {
     try {

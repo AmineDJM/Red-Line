@@ -1,0 +1,362 @@
+{
+  "version": 1,
+  "source": "ElevenLabs (sound-generation, music) — généré pour Red Line",
+  "formats": {
+    "webm": "audio/webm; codecs=\"opus\"",
+    "m4a": "audio/mp4; codecs=\"mp4a.40.2\""
+  },
+  "sounds": {
+    "airstrike": {
+      "kind": "sfx",
+      "base": "sfx/airstrike",
+      "duration": 2.798,
+      "loop": false,
+      "channels": 1,
+      "bytes": {
+        "webm": 14037,
+        "m4a": 21216
+      },
+      "gainDb": -0.26
+    },
+    "amb-combat": {
+      "kind": "ambience",
+      "base": "ambience/amb-combat",
+      "duration": 28.0,
+      "loop": true,
+      "loopStart": 0.25,
+      "loopEnd": 27.75,
+      "channels": 1,
+      "bytes": {
+        "webm": 101508,
+        "m4a": 147517
+      },
+      "gainDb": -8.45
+    },
+    "amb-peace": {
+      "kind": "ambience",
+      "base": "ambience/amb-peace",
+      "duration": 28.0,
+      "loop": true,
+      "loopStart": 0.25,
+      "loopEnd": 27.75,
+      "channels": 1,
+      "bytes": {
+        "webm": 95915,
+        "m4a": 146995
+      },
+      "gainDb": 16.92
+    },
+    "amb-tension": {
+      "kind": "ambience",
+      "base": "ambience/amb-tension",
+      "duration": 28.0,
+      "loop": true,
+      "loopStart": 0.25,
+      "loopEnd": 27.75,
+      "channels": 1,
+      "bytes": {
+        "webm": 112935,
+        "m4a": 146337
+      },
+      "gainDb": -10.6
+    },
+    "amb-war": {
+      "kind": "ambience",
+      "base": "ambience/amb-war",
+      "duration": 28.0,
+      "loop": true,
+      "loopStart": 0.25,
+      "loopEnd": 27.75,
+      "channels": 1,
+      "bytes": {
+        "webm": 89715,
+        "m4a": 146579
+      },
+      "gainDb": -5.26
+    },
+    "city-captured": {
+      "kind": "sfx",
+      "base": "sfx/city-captured",
+      "duration": 3.48,
+      "loop": false,
+      "channels": 2,
+      "bytes": {
+        "webm": 26679,
+        "m4a": 32682
+      },
+      "gainDb": -9.86
+    },
+    "city-lost": {
+      "kind": "sfx",
+      "base": "sfx/city-lost",
+      "duration": 3.999,
+      "loop": false,
+      "channels": 2,
+      "bytes": {
+        "webm": 24731,
+        "m4a": 37452
+      },
+      "gainDb": -7.55
+    },
+    "combat": {
+      "kind": "music",
+      "base": "music/combat",
+      "duration": 76.5,
+      "loop": true,
+      "loopStart": 0.25,
+      "loopEnd": 76.25,
+      "channels": 2,
+      "bytes": {
+        "webm": 517089,
+        "m4a": 782192
+      },
+      "gainDb": -5.72
+    },
+    "defeat": {
+      "kind": "music",
+      "base": "music/defeat",
+      "duration": 28.003,
+      "loop": false,
+      "channels": 2,
+      "bytes": {
+        "webm": 230664,
+        "m4a": 287396
+      },
+      "gainDb": -7.17
+    },
+    "intel-report": {
+      "kind": "sfx",
+      "base": "sfx/intel-report",
+      "duration": 2.0,
+      "loop": false,
+      "channels": 1,
+      "bytes": {
+        "webm": 13855,
+        "m4a": 15771
+      },
+      "gainDb": -11.6
+    },
+    "interception": {
+      "kind": "sfx",
+      "base": "sfx/interception",
+      "duration": 2.48,
+      "loop": false,
+      "channels": 1,
+      "bytes": {
+        "webm": 10811,
+        "m4a": 18990
+      },
+      "gainDb": -11.18
+    },
+    "missile-launch": {
+      "kind": "sfx",
+      "base": "sfx/missile-launch",
+      "duration": 4.0,
+      "loop": false,
+      "channels": 1,
+      "bytes": {
+        "webm": 18358,
+        "m4a": 29870
+      },
+      "gainDb": -6.59
+    },
+    "notification": {
+      "kind": "sfx",
+      "base": "sfx/notification",
+      "duration": 0.8,
+      "loop": false,
+      "channels": 1,
+      "bytes": {
+        "webm": 4687,
+        "m4a": 6962
+      },
+      "gainDb": 1.8
+    },
+    "order": {
+      "kind": "sfx",
+      "base": "sfx/order",
+      "duration": 0.286,
+      "loop": false,
+      "channels": 1,
+      "bytes": {
+        "webm": 1896,
+        "m4a": 3213
+      },
+      "gainDb": -11.9
+    },
+    "peace": {
+      "kind": "music",
+      "base": "music/peace",
+      "duration": 92.5,
+      "loop": true,
+      "loopStart": 0.25,
+      "loopEnd": 92.25,
+      "channels": 2,
+      "bytes": {
+        "webm": 727979,
+        "m4a": 949891
+      },
+      "gainDb": 6.54
+    },
+    "peace-signed": {
+      "kind": "sfx",
+      "base": "sfx/peace-signed",
+      "duration": 4.19,
+      "loop": false,
+      "channels": 2,
+      "bytes": {
+        "webm": 35784,
+        "m4a": 39322
+      },
+      "gainDb": -8.87
+    },
+    "production-complete": {
+      "kind": "sfx",
+      "base": "sfx/production-complete",
+      "duration": 2.0,
+      "loop": false,
+      "channels": 1,
+      "bytes": {
+        "webm": 10812,
+        "m4a": 15481
+      },
+      "gainDb": -11.18
+    },
+    "radar-alert": {
+      "kind": "sfx",
+      "base": "sfx/radar-alert",
+      "duration": 2.48,
+      "loop": false,
+      "channels": 1,
+      "bytes": {
+        "webm": 12406,
+        "m4a": 18868
+      },
+      "gainDb": -8.55
+    },
+    "research-complete": {
+      "kind": "sfx",
+      "base": "sfx/research-complete",
+      "duration": 2.0,
+      "loop": false,
+      "channels": 1,
+      "bytes": {
+        "webm": 10105,
+        "m4a": 15584
+      },
+      "gainDb": 7.2
+    },
+    "select": {
+      "kind": "sfx",
+      "base": "sfx/select",
+      "duration": 0.48,
+      "loop": false,
+      "channels": 1,
+      "bytes": {
+        "webm": 2923,
+        "m4a": 4485
+      },
+      "gainDb": -8.2
+    },
+    "tension": {
+      "kind": "music",
+      "base": "music/tension",
+      "duration": 55.0,
+      "loop": true,
+      "loopStart": 0.25,
+      "loopEnd": 54.75,
+      "channels": 2,
+      "bytes": {
+        "webm": 431976,
+        "m4a": 562837
+      },
+      "gainDb": -4.69
+    },
+    "unit-destroyed": {
+      "kind": "sfx",
+      "base": "sfx/unit-destroyed",
+      "duration": 2.48,
+      "loop": false,
+      "channels": 1,
+      "bytes": {
+        "webm": 11225,
+        "m4a": 18957
+      },
+      "gainDb": -6.29
+    },
+    "victory": {
+      "kind": "music",
+      "base": "music/victory",
+      "duration": 28.003,
+      "loop": false,
+      "channels": 2,
+      "bytes": {
+        "webm": 205351,
+        "m4a": 286592
+      },
+      "gainDb": -4.75
+    },
+    "war": {
+      "kind": "music",
+      "base": "music/war",
+      "duration": 84.5,
+      "loop": true,
+      "loopStart": 0.25,
+      "loopEnd": 84.25,
+      "channels": 2,
+      "bytes": {
+        "webm": 625982,
+        "m4a": 865104
+      },
+      "gainDb": -4.76
+    },
+    "war-declared": {
+      "kind": "sfx",
+      "base": "sfx/war-declared",
+      "duration": 5.0,
+      "loop": false,
+      "channels": 2,
+      "bytes": {
+        "webm": 33438,
+        "m4a": 46784
+      },
+      "gainDb": -5.26
+    },
+    "war-declared-me": {
+      "kind": "sfx",
+      "base": "sfx/war-declared-me",
+      "duration": 6.0,
+      "loop": false,
+      "channels": 2,
+      "bytes": {
+        "webm": 38433,
+        "m4a": 55979
+      },
+      "gainDb": -6.28
+    },
+    "window-close": {
+      "kind": "sfx",
+      "base": "sfx/window-close",
+      "duration": 0.48,
+      "loop": false,
+      "channels": 1,
+      "bytes": {
+        "webm": 2731,
+        "m4a": 4633
+      },
+      "gainDb": 1.1
+    },
+    "window-open": {
+      "kind": "sfx",
+      "base": "sfx/window-open",
+      "duration": 0.48,
+      "loop": false,
+      "channels": 1,
+      "bytes": {
+        "webm": 2656,
+        "m4a": 4582
+      },
+      "gainDb": -12.2
+    }
+  }
+}

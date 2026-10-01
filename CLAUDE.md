@@ -13,6 +13,8 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
   seules les IA lointaines (> `time.dormancyRadiusKm`) et en paix avec les joueurs mettent leurs décisions en
   veille (commande système `dormancy`). **Fin pour abandon** et fermeture après **48 h** sans connexion (solo) ou
   **24 h** sans aucun humain (multijoueur). Quota : 10 parties solo en cours, suppressibles par le joueur.
+- Économie du service (coûts mesurés par partie et par joueur, attribution, recettes, alertes) et gestion
+  complète du back-office (comptes, RGPD, parties, annonces, paramètres serveur) : `docs/couts.md`.
 - Exigences d'Amine prioritaires : **dollars réels** (prix unitaires réels, budgets de défense réels), **arsenaux
   réels** au départ (ORBAT), production soumise à la R&D, **vraies photos** des matériels, interface **terminal
   moderne extrêmement propre** et carte au niveau de **Conflict of Nations**.
@@ -26,8 +28,12 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
 - `apps/server` : Fastify + WebSocket + PostgreSQL (Drizzle) ; sert aussi `apps/client/dist` (`/`) et
   `apps/admin/dist` (`/admin/`).
 - `apps/client` : jeu (React, Vite, MapLibre, Zustand, i18next). `apps/admin` : back-office.
+- `apps/site` : pages publiques prérendues au build (SEO : accueil, guide, nations, arsenal, FAQ, légal), contenus
+  par langue dans `apps/site/content/<langue>/` (site.json + legal/*.md, le français fait foi), servies sous
+  `/<langue>/…` par `apps/server/src/http/site.ts` (jetons `{{origin}}` = `PUBLIC_URL`, `{{legal.*}}` = back-office).
 - `data/` : catalogue, équilibrage, scénarios, carte (générée), fond de carte, glyphes, tuiles satellite.
-- `tools/map`, `tools/tiles`, `tools/glyphs` : pipelines reproductibles qui produisent `data/`.
+- `tools/map`, `tools/tiles`, `tools/glyphs` : pipelines reproductibles qui produisent `data/` ; `tools/audio` : sons et
+  musiques ElevenLabs → `apps/client/public/audio` (moteur audio : `apps/client/src/audio`).
 - `e2e/` : Playwright contre le vrai serveur. `docs/` : architecture, déploiement, bilans.
 
 ## Décisions prises

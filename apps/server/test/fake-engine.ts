@@ -481,6 +481,11 @@ const applySystem: NonNullable<Engine['applySystem']> = (state, cmd) => {
         return { ok: false, error: 'invalid_target', message: 'Production inconnue' };
       }
       break;
+    case 'grant':
+      // Montant témoin refusé (test du refus du moteur : aucun débit).
+      if (cmd.money === 13)
+        return { ok: false, error: 'invalid_target', message: 'Dotation refusée' };
+      break;
     default:
       break;
   }

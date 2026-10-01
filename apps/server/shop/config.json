@@ -112,13 +112,96 @@
       "purchasable": false
     }
   ],
-  "accelerate": { "pricePerHour": 2, "minimum": 5 },
+  "resourceOffers": [
+    {
+      "id": "res-credit",
+      "name": "Ligne de crédit",
+      "money": 500000000,
+      "price": 50,
+      "sort": 1
+    },
+    {
+      "id": "res-loan",
+      "name": "Emprunt d'État",
+      "money": 2000000000,
+      "price": 180,
+      "sort": 2
+    },
+    {
+      "id": "res-fund",
+      "name": "Fonds souverain",
+      "money": 10000000000,
+      "price": 800,
+      "sort": 3
+    },
+    {
+      "id": "res-oil",
+      "name": "Cargaison de pétrole",
+      "resources": {
+        "oil": 200
+      },
+      "price": 40,
+      "sort": 10
+    },
+    {
+      "id": "res-metals",
+      "name": "Minerais et métaux",
+      "resources": {
+        "metals": 200
+      },
+      "price": 40,
+      "sort": 11
+    },
+    {
+      "id": "res-electronics",
+      "name": "Composants électroniques",
+      "resources": {
+        "electronics": 100
+      },
+      "price": 50,
+      "sort": 12
+    },
+    {
+      "id": "res-food",
+      "name": "Réserves alimentaires",
+      "resources": {
+        "food": 300
+      },
+      "price": 30,
+      "sort": 13
+    },
+    {
+      "id": "res-logistics",
+      "name": "Lot logistique",
+      "resources": {
+        "oil": 150,
+        "metals": 150,
+        "electronics": 75,
+        "food": 200
+      },
+      "price": 120,
+      "sort": 20
+    }
+  ],
+  "accelerate": {
+    "pricePerHour": 2,
+    "minimum": 5
+  },
   "seasons": {
     "lengthDays": 90,
     "rewards": [
-      { "rank": 1, "cosmeticId": "season.theme.command" },
-      { "rank": 3, "cosmeticId": "season.skin.veteran" },
-      { "rank": 10, "cosmeticId": "season.flag.laurel" }
+      {
+        "rank": 1,
+        "cosmeticId": "season.theme.command"
+      },
+      {
+        "rank": 3,
+        "cosmeticId": "season.skin.veteran"
+      },
+      {
+        "rank": 10,
+        "cosmeticId": "season.flag.laurel"
+      }
     ]
   },
   "points": {
