@@ -267,6 +267,11 @@ export interface EconomyDetailView {
   /** Entretien prévu par jour, par catégorie d'unités (dollars). */
   upkeep: Record<string, number>;
   upkeepTotal: number;
+  /**
+   * Ajustement de l'entretien (âge du matériel, coût local, facteur national de départ) : entretien
+   * au prix catalogue, facteur moyen appliqué (upkeepTotal / catalog) et indice de coût local.
+   */
+  upkeepAdjust?: { catalog: number; factor: number; costIndex: number };
   /** Flux réels des dernières 24 h de jeu et du jour en cours (dollars signés). */
   lastDay: Partial<Record<LedgerKey, number>>;
   today: Partial<Record<LedgerKey, number>>;

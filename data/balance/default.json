@@ -45,6 +45,39 @@
     "budgetMultiplier": 1,
     "provinceShare": 0.5
   },
+  "upkeep": {
+    "generationFactor": {
+      "1": 0.6,
+      "2": 0.7,
+      "3": 0.85,
+      "4": 1,
+      "5": 1.1
+    },
+    "generationExempt": ["infantry"],
+    "localShare": {
+      "infantry": 0.9,
+      "logistics": 0.7,
+      "tank": 0.6,
+      "ifv": 0.6,
+      "artillery": 0.6,
+      "surface_ship": 0.5,
+      "submarine": 0.45,
+      "radar": 0.5,
+      "helicopter": 0.45,
+      "air_support": 0.45,
+      "fighter": 0.4,
+      "bomber": 0.4,
+      "drone": 0.4,
+      "air_defense": 0.4,
+      "strike_missile": 0.3,
+      "nuclear": 0.3,
+      "space": 0.2
+    },
+    "localShareDefault": 0.5,
+    "defaultCostIndex": 1,
+    "maxStartShare": 0.7,
+    "minStartShare": 0
+  },
   "research": {
     "durationMultiplier": 1,
     "maxQueue": 5

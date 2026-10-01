@@ -27,6 +27,7 @@ import { fromLocalInput, toLocalInput } from '../src/lib/dates';
 import { href, parseHash } from '../src/lib/router';
 import { deepMerge } from '../src/screens/Scenarios';
 import { helpKeyOf, ruleLabel } from '../src/screens/Rules';
+import { RULE_HELP, RULE_SECTIONS } from '../src/i18n/rules';
 import { targetRoute } from '../src/screens/Audit';
 
 describe('introspection des schémas zod', () => {
@@ -130,6 +131,24 @@ describe('règles : libellés et fusion', () => {
     expect(helpKeyOf('combat.veterancyXp.1')).toBe('combat.veterancyXp');
     expect(helpKeyOf('buildings.levels.mine.2.costUsd')).toBe('buildings.levels.costUsd');
     expect(ruleLabel('combat.variance')).toBe('Combat › Variance des dégâts');
+  });
+  it('sections entretien, budget et IA : libellés et aides en français pour chaque clé', () => {
+    const root = describeSchema(BalanceSchema) as SNode & { t: 'object' };
+    const keys: string[] = [];
+    const walk = (n: SNode, k: string) => {
+      keys.push(k);
+      if (n.t === 'object') for (const [c, v] of Object.entries(n.shape)) walk(v, `${k}.${c}`);
+    };
+    for (const sec of ['money', 'upkeep', 'ai']) walk(root.shape[sec]!, sec);
+    expect(keys.length).toBeGreaterThan(150);
+    expect(keys.filter((k) => k.includes('.') && !RULE_HELP[k])).toEqual([]);
+    expect(RULE_SECTIONS.ai![0]).toBe('Intelligence artificielle');
+    expect(ruleLabel('ai.levels.hard.warRatio')).toBe(
+      'Intelligence artificielle › Rapport de force pour une guerre',
+    );
+    expect(ruleLabel('upkeep.localShare.infantry')).toBe(
+      'Entretien des forces › Part locale par catégorie',
+    );
   });
   it('surcharges de scénario fusionnées en profondeur', () => {
     const m = deepMerge({ a: { b: 1, c: 2 }, l: [1, 2] }, { a: { b: 3 }, l: [9] });

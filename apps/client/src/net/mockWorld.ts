@@ -337,6 +337,7 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
     },
     upkeep,
     upkeepTotal,
+    upkeepAdjust: { catalog: upkeepTotal / 0.62, factor: 0.62, costIndex: 0.85 },
     lastDay: {
       budgetNational: national,
       budgetProvincial: provincial,

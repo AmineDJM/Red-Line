@@ -3,6 +3,7 @@
   "year": 2025,
   "doctrine": "us",
   "defenseBudgetUsd": 1470000000,
+  "costIndex": 0.4,
   "activePersonnel": 24100,
   "inventory": [
     {

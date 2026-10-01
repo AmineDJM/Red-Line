@@ -19,15 +19,10 @@ import type { ModuleIncome } from '../types.js';
 import { health, power, provinceIncomeFactor, provinceResources } from './buildings.js';
 import { cfg, effect } from './config.js';
 import { eco, ecoNation, ecoRt, orbatOf } from './state.js';
+import { budgetDay, upkeepFactor } from './upkeep.js';
 import { eraOk, fail } from './util.js';
 
-/** Budget de défense journalier d'une nation (dollars), 0 sans ORBAT. */
-export function budgetDay(state: EngineState, n: NationId): number {
-  const o = orbatOf(state, n);
-  if (!o) return 0;
-  const m = cfg(state.world).money;
-  return o.defenseBudgetUsd * m.budgetPerDayFraction * m.budgetMultiplier;
-}
+export { budgetDay };
 
 /**
  * Revenu journalier en argent de chaque province, figé pour la partie : part provinciale du budget de
@@ -100,6 +95,8 @@ export interface Breakdown {
   consumption: Record<Resource, number>;
   upkeep: Record<string, number>;
   upkeepTotal: number;
+  /** Entretien au prix catalogue (sans âge, coût local ni facteur national ; modificateurs compris). */
+  upkeepCatalog: number;
 }
 
 /** Revenus, ressources et entretien prévus par jour, poste par poste (économie réelle). */
@@ -132,12 +129,15 @@ export function breakdown(state: EngineState, n: NationId): Breakdown {
 
   const upkeep: Record<string, number> = {};
   let upkeepTotal = 0;
+  let upkeepCatalog = 0;
   const upMod = modifier(state, n, 'upkeep');
   for (const uid of sortedSet(state.rt.byNation.get(n))) {
     const u = state.units[uid];
     if (!u) continue;
     const sys = sysOf(state, u);
-    const v = sys.upkeepPerDay * u.count * upMod;
+    const cat = sys.upkeepPerDay * u.count * upMod;
+    const v = cat * upkeepFactor(state, n, sys);
+    upkeepCatalog += cat;
     if (v !== 0) {
       upkeep[sys.category] = (upkeep[sys.category] ?? 0) + v;
       upkeepTotal += v;
@@ -156,6 +156,7 @@ export function breakdown(state: EngineState, n: NationId): Breakdown {
     consumption,
     upkeep,
     upkeepTotal,
+    upkeepCatalog,
   };
 }
 

@@ -32,6 +32,8 @@ type Item = Orbat['inventory'][number];
 const LABELS: Record<string, string> = {
   defenseBudgetUsd: T.orbat.budgetShort,
   activePersonnel: T.orbat.personnel,
+  costIndex: T.orbat.costIndex,
+  upkeepShare: T.orbat.upkeepShare,
   year: T.orbat.year,
   doctrine: T.orbat.doctrine,
   confidence: T.orbat.confidence,
@@ -359,6 +361,18 @@ function OrbatEditor({
             <NumberField path={['defenseBudgetUsd']} affix={usd} />
             <NumberField path={['activePersonnel']} optional affix={(n) => compact(n)} />
             <NumberField path={['year']} />
+            <NumberField
+              path={['costIndex']}
+              optional
+              hint={T.orbat.costIndexHint}
+              affix={(n) => `× ${num(n)}`}
+            />
+            <NumberField
+              path={['upkeepShare']}
+              optional
+              hint={T.orbat.upkeepShareHint}
+              affix={(n) => `${num(n * 100)} %`}
+            />
             <SelectField
               path={['doctrine']}
               options={DOCTRINES.map((k) => [k, T.doctrines[k]] as const)}

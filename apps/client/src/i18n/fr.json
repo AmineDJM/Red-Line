@@ -1294,6 +1294,8 @@
     "runway": "réserves : {{days}} j",
     "incomeDetail": "Revenus / jour",
     "expenseDetail": "Entretien et services / jour",
+    "upkeepAdjusted": "Entretien ajusté au coût local : ×{{factor}} du prix catalogue ({{catalog}} / jour), indice de coût {{index}}.",
+    "upkeepAdjustedHelp": "Le matériel ancien coûte moins cher à entretenir et la part locale (soldes, carburant, main-d'œuvre) suit le niveau des prix du pays ; au départ, l'entretien de l'armée réelle ne dépasse jamais une part réaliste du budget de défense.",
     "incomeKeys": {
       "trade": "Commerce (sanctions, blocus)",
       "national": "Budget national",

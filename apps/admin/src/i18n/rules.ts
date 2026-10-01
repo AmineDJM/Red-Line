@@ -30,6 +30,10 @@ export const RULE_SECTIONS: Record<string, [label: string, help: string]> = {
     'Budget (dollars)',
     'Budget de défense réel versé chaque jour de jeu, part liée aux provinces.',
   ],
+  upkeep: [
+    'Entretien des forces',
+    'Entretien journalier = prix catalogue × facteur de génération × coût local × facteur national de départ (armée réelle ramenée sous une part du budget).',
+  ],
   industry: [
     'Industrie et commerce',
     'Importations, séries de production, annulations, réparations, marché.',
@@ -78,11 +82,331 @@ export const RULE_SECTIONS: Record<string, [label: string, help: string]> = {
     'Mode illimité',
     'Plafonds auxquels la réserve d’une nation en mode illimité (compte administrateur) est gelée.',
   ],
+  ai: [
+    'Intelligence artificielle',
+    'Heuristiques de décision des IA par niveau de difficulté (guerre, tactique, économie, diplomatie) : elles jouent avec les mêmes ordres et le même brouillard que les joueurs.',
+  ],
   startingArmy: [
     'Armée de départ',
     'Repli si la nation jouable n’a pas d’ORBAT : unités posées autour de la capitale.',
   ],
   garrisonArmy: ['Garnison des IA', 'Armée réduite des nations non jouées (repli sans ORBAT).'],
+};
+
+/** Profil d'un niveau de difficulté de l'IA (section `ai.levels`) : mêmes libellés pour les trois niveaux. */
+const AI_LEVEL_HELP: Record<string, HelpEntry> = {
+  warRatio: [
+    'Rapport de force pour une guerre',
+    'Supériorité estimée (sans tricher) nécessaire pour déclarer une guerre.',
+    'x',
+  ],
+  casusBelliWaiverRatio: [
+    'Guerre sans motif',
+    'Supériorité exigée pour attaquer sans casus belli public (0 = jamais sans motif).',
+    'x',
+  ],
+  maxWars: [
+    'Guerres simultanées',
+    'Guerres voulues au plus en même temps (0 : jamais d’agression).',
+    'n',
+  ],
+  warChancePerDay: [
+    'Passage à l’acte contre une IA',
+    'Probabilité par jour d’attaquer quand une cible convient.',
+    'frac',
+  ],
+  warChanceHumanPerDay: [
+    'Passage à l’acte contre un joueur',
+    'Probabilité par jour d’attaquer un joueur humain quand il est une cible convenable.',
+    'frac',
+  ],
+  warmupDays: ['Trêve de début de partie', 'Aucune agression avant ce délai.', 'j'],
+  caution: ['Prudence', 'Majoration de la force supposée de l’adversaire.', 'x'],
+  peaceRatio: [
+    'Seuil de demande de paix',
+    'Sous ce rapport de force, et avec des pertes, l’IA demande la paix.',
+    'x',
+  ],
+  acceptRatio: [
+    'Seuil d’acceptation de la paix',
+    'Sous ce rapport de force, une offre de paix est acceptée.',
+    'x',
+  ],
+  humanTargetBias: [
+    'Préférence pour les joueurs',
+    'Multiplicateur du rapport de force contre un joueur humain (> 1 : cible préférée).',
+    'x',
+  ],
+  alliances: ['Alliances', 'Fonde, rejoint et invite dans des alliances.'],
+  proxy: ['Guerres par procuration', 'Courtise des neutres, finance des rebelles.'],
+  council: ['Conseil de sécurité', 'Dépose des résolutions et vote.'],
+  capitalGarrison: [
+    'Garnison de la capitale',
+    'Unités terrestres gardées en permanence dans la capitale en guerre.',
+    'n',
+  ],
+  defendCities: [
+    'Défense des villes',
+    'Renforce les villes menacées par des forces ennemies vues.',
+  ],
+  counterattack: ['Contre-attaques', 'Reprend les provinces perdues voisines.'],
+  offensive: [
+    'Offensives',
+    'Aucune, seulement dans les guerres qu’elle a déclarées, ou contre tout ennemi.',
+  ],
+  maxCounterPerThink: ['Contre-attaques par réflexion', undefined, 'n'],
+  maxOffensivePerThink: ['Offensives par réflexion', undefined, 'n'],
+  groupMax: [
+    'Taille des groupes',
+    'Unités envoyées ensemble au plus (concentration des forces).',
+    'n',
+  ],
+  attackRatio: [
+    'Rapport d’attaque',
+    'Force engagée / force ennemie connue près de l’objectif, sinon pas d’attaque.',
+    'x',
+  ],
+  pathBudget: [
+    'Calculs de trajet',
+    'Calculs de trajet par réflexion tactique (budget de calcul).',
+    'n',
+  ],
+  enemyCapitalBonus: [
+    'Attrait des capitales ennemies',
+    'Multiplicateur du score d’une capitale ennemie comme objectif.',
+    'x',
+  ],
+  salvosPerThink: ['Salves de missiles', 'Salves tirées par réflexion.', 'n'],
+  salvoSize: ['Taille d’une salve', 'Munitions tirées par salve (les stocks sont consommés).', 'n'],
+  blockades: ['Blocus', 'Ports ennemis tenus sous blocus à la fois, au plus.', 'n'],
+  airStrikesPerThink: ['Frappes aériennes', 'Frappes lancées par réflexion.', 'n'],
+  caps: [
+    'Patrouilles de chasse',
+    'Patrouilles au-dessus de la capitale en cas de menace aérienne.',
+    'n',
+  ],
+  supportStrikes: ['Frappes d’appui', 'Frappe les défenseurs des objectifs de ses offensives.'],
+  adaptiveProduction: [
+    'Production adaptée',
+    'Produit selon les forces ennemies observées (sinon : meilleur rapport valeur / prix).',
+  ],
+  reconChance: [
+    'Reconnaissance',
+    'Probabilité quotidienne d’une reconnaissance militaire de l’ennemi en guerre.',
+    'frac',
+  ],
+};
+
+const AI_LEVELS: [key: string, label: string][] = [
+  ['easy', 'Facile'],
+  ['normal', 'Normal'],
+  ['hard', 'Difficile'],
+];
+
+/** Section `ai` : heuristiques de décision (AiBalanceSchema). */
+const AI_HELP: Record<string, HelpEntry> = {
+  'ai.levels': [
+    'Niveaux de difficulté',
+    'Profil de décision de chaque niveau (facile, normal, difficile).',
+  ],
+  ...Object.fromEntries(
+    AI_LEVELS.flatMap(([lv, label]): [string, HelpEntry][] => [
+      [`ai.levels.${lv}`, [label, `Profil des IA de niveau « ${label.toLowerCase()} ».`]],
+      ...Object.entries(AI_LEVEL_HELP).map(([k, h]): [string, HelpEntry] => [
+        `ai.levels.${lv}.${k}`,
+        h,
+      ]),
+    ]),
+  ),
+  'ai.tactical': ['Tactique', 'Portées d’intervention, menaces, renforts et plafonds d’unités.'],
+  'ai.tactical.defendReachKm': [
+    'Portée défensive',
+    'Distance maximale d’intervention défensive.',
+    'km',
+  ],
+  'ai.tactical.attackReachKm': [
+    'Portée offensive',
+    'Distance maximale entre une unité et l’objectif d’une offensive ou d’une contre-attaque.',
+    'km',
+  ],
+  'ai.tactical.threatRadiusKm': [
+    'Rayon de menace',
+    'Une force ennemie à cette distance d’une ville la menace.',
+    'km',
+  ],
+  'ai.tactical.cityRadiusKm': [
+    'Rayon d’une ville',
+    'On y compte ses défenseurs et la force ennemie qui la tient.',
+    'km',
+  ],
+  'ai.tactical.reinforceReachKm': [
+    'Portée des renforts',
+    'Distance maximale des renforts envoyés vers une ville menacée.',
+    'km',
+  ],
+  'ai.tactical.maxReinforcePerThink': ['Villes renforcées par réflexion', undefined, 'n'],
+  'ai.tactical.capAlertKm': [
+    'Alerte aérienne',
+    'Patrouille de chasse au-dessus de la capitale si un aéronef ennemi est vu à cette distance.',
+    'km',
+  ],
+  'ai.tactical.capRadiusKm': ['Rayon des patrouilles', 'Autour de la capitale.', 'km'],
+  'ai.tactical.contactMemoryHours': [
+    'Mémoire des contacts',
+    'Contacts ennemis perdus de vue retenus comme menace pendant ce délai.',
+    'h',
+  ],
+  'ai.tactical.commitHours': [
+    'Engagement offensif',
+    'Une unité lancée dans une offensive n’est pas rappelée en renfort pendant ce délai.',
+    'h',
+  ],
+  'ai.tactical.captureRetryHours': [
+    'Nouvel essai de capture',
+    'Délai avant de retenter une capture sans chemin praticable.',
+    'h',
+  ],
+  'ai.tactical.peaceUnitsPerProvince': [
+    'Unités en paix par province',
+    'Plafond de l’armée en paix : par province possédée, plus la base.',
+    'n',
+  ],
+  'ai.tactical.peaceUnitsBase': ['Unités en paix (base)', undefined, 'n'],
+  'ai.tactical.warUnitsPerProvince': [
+    'Unités en guerre par province',
+    'Plafond de l’armée en guerre : par province possédée, plus la base.',
+    'n',
+  ],
+  'ai.tactical.warUnitsBase': ['Unités en guerre (base)', undefined, 'n'],
+  'ai.tactical.maxQueuePeace': ['Productions simultanées en paix', undefined, 'n'],
+  'ai.tactical.maxQueueWar': ['Productions simultanées en guerre', undefined, 'n'],
+  'ai.economy': ['Économie', 'Réserves, recherche, achats de guerre et investissements des IA.'],
+  'ai.economy.peaceReserveFactor': [
+    'Réserve de production en paix',
+    'En paix, on ne produit que si l’argent couvre ce multiple du coût.',
+    'x',
+  ],
+  'ai.economy.reserveDaysWar': ['Réserve en guerre', 'Jours de budget de défense gardés.', 'j'],
+  'ai.economy.reserveDaysPeace': ['Réserve en paix', 'Jours de budget de défense gardés.', 'j'],
+  'ai.economy.deficitDays': [
+    'Couverture du déficit',
+    'Si l’entretien dépasse les revenus, la réserve couvre aussi ce nombre de jours de déficit.',
+    'j',
+  ],
+  'ai.economy.researchSpendShare': [
+    'Part maximale d’une recherche',
+    'Une recherche n’est lancée que si elle coûte moins que cette part de la trésorerie.',
+    'frac',
+  ],
+  'ai.economy.researchFocus': [
+    'Concentration de la recherche',
+    'Avance (en rangs) des branches prioritaires sur les autres.',
+    'n',
+  ],
+  'ai.economy.warCategories': [
+    'Achats de guerre',
+    'Catégories achetées en guerre, par ordre de préférence.',
+  ],
+  'ai.economy.warReserveDays': [
+    'Réserve des achats de guerre',
+    'En jours de budget de défense.',
+    'j',
+  ],
+  'ai.economy.warReserveShare': [
+    'Réserve sans budget',
+    'Part de la trésorerie gardée par une nation sans ORBAT.',
+    'frac',
+  ],
+  'ai.economy.warMaxQueue': ['Achats de guerre simultanés', undefined, 'n'],
+  'ai.economy.warBatch': ['Taille d’une série', 'Unités commandées ensemble en guerre.', 'n'],
+  'ai.economy.repairFactor': [
+    'Seuil de réparation',
+    'Une réparation n’est lancée que si l’argent couvre ce multiple de son coût.',
+    'x',
+  ],
+  'ai.economy.investDays': [
+    'Seuil d’investissement',
+    'En paix, investit seulement si la trésorerie dépasse ce nombre de jours de budget.',
+    'j',
+  ],
+  'ai.economy.investIn': [
+    'Bâtiments prioritaires',
+    'Améliorés en priorité (ressources, industrie).',
+  ],
+  'ai.strategy': ['Stratégie', 'Rythme des réflexions, alliances, paix et guerre par procuration.'],
+  'ai.strategy.strategicEveryHot': [
+    'Rythme stratégique en guerre',
+    'Réflexions tactiques entre deux réflexions stratégiques.',
+    'n',
+  ],
+  'ai.strategy.strategicEveryCalm': [
+    'Rythme stratégique au calme',
+    'Réflexions tactiques entre deux réflexions stratégiques.',
+    'n',
+  ],
+  'ai.strategy.tacticalEveryCalm': [
+    'Rythme tactique au calme',
+    'Espacement des réflexions tactiques des nations éloignées de tout conflit.',
+    'n',
+  ],
+  'ai.strategy.inviteCooldownDays': [
+    'Délai entre deux invitations',
+    'Une nation n’est pas réinvitée dans la même alliance avant ce délai.',
+    'j',
+  ],
+  'ai.strategy.unreachablePeaceDays': [
+    'Paix des guerres sans front',
+    'Paix blanche proposée après ce délai (pas voisins, rien perdu ni pris).',
+    'j',
+  ],
+  'ai.strategy.minStabilityForWar': [
+    'Stabilité minimale pour attaquer',
+    'Pas de guerre d’agression sous cette stabilité.',
+    'pts',
+  ],
+  'ai.strategy.ownRatioShare': [
+    'Part de ses propres forces',
+    'Sans les alliés, ses forces doivent peser cette part du rapport de force voulu.',
+    'frac',
+  ],
+  'ai.strategy.takeoverCalmDays': [
+    'Calme après une reprise',
+    'Pas de décision brutale après le remplacement d’un joueur par l’IA.',
+    'j',
+  ],
+  'ai.strategy.peaceAskEveryDays': ['Délai entre deux demandes de paix', 'Au même ennemi.', 'j'],
+  'ai.strategy.proxyEveryDays': ['Délai entre deux actions par procuration', undefined, 'j'],
+  'ai.strategy.courtShare': [
+    'Cour d’un neutre',
+    'Part de la trésorerie offerte à un neutre courtisé.',
+    'frac',
+  ],
+  'ai.strategy.fundShare': [
+    'Financement de rebelles',
+    'Part de la trésorerie versée à des rebelles.',
+    'frac',
+  ],
+  'ai.strategy.allianceMinProvinces': [
+    'Taille minimale d’un fondateur',
+    'Provinces nécessaires pour fonder une alliance.',
+    'n',
+  ],
+  'ai.strategy.nationsPerAlliance': [
+    'Nations par alliance',
+    'Une alliance au plus pour ce nombre de nations (pas de poussière d’alliances).',
+    'n',
+  ],
+  'ai.strategy.maxCouncilProposals': [
+    'Résolutions en attente',
+    'Au-delà, l’IA ne charge plus l’ordre du jour du Conseil.',
+    'n',
+  ],
+  'ai.strategy.invitesPerThink': ['Invitations par réflexion', undefined, 'n'],
+  'ai.strategy.inviteLeaning': [
+    'Adhésion d’office',
+    'Penchant au-delà duquel une invitation dans une alliance est acceptée d’office.',
+    'frac',
+  ],
 };
 
 export const RULE_HELP: Record<string, HelpEntry> = {
@@ -217,6 +541,46 @@ export const RULE_HELP: Record<string, HelpEntry> = {
     'Part du revenu réduite par les sanctions et le blocus des ports.',
     'frac',
   ],
+  'money.budgetDollarFactor': [
+    'Conversion en dollars du catalogue',
+    'Budgets ORBAT × ce facteur : 1 en 2025, inflation pour un scénario historique (≈ 2,97 de 1985 à 2025).',
+    'x',
+  ],
+  'upkeep.generationFactor': [
+    'Facteur par génération',
+    'Entretien selon l’âge du matériel, génération 1 (ancien) à 5 (dernière) ; absent = 1.',
+    'x',
+  ],
+  'upkeep.generationExempt': [
+    'Catégories sans effet d’âge',
+    'Leur entretien est surtout fait de soldes (infanterie).',
+  ],
+  'upkeep.localShare': [
+    'Part locale par catégorie',
+    'Soldes, carburant, main-d’œuvre payés au niveau de prix du pays (costIndex de l’ORBAT) ; le reste (pièces importées) au prix mondial.',
+    'frac',
+  ],
+  'upkeep.localShareDefault': [
+    'Part locale par défaut',
+    'Catégories absentes de la liste.',
+    'frac',
+  ],
+  'upkeep.defaultCostIndex': [
+    'Indice de coût par défaut',
+    'Niveau des prix d’une nation dont l’ORBAT ne précise pas costIndex (États-Unis = 1).',
+    'x',
+  ],
+  'upkeep.maxStartShare': [
+    'Part maximale du budget',
+    'Au départ, l’entretien de l’armée réelle est ramené sous cette part du budget de défense par un facteur national (ou upkeepShare de l’ORBAT).',
+    'frac',
+  ],
+  'upkeep.minStartShare': [
+    'Part minimale du budget',
+    'Relève l’entretien des armées très petites devant leur budget (0 = désactivé).',
+    'frac',
+  ],
+  ...AI_HELP,
   'industry.importPriceFactor': [
     'Prix des importations',
     'Achat au catalogue d’un fournisseur étranger : prix × ce facteur.',
