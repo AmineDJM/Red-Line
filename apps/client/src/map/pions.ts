@@ -52,6 +52,7 @@ export type PionFlag =
   | 'u' // en plongée (sous-marin du joueur)
   | 'n' // contact sonar (sous-marin étranger détecté)
   | 'j' // brouilleur actif
+  | 'f' // retranchée (à l'arrêt au contact d'une ville de sa nation : bonus du défenseur)
   | 'x'; // contact imprécis (présence seule)
 
 export interface PionSpec {
@@ -180,7 +181,7 @@ function drawFlag(
   ctx.stroke();
 }
 
-type BadgeKind = 'm' | 'c' | 'e' | 'a' | 'j' | 'n';
+type BadgeKind = 'm' | 'c' | 'e' | 'a' | 'j' | 'n' | 'f';
 const BADGE_COLOR: Record<BadgeKind, string> = {
   m: C.cyan,
   c: C.red,
@@ -188,6 +189,7 @@ const BADGE_COLOR: Record<BadgeKind, string> = {
   a: C.cyan,
   j: C.amber,
   n: C.cyan,
+  f: '#b9c7d6',
 };
 
 function drawBadgeGlyph(ctx: CanvasRenderingContext2D, k: BadgeKind, cx: number, cy: number) {
@@ -245,6 +247,16 @@ function drawBadgeGlyph(ctx: CanvasRenderingContext2D, k: BadgeKind, cx: number,
       ctx.arc(cx - 2, cy, 3.6, -0.8, 0.8);
       ctx.stroke();
       break;
+    case 'f': // écu (retranchement)
+      ctx.moveTo(cx, cy - 2.9);
+      ctx.lineTo(cx + 2.6, cy - 1.9);
+      ctx.lineTo(cx + 2.3, cy + 0.9);
+      ctx.quadraticCurveTo(cx + 1.4, cy + 2.4, cx, cy + 3);
+      ctx.quadraticCurveTo(cx - 1.4, cy + 2.4, cx - 2.3, cy + 0.9);
+      ctx.lineTo(cx - 2.6, cy - 1.9);
+      ctx.closePath();
+      ctx.fill();
+      break;
   }
 }
 
@@ -279,6 +291,18 @@ export function drawPion(s: PionSpec): SpriteImage {
     ctx.strokeStyle = alpha(edge, i === 2 ? 0.45 : 0.7);
     ctx.lineWidth = 1;
     ctx.stroke();
+  }
+
+  // Au combat : liseré lumineux rouge autour du pion (lecture immédiate de l'accrochage).
+  if (f.includes('c')) {
+    ctx.save();
+    ctx.shadowColor = alpha(C.red, 0.9);
+    ctx.shadowBlur = 5;
+    rr(ctx, x - 1.2, y - 1.2, w + 2.4, h + 2.4, 4.4);
+    ctx.strokeStyle = alpha(C.red, 0.8);
+    ctx.lineWidth = 1.6;
+    ctx.stroke();
+    ctx.restore();
   }
 
   // Ombre portée discrète puis corps.
@@ -350,9 +374,11 @@ export function drawPion(s: PionSpec): SpriteImage {
           ? 'a'
           : f.includes('m')
             ? 'm'
-            : f.includes('j')
-              ? 'j'
-              : null;
+            : f.includes('f')
+              ? 'f'
+              : f.includes('j')
+                ? 'j'
+                : null;
   if (main) badge(ctx, main, x - 0.5, y - 0.5);
 
   // Ravitaillement : triangle d'alerte (coin inférieur droit).
@@ -402,6 +428,105 @@ export function drawPion(s: PionSpec): SpriteImage {
     ctx.fillText(t('map.pion.decoy'), x + 3, y + h + 4.4);
   }
   return out(c);
+}
+
+// ——— Combats ———
+
+/**
+ * Marqueur de bataille : losange sombre à liseré rouge, épées croisées ; `side` teinte le cœur
+ * (attaquant ambre, défenseur cyan, sans camp : rouge), `hot` renforce le liseré.
+ */
+export function drawBattle(side: string, hot: boolean): SpriteImage {
+  const S = 30;
+  const { c, ctx } = canvas(S, S);
+  const m = S / 2;
+  const tone = side === 'att' ? C.amber : side === 'def' ? C.cyan : C.red;
+  ctx.save();
+  ctx.shadowColor = alpha(C.red, hot ? 0.9 : 0.5);
+  ctx.shadowBlur = hot ? 6 : 3;
+  ctx.beginPath();
+  ctx.moveTo(m, 2.5);
+  ctx.lineTo(S - 2.5, m);
+  ctx.lineTo(m, S - 2.5);
+  ctx.lineTo(2.5, m);
+  ctx.closePath();
+  ctx.fillStyle = '#160b0f';
+  ctx.fill();
+  ctx.restore();
+  ctx.strokeStyle = C.red;
+  ctx.lineWidth = hot ? 1.8 : 1.3;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(m, 5.5);
+  ctx.lineTo(S - 5.5, m);
+  ctx.lineTo(m, S - 5.5);
+  ctx.lineTo(5.5, m);
+  ctx.closePath();
+  ctx.strokeStyle = alpha(tone, 0.55);
+  ctx.lineWidth = 0.8;
+  ctx.stroke();
+  // Épées croisées.
+  ctx.strokeStyle = '#f4f7fa';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 1.7;
+  ctx.beginPath();
+  ctx.moveTo(m - 5.2, m - 5.2);
+  ctx.lineTo(m + 4.6, m + 4.6);
+  ctx.moveTo(m + 5.2, m - 5.2);
+  ctx.lineTo(m - 4.6, m + 4.6);
+  ctx.stroke();
+  ctx.lineWidth = 1.4;
+  ctx.strokeStyle = tone;
+  ctx.beginPath();
+  ctx.moveTo(m + 2.2, m + 5.4);
+  ctx.lineTo(m + 5.4, m + 2.2);
+  ctx.moveTo(m - 2.2, m + 5.4);
+  ctx.lineTo(m - 5.4, m + 2.2);
+  ctx.stroke();
+  return out(c);
+}
+
+/** Ombre portée d'un aéronef en vol : ellipse douce sous le pion « en altitude ». */
+export function drawAirShadow(): SpriteImage {
+  const W = 52;
+  const H = 14;
+  const { c, ctx } = canvas(W, H);
+  ctx.save();
+  ctx.translate(W / 2, H / 2);
+  ctx.scale(1, H / W);
+  const g = ctx.createRadialGradient(0, 0, 1, 0, 0, W / 2);
+  g.addColorStop(0, 'rgba(0,0,0,0.6)');
+  g.addColorStop(0.55, 'rgba(0,0,0,0.3)');
+  g.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.arc(0, 0, W / 2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+  return out(c);
+}
+
+const glyphUrls = new Map<string, string>();
+
+/**
+ * Pictogramme de carte en image (data URL), pour les infobulles et menus DOM : mêmes silhouettes
+ * que les pions. Mis en cache par (pictogramme, couleur, taille).
+ */
+export function glyphDataUrl(glyph: GlyphId, color = '#f2f6fa', size = 18): string {
+  const key = `${glyph}|${color}|${size}`;
+  const hit = glyphUrls.get(key);
+  if (hit) return hit;
+  if (typeof document === 'undefined') return '';
+  const r = 2;
+  const cv = document.createElement('canvas');
+  cv.width = cv.height = size * r;
+  const ctx = cv.getContext('2d');
+  if (!ctx) return '';
+  ctx.scale(r, r);
+  drawGlyph(ctx, glyph, 0, 0, size, color);
+  const url = cv.toDataURL('image/png');
+  glyphUrls.set(key, url);
+  return url;
 }
 
 // ——— Bâtiments ———
@@ -621,6 +746,15 @@ export async function resolveSprite(
   if (id.startsWith('city|')) {
     const [, cls, rel] = id.split('|');
     add(id, drawCity(Number(cls), rel as Rel));
+    return true;
+  }
+  if (id.startsWith('battle|')) {
+    const [, side, hot] = id.split('|');
+    add(id, drawBattle(side ?? '', hot === '1'));
+    return true;
+  }
+  if (id === 'air-shadow') {
+    add(id, drawAirShadow());
     return true;
   }
   if (id.startsWith('fort|')) {

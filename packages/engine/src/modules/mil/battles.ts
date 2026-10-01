@@ -142,7 +142,14 @@ export function shot(
   cls: TargetClass,
   hit: boolean,
 ): void {
-  if (b.shots.length >= milBal(state).battle.maxShots) return;
+  const bal = milBal(state).battle;
+  const live = Math.round(bal.liveShots);
+  if (live > 0) {
+    const rs = (b.rs ??= []);
+    rs.push({ t: state.time, from: [from[0], from[1]], to: [to[0], to[1]], cls, hit });
+    if (rs.length > live) rs.splice(0, rs.length - live);
+  }
+  if (b.shots.length >= bal.maxShots) return;
   b.shots.push({ t: state.time, from: [from[0], from[1]], to: [to[0], to[1]], cls, hit });
 }
 
@@ -213,6 +220,8 @@ export function handleClose(state: EngineState, d: { b: string }): void {
     return;
   }
   b.end = b.last;
+  // L'activité en direct ne sert plus (le replay garde les tirs).
+  delete b.rs;
   const la = b.a.lossValue;
   const ld = b.d.lossValue;
   b.outcome = ld > la * 1.2 && ld > 0 ? 'attacker' : la > ld * 1.2 && la > 0 ? 'defender' : 'draw';
@@ -314,6 +323,27 @@ export function battleReportForImpl(
   return reportOf(b);
 }
 
+/**
+ * Activité récente d'une bataille en cours (vue des participants) : derniers tirs, bornés en nombre
+ * et en ancienneté. Absente pour une bataille close.
+ */
+function liveOf(state: EngineState, b: BattleSt): BattleReportSummary['live'] {
+  if (b.end !== null) return undefined;
+  const since = state.time - milBal(state).battle.liveMinutes * MINUTE;
+  return {
+    lastAt: b.last,
+    shots: (b.rs ?? [])
+      .filter((x) => x.t >= since)
+      .map((x) => ({
+        t: x.t,
+        from: [x.from[0], x.from[1]],
+        to: [x.to[0], x.to[1]],
+        cls: x.cls,
+        hit: x.hit,
+      })),
+  };
+}
+
 /** Résumés récents pour la vue d'une nation. */
 export function summariesFor(state: EngineState, nation: NationId): BattleReportSummary[] {
   const m = mil(state);
@@ -323,5 +353,10 @@ export function summariesFor(state: EngineState, nation: NationId): BattleReport
     if (participates(b, nation)) out.push(b);
   }
   out.sort((x, y) => y.start - x.start || (x.id < y.id ? 1 : -1));
-  return out.slice(0, milBal(state).battle.viewCount).map(summaryOf);
+  return out.slice(0, milBal(state).battle.viewCount).map((b) => {
+    const s = summaryOf(b);
+    const live = liveOf(state, b);
+    if (live) s.live = live;
+    return s;
+  });
 }

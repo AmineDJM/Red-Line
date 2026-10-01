@@ -140,6 +140,10 @@ export const MilitaryBalanceSchema = z.object({
       maxTimeline: num(40),
       /** Résumés envoyés dans la vue. */
       viewCount: num(20),
+      /** Bataille en cours : derniers tirs joints au résumé de la vue (affichage des combats). */
+      liveShots: num(16),
+      /** Ancienneté maximale de ces tirs (minutes de jeu). */
+      liveMinutes: num(20),
     })
     .default({}),
   generals: z

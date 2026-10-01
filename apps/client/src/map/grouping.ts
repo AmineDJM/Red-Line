@@ -24,6 +24,11 @@ export interface Group<T extends GroupItem = GroupItem> {
   members: T[];
   /** Décalage d'écartement (px CSS à l'échelle 1 du pion), [0, 0] sinon. */
   off: [number, number];
+  /**
+   * Piles écartées côte à côte (nations différentes au même endroit : front, bataille) : identifiant
+   * commun du groupe d'écartement (menu de pile « à proximité »), absent sinon.
+   */
+  cluster?: string;
 }
 
 export const TILE = 512;
@@ -174,6 +179,8 @@ function spreadOverlapping<T extends GroupItem>(groups: Group<T>[], o: GroupOpti
     }
     mx /= idx.length;
     my /= idx.length;
+    const cid = groups[idx[0]!]!.id;
+    for (const i of idx) groups[i]!.cluster = cid;
     const cols = Math.min(3, idx.length);
     const rows = Math.ceil(idx.length / cols);
     const gx = o.w + 8;

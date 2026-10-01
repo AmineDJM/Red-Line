@@ -10,6 +10,7 @@ import {
   positionAt,
   type GameTime,
   type LngLat,
+  type Movement,
   type NationId,
   type NationView,
   type ProvinceDef,
@@ -24,6 +25,7 @@ import { glyphFor, type GlyphId } from './glyphs.js';
 import { groupItems, type Group, type GroupItem } from './grouping.js';
 import { isMoving, remainingPath, unitPosition } from './interpolation.js';
 import { C, relationOf, type Rel } from './palette.js';
+import { unitCat, type CityIndex, type UnitCat } from './unitCat.js';
 import {
   BLD_SIZE,
   PION_H,
@@ -59,6 +61,13 @@ export interface UnitCtx {
   selection: ReadonlySet<UnitId>;
   target: UnitId | null;
   t: GameTime;
+  /**
+   * Retranchement (unité terrestre à l'arrêt au contact d'une ville de sa nation, bonus du
+   * défenseur) : index des villes, propriétaires des provinces et distance de contact (km).
+   */
+  cities?: CityIndex;
+  provinces?: Record<string, ProvinceView>;
+  contactKm?: number;
 }
 
 export function nationColor(
@@ -87,6 +96,12 @@ export interface UnitInfo extends GroupItem {
   /** 1 sélectionnée, 2 cible, 0 sinon. */
   sel: 0 | 1 | 2;
   missile: boolean;
+  /** Famille (filtres, composition). */
+  cat: UnitCat;
+  /** En vol (trajet aérien en cours). */
+  air: boolean;
+  /** Avancement du trajet en cours (0..1), null à l'arrêt. */
+  prog: number | null;
 }
 
 const STALE_MS = 10 * 60_000;
@@ -128,6 +143,15 @@ export function unitInfos(units: Iterable<UnitView>, ctx: UnitCtx): UnitInfo[] {
     if (sys?.category === 'submarine') flags += rel === 'own' ? 'u' : 'n';
     if (u.jamming) flags += 'j';
     if (!known) flags += 'x';
+    if (
+      ctx.cities &&
+      known &&
+      !moving &&
+      sys!.movement === 'land' &&
+      u.status !== 'embarked' &&
+      ctx.cities.ownCityNear(pos, u.owner, ctx.provinces, ctx.contactKm ?? 5)
+    )
+      flags += 'f';
     const age = ctx.t - u.lastSeen;
     const stale = rel !== 'own' && age > STALE_MS;
     const sel: 0 | 1 | 2 = ctx.selection.has(u.id) ? 1 : ctx.target === u.id ? 2 : 0;
@@ -155,6 +179,17 @@ export function unitInfos(units: Iterable<UnitView>, ctx: UnitCtx): UnitInfo[] {
       op: stale ? Math.max(0.45, 1 - (age - STALE_MS) / (3 * 3600_000)) : 1,
       sel,
       missile,
+      cat: unitCat(sys),
+      air: air && moving,
+      prog: moving
+        ? Math.max(
+            0,
+            Math.min(
+              1,
+              (ctx.t - legs![0]!.t0) / Math.max(1, legs![legs!.length - 1]!.t1 - legs![0]!.t0),
+            ),
+          )
+        : null,
     });
   }
   return out;
@@ -174,6 +209,7 @@ function groupFlags(ms: UnitInfo[]): string {
   if (all('u')) f += 'u';
   if (all('n')) f += 'n';
   if (all('x')) f += 'x';
+  if (all('f')) f += 'f';
   return f;
 }
 
@@ -234,7 +270,31 @@ export interface TokenResult {
   headings: Feature<Point>[];
   /** Missiles en vol. */
   missiles: Feature<Point>[];
+  /** Ombres portées des aéronefs en vol (au sol, sous le pion « en altitude »). */
+  shadows: Feature<Point>[];
   groups: Group<UnitInfo>[];
+}
+
+/** Hauteur d'affichage d'un aéronef en croisière (px CSS à l'échelle 1 du pion). */
+export const AIR_LIFT = 13;
+
+/**
+ * Altitude d'affichage d'un aéronef selon l'avancement de son trajet : montée, croisière, descente
+ * (trapèze). Le pion est soulevé de cette hauteur, son ombre reste sur la trace au sol.
+ */
+export function airLift(prog: number | null): number {
+  if (prog === null) return 0;
+  return AIR_LIFT * Math.max(0, Math.min(1, prog * 7, (1 - prog) * 7));
+}
+
+function shadowFeature(i: UnitInfo, off: [number, number], lift: number): Feature<Point> {
+  const r = (v: number) => Math.round(v * 10) / 10;
+  const k = lift / AIR_LIFT;
+  return pointFeature(`${i.id}:sh`, i.pos, {
+    off: [r(off[0]), r(off[1] + 4)],
+    op: Math.round((0.75 - 0.35 * k) * 100) / 100,
+    sz: Math.round((1 - 0.18 * k) * 100) / 100,
+  });
 }
 
 /**
@@ -250,6 +310,7 @@ export function tokenFeatures(
   const focus: Feature<Point>[] = [];
   const headings: Feature<Point>[] = [];
   const missiles: Feature<Point>[] = [];
+  const shadows: Feature<Point>[] = [];
   for (const i of infos) {
     if (i.missile) {
       missiles.push(
@@ -275,13 +336,16 @@ export function tokenFeatures(
   );
   for (const g of spread) {
     const i = g.leader;
+    const lift = i.air ? airLift(i.prog) : 0;
+    const off: [number, number] = lift ? [g.off[0], g.off[1] - lift] : g.off;
+    if (lift) shadows.push(shadowFeature(i, g.off, lift));
     focus.push(
       pointFeature(i.id, i.pos, {
-        ...pionProps(pionSpecFor([i], ctx, true), g.off),
+        ...pionProps(pionSpecFor([i], ctx, true), off),
         sel: i.sel,
         sort: sortKey(i.rel, i.sel),
         op: i.op,
-        foff: g.off,
+        foff: off,
         n: 1,
         members: i.id,
       }),
@@ -292,7 +356,7 @@ export function tokenFeatures(
           rot: i.heading,
           rel: i.rel,
           f: 1,
-          off: headingOffset(i.heading, g.off),
+          off: headingOffset(i.heading, off),
         }),
       );
   }
@@ -302,9 +366,13 @@ export function tokenFeatures(
   const tokens: Feature<Point>[] = [];
   for (const g of groups) {
     const lead = g.leader;
+    const single = g.members.length === 1;
+    const lift = single && lead.air ? airLift(lead.prog) : 0;
+    const off: [number, number] = lift ? [g.off[0], g.off[1] - lift] : g.off;
+    if (lift) shadows.push(shadowFeature(lead, g.off, lift));
     tokens.push(
       pointFeature(g.id, lead.pos, {
-        ...pionProps(pionSpecFor(g.members, ctx), g.off),
+        ...pionProps(pionSpecFor(g.members, ctx), off),
         sel: 0,
         sort: sortKey(lead.rel, 0) + (g.members.length > 1 ? 1 : 0),
         op: Math.max(...g.members.map((m) => m.op)),
@@ -312,19 +380,21 @@ export function tokenFeatures(
         // Pile en mouvement : source dédiée, mise à jour souvent (voir GameMap).
         mv: g.members.some((m) => m.flags.includes('m')) ? 1 : 0,
         members: g.members.length > 1 ? g.members.map((m) => m.id).join(',') : lead.id,
+        // Piles écartées côte à côte (même endroit, nations différentes).
+        cl: g.cluster ?? '',
       }),
     );
-    if (g.members.length === 1 && lead.heading !== null)
+    if (single && lead.heading !== null)
       headings.push(
         pointFeature(g.id, lead.pos, {
           rot: lead.heading,
           rel: lead.rel,
           f: 0,
-          off: headingOffset(lead.heading, g.off),
+          off: headingOffset(lead.heading, off),
         }),
       );
   }
-  return { tokens, focus, headings, missiles, groups };
+  return { tokens, focus, headings, missiles, shadows, groups };
 }
 
 /** Taille (px CSS à l'échelle 1) des textes des pions : effectif et numéro de pile. */
@@ -427,61 +497,148 @@ export function uncertaintyFeatures(
 
 // ——— Trajectoires ———
 
-/** Trajectoires restantes des unités du joueur en mouvement (hors missiles). */
+/**
+ * Trajectoires restantes des unités en mouvement (hors missiles) : celles du joueur, et avec
+ * `foreign` celles des unités étrangères visibles (couleur de relation, trait plus fin).
+ * Tête de flèche à destination, avec l'heure d'arrivée (`end`) pour les étiquettes d'ETA.
+ */
 export function pathFeatures(
   units: Iterable<UnitView>,
   t: GameTime,
   me: NationId | null,
   selection: ReadonlySet<UnitId>,
+  opts?: { foreign?: boolean; nations?: Record<NationId, NationView>; foreignKm?: number },
 ) {
   const lines: Feature<LineString>[] = [];
   const heads: Feature<Point>[] = [];
   for (const u of units) {
-    if (u.owner !== me || !u.move || !isMoving(u, t) || u.missile) continue;
-    const coords = remainingPath(u.move, t);
+    if (!u.move || u.missile || u.status === 'destroyed') continue;
+    const own = u.owner === me;
+    if (!own && !opts?.foreign) continue;
+    if (!isMoving(u, t)) continue;
+    // Unités étrangères : seulement l'amorce du trajet (direction), pas toute la route.
+    const coords = own
+      ? remainingPath(u.move, t)
+      : truncatePath(remainingPath(u.move, t), opts?.foreignKm ?? FOREIGN_PATH_KM);
     if (coords.length < 2) continue;
     const sel = selection.has(u.id) ? 1 : 0;
     const air = u.move.legs.some((l) => l.medium === 'air') ? 1 : 0;
+    const rel = own ? 'own' : relationOf(u.owner, me, opts?.nations ?? {});
     lines.push({
       type: 'Feature',
-      properties: { id: u.id, sel, air },
+      properties: { id: u.id, sel, air, rel },
       geometry: { type: 'LineString', coordinates: coords },
     });
     const end = coords[coords.length - 1]!;
     const prev = coords[coords.length - 2]!;
     heads.push({
       type: 'Feature',
-      properties: { id: u.id, sel, rot: screenBearing(prev, end) },
+      properties: {
+        id: u.id,
+        sel,
+        rel,
+        rot: screenBearing(prev, end),
+        end: u.move.legs[u.move.legs.length - 1]!.t1,
+      },
       geometry: { type: 'Point', coordinates: end },
     });
   }
   return { lines: fc(lines), heads: fc(heads) };
 }
 
+/** Longueur affichée des trajets des unités étrangères (km) : la direction, pas la destination. */
+export const FOREIGN_PATH_KM = 160;
+
+/** Coupe une polyligne après `km` kilomètres (dernier segment interpolé). */
+export function truncatePath(coords: LngLat[], km: number): LngLat[] {
+  if (coords.length < 2) return coords;
+  const out: LngLat[] = [coords[0]!];
+  let acc = 0;
+  for (let i = 1; i < coords.length; i++) {
+    const a = coords[i - 1]!;
+    const b = coords[i]!;
+    const d = distanceKm(a, b);
+    if (acc + d >= km) {
+      const f = d > 0 ? (km - acc) / d : 0;
+      out.push([a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f]);
+      return out;
+    }
+    acc += d;
+    out.push(b);
+  }
+  return out;
+}
+
+/** Kilomètres par pixel CSS à une latitude et un zoom donnés (Mercator, tuiles de 512 px). */
+export function kmPerPx(lat: number, zoom: number): number {
+  return (40075 * Math.cos((lat * Math.PI) / 180)) / (512 * Math.pow(2, zoom));
+}
+
+export interface MotionOptions {
+  /** Zoom courant : sillages et traces au sol à partir de 4 (longueur constante à l'écran). */
+  zoom?: number;
+  /** Étendue visible [ouest, sud, est, nord] : sillages et traces hors champ omis. */
+  bounds?: [number, number, number, number];
+}
+
+/** Traînée échantillonnée entre `from` et t (n + 1 points), longitudes dépliées. */
+function trailPoints(move: Movement, from: GameTime, t: GameTime, n: number): LngLat[] {
+  const pts: LngLat[] = [];
+  for (let i = 0; i <= n; i++) pts.push(positionAt(move, from + ((t - from) * i) / n));
+  unwrap(pts);
+  return pts;
+}
+
 /**
  * Missiles en vol : traînée (dégradé, `line-progress`) derrière la position courante et
- * trajectoire prévue jusqu'à l'impact (pointillés), point d'impact.
+ * trajectoire prévue jusqu'à l'impact (pointillés), point d'impact. Aéronefs : traînée de
+ * condensation. Avec un zoom ≥ 4 : sillage des navires et trace des colonnes terrestres en
+ * mouvement (longueur constante à l'écran, unités visibles dans l'étendue seulement).
  */
-export function missileFeatures(units: Iterable<UnitView>, t: GameTime, me: NationId | null) {
+export function missileFeatures(
+  units: Iterable<UnitView>,
+  t: GameTime,
+  me: NationId | null,
+  opts: MotionOptions = {},
+) {
   const trails: Feature<LineString>[] = [];
   const ahead: Feature<LineString>[] = [];
   const impacts: Feature<Point>[] = [];
+  const surface = (opts.zoom ?? 0) >= 4;
+  const b = opts.bounds;
   for (const u of units) {
     if (!u.move || !isMoving(u, t)) continue;
     const isMissile = !!u.missile;
+    const leg = legAt(u.move, t);
     const air = u.move.legs.some((l) => l.medium === 'air');
-    if (!isMissile && !air) continue;
+    const own = u.owner === me;
+    if (!isMissile && !air) {
+      if (!surface || !leg || u.status === 'destroyed') continue;
+      const pos = positionAt(u.move, t);
+      if (b && (pos[0] < b[0] || pos[0] > b[2] || pos[1] < b[1] || pos[1] > b[3])) continue;
+      const sea = leg.medium === 'sea';
+      // Longueur à l'écran : ~38 px (sillage), ~26 px (trace), bornée au trajet déjà parcouru.
+      const km = kmPerPx(pos[1], opts.zoom!) * (sea ? 38 : 26);
+      const speed = distanceKm(leg.from, leg.to) / Math.max(1, leg.t1 - leg.t0);
+      if (speed <= 0) continue;
+      const from = Math.max(u.move.legs[0]!.t0, t - km / speed);
+      if (t - from < 1) continue;
+      const pts = trailPoints(u.move, from, t, sea ? 6 : 4);
+      if (distanceKm(pts[0]!, pts[pts.length - 1]!) < 0.2) continue;
+      trails.push({
+        type: 'Feature',
+        properties: { id: u.id, kind: sea ? 'sea' : 'land', own: own ? 1 : 0 },
+        geometry: { type: 'LineString', coordinates: pts },
+      });
+      continue;
+    }
     const t0 = u.move.legs[0]!.t0;
     const end = movementEnd(u.move);
     const span = Math.max(1, end - t0);
-    // Traînée : dernier 12 % du vol (missile) ou 4 % (aéronef), au plus 20 échantillons.
+    // Traînée : dernier 12 % du vol (missile) ou 4 % (aéronef), 12 échantillons.
     const frac = isMissile ? 0.12 : 0.04;
     const from = Math.max(t0, t - span * frac);
-    const n = 12;
-    const pts: LngLat[] = [];
-    for (let i = 0; i <= n; i++) pts.push(positionAt(u.move, from + ((t - from) * i) / n));
-    unwrap(pts);
-    const own = u.owner === me;
+    const pts = trailPoints(u.move, from, t, 12);
     if (distanceKm(pts[0]!, pts[pts.length - 1]!) > 0.5)
       trails.push({
         type: 'Feature',
@@ -774,6 +931,29 @@ export function cityClassThresholds(defs: Iterable<ProvinceDef>): [number, numbe
   ];
 }
 
+/** Population compacte pour les étiquettes de ville : « 2,1 M hab. », « 640 k hab. ». */
+export function popLabel(pop: number | undefined): string {
+  if (!pop || pop < 1000) return '';
+  if (pop >= 1e6) return `${(pop / 1e6).toFixed(pop >= 1e7 ? 0 : 1).replace('.', ',')} M hab.`;
+  return `${Math.round(pop / 1000)} k hab.`;
+}
+
+/** Noms des provinces (centroïdes), seulement s'ils diffèrent du nom de la ville. */
+export function provinceLabelFeatures(defs: Iterable<ProvinceDef>): FeatureCollection<Point> {
+  const out: Feature<Point>[] = [];
+  for (const d of defs) {
+    if (!d.name || (d.cityName && d.cityName === d.name)) continue;
+    // Pas de nom au-dessus de la ville elle-même : le centroïde doit en être éloigné.
+    if (distanceKm(d.centroid, d.cityPoint) < 12) continue;
+    out.push({
+      type: 'Feature',
+      properties: { id: d.id, name: d.name, rank: -Math.round(Math.log10(1 + d.areaKm2) * 10) },
+      geometry: { type: 'Point', coordinates: d.centroid },
+    });
+  }
+  return fc(out);
+}
+
 /** Villes des provinces : marqueur proportionné (capitale distinguée) et nom. */
 export function cityFeatures(
   defs: Record<string, ProvinceDef>,
@@ -794,6 +974,7 @@ export function cityFeatures(
         cls,
         img: `city|${cls}|${rel}`,
         mine: owner === ctx.me ? 1 : 0,
+        pop: popLabel(pop),
         // Rang de collision : capitales et grandes villes d'abord, puis la population.
         rank: cls * 100 - Math.min(99, Math.log10(1 + pop) * 10),
       },

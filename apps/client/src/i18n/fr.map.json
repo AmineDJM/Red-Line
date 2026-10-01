@@ -35,7 +35,12 @@
       "noFlyZone": "Zone d'exclusion aérienne",
       "disputed": "Territoire disputé",
       "unrest": "Tension",
-      "prompt": "inspect"
+      "prompt": "inspect",
+      "stackTitle": "Pile · {{count}} unités",
+      "stackCombat": "{{count}} au combat",
+      "stackMoving": "{{count}} en mouvement",
+      "mixed": "{{count}} nations au même endroit",
+      "stackHint": "Clic : choisir les unités de la pile"
     },
     "rel": {
       "own": "Vos forces",
@@ -125,7 +130,88 @@
       "km": "{{value}} km"
     },
     "pion": {
-      "decoy": "LEURRE"
+      "decoy": "LEURRE",
+      "entrenched": "Retranchée"
+    },
+    "eta": "ETA {{value}}",
+    "city": {
+      "rank0": "Capitale",
+      "rank1": "Grande ville",
+      "rank2": "Ville moyenne",
+      "rank3": "Petite ville"
+    },
+    "prov": {
+      "morale": "moral {{value}}",
+      "buildings_one": "1 bâtiment",
+      "buildings_other": "{{count}} bâtiments",
+      "garrison": "Garnison",
+      "garrisonNone": "Aucune unité à proximité",
+      "control": "Contrôle",
+      "controlOwn": "Tenue",
+      "controlContested": "Contestée",
+      "rankPop": "{{rank}} · {{pop}}"
+    },
+    "battle": {
+      "skirmish": "Accrochage",
+      "engagedUnits": "Unités au combat",
+      "hint": "Clic : détail des combats",
+      "since": "Depuis",
+      "lastShot": "Dernier tir",
+      "yourLosses": "Vos pertes",
+      "foeLosses": "Pertes adverses",
+      "live": "Combat en cours",
+      "ended": "Combats terminés",
+      "attacker": "Attaquant",
+      "defender": "Défenseur",
+      "you": "vous",
+      "engaged": "{{count}} engagés",
+      "balance": "Rapport des pertes",
+      "fire": "Tirs récents",
+      "fireValue": "{{count}} tirs · {{hits}} au but",
+      "fireNone": "Aucun tir ces dernières minutes",
+      "timeline": "Chronologie",
+      "locate": "Centrer",
+      "report": "Rapport complet",
+      "units": "Unités engagées",
+      "close": "Fermer le détail",
+      "noReport": "Accrochage sans rapport : unités au combat visibles ci-dessous.",
+      "loading": "Chronologie…"
+    },
+    "stack": {
+      "title": "Pile",
+      "prompt": "stack",
+      "units_one": "1 unité",
+      "units_other": "{{count}} unités",
+      "all": "Tout",
+      "cat": {
+        "land": "Terre",
+        "air": "Air",
+        "sea": "Mer",
+        "ad": "DCA",
+        "missile": "Missiles",
+        "other": "Autres"
+      },
+      "selectAll": "Tout sélectionner",
+      "select": "Sélectionner",
+      "selectN": "Sélectionner ({{count}})",
+      "add": "Ajouter",
+      "attack": "Attaquer",
+      "inspect": "Inspecter",
+      "zoom": "Zoomer",
+      "near": "À proximité",
+      "picked": "{{units}} choisie(s) · ×{{count}}",
+      "pickedNone": "Aucune unité choisie",
+      "eta": "arrivée {{value}}",
+      "only": "Seulement",
+      "hint": "Double-clic : cette unité seule · Entrée : valider",
+      "hintTouch": "Touchez pour cocher, puis validez",
+      "close": "Fermer",
+      "notOwn": "Unités étrangères",
+      "more": "+ {{count}} autres"
+    },
+    "settings": {
+      "reduceMotion": "Réduire les animations",
+      "reduceMotionHelp": "Coupe les effets de combat (tirs, explosions), les pulsations et les tirets animés de la carte."
     }
   }
 }

@@ -50,11 +50,19 @@ export interface LaunchBadge {
   n: number;
 }
 
+/** Heure d'arrivée écrite près de la flèche de destination d'un trajet. */
+export interface EtaLabel {
+  at: LngLat;
+  text: string;
+  tone?: CalloutTone;
+}
+
 export interface OverlayContent {
   callouts: CalloutContent[];
   routes: RouteLabel[];
   badges: LaunchBadge[];
   rings?: RingLabel[];
+  etas?: EtaLabel[];
   /** Positions d'icônes (unités) que les étiquettes ne doivent pas recouvrir. */
   icons?: LngLat[];
 }
@@ -135,7 +143,8 @@ export class OverlayRenderer {
       !content.routes.length &&
       !content.badges.length &&
       !content.callouts.length &&
-      !content.rings?.length;
+      !content.rings?.length &&
+      !content.etas?.length;
     if (empty) {
       // Chromium n'applique pas toujours un clearRect seul (aucun dessin ensuite) : sans cette remise
       // à zéro explicite, les dernières étiquettes resteraient figées à l'écran après un saut de caméra.
@@ -151,6 +160,7 @@ export class OverlayRenderer {
     ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     this.hasInk = true;
     const segments = this.drawRoutes(content.routes);
+    this.drawEtas(content.etas ?? [], segments);
     this.drawRings(content.rings ?? []);
     this.drawBadges(content.badges);
     this.drawCallouts(content.callouts, segments, content.icons ?? []);
@@ -321,6 +331,35 @@ export class OverlayRenderer {
       ]);
     }
     return segments;
+  }
+
+  /** Pastilles « ETA » à côté des flèches de destination (zones ajoutées aux segments évités). */
+  private drawEtas(etas: EtaLabel[], segments: [Point, Point][]) {
+    const ctx = this.ctx;
+    const font = `600 9.5px ${MONO}`;
+    ctx.font = font;
+    for (const e of etas) {
+      const p = this.project(e.at);
+      if (p.x < -40 || p.y < -20 || p.x > this.w + 40 || p.y > this.h + 20) continue;
+      const tone = TONES[e.tone ?? 'green'];
+      const w = ctx.measureText(e.text).width + 10;
+      const x = p.x + 10;
+      const y = p.y - 16;
+      ctx.fillStyle = 'rgba(10,14,19,0.88)';
+      ctx.beginPath();
+      ctx.roundRect(x, y, w, 14, 2);
+      ctx.fill();
+      ctx.fillStyle = tone;
+      ctx.fillRect(x, y + 2, 2, 10);
+      ctx.fillStyle = C.text;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(e.text, x + 6, y + 7.5);
+      segments.push([
+        { x, y },
+        { x: x + w, y: y + 14 },
+      ]);
+    }
   }
 
   private drawRings(rings: RingLabel[]) {

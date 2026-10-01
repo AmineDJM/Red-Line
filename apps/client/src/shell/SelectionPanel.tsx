@@ -20,6 +20,8 @@ import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { useGameTime, weaponLabels, weaponSubtitle } from './helpers.js';
+import { useMapSel } from '../map/mapSel.js';
+import { BattlePanel } from './BattlePanel.js';
 import { ProvincePanel } from './ProvincePanel.js';
 
 const STANCES: UnitStance[] = ['hold', 'defend', 'aggressive'];
@@ -271,15 +273,17 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
   );
 }
 
-/** Panneau de sélection (bas gauche) : unité sélectionnée ou inspectée, sinon province. */
+/** Panneau de sélection (bas gauche) : unité sélectionnée ou inspectée, bataille, sinon province. */
 export function SelectionPanel({ compact }: { compact: boolean }) {
   const selection = useUi((s) => s.selection);
   const inspected = useUi((s) => s.inspected);
   const province = useUi((s) => s.selectedProvince);
+  const battle = useMapSel((s) => s.battle);
   const view = useGame((s) => s.view);
   const id = selection[0] ?? inspected;
   const u = id ? view?.units[id] : undefined;
   if (u && view) return <UnitPanel u={u} compact={compact} />;
+  if (battle && view) return <BattlePanel compact={compact} />;
   if (province && view?.provinces[province])
     return <ProvincePanel id={province} compact={compact} />;
   return null;

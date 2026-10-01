@@ -128,6 +128,8 @@ export interface BattleSt {
     units: { id: UnitId; owner: NationId; systemId: SystemId; at: LngLat; hp: number }[];
   }[];
   shots: { t: GameTime; from: LngLat; to: LngLat; cls: TargetClass; hit: boolean }[];
+  /** Derniers tirs (file bornée, indépendante du plafond du replay) : activité affichée en direct. */
+  rs?: { t: GameTime; from: LngLat; to: LngLat; cls: TargetClass; hit: boolean }[];
   outcome: 'attacker' | 'defender' | 'draw' | 'ongoing';
   title: string;
 }
