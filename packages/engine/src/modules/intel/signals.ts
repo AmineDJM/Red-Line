@@ -6,7 +6,7 @@ import { agentsIn, doubledIn, neighborNations, quality, roll } from './levels.js
 import { publish } from './reports.js';
 import { BUILDING_LABEL, announce, imagery, knowledge, provincesInCircle } from './provinces.js';
 import { ist, nat } from './state.js';
-import { nationName, provinceName, sectorOf } from './text.js';
+import { nationName, natA, natAgree, natDe, natLe, provinceName, sectorOf } from './text.js';
 
 /**
  * Réactions du renseignement aux signaux des autres modules (et aux siens). Chaque signal met à jour
@@ -128,7 +128,7 @@ function nuclear(state: EngineState, d: Data): void {
       title: 'FLASH — Détonation nucléaire',
       lines: [
         `Détonation nucléaire détectée : ${where}. ` +
-          (known ? `Attribuée à ${nationName(state, by)}.` : 'Origine non déterminée.'),
+          (known ? `Attribuée ${natA(state, by)}.` : 'Origine non déterminée.'),
       ],
       at,
       radiusKm: at ? 50 : 0,
@@ -159,7 +159,7 @@ function sabotage(state: EngineState, d: Data): void {
     title: 'Sabotage',
     lines: [
       `Sabotage : ${b ? (BUILDING_LABEL[b] ?? b) : 'installation'}${pid ? ` de ${provinceName(state, pid)}` : ''} endommagé(e) à ${dmg} %. ` +
-        (known ? `Commandité par ${nationName(state, by)}.` : 'Auteurs non identifiés.'),
+        (known ? `Commandité par ${natLe(state, by)}.` : 'Auteurs non identifiés.'),
     ],
     at,
     radiusKm: at ? 20 : 0,
@@ -185,7 +185,7 @@ function cyber(state: EngineState, d: Data): void {
     title: 'Cyberattaque',
     lines: [
       `Cyberattaque contre nos ${CYBER_LABEL[kind] ?? 'systèmes'}, effets ≈ ${Math.round(num(d.hours, 12))} h. ` +
-        (known ? `Attribuée à ${nationName(state, by)}.` : 'Attribution impossible.'),
+        (known ? `Attribuée ${natA(state, by)}.` : 'Attribution impossible.'),
     ],
     at: null,
     radiusKm: 0,
@@ -213,7 +213,7 @@ function rebels(state: EngineState, d: Data): void {
     title: 'Groupes armés financés',
     lines: [
       `Financement de groupes armés détecté en ${provinceName(state, pid!)}. ` +
-        (known ? `Fonds d'origine ${nationName(state, by)}.` : 'Origine des fonds inconnue.'),
+        (known ? `Fonds en provenance ${natDe(state, by)}.` : 'Origine des fonds inconnue.'),
     ],
     at,
     radiusKm: at ? 50 : 0,
@@ -251,7 +251,9 @@ function research(state: EngineState, d: Data): void {
       source: 'humint',
       kind: 'intentions',
       title: `Programme achevé — ${nationName(state, n)}`,
-      lines: [`${nationName(state, n)} a achevé le programme « ${name} ».`],
+      lines: [
+        `${natLe(state, n, true)} ${natAgree(state, n, 'a', 'ont')} achevé le programme « ${name} ».`,
+      ],
       at: null,
       radiusKm: 0,
       subject: { nationId: n },
@@ -281,7 +283,7 @@ function blackMarket(state: EngineState, d: Data): void {
       source: 'humint',
       kind: 'intentions',
       title: `Marché noir — ${nationName(state, buyer)}`,
-      lines: [`Achat au marché noir par ${nationName(state, buyer)} : ${label}.`],
+      lines: [`Achat au marché noir par ${natLe(state, buyer)} : ${label}.`],
       at: null,
       radiusKm: 0,
       subject: { nationId: buyer, systemIds: [sys] },

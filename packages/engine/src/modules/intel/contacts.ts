@@ -16,7 +16,7 @@ import { cfg } from './config.js';
 import { allied, hash01, quality, roll } from './levels.js';
 import { publish } from './reports.js';
 import { ist, nextId, type Decoy } from './state.js';
-import { CATEGORY_LABEL, approx, cardinal, fmtTime, nationName, sectorOf } from './text.js';
+import { CATEGORY_LABEL, approx, cardinal, fmtTime, nationName, natDe, sectorOf } from './text.js';
 
 /**
  * Contacts issus du renseignement : ils enrichissent `state.know` (connaissance de la nation) comme des
@@ -199,7 +199,7 @@ export function interceptTick(state: EngineState, id: string): void {
       I.dest = dest;
       const sys = sysOf(state, u);
       const lines: string[] = [];
-      const who = `${CATEGORY_LABEL[sys.category]} (${sys.name}) de ${nationName(state, u.owner)}`;
+      const who = `${CATEGORY_LABEL[sys.category]} (${sys.name}) ${natDe(state, u.owner)}`;
       if (dest && u.move) {
         lines.push(`Ordre intercepté : ${who} fait mouvement vers ${sectorOf(state, dest)}.`);
         lines.push(
@@ -356,7 +356,7 @@ export function reportExposedDecoys(state: EngineState, n: NationId, found: Deco
     kind: 'counterintel',
     title: 'Leurres identifiés',
     lines: [
-      `${found.length} contact(s) de ${nationName(state, found[0]!.owner)} ${sectorOf(state, at)} identifié(s) comme des leurres.`,
+      `${found.length} contact(s) ${natDe(state, found[0]!.owner)} ${sectorOf(state, at)} identifié(s) comme des leurres.`,
       'Signatures thermiques et radio incohérentes ; contacts retirés de la situation tactique.',
     ],
     at,

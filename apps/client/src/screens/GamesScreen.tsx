@@ -60,6 +60,10 @@ export function GamesScreen() {
       setDeleting(false);
     }
   };
+  const statusLabel = (g: MyGame) =>
+    g.game.status === 'ended' && g.game.endReason === 'abandoned'
+      ? t('games.status.abandoned')
+      : t(`games.status.${g.game.status}`);
   return (
     <Page
       path={[t('games.path')]}
@@ -91,6 +95,7 @@ export function GamesScreen() {
       ) : (
         <Table
           label={t('games.title')}
+          className="games-table"
           rows={games}
           rowKey={(g) => g.game.id}
           empty={
@@ -110,13 +115,14 @@ export function GamesScreen() {
               header: t('games.cols.game'),
               render: (g) => (
                 <span className="lobbyname">
-                  <b>
-                    <Flag nationId={g.nationId} size={11} className="rl-only-mobile" />{' '}
-                    {g.game.name}
+                  <b title={g.game.name}>
+                    <Flag nationId={g.nationId} size={11} className="rl-only-mobile" />
+                    <span className="lobbyname__title">{g.game.name}</span>
                   </b>
                   <span>
                     {t(`games.mode.${g.game.mode}`)} ·{' '}
                     {new Date(g.createdAt).toLocaleDateString('fr-FR')}
+                    <span className="rl-only-mobile"> · {statusLabel(g)}</span>
                   </span>
                 </span>
               ),
@@ -157,9 +163,7 @@ export function GamesScreen() {
                   dot
                   pulse={g.game.status === 'running'}
                 >
-                  {g.game.status === 'ended' && g.game.endReason === 'abandoned'
-                    ? t('games.status.abandoned')
-                    : t(`games.status.${g.game.status}`)}
+                  {statusLabel(g)}
                 </Badge>
               ),
             },

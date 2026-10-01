@@ -92,7 +92,9 @@ export function battleFor(
     frames: [],
     shots: [],
     outcome: 'ongoing',
-    title: pid ? `Bataille de ${where}` : 'Bataille en mer',
+    title: pid
+      ? `Bataille ${/^[aeiouéèêâîô]/i.test(where) ? "d'" : 'de '}${where}`
+      : 'Bataille en mer',
   };
   m.battles[id] = b;
   m.open.push(id);

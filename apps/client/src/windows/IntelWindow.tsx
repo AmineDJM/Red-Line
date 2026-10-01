@@ -30,7 +30,7 @@ import {
 import { Ago, Cotation, NationTag, isLowCotation } from '../components/Common.js';
 import { MiniMap } from '../components/MiniMap.js';
 import { fmtDuration } from '../i18n/index.js';
-import { nationName, provinceName } from '../lib/game.js';
+import { nationForms, nationName, provinceName } from '../lib/game.js';
 import { useGameTime } from '../shell/helpers.js';
 import type { WindowContentProps } from '../shell/WindowHost.js';
 import { useGame } from '../store/game.js';
@@ -155,7 +155,7 @@ function ReportCard({
         if (allies[0])
           void send(
             { kind: 'shareReport', reportId: a.reportId, to: allies[0] },
-            t('intel.shared', { nation: nationName(allies[0]) }),
+            t('intel.shared', nationForms(allies[0])),
           );
         break;
       case 'open_unit':
@@ -194,7 +194,7 @@ function ReportCard({
             )}
             {r.sharedBy ? (
               <Badge tone="green" variant="outline">
-                {t('intel.sharedBy', { nation: nationName(r.sharedBy) })}
+                {t('intel.sharedBy', nationForms(r.sharedBy))}
               </Badge>
             ) : null}
             <Ago from={r.time} now={now} />

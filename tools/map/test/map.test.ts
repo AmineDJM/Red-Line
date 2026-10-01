@@ -6,10 +6,13 @@ import { describe, expect, it } from 'vitest';
 import {
   CellsFileSchema,
   DisputedAreaSchema,
+  frA,
+  frDe,
   NationDefSchema,
   ProvinceDefSchema,
   StraitSchema,
 } from '@redline/shared';
+import { NATION_ARTICLE } from '../src/articles.js';
 import { cellOf, navalCells, seaPath } from '../src/cells.js';
 import { SEA_LINKS, VIOLET_HUE_RANGE } from '../src/config.js';
 import { hueOf } from '../src/economy.js';
@@ -66,6 +69,23 @@ describe('nations', () => {
         if (a !== b)
           expect(nationById.get(a)!.color, `${a}/${b}`).not.toBe(nationById.get(b)!.color);
       }
+  });
+  it('chaque nation a son article français (donnée du pipeline, élision cohérente)', () => {
+    expect(Object.keys(NATION_ARTICLE).sort()).toEqual(nations.map((n) => n.id).sort());
+    for (const n of nations) {
+      expect(n.article, n.id).toBeDefined();
+      expect(n.article, n.id).toBe(NATION_ARTICLE[n.id]);
+      // « l' » seulement devant voyelle ou h muet ; jamais « le / la » devant voyelle.
+      const vowel = /^[aeiouàâéèêîïôûœ]/i.test(n.name);
+      if (n.article === "l'") expect(vowel || /^h/i.test(n.name), n.id).toBe(true);
+      if (n.article === 'le' || n.article === 'la') expect(vowel, n.id).toBe(false);
+    }
+    const de = (id: string) => frDe(nationById.get(id)!.name, nationById.get(id)!.article);
+    expect(de('mar')).toBe('du Maroc');
+    expect(de('usa')).toBe('des États-Unis');
+    expect(de('dza')).toBe("de l'Algérie");
+    expect(de('isr')).toBe("d'Israël");
+    expect(frA(nationById.get('cub')!.name, nationById.get('cub')!.article)).toBe('à Cuba');
   });
 });
 

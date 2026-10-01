@@ -79,6 +79,11 @@ export type WeaponSheet = z.infer<typeof WeaponSheetSchema>;
 export const WeaponSystemSchema = z.object({
   id: z.string().regex(/^[a-z]{2,5}\.[a-z0-9-]+$/, 'format attendu : doctrine.nom-en-minuscules'),
   name: z.string().min(1),
+  /**
+   * Système générique de doctrine (infanterie, satellites, brouilleurs) : le nom ne porte pas de
+   * pays (« Infanterie de marine ») ; l'interface affiche la doctrine en badge discret.
+   */
+  generic: z.boolean().optional(),
   doctrine: z.enum(DOCTRINES),
   /** Pays d'origine, ISO 3166-1 alpha-2. */
   origin: z.string().length(2),

@@ -395,6 +395,7 @@ export function EditorScreen({ id }: { id: string | null }) {
                     <CheckField path={['canCapture']} />
                     <CheckField path={['licensable']} />
                     <CheckField path={['exportable']} />
+                    <CheckField path={['generic']} />
                   </div>
                   <div className="grid" style={{ marginTop: 12 }}>
                     <GatesField />

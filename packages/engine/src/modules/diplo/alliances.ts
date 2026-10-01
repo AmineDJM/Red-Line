@@ -11,6 +11,10 @@ import {
   clamp,
   ds,
   isRegular,
+  natA,
+  natAgree,
+  natDe,
+  natLe,
   newId,
   type Alliance,
   type AllianceVote,
@@ -139,7 +143,7 @@ export function orderAnswerInvite(
       state,
       [A.leader],
       'Invitation déclinée',
-      `${n.toUpperCase()} décline l'invitation.`,
+      `${natLe(state, n, true)} ${natAgree(state, n, 'décline', 'déclinent')} l'invitation.`,
     );
     return OK;
   }
@@ -228,10 +232,10 @@ export function openVote(
   scheduleMod(state, { t: v.endsAt, m: 'diplo', e: 'avote', d: { a: A.id, id: v.id } });
   const label =
     kind === 'replace_leader'
-      ? `Remplacement du chef par ${subject.toUpperCase()}`
+      ? `Remplacement du chef par ${natLe(state, subject)}`
       : kind === 'expel'
-        ? `Exclusion de ${subject.toUpperCase()}`
-        : `Dispense de défense mutuelle face à ${subject.toUpperCase()}`;
+        ? `Exclusion ${natDe(state, subject)}`
+        : `Dispense de défense mutuelle face ${natA(state, subject)}`;
   genericNote(state, A.members, "Vote d'alliance", `${A.name} : ${label}.`, 'alliance_vote');
   return v;
 }

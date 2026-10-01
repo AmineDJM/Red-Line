@@ -17,6 +17,49 @@
   color: var(--rl-text-dim);
   font-size: var(--rl-fs-2xs);
 }
+/* Position d'une unité : lien discret qui centre la carte. */
+.uloc {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 180px;
+  padding: 2px 6px;
+  margin: -2px -6px;
+  border: 1px solid transparent;
+  border-radius: var(--rl-radius-sm);
+  background: none;
+  color: var(--rl-text);
+  font: inherit;
+  font-size: var(--rl-fs-xs);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.uloc span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.uloc svg {
+  flex: none;
+  color: var(--rl-text-dim);
+}
+.uloc--sea,
+.uloc--air,
+.uloc--embarked {
+  color: var(--rl-cyan);
+}
+@media (hover: hover) {
+  .uloc:hover {
+    border-color: var(--rl-line-strong);
+    background: var(--rl-panel-2);
+  }
+  .uloc:hover svg {
+    color: var(--rl-amber);
+  }
+}
+.uloc:focus-visible {
+  outline: none;
+  box-shadow: var(--rl-focus);
+}
 .generals {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));

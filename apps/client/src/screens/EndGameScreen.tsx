@@ -139,7 +139,10 @@ export function EndGameScreen({ id }: { id: string }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
   const mine = stats?.nations.find((n) => n.nationId === me);
-  const victory = !!stats?.winner && stats.winner === me;
+  const victory = !abandoned && !!stats?.winner && stats.winner === me;
+  // Partie close sans bilan enregistré (fin pour abandon d'une partie déchargée) : pas de zéros trompeurs.
+  const recorded = !!stats?.nations.some((n) => n.provincesStart > 0 || n.provincesEnd > 0);
+  const kind = abandoned ? 'abandoned' : !me ? 'ended' : victory ? 'victory' : 'defeat';
   return (
     <Page
       path={[t('endgame.path'), id]}
@@ -166,26 +169,14 @@ export function EndGameScreen({ id }: { id: string }) {
         <Spinner label={t('app.loading')} />
       ) : (
         <div className="vstack">
-          <div
-            className={
-              abandoned
-                ? 'endbanner endbanner--abandoned'
-                : victory
-                  ? 'endbanner endbanner--victory'
-                  : 'endbanner endbanner--defeat'
-            }
-          >
+          <div className={`endbanner endbanner--${kind}`} data-testid="end-banner">
             {me ? <Flag nationId={me} size={40} /> : null}
             <div>
-              <span className="endbanner__kicker">{me ? world.nations[me]?.name : ''}</span>
-              <h2>
-                {abandoned
-                  ? t('game.end.abandoned')
-                  : victory
-                    ? t('game.end.victory')
-                    : t('game.end.defeat')}
-              </h2>
-              <span className="muted">
+              <span className="endbanner__kicker">
+                {me ? world.nations[me]?.name : t('game.end.kickerEnded')}
+              </span>
+              <h2>{kind === 'ended' ? t('endgame.ended') : t(`game.end.${kind}`)}</h2>
+              <span className="endbanner__text muted">
                 {abandoned
                   ? t('game.end.abandonedText')
                   : stats.winner
@@ -197,7 +188,7 @@ export function EndGameScreen({ id }: { id: string }) {
               </span>
             </div>
           </div>
-          {mine ? (
+          {mine && recorded ? (
             <div className="kpis">
               <Stat
                 label={t('endgame.provinces')}
@@ -237,70 +228,74 @@ export function EndGameScreen({ id }: { id: string }) {
               </Panel>
             ) : null}
           </div>
-          <Table
-            label={t('endgame.table')}
-            rows={stats.nations}
-            rowKey={(n) => n.nationId}
-            defaultSort={{ key: 'end', dir: 'desc' }}
-            columns={[
-              {
-                key: 'n',
-                header: t('endgame.cols.nation'),
-                render: (n) => (
-                  <span className="nat nat--strong">
-                    <Flag nationId={n.nationId} size={12} />
-                    <span className="nat__name">
-                      {world.nations[n.nationId]?.name ?? n.nationId}
+          {!recorded ? (
+            <p className="hint">{t('endgame.noStats')}</p>
+          ) : (
+            <Table
+              label={t('endgame.table')}
+              rows={stats.nations}
+              rowKey={(n) => n.nationId}
+              defaultSort={{ key: 'end', dir: 'desc' }}
+              columns={[
+                {
+                  key: 'n',
+                  header: t('endgame.cols.nation'),
+                  render: (n) => (
+                    <span className="nat nat--strong">
+                      <Flag nationId={n.nationId} size={12} />
+                      <span className="nat__name">
+                        {world.nations[n.nationId]?.name ?? n.nationId}
+                      </span>
+                      {n.nationId === stats.winner ? (
+                        <Icon name="crown" size={13} className="rl-tone-amber" />
+                      ) : null}
                     </span>
-                    {n.nationId === stats.winner ? (
-                      <Icon name="crown" size={13} className="rl-tone-amber" />
-                    ) : null}
-                  </span>
-                ),
-              },
-              {
-                key: 'p',
-                header: t('endgame.cols.player'),
-                render: (n) => n.player ?? <Badge tone="neutral">IA</Badge>,
-                hideOnMobile: true,
-              },
-              {
-                key: 'end',
-                header: t('endgame.cols.provinces'),
-                align: 'right',
-                render: (n) => `${n.provincesStart} → ${n.provincesEnd}`,
-                sort: (a, b) => a.provincesEnd - b.provincesEnd,
-              },
-              {
-                key: 'c',
-                header: t('endgame.cols.conquered'),
-                align: 'right',
-                render: (n) => n.conquered,
-                sort: (a, b) => a.conquered - b.conquered,
-              },
-              {
-                key: 'k',
-                header: t('endgame.cols.kills'),
-                align: 'right',
-                render: (n) => formatInt(n.kills),
-                hideOnMobile: true,
-              },
-              {
-                key: 'l',
-                header: t('endgame.cols.losses'),
-                align: 'right',
-                render: (n) => formatInt(n.losses),
-                hideOnMobile: true,
-              },
-              {
-                key: 's',
-                header: t('endgame.cols.spent'),
-                align: 'right',
-                render: (n) => <span className="rl-money">{formatMoney(n.spentUsd)}</span>,
-                hideOnMobile: true,
-              },
-            ]}
-          />
+                  ),
+                },
+                {
+                  key: 'p',
+                  header: t('endgame.cols.player'),
+                  render: (n) => n.player ?? <Badge tone="neutral">IA</Badge>,
+                  hideOnMobile: true,
+                },
+                {
+                  key: 'end',
+                  header: t('endgame.cols.provinces'),
+                  align: 'right',
+                  render: (n) => `${n.provincesStart} → ${n.provincesEnd}`,
+                  sort: (a, b) => a.provincesEnd - b.provincesEnd,
+                },
+                {
+                  key: 'c',
+                  header: t('endgame.cols.conquered'),
+                  align: 'right',
+                  render: (n) => n.conquered,
+                  sort: (a, b) => a.conquered - b.conquered,
+                },
+                {
+                  key: 'k',
+                  header: t('endgame.cols.kills'),
+                  align: 'right',
+                  render: (n) => formatInt(n.kills),
+                  hideOnMobile: true,
+                },
+                {
+                  key: 'l',
+                  header: t('endgame.cols.losses'),
+                  align: 'right',
+                  render: (n) => formatInt(n.losses),
+                  hideOnMobile: true,
+                },
+                {
+                  key: 's',
+                  header: t('endgame.cols.spent'),
+                  align: 'right',
+                  render: (n) => <span className="rl-money">{formatMoney(n.spentUsd)}</span>,
+                  hideOnMobile: true,
+                },
+              ]}
+            />
+          )}
         </div>
       )}
     </Page>

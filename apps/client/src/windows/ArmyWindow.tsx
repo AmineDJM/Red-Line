@@ -33,7 +33,8 @@ import {
 } from '@redline/ui';
 import { fmtDuration } from '../i18n/index.js';
 import { norm, resolvePlace, type CommandCtx } from '../lib/commands.js';
-import { unitPosition } from '../map/interpolation.js';
+import { isMoving, unitPosition } from '../map/interpolation.js';
+import { unitLocation, type UnitLocation } from '../lib/location.js';
 import { t as tr } from '../i18n/index.js';
 import { useGameTime } from '../shell/helpers.js';
 import type { WindowContentProps } from '../shell/WindowHost.js';
@@ -61,6 +62,7 @@ function Units({ mobile }: { mobile: boolean }) {
   const view = useGame((s) => s.view);
   const me = useGame((s) => s.me);
   const catalog = useWorld((s) => s.catalog);
+  const provinces = useWorld((s) => s.provinces);
   const selection = useUi((s) => s.selection);
   const select = useUi((s) => s.select);
   const focusOn = useUi((s) => s.focusOn);
@@ -89,6 +91,28 @@ function Units({ mobile }: { mobile: boolean }) {
         !q || norm(catalog[u.systemId ?? '']?.name ?? '').includes(norm(q)) || u.id.includes(q),
     );
   const general = (u: UnitView) => view?.generals?.find((g) => g.id === u.generalId);
+  // Position : ville la plus proche, « en mer », « en vol » (calculée une fois par rendu).
+  const now = gameNow();
+  const locs = new Map<UnitId, UnitLocation>();
+  const loc = (u: UnitView): UnitLocation => {
+    let l = locs.get(u.id);
+    if (!l) {
+      const sys = u.systemId ? catalog[u.systemId] : undefined;
+      const flying =
+        u.mission?.airborne ?? (isMoving(u, now) || (!!u.mission && u.mission.kind !== 'none'));
+      l = unitLocation(u, sys, unitPosition(u, now), provinces, flying);
+      locs.set(u.id, l);
+    }
+    return l;
+  };
+  const locLabel = (l: UnitLocation): string =>
+    l.kind === 'city'
+      ? (l.city ?? '—')
+      : l.kind === 'near'
+        ? t('army.loc.near', { city: l.city, km: l.km })
+        : t(`army.loc.${l.kind}`);
+  const locTitle = (l: UnitLocation): string =>
+    l.city ? t('army.loc.title', { city: l.city, km: l.km ?? 0 }) : t('army.loc.center');
   const elements = rows.reduce((s, u) => s + (u.count ?? 1), 0);
   return (
     <div className="vstack">
@@ -150,7 +174,7 @@ function Units({ mobile }: { mobile: boolean }) {
                       {u.veterancy ? ` · ${'★'.repeat(u.veterancy)}` : ''}
                       <span className="rl-only-mobile">
                         {' '}
-                        · {t(`game.status.${u.status ?? 'idle'}`)}
+                        · {t(`game.status.${u.status ?? 'idle'}`)} · {locLabel(loc(u))}
                       </span>
                     </span>
                   </span>
@@ -164,6 +188,34 @@ function Units({ mobile }: { mobile: boolean }) {
             align: 'right',
             render: (u) => formatInt(u.count ?? 1),
             sort: (a, b) => (a.count ?? 1) - (b.count ?? 1),
+          },
+          {
+            key: 'pos',
+            header: t('army.cols.position'),
+            hideOnMobile: true,
+            sort: (a, b) => locLabel(loc(a)).localeCompare(locLabel(loc(b))),
+            render: (u) => {
+              const l = loc(u);
+              return (
+                <button
+                  type="button"
+                  className={`uloc uloc--${l.kind}`}
+                  title={locTitle(l)}
+                  aria-label={`${t('army.loc.center')} : ${locLabel(l)}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    focusOn(l.at, 6.5);
+                    if (mobile) closeAll();
+                  }}
+                >
+                  <Icon
+                    name={l.kind === 'air' ? 'target' : l.kind === 'sea' ? 'anchor' : 'mapPin'}
+                    size={11}
+                  />
+                  <span>{locLabel(l)}</span>
+                </button>
+              );
+            },
           },
           {
             key: 'hp',

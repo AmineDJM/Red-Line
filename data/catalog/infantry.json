@@ -3,7 +3,8 @@
   "systems": [
     {
       "id": "us.infantry-light",
-      "name": "Infanterie légère (États-Unis)",
+      "name": "Infanterie légère",
+      "generic": true,
       "doctrine": "us",
       "origin": "US",
       "category": "infantry",
@@ -74,7 +75,8 @@
     },
     {
       "id": "us.infantry-mech",
-      "name": "Infanterie mécanisée (États-Unis)",
+      "name": "Infanterie mécanisée",
+      "generic": true,
       "doctrine": "us",
       "origin": "US",
       "category": "infantry",
@@ -145,7 +147,8 @@
     },
     {
       "id": "ru.infantry-light",
-      "name": "Infanterie légère (Russie)",
+      "name": "Infanterie légère",
+      "generic": true,
       "doctrine": "ru",
       "origin": "RU",
       "category": "infantry",
@@ -216,7 +219,8 @@
     },
     {
       "id": "ru.infantry-mech",
-      "name": "Infanterie mécanisée (Russie)",
+      "name": "Infanterie mécanisée",
+      "generic": true,
       "doctrine": "ru",
       "origin": "RU",
       "category": "infantry",
@@ -287,7 +291,8 @@
     },
     {
       "id": "cn.infantry-light",
-      "name": "Infanterie légère (Chine)",
+      "name": "Infanterie légère",
+      "generic": true,
       "doctrine": "cn",
       "origin": "CN",
       "category": "infantry",
@@ -358,7 +363,8 @@
     },
     {
       "id": "cn.infantry-mech",
-      "name": "Infanterie mécanisée (Chine)",
+      "name": "Infanterie mécanisée",
+      "generic": true,
       "doctrine": "cn",
       "origin": "CN",
       "category": "infantry",
@@ -429,7 +435,8 @@
     },
     {
       "id": "eu.infantry-light",
-      "name": "Infanterie légère (Europe)",
+      "name": "Infanterie légère",
+      "generic": true,
       "doctrine": "eu",
       "origin": "EU",
       "category": "infantry",
@@ -500,7 +507,8 @@
     },
     {
       "id": "eu.infantry-mech",
-      "name": "Infanterie mécanisée (Europe)",
+      "name": "Infanterie mécanisée",
+      "generic": true,
       "doctrine": "eu",
       "origin": "EU",
       "category": "infantry",
@@ -571,7 +579,8 @@
     },
     {
       "id": "other.infantry-light",
-      "name": "Infanterie légère (générique)",
+      "name": "Infanterie légère",
+      "generic": true,
       "doctrine": "other",
       "origin": "XX",
       "category": "infantry",
@@ -642,7 +651,8 @@
     },
     {
       "id": "other.infantry-mech",
-      "name": "Infanterie mécanisée (générique)",
+      "name": "Infanterie mécanisée",
+      "generic": true,
       "doctrine": "other",
       "origin": "XX",
       "category": "infantry",
@@ -713,7 +723,8 @@
     },
     {
       "id": "us.marines",
-      "name": "Infanterie de marine (États-Unis)",
+      "name": "Infanterie de marine",
+      "generic": true,
       "doctrine": "us",
       "origin": "US",
       "category": "infantry",
@@ -784,7 +795,8 @@
     },
     {
       "id": "us.special-forces",
-      "name": "Forces spéciales (États-Unis)",
+      "name": "Forces spéciales",
+      "generic": true,
       "doctrine": "us",
       "origin": "US",
       "category": "infantry",
@@ -855,7 +867,8 @@
     },
     {
       "id": "us.airborne",
-      "name": "Troupes aéroportées (États-Unis)",
+      "name": "Troupes aéroportées",
+      "generic": true,
       "doctrine": "us",
       "origin": "US",
       "category": "infantry",
@@ -926,7 +939,8 @@
     },
     {
       "id": "ru.naval-infantry",
-      "name": "Infanterie de marine (Russie)",
+      "name": "Infanterie de marine",
+      "generic": true,
       "doctrine": "ru",
       "origin": "RU",
       "category": "infantry",
@@ -997,7 +1011,8 @@
     },
     {
       "id": "ru.spetsnaz",
-      "name": "Spetsnaz (Russie)",
+      "name": "Spetsnaz",
+      "generic": true,
       "doctrine": "ru",
       "origin": "RU",
       "category": "infantry",
@@ -1068,7 +1083,8 @@
     },
     {
       "id": "ru.vdv-airborne",
-      "name": "Troupes aéroportées VDV (Russie)",
+      "name": "Troupes aéroportées VDV",
+      "generic": true,
       "doctrine": "ru",
       "origin": "RU",
       "category": "infantry",
@@ -1139,7 +1155,8 @@
     },
     {
       "id": "cn.marines",
-      "name": "Infanterie de marine (Chine)",
+      "name": "Infanterie de marine",
+      "generic": true,
       "doctrine": "cn",
       "origin": "CN",
       "category": "infantry",
@@ -1210,7 +1227,8 @@
     },
     {
       "id": "cn.special-forces",
-      "name": "Forces spéciales (Chine)",
+      "name": "Forces spéciales",
+      "generic": true,
       "doctrine": "cn",
       "origin": "CN",
       "category": "infantry",
@@ -1281,7 +1299,8 @@
     },
     {
       "id": "cn.airborne",
-      "name": "Troupes aéroportées (Chine)",
+      "name": "Troupes aéroportées",
+      "generic": true,
       "doctrine": "cn",
       "origin": "CN",
       "category": "infantry",
@@ -1352,7 +1371,8 @@
     },
     {
       "id": "eu.marines",
-      "name": "Infanterie de marine (Europe)",
+      "name": "Infanterie de marine",
+      "generic": true,
       "doctrine": "eu",
       "origin": "EU",
       "category": "infantry",
@@ -1423,7 +1443,8 @@
     },
     {
       "id": "eu.special-forces",
-      "name": "Forces spéciales (Europe)",
+      "name": "Forces spéciales",
+      "generic": true,
       "doctrine": "eu",
       "origin": "EU",
       "category": "infantry",
@@ -1494,7 +1515,8 @@
     },
     {
       "id": "eu.airborne",
-      "name": "Troupes aéroportées (Europe)",
+      "name": "Troupes aéroportées",
+      "generic": true,
       "doctrine": "eu",
       "origin": "EU",
       "category": "infantry",
@@ -1565,7 +1587,8 @@
     },
     {
       "id": "other.marines",
-      "name": "Infanterie de marine (générique)",
+      "name": "Infanterie de marine",
+      "generic": true,
       "doctrine": "other",
       "origin": "XX",
       "category": "infantry",
@@ -1636,7 +1659,8 @@
     },
     {
       "id": "other.special-forces",
-      "name": "Forces spéciales (générique)",
+      "name": "Forces spéciales",
+      "generic": true,
       "doctrine": "other",
       "origin": "XX",
       "category": "infantry",
@@ -1707,7 +1731,8 @@
     },
     {
       "id": "other.airborne",
-      "name": "Troupes aéroportées (générique)",
+      "name": "Troupes aéroportées",
+      "generic": true,
       "doctrine": "other",
       "origin": "XX",
       "category": "infantry",

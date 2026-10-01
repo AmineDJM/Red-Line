@@ -10,7 +10,7 @@ import { battleFor, countermeasure, timeline, touch } from './battles.js';
 import { milBal, type MissileSt } from './state.js';
 import { countLoss } from './stats.js';
 import { damageUnit } from './strike.js';
-import { OK, fail, generic, nameOfProvince, posOf, provinceAt, unitsNear } from './util.js';
+import { OK, atProvince, fail, generic, nationLe, posOf, provinceAt, unitsNear } from './util.js';
 
 /**
  * Nucléaire. L'emploi exige une autorisation explicite (ordre `nuclearAuth`, board.nuclearAuth),
@@ -87,19 +87,19 @@ export function detonate(state: EngineState, M: Unit, at: LngLat, st: MissileSt)
     timeline(
       state,
       b,
-      `Détonation nucléaire à ${nameOfProvince(state, pid)} : ${destroyed} éléments anéantis`,
+      `Détonation nucléaire ${atProvince(state, pid)} : ${destroyed} éléments anéantis`,
     );
     touch(state, b);
   }
-  const where = nameOfProvince(state, pid);
+  const where = atProvince(state, pid);
   signal(state, 'nuclear_detonation', { by: M.owner, victim, at, pid });
   signal(state, 'strike', { by: M.owner, victim, at, kind: 'missile', nuclear: true });
   raiseAlert(state, milBal(state).tension.nuclear, 'nuclear');
   setTensionAtLeast(state, thresholds(state)[3]!);
   signal(state, 'news', {
     category: 'nuclear',
-    headline: `Détonation nucléaire à ${where}`,
-    body: `Une arme nucléaire tirée par ${M.owner.toUpperCase()} a explosé à ${where}.`,
+    headline: `Détonation nucléaire ${where}`,
+    body: `Une arme nucléaire tirée par ${nationLe(state, M.owner)} a explosé ${where}.`,
     at,
     nations: victim ? [M.owner, victim] : [M.owner],
   });
@@ -115,7 +115,7 @@ export function detonate(state: EngineState, M: Unit, at: LngLat, st: MissileSt)
     null,
     'nuclear',
     'Détonation nucléaire',
-    `Frappe nucléaire à ${where}.`,
+    `Frappe nucléaire ${where}.`,
     'critical',
     at,
   );

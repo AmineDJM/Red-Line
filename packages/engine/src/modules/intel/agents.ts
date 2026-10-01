@@ -8,7 +8,7 @@ import { cfg, clamp } from './config.js';
 import { budgetFactor, level, quality, roll } from './levels.js';
 import { publish } from './reports.js';
 import { ist, nat, nextId, type Agent } from './state.js';
-import { codename, fmtTime, nationName } from './text.js';
+import { codename, fmtTime, nationName, natAgree, natDe, natLe } from './text.js';
 
 export function createAgent(
   state: EngineState,
@@ -80,9 +80,9 @@ export function catchQuietly(state: EngineState, a: Agent): void {
     dept: 'interior',
     source: 'humint',
     kind: 'counterintel',
-    title: `Agent de ${nationName(state, a.owner)} démasqué`,
+    title: `Agent ${natDe(state, a.owner)} démasqué`,
     lines: [
-      `${a.kind === 'officer' ? 'Officier traitant' : 'Source recrutée'} au service de ${nationName(state, a.owner)} identifié(e) et placé(e) sous surveillance.`,
+      `${a.kind === 'officer' ? 'Officier traitant' : 'Source recrutée'} au service ${natDe(state, a.owner)} identifié(e) et placé(e) sous surveillance.`,
       `Arrestation publique prévue ${fmtTime(until)}. Retournement possible d'ici là (ordre « retourner »).`,
     ],
     at: capitalPoint(state, a.host),
@@ -137,7 +137,7 @@ export function publicArrest(state: EngineState, a: Agent): void {
       at,
       category: 'intel',
       title: 'Agent démasqué',
-      text: `${nationName(state, a.host)} annonce l'arrestation d'un agent de ${nationName(state, a.owner)}.`,
+      text: `${natLe(state, a.host, true)} ${natAgree(state, a.host, 'annonce', 'annoncent')} l'arrestation d'un agent ${natDe(state, a.owner)}.`,
       severity: 'warn',
     },
     [a.owner, a.host],
@@ -146,10 +146,10 @@ export function publicArrest(state: EngineState, a: Agent): void {
     dept: 'interior',
     source: 'humint',
     kind: 'counterintel',
-    title: `Arrestation d'un agent de ${nationName(state, a.owner)}`,
+    title: `Arrestation d'un agent ${natDe(state, a.owner)}`,
     lines: [
       `L'agent étranger placé sous surveillance a été interpellé.`,
-      `Incident diplomatique ouvert avec ${nationName(state, a.owner)}.`,
+      `Incident diplomatique ouvert avec ${natLe(state, a.owner)}.`,
     ],
     at,
     radiusKm: 50,
@@ -162,7 +162,7 @@ export function publicArrest(state: EngineState, a: Agent): void {
     kind: 'flash',
     title: `Agent ${a.codename} arrêté`,
     lines: [
-      `${a.codename} a été arrêté par les services de ${nationName(state, a.host)}.`,
+      `${a.codename} a été arrêté par les services ${natDe(state, a.host)}.`,
       'Réseau local à considérer comme compromis. Perte de réputation attendue.',
     ],
     at,

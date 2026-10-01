@@ -4,6 +4,11 @@ import {
   MINUTE,
   bearing,
   distanceKm,
+  frA,
+  frAgree,
+  frCap,
+  frDe,
+  frLe,
   type Category,
   type Department,
   type LngLat,
@@ -85,6 +90,31 @@ export function codename(state: EngineState): string {
 
 export function nationName(state: EngineState, n: NationId): string {
   return wi(state.world).nationById.get(n)?.name ?? n.toUpperCase();
+}
+
+function nationArticle(state: EngineState, n: NationId): string {
+  return wi(state.world).nationById.get(n)?.article ?? '';
+}
+
+/** « le Maroc », « l'Algérie », « Cuba » ; `cap` pour un début de phrase. */
+export function natLe(state: EngineState, n: NationId, cap = false): string {
+  const s = frLe(nationName(state, n), nationArticle(state, n));
+  return cap ? frCap(s) : s;
+}
+
+/** « du Maroc », « de l'Algérie », « des États-Unis », « d'Israël ». */
+export function natDe(state: EngineState, n: NationId): string {
+  return frDe(nationName(state, n), nationArticle(state, n));
+}
+
+/** « au Maroc », « à l'Algérie », « aux États-Unis », « à Cuba ». */
+export function natA(state: EngineState, n: NationId): string {
+  return frA(nationName(state, n), nationArticle(state, n));
+}
+
+/** Verbe accordé en nombre avec la nation sujet : « le Maroc propose », « les États-Unis proposent ». */
+export function natAgree(state: EngineState, n: NationId, sg: string, pl: string): string {
+  return frAgree(nationArticle(state, n), sg, pl);
 }
 
 export function provinceName(state: EngineState, pid: ProvinceId): string {

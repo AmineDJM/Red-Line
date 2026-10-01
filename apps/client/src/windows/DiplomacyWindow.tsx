@@ -27,7 +27,7 @@ import {
 } from '@redline/ui';
 import { Ago, NationTag, RelationBadge } from '../components/Common.js';
 import { norm } from '../lib/commands.js';
-import { nationName, relationOf } from '../lib/game.js';
+import { nationForms, nationName, relationOf } from '../lib/game.js';
 import { useGameTime } from '../shell/helpers.js';
 import type { WindowContentProps } from '../shell/WindowHost.js';
 import { useGame } from '../store/game.js';
@@ -134,7 +134,7 @@ function Relations() {
           onClick={() =>
             void send(
               { kind: 'proposePeace', nationId: r.id, type: 'ceasefire' },
-              t('console.done.ceasefire', { nation: nationName(r.id) }),
+              t('console.done.ceasefire', nationForms(r.id)),
             )
           }
         >
@@ -146,7 +146,7 @@ function Relations() {
           onClick={() =>
             void send(
               { kind: 'proposePeace', nationId: r.id, type: 'peace' },
-              t('console.done.peace', { nation: nationName(r.id) }),
+              t('console.done.peace', nationForms(r.id)),
             )
           }
         >
@@ -309,7 +309,7 @@ function Relations() {
                 if (war)
                   void send(
                     { kind: 'declareWar', nationId: war },
-                    t('console.done.war', { nation: nationName(war) }),
+                    t('console.done.war', nationForms(war)),
                   );
                 setWar(null);
               }}
@@ -319,7 +319,7 @@ function Relations() {
           </>
         }
       >
-        <p>{t('diplomacy.warText', { nation: war ? nationName(war) : '' })}</p>
+        <p>{t('diplomacy.warText', nationForms(war))}</p>
       </Dialog>
     </div>
   );
@@ -392,7 +392,7 @@ function AllianceCard({ a, mine }: { a: AllianceView; mine: boolean }) {
                 <div key={v.id} className="vote">
                   <div className="vote__head">
                     <Icon name="vote" size={14} />
-                    <b>{t(`diplomacy.votes.${v.kind}`, { nation: nationName(v.subject) })}</b>
+                    <b>{t(`diplomacy.votes.${v.kind}`, nationForms(v.subject))}</b>
                     <span className="grow" />
                     <Countdown ms={v.endsAt - now} dayUnit={t('time.dayUnit')} />
                   </div>
@@ -682,7 +682,7 @@ function Neutrals() {
                 onClick={() =>
                   void send(
                     { kind: 'courtNeutral', nationId: r.nationId, aid },
-                    t('diplomacy.courted', { nation: nationName(r.nationId) }),
+                    t('diplomacy.courted', nationForms(r.nationId)),
                   )
                 }
               >
