@@ -5,19 +5,18 @@ Stripe. Compter une demi-heure la première fois.
 
 Tout est décrit dans le fichier `render.yaml` du dépôt (un « Blueprint ») : **un seul service web** sert le jeu
 (`/`), le back-office (`/admin/`), l'API et le temps réel (WebSocket) sur la même adresse, plus **une base
-PostgreSQL**. Deux environnements :
+PostgreSQL**, en production uniquement :
 
 | Environnement | Branche GitHub | Service web                          | Base                                    |
 | ------------- | -------------- | ------------------------------------ | --------------------------------------- |
 | Production    | `main`         | `redline-server` (Starter, 7 $/mois) | `redline-db` (basic-256mb, disque 5 Go) |
-| Staging       | `staging`      | `redline-server-staging` (gratuit)   | `redline-db-staging` (gratuite)         |
 
-> Le service gratuit s'endort après 15 minutes sans visite (les parties s'arrêtent le temps de son réveil) et la
-> base gratuite est supprimée au bout de 30 jours : très bien pour essayer, **jamais pour la production**.
+> Un environnement de test (staging, offres gratuites) pourra être ajouté plus tard dans `render.yaml` ; il exige
+> une branche `staging` sur GitHub.
 
 ## 1. Préparer
 
-1. Un compte **GitHub** avec le dépôt Red Line, et la branche `main` à jour (la branche `staging` est facultative).
+1. Un compte **GitHub** avec le dépôt Red Line, et la branche `main` à jour.
 2. Un compte **Render** (render.com) relié à GitHub : Render → _Account Settings_ → _GitHub_ → autoriser l'accès au
    dépôt.
 3. Choisir dès maintenant :
@@ -28,8 +27,7 @@ PostgreSQL**. Deux environnements :
 ## 2. Créer le Blueprint
 
 1. Render → **New +** → **Blueprint**.
-2. Choisir le dépôt Red Line, branche `main`. Render lit `render.yaml` et affiche : 2 services web, 2 bases.
-   (Pour ne créer que la production, supprimer le staging juste après, ou le laisser : il ne coûte rien.)
+2. Choisir le dépôt Red Line, branche `main`. Render lit `render.yaml` et affiche : 1 service web, 1 base.
 3. Render demande les valeurs « à saisir » (les autres sont automatiques) :
 
    | Variable                | Que mettre                                                                    |
@@ -51,8 +49,7 @@ PostgreSQL**. Deux environnements :
    → modifier → **Save, rebuild and deploy**).
 
 Chaque `git push` sur `main` redéploie automatiquement, **seulement si la CI GitHub est verte**
-(`autoDeployTrigger: checksPass`) : un code qui casse les tests n'est jamais mis en ligne. Le staging, lui, se
-redéploie à chaque push sur `staging`.
+(`autoDeployTrigger: checksPass`) : un code qui casse les tests n'est jamais mis en ligne.
 
 ## 3. Vérifier que tout fonctionne
 
@@ -80,7 +77,7 @@ jeu fonctionne. Pour l'activer :
    - Copier le **secret de signature** (`whsec_…`) dans `STRIPE_WEBHOOK_SECRET`.
 3. **Save, rebuild and deploy**. Dans le jeu, la boutique propose les packs ; un achat de test crédite le
    portefeuille une fois le webhook reçu (Stripe → Webhooks → le point de terminaison affiche « 200 »).
-4. Staging : mêmes étapes avec les clés de **test** (`sk_test_…`) et l'adresse du staging.
+4. Pour essayer sans vrai paiement : clés de **test** (`sk_test_…`) d'abord, puis clés réelles.
 
 Garanties : le portefeuille n'est crédité **que** par un webhook dont la signature est vérifiée ; chaque
 événement n'est traité qu'une fois ; le journal des mouvements est en ajout seul. Les remboursements se font
@@ -114,7 +111,6 @@ notifications exigent que le joueur ait ajouté Red Line à l'écran d'accueil.
 - La base n'accepte **aucune connexion depuis Internet** (`ipAllowList: []`) : seul le service y accède par le
   réseau privé de Render. Pour une connexion ponctuelle depuis un ordinateur (outil SQL, `pg_dump`), ajouter
   temporairement son adresse IP dans `redline-db` → **Networking**, puis la retirer.
-- La base gratuite du staging n'est **pas** sauvegardée et disparaît au bout de 30 jours.
 
 ## 8. Compte illimité (administrateur)
 
