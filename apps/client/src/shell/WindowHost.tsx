@@ -14,6 +14,9 @@ export interface WindowContentProps {
 
 // Chaque domaine est un morceau chargé à la première ouverture.
 const CONTENT: Record<WindowId, LazyExoticComponent<ComponentType<WindowContentProps>>> = {
+  armies: lazy(() =>
+    import('../windows/ArmiesWindow.js').then((m) => ({ default: m.ArmiesWindow })),
+  ),
   army: lazy(() => import('../windows/ArmyWindow.js').then((m) => ({ default: m.ArmyWindow }))),
   production: lazy(() =>
     import('../windows/ProductionWindow.js').then((m) => ({ default: m.ProductionWindow })),
@@ -34,9 +37,6 @@ const CONTENT: Record<WindowId, LazyExoticComponent<ComponentType<WindowContentP
   news: lazy(() => import('../windows/NewsWindow.js').then((m) => ({ default: m.NewsWindow }))),
   battles: lazy(() =>
     import('../windows/BattlesWindow.js').then((m) => ({ default: m.BattlesWindow })),
-  ),
-  encyclopedia: lazy(() =>
-    import('../windows/EncyclopediaWindow.js').then((m) => ({ default: m.EncyclopediaWindow })),
   ),
   chat: lazy(() => import('../windows/ChatWindow.js').then((m) => ({ default: m.ChatWindow }))),
   shop: lazy(() => import('../windows/ShopWindow.js').then((m) => ({ default: m.ShopWindow }))),
@@ -87,7 +87,10 @@ function Host({ win, top, mobile }: { win: WindowState; top: boolean; mobile: bo
   );
 }
 
-/** Fenêtres ouvertes : flottantes sur ordinateur, une seule plein écran sur mobile. */
+/**
+ * Fenêtre ouverte (une seule à la fois : en ouvrir une autre la remplace) : flottante sur
+ * ordinateur, plein écran sur mobile.
+ */
 export function WindowHost() {
   const windows = useUi((s) => s.windows);
   const mobile = useIsMobile();

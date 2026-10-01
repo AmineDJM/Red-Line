@@ -1,810 +1,367 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { Category } from '@redline/shared';
 import {
-  HOUR,
-  MINUTE,
-  type GeneralView,
-  type Order,
-  type OperationView,
-  type UnitId,
-  type UnitView,
-} from '@redline/shared';
-import {
-  Badge,
   Button,
-  Checkbox,
-  Countdown,
   EmptyState,
-  Field,
   Gauge,
   Icon,
-  Input,
-  Panel,
   SearchInput,
-  Segmented,
-  Select,
-  Slider,
+  Stat,
   Table,
   Tabs,
-  UnitMarker,
   Window,
+  WeaponPhoto,
   formatInt,
-  pictogramFor,
+  formatMoney,
 } from '@redline/ui';
-import { fmtDuration } from '../i18n/index.js';
-import { norm, resolvePlace, type CommandCtx } from '../lib/commands.js';
-import { isMoving, unitPosition } from '../map/interpolation.js';
-import { unitLocation, type UnitLocation } from '../lib/location.js';
-import { t as tr } from '../i18n/index.js';
+import { ArsenalBrowser, CategoryNav } from '../components/ArsenalBrowser.js';
+import { inventory, type InventoryRow } from '../lib/armies.js';
+import {
+  NAV_CATEGORIES,
+  readCategory,
+  writeCategory,
+  type CategoryFilter,
+} from '../lib/arsenal.js';
+import { norm } from '../lib/commands.js';
+import { totalUpkeep } from '../lib/game.js';
+import { photoFor, usePhotos } from '../lib/photos.js';
 import { useGameTime } from '../shell/helpers.js';
 import type { WindowContentProps } from '../shell/WindowHost.js';
-import { gameNow, useGame } from '../store/game.js';
+import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 
-type Tab = 'units' | 'generals' | 'operations';
-type Domain = 'all' | 'land' | 'air' | 'sea' | 'static';
+const CATEGORY_KEY = 'inventory';
 
-function useSend() {
-  const { t } = useTranslation();
-  const toast = useUi((s) => s.toast);
-  return async (order: Order, ok: string) => {
-    const res = await useGame.getState().connection?.sendOrder(order);
-    if (res?.ok) toast(ok, 'ok');
-    else if (res)
-      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
-    return !!res?.ok;
-  };
-}
+type Tab = 'inventory' | 'catalog';
 
-function Units({ mobile }: { mobile: boolean }) {
-  const { t } = useTranslation();
-  const view = useGame((s) => s.view);
-  const me = useGame((s) => s.me);
-  const catalog = useWorld((s) => s.catalog);
-  const provinces = useWorld((s) => s.provinces);
-  const selection = useUi((s) => s.selection);
-  const select = useUi((s) => s.select);
-  const focusOn = useUi((s) => s.focusOn);
-  const closeAll = useUi((s) => s.closeAllWindows);
-  const [domain, setDomain] = useState<Domain>('all');
-  const [q, setQ] = useState('');
-  const own = useMemo(
-    () =>
-      Object.values(view?.units ?? {}).filter(
-        (u) => u.owner === me && u.level === 'own' && u.status !== 'destroyed',
-      ),
-    [view?.units, me],
-  );
-  const dom = (u: UnitView): Domain =>
-    (u.systemId ? (catalog[u.systemId]?.movement ?? 'land') : 'land') as Domain;
-  const counts = useMemo(() => {
-    const c: Record<Domain, number> = { all: own.length, land: 0, air: 0, sea: 0, static: 0 };
-    for (const u of own) c[dom(u)]++;
-    return c;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [own, catalog]);
-  const rows = own
-    .filter((u) => domain === 'all' || dom(u) === domain)
-    .filter(
-      (u) =>
-        !q || norm(catalog[u.systemId ?? '']?.name ?? '').includes(norm(q)) || u.id.includes(q),
-    );
-  const general = (u: UnitView) => view?.generals?.find((g) => g.id === u.generalId);
-  // Position : ville la plus proche, « en mer », « en vol » (calculée une fois par rendu).
-  const now = gameNow();
-  const locs = new Map<UnitId, UnitLocation>();
-  const loc = (u: UnitView): UnitLocation => {
-    let l = locs.get(u.id);
-    if (!l) {
-      const sys = u.systemId ? catalog[u.systemId] : undefined;
-      const flying =
-        u.mission?.airborne ?? (isMoving(u, now) || (!!u.mission && u.mission.kind !== 'none'));
-      l = unitLocation(u, sys, unitPosition(u, now), provinces, flying);
-      locs.set(u.id, l);
-    }
-    return l;
-  };
-  const locLabel = (l: UnitLocation): string =>
-    l.kind === 'city'
-      ? (l.city ?? '—')
-      : l.kind === 'near'
-        ? t('army.loc.near', { city: l.city, km: l.km })
-        : t(`army.loc.${l.kind}`);
-  const locTitle = (l: UnitLocation): string =>
-    l.city ? t('army.loc.title', { city: l.city, km: l.km ?? 0 }) : t('army.loc.center');
-  const elements = rows.reduce((s, u) => s + (u.count ?? 1), 0);
-  return (
-    <div className="vstack">
-      <div className="row row--between">
-        <Segmented
-          size="sm"
-          label={t('army.domain')}
-          value={domain}
-          onChange={setDomain}
-          options={(['all', 'land', 'air', 'sea', 'static'] as Domain[]).map((d) => ({
-            value: d,
-            label: `${t(`army.domains.${d}`)} ${counts[d]}`,
-          }))}
-        />
-        <SearchInput
-          value={q}
-          onChange={setQ}
-          label={t('app.search')}
-          placeholder={t('army.search')}
-          className="army-search"
-        />
-      </div>
-      <Table
-        label={t('army.units')}
-        rows={rows}
-        rowKey={(u) => u.id}
-        selectedKey={selection[0] ?? null}
-        rowClass={(u) => (selection.includes(u.id) ? 'rl-tr--sel' : undefined)}
-        onRowClick={(u) => {
-          select([u.id]);
-          focusOn(unitPosition(u, gameNow()), 6.5);
-          if (mobile) closeAll();
-        }}
-        defaultSort={{ key: 'name', dir: 'asc' }}
-        empty={<EmptyState compact icon="army" title={t('army.empty')} />}
-        columns={[
-          {
-            key: 'name',
-            header: t('army.cols.unit'),
-            sort: (a, b) =>
-              (catalog[a.systemId ?? '']?.name ?? '').localeCompare(
-                catalog[b.systemId ?? '']?.name ?? '',
-              ),
-            render: (u) => {
-              const s = u.systemId ? catalog[u.systemId] : undefined;
-              return (
-                <span className="urow">
-                  <UnitMarker
-                    pictogram={pictogramFor(s)}
-                    nationId={u.owner}
-                    tone="own"
-                    size="sm"
-                    health={u.hpRatio}
-                  />
-                  <span className="urow__name">
-                    <b>{s?.name ?? u.systemId}</b>
-                    <span>
-                      {u.id}
-                      {u.veterancy ? ` · ${'★'.repeat(u.veterancy)}` : ''}
-                      <span className="rl-only-mobile">
-                        {' '}
-                        · {t(`game.status.${u.status ?? 'idle'}`)} · {locLabel(loc(u))}
-                      </span>
-                    </span>
-                  </span>
-                </span>
-              );
-            },
-          },
-          {
-            key: 'n',
-            header: t('army.cols.count'),
-            align: 'right',
-            render: (u) => formatInt(u.count ?? 1),
-            sort: (a, b) => (a.count ?? 1) - (b.count ?? 1),
-          },
-          {
-            key: 'pos',
-            header: t('army.cols.position'),
-            hideOnMobile: true,
-            sort: (a, b) => locLabel(loc(a)).localeCompare(locLabel(loc(b))),
-            render: (u) => {
-              const l = loc(u);
-              return (
-                <button
-                  type="button"
-                  className={`uloc uloc--${l.kind}`}
-                  title={locTitle(l)}
-                  aria-label={`${t('army.loc.center')} : ${locLabel(l)}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    focusOn(l.at, 6.5);
-                    if (mobile) closeAll();
-                  }}
-                >
-                  <Icon
-                    name={l.kind === 'air' ? 'target' : l.kind === 'sea' ? 'anchor' : 'mapPin'}
-                    size={11}
-                  />
-                  <span>{locLabel(l)}</span>
-                </button>
-              );
-            },
-          },
-          {
-            key: 'hp',
-            header: t('army.cols.hp'),
-            render: (u) => <Gauge value={u.hpRatio ?? 1} tone="auto" cells={8} />,
-            sort: (a, b) => (a.hpRatio ?? 1) - (b.hpRatio ?? 1),
-            hideOnMobile: true,
-          },
-          {
-            key: 'st',
-            header: t('army.cols.status'),
-            hideOnMobile: true,
-            render: (u) => (
-              <Badge
-                tone={u.status === 'combat' ? 'red' : u.status === 'moving' ? 'cyan' : 'neutral'}
-                dot
-                pulse={u.status === 'combat'}
-              >
-                {t(`game.status.${u.status ?? 'idle'}`)}
-              </Badge>
-            ),
-          },
-          {
-            key: 'sup',
-            header: t('army.cols.supply'),
-            hideOnMobile: true,
-            render: (u) =>
-              u.supply ? (
-                <span
-                  className={
-                    u.supply === 'supplied'
-                      ? 'rl-tone-green'
-                      : u.supply === 'limited'
-                        ? 'rl-tone-amber'
-                        : 'rl-tone-red'
-                  }
-                >
-                  {t(`army.supplyState.${u.supply}`)}
-                </span>
-              ) : (
-                '—'
-              ),
-          },
-          {
-            key: 'mis',
-            header: t('army.cols.mission'),
-            hideOnMobile: true,
-            render: (u) =>
-              u.mission && u.mission.kind !== 'none' ? (
-                t(`army.mission.${u.mission.kind}`)
-              ) : (
-                <span className="muted">—</span>
-              ),
-          },
-          {
-            key: 'gen',
-            header: t('army.cols.general'),
-            hideOnMobile: true,
-            render: (u) => general(u)?.name ?? <span className="muted">—</span>,
-          },
-        ]}
-      />
-      <p className="hint">
-        {t('army.summary', { units: rows.length, elements: formatInt(elements) })}
-      </p>
-    </div>
-  );
-}
-
-const DIRECTIVES = ['none', 'defend', 'advance', 'harass'] as const;
-
-function GeneralCard({ g }: { g: GeneralView }) {
-  const { t } = useTranslation();
-  const view = useGame((s) => s.view);
-  const catalog = useWorld((s) => s.catalog);
-  const selection = useUi((s) => s.selection);
-  const select = useUi((s) => s.select);
-  const send = useSend();
-  const units = g.unitIds.map((id) => view?.units[id]).filter((u): u is UnitView => !!u);
-  const area = g.area ?? (units[0] ? unitPosition(units[0], gameNow()) : null);
-  return (
-    <Panel
-      title={g.name}
-      meta={t('army.unitsCount', { count: units.length })}
-      accent={g.directive ? 'cyan' : undefined}
-      actions={
-        g.directive ? (
-          <Badge tone="cyan" dot pulse>
-            {t('army.delegated')}
-          </Badge>
-        ) : null
-      }
-    >
-      <div className="general">
-        <div className="general__traits">
-          {g.traits.map((tr_) => (
-            <Badge key={tr_} tone="violet" variant="outline">
-              {t(`army.traits.${tr_}`)}
-            </Badge>
-          ))}
-        </div>
-        <div className="general__units">
-          {units.slice(0, 10).map((u) => (
-            <button
-              key={u.id}
-              type="button"
-              onClick={() => select([u.id])}
-              title={catalog[u.systemId ?? '']?.name}
-            >
-              <UnitMarker
-                pictogram={pictogramFor(catalog[u.systemId ?? ''])}
-                tone="own"
-                count={u.count}
-                size="sm"
-                health={u.hpRatio}
-              />
-            </button>
-          ))}
-          {units.length > 10 ? <span className="muted small">+{units.length - 10}</span> : null}
-        </div>
-        <div className="general__row">
-          <span className="general__label">{t('army.directive')}</span>
-          <Segmented
-            size="sm"
-            label={t('army.directive')}
-            value={g.directive ?? 'none'}
-            onChange={(d) =>
-              void send(
-                {
-                  kind: 'delegate',
-                  generalId: g.id,
-                  directive: d === 'none' ? null : d,
-                  area: d === 'none' ? null : area,
-                },
-                d === 'none' ? t('army.delegationOff') : t('army.delegationOn', { name: g.name }),
-              )
-            }
-            options={DIRECTIVES.map((d) => ({ value: d, label: t(`army.directives.${d}`) }))}
-          />
-        </div>
-        <div className="general__actions">
-          <Button
-            size="sm"
-            variant="subtle"
-            icon={<Icon name="army" size={12} />}
-            onClick={() => select(g.unitIds)}
-            disabled={!units.length}
-          >
-            {t('army.selectGroup')}
-          </Button>
-          <Button
-            size="sm"
-            variant="subtle"
-            icon={<Icon name="plus" size={12} />}
-            disabled={!selection.length}
-            onClick={() =>
-              void send(
-                {
-                  kind: 'appointGeneral',
-                  generalId: g.id,
-                  unitIds: [...new Set([...g.unitIds, ...selection])],
-                },
-                t('army.assigned', { name: g.name }),
-              )
-            }
-          >
-            {t('army.assignSelection', { count: selection.length })}
-          </Button>
-        </div>
-      </div>
-    </Panel>
-  );
-}
-
-function Generals() {
-  const { t } = useTranslation();
-  const generals = useGame((s) => s.view?.generals ?? []);
-  if (!generals.length) return <EmptyState icon="user" title={t('army.noGenerals')} />;
-  return (
-    <div className="generals">
-      {generals.map((g) => (
-        <GeneralCard key={g.id} g={g} />
-      ))}
-    </div>
-  );
-}
-
-// ——— Opérations combinées ———
-
-type StepKind = 'move' | 'attack' | 'strike' | 'patrol' | 'jam' | 'stop' | 'rtb';
-interface DraftStep {
-  id: number;
-  offsetMin: number;
-  label: string;
-  kind: StepKind;
-  unitIds: UnitId[];
-  place: string;
-  targetId: string;
-}
-
-function OperationEditor({ onDone }: { onDone: () => void }) {
-  const { t } = useTranslation();
-  const view = useGame((s) => s.view);
-  const me = useGame((s) => s.me);
-  const world = useWorld();
-  const selection = useUi((s) => s.selection);
-  const send = useSend();
-  const [name, setName] = useState(t('army.ops.defaultName'));
-  const [inH, setInH] = useState(6);
-  const [steps, setSteps] = useState<DraftStep[]>(() => [
-    {
-      id: 1,
-      offsetMin: -60,
-      label: t('army.ops.examples.prep'),
-      kind: 'strike',
-      unitIds: [],
-      place: '',
-      targetId: '',
-    },
-    {
-      id: 2,
-      offsetMin: 0,
-      label: t('army.ops.examples.assault'),
-      kind: 'move',
-      unitIds: selection,
-      place: '',
-      targetId: '',
-    },
-  ]);
-  const own = Object.values(view?.units ?? {}).filter((u) => u.owner === me && u.level === 'own');
-  const ctx: CommandCtx | null =
-    view && me
-      ? {
-          view,
-          me,
-          catalog: world.catalog,
-          provinces: world.provinces,
-          nations: world.nations,
-          research: world.research,
-          selection,
-          label: (k, o) => tr(k, o),
-        }
-      : null;
-  const update = (id: number, patch: Partial<DraftStep>) =>
-    setSteps((s) => s.map((x) => (x.id === id ? { ...x, ...patch } : x)));
-  const toOrder = (s: DraftStep): Order | null => {
-    if (!ctx || !s.unitIds.length) return null;
-    const p = s.place ? resolvePlace(s.place, ctx) : null;
-    switch (s.kind) {
-      case 'move':
-        return p ? { kind: 'move', unitIds: s.unitIds, to: p.at } : null;
-      case 'attack':
-        return s.targetId ? { kind: 'attack', unitIds: s.unitIds, targetId: s.targetId } : null;
-      case 'strike':
-        return p
-          ? { kind: 'strike', unitIds: s.unitIds, target: { type: 'point', at: p.at } }
-          : null;
-      case 'patrol':
-        return p ? { kind: 'patrol', unitIds: s.unitIds, at: p.at, radiusKm: 80 } : null;
-      case 'jam':
-        return { kind: 'jam', unitIds: s.unitIds, on: true };
-      case 'stop':
-        return { kind: 'stop', unitIds: s.unitIds };
-      case 'rtb':
-        return { kind: 'rtb', unitIds: s.unitIds };
-    }
-  };
-  const orders = steps.map(toOrder);
-  const valid = name.trim().length > 0 && orders.every(Boolean);
-  const hHour = gameNow() + inH * HOUR;
-  const enemies = Object.values(view?.units ?? {}).filter((u) => u.owner !== me);
-  return (
-    <Panel title={t('army.ops.new')} accent="cyan">
-      <div className="opedit">
-        <div className="opedit__head">
-          <Field label={t('army.ops.name')}>
-            <Input value={name} maxLength={60} onChange={(e) => setName(e.target.value)} />
-          </Field>
-          <Field
-            label={t('army.ops.hHour')}
-            hint={t('army.ops.hHourHint', { value: fmtDuration(inH * HOUR) })}
-          >
-            <Slider
-              value={inH}
-              onChange={setInH}
-              min={1}
-              max={72}
-              label={t('army.ops.hHour')}
-              format={(v) => `H+${v}`}
-            />
-          </Field>
-        </div>
-        <ol className="opedit__steps">
-          {[...steps]
-            .sort((a, b) => a.offsetMin - b.offsetMin)
-            .map((s) => (
-              <li key={s.id} className={toOrder(s) ? 'opstep' : 'opstep opstep--invalid'}>
-                <div className="opstep__time">
-                  <Input
-                    aria-label={t('army.ops.offset')}
-                    value={String(s.offsetMin)}
-                    onChange={(e) =>
-                      update(s.id, {
-                        offsetMin: Math.max(
-                          -10080,
-                          Math.min(10080, Number(e.target.value.replace(/[^\d-]/g, '')) || 0),
-                        ),
-                      })
-                    }
-                  />
-                  <span>
-                    {s.offsetMin === 0
-                      ? 'H'
-                      : `H${s.offsetMin > 0 ? '+' : '−'}${Math.abs(s.offsetMin)} min`}
-                  </span>
-                </div>
-                <div className="opstep__main">
-                  <div className="opstep__row">
-                    <Select
-                      value={s.kind}
-                      onChange={(k) => update(s.id, { kind: k as StepKind })}
-                      options={(
-                        ['move', 'attack', 'strike', 'patrol', 'jam', 'stop', 'rtb'] as StepKind[]
-                      ).map((k) => ({ value: k, label: t(`army.ops.kinds.${k}`) }))}
-                      label={t('army.ops.kind')}
-                    />
-                    <Input
-                      value={s.label}
-                      placeholder={t('army.ops.label')}
-                      maxLength={80}
-                      onChange={(e) => update(s.id, { label: e.target.value })}
-                    />
-                  </div>
-                  <div className="opstep__row">
-                    <Button
-                      size="sm"
-                      variant="subtle"
-                      icon={<Icon name="army" size={12} />}
-                      onClick={() => update(s.id, { unitIds: selection })}
-                      disabled={!selection.length}
-                    >
-                      {t('army.ops.useSelection', { count: selection.length })}
-                    </Button>
-                    <span className="opstep__units">
-                      {s.unitIds.length
-                        ? t('army.ops.unitsCount', { count: s.unitIds.length })
-                        : t('army.ops.noUnits')}
-                    </span>
-                    {s.kind === 'attack' ? (
-                      <Select
-                        value={s.targetId}
-                        onChange={(v) => update(s.id, { targetId: v })}
-                        options={[
-                          { value: '', label: t('army.ops.pickTarget') },
-                          ...enemies.slice(0, 40).map((u) => ({
-                            value: u.id,
-                            label: `${u.id} · ${world.catalog[u.systemId ?? '']?.name ?? t('game.legend.detected')}`,
-                          })),
-                        ]}
-                        label={t('game.orders.target')}
-                      />
-                    ) : ['move', 'strike', 'patrol'].includes(s.kind) ? (
-                      <Input
-                        value={s.place}
-                        placeholder={t('army.ops.place')}
-                        onChange={(e) => update(s.id, { place: e.target.value })}
-                        aria-label={t('army.ops.place')}
-                      />
-                    ) : null}
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  className="opstep__del"
-                  aria-label={t('army.ops.removeStep')}
-                  onClick={() => setSteps((x) => x.filter((y) => y.id !== s.id))}
-                >
-                  <Icon name="trash" size={13} />
-                </button>
-              </li>
-            ))}
-        </ol>
-        <div className="opedit__foot">
-          <Button
-            size="sm"
-            variant="subtle"
-            icon={<Icon name="plus" size={12} />}
-            disabled={steps.length >= 30}
-            onClick={() =>
-              setSteps((s) => [
-                ...s,
-                {
-                  id: Date.now(),
-                  offsetMin: (s[s.length - 1]?.offsetMin ?? 0) + 30,
-                  label: '',
-                  kind: 'move',
-                  unitIds: selection,
-                  place: '',
-                  targetId: '',
-                },
-              ])
-            }
-          >
-            {t('army.ops.addStep')}
-          </Button>
-          <span className="grow" />
-          <Button variant="ghost" onClick={onDone}>
-            {t('app.cancel')}
-          </Button>
-          <Button
-            variant="primary"
-            disabled={!valid}
-            icon={<Icon name="clock" size={13} />}
-            onClick={() =>
-              void send(
-                {
-                  kind: 'operation',
-                  name: name.trim(),
-                  hHour,
-                  steps: steps.map((s, i) => ({
-                    offsetMin: s.offsetMin,
-                    label: s.label || undefined,
-                    order: orders[i] as never,
-                  })),
-                },
-                t('army.ops.planned', { name }),
-              ).then((ok) => ok && onDone())
-            }
-            data-testid="op-submit"
-          >
-            {t('army.ops.plan')}
-          </Button>
-        </div>
-        {!valid ? <p className="hint">{t('army.ops.invalid')}</p> : null}
-      </div>
-    </Panel>
-  );
-}
-
-function OperationCard({ op, now }: { op: OperationView; now: number }) {
-  const { t } = useTranslation();
-  const send = useSend();
-  const tone =
-    op.status === 'running'
-      ? 'cyan'
-      : op.status === 'planned'
-        ? 'amber'
-        : op.status === 'done'
-          ? 'green'
-          : op.status === 'failed'
-            ? 'red'
-            : 'neutral';
-  return (
-    <Panel
-      title={op.name}
-      accent={tone === 'neutral' ? undefined : tone}
-      meta={
-        op.status === 'planned' ? (
-          <Countdown ms={op.hHour - now} prefix="H−" dayUnit={t('time.dayUnit')} />
-        ) : undefined
-      }
-      actions={
-        <>
-          <Badge tone={tone}>{t(`army.ops.status.${op.status}`)}</Badge>
-          {op.status === 'planned' || op.status === 'running' ? (
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() =>
-                void send({ kind: 'cancelOperation', operationId: op.id }, t('army.ops.cancelled'))
-              }
-            >
-              {t('app.cancel')}
-            </Button>
-          ) : null}
-        </>
-      }
-    >
-      <ol className="optimeline">
-        {[...op.steps]
-          .sort((a, b) => a.offsetMin - b.offsetMin)
-          .map((s, i) => {
-            const at = op.hHour + s.offsetMin * MINUTE;
-            return (
-              <li
-                key={i}
-                className={`optimeline__step optimeline__step--${s.status}${at <= now && s.status === 'pending' ? ' optimeline__step--due' : ''}`}
-              >
-                <span className="optimeline__t">
-                  {s.offsetMin === 0
-                    ? 'H'
-                    : `H${s.offsetMin > 0 ? '+' : '−'}${Math.abs(s.offsetMin)}′`}
-                </span>
-                <span className="optimeline__dot" aria-hidden />
-                <span className="optimeline__label">
-                  {s.label}
-                  {s.error ? <span className="rl-tone-red"> — {s.error}</span> : null}
-                </span>
-                <span className="optimeline__st">{t(`army.ops.stepStatus.${s.status}`)}</span>
-              </li>
-            );
-          })}
-      </ol>
-    </Panel>
-  );
-}
-
-function Operations() {
-  const { t } = useTranslation();
-  const ops = useGame((s) => s.view?.operations ?? []);
-  const now = useGameTime(1000);
-  const [editing, setEditing] = useState(false);
-  return (
-    <div className="vstack">
-      {editing ? (
-        <OperationEditor onDone={() => setEditing(false)} />
-      ) : (
-        <div className="row row--between">
-          <p className="hint">{t('army.ops.help')}</p>
-          <Button
-            variant="primary"
-            icon={<Icon name="plus" size={13} />}
-            onClick={() => setEditing(true)}
-            data-testid="op-new"
-          >
-            {t('army.ops.new')}
-          </Button>
-        </div>
-      )}
-      {ops.length ? (
-        ops.map((op) => <OperationCard key={op.id} op={op} now={now} />)
-      ) : !editing ? (
-        <EmptyState icon="clock" title={t('army.ops.none')} />
-      ) : null}
-    </div>
-  );
-}
-
-/** Armée : unités, groupes et généraux (délégation IA), opérations combinées. */
+/**
+ * Arsenal de guerre : inventaire du matériel possédé (onglet « Inventaire ») et catalogue complet
+ * des matériels par catégorie, avec photos et fiches (onglet « Catalogue », ex-Encyclopédie).
+ * La gestion des groupes sur la carte est dans « Mes armées ».
+ */
 export function ArmyWindow({ win, frame, mobile }: WindowContentProps) {
   const { t } = useTranslation();
-  const view = useGame((s) => s.view);
-  const me = useGame((s) => s.me);
-  const [tab, setTab] = useState<Tab>((win.params.tab as Tab) ?? 'units');
+  const spectator = useGame((s) => !!s.view?.spectator);
+  const [tab, setTab] = useState<Tab>(
+    spectator ? 'catalog' : ((win.params.tab as Tab | undefined) ?? 'inventory'),
+  );
   useEffect(() => {
     if (win.params.tab) setTab(win.params.tab as Tab);
   }, [win.seq, win.params.tab]);
-  const own = Object.values(view?.units ?? {}).filter((u) => u.owner === me && u.level === 'own');
+  const cur: Tab = spectator ? 'catalog' : tab;
   return (
     <Window
       {...frame}
-      path={[t('sections.path.army'), t(`army.tabs.${tab}`)]}
+      path={[t('sections.path.army'), t(`inventory.tabs.${cur}`)]}
+      flush
       tabs={
         <Tabs
           label={t('sections.army')}
-          value={tab}
+          value={cur}
           onChange={setTab}
           tabs={[
+            ...(spectator
+              ? []
+              : [
+                  {
+                    id: 'inventory' as Tab,
+                    label: t('inventory.tabs.inventory'),
+                    icon: <Icon name="army" size={13} />,
+                  },
+                ]),
             {
-              id: 'units',
-              label: t('army.tabs.units'),
-              count: own.length,
-              icon: <Icon name="army" size={13} />,
-            },
-            {
-              id: 'generals',
-              label: t('army.tabs.generals'),
-              count: view?.generals?.length ?? 0,
-              icon: <Icon name="user" size={13} />,
-            },
-            {
-              id: 'operations',
-              label: t('army.tabs.operations'),
-              count:
-                view?.operations?.filter((o) => o.status === 'planned' || o.status === 'running')
-                  .length ?? 0,
-              icon: <Icon name="clock" size={13} />,
+              id: 'catalog' as Tab,
+              label: t('inventory.tabs.catalog'),
+              icon: <Icon name="encyclopedia" size={13} />,
             },
           ]}
         />
       }
     >
-      {tab === 'units' ? (
-        <Units mobile={mobile} />
-      ) : tab === 'generals' ? (
-        <Generals />
+      {cur === 'inventory' ? (
+        <Inventory mobile={mobile} />
       ) : (
-        <Operations />
+        <ArsenalBrowser mode="encyclopedia" mobile={mobile} initialSystemId={win.params.systemId} />
       )}
     </Window>
+  );
+}
+
+/** Inventaire : nombre, valeur en dollars, disponibilité, en production, pertes par matériel. */
+function Inventory({ mobile }: { mobile: boolean }) {
+  const { t } = useTranslation();
+  const view = useGame((s) => s.view);
+  const me = useGame((s) => s.me);
+  const catalog = useWorld((s) => s.catalog);
+  const photos = usePhotos();
+  const openSheet = useUi((s) => s.openSheet);
+  const openWindow = useUi((s) => s.openWindow);
+  const now = useGameTime(5000);
+  const [category, setCategory] = useState<CategoryFilter>(
+    () => readCategory(CATEGORY_KEY) ?? 'all',
+  );
+  const [q, setQ] = useState('');
+
+  const rows = useMemo(() => inventory(view, me, catalog, now), [view, me, catalog, now]);
+  const totals = useMemo(() => {
+    const s = {
+      elements: 0,
+      available: 0,
+      engaged: 0,
+      inProduction: 0,
+      losses: 0,
+      value: 0,
+      systems: 0,
+    };
+    for (const r of rows) {
+      s.elements += r.elements;
+      s.available += r.available;
+      s.engaged += r.engaged;
+      s.inProduction += r.inProduction;
+      s.losses += r.losses;
+      s.value += r.value;
+      if (r.elements) s.systems++;
+    }
+    return s;
+  }, [rows]);
+  const upkeep = useMemo(() => totalUpkeep(view, me, catalog), [view, me, catalog]);
+
+  const searching = norm(q).length > 0;
+  const counts = useMemo(() => {
+    const c = { all: 0 } as Record<CategoryFilter, number>;
+    for (const k of NAV_CATEGORIES) c[k] = 0;
+    for (const r of rows) {
+      c.all++;
+      c[r.category] = (c[r.category] ?? 0) + 1;
+    }
+    return c;
+  }, [rows]);
+  const available = useMemo(() => new Set<Category>(rows.map((r) => r.category)), [rows]);
+  const list = useMemo(() => {
+    const nq = norm(q);
+    return rows
+      .filter((r) =>
+        nq
+          ? norm(catalog[r.systemId]?.name ?? r.systemId).includes(nq) || r.systemId.includes(nq)
+          : category === 'all' || r.category === category,
+      )
+      .sort(
+        (a, b) =>
+          NAV_CATEGORIES.indexOf(a.category) - NAV_CATEGORIES.indexOf(b.category) ||
+          b.elements - a.elements ||
+          b.inProduction - a.inProduction,
+      );
+  }, [rows, q, category, catalog]);
+
+  const name = (r: InventoryRow) => catalog[r.systemId]?.name ?? r.systemId;
+  const availability = totals.elements ? totals.available / totals.elements : 0;
+
+  return (
+    <div className={mobile ? 'inv inv--mobile' : 'inv'}>
+      <div className="kpis inv__kpis" data-testid="inventory-summary">
+        <Stat
+          label={t('inventory.kpi.elements')}
+          value={formatInt(totals.elements)}
+          sub={t('inventory.kpi.systems', { count: totals.systems })}
+          icon={<Icon name="army" size={12} />}
+        />
+        <Stat
+          label={t('inventory.kpi.value')}
+          value={formatMoney(totals.value)}
+          tone="amber"
+          sub={t('inventory.kpi.upkeep', { value: formatMoney(upkeep) })}
+        />
+        <Stat
+          label={t('inventory.kpi.available')}
+          value={`${Math.round(availability * 100)} %`}
+          tone={availability > 0.6 ? 'green' : availability > 0.3 ? 'amber' : 'red'}
+          sub={t('inventory.kpi.availableSub', {
+            available: formatInt(totals.available),
+            engaged: formatInt(totals.engaged),
+          })}
+        />
+        <Stat
+          label={t('inventory.kpi.production')}
+          value={formatInt(totals.inProduction)}
+          tone="cyan"
+          sub={t('inventory.kpi.productionSub', {
+            count: view?.economy.production.length ?? 0,
+          })}
+        />
+        <Stat
+          label={t('inventory.kpi.losses')}
+          value={formatInt(totals.losses)}
+          tone={totals.losses ? 'red' : 'default'}
+          sub={t('inventory.kpi.lossesSub')}
+        />
+      </div>
+      <div className="inv__bar">
+        <SearchInput
+          value={q}
+          onChange={setQ}
+          label={t('app.search')}
+          placeholder={t('inventory.search')}
+          className="inv__search"
+        />
+        <span className="grow" />
+        <Button
+          size="sm"
+          variant="subtle"
+          icon={<Icon name="production" size={12} />}
+          onClick={() => openWindow('production')}
+        >
+          {t('inventory.toProduction')}
+        </Button>
+      </div>
+      <CategoryNav
+        value={category}
+        counts={counts}
+        available={available}
+        searching={searching}
+        mobile
+        onChange={(c) => {
+          setCategory(c);
+          writeCategory(CATEGORY_KEY, c);
+          if (searching) setQ('');
+        }}
+      />
+      <div className="inv__table">
+        <Table
+          label={t('sections.army')}
+          rows={list}
+          rowKey={(r) => r.systemId}
+          onRowClick={(r) => openSheet(r.systemId)}
+          empty={
+            <EmptyState
+              compact
+              icon="army"
+              title={rows.length ? t('inventory.noMatch') : t('inventory.empty')}
+            />
+          }
+          columns={[
+            {
+              key: 'sys',
+              header: t('inventory.cols.system'),
+              sort: (a, b) => name(a).localeCompare(name(b)),
+              render: (r) => {
+                const s = catalog[r.systemId];
+                return (
+                  <span className="invrow">
+                    {s ? (
+                      <WeaponPhoto system={s} photo={photoFor(s, photos)} variant="mini" />
+                    ) : null}
+                    <span className="invrow__name">
+                      <b>{name(r)}</b>
+                      <span>
+                        {t(`categories.${r.category}`)}
+                        <span className="rl-only-mobile">
+                          {' · '}
+                          {t('inventory.mobileLine', {
+                            n: formatInt(r.elements),
+                            available: formatInt(r.available),
+                            value: formatMoney(r.value),
+                          })}
+                        </span>
+                      </span>
+                    </span>
+                  </span>
+                );
+              },
+            },
+            {
+              key: 'n',
+              header: t('inventory.cols.inService'),
+              align: 'right',
+              sort: (a, b) => a.elements - b.elements,
+              render: (r) => (
+                <span className="armies__n">
+                  <b>{formatInt(r.elements)}</b>
+                  <span>{t('armies.piles', { count: r.piles })}</span>
+                </span>
+              ),
+            },
+            {
+              key: 'av',
+              header: t('inventory.cols.available'),
+              align: 'right',
+              hideOnMobile: true,
+              sort: (a, b) => a.available - b.available,
+              render: (r) => (
+                <span className={r.available ? 'rl-tone-green' : 'muted'}>
+                  {formatInt(r.available)}
+                </span>
+              ),
+            },
+            {
+              key: 'eng',
+              header: t('inventory.cols.engaged'),
+              align: 'right',
+              hideOnMobile: true,
+              sort: (a, b) => a.engaged + a.deployed - (b.engaged + b.deployed),
+              render: (r) =>
+                r.engaged || r.deployed ? (
+                  <span>
+                    {r.engaged ? <span className="rl-tone-red">{formatInt(r.engaged)}</span> : null}
+                    {r.engaged && r.deployed ? ' · ' : null}
+                    {r.deployed ? (
+                      <span className="rl-tone-cyan">{formatInt(r.deployed)}</span>
+                    ) : null}
+                  </span>
+                ) : (
+                  <span className="muted">—</span>
+                ),
+            },
+            {
+              key: 'hp',
+              header: t('inventory.cols.hp'),
+              hideOnMobile: true,
+              render: (r) =>
+                r.elements ? (
+                  <Gauge value={r.hp} tone="auto" cells={6} label={t('inventory.cols.hp')} />
+                ) : (
+                  <span className="muted">—</span>
+                ),
+            },
+            {
+              key: 'prod',
+              header: t('inventory.cols.production'),
+              align: 'right',
+              hideOnMobile: true,
+              sort: (a, b) => a.inProduction - b.inProduction,
+              render: (r) =>
+                r.inProduction ? (
+                  <span className="rl-tone-cyan">+{formatInt(r.inProduction)}</span>
+                ) : (
+                  <span className="muted">—</span>
+                ),
+            },
+            {
+              key: 'loss',
+              header: t('inventory.cols.losses'),
+              align: 'right',
+              hideOnMobile: true,
+              sort: (a, b) => a.losses - b.losses,
+              render: (r) =>
+                r.losses ? (
+                  <span className="rl-tone-red">−{formatInt(r.losses)}</span>
+                ) : (
+                  <span className="muted">—</span>
+                ),
+            },
+            {
+              key: 'val',
+              header: t('inventory.cols.value'),
+              align: 'right',
+              hideOnMobile: true,
+              sort: (a, b) => a.value - b.value,
+              render: (r) => <span className="rl-money">{formatMoney(r.value)}</span>,
+            },
+          ]}
+        />
+      </div>
+      <p className="hint inv__hint">{t('inventory.hint')}</p>
+    </div>
   );
 }

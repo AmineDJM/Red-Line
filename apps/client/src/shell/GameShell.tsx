@@ -21,6 +21,7 @@ import { useShortcuts } from './shortcuts.js';
 import { TopBar } from './TopBar.js';
 import { Tutorial } from './Tutorial.js';
 import { useIsMobile } from './useMedia.js';
+import { WeaponSheet } from './WeaponSheet.js';
 import { WindowHost } from './WindowHost.js';
 
 export interface GameShellProps {
@@ -80,6 +81,7 @@ export function GameShell({
       ) : null}
       {!sheetOpen ? <OrderBar /> : null}
       <WindowHost />
+      <WeaponSheet />
       <AlertCenter mobile={mobile} />
       {children}
       <CommandConsole />

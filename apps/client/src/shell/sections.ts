@@ -14,7 +14,8 @@ export interface SectionDef {
 
 /** Domaines de la coque de jeu, dans l'ordre de la barre latérale. */
 export const SECTIONS: SectionDef[] = [
-  { id: 'army', icon: 'army', key: 'A', group: 'main', mobile: true },
+  { id: 'armies', icon: 'army', key: 'A', group: 'main', mobile: true },
+  { id: 'army', icon: 'missile', key: 'G', group: 'main' },
   { id: 'production', icon: 'production', key: 'P', group: 'main', mobile: true },
   { id: 'research', icon: 'research', key: 'R', group: 'main' },
   { id: 'economy', icon: 'economy', key: 'E', group: 'main' },
@@ -23,18 +24,20 @@ export const SECTIONS: SectionDef[] = [
   { id: 'council', icon: 'council', key: 'C', group: 'main' },
   { id: 'news', icon: 'news', key: 'N', group: 'main' },
   { id: 'battles', icon: 'battle', key: 'B', group: 'main' },
-  { id: 'encyclopedia', icon: 'encyclopedia', key: 'Y', group: 'main' },
   { id: 'chat', icon: 'chat', key: 'M', group: 'tools' },
   { id: 'shop', icon: 'shop', key: 'O', group: 'tools' },
   { id: 'settings', icon: 'settings', key: ',', group: 'tools' },
 ];
 
-/** Domaines utiles à un spectateur (vue publique : pas d'armée, d'économie ni de renseignement). */
+/**
+ * Domaines utiles à un spectateur (vue publique : pas d'armées, d'économie ni de renseignement ;
+ * l'Arsenal de guerre ne lui montre que le catalogue).
+ */
 export const SPECTATOR_SECTIONS = new Set<WindowId>([
+  'army',
   'council',
   'news',
   'battles',
-  'encyclopedia',
   'chat',
   'settings',
 ]);

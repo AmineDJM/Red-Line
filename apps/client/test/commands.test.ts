@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { NationDef, PlayerView, ProvinceDef, UnitView, WeaponSystem } from '@redline/shared';
 import { formatMoney } from '@redline/ui';
+import fr from '../src/i18n/fr.json';
 import {
   norm,
   parseCommand,
@@ -138,6 +139,19 @@ describe('console de commande', () => {
     expect(parseCommand('speed x4', ctx)).toEqual({ type: 'speed', speed: 4 });
     expect(parseCommand(':pause', ctx)).toEqual({ type: 'pause', paused: true });
     expect(parseCommand('open research', ctx)).toEqual({ type: 'open', window: 'research' });
+    // Libellés français : « Mes armées » et « Arsenal de guerre » (Ctrl+K).
+    const sections = fr.sections as unknown as Record<string, Record<string, string> | string>;
+    const fl: CommandCtx = {
+      ...ctx,
+      label: (key) => {
+        const [, a, b] = key.split('.');
+        const v = b ? (sections[a!] as Record<string, string>)[b] : sections[a!];
+        return typeof v === 'string' ? v : key;
+      },
+    };
+    expect(parseCommand('open mes armées', fl)).toEqual({ type: 'open', window: 'armies' });
+    expect(parseCommand('armées', fl)).toEqual({ type: 'open', window: 'armies' });
+    expect(parseCommand('open arsenal de guerre', fl)).toEqual({ type: 'open', window: 'army' });
     expect(parseCommand('xyzzy', ctx).type).toBe('error');
     expect(parseCommand('', ctx).type).toBe('error');
   });

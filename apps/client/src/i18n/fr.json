@@ -38,7 +38,8 @@
     "in": "dans {{value}}"
   },
   "sections": {
-    "army": "Armée",
+    "armies": "Mes armées",
+    "army": "Arsenal de guerre",
     "production": "Production",
     "research": "Recherche",
     "economy": "Économie",
@@ -47,13 +48,13 @@
     "council": "Conseil de sécurité",
     "news": "Actualité",
     "battles": "Rapports de bataille",
-    "encyclopedia": "Encyclopédie",
     "chat": "Messagerie",
     "shop": "Boutique",
     "settings": "Réglages",
     "short": {
-      "army": "Armée",
-      "production": "Arsenal",
+      "armies": "Armées",
+      "army": "Arsenal",
+      "production": "Production",
       "research": "R&D",
       "economy": "Économie",
       "intel": "Rens.",
@@ -61,14 +62,14 @@
       "council": "Conseil",
       "news": "Actualité",
       "battles": "Batailles",
-      "encyclopedia": "Encyclo.",
       "chat": "Messages",
       "shop": "Boutique",
       "settings": "Réglages"
     },
     "path": {
-      "army": "Armée",
-      "production": "Arsenal",
+      "armies": "Mes armées",
+      "army": "Arsenal de guerre",
+      "production": "Production",
       "research": "R&D",
       "economy": "Économie",
       "intel": "Renseignement",
@@ -76,7 +77,6 @@
       "council": "ONU\\Conseil",
       "news": "Dépêches",
       "battles": "Batailles",
-      "encyclopedia": "Encyclopédie",
       "chat": "Messagerie",
       "shop": "Boutique",
       "settings": "Réglages"
@@ -261,7 +261,7 @@
       "perDay": "{{value}} / jour"
     },
     "toolbar": {
-      "army": "Armée",
+      "army": "Mes armées",
       "production": "Production",
       "alerts": "Alertes",
       "layers": "Calques",
@@ -624,7 +624,7 @@
     "console": "Console de commande",
     "pause": "Pause / reprise",
     "speed": "Vitesses",
-    "windows": "Armée, Production, Recherche, Économie, Renseignement…",
+    "windows": "Mes armées, Arsenal de guerre, Production, Recherche, Économie, Renseignement…",
     "escape": "Annuler l'ordre, désélectionner, fermer",
     "confirm": "Confirmer l'ordre",
     "legend": "Légende",
@@ -1086,13 +1086,49 @@
     "unknownContact": "contact non identifié",
     "noContacts": "Aucune unité étrangère détectée : rapprochez vos radars ou lancez une reconnaissance."
   },
+  "sheet": {
+    "path": "Fiche",
+    "catalog": "Voir dans le catalogue",
+    "pile": "Pile {{id}}"
+  },
   "arsenal": {
     "title": "Arsenal",
     "doctrines": "Doctrines et fournisseurs",
     "all": "Tous",
     "search": "Rechercher un système…",
     "category": "Catégorie",
-    "allCategories": "Toutes catégories",
+    "categories": "Catégories de matériel",
+    "allCategories": "Tout l'arsenal",
+    "searchAll_one": "Recherche dans tout l'arsenal : {{count}} résultat",
+    "searchAll_other": "Recherche dans tout l'arsenal : {{count}} résultats",
+    "emptyCategory": "Aucun système dans la catégorie « {{category}} » pour cette doctrine et ces filtres.",
+    "groups": {
+      "air": "Air",
+      "land": "Terre",
+      "defense": "Défense et détection",
+      "strike": "Frappe et stratégique",
+      "sea": "Mer",
+      "support": "Soutien"
+    },
+    "cats": {
+      "fighter": "Chasseurs",
+      "bomber": "Bombardiers",
+      "air_support": "Appui aérien",
+      "helicopter": "Hélicoptères",
+      "drone": "Drones",
+      "tank": "Chars",
+      "ifv": "Blindés (VCI)",
+      "artillery": "Artillerie",
+      "infantry": "Infanterie",
+      "air_defense": "Défense antiaérienne",
+      "radar": "Radars",
+      "strike_missile": "Missiles de frappe",
+      "nuclear": "Nucléaire",
+      "space": "Espace",
+      "surface_ship": "Marine de surface",
+      "submarine": "Sous-marins",
+      "logistics": "Logistique"
+    },
     "allGen": "Toutes",
     "producible": "Productible",
     "importable": "Importable",
@@ -1634,39 +1670,144 @@
     "resourcesHint": "Les ressources sont produites par les provinces et leurs bâtiments (puits, mines, fermes, usines d'électronique, raffineries) et consommées par vos unités. Une pénurie ralentit la production ; la nourriture pèse sur le moral.",
     "ledgerToday": "Flux réels · aujourd'hui"
   },
+  "armies": {
+    "tabs": {
+      "armies": "Armées",
+      "generals": "Généraux",
+      "operations": "Opérations"
+    },
+    "name": {
+      "land": "Armée {{n}}",
+      "air": "Escadre {{n}}",
+      "sea": "Flotte {{n}}"
+    },
+    "kpi": {
+      "armies": "Armées",
+      "armiesSub": "{{combat}} au combat · {{moving}} en route",
+      "land": "Terre",
+      "air": "Air",
+      "sea": "Mer",
+      "static": "Sites fixes",
+      "piles_one": "{{count}} pile",
+      "piles_other": "{{count}} piles",
+      "value": "Valeur",
+      "valueSub": "au prix catalogue"
+    },
+    "domain": "Milieu",
+    "domains": {
+      "all": "Toutes",
+      "land": "Terre",
+      "air": "Air",
+      "sea": "Mer"
+    },
+    "state": {
+      "combat": "Au combat",
+      "moving": "En mouvement",
+      "resupply": "Ravitaillement",
+      "embarked": "Embarquée",
+      "idle": "Au repos"
+    },
+    "stateFilter": "État",
+    "allStates": "Tous les états",
+    "sort": "Trier par",
+    "sortBy": {
+      "state": "Tri : combat d'abord",
+      "elements": "Tri : effectif",
+      "hp": "Tri : santé",
+      "name": "Tri : nom"
+    },
+    "search": "Armée, matériel, ville…",
+    "empty": "Aucune armée sur la carte.",
+    "noMatch": "Aucune armée ne correspond aux filtres.",
+    "pick": "Choisissez une armée",
+    "pickHint": "Composition, état, localisation et ordres s'affichent ici, avec les actions directes.",
+    "back": "Retour aux armées",
+    "cols": {
+      "army": "Armée",
+      "strength": "Effectif",
+      "hp": "Santé",
+      "state": "État",
+      "location": "Localisation",
+      "orders": "Ordres en cours",
+      "general": "Général"
+    },
+    "elements_one": "{{count}} élément",
+    "elements_other": "{{count}} éléments",
+    "piles_one": "{{count}} pile",
+    "piles_other": "{{count}} piles",
+    "supply": "Ravitaillement",
+    "veterancy": "Vétérance",
+    "composition": "Composition",
+    "order": {
+      "move": "Vers {{place}} · arrivée dans {{eta}}",
+      "attack": "Attaque : {{target}}",
+      "delegated": "Déléguée au général : {{directive}}",
+      "none": "En attente d'ordres"
+    },
+    "rename": "Renommer l'armée",
+    "save": "Valider",
+    "actions": {
+      "center": "Centrer",
+      "select": "Sélectionner",
+      "move": "Déplacer",
+      "stop": "Arrêter",
+      "patrol": "Patrouille sur zone",
+      "merge": "Fusionner les piles",
+      "split": "Scinder la pile en deux",
+      "selectPile": "Sélectionner la pile"
+    },
+    "mergeNone": "Aucune pile du même matériel à l'arrêt à moins de 10 km.",
+    "moveHint": "{{name}} sélectionnée : touchez la carte pour fixer la destination.",
+    "done": {
+      "stop": "Ordre d'arrêt transmis",
+      "patrol": "Patrouille engagée",
+      "rtb": "Retour à la base ordonné",
+      "merge": "Piles fusionnées",
+      "split": "Pile scindée"
+    }
+  },
+  "inventory": {
+    "tabs": {
+      "inventory": "Inventaire",
+      "catalog": "Catalogue"
+    },
+    "kpi": {
+      "elements": "En service",
+      "systems_one": "{{count}} matériel différent",
+      "systems_other": "{{count}} matériels différents",
+      "value": "Valeur du parc",
+      "upkeep": "entretien {{value}} / jour",
+      "available": "Disponibilité",
+      "availableSub": "{{available}} disponibles · {{engaged}} au combat",
+      "production": "En production",
+      "productionSub_one": "{{count}} commande en cours",
+      "productionSub_other": "{{count}} commandes en cours",
+      "losses": "Pertes",
+      "lossesSub": "d'après les rapports de bataille"
+    },
+    "search": "Rechercher un matériel…",
+    "toProduction": "Production",
+    "empty": "Aucun matériel en service.",
+    "noMatch": "Aucun matériel dans cette catégorie.",
+    "mobileLine": "{{n}} en service · {{available}} dispo. · {{value}}",
+    "cols": {
+      "system": "Matériel",
+      "inService": "En service",
+      "available": "Disponibles",
+      "engaged": "Combat · déployés",
+      "hp": "État",
+      "production": "En production",
+      "losses": "Pertes",
+      "value": "Valeur"
+    },
+    "hint": "Disponibles : à l'arrêt, hors combat et prêts. Déployés : en mouvement, en mission, embarqués ou en remise en œuvre. Touchez une ligne pour ouvrir la fiche."
+  },
   "army": {
     "supply": {
       "supplied": "Ravitaillées",
       "limited": "Ravitaillement limité",
       "cut": "Coupées"
     },
-    "tabs": {
-      "units": "Unités",
-      "generals": "Généraux",
-      "operations": "Opérations"
-    },
-    "units": "Unités",
-    "empty": "Aucune unité.",
-    "search": "Rechercher une unité…",
-    "domain": "Milieu",
-    "domains": {
-      "all": "Toutes",
-      "land": "Terre",
-      "air": "Air",
-      "sea": "Mer",
-      "static": "Fixes"
-    },
-    "cols": {
-      "unit": "Unité",
-      "count": "Effectif",
-      "position": "Position",
-      "hp": "État",
-      "status": "Statut",
-      "supply": "Ravitaillement",
-      "mission": "Mission",
-      "general": "Général"
-    },
-    "summary": "{{units}} unités · {{elements}} éléments",
     "loc": {
       "near": "{{city}} · {{km}} km",
       "sea": "En mer",
@@ -1772,7 +1913,42 @@
   },
   "diplomacy": {
     "unavailable": "Diplomatie indisponible dans cette partie.",
+    "country": {
+      "pick": "Choisir un pays…",
+      "none": "Aucun pays choisi",
+      "noneHint": "Touchez une province étrangère sur la carte puis « Pays », ou choisissez un pays ci-dessous.",
+      "open": "Pays : {{nation}}",
+      "openTip": "Relations, accords, actions diplomatiques, message, renseignement",
+      "player": "Joueur humain",
+      "ai": "Dirigé par l'IA",
+      "embargoed": "Sous embargo",
+      "sanctioned": "Sanctionné",
+      "mobilized": "Mobilisé",
+      "relation": "Relation et accords",
+      "pending": "Proposition",
+      "pendingMine": "{{kind}} envoyée",
+      "pendingTheirs": "{{kind}} reçue",
+      "passage": "Droit de passage",
+      "mutualDefense": "Défense mutuelle",
+      "intelSharing": "Partage du renseignement",
+      "no": "non",
+      "profile": "Profil",
+      "provinces": "Provinces",
+      "budget": "Budget de défense",
+      "personnel": "Personnel d'active",
+      "doctrine": "Doctrine",
+      "actions": "Actions",
+      "invite": "Inviter dans l'alliance",
+      "invited": "Invitation envoyée {{aNation}}",
+      "sanctions": "Proposer des sanctions (Conseil)",
+      "sanctionsClosed": "Les propositions au Conseil de sécurité ne sont pas ouvertes.",
+      "sanctionsText": "Sanctions économiques contre {{nationLe}}.",
+      "sanctionsProposed": "Résolution de sanctions déposée au Conseil",
+      "message": "Envoyer un message",
+      "intel": "Renseignement"
+    },
     "tabs": {
+      "nation": "Pays",
       "relations": "Relations",
       "alliances": "Alliances",
       "neutrals": "Neutres",
