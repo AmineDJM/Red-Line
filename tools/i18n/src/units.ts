@@ -137,10 +137,19 @@ export function checkText(src: string, out: unknown, lang: Locale): string[] {
   if (markup(src).join('|') !== markup(out).join('|')) errs.push('balisage modifié');
   if (src.includes('Red Line') && !out.includes('Red Line')) errs.push('« Red Line » traduit');
   if (out.length > maxLength(src)) errs.push(`trop long (${out.length} > ${maxLength(src)})`);
-  // Texte long rendu tel quel dans une langue à écriture non latine : non traduit.
-  if (NON_LATIN.includes(lang) && src.length > 24 && /\s/.test(src) && out === src)
+  // Texte rendu tel quel dans une langue à écriture non latine : non traduit (sauf variables,
+  // symboles ou exemples de commandes, qui restent identiques d'une langue à l'autre).
+  if (NON_LATIN.includes(lang) && out === src && translatableWords(src) >= 3)
     errs.push('non traduit');
   return errs;
+}
+
+/** Mots français à traduire (hors variables, désignations et mots-clés de la console). */
+function translatableWords(src: string): number {
+  const text = src.replace(/\{\{[^}]*\}\}/g, ' ');
+  const words = text.match(/\p{L}{3,}/gu) ?? [];
+  const COMMANDS = /^(move|sel|produce|research|help|goto|alger|rafale|aero|gen\d?)$/i;
+  return words.filter((w) => !COMMANDS.test(w)).length;
 }
 
 /** Contrôle une traduction plurielle (objet catégorie → texte). */
