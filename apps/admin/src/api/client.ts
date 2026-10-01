@@ -25,6 +25,7 @@ import type {
 import type {
   AdminChatMessage,
   AdminPack,
+  AdminResourceOffer,
   AdminUser,
   Anomaly,
   AuditEntry,
@@ -35,6 +36,7 @@ import type {
   PackBody,
   PhotoEntry,
   PromoBody,
+  ResourceOfferBody,
   Promotion,
   Purchase,
   PurchaseStatus,
@@ -303,6 +305,12 @@ export function createApi(t: Transport, onUnauthorized?: () => void) {
     createPack: (b: PackBody) => req<{ pack: AdminPack }>('POST', '/admin/api/shop/packs', b),
     updatePack: (id: string, b: PackBody) =>
       req<{ pack: AdminPack }>('PUT', `/admin/api/shop/packs/${enc(id)}`, b),
+    listResourceOffers: () =>
+      req<{ offers: AdminResourceOffer[] }>('GET', '/admin/api/shop/resources'),
+    createResourceOffer: (b: ResourceOfferBody) =>
+      req<{ offer: AdminResourceOffer }>('POST', '/admin/api/shop/resources', b),
+    updateResourceOffer: (id: string, b: ResourceOfferBody) =>
+      req<{ offer: AdminResourceOffer }>('PUT', `/admin/api/shop/resources/${enc(id)}`, b),
     listPromotions: () => req<{ promotions: Promotion[] }>('GET', '/admin/api/shop/promotions'),
     createPromotion: (b: PromoBody) =>
       req<{ promotion: Promotion }>('POST', '/admin/api/shop/promotions', b),

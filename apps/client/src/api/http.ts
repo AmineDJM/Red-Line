@@ -20,6 +20,8 @@ import type {
   ResearchNode,
   ScenarioSummary,
   SeasonView,
+  ResourceBuyResult,
+  ResourceOffer,
   ShopPack,
   TimelapseView,
   WalletEntry,
@@ -255,6 +257,12 @@ export class HttpApi implements Api {
   }
   async cosmetics(): Promise<{ items: CosmeticItem[]; owned: string[] }> {
     return request('GET', '/api/shop/cosmetics');
+  }
+  async resourceOffers(): Promise<ResourceOffer[]> {
+    return (await request<{ offers: ResourceOffer[] }>('GET', '/api/shop/resources')).offers;
+  }
+  async buyResources(gameId: string, offerId: string): Promise<ResourceBuyResult> {
+    return request('POST', `/api/games/${enc(gameId)}/shop/resources`, { offerId });
   }
   async buyCosmetic(id: string): Promise<{ ok: boolean; balance: number }> {
     return request('POST', `/api/shop/cosmetics/${enc(id)}/buy`, {});

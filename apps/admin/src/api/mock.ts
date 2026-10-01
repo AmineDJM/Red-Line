@@ -9,6 +9,7 @@ import {
   NationDefSchema,
   OrbatSchema,
   ProvinceDefSchema,
+  RESOURCES,
   ROLES,
   ResearchNodeSchema,
   ScenarioFileSchema,
@@ -36,6 +37,7 @@ import type {
   MetricsExtra,
   PackBody,
   PromoBody,
+  ResourceOfferBody,
   UserPatch,
 } from './types';
 import {
@@ -928,6 +930,52 @@ export function createMockTransport(opts: { role?: Role; latencyMs?: number } = 
       active: p.active ?? true,
     };
   };
+  const checkOffer = (b: Body): ResourceOfferBody => {
+    const p = b as unknown as ResourceOfferBody;
+    if (!/^[a-z0-9._-]+$/.test(String(p.id ?? '')))
+      throw new ApiError(400, 'id : Invalid', 'invalid_body');
+    const resources: ResourceOfferBody['resources'] = {};
+    for (const r of RESOURCES) {
+      const v = Number(p.resources?.[r] ?? 0);
+      if (v > 0) resources[r] = v;
+    }
+    const money = Math.max(0, Number(p.money ?? 0));
+    if (!p.name || !(p.price > 0) || (money <= 0 && Object.keys(resources).length === 0))
+      throw new ApiError(400, 'Offre vide : dollars ou ressources requis', 'invalid_body');
+    return {
+      id: p.id,
+      name: p.name,
+      money,
+      resources,
+      price: Math.round(p.price),
+      active: p.active ?? true,
+      sort: Math.round(p.sort ?? 0),
+    };
+  };
+  on('GET', '/admin/api/shop/resources', () => {
+    need('superadmin');
+    return { offers: clone([...shop.offers].sort((a, b) => a.sort - b.sort)) };
+  });
+  on('POST', '/admin/api/shop/resources', (_p, b) => {
+    need('superadmin');
+    const o = checkOffer(b);
+    if (shop.offers.some((x) => x.id === o.id))
+      throw new ApiError(409, 'Cette offre existe déjà', 'already_exists');
+    const row = { ...o, updatedAt: now() };
+    shop.offers.push(row);
+    log('shop.resources.create', `offer:${o.id}`, null, o);
+    return { offer: clone(row) };
+  });
+  on('PUT', '/admin/api/shop/resources/:id', ([id], b) => {
+    need('superadmin');
+    const i = shop.offers.findIndex((x) => x.id === id);
+    if (i < 0) throw new ApiError(404, 'Offre introuvable', 'not_found');
+    const before = shop.offers[i];
+    const row = { ...checkOffer({ ...b, id }), updatedAt: now() };
+    shop.offers[i] = row;
+    log('shop.resources.update', `offer:${id}`, before, row);
+    return { offer: clone(row) };
+  });
   on('GET', '/admin/api/shop/promotions', () => {
     need('superadmin');
     return { promotions: clone([...shop.promotions].sort((a, b) => b.id - a.id)) };

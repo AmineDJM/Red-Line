@@ -22,6 +22,7 @@ import {
   type ProvinceDef,
   type RankingEntry,
   type SeasonView,
+  type ResourceOffer,
   type ShopPack,
   type TimelapseView,
   type WalletEntry,
@@ -504,6 +505,30 @@ export function demoBattleReport(
 }
 
 // ——— Boutique, classements, légal ———
+
+/** Offres de ressources en jeu (copie de apps/server/shop/config.json). */
+export const DEMO_RESOURCE_OFFERS: ResourceOffer[] = [
+  { id: 'res-credit', name: 'Ligne de crédit', money: 500e6, resources: {}, price: 50 },
+  { id: 'res-loan', name: "Emprunt d'État", money: 2e9, resources: {}, price: 180 },
+  { id: 'res-fund', name: 'Fonds souverain', money: 10e9, resources: {}, price: 800 },
+  { id: 'res-oil', name: 'Cargaison de pétrole', money: 0, resources: { oil: 200 }, price: 40 },
+  { id: 'res-metals', name: 'Minerais et métaux', money: 0, resources: { metals: 200 }, price: 40 },
+  {
+    id: 'res-electronics',
+    name: 'Composants électroniques',
+    money: 0,
+    resources: { electronics: 100 },
+    price: 50,
+  },
+  { id: 'res-food', name: 'Réserves alimentaires', money: 0, resources: { food: 300 }, price: 30 },
+  {
+    id: 'res-logistics',
+    name: 'Lot logistique',
+    money: 0,
+    resources: { oil: 150, metals: 150, electronics: 75, food: 200 },
+    price: 120,
+  },
+];
 
 export const DEMO_PACKS: ShopPack[] = [
   {
