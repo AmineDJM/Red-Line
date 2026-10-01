@@ -7,15 +7,15 @@ exact, le camp adverse n'est connu que par ce que son camp a vu pendant les comb
 
 ## Où ça vit
 
-| Couche                                     | Fichier                                                                                    |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| Contrat (champs optionnels, rétrocompatible) | `packages/shared/src/military.ts` : `BattleReport.aar` (`BattleAar`), `BattleReportSummary.domain / mySide / intensity` |
-| Réglages                                   | `data/balance/default.json` → `military.report` (schéma `MilitaryBalanceSchema.report`) ; personnels par élément : `military.casualties` |
-| Enregistrement pendant les combats         | `packages/engine/src/modules/mil/battles.ts` (état sérialisé `BattleSt.x`)                  |
-| Construction du rapport pour un lecteur    | `packages/engine/src/modules/mil/aar.ts` (`reportFor`, `summaryFor`, lecture seule)         |
-| Route                                      | `GET /api/games/:id/battle-reports/:rid` (inchangée : `battleReportFor(state, nation, id)`) |
-| Fenêtre                                    | `apps/client/src/windows/BattlesWindow.tsx`, `apps/client/src/components/BattleAar.tsx`, `styles/w-battles.css` |
-| Banc                                       | `node packages/engine/bench/run.mjs battle-report` (vraie carte : rapport vu par chaque camp) |
+| Couche                                       | Fichier                                                                                                                                  |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Contrat (champs optionnels, rétrocompatible) | `packages/shared/src/military.ts` : `BattleReport.aar` (`BattleAar`), `BattleReportSummary.domain / mySide / intensity`                  |
+| Réglages                                     | `data/balance/default.json` → `military.report` (schéma `MilitaryBalanceSchema.report`) ; personnels par élément : `military.casualties` |
+| Enregistrement pendant les combats           | `packages/engine/src/modules/mil/battles.ts` (état sérialisé `BattleSt.x`)                                                               |
+| Construction du rapport pour un lecteur      | `packages/engine/src/modules/mil/aar.ts` (`reportFor`, `summaryFor`, lecture seule)                                                      |
+| Route                                        | `GET /api/games/:id/battle-reports/:rid` (inchangée : `battleReportFor(state, nation, id)`)                                              |
+| Fenêtre                                      | `apps/client/src/windows/BattlesWindow.tsx`, `apps/client/src/components/BattleAar.tsx`, `styles/w-battles.css`                          |
+| Banc                                         | `node packages/engine/bench/run.mjs battle-report` (vraie carte : rapport vu par chaque camp)                                            |
 
 Les batailles des parties antérieures (sans `BattleSt.x`) gardent l'ancien rapport (`aar` absent) ; la
 fenêtre affiche alors les anciens tableaux.
@@ -40,17 +40,17 @@ fenêtre affiche alors les anciens tableaux.
 
 ## Le rapport (`BattleAar`)
 
-| Champ               | Contenu                                                                                                                                            |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `place`             | province, ville, propriétaire au début, milieu (`land`, `coast`, `sea`, `air`), combats en zone urbaine                                            |
-| `sides[2]`          | attaquant puis défenseur : `own` (camp du lecteur), cote `grade` du renseignement (adversaire), ordre de bataille, totaux, bilan                  |
-| `sides[].forces`    | par matériel : engagés, détruits, endommagés, capturés, personnels, munitions (son camp seulement) ; contacts non identifiés groupés par milieu      |
-| `sides[].casualties`| tués, blessés, disparus, prisonniers                                                                                                               |
-| `sides[]`           | matériels détruits / endommagés / capturés, valeur perdue ($), missiles tirés et abattus, interceptions, sorties aériennes, munitions principales  |
-| `phases`            | `preparation`, `strikes`, `assault`, `defense`, `counter`, `air`, `naval`, `retreat`, `capture` — début, fin, camp à l'initiative, pertes          |
-| `losses`            | pertes cumulées dans le temps (exactes pour son camp, confirmées pour l'adversaire)                                                                |
-| `factors`           | jusqu'à 6 facteurs décisifs : rapport de forces, supériorité aérienne, guerre électronique, furtivité, défense retranchée, défense aérienne, ravitaillement (−), vétérance, commandement, moral (−) — camp, signe, poids, paramètres du libellé |
-| `result`            | `verdict` (victoire décisive / avantage / indécis / en cours), provinces prises pendant les combats, province tenue                                  |
+| Champ                | Contenu                                                                                                                                                                                                                                         |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `place`              | province, ville, propriétaire au début, milieu (`land`, `coast`, `sea`, `air`), combats en zone urbaine                                                                                                                                         |
+| `sides[2]`           | attaquant puis défenseur : `own` (camp du lecteur), cote `grade` du renseignement (adversaire), ordre de bataille, totaux, bilan                                                                                                                |
+| `sides[].forces`     | par matériel : engagés, détruits, endommagés, capturés, personnels, munitions (son camp seulement) ; contacts non identifiés groupés par milieu                                                                                                 |
+| `sides[].casualties` | tués, blessés, disparus, prisonniers                                                                                                                                                                                                            |
+| `sides[]`            | matériels détruits / endommagés / capturés, valeur perdue ($), missiles tirés et abattus, interceptions, sorties aériennes, munitions principales                                                                                               |
+| `phases`             | `preparation`, `strikes`, `assault`, `defense`, `counter`, `air`, `naval`, `retreat`, `capture` — début, fin, camp à l'initiative, pertes                                                                                                       |
+| `losses`             | pertes cumulées dans le temps (exactes pour son camp, confirmées pour l'adversaire)                                                                                                                                                             |
+| `factors`            | jusqu'à 6 facteurs décisifs : rapport de forces, supériorité aérienne, guerre électronique, furtivité, défense retranchée, défense aérienne, ravitaillement (−), vétérance, commandement, moral (−) — camp, signe, poids, paramètres du libellé |
+| `result`             | `verdict` (victoire décisive / avantage / indécis / en cours), provinces prises pendant les combats, province tenue                                                                                                                             |
 
 Chaque nombre est une **estimation** `{ best, min, max }` : exacte (`min = max`) pour son camp, fourchette
 pour l'adversaire. Les libellés sont traduits côté client (`battles.aar.*` de `fr.json`) : le moteur

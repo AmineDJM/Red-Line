@@ -100,7 +100,9 @@ describe('rapport de bataille après action', { timeout: 60_000 }, () => {
     expect(a.timeline.some((x) => x.text.startsWith('Tir de'))).toBe(false);
     const launcher = cityOf('bbb-2');
     for (const sh of a.replay.shots)
-      expect(Math.abs(sh.from[0] - launcher[0]) + Math.abs(sh.from[1] - launcher[1])).toBeGreaterThan(0.5);
+      expect(
+        Math.abs(sh.from[0] - launcher[0]) + Math.abs(sh.from[1] - launcher[1]),
+      ).toBeGreaterThan(0.5);
     // Le résumé de la vue (camp adverse) ne cite que les matériels identifiés.
     const sum = viewFor(s, 'aaa').battleReports!.find((x) => x.id === a.id)!;
     expect(sum.defender.engaged.every((e) => e.systemId !== 'tst.cruise')).toBe(true);

@@ -506,7 +506,7 @@ function AiWorldSchema() {
             fromDays: 2,
             maxWars: 1,
             maxActiveWars: 6,
-            rivalryChancePerDay: 0.02,
+            rivalryChancePerDay: 0.03,
             rivalryRatio: 1.3,
             opportunismChancePerDay: 0.01,
             opportunismRatio: 2,

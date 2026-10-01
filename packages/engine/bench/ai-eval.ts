@@ -162,7 +162,8 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
     }
     if (o.kind === 'proposePeace' && (o as { nationId: string }).nationId === HUMAN)
       tr.peaceToHuman++;
-    if (o.kind === 'declareWar') tr.aggressions.push(`${n}>${(o as { nationId: string }).nationId}`);
+    if (o.kind === 'declareWar')
+      tr.aggressions.push(`${n}>${(o as { nationId: string }).nationId}`);
     if (o.kind === 'strike' || o.kind === 'patrol') {
       const ids = (o as { unitIds: string[] }).unitIds;
       const u0 = st.units[ids[0]!];
@@ -309,7 +310,9 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
     for (const k of now) for (const x of k.split('|')) inv.add(x);
     peakAiWars.nations = Math.max(peakAiWars.nations, inv.size);
   };
-  const owner0 = Object.fromEntries(Object.keys(s.provinces).map((p) => [p, s.provinces[p]!.owner]));
+  const owner0 = Object.fromEntries(
+    Object.keys(s.provinces).map((p) => [p, s.provinces[p]!.owner]),
+  );
   while (s.time < end) {
     const out = advanceTo(s, Math.min(end, s.time + STEP));
     notes.push(...out);
@@ -600,9 +603,9 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
     aiProvincesTaken: aiCaptured.length,
     conquerors: conquests.size,
     provincesChangedHands: changed.length,
-    defeatedAi: (byKind('nation_defeated') as Extract<GameNotification, { kind: 'nation_defeated' }>[]).filter(
-      (x) => isAi(x.nationId),
-    ).length,
+    defeatedAi: (
+      byKind('nation_defeated') as Extract<GameNotification, { kind: 'nation_defeated' }>[]
+    ).filter((x) => isAi(x.nationId)).length,
   };
   const warLines = aiWarList.map((x) => {
     const [a, b] = x.k.split('|') as [NationId, NationId];

@@ -309,9 +309,7 @@ function buildSide(
     const v = elementValue(L.sys);
     addTo(usd, L.destroyed.best * v, L.destroyed.min * v, L.destroyed.max * v);
   }
-  const E = other(s);
   const mineX = X[s];
-  const theirs = X[E];
   // Missiles et munitions : exacts pour son camp ; pour l'adversaire, ce que son camp a encaissé ou abattu.
   const seenMissiles = X[V].mi + X[V].mr;
   const side: BattleAarSide = {
@@ -364,7 +362,6 @@ function buildSide(
     if (mineX.gn.length > 0) side.generals = [...mineX.gn];
     if (mineX.vt[1] > 0) side.veterancy = Math.round((mineX.vt[0] / mineX.vt[1]) * 100) / 100;
   } else side.grade = grade(b, X, V);
-  void theirs;
   return { side, lines };
 }
 

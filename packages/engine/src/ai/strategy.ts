@@ -414,6 +414,15 @@ function stalemate(state: EngineState, n: NationId, e: NationId, m: Memory): boo
   return !!f && state.time - f[1] >= days * DAY;
 }
 
+/**
+ * Guerre entre IA trop jeune pour une paix négociée (but atteint, agresseur satisfait) : les guerres
+ * durent au moins `capitulationMinDays` (la chute d'une capitale suffit toujours).
+ */
+function tooEarly(state: EngineState, n: NationId, e: NationId): boolean {
+  if (!aiNation(state, e) || !aiNation(state, n)) return false;
+  return warYoungerThan(state, n, e, worldLevel(state, n).capitulationMinDays);
+}
+
 /** Mise à jour de l'état des fronts contre les autres IA (enlisement). */
 function trackFronts(state: EngineState, n: NationId, m: Memory): void {
   const front = (m.front ??= {});
@@ -453,7 +462,11 @@ function shouldAcceptPeace(
   P: LevelProfile,
 ): boolean {
   if (state.nations[n]!.aiLevel === 'easy') return true;
-  if (satisfied(state, n, from, P, 0.5) || warGoalReached(state, n, from)) return true;
+  if (
+    !tooEarly(state, n, from) &&
+    (satisfied(state, n, from, P, 0.5) || warGoalReached(state, n, from))
+  )
+    return true;
   // Guerre entre IA : capitulation (capitale perdue, territoire largement perdu), victoire acquise
   // (capitale ennemie tenue) ou enlisement.
   if (capitulates(state, n, from) || capitulates(state, from, n)) return true;
@@ -590,7 +603,10 @@ function seekPeace(
     const ratio = ratioAgainst(state, n, e, mine, P);
     const lost = lostTo(state, n, e);
     const losing = (ratio < P.peaceRatio && lost > 0) || ratio < P.peaceRatio * 0.6 || stab < 30;
-    const done = !losing && (satisfied(state, n, e, P, 1) || warGoalReached(state, n, e));
+    const done =
+      !losing &&
+      !tooEarly(state, n, e) &&
+      (satisfied(state, n, e, P, 1) || warGoalReached(state, n, e));
     // Guerre entre IA : capitulation (la paix cède le territoire perdu) ou enlisement (statu quo).
     const ends = capitulates(state, n, e) || stalemate(state, n, e, m);
     if (!losing && !idle && !done && !ends) continue;

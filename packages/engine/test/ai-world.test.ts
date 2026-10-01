@@ -102,7 +102,7 @@ describe('monde vivant : guerres entre IA', { timeout: 120_000 }, () => {
   it('la guerre se termine : la victime capitule, le vainqueur garde ses conquêtes ; déterministe', () => {
     const run = () => {
       const s = game(RIVALS, 11);
-      advanceTo(s, 14 * DAY);
+      advanceTo(s, 8 * DAY);
       return s;
     };
     const s = run();

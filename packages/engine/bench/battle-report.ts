@@ -59,6 +59,9 @@ for (const n of [A, B]) {
       );
   }
   console.log('  phases', a.phases.map((p) => `${p.kind}:${p.side}`).join(' → '));
-  console.log('  facteurs', a.factors.map((f) => `${f.kind}(${f.side}${f.positive ? '+' : '−'})`).join(' '));
+  console.log(
+    '  facteurs',
+    a.factors.map((f) => `${f.kind}(${f.side}${f.positive ? '+' : '−'})`).join(' '),
+  );
 }
 if (env.BR_OUT) writeFileSync(env.BR_OUT, JSON.stringify(out, null, 1));
