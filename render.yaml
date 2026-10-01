@@ -1,9 +1,8 @@
 # yaml-language-server: $schema=https://render.com/schema/render.yaml.json
 # Blueprint Render — Red Line (validé contre https://render.com/schema/render.yaml.json)
 # Un seul service web (API + WebSocket + client + back-office servis sur la même origine)
-# et une base PostgreSQL, en deux environnements :
-#   - production : branche `main`, offre Starter (pas de mise en veille), déployée seulement si la CI passe
-#   - staging    : branche `staging`, offres gratuites (mise en veille après 15 min, base gratuite limitée à 30 j)
+# et une base PostgreSQL. Production : branche `main`, offre Starter (pas de mise en veille), déployée
+# seulement si la CI passe. Un environnement de test (staging) pourra être ajouté plus tard.
 # L'imagerie satellite (data/tiles/*.pmtiles) est dans le dépôt : aucun disque n'est nécessaire.
 # Seuils de passage à l'offre supérieure : docs/charge.md.
 
@@ -54,46 +53,6 @@ services:
       - key: STRIPE_WEBHOOK_SECRET
         sync: false
 
-  - type: web
-    name: redline-server-staging
-    runtime: node
-    plan: free
-    region: frankfurt
-    branch: staging
-    autoDeployTrigger: commit
-    buildCommand: npx --yes pnpm@10.33.0 install --frozen-lockfile && npx --yes pnpm@10.33.0 build
-    # L'offre gratuite n'a pas de preDeployCommand : migrations au démarrage.
-    startCommand: node apps/server/dist/main.js
-    healthCheckPath: /healthz
-    envVars:
-      - key: NODE_VERSION
-        value: '22'
-      - key: NODE_ENV
-        value: production
-      - key: NODE_OPTIONS
-        value: --max-old-space-size=384
-      - key: CLIENT_IP_HEADER
-        value: cf-connecting-ip
-      - key: MIGRATE_ON_START
-        value: 'true'
-      - key: DATABASE_URL
-        fromDatabase:
-          name: redline-db-staging
-          property: connectionString
-      - key: SESSION_SECRET
-        generateValue: true
-      - key: ADMIN_EMAIL
-        sync: false
-      - key: ADMIN_PASSWORD
-        sync: false
-      - key: PUBLIC_URL
-        sync: false
-      # Staging : clés Stripe de TEST (sk_test_…) uniquement.
-      - key: STRIPE_SECRET_KEY
-        sync: false
-      - key: STRIPE_WEBHOOK_SECRET
-        sync: false
-
 databases:
   - name: redline-db
     plan: basic-256mb
@@ -105,11 +64,4 @@ databases:
     user: redline
     # Aucune connexion depuis Internet : seul le service web (réseau privé Render) y accède.
     # Pour une connexion ponctuelle depuis un poste (pg_dump…), ajouter son IP dans le tableau de bord.
-    ipAllowList: []
-  - name: redline-db-staging
-    plan: free
-    region: frankfurt
-    postgresMajorVersion: '16'
-    databaseName: redline_staging
-    user: redline
     ipAllowList: []
