@@ -287,6 +287,8 @@ export function ArsenalBrowser({
               photo={photoFor(s, photos)}
               subtitle={t(`categories.${s.category}`)}
               price={formatMoney(systemPrice(s))}
+              delay={formatHours(s.buildTimeH, t('time.dayUnit'))}
+              delayLabel={t('arsenal.buildTime')}
               generationLabel={t('weapon.gen')}
               footer={
                 mode === 'production' && owned[s.id]

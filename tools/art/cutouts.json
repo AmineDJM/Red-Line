@@ -1,0 +1,2230 @@
+{
+  "us.f-5e": {
+    "title": "File:J-3005.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.235
+  },
+  "us.f-16": {
+    "title": "File:F-16 June 2008.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.216
+  },
+  "us.f-15e": {
+    "title": "File:F-15E takes on fuel from KC-10.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.256
+  },
+  "us.fa-18e": {
+    "title": "File:US Navy 071203-N-8923M-074 An F-A-18F Super Hornet, from the Red Rippers of Strike Fighter Squadron (VFA) 11, makes a sharp turn above the flight deck aboard the Nimitz-class nuclear-powered aircraft carrier USS Harry S. Truman.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.211
+  },
+  "us.f-22": {
+    "title": "File:F-22 Raptor edit1 (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.304
+  },
+  "us.f-35": {
+    "title": "File:F-35A flight (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.251
+  },
+  "ru.mig-21": {
+    "title": "File:Croatian MiG-21 (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.153
+  },
+  "ru.mig-29": {
+    "title": "File:VVS 100th IMG 0691 (7727464290) (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.176
+  },
+  "ru.mig-31": {
+    "title": "File:Mikoyan-Gurevich MiG-31BM in flight.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.095
+  },
+  "ru.su-27": {
+    "title": "File:Su-27SM3 in flight, Celebration of the 100th anniversary of Russian Air Force.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.146
+  },
+  "ru.su-30": {
+    "title": "File:Sukhoi Su-30SM in flight 2014.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.193
+  },
+  "ru.su-35": {
+    "title": "File:Russian Air Force, RF-81719, Sukhoi Su-35S (49581740157).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.154
+  },
+  "ru.su-57": {
+    "title": "File:Sukhoi Design Bureau, 054, Sukhoi T-50 (Su-57 prototype) (49581303977).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.26
+  },
+  "cn.j-7": {
+    "title": "File:In flight air-to-air left front view of a PRC F-7II fighter aircraft - DPLA.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.117
+  },
+  "cn.j-10": {
+    "title": "File:J-10B with PL-10 and PL-12.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.212
+  },
+  "cn.j-11": {
+    "title": "File:J-11BChel.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.12
+  },
+  "cn.j-16": {
+    "title": "File:J-16 at China's Air Force Aviation Open Day 20250921.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.135
+  },
+  "cn.j-20": {
+    "title": "File:J-20 at CCAS2022 (20220827103424).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.262
+  },
+  "cn.j-35": {
+    "title": "File:Shenyang J-31 (F60) at 2014 Zhuhai Air Show.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.116
+  },
+  "eu.mirage-2000": {
+    "title": "File:Mirage 2000C in-flight 2 (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.191
+  },
+  "eu.tornado": {
+    "title": "File:43+74 Panavia Tornado IDS German Marine (8738052307).jpg",
+    "use": true,
+    "reason": "contrôle visuel : appareil complet",
+    "coverage": 0.188
+  },
+  "eu.gripen": {
+    "title": "File:Saab JAS 39 Gripen at Kaivopuisto Air Show, June 2017 (altered) copy.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.254
+  },
+  "eu.typhoon": {
+    "title": "File:Eurofighter Typhoon AUT.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.215
+  },
+  "eu.rafale": {
+    "title": "File:Rafale - RIAT 2009 (3751416421).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.203
+  },
+  "other.jf-17": {
+    "title": "File:13-143 JF-17 PAKISTAN AIR FORCE LBG (18888092161).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.141
+  },
+  "other.kf-21": {
+    "title": "File:A South Korean Air Force KF-21, developed by Korea Aerospace Industries, performs an aerial demonstration at the Aerospace and Defense Exhibition in Seoul, South Korea, October 21, 2023.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.206
+  },
+  "other.tejas": {
+    "title": "File:KH-2013 IAF Tejas 2 (33026195996).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.086
+  },
+  "us.patriot": {
+    "title": "File:German Patriot missile launcher.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.288
+  },
+  "ru.s-400": {
+    "title": "File:С-400 «Триумф».JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.245
+  },
+  "ru.pantsir-s1": {
+    "title": "File:MAKS Airshow 2013 (Ramenskoye Airport, Russia) (521-05).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.486
+  },
+  "eu.mistral": {
+    "title": "File:Mistral 3 of the Croatian army.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.11
+  },
+  "ru.krasukha-4": {
+    "title": "File:MAKS2015part6-51.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.423
+  },
+  "us.m1a2-abrams": {
+    "title": "File:M1A2 Abrams firing.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.133
+  },
+  "ru.t-90m": {
+    "title": "File:T-90M.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.25
+  },
+  "cn.type-99a": {
+    "title": "File:ZTZ-99A tank front 20170902.jpg",
+    "use": false,
+    "reason": "panneau d'exposition conservé devant le char"
+  },
+  "eu.leopard-2a7": {
+    "title": "File:Leopard 2A7.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.488
+  },
+  "eu.leclerc": {
+    "title": "File:Leclerc-openphotonet PICT6015.JPG",
+    "use": false,
+    "reason": "nuage de poussière conservé par le détourage"
+  },
+  "us.m2-bradley": {
+    "title": "File:US M2A1 Bradley deployed to Saudi Arabia during Operation Desert Shield.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.403
+  },
+  "ru.bmp-3": {
+    "title": "File:Army2016demo-011.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.344
+  },
+  "us.m109-paladin": {
+    "title": "File:M109A6 Paladin ID 071010-F-0209C-002.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.265
+  },
+  "ru.2s19-msta": {
+    "title": "File:ParkPatriot2015part6-02.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite, gauche)",
+    "coverage": 0.434
+  },
+  "eu.caesar": {
+    "title": "File:French Caesar self-propelled howitzer in Iraq.jpg",
+    "use": false,
+    "reason": "tir : fumée conservée par le détourage"
+  },
+  "us.mq-9-reaper": {
+    "title": "File:MQ-9 Reaper UAV (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.197
+  },
+  "ru.orion": {
+    "title": "File:Kronstadt Orion-E front right ARMY-2022.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.169
+  },
+  "other.bayraktar-tb2": {
+    "title": "File:Bayraktar TB2 Runway.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.08
+  },
+  "us.ah-64-apache": {
+    "title": "File:AH-64D Apache Longbow.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.194
+  },
+  "ru.ka-52": {
+    "title": "File:Ka-52 at MAKS-2009.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.194
+  },
+  "us.infantry-light": {
+    "title": "File:Flickr - The U.S. Army - Early-morning dismounted patrol mission.jpg",
+    "use": false,
+    "reason": "soldats dispersés : photo d'origine"
+  },
+  "us.infantry-mech": {
+    "title": "File:2nd Battalion, 7th Infantry Regiment- Daytime CALFEX (9231951).jpg",
+    "use": false,
+    "reason": "groupe de soldats et véhicule : photo d'origine"
+  },
+  "ru.infantry-light": {
+    "title": "File:Anti-AircraftExercise2019-26.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (haut, droite)",
+    "coverage": 0.316
+  },
+  "ru.infantry-mech": {
+    "title": "File:MechanizedInfantryExercise2018-13.jpg",
+    "use": false,
+    "reason": "véhicule dans la neige soulevée : photo d'origine"
+  },
+  "cn.infantry-light": {
+    "title": "File:CJCS meets PRC troop in Shenyang (36604294635).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.069
+  },
+  "cn.infantry-mech": {
+    "title": "File:CJCS meets PRC troop in Shenyang (36558137376).jpg",
+    "use": false,
+    "reason": "groupe de soldats et véhicule : photo d'origine"
+  },
+  "eu.infantry-light": {
+    "title": "File:Italian Army - 8th Alpini Regiment patrol during exercise Picca d’Acciaio - March 2025 02.jpg",
+    "use": false,
+    "reason": "soldats dispersés : photo d'origine"
+  },
+  "eu.infantry-mech": {
+    "title": "File:Puma Infantry Fighting Vehicle.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.333
+  },
+  "other.infantry-light": {
+    "title": "File:Training exercise with M4A1 rifles 170206-A-EO786-023.jpg",
+    "use": false,
+    "reason": "sujet non détecté",
+    "coverage": 0.01
+  },
+  "other.infantry-mech": {
+    "title": "File:Marines and Australian conduct a mechanized infantry assault for Exercise Koolendong (6810770).jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite, gauche)",
+    "coverage": 0.295
+  },
+  "us.b-52h-stratofortress": {
+    "title": "File:B-52 Stratofortress assigned to the 307th Bomb Wing (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.126
+  },
+  "us.b-1b-lancer": {
+    "title": "File:B-1B air refueling.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.126
+  },
+  "us.b-2-spirit": {
+    "title": "File:B-2A Spirit.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.095
+  },
+  "us.b-21-raider": {
+    "title": "File:B-21-in-flight.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.073
+  },
+  "ru.tu-95ms": {
+    "title": "File:Tupolev Tu-95MS (Jan 2015).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.212
+  },
+  "ru.tu-22m3": {
+    "title": "File:Tupolev Tu-22M3.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.102
+  },
+  "ru.tu-160": {
+    "title": "File:Tupolev Tu-160 RF-94109.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.064
+  },
+  "cn.h-6k": {
+    "title": "File:Xian H-6K.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.16
+  },
+  "us.a-10c-thunderbolt-ii": {
+    "title": "File:Fairchild Republic A-10 Thunderbolt II - 32156159151.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.169
+  },
+  "us.e-3-sentry": {
+    "title": "File:E-3 Sentry Airborne Warning and Control System (AWACS) conducts a mission.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.222
+  },
+  "us.e-7-wedgetail": {
+    "title": "File:A30-001 in flight over the United States in April 2025 (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.196
+  },
+  "us.e-2d-hawkeye": {
+    "title": "File:E-2D Advanced Hawkeye aircraft conduct a test flight.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.242
+  },
+  "us.kc-135-stratotanker": {
+    "title": "File:F-15C Eagle from the 67th Fighter Squadron at Kadena AB is refueled by a KC-135R Stratotanker from the 909th Air Refueling Squadron .jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.14
+  },
+  "us.kc-46-pegasus": {
+    "title": "File:KC-46 Pegasus prepares to refuel C-17 (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.156
+  },
+  "us.c-17-globemaster-iii": {
+    "title": "File:C-17 test sortie.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.097
+  },
+  "us.c-130-hercules": {
+    "title": "File:Lockheed C-130 Hercules.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.166
+  },
+  "us.ea-18g-growler": {
+    "title": "File:U.S. Navy EA-18G Growler breaks away from a U.S. Air Force KC-135 (altered).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.245
+  },
+  "us.p-8-poseidon": {
+    "title": "File:20190401 P-8 Poseidon Tail 169327 Kadena AB-115.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.164
+  },
+  "us.av-8b-harrier-ii": {
+    "title": "File:AV-8B II Harrier, 5-10-26 at MCAS Cherry Point.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.073
+  },
+  "us.f-4-phantom-ii": {
+    "title": "File:QF-4 Holloman AFB.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.228
+  },
+  "ru.su-25": {
+    "title": "File:Sukhoi Su-25 of the Russian Air Force landing at Vladivostok (8683076150).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.196
+  },
+  "ru.su-34": {
+    "title": "File:MAKS2015part1-10 (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.231
+  },
+  "ru.su-24": {
+    "title": "File:Sukhoi Su-24 inflight Mishin-2.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.18
+  },
+  "ru.su-22": {
+    "title": "File:Su-22 (12420898444).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.144
+  },
+  "ru.mig-23": {
+    "title": "File:Mig-23-DNST8908431 JPG.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.155
+  },
+  "ru.a-50": {
+    "title": "File:Airborne early warning and control aircraft A-50U (Red 41).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.142
+  },
+  "ru.il-78": {
+    "title": "File:Ilyushin Il-78M inflight.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.13
+  },
+  "ru.il-76": {
+    "title": "File:Il-76MD-90A RF-78653.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.142
+  },
+  "ru.an-26": {
+    "title": "File:An-26 Niµ Nishava Serbien Marko Stojkovic IMG 2634-1-2.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.232
+  },
+  "ru.yak-130": {
+    "title": "File:Yakovlev Yak- 130 (modify).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.289
+  },
+  "cn.kj-500": {
+    "title": "File:KJ-500 (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.219
+  },
+  "cn.kj-2000": {
+    "title": "File:KJ2000 at 2014 Zhuhai Air Show.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.228
+  },
+  "cn.y-20": {
+    "title": "File:11151@PEK (20210207094253).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.172
+  },
+  "cn.yy-20": {
+    "title": "File:YY-20A releasing flares at CCAS2023 (20230724103338).jpg",
+    "use": false,
+    "reason": "vue de dessous avec leurres : photo d'origine"
+  },
+  "cn.y-9": {
+    "title": "File:GX-8 9231 20160131.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.151
+  },
+  "cn.k-8-karakorum": {
+    "title": "File:Bangladesh Air Force K-8 (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.241
+  },
+  "eu.a400m-atlas": {
+    "title": "File:German Air Force Airbus A400M (out cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.156
+  },
+  "eu.a330-mrtt": {
+    "title": "File:KC-30 A39-002 refuelling an USAF F-16 (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.116
+  },
+  "eu.globaleye": {
+    "title": "File:Globaleye (53063401761).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.138
+  },
+  "eu.c-295": {
+    "title": "File:Polish Air Force C-295 (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.202
+  },
+  "eu.mirage-f1": {
+    "title": "File:French Air Force Mirage F1 returns to it's mission after receiving fuel from a KC-10 Extender.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.222
+  },
+  "eu.mirage-5": {
+    "title": "File:BA-05 Mirage 5BA, 1 SM, Arrival at Fairford RIAT 1987.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.152
+  },
+  "eu.alpha-jet": {
+    "title": "File:Alpha Jet - RIAT 2007 (2544737153).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.181
+  },
+  "eu.hawk": {
+    "title": "File:Hawk - RIAT 2011 (6122004254).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.219
+  },
+  "other.fa-50": {
+    "title": "File:Light Combat FA-50 Fighting Eagle.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.149
+  },
+  "other.a-29-super-tucano": {
+    "title": "File:Embraer EMB-314 Super Tucano Brazilian Air Force 1.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.24
+  },
+  "other.l-39-albatros": {
+    "title": "File:24 L-39 (N-757SF) Violated Reno Air Race 2014 photo Don Ramey Logan.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.188
+  },
+  "other.f-14-tomcat": {
+    "title": "File:F-14 Tomcat at Mehrabad preparing for Iranian Army Day 2013 (1).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.164
+  },
+  "us.ah-1z-viper": {
+    "title": "File:AH-1Z attack helicopter with Marine Light Attack Helicopter Squadron 775 Group 41, execute pre-flight checks and procedures (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.222
+  },
+  "us.ah-1-cobra": {
+    "title": "File:Air-to-air left front view of an AH-1S Cobra helicopter on a mission during Exercise Gallant Eagle '86 - DPLA - 044ed75d7dc4b11e3c24813506230f48.jpeg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.171
+  },
+  "us.uh-60-black-hawk": {
+    "title": "File:National-Guard-UH-60-Black-Hawk-operations-at-Fort-McCoy.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.197
+  },
+  "us.ch-47-chinook": {
+    "title": "File:CH-47 assigned to 3rd General Support Aviation Battalion, 82nd Combat Aviation Brigade.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.2
+  },
+  "us.mh-60r-seahawk": {
+    "title": "File:MH-60R Seahawk of HSM-75 in flight 2013.JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.124
+  },
+  "us.uh-1-huey": {
+    "title": "File:UH1 Huey - Fly Navy 2017 (26938005897).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.25
+  },
+  "ru.mi-28nm": {
+    "title": "File:Mi-28NM at Dubai Airshow 2021.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.35
+  },
+  "ru.mi-24": {
+    "title": "File:Mi24CP (modified) b.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.23
+  },
+  "ru.mi-8": {
+    "title": "File:Mi-8T 12411 V i PVO VS, august 04, 2008.JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.086
+  },
+  "ru.ka-27": {
+    "title": "File:A Russian Helix KA-27 (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.229
+  },
+  "ru.mi-2": {
+    "title": "File:Mil mi-2(modified).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.211
+  },
+  "cn.z-10": {
+    "title": "File:PLAAF Changhe WZ-10 - Jordan.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.18
+  },
+  "cn.z-19": {
+    "title": "File:Harbin Z-19 helicopter (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.239
+  },
+  "cn.z-20": {
+    "title": "File:Z-20 Airshow China 2022 fly.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.18
+  },
+  "cn.z-9": {
+    "title": "File:PLAN Z-9 Helicopter.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (haut)",
+    "coverage": 0.217
+  },
+  "eu.tigre": {
+    "title": "File:20170810034242!Eurocopter EC-665 Tiger UHT, Germany - Army AN1547188 (2).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.225
+  },
+  "eu.nh90": {
+    "title": "File:NH90 - RIAT 2018 (45206723701).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.25
+  },
+  "eu.aw101": {
+    "title": "File:AgustaWestland HH-101A Caesar (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.261
+  },
+  "eu.gazelle": {
+    "title": "File:Gazelle - RIAT 2014 (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.205
+  },
+  "eu.sa-330-puma": {
+    "title": "File:Puma - RIAT 2010 (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.246
+  },
+  "other.t129-atak": {
+    "title": "File:BG12-1001 (14662033896).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.182
+  },
+  "us.rq-4-global-hawk": {
+    "title": "File:Global Hawk 1.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.156
+  },
+  "us.mq-1c-gray-eagle": {
+    "title": "File:MQ-1C Warrior (2005-08-11).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.178
+  },
+  "us.switchblade-600": {
+    "title": "File:Switchblade 600 Loitering Munitions Training (8767595).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.15
+  },
+  "us.scaneagle": {
+    "title": "File:US Navy 1005268-N-RC844-159 A Scan Eagle Unmanned Aerial Vehicle (UAV).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.072
+  },
+  "ru.forpost": {
+    "title": "File:Forpost UAV InnovationDay2013part2-02.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.22
+  },
+  "ru.s-70-okhotnik": {
+    "title": "File:S-70 takeoff front view.png",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.249
+  },
+  "ru.lancet": {
+    "title": "File:ZALA Lancet at IDEX 2025.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.209
+  },
+  "ru.geran-2": {
+    "title": "File:Remains of Shahed drone in Vinnytsia Oblast, 2024-03-18 (01) (cropped).jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.364
+  },
+  "ru.orlan-10": {
+    "title": "File:Orlan-10 UAV Army-2022 2022-08-20 2475.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.181
+  },
+  "cn.wing-loong-ii": {
+    "title": "File:Ударный китайский БПЛА Wing Loong II - МАКС-2017 02.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.144
+  },
+  "cn.ch-4": {
+    "title": "File:CH-4 at Airshow China Zhuhai 2022.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.134
+  },
+  "cn.ch-5": {
+    "title": "File:CH-5 at Airshow China Zhuhai 2022.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.115
+  },
+  "cn.gj-11": {
+    "title": "File:Gongji-11 20221020.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.138
+  },
+  "eu.patroller": {
+    "title": "File:Safran Patroller au salon du Bourget 2019.jpg",
+    "use": false,
+    "reason": "objet au sol conservé par le détourage"
+  },
+  "eu.eurodrone": {
+    "title": "File:EuroMALE ILA 2018 (01) (cropped).jpg",
+    "use": false,
+    "reason": "panneau d'exposition devant la maquette"
+  },
+  "other.akinci": {
+    "title": "File:BayraktarAkıncı Teknofest2019 (3).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.175
+  },
+  "other.heron-tp": {
+    "title": "File:IAF-Eitan--Independence-Day-2017-Tel-Nof-IZE-099.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.199
+  },
+  "other.harop": {
+    "title": "File:IAI Harop PAS 2013 01.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.19
+  },
+  "other.hermes-900": {
+    "title": "File:Elbit Systems 900 take off.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.089
+  },
+  "other.shahed-136": {
+    "title": "File:2023 IRGC Aerospace Force achievements Exhibition in Kermanshah (018).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.348
+  },
+  "other.mohajer-6": {
+    "title": "File:IRGC Ground New Equipment 2021 (09).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.106
+  },
+  "us.m60-patton": {
+    "title": "File:M60 Patton Tank Fort Lewis Military Museum.jpg",
+    "use": false,
+    "reason": "second matériel conservé par le détourage"
+  },
+  "ru.t-72b3": {
+    "title": "File:T-72B3 - TankBiathlon2013-09.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.257
+  },
+  "ru.t-80bvm": {
+    "title": "File:T-80BVM (2).jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (haut, droite, gauche)",
+    "coverage": 0.723
+  },
+  "ru.t-14-armata": {
+    "title": "File:VDayRehearsal05052016-28.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.39
+  },
+  "ru.t-72": {
+    "title": "File:Alabino05042017-40.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite, gauche)",
+    "coverage": 0.475
+  },
+  "ru.t-62": {
+    "title": "File:ParkPatriot2015part10-12.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.267
+  },
+  "ru.t-55": {
+    "title": "File:T-55 4.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.284
+  },
+  "cn.type-96b": {
+    "title": "File:Type 96B 03.jpg",
+    "use": false,
+    "reason": "éléments de décor conservés par le détourage"
+  },
+  "cn.type-15": {
+    "title": "File:Type 15 tank 20221020.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (bas)",
+    "coverage": 0.366
+  },
+  "cn.vt4": {
+    "title": "File:NORINCO VT-4 at IDEX 2017.jpg",
+    "use": false,
+    "reason": "panneau d'exposition conservé"
+  },
+  "cn.type-59": {
+    "title": "File:Type 59 tank in Military Museum of the Chinese People's Revolution 20180219.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.489
+  },
+  "eu.challenger-3": {
+    "title": "File:DES 2024 100 0104.jpg",
+    "use": false,
+    "reason": "second véhicule (Boxer) conservé par le détourage"
+  },
+  "eu.challenger-2": {
+    "title": "File:Challenger2-Bergen-Hohne-Training-Area-2.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.207
+  },
+  "eu.ariete": {
+    "title": "File:Italian Army - 4th Tank Regiment - Ariete tanks during an exercise at Capo Teulada October 2022.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.29
+  },
+  "eu.leopard-1": {
+    "title": "File:Leopard 1A5.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.187
+  },
+  "eu.amx-30": {
+    "title": "File:AMX-30B U.S. Army Armor & Cavalry Collection.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.5
+  },
+  "other.k2-black-panther": {
+    "title": "File:U.S., ROK forces forge interoperability with combined arms exercise - 8 of 8.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.447
+  },
+  "other.merkava-iv": {
+    "title": "File:Merkava-Mk4m-whiteback01.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.453
+  },
+  "other.altay": {
+    "title": "File:Altay Tank.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.278
+  },
+  "other.arjun": {
+    "title": "File:Arjun MBT bump track test 2.JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.201
+  },
+  "other.al-khalid": {
+    "title": "File:Bangladesh Army MBT2000. (39072813711).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.304
+  },
+  "other.pt-91-twardy": {
+    "title": "File:PT91 MSPO15 DSC02773.JPG",
+    "use": false,
+    "reason": "abri conservé par le détourage"
+  },
+  "us.stryker": {
+    "title": "File:5-4 ADA train with Polish ADA during Saber Strike 2022 03.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.349
+  },
+  "us.ampv": {
+    "title": "File:AMPV - 180920-A-EN512-002.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.369
+  },
+  "us.m113": {
+    "title": "File:Allied Spirit I 150126-A-LO967-001.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.467
+  },
+  "ru.bmp-2": {
+    "title": "File:Army2016demo-007.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.366
+  },
+  "ru.bmp-1": {
+    "title": "File:БМП-1 с учебного полигона Алматинского Института Сухопутных Войск.JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.314
+  },
+  "ru.btr-82a": {
+    "title": "File:BTR-82A - TankBiathlon14part2-63.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.432
+  },
+  "ru.btr-80": {
+    "title": "File:2011 Moscow Victory Day Parade (360-06) (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.463
+  },
+  "ru.brdm-2": {
+    "title": "File:BRDM-2 (1964) owned by James Stewart pic1.JPG",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.371
+  },
+  "ru.mt-lb": {
+    "title": "File:RWS2017-37.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.414
+  },
+  "cn.zbd-04a": {
+    "title": "File:ZBD-04A IFV 20170716.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.309
+  },
+  "cn.zbl-08": {
+    "title": "File:ZBL-08.jpg",
+    "use": false,
+    "reason": "colonne de défilé et drapeau : photo d'origine"
+  },
+  "cn.type-63": {
+    "title": "File:Type 63 Amphibious APC 20131004.JPG",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.468
+  },
+  "eu.cv90": {
+    "title": "File:Stridsfordon 90 Revinge 2012-2.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.358
+  },
+  "eu.puma": {
+    "title": "File:Puma, first series.jpg",
+    "use": false,
+    "reason": "panneau d'exposition conservé"
+  },
+  "eu.vbci": {
+    "title": "File:VBCI, nouvelles couleurs Armée de Terre (14 juillet 2021) (4).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.287
+  },
+  "eu.boxer": {
+    "title": "File:DSCN7330-crop - Copy.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.467
+  },
+  "eu.patria-amv": {
+    "title": "File:Pansarterrängbil 360 Revinge 2015-7.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.35
+  },
+  "eu.vab": {
+    "title": "File:VAB AZURE, Paris.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.277
+  },
+  "other.namer": {
+    "title": "File:Flickr - Israel Defense Forces - 13th Battalion of the Golani Brigade Holds Drill at Golan Heights (8).jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.385
+  },
+  "us.m777": {
+    "title": "File:M777 howitzer rear.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite, gauche)",
+    "coverage": 0.463
+  },
+  "us.m142-himars": {
+    "title": "File:HIMARS - missile launched.jpg",
+    "use": false,
+    "reason": "tir : missile et fumée"
+  },
+  "us.m270-mlrs": {
+    "title": "File:M270 MLRS (1984).JPEG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.201
+  },
+  "ru.2s35-koalitsiya": {
+    "title": "File:9may2015Moscow-35 (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.272
+  },
+  "ru.2s7-pion": {
+    "title": "File:Army-2018-29.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.308
+  },
+  "ru.2s1-gvozdika": {
+    "title": "File:6742 - Moscow - Poklonnaya Hill - Tank.JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.25
+  },
+  "ru.2s3-akatsiya": {
+    "title": "File:2S3 Akatsiya 3261.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.449
+  },
+  "ru.d-30": {
+    "title": "File:ANA Artillery Demonstration (5050655391).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.213
+  },
+  "ru.bm-21-grad": {
+    "title": "File:Russian BM-21 Grad in Saint Petersburg.JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.328
+  },
+  "ru.bm-27-uragan": {
+    "title": "File:9K57 Uragan 2.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.47
+  },
+  "ru.bm-30-smerch": {
+    "title": "File:9a52 smerch.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.351
+  },
+  "ru.tornado-s": {
+    "title": "File:Tornado-S - Army 2024-08-14 44.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite, gauche)",
+    "coverage": 0.49
+  },
+  "ru.tos-1a": {
+    "title": "File:Army2016-487.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.448
+  },
+  "cn.plz-05": {
+    "title": "File:PLZ-05 Self-Propelled Artillery 20170919.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.258
+  },
+  "cn.phl-03": {
+    "title": "File:PHL-03 Multiple rocket launchers 20170902.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.51
+  },
+  "cn.phl-16": {
+    "title": "File:PHL16TBM 2025 V-J Parade CNS.png",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite, gauche)",
+    "coverage": 0.537
+  },
+  "eu.pzh-2000": {
+    "title": "File:Allied Spirit I 150117-A-FO275-006.jpg",
+    "use": false,
+    "reason": "neige projetée conservée par le détourage"
+  },
+  "eu.archer": {
+    "title": "File:Archerside commons.jpg",
+    "use": false,
+    "reason": "neige projetée conservée par le détourage"
+  },
+  "other.k9-thunder": {
+    "title": "File:K9 Kõu.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.385
+  },
+  "other.k239-chunmoo": {
+    "title": "File:K239PL MSPO23 140102275.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (haut, droite, gauche)",
+    "coverage": 0.62
+  },
+  "other.pinaka": {
+    "title": "File:Pinaka.JPG",
+    "use": false,
+    "reason": "tir : flammes conservées"
+  },
+  "other.fajr-5": {
+    "title": "File:Fajr5.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.456
+  },
+  "us.nasams": {
+    "title": "File:Norwegian Advanced Surface to Air Missile System.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.215
+  },
+  "us.avenger": {
+    "title": "File:Avenger missile.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.467
+  },
+  "us.thaad": {
+    "title": "File:The first of two Terminal High Altitude Area Defense (THAAD) interceptors is launched during a successful intercept test - US Army.jpg",
+    "use": false,
+    "reason": "tir : panache conservé"
+  },
+  "us.stinger": {
+    "title": "File:Voorzijde van een Stinger lanceerbuis met richt-afvuurapparatuur (2086-065-004).jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite, gauche)",
+    "coverage": 0.319
+  },
+  "us.mim-23-hawk": {
+    "title": "File:Romanian MIM-23 Hawk.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.208
+  },
+  "us.ew-jammer": {
+    "title": "File:Electronic Warfare Vehicle Provides Signal Intelligence for Sky Soldiers (4738453).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.418
+  },
+  "ru.tor-m2": {
+    "title": "File:Tor-M1 SAM (2).jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.523
+  },
+  "ru.buk-m3": {
+    "title": "File:9A317ME Buk-M3-Viking ARMY-2022.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.455
+  },
+  "ru.s-300pmu2": {
+    "title": "File:S-300PMU2 with tractor-trailer KrAZ-260V.jpg",
+    "use": false,
+    "reason": "panneau au sol conservé"
+  },
+  "ru.s-500": {
+    "title": "File:С-500 российский зенитный ракетный комплекс.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.161,
+    "box": [0, 0, 0.78, 1]
+  },
+  "ru.igla": {
+    "title": "File:Dan srpskog jedinstva slobode i zastave - LPRS Igla - 01.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (bas)",
+    "coverage": 0.332
+  },
+  "ru.s-75-dvina": {
+    "title": "File:Egyptian SA-2 SAM.JPEG",
+    "use": false,
+    "reason": "découpe incomplète"
+  },
+  "ru.s-125-neva": {
+    "title": "File:Mordenized SNR-125 radar by Viettel.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.381
+  },
+  "ru.2k12-kub": {
+    "title": "File:2P25 VS 2.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.331
+  },
+  "ru.9k33-osa": {
+    "title": "File:ParkPatriot2015part8-28.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.482
+  },
+  "ru.zsu-23-4-shilka": {
+    "title": "File:ЗСУ-23-4 «Шилка» в Музее отечественной военной истории.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.443
+  },
+  "ru.strela-10": {
+    "title": "File:9A35 combat vehicle 9K35 Strela-10 - TankBiathlon14part2-37.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.503
+  },
+  "cn.hq-9b": {
+    "title": "File:HQ-9B 20250921.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.515
+  },
+  "cn.hq-16": {
+    "title": "File:HQ-16A Surface-to-air missiles 20170919.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.473
+  },
+  "cn.hq-17": {
+    "title": "File:Zastava 2024 - HQ-17AE - 02.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite, gauche)",
+    "coverage": 0.469
+  },
+  "cn.hq-7": {
+    "title": "File:Bangladesh Air Force FM-90 Crotale SAM (31545368571).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.523
+  },
+  "eu.samp-t": {
+    "title": "File:Système SAMP-T (14 juillet 2021) (2).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.309
+  },
+  "eu.iris-t-slm": {
+    "title": "File:Iris-t slm 11th aam brigade field.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.198
+  },
+  "eu.skynex": {
+    "title": "File:Skynex AC West.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.158
+  },
+  "eu.gepard": {
+    "title": "File:010 FZD 030.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.276
+  },
+  "eu.crotale": {
+    "title": "File:Crotale NG P1220851.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (bas, gauche)",
+    "coverage": 0.428
+  },
+  "other.iron-dome": {
+    "title": "File:RamatDavid 020517 Iron Dome 01.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.16
+  },
+  "other.davids-sling": {
+    "title": "File:David-Sling-0001.jpg",
+    "use": false,
+    "reason": "sujet non détecté",
+    "coverage": 0.003
+  },
+  "other.arrow-3": {
+    "title": "File:Arrow-3 Feb-25-2013 (a).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.069
+  },
+  "other.bavar-373": {
+    "title": "File:2019 Sacred Defence Week parade (148).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.064
+  },
+  "other.akash": {
+    "title": "File:Akash SAM.jpg",
+    "use": false,
+    "reason": "tir : missile en vol, lanceur lointain"
+  },
+  "us.tomahawk": {
+    "title": "File:Tomahawk Block IV cruise missile -crop.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.125
+  },
+  "us.jassm-er": {
+    "title": "File:Agm-158 JASSM.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.031
+  },
+  "us.atacms": {
+    "title": "File:ATACMSMay2006 (cropped).jpg",
+    "use": false,
+    "reason": "tir : panache conservé"
+  },
+  "us.prsm": {
+    "title": "File:Precision Strike Missile (PrSM) Increment 1 Limited User Test.jpg",
+    "use": false,
+    "reason": "tir : panache conservé"
+  },
+  "us.agm-88-harm": {
+    "title": "File:AGM-88 HARM on F-4G.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (haut, gauche)",
+    "coverage": 0.279
+  },
+  "us.harpoon": {
+    "title": "File:Harpoon missile launch aboard USS Shiloh.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.054
+  },
+  "ru.kalibr": {
+    "title": "File:3M-54E1.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.2
+  },
+  "ru.iskander-m": {
+    "title": "File:Army2016demo-075.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.315
+  },
+  "ru.kh-101": {
+    "title": "File:Russian Kh-101 missile shot in Vinnytsia Oblast, 2023-01-26 (05).jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite, gauche)",
+    "coverage": 0.307
+  },
+  "ru.kinzhal": {
+    "title": "File:2018 Moscow Victory Day Parade 66.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.181
+  },
+  "ru.zircon": {
+    "title": "File:Zirkon 03.12.2024.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.035
+  },
+  "ru.p-800-oniks": {
+    "title": "File:3M55 Yakhont Onyx SS-N-26 Armia 2018.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (bas)",
+    "coverage": 0.271
+  },
+  "ru.tochka-u": {
+    "title": "File:Tochka-U rep parad Yekat.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.248
+  },
+  "ru.scud-b": {
+    "title": "File:2TZM-5306.JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.235
+  },
+  "cn.cj-10": {
+    "title": "File:CJ-20 cruise missiles.jpg",
+    "use": false,
+    "reason": "panneau d'exposition conservé"
+  },
+  "cn.df-15": {
+    "title": "File:Dongfeng-15B.JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.27
+  },
+  "cn.df-17": {
+    "title": "File:DF-17 Missile 20221020.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.436
+  },
+  "cn.df-21d": {
+    "title": "File:DF-21A TEL - Chinese Military Museum Beijing.jpg",
+    "use": false,
+    "reason": "panneau d'exposition conservé"
+  },
+  "cn.df-26": {
+    "title": "File:Dong-Feng 26.JPG",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.164
+  },
+  "cn.c-802": {
+    "title": "File:YJ-83J Missile 20170902.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (haut, gauche)",
+    "coverage": 0.358
+  },
+  "eu.scalp-storm-shadow": {
+    "title": "File:RAF Museum, Colindale, London - DSC06025.JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.195
+  },
+  "eu.exocet": {
+    "title": "File:ExocetNerz.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite, bas, gauche)",
+    "coverage": 0.621
+  },
+  "eu.taurus-kepd-350": {
+    "title": "File:Taurus ILA2006.JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.191
+  },
+  "eu.nsm": {
+    "title": "File:Jelcz P662D43 z wyrzutnia.JPG",
+    "use": false,
+    "reason": "sujet coupé par le cadre (bas, gauche)",
+    "coverage": 0.489
+  },
+  "other.brahmos": {
+    "title": "File:Indian Army's BrahMos Mobile Autonomous Launchers (MAL) during DefExpo 2014, New Delhi..JPG",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite, gauche)",
+    "coverage": 0.555
+  },
+  "other.fateh-110": {
+    "title": "File:Unveiling ceremony of Fateh-313 missile (05).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.018
+  },
+  "other.kheibar-shekan": {
+    "title": "File:Sacred Defence Week parade, 2022, in Tehran (085).jpg",
+    "use": false,
+    "reason": "caisses conservées par le détourage"
+  },
+  "other.shahab-3": {
+    "title": "File:Musée de la révolution islamique et de la défense sacrée, Téhéran (9).jpg",
+    "use": false,
+    "reason": "plusieurs maquettes sur la photo"
+  },
+  "us.minuteman-iii": {
+    "title": "File:Unarmed Minuteman III ICBM launch - operational test - Vandenberg Space Force Base - May 21 2025.jpg",
+    "use": false,
+    "reason": "sujet non détecté",
+    "coverage": 0.006
+  },
+  "us.trident-ii-d5": {
+    "title": "File:151107-N-ZZ999-001 - SLBM being launched from USS Kentucky.jpg",
+    "use": false,
+    "reason": "tir : panache conservé"
+  },
+  "us.b61-12": {
+    "title": "File:F-35 B61-12 trial.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.17
+  },
+  "ru.yars": {
+    "title": "File:April 9th rehearsal in Alabino of 2014 Victory Day Parade (558-59).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.405
+  },
+  "ru.sarmat": {
+    "title": "File:Sarmat-launch.webm",
+    "use": false,
+    "reason": "lancement : panache et décor conservés"
+  },
+  "cn.df-41": {
+    "title": "File:120秒看大阅兵震撼瞬间！1.png",
+    "use": false,
+    "reason": "colonne de défilé : photo d'origine recadrée"
+  },
+  "eu.asmp-a": {
+    "title": "File:SG1059332.JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.335
+  },
+  "other.hwasong-17": {
+    "title": "File:Hwasong17-20201010-KORN Pyonyang-N323-2.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (haut, droite)",
+    "coverage": 0.462
+  },
+  "us.arleigh-burke": {
+    "title": "File:US Navy 080906-N-1082Z-067 The guided-missile destroyer USS Roosevelt (DDG 80) transits the Atlantic Ocean.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.137
+  },
+  "us.gerald-r-ford": {
+    "title": "File:Bow view of USS Gerald R. Ford (CVN-78) underway on 8 April 2017.JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.225
+  },
+  "us.nimitz": {
+    "title": "File:USS Nimitz in Victoria Canada 036.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.19
+  },
+  "us.america": {
+    "title": "File:USS America (LHA-6) F-35B loaded.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.27
+  },
+  "us.ticonderoga": {
+    "title": "File:US Navy 080923-N-2183K-024 The guided-missile cruiser USS Cape St. George (CG 71) steams in the Indian Ocean supporting maritime security operations in the U.S. 5th Fleet area of responsibility.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.259
+  },
+  "us.constellation": {
+    "title": "File:Artist rendering of USS Constellation (FFG-62).jpg",
+    "use": false,
+    "reason": "vue d'artiste officielle : image d'origine"
+  },
+  "us.lcs": {
+    "title": "File:USS Independence (LCS-2) at Naval Air Station Key West on 29 March 2010 (100329-N-1481K-298).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.265
+  },
+  "ru.admiral-kuznetsov": {
+    "title": "File:MilitarySportsHoliday2017-03.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.163
+  },
+  "ru.admiral-gorshkov": {
+    "title": "File:Admiral Gorshkov frigate 02.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.094
+  },
+  "ru.karakurt": {
+    "title": "File:Schiff «Burya» 03.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.333
+  },
+  "ru.kirov": {
+    "title": "File:Kirov-class battlecruiser.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.197
+  },
+  "ru.slava": {
+    "title": "File:ChervonaUkraina1990b.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.199
+  },
+  "ru.udaloy": {
+    "title": "File:AdmiralVinogradov2009.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.103
+  },
+  "ru.steregushchiy": {
+    "title": "File:Corvette Steregushchiy.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.24
+  },
+  "ru.buyan-m": {
+    "title": "File:Caspian Corvette Volgodonsk.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.146
+  },
+  "ru.gepard-class": {
+    "title": "File:Caspian Frigate Dagestan.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.188
+  },
+  "cn.type-055": {
+    "title": "File:PLANS Nanchang (DDG-101) 20211018.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.144
+  },
+  "cn.type-052d": {
+    "title": "File:CNS Kunming (DDG-172) docks at a harbor on Changxing Island 2.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (haut, droite, gauche)",
+    "coverage": 0.554
+  },
+  "cn.type-054a": {
+    "title": "File:538 Yantai .jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.155
+  },
+  "cn.type-056": {
+    "title": "File:596 Huizhou.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.067
+  },
+  "cn.type-022": {
+    "title": "File:Houbei (Type 022) Class Fast Attack Craft.JPG",
+    "use": false,
+    "reason": "second navire conservé par le détourage"
+  },
+  "cn.type-003-fujian": {
+    "title": "File:Chinese aircraft carrier Fujian flight deck.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.421
+  },
+  "cn.liaoning": {
+    "title": "File:Aircraft Carrier Liaoning CV-16.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.073
+  },
+  "cn.shandong": {
+    "title": "File:Chinese aircraft carrier Shandong in 2019.jpg",
+    "use": false,
+    "reason": "grue de quai conservée"
+  },
+  "cn.type-075": {
+    "title": "File:2024年11月-海南號A.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.139
+  },
+  "eu.charles-de-gaulle": {
+    "title": "File:French aircraft carrier Charles de Gaulle (R91) underway in the Ionian Sea on 17 March 2022 (220317-N-DH793-1322)cropped.JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.147
+  },
+  "eu.fremm": {
+    "title": "File:Nave Bergamini 3.JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.119
+  },
+  "eu.horizon": {
+    "title": "File:French destroyer Forbin (D620) underway in the Arabian Sea on 31 May 2009 (090531-N-9988F-406).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.105
+  },
+  "eu.type-45": {
+    "title": "File:HMS Daring-1.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.13
+  },
+  "eu.queen-elizabeth": {
+    "title": "File:HMS Queen Elizabeth (R08) underway in the Atlantic Ocean on 17 October 2019 (191017-N-QI061-2210).JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.223
+  },
+  "eu.mistral-class": {
+    "title": "File:BPC Dixmude.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.271
+  },
+  "eu.meko-a-200": {
+    "title": "File:F221 Hessen-Kieler Woche 2007.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.311
+  },
+  "eu.gowind": {
+    "title": "File:ENS El Fateh Aug 2022 (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.131
+  },
+  "other.sejong-the-great": {
+    "title": "File:ROKS Sejong the Great (DDG-991), broadside view in July 2010.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.196
+  },
+  "other.kolkata": {
+    "title": "File:INS Kolkata steams alongside the guided-missile destroyer USS Sterett (DDG 104) during Malabar 2020 (cropped).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.138
+  },
+  "other.saar-6": {
+    "title": "File:Sa'ar-6-class-corvette-0026.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.202
+  },
+  "us.virginia": {
+    "title": "File:US Navy 040730-N-1234E-002 PCU Virginia (SSN 774) returns to the General Dynamics Electric Boat shipyard.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.111
+  },
+  "us.ohio": {
+    "title": "File:USS Henry M. Jackson (SSBN 730).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.043
+  },
+  "us.columbia": {
+    "title": "File:Artist rendering of a Columbia-class ballistic missile submarine, 2019 (190306-N-N0101-125).jpg",
+    "use": false,
+    "reason": "vue d'artiste officielle : image d'origine"
+  },
+  "us.seawolf": {
+    "title": "File:USS Connecticut SSN 22.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.08
+  },
+  "ru.yasen-m": {
+    "title": "File:К-560 «Северодвинск».jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.202
+  },
+  "ru.borei": {
+    "title": "File:«Александр Невский» в Вилючинске.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.298
+  },
+  "ru.kilo": {
+    "title": "File:«Ростов-на-Дону».jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.141
+  },
+  "ru.delta-iv": {
+    "title": "File:Submarine Delta IV class.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.164
+  },
+  "cn.type-094": {
+    "title": "File:Jin (Type 094) Class Ballistic Missile Submarine.JPG",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.168
+  },
+  "cn.type-039": {
+    "title": "File:Song-class Submarine 5.jpg",
+    "use": false,
+    "reason": "structure de quai conservée"
+  },
+  "eu.suffren": {
+    "title": "File:Suffren VARUNA 23.jpg",
+    "use": false,
+    "reason": "sujet non détecté",
+    "coverage": 0.011
+  },
+  "eu.astute": {
+    "title": "File:US Navy 111128-N-NK458-064 The Royal Navy submarine HMS Astute (S119) arrives at Naval Station Norfolk.jpg",
+    "use": false,
+    "reason": "navires en arrière-plan conservés"
+  },
+  "eu.type-212": {
+    "title": "File:Submarine Scire (S-527).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.191
+  },
+  "eu.scorpene": {
+    "title": "File:INS Kalvari (S21) at sea.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.055
+  },
+  "eu.triomphant": {
+    "title": "File:Sous-marin-nucleaire-lanceur-d-engins-le-triomphant.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.047
+  },
+  "eu.type-209": {
+    "title": "File:Chilean submarine Simpson (SS-21) at Pearl Harbor on 21 June 2004 (040621-N-5539C-001).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.065
+  },
+  "eu.type-214": {
+    "title": "File:ROKS Yun Bonggil (SS 077) 190605-N-SS370-0028.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.105
+  },
+  "eu.vanguard": {
+    "title": "File:HMS Vanguard (SSBN-50).jpg",
+    "use": false,
+    "reason": "remorqueurs conservés"
+  },
+  "other.soryu": {
+    "title": "File:JS Hakuryu (SS-503) arrives at Joint Base Pearl Harbor-Hickam for a scheduled port visit, -6 Feb. 2013 (YP255-023).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.059
+  },
+  "other.dolphin": {
+    "title": "File:RAHAV 7213.JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.1
+  },
+  "other.ghadir": {
+    "title": "File:Commissioning ceremony of two Ghadir-class submarines, 2018-11-29 (07).jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (haut, droite)",
+    "coverage": 0.392
+  },
+  "us.marines": {
+    "title": "File:US Navy 091012-M-8752R-072 Marines and Sailors conduct an amphibious landing demonstration at Egyptian beaches near Alexandria during Exercise Bright Star 2009.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.338
+  },
+  "us.special-forces": {
+    "title": "File:Special Forces Soldiers Shooting Range Training (6135523).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.137
+  },
+  "us.airborne": {
+    "title": "File:82nd Airborne Division Paratroopers Jump Into Latvia (4466626).jpg",
+    "use": false,
+    "reason": "parachutistes dispersés : photo d'origine"
+  },
+  "ru.naval-infantry": {
+    "title": "File:Russian naval infantryman on an FTX in Poland during BALTOPS 2003 (June 2003).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.245
+  },
+  "ru.spetsnaz": {
+    "title": "File:SAVX0514-1(1).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.324
+  },
+  "ru.vdv-airborne": {
+    "title": "File:Iveco LMV Lynx of the Russian Airborne Troops 09.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.094
+  },
+  "cn.marines": {
+    "title": "File:PLA Marine Boarding Z-18 on PLANS Anhui.png",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite, gauche)",
+    "coverage": 0.149
+  },
+  "cn.airborne": {
+    "title": "File:AirbornePlatoon2018-46.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (haut, droite, bas, gauche)",
+    "coverage": 0.407
+  },
+  "eu.marines": {
+    "title": "File:US Navy 030226-N-1050K-023 Royal Marines from the 40th Commando unit load onto a Landing Craft Utility (LCU) following intensive training in the Kuwaiti Desert.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.272
+  },
+  "eu.special-forces": {
+    "title": "File:KSK Scharfschütze.jpg",
+    "use": false,
+    "reason": "découpe incomplète"
+  },
+  "eu.airborne": {
+    "title": "File:Multi-national paratroopers commemorate D-Day with historic jump into Normandy, France (8470231).jpg",
+    "use": false,
+    "reason": "parachutistes dispersés : photo d'origine"
+  },
+  "other.marines": {
+    "title": "File:Multinational Amphibious Landing during Exercise Talisman Sabre 21 (6758503).jpg",
+    "use": false,
+    "reason": "silhouettes dispersées : photo d'origine"
+  },
+  "other.special-forces": {
+    "title": "File:Tactical Movement Exercise with Special Forces-El Salvador (9599368).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.111
+  },
+  "other.airborne": {
+    "title": "File:Italian Army - Paratroopers Brigade \"Folgore\" paratroopers during an exercise with the Italian Air Force's 46th Air Brigade.jpg",
+    "use": false,
+    "reason": "parachutistes dispersés : photo d'origine"
+  },
+  "us.optical-recon-satellite": {
+    "title": "File:HEXAGON KH-9 Reconnaissance Satellite (160822-F-IO108-026).jpg",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "us.radar-satellite": {
+    "title": "File:NROL-37 launch tower view.jpg",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "us.sigint-satellite": {
+    "title": "File:Delta IV NROL-70 Launch (8334017).jpg",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "us.early-warning-satellite": {
+    "title": "File:Delta-4H DSP-23 2 (cropped).jpg",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "us.asat": {
+    "title": "File:F-15 with ASM-135 ASAT.jpg",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "ru.optical-recon-satellite": {
+    "title": "File:Soyuz 2.1b GLONASS-K2 13L launch 01.jpg",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "ru.radar-satellite": {
+    "title": "File:\"Kondor-E\" reconnaissance satellite on MAKS-2021 airshow.jpg",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "ru.sigint-satellite": {
+    "title": "File:Launch of the Angara-A5 from the Plesetsk cosmodrome (2025-06-19) 05.jpg",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "ru.early-warning-satellite": {
+    "title": "File:Soyuz-2 in Plesetsk 25.10.2018.jpg",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "ru.asat": {
+    "title": "File:Пуск противоракеты системы ПРО А-235 на полигоне Сары-Шаган.webm",
+    "use": true,
+    "reason": "contrôle visuel : véhicule et conteneur complets",
+    "coverage": 0.155
+  },
+  "cn.optical-recon-satellite": {
+    "title": "File:Yaogan-36 satellite launch.png",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "cn.radar-satellite": {
+    "title": "File:HXMT launch.jpg",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "cn.sigint-satellite": {
+    "title": "File:Shenzhou 12 launch.jpg",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "cn.early-warning-satellite": {
+    "title": "File:Shenzhou 22 CZ-2F Y22 launch 10.png",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "eu.optical-recon-satellite": {
+    "title": "File:Sentinel-2A liftoff (18882549998).jpg",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "eu.radar-satellite": {
+    "title": "File:Launch of Delta II rocket carrying COSMO-2 (071208-F-9876C-001).jpg",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "eu.sigint-satellite": {
+    "title": "File:Vega VV05 assembled in ELV.jpg",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "other.asat": {
+    "title": "File:PAD integration.JPG",
+    "use": false,
+    "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "other.supply-convoy": {
+    "title": "File:Military trucks laden with ammunition convoy.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.31
+  },
+  "other.cargo-ship": {
+    "title": "File:00 0883 Container Ship MARUS.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.138
+  },
+  "other.cargo-aircraft": {
+    "title": "File:Antonov An-124-100M Ruslan - Cargo Transporter - VGHS.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.191
+  },
+  "us.an-tpy-2": {
+    "title": "File:Keen Sword 25- Supporting the Joint-Bilateral Air Defense Kill Chain Across Japan (8731809).jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.486
+  },
+  "us.an-fps-132-uewr": {
+    "title": "File:AN FPS-132 Upgraded Early Warning radar (UEWR) (7414560082).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.205
+  },
+  "us.an-tps-80-g-ator": {
+    "title": "File:RD 24 - Marines with 3-12 Set Up a AN-TPS-80 Ground-Air Task Oriented Radar on Camp Yonaguni (8564892).jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.195
+  },
+  "us.an-tps-75": {
+    "title": "File:606th Air Control Squadron deploys for Astral Knight 2019 (5415005).jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (gauche)",
+    "coverage": 0.164
+  },
+  "ru.nebo-m": {
+    "title": "File:55Zh6ME long-range mobile radar, Celebration of the 100th anniversary of Russian Air Force.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (haut, droite)",
+    "coverage": 0.274
+  },
+  "ru.voronezh-dm": {
+    "title": "File:\"Voronezh-M\" radar - panoramio - RussianArms (1).jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite, bas, gauche)",
+    "coverage": 0.544
+  },
+  "ru.protivnik-ge": {
+    "title": "File:Protivnik-GE radar - MAKS 2011.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.303
+  },
+  "ru.p-18": {
+    "title": "File:P-18 air defense radar system-1.JPG",
+    "use": false,
+    "reason": "antenne incomplète après détourage"
+  },
+  "eu.ground-master-400": {
+    "title": "File:Ground Master 403 (KEVA2010) Kokonaisturvallisuus 2015 01.JPG",
+    "use": false,
+    "reason": "sujet coupé par le cadre (droite)",
+    "coverage": 0.351
+  },
+  "eu.smart-l-ewc": {
+    "title": "File:SMART-L of the F803 Zr.Ms. Tromp.jpg",
+    "use": false,
+    "reason": "sujet coupé par le cadre (bas, gauche)",
+    "coverage": 0.443
+  },
+  "eu.trml-4d": {
+    "title": "File:IRIS-T SLM radar unit TRML-4D ILA-2022.jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.328
+  },
+  "other.el-m-2084": {
+    "title": "File:ELTA ELM-2084 MMR.JPG",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.178
+  },
+  "other.ghadir-oth": {
+    "title": "File:Entry into service of Ghadir early warning radar (18).jpg",
+    "use": true,
+    "reason": "contrôles automatiques passés",
+    "coverage": 0.182
+  }
+}

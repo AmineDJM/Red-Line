@@ -3,6 +3,7 @@ import type { WeaponSystem } from '@redline/shared';
 import { Pictogram, Flag } from './Pictogram.js';
 import { pictogramFor } from '../pictograms.js';
 import { KeyValue } from './Panel.js';
+import { Icon } from '../icons.js';
 
 /** Libellés de la fiche (fournis par l'application, via i18n). */
 export interface WeaponCardLabels {
@@ -264,6 +265,10 @@ export interface WeaponTileProps {
   subtitle: string;
   /** Prix (texte déjà formaté, ex. « $78 M »). */
   price?: ReactNode;
+  /** Délai de production (texte déjà formaté, ex. « 12 j »). */
+  delay?: ReactNode;
+  /** Libellé accessible du délai (« Délai de production »). */
+  delayLabel?: string;
   /** Badges d'état (Productible, Import, Licence, R&D requise). */
   badges?: ReactNode;
   /** Ligne de pied (« Possédé : 14 »). */
@@ -275,12 +280,14 @@ export interface WeaponTileProps {
   dimmed?: boolean;
 }
 
-/** Tuile d'arsenal : vignette photo, nom, prix en ambre, badges d'état. */
+/** Tuile d'arsenal (carte façon fiche) : grande vignette photo, nom, prix en ambre, délai, badges d'état. */
 export function WeaponTile({
   system,
   photo,
   subtitle,
   price,
+  delay,
+  delayLabel,
   badges,
   footer,
   generationLabel = 'Gén.',
@@ -316,8 +323,14 @@ export function WeaponTile({
         <span className="rl-wtile__sub">{subtitle}</span>
         <span className="rl-wtile__row">
           {price ? <span className="rl-wtile__price">{price}</span> : null}
-          {footer ? <span className="rl-wtile__foot">{footer}</span> : null}
+          {delay ? (
+            <span className="rl-wtile__delay" title={delayLabel}>
+              <Icon name="clock" size={11} />
+              {delay}
+            </span>
+          ) : null}
         </span>
+        {footer ? <span className="rl-wtile__foot">{footer}</span> : null}
         {badges ? <span className="rl-wtile__badges">{badges}</span> : null}
       </span>
     </button>

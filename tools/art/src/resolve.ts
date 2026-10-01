@@ -35,14 +35,19 @@ const result: SelectionFile = only.size ? { ...previous } : {};
 const wikiTitles = systems.map((s) => sources[s.id]?.wiki).filter((t): t is string => !!t);
 const mains = await pageImages(wikiTitles);
 const ovTitle = (o: Override) => fileTitle(typeof o === 'string' ? o : o.file);
+const ovSeek = (o: Override) => (typeof o === 'object' ? o.seek : undefined);
+const ovList = systems.map((s) => overrides[s.id]).filter((o): o is Override => !!o);
 const ovInfos = await fileInfos(
-  systems
-    .map((s) => overrides[s.id])
-    .filter((o): o is Override => !!o)
-    .map(ovTitle),
+  ovList.filter((o) => ovSeek(o) == null).map(ovTitle),
   undefined,
   true,
 );
+// Images extraites de vidéos : une requête par instant demandé (clé « titre@instant »).
+for (const o of ovList.filter((o) => ovSeek(o) != null)) {
+  const info = (await fileInfos([ovTitle(o)], undefined, true, ovSeek(o))).get(ovTitle(o));
+  ovInfos.set(`${ovTitle(o)}@${ovSeek(o)}`, info ?? null);
+}
+const ovKey = (o: Override) => (ovSeek(o) != null ? `${ovTitle(o)}@${ovSeek(o)}` : ovTitle(o));
 
 let found = 0;
 for (const sys of systems) {
@@ -58,7 +63,7 @@ for (const sys of systems) {
 
   if (ov) {
     const file = ovTitle(ov);
-    const info = ovInfos.get(file);
+    const info = ovInfos.get(ovKey(ov));
     if (!info) {
       console.warn(`✗ ${sys.id} : surcharge ${file} introuvable ou licence refusée`);
     } else {

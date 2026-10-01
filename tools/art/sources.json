@@ -61,7 +61,9 @@
     "wiki": "Dassault Mirage 2000"
   },
   "eu.tornado": {
-    "wiki": "Panavia Tornado"
+    "wiki": "Panavia Tornado",
+    "cutout": true,
+    "cutoutWhy": "contrôle visuel : appareil complet"
   },
   "eu.gripen": {
     "wiki": "Saab JAS 39 Gripen"
@@ -106,14 +108,18 @@
     "search": "T-90M"
   },
   "cn.type-99a": {
-    "wiki": "Type 99 tank"
+    "wiki": "Type 99 tank",
+    "cutout": false,
+    "cutoutWhy": "panneau d'exposition conservé devant le char"
   },
   "eu.leopard-2a7": {
     "wiki": "Leopard 2",
     "search": "Leopard 2A7"
   },
   "eu.leclerc": {
-    "wiki": "Leclerc tank"
+    "wiki": "Leclerc tank",
+    "cutout": false,
+    "cutoutWhy": "nuage de poussière conservé par le détourage"
   },
   "us.m2-bradley": {
     "wiki": "M2 Bradley"
@@ -130,7 +136,9 @@
     "search": "2S19 Msta-S"
   },
   "eu.caesar": {
-    "wiki": "CAESAR self-propelled howitzer"
+    "wiki": "CAESAR self-propelled howitzer",
+    "cutout": false,
+    "cutoutWhy": "tir : fumée conservée par le détourage"
   },
   "us.mq-9-reaper": {
     "wiki": "General Atomics MQ-9 Reaper"
@@ -148,26 +156,36 @@
     "wiki": "Kamov Ka-52"
   },
   "us.infantry-light": {
-    "generic": true
+    "generic": true,
+    "cutout": false,
+    "cutoutWhy": "soldats dispersés : photo d'origine"
   },
   "us.infantry-mech": {
-    "generic": true
+    "generic": true,
+    "cutout": false,
+    "cutoutWhy": "groupe de soldats et véhicule : photo d'origine"
   },
   "ru.infantry-light": {
     "generic": true
   },
   "ru.infantry-mech": {
     "generic": true,
-    "none": "aucune photo libre satisfaisante trouvée"
+    "note": "BMP-2 de la 3e division de fusiliers motorisés en exercice (oblast de Voronej, 2018) ; les fantassins embarqués ne sont pas visibles",
+    "cutout": false,
+    "cutoutWhy": "véhicule dans la neige soulevée : photo d'origine"
   },
   "cn.infantry-light": {
     "generic": true
   },
   "cn.infantry-mech": {
-    "generic": true
+    "generic": true,
+    "cutout": false,
+    "cutoutWhy": "groupe de soldats et véhicule : photo d'origine"
   },
   "eu.infantry-light": {
-    "generic": true
+    "generic": true,
+    "cutout": false,
+    "cutoutWhy": "soldats dispersés : photo d'origine"
   },
   "eu.infantry-mech": {
     "generic": true
@@ -207,7 +225,7 @@
   },
   "cn.h-20": {
     "wiki": "Xian H-20",
-    "none": "appareil jamais montré publiquement : aucune photo réelle"
+    "none": "appareil jamais montré publiquement : aucune photo réelle (pas de vue d'artiste substituée)"
   },
   "us.a-10c-thunderbolt-ii": {
     "wiki": "Fairchild Republic A-10 Thunderbolt II"
@@ -287,7 +305,9 @@
   },
   "cn.yy-20": {
     "wiki": "Xian Y-20",
-    "search": "YY-20"
+    "search": "YY-20",
+    "cutout": false,
+    "cutoutWhy": "vue de dessous avec leurres : photo d'origine"
   },
   "cn.y-9": {
     "wiki": "Shaanxi Y-9"
@@ -443,11 +463,15 @@
     "wiki": "Hongdu GJ-11"
   },
   "eu.patroller": {
-    "wiki": "Sagem Patroller"
+    "wiki": "Sagem Patroller",
+    "cutout": false,
+    "cutoutWhy": "objet au sol conservé par le détourage"
   },
   "eu.eurodrone": {
     "wiki": "Eurodrone",
-    "none": "seule une maquette grandeur nature a été exposée (aucun appareil réel photographié sous licence libre)"
+    "note": "Maquette grandeur nature exposée au salon ILA de Berlin (2018) : aucun appareil de série n'a encore été photographié",
+    "cutout": false,
+    "cutoutWhy": "panneau d'exposition devant la maquette"
   },
   "other.akinci": {
     "wiki": "Baykar Bayraktar Akıncı"
@@ -468,7 +492,9 @@
     "wiki": "Qods Mohajer-6"
   },
   "us.m60-patton": {
-    "wiki": "M60 tank"
+    "wiki": "M60 tank",
+    "cutout": false,
+    "cutoutWhy": "second matériel conservé par le détourage"
   },
   "ru.t-72b3": {
     "wiki": "T-72",
@@ -492,19 +518,26 @@
   },
   "cn.type-96b": {
     "wiki": "Type 96 tank",
-    "search": "Type 96B"
+    "search": "Type 96B",
+    "cutout": false,
+    "cutoutWhy": "éléments de décor conservés par le détourage"
   },
   "cn.type-15": {
     "wiki": "Type 15 tank"
   },
   "cn.vt4": {
-    "wiki": "VT-4"
+    "wiki": "VT-4",
+    "cutout": false,
+    "cutoutWhy": "panneau d'exposition conservé"
   },
   "cn.type-59": {
     "wiki": "Type 59 tank"
   },
   "eu.challenger-3": {
-    "wiki": "Challenger 3"
+    "wiki": "Challenger 3",
+    "cutout": false,
+    "cutoutWhy": "second véhicule (Boxer) conservé par le détourage",
+    "note": "Cadrage excluant le panneau d'exposition (logos du ministère de la Défense et de la British Army) : l'OGL n'autorise pas les insignes militaires"
   },
   "eu.challenger-2": {
     "wiki": "Challenger 2"
@@ -535,7 +568,9 @@
     "wiki": "Al-Khalid tank"
   },
   "other.pt-91-twardy": {
-    "wiki": "PT-91 Twardy"
+    "wiki": "PT-91 Twardy",
+    "cutout": false,
+    "cutoutWhy": "abri conservé par le détourage"
   },
   "us.stryker": {
     "wiki": "Stryker"
@@ -569,7 +604,9 @@
     "wiki": "ZBD-04"
   },
   "cn.zbl-08": {
-    "wiki": "ZBL-08"
+    "wiki": "ZBL-08",
+    "cutout": false,
+    "cutoutWhy": "colonne de défilé et drapeau : photo d'origine"
   },
   "cn.type-63": {
     "wiki": "Type 63 armored personnel carrier"
@@ -578,7 +615,9 @@
     "wiki": "CV90"
   },
   "eu.puma": {
-    "wiki": "Puma (IFV)"
+    "wiki": "Puma (IFV)",
+    "cutout": false,
+    "cutoutWhy": "panneau d'exposition conservé"
   },
   "eu.vbci": {
     "wiki": "VBCI"
@@ -599,7 +638,9 @@
     "wiki": "M777 howitzer"
   },
   "us.m142-himars": {
-    "wiki": "M142 HIMARS"
+    "wiki": "M142 HIMARS",
+    "cutout": false,
+    "cutoutWhy": "tir : missile et fumée"
   },
   "us.m270-mlrs": {
     "wiki": "M270 multiple rocket launcher"
@@ -645,10 +686,14 @@
     "wiki": "PHL-16"
   },
   "eu.pzh-2000": {
-    "wiki": "Panzerhaubitze 2000"
+    "wiki": "Panzerhaubitze 2000",
+    "cutout": false,
+    "cutoutWhy": "neige projetée conservée par le détourage"
   },
   "eu.archer": {
-    "wiki": "Archer artillery system"
+    "wiki": "Archer artillery system",
+    "cutout": false,
+    "cutoutWhy": "neige projetée conservée par le détourage"
   },
   "other.k9-thunder": {
     "wiki": "K9 Thunder"
@@ -657,7 +702,9 @@
     "wiki": "K239 Chunmoo"
   },
   "other.pinaka": {
-    "wiki": "Pinaka multi-barrel rocket launcher"
+    "wiki": "Pinaka multi-barrel rocket launcher",
+    "cutout": false,
+    "cutoutWhy": "tir : flammes conservées"
   },
   "other.fajr-5": {
     "wiki": "Fajr-5"
@@ -669,7 +716,9 @@
     "wiki": "AN/TWQ-1 Avenger"
   },
   "us.thaad": {
-    "wiki": "Terminal High Altitude Area Defense"
+    "wiki": "Terminal High Altitude Area Defense",
+    "cutout": false,
+    "cutoutWhy": "tir : panache conservé"
   },
   "us.stinger": {
     "wiki": "FIM-92 Stinger"
@@ -689,17 +738,22 @@
   },
   "ru.s-300pmu2": {
     "wiki": "S-300 missile system",
-    "search": "S-300PMU2"
+    "search": "S-300PMU2",
+    "cutout": false,
+    "cutoutWhy": "panneau au sol conservé"
   },
   "ru.s-500": {
     "wiki": "S-500 missile system",
-    "none": "aucune photo libre exploitable (seule photo : un autoportrait devant le lanceur)"
+    "note": "Photo officielle du ministère russe de la Défense (900 px de large, emblème du ministère exclu du cadre)",
+    "cutoutBox": [0, 0, 0.78, 1]
   },
   "ru.igla": {
     "wiki": "9K38 Igla"
   },
   "ru.s-75-dvina": {
-    "wiki": "S-75 Dvina"
+    "wiki": "S-75 Dvina",
+    "cutout": false,
+    "cutoutWhy": "découpe incomplète"
   },
   "ru.s-125-neva": {
     "wiki": "S-125 Neva/Pechora"
@@ -731,7 +785,7 @@
   },
   "cn.ew-jammer": {
     "generic": true,
-    "none": "aucune photo libre d'un brouilleur chinois"
+    "none": "aucune photo libre identifiable d'un brouilleur chinois"
   },
   "eu.samp-t": {
     "wiki": "SAMP/T"
@@ -761,7 +815,9 @@
     "wiki": "Bavar-373"
   },
   "other.akash": {
-    "wiki": "Akash (missile)"
+    "wiki": "Akash (missile)",
+    "cutout": false,
+    "cutoutWhy": "tir : missile en vol, lanceur lointain"
   },
   "us.tomahawk": {
     "wiki": "Tomahawk (missile)"
@@ -770,10 +826,14 @@
     "wiki": "AGM-158 JASSM"
   },
   "us.atacms": {
-    "wiki": "MGM-140 ATACMS"
+    "wiki": "MGM-140 ATACMS",
+    "cutout": false,
+    "cutoutWhy": "tir : panache conservé"
   },
   "us.prsm": {
-    "wiki": "Precision Strike Missile"
+    "wiki": "Precision Strike Missile",
+    "cutout": false,
+    "cutoutWhy": "tir : panache conservé"
   },
   "us.agm-88-harm": {
     "wiki": "AGM-88 HARM"
@@ -806,7 +866,9 @@
     "wiki": "Scud"
   },
   "cn.cj-10": {
-    "wiki": "CJ-10 (missile)"
+    "wiki": "CJ-10 (missile)",
+    "cutout": false,
+    "cutoutWhy": "panneau d'exposition conservé"
   },
   "cn.df-15": {
     "wiki": "DF-15"
@@ -816,14 +878,16 @@
   },
   "cn.df-21d": {
     "wiki": "DF-21",
-    "search": "DF-21D"
+    "search": "DF-21D",
+    "cutout": false,
+    "cutoutWhy": "panneau d'exposition conservé"
   },
   "cn.df-26": {
     "wiki": "DF-26"
   },
   "cn.yj-18": {
     "wiki": "YJ-18",
-    "none": "aucune photo libre du missile"
+    "none": "aucune photo libre identifiable du missile (missiles YJ du défilé 2025 non identifiés comme YJ-18)"
   },
   "cn.c-802": {
     "wiki": "C-802"
@@ -847,21 +911,27 @@
     "wiki": "Fateh-110"
   },
   "other.kheibar-shekan": {
-    "wiki": "Kheibar Shekan"
+    "wiki": "Kheibar Shekan",
+    "cutout": false,
+    "cutoutWhy": "caisses conservées par le détourage"
   },
   "other.shahab-3": {
     "wiki": "Shahab-3",
-    "note": "vue de missiles balistiques iraniens de la famille Shahab (musée de Téhéran)"
+    "note": "vue de missiles balistiques iraniens de la famille Shahab (musée de Téhéran)",
+    "cutout": false,
+    "cutoutWhy": "plusieurs maquettes sur la photo"
   },
   "other.kn-23": {
     "wiki": "KN-23",
-    "none": "aucune photo libre du missile"
+    "none": "aucune photo libre du missile sur Commons (seulement des schémas)"
   },
   "us.minuteman-iii": {
     "wiki": "LGM-30 Minuteman"
   },
   "us.trident-ii-d5": {
-    "wiki": "UGM-133 Trident II"
+    "wiki": "UGM-133 Trident II",
+    "cutout": false,
+    "cutoutWhy": "tir : panache conservé"
   },
   "us.b61-12": {
     "wiki": "B61 nuclear bomb",
@@ -872,19 +942,23 @@
   },
   "ru.sarmat": {
     "wiki": "RS-28 Sarmat",
-    "none": "photos libres (ministère russe de la Défense) uniquement en très basse résolution"
+    "note": "Image extraite de la vidéo officielle du lancement d'essai (Plessetsk, 20 avril 2022), ministère russe de la Défense",
+    "cutout": false,
+    "cutoutWhy": "lancement : panache et décor conservés"
   },
   "ru.bulava": {
     "wiki": "RSM-56 Bulava",
-    "none": "photos libres (ministère russe de la Défense) uniquement en très basse résolution (550 px)"
+    "none": "photos officielles en 550 px seulement ; dans les vidéos libres, le missile n'est qu'une flamme dans la brume"
   },
   "cn.df-41": {
     "wiki": "DF-41",
-    "none": "aucune photo libre exploitable (seule une capture vidéo avec incrustations)"
+    "note": "Image extraite d'un reportage vidéo de China News Service (défilé du 1er octobre 2019), recadrée pour exclure logo et sous-titres",
+    "cutout": false,
+    "cutoutWhy": "colonne de défilé : photo d'origine recadrée"
   },
   "cn.jl-3": {
     "wiki": "JL-3",
-    "none": "aucune photo libre du missile"
+    "none": "aucune photo libre du missile (seule image sur Commons : une sculpture de glace, refusée)"
   },
   "eu.m51": {
     "wiki": "M51 (missile)",
@@ -895,7 +969,7 @@
   },
   "other.agni-v": {
     "wiki": "Agni-V",
-    "none": "seule photo libre mal cadrée (salon) ; les autres sont sous licence GODL-India (non retenue)"
+    "none": "photos DRDO sous licence GODL-India, à valider par Amine (voir rapport) ; la seule photo CC est un schéma"
   },
   "other.shaheen-iii": {
     "wiki": "Shaheen-III",
@@ -925,7 +999,9 @@
   },
   "us.constellation": {
     "wiki": "Constellation-class frigate",
-    "none": "navire en construction : seulement des vues d'artiste"
+    "note": "Vue d'artiste officielle de l'US Navy (USS Constellation FFG-62, 2021, domaine public) : aucun navire achevé n'a encore été photographié",
+    "cutout": false,
+    "cutoutWhy": "vue d'artiste officielle : image d'origine"
   },
   "us.lcs": {
     "wiki": "Littoral combat ship"
@@ -970,7 +1046,9 @@
     "wiki": "Type 056 corvette"
   },
   "cn.type-022": {
-    "wiki": "Type 022 missile boat"
+    "wiki": "Type 022 missile boat",
+    "cutout": false,
+    "cutoutWhy": "second navire conservé par le détourage"
   },
   "cn.type-003-fujian": {
     "wiki": "Chinese aircraft carrier Fujian"
@@ -979,7 +1057,9 @@
     "wiki": "Chinese aircraft carrier Liaoning"
   },
   "cn.shandong": {
-    "wiki": "Chinese aircraft carrier Shandong"
+    "wiki": "Chinese aircraft carrier Shandong",
+    "cutout": false,
+    "cutoutWhy": "grue de quai conservée"
   },
   "cn.type-075": {
     "wiki": "Type 075 landing helicopter dock"
@@ -1026,7 +1106,9 @@
   },
   "us.columbia": {
     "wiki": "Columbia-class submarine",
-    "none": "sous-marin en construction : seulement des vues d'artiste"
+    "note": "Vue d'artiste officielle de l'US Navy (programme Columbia, 2019, domaine public) : aucun sous-marin achevé n'a encore été photographié",
+    "cutout": false,
+    "cutoutWhy": "vue d'artiste officielle : image d'origine"
   },
   "us.seawolf": {
     "wiki": "Seawolf-class submarine"
@@ -1046,19 +1128,23 @@
   },
   "cn.type-093": {
     "wiki": "Type 093 submarine",
-    "none": "aucune photo libre de ce sous-marin"
+    "none": "aucune photo libre de ce sous-marin (seulement une silhouette dessinée)"
   },
   "cn.type-094": {
     "wiki": "Type 094 submarine"
   },
   "cn.type-039": {
-    "wiki": "Type 039 submarine"
+    "wiki": "Type 039 submarine",
+    "cutout": false,
+    "cutoutWhy": "structure de quai conservée"
   },
   "eu.suffren": {
     "wiki": "Suffren-class submarine"
   },
   "eu.astute": {
-    "wiki": "Astute-class submarine"
+    "wiki": "Astute-class submarine",
+    "cutout": false,
+    "cutoutWhy": "navires en arrière-plan conservés"
   },
   "eu.type-212": {
     "wiki": "Type 212 submarine"
@@ -1076,7 +1162,9 @@
     "wiki": "Type 214 submarine"
   },
   "eu.vanguard": {
-    "wiki": "Vanguard-class submarine"
+    "wiki": "Vanguard-class submarine",
+    "cutout": false,
+    "cutoutWhy": "remorqueurs conservés"
   },
   "other.soryu": {
     "wiki": "Sōryū-class submarine"
@@ -1094,7 +1182,9 @@
     "generic": true
   },
   "us.airborne": {
-    "generic": true
+    "generic": true,
+    "cutout": false,
+    "cutoutWhy": "parachutistes dispersés : photo d'origine"
   },
   "ru.naval-infantry": {
     "generic": true
@@ -1119,19 +1209,27 @@
     "generic": true
   },
   "eu.special-forces": {
-    "generic": true
+    "generic": true,
+    "cutout": false,
+    "cutoutWhy": "découpe incomplète"
   },
   "eu.airborne": {
-    "generic": true
+    "generic": true,
+    "cutout": false,
+    "cutoutWhy": "parachutistes dispersés : photo d'origine"
   },
   "other.marines": {
-    "generic": true
+    "generic": true,
+    "cutout": false,
+    "cutoutWhy": "silhouettes dispersées : photo d'origine"
   },
   "other.special-forces": {
     "generic": true
   },
   "other.airborne": {
-    "generic": true
+    "generic": true,
+    "cutout": false,
+    "cutoutWhy": "parachutistes dispersés : photo d'origine"
   },
   "us.optical-recon-satellite": {
     "generic": true
@@ -1163,7 +1261,9 @@
   },
   "ru.asat": {
     "generic": true,
-    "none": "aucune photo libre (système Nudol non montré)"
+    "note": "Image extraite de la vidéo officielle d'un essai de l'antimissile du système A-235 (Sary-Chagan) : transport du conteneur de l'intercepteur ; le Nudol (PL-19) lui-même n'a jamais été montré",
+    "cutout": true,
+    "cutoutWhy": "contrôle visuel : véhicule et conteneur complets"
   },
   "cn.optical-recon-satellite": {
     "generic": true
@@ -1179,7 +1279,7 @@
   },
   "cn.asat": {
     "generic": true,
-    "none": "aucune photo libre"
+    "none": "aucune photo libre d'un antisatellite chinois (SC-19/DN-3 jamais montrés hors vidéos non libres)"
   },
   "eu.optical-recon-satellite": {
     "generic": true
@@ -1232,7 +1332,7 @@
   },
   "ru.container-29b6": {
     "wiki": "Container (radar)",
-    "none": "aucune photo libre trouvée"
+    "none": "seule photo libre (ministère russe de la Défense) en 550 px, trop petite"
   },
   "ru.podsolnukh-e": {
     "wiki": "Podsolnukh radar",
@@ -1242,23 +1342,25 @@
     "wiki": "Protivnik-GE"
   },
   "ru.p-18": {
-    "wiki": "P-18 radar"
+    "wiki": "P-18 radar",
+    "cutout": false,
+    "cutoutWhy": "antenne incomplète après détourage"
   },
   "cn.jy-27a": {
     "wiki": "JY-27",
-    "none": "aucune photo libre trouvée"
+    "none": "aucune photo libre trouvée sur Commons"
   },
   "cn.ylc-8b": {
     "wiki": "YLC-8",
-    "none": "aucune photo libre trouvée"
+    "none": "aucune photo libre trouvée sur Commons"
   },
   "cn.jy-26": {
     "wiki": "JY-26",
-    "none": "aucune photo libre trouvée"
+    "none": "aucune photo libre trouvée sur Commons"
   },
   "cn.type-7010-lpar": {
     "wiki": "Type 7010 radar",
-    "none": "aucune photo libre trouvée"
+    "none": "aucune photo libre trouvée sur Commons"
   },
   "eu.ground-master-400": {
     "wiki": "Ground Master 400"
@@ -1275,7 +1377,7 @@
   },
   "other.el-m-2080-green-pine": {
     "wiki": "EL/M-2080 Green Pine",
-    "none": "aucune photo libre trouvée"
+    "none": "seule image « CC BY-SA » : copie basse définition (825 px) d'une image de constructeur, licence douteuse"
   },
   "other.ghadir-oth": {
     "wiki": "Ghadir radar"
