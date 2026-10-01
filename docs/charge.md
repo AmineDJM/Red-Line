@@ -81,11 +81,16 @@ reçoivent ~2,5 à 3,6 Mo/min de WebSocket au total (≈ 40 à 55 Kio/min par jo
    déploiement : 67 connexions en 2 s).
 6. **Instantanés** : une seule sérialisation au lieu de deux (`stateHash` du moteur resérialisait l'état :
    110 ms économisées par instantané) ; empreinte SHA-256 calculée hors du chemin de simulation.
-7. **Parties inactives** : une partie solo dont le joueur est absent depuis 5 min est mise en pause (reprise à
-   son retour), une partie multijoueur dont tous les joueurs sont partis ou remplacés par des IA aussi ; toute
-   partie en pause sans connexion depuis 10 min est déchargée de la mémoire. Au redémarrage, seules les parties
-   **en cours** sont adoptées (les autres sont chargées à la demande). Avant : toutes les parties jamais créées
-   restaient simulées en mémoire (201 IA chacune).
+7. **Parties sans joueur connecté** : une partie **continue toujours** (constructions, recherche, attaques
+   nocturnes des IA, guerres en cours). Après 5 min sans aucun joueur humain connecté, les IA **lointaines**
+   (aucune ville à moins de `time.dormancyRadiusKm` = 2 000 km d'une ville d'un joueur humain) **et en paix
+   avec lui** mettent leurs décisions en veille (commande système `dormancy`, journalisée : le rejeu reste
+   identique) ; elles se réveillent dès le retour d'un joueur. Les voisins et tout pays en guerre avec un
+   joueur continuent de jouer. Une partie **multijoueur** sans aucun joueur humain connecté depuis **24 h**,
+   ou une partie **solo** dont le joueur ne s'est pas connecté depuis **48 h**, est mise en pause (reprise
+   au retour d'un joueur). Toute partie en pause sans connexion depuis 10 min est
+   déchargée de la mémoire. Au redémarrage, seules les parties **en cours** sont adoptées (les autres sont
+   chargées à la demande).
 8. **Quotas de création** : 20 parties solo et 5 parties multijoueur non terminées par joueur, 10 créations par
    minute et par IP (une création coûte ~1,5 s de calcul).
 9. **Compression** : WebSocket permessage-deflate (au-delà de 2 Kio, sans contexte conservé : pas de mémoire

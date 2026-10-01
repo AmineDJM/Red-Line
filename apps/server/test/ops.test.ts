@@ -32,7 +32,13 @@ describe.skipIf(!hasDb)('exploitation : IA imposée, nations, sécurité, quotas
     built = await startApp({
       dataDir,
       env: ADMIN,
-      runtime: { maxActiveSoloPerUser: 2, soloIdlePauseMs: 60_000, idleUnloadMs: 120_000 },
+      runtime: {
+        maxActiveSoloPerUser: 2,
+        dormancyDelayMs: 60_000,
+        multiIdlePauseMs: 3_600_000,
+        soloIdlePauseMs: 7_200_000,
+        idleUnloadMs: 120_000,
+      },
     });
     port = await listen(built.app);
     admin = await login(built.app, ADMIN.ADMIN_EMAIL, ADMIN.ADMIN_PASSWORD);
@@ -195,7 +201,7 @@ describe.skipIf(!hasDb)('exploitation : IA imposée, nations, sécurité, quotas
     expect(third.json().error).toBe('too_many_games');
   });
 
-  it('partie solo abandonnée : pause, déchargement, reprise au retour du joueur', async () => {
+  it('partie solo sans joueur : elle continue, IA lointaines en veille, réveil au retour', async () => {
     const host = built.ctx.host;
     const u = await guest(built.app);
     const id = await createGame(built.app, u.cookie, { nationId: 'fra', speed: 1000 });
@@ -203,19 +209,59 @@ describe.skipIf(!hasDb)('exploitation : IA imposée, nations, sécurité, quotas
     await ws.next('welcome');
     await ws.close();
     await until(() => host.games.get(id)?.idleSince !== null, 'départ du joueur');
+    const g = host.games.get(id)!;
     const t0 = Date.now();
     await host.manageIdle(t0 + 30_000);
-    expect(host.games.get(id)!.meta.status).toBe('running');
+    expect(g.dormant).toBe(false);
     await host.manageIdle(t0 + 61_000);
-    expect(host.games.get(id)!.meta.status).toBe('paused');
-    expect(host.games.get(id)!.pauseReason).toBe('idle');
-    await host.manageIdle(t0 + 121_000);
+    expect(g.dormant).toBe(true);
+    expect(fakeState(g.state).sys.at(-1)).toEqual({ kind: 'dormancy', on: true });
+    // Pas de pause avant le délai solo (ici 2 h, 48 h en production) : la partie continue la nuit.
+    await host.manageIdle(t0 + 7_199_000);
+    expect(host.games.get(id)).toBe(g);
+    expect(g.meta.status).toBe('running');
+    expect(g.clock.paused).toBe(false);
+
+    const back = await WsClient.connect(port, id, u.cookie);
+    const w = await back.next('welcome');
+    expect(w.clock.paused).toBe(false);
+    expect(g.dormant).toBe(false);
+    expect(fakeState(g.state).sys.at(-1)).toEqual({ kind: 'dormancy', on: false });
+    await back.close();
+
+    // Joueur absent au-delà du délai solo : pause, reprise à son retour.
+    await until(() => g.idleSince !== null, 'nouveau départ');
+    const t1 = Date.now();
+    await host.manageIdle(t1 + 7_201_000);
+    expect(g.meta.status).toBe('paused');
+    expect(g.pauseReason).toBe('idle');
+    const again = await WsClient.connect(port, id, u.cookie);
+    expect((await again.next('welcome')).clock.paused).toBe(false);
+    await again.close();
+  });
+
+  it('multijoueur sans aucun joueur connecté pendant 24 h : pause, déchargement, reprise', async () => {
+    const host = built.ctx.host;
+    const u = await guest(built.app);
+    const id = await createGame(built.app, u.cookie, { nationId: 'fra', speed: 1000 });
+    const ws = await WsClient.connect(port, id, u.cookie);
+    await ws.next('welcome');
+    await ws.close();
+    await until(() => host.games.get(id)?.idleSince !== null, 'départ du joueur');
+    const g = host.games.get(id)!;
+    (g.meta as { mode: string }).mode = 'multi'; // seul le mode compte ici
+    const t0 = Date.now();
+    await host.manageIdle(t0 + 3_599_000);
+    expect(g.meta.status).toBe('running');
+    await host.manageIdle(t0 + 3_601_000);
+    expect(g.meta.status).toBe('paused');
+    expect(g.pauseReason).toBe('idle');
+    await host.manageIdle(t0 + 3_601_000 + 121_000);
     expect(host.games.has(id)).toBe(false);
     const [row] = await sqlQuery(
       (sql) => sql`SELECT status, pause_reason, lease_owner FROM games WHERE id = ${id}`,
     );
     expect(row).toMatchObject({ status: 'paused', pause_reason: 'idle', lease_owner: null });
-    // Pas réadoptée par le battement de cœur : rien à simuler.
     await host.beat();
     expect(host.games.has(id)).toBe(false);
 

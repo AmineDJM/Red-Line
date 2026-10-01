@@ -209,6 +209,12 @@ export const BalanceSchema = z.object({
     captureMinutes: z.number().positive(),
     /** Période de réflexion des IA, en minutes de jeu. */
     aiThinkMinutes: z.number().positive(),
+    /**
+     * Aucun joueur humain connecté : les IA dont le territoire est à plus de ce rayon (km) de celui de
+     * tout joueur humain, et qui ne sont pas en guerre avec lui, suspendent leurs décisions jusqu'au
+     * retour d'un joueur. La simulation continue (constructions, mouvements, combats en cours).
+     */
+    dormancyRadiusKm: z.number().positive().optional(),
   }),
   combat: z.object({
     /** Variance des dégâts : multiplicateur tiré dans [1 - v, 1 + v]. */

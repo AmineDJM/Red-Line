@@ -41,6 +41,11 @@ export interface RuntimeOptions {
   maxActiveMultiPerUser: number;
   /** Budget d'une tranche de travail synchrone (ms) ; pauses et déchargements des parties inactives. */
   sliceBudgetMs: number;
+  /** Sans joueur connecté : délai avant la veille des IA lointaines. */
+  dormancyDelayMs: number;
+  /** Multijoueur sans joueur connecté : délai avant la pause (24 h). */
+  multiIdlePauseMs: number;
+  /** Solo sans connexion du joueur : délai avant la pause (48 h). */
   soloIdlePauseMs: number;
   idleUnloadMs: number;
 }

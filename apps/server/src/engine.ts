@@ -2,6 +2,7 @@ import type {
   AdvanceTo,
   ApplyOrder,
   ApplySystem,
+  IsDormant,
   BuildWorld,
   CreateGame,
   DeserializeState,
@@ -53,6 +54,8 @@ export interface Engine {
    * `state.units` et `state.queue` par introspection.
    */
   stateStats?: (state: GameState) => { unitCount: number; queueSize: number };
+  /** IA lointaines en veille (commande système 'dormancy'), lu à la reprise d'une partie. */
+  isDormant?: IsDormant;
 }
 
 export const ENGINE_FUNCTIONS = [
@@ -76,6 +79,7 @@ export const OPTIONAL_ENGINE_FUNCTIONS = [
   'stats',
   'battleReportFor',
   'stateStats',
+  'isDormant',
 ] as const satisfies readonly (keyof Engine)[];
 
 /** Construit l'objet Engine à partir d'un module ; renvoie la liste des fonctions manquantes sinon. */

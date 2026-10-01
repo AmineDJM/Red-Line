@@ -112,6 +112,8 @@ export interface HostedGame {
   behind: boolean;
   /** Dernier instant (réel) où la partie avait au moins une connexion de joueur. */
   idleSince: number | null;
+  /** IA lointaines en veille (commande système 'dormancy' journalisée). */
+  dormant: boolean;
   /** Écritures en base de la partie, sérialisées (journal, instantanés, horloge). */
   writes: Promise<void>;
   errored: boolean;
@@ -139,7 +141,14 @@ export interface HostOptions {
   sliceBudgetMs?: number;
   /** Part maximale du processeur consacrée aux diffusions d'une partie (0 à 1). Défaut : 0,35. */
   flushCpuShare?: number;
-  /** Partie solo sans joueur connecté depuis ce délai : pause automatique (reprise à son retour). */
+  /**
+   * Aucun joueur humain connecté depuis ce délai : les IA lointaines (hors de portée des joueurs, en
+   * paix avec eux) mettent leurs décisions en veille jusqu'au retour d'un joueur. La partie continue.
+   */
+  dormancyDelayMs?: number;
+  /** Partie multijoueur sans aucun joueur humain connecté depuis ce délai : pause (reprise au retour). */
+  multiIdlePauseMs?: number;
+  /** Partie solo dont le joueur n'est pas revenu depuis ce délai : pause (reprise à son retour). */
   soloIdlePauseMs?: number;
   /** Partie en pause sans aucune connexion depuis ce délai : déchargée de la mémoire (instantané). */
   idleUnloadMs?: number;
@@ -167,7 +176,9 @@ const DEFAULT_SLICE_MS = 40;
 const DEFAULT_FLUSH_SHARE = 0.35;
 /** Au-delà, un travail synchrone est journalisé (latence ressentie par tous les joueurs). */
 const SLOW_MS = 250;
-const DEFAULT_SOLO_IDLE_PAUSE_MS = 5 * 60_000;
+const DEFAULT_DORMANCY_DELAY_MS = 5 * 60_000;
+const DEFAULT_MULTI_IDLE_PAUSE_MS = 24 * 3_600_000;
+const DEFAULT_SOLO_IDLE_PAUSE_MS = 48 * 3_600_000;
 const DEFAULT_IDLE_UNLOAD_MS = 10 * 60_000;
 /** Clé de vue des spectateurs (vue publique commune). */
 const SPECTATOR_KEY = '\u0000spectator';
@@ -473,6 +484,7 @@ export class GameHost {
       flushCostMs: 0,
       behind: false,
       idleSince: Date.now(),
+      dormant: engine.isDormant?.(state) ?? false,
       writes: Promise.resolve(),
       errored: false,
       stuckWarned: false,
@@ -504,7 +516,7 @@ export class GameHost {
         if (g && !held.has(id)) this.leaseLost(g);
       }
       // Parties terminées sans spectateur, parties en pause abandonnées : on libère la mémoire.
-      // Parties solo sans joueur connecté : pause automatique (reprise au retour du joueur).
+      // Sans joueur connecté : IA lointaines en veille ; multijoueur abandonné 24 h : pause.
       await this.manageIdle(Date.now());
       if (!this.d.worlds.unavailableReason()) await this.adoptOrphans();
       const keep = new Set<string>();
@@ -525,12 +537,17 @@ export class GameHost {
   }
 
   /**
-   * Gestion des parties sans joueur : une partie solo dont le joueur est absent depuis
-   * `soloIdlePauseMs` est mise en pause (raison 'idle') ; une partie terminée, ou en pause sans aucune
-   * connexion depuis `idleUnloadMs`, est déchargée (instantané, bail libéré) et rechargée à la demande.
+   * Gestion des parties sans joueur. Une partie continue toujours en l'absence de ses joueurs
+   * (constructions, attaques nocturnes, guerres en cours) : après `dormancyDelayMs` sans joueur humain
+   * connecté, seules les IA lointaines et en paix avec les joueurs suspendent leurs décisions (moteur,
+   * commande 'dormancy'). Sans aucun humain connecté depuis `multiIdlePauseMs` (multijoueur, 24 h) ou
+   * `soloIdlePauseMs` (solo, 48 h), la partie est mise en pause (raison 'idle', reprise au retour). Une partie terminée, ou en
+   * pause sans connexion depuis `idleUnloadMs`, est déchargée (instantané, bail libéré).
    */
   async manageIdle(now: number): Promise<void> {
-    const pauseMs = this.d.options.soloIdlePauseMs ?? DEFAULT_SOLO_IDLE_PAUSE_MS;
+    const dormancyMs = this.d.options.dormancyDelayMs ?? DEFAULT_DORMANCY_DELAY_MS;
+    const multiPauseMs = this.d.options.multiIdlePauseMs ?? DEFAULT_MULTI_IDLE_PAUSE_MS;
+    const soloPauseMs = this.d.options.soloIdlePauseMs ?? DEFAULT_SOLO_IDLE_PAUSE_MS;
     const unloadMs = this.d.options.idleUnloadMs ?? DEFAULT_IDLE_UNLOAD_MS;
     for (const g of [...this.games.values()]) {
       if (this.stopped) return;
@@ -540,14 +557,19 @@ export class GameHost {
       }
       if (g.idleSince === null || g.errored) continue;
       const idle = now - g.idleSince;
-      if (g.meta.status === 'running' && idle >= pauseMs) {
-        // Solo : le joueur est absent. Multi : plus aucun humain aux commandes (tous partis ou
-        // remplacés par des IA pour inactivité) — inutile de simuler 200 IA pour personne.
-        const abandoned = g.meta.mode === 'solo' || g.players.every((p) => !p.userId || p.isAi);
-        if (abandoned) {
-          this.setClock(g, { paused: true }, 'idle');
-          this.log.info({ gameId: g.id, mode: g.meta.mode }, 'partie en pause : aucun joueur');
+      if (g.meta.status === 'running' && !g.dormant && idle >= dormancyMs) {
+        if (this.applySystemNow(g, { kind: 'dormancy', on: true }).ok) {
+          g.dormant = true;
+          this.log.info({ gameId: g.id }, 'aucun joueur connecté : IA lointaines en veille');
         }
+      }
+      const pauseMs = g.meta.mode === 'solo' ? soloPauseMs : multiPauseMs;
+      if (g.meta.status === 'running' && idle >= pauseMs) {
+        this.setClock(g, { paused: true }, 'idle');
+        this.log.info(
+          { gameId: g.id, mode: g.meta.mode },
+          'partie en pause : aucun joueur connecté',
+        );
       }
       if (g.meta.status === 'paused' && g.connections.size === 0 && idle >= unloadMs) {
         this.log.info({ gameId: g.id }, 'partie en pause inactive déchargée de la mémoire');
@@ -975,10 +997,13 @@ export class GameHost {
     if (!conn.spectator) {
       this.playerReturned(g, conn.userId, now);
       g.idleSince = null;
-      // Partie mise en pause faute de joueur (solo : joueur absent ; multi : tous remplacés par des
-      // IA) : elle reprend au retour d'un joueur.
+      // Partie mise en pause faute de joueur (24 h en multi, 48 h en solo) : reprise au retour.
       if (g.meta.status === 'paused' && g.pauseReason === 'idle' && !g.errored) {
         this.setClock(g, { paused: false }, 'player');
+      }
+      // Retour d'un joueur : toutes les IA reprennent leurs décisions.
+      if (g.dormant && this.applySystemNow(g, { kind: 'dormancy', on: false }).ok) {
+        g.dormant = false;
       }
     }
     const ok = this.safely(g, () => {
@@ -1391,6 +1416,7 @@ export class GameHost {
       flushCostMs: 0,
       behind: false,
       idleSince: Date.now(),
+      dormant: false,
       writes: Promise.resolve(),
       errored: false,
       stuckWarned: false,

@@ -142,6 +142,11 @@ export interface SharedBoard {
    * Alliances avec droit de passage, retrait après la paix, cessez-le-feu.
    */
   passage?: Record<string, number>;
+  /**
+   * Serveur : aucun joueur humain connecté (commande système 'dormancy'). Les IA lointaines et en paix
+   * avec les joueurs suspendent leurs décisions.
+   */
+  dormancy?: boolean;
   /** diplo : chartes des alliances (partage du renseignement, passage…), par identifiant d'alliance. */
   allianceCharters?: Record<
     string,
