@@ -222,34 +222,34 @@
       "forward_base": 36
     },
     "buildCostUsd": {
-      "oil_field": 400000000,
-      "mine": 300000000,
-      "farm": 60000000,
-      "electronics_plant": 1500000000,
-      "local_industry": 250000000,
-      "refinery": 2500000000,
-      "power_plant": 1500000000,
-      "port": 800000000,
-      "naval_base": 1500000000,
-      "air_base": 1000000000,
-      "military_base": 400000000,
-      "arms_factory": 1200000000,
-      "research_center": 500000000,
-      "recruiting_office": 20000000,
-      "bunker": 150000000,
-      "air_defense_site": 600000000,
-      "coastal_battery": 300000000,
-      "radar_station": 250000000,
-      "missile_silo": 400000000,
-      "hospital": 200000000,
-      "secret_lab": 1000000000,
-      "forward_base": 100000000
+      "oil_field": 40000000,
+      "mine": 30000000,
+      "farm": 6000000,
+      "electronics_plant": 150000000,
+      "local_industry": 25000000,
+      "refinery": 250000000,
+      "power_plant": 150000000,
+      "port": 80000000,
+      "naval_base": 150000000,
+      "air_base": 100000000,
+      "military_base": 40000000,
+      "arms_factory": 120000000,
+      "research_center": 50000000,
+      "recruiting_office": 2000000,
+      "bunker": 15000000,
+      "air_defense_site": 60000000,
+      "coastal_battery": 30000000,
+      "radar_station": 25000000,
+      "missile_silo": 40000000,
+      "hospital": 20000000,
+      "secret_lab": 100000000,
+      "forward_base": 10000000
     },
     "levels": {
       "oil_field": [
         {
           "level": 1,
-          "costUsd": 400000000,
+          "costUsd": 40000000,
           "buildHours": 168,
           "effects": {
             "oilPerDay": 8
@@ -257,7 +257,7 @@
         },
         {
           "level": 2,
-          "costUsd": 600000000,
+          "costUsd": 60000000,
           "buildHours": 210,
           "effects": {
             "oilPerDay": 14
@@ -265,7 +265,7 @@
         },
         {
           "level": 3,
-          "costUsd": 880000000,
+          "costUsd": 88000000,
           "buildHours": 252,
           "effects": {
             "oilPerDay": 20
@@ -273,7 +273,7 @@
         },
         {
           "level": 4,
-          "costUsd": 1280000000,
+          "costUsd": 128000000,
           "buildHours": 302,
           "effects": {
             "oilPerDay": 28
@@ -281,7 +281,7 @@
         },
         {
           "level": 5,
-          "costUsd": 1800000000,
+          "costUsd": 180000000,
           "buildHours": 370,
           "effects": {
             "oilPerDay": 36
@@ -291,7 +291,7 @@
       "mine": [
         {
           "level": 1,
-          "costUsd": 300000000,
+          "costUsd": 30000000,
           "buildHours": 168,
           "effects": {
             "metalsPerDay": 8
@@ -299,7 +299,7 @@
         },
         {
           "level": 2,
-          "costUsd": 450000000,
+          "costUsd": 45000000,
           "buildHours": 210,
           "effects": {
             "metalsPerDay": 14
@@ -307,7 +307,7 @@
         },
         {
           "level": 3,
-          "costUsd": 660000000,
+          "costUsd": 66000000,
           "buildHours": 252,
           "effects": {
             "metalsPerDay": 20
@@ -315,7 +315,7 @@
         },
         {
           "level": 4,
-          "costUsd": 960000000,
+          "costUsd": 96000000,
           "buildHours": 302,
           "effects": {
             "metalsPerDay": 28
@@ -323,7 +323,7 @@
         },
         {
           "level": 5,
-          "costUsd": 1350000000,
+          "costUsd": 135000000,
           "buildHours": 370,
           "effects": {
             "metalsPerDay": 36
@@ -333,7 +333,7 @@
       "farm": [
         {
           "level": 1,
-          "costUsd": 60000000,
+          "costUsd": 6000000,
           "buildHours": 72,
           "effects": {
             "foodPerDay": 12
@@ -341,7 +341,7 @@
         },
         {
           "level": 2,
-          "costUsd": 90000000,
+          "costUsd": 9000000,
           "buildHours": 90,
           "effects": {
             "foodPerDay": 20
@@ -349,7 +349,7 @@
         },
         {
           "level": 3,
-          "costUsd": 132000000,
+          "costUsd": 13200000,
           "buildHours": 108,
           "effects": {
             "foodPerDay": 30
@@ -357,7 +357,7 @@
         },
         {
           "level": 4,
-          "costUsd": 192000000,
+          "costUsd": 19200000,
           "buildHours": 130,
           "effects": {
             "foodPerDay": 42
@@ -365,7 +365,7 @@
         },
         {
           "level": 5,
-          "costUsd": 270000000,
+          "costUsd": 27000000,
           "buildHours": 158,
           "effects": {
             "foodPerDay": 55
@@ -375,7 +375,7 @@
       "electronics_plant": [
         {
           "level": 1,
-          "costUsd": 1500000000,
+          "costUsd": 150000000,
           "buildHours": 240,
           "effects": {
             "electronicsPerDay": 6
@@ -383,7 +383,7 @@
         },
         {
           "level": 2,
-          "costUsd": 2250000000,
+          "costUsd": 225000000,
           "buildHours": 300,
           "effects": {
             "electronicsPerDay": 10
@@ -391,7 +391,7 @@
         },
         {
           "level": 3,
-          "costUsd": 3300000000,
+          "costUsd": 330000000,
           "buildHours": 360,
           "effects": {
             "electronicsPerDay": 15
@@ -399,7 +399,7 @@
         },
         {
           "level": 4,
-          "costUsd": 4800000000,
+          "costUsd": 480000000,
           "buildHours": 432,
           "effects": {
             "electronicsPerDay": 21
@@ -407,7 +407,7 @@
         },
         {
           "level": 5,
-          "costUsd": 6750000000,
+          "costUsd": 675000000,
           "buildHours": 528,
           "effects": {
             "electronicsPerDay": 28
@@ -417,7 +417,7 @@
       "local_industry": [
         {
           "level": 1,
-          "costUsd": 250000000,
+          "costUsd": 25000000,
           "buildHours": 120,
           "effects": {
             "incomeMultiplier": 1.05,
@@ -426,7 +426,7 @@
         },
         {
           "level": 2,
-          "costUsd": 375000000,
+          "costUsd": 37500000,
           "buildHours": 150,
           "effects": {
             "incomeMultiplier": 1.1,
@@ -435,7 +435,7 @@
         },
         {
           "level": 3,
-          "costUsd": 550000000,
+          "costUsd": 55000000,
           "buildHours": 180,
           "effects": {
             "incomeMultiplier": 1.15,
@@ -444,7 +444,7 @@
         },
         {
           "level": 4,
-          "costUsd": 800000000,
+          "costUsd": 80000000,
           "buildHours": 216,
           "effects": {
             "incomeMultiplier": 1.2,
@@ -453,7 +453,7 @@
         },
         {
           "level": 5,
-          "costUsd": 1125000000,
+          "costUsd": 112500000,
           "buildHours": 264,
           "effects": {
             "incomeMultiplier": 1.25,
@@ -464,7 +464,7 @@
       "refinery": [
         {
           "level": 1,
-          "costUsd": 2500000000,
+          "costUsd": 250000000,
           "buildHours": 336,
           "effects": {
             "oilMultiplier": 1.1,
@@ -473,7 +473,7 @@
         },
         {
           "level": 2,
-          "costUsd": 3750000000,
+          "costUsd": 375000000,
           "buildHours": 420,
           "effects": {
             "oilMultiplier": 1.15,
@@ -482,7 +482,7 @@
         },
         {
           "level": 3,
-          "costUsd": 5500000000,
+          "costUsd": 550000000,
           "buildHours": 504,
           "effects": {
             "oilMultiplier": 1.2,
@@ -491,7 +491,7 @@
         },
         {
           "level": 4,
-          "costUsd": 8000000000,
+          "costUsd": 800000000,
           "buildHours": 605,
           "effects": {
             "oilMultiplier": 1.25,
@@ -500,7 +500,7 @@
         },
         {
           "level": 5,
-          "costUsd": 11250000000,
+          "costUsd": 1125000000,
           "buildHours": 739,
           "effects": {
             "oilMultiplier": 1.3,
@@ -511,7 +511,7 @@
       "power_plant": [
         {
           "level": 1,
-          "costUsd": 1500000000,
+          "costUsd": 150000000,
           "buildHours": 336,
           "effects": {
             "productionSpeed": 1.1,
@@ -521,7 +521,7 @@
         },
         {
           "level": 2,
-          "costUsd": 2250000000,
+          "costUsd": 225000000,
           "buildHours": 420,
           "effects": {
             "productionSpeed": 1.15,
@@ -531,7 +531,7 @@
         },
         {
           "level": 3,
-          "costUsd": 3300000000,
+          "costUsd": 330000000,
           "buildHours": 504,
           "effects": {
             "productionSpeed": 1.2,
@@ -541,7 +541,7 @@
         },
         {
           "level": 4,
-          "costUsd": 4800000000,
+          "costUsd": 480000000,
           "buildHours": 605,
           "effects": {
             "productionSpeed": 1.25,
@@ -551,7 +551,7 @@
         },
         {
           "level": 5,
-          "costUsd": 6750000000,
+          "costUsd": 675000000,
           "buildHours": 739,
           "effects": {
             "productionSpeed": 1.3,
@@ -563,7 +563,7 @@
       "port": [
         {
           "level": 1,
-          "costUsd": 800000000,
+          "costUsd": 80000000,
           "buildHours": 240,
           "effects": {
             "tradeMultiplier": 1.05,
@@ -573,7 +573,7 @@
         },
         {
           "level": 2,
-          "costUsd": 1200000000,
+          "costUsd": 120000000,
           "buildHours": 300,
           "effects": {
             "tradeMultiplier": 1.1,
@@ -583,7 +583,7 @@
         },
         {
           "level": 3,
-          "costUsd": 1760000000,
+          "costUsd": 176000000,
           "buildHours": 360,
           "effects": {
             "tradeMultiplier": 1.15,
@@ -593,7 +593,7 @@
         },
         {
           "level": 4,
-          "costUsd": 2560000000,
+          "costUsd": 256000000,
           "buildHours": 432,
           "effects": {
             "tradeMultiplier": 1.2,
@@ -603,7 +603,7 @@
         },
         {
           "level": 5,
-          "costUsd": 3600000000,
+          "costUsd": 360000000,
           "buildHours": 528,
           "effects": {
             "tradeMultiplier": 1.25,
@@ -615,7 +615,7 @@
       "naval_base": [
         {
           "level": 1,
-          "costUsd": 1500000000,
+          "costUsd": 150000000,
           "buildHours": 336,
           "effects": {
             "navalProductionSpeed": 1.0,
@@ -625,7 +625,7 @@
         },
         {
           "level": 2,
-          "costUsd": 2250000000,
+          "costUsd": 225000000,
           "buildHours": 420,
           "effects": {
             "navalProductionSpeed": 1.1,
@@ -635,7 +635,7 @@
         },
         {
           "level": 3,
-          "costUsd": 3300000000,
+          "costUsd": 330000000,
           "buildHours": 504,
           "effects": {
             "navalProductionSpeed": 1.2,
@@ -645,7 +645,7 @@
         },
         {
           "level": 4,
-          "costUsd": 4800000000,
+          "costUsd": 480000000,
           "buildHours": 605,
           "effects": {
             "navalProductionSpeed": 1.3,
@@ -655,7 +655,7 @@
         },
         {
           "level": 5,
-          "costUsd": 6750000000,
+          "costUsd": 675000000,
           "buildHours": 739,
           "effects": {
             "navalProductionSpeed": 1.4,
@@ -667,7 +667,7 @@
       "air_base": [
         {
           "level": 1,
-          "costUsd": 1000000000,
+          "costUsd": 100000000,
           "buildHours": 240,
           "effects": {
             "aircraftCapacity": 24,
@@ -678,7 +678,7 @@
         },
         {
           "level": 2,
-          "costUsd": 1500000000,
+          "costUsd": 150000000,
           "buildHours": 300,
           "effects": {
             "aircraftCapacity": 48,
@@ -689,7 +689,7 @@
         },
         {
           "level": 3,
-          "costUsd": 2200000000,
+          "costUsd": 220000000,
           "buildHours": 360,
           "effects": {
             "aircraftCapacity": 72,
@@ -700,7 +700,7 @@
         },
         {
           "level": 4,
-          "costUsd": 3200000000,
+          "costUsd": 320000000,
           "buildHours": 432,
           "effects": {
             "aircraftCapacity": 96,
@@ -711,7 +711,7 @@
         },
         {
           "level": 5,
-          "costUsd": 4500000000,
+          "costUsd": 450000000,
           "buildHours": 528,
           "effects": {
             "aircraftCapacity": 120,
@@ -724,7 +724,7 @@
       "military_base": [
         {
           "level": 1,
-          "costUsd": 400000000,
+          "costUsd": 40000000,
           "buildHours": 120,
           "effects": {
             "garrisonCapacity": 10,
@@ -734,7 +734,7 @@
         },
         {
           "level": 2,
-          "costUsd": 600000000,
+          "costUsd": 60000000,
           "buildHours": 150,
           "effects": {
             "garrisonCapacity": 20,
@@ -744,7 +744,7 @@
         },
         {
           "level": 3,
-          "costUsd": 880000000,
+          "costUsd": 88000000,
           "buildHours": 180,
           "effects": {
             "garrisonCapacity": 30,
@@ -754,7 +754,7 @@
         },
         {
           "level": 4,
-          "costUsd": 1280000000,
+          "costUsd": 128000000,
           "buildHours": 216,
           "effects": {
             "garrisonCapacity": 40,
@@ -764,7 +764,7 @@
         },
         {
           "level": 5,
-          "costUsd": 1800000000,
+          "costUsd": 180000000,
           "buildHours": 264,
           "effects": {
             "garrisonCapacity": 50,
@@ -776,7 +776,7 @@
       "arms_factory": [
         {
           "level": 1,
-          "costUsd": 1200000000,
+          "costUsd": 120000000,
           "buildHours": 240,
           "effects": {
             "productionSpeed": 1.2,
@@ -785,7 +785,7 @@
         },
         {
           "level": 2,
-          "costUsd": 1800000000,
+          "costUsd": 180000000,
           "buildHours": 300,
           "effects": {
             "productionSpeed": 1.3,
@@ -794,7 +794,7 @@
         },
         {
           "level": 3,
-          "costUsd": 2640000000,
+          "costUsd": 264000000,
           "buildHours": 360,
           "effects": {
             "productionSpeed": 1.4,
@@ -803,7 +803,7 @@
         },
         {
           "level": 4,
-          "costUsd": 3840000000,
+          "costUsd": 384000000,
           "buildHours": 432,
           "effects": {
             "productionSpeed": 1.5,
@@ -812,7 +812,7 @@
         },
         {
           "level": 5,
-          "costUsd": 5400000000,
+          "costUsd": 540000000,
           "buildHours": 528,
           "effects": {
             "productionSpeed": 1.6,
@@ -823,7 +823,7 @@
       "research_center": [
         {
           "level": 1,
-          "costUsd": 500000000,
+          "costUsd": 50000000,
           "buildHours": 168,
           "effects": {
             "researchSpeed": 1.05
@@ -831,7 +831,7 @@
         },
         {
           "level": 2,
-          "costUsd": 750000000,
+          "costUsd": 75000000,
           "buildHours": 210,
           "effects": {
             "researchSpeed": 1.08
@@ -839,7 +839,7 @@
         },
         {
           "level": 3,
-          "costUsd": 1100000000,
+          "costUsd": 110000000,
           "buildHours": 252,
           "effects": {
             "researchSpeed": 1.11
@@ -847,7 +847,7 @@
         },
         {
           "level": 4,
-          "costUsd": 1600000000,
+          "costUsd": 160000000,
           "buildHours": 302,
           "effects": {
             "researchSpeed": 1.14
@@ -855,7 +855,7 @@
         },
         {
           "level": 5,
-          "costUsd": 2250000000,
+          "costUsd": 225000000,
           "buildHours": 370,
           "effects": {
             "researchSpeed": 1.17
@@ -865,7 +865,7 @@
       "recruiting_office": [
         {
           "level": 1,
-          "costUsd": 20000000,
+          "costUsd": 2000000,
           "buildHours": 24,
           "effects": {
             "infantryProductionSpeed": 1.2,
@@ -874,7 +874,7 @@
         },
         {
           "level": 2,
-          "costUsd": 30000000,
+          "costUsd": 3000000,
           "buildHours": 30,
           "effects": {
             "infantryProductionSpeed": 1.4,
@@ -883,7 +883,7 @@
         },
         {
           "level": 3,
-          "costUsd": 44000000,
+          "costUsd": 4400000,
           "buildHours": 36,
           "effects": {
             "infantryProductionSpeed": 1.6,
@@ -892,7 +892,7 @@
         },
         {
           "level": 4,
-          "costUsd": 64000000,
+          "costUsd": 6400000,
           "buildHours": 43,
           "effects": {
             "infantryProductionSpeed": 1.8,
@@ -901,7 +901,7 @@
         },
         {
           "level": 5,
-          "costUsd": 90000000,
+          "costUsd": 9000000,
           "buildHours": 53,
           "effects": {
             "infantryProductionSpeed": 2.0,
@@ -912,7 +912,7 @@
       "bunker": [
         {
           "level": 1,
-          "costUsd": 150000000,
+          "costUsd": 15000000,
           "buildHours": 72,
           "effects": {
             "damageReduction": 0.15
@@ -920,7 +920,7 @@
         },
         {
           "level": 2,
-          "costUsd": 225000000,
+          "costUsd": 22500000,
           "buildHours": 90,
           "effects": {
             "damageReduction": 0.22
@@ -928,7 +928,7 @@
         },
         {
           "level": 3,
-          "costUsd": 330000000,
+          "costUsd": 33000000,
           "buildHours": 108,
           "effects": {
             "damageReduction": 0.3
@@ -936,7 +936,7 @@
         },
         {
           "level": 4,
-          "costUsd": 480000000,
+          "costUsd": 48000000,
           "buildHours": 130,
           "effects": {
             "damageReduction": 0.37
@@ -944,7 +944,7 @@
         },
         {
           "level": 5,
-          "costUsd": 675000000,
+          "costUsd": 67500000,
           "buildHours": 158,
           "effects": {
             "damageReduction": 0.45
@@ -954,7 +954,7 @@
       "air_defense_site": [
         {
           "level": 1,
-          "costUsd": 600000000,
+          "costUsd": 60000000,
           "buildHours": 120,
           "effects": {
             "rangeKm": 40,
@@ -968,7 +968,7 @@
         },
         {
           "level": 2,
-          "costUsd": 900000000,
+          "costUsd": 90000000,
           "buildHours": 150,
           "effects": {
             "rangeKm": 70,
@@ -982,7 +982,7 @@
         },
         {
           "level": 3,
-          "costUsd": 1320000000,
+          "costUsd": 132000000,
           "buildHours": 180,
           "effects": {
             "rangeKm": 100,
@@ -996,7 +996,7 @@
         },
         {
           "level": 4,
-          "costUsd": 1920000000,
+          "costUsd": 192000000,
           "buildHours": 216,
           "effects": {
             "rangeKm": 130,
@@ -1010,7 +1010,7 @@
         },
         {
           "level": 5,
-          "costUsd": 2700000000,
+          "costUsd": 270000000,
           "buildHours": 264,
           "effects": {
             "rangeKm": 160,
@@ -1026,7 +1026,7 @@
       "coastal_battery": [
         {
           "level": 1,
-          "costUsd": 300000000,
+          "costUsd": 30000000,
           "buildHours": 96,
           "effects": {
             "rangeKm": 100,
@@ -1035,7 +1035,7 @@
         },
         {
           "level": 2,
-          "costUsd": 450000000,
+          "costUsd": 45000000,
           "buildHours": 120,
           "effects": {
             "rangeKm": 150,
@@ -1044,7 +1044,7 @@
         },
         {
           "level": 3,
-          "costUsd": 660000000,
+          "costUsd": 66000000,
           "buildHours": 144,
           "effects": {
             "rangeKm": 200,
@@ -1053,7 +1053,7 @@
         },
         {
           "level": 4,
-          "costUsd": 960000000,
+          "costUsd": 96000000,
           "buildHours": 173,
           "effects": {
             "rangeKm": 250,
@@ -1062,7 +1062,7 @@
         },
         {
           "level": 5,
-          "costUsd": 1350000000,
+          "costUsd": 135000000,
           "buildHours": 211,
           "effects": {
             "rangeKm": 300,
@@ -1073,7 +1073,7 @@
       "radar_station": [
         {
           "level": 1,
-          "costUsd": 250000000,
+          "costUsd": 25000000,
           "buildHours": 96,
           "effects": {
             "detectionKm": 250,
@@ -1082,7 +1082,7 @@
         },
         {
           "level": 2,
-          "costUsd": 375000000,
+          "costUsd": 37500000,
           "buildHours": 120,
           "effects": {
             "detectionKm": 350,
@@ -1091,7 +1091,7 @@
         },
         {
           "level": 3,
-          "costUsd": 550000000,
+          "costUsd": 55000000,
           "buildHours": 144,
           "effects": {
             "detectionKm": 450,
@@ -1100,7 +1100,7 @@
         },
         {
           "level": 4,
-          "costUsd": 800000000,
+          "costUsd": 80000000,
           "buildHours": 173,
           "effects": {
             "detectionKm": 550,
@@ -1109,7 +1109,7 @@
         },
         {
           "level": 5,
-          "costUsd": 1125000000,
+          "costUsd": 112500000,
           "buildHours": 211,
           "effects": {
             "detectionKm": 650,
@@ -1120,7 +1120,7 @@
       "missile_silo": [
         {
           "level": 1,
-          "costUsd": 400000000,
+          "costUsd": 40000000,
           "buildHours": 336,
           "effects": {
             "silos": 1,
@@ -1129,7 +1129,7 @@
         },
         {
           "level": 2,
-          "costUsd": 600000000,
+          "costUsd": 60000000,
           "buildHours": 420,
           "effects": {
             "silos": 2,
@@ -1138,7 +1138,7 @@
         },
         {
           "level": 3,
-          "costUsd": 880000000,
+          "costUsd": 88000000,
           "buildHours": 504,
           "effects": {
             "silos": 3,
@@ -1147,7 +1147,7 @@
         },
         {
           "level": 4,
-          "costUsd": 1280000000,
+          "costUsd": 128000000,
           "buildHours": 605,
           "effects": {
             "silos": 4,
@@ -1156,7 +1156,7 @@
         },
         {
           "level": 5,
-          "costUsd": 1800000000,
+          "costUsd": 180000000,
           "buildHours": 739,
           "effects": {
             "silos": 6,
@@ -1167,7 +1167,7 @@
       "hospital": [
         {
           "level": 1,
-          "costUsd": 200000000,
+          "costUsd": 20000000,
           "buildHours": 96,
           "effects": {
             "healPerHour": 0.01,
@@ -1176,7 +1176,7 @@
         },
         {
           "level": 2,
-          "costUsd": 300000000,
+          "costUsd": 30000000,
           "buildHours": 120,
           "effects": {
             "healPerHour": 0.015,
@@ -1185,7 +1185,7 @@
         },
         {
           "level": 3,
-          "costUsd": 440000000,
+          "costUsd": 44000000,
           "buildHours": 144,
           "effects": {
             "healPerHour": 0.02,
@@ -1194,7 +1194,7 @@
         },
         {
           "level": 4,
-          "costUsd": 640000000,
+          "costUsd": 64000000,
           "buildHours": 173,
           "effects": {
             "healPerHour": 0.03,
@@ -1203,7 +1203,7 @@
         },
         {
           "level": 5,
-          "costUsd": 900000000,
+          "costUsd": 90000000,
           "buildHours": 211,
           "effects": {
             "healPerHour": 0.04,
@@ -1214,7 +1214,7 @@
       "secret_lab": [
         {
           "level": 1,
-          "costUsd": 1000000000,
+          "costUsd": 100000000,
           "buildHours": 336,
           "effects": {
             "researchSpeed": 1.05,
@@ -1223,7 +1223,7 @@
         },
         {
           "level": 2,
-          "costUsd": 1500000000,
+          "costUsd": 150000000,
           "buildHours": 420,
           "effects": {
             "researchSpeed": 1.1,
@@ -1232,7 +1232,7 @@
         },
         {
           "level": 3,
-          "costUsd": 2200000000,
+          "costUsd": 220000000,
           "buildHours": 504,
           "effects": {
             "researchSpeed": 1.15,
@@ -1241,7 +1241,7 @@
         },
         {
           "level": 4,
-          "costUsd": 3200000000,
+          "costUsd": 320000000,
           "buildHours": 605,
           "effects": {
             "researchSpeed": 1.22,
@@ -1250,7 +1250,7 @@
         },
         {
           "level": 5,
-          "costUsd": 4500000000,
+          "costUsd": 450000000,
           "buildHours": 739,
           "effects": {
             "researchSpeed": 1.3,
@@ -1261,7 +1261,7 @@
       "forward_base": [
         {
           "level": 1,
-          "costUsd": 100000000,
+          "costUsd": 10000000,
           "buildHours": 36,
           "effects": {
             "supplyRangeKm": 150,
@@ -1270,7 +1270,7 @@
         },
         {
           "level": 2,
-          "costUsd": 150000000,
+          "costUsd": 15000000,
           "buildHours": 45,
           "effects": {
             "supplyRangeKm": 200,
@@ -1279,7 +1279,7 @@
         },
         {
           "level": 3,
-          "costUsd": 220000000,
+          "costUsd": 22000000,
           "buildHours": 54,
           "effects": {
             "supplyRangeKm": 250,
@@ -1288,7 +1288,7 @@
         },
         {
           "level": 4,
-          "costUsd": 320000000,
+          "costUsd": 32000000,
           "buildHours": 65,
           "effects": {
             "supplyRangeKm": 300,
@@ -1297,7 +1297,7 @@
         },
         {
           "level": 5,
-          "costUsd": 450000000,
+          "costUsd": 45000000,
           "buildHours": 79,
           "effects": {
             "supplyRangeKm": 350,
