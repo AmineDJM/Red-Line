@@ -114,9 +114,7 @@ describe('IA : menace contre un joueur humain', { timeout: 120_000 }, () => {
     expect(ultimatumAt).toBeGreaterThan(0);
     // Le joueur porte sa réserve au contact, sous les yeux des troupes massées de bbb.
     const before = estimateForce(s, 'bbb', 'aaa', ownForce(s, 'bbb'), 1);
-    expect(applyOrder(s, 'aaa', { kind: 'move', unitIds: reserve, to: [4.3, 40.6] }).ok).toBe(
-      true,
-    );
+    expect(applyOrder(s, 'aaa', { kind: 'move', unitIds: reserve, to: [4.3, 40.6] }).ok).toBe(true);
     advanceTo(s, ultimatumAt + 2 * DAY);
     expect(estimateForce(s, 'bbb', 'aaa', ownForce(s, 'bbb'), 1)).toBeGreaterThan(before);
     expect(atWar(s, 'aaa', 'bbb')).toBe(false);

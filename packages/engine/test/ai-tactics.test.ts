@@ -13,9 +13,18 @@ import { cityOf, testWorld, unitsOf } from './fixtures.js';
 
 /** Ordres donnés par l'IA d'une nation (traceur de diagnostic), réussis ou non. */
 function record(n: string) {
-  const log: { t: number; o: Order; ok: boolean; money: number }[] = [];
+  const log: { t: number; o: Order; ok: boolean; money: number; eta: number[] }[] = [];
   setAiTracer((st, who, o, r) => {
-    if (who === n) log.push({ t: st.time, o: o as Order, ok: r.ok, money: st.nations[who]!.money });
+    if (who !== n) return;
+    // Arrivées prévues des unités d'un ordre de déplacement.
+    const eta =
+      o.kind === 'move'
+        ? (o as { unitIds: string[] }).unitIds.map((id) => {
+            const legs = st.units[id]?.move?.legs;
+            return legs?.length ? legs[legs.length - 1]!.t1 : st.time;
+          })
+        : [];
+    log.push({ t: st.time, o: o as Order, ok: r.ok, money: st.nations[who]!.money, eta });
   });
   return log;
 }
@@ -81,7 +90,7 @@ describe('IA tactique', { timeout: 60_000 }, () => {
     const log = record('bbb');
     expect(applyOrder(s, 'aaa', { kind: 'declareWar', nationId: 'bbb' }).ok).toBe(true);
     transferProvince(s, 'bbb-4', 'aaa');
-    advanceTo(s, 6 * HOUR);
+    advanceTo(s, 12 * HOUR);
     const city = cityOf('bbb-4');
     const toCity = log.filter(
       (x) =>
@@ -91,9 +100,13 @@ describe('IA tactique', { timeout: 60_000 }, () => {
         Math.abs(x.o.to[1] - city[1]) < 0.01,
     );
     expect(toCity.length).toBeGreaterThan(0);
-    // Jamais une unité seule : au moins deux unités par ordre.
-    for (const x of toCity)
-      expect((x.o as { unitIds: string[] }).unitIds.length).toBeGreaterThan(1);
+    // Jamais une unité seule : au moins deux unités, parties en vagues échelonnées qui arrivent
+    // ensemble (moins d'une heure d'écart entre les arrivées prévues).
+    expect(
+      new Set(toCity.flatMap((x) => (x.o as { unitIds: string[] }).unitIds)).size,
+    ).toBeGreaterThan(1);
+    const etas = toCity.flatMap((x) => x.eta);
+    expect(Math.max(...etas) - Math.min(...etas)).toBeLessThanOrEqual(HOUR);
     advanceTo(s, 3 * DAY);
     expect(s.provinces['bbb-4']!.owner).toBe('bbb');
   });

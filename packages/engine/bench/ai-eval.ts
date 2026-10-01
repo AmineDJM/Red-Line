@@ -260,6 +260,7 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
     air: 0,
   };
   const capDefense: number[] = [];
+  const bareBy = new Map<NationId, number>();
   const stuck = new Set<string>();
   const lastPos = new Map<string, { p: LngLat; t: number; moving: boolean }>();
   const peakWars = { n: 0 };
@@ -272,6 +273,9 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
   const estOver: Record<string, number> = { engine: 0, mirror: 0 };
   const estDays = new Set([1, 7, 14]);
   const plans = new Map<string, { n: NationId; t: NationId; at: number }>();
+  // Dépêches d'ultimatum et de désescalade (relevées au fil de l'eau : le fil est borné).
+  const seenNews = new Set<string>();
+  const ultim = { all: 0, human: 0, deesc: 0, deescHuman: 0 };
   while (s.time < end) {
     const out = advanceTo(s, Math.min(end, s.time + STEP));
     notes.push(...out);
@@ -281,6 +285,18 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
     for (const x of Object.keys(mem).sort()) {
       const p = mem[x]!.plan;
       if (p && !plans.has(`${x}>${p.t}`)) plans.set(`${x}>${p.t}`, { n: x, t: p.t, at: s.time });
+    }
+    for (const it of ds(s).news) {
+      if (seenNews.has(it.id)) continue;
+      seenNews.add(it.id);
+      const h = it.nations.includes(HUMAN);
+      if (/renonce|Désescalade/.test(it.headline)) {
+        ultim.deesc++;
+        if (h) ultim.deescHuman++;
+      } else if (/ultimatum/i.test(it.headline)) {
+        ultim.all++;
+        if (h) ultim.human++;
+      }
     }
     const dayNow = Math.round(s.time / DAY);
     if (s.time % DAY === 0 && estDays.has(dayNow)) {
@@ -351,7 +367,10 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
           atWarSamples.capThreat++;
           capDefense.push(defenders / threat);
           if (defenders < threat) atWarSamples.capThreatThin++;
-          if (garrisoned === 0) atWarSamples.capBare++;
+          if (garrisoned === 0) {
+            atWarSamples.capBare++;
+            bareBy.set(n, (bareBy.get(n) ?? 0) + 1);
+          }
         }
       }
     }
@@ -485,7 +504,6 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
             : 'finie',
       };
     });
-  const newsAll = ds(s).news.filter((x) => x.nations.includes(HUMAN));
   const spreads: number[] = [];
   for (const key of [...tr.arrivals.keys()].sort()) {
     const list = tr.arrivals.get(key)!.sort((a, b) => a.t - b.t);
@@ -565,9 +583,10 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
     humanPlans: [...plans.values()]
       .filter((p) => p.t === HUMAN)
       .map((p) => `${p.n}@J${(p.at / DAY).toFixed(1)}`),
-    ultimatums: newsAll.filter((x) => /ultimatum/i.test(x.headline) && !/renonce/.test(x.headline))
-      .length,
-    deescalations: newsAll.filter((x) => /renonce|Désescalade/.test(x.headline)).length,
+    ultimatums: ultim.human,
+    deescalations: ultim.deescHuman,
+    ultimatumsAll: ultim.all,
+    deescalationsAll: ultim.deesc,
     humanProvLost: start[HUMAN] ? start[HUMAN]!.provs - (s.nations[HUMAN]?.provinceCount ?? 0) : 0,
     humanAlive: !!s.nations[HUMAN]?.alive,
     peaceToHuman: tr.peaceToHuman,
@@ -612,6 +631,14 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
       console.log(`  J${(x.time / DAY).toFixed(1)} guerre ${x.by} → ${x.against} (${nb})`);
     }
     for (const x of pingExamples) console.log('  va-et-vient', x);
+    console.log(
+      '  capitale dégarnie (relevés)',
+      [...bareBy]
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 8)
+        .map(([k, v]) => `${k}:${v}`)
+        .join(' '),
+    );
     for (const c of captured.slice(0, 40))
       console.log(
         `  J${(c.time / DAY).toFixed(1)} ${c.by} prend ${c.provinceId} à ${c.from}${capOf(c.from) === c.provinceId ? ' (CAPITALE)' : ''}`,

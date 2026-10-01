@@ -29,7 +29,7 @@ import { planUnitMove } from '../movement/plan-unit.js';
 import { crossingHits } from '../movement/movement.js';
 import { nextInt } from '../rng/rng.js';
 import { hasPassage } from '../state/war.js';
-import { weaponRange } from '../encounters/profile.js';
+import { targetClassOf, weaponRange } from '../encounters/profile.js';
 import {
   contactValue,
   elementValue,
@@ -42,6 +42,7 @@ import { board } from '../modules/kit.js';
 import {
   capitalThreat,
   captureFailures,
+  clearOperations,
   commitments,
   forgetNation,
   isHot,
@@ -49,6 +50,7 @@ import {
   reactiveThink,
   strategicThink,
   thinkContext,
+  warGoalReached,
   warPlanOf,
   type Operation,
 } from './strategy.js';
@@ -223,6 +225,8 @@ interface Ctx {
   aimed: Set<ProvinceId>;
   /** Capitale menacée : survie d'abord (production sans réserve). */
   critical: boolean;
+  /** Garnison de la capitale incomplète (production à la capitale). */
+  capShort: boolean;
   /** Opérations en cours (rassemblement, débarquement) et unité → province visée. */
   ops: Record<ProvinceId, Operation>;
   opUnits: Map<string, ProvinceId>;
@@ -263,8 +267,7 @@ function think(state: EngineState, n: NationId): void {
   const enemies = warsOf(state, n);
   if (enemies.length === 0) {
     const plan = warPlanOf(state, n);
-    const mem = operations(state, n);
-    for (const k of sortedKeys(mem)) delete mem[k];
+    clearOperations(state, n);
     if (plan) {
       // Menace contre un joueur : troupes massées à la frontière (visibles de son renseignement).
       const ctx = context(state, n);
@@ -282,8 +285,12 @@ function think(state: EngineState, n: NationId): void {
   if (ctx.L.counterattack) counterattack(ctx);
   const off = ctx.L.offensive;
   if (off !== 'none') {
+    // Guerres qu'elle a déclarées et dont le but n'est pas atteint (guerre limitée : au-delà, elle
+    // défend ses gains et attend la paix).
     const started = ds(state)
-      ? enemies.filter((e) => ds(state).aggressor[pairKey(n, e)] === n)
+      ? enemies.filter(
+          (e) => ds(state).aggressor[pairKey(n, e)] === n && !warGoalReached(state, n, e),
+        )
       : [];
     if (off === 'all' || started.length > 0)
       offensive(ctx, off === 'all' ? null : new Set(started));
@@ -353,6 +360,7 @@ function context(state: EngineState, n: NationId): Ctx {
     hold: new Map(),
     aimed: new Set(),
     critical: false,
+    capShort: false,
     ops,
     opUnits,
     byId,
@@ -418,7 +426,8 @@ function destOf(m: Mine): LngLat {
 
 /**
  * Garde une ville : réserve les unités terrestres présentes (ou en route), puis fait venir les plus
- * proches unités libres jusqu'à `count` unités et `value` de force. Renvoie la force obtenue.
+ * proches unités libres jusqu'à `count` unités et `value` de force. Renvoie le nombre d'unités
+ * obtenues (présentes, en route ou envoyées).
  */
 function garrison(
   ctx: Ctx,
@@ -428,7 +437,7 @@ function garrison(
   minShare: number,
   recall = false,
   reach = ctx.T.reinforceReachKm,
-): void {
+): number {
   const { state } = ctx;
   const at = cityPoint(state, pid);
   const gc = state.world.balance.combat.groundContactKm;
@@ -448,7 +457,7 @@ function garrison(
     have++;
     force += m.value;
   }
-  if (have >= count && force >= value) return;
+  if (have >= count && force >= value) return have;
   // Unités engagées dans une offensive : rappelées seulement pour la capitale (`recall`).
   const cands = ctx.land
     .filter(
@@ -462,7 +471,7 @@ function garrison(
     .sort((a, b) => a.d - b.d || (a.m.u.id < b.m.u.id ? -1 : 1));
   // Inutile d'envoyer des renforts qui ne suffiraient pas (ils seraient détruits un à un).
   const available = cands.slice(0, ctx.L.groupMax).reduce((a, x) => a + x.m.value, 0);
-  if (value > 0 && force + available < value * minShare) return;
+  if (value > 0 && force + available < value * minShare) return have;
   const group: Mine[] = [];
   const nav = wi(state.world).nav;
   for (const { m } of cands) {
@@ -476,13 +485,15 @@ function garrison(
     have++;
     force += m.value;
   }
-  if (group.length === 0) return;
+  if (group.length === 0) return have;
   if (order(state, ctx.n, { kind: 'move', unitIds: group.map((m) => m.u.id), to: at })) {
     for (const m of group) {
       ctx.idle.delete(m.u.id);
       ctx.reserved.add(m.u.id);
     }
+    return have;
   }
+  return have - group.length;
 }
 
 /** Marge des défenseurs gardés sur place au-delà de la force jugée nécessaire. */
@@ -500,7 +511,9 @@ function holdKeyPoints(ctx: Ctx): void {
       ctx.T.contactMemoryHours * 3_600_000,
     );
     if (threat > 0) ctx.critical = true;
-    garrison(ctx, cap, L.capitalGarrison, threat * L.attackRatio, 0, true);
+    const have = garrison(ctx, cap, L.capitalGarrison, threat * L.attackRatio, 0, true);
+    // Garnison incomplète : les prochaines unités sortent à la capitale.
+    if (have < L.capitalGarrison) ctx.capShort = true;
   }
   if (!L.defendCities) return;
   const cities = [...ctx.threat]
@@ -527,7 +540,8 @@ function defend(ctx: Ctx): void {
     // Milieu inconnu : sur terre si la position est dans une province, en mer sinon.
     const naval = th.medium === 'sea' || (th.medium === null && !pid);
     const pool = naval ? ctx.sea : ctx.land;
-    const cls = th.sys?.targetClass ?? null;
+    // Classe de cible effective (munitions en stock, aéronef posé : installation), comme le moteur.
+    const cls = th.sys ? targetClassOf(state, state.units[th.id]!) : null;
     const cands = pool
       .filter((m) => {
         if (!ctx.idle.has(m.u.id) || !m.armed) return false;
@@ -740,17 +754,10 @@ function escort(ctx: Ctx, pid: ProvinceId): string[] {
     .sort((a, b) => a.d - b.d || (a.m.u.id < b.m.u.id ? -1 : 1))
     .slice(0, L.escortShips)
     .map((x) => x.m);
-  if (ships.length === 0) return [];
-  const ids = ships.map((m) => m.u.id);
-  if (!order(state, n, { kind: 'patrol', unitIds: ids, at, radiusKm: ESCORT_RADIUS_KM })) {
-    // Un navire sans route vers la zone fait échouer l'ordre groupé : un par un.
-    const ok: string[] = [];
-    for (const id of ids)
-      if (order(state, n, { kind: 'patrol', unitIds: [id], at, radiusKm: ESCORT_RADIUS_KM }))
-        ok.push(id);
-    for (const id of ok) ctx.idle.delete(id);
-    return ok;
-  }
+  // Route maritime vérifiée avant l'ordre (mer fermée, détroit) : pas d'ordre refusé.
+  const ids = ships.filter((m) => !('error' in planUnitMove(state, m.u, at))).map((m) => m.u.id);
+  if (ids.length === 0) return [];
+  if (!order(state, n, { kind: 'patrol', unitIds: ids, at, radiusKm: ESCORT_RADIUS_KM })) return [];
   for (const id of ids) ctx.idle.delete(id);
   return ids;
 }
@@ -813,7 +820,9 @@ function runOps(ctx: Ctx): void {
     const late = state.time >= op.until;
     if (there.length < all.length && !late) continue;
     const force = there.reduce((a, m) => a + m.value, 0);
-    if (force < op.need || there.length < 2 || !there.some((m) => m.s.canCapture)) {
+    // Force exigée revue au départ : l'ennemi a pu renforcer la ville entre-temps.
+    const need = Math.max(op.need, needFor(ctx, pid, P.owner) * (op.sea ? T.amphibiousRatio : 1));
+    if (force < need || there.length < 2 || !there.some((m) => m.s.canCapture)) {
       if (late || there.length === all.length) release(ctx, pid);
       continue;
     }
@@ -1228,8 +1237,8 @@ function productionSites(
   }
   const imports = forward ?? home;
   const factories = new Map<string, ProvinceId | null>();
-  // Capitale menacée : les renforts sortent sur place (ils la défendent aussitôt).
-  if (ctx?.critical && home === cap) return () => home;
+  // Capitale menacée ou dégarnie : les renforts sortent sur place (ils la défendent aussitôt).
+  if ((ctx?.critical || ctx?.capShort) && home === cap) return () => home;
   return (s: WeaponSystem): ProvinceId => {
     const need = requiredBuildings(s);
     const key = need.join(',');

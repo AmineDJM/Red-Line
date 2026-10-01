@@ -199,6 +199,13 @@ export function warPlanOf(state: EngineState, n: NationId): WarPlan | null {
   return s?.mem[n]?.plan ?? null;
 }
 
+/** Plus d'opérations en cours (nation en paix) ; sans créer de mémoire. */
+export function clearOperations(state: EngineState, n: NationId): void {
+  const s = (state.mods as Record<string, unknown>).ai as AiState | undefined;
+  const m = s?.mem[n];
+  if (m?.ops) delete m.ops;
+}
+
 /** Opérations offensives en cours d'une nation (mémoire de l'IA, sérialisée). */
 export function operations(state: EngineState, n: NationId): Record<ProvinceId, Operation> {
   return (memory(state, n).ops ??= {});
@@ -349,6 +356,17 @@ function ratioAgainst(
 }
 
 /**
+ * But de guerre atteint : agresseur qui tient la part `warGoalShare` des provinces d'origine de `e`
+ * (guerre limitée : il arrête ses offensives contre elle et propose la paix).
+ */
+export function warGoalReached(state: EngineState, n: NationId, e: NationId): boolean {
+  const P = profile(state, n);
+  if (P.warGoalShare >= 1 || ds(state)?.aggressor[pairKey(n, e)] !== n) return false;
+  const init = wi(state.world).provsByNation.get(e)?.length ?? 0;
+  return init > 0 && lostTo(state, e, n) >= Math.max(1, Math.ceil(P.warGoalShare * init));
+}
+
+/**
  * Guerre limitée atteinte : agresseur qui tient des provinces de `e` depuis au moins `share` ×
  * `satisfiedPeaceDays` jours de guerre (il garde ses gains à la paix).
  */
@@ -374,7 +392,7 @@ function shouldAcceptPeace(
   P: LevelProfile,
 ): boolean {
   if (state.nations[n]!.aiLevel === 'easy') return true;
-  if (satisfied(state, n, from, P, 0.5)) return true;
+  if (satisfied(state, n, from, P, 0.5) || warGoalReached(state, n, from)) return true;
   if (stabilityOf(state, n) < 40) return true;
   if (noFront(state, n, from, S(state).unreachablePeaceDays)) return true;
   const ratio = ratioAgainst(state, n, from, mine, P);
@@ -497,7 +515,7 @@ function seekPeace(
     const ratio = ratioAgainst(state, n, e, mine, P);
     const lost = lostTo(state, n, e);
     const losing = (ratio < P.peaceRatio && lost > 0) || ratio < P.peaceRatio * 0.6 || stab < 30;
-    const done = !losing && satisfied(state, n, e, P, 1);
+    const done = !losing && (satisfied(state, n, e, P, 1) || warGoalReached(state, n, e));
     if (!losing && !idle && !done) continue;
     m.peaceAsk[e] = state.time;
     order(state, n, {

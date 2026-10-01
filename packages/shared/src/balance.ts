@@ -237,6 +237,7 @@ interface AiLevelDefaults {
   humanWarRatio: number;
   humanMotiveFactor: number;
   satisfiedPeaceDays: number;
+  warGoalShare: number;
   humanPrepHours: number;
   ultimatumHours: number;
   humanAggressors: number;
@@ -337,6 +338,11 @@ const aiLevel = (d: AiLevelDefaults) =>
        * paix (il garde ses gains) et accepte celle qu'on lui propose ; 0 = jamais (va jusqu'au bout).
        */
       satisfiedPeaceDays: num(d.satisfiedPeaceDays),
+      /**
+       * But de guerre limité : agresseur qui tient cette part des provinces d'origine de sa cible arrête
+       * ses offensives contre elle (il défend ses gains et propose la paix) ; 1 = jusqu'au bout.
+       */
+      warGoalShare: num(d.warGoalShare),
       /** Durée des préparatifs (troupes massées à la frontière, plan connu du renseignement), heures. */
       humanPrepHours: num(d.humanPrepHours),
       /** Délai de l'ultimatum public avant la déclaration de guerre (heures). */
@@ -409,6 +415,7 @@ export const AiBalanceSchema = z.object({
         humanWarRatio: 3,
         humanMotiveFactor: 0,
         satisfiedPeaceDays: 3,
+        warGoalShare: 0.2,
         humanPrepHours: 72,
         ultimatumHours: 24,
         humanAggressors: 1,
@@ -458,6 +465,7 @@ export const AiBalanceSchema = z.object({
         humanWarRatio: 1.6,
         humanMotiveFactor: 1.5,
         satisfiedPeaceDays: 5,
+        warGoalShare: 0.34,
         humanPrepHours: 36,
         ultimatumHours: 24,
         humanAggressors: 1,
@@ -507,6 +515,7 @@ export const AiBalanceSchema = z.object({
         humanWarRatio: 1.3,
         humanMotiveFactor: 1,
         satisfiedPeaceDays: 0,
+        warGoalShare: 1,
         humanPrepHours: 24,
         ultimatumHours: 12,
         humanAggressors: 2,

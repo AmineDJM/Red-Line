@@ -195,6 +195,79 @@ const AI_LEVEL_HELP: Record<string, HelpEntry> = {
     'Probabilité quotidienne d’une reconnaissance militaire de l’ennemi en guerre.',
     'frac',
   ],
+  humanWarFromDays: [
+    'Première menace contre un joueur',
+    'Pas de préparatifs de guerre contre un joueur humain avant ce jour de partie.',
+    'j',
+  ],
+  humanWarRatio: [
+    'Rapport de force contre un joueur',
+    'Supériorité estimée (sans tricher) exigée pour menacer un joueur humain voisin.',
+    'x',
+  ],
+  humanMotiveFactor: [
+    'Menace sans motif',
+    'Sans motif ni opportunité (cible en guerre ou instable), rapport exigé multiplié par ce facteur (0 = jamais).',
+    'x',
+  ],
+  satisfiedPeaceDays: [
+    'Guerre limitée',
+    'L’agresseur qui tient des provinces adverses depuis ce délai propose la paix et garde ses gains (0 = jamais).',
+    'j',
+  ],
+  warGoalShare: [
+    'But de guerre',
+    'Part des provinces de sa cible au-delà de laquelle l’agresseur arrête ses offensives et propose la paix (1 = jusqu’au bout).',
+    'frac',
+  ],
+  humanPrepHours: [
+    'Durée des préparatifs',
+    'Troupes massées à la frontière et plan connu du renseignement adverse, avant l’ultimatum.',
+    'h',
+  ],
+  ultimatumHours: [
+    'Délai de l’ultimatum',
+    'Entre l’ultimatum public et la déclaration de guerre (renonciation si le rapport de force se dégrade).',
+    'h',
+  ],
+  humanAggressors: [
+    'Agresseurs d’un même joueur',
+    'Nations IA menaçant ou attaquant le même joueur humain à la fois, au plus.',
+    'n',
+  ],
+  coalition: [
+    'Coalition',
+    'Les forces des autres agresseurs du même joueur comptent dans le rapport de force.',
+  ],
+  humanCooldownDays: [
+    'Répit après une menace',
+    'Pas de nouvelle menace contre ce joueur après une menace abandonnée ou une paix.',
+    'j',
+  ],
+  stageUnits: ['Troupes massées', 'Unités envoyées à la frontière pendant les préparatifs.', 'n'],
+  rally: [
+    'Rassemblement',
+    'Le groupe se regroupe près de l’objectif puis part en vagues échelonnées qui arrivent ensemble.',
+  ],
+  amphibious: [
+    'Débarquements',
+    'Offensives par la mer sur les provinces côtières ennemies à portée d’un port.',
+  ],
+  escortShips: ['Navires d’escorte', 'Navires envoyés tenir la zone d’un débarquement.', 'n'],
+  airEscorts: [
+    'Chasseurs d’escorte',
+    'Patrouille de chasse sur l’objectif de chaque frappe hors de son territoire.',
+    'n',
+  ],
+  sead: [
+    'Suppression des défenses',
+    'Les défenses antiaériennes identifiées sur la route ou l’objectif sont frappées d’abord.',
+  ],
+  deepStrikesPerThink: [
+    'Frappes profondes',
+    'Frappes par réflexion sur les installations ennemies révélées par le renseignement.',
+    'n',
+  ],
 };
 
 const AI_LEVELS: [key: string, label: string][] = [
@@ -280,6 +353,90 @@ const AI_HELP: Record<string, HelpEntry> = {
   'ai.tactical.warUnitsBase': ['Unités en guerre (base)', undefined, 'n'],
   'ai.tactical.maxQueuePeace': ['Productions simultanées en paix', undefined, 'n'],
   'ai.tactical.maxQueueWar': ['Productions simultanées en guerre', undefined, 'n'],
+  'ai.tactical.amphibiousReachKm': [
+    'Portée d’un débarquement',
+    'Distance maximale entre la ville côtière d’embarquement et la ville visée.',
+    'km',
+  ],
+  'ai.tactical.amphibiousRatio': [
+    'Force d’un débarquement',
+    'Force exigée multipliée par ce facteur (unités sans défense pendant la traversée).',
+    'x',
+  ],
+  'ai.tactical.escortOnStationKm': [
+    'Escorte sur zone',
+    'Distance du navire d’escorte au point de débarquement pour autoriser la traversée.',
+    'km',
+  ],
+  'ai.tactical.seaControlKm': [
+    'Contrôle de la mer',
+    'Pas de traversée sans escorte si un navire ennemi identifié est à cette distance.',
+    'km',
+  ],
+  'ai.tactical.rallySpreadHours': [
+    'Écart d’arrivée toléré',
+    'Au-delà, le groupe se rassemble d’abord avant l’offensive.',
+    'h',
+  ],
+  'ai.tactical.rallyRadiusKm': [
+    'Rayon du rassemblement',
+    'Une unité est arrivée au point à cette distance.',
+    'km',
+  ],
+  'ai.tactical.rallyMaxHours': [
+    'Attente maximale',
+    'Au point de rassemblement, avant de partir avec les unités arrivées.',
+    'h',
+  ],
+  'ai.tactical.deepStrikeKm': [
+    'Portée des frappes profondes',
+    'Distance maximale de l’installation visée à son territoire.',
+    'km',
+  ],
+  'ai.estimate': [
+    'Estimation des forces',
+    'Force adverse estimée sans tricher : ORBAT public de départ, territoire perdu, production possible, incertitude.',
+  ],
+  'ai.estimate.useOrbat': [
+    'Partir de l’ORBAT public',
+    'Sinon : autant de forces par province que soi (hypothèse miroir).',
+  ],
+  'ai.estimate.uncertaintyHigh': [
+    'Incertitude (source fiable)',
+    'ORBAT de fiabilité « haute ».',
+    'frac',
+  ],
+  'ai.estimate.uncertaintyMedium': [
+    'Incertitude (source moyenne)',
+    'ORBAT de fiabilité « moyenne ».',
+    'frac',
+  ],
+  'ai.estimate.uncertaintyLow': [
+    'Incertitude (source faible)',
+    'ORBAT de fiabilité « basse ».',
+    'frac',
+  ],
+  'ai.estimate.uncertaintyPerDay': [
+    'Vieillissement',
+    'Hausse quotidienne de l’incertitude (l’ORBAT publié vieillit).',
+    'frac',
+  ],
+  'ai.estimate.maxUncertainty': ['Incertitude maximale', undefined, 'frac'],
+  'ai.estimate.reconDiscount': [
+    'Effet de la reconnaissance',
+    'Réduction de l’incertitude selon la part du pays couverte par une reconnaissance militaire.',
+    'frac',
+  ],
+  'ai.estimate.productionShare': [
+    'Part du budget en matériels',
+    'Part du budget de défense public supposée consacrée chaque jour à de nouveaux matériels.',
+    'frac',
+  ],
+  'ai.estimate.territoryLoss': [
+    'Pertes avec le territoire',
+    'Part des forces supposée perdue avec le territoire perdu (1 : proportionnelle).',
+    'frac',
+  ],
   'ai.economy': ['Économie', 'Réserves, recherche, achats de guerre et investissements des IA.'],
   'ai.economy.peaceReserveFactor': [
     'Réserve de production en paix',
@@ -363,6 +520,16 @@ const AI_HELP: Record<string, HelpEntry> = {
     'Stabilité minimale pour attaquer',
     'Pas de guerre d’agression sous cette stabilité.',
     'pts',
+  ],
+  'ai.strategy.planHoldShare': [
+    'Seuil de renonciation',
+    'À chaque étape d’une menace, renonce si le rapport de force est tombé sous cette part du rapport exigé.',
+    'frac',
+  ],
+  'ai.strategy.threatReachKm': [
+    'Portée d’une menace',
+    'La capitale du joueur visé doit être à moins de cette distance d’une de ses villes.',
+    'km',
   ],
   'ai.strategy.ownRatioShare': [
     'Part de ses propres forces',
