@@ -1655,9 +1655,10 @@
       "amphibiousRatio": 1.5,
       "escortOnStationKm": 120,
       "seaControlKm": 300,
-      "rallySpreadHours": 3,
+      "rallySpreadHours": 6,
       "rallyRadiusKm": 40,
       "rallyMaxHours": 18,
+      "staggerDepartures": true,
       "deepStrikeKm": 600
     },
     "economy": {

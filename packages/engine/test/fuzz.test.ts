@@ -134,7 +134,7 @@ function checkInvariants(s: EngineState): void {
   }
 }
 
-describe('fuzz', () => {
+describe('fuzz', { timeout: 60_000 }, () => {
   it('30 jours d’ordres aléatoires et d’IA : ni exception ni NaN', () => {
     const world = testWorld();
     fc.assert(

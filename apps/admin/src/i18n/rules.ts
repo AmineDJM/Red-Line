@@ -388,6 +388,10 @@ const AI_HELP: Record<string, HelpEntry> = {
     'Au point de rassemblement, avant de partir avec les unités arrivées.',
     'h',
   ],
+  'ai.tactical.staggerDepartures': [
+    'Départs échelonnés',
+    'Depuis le point de rassemblement, les plus lents partent d’abord pour que tous arrivent ensemble.',
+  ],
   'ai.tactical.deepStrikeKm': [
     'Portée des frappes profondes',
     'Distance maximale de l’installation visée à son territoire.',

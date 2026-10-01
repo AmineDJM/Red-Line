@@ -655,6 +655,7 @@ function launchGroup(
   let first = Infinity;
   let last = 0;
   let bySea = false;
+  const etas = new Map<string, number>();
   for (const { m } of cands) {
     if (force >= need && group.length >= minUnits && capturer) break;
     if (group.length >= max || ctx.paths <= 0) break;
@@ -666,6 +667,7 @@ function launchGroup(
       continue;
     }
     const eta = legs.length ? legs[legs.length - 1]!.t1 - state.time : 0;
+    etas.set(m.u.id, eta);
     first = Math.min(first, eta);
     last = Math.max(last, eta);
     bySea ||= legs.some((l) => l.medium === 'sea');
@@ -683,6 +685,29 @@ function launchGroup(
   if (L.rally && group.length >= 2 && (bySea || last - first > T.rallySpreadHours * HOUR)) {
     if (startOp(ctx, pid, group, need, bySea)) return true;
     if (bySea) return false;
+  }
+  // Arrivées étalées sans rassemblement nécessaire (unités proches les unes des autres) : départs
+  // échelonnés sur place, les plus lents d'abord, pour que le groupe arrive ensemble.
+  if (L.rally && T.staggerDepartures && group.length >= 2 && last - first > HOUR) {
+    const go: Record<string, number> = {};
+    for (const m of group) go[m.u.id] = state.time + last - etas.get(m.u.id)!;
+    const op: Operation = {
+      at: city,
+      units: group.map((m) => m.u.id),
+      need,
+      until: state.time,
+      go,
+    };
+    ctx.ops[pid] = op;
+    const until = state.time + last + T.commitHours * HOUR;
+    for (const m of group) {
+      ctx.idle.delete(m.u.id);
+      ctx.opUnits.set(m.u.id, pid);
+      ctx.commit[m.u.id] = [pid, until];
+    }
+    depart(ctx, pid, op);
+    ctx.aimed.add(pid);
+    return true;
   }
   if (!order(state, n, { kind: 'move', unitIds: group.map((m) => m.u.id), to: city })) return false;
   const until = state.time + T.commitHours * HOUR;
@@ -896,7 +921,8 @@ function runOps(ctx: Ctx): void {
       );
     const slowest = Math.max(...eta.values());
     op.go = {};
-    for (const m of there) op.go[m.u.id] = state.time + slowest - eta.get(m.u.id)!;
+    for (const m of there)
+      op.go[m.u.id] = T.staggerDepartures ? state.time + slowest - eta.get(m.u.id)! : state.time;
     // Les unités arrivées en retard (hors du point) sont libérées.
     for (const m of all) {
       if (op.go[m.u.id] !== undefined) continue;

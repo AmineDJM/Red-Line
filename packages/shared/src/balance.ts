@@ -572,11 +572,13 @@ export const AiBalanceSchema = z.object({
       /** Pas de traversée sans escorte si un navire ennemi identifié est à cette distance du débarquement (km). */
       seaControlKm: num(300),
       /** Rassemblement : écart des heures d'arrivée au-delà duquel le groupe se regroupe d'abord (heures). */
-      rallySpreadHours: num(3),
+      rallySpreadHours: num(6),
       /** Rassemblement : une unité est « au point » à cette distance (km). */
       rallyRadiusKm: num(40),
       /** Rassemblement : attente maximale avant de partir avec les unités arrivées (heures). */
       rallyMaxHours: num(18),
+      /** Départs échelonnés depuis le point de rassemblement (les plus lents d'abord) pour arriver ensemble. */
+      staggerDepartures: z.boolean().default(true),
       /** Frappes profondes : distance maximale de l'installation visée à son territoire (km). */
       deepStrikeKm: num(600),
     })
