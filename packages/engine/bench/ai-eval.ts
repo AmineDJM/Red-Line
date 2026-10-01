@@ -171,7 +171,15 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
   );
   const capOf = (n: NationId) => W.nationById.get(n)?.capitalProvinceId;
   let samples = 0;
-  const atWarSamples = { idleLand: 0, land: 0, capThreat: 0, capThreatThin: 0, airUsed: 0, air: 0 };
+  const atWarSamples = {
+    idleLand: 0,
+    land: 0,
+    capThreat: 0,
+    capThreatThin: 0,
+    capBare: 0,
+    airUsed: 0,
+    air: 0,
+  };
   const capDefense: number[] = [];
   const stuck = new Set<string>();
   const lastPos = new Map<string, { p: LngLat; t: number; moving: boolean }>();
@@ -194,6 +202,9 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
       const cap = capOf(n);
       const capPt = cap ? W.provById.get(cap)!.cityPoint : null;
       let defenders = 0;
+      // Garnison effective : unité terrestre arrêtée dans la ville (elle empêche la capture).
+      let garrisoned = 0;
+      const gc = s.world.balance.combat.groundContactKm;
       for (const id of nationUnits(s, n)) {
         const u = s.units[id]!;
         if (u.role || u.off) continue;
@@ -203,6 +214,7 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
           atWarSamples.land++;
           if (!u.move && !u.target) atWarSamples.idleLand++;
           if (capPt && distanceKm(p, capPt) <= 150) defenders++;
+          if (capPt && !u.move && distanceKm(p, capPt) <= gc) garrisoned++;
           // Bloquée : un trajet en cours mais aucun déplacement en 24 h.
           const prev = lastPos.get(id);
           if (prev && u.move && prev.moving && s.time - prev.t >= DAY && distanceKm(prev.p, p) < 1)
@@ -229,6 +241,7 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
           atWarSamples.capThreat++;
           capDefense.push(defenders / threat);
           if (defenders < threat) atWarSamples.capThreatThin++;
+          if (garrisoned === 0) atWarSamples.capBare++;
         }
       }
     }
@@ -375,6 +388,9 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
       ? Math.round((atWarSamples.airUsed / atWarSamples.air) * 100)
       : 0,
     capThreatSamples: atWarSamples.capThreat,
+    capBarePct: atWarSamples.capThreat
+      ? Math.round((atWarSamples.capBare / atWarSamples.capThreat) * 100)
+      : 0,
     capThreatThinPct: atWarSamples.capThreat
       ? Math.round((atWarSamples.capThreatThin / atWarSamples.capThreat) * 100)
       : 0,

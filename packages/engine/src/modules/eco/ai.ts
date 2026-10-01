@@ -107,7 +107,10 @@ function thinkResearch(state: EngineState, n: NationId, atWar: boolean): void {
   if (en.cur || en.queue.length > 0) return;
   const money = state.nations[n]!.money;
   const ec = aiCfg(state.world).economy;
-  const budget = Math.min(money * ec.researchSpendShare, money - aiReserve(state, n, atWar));
+  const share = money * ec.researchSpendShare;
+  if (!(share > 0) || share < cheapest(tree)) return;
+  // Réserve (grand livre) lue seulement quand une recherche est envisageable.
+  const budget = Math.min(share, money - aiReserve(state, n, atWar));
   if (!(budget > 0)) return;
   const done = new Set(en.done);
   const ranks = branchRanks(state, n, atWar);
@@ -126,6 +129,19 @@ function thinkResearch(state: EngineState, n: NationId, atWar: boolean): void {
     bestScore = score;
   }
   if (best) aiOrder(state, n, { kind: 'research', nodeId: best.id });
+}
+
+/** Coût du nœud de recherche le moins cher (par arbre). */
+const cheapestCache = new WeakMap<object, number>();
+
+function cheapest(tree: ReadonlyMap<string, ResearchNode>): number {
+  let c = cheapestCache.get(tree);
+  if (c === undefined) {
+    c = Infinity;
+    for (const node of tree.values()) c = Math.min(c, node.cost.money);
+    cheapestCache.set(tree, c);
+  }
+  return c;
 }
 
 /** Identifiants de l'arbre triés (par arbre). */

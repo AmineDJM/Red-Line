@@ -161,6 +161,8 @@ interface Mine {
   s: WeaponSystem;
   pos: LngLat;
   value: number;
+  /** Arme à portée (tir possible). */
+  armed: boolean;
   /** Peut combattre des forces terrestres (dégâts contre infanterie ou blindés, arme à portée). */
   ground: boolean;
 }
@@ -263,12 +265,14 @@ function context(state: EngineState, n: NationId): Ctx {
     const s = sysOf(state, u);
     if (s.speedKmh <= 0 || (s.movement !== 'land' && s.movement !== 'sea')) continue;
     const hp = u.hp / Math.max(1, u.maxHp);
+    const armed = weaponRange(state, u).max > 0;
     const m: Mine = {
       u,
       s,
       pos: unitPosAt(state, u, state.time),
       value: elementValue(state, u.sys) * u.count * hp,
-      ground: weaponRange(state, u).max > 0 && (s.damage.infantry > 0 || s.damage.armor > 0),
+      armed,
+      ground: armed && (s.damage.infantry > 0 || s.damage.armor > 0),
     };
     (s.movement === 'land' ? land : sea).push(m);
   }
@@ -311,6 +315,7 @@ function picture(ctx: Ctx): void {
   if (!known) return;
   const memory = T.contactMemoryHours * 3_600_000;
   const cat = state.world.catalog;
+  const nav = wi(state.world).nav;
   for (const id of sortedKeys(known)) {
     const c = known[id]!;
     if (!atWar(state, n, c.owner)) continue;
@@ -322,9 +327,12 @@ function picture(ctx: Ctx): void {
     const value = contactValue(state, c, ctx.mine);
     const medium = sys ? sys.movement : null;
     ctx.enemies.push({ id, pos, sys, value, seen: c.seen, medium });
-    // Force terrestre (ou non identifiée) : menace pour les villes proches.
+    // Force terrestre (ou non identifiée) : menace pour les villes proches. Le grand rayon de menace
+    // n'est utile que près de chez soi (province du contact à elle ou voisine d'une des siennes).
     if (medium === 'air' || medium === 'sea' || medium === 'static') continue;
-    for (const near of citiesNear(state.world, pos, T.threatRadiusKm)) {
+    const pid = nav.cellProv.get(nav.cellOfPos(pos));
+    const near0 = !!pid && (state.provinces[pid]?.owner === n || bordersOwned(state, n, pid));
+    for (const near of citiesNear(state.world, pos, near0 ? T.threatRadiusKm : T.cityRadiusKm)) {
       const owner = state.provinces[near.pid]?.owner;
       if (owner === n) ctx.threat.set(near.pid, (ctx.threat.get(near.pid) ?? 0) + value);
       else if (near.d <= T.cityRadiusKm)
@@ -443,7 +451,7 @@ function defend(ctx: Ctx): void {
     const cls = th.sys?.targetClass ?? null;
     const cands = pool
       .filter((m) => {
-        if (!ctx.idle.has(m.u.id) || weaponRange(state, m.u).max <= 0) return false;
+        if (!ctx.idle.has(m.u.id) || !m.armed) return false;
         if (cls) return m.s.damage[cls] > 0;
         return naval ? m.s.damage.ship > 0 : m.ground;
       })

@@ -227,6 +227,7 @@ interface AiLevelDefaults {
   enemyCapitalBonus: number;
   salvosPerThink: number;
   salvoSize: number;
+  blockades: number;
   airStrikesPerThink: number;
   caps: number;
   supportStrikes: boolean;
@@ -288,6 +289,8 @@ const aiLevel = (d: AiLevelDefaults) =>
       salvosPerThink: num(d.salvosPerThink),
       /** Munitions tirées par salve (les stocks sont consommés). */
       salvoSize: num(d.salvoSize),
+      /** Blocus de ports ennemis tenus à la fois au plus (navires de surface libres). */
+      blockades: num(d.blockades),
       airStrikesPerThink: num(d.airStrikesPerThink),
       /** Patrouilles de chasse au-dessus de la capitale en cas de menace aérienne. */
       caps: num(d.caps),
@@ -335,6 +338,7 @@ export const AiBalanceSchema = z.object({
         enemyCapitalBonus: 1,
         salvosPerThink: 0,
         salvoSize: 2,
+        blockades: 0,
         airStrikesPerThink: 0,
         caps: 1,
         supportStrikes: false,
@@ -367,6 +371,7 @@ export const AiBalanceSchema = z.object({
         enemyCapitalBonus: 1.5,
         salvosPerThink: 1,
         salvoSize: 4,
+        blockades: 0,
         airStrikesPerThink: 1,
         caps: 1,
         supportStrikes: true,
@@ -399,6 +404,7 @@ export const AiBalanceSchema = z.object({
         enemyCapitalBonus: 2.5,
         salvosPerThink: 2,
         salvoSize: 8,
+        blockades: 1,
         airStrikesPerThink: 2,
         caps: 2,
         supportStrikes: true,
@@ -421,6 +427,9 @@ export const AiBalanceSchema = z.object({
       reinforceReachKm: num(800),
       /** Villes menacées renforcées par réflexion. */
       maxReinforcePerThink: num(2),
+      /** Patrouille de chasse au-dessus de la capitale si un aéronef ennemi est vu à cette distance (km). */
+      capAlertKm: num(600),
+      capRadiusKm: num(250),
       /** Contacts ennemis perdus de vue retenus comme menace pendant ce délai (heures). */
       contactMemoryHours: num(12),
       /** Délai avant de retenter une capture sans chemin praticable (heures de jeu). */

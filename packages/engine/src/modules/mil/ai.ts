@@ -13,6 +13,8 @@ import { sortedKeys, sortedSet, sysOf, warsOf } from '../../state/access.js';
 import type { EngineState, Unit } from '../../state/types.js';
 import { wi } from '../../state/world.js';
 import { airFeasible, msOf } from './air.js';
+import { planUnitMove } from '../../movement/plan-unit.js';
+import { isRegular } from '../diplo/state.js';
 import { mil } from './state.js';
 import { cellsLeft, missileForShip } from './strike.js';
 import {
@@ -23,6 +25,7 @@ import {
   isRecon,
   isTanker,
   launchCells,
+  portsOf,
   posOf,
   strikeRangeKm,
 } from './util.js';
@@ -31,8 +34,9 @@ import {
  * IA de combat (crochet aiThink, nations tenues par l'IA et en guerre seulement). Elle ne triche pas :
  * elle ne vise que ce que sa nation voit (contacts observés, au niveau d'identification atteint) et
  * les bâtiments publics de la carte. Réglages par niveau : data/balance, section ai.levels.
- *  - Défense aérienne : patrouilles de chasse au-dessus de la capitale (`caps`), un avion radar en
- *    orbite s'il y en a ; les défenses sol-air interceptent automatiquement.
+ *  - Défense aérienne : quand un aéronef ou un missile ennemi est vu à moins de `capAlertKm` de la
+ *    capitale, patrouilles de chasse au-dessus d'elle (`caps`) et un avion radar en orbite s'il y en
+ *    a ; les défenses sol-air interceptent automatiquement.
  *  - Salves de missiles (`salvosPerThink`) sur les menaces identifiées (défense aérienne et radars
  *    d'abord, puis navires et concentrations), sinon sur les bases ennemies à portée.
  *  - Frappes aériennes (`airStrikesPerThink`) sur les forces terrestres ennemies vues chez soi et, en
@@ -60,8 +64,9 @@ function ready(state: EngineState, u: Unit): boolean {
 
 export function combatAi(state: EngineState, n: NationId): void {
   if (!state.rt.enemies.get(n)?.size) return;
+  navalAi(state, n);
   // Réactive : rien à faire tant qu'aucun ennemi n'est observé (coût nul pour les guerres dormantes).
-  const { threats, air } = visibleEnemies(state, n);
+  const { threats, air, airAt } = visibleEnemies(state, n);
   if (threats.length === 0 && !air) return;
   const ns = state.nations[n]!;
   const L = aiLevelCfg(state, ns.aiLevel);
@@ -74,9 +79,10 @@ export function combatAi(state: EngineState, n: NationId): void {
     capId && state.provinces[capId]?.owner === n ? w.provById.get(capId)!.cityPoint : null;
 
   // 1. Menace aérienne (avions, drones, missiles) : chasse et avion radar au-dessus de la capitale.
-  if (capital && air) {
+  const T = aiCfg(state.world).tactical;
+  if (capital && airAt.some((p) => distanceKm(p, capital) <= T.capAlertKm)) {
     const ms = mil(state).ms;
-    const radius = 250;
+    const radius = T.capRadiusKm;
     const onCap = units.filter(
       (u) => ms[u.id]?.mis === 'patrol' && sysOf(state, u).movement === 'air',
     ).length;
@@ -164,27 +170,101 @@ export function combatAi(state: EngineState, n: NationId): void {
   }
 }
 
+/**
+ * Marine : blocus des ports ennemis par les navires de surface libres (au plus `blockades` blocus
+ * tenus à la fois ; une réflexion navale toutes les `NAVAL_EVERY` réflexions, décalée par nation). Le
+ * blocus coupe une part du commerce de l'ennemi ; les navires engagent ce qui force le blocus.
+ */
+const NAVAL_EVERY = 12;
+
+function navalAi(state: EngineState, n: NationId): void {
+  const ns = state.nations[n]!;
+  let want = aiLevelCfg(state, ns.aiLevel).blockades;
+  if (want <= 0) return;
+  const tick = Math.round(state.time / (state.world.balance.time.aiThinkMinutes * 60_000));
+  if ((tick + state.nationIds.indexOf(n)) % NAVAL_EVERY !== 0) return;
+  const m = mil(state);
+  const busy = new Set<string>();
+  const blocked = new Set<string>();
+  for (const id of sortedKeys(m.blk)) {
+    const b = m.blk[id]!;
+    if (b.by !== n) continue;
+    for (const u of b.units) busy.add(u);
+    if ('provinceId' in b.target) blocked.add(b.target.provinceId);
+    want--;
+  }
+  if (want <= 0) return;
+  const ships = sortedSet(state.rt.byNation.get(n))
+    .map((id) => state.units[id]!)
+    .filter((u) => {
+      if (u.role || u.off || u.move || u.target || busy.has(u.id)) return false;
+      const s = sysOf(state, u);
+      return s.category === 'surface_ship' && s.damage.ship > 0;
+    });
+  if (ships.length === 0) return;
+  const w = wi(state.world);
+  const ports: { pid: string; at: LngLat }[] = [];
+  for (const e of warsOf(state, n)) {
+    if (!isRegular(state, e)) continue;
+    for (const pid of portsOf(state, e)) {
+      if (blocked.has(pid)) continue;
+      ports.push({ pid, at: w.seaSpawn.get(pid)! });
+    }
+  }
+  let tries = 3;
+  while (want > 0 && tries > 0 && ships.length > 0 && ports.length > 0) {
+    // Couple port / navire le plus proche (départage par identifiants).
+    let best: { si: number; pi: number; d: number } | null = null;
+    for (let si = 0; si < ships.length; si++) {
+      const here = posOf(state, ships[si]!);
+      for (let pi = 0; pi < ports.length; pi++) {
+        const d = distanceKm(here, ports[pi]!.at);
+        if (d <= NAVAL_REACH_KM && (!best || d < best.d)) best = { si, pi, d };
+      }
+    }
+    if (!best) return;
+    tries--;
+    const ship = ships.splice(best.si, 1)[0]!;
+    const port = ports.splice(best.pi, 1)[0]!;
+    if ('error' in planUnitMove(state, ship, port.at)) continue;
+    if (order(state, n, { kind: 'blockade', unitIds: [ship.id], target: { provinceId: port.pid } }))
+      want--;
+  }
+}
+
+/** Distance maximale d'un navire au port qu'il va bloquer (km). */
+const NAVAL_REACH_KM = 2500;
+
 /** Ennemis observés (hors missiles) et présence d'une menace aérienne (aéronef ou missile vu). */
-function visibleEnemies(state: EngineState, n: NationId): { threats: Seen[]; air: boolean } {
+function visibleEnemies(
+  state: EngineState,
+  n: NationId,
+): { threats: Seen[]; air: boolean; airAt: LngLat[] } {
   const threats: Seen[] = [];
+  const airAt: LngLat[] = [];
   let air = false;
   const known = state.know[n];
-  if (!known) return { threats, air };
+  if (!known) return { threats, air, airAt };
   const enemies = state.rt.enemies.get(n);
   const cat = state.world.catalog;
   for (const id of sortedKeys(known)) {
     const c = known[id]!;
     const u = state.units[id];
     if (!c.seen || !u || u.off || !enemies?.has(u.owner)) continue;
+    const pos = posOf(state, u);
     if (u.role === 'missile') {
       air = true;
+      airAt.push(pos);
       continue;
     }
     const sys = c.lvl >= 2 && c.sys ? (cat.get(c.sys) ?? null) : null;
-    if (sysOf(state, u).movement === 'air') air = true;
-    threats.push({ u, sys, pos: posOf(state, u) });
+    if (sysOf(state, u).movement === 'air') {
+      air = true;
+      airAt.push(pos);
+    }
+    threats.push({ u, sys, pos });
   }
-  return { threats, air };
+  return { threats, air, airAt };
 }
 
 /** Villes ennemies visées par ses unités terrestres en route (objectifs de ses offensives). */
