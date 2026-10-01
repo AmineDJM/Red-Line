@@ -12,7 +12,7 @@ import {
 import type { OrderResult } from '../../api.js';
 import type { EngineState } from '../../state/types.js';
 import { atWar, nationUnits, provincesOf, sortedKeys, warsOf } from '../../state/access.js';
-import { wi } from '../../state/world.js';
+import { roadSpawn, wi } from '../../state/world.js';
 import { spawnUnit } from '../../state/units.js';
 import { declareWar as coreDeclareWar, makePeace } from '../../state/war.js';
 import { destroyUnit } from '../../combat/combat.js';
@@ -97,7 +97,7 @@ function spawnPoint(state: EngineState, pid: ProvinceId, k: number, km: number):
   const city = w.provById.get(pid)!.cityPoint;
   for (const f of [1, 0.6, 0.3]) {
     const cand = destination(city, (k * 137.508 + 40) % 360, km * f);
-    if (w.nav.cellProv.get(w.nav.cellAt(cand)) === pid) return cand;
+    if (w.nav.cellProv.get(w.nav.cellAt(cand)) === pid) return roadSpawn(w, cand, km * 0.5, pid);
   }
   return city;
 }

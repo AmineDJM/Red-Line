@@ -21,7 +21,7 @@ import {
   type NationState,
   type StateData,
 } from './types.js';
-import { wi } from './world.js';
+import { roadSpawn, wi } from './world.js';
 import { spawnUnit } from './units.js';
 import { registerProvinceZone } from '../encounters/pairs.js';
 import { cleanTop, settle } from '../sim/settle.js';
@@ -171,7 +171,7 @@ function placeArmy(state: EngineState, n: NationId): void {
         if (k > 0) {
           const cand = destination(city, (k * 137.508) % 360, gc * 0.3 * (1 + (k % 3) / 3));
           const cell = w.nav.cellAt(cand);
-          if (w.nav.cellProv.get(cell) === site) pos = cand;
+          if (w.nav.cellProv.get(cell) === site) pos = roadSpawn(w, cand, gc, site);
         }
       }
       if (pos) spawnUnit(state, n, sys.id, pos);

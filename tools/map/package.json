@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsx src/build.ts",
+    "routes": "tsx src/routes-cli.ts",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json",
     "cities": "node scripts/cities.mjs"

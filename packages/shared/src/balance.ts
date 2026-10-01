@@ -722,6 +722,8 @@ export const BalanceSchema = z.object({
     embarkedSpeedFactor: z.number().positive(),
     /** Délai d'embarquement/débarquement, en minutes de jeu. */
     embarkMinutes: z.number().min(0),
+    /** Unités terrestres : distance maximale (km) entre le point visé et le réseau de routes. */
+    roadSnapKm: z.number().positive().optional(),
   }),
   sensors: z.object({
     /** Couverture radar de base autour de la ville de chaque province possédée, en km. */

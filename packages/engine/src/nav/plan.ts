@@ -13,7 +13,8 @@ import { astar } from './astar.js';
 import { interpolator } from '../geo/sphere.js';
 import type { NavGraph } from './graph.js';
 
-export type PlanResult = { legs: Leg[] } | { error: 'unreachable' | 'not_allowed' };
+export type PlanError = 'unreachable' | 'not_allowed' | 'off_road';
+export type PlanResult = { legs: Leg[] } | { error: PlanError };
 
 /** Longueur maximale d'un segment lissé, en nombre de cellules du chemin. */
 const MAX_SPAN = 64;
@@ -41,7 +42,7 @@ function snapTo(g: NavGraph, cell: string, to: LngLat, ok: (c: string) => boolea
   return best;
 }
 
-interface Segment {
+export interface Segment {
   from: LngLat;
   to: LngLat;
   medium: 'land' | 'sea';
@@ -50,7 +51,7 @@ interface Segment {
 }
 
 /** Trajet de surface indépendant de l'heure de départ (mémoïsable). */
-export type SurfaceSegments = { error: 'unreachable' | 'not_allowed' } | { segs: Segment[] };
+export type SurfaceSegments = { error: PlanError } | { segs: Segment[] };
 
 const MEMO_MAX = 512;
 
@@ -184,7 +185,11 @@ function surfaceSegments(
 }
 
 /** Lissage « string pulling » : recherche exponentielle puis dichotomique du point visible le plus loin. */
-function smoothRun(g: NavGraph, pts: LngLat[], allowed: (cell: string) => boolean): LngLat[] {
+export function smoothRun(
+  g: NavGraph,
+  pts: LngLat[],
+  allowed: (cell: string) => boolean,
+): LngLat[] {
   if (pts.length <= 2) return pts;
   const fixed = new Set<string>([g.cellAt(pts[0]!), g.cellAt(pts[pts.length - 1]!)]);
   const stepKm = g.edgeKm * 0.75;

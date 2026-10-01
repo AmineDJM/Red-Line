@@ -10,6 +10,7 @@ import {
   OrbatSchema,
   ProvinceDefSchema,
   ResearchFileSchema,
+  RoutesFileSchema,
   ScenarioFileSchema,
   StraitSchema,
   type Balance,
@@ -71,6 +72,10 @@ export function loadRealData(scenarioId = 'world-today'): RealData {
     disputed: existsSync(join(root, 'map/disputed.json'))
       ? listOf(j('map/disputed.json'), 'disputed').map((x) => DisputedAreaSchema.parse(x))
       : [],
+    // REDLINE_NO_ROUTES=1 : déplacement libre sur la grille (comparaison avant / après le réseau).
+    ...(existsSync(join(root, 'map/routes.json')) && !process.env.REDLINE_NO_ROUTES
+      ? { routes: RoutesFileSchema.parse(j('map/routes.json')) }
+      : {}),
   };
   const catalog: WeaponSystem[] = [];
   const seen = new Set<string>();
