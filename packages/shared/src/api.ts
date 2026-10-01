@@ -22,6 +22,7 @@ import type { WeaponSystem } from './catalog.js';
  *   POST /api/games          CreateGameBody   → { game: GameMeta }
  *   GET  /api/games                           → { games: MyGame[] }
  *   GET  /api/games/:id                       → { game: GameMeta, me: NationId }
+ *   DELETE /api/games/:id                     → { ok }  (partie solo de l'appelant, définitif)
  *   WS   /ws?gameId=…                         (MessagePack, voir protocol.ts)
  *   GET  /tiles/:file.pmtiles                 (requêtes HTTP Range)
  *   GET  /basemap/:file.geojson               (côtes, mers, villes)

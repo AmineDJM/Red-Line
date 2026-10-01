@@ -43,10 +43,10 @@ export interface RuntimeOptions {
   sliceBudgetMs: number;
   /** Sans joueur connecté : délai avant la veille des IA lointaines. */
   dormancyDelayMs: number;
-  /** Multijoueur sans joueur connecté : délai avant la pause (24 h). */
-  multiIdlePauseMs: number;
-  /** Solo sans connexion du joueur : délai avant la pause (48 h). */
-  soloIdlePauseMs: number;
+  /** Multijoueur sans aucun joueur connecté : délai avant la fin pour abandon (24 h). */
+  multiAbandonMs: number;
+  /** Solo sans connexion du joueur : délai avant la fin pour abandon (48 h). */
+  soloAbandonMs: number;
   idleUnloadMs: number;
 }
 

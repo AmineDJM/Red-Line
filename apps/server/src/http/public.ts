@@ -157,6 +157,25 @@ export async function publicRoutes(app: FastifyInstance, ctx: AppContext): Promi
     return { games: list };
   });
 
+  // Suppression définitive d'une partie solo par son créateur (libère aussi le quota).
+  app.delete('/api/games/:id', async (req, reply) => {
+    const { user } = await requireUser(req, reply);
+    const id = z
+      .string()
+      .uuid()
+      .safeParse((req.params as { id: string }).id);
+    if (!id.success) throw new HttpError(404, 'not_found', 'Partie introuvable');
+    const r = await host.deleteSoloGame(id.data, user.id);
+    if (r === 'not_found') throw new HttpError(404, 'not_found', 'Partie introuvable');
+    if (r === 'not_allowed') {
+      throw new HttpError(403, 'not_allowed', 'Seules vos parties solo peuvent être supprimées');
+    }
+    if (r === 'busy') {
+      throw new HttpError(409, 'game_busy', 'Partie en cours sur un autre serveur : réessayez');
+    }
+    return { ok: true };
+  });
+
   app.get('/api/games/:id', async (req, reply) => {
     const { user } = await requireUser(req, reply);
     const id = z
