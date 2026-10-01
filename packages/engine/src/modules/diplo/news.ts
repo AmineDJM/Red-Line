@@ -1,12 +1,25 @@
-import type { LngLat, NationId, NewsCategory, NewsItem } from '@redline/shared';
+import {
+  frA,
+  frAgree,
+  frCap,
+  frDe,
+  frLe,
+  type LngLat,
+  type NationId,
+  type NewsCategory,
+  type NewsItem,
+} from '@redline/shared';
 import type { EngineState } from '../../state/types.js';
 import { notify } from '../../state/access.js';
-import { cfg, ds, nationName } from './state.js';
+import { cfg, ds, nationArticle, nationName } from './state.js';
 
 /**
  * Fil d'actualité mondial : dépêches sobres en français, générées à partir des événements du jeu.
  * Le choix du gabarit est déterministe (empreinte du numéro de dépêche), sans consommer le PRNG.
- * Style « dépêche » (nations séparées par une barre oblique, deux-points) : pas d'article à accorder.
+ * Noms de pays : `{A}` nu (style « dépêche » : « Maroc / Algérie : … »), `{le:A}` / `{Le:A}` (« le Maroc »,
+ * « Le Maroc » en début de phrase), `{de:A}` (« du Maroc ») et `{a:A}` (« au Maroc ») : l'article vient
+ * des données (`NationDef.article`). Verbe accordé en nombre par `{s:A:attaque|attaquent}` (« les
+ * États-Unis attaquent ») ; jamais d'accord en genre sur le nom du pays (« mise en cause du… »).
  */
 interface Template {
   cat: NewsCategory;
@@ -19,25 +32,25 @@ export const TEMPLATES = {
     cat: 'war',
     h: [
       '{A} / {B} : les hostilités sont ouvertes',
-      'Guerre ouverte : {A} contre {B}',
-      '{A} franchit la ligne rouge : état de guerre avec {B}',
+      'Guerre ouverte : {le:A} contre {le:B}',
+      '{Le:A} {s:A:franchit|franchissent} la ligne rouge : état de guerre avec {le:B}',
       'Rupture diplomatique totale : {A} / {B}',
     ],
     b: [
-      "Les chancelleries confirment l'état de guerre. Agresseur désigné : {A}.",
-      'Premiers mouvements de troupes signalés. {B} dénonce une agression de {A}.',
-      "Les appels au calme se multiplient après l'ouverture des hostilités par {A}.",
+      "Les chancelleries confirment l'état de guerre. Agresseur désigné : {le:A}.",
+      'Premiers mouvements de troupes signalés. {Le:B} {s:B:dénonce|dénoncent} une agression {de:A}.',
+      "Les appels au calme se multiplient après l'ouverture des hostilités par {le:A}.",
     ],
   },
   war_alliance: {
     cat: 'war',
     h: [
-      '{X} : {A} entre en guerre contre {B} au nom de la défense mutuelle',
-      'Défense mutuelle activée : {A} rejoint le conflit face à {B}',
-      "Solidarité d'alliance : {A} déclare la guerre à {B}",
+      '{X} : {le:A} {s:A:entre|entrent} en guerre contre {le:B} au nom de la défense mutuelle',
+      'Défense mutuelle activée : {le:A} {s:A:rejoint|rejoignent} le conflit face {a:B}',
+      "Solidarité d'alliance : {le:A} {s:A:déclare|déclarent} la guerre {a:B}",
     ],
     b: [
-      "{A} honore la charte de l'alliance {X} après l'agression d'un membre.",
+      "{Le:A} {s:A:honore|honorent} la charte de l'alliance {X} après l'agression d'un membre.",
       "La clause de défense mutuelle de l'alliance {X} élargit le conflit.",
     ],
   },
@@ -45,7 +58,7 @@ export const TEMPLATES = {
     cat: 'peace',
     h: [
       '{A} / {B} : un traité de paix est signé',
-      'Fin des hostilités entre {A} et {B}',
+      'Fin des hostilités entre {le:A} et {le:B}',
       'Paix conclue : {A} / {B}',
     ],
     b: [
@@ -57,7 +70,7 @@ export const TEMPLATES = {
     cat: 'peace',
     h: [
       '{A} / {B} : cessez-le-feu en vigueur',
-      'Les armes se taisent : trêve entre {A} et {B}',
+      'Les armes se taisent : trêve entre {le:A} et {le:B}',
       'Cessez-le-feu conclu : {A} / {B}',
     ],
     b: [
@@ -68,49 +81,66 @@ export const TEMPLATES = {
   ceasefire_violated: {
     cat: 'war',
     h: [
-      '{A} viole le cessez-le-feu avec {B}',
-      'Trêve rompue : {A} reprend les hostilités contre {B}',
-      'Violation du cessez-le-feu : {A} mis en cause',
+      '{Le:A} {s:A:viole|violent} le cessez-le-feu avec {le:B}',
+      'Trêve rompue : {le:A} {s:A:reprend|reprennent} les hostilités contre {le:B}',
+      'Violation du cessez-le-feu : mise en cause {de:A}',
     ],
     b: [
       'La communauté internationale condamne la rupture de la trêve. Un vote de sanctions est engagé.',
-      'Le Conseil de sécurité est saisi automatiquement de la violation commise par {A}.',
+      'Le Conseil de sécurité est saisi automatiquement de la violation commise par {le:A}.',
     ],
   },
   alliance_created: {
     cat: 'alliance',
     h: [
-      'Nouvelle alliance : {X}, sous la conduite de {A}',
-      '{A} fonde l’alliance {X}',
+      'Nouvelle alliance : {X}, sous la conduite {de:A}',
+      '{Le:A} {s:A:fonde|fondent} l’alliance {X}',
       'Recomposition stratégique : naissance de {X}',
     ],
-    b: ['Charte : {Y}.', 'Le nouveau bloc est dirigé par {A}. Charte : {Y}.'],
+    b: ['Charte : {Y}.', 'Le nouveau bloc est dirigé par {le:A}. Charte : {Y}.'],
   },
   alliance_joined: {
     cat: 'alliance',
-    h: ['{A} rejoint l’alliance {X}', '{X} s’élargit : adhésion de {A}', 'Adhésion : {A} / {X}'],
-    b: ["L'alliance compte désormais {Y} membres.", '{A} signe la charte de {X}.'],
+    h: [
+      '{Le:A} {s:A:rejoint|rejoignent} l’alliance {X}',
+      '{X} s’élargit : adhésion {de:A}',
+      'Adhésion : {A} / {X}',
+    ],
+    b: ["L'alliance compte désormais {Y} membres.", '{Le:A} {s:A:signe|signent} la charte de {X}.'],
   },
   alliance_left: {
     cat: 'alliance',
-    h: ['{A} quitte l’alliance {X}', 'Départ fracassant : {A} / {X}', '{X} perd un membre : {A}'],
-    b: ['Le retrait de {A} fragilise {X}.', 'Les partenaires de {A} prennent acte de son départ.'],
+    h: [
+      '{Le:A} {s:A:quitte|quittent} l’alliance {X}',
+      'Départ fracassant : {A} / {X}',
+      '{X} perd un membre : {le:A}',
+    ],
+    b: [
+      'Le retrait {de:A} fragilise {X}.',
+      'Les partenaires {de:A} prennent acte de {s:A:son|leur} départ.',
+    ],
   },
   alliance_expelled: {
     cat: 'alliance',
-    h: ['{X} exclut {A}', 'Exclusion : {A} n’est plus membre de {X}'],
-    b: ["Les membres de {X} ont voté l'exclusion de {A}."],
+    h: [
+      '{X} exclut {le:A}',
+      'Exclusion : {le:A} {s:A:n’est plus membre|ne sont plus membres} de {X}',
+    ],
+    b: ["Les membres de {X} ont voté l'exclusion {de:A}."],
   },
   leader_replaced: {
     cat: 'alliance',
-    h: ['{X} : {A} prend la tête de l’alliance', 'Changement de direction à la tête de {X}'],
-    b: ["Les membres de {X} ont désigné {A} comme nouveau chef de l'alliance."],
+    h: [
+      '{X} : {le:A} {s:A:prend|prennent} la tête de l’alliance',
+      'Changement de direction à la tête de {X}',
+    ],
+    b: ["Les membres de {X} ont désigné {le:A} comme nouveau chef de l'alliance."],
   },
   mutual_skipped: {
     cat: 'alliance',
-    h: ['{X} renonce à la défense mutuelle face à {A}', 'Défense mutuelle suspendue : {X} / {A}'],
+    h: ['{X} renonce à la défense mutuelle face {a:A}', 'Défense mutuelle suspendue : {X} / {A}'],
     b: [
-      'Les membres de {X} ont voté la dispense : aucune entrée en guerre automatique contre {A}.',
+      'Les membres de {X} ont voté la dispense : aucune entrée en guerre automatique contre {le:A}.',
     ],
   },
   council_open: {
@@ -133,9 +163,9 @@ export const TEMPLATES = {
   resolution_passed: {
     cat: 'council',
     h: [
-      'Conseil de sécurité : {X} adopté(e) contre {A}',
+      'Conseil de sécurité : {X} adopté(e) contre {le:A}',
       'Résolution adoptée : {X} ({A})',
-      '{A} visé par une résolution : {X}',
+      'Résolution visant {le:A} : {X}',
     ],
     b: ['Le texte entre en vigueur pour {Y} jour(s).', 'Vote : {Y}.'],
   },
@@ -147,22 +177,25 @@ export const TEMPLATES = {
   resolution_rejected: {
     cat: 'council',
     h: ['Conseil de sécurité : {X} rejeté(e)', 'Pas de majorité pour {X}'],
-    b: ['Le projet présenté par {A} n’a pas recueilli la majorité requise.'],
+    b: ['Le projet présenté par {le:A} n’a pas recueilli la majorité requise.'],
   },
   resolution_vetoed: {
     cat: 'council',
-    h: ['Veto au Conseil de sécurité : {X} bloqué(e)', '{A} oppose son veto : {X}'],
-    b: ['Le veto de {A} empêche l’adoption du texte.'],
+    h: [
+      'Veto au Conseil de sécurité : {X} bloqué(e)',
+      '{Le:A} {s:A:oppose son|opposent leur} veto : {X}',
+    ],
+    b: ['Le veto {de:A} empêche l’adoption du texte.'],
   },
   strike: {
     cat: 'strike',
     h: [
-      'Frappes {X} de {A} signalées près de {P}',
+      'Frappes {X} {de:A} signalées près de {P}',
       '{B} : frappes {X} près de {P}',
       '{A} / {B} : nouvelles frappes {X}',
     ],
     b: [
-      'Des explosions ont été entendues près de {P}. {B} accuse {A}.',
+      'Des explosions ont été entendues près de {P}. {Le:B} {s:B:accuse|accusent} {le:A}.',
       'Bilan en cours d’évaluation après des frappes {X} près de {P}.',
     ],
   },
@@ -170,48 +203,57 @@ export const TEMPLATES = {
     cat: 'nuclear',
     h: [
       'Détonation nucléaire près de {P}',
-      'Le tabou nucléaire est brisé : {A} frappe {B}',
+      'Le tabou nucléaire est brisé : {le:A} {s:A:frappe|frappent} {le:B}',
       'Frappe nucléaire : le monde sous le choc',
     ],
     b: [
-      "Une arme nucléaire a été employée par {A} près de {P}. L'alerte mondiale est maximale.",
-      'Les capitales condamnent unanimement l’emploi de l’arme atomique par {A}.',
+      "Une arme nucléaire a été employée par {le:A} près de {P}. L'alerte mondiale est maximale.",
+      'Les capitales condamnent unanimement l’emploi de l’arme atomique par {le:A}.',
     ],
   },
   battle: {
     cat: 'war',
-    h: ['Combats violents près de {P}', 'Bataille près de {P} : {A} l’emporte', 'Front : {P}'],
-    b: ['Belligérants : {X}.', 'Les combats ont opposé {X}. Avantage : {A}.'],
+    h: [
+      'Combats violents près de {P}',
+      'Bataille près de {P} : {le:A} {s:A:l’emporte|l’emportent}',
+      'Front : {P}',
+    ],
+    b: ['Belligérants : {X}.', 'Les combats ont opposé {X}. Avantage : {le:A}.'],
   },
   capital: {
     cat: 'capture',
     h: [
-      'La capitale de {B} tombe aux mains de {A}',
-      '{P} : la capitale de {B} est prise par {A}',
-      'Coup de tonnerre : {A} s’empare de {P}',
+      'La capitale {de:B} tombe aux mains {de:A}',
+      '{P} : la capitale {de:B} est prise par {le:A}',
+      'Coup de tonnerre : {le:A} {s:A:s’empare|s’emparent} de {P}',
     ],
     b: [
-      'Le gouvernement de {B} aurait quitté {P}.',
+      'Le gouvernement {de:B} aurait quitté {P}.',
       'La chute de {P} marque un tournant dans le conflit.',
     ],
   },
   capture: {
     cat: 'capture',
-    h: ['{A} prend le contrôle de {P}', '{P} passe sous contrôle de {A}'],
-    b: ['{B} perd la province de {P}.'],
+    h: ['{Le:A} {s:A:prend|prennent} le contrôle de {P}', '{P} passe sous le contrôle {de:A}'],
+    b: ['{Le:B} {s:B:perd|perdent} la province de {P}.'],
   },
   agent_caught: {
     cat: 'leak',
     h: [
-      'Affaire d’espionnage : {B} accuse {A}',
-      'Un agent de {A} arrêté par {B}',
-      'Espionnage : incident diplomatique entre {A} et {B}',
+      'Affaire d’espionnage : {le:B} {s:B:accuse|accusent} {le:A}',
+      'Un agent {de:A} arrêté par {le:B}',
+      'Espionnage : incident diplomatique entre {le:A} et {le:B}',
     ],
-    b: ['{B} dénonce une opération de renseignement menée par {A} sur son sol.'],
+    b: [
+      '{Le:B} {s:B:dénonce|dénoncent} une opération de renseignement menée par {le:A} sur {s:B:son|leur} sol.',
+    ],
   },
   blockade: {
     cat: 'economy',
-    h: ['Blocus : {A} verrouille {P}', 'Le trafic maritime perturbé : blocus de {P}'],
+    h: [
+      'Blocus : {le:A} {s:A:verrouille|verrouillent} {P}',
+      'Le trafic maritime perturbé : blocus de {P}',
+    ],
     b: ['Les échanges commerciaux sont fortement ralentis autour de {P}.'],
   },
   blockade_lifted: {
@@ -222,25 +264,25 @@ export const TEMPLATES = {
   revolt: {
     cat: 'revolt',
     h: [
-      'Troubles à {P} : manifestations contre le pouvoir de {B}',
+      'Troubles à {P} : manifestations contre le pouvoir {de:B}',
       '{B} : émeutes à {P}',
       'Agitation à {P}',
     ],
     b: [
-      'Des milliers de manifestants défient les autorités de {B}.',
-      'Les forces de l’ordre de {B} sont déployées à {P}.',
+      'Des milliers de manifestants défient les autorités {de:B}.',
+      'Les forces de l’ordre {de:B} sont déployées à {P}.',
     ],
   },
   revolt_disputed: {
     cat: 'revolt',
     h: [
-      '{X} : révolte à {P} contre {B}',
+      '{X} : révolte à {P} contre {le:B}',
       'Territoire disputé : soulèvement populaire à {P}',
       '{X} : la tension monte à {P}',
     ],
     b: [
-      'Dans ce territoire revendiqué par {Y}, la population conteste l’autorité de {B}.',
-      'La région de {X} renoue avec la violence. Détenteur : {B}.',
+      'Dans ce territoire revendiqué par {Y}, la population conteste l’autorité {de:B}.',
+      'La région de {X} renoue avec la violence. Détenteur : {le:B}.',
     ],
   },
   uprising: {
@@ -251,47 +293,50 @@ export const TEMPLATES = {
       'Insurrection à {P}',
     ],
     b: [
-      'Des combattants rebelles défient l’armée de {B}.',
+      'Des combattants rebelles défient l’armée {de:B}.',
       'Les insurgés contrôleraient plusieurs axes autour de {P}.',
     ],
   },
   rallied: {
     cat: 'revolt',
     h: [
-      '{P} : les insurgés se rallient à {A}',
-      'Territoire disputé : {P} passe sous contrôle de {A}',
+      '{P} : les insurgés se rallient {a:A}',
+      'Territoire disputé : {P} passe sous le contrôle {de:A}',
     ],
-    b: ['Après la chute des autorités de {B}, les insurgés ont proclamé leur ralliement à {A}.'],
+    b: ['Après la chute des autorités {de:B}, les insurgés ont proclamé leur ralliement {a:A}.'],
   },
   coup: {
     cat: 'coup',
     h: ['Coup d’État : {A}', '{A} : l’armée prend le pouvoir', '{A} : le gouvernement renversé'],
     b: [
-      'Une junte annonce la suspension des institutions. La politique étrangère de {A} change de cap.',
+      'Une junte annonce la suspension des institutions. La politique étrangère {de:A} change de cap.',
       'Après des semaines d’instabilité, les militaires s’emparent du pouvoir.',
     ],
   },
   refugees: {
     cat: 'refugees',
     h: [
-      'Afflux de réfugiés fuyant {A}',
-      'Crise humanitaire : les civils fuient {A}',
+      'Afflux de réfugiés fuyant {le:A}',
+      'Crise humanitaire : les civils fuient {le:A}',
       'Exode : {A}',
     ],
     b: [
       'Pays d’accueil sous pression : {X}.',
-      'Les frontières de {X} voient affluer des familles fuyant les combats.',
+      'Les pays voisins voient affluer des familles fuyant les combats : {X}.',
     ],
   },
   embargo_import_blocked: {
     cat: 'economy',
-    h: ['Embargo : {A} privé d’achats d’armement'],
+    h: ['Embargo : achats d’armement interdits {a:A}'],
     b: ['Les fournisseurs se conforment à la résolution du Conseil.'],
   },
   black_market: {
     cat: 'economy',
-    h: ['Trafic d’armes : {A} mis en cause', 'Marché noir : une filière vers {A} démantelée'],
-    b: ['Des livraisons illicites à destination de {A} ont été repérées.'],
+    h: [
+      'Trafic d’armes : mise en cause {de:A}',
+      'Marché noir : une filière vers {le:A} démantelée',
+    ],
+    b: ['Des livraisons illicites à destination {de:A} ont été repérées.'],
   },
   peacekeepers: {
     cat: 'council',
@@ -300,7 +345,10 @@ export const TEMPLATES = {
   },
   peacekeepers_attacked: {
     cat: 'council',
-    h: ['Casques bleus attaqués : {A} mis en cause', '{A} ouvre le feu sur les casques bleus'],
+    h: [
+      'Casques bleus attaqués : mise en cause {de:A}',
+      '{Le:A} {s:A:ouvre|ouvrent} le feu sur les casques bleus',
+    ],
     b: ['Le Conseil de sécurité est saisi. Des sanctions sont mises au vote.'],
   },
   oil_crisis: {
@@ -329,7 +377,7 @@ export const TEMPLATES = {
   mercenaries: {
     cat: 'war',
     h: ['Des sociétés militaires privées signalées à {P}'],
-    b: ['Des combattants sous contrat auraient été engagés par {A}.'],
+    b: ['Des combattants sous contrat auraient été engagés par {le:A}.'],
   },
 } satisfies Record<string, Template>;
 
@@ -358,12 +406,28 @@ export function elide(s: string): string {
   return s.replace(/\b([Dd])e ([AEIOUÉÈÊÂÎÔaeiouéèêâîô])/g, '$1’$2');
 }
 
-function fill(tpl: string, state: EngineState, v: NewsVars): string {
+/** Remplit un gabarit de dépêche (noms de pays accordés, élision). */
+export function fill(tpl: string, state: EngineState, v: NewsVars): string {
   return elide(fill0(tpl, state, v));
+}
+
+function form(state: EngineState, f: string, n: NationId): string {
+  const name = nationName(state, n);
+  const art = nationArticle(state, n);
+  if (f === 'de') return frDe(name, art);
+  if (f === 'a') return frA(name, art);
+  const le = frLe(name, art);
+  return f === 'Le' ? frCap(le) : le;
 }
 
 function fill0(tpl: string, state: EngineState, v: NewsVars): string {
   return tpl
+    .replace(/\{(le|Le|de|a):([AB])\}/g, (_m, f: string, k: 'A' | 'B') =>
+      v[k] ? form(state, f, v[k]) : '—',
+    )
+    .replace(/\{s:([AB]):([^|}]*)\|([^}]*)\}/g, (_m, k: 'A' | 'B', sg: string, pl: string) =>
+      v[k] ? frAgree(nationArticle(state, v[k]), sg, pl) : sg,
+    )
     .replace(/\{A\}/g, v.A ? nationName(state, v.A) : '—')
     .replace(/\{B\}/g, v.B ? nationName(state, v.B) : '—')
     .replace(/\{P\}/g, v.P ?? '—')

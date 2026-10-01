@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { RESOURCES } from './catalog.js';
+import { FrArticleSchema } from './french.js';
 
 /** Bâtiments stratégiques génériques (jamais de sites réels nommés). */
 export const BUILDING_TYPES = [
@@ -37,6 +38,8 @@ export const NationDefSchema = z.object({
   id: z.string(), // iso3 en minuscules, ou identifiant d'entité ("gaza", "pse")
   iso: z.string(), // ISO alpha-3 ou code d'entité
   name: z.string(),
+  /** Article défini français (« le » Maroc, « l' » Algérie, « » pour Cuba) : voir french.ts. */
+  article: FrArticleSchema.optional(),
   kind: z.enum(['state', 'entity']),
   /** Couleur de teinte, hex "#rrggbb". */
   color: z.string().regex(/^#[0-9a-fA-F]{6}$/),

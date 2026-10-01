@@ -3,7 +3,8 @@
   "systems": [
     {
       "id": "us.optical-recon-satellite",
-      "name": "Satellite de reconnaissance optique (États-Unis)",
+      "name": "Satellite de reconnaissance optique",
+      "generic": true,
       "doctrine": "us",
       "origin": "US",
       "category": "space",
@@ -83,7 +84,8 @@
     },
     {
       "id": "us.radar-satellite",
-      "name": "Satellite de reconnaissance radar (États-Unis)",
+      "name": "Satellite de reconnaissance radar",
+      "generic": true,
       "doctrine": "us",
       "origin": "US",
       "category": "space",
@@ -163,7 +165,8 @@
     },
     {
       "id": "us.sigint-satellite",
-      "name": "Satellite d'écoute électronique (États-Unis)",
+      "name": "Satellite d'écoute électronique",
+      "generic": true,
       "doctrine": "us",
       "origin": "US",
       "category": "space",
@@ -243,7 +246,8 @@
     },
     {
       "id": "us.early-warning-satellite",
-      "name": "Satellite d'alerte avancée (États-Unis)",
+      "name": "Satellite d'alerte avancée",
+      "generic": true,
       "doctrine": "us",
       "origin": "US",
       "category": "space",
@@ -323,7 +327,8 @@
     },
     {
       "id": "us.asat",
-      "name": "Arme antisatellite (États-Unis)",
+      "name": "Arme antisatellite",
+      "generic": true,
       "doctrine": "us",
       "origin": "US",
       "category": "space",
@@ -400,7 +405,8 @@
     },
     {
       "id": "ru.optical-recon-satellite",
-      "name": "Satellite de reconnaissance optique (Russie)",
+      "name": "Satellite de reconnaissance optique",
+      "generic": true,
       "doctrine": "ru",
       "origin": "RU",
       "category": "space",
@@ -480,7 +486,8 @@
     },
     {
       "id": "ru.radar-satellite",
-      "name": "Satellite de reconnaissance radar (Russie)",
+      "name": "Satellite de reconnaissance radar",
+      "generic": true,
       "doctrine": "ru",
       "origin": "RU",
       "category": "space",
@@ -560,7 +567,8 @@
     },
     {
       "id": "ru.sigint-satellite",
-      "name": "Satellite d'écoute électronique (Russie)",
+      "name": "Satellite d'écoute électronique",
+      "generic": true,
       "doctrine": "ru",
       "origin": "RU",
       "category": "space",
@@ -640,7 +648,8 @@
     },
     {
       "id": "ru.early-warning-satellite",
-      "name": "Satellite d'alerte avancée (Russie)",
+      "name": "Satellite d'alerte avancée",
+      "generic": true,
       "doctrine": "ru",
       "origin": "RU",
       "category": "space",
@@ -720,7 +729,8 @@
     },
     {
       "id": "ru.asat",
-      "name": "Arme antisatellite (Russie)",
+      "name": "Arme antisatellite",
+      "generic": true,
       "doctrine": "ru",
       "origin": "RU",
       "category": "space",
@@ -797,7 +807,8 @@
     },
     {
       "id": "cn.optical-recon-satellite",
-      "name": "Satellite de reconnaissance optique (Chine)",
+      "name": "Satellite de reconnaissance optique",
+      "generic": true,
       "doctrine": "cn",
       "origin": "CN",
       "category": "space",
@@ -877,7 +888,8 @@
     },
     {
       "id": "cn.radar-satellite",
-      "name": "Satellite de reconnaissance radar (Chine)",
+      "name": "Satellite de reconnaissance radar",
+      "generic": true,
       "doctrine": "cn",
       "origin": "CN",
       "category": "space",
@@ -957,7 +969,8 @@
     },
     {
       "id": "cn.sigint-satellite",
-      "name": "Satellite d'écoute électronique (Chine)",
+      "name": "Satellite d'écoute électronique",
+      "generic": true,
       "doctrine": "cn",
       "origin": "CN",
       "category": "space",
@@ -1037,7 +1050,8 @@
     },
     {
       "id": "cn.early-warning-satellite",
-      "name": "Satellite d'alerte avancée (Chine)",
+      "name": "Satellite d'alerte avancée",
+      "generic": true,
       "doctrine": "cn",
       "origin": "CN",
       "category": "space",
@@ -1117,7 +1131,8 @@
     },
     {
       "id": "cn.asat",
-      "name": "Arme antisatellite (Chine)",
+      "name": "Arme antisatellite",
+      "generic": true,
       "doctrine": "cn",
       "origin": "CN",
       "category": "space",
@@ -1194,7 +1209,8 @@
     },
     {
       "id": "eu.optical-recon-satellite",
-      "name": "Satellite de reconnaissance optique (Europe)",
+      "name": "Satellite de reconnaissance optique",
+      "generic": true,
       "doctrine": "eu",
       "origin": "FR",
       "category": "space",
@@ -1274,7 +1290,8 @@
     },
     {
       "id": "eu.radar-satellite",
-      "name": "Satellite de reconnaissance radar (Europe)",
+      "name": "Satellite de reconnaissance radar",
+      "generic": true,
       "doctrine": "eu",
       "origin": "FR",
       "category": "space",
@@ -1354,7 +1371,8 @@
     },
     {
       "id": "eu.sigint-satellite",
-      "name": "Satellite d'écoute électronique (Europe)",
+      "name": "Satellite d'écoute électronique",
+      "generic": true,
       "doctrine": "eu",
       "origin": "FR",
       "category": "space",
@@ -1434,7 +1452,8 @@
     },
     {
       "id": "other.optical-recon-satellite",
-      "name": "Satellite de reconnaissance optique (Inde)",
+      "name": "Satellite de reconnaissance optique",
+      "generic": true,
       "doctrine": "other",
       "origin": "IN",
       "category": "space",
@@ -1514,7 +1533,8 @@
     },
     {
       "id": "other.asat",
-      "name": "Arme antisatellite (Inde)",
+      "name": "Arme antisatellite",
+      "generic": true,
       "doctrine": "other",
       "origin": "IN",
       "category": "space",

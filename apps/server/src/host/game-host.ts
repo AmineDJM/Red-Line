@@ -5,6 +5,7 @@ import type { FastifyBaseLogger } from 'fastify';
 import type { GameSetup, GameState, GameStats, SystemCommand, World } from '@redline/engine';
 import {
   BalanceSchema,
+  frDe,
   type AdminGame,
   type Balance,
   type ClientMessage,
@@ -1182,6 +1183,12 @@ export class GameHost {
     return this.d.store.current().nationsById.get(id)?.name ?? id;
   }
 
+  /** « du Maroc », « de l'Algérie », « des États-Unis » (article des données de carte). */
+  private nationDe(id: NationId): string {
+    const d = this.d.store.current().nationsById.get(id);
+    return frDe(d?.name ?? id, d?.article);
+  }
+
   /**
    * Remplace par une IA les joueurs inactifs depuis `inactiveAiAfterH` heures réelles (multijoueur,
    * joueurs non connectés). Appelé périodiquement ; `now` injectable pour les tests.
@@ -1212,10 +1219,7 @@ export class GameHost {
             .set({ isAiReplacement: true, aiSince: new Date(now) })
             .where(and(eq(gamePlayers.gameId, g.id), eq(gamePlayers.slot, slot)));
         });
-        this.notice(
-          g,
-          `${this.nationName(p.nationId)} est désormais tenue par une IA (joueur inactif).`,
-        );
+        this.notice(g, `L'IA prend le contrôle ${this.nationDe(p.nationId)} (joueur inactif).`);
         this.log.info({ gameId: g.id, nation: p.nationId }, 'joueur inactif remplacé par une IA');
       }
     }
@@ -1404,7 +1408,7 @@ export class GameHost {
     this.notice(
       g,
       ai
-        ? `${name} est confiée à une IA par l'administration.`
+        ? `L'administration confie le contrôle ${this.nationDe(nationId)} à une IA.`
         : `${name} : l'administration a rendu la nation à son joueur.`,
       ai ? 'warn' : 'info',
     );
@@ -1720,7 +1724,7 @@ export class GameHost {
       g.players.push({ slot, userId, nationId, isAi: false, aiForced: false, lastActiveAt: now });
     }
     g.meta.playerCount = g.players.filter((p) => p.userId).length;
-    this.notice(g, `Un nouveau joueur prend la tête de ${this.nationName(nationId)}.`);
+    this.notice(g, `Un nouveau joueur prend la tête ${this.nationDe(nationId)}.`);
     return g.meta;
   }
 
@@ -1752,7 +1756,7 @@ export class GameHost {
       }
     }
     g.meta.playerCount = g.players.filter((x) => x.userId).length;
-    this.notice(g, `${this.nationName(p.nationId)} est désormais tenue par une IA.`);
+    this.notice(g, `L'IA prend le contrôle ${this.nationDe(p.nationId)}.`);
   }
 
   // ───────────────────────────── Persistance ─────────────────────────────

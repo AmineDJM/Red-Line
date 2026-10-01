@@ -379,7 +379,7 @@
     },
     {
       "id": "us.infantry-light",
-      "name": "Infanterie légère (États-Unis)",
+      "name": "Infanterie légère",
       "category": "infantry",
       "doctrine": "us",
       "origin": "US",
@@ -387,7 +387,7 @@
     },
     {
       "id": "us.infantry-mech",
-      "name": "Infanterie mécanisée (États-Unis)",
+      "name": "Infanterie mécanisée",
       "category": "infantry",
       "doctrine": "us",
       "origin": "US",
@@ -395,7 +395,7 @@
     },
     {
       "id": "ru.infantry-light",
-      "name": "Infanterie légère (Russie)",
+      "name": "Infanterie légère",
       "category": "infantry",
       "doctrine": "ru",
       "origin": "RU",
@@ -403,7 +403,7 @@
     },
     {
       "id": "ru.infantry-mech",
-      "name": "Infanterie mécanisée (Russie)",
+      "name": "Infanterie mécanisée",
       "category": "infantry",
       "doctrine": "ru",
       "origin": "RU",
@@ -411,7 +411,7 @@
     },
     {
       "id": "cn.infantry-light",
-      "name": "Infanterie légère (Chine)",
+      "name": "Infanterie légère",
       "category": "infantry",
       "doctrine": "cn",
       "origin": "CN",
@@ -419,7 +419,7 @@
     },
     {
       "id": "cn.infantry-mech",
-      "name": "Infanterie mécanisée (Chine)",
+      "name": "Infanterie mécanisée",
       "category": "infantry",
       "doctrine": "cn",
       "origin": "CN",
@@ -427,7 +427,7 @@
     },
     {
       "id": "eu.infantry-light",
-      "name": "Infanterie légère (Europe)",
+      "name": "Infanterie légère",
       "category": "infantry",
       "doctrine": "eu",
       "origin": "EU",
@@ -435,7 +435,7 @@
     },
     {
       "id": "eu.infantry-mech",
-      "name": "Infanterie mécanisée (Europe)",
+      "name": "Infanterie mécanisée",
       "category": "infantry",
       "doctrine": "eu",
       "origin": "EU",
@@ -443,7 +443,7 @@
     },
     {
       "id": "other.infantry-light",
-      "name": "Infanterie légère (générique)",
+      "name": "Infanterie légère",
       "category": "infantry",
       "doctrine": "other",
       "origin": "XX",
@@ -451,7 +451,7 @@
     },
     {
       "id": "other.infantry-mech",
-      "name": "Infanterie mécanisée (générique)",
+      "name": "Infanterie mécanisée",
       "category": "infantry",
       "doctrine": "other",
       "origin": "XX",

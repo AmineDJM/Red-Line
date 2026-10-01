@@ -42,6 +42,8 @@ import {
   cardinal,
   hedge,
   nationName,
+  natDe,
+  natLe,
   sectorOf,
 } from './text.js';
 
@@ -218,7 +220,7 @@ export function scan(state: EngineState): void {
       for (const uid of g.inferred) revealContact(state, n, state.units[uid]!, 1, 25);
       const qq = clamp(0.45 * q + (0.5 * g.seen.length) / g.units + 0.05, 0.05, 0.95);
       const lines = [
-        `${approx(state, g.units, qq)} unités de ${nationName(state, g.owner)} en mouvement, ${sectorOf(state, g.at)}.`,
+        `${approx(state, g.units, qq)} unités ${natDe(state, g.owner)} en mouvement, ${sectorOf(state, g.at)}.`,
       ];
       if (g.heading) lines.push(`Direction générale : ${cardinal(g.at, g.heading)}.`);
       lines.push(hedge(state, qq));
@@ -226,7 +228,7 @@ export function scan(state: EngineState): void {
         dept: 'military',
         source: 'sigint',
         kind: 'flash',
-        title: `FLASH — Mouvement de forces de ${nationName(state, g.owner)}`,
+        title: `FLASH — Mouvement de forces ${natDe(state, g.owner)}`,
         lines,
         at: g.at,
         radiusKm: 30 + (1 - qq) * 120,
@@ -302,19 +304,18 @@ function interiorNote(state: EngineState, n: NationId): void {
 function nationFacts(state: EngineState, n: NationId, x: NationId, qx: number): string[] {
   const facts: string[] = [];
   const wars = warsOf(state, x);
-  if (wars.length)
-    facts.push(`en guerre contre ${wars.map((y) => nationName(state, y)).join(', ')}`);
+  if (wars.length) facts.push(`en guerre contre ${wars.map((y) => natLe(state, y)).join(', ')}`);
   const plans = board(state).warPlans?.[x] ?? [];
   if (plans.length && roll(state) < qx)
-    facts.push(`prépare une offensive contre ${plans.map((y) => nationName(state, y)).join(', ')}`);
+    facts.push(`prépare une offensive contre ${plans.map((y) => natLe(state, y)).join(', ')}`);
   const aid = board(state).allianceOf[x];
   if (aid && roll(state) < qx) {
     const mates = state.nationIds.filter((y) => y !== x && board(state).allianceOf[y] === aid);
     if (mates.length)
       facts.push(
-        `alliée à ${mates
+        `alliance avec ${mates
           .slice(0, 3)
-          .map((y) => nationName(state, y))
+          .map((y) => natLe(state, y))
           .join(', ')}`,
       );
   }
@@ -403,7 +404,7 @@ function militaryNote(state: EngineState, n: NationId, pool: PoolEntry[]): void 
   if (conc && conc.units >= 2) {
     at = conc.at;
     lines.push(
-      `Présence frontalière : ${approx(state, conc.units, q)} unités de ${nationName(state, conc.owner)}, ${sectorOf(state, conc.at)}.`,
+      `Présence frontalière : ${approx(state, conc.units, q)} unités ${natDe(state, conc.owner)}, ${sectorOf(state, conc.at)}.`,
     );
   }
   const contacts = Object.values(state.know[n] ?? {});

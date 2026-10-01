@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { DAY, HOUR } from '@redline/shared';
 import { advanceTo, notificationsFor, viewFor } from '../src/index.js';
 import { signal } from '../src/modules/registry.js';
+import { TEMPLATES, fill } from '../src/modules/diplo/news.js';
+import { wi } from '../src/state/world.js';
 import { cityOf } from './fixtures.js';
 import { D, game, ok } from './diplo-helpers.js';
 
@@ -100,5 +102,47 @@ describe('diplomatie : fil d’actualité mondial', () => {
     const v = viewFor(s, 'aaa').news!;
     expect(v[0]!.time).toBeGreaterThanOrEqual(v[v.length - 1]!.time);
     expect(Number(v[0]!.id.slice(1))).toBeGreaterThan(Number(v[1]!.id.slice(1)));
+  });
+
+  it('noms de pays accordés : article, contractions, élision (jamais « de Maroc »)', () => {
+    // Aucun nom nu après une préposition ou un verbe : seulement en style « dépêche » (« A / B : »).
+    const all = Object.values(TEMPLATES).flatMap((t) => [...t.h, ...t.b]);
+    for (const tpl of all) {
+      expect(tpl, tpl).not.toMatch(
+        /\b(de|à|au|contre|par|entre|avec|vers|fuyant|fuient|face|et|pour|accuse|frappe|exclut)\s+\{[AB]\}/,
+      );
+      expect(tpl, tpl).not.toMatch(/\{[AB]\} (?!\/|:|\()/);
+      // Sujet suivi d'un verbe : toujours accordé en nombre (« les États-Unis attaquent »).
+      expect(tpl, tpl).not.toMatch(
+        /(?<!par |contre |avec |entre |visant |vers )\{[Ll]e:([AB])\} (?!\{s:\1:|contre |et |au |comme |sous |près |sur |non |\(|:)/,
+      );
+    }
+    const s = game();
+    const defs = wi(s.world).nationById;
+    const a = defs.get('aaa')!;
+    const b = defs.get('bbb')!;
+    const saved = [{ ...a }, { ...b }];
+    try {
+      Object.assign(a, { name: 'États-Unis', article: 'les' });
+      Object.assign(b, { name: 'Algérie', article: "l'" });
+      const v = { A: 'aaa', B: 'bbb', P: 'Oran', X: 'aériennes' };
+      expect(fill('La capitale {de:B} tombe aux mains {de:A}', s, v)).toBe(
+        "La capitale de l'Algérie tombe aux mains des États-Unis",
+      );
+      expect(fill('{Le:A} {s:A:déclare|déclarent} la guerre {a:B} près de {P}', s, v)).toBe(
+        "Les États-Unis déclarent la guerre à l'Algérie près d’Oran",
+      );
+      Object.assign(a, { name: 'Maroc', article: 'le' });
+      Object.assign(b, { name: 'Israël', article: '' });
+      expect(fill('Frappes {X} {de:A} : {le:B} {s:B:accuse|accusent} {le:A}', s, v)).toBe(
+        'Frappes aériennes du Maroc : Israël accuse le Maroc',
+      );
+      expect(fill('{A} / {B} : {de:B}, {a:A}', s, v)).toBe("Maroc / Israël : d'Israël, au Maroc");
+    } finally {
+      Object.assign(a, saved[0]);
+      Object.assign(b, saved[1]);
+      if (saved[0]!.article === undefined) delete a.article;
+      if (saved[1]!.article === undefined) delete b.article;
+    }
   });
 });

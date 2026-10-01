@@ -45,7 +45,17 @@ import {
   startListen,
 } from './contacts.js';
 import { ist, nat, nextId, type Agent, type StoredOp } from './state.js';
-import { CATEGORY_LABEL, fmtTime, nationName, provinceName, sectorOf } from './text.js';
+import {
+  CATEGORY_LABEL,
+  fmtTime,
+  nationName,
+  natA,
+  natAgree,
+  natDe,
+  natLe,
+  provinceName,
+  sectorOf,
+} from './text.js';
 
 export const OP_LABEL: Record<IntelOpKind, string> = {
   infiltrate_spy: "Infiltration d'un agent",
@@ -395,9 +405,9 @@ function onExposed(state: EngineState, n: NationId, op: StoredOp): void {
     dept: CYBER[op.kind] ? 'interior' : 'military',
     source: 'sigint',
     kind: CYBER[op.kind] ? 'cyber' : 'counterintel',
-    title: `${OP_LABEL[op.kind]} attribuée à ${nationName(state, n)}`,
+    title: `${OP_LABEL[op.kind]} attribuée ${natA(state, n)}`,
     lines: [
-      `Tentative de ${OP_LABEL[op.kind].toLowerCase()} détectée et attribuée à ${nationName(state, n)}.`,
+      `Tentative de ${OP_LABEL[op.kind].toLowerCase()} détectée et attribuée ${natA(state, n)}.`,
       'Mesures de protection renforcées.',
     ],
     at: op.target.at ?? null,
@@ -422,6 +432,9 @@ function applySuccess(state: EngineState, n: NationId, op: StoredOp): void {
   const c = cfg(state);
   const v = op.victim;
   const vName = v ? nationName(state, v) : '';
+  const vDe = v ? natDe(state, v) : '';
+  const vLe = v ? natLe(state, v) : '';
+  const vA = v ? natA(state, v) : '';
   const result = (lines: string[], extra: Partial<Parameters<typeof publish>[2]> = {}): void => {
     publish(state, n, {
       dept: op.dept,
@@ -442,8 +455,8 @@ function applySuccess(state: EngineState, n: NationId, op: StoredOp): void {
       const a = createAgent(state, n, v!, op.kind === 'infiltrate_spy' ? 'officer' : 'source');
       result([
         op.kind === 'infiltrate_spy'
-          ? `Agent ${a.codename} implanté en ${vName}. Premières remontées sous 24 heures.`
-          : `Source ${a.codename} recrutée en ${vName}. Accès limité mais discret.`,
+          ? `Agent ${a.codename} implanté sur le territoire ${vDe}. Premières remontées sous 24 heures.`
+          : `Source ${a.codename} recrutée sur le territoire ${vDe}. Accès limité mais discret.`,
       ]);
       return;
     }
@@ -457,7 +470,7 @@ function applySuccess(state: EngineState, n: NationId, op: StoredOp): void {
       a.turnedAt = state.time;
       result([
         `Agent ${a.codename} retourné : il travaille désormais pour nous.`,
-        `Ses rapports à ${vName} sont sous notre contrôle ; son service ignore la manœuvre.`,
+        `Ses rapports ${vA} sont sous notre contrôle ; son service ignore la manœuvre.`,
       ]);
       return;
     }
@@ -468,7 +481,7 @@ function applySuccess(state: EngineState, n: NationId, op: StoredOp): void {
         return;
       }
       a.state = 'exfiltrated';
-      result([`Agent ${a.codename} exfiltré de ${vName}, en sécurité.`]);
+      result([`Agent ${a.codename} exfiltré ${vDe}, en sécurité.`]);
       return;
     }
     case 'steal_research': {
@@ -481,7 +494,7 @@ function applySuccess(state: EngineState, n: NationId, op: StoredOp): void {
         (id) => (res?.get(id)?.tier ?? 0) === (res?.get(cands[0]!)?.tier ?? 0),
       );
       if (top.length === 0) {
-        result([`Aucune avance technologique de ${vName} exploitable par nos laboratoires.`]);
+        result([`Aucune avance technologique ${vDe} exploitable par nos laboratoires.`]);
         return;
       }
       const nodeId = top[Math.floor(roll(state) * top.length)]!;
@@ -490,7 +503,7 @@ function applySuccess(state: EngineState, n: NationId, op: StoredOp): void {
       g.sort();
       signal(state, 'research_stolen', { by: n, victim: v, nodeId });
       result([
-        `Dossiers techniques « ${res?.get(nodeId)?.name ?? nodeId} » récupérés auprès de ${vName}.`,
+        `Dossiers techniques « ${res?.get(nodeId)?.name ?? nodeId} » récupérés auprès ${vDe}.`,
         'Transmis à nos laboratoires.',
       ]);
       return;
@@ -558,29 +571,27 @@ function applySuccess(state: EngineState, n: NationId, op: StoredOp): void {
     case 'disinformation':
       signal(state, 'disinformation', { by: n, victim: v, amount: c.disinformationAmount });
       result([
-        `Campagne diffusée dans l'espace médiatique de ${vName}. Effet sur la stabilité attendu.`,
+        `Campagne diffusée dans l'espace médiatique ${vDe}. Effet sur la stabilité attendu.`,
       ]);
       return;
     case 'leak_plans': {
       const { headline, body } = leakContent(state, v!);
       signal(state, 'leak', { by: n, victim: v, headline, body });
-      result([`Documents de ${vName} rendus publics : « ${headline} ».`], { kind: 'leak' });
+      result([`Documents ${vDe} rendus publics : « ${headline} ».`], { kind: 'leak' });
       return;
     }
     case 'plant_fake_report': {
       const planted = plantFake(state, n, v!, op.target.at ?? null, 'report');
       result([
         planted
-          ? `Faux rapport introduit dans les circuits de ${vName}.`
-          : `Faux rapport transmis ; réception par ${vName} non confirmée.`,
+          ? `Faux rapport introduit dans les circuits ${vDe}.`
+          : `Faux rapport transmis ; réception par ${vLe} non confirmée.`,
       ]);
       return;
     }
     case 'fake_radio_traffic': {
       plantFake(state, n, v!, op.target.at!, 'radio');
-      result([
-        `Faux trafic radio émis ${sectorOf(state, op.target.at!)} à destination de ${vName}.`,
-      ]);
+      result([`Faux trafic radio émis ${sectorOf(state, op.target.at!)} à destination ${vDe}.`]);
       return;
     }
     case 'deploy_decoys': {
@@ -588,7 +599,7 @@ function applySuccess(state: EngineState, n: NationId, op: StoredOp): void {
       const count = c.decoyCount + level(state, n, 'military') - 1;
       const ds = deployDecoys(state, n, op.target.at!, deceived, count);
       result([
-        `${ds.length} leurre(s) déployé(s) ${sectorOf(state, op.target.at!)}, visibles de ${deceived.map((x) => nationName(state, x)).join(', ')}.`,
+        `${ds.length} leurre(s) déployé(s) ${sectorOf(state, op.target.at!)}, visibles par ${deceived.map((x) => natLe(state, x)).join(', ')}.`,
         `Durée : ${c.decoyHours} heures.`,
       ]);
       return;
@@ -702,7 +713,7 @@ export function plantFake(
       dept: 'military',
       source: 'sigint',
       kind: 'flash',
-      title: `FLASH — Mouvement massif de forces de ${nationName(state, by)}`,
+      title: `FLASH — Mouvement massif de forces ${natDe(state, by)}`,
       lines: [
         `≈ ${units} unités en mouvement ${sectorOf(state, at)}, dont ${CATEGORY_LABEL[cat]}.`,
         channel === 'radio'
@@ -727,9 +738,9 @@ export function plantFake(
       dept: 'exterior',
       source: 'humint',
       kind: 'intentions',
-      title: `Intentions de ${nationName(state, actor)}`,
+      title: `Intentions ${natDe(state, actor)}`,
       lines: [
-        `${nationName(state, actor)} préparerait une offensive contre ${nationName(state, victim)} sous 72 heures.`,
+        `${natLe(state, actor, true)} ${natAgree(state, actor, 'préparerait', 'prépareraient')} une offensive contre ${natLe(state, victim)} sous 72 heures.`,
         'Mobilisation discrète des réserves signalée par une source proche de l’état-major.',
       ],
       at: capAt,
@@ -744,13 +755,14 @@ export function plantFake(
 
 /** Contenu d'une fuite : vrais secrets de la victime (plans, production, recherche, opérations). */
 function leakContent(state: EngineState, victim: NationId): { headline: string; body: string } {
-  const name = nationName(state, victim);
+  const le = natLe(state, victim);
+  const de = natDe(state, victim);
   const facts: { head: string; line: string }[] = [];
   const plans = board(state).warPlans?.[victim] ?? [];
   if (plans.length) {
-    const t = plans.map((x) => nationName(state, x)).join(', ');
+    const t = plans.map((x) => natLe(state, x)).join(', ');
     facts.push({
-      head: `${name} préparait une guerre contre ${t}`,
+      head: `${le} ${natAgree(state, victim, 'préparait', 'préparaient')} une guerre contre ${t}`,
       line: `Plans d'offensive contre ${t}.`,
     });
   }
@@ -758,26 +770,29 @@ function leakContent(state: EngineState, victim: NationId): { headline: string; 
   if (prod.length) {
     const s = state.world.catalog.get(prod[0]!.systemId);
     facts.push({
-      head: `Le programme d'armement secret de ${name}`,
+      head: `le programme d'armement secret ${de}`,
       line: `${prod.length} système(s) d'armes en production, dont ${s?.name ?? prod[0]!.systemId}.`,
     });
   }
   const cur = researchOf(state, victim)?.current?.id;
   if (cur) {
     const nm = state.world.research?.get(cur)?.name ?? cur;
-    facts.push({ head: `${name} développe « ${nm} »`, line: `Programme de recherche « ${nm} ».` });
+    facts.push({
+      head: `${le} ${natAgree(state, victim, 'développe', 'développent')} « ${nm} »`,
+      line: `Programme de recherche « ${nm} ».`,
+    });
   }
   const ops = nat(state, victim).ops.filter((o) => o.status === 'running' && o.victim);
   if (ops.length) {
-    const t = [...new Set(ops.map((o) => nationName(state, o.victim!)))].join(', ');
+    const t = [...new Set(ops.map((o) => natLe(state, o.victim!)))].join(', ');
     facts.push({
-      head: `Les opérations clandestines de ${name}`,
+      head: `les opérations clandestines ${de}`,
       line: `Opérations clandestines en cours visant ${t}.`,
     });
   }
   if (facts.length === 0)
     facts.push({
-      head: `Documents internes de ${name}`,
+      head: `documents internes ${de}`,
       line: 'Correspondance interne embarrassante sur la conduite des affaires militaires.',
     });
   return {

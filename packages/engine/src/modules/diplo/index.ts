@@ -16,7 +16,7 @@ import { seedRng } from '../../rng/rng.js';
 import type { EngineModule, ModEvent } from '../types.js';
 import { board, signal } from '../registry.js';
 import { worldConfig } from './config.js';
-import { addReputation, addStability, ds, isRegular, type DiploState } from './state.js';
+import { addReputation, addStability, ds, isRegular, natList, type DiploState } from './state.js';
 import { news, pushNews, throttled } from './news.js';
 import {
   onCeasefireEnd,
@@ -334,7 +334,7 @@ function onSignal(state: EngineState, name: string, x: Record<string, unknown>):
       news(
         state,
         'battle',
-        { A: winner, P: placeName(state, at), X: nations.map((n) => n.toUpperCase()).join(', ') },
+        { A: winner, P: placeName(state, at), X: natList(state, nations) },
         at,
         nations,
       );

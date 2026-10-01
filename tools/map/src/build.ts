@@ -19,6 +19,7 @@ import {
   type ProvinceDef,
   type Strait,
 } from '@redline/shared';
+import { NATION_ARTICLE } from './articles.js';
 import * as basemap from './basemap.js';
 import {
   cellCenter,
@@ -346,12 +347,18 @@ async function main() {
       if (o) link(provById.get(id)!.nation, provById.get(o)!.nation);
     }
   const colors = colorNations([...nt.nations.keys()], nationNb);
+  const articleOf = (id: string) => {
+    const a = NATION_ARTICLE[id];
+    if (a === undefined) throw new Error(`article français manquant pour ${id} (src/articles.ts)`);
+    return a;
+  };
   const nations: NationDef[] = [...nt.nations.values()]
     .sort((a, b) => a.id.localeCompare(b.id))
     .map((n) => ({
       id: n.id,
       iso: n.iso,
       name: n.name,
+      article: articleOf(n.id),
       kind: n.kind,
       color: colors.get(n.id)!,
       capitalProvinceId: capitalOf.get(n.id)!.id,

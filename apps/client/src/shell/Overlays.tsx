@@ -16,6 +16,7 @@ import {
 } from '@redline/ui';
 import { fmtClock, fmtDuration, fmtKm } from '../i18n/index.js';
 import { unitPosition } from '../map/interpolation.js';
+import { nationForms } from '../lib/game.js';
 import { navigate } from '../router.js';
 import { gameNow, useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
@@ -415,7 +416,10 @@ export function LegendPanel({ fog }: { fog: boolean }) {
   );
 }
 
-/** Victoire ou défaite : superposition sobre, lien vers l'écran de fin de partie. */
+/**
+ * Victoire, défaite ou fin pour abandon (partie close faute de joueur, `GameMeta.endReason`) :
+ * superposition sobre, lien vers l'écran de fin de partie.
+ */
 export function EndOverlay() {
   const { t } = useTranslation();
   const view = useGame((s) => s.view);
@@ -424,22 +428,33 @@ export function EndOverlay() {
   const [dismissed, setDismissed] = useState(false);
   const winner = view?.victory.winner ?? null;
   const defeated = !!(me && view && view.nations[me] && !view.nations[me]!.alive);
-  if (dismissed || (!winner && !defeated) || !view) return null;
-  const victory = winner === me;
-  const winnerName = winner ? (view.nations[winner]?.name ?? winner) : '';
+  const abandoned = meta?.status === 'ended' && meta.endReason === 'abandoned';
+  if (dismissed || (!winner && !defeated && !abandoned) || !view) return null;
+  const victory = !abandoned && winner === me;
+  const kind = abandoned ? 'abandoned' : victory ? 'victory' : 'defeat';
   return (
     <div
-      className={victory ? 'endov endov--victory' : 'endov endov--defeat'}
+      className={`endov endov--${kind}`}
       role="dialog"
       aria-modal="true"
+      aria-labelledby="endov-title"
+      data-testid="end-overlay"
     >
       <div className="endov__card">
-        <div className="endov__kicker">{view.nations[me ?? '']?.name}</div>
-        <h2 className="endov__title">{victory ? t('game.end.victory') : t('game.end.defeat')}</h2>
+        <div className="endov__kicker">
+          {abandoned ? t('game.end.kickerEnded') : view.nations[me ?? '']?.name}
+        </div>
+        <h2 className="endov__title" id="endov-title">
+          {t(`game.end.${kind}`)}
+        </h2>
         <p className="endov__text">
-          {victory
-            ? t('game.end.victoryText', { nation: winnerName })
-            : t('game.end.defeatText', { nation: winnerName || '—' })}
+          {abandoned
+            ? t('game.end.abandonedText')
+            : victory
+              ? t('game.end.victoryText')
+              : winner
+                ? t('game.end.defeatText', nationForms(winner))
+                : t('game.end.defeatTextAlone')}
         </p>
         <div className="endov__actions">
           <Button onClick={() => setDismissed(true)}>{t('game.end.observe')}</Button>

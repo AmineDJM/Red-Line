@@ -8,6 +8,7 @@ import type {
   ResolutionType,
   UnitId,
 } from '@redline/shared';
+import { frA, frAgree, frCap, frDe, frLe, type FrArticle } from '@redline/shared';
 import type { EngineState } from '../../state/types.js';
 import type { RngState } from '../../rng/rng.js';
 import { board, modState } from '../kit.js';
@@ -239,6 +240,40 @@ export function nationName(state: EngineState, n: NationId): string {
   if (p?.kind === 'peacekeeper') return 'Casques bleus';
   if (p?.kind === 'rebel') return p.of ? `Rebelles (${nationName(state, p.of)})` : 'Rebelles';
   return n;
+}
+
+/** Article français de la nation (données) ; pseudo-nations au pluriel (« les Casques bleus »). */
+export function nationArticle(state: EngineState, n: NationId): FrArticle {
+  const def = wi(state.world).nationById.get(n);
+  if (def) return def.article ?? '';
+  return ds(state).pseudo[n] ? 'les' : '';
+}
+
+/** « le Maroc », « l'Algérie », « Cuba » ; `cap` pour un début de phrase. */
+export function natLe(state: EngineState, n: NationId, cap = false): string {
+  const s = frLe(nationName(state, n), nationArticle(state, n));
+  return cap ? frCap(s) : s;
+}
+
+/** « du Maroc », « de l'Algérie », « des États-Unis », « d'Israël ». */
+export function natDe(state: EngineState, n: NationId): string {
+  return frDe(nationName(state, n), nationArticle(state, n));
+}
+
+/** « au Maroc », « à l'Algérie », « aux États-Unis », « à Cuba ». */
+export function natA(state: EngineState, n: NationId): string {
+  return frA(nationName(state, n), nationArticle(state, n));
+}
+
+/** Verbe accordé en nombre avec la nation sujet : « le Maroc propose », « les États-Unis proposent ». */
+export function natAgree(state: EngineState, n: NationId, sg: string, pl: string): string {
+  return frAgree(nationArticle(state, n), sg, pl);
+}
+
+/** Liste de nations avec article : « le Maroc, l'Algérie et la Tunisie ». */
+export function natList(state: EngineState, ns: readonly NationId[]): string {
+  const l = ns.map((n) => natLe(state, n));
+  return l.length <= 1 ? (l[0] ?? '') : `${l.slice(0, -1).join(', ')} et ${l[l.length - 1]}`;
 }
 
 export function newId(state: EngineState, prefix: string): string {

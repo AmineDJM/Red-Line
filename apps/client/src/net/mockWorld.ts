@@ -11,6 +11,8 @@ import {
   MINUTE,
   destination,
   distanceKm,
+  frAgree,
+  frForms,
   type AgentView,
   type AllianceView,
   type BattleReportSummary,
@@ -755,6 +757,14 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
     { id: 'military', level: 1, budgetPerDay: 1.7e6, capacity: 3, running: 1 },
   ];
   const hn = (id?: NationId) => ctx.nations.find((n) => n.id === id)?.name ?? '—';
+  /** Formes accordées (« le Maroc », « au Maroc »…) et accord du verbe (« lance / lancent »). */
+  const hf = (id?: NationId) => {
+    const n = ctx.nations.find((x) => x.id === id);
+    return {
+      ...frForms(n?.name ?? '—', n?.article),
+      v: (sg: string, pl: string) => frAgree(n?.article, sg, pl),
+    };
+  };
   const hp = ctx.captureTarget;
   const enemyUnits = Object.values(view.units).filter((u) => u.owner !== me);
   const report = (
@@ -839,7 +849,7 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
       kind: 'intentions',
       reliability: 'B',
       credibility: 3,
-      title: `${hn(h1 ?? h0)} prête à un cessez-le-feu`,
+      title: `Cessez-le-feu : ouverture ${hf(h1 ?? h0).deNation}`,
       body: 'Notre agent au ministère des Affaires étrangères rapporte des discussions internes favorables à un cessez-le-feu, sous condition de retrait de la province disputée.',
       subject: { nationId: h1 ?? h0 },
       actions: [{ kind: 'share', reportId: 'r5' }],
@@ -875,7 +885,7 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
       reliability: 'C',
       credibility: 3,
       title: 'Note quotidienne — Diplomatie et économie',
-      body: `Le Conseil de sécurité se réunit dans 2 jours. ${hn(bigFive[0])} soutiendrait une résolution de cessez-le-feu.`,
+      body: `Le Conseil de sécurité se réunit dans 2 jours. ${hf(bigFive[0]).NationLe} ${hf(bigFive[0]).v('soutiendrait', 'soutiendraient')} une résolution de cessez-le-feu.`,
       actions: [],
     }),
     report({
@@ -887,7 +897,7 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
       reliability: 'A',
       credibility: 1,
       title: 'Agent étranger démasqué à la capitale',
-      body: `Un officier de liaison travaillant pour ${hn(h0)} a été arrêté au ministère de la Défense. Retournement possible en agent double.`,
+      body: `Un officier de liaison travaillant pour ${hf(h0).nationLe} a été arrêté au ministère de la Défense. Retournement possible en agent double.`,
       at: cap?.cityPoint ?? null,
       radiusKm: 15,
       actions: [{ kind: 'open_province', provinceId: cap?.id ?? '' }],
@@ -1197,7 +1207,7 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
           type: 'ceasefire',
           proposer: bigFive[4] ?? bigFive[0]!,
           target: { nationId: h0 },
-          text: `Le Conseil exige un cessez-le-feu immédiat entre ${hn(me)} et ${hn(h0)}, le retrait des forces sur les lignes du J+0 et l’ouverture de couloirs humanitaires.`,
+          text: `Le Conseil exige un cessez-le-feu immédiat entre ${hf(me).nationLe} et ${hf(h0).nationLe}, le retrait des forces sur les lignes du J+0 et l’ouverture de couloirs humanitaires.`,
           votes: {
             [bigFive[4] ?? 'fra']: 'yes',
             [bigFive[3] ?? 'gbr']: 'yes',
@@ -1211,7 +1221,7 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
           type: 'arms_embargo',
           proposer: me,
           target: { nationId: h0 },
-          text: `Embargo sur les livraisons d’armes à ${hn(h0)} pour une durée de 30 jours.`,
+          text: `Embargo sur les livraisons d’armes ${hf(h0).aNation} pour une durée de 30 jours.`,
           votes: { [me]: 'yes', [bigFive[1] ?? 'rus']: 'yes', [bigFive[0] ?? 'usa']: 'no' },
           status: 'voting',
           durationDays: 30,
@@ -1234,7 +1244,7 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
         type: 'economic_sanctions',
         proposer: bigFive[0] ?? others[0]!,
         target: { nationId: h1 ?? others[1] },
-        text: `Sanctions économiques contre ${hn(h1 ?? others[1])}.`,
+        text: `Sanctions économiques contre ${hf(h1 ?? others[1]).nationLe}.`,
         votes: {},
         status: 'passed',
         durationDays: 30,
@@ -1271,8 +1281,8 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
     news(
       1,
       'war',
-      `${hn(h0)} lance une offensive blindée`,
-      `Des colonnes de chars franchissent la frontière. ${hn(me)} annonce une riposte « proportionnée ».`,
+      `${hf(h0).NationLe} ${hf(h0).v('lance', 'lancent')} une offensive blindée`,
+      `Des colonnes de chars franchissent la frontière. ${hf(me).NationLe} ${hf(me).v('annonce', 'annoncent')} une riposte « proportionnée ».`,
       40 * MINUTE,
       at1,
       [me, h0 ?? ''],
@@ -1308,7 +1318,7 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
       5,
       'alliance',
       'Naissance du Pacte du Sahel',
-      `${hn(me)} et ses voisins signent une charte de défense mutuelle et de partage du renseignement.`,
+      `${hf(me).NationLe} et ${hf(me).v('ses', 'leurs')} voisins signent une charte de défense mutuelle et de partage du renseignement.`,
       2 * DAY,
       ctx.capPt,
       [me, ...allies],
@@ -1353,7 +1363,7 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
       10,
       'nuclear',
       'Exercice nucléaire annoncé',
-      `${hn(bigFive[1])} met ses forces stratégiques en alerte pour un exercice de 48 h.`,
+      `${hf(bigFive[1]).NationLe} ${hf(bigFive[1]).v('met ses', 'mettent leurs')} forces stratégiques en alerte pour un exercice de 48 h.`,
       26 * HOUR,
       null,
       bigFive.slice(1, 2),

@@ -402,6 +402,7 @@ export const fr = {
     targetClass: 'Classe de cible',
     movement: 'Déplacement',
     canCapture: 'Peut capturer une province',
+    generic: 'Système générique de doctrine (nom sans pays)',
     'cost.money': 'Coût (dollars)',
     'cost.resources': 'Coût en ressources',
     'cost.resources.oil': 'Pétrole',

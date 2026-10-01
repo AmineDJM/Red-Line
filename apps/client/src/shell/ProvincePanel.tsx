@@ -16,7 +16,7 @@ import {
   pictogramForBuilding,
 } from '@redline/ui';
 import { fmtDuration } from '../i18n/index.js';
-import { nationName, relationOf } from '../lib/game.js';
+import { nationForms, nationName, relationOf } from '../lib/game.js';
 import { BuildingRow, BuildMenu } from '../components/Buildings.js';
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
@@ -117,7 +117,7 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
           <span>
             {capture.by === me
               ? t('province.captureOwn')
-              : t('province.captureBy', { nation: nationName(capture.by) })}
+              : t('province.captureBy', nationForms(capture.by))}
           </span>
           <ProgressBar
             value={captureF}

@@ -250,6 +250,14 @@ describe('data/catalog', () => {
     expect(systems.some((s) => (s.sensor?.stealthDetect ?? 0) >= 0.5)).toBe(true);
     expect(systems.filter((s) => s.air?.tankerFuelH).length).toBeGreaterThanOrEqual(4);
   });
+  it('noms sans pays de doctrine entre parenthèses ; systèmes génériques marqués', () => {
+    const country = / \((États-Unis|Russie|Chine|Europe|Inde|générique|Israël|France|Iran)\)$/;
+    for (const s of systems) expect(s.name, s.id).not.toMatch(country);
+    // Infanterie, satellites et brouilleurs : même nom pour chaque doctrine, doctrine en badge.
+    for (const s of systems.filter((x) => x.category === 'infantry'))
+      expect(s.generic, s.id).toBe(true);
+    expect(systems.filter((s) => s.generic).length).toBeGreaterThanOrEqual(40);
+  });
 });
 
 describe('chasseurs et multirôles (catégorie validée)', () => {

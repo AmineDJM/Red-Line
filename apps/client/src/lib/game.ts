@@ -2,6 +2,7 @@
  * Aides de lecture de la vue du joueur (noms, inventaire, droits de production). Aucune règle de
  * jeu n'est décidée ici : le moteur valide chaque ordre ; ces aides ne servent qu'à l'affichage.
  */
+import { frForms, type FrNationForms } from '@redline/shared';
 import type {
   BuildingType,
   Category,
@@ -23,6 +24,28 @@ export function nationName(id: NationId | null | undefined): string {
     useWorld.getState().nations[id]?.name ??
     id.toUpperCase()
   );
+}
+
+/**
+ * Formes grammaticales du nom d'une nation pour les gabarits i18n : `{{nation}}` (Maroc),
+ * `{{nationLe}}` (le Maroc), `{{NationLe}}` (Le Maroc), `{{deNation}}` (du Maroc), `{{aNation}}`
+ * (au Maroc). L'article vient des données de carte (`NationDef.article`).
+ */
+export function nationForms(id: NationId | null | undefined): FrNationForms {
+  if (!id) return frForms('—', '');
+  return frForms(nationName(id), useWorld.getState().nations[id]?.article ?? '');
+}
+
+/** Formes de deux nations, préfixées (`aLe`, `bA`…) pour les gabarits à deux pays. */
+export function nationPair(a: NationId, b: NationId): Record<string, string> {
+  const pre = (p: string, f: FrNationForms) => ({
+    [p]: f.nation,
+    [`${p}Le`]: f.nationLe,
+    [`${p.toUpperCase()}Le`]: f.NationLe,
+    [`${p}De`]: f.deNation,
+    [`${p}A`]: f.aNation,
+  });
+  return { ...pre('a', nationForms(a)), ...pre('b', nationForms(b)) };
 }
 
 export function nationColor(id: NationId): string {

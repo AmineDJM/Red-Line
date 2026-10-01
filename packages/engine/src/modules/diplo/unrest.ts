@@ -30,6 +30,7 @@ import {
   ds,
   isPseudo,
   isRegular,
+  natList,
   reputation,
   round1,
   sameAlliance,
@@ -356,7 +357,7 @@ function revolt(
     B: holder,
     P: def.name,
     X: areaName ?? '',
-    Y: (claimants ?? []).map((c) => c.toUpperCase()).join(', '),
+    Y: natList(state, claimants ?? []),
   };
   if (armed) {
     const tension = areaName

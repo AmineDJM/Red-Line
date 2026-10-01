@@ -2,7 +2,7 @@ import { eq, inArray } from 'drizzle-orm';
 import type { FastifyBaseLogger, FastifyInstance } from 'fastify';
 import webpush from 'web-push';
 import { z } from 'zod';
-import type { GameNotification, NationId } from '@redline/shared';
+import { frForms, frPlural, type GameNotification, type NationId } from '@redline/shared';
 import type { Db } from '../db/client.js';
 import { pushSubscriptions, serverSettings } from '../db/schema.js';
 import type { Engine } from '../engine.js';
@@ -160,7 +160,11 @@ export class PushService {
     );
     if (major.length === 0) return;
     const data = this.deps.store.current();
-    const nationName = (id: string) => data.nationsById.get(id)?.name ?? id;
+    // Noms accordés : « Le Maroc vous déclare la guerre », « Les États-Unis attaquent… ».
+    const nation = (id: string) => {
+      const d = data.nationsById.get(id);
+      return { ...frForms(d?.name ?? id, d?.article), pl: frPlural(d?.article) };
+    };
     const provinceName = (id: string) => data.map?.provinces.find((p) => p.id === id)?.name ?? id;
     let owners: Record<string, NationId> | null = null;
     const ownerOf = (pid: string) => {
@@ -183,13 +187,13 @@ export class PushService {
           case 'war_declared':
             if (n.against === me) {
               cat = 'attack';
-              body = `${nationName(n.by)} vous déclare la guerre.`;
+              body = `${nation(n.by).NationLe} ${nation(n.by).pl ? 'vous déclarent' : 'vous déclare'} la guerre.`;
             }
             break;
           case 'province_capture_started':
             if (n.by !== me && ownerOf(n.provinceId) === me) {
               cat = 'attack';
-              body = `${nationName(n.by)} attaque ${provinceName(n.provinceId)}.`;
+              body = `${nation(n.by).NationLe} ${nation(n.by).pl ? 'attaquent' : 'attaque'} ${provinceName(n.provinceId)}.`;
             }
             break;
           case 'unit_destroyed':
@@ -201,7 +205,7 @@ export class PushService {
           case 'province_captured':
             if (n.from === me) {
               cat = 'capture';
-              body = `${nationName(n.by)} s'est emparé de ${provinceName(n.provinceId)}.`;
+              body = `${provinceName(n.provinceId)} : capture par ${nation(n.by).nationLe}.`;
             } else if (n.by === me) {
               cat = 'capture';
               body = `Vos troupes ont pris ${provinceName(n.provinceId)}.`;
@@ -222,7 +226,7 @@ export class PushService {
             body =
               n.winner === me
                 ? 'Victoire ! Votre nation l’emporte.'
-                : `${nationName(n.winner)} remporte la partie.`;
+                : `Victoire ${nation(n.winner).deNation}. La partie est terminée.`;
             break;
           case 'nation_defeated':
             if (n.nationId === me) {

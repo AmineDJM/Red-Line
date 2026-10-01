@@ -1,6 +1,7 @@
 import {
   MINUTE,
   distanceKm,
+  frLe,
   type BuildingType,
   type GameNotification,
   type LngLat,
@@ -273,6 +274,17 @@ export function nameOfProvince(state: EngineState, pid: ProvinceId | null): stri
   if (!pid) return 'en mer';
   const d = provDef(state, pid);
   return d?.cityName ?? d?.name ?? pid;
+}
+
+/** Nom de nation avec son article (« le Maroc », « l'Algérie ») pour les textes de mil. */
+export function nationLe(state: EngineState, n: NationId): string {
+  const d = wi(state.world).nationById.get(n);
+  return d ? frLe(d.name, d.article) : n.toUpperCase();
+}
+
+/** « à Oran », ou « en mer » hors de toute province. */
+export function atProvince(state: EngineState, pid: ProvinceId | null): string {
+  return pid ? `à ${nameOfProvince(state, pid)}` : 'en mer';
 }
 
 export function sysName(state: EngineState, u: Unit): string {

@@ -5,6 +5,7 @@ import { countryName, t } from '../i18n/index.js';
 import { gameNow, useGame } from '../store/game.js';
 import { useWorld } from '../store/world.js';
 import type { WindowId, WindowParams } from '../store/ui.js';
+import { nationForms, nationPair } from '../lib/game.js';
 
 /** Temps de jeu courant, rafraîchi toutes les `ms` millisecondes. */
 export function useGameTime(ms = 1000): number {
@@ -37,6 +38,12 @@ export function weaponLabels(): WeaponCardLabels {
 }
 
 export function weaponSubtitle(s: WeaponSystem): string {
+  // Système générique (infanterie, satellites…) : la doctrine, pas un pays d'origine trompeur.
+  if (s.generic && (s.doctrine !== 'other' || s.origin.toUpperCase() === 'XX'))
+    return t('weapon.subtitleDoctrine', {
+      category: t(`categories.${s.category}`),
+      doctrine: t(`weapon.doctrineAdj.${s.doctrine}`),
+    });
   return t('weapon.subtitle', {
     category: t(`categories.${s.category}`),
     country: countryName(s.origin),
@@ -60,8 +67,7 @@ export function describeNotification(
   me: NationId | null,
 ): NotificationInfo {
   const w = useWorld.getState();
-  const nation = (id: NationId) =>
-    view?.nations[id]?.name ?? w.nations[id]?.name ?? id.toUpperCase();
+  const nation = (id: NationId) => nationForms(id);
   const province = (id: string) => w.provinces[id]?.cityName ?? w.provinces[id]?.name ?? id;
   const unitName = (systemId?: string) =>
     (systemId && w.catalog[systemId]?.name) || t('game.selection.unknownType');
@@ -83,7 +89,7 @@ export function describeNotification(
     case 'unit_detected': {
       const u = view?.units[n.unitId];
       const text = u?.systemId
-        ? k('unit_detected_known', { unit: unitName(u.systemId), nation: nation(u.owner) })
+        ? k('unit_detected_known', { ...nation(u.owner), unit: unitName(u.systemId) })
         : k('unit_detected');
       return { text, critical: false, major: false, at, icon: 'radio' };
     }
@@ -100,8 +106,8 @@ export function describeNotification(
       if (provOwner === me)
         return {
           text: k('province_capture_started_threat', {
+            ...nation(n.by),
             province: province(n.provinceId),
-            nation: nation(n.by),
           }),
           critical: true,
           major: true,
@@ -110,8 +116,8 @@ export function describeNotification(
         };
       return {
         text: k('province_capture_started', {
+          ...nation(n.by),
           province: province(n.provinceId),
-          nation: nation(n.by),
         }),
         critical: false,
         major: false,
@@ -137,7 +143,7 @@ export function describeNotification(
           icon: 'warning',
         };
       return {
-        text: k('province_captured', { province: province(n.provinceId), nation: nation(n.by) }),
+        text: k('province_captured', { ...nation(n.by), province: province(n.provinceId) }),
         critical: false,
         major: false,
         at,
@@ -155,7 +161,7 @@ export function describeNotification(
       return { text: k('arrived'), critical: false, major: false, at, icon: 'mapPin' };
     case 'nation_defeated':
       return {
-        text: k('nation_defeated', { nation: nation(n.nationId) }),
+        text: k('nation_defeated', nation(n.nationId)),
         critical: n.nationId === me,
         major: true,
         at: null,
@@ -163,7 +169,7 @@ export function describeNotification(
       };
     case 'victory':
       return {
-        text: k('victory', { nation: nation(n.winner) }),
+        text: k('victory', nation(n.winner)),
         critical: n.winner !== me,
         major: true,
         at: null,
@@ -186,7 +192,7 @@ export function describeNotification(
       };
     case 'war_declared':
       return {
-        text: k('war_declared', { a: nation(n.by), b: nation(n.against) }),
+        text: k('war_declared', nationPair(n.by, n.against)),
         critical: n.against === me,
         major: true,
         at: null,
@@ -195,7 +201,7 @@ export function describeNotification(
       };
     case 'peace_signed':
       return {
-        text: k('peace_signed', { a: nation(n.a), b: nation(n.b) }),
+        text: k('peace_signed', nationPair(n.a, n.b)),
         critical: false,
         major: true,
         at: null,

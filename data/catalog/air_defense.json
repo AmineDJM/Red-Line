@@ -803,7 +803,8 @@
     },
     {
       "id": "us.ew-jammer",
-      "name": "Brouilleur de guerre électronique (États-Unis)",
+      "name": "Brouilleur de guerre électronique",
+      "generic": true,
       "doctrine": "us",
       "origin": "US",
       "category": "air_defense",
@@ -2078,7 +2079,8 @@
     },
     {
       "id": "cn.ew-jammer",
-      "name": "Brouilleur de guerre électronique (Chine)",
+      "name": "Brouilleur de guerre électronique",
+      "generic": true,
       "doctrine": "cn",
       "origin": "CN",
       "category": "air_defense",

@@ -79,7 +79,9 @@ describe.skipIf(!hasDb)('exploitation : IA imposée, nations, sécurité, quotas
     expect(r.json().player).toMatchObject({ nationId: 'dza', isAi: true, aiForced: true });
     const g = built.ctx.host.games.get(gameId)!;
     expect(fakeState(g.state).ai.dza).toBe(true);
-    expect((await wsA.next('notice', (m) => m.text.includes('confiée'))).text).toContain('Algérie');
+    expect((await wsA.next('notice', (m) => m.text.includes('confie'))).text).toContain(
+      "de l'Algérie",
+    );
 
     // Le joueur ne reprend pas la main en revenant, ses ordres sont refusés.
     await wsB.close();

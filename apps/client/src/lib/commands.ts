@@ -17,6 +17,8 @@
  */
 import {
   INTEL_OPS,
+  frForms,
+  frLe,
   type LngLat,
   type NationDef,
   type NationId,
@@ -365,7 +367,7 @@ export function parseCommand(input: string, ctx: CommandCtx): CommandAction {
         },
         summary: ctx.label('console.done.intel', {
           op: ctx.label(`intel.ops.${op}`),
-          target: nation?.name ?? place!.name,
+          target: nation ? frLe(nation.name, nation.article) : place!.name,
         }),
       };
     }
@@ -385,7 +387,7 @@ export function parseCommand(input: string, ctx: CommandCtx): CommandAction {
       return {
         type: 'order',
         order,
-        summary: ctx.label(`console.done.${cmd.id}`, { nation: n.name }),
+        summary: ctx.label(`console.done.${cmd.id}`, frForms(n.name, n.article)),
       };
     }
     case 'mobilize': {

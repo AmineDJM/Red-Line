@@ -84,6 +84,44 @@
   color: var(--rl-text-dim);
   font-size: var(--rl-fs-2xs);
 }
+/* Nom de partie : il occupe la place restante et s'abrège à droite (jamais de débordement). */
+.games-table td:first-child {
+  width: 100%;
+  max-width: 0;
+}
+.games-table .lobbyname {
+  min-width: 0;
+}
+.games-table .lobbyname b {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+}
+.games-table .lobbyname b .rl-flag {
+  flex: none;
+  margin-top: 0.3em;
+}
+.lobbyname b .lobbyname__title {
+  display: -webkit-box;
+  min-width: 0;
+  overflow: hidden;
+  color: inherit;
+  font-size: inherit;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+.games-table td:first-child {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+.games-table .lobbyname > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .picker__players {
   display: inline-flex;
   align-items: center;
@@ -154,7 +192,7 @@
 }
 .endbanner h2 {
   margin: 4px 0;
-  font: 800 34px / 1 var(--rl-font-mono);
+  font: 800 clamp(24px, 7vw, 34px) / 1 var(--rl-font-mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
