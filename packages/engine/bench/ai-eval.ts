@@ -151,6 +151,12 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
   });
 
   const isAi = (n: NationId) => s.nations[n]?.isAi;
+  const deficitAtStart = new Set<NationId>();
+  for (const n of s.nationIds) {
+    if (budgetDay(s, n) <= 0) continue;
+    const b = breakdown(s, n);
+    if (b.upkeepTotal > b.total) deficitAtStart.add(n);
+  }
   let declared = 0;
   if (MODE !== 'free') {
     advanceTo(s, DAY);
@@ -322,6 +328,10 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
     upkeepOver: 0,
     researchDone: 0,
     minDays: Infinity,
+    /** En solde négatif sans être en déficit structurel au départ : faillite due aux dépenses. */
+    negativeSolvent: 0,
+    /** Déficit structurel au départ (entretien de l'ORBAT supérieur au budget). */
+    deficitAtStart: deficitAtStart.size,
   };
   for (const n of s.nationIds) {
     const ns = s.nations[n]!;
@@ -330,6 +340,7 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
     if (bd <= 0) continue;
     eco.nations++;
     if (ns.money < 0) eco.negative++;
+    if (ns.money < 0 && !deficitAtStart.has(n)) eco.negativeSolvent++;
     if (ns.money < bd) eco.belowDay++;
     if (ns.money < start[n]!.money) eco.poorer++;
     eco.minDays = Math.min(eco.minDays, ns.money / bd);

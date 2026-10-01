@@ -38,6 +38,7 @@ import {
 import { board } from '../modules/kit.js';
 import {
   captureFailures,
+  commitments,
   forgetNation,
   isHot,
   reactiveThink,
@@ -194,6 +195,8 @@ interface Ctx {
   reserved: Set<string>;
   paths: number;
   failed: Record<string, number>;
+  /** Unités engagées dans une offensive : unité → [province visée, jusqu'à]. */
+  commit: Record<string, [string, number]>;
   enemies: Seen[];
   /** Force ennemie connue menaçant chacune de ses villes (rayon threatRadiusKm). */
   threat: Map<ProvinceId, number>;
@@ -291,6 +294,7 @@ function context(state: EngineState, n: NationId): Ctx {
     reserved: new Set(),
     paths: L.pathBudget,
     failed: captureFailures(state, n),
+    commit: commitments(state, n),
     enemies: [],
     threat: new Map(),
     hold: new Map(),
@@ -359,7 +363,14 @@ function destOf(m: Mine): LngLat {
  * Garde une ville : réserve les unités terrestres présentes (ou en route), puis fait venir les plus
  * proches unités libres jusqu'à `count` unités et `value` de force. Renvoie la force obtenue.
  */
-function garrison(ctx: Ctx, pid: ProvinceId, count: number, value: number, minShare: number): void {
+function garrison(
+  ctx: Ctx,
+  pid: ProvinceId,
+  count: number,
+  value: number,
+  minShare: number,
+  recall = false,
+): void {
   const { state } = ctx;
   const at = cityPoint(state, pid);
   const gc = state.world.balance.combat.groundContactKm;
@@ -381,8 +392,9 @@ function garrison(ctx: Ctx, pid: ProvinceId, count: number, value: number, minSh
   }
   if (have >= count && force >= value) return;
   const reach = ctx.T.reinforceReachKm;
+  // Unités engagées dans une offensive : rappelées seulement pour la capitale (`recall`).
   const cands = ctx.land
-    .filter((m) => ctx.idle.has(m.u.id) && m.ground)
+    .filter((m) => ctx.idle.has(m.u.id) && m.ground && (recall || !ctx.commit[m.u.id]))
     .map((m) => ({ m, d: distanceKm(m.pos, at) }))
     .filter((x) => x.d <= reach)
     .sort((a, b) => a.d - b.d || (a.m.u.id < b.m.u.id ? -1 : 1));
@@ -421,7 +433,7 @@ function holdKeyPoints(ctx: Ctx): void {
   if (cap && state.provinces[cap]?.owner === n) {
     const threat = ctx.threat.get(cap) ?? 0;
     if (threat > 0) ctx.critical = true;
-    garrison(ctx, cap, L.capitalGarrison, threat * L.attackRatio, 0);
+    garrison(ctx, cap, L.capitalGarrison, threat * L.attackRatio, 0, true);
   }
   if (!L.defendCities) return;
   const cities = [...ctx.threat]
@@ -487,7 +499,12 @@ function launchGroup(ctx: Ctx, pid: ProvinceId, need: number): boolean {
   if (ctx.paths <= 0 || (ctx.failed[pid] ?? 0) > state.time || ctx.aimed.has(pid)) return false;
   const city = cityPoint(state, pid);
   const cands = ctx.land
-    .filter((m) => ctx.idle.has(m.u.id) && (m.ground || m.s.canCapture))
+    .filter(
+      (m) =>
+        ctx.idle.has(m.u.id) &&
+        (m.ground || m.s.canCapture) &&
+        (!ctx.commit[m.u.id] || ctx.commit[m.u.id]![0] === pid),
+    )
     .map((m) => ({ m, d: distanceKm(m.pos, city) }))
     .filter((x) => x.d <= ctx.T.attackReachKm)
     .sort((a, b) => a.d - b.d || (a.m.u.id < b.m.u.id ? -1 : 1));
@@ -520,7 +537,11 @@ function launchGroup(ctx: Ctx, pid: ProvinceId, need: number): boolean {
     return false;
   }
   if (!order(state, n, { kind: 'move', unitIds: group.map((m) => m.u.id), to: city })) return false;
-  for (const m of group) ctx.idle.delete(m.u.id);
+  const until = state.time + ctx.T.commitHours * 3_600_000;
+  for (const m of group) {
+    ctx.idle.delete(m.u.id);
+    ctx.commit[m.u.id] = [pid, until];
+  }
   ctx.aimed.add(pid);
   return true;
 }

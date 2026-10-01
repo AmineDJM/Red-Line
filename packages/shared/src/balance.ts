@@ -432,6 +432,8 @@ export const AiBalanceSchema = z.object({
       capRadiusKm: num(250),
       /** Contacts ennemis perdus de vue retenus comme menace pendant ce délai (heures). */
       contactMemoryHours: num(12),
+      /** Une unité lancée dans une offensive n'est pas rappelée en renfort pendant ce délai (heures). */
+      commitHours: num(8),
       /** Délai avant de retenter une capture sans chemin praticable (heures de jeu). */
       captureRetryHours: num(6),
       /** Plafond d'unités en paix, par province possédée, plus une base. */
@@ -491,6 +493,8 @@ export const AiBalanceSchema = z.object({
       unreachablePeaceDays: num(3),
       /** Pas de guerre d'agression sous cette stabilité. */
       minStabilityForWar: num(45),
+      /** Ses propres forces (sans les alliés) doivent peser cette part du rapport de force voulu. */
+      ownRatioShare: num(0.6),
       /** Après une reprise en main (joueur remplacé) : pas de décision brutale pendant ce délai (jours). */
       takeoverCalmDays: num(1),
       /** Délai entre deux demandes de paix au même ennemi (jours). */

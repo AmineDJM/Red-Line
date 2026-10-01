@@ -74,6 +74,8 @@ interface Memory {
   capFail: Record<string, number>;
   /** Invitations d'alliance envoyées : nation → date (pas de relance avant `inviteCooldownDays`). */
   invited?: Record<NationId, number>;
+  /** Unités engagées dans une offensive : unité → [province visée, jusqu'à] (pas de rappel en renfort). */
+  commit?: Record<string, [string, number]>;
 }
 
 interface AiState {
@@ -116,6 +118,14 @@ export function captureFailures(state: EngineState, n: NationId): Record<string,
   m.capFail ??= {};
   for (const k of sortedKeys(m.capFail)) if (m.capFail[k]! <= state.time) delete m.capFail[k];
   return m.capFail;
+}
+
+/** Engagements offensifs en cours d'une nation (unités disparues et engagements échus retirés). */
+export function commitments(state: EngineState, n: NationId): Record<string, [string, number]> {
+  const m = memory(state, n);
+  const c = (m.commit ??= {});
+  for (const k of sortedKeys(c)) if (c[k]![1] <= state.time || !state.units[k]) delete c[k];
+  return c;
 }
 
 function order(state: EngineState, n: NationId, o: Order): boolean {
@@ -435,6 +445,11 @@ function seekWar(
     if (d.grace[`${n}>${t}`] !== undefined) continue;
     let r = ratioAgainst(state, n, t, mine, P);
     if (state.nations[t]!.isPlayer) r *= P.humanTargetBias;
+    if (r < bestRatio) continue;
+    // Pas de guerre sur la seule foi de ses alliés (dont la force n'est qu'estimée) : ses propres
+    // forces doivent déjà peser une part du rapport voulu.
+    const own = (mine.value + 1) / (sideForce(state, n, t, mine, P) + 1);
+    if (own < P.warRatio * S(state).ownRatioShare) continue;
     const waived = P.casusBelliWaiverRatio > 0 && r >= P.casusBelliWaiverRatio;
     if (!waived && !casusBelli(state, n, t)) continue;
     if (r >= bestRatio) {
