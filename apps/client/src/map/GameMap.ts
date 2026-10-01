@@ -339,6 +339,8 @@ export class GameMap {
     this.tooltip = new MapTooltip(container);
     this.map.on('load', () => this.onLoad());
     const drawOverlay = () => this.overlay.draw(this.overlayContent);
+    // Ondes de bataille entrant dans le champ : relance de la boucle des effets (sans coût sinon).
+    this.map.on('moveend', () => this.fx.wake());
     this.map.on('render', drawOverlay);
     // Un saut de caméra programmé (centrage sur une alerte…) ne produit pas toujours d'image :
     // la surcouche est aussi redessinée sur les mouvements, sinon elle resterait figée.
@@ -1246,6 +1248,7 @@ export class GameMap {
     this.updateMissiles(tNow, me);
   }
 
+  private trailsTick = -10;
   /** Pile d'appartenance de chaque unité au dernier regroupement (hystérésis). */
   private groupOf = new Map<string, string>();
   /** Décalage affiché de chaque pion (glissement vers l'écartement voulu). */
@@ -1286,6 +1289,10 @@ export class GameMap {
 
   /** Traînées des aéronefs et missiles en vol, trajectoire prévue, impacts. */
   private updateMissiles(tNow: number, me: NationId | null) {
+    // Sans missile en vol, traînées, sillages et traces suivent à ~4 Hz : moins de travail pour le
+    // worker de la carte, écart imperceptible (quelques pixels au plus).
+    if (!this.animState.missiles && this.tickCount - this.trailsTick < 3) return;
+    this.trailsTick = this.tickCount;
     const z = this.map.getZoom();
     const b = this.map.getBounds();
     const m = missileFeatures(this.units, tNow, me, {

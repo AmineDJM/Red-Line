@@ -128,7 +128,7 @@ export function battleFeatures(markers: readonly BattleMarker[]): FeatureCollect
     properties: {
       id: m.id,
       rid: m.reportId ?? '',
-      heat: Math.round(m.heat * 100) / 100,
+      heat: Math.round(m.heat * 10) / 10,
       side: m.side ?? '',
       // Étiquette compacte : pertes « vous / adversaire » (batailles du joueur).
       label: m.reportId && m.side ? `-${m.lossOwn} / -${m.lossFoe}` : '',

@@ -263,13 +263,23 @@ export class FxRenderer {
       this.lastDraw = now;
       this.draw(now);
     }
-    if (this.system.busy || this.pulsing) this.raf = requestAnimationFrame(this.frame);
+    // Ondes hors champ : la boucle s'arrête (relancée par `wake` quand la carte bouge).
+    if (this.system.busy || (this.pulsing && this.pulsesVisible()))
+      this.raf = requestAnimationFrame(this.frame);
     else this.lastFrame = 0;
   };
   /** Combats en cours à signaler par des ondes (position, intensité 0..1). */
   private pulses: { at: LngLat; heat: number }[] = [];
   private get pulsing() {
     return this.pulses.length > 0;
+  }
+
+  private pulsesVisible(): boolean {
+    for (const pl of this.pulses) {
+      const q = this.map.project(pl.at as [number, number]);
+      if (q.x > -60 && q.y > -60 && q.x < this.w + 60 && q.y < this.h + 60) return true;
+    }
+    return false;
   }
 
   /**
