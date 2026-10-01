@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { CATEGORIES } from './catalog.js';
 import { BUILDING_TYPES } from './map.js';
+import { StacksBalanceSchema } from './stacks.js';
 
 // ——— Combat complet (phase 3) : chiffres d'équilibrage du module militaire du moteur ———
 
@@ -1131,6 +1132,8 @@ export const BalanceSchema = z.object({
     .optional(),
   /** Combat complet (phase 3) : voir MilitaryBalanceSchema (valeurs par défaut documentées). */
   military: MilitaryBalanceSchema.optional(),
+  /** Piles mixtes (regroupement de départ, fusion, emploi par l'IA) : voir StacksBalanceSchema. */
+  stacks: StacksBalanceSchema.optional(),
   /**
    * Mode illimité (compte administrateur) : la réserve d'une nation illimitée est gelée à ces plafonds
    * et remise à niveau après chaque événement ou ordre (aucune dépense n'est refusée faute de fonds).

@@ -17,6 +17,7 @@ import {
   unitPosAt,
   warsOf,
 } from '../../state/access.js';
+import { partsOf } from '../../state/stack.js';
 import { wi } from '../../state/world.js';
 import { board } from '../kit.js';
 import { cfg, clamp } from './config.js';
@@ -386,8 +387,8 @@ function militaryNote(state: EngineState, n: NationId, pool: PoolEntry[]): void 
     const cats = new Map<string, number>();
     for (const uid of nationUnits(state, x)) {
       const u = state.units[uid]!;
-      const cat = sysOf(state, u).category;
-      cats.set(cat, (cats.get(cat) ?? 0) + u.count);
+      for (const p of partsOf(state, u))
+        cats.set(p.sys.category, (cats.get(p.sys.category) ?? 0) + p.c);
     }
     const top = [...cats.entries()]
       .sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))

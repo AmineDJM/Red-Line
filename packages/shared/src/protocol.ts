@@ -138,7 +138,20 @@ const BASE_ORDERS = [
     mission: z.enum(['raid', 'sabotage', 'rescue']),
     building: buildingType.optional(),
   }),
-  z.object({ kind: z.literal('split'), unitId: id, count: z.number().int().positive() }),
+  z.object({
+    kind: z.literal('split'),
+    unitId: id,
+    /** Éléments détachés (pile mixte : répartis au prorata de chaque matériel). */
+    count: z.number().int().positive().optional(),
+    /** Éléments détachés par matériel (pile mixte). */
+    parts: z
+      .array(z.object({ systemId: id, count: z.number().int().positive() }))
+      .min(1)
+      .max(64)
+      .optional(),
+    /** 'half' : diviser en deux piles ; 'type' : une pile par matériel. */
+    mode: z.enum(['half', 'type']).optional(),
+  }),
   z.object({ kind: z.literal('merge'), unitIds }),
   z.object({ kind: z.literal('appointGeneral'), generalId: id, unitIds: z.array(id).max(200) }),
   z.object({

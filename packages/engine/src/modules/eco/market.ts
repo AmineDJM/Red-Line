@@ -54,7 +54,8 @@ function unitsOfSystem(state: EngineState, n: NationId, systemId: string): Unit[
   const out: Unit[] = [];
   for (const id of sortedSet(state.rt.byNation.get(n))) {
     const u = state.units[id];
-    if (u && u.sys === systemId && !carriers.has(id)) out.push(u);
+    // Piles mixtes exclues : séparer d'abord par matériel (ordre `split`, mode 'type').
+    if (u && !u.mix && u.sys === systemId && !carriers.has(id)) out.push(u);
   }
   return out;
 }

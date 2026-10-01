@@ -189,7 +189,8 @@ describe('performance (vraie partie, ORBAT 2025)', () => {
     const tCreate = performance.now() - t;
     const units = Object.keys(s.units).length;
     log.push(`createGame : ${tCreate.toFixed(0)} ms, ${units} unités`);
-    expect(units).toBeGreaterThan(3000);
+    // Armées de départ regroupées en piles mixtes (brigades, escadres) : ~2 000 piles.
+    expect(units).toBeGreaterThan(1500);
 
     t = performance.now();
     advanceTo(s, DAY);

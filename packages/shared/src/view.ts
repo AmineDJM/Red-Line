@@ -84,6 +84,18 @@ export interface UnitView {
   decoy?: boolean;
   /** Unité rebelle, neutre de maintien de la paix, ou mercenaire. */
   affiliation?: 'regular' | 'rebel' | 'peacekeeper' | 'mercenary';
+  /**
+   * Pile mixte (own ou precise) : effectif vivant par matériel, trié par identifiant de système.
+   * Absent pour une pile d'un seul matériel (`systemId` × `count`). `systemId` est alors le matériel
+   * principal (le plus de points de vie), qui donne l'icône.
+   */
+  parts?: StackPartView[];
+}
+
+/** Élément d'une pile mixte. */
+export interface StackPartView {
+  systemId: SystemId;
+  count: number;
 }
 
 export interface CaptureView {

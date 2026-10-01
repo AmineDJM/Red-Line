@@ -9,6 +9,7 @@ import {
   type NationId,
   type UnitView,
 } from '@redline/shared';
+import { partsOf } from '../../state/stack.js';
 import type { EngineState, Unit } from '../../state/types.js';
 import { sightLevel, sortedKeys, sysOf, unitPosAt } from '../../state/access.js';
 import { scheduleMod } from '../kit.js';
@@ -119,8 +120,8 @@ export function listenTick(state: EngineState, id: string): void {
     if (!g) byOwner.set(u.owner, (g = { units: 0, elements: 0, cats: new Map() }));
     g.units++;
     g.elements += u.count;
-    const cat = sysOf(state, u).category;
-    g.cats.set(cat, (g.cats.get(cat) ?? 0) + u.count);
+    for (const p of partsOf(state, u))
+      g.cats.set(p.sys.category, (g.cats.get(p.sys.category) ?? 0) + p.c);
   }
   if (!L.reported) {
     L.reported = true;

@@ -13,6 +13,7 @@ import { heapPush } from '../queue/heap.js';
 import { PRIORITY, type EventInput, type GameEvent } from '../queue/events.js';
 import { posAt, trajectoryPieces, type Piece } from '../geo/sphere.js';
 import type { EngineState, Unit } from './types.js';
+import { stackSystem } from './stack.js';
 
 export function sortedKeys(o: object): string[] {
   return Object.keys(o).sort();
@@ -22,7 +23,9 @@ export function sortedSet<T extends string>(s: Iterable<T> | undefined): T[] {
   return s ? [...s].sort() : [];
 }
 
+/** Fiche d'une unité ; pile mixte : fiche synthétique équivalente à ses éléments (state/stack.ts). */
 export function sysOf(state: EngineState, u: Unit): WeaponSystem {
+  if (u.mix) return stackSystem(state, u);
   const s = state.world.catalog.get(u.sys);
   if (!s) throw new Error(`système inconnu : ${u.sys}`);
   return s;

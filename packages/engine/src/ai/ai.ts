@@ -32,14 +32,15 @@ import { hasPassage } from '../state/war.js';
 import { targetClassOf, weaponRange } from '../encounters/profile.js';
 import {
   contactValue,
-  elementValue,
   estimateForce,
   neighborNations,
   ownForce,
   seaLinks,
+  unitValue,
   type OwnForce,
 } from './estimate.js';
 import { board } from '../modules/kit.js';
+import { manageStacks, stackEquivalents } from './stacks.js';
 import {
   capitalThreat,
   captureFailures,
@@ -266,6 +267,8 @@ function pathLegs(ctx: Ctx, m: Mine, to: LngLat): Leg[] | null {
 
 function think(state: EngineState, n: NationId): void {
   const enemies = warsOf(state, n);
+  // Piles : détachements en guerre, regroupements sinon (ai/stacks.ts).
+  manageStacks(state, n, enemies.length > 0);
   if (enemies.length === 0) {
     const plan = warPlanOf(state, n);
     clearOperations(state, n);
@@ -320,7 +323,7 @@ function context(state: EngineState, n: NationId): Ctx {
       u,
       s,
       pos: unitPosAt(state, u, state.time),
-      value: elementValue(state, u.sys) * u.count * hp,
+      value: unitValue(state, u),
       armed,
       ground: armed && (s.damage.infantry > 0 || s.damage.armor > 0),
     };
@@ -1248,7 +1251,8 @@ function produce(state: EngineState, n: NationId, peaceful: boolean, ctx: Ctx | 
   const maxUnits = peaceful
     ? T.peaceUnitsBase + T.peaceUnitsPerProvince * ns.provinceCount
     : T.warUnitsBase + T.warUnitsPerProvince * ns.provinceCount;
-  if ((state.rt.byNation.get(n)?.size ?? 0) + ns.production.length >= maxUnits) return;
+  // Piles mixtes comptées comme les piles d'un seul matériel qu'elles remplacent (ai/stacks.ts).
+  if (stackEquivalents(state, n) + ns.production.length >= maxUnits) return;
   const siteOf = productionSites(state, n, ctx);
   if (!siteOf) return;
   const sites = new Map<string, ProvinceId>();

@@ -51,7 +51,13 @@ function ownUnitView(state: EngineState, u: Unit): UnitView {
     targetId: u.target,
   };
   if (u.move) v.move = u.move;
+  if (u.mix) v.parts = partsView(u);
   return v;
+}
+
+/** Composition d'une pile mixte (éléments vivants par matériel). */
+function partsView(u: Unit): UnitView['parts'] {
+  return u.mix!.filter((p) => p.c > 0).map((p) => ({ systemId: p.sys, count: p.c }));
 }
 
 /** Unité étrangère actuellement observée : seulement le segment courant, depuis le début de l'observation. */
@@ -83,6 +89,7 @@ function seenUnitView(state: EngineState, u: Unit, c: Contact): UnitView {
     v.count = u.count;
     v.hpRatio = u.hp / u.maxHp;
     v.status = unitStatus(state, u);
+    if (u.mix) v.parts = partsView(u);
   }
   return v;
 }

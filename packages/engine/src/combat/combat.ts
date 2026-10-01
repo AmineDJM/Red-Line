@@ -22,6 +22,8 @@ import { milBal } from '../modules/mil/state.js';
 import { vecDistKm } from '../geo/sphere.js';
 import { setMovement } from '../movement/movement.js';
 import { planUnitMove } from '../movement/plan-unit.js';
+import { fullRangeKm, syncStackCount } from '../state/stack.js';
+import { canHarm, mixedBaseDamage } from './stack-combat.js';
 import type { GameEvent } from '../queue/events.js';
 
 /**
@@ -67,7 +69,7 @@ function validTargets(state: EngineState, u: Unit): TargetCand[] {
     if (!inRange(w, pair.d)) continue;
     const o = state.units[otherOf(key, u.id)];
     if (!o || o.off || o.role === 'missile') continue;
-    if (sys.damage[targetClassOf(state, o)] <= 0) continue;
+    if (o.mix ? !canHarm(state, sys, o) : sys.damage[targetClassOf(state, o)] <= 0) continue;
     if (sightLevel(state, u.owner, o.id) === 0) continue;
     if (u.stance === 'hold' && u.target !== o.id) continue;
     if (!hostile(state, u, o)) continue;
@@ -154,8 +156,10 @@ export function refreshCombat(state: EngineState, uid: UnitId): void {
         );
       }
     }
-    // Poursuite terminée : la cible est à portée, on s'arrête pour tirer.
-    if (u.chasing && u.move && u.target && list.some((c) => c.unit.id === u.target)) {
+    // Poursuite terminée : la cible est à portée, on s'arrête pour tirer (pile mixte : à portée de
+    // tous ses matériels armés, sinon elle continue d'approcher en tirant avec ceux qui portent).
+    const tc = u.target ? list.find((c) => c.unit.id === u.target) : undefined;
+    if (u.chasing && u.move && tc && (!u.mix || tc.d <= fullRangeKm(state, u))) {
       setMovement(state, u, null);
     }
     return;
@@ -235,14 +239,16 @@ export function roundDamage(state: EngineState, u: Unit, tgt: Unit, varianceRoll
   const sys = sysOf(state, u);
   const ts = sysOf(state, tgt);
   const vet = veterancyLevel(state, u.xp);
+  // Pile mixte (d'un côté au moins) : somme des matériels à portée contre chaque matériel de la cible,
+  // blindage compris (state/stack.ts) ; sinon le calcul d'origine, à l'identique.
+  const mixed = !!(u.mix || tgt.mix);
   let dmg =
-    sys.damage[targetClassOf(state, tgt)] *
-    u.count *
+    (mixed ? mixedBaseDamage(state, u, tgt) : sys.damage[targetClassOf(state, tgt)] * u.count) *
     (1 + vet * b.veterancyDamageBonus) *
     varianceRoll;
   dmg *= modifier(state, u.owner, 'combat.damage') / modifier(state, tgt.owner, 'combat.armor');
   dmg *= unitModifier(state, u, 'combat.damage') / unitModifier(state, tgt, 'combat.armor');
-  dmg *= 1 - ts.armor;
+  if (!mixed) dmg *= 1 - ts.armor;
   if (inOwnCity(state, tgt)) dmg /= 1 + b.defenderCityBonus;
   const jam = jammingFor(state, tgt);
   const res = Math.min(1, sys.ew.jamResistance * modifier(state, u.owner, 'ew.jamResistance'));
@@ -275,7 +281,8 @@ export function inflict(state: EngineState, by: Unit | null, tgt: Unit, dmg: num
     destroyUnit(state, tgt, by);
     return true;
   }
-  tgt.count = Math.max(1, Math.ceil(tgt.hp / ts.hp - 1e-9));
+  if (tgt.mix) syncStackCount(state, tgt);
+  else tgt.count = Math.max(1, Math.ceil(tgt.hp / ts.hp - 1e-9));
   state.rt.dirtyCombat.add(tgt.id);
   return false;
 }

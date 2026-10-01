@@ -10,6 +10,7 @@ import {
 } from '@redline/shared';
 import type { OrderResult } from '../../api.js';
 import { provincesOf, sortedSet, sysOf } from '../../state/access.js';
+import { partsOf } from '../../state/stack.js';
 import type { EngineState } from '../../state/types.js';
 import { spawnUnit } from '../../state/units.js';
 import { wi } from '../../state/world.js';
@@ -134,16 +135,19 @@ export function breakdown(state: EngineState, n: NationId): Breakdown {
   for (const uid of sortedSet(state.rt.byNation.get(n))) {
     const u = state.units[uid];
     if (!u) continue;
-    const sys = sysOf(state, u);
-    const cat = sys.upkeepPerDay * u.count * upMod;
-    const v = cat * upkeepFactor(state, n, sys);
-    upkeepCatalog += cat;
-    if (v !== 0) {
-      upkeep[sys.category] = (upkeep[sys.category] ?? 0) + v;
-      upkeepTotal += v;
+    // Pile mixte : entretien et consommation de chacun de ses matériels (state/stack.ts).
+    for (const p of u.mix ? partsOf(state, u) : [{ sys: sysOf(state, u), c: u.count }]) {
+      const sys = p.sys;
+      const cat = sys.upkeepPerDay * p.c * upMod;
+      const v = cat * upkeepFactor(state, n, sys);
+      upkeepCatalog += cat;
+      if (v !== 0) {
+        upkeep[sys.category] = (upkeep[sys.category] ?? 0) + v;
+        upkeepTotal += v;
+      }
+      const cons = consumptionOf(state, sys);
+      if (cons) consumption[cons[0]] += cons[1] * p.c;
     }
-    const cons = consumptionOf(state, sys);
-    if (cons) consumption[cons[0]] += cons[1] * u.count;
   }
   return {
     national,

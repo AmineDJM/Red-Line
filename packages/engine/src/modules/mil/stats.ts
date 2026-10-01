@@ -1,6 +1,7 @@
 import type { NationId } from '@redline/shared';
 import type { GameStats } from '../../api.js';
 import { sysOf } from '../../state/access.js';
+import { mixedCountAt } from '../../state/stack.js';
 import type { EngineState, Unit } from '../../state/types.js';
 import { board } from '../kit.js';
 import { mil, milBal, type StatSt } from './state.js';
@@ -38,6 +39,7 @@ export function countLoss(state: EngineState, victim: Unit, lost: number, by: Un
 
 /** Éléments qu'une unité perd si elle tombe à `hp` points de vie. */
 export function elementsLost(state: EngineState, u: Unit, hpAfter: number): number {
+  if (u.mix) return Math.max(0, u.count - mixedCountAt(state, u, hpAfter));
   const per = sysOf(state, u).hp;
   const after = hpAfter <= 1e-6 ? 0 : Math.max(1, Math.ceil(hpAfter / per - 1e-9));
   return Math.max(0, u.count - after);

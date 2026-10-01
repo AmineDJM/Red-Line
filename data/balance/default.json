@@ -1710,6 +1710,57 @@
       "inviteLeaning": 0.4
     }
   },
+  "startingForces": {
+    "stackMax": {
+      "fighter": 24,
+      "bomber": 12,
+      "air_support": 8,
+      "helicopter": 24,
+      "drone": 24,
+      "tank": 60,
+      "ifv": 60,
+      "artillery": 36,
+      "air_defense": 36,
+      "strike_missile": 120,
+      "nuclear": 60,
+      "surface_ship": 4,
+      "submarine": 2,
+      "infantry": 12,
+      "space": 50,
+      "logistics": 20,
+      "radar": 6
+    },
+    "maxStacksPerNation": 150,
+    "maxStacksWorld": 5000
+  },
+  "stacks": {
+    "classes": {
+      "land": ["infantry", "ifv", "tank", "artillery"],
+      "rotary": ["helicopter"],
+      "jet": ["fighter", "bomber"],
+      "drone": ["drone"]
+    },
+    "mergeKm": 10,
+    "maxSystems": 24,
+    "start": {
+      "enabled": true,
+      "groups": [
+        { "id": "land", "categories": ["infantry", "ifv", "tank", "artillery"], "maxModules": 12 },
+        { "id": "rotary", "categories": ["helicopter"], "maxModules": 6 },
+        { "id": "drone", "categories": ["drone"], "maxModules": 4 }
+      ]
+    },
+    "ai": {
+      "warStacksPerGroup": 2,
+      "warStacksPerProvince": 1,
+      "warStacksPerEnemyProvince": 1,
+      "mergeAbove": 2,
+      "peaceStacksPerProvince": 0.25,
+      "peaceMergeEvery": 4,
+      "minSplitElements": 4,
+      "maxOpsPerThink": 6
+    }
+  },
   "startingArmy": [
     {
       "systemId": "other.infantry-light",
