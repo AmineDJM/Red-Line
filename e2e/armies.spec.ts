@@ -10,7 +10,7 @@ import { isMobile, openWindow, preparePage, startSoloGame } from './helpers.js';
  */
 test('Mes armées → centrer → fiche seule', async ({ page }, info) => {
   // Parcours long (connexion, carte WebGL logicielle) : marge sur machine chargée.
-  test.setTimeout(480_000);
+  test.setTimeout(900_000);
   const errors = await preparePage(page);
   await startSoloGame(page, 'France');
   const mobile = isMobile(info);

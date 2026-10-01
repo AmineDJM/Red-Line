@@ -305,7 +305,7 @@
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 380px;
+  grid-template-columns: minmax(0, 1fr) 350px;
 }
 .armies__list {
   min-height: 0;
@@ -335,7 +335,7 @@
 }
 .armies__order {
   display: inline-block;
-  max-width: 220px;
+  max-width: 180px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -345,7 +345,7 @@
   display: inline-flex;
   flex-direction: column;
   line-height: 1.25;
-  max-width: 180px;
+  max-width: 160px;
 }
 .armies__loc span,
 .armies__loc small {
@@ -575,7 +575,7 @@
   display: none;
 }
 .armies:not(.armies--mobile) .urow__name {
-  max-width: 300px;
+  max-width: 250px;
 }
 .armies:not(.armies--mobile) .urow__name > * {
   overflow: hidden;

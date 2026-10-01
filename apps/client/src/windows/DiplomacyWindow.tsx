@@ -251,11 +251,11 @@ function RelationActions({
   const send = useSend();
   const rel = relationOf(view, nationId);
   const p = view?.diplomacy?.relations.find((x) => x.nationId === nationId)?.pending;
-  // Les clics ne doivent pas ouvrir la fiche du pays (ligne de tableau cliquable).
+  // Clics et touches ne doivent pas ouvrir la fiche du pays (ligne de tableau cliquable).
   const stop = (e: { stopPropagation(): void }) => e.stopPropagation();
   if (p && p.from !== me)
     return (
-      <span className="rowactions" onClick={stop}>
+      <span className="rowactions" onClick={stop} onKeyDown={stop}>
         <Badge tone="amber">{t(`diplomacy.proposal.${p.kind}`)}</Badge>
         <Button
           size="sm"
@@ -279,7 +279,7 @@ function RelationActions({
     );
   if (p && p.from === me) return <Badge tone="neutral">{t('diplomacy.sent')}</Badge>;
   return rel === 'war' ? (
-    <span className="rowactions" onClick={stop}>
+    <span className="rowactions" onClick={stop} onKeyDown={stop}>
       <Button
         size="sm"
         variant="subtle"
@@ -306,7 +306,7 @@ function RelationActions({
       </Button>
     </span>
   ) : rel !== 'ally' ? (
-    <span className="rowactions" onClick={stop}>
+    <span className="rowactions" onClick={stop} onKeyDown={stop}>
       <Button size="sm" variant="danger" onClick={() => onWar(nationId)}>
         {t('diplomacy.declareWar')}
       </Button>

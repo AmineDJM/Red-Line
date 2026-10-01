@@ -341,7 +341,7 @@ function Armies({ mobile }: { mobile: boolean }) {
           key: 'hp',
           header: t('armies.cols.hp'),
           hideOnMobile: true,
-          render: (a) => <Gauge value={a.hp} tone="auto" cells={8} label={t('armies.cols.hp')} />,
+          render: (a) => <Gauge value={a.hp} tone="auto" cells={6} label={t('armies.cols.hp')} />,
         },
         {
           key: 'state',

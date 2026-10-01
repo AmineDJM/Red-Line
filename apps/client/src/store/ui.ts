@@ -153,7 +153,7 @@ function readBool(key: string, fallback: boolean): boolean {
 
 /** Tailles par défaut des fenêtres (ordinateur). */
 const WINDOW_SIZE: Record<WindowId, { w: number; h: number }> = {
-  armies: { w: 1180, h: 720 },
+  armies: { w: 1320, h: 740 },
   army: { w: 1280, h: 760 },
   production: { w: 1280, h: 760 },
   research: { w: 1120, h: 700 },
