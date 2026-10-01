@@ -4393,7 +4393,24 @@
     "via": "pageimage"
   },
   "cn.ew-jammer": {
-    "none": "aucune photo libre identifiable d'un brouilleur chinois"
+    "systemId": "cn.ew-jammer",
+    "generic": true,
+    "title": "File:PLA Cyber 2025 V-J Parade CNS.png",
+    "width": 1880,
+    "height": 936,
+    "mime": "image/png",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/PLA_Cyber_2025_V-J_Parade_CNS.png/1280px-PLA_Cyber_2025_V-J_Parade_CNS.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "thumbWidth": 1280,
+    "thumbHeight": 637,
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:PLA_Cyber_2025_V-J_Parade_CNS.png",
+    "credit": "中国新闻社",
+    "license": "CC BY 4.0",
+    "licenseCode": "cc-by-4.0",
+    "restrictions": "",
+    "objectName": "PLA Cyber 2025 V-J Parade CNS",
+    "focus": [0.38, 0.6],
+    "zoom": 1.1,
+    "via": "override"
   },
   "eu.samp-t": {
     "systemId": "eu.samp-t",
@@ -4947,7 +4964,7 @@
     "via": "pageimage"
   },
   "cn.yj-18": {
-    "none": "aucune photo libre identifiable du missile (missiles YJ du défilé 2025 non identifiés comme YJ-18)"
+    "none": "aucune photo libre identifiable du missile (catégorie Commons YJ-18 vide ; missiles YJ du défilé 2025 non identifiés comme YJ-18) — recherche du 2026-10-01"
   },
   "cn.c-802": {
     "systemId": "cn.c-802",
@@ -5121,7 +5138,7 @@
     "via": "override"
   },
   "other.kn-23": {
-    "none": "aucune photo libre du missile sur Commons (seulement des schémas)"
+    "none": "aucune photo libre nette du missile ni de son lanceur : la catégorie Commons KN-23 ne contient que des schémas, les photos du ministère japonais de la Défense montrent des débris non identifiables en 600 px — recherche du 2026-10-01"
   },
   "us.minuteman-iii": {
     "systemId": "us.minuteman-iii",
@@ -5220,7 +5237,23 @@
     "via": "override"
   },
   "ru.bulava": {
-    "none": "photos officielles en 550 px seulement ; dans les vidéos libres, le missile n'est qu'une flamme dans la brume"
+    "systemId": "ru.bulava",
+    "generic": false,
+    "title": "File:Army2016-501.jpg",
+    "width": 2250,
+    "height": 1500,
+    "mime": "image/jpeg",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/Army2016-501.jpg/1920px-Army2016-501.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "thumbWidth": 1920,
+    "thumbHeight": 1280,
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Army2016-501.jpg",
+    "credit": "Vitaly V. Kuzmin",
+    "license": "CC BY-SA 4.0",
+    "licenseCode": "cc-by-sa-4.0",
+    "restrictions": "",
+    "objectName": "Army2016-501",
+    "focus": "centre",
+    "via": "override"
   },
   "cn.df-41": {
     "systemId": "cn.df-41",
@@ -5243,10 +5276,10 @@
     "via": "override"
   },
   "cn.jl-3": {
-    "none": "aucune photo libre du missile (seule image sur Commons : une sculpture de glace, refusée)"
+    "none": "aucune photo libre du missile (seule image sur Commons : une sculpture de glace, refusée ; aucune photo China News Service du JL-3 au défilé de 2025) — recherche du 2026-10-01"
   },
   "eu.m51": {
-    "none": "aucune photo libre (seulement des schémas)"
+    "none": "aucune photo libre du missile : sur Commons, seulement une vue éclatée dessinée, un schéma de SNLE et les radars de suivi des essais (Penmarc'h) — recherche du 2026-10-01"
   },
   "eu.asmp-a": {
     "systemId": "eu.asmp-a",
@@ -5268,10 +5301,26 @@
     "via": "override"
   },
   "other.agni-v": {
-    "none": "photos DRDO sous licence GODL-India, à valider par Amine (voir rapport) ; la seule photo CC est un schéma"
+    "systemId": "other.agni-v",
+    "generic": false,
+    "title": "File:Agni V Ballistic missile successfully launched on 15 September 2013 (7).jpg",
+    "width": 4288,
+    "height": 2848,
+    "mime": "image/jpeg",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Agni_V_Ballistic_missile_successfully_launched_on_15_September_2013_%287%29.jpg/1920px-Agni_V_Ballistic_missile_successfully_launched_on_15_September_2013_%287%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "thumbWidth": 1920,
+    "thumbHeight": 1275,
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Agni_V_Ballistic_missile_successfully_launched_on_15_September_2013_(7).jpg",
+    "credit": "DRDO / Ministry of Defence, Government of India",
+    "license": "GODL-India",
+    "licenseCode": "",
+    "restrictions": "",
+    "objectName": "Agni V Ballistic missile successfully launched on 15 September 2013 (7)",
+    "focus": "centre",
+    "via": "override"
   },
   "other.shaheen-iii": {
-    "none": "aucune photo libre de cette version"
+    "none": "aucune photo libre de cette version : la catégorie Commons Shaheen-III ne contient qu'une carte de portée — recherche du 2026-10-01"
   },
   "other.hwasong-17": {
     "systemId": "other.hwasong-17",
@@ -5294,7 +5343,7 @@
     "via": "override"
   },
   "other.jericho-iii": {
-    "none": "aucune photo libre du missile (programme non montré publiquement)"
+    "none": "aucune photo libre du missile (programme non montré publiquement) — recherche du 2026-10-01"
   },
   "us.arleigh-burke": {
     "systemId": "us.arleigh-burke",
@@ -6135,7 +6184,7 @@
     "via": "search"
   },
   "cn.type-093": {
-    "none": "aucune photo libre de ce sous-marin (seulement une silhouette dessinée)"
+    "none": "aucune photo libre de ce sous-marin : la catégorie Commons « Type 09III submarines » ne contient qu'un dessin — recherche du 2026-10-01"
   },
   "cn.type-094": {
     "systemId": "cn.type-094",
@@ -6520,7 +6569,7 @@
     "via": "override"
   },
   "cn.special-forces": {
-    "none": "aucune photo libre identifiable des forces spéciales chinoises"
+    "none": "aucune photo libre identifiable des forces spéciales chinoises (catégorie Commons sans photo, seulement des insignes ; photos mil.ru d'exercices sino-russes sans forces spéciales) — recherche du 2026-10-01"
   },
   "cn.airborne": {
     "systemId": "cn.airborne",
@@ -6922,7 +6971,24 @@
     "via": "override"
   },
   "cn.asat": {
-    "none": "aucune photo libre d'un antisatellite chinois (SC-19/DN-3 jamais montrés hors vidéos non libres)"
+    "systemId": "cn.asat",
+    "generic": true,
+    "title": "File:HQ29 2025 V-J Parade CNS.png",
+    "width": 1807,
+    "height": 900,
+    "mime": "image/png",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/HQ29_2025_V-J_Parade_CNS.png/1280px-HQ29_2025_V-J_Parade_CNS.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "thumbWidth": 1280,
+    "thumbHeight": 638,
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:HQ29_2025_V-J_Parade_CNS.png",
+    "credit": "中国新闻社",
+    "license": "CC BY 4.0",
+    "licenseCode": "cc-by-4.0",
+    "restrictions": "",
+    "objectName": "HQ29 2025 V-J Parade CNS",
+    "focus": [0.6, 0.42],
+    "zoom": 1.15,
+    "via": "override"
   },
   "eu.optical-recon-satellite": {
     "systemId": "eu.optical-recon-satellite",
@@ -6982,7 +7048,7 @@
     "via": "override"
   },
   "other.optical-recon-satellite": {
-    "none": "photos ISRO sous licence GODL-India (non retenue)"
+    "none": "photos ISRO sous licence GODL-India seulement (non validée pour ce système) : candidates à valider par Amine, voir le rapport — recherche du 2026-10-01"
   },
   "other.asat": {
     "systemId": "other.asat",
@@ -7137,7 +7203,7 @@
     "via": "override"
   },
   "ru.rezonans-ne": {
-    "none": "aucune photo libre trouvée"
+    "none": "aucune photo libre du radar (photos mil.ru des troupes radiotechniques examinées : autres radars) — recherche du 2026-10-01"
   },
   "ru.nebo-m": {
     "systemId": "ru.nebo-m",
@@ -7179,10 +7245,10 @@
     "via": "override"
   },
   "ru.container-29b6": {
-    "none": "seule photo libre (ministère russe de la Défense) en 550 px, trop petite"
+    "none": "seule photo libre (ministère russe de la Défense) en 550 px, trop petite — recherche du 2026-10-01"
   },
   "ru.podsolnukh-e": {
-    "none": "aucune photo libre trouvée"
+    "none": "aucune photo libre du radar (les fichiers « Podsolnukh » de Commons sont des bateaux de croisière) — recherche du 2026-10-01"
   },
   "ru.protivnik-ge": {
     "systemId": "ru.protivnik-ge",
@@ -7223,16 +7289,16 @@
     "via": "override"
   },
   "cn.jy-27a": {
-    "none": "aucune photo libre trouvée sur Commons"
+    "none": "aucune photo libre : ni catégorie ni fichier Commons — recherche du 2026-10-01"
   },
   "cn.ylc-8b": {
-    "none": "aucune photo libre trouvée sur Commons"
+    "none": "aucune photo libre : ni catégorie ni fichier Commons — recherche du 2026-10-01"
   },
   "cn.jy-26": {
-    "none": "aucune photo libre trouvée sur Commons"
+    "none": "aucune photo libre : ni catégorie ni fichier Commons — recherche du 2026-10-01"
   },
   "cn.type-7010-lpar": {
-    "none": "aucune photo libre trouvée sur Commons"
+    "none": "aucune photo libre trouvée sur Commons — recherche du 2026-10-01"
   },
   "eu.ground-master-400": {
     "systemId": "eu.ground-master-400",
@@ -7311,7 +7377,7 @@
     "via": "override"
   },
   "other.el-m-2080-green-pine": {
-    "none": "seule image « CC BY-SA » : copie basse définition (825 px) d'une image de constructeur, licence douteuse"
+    "none": "seule image « CC BY-SA » : copie basse définition (825 px) d'une image de constructeur, licence douteuse ; la vue aérienne PikiWiki d'Ein Shemer (CC BY 2.5) ne laisse pas distinguer le radar — recherche du 2026-10-01"
   },
   "other.ghadir-oth": {
     "systemId": "other.ghadir-oth",
@@ -7334,9 +7400,9 @@
     "via": "override"
   },
   "other.sepehr-oth": {
-    "none": "aucune photo libre trouvée"
+    "none": "aucune photo libre (catégorie Commons des radars iraniens sans le Sepehr) — recherche du 2026-10-01"
   },
   "other.swordfish-lrtr": {
-    "none": "aucune photo libre trouvée"
+    "none": "aucune photo trouvée, même sous licence gouvernementale indienne — recherche du 2026-10-01"
   }
 }

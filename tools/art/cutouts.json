@@ -1361,6 +1361,11 @@
     "reason": "contrôles automatiques passés",
     "coverage": 0.523
   },
+  "cn.ew-jammer": {
+    "title": "File:PLA Cyber 2025 V-J Parade CNS.png",
+    "use": false,
+    "reason": "colonne de véhicules coupée par le cadre : photo d’origine conservée"
+  },
   "eu.samp-t": {
     "title": "File:Système SAMP-T (14 juillet 2021) (2).jpg",
     "use": true,
@@ -1610,6 +1615,18 @@
     "use": false,
     "reason": "lancement : panache et décor conservés"
   },
+  "ru.bulava": {
+    "title": "File:Army2016-501.jpg",
+    "use": true,
+    "reason": "détourage validé au contrôle visuel ; second véhicule (à gauche) retiré par cutoutErase",
+    "coverage": 0.263,
+    "erase": [
+      [0, 0.25, 0.079, 0.367],
+      [0, 0.367, 0.05, 0.44],
+      [0, 0.44, 0.044, 0.57],
+      [0, 0.57, 0.028, 0.72]
+    ]
+  },
   "cn.df-41": {
     "title": "File:120秒看大阅兵震撼瞬间！1.png",
     "use": false,
@@ -1620,6 +1637,11 @@
     "use": true,
     "reason": "contrôles automatiques passés",
     "coverage": 0.335
+  },
+  "other.agni-v": {
+    "title": "File:Agni V Ballistic missile successfully launched on 15 September 2013 (7).jpg",
+    "use": false,
+    "reason": "tir avec panache et fumée : photo d’origine conservée"
   },
   "other.hwasong-17": {
     "title": "File:Hwasong17-20201010-KORN Pyonyang-N323-2.jpg",
@@ -2111,6 +2133,11 @@
     "title": "File:Shenzhou 22 CZ-2F Y22 launch 10.png",
     "use": false,
     "reason": "catégorie non détourée (lancement, vue orbitale)"
+  },
+  "cn.asat": {
+    "title": "File:HQ29 2025 V-J Parade CNS.png",
+    "use": false,
+    "reason": "colonne de lanceurs au défilé : photo d’origine, cadrée pour exclure le cache gris de la source"
   },
   "eu.optical-recon-satellite": {
     "title": "File:Sentinel-2A liftoff (18882549998).jpg",

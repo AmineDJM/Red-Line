@@ -81,29 +81,37 @@ export function grade(img: sharp.Sharp, crisp = false): sharp.Sharp {
     .sharpen(crisp ? { sigma: 0.8, m1: 0.6, m2: 1.6 } : { sigma: 0.6 });
 }
 
+type Rect = [number, number, number, number];
+
 /**
- * Ne garde de la découpe que la zone `box` ([x0, y0, x1, y1] en fractions de l'image) : écarte un second
- * véhicule ou un élément de décor que le détourage a conservé à côté du sujet.
+ * Ne garde de la découpe que la zone `box` ([x0, y0, x1, y1] en fractions de l'image) et retire les zones
+ * `erase` : écarte un second véhicule ou un élément de décor que le détourage a conservé à côté du sujet.
+ * Seule la transparence change (aucun pixel n'est ajouté).
  */
 export async function keepBox(
   png: Buffer,
-  box?: [number, number, number, number],
+  box?: Rect,
+  erase: readonly Rect[] = [],
 ): Promise<Buffer> {
-  if (!box) return png;
+  if (!box && erase.length === 0) return png;
   const { width = 0, height = 0 } = await sharp(png).metadata();
-  const [x0, y0, x1, y1] = box;
-  const left = Math.round(x0 * width);
-  const top = Math.round(y0 * height);
-  const w = Math.max(1, Math.round((x1 - x0) * width));
-  const h = Math.max(1, Math.round((y1 - y0) * height));
-  const mask = Buffer.from(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><rect x="${left}" y="${top}" width="${w}" height="${h}" fill="#fff"/></svg>`,
-  );
-  return sharp(png)
-    .ensureAlpha()
-    .composite([{ input: mask, blend: 'dest-in' }])
-    .png()
-    .toBuffer();
+  const rect = ([x0, y0, x1, y1]: Rect, fill: string) =>
+    `<rect x="${Math.round(x0 * width)}" y="${Math.round(y0 * height)}" ` +
+    `width="${Math.max(1, Math.round((x1 - x0) * width))}" ` +
+    `height="${Math.max(1, Math.round((y1 - y0) * height))}" fill="${fill}"/>`;
+  const svg = (rects: string) =>
+    Buffer.from(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">${rects}</svg>`,
+    );
+  // `dest-in` garde la zone `box`, `dest-out` retire les zones `erase`.
+  const layers: sharp.OverlayOptions[] = [
+    { input: svg(rect(box ?? [0, 0, 1, 1], '#fff')), blend: 'dest-in' },
+  ];
+  if (erase.length)
+    layers.push({ input: svg(erase.map((r) => rect(r, '#fff')).join('')), blend: 'dest-out' });
+  let img = await sharp(png).ensureAlpha().png().toBuffer();
+  for (const layer of layers) img = await sharp(img).composite([layer]).png().toBuffer();
+  return img;
 }
 
 /** Boîte englobante du sujet (pixels d'opacité ≥ 50 %). */

@@ -211,5 +211,21 @@
   "eu.eurodrone": "File:EuroMALE ILA 2018 (01) (cropped).jpg",
   "us.columbia": "File:Artist rendering of a Columbia-class ballistic missile submarine, 2019 (190306-N-N0101-125).jpg",
   "us.constellation": "File:Artist rendering of USS Constellation (FFG-62).jpg",
-  "ru.infantry-mech": "File:MechanizedInfantryExercise2018-13.jpg"
+  "ru.infantry-mech": "File:MechanizedInfantryExercise2018-13.jpg",
+  "other.agni-v": {
+    "file": "File:Agni V Ballistic missile successfully launched on 15 September 2013 (7).jpg",
+    "credit": "DRDO / Ministry of Defence, Government of India",
+    "validated": ["GODL-India"]
+  },
+  "ru.bulava": "File:Army2016-501.jpg",
+  "cn.asat": {
+    "file": "File:HQ29 2025 V-J Parade CNS.png",
+    "focus": [0.6, 0.42],
+    "zoom": 1.15
+  },
+  "cn.ew-jammer": {
+    "file": "File:PLA Cyber 2025 V-J Parade CNS.png",
+    "focus": [0.38, 0.6],
+    "zoom": 1.1
+  }
 }

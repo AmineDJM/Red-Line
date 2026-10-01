@@ -36,18 +36,17 @@ const wikiTitles = systems.map((s) => sources[s.id]?.wiki).filter((t): t is stri
 const mains = await pageImages(wikiTitles);
 const ovTitle = (o: Override) => fileTitle(typeof o === 'string' ? o : o.file);
 const ovSeek = (o: Override) => (typeof o === 'object' ? o.seek : undefined);
-const ovList = systems.map((s) => overrides[s.id]).filter((o): o is Override => !!o);
-const ovInfos = await fileInfos(
-  ovList.filter((o) => ovSeek(o) == null).map(ovTitle),
-  undefined,
-  true,
-);
-// Images extraites de vidéos : une requête par instant demandé (clé « titre@instant »).
-for (const o of ovList.filter((o) => ovSeek(o) != null)) {
-  const info = (await fileInfos([ovTitle(o)], undefined, true, ovSeek(o))).get(ovTitle(o));
-  ovInfos.set(`${ovTitle(o)}@${ovSeek(o)}`, info ?? null);
-}
 const ovKey = (o: Override) => (ovSeek(o) != null ? `${ovTitle(o)}@${ovSeek(o)}` : ovTitle(o));
+const ovValidated = (o: Override) => (typeof o === 'object' ? (o.validated ?? []) : []);
+const ovList = systems.map((s) => overrides[s.id]).filter((o): o is Override => !!o);
+const single = (o: Override) => ovSeek(o) != null || ovValidated(o).length > 0;
+const ovInfos = await fileInfos(ovList.filter((o) => !single(o)).map(ovTitle), undefined, true);
+// Images extraites de vidéos (clé « titre@instant ») et photos sous licence validée au cas par cas : une
+// requête par surcharge, la licence validée ne valant que pour cette photo.
+for (const o of ovList.filter(single)) {
+  const infos = await fileInfos([ovTitle(o)], undefined, true, ovSeek(o), ovValidated(o));
+  ovInfos.set(ovKey(o), infos.get(ovTitle(o)) ?? null);
+}
 
 let found = 0;
 for (const sys of systems) {

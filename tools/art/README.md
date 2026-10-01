@@ -16,9 +16,10 @@ Aucune image générée : si aucune photo libre n'existe pour un système, il re
 ## Licences
 
 Acceptées : **domaine public** (dont photos du département de la Défense américain), **CC0**, **CC BY**,
-**CC BY-SA** (toutes versions). Refusées : NC, ND, usage loyal (« fair use »), GFDL seule, GODL indienne,
-licence inconnue. Exception limitée aux **surcharges manuelles** : la **Licence Ouverte** d'Etalab (État français,
-compatible CC BY : Suffren et Triomphant) et l'OGL v3 britannique (Challenger 3) sont admises, faute de toute photo
+**CC BY-SA** (toutes versions). Refusées : NC, ND, usage loyal (« fair use »), GFDL seule, GODL indienne (sauf
+Agni-V, voir plus bas), licence inconnue. Exception limitée aux **surcharges manuelles** : la **Licence Ouverte**
+d'Etalab (État français, compatible CC BY : Suffren et Triomphant) et l'OGL v3 britannique (Challenger 3) sont
+admises, faute de toute photo
 CC (`acceptLicense(…, extended)`) ; la sélection automatique ne les retient jamais. **Ces trois photos ont été
 validées par Amine le 2026-10-01.** Mentions exigées (reprises dans `CREDITS.md`) :
 
@@ -29,9 +30,34 @@ validées par Amine le 2026-10-01.** Mentions exigées (reprises dans `CREDITS.m
   Challenger 3 est recadrée (`overrides.json`) pour exclure le panneau d'exposition portant les logos du
   ministère de la Défense et de la British Army ; il ne reste qu'un petit marquage tactique d'unité sur la caisse.
 
-Toute autre licence gouvernementale (GODL-India, licences israélienne ou pakistanaise…) reste **refusée** tant
-qu'Amine ne l'a pas validée au cas par cas : les candidats sont listés à part, jamais activés d'office. Seuls les fichiers hébergés sur
-Commons sont interrogés (les fichiers locaux de Wikipedia, souvent non libres, sont donc exclus d'office). La
+**GODL-India (Agni-V seulement)** : la Government Open Data License – India (Gazette of India, partie I
+section 1, février 2017, <https://data.gov.in/government-open-data-license-india>) a été **validée par Amine le
+2026-10-01 pour l'Agni-V uniquement**. Elle n'est admise que par une surcharge qui la cite (`"validated":
+["GODL-India"]` dans `overrides.json`, voir `CASE_BY_CASE` dans `src/lib.ts`) ; la sélection automatique et les
+autres systèmes la refusent toujours. Texte (sections 3 à 7) : licence mondiale, gratuite, non exclusive
+d'utiliser, adapter, publier (original ou dérivé), traduire, afficher et créer des œuvres dérivées à toutes fins
+licites, commerciales ou non. Obligations reprises dans `CREDITS.md` :
+
+- **attribution** (section 4 a et 5) : fournisseur, source et licence avec l'URL, au format « [Fournisseur],
+  [Année], [Nom], [Dépôt], [Date], [URL]. Published under Government Open Data License – India: [URL] » ; ici
+  « DRDO / Ministry of Defence, Government of India » et le lien Commons (champ `attribution` de `sources.json`,
+  obligatoire : `build` échoue sans lui) ;
+- **pas d'approbation implicite** (section 4 c) : rien ne doit laisser entendre que la DRDO ou le gouvernement
+  indien approuve le jeu ;
+- **exclusions** (section 6) : noms, écussons, logos et symboles officiels du fournisseur, marques et insignes
+  militaires ne sont pas couverts → **aucun emblème officiel dans le cadre** (recadrage ou zone de découpe) ;
+- la licence tombe automatiquement en cas de manquement (section 7), rétablie si corrigé sous 30 jours.
+
+Photo retenue : « Agni V Ballistic missile successfully launched on 15 September 2013 (7) » (source officielle
+drdo.gov.in, paysage, aucun emblème visible). Écartées : le lanceur TCT-5 (missile bâché ; source Commons = un
+blog de stagiaire, provenance DRDO non démontrable), les tirs verticaux de 2018 et 2024 (format portrait, sigle
+DRDO peint sur le missile, source secondaire pour 2024), « Advanced Agni Missile » (variante non identifiée
+comme Agni-V), la photo du défilé de 2013 (emblème DRDO et « Ministry of Defence » sur la calandre du tracteur).
+
+Toute autre licence gouvernementale (GODL-India pour un autre système, licences israélienne ou pakistanaise…)
+reste **refusée** tant qu'Amine ne l'a pas validée au cas par cas : les candidats sont listés à part, jamais
+activés d'office. Seuls les fichiers hébergés sur Commons sont interrogés (les fichiers locaux de Wikipedia,
+souvent non libres, sont donc exclus d'office). La
 vérification se fait sur les métadonnées `extmetadata` (`License`, `LicenseShortName`) : voir `acceptLicense`
 dans `src/lib.ts`.
 
@@ -58,7 +84,11 @@ Dans `sources.json`, `none` documente pourquoi un système reste **sans photo** 
 `generic: true` marque une photo **représentative** (infanterie, satellites, logistique, brouilleurs) et `note`
 précise ce que montre la photo quand ce n'est pas exactement le système (repris dans le manifeste).
 `cutout: false` (avec `cutoutWhy`) refuse le détourage après contrôle visuel, `cutout: true` l'impose malgré un
-contrôle automatique, `cutoutBox: [x0, y0, x1, y1]` ne garde qu'une zone de la découpe (second véhicule à écarter).
+contrôle automatique, `cutoutBox: [x0, y0, x1, y1]` ne garde qu'une zone de la découpe (second véhicule à écarter),
+`cutoutErase: [[x0, y0, x1, y1], …]` en retire des zones (reste de décor collé au sujet).
+`attribution` donne la déclaration d'attribution exigée par une licence gouvernementale (GODL-India), reprise
+telle quelle dans `CREDITS.md`. Dans `overrides.json`, `validated` (liste de licences) admet pour cette seule
+photo une licence validée au cas par cas par Amine.
 
 ## Utilisation
 
@@ -112,8 +142,8 @@ false` dans `sources.json` avec la raison. Une décision ne vaut que pour la pho
 ## Réseau et politesse
 
 User-Agent `RedLine-art/1.0 (https://github.com/AmineDJM/Red-Line)` (jamais d'adresse e-mail), une requête toutes
-les 300 ms au plus, reprise automatique sur 429/5xx avec `Retry-After`. Les URL de miniatures sont celles
-renvoyées par l'API (`iiurlwidth=1920`), jamais construites à la main. Pour une image plus étroite que 1920 px,
+les 2 s au plus (les environnements partagés reçoivent vite des 429 de Wikimedia), reprise automatique sur
+429/5xx avec `Retry-After`. Les URL de miniatures sont celles renvoyées par l'API (`iiurlwidth=1920`), jamais construites à la main. Pour une image plus étroite que 1920 px,
 l'API renverrait l'original (hôte `upload.wikimedia.org`, très limité en débit depuis les environnements
 partagés) : on redemande alors une miniature standard (1280 ou 960 px), servie par le cache de miniatures. Les
 téléchargements ont un délai maximal (90 s) ; si une photo reste inaccessible, `build` garde la fiche précédente

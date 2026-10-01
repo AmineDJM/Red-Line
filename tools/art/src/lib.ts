@@ -24,8 +24,11 @@ export const USER_AGENT = 'RedLine-art/1.0 (https://github.com/AmineDJM/Red-Line
 const COMMONS_API = 'https://commons.wikimedia.org/w/api.php';
 const WIKI_API = 'https://en.wikipedia.org/w/api.php';
 
-/** Intervalle minimal entre deux requêtes (≈ 3,3 requêtes par seconde au plus). */
-const MIN_INTERVAL_MS = 300;
+/**
+ * Intervalle minimal entre deux requêtes (une toutes les 2 s au plus) : les environnements partagés sont vite
+ * limités par Wikimedia (429), la patience coûte moins cher que les reprises.
+ */
+const MIN_INTERVAL_MS = 2000;
 let last = 0;
 
 async function pace(): Promise<void> {
@@ -118,6 +121,10 @@ export interface SourceSpec {
   cutoutWhy?: string;
   /** Zone de la découpe à garder, [x0, y0, x1, y1] en fractions (écarte un second véhicule, un décor). */
   cutoutBox?: [number, number, number, number];
+  /** Zones de la découpe à retirer (mêmes coordonnées), pour un reste de décor qu'aucune boîte n'écarte. */
+  cutoutErase?: [number, number, number, number][];
+  /** Déclaration d'attribution imposée par la licence (GODL-India), reprise telle quelle dans CREDITS.md. */
+  attribution?: string;
 }
 
 /** Décision de détourage d'un système (cutouts.json). */
@@ -130,6 +137,8 @@ export interface CutoutDecision {
   coverage?: number;
   /** Zone gardée (copie de sources.json `cutoutBox`). */
   box?: [number, number, number, number];
+  /** Zones retirées (copie de sources.json `cutoutErase`). */
+  erase?: [number, number, number, number][];
 }
 
 /** Surcharge manuelle : titre de fichier Commons, ou objet avec cadrage. */
@@ -143,6 +152,11 @@ export type Override =
       credit?: string;
       /** Vidéo : instant (secondes) de l'image extraite par Commons. */
       seek?: number;
+      /**
+       * Licences admises pour cette seule photo, validées au cas par cas par Amine (ex. « GODL-India » pour
+       * l'Agni-V) : voir CASE_BY_CASE. Jamais utilisé par la sélection automatique.
+       */
+      validated?: string[];
     };
 /**
  * Cadrage : 'centre' (défaut), 'attention' (sujet détecté), un bord, un point normalisé [x, y], ou 'fit'
@@ -201,14 +215,30 @@ export function stripHtml(html: string): string {
 }
 
 /**
+ * Licences gouvernementales admises seulement au cas par cas, pour une photo précise (surcharge manuelle avec
+ * `validated`), après validation explicite d'Amine. Clé = libellé affiché, valeur = reconnaissance.
+ */
+export const CASE_BY_CASE: Record<string, RegExp> = {
+  // Government Open Data License – India (Gazette of India, 2017) : attribution exigée, pas d'approbation
+  // implicite, ne couvre ni les logos et emblèmes du fournisseur ni les insignes militaires.
+  'GODL-India': /^godl(-india)?\b|government open data licen[cs]e\W+india/i,
+};
+
+/**
  * Licences acceptées : domaine public, CC0, CC BY, CC BY-SA (usage commercial permis).
  * Tout le reste est refusé (NC, ND, usage loyal, GFDL seule, licences gouvernementales, inconnue).
  *
  * `extended` (surcharges manuelles seulement) admet en plus deux licences publiques d'attribution que leurs
  * auteurs déclarent compatibles CC BY : la Licence Ouverte 2.0 (Etalab, État français, dont le ministère des
  * Armées) et l'Open Government Licence v3 (Royaume-Uni). Utilisées uniquement faute de photo CC/PD.
+ * `validated` (surcharge manuelle validée au cas par cas) admet en plus les licences citées de CASE_BY_CASE.
  */
-export function acceptLicense(code: string, short: string, extended = false): string | null {
+export function acceptLicense(
+  code: string,
+  short: string,
+  extended = false,
+  validated: readonly string[] = [],
+): string | null {
   const c = code.toLowerCase().trim();
   const s = short.trim();
   if (/\bnc\b|-nc|\bnd\b|-nd|non-?commercial|no ?deriv|fair ?use/i.test(`${c} ${s}`)) return null;
@@ -220,15 +250,21 @@ export function acceptLicense(code: string, short: string, extended = false): st
   if (ms) return `CC BY${ms[1] ? '-SA' : ''} ${ms[2]}`;
   if (extended && /^(licence ouverte|open licence|etalab)/i.test(s)) return 'Licence Ouverte';
   if (extended && (/^ogl/i.test(c) || /^(OGL|Open Government Licence)/i.test(s))) return 'OGL v3';
+  for (const name of validated)
+    if (CASE_BY_CASE[name]?.test(s) || CASE_BY_CASE[name]?.test(c)) return name;
   return null;
 }
 
-export function parseImageInfo(page: any, extended = false): FileInfo | null {
+export function parseImageInfo(
+  page: any,
+  extended = false,
+  validated: readonly string[] = [],
+): FileInfo | null {
   const ii = page?.imageinfo?.[0];
   if (!ii || page.missing) return null;
   const md = ii.extmetadata ?? {};
   const val = (k: string): string => (md[k]?.value != null ? String(md[k].value) : '');
-  const license = acceptLicense(val('License'), val('LicenseShortName'), extended);
+  const license = acceptLicense(val('License'), val('LicenseShortName'), extended, validated);
   if (!license) return null;
   let credit = stripHtml(val('Artist')) || stripHtml(val('Credit'));
   if (!credit || /^unknown/i.test(credit)) credit = stripHtml(val('Credit'));
@@ -285,6 +321,7 @@ export async function fileInfos(
   width = FETCH_WIDTH,
   extended = false,
   seek?: number,
+  validated: readonly string[] = [],
 ): Promise<Map<string, FileInfo | null>> {
   const out = new Map<string, FileInfo | null>();
   for (const batch of chunks([...new Set(titles)], 40)) {
@@ -301,7 +338,7 @@ export async function fileInfos(
     const norm = new Map<string, string>();
     for (const n of data.query?.normalized ?? []) norm.set(n.to, n.from);
     for (const page of data.query?.pages ?? []) {
-      const info = parseImageInfo(page, extended);
+      const info = parseImageInfo(page, extended, validated);
       out.set(page.title, info);
       const from = norm.get(page.title);
       if (from) out.set(from, info);
@@ -324,7 +361,7 @@ export async function fileInfos(
         iiextmetadatafilter:
           'License|LicenseShortName|Artist|Credit|Restrictions|ObjectName|UsageTerms',
       });
-      const scaled = parseImageInfo(data.query?.pages?.[0], extended);
+      const scaled = parseImageInfo(data.query?.pages?.[0], extended, validated);
       if (scaled?.thumbUrl.includes('/thumb/')) out.set(title, { ...info, ...scaled });
     }
   }
