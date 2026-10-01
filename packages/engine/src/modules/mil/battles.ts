@@ -331,22 +331,39 @@ function closeBucket(state: EngineState, X: BattleX): void {
   const k = phaseKind(a, d, prev);
   if (!k) return;
   const [kind, side] = k;
-  if (prev && prev[0] === kind && prev[3] === side && t0 <= prev[2] + 2 * ms) {
-    prev[2] = t1;
-    prev[4] += a[B_LOST]!;
-    prev[5] += d[B_LOST]!;
-    prev[6] += a[B_SEEN]!;
-    prev[7] += d[B_SEEN]!;
+  const add = (ph: BattleX['ph'][number]) => {
+    ph[2] = t1;
+    ph[4] += a[B_LOST]!;
+    ph[5] += d[B_LOST]!;
+    ph[6] += a[B_SEEN]!;
+    ph[7] += d[B_SEEN]!;
+  };
+  const contiguous = !!prev && t0 <= prev[2] + 2 * ms;
+  // Feux à distance successifs du même camp (frappes, préparation, combat aérien) : une seule phase.
+  const STANDOFF = ['preparation', 'strikes', 'air'];
+  if (
+    prev &&
+    contiguous &&
+    prev[3] === side &&
+    STANDOFF.includes(prev[0]) &&
+    STANDOFF.includes(kind)
+  ) {
+    if (kind === 'preparation') prev[0] = 'preparation';
+    add(prev);
     return;
   }
-  if (prev && X.ph.length >= Math.max(2, milBal(state).report.maxPhases)) {
-    // Plafond : la dernière phase absorbe la suite.
-    prev[2] = t1;
-    prev[4] += a[B_LOST]!;
-    prev[5] += d[B_LOST]!;
-    prev[6] += a[B_SEEN]!;
-    prev[7] += d[B_SEEN]!;
+  if (prev && prev[0] === kind && prev[3] === side && contiguous) {
+    add(prev);
     return;
+  }
+  // Plafond : la dernière phase de combat absorbe la suite (jamais la prise de la ville, ponctuelle).
+  const cap = Math.max(2, milBal(state).report.maxPhases);
+  if (prev && X.ph.length >= cap) {
+    if (prev[0] !== 'capture') {
+      add(prev);
+      return;
+    }
+    if (X.ph.length >= cap + 4) return;
   }
   X.ph.push([kind, t0, t1, side, a[B_LOST]!, d[B_LOST]!, a[B_SEEN]!, d[B_SEEN]!]);
 }
@@ -505,9 +522,17 @@ export function recordCapture(
     const L = X[sFrom];
     for (const k of Object.keys(captured).sort()) L.cp[k] = (L.cp[k] ?? 0) + captured[k]!;
     if (b.end === null) {
-      closeBucket(state, X);
       const ph = X.ph;
-      if (ph.length < Math.max(2, milBal(state).report.maxPhases) + 2)
+      const last = ph[ph.length - 1];
+      // Prises rapprochées par le même camp : une seule phase « prise de la ville ».
+      if (
+        last &&
+        last[0] === 'capture' &&
+        last[3] === sTo &&
+        state.time - last[2] <= bucketMs(state)
+      )
+        last[2] = state.time;
+      else if (ph.length < Math.max(2, milBal(state).report.maxPhases) + 2)
         ph.push(['capture', state.time, state.time, sTo, 0, 0, 0, 0]);
     }
     timeline(state, b, `Prise de ${nameOfProvince(state, pid)} par ${to.toUpperCase()}`);

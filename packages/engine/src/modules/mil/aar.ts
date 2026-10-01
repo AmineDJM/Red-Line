@@ -467,6 +467,8 @@ function aarOf(state: EngineState, b: BattleSt, X: BattleX, V: Side): BattleAar 
     attackerLosses: lossA(p[4], p[6]),
     defenderLosses: lossD(p[5], p[7]),
   }));
+  // Ordre chronologique (une prise de ville s'inscrit pendant la tranche en cours).
+  phases.sort((x, y) => x.t0 - y.t0 || x.t1 - y.t1);
   const losses = [
     { t: b.start, attacker: 0, defender: 0 },
     ...X.ser.map((p) => ({ t: p[0], attacker: lossA(p[1], p[3]), defender: lossD(p[2], p[4]) })),

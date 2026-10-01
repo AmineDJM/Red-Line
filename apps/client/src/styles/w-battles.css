@@ -260,7 +260,7 @@
 }
 .aar-band--capture {
   fill: var(--rl-green);
-  opacity: 0.5;
+  opacity: 0.12;
 }
 .aar-tip {
   position: absolute;
@@ -409,4 +409,24 @@
 .battle .rl-panel__head {
   flex-wrap: wrap;
   row-gap: 2px;
+}
+
+.aar-more {
+  padding: 6px 10px;
+  border-top: 1px solid var(--rl-line);
+  text-align: center;
+}
+.aar-table.aar-balance {
+  table-layout: fixed;
+  min-width: 0;
+}
+.aar-table.aar-balance th:first-child {
+  width: 40%;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+.aar-table.aar-balance th,
+.aar-table.aar-balance td {
+  overflow-wrap: anywhere;
+  white-space: normal;
 }

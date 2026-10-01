@@ -1891,7 +1891,9 @@
       "captured1": "Prise de {{name}} ({{by}})",
       "held": "{{name}} : position tenue par son propriétaire",
       "noChange": "Aucun changement territorial.",
-      "noCountermeasure": "Aucune contre-mesure notable."
+      "noCountermeasure": "Aucune contre-mesure notable.",
+      "showAll": "Afficher les {{n}} autres matériels",
+      "showLess": "Réduire la liste"
     }
   },
   "chat": {

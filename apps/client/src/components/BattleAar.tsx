@@ -8,7 +8,7 @@ import type {
   BattlePhase,
   Estimate,
 } from '@redline/shared';
-import { Badge, Panel, WeaponPhoto, formatInt, formatMoney } from '@redline/ui';
+import { Badge, Button, Panel, WeaponPhoto, formatInt, formatMoney } from '@redline/ui';
 import { NationTag } from './Common.js';
 import { fmtClock, fmtDuration } from '../i18n/index.js';
 import { photoFor, usePhotos } from '../lib/photos.js';
@@ -175,11 +175,16 @@ function lineName(
     : t('battles.aar.unidentified', { medium: t(`battles.aar.medium.${f.medium}`) });
 }
 
+/** Lignes de l'ordre de bataille affichées avant « afficher tout ». */
+const FORCE_ROWS = 10;
+
 export function AarForces({ side }: { side: BattleAarSide }) {
   const { t } = useTranslation();
   const catalog = useWorld((s) => s.catalog);
   const photos = usePhotos();
-  const rows = [...side.forces].sort((a, b) => b.engaged.best - a.engaged.best);
+  const [all, setAll] = useState(false);
+  const sorted = [...side.forces].sort((a, b) => b.engaged.best - a.engaged.best);
+  const rows = all ? sorted : sorted.slice(0, FORCE_ROWS);
   return (
     <Panel
       title={`${t('battles.aar.orbat')} · ${sideLabel(t, side)}`}
@@ -256,6 +261,15 @@ export function AarForces({ side }: { side: BattleAarSide }) {
           </tbody>
         </table>
       </div>
+      {sorted.length > FORCE_ROWS ? (
+        <div className="aar-more">
+          <Button size="sm" variant="ghost" onClick={() => setAll(!all)}>
+            {all
+              ? t('battles.aar.showLess')
+              : t('battles.aar.showAll', { n: sorted.length - FORCE_ROWS })}
+          </Button>
+        </div>
+      ) : null}
     </Panel>
   );
 }
