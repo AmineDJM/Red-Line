@@ -26,7 +26,7 @@ import {
 import { C } from './palette.js';
 
 /** Rayon d'accrochage par défaut (km), comme `balance.movement.roadSnapKm` côté moteur. */
-export const DEFAULT_ROAD_SNAP_KM = 60;
+export const DEFAULT_ROAD_SNAP_KM = 80;
 /** Aimant des villes (pixels écran), et rayon minimal (km) : une ville toute proche l'emporte. */
 export const CITY_MAGNET_PX = { mouse: 34, touch: 48 } as const;
 const CITY_MAGNET_MIN_KM = 6;
@@ -115,6 +115,26 @@ function concat(out: LngLat[], pts: LngLat[]): void {
  * masse continentale. Null si inatteignable.
  */
 export function roadPath(net: RoadNet, from: LngLat, to: LngLat, seaFactor = 0.6): RoadPath | null {
+  // Cache par réseau (aperçu redessiné ~4 Hz, barre d'ordre à chaque rendu) : position arrondie à ~10 m.
+  let cache = pathCache.get(net);
+  if (!cache) pathCache.set(net, (cache = new Map()));
+  const key = `${from[0].toFixed(4)},${from[1].toFixed(4)}>${to[0]},${to[1]}>${seaFactor}`;
+  const hit = cache.get(key);
+  if (hit !== undefined) return hit;
+  const p = computeRoadPath(net, from, to, seaFactor);
+  if (cache.size >= 256) cache.clear();
+  cache.set(key, p);
+  return p;
+}
+
+const pathCache = new WeakMap<RoadNet, Map<string, RoadPath | null>>();
+
+function computeRoadPath(
+  net: RoadNet,
+  from: LngLat,
+  to: LngLat,
+  seaFactor: number,
+): RoadPath | null {
   const S = joinPoint(net, from);
   const D = net.snap(to, 1) ?? net.snap(to, DEFAULT_ROAD_SNAP_KM);
   if (!S || !D) return null;

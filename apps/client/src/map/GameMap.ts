@@ -142,6 +142,8 @@ const HOVER_DELAY_MS = 160;
 const CITY_LAYERS = ['cities-0', 'cities-1', 'cities-2', 'cities-3'];
 /** Au-delà de cet étalement, toucher une pile zoome dessus au lieu de la sélectionner. */
 const STACK_SPREAD_KM = 30;
+/** Trajets routiers dessinés au plus dans l'aperçu d'un ordre (sélection nombreuse). */
+const MAX_ROAD_PREVIEWS = 12;
 
 const PATH_DASH = dashSequence(2, 2, 14);
 const PREVIEW_DASH = dashSequence(2, 1.5, 14);
@@ -220,9 +222,8 @@ export class GameMap {
   private box: { x0: number; y0: number; el: HTMLDivElement } | null = null;
   private domListeners: [EventTarget, string, EventListener, AddEventListenerOptions?][] = [];
   private cityThresholds: [number, number] = [Infinity, Infinity];
-  /** Couche « routes » (réseau des unités terrestres) et trajets d'aperçu en cache. */
+  /** Couche « routes » (réseau des unités terrestres). */
   private roadLayer: RoadLayer | null = null;
-  private roadPaths = new Map<string, RoadPath | null>();
   /** Diagnostic : nombre de résolutions demandées par image. */
   readonly resolveCount = new Map<string, number>();
   private perf = { ticks: 0, total: 0, max: 0, group: 0, groups: 0, pions: 0, skipped: 0 };
@@ -439,7 +440,6 @@ export class GameMap {
       useWorld.subscribe((s, prev) => {
         if (s.roads === prev.roads) return;
         this.roadLayer?.attach(s.roads);
-        this.roadPaths.clear();
         this.refreshSelection();
       }),
     );
@@ -512,17 +512,11 @@ export class GameMap {
     });
   }
 
-  /** Trajet d'aperçu le long des routes (mis en cache : recalculé ~4 Hz pendant les mouvements). */
+  /** Trajet d'aperçu le long des routes (mis en cache par `roadPath`). */
   private roadPathFor(from: LngLat, to: LngLat): RoadPath | null {
     const w = useWorld.getState();
     if (!w.roads) return null;
-    const key = `${from[0].toFixed(4)},${from[1].toFixed(4)}>${to[0]},${to[1]}`;
-    const hit = this.roadPaths.get(key);
-    if (hit !== undefined) return hit;
-    const p = roadPath(w.roads, from, to, w.balance?.movement.embarkedSpeedFactor);
-    if (this.roadPaths.size > 64) this.roadPaths.clear();
-    this.roadPaths.set(key, p);
-    return p;
+    return roadPath(w.roads, from, to, w.balance?.movement.embarkedSpeedFactor);
   }
 
   private emptySources = new Set<string>();
@@ -1140,11 +1134,14 @@ export class GameMap {
           ? pending.to
           : (this.positions.get(pending.targetId) ?? view.units[pending.targetId]?.pos);
       if (from.length && target) {
-        // Unités terrestres : trajet réel le long des routes (traversée par les ports si besoin).
+        // Unités terrestres : trajet réel le long des routes (traversée par les ports si besoin),
+        // pour les MAX_ROAD_PREVIEWS premières (au-delà : ligne directe, l'écran serait illisible).
         const paths =
           pending.kind === 'move'
-            ? placed.map(({ id, at }) =>
-                this.landSelected([id]) ? this.roadPathFor(at, target) : null,
+            ? placed.map(({ id, at }, i) =>
+                i < MAX_ROAD_PREVIEWS && this.landSelected([id])
+                  ? this.roadPathFor(at, target)
+                  : null,
               )
             : undefined;
         const pv = previewFeatures({ kind: pending.kind, from, to: target, paths });

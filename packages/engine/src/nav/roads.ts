@@ -29,7 +29,7 @@ import { smoothRun, type Segment, type SurfaceSegments } from './plan.js';
  */
 
 /** Rayon d'accrochage par défaut (km) si l'équilibrage n'en fixe pas. */
-export const DEFAULT_ROAD_SNAP_KM = 60;
+export const DEFAULT_ROAD_SNAP_KM = 80;
 /** Distance maximale (km) pour rattacher au réseau une unité qui en est écartée. */
 const JOIN_MAX_KM = 4000;
 /** En deçà (km), une unité est considérée sur le réseau (pas de segment de rattachement). */

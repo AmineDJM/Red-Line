@@ -115,12 +115,12 @@ describe('réseau de routes : trajets terrestres', () => {
   it('point trop loin de toute route : ordre refusé avec un message clair', () => {
     const paris = byCity('Paris').cityPoint;
     const s = game([{ owner: 'fra', systemId: INF, pos: paris }]);
-    // Premier point terrestre (centre de cellule) à plus de 60 km du réseau.
+    // Premier point terrestre (centre de cellule) à plus du rayon d’accrochage (balance.movement.roadSnapKm) du réseau.
     const nav = wi(world).nav;
     let far: LngLat | null = null;
     for (const cell of [...nav.cellProv.keys()].sort()) {
       const p = nav.center(nav.node(cell));
-      if (!roads.snap(p, 61)) {
+      if (!roads.snap(p, (data.balance.movement.roadSnapKm ?? 80) + 1)) {
         far = p;
         break;
       }
