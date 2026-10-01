@@ -13,6 +13,7 @@ import {
   type UnitId,
 } from '@redline/shared';
 import type { EngineState } from '../../state/types.js';
+import type { InteriorState } from './interior.js';
 
 /**
  * État du module renseignement (state.mods.intel). Données sérialisables uniquement.
@@ -38,6 +39,8 @@ export interface StoredOp {
   agentId?: string;
   /** Reconnaissance d'un pays entier (absent : opération en une fois, ou mission d'avant les phases). */
   rn?: NationRecon;
+  /** Préparation repérée par la sécurité intérieure de la cible (JAMAIS envoyé au client). */
+  dt?: 1;
 }
 
 /**
@@ -130,6 +133,8 @@ export interface NationIntel {
   };
   /** Prochaine réflexion de renseignement de l'IA. */
   aiNext: GameTime;
+  /** Renseignement intérieur (priorité, sites protégés, menace) ; absent = réglages par défaut. */
+  int?: InteriorState;
 }
 
 export interface IntelState {

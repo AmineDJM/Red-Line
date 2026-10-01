@@ -1461,7 +1461,138 @@
       "provincesPerWave": 3,
       "levels": 2,
       "qualityBonus": 0.5
+    },
+    "interior": {
+      "focus": {
+        "balanced": {
+          "agentDetect": 1,
+          "opDetect": 1,
+          "protection": 1,
+          "unrest": 1
+        },
+        "counterintel": {
+          "agentDetect": 1.8,
+          "opDetect": 1.5,
+          "protection": 0.8,
+          "unrest": 0.6
+        },
+        "protection": {
+          "agentDetect": 0.8,
+          "opDetect": 1.2,
+          "protection": 1.6,
+          "unrest": 0.8
+        },
+        "surveillance": {
+          "agentDetect": 0.9,
+          "opDetect": 0.8,
+          "protection": 0.9,
+          "unrest": 1.8
+        }
+      },
+      "opDetectBase": 0.25,
+      "opDetectMax": 0.85,
+      "foilFactor": 0.5,
+      "detectedExposure": 1.5,
+      "protectionMax": 0.6,
+      "protectedBase": 1,
+      "protectedPerLevel": 1,
+      "protectionFocusBonus": 2,
+      "unrestReductionMax": 0.4,
+      "threatDecay": 0.85,
+      "threatWeights": {
+        "sabotage": 30,
+        "rebels": 25,
+        "cyber": 10,
+        "domestic": 15,
+        "alert": 20,
+        "agent": 15,
+        "sensitive": 8,
+        "border": 15,
+        "capital": 10
+      }
     }
+  },
+  "domestic": {
+    "changeCooldownDays": 2,
+    "policies": {
+      "propaganda": {
+        "income": 0.98,
+        "stabilityPerDay": 0.3,
+        "morale": 6,
+        "warSupport": 15,
+        "unrest": 0.9
+      },
+      "conscription": {
+        "infantry": 1.5,
+        "income": 0.95,
+        "upkeep": 0.95,
+        "morale": -4,
+        "warSupport": -5
+      },
+      "war_economy": {
+        "production": 1.25,
+        "income": 0.95,
+        "stabilityPerDay": -0.6,
+        "morale": -5,
+        "strikes": 1.5
+      },
+      "austerity": {
+        "income": 1.06,
+        "upkeep": 0.9,
+        "stabilityPerDay": -0.4,
+        "morale": -8,
+        "unrest": 1.2,
+        "strikes": 2,
+        "excludes": ["stimulus"]
+      },
+      "stimulus": {
+        "income": 0.9,
+        "stabilityPerDay": 0.4,
+        "morale": 8,
+        "strikes": 0.5,
+        "excludes": ["austerity"]
+      },
+      "martial_law": {
+        "income": 0.95,
+        "research": 0.95,
+        "stabilityPerDay": 1.2,
+        "morale": -10,
+        "warSupport": -10,
+        "unrest": 0.4,
+        "strikes": 0.2
+      }
+    },
+    "warSupport": {
+      "start": 60,
+      "driftPerDay": 2,
+      "defensiveBonus": 15,
+      "offensivePenalty": 10,
+      "lossPerUnit": 0.3,
+      "lossCapPerDay": 5,
+      "provinceLost": 2,
+      "lowThreshold": 35,
+      "lowWeariness": 2,
+      "highThreshold": 75,
+      "highWeariness": 0.6
+    },
+    "events": {
+      "strikeChance": 0.25,
+      "moraleThreshold": 55,
+      "strikeHours": 48,
+      "strikeProduction": 0.8,
+      "protestChance": 0.25,
+      "stabilityThreshold": 50,
+      "protestStability": 2,
+      "protestUnrest": 8,
+      "sabotageChance": 0.2,
+      "sabotageUnrest": 25,
+      "sabotageDamage": [0.1, 0.3],
+      "riotThreshold": 30,
+      "riotStability": 4,
+      "cooldownDays": 3
+    },
+    "occupiedRisk": 25,
+    "ai": true
   },
   "diplomacy": {
     "councilEveryDays": 30,

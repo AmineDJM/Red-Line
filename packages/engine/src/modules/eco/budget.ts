@@ -218,11 +218,16 @@ export function economyDaily(state: EngineState): void {
     en.today = {};
     en.lastMoney = ns.money;
   }
-  // Moral : retour vers la cible (départ, ou « occupée »), pénurie de nourriture.
+  // Moral : retour vers la cible (départ, ou « occupée », décalée par les politiques intérieures),
+  // pénurie de nourriture.
+  const shift = board(state).moraleShift ?? {};
+  const sum = new Map<NationId, [number, number]>();
   for (const pid of Object.keys(state.provinces).sort()) {
     const P = state.provinces[pid]!;
-    const original = w.provById.get(pid)!.nationId === P.owner;
-    const target = original ? c.morale.start : c.morale.occupied;
+    const def = w.provById.get(pid)!;
+    const original = def.nationId === P.owner;
+    const base = original ? c.morale.start : c.morale.occupied;
+    const target = Math.max(0, Math.min(100, base + (shift[P.owner] ?? 0)));
     let m = es.morale[pid] ?? c.morale.start;
     if (m < target) m = Math.min(target, m + c.morale.recoveryPerDay);
     else if (m > target) m = Math.max(target, m - c.morale.recoveryPerDay);
@@ -230,7 +235,21 @@ export function economyDaily(state: EngineState): void {
     m = Math.max(0, Math.min(100, m));
     if (m === c.morale.start) delete es.morale[pid];
     else es.morale[pid] = m;
+    const wgt = Math.max(1, def.population ?? 0);
+    const acc = sum.get(P.owner) ?? [0, 0];
+    acc[0] += m * wgt;
+    acc[1] += wgt;
+    sum.set(P.owner, acc);
   }
+  // Moral moyen par nation (lu par la gestion intérieure) : seulement s'il s'écarte du moral de départ.
+  const avg: Record<NationId, number> = {};
+  for (const [n, [s, wgt]] of [...sum].sort((a, b) => (a[0] < b[0] ? -1 : 1))) {
+    const v = Math.round((s / wgt) * 10) / 10;
+    if (v !== c.morale.start) avg[n] = v;
+  }
+  const b = board(state);
+  if (Object.keys(avg).length > 0) b.moraleAvg = avg;
+  else delete b.moraleAvg;
 }
 
 /** Province conquise : moral d'occupation (sauf libération). */

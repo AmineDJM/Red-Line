@@ -116,6 +116,7 @@ export function produceOrder(
     if (err) return fail(err);
     const speed =
       modifier(state, n, 'production.speed') *
+      (sys.category === 'infantry' ? modifier(state, n, 'production.speed.infantry') : 1) *
       provinceProductionSpeed(state, order.provinceId, requiredBuildings(sys));
     pay(state, n, paid, 'production');
     const ms = (batchHours(state, sys, count) * HOUR) / (speed > 0 ? speed : 1);
