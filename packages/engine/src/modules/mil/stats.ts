@@ -30,6 +30,9 @@ export function countLoss(state: EngineState, victim: Unit, lost: number, by: Un
     k.kills += lost;
     k.casInf += lost * per;
     k.bySys[by.sys] = (k.bySys[by.sys] ?? 0) + lost;
+    const vs = (k.vs ??= {});
+    vs[victim.owner] =
+      (vs[victim.owner] ?? 0) + lost * (sys.cost.money / Math.max(1, sys.unitSize));
   }
 }
 

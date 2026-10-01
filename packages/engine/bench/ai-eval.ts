@@ -293,7 +293,7 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
       if (/renonce|Désescalade/.test(it.headline)) {
         ultim.deesc++;
         if (h) ultim.deescHuman++;
-      } else if (/ultimatum/i.test(it.headline)) {
+      } else if (/ultimatum|Tension extrême/i.test(it.headline)) {
         ultim.all++;
         if (h) ultim.human++;
       }
@@ -631,6 +631,38 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
       console.log(`  J${(x.time / DAY).toFixed(1)} guerre ${x.by} → ${x.against} (${nb})`);
     }
     for (const x of pingExamples) console.log('  va-et-vient', x);
+    const capBy = new Map<string, [number, number, number]>();
+    for (const c of tr.captures) {
+      const k = `${c.n}→${c.pid ? W.provById.get(c.pid)?.nationId : '?'}`;
+      const e = capBy.get(k) ?? [0, 0, 0];
+      e[0]++;
+      const ok = c.pid ? capturedBy.get(`${c.n}|${c.pid}`) : undefined;
+      if (ok !== undefined && ok >= c.t) e[1]++;
+      else if ((deadAt.get(c.uid) ?? -1) >= c.t) e[2]++;
+      capBy.set(k, e);
+    }
+    console.log(
+      '  captures (ordres/pris/perdus)',
+      [...capBy]
+        .sort((a, b) => b[1][2] - a[1][2])
+        .slice(0, 10)
+        .map(([k, v]) => `${k}:${v.join('/')}`)
+        .join(' '),
+    );
+    const amphBy = new Map<string, [number, number, number]>();
+    for (const c of tr.amph) {
+      const k = `${c.n}→${c.pid ? W.provById.get(c.pid)?.nationId : '?'}`;
+      const e = amphBy.get(k) ?? [0, 0, 0];
+      e[0]++;
+      const ok = c.pid ? capturedBy.get(`${c.n}|${c.pid}`) : undefined;
+      if (ok !== undefined && ok >= c.t) e[1]++;
+      else if ((deadAt.get(c.uid) ?? -1) >= c.t) e[2]++;
+      amphBy.set(k, e);
+    }
+    console.log(
+      '  débarquements (ordres/pris/perdus)',
+      [...amphBy].map(([k, v]) => `${k}:${v.join('/')}`).join(' '),
+    );
     console.log(
       '  capitale dégarnie (relevés)',
       [...bareBy]

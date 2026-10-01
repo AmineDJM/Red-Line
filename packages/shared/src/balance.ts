@@ -481,9 +481,9 @@ export const AiBalanceSchema = z.object({
       }),
       hard: aiLevel({
         warRatio: 2,
-        casusBelliWaiverRatio: 3,
+        casusBelliWaiverRatio: 5,
         maxWars: 2,
-        warChancePerDay: 0.02,
+        warChancePerDay: 0.01,
         warChanceHumanPerDay: 0.35,
         warmupDays: 3,
         caution: 1,

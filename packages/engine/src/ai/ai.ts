@@ -33,6 +33,7 @@ import { targetClassOf, weaponRange } from '../encounters/profile.js';
 import {
   contactValue,
   elementValue,
+  estimateForce,
   neighborNations,
   ownForce,
   seaLinks,
@@ -279,6 +280,7 @@ function think(state: EngineState, n: NationId): void {
     return;
   }
   const ctx = context(state, n);
+  stopNeutralChases(ctx);
   holdKeyPoints(ctx);
   defend(ctx);
   runOps(ctx);
@@ -524,6 +526,46 @@ function holdKeyPoints(ctx: Ctx): void {
   for (const [pid, threat] of cities) garrison(ctx, pid, 1, threat, 0.6);
 }
 
+/**
+ * Poursuites qui entreraient chez un neutre : une cible qui s'enfuit vers un pays tiers (position vue,
+ * ou extrapolée d'une demi-heure sur sa trajectoire observée) n'est pas suivie, sinon la poursuite
+ * ouvrirait une guerre que personne n'a décidée.
+ */
+function stopNeutralChases(ctx: Ctx): void {
+  const { state, n } = ctx;
+  const nav = wi(state.world).nav;
+  const ahead = state.world.balance.time.aiThinkMinutes * MINUTE;
+  const neutral = (p: LngLat): boolean => {
+    const pid = nav.cellProv.get(nav.cellOfPos(p));
+    const owner = pid ? state.provinces[pid]?.owner : undefined;
+    return !!owner && owner !== n && !atWar(state, n, owner) && !hasPassage(state, n, owner);
+  };
+  const stop: string[] = [];
+  for (const m of [...ctx.land, ...ctx.sea]) {
+    const t = m.u.target ? state.units[m.u.target] : undefined;
+    if (!t) continue;
+    if (
+      neutral(unitPosAt(state, t, state.time)) ||
+      neutral(unitPosAt(state, t, state.time + ahead))
+    ) {
+      stop.push(m.u.id);
+      continue;
+    }
+    // Trajet de poursuite recalculé par le moteur : il ne doit pas traverser un neutre.
+    const legs = m.u.move?.legs.filter((l) => l.t1 > state.time);
+    if (
+      legs?.length &&
+      crossingHits(state, m.pos, legs, (p) => {
+        const owner = state.provinces[p]?.owner;
+        return !!owner && owner !== n && !atWar(state, n, owner) && !hasPassage(state, n, owner);
+      })
+    )
+      stop.push(m.u.id);
+  }
+  if (stop.length > 0 && order(state, n, { kind: 'stop', unitIds: stop }))
+    for (const id of stop) ctx.idle.add(id);
+}
+
 /** 2. Défense : ennemis vus sur son territoire ou près de ses villes, attaqués par un groupe. */
 function defend(ctx: Ctx): void {
   const { state, n, L } = ctx;
@@ -600,7 +642,8 @@ function launchGroup(
     .filter((x) => x.d <= reach)
     .sort((a, b) => a.d - b.d || (a.m.u.id < b.m.u.id ? -1 : 1));
   if (!cands.some((x) => x.m.s.canCapture)) return false;
-  const max = Math.max(1, L.groupMax);
+  // Débarquement : groupe double (une tête de pont doit tenir seule jusqu'aux renforts).
+  const max = Math.max(1, L.groupMax) * (from ? 2 : 1);
   // Jamais seule : même une ville qui paraît vide peut cacher des défenseurs (brouillard de guerre).
   const minUnits = Math.min(2, max);
   // Faisabilité sans calcul de trajet : les `max` plus proches suffisent-elles ?
@@ -754,8 +797,8 @@ function escort(ctx: Ctx, pid: ProvinceId): string[] {
     .sort((a, b) => a.d - b.d || (a.m.u.id < b.m.u.id ? -1 : 1))
     .slice(0, L.escortShips)
     .map((x) => x.m);
-  // Route maritime vérifiée avant l'ordre (mer fermée, détroit) : pas d'ordre refusé.
-  const ids = ships.filter((m) => !('error' in planUnitMove(state, m.u, at))).map((m) => m.u.id);
+  // Route maritime vérifiée avant l'ordre (mer fermée, détroit, eaux d'un neutre) : pas d'ordre refusé.
+  const ids = ships.filter((m) => safeLegs(state, n, m.u, at)).map((m) => m.u.id);
   if (ids.length === 0) return [];
   if (!order(state, n, { kind: 'patrol', unitIds: ids, at, radiusKm: ESCORT_RADIUS_KM })) return [];
   for (const id of ids) ctx.idle.delete(id);
@@ -808,6 +851,11 @@ function runOps(ctx: Ctx): void {
     // Unités prises pour défendre une ville (garnison) : retirées de l'opération.
     op.units = op.units.filter((id) => !ctx.reserved.has(id));
     if (!P || P.owner === n || !atWar(state, n, P.owner) || op.units.length === 0) {
+      release(ctx, pid);
+      continue;
+    }
+    // But de guerre atteint entre-temps (guerre limitée) : l'opération est annulée.
+    if (warGoalReached(state, n, P.owner)) {
       release(ctx, pid);
       continue;
     }
@@ -1033,16 +1081,33 @@ function offensive(ctx: Ctx, only: Set<NationId> | null): void {
   cands.sort((a, b) => b.score - a.score || (a.pid < b.pid ? -1 : 1));
   let launched = 0;
   let tries = 0;
+  let seaPrior: Map<NationId, number> | undefined;
   for (const c of cands) {
     if (launched >= L.maxOffensivePerThink || ctx.paths <= 0 || tries >= 4) break;
     tries++;
-    const need = needFor(ctx, c.pid, c.owner) * (c.from ? T.amphibiousRatio : 1);
+    // Débarquement : sans vue sur la côte, part supposée des forces publiques de l'ennemi par province.
+    const blind = c.from ? (seaPrior ??= new Map()) : null;
+    let prior = 0;
+    if (blind) {
+      if (!blind.has(c.owner)) {
+        const provs = Math.max(1, state.nations[c.owner]?.provinceCount ?? 1);
+        blind.set(
+          c.owner,
+          (estimateForce(state, n, c.owner, ctx.mine, 1) / provs) * SEA_PRIOR_SHARE,
+        );
+      }
+      prior = blind.get(c.owner)!;
+    }
+    const need = Math.max(needFor(ctx, c.pid, c.owner), prior) * (c.from ? T.amphibiousRatio : 1);
     if (launchGroup(ctx, c.pid, need, c.from)) launched++;
   }
 }
 
 /** Attrait d'un objectif à prendre par la mer, relatif à un objectif voisin par la terre. */
 const SEA_TARGET_WEIGHT = 0.6;
+
+/** Débarquement à l'aveugle : part des forces estimées de l'ennemi supposée dans chaque province. */
+const SEA_PRIOR_SHARE = 0.25;
 
 function bordersOwned(state: EngineState, n: NationId, pid: ProvinceId): boolean {
   const def = wi(state.world).provById.get(pid);

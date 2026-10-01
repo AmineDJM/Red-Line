@@ -173,6 +173,11 @@ export interface StatSt {
   bySys: Record<SystemId, number>;
   missiles: number;
   intercepted: number;
+  /**
+   * Valeur détruite (prix des éléments) par nation victime : ce que l'attaquant a vu détruire, base de
+   * son estimation des forces adverses restantes (IA, sans tricher).
+   */
+  vs?: Record<NationId, number>;
 }
 
 export interface MilState {

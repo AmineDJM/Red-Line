@@ -393,6 +393,13 @@ function shouldAcceptPeace(
 ): boolean {
   if (state.nations[n]!.aiLevel === 'easy') return true;
   if (satisfied(state, n, from, P, 0.5) || warGoalReached(state, n, from)) return true;
+  // Victime qui n'a rien perdu et ne mène pas d'offensive dans cette guerre : le statu quo lui suffit.
+  if (
+    P.offensive !== 'all' &&
+    ds(state).aggressor[pairKey(n, from)] === from &&
+    lostTo(state, n, from) === 0
+  )
+    return true;
   if (stabilityOf(state, n) < 40) return true;
   if (noFront(state, n, from, S(state).unreachablePeaceDays)) return true;
   const ratio = ratioAgainst(state, n, from, mine, P);

@@ -130,6 +130,14 @@ function orbatValue(state: EngineState, o: Orbat): number {
   return v;
 }
 
+/** Valeur des forces de `t` que `n` a détruites (statistiques de combat de `n`). */
+function destroyedBy(state: EngineState, n: NationId, t: NationId): number {
+  const m = (
+    state.mods as Record<string, { stats?: Record<NationId, { vs?: Record<NationId, number> }> }>
+  ).mil;
+  return m?.stats?.[n]?.vs?.[t] ?? 0;
+}
+
 /** Fiabilité publiée d'un ORBAT → incertitude de départ. */
 function baseUncertainty(state: EngineState, o: Orbat): number {
   const E = aiCfg(state.world).estimate;
@@ -159,7 +167,12 @@ export function publicForce(
   const cur = state.nations[t]?.provinceCount ?? 0;
   const kept = init > 0 && cur < init ? 1 - E.territoryLoss * (1 - cur / init) : 1;
   const days = state.time / DAY;
-  const mean = orbatValue(state, o) * kept + budgetDay(state, t) * days * E.productionShare;
+  // Pertes infligées par `n` lui-même (il a vu ses cibles détruites) ; celles des autres lui échappent.
+  const killed = destroyedBy(state, n, t);
+  const mean = Math.max(
+    0,
+    orbatValue(state, o) * kept + budgetDay(state, t) * days * E.productionShare - killed,
+  );
   let sigma = Math.min(E.maxUncertainty, baseUncertainty(state, o) + E.uncertaintyPerDay * days);
   const cov = nationCoverage(state, n, t, 'm');
   if (cov.total > 0) sigma *= 1 - E.reconDiscount * (cov.known / cov.total);

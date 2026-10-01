@@ -388,10 +388,7 @@ export const TEMPLATES = {
   },
   deescalation: {
     cat: 'peace',
-    h: [
-      "{Le:A} {s:A:renonce|renoncent} à l'ultimatum adressé {a:B}",
-      'Désescalade : {A} / {B}',
-    ],
+    h: ["{Le:A} {s:A:renonce|renoncent} à l'ultimatum adressé {a:B}", 'Désescalade : {A} / {B}'],
     b: [
       'Le rapport de force a changé : les troupes massées à la frontière regagnent leurs casernes.',
       "Les chancelleries saluent le recul {de:A} : la menace n'a pas été mise à exécution.",
