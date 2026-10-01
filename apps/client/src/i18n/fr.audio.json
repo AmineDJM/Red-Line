@@ -1,0 +1,16 @@
+{
+  "audio": {
+    "title": "Son",
+    "mute": "Couper le son",
+    "muteHelp": "Rien n'est téléchargé tant que le son est coupé. Réglages mémorisés sur cet appareil.",
+    "levels": {
+      "master": "Volume général",
+      "music": "Musique et ambiances",
+      "sfx": "Effets",
+      "ui": "Interface"
+    },
+    "reduced": "Sons réduits",
+    "reducedHelp": "Pas d'ambiance de bataille, ponctuations adoucies, transitions plus lentes (activé d'office si le système demande de réduire les animations).",
+    "credits": "Sons et musiques générés pour Red Line avec ElevenLabs."
+  }
+}

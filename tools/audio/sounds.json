@@ -1,0 +1,188 @@
+{
+  "$comment": "Sons de Red Line générés avec ElevenLabs (effets : /v1/sound-generation ; musiques : /v1/music). Style : orchestral / hybride militaire moderne, sobre. Cibles de sonie en LUFS intégrés (les sons très courts sont normalisés en crête).",
+  "music": [
+    {
+      "id": "peace",
+      "seconds": 96,
+      "loop": true,
+      "lufs": -19,
+      "prompt": "Instrumental only. Calm, restrained modern orchestral-hybrid underscore for a geopolitical strategy game in peacetime: soft sustained low strings, warm analog synth pad, sparse felt piano notes, distant soft timpani swells, a quiet undercurrent of tension, slow, 70 BPM, D minor. Steady texture from start to end, no intro, no outro, no climax, no vocals, loopable background bed."
+    },
+    {
+      "id": "tension",
+      "seconds": 80,
+      "loop": true,
+      "lufs": -19,
+      "prompt": "Instrumental only. Tense, restrained modern orchestral-hybrid underscore for a military command room before a war: pulsing low synth ostinato, ticking clock-like percussion, sustained dissonant strings, low brass swells, growing unease but controlled, 90 BPM, D minor. Steady intensity from start to end, no intro, no outro, no vocals, loopable."
+    },
+    {
+      "id": "war",
+      "seconds": 90,
+      "loop": true,
+      "lufs": -18,
+      "prompt": "Instrumental only. Dark martial modern orchestral-hybrid war theme for a strategy game: military snare patterns, driving low string ostinato, heavy sustained brass chords, taiko drums, grim and determined, serious and sober rather than bombastic, 100 BPM, D minor. Constant intensity, no intro, no outro, no fade, no vocals, loopable."
+    },
+    {
+      "id": "combat",
+      "seconds": 80,
+      "loop": true,
+      "lufs": -17,
+      "prompt": "Instrumental only. Intense battle music, modern orchestral-hybrid: relentless war drums and taiko, aggressive staccato strings, powerful low brass hits, dark distorted low synth pulse, urgent and heavy but controlled, 120 BPM, D minor. Constant intensity from start to end, no intro, no outro, no vocals, loopable."
+    },
+    {
+      "id": "victory",
+      "seconds": 28,
+      "loop": false,
+      "lufs": -17,
+      "prompt": "Instrumental only. Short dignified victory theme for the end of a war: solemn triumphant brass chorale and full strings, timpani rolls, a sense of hard-won victory rather than celebration, D major, clear final chord ending."
+    },
+    {
+      "id": "defeat",
+      "seconds": 28,
+      "loop": false,
+      "lufs": -19,
+      "prompt": "Instrumental only. Short somber defeat theme for the end of a war: slow mournful strings, a lone low french horn, a distant muffled snare, desolate and quiet, D minor, quiet final ending."
+    }
+  ],
+  "ambience": [
+    {
+      "id": "amb-peace",
+      "seconds": 30,
+      "lufs": -27,
+      "prompt": "Quiet modern military command center room tone: soft air conditioning hum, faint distant computer beeps and gentle electronic hum, calm, no voices, no music"
+    },
+    {
+      "id": "amb-tension",
+      "seconds": 30,
+      "lufs": -27,
+      "prompt": "Tense military operations room ambience: low electronic hum, soft radio static with faint encrypted radio squelch bursts, slow radar sweep pings, no intelligible voices, no music"
+    },
+    {
+      "id": "amb-war",
+      "seconds": 30,
+      "lufs": -25,
+      "prompt": "Distant artillery barrage rumbling far away over the horizon, sporadic deep muffled booms, low wind, no voices, no music"
+    },
+    {
+      "id": "amb-combat",
+      "seconds": 30,
+      "lufs": -24,
+      "prompt": "Battle ambience at medium distance: continuous rifle and machine gun fire, explosions and artillery impacts, rumble, no voices, no music"
+    }
+  ],
+  "sfx": [
+    {
+      "id": "war-declared",
+      "seconds": 5,
+      "stereo": true,
+      "lufs": -17,
+      "prompt": "Cinematic war declaration sting: deep low brass and taiko impact, sub boom, ominous rising string swell ending on a dark sustained low chord, modern military hybrid orchestral, sober, no voice"
+    },
+    {
+      "id": "war-declared-me",
+      "seconds": 6,
+      "stereo": true,
+      "lufs": -15,
+      "prompt": "Heavy dramatic war alarm sting: huge orchestral brass stab with war drums, a distant air raid siren tone underneath, deep sub impact, dark menacing low strings tail, cinematic military, no voice"
+    },
+    {
+      "id": "peace-signed",
+      "seconds": 5,
+      "stereo": true,
+      "lufs": -19,
+      "prompt": "Gentle resolving orchestral chord: warm french horns and soft strings, calm hopeful major resolution, subtle and sober, cinematic, no percussion, no voice"
+    },
+    {
+      "id": "city-captured",
+      "seconds": 3.5,
+      "stereo": true,
+      "lufs": -18,
+      "prompt": "Short victorious military brass hit with a snare roll and timpani, confident and restrained, cinematic orchestral, no voice"
+    },
+    {
+      "id": "city-lost",
+      "seconds": 4,
+      "stereo": true,
+      "lufs": -18,
+      "prompt": "Short somber orchestral sting: low descending cellos and contrabasses, muted brass, soft distant timpani, sense of loss, cinematic, no voice"
+    },
+    {
+      "id": "unit-destroyed",
+      "seconds": 2.5,
+      "lufs": -19,
+      "prompt": "Distant muffled heavy explosion with a short debris rumble, realistic military, no voice"
+    },
+    {
+      "id": "missile-launch",
+      "seconds": 4,
+      "lufs": -19,
+      "prompt": "Distant ballistic missile launch: ignition roar and rocket whoosh rising into the sky, realistic military, no voice"
+    },
+    {
+      "id": "interception",
+      "seconds": 2.5,
+      "lufs": -20,
+      "prompt": "Air defense interceptor missile hitting its target high in the sky: sharp distant airburst crack with a rolling echo, realistic, no voice"
+    },
+    {
+      "id": "airstrike",
+      "seconds": 4,
+      "lufs": -19,
+      "prompt": "Fighter jet fast flyby followed by distant bomb impacts rumbling, realistic military, no voice"
+    },
+    {
+      "id": "radar-alert",
+      "seconds": 2.5,
+      "lufs": -21,
+      "prompt": "Military radar warning alert: three clean low electronic warning tones over a soft radar sweep hum, modern command center, not shrill"
+    },
+    {
+      "id": "production-complete",
+      "seconds": 2,
+      "lufs": -22,
+      "prompt": "Heavy mechanical industrial clunk with a short hydraulic hiss, followed by a short clean low confirmation beep, military factory"
+    },
+    {
+      "id": "research-complete",
+      "seconds": 2,
+      "lufs": -22,
+      "prompt": "Modern digital terminal confirmation chime, soft rising synth tones, clean high-tech military computer, subtle"
+    },
+    {
+      "id": "intel-report",
+      "seconds": 2,
+      "lufs": -23,
+      "prompt": "Encrypted data transmission: short teletype burst and digital data chirps, military intelligence terminal, subtle"
+    },
+    {
+      "id": "notification",
+      "seconds": 0.8,
+      "peak": -9,
+      "prompt": "Soft discreet terminal notification ping, single clean low electronic tone, subtle"
+    },
+    {
+      "id": "order",
+      "seconds": 0.5,
+      "peak": -12,
+      "prompt": "Very short subtle mechanical radio key click, tactical command terminal, crisp and quiet"
+    },
+    {
+      "id": "select",
+      "seconds": 0.5,
+      "peak": -14,
+      "prompt": "Very short soft electronic blip, tactical display unit selection, subtle"
+    },
+    {
+      "id": "window-open",
+      "seconds": 0.5,
+      "peak": -16,
+      "prompt": "Very subtle short digital terminal panel opening tick, soft electronic swish, minimal"
+    },
+    {
+      "id": "window-close",
+      "seconds": 0.5,
+      "peak": -16,
+      "prompt": "Very subtle short digital terminal panel closing tick, soft descending electronic blip, minimal"
+    }
+  ]
+}

@@ -134,7 +134,7 @@ const WINDOW_SIZE: Record<WindowId, { w: number; h: number }> = {
   encyclopedia: { w: 1280, h: 760 },
   chat: { w: 780, h: 620 },
   shop: { w: 900, h: 640 },
-  settings: { w: 520, h: 560 },
+  settings: { w: 520, h: 720 },
 };
 
 /** Zone utile des fenêtres flottantes (sous la barre supérieure, à droite du rail). */

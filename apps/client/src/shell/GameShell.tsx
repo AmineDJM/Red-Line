@@ -1,5 +1,6 @@
 import { useCallback, useState, type ReactNode } from 'react';
 import type { LngLat } from '@redline/shared';
+import { AudioBridge } from '../audio/AudioBridge.js';
 import { MapView } from '../map/MapView.js';
 import { navigate } from '../router.js';
 import { useUi } from '../store/ui.js';
@@ -86,6 +87,7 @@ export function GameShell({
       {help ? <ShortcutsHelp onClose={() => setHelp(false)} /> : null}
       <Toasts />
       <EndOverlay />
+      <AudioBridge />
     </div>
   );
 }
