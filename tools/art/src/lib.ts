@@ -1,4 +1,5 @@
 // Outils communs du pipeline photo : accès poli aux API Wikimedia, lecture des licences, chemins.
+import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -13,9 +14,13 @@ export const SELECTION = resolve(TOOL_DIR, 'selection.json');
 export const MANIFEST = resolve(REPO, 'data/art/photos.json');
 export const CREDITS = resolve(REPO, 'data/art/CREDITS.md');
 export const PHOTO_DIR = resolve(REPO, 'apps/client/public/art/photos');
+/** Décisions de détourage (verrou commité, produit par `cutout`, lu par `build`). */
+export const CUTOUTS = resolve(TOOL_DIR, 'cutouts.json');
+/** Découpes (PNG avec transparence) mises en cache, une par photo source. */
+export const CUTOUT_DIR = resolve(CACHE_DIR, 'cutout');
 
 /** Identification exigée par Wikimedia. Jamais d'adresse e-mail. */
-export const USER_AGENT = 'RedLine/0.1 (+https://github.com/AmineDJM/Red-Line)';
+export const USER_AGENT = 'RedLine-art/1.0 (https://github.com/AmineDJM/Red-Line)';
 const COMMONS_API = 'https://commons.wikimedia.org/w/api.php';
 const WIKI_API = 'https://en.wikipedia.org/w/api.php';
 
@@ -31,9 +36,18 @@ async function pace(): Promise<void> {
 
 export async function politeFetch(url: string, attempt = 0): Promise<Response> {
   await pace();
-  const res = await fetch(url, {
-    headers: { 'User-Agent': USER_AGENT, 'Api-User-Agent': USER_AGENT },
-  });
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      headers: { 'User-Agent': USER_AGENT, 'Api-User-Agent': USER_AGENT },
+      // Une connexion bloquée ne doit pas figer tout le pipeline.
+      signal: AbortSignal.timeout(90_000),
+    });
+  } catch (e) {
+    if (attempt >= 5) throw e;
+    await new Promise((r) => setTimeout(r, 10_000 * (attempt + 1)));
+    return politeFetch(url, attempt + 1);
+  }
   if ((res.status === 429 || res.status >= 500) && attempt < 5) {
     const retry = Number(res.headers.get('retry-after')) || 5 * (attempt + 1);
     await res.body?.cancel();
@@ -94,6 +108,28 @@ export interface SourceSpec {
   /** Raison documentée pour laquelle aucune photo n'est retenue. */
   none?: string;
   note?: string;
+  /**
+   * Détourage (étape `cutout`) : `false` garde la photo d'origine (détourage refusé au contrôle visuel :
+   * navire sur l'eau, radar dans son décor, groupe, lancement…), `true` impose le détourage même si un
+   * contrôle automatique échoue. Absent : détourage tenté, retenu si les contrôles automatiques passent.
+   */
+  cutout?: boolean;
+  /** Raison du choix de détourage (contrôle visuel), reprise dans cutouts.json. */
+  cutoutWhy?: string;
+  /** Zone de la découpe à garder, [x0, y0, x1, y1] en fractions (écarte un second véhicule, un décor). */
+  cutoutBox?: [number, number, number, number];
+}
+
+/** Décision de détourage d'un système (cutouts.json). */
+export interface CutoutDecision {
+  /** Titre du fichier Commons détouré : la décision ne vaut que pour cette photo. */
+  title: string;
+  use: boolean;
+  reason: string;
+  /** Part de l'image occupée par le sujet (0..1), pour mémoire. */
+  coverage?: number;
+  /** Zone gardée (copie de sources.json `cutoutBox`). */
+  box?: [number, number, number, number];
 }
 
 /** Surcharge manuelle : titre de fichier Commons, ou objet avec cadrage. */
@@ -105,6 +141,8 @@ export type Override =
       zoom?: number;
       /** Crédit corrigé à la main quand les métadonnées Commons sont inexploitables (URL, texte trop long). */
       credit?: string;
+      /** Vidéo : instant (secondes) de l'image extraite par Commons. */
+      seek?: number;
     };
 /**
  * Cadrage : 'centre' (défaut), 'attention' (sujet détecté), un bord, un point normalisé [x, y], ou 'fit'
@@ -215,14 +253,38 @@ export function parseImageInfo(page: any, extended = false): FileInfo | null {
   };
 }
 
+/** Clé de cache d'une photo source (URL de miniature Commons). */
+export function sourceKey(sel: Pick<Selection, 'thumbUrl'>): string {
+  return createHash('sha1').update(sel.thumbUrl).digest('hex').slice(0, 16);
+}
+
+/** Photo source téléchargée (cache .cache/dl), telle que renvoyée par Commons. */
+export async function downloadSource(sel: Selection): Promise<Buffer> {
+  const path = resolve(CACHE_DIR, 'dl', `${sourceKey(sel)}.img`);
+  try {
+    return await readFile(path);
+  } catch {
+    const res = await politeFetch(sel.thumbUrl);
+    if (!res.ok) throw new Error(`${sel.systemId} : ${res.status} ${sel.thumbUrl}`);
+    const buf = Buffer.from(await res.arrayBuffer());
+    await mkdir(dirname(path), { recursive: true });
+    await writeFile(path, buf);
+    return buf;
+  }
+}
+
 /** Largeur de miniature demandée : assez pour un recadrage 16:10 en 1280×800 sans agrandissement. */
 export const FETCH_WIDTH = 1920;
 
-/** Métadonnées Commons (licence, auteur, miniature) pour une liste de titres « File:… ». */
+/**
+ * Métadonnées Commons (licence, auteur, miniature) pour une liste de titres « File:… ». `seek` (secondes) :
+ * pour une vidéo, la miniature renvoyée par Commons est l'image extraite à cet instant.
+ */
 export async function fileInfos(
   titles: string[],
   width = FETCH_WIDTH,
   extended = false,
+  seek?: number,
 ): Promise<Map<string, FileInfo | null>> {
   const out = new Map<string, FileInfo | null>();
   for (const batch of chunks([...new Set(titles)], 40)) {
@@ -232,6 +294,7 @@ export async function fileInfos(
       prop: 'imageinfo',
       iiprop: 'url|size|mime|user|extmetadata',
       iiurlwidth: String(width),
+      ...(seek != null ? { iiurlparam: `${width}px-seek=${seek}` } : {}),
       iiextmetadatafilter:
         'License|LicenseShortName|Artist|Credit|Restrictions|ObjectName|UsageTerms',
     });
@@ -242,6 +305,27 @@ export async function fileInfos(
       out.set(page.title, info);
       const from = norm.get(page.title);
       if (from) out.set(from, info);
+    }
+  }
+  // Image plus étroite que la largeur demandée : l'API renvoie l'original (upload.wikimedia.org, très
+  // limité en débit depuis les environnements partagés). On redemande une miniature à la plus grande largeur
+  // standard inférieure (1280 ou 960 px), servie par le cache de miniatures : URL toujours renvoyée par l'API,
+  // jamais construite à la main.
+  if (seek == null && width === FETCH_WIDTH) {
+    for (const [title, info] of [...out]) {
+      if (!info || info.thumbUrl.includes('/thumb/') || info.width <= 960) continue;
+      const step = info.width > 1280 ? 1280 : 960;
+      const data = await commonsApi({
+        action: 'query',
+        titles: info.title,
+        prop: 'imageinfo',
+        iiprop: 'url|size|mime|user|extmetadata',
+        iiurlwidth: String(step),
+        iiextmetadatafilter:
+          'License|LicenseShortName|Artist|Credit|Restrictions|ObjectName|UsageTerms',
+      });
+      const scaled = parseImageInfo(data.query?.pages?.[0], extended);
+      if (scaled?.thumbUrl.includes('/thumb/')) out.set(title, { ...info, ...scaled });
     }
   }
   return out;

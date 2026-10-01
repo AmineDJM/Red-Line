@@ -2,7 +2,9 @@
 
 Photographies réelles issues de Wikimedia Commons, sous licences libres permettant un usage commercial :
 domaine public, CC0, CC BY et CC BY-SA. Chaque image a été recadrée (16:10), redimensionnée et légèrement
-étalonnée ; les versions modifiées des images CC BY-SA sont diffusées sous la même licence.
+étalonnée ; quand le sujet a été détouré, son arrière-plan a été remplacé par un fond uniforme (le sujet
+reste la photo d’origine, aucun pixel n’est généré). Les versions modifiées des images CC BY-SA sont
+diffusées sous la même licence.
 
 Textes des licences : [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/),
 [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/),
@@ -15,7 +17,20 @@ Textes des licences : [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/),
 [OGL v3](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/) (Royaume-Uni), toutes deux
 compatibles CC BY et utilisées seulement faute de photo CC ou domaine public.
 
-Généré par `tools/art` (374 photos). Ne pas modifier à la main.
+## Licences étendues (validées par Amine le 2026-10-01)
+
+Les photos sous Licence Ouverte (Etalab 2.0) et sous Open Government Licence v3.0 ont été validées par Amine
+le 2026-10-01. Mentions exigées :
+
+- **Licence Ouverte 2.0** : mention de la paternité (« Ministère des Armées » ou l’auteur indiqué) et de la
+  date de dernière mise à jour, avec lien vers la source ; modifications signalées (recadrage, étalonnage,
+  détourage). La licence n’accorde aucun droit sur les marques et insignes.
+- **OGL v3** : « Contains public sector information licensed under the Open Government Licence v3.0. »,
+  avec l’attribution fournie par la source (« UK MOD © Crown copyright »). L’OGL n’autorise pas l’usage
+  des insignes militaires (cadrage excluant tout insigne mis en avant) ni n’implique l’approbation du
+  fournisseur des données.
+
+Généré par `tools/art` (382 photos, dont 242 détourées). Ne pas modifier à la main.
 
 Format : **système** (`identifiant`) — auteur — licence — fichier source sur Commons.
 
@@ -69,6 +84,7 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 - **Infanterie légère** (`us.infantry-light`) — The U.S. Army — Domaine public — [Flickr - The U.S. Army - Early-morning dismounted patrol mission.jpg](https://commons.wikimedia.org/wiki/File:Flickr_-_The_U.S._Army_-_Early-morning_dismounted_patrol_mission.jpg) — _photo représentative_
 - **Infanterie mécanisée** (`us.infantry-mech`) — U.S. Army photo by Sgt. Cody Nelson — Domaine public — [2nd Battalion, 7th Infantry Regiment- Daytime CALFEX (9231951).jpg](<https://commons.wikimedia.org/wiki/File:2nd_Battalion,_7th_Infantry_Regiment-_Daytime_CALFEX_(9231951).jpg>) — _photo représentative_
 - **Infanterie légère** (`ru.infantry-light`) — Константин Алыш (Konstantin Alysh). — CC BY 4.0 — [Anti-AircraftExercise2019-26.jpg](https://commons.wikimedia.org/wiki/File:Anti-AircraftExercise2019-26.jpg) — _photo représentative_
+- **Infanterie mécanisée** (`ru.infantry-mech`) — Евгений Половодов (Yevgeny Polovodov) — CC BY 4.0 — [MechanizedInfantryExercise2018-13.jpg](https://commons.wikimedia.org/wiki/File:MechanizedInfantryExercise2018-13.jpg) — _photo représentative ; BMP-2 de la 3e division de fusiliers motorisés en exercice (oblast de Voronej, 2018) ; les fantassins embarqués ne sont pas visibles_
 - **Infanterie légère** (`cn.infantry-light`) — Chairman of the Joint Chiefs of Staff from Washington D.C, United States — CC BY 2.0 — [CJCS meets PRC troop in Shenyang (36604294635).jpg](<https://commons.wikimedia.org/wiki/File:CJCS_meets_PRC_troop_in_Shenyang_(36604294635).jpg>) — _photo représentative_
 - **Infanterie mécanisée** (`cn.infantry-mech`) — Chairman of the Joint Chiefs of Staff from Washington D.C, United States — CC BY 2.0 — [CJCS meets PRC troop in Shenyang (36558137376).jpg](<https://commons.wikimedia.org/wiki/File:CJCS_meets_PRC_troop_in_Shenyang_(36558137376).jpg>) — _photo représentative_
 - **Infanterie légère** (`eu.infantry-light`) — Italian Army — CC BY 2.5 — [Italian Army - 8th Alpini Regiment patrol during exercise Picca d’Acciaio - March 2025 02.jpg](https://commons.wikimedia.org/wiki/File:Italian_Army_-_8th_Alpini_Regiment_patrol_during_exercise_Picca_d%E2%80%99Acciaio_-_March_2025_02.jpg) — _photo représentative_
@@ -158,6 +174,7 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 - **CH-5** (`cn.ch-5`) — Infinty 0 — CC BY-SA 4.0 — [CH-5 at Airshow China Zhuhai 2022.jpg](https://commons.wikimedia.org/wiki/File:CH-5_at_Airshow_China_Zhuhai_2022.jpg)
 - **GJ-11** (`cn.gj-11`) — 颐园居 — CC BY-SA 4.0 — [Gongji-11 20221020.jpg](https://commons.wikimedia.org/wiki/File:Gongji-11_20221020.jpg)
 - **Patroller** (`eu.patroller`) — Gervaisjc — CC BY-SA 4.0 — [Safran Patroller au salon du Bourget 2019.jpg](https://commons.wikimedia.org/wiki/File:Safran_Patroller_au_salon_du_Bourget_2019.jpg)
+- **Eurodrone** (`eu.eurodrone`) — DeffiSK — CC BY-SA 4.0 — [EuroMALE ILA 2018 (01) (cropped).jpg](<https://commons.wikimedia.org/wiki/File:EuroMALE_ILA_2018_(01)_(cropped).jpg>) — _Maquette grandeur nature exposée au salon ILA de Berlin (2018) : aucun appareil de série n'a encore été photographié_
 - **Akinci** (`other.akinci`) — CeeGee — CC BY-SA 4.0 — [BayraktarAkıncı Teknofest2019 (3).jpg](<https://commons.wikimedia.org/wiki/File:BayraktarAk%C4%B1nc%C4%B1_Teknofest2019_(3).jpg>)
 - **Heron TP** (`other.heron-tp`) — MathKnight and Zachi Evenor — CC BY 4.0 — [IAF-Eitan--Independence-Day-2017-Tel-Nof-IZE-099.jpg](https://commons.wikimedia.org/wiki/File:IAF-Eitan--Independence-Day-2017-Tel-Nof-IZE-099.jpg)
 - **Harop** (`other.harop`) — Julian Herzog (Website) — CC BY 4.0 — [IAI Harop PAS 2013 01.jpg](https://commons.wikimedia.org/wiki/File:IAI_Harop_PAS_2013_01.jpg)
@@ -175,7 +192,7 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 - **Type 15** (`cn.type-15`) — 颐园居 — CC BY-SA 4.0 — [Type 15 tank 20221020.jpg](https://commons.wikimedia.org/wiki/File:Type_15_tank_20221020.jpg)
 - **VT4** (`cn.vt4`) — Mztourist — CC BY-SA 4.0 — [NORINCO VT-4 at IDEX 2017.jpg](https://commons.wikimedia.org/wiki/File:NORINCO_VT-4_at_IDEX_2017.jpg)
 - **Type 59** (`cn.type-59`) — Tyg728 — CC BY-SA 4.0 — [Type 59 tank in Military Museum of the Chinese People's Revolution 20180219.jpg](https://commons.wikimedia.org/wiki/File:Type_59_tank_in_Military_Museum_of_the_Chinese_People%27s_Revolution_20180219.jpg)
-- **Challenger 3** (`eu.challenger-3`) — Ministry of Defence — OGL v3 — [DES 2024 100 0104.jpg](https://commons.wikimedia.org/wiki/File:DES_2024_100_0104.jpg)
+- **Challenger 3** (`eu.challenger-3`) — Ministry of Defence — OGL v3 — [DES 2024 100 0104.jpg](https://commons.wikimedia.org/wiki/File:DES_2024_100_0104.jpg) — _Cadrage excluant le panneau d'exposition (logos du ministère de la Défense et de la British Army) : l'OGL n'autorise pas les insignes militaires ; Contains public sector information licensed under the Open Government Licence v3.0. ; licence validée par Amine le 2026-10-01_
 - **Challenger 2** (`eu.challenger-2`) — Fiorellino — CC BY-SA 3.0 — [Challenger2-Bergen-Hohne-Training-Area-2.jpg](https://commons.wikimedia.org/wiki/File:Challenger2-Bergen-Hohne-Training-Area-2.jpg)
 - **Ariete** (`eu.ariete`) — Italian Army — CC BY 2.5 — [Italian Army - 4th Tank Regiment - Ariete tanks during an exercise at Capo Teulada October 2022.jpg](https://commons.wikimedia.org/wiki/File:Italian_Army_-_4th_Tank_Regiment_-_Ariete_tanks_during_an_exercise_at_Capo_Teulada_October_2022.jpg)
 - **Leopard 1** (`eu.leopard-1`) — Rainer Lippert — CC BY-SA 4.0 — [Leopard 1A5.jpg](https://commons.wikimedia.org/wiki/File:Leopard_1A5.jpg)
@@ -236,6 +253,7 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 - **Tor-M2** (`ru.tor-m2`) — Vitaly V. Kuzmin — CC BY-SA 4.0 — [Tor-M1 SAM (2).jpg](<https://commons.wikimedia.org/wiki/File:Tor-M1_SAM_(2).jpg>)
 - **Buk-M3** (`ru.buk-m3`) — Boevaya mashina — CC BY-SA 3.0 — [9A317ME Buk-M3-Viking ARMY-2022.jpg](https://commons.wikimedia.org/wiki/File:9A317ME_Buk-M3-Viking_ARMY-2022.jpg)
 - **S-300PMU2** (`ru.s-300pmu2`) — Vitaly V. Kuzmin — CC BY-SA 4.0 — [S-300PMU2 with tractor-trailer KrAZ-260V.jpg](https://commons.wikimedia.org/wiki/File:S-300PMU2_with_tractor-trailer_KrAZ-260V.jpg)
+- **S-500** (`ru.s-500`) — Пресс-служба Минобороны РФ — CC BY 4.0 — [С-500 российский зенитный ракетный комплекс.jpg](https://commons.wikimedia.org/wiki/File:%D0%A1-500_%D1%80%D0%BE%D1%81%D1%81%D0%B8%D0%B9%D1%81%D0%BA%D0%B8%D0%B9_%D0%B7%D0%B5%D0%BD%D0%B8%D1%82%D0%BD%D1%8B%D0%B9_%D1%80%D0%B0%D0%BA%D0%B5%D1%82%D0%BD%D1%8B%D0%B9_%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%81.jpg) — _Photo officielle du ministère russe de la Défense (900 px de large, emblème du ministère exclu du cadre)_
 - **Igla** (`ru.igla`) — Srđan Popović — CC BY-SA 4.0 — [Dan srpskog jedinstva slobode i zastave - LPRS Igla - 01.jpg](https://commons.wikimedia.org/wiki/File:Dan_srpskog_jedinstva_slobode_i_zastave_-_LPRS_Igla_-_01.jpg)
 - **S-75 Dvina** (`ru.s-75-dvina`) — SSgt. David Nolan — Domaine public — [Egyptian SA-2 SAM.JPEG](https://commons.wikimedia.org/wiki/File:Egyptian_SA-2_SAM.JPEG)
 - **S-125 Neva** (`ru.s-125-neva`) — Arest128 — CC BY 4.0 — [Mordenized SNR-125 radar by Viettel.jpg](https://commons.wikimedia.org/wiki/File:Mordenized_SNR-125_radar_by_Viettel.jpg)
@@ -289,6 +307,8 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 - **Trident II D5** (`us.trident-ii-d5`) — U.S. Navy — Domaine public — [151107-N-ZZ999-001 - SLBM being launched from USS Kentucky.jpg](https://commons.wikimedia.org/wiki/File:151107-N-ZZ999-001_-_SLBM_being_launched_from_USS_Kentucky.jpg)
 - **B61-12** (`us.b61-12`) — Los Alamos National Laboratory — Domaine public — [F-35 B61-12 trial.jpg](https://commons.wikimedia.org/wiki/File:F-35_B61-12_trial.jpg)
 - **Yars** (`ru.yars`) — Vitaly V. Kuzmin — CC BY-SA 4.0 — [April 9th rehearsal in Alabino of 2014 Victory Day Parade (558-59).jpg](<https://commons.wikimedia.org/wiki/File:April_9th_rehearsal_in_Alabino_of_2014_Victory_Day_Parade_(558-59).jpg>)
+- **Sarmat** (`ru.sarmat`) — Ministry of Defence of the Russian Federation — CC BY 4.0 — [Sarmat-launch.webm](https://commons.wikimedia.org/wiki/File:Sarmat-launch.webm) — _Image extraite de la vidéo officielle du lancement d'essai (Plessetsk, 20 avril 2022), ministère russe de la Défense_
+- **DF-41** (`cn.df-41`) — 中国新闻社 — CC BY 4.0 — [120秒看大阅兵震撼瞬间！1.png](https://commons.wikimedia.org/wiki/File:120%E7%A7%92%E7%9C%8B%E5%A4%A7%E9%98%85%E5%85%B5%E9%9C%87%E6%92%BC%E7%9E%AC%E9%97%B4%EF%BC%811.png) — _Image extraite d'un reportage vidéo de China News Service (défilé du 1er octobre 2019), recadrée pour exclure logo et sous-titres_
 - **ASMP-A** (`eu.asmp-a`) — User:Thomas Boucajay — CC BY 3.0 — [SG1059332.JPG](https://commons.wikimedia.org/wiki/File:SG1059332.JPG)
 - **Hwasong-17** (`other.hwasong-17`) — North Korea Public Relationships — CC BY 4.0 — [Hwasong17-20201010-KORN Pyonyang-N323-2.jpg](https://commons.wikimedia.org/wiki/File:Hwasong17-20201010-KORN_Pyonyang-N323-2.jpg)
 - **Arleigh Burke** (`us.arleigh-burke`) — U.S. Navy photo by Mass Communication Specialist 2nd Class Jason R. Zalasky — Domaine public — [US Navy 080906-N-1082Z-067 The guided-missile destroyer USS Roosevelt (DDG 80) transits the Atlantic Ocean.jpg](<https://commons.wikimedia.org/wiki/File:US_Navy_080906-N-1082Z-067_The_guided-missile_destroyer_USS_Roosevelt_(DDG_80)_transits_the_Atlantic_Ocean.jpg>)
@@ -296,6 +316,7 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 - **Nimitz** (`us.nimitz`) — Resized and recompressed version of \[1\] from Nimitz's official site (has several more images.) — Domaine public — [USS Nimitz in Victoria Canada 036.jpg](https://commons.wikimedia.org/wiki/File:USS_Nimitz_in_Victoria_Canada_036.jpg)
 - **America** (`us.america`) — US Navy — Domaine public — [USS America (LHA-6) F-35B loaded.jpg](<https://commons.wikimedia.org/wiki/File:USS_America_(LHA-6)_F-35B_loaded.jpg>)
 - **Ticonderoga** (`us.ticonderoga`) — U.S. Navy photo by Mass Communication Specialist 2nd Class Dustin Kelling — Domaine public — [US Navy 080923-N-2183K-024 The guided-missile cruiser USS Cape St. George (CG 71) steams in the Indian Ocean supporting maritime security operations in the U.S. 5th Fleet area of responsibility.jpg](<https://commons.wikimedia.org/wiki/File:US_Navy_080923-N-2183K-024_The_guided-missile_cruiser_USS_Cape_St._George_(CG_71)_steams_in_the_Indian_Ocean_supporting_maritime_security_operations_in_the_U.S._5th_Fleet_area_of_responsibility.jpg>)
+- **Constellation** (`us.constellation`) — United States Navy — Domaine public — [Artist rendering of USS Constellation (FFG-62).jpg](<https://commons.wikimedia.org/wiki/File:Artist_rendering_of_USS_Constellation_(FFG-62).jpg>) — _Vue d'artiste officielle de l'US Navy (USS Constellation FFG-62, 2021, domaine public) : aucun navire achevé n'a encore été photographié_
 - **LCS** (`us.lcs`) — U.S. Navy photo by Naval Air Crewman 2nd Class Nicholas Kontodiakos — Domaine public — [USS Independence (LCS-2) at Naval Air Station Key West on 29 March 2010 (100329-N-1481K-298).jpg](<https://commons.wikimedia.org/wiki/File:USS_Independence_(LCS-2)_at_Naval_Air_Station_Key_West_on_29_March_2010_(100329-N-1481K-298).jpg>)
 - **Admiral Kuznetsov** (`ru.admiral-kuznetsov`) — Сергей Федюнин — CC BY 4.0 — [MilitarySportsHoliday2017-03.jpg](https://commons.wikimedia.org/wiki/File:MilitarySportsHoliday2017-03.jpg)
 - **Admiral Gorshkov** (`ru.admiral-gorshkov`) — Ministry of Defence of the Russian Federation — CC BY 4.0 — [Admiral Gorshkov frigate 02.jpg](https://commons.wikimedia.org/wiki/File:Admiral_Gorshkov_frigate_02.jpg)
@@ -328,6 +349,7 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 - **Saar 6** (`other.saar-6`) — IDF Spokesperson's Unit photographer — CC BY-SA 3.0 — [Sa'ar-6-class-corvette-0026.jpg](https://commons.wikimedia.org/wiki/File:Sa%27ar-6-class-corvette-0026.jpg)
 - **Virginia** (`us.virginia`) — U.S. Navy photo by General Dynamics Electric Boat — Domaine public — [US Navy 040730-N-1234E-002 PCU Virginia (SSN 774) returns to the General Dynamics Electric Boat shipyard.jpg](<https://commons.wikimedia.org/wiki/File:US_Navy_040730-N-1234E-002_PCU_Virginia_(SSN_774)_returns_to_the_General_Dynamics_Electric_Boat_shipyard.jpg>)
 - **Ohio** (`us.ohio`) — Mass Communication Specialist 1st Class Ahron Arendes — Domaine public — [USS Henry M. Jackson (SSBN 730).jpg](<https://commons.wikimedia.org/wiki/File:USS_Henry_M._Jackson_(SSBN_730).jpg>)
+- **Columbia** (`us.columbia`) — U.S. Navy illustration/released — Domaine public — [Artist rendering of a Columbia-class ballistic missile submarine, 2019 (190306-N-N0101-125).jpg](<https://commons.wikimedia.org/wiki/File:Artist_rendering_of_a_Columbia-class_ballistic_missile_submarine,_2019_(190306-N-N0101-125).jpg>) — _Vue d'artiste officielle de l'US Navy (programme Columbia, 2019, domaine public) : aucun sous-marin achevé n'a encore été photographié_
 - **Seawolf** (`us.seawolf`) — Thiep Nguyen — Domaine public — [USS Connecticut SSN 22.jpg](https://commons.wikimedia.org/wiki/File:USS_Connecticut_SSN_22.jpg)
 - **Yasen-M** (`ru.yasen-m`) — Ministry of Defence of the Russian Federation — CC BY 4.0 — [К-560 «Северодвинск».jpg](https://commons.wikimedia.org/wiki/File:%D0%9A-560_%C2%AB%D0%A1%D0%B5%D0%B2%D0%B5%D1%80%D0%BE%D0%B4%D0%B2%D0%B8%D0%BD%D1%81%D0%BA%C2%BB.jpg)
 - **Borei** (`ru.borei`) — Ildus Gilyazutdinov — CC BY 4.0 — [«Александр Невский» в Вилючинске.jpg](https://commons.wikimedia.org/wiki/File:%C2%AB%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80_%D0%9D%D0%B5%D0%B2%D1%81%D0%BA%D0%B8%D0%B9%C2%BB_%D0%B2_%D0%92%D0%B8%D0%BB%D1%8E%D1%87%D0%B8%D0%BD%D1%81%D0%BA%D0%B5.jpg)
@@ -335,11 +357,11 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 - **Delta IV** (`ru.delta-iv`) — US gov — Domaine public — [Submarine Delta IV class.jpg](https://commons.wikimedia.org/wiki/File:Submarine_Delta_IV_class.jpg)
 - **Type 094** (`cn.type-094`) — Office of Naval Intelligence (rapport CRS RL33153, Congrès des États-Unis) — Domaine public — [Jin (Type 094) Class Ballistic Missile Submarine.JPG](<https://commons.wikimedia.org/wiki/File:Jin_(Type_094)_Class_Ballistic_Missile_Submarine.JPG>)
 - **Type 039** (`cn.type-039`) — SteKrueBe — CC BY-SA 3.0 — [Song-class Submarine 5.jpg](https://commons.wikimedia.org/wiki/File:Song-class_Submarine_5.jpg)
-- **Suffren** (`eu.suffren`) — Armée française — Licence Ouverte — [Suffren VARUNA 23.jpg](https://commons.wikimedia.org/wiki/File:Suffren_VARUNA_23.jpg)
+- **Suffren** (`eu.suffren`) — Armée française — Licence Ouverte — [Suffren VARUNA 23.jpg](https://commons.wikimedia.org/wiki/File:Suffren_VARUNA_23.jpg) — _licence validée par Amine le 2026-10-01_
 - **Astute** (`eu.astute`) — U.S. Navy photo by Mass Communication Specialist 1st Class Todd A. Schaffer — Domaine public — [US Navy 111128-N-NK458-064 The Royal Navy submarine HMS Astute (S119) arrives at Naval Station Norfolk.jpg](<https://commons.wikimedia.org/wiki/File:US_Navy_111128-N-NK458-064_The_Royal_Navy_submarine_HMS_Astute_(S119)_arrives_at_Naval_Station_Norfolk.jpg>)
 - **Type 212** (`eu.type-212`) — PO1 Steven Myers, U.S. Navy — Domaine public — [Submarine Scire (S-527).jpg](<https://commons.wikimedia.org/wiki/File:Submarine_Scire_(S-527).jpg>)
 - **Scorpene** (`eu.scorpene`) — Indian Navy — CC BY 2.5 — [INS Kalvari (S21) at sea.jpg](<https://commons.wikimedia.org/wiki/File:INS_Kalvari_(S21)_at_sea.jpg>)
-- **Triomphant** (`eu.triomphant`) — Ministère des Armées — Licence Ouverte — [Sous-marin-nucleaire-lanceur-d-engins-le-triomphant.jpg](https://commons.wikimedia.org/wiki/File:Sous-marin-nucleaire-lanceur-d-engins-le-triomphant.jpg)
+- **Triomphant** (`eu.triomphant`) — Ministère des Armées — Licence Ouverte — [Sous-marin-nucleaire-lanceur-d-engins-le-triomphant.jpg](https://commons.wikimedia.org/wiki/File:Sous-marin-nucleaire-lanceur-d-engins-le-triomphant.jpg) — _licence validée par Amine le 2026-10-01_
 - **Type 209** (`eu.type-209`) — United States Navy photo by Journalist 3rd Class Corwin Colbert — Domaine public — [Chilean submarine Simpson (SS-21) at Pearl Harbor on 21 June 2004 (040621-N-5539C-001).jpg](<https://commons.wikimedia.org/wiki/File:Chilean_submarine_Simpson_(SS-21)_at_Pearl_Harbor_on_21_June_2004_(040621-N-5539C-001).jpg>)
 - **Type 214** (`eu.type-214`) — U.S. Navy photo by Mass Communication Specialist Seaman Chase Stephens — Domaine public — [ROKS Yun Bonggil (SS 077) 190605-N-SS370-0028.jpg](<https://commons.wikimedia.org/wiki/File:ROKS_Yun_Bonggil_(SS_077)_190605-N-SS370-0028.jpg>)
 - **Vanguard** (`eu.vanguard`) — OS2 JOHN BOUVIA — Domaine public — [HMS Vanguard (SSBN-50).jpg](<https://commons.wikimedia.org/wiki/File:HMS_Vanguard_(SSBN-50).jpg>)
@@ -369,6 +391,7 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 - **Radar satellite** (`ru.radar-satellite`) — Kirill Borisenko — CC BY-SA 4.0 — ["Kondor-E" reconnaissance satellite on MAKS-2021 airshow.jpg](https://commons.wikimedia.org/wiki/File:%22Kondor-E%22_reconnaissance_satellite_on_MAKS-2021_airshow.jpg) — _photo représentative ; satellite radar Kondor-E présenté au salon MAKS-2021_
 - **SIGINT satellite** (`ru.sigint-satellite`) — Ministère de la Défense de la Fédération de Russie (mil.ru) — CC BY 4.0 — [Launch of the Angara-A5 from the Plesetsk cosmodrome (2025-06-19) 05.jpg](<https://commons.wikimedia.org/wiki/File:Launch_of_the_Angara-A5_from_the_Plesetsk_cosmodrome_(2025-06-19)_05.jpg>) — _photo représentative_
 - **Early warning satellite** (`ru.early-warning-satellite`) — Ministère de la Défense de la Fédération de Russie (mil.ru) — CC BY 4.0 — [Soyuz-2 in Plesetsk 25.10.2018.jpg](https://commons.wikimedia.org/wiki/File:Soyuz-2_in_Plesetsk_25.10.2018.jpg) — _photo représentative_
+- **ASAT** (`ru.asat`) — Ministry of Defence of the Russian Federation — CC BY 4.0 — [Пуск противоракеты системы ПРО А-235 на полигоне Сары-Шаган.webm](https://commons.wikimedia.org/wiki/File:%D0%9F%D1%83%D1%81%D0%BA_%D0%BF%D1%80%D0%BE%D1%82%D0%B8%D0%B2%D0%BE%D1%80%D0%B0%D0%BA%D0%B5%D1%82%D1%8B_%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B_%D0%9F%D0%A0%D0%9E_%D0%90-235_%D0%BD%D0%B0_%D0%BF%D0%BE%D0%BB%D0%B8%D0%B3%D0%BE%D0%BD%D0%B5_%D0%A1%D0%B0%D1%80%D1%8B-%D0%A8%D0%B0%D0%B3%D0%B0%D0%BD.webm) — _photo représentative ; Image extraite de la vidéo officielle d'un essai de l'antimissile du système A-235 (Sary-Chagan) : transport du conteneur de l'intercepteur ; le Nudol (PL-19) lui-même n'a jamais été montré_
 - **Optical recon satellite** (`cn.optical-recon-satellite`) — China News Serivce — CC BY 4.0 — [Yaogan-36 satellite launch.png](https://commons.wikimedia.org/wiki/File:Yaogan-36_satellite_launch.png) — _photo représentative_
 - **Radar satellite** (`cn.radar-satellite`) — Institute of High Energy Physics, Chinese Academy of Sciences — CC BY 4.0 — [HXMT launch.jpg](https://commons.wikimedia.org/wiki/File:HXMT_launch.jpg) — _photo représentative_
 - **SIGINT satellite** (`cn.sigint-satellite`) — 中国新闻网 — CC BY 4.0 — [Shenzhou 12 launch.jpg](https://commons.wikimedia.org/wiki/File:Shenzhou_12_launch.jpg) — _photo représentative_
@@ -396,35 +419,27 @@ Format : **système** (`identifiant`) — auteur — licence — fichier source 
 
 ## Systèmes sans photo
 
-- `ru.infantry-mech` (Infanterie mécanisée) : aucune photo libre satisfaisante trouvée
-- `cn.h-20` (H-20) : appareil jamais montré publiquement : aucune photo réelle
-- `eu.eurodrone` (Eurodrone) : seule une maquette grandeur nature a été exposée (aucun appareil réel photographié sous licence libre)
-- `ru.s-500` (S-500) : aucune photo libre exploitable (seule photo : un autoportrait devant le lanceur)
-- `cn.ew-jammer` (EW jammer) : aucune photo libre d'un brouilleur chinois
-- `cn.yj-18` (YJ-18) : aucune photo libre du missile
-- `other.kn-23` (KN-23) : aucune photo libre du missile
-- `ru.sarmat` (Sarmat) : photos libres (ministère russe de la Défense) uniquement en très basse résolution
-- `ru.bulava` (Bulava) : photos libres (ministère russe de la Défense) uniquement en très basse résolution (550 px)
-- `cn.df-41` (DF-41) : aucune photo libre exploitable (seule une capture vidéo avec incrustations)
-- `cn.jl-3` (JL-3) : aucune photo libre du missile
+- `cn.h-20` (H-20) : appareil jamais montré publiquement : aucune photo réelle (pas de vue d'artiste substituée)
+- `cn.ew-jammer` (EW jammer) : aucune photo libre identifiable d'un brouilleur chinois
+- `cn.yj-18` (YJ-18) : aucune photo libre identifiable du missile (missiles YJ du défilé 2025 non identifiés comme YJ-18)
+- `other.kn-23` (KN-23) : aucune photo libre du missile sur Commons (seulement des schémas)
+- `ru.bulava` (Bulava) : photos officielles en 550 px seulement ; dans les vidéos libres, le missile n'est qu'une flamme dans la brume
+- `cn.jl-3` (JL-3) : aucune photo libre du missile (seule image sur Commons : une sculpture de glace, refusée)
 - `eu.m51` (M51) : aucune photo libre (seulement des schémas)
-- `other.agni-v` (Agni-V) : seule photo libre mal cadrée (salon) ; les autres sont sous licence GODL-India (non retenue)
+- `other.agni-v` (Agni-V) : photos DRDO sous licence GODL-India, à valider par Amine (voir rapport) ; la seule photo CC est un schéma
 - `other.shaheen-iii` (Shaheen-III) : aucune photo libre de cette version
 - `other.jericho-iii` (Jericho III) : aucune photo libre du missile (programme non montré publiquement)
-- `us.constellation` (Constellation) : navire en construction : seulement des vues d'artiste
-- `us.columbia` (Columbia) : sous-marin en construction : seulement des vues d'artiste
-- `cn.type-093` (Type 093) : aucune photo libre de ce sous-marin
+- `cn.type-093` (Type 093) : aucune photo libre de ce sous-marin (seulement une silhouette dessinée)
 - `cn.special-forces` (Special forces) : aucune photo libre identifiable des forces spéciales chinoises
-- `ru.asat` (ASAT) : aucune photo libre (système Nudol non montré)
-- `cn.asat` (ASAT) : aucune photo libre
+- `cn.asat` (ASAT) : aucune photo libre d'un antisatellite chinois (SC-19/DN-3 jamais montrés hors vidéos non libres)
 - `other.optical-recon-satellite` (Optical recon satellite) : photos ISRO sous licence GODL-India (non retenue)
 - `ru.rezonans-ne` (Rezonans-NE) : aucune photo libre trouvée
-- `ru.container-29b6` (Container 29B6) : aucune photo libre trouvée
+- `ru.container-29b6` (Container 29B6) : seule photo libre (ministère russe de la Défense) en 550 px, trop petite
 - `ru.podsolnukh-e` (Podsolnukh-E) : aucune photo libre trouvée
-- `cn.jy-27a` (JY-27A) : aucune photo libre trouvée
-- `cn.ylc-8b` (YLC-8B) : aucune photo libre trouvée
-- `cn.jy-26` (JY-26) : aucune photo libre trouvée
-- `cn.type-7010-lpar` (Type 7010 LPAR) : aucune photo libre trouvée
-- `other.el-m-2080-green-pine` (EL/M-2080 Green Pine) : aucune photo libre trouvée
+- `cn.jy-27a` (JY-27A) : aucune photo libre trouvée sur Commons
+- `cn.ylc-8b` (YLC-8B) : aucune photo libre trouvée sur Commons
+- `cn.jy-26` (JY-26) : aucune photo libre trouvée sur Commons
+- `cn.type-7010-lpar` (Type 7010 LPAR) : aucune photo libre trouvée sur Commons
+- `other.el-m-2080-green-pine` (EL/M-2080 Green Pine) : seule image « CC BY-SA » : copie basse définition (825 px) d'une image de constructeur, licence douteuse
 - `other.sepehr-oth` (Sepehr OTH) : aucune photo libre trouvée
 - `other.swordfish-lrtr` (Swordfish LRTR) : aucune photo libre trouvée

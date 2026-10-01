@@ -2127,38 +2127,35 @@
 }
 .rl-photo__frame {
   position: relative;
-  aspect-ratio: 16 / 9;
+  /* Les photos sont composées en 16:10 (fond « terminal tactique » commun) : on les montre entières. */
+  aspect-ratio: 16 / 10;
   overflow: hidden;
   border-radius: var(--rl-radius-sm);
-  background: #070a0e;
-}
-.rl-photo--thumb .rl-photo__frame {
-  aspect-ratio: 16 / 10;
+  background: #0c131a;
 }
 .rl-photo--mini .rl-photo__frame {
-  width: 56px;
-  aspect-ratio: 4 / 3;
+  width: 88px;
 }
 .rl-photo__frame img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(0.92) contrast(1.03);
 }
+/* Liseré et léger voile en tête (lisibilité des badges), communs à toutes les photos. */
 .rl-photo__frame::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-  background: linear-gradient(
-    180deg,
-    rgba(10, 14, 19, 0.35) 0%,
-    transparent 28%,
-    transparent 62%,
-    rgba(10, 14, 19, 0.55) 100%
-  );
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px rgba(76, 201, 240, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  background: linear-gradient(180deg, rgba(10, 14, 19, 0.3) 0%, transparent 22%);
+}
+.rl-photo--mini .rl-photo__frame::after {
+  background: none;
 }
 .rl-photo__none {
   display: flex;
@@ -2344,7 +2341,7 @@
 }
 .rl-wtile__name {
   font-weight: 700;
-  font-size: var(--rl-fs);
+  font-size: var(--rl-fs-md);
   color: var(--rl-text-strong);
   white-space: nowrap;
   overflow: hidden;
@@ -2369,6 +2366,15 @@
 .rl-wtile__price {
   color: var(--rl-amber);
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.rl-wtile__delay {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-xs);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }

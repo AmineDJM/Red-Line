@@ -1,16 +1,21 @@
-// Étape 2 : télécharge les photos choisies (selection.json), les recadre en 16:10, les étalonne et produit
-// les WebP du client, le manifeste data/art/photos.json et data/art/CREDITS.md.
+// Étape 3 : compose les fiches photo (sujet détouré sur fond « terminal tactique », ou photo recadrée en
+// 16:10), les étalonne et produit les WebP du client, le manifeste data/art/photos.json et data/art/CREDITS.md.
 //
 //   pnpm --filter @redline/tools-art build
+//   pnpm --filter @redline/tools-art build -- eu.f-16   # ne recompose que ces systèmes (manifeste complet)
 //
-// Téléchargements mis en cache dans tools/art/.cache (ignoré par git) : relancer ne retélécharge rien.
-import { createHash } from 'node:crypto';
+// Téléchargements et découpes en cache dans tools/art/.cache (ignoré par git) : relancer ne retélécharge rien.
+// Les décisions de détourage viennent de cutouts.json (étape `cutout`).
 import { mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import sharp from 'sharp';
+import { FRAME_TIGHTEN, composeCutout, composeFramed, keepBox, prepareSubject } from './compose.js';
 import {
   CACHE_DIR,
   CREDITS,
+  CUTOUTS,
+  CUTOUT_DIR,
+  type CutoutDecision,
   type Focus,
   MANIFEST,
   PHOTO_DIR,
@@ -19,34 +24,23 @@ import {
   SOURCES,
   type SourceSpec,
   catalog,
-  politeFetch,
+  downloadSource,
   readJson,
+  sourceKey,
   writeJson,
 } from './lib.js';
 
-const FULL = { width: 1280, height: 800, quality: 74 };
-const THUMB = { width: 400, height: 250, quality: 70 };
+const FULL = { width: 1280, height: 800, quality: 76 };
+const THUMB = { width: 400, height: 250, quality: 74 };
 
 type SelectionFile = Record<string, Selection | { none: string }>;
 const selection = await readJson<SelectionFile>(SELECTION);
 const sources = await readJson<Record<string, SourceSpec>>(SOURCES);
+const cutouts = await readJson<Record<string, CutoutDecision>>(CUTOUTS, {});
 const systems = await catalog();
+const only = new Set(process.argv.slice(2).filter((a) => a !== '--' && !a.startsWith('-')));
 await mkdir(join(CACHE_DIR, 'dl'), { recursive: true });
 await mkdir(PHOTO_DIR, { recursive: true });
-
-async function download(sel: Selection): Promise<Buffer> {
-  const key = createHash('sha1').update(sel.thumbUrl).digest('hex').slice(0, 16);
-  const path = join(CACHE_DIR, 'dl', `${key}.img`);
-  try {
-    return await readFile(path);
-  } catch {
-    const res = await politeFetch(sel.thumbUrl);
-    if (!res.ok) throw new Error(`${sel.systemId} : ${res.status} ${sel.thumbUrl}`);
-    const buf = Buffer.from(await res.arrayBuffer());
-    await writeFile(path, buf);
-    return buf;
-  }
-}
 
 /** Rectangle 16:10 dans l'image source, centré sur le point d'intérêt (fractions 0..1) et borné. */
 function cropBox(w: number, h: number, focus: Focus, zoom = 1) {
@@ -72,27 +66,10 @@ function cropBox(w: number, h: number, focus: Focus, zoom = 1) {
   return { left, top, width: cw, height: ch };
 }
 
-/**
- * Étalonnage commun, discret : léger contraste, saturation réduite, dominante froide à peine perceptible,
- * pour que des photos d'origines très diverses tiennent ensemble sur l'interface sombre.
- */
-function grade(img: sharp.Sharp): sharp.Sharp {
-  return img
-    .modulate({ saturation: 0.84, brightness: 0.98 })
-    .linear(1.07, -7)
-    .recomb([
-      [0.965, 0.025, 0.01],
-      [0.01, 0.98, 0.01],
-      [0.0, 0.03, 1.0],
-    ])
-    .sharpen({ sigma: 0.5 });
-}
-
-async function render(sel: Selection, src: Buffer): Promise<{ full: Buffer; thumb: Buffer }> {
-  const base = sharp(src, { failOn: 'none' }).rotate();
-  const meta = await base.clone().toBuffer({ resolveWithObject: true });
+/** Photo non détourée, recadrée en 16:10 selon `focus` / `zoom` et resserrée de FRAME_TIGHTEN. */
+async function cropFramed(sel: Selection, src: Buffer): Promise<Buffer> {
+  const meta = await sharp(src, { failOn: 'none' }).rotate().toBuffer({ resolveWithObject: true });
   const { width: w, height: h } = meta.info;
-  let cropped: Buffer;
   if (sel.focus === 'fit') {
     // Image très allongée : entière, sur un fond flou et assombri tiré d'elle-même (pas de bandes noires).
     const bg = await sharp(meta.data)
@@ -103,7 +80,7 @@ async function render(sel: Selection, src: Buffer): Promise<{ full: Buffer; thum
     const fg = await sharp(meta.data)
       .resize(FULL.width, FULL.height, { fit: 'inside' })
       .toBuffer({ resolveWithObject: true });
-    cropped = await sharp(bg)
+    return sharp(bg)
       .composite([
         {
           input: fg.data,
@@ -112,23 +89,46 @@ async function render(sel: Selection, src: Buffer): Promise<{ full: Buffer; thum
         },
       ])
       .toBuffer();
-  } else if (sel.focus === 'attention') {
-    cropped = await sharp(meta.data)
+  }
+  if (sel.focus === 'attention') {
+    return sharp(meta.data)
       .resize(FULL.width, FULL.height, { fit: 'cover', position: sharp.strategy.attention })
       .toBuffer();
-  } else {
-    cropped = await sharp(meta.data)
-      .extract(cropBox(w, h, sel.focus, sel.zoom))
-      .resize(FULL.width, FULL.height, { fit: 'fill' })
-      .toBuffer();
   }
-  const full = await grade(sharp(cropped))
-    .webp({ quality: FULL.quality, effort: 6, smartSubsample: true })
+  return sharp(meta.data)
+    .extract(cropBox(w, h, sel.focus, (sel.zoom ?? 1) * FRAME_TIGHTEN))
+    .resize(FULL.width, FULL.height, { fit: 'fill', kernel: 'lanczos3' })
     .toBuffer();
-  const thumb = await grade(sharp(cropped).resize(THUMB.width, THUMB.height))
-    .webp({ quality: THUMB.quality, effort: 6, smartSubsample: true })
-    .toBuffer();
-  return { full, thumb };
+}
+
+const webp = (img: sharp.Sharp, quality: number) =>
+  img.webp({ quality, effort: 6, smartSubsample: true }).toBuffer();
+
+async function render(
+  sel: Selection,
+  cut: CutoutDecision | undefined,
+): Promise<{ full: Buffer; thumb: Buffer; cutout: boolean }> {
+  if (cut?.use && cut.title === sel.title) {
+    let png: Buffer;
+    try {
+      png = await readFile(join(CUTOUT_DIR, `${sourceKey(sel)}.png`));
+    } catch {
+      throw new Error(
+        `${sel.systemId} : découpe absente du cache, lancer d'abord « pnpm --filter @redline/tools-art cutout »`,
+      );
+    }
+    const subject = await prepareSubject(await keepBox(png, cut.box));
+    const full = await webp(await composeCutout(subject, FULL.width, FULL.height), FULL.quality);
+    const thumb = await webp(
+      await composeCutout(subject, THUMB.width, THUMB.height),
+      THUMB.quality,
+    );
+    return { full, thumb, cutout: true };
+  }
+  const cropped = await cropFramed(sel, await downloadSource(sel));
+  const full = await webp(await composeFramed(cropped, FULL.width, FULL.height), FULL.quality);
+  const thumb = await webp(await composeFramed(cropped, THUMB.width, THUMB.height), THUMB.quality);
+  return { full, thumb, cutout: false };
 }
 
 interface ManifestEntry {
@@ -140,21 +140,43 @@ interface ManifestEntry {
   title: string;
   generic?: boolean;
   note?: string;
+  /** Sujet détouré et posé sur le fond commun (sinon photo recadrée). */
+  cutout?: boolean;
 }
 
 const manifest: Record<string, ManifestEntry> = {};
+const previous = await readJson<Record<string, ManifestEntry>>(MANIFEST, {});
+const failed: string[] = [];
 const missing: { id: string; reason: string }[] = [];
 let bytes = 0;
+let detoured = 0;
 for (const sys of systems) {
   const sel = selection[sys.id];
   if (!sel || 'none' in sel) {
     missing.push({ id: sys.id, reason: sel && 'none' in sel ? sel.none : 'non résolu' });
     continue;
   }
-  const { full, thumb } = await render(sel, await download(sel));
-  await writeFile(join(PHOTO_DIR, `${sys.id}.webp`), full);
-  await writeFile(join(PHOTO_DIR, `${sys.id}.thumb.webp`), thumb);
-  bytes += full.length + thumb.length;
+  const cut = cutouts[sys.id];
+  let cutout = !!cut?.use && cut.title === sel.title;
+  if (only.size === 0 || only.has(sys.id)) {
+    let r: Awaited<ReturnType<typeof render>>;
+    try {
+      r = await render(sel, cut);
+    } catch (e) {
+      // Téléchargement impossible (limite de débit) : on garde la fiche précédente si elle porte sur la
+      // même photo, sinon le système est signalé ; relancer ensuite « build -- <id> ».
+      const prev = previous[sys.id];
+      console.warn(`\n✗ ${sys.id} : ${(e as Error).message}`);
+      failed.push(sys.id);
+      if (prev && prev.title === sel.title.replace(/^File:/, '')) manifest[sys.id] = prev;
+      continue;
+    }
+    cutout = r.cutout;
+    await writeFile(join(PHOTO_DIR, `${sys.id}.webp`), r.full);
+    await writeFile(join(PHOTO_DIR, `${sys.id}.thumb.webp`), r.thumb);
+    bytes += r.full.length + r.thumb.length;
+  }
+  if (cutout) detoured++;
   const note = sources[sys.id]?.note;
   manifest[sys.id] = {
     file: `/art/photos/${sys.id}.webp`,
@@ -165,6 +187,7 @@ for (const sys of systems) {
     title: sel.title.replace(/^File:/, ''),
     ...(sel.generic ? { generic: true } : {}),
     ...(note ? { note } : {}),
+    ...(cutout ? { cutout: true } : {}),
   };
   if (process.stdout.isTTY) process.stdout.write(`\r${Object.keys(manifest).length} photos`);
 }
@@ -187,7 +210,9 @@ const lines = [
   '',
   'Photographies réelles issues de Wikimedia Commons, sous licences libres permettant un usage commercial :',
   'domaine public, CC0, CC BY et CC BY-SA. Chaque image a été recadrée (16:10), redimensionnée et légèrement',
-  'étalonnée ; les versions modifiées des images CC BY-SA sont diffusées sous la même licence.',
+  'étalonnée ; quand le sujet a été détouré, son arrière-plan a été remplacé par un fond uniforme (le sujet',
+  'reste la photo d’origine, aucun pixel n’est généré). Les versions modifiées des images CC BY-SA sont',
+  'diffusées sous la même licence.',
   '',
   'Textes des licences : [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/),',
   '[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/),',
@@ -200,14 +225,37 @@ const lines = [
   '[OGL v3](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/) (Royaume-Uni), toutes deux',
   'compatibles CC BY et utilisées seulement faute de photo CC ou domaine public.',
   '',
-  `Généré par \`tools/art\` (${Object.keys(manifest).length} photos). Ne pas modifier à la main.`,
+  '## Licences étendues (validées par Amine le 2026-10-01)',
+  '',
+  'Les photos sous Licence Ouverte (Etalab 2.0) et sous Open Government Licence v3.0 ont été validées par Amine',
+  'le 2026-10-01. Mentions exigées :',
+  '',
+  '- **Licence Ouverte 2.0** : mention de la paternité (« Ministère des Armées » ou l’auteur indiqué) et de la',
+  '  date de dernière mise à jour, avec lien vers la source ; modifications signalées (recadrage, étalonnage,',
+  '  détourage). La licence n’accorde aucun droit sur les marques et insignes.',
+  '- **OGL v3** : « Contains public sector information licensed under the Open Government Licence v3.0. »,',
+  '  avec l’attribution fournie par la source (« UK MOD © Crown copyright »). L’OGL n’autorise pas l’usage',
+  '  des insignes militaires (cadrage excluant tout insigne mis en avant) ni n’implique l’approbation du',
+  '  fournisseur des données.',
+  '',
+  `Généré par \`tools/art\` (${Object.keys(manifest).length} photos, dont ${detoured} détourées). Ne pas modifier à la main.`,
   '',
   'Format : **système** (`identifiant`) — auteur — licence — fichier source sur Commons.',
   '',
 ];
 const md = (s: string) => s.replace(/([\\`*_[\]<>])/g, '\\$1');
+const ogl = 'Contains public sector information licensed under the Open Government Licence v3.0.';
 for (const [id, e] of Object.entries(manifest)) {
-  const extra = [e.generic ? 'photo représentative' : '', e.note ?? ''].filter(Boolean).join(' ; ');
+  const extra = [
+    e.generic ? 'photo représentative' : '',
+    e.note ?? '',
+    e.license === 'OGL v3' ? ogl : '',
+    e.license === 'Licence Ouverte' || e.license === 'OGL v3'
+      ? 'licence validée par Amine le 2026-10-01'
+      : '',
+  ]
+    .filter(Boolean)
+    .join(' ; ');
   lines.push(
     `- **${md(names.get(id) ?? id)}** (\`${id}\`) — ${md(e.credit)} — ${e.license} — ` +
       `[${md(e.title)}](<${e.sourceUrl}>)${extra ? ` — _${md(extra)}_` : ''}`,
@@ -222,7 +270,13 @@ await writeFile(CREDITS, lines.join('\n') + '\n');
 let disk = 0;
 for (const f of await readdir(PHOTO_DIR)) disk += (await stat(join(PHOTO_DIR, f))).size;
 console.log(
-  `\n${Object.keys(manifest).length}/${systems.length} photos, ${missing.length} sans photo, ` +
+  `\n${Object.keys(manifest).length}/${systems.length} photos (${detoured} détourées), ${missing.length} sans photo, ` +
     `${(disk / 1048576).toFixed(1)} Mio sur disque (${(bytes / 1048576).toFixed(1)} Mio écrits)`,
 );
 console.log([...byLicense].map(([l, n]) => `${l} : ${n}`).join(' · '));
+if (failed.length) {
+  console.error(
+    `\n${failed.length} photo(s) non composée(s), relancer : build -- ${failed.join(' ')}`,
+  );
+  process.exitCode = 1;
+}

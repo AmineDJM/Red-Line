@@ -950,7 +950,23 @@
     "via": "override"
   },
   "ru.infantry-mech": {
-    "none": "aucune photo libre satisfaisante trouvée"
+    "systemId": "ru.infantry-mech",
+    "generic": true,
+    "title": "File:MechanizedInfantryExercise2018-13.jpg",
+    "width": 1200,
+    "height": 800,
+    "mime": "image/jpeg",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/MechanizedInfantryExercise2018-13.jpg/960px-MechanizedInfantryExercise2018-13.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "thumbWidth": 960,
+    "thumbHeight": 640,
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:MechanizedInfantryExercise2018-13.jpg",
+    "credit": "Евгений Половодов (Yevgeny Polovodov)",
+    "license": "CC BY 4.0",
+    "licenseCode": "cc-by-4.0",
+    "restrictions": "",
+    "objectName": "MechanizedInfantryExercise2018-13",
+    "focus": "centre",
+    "via": "override"
   },
   "cn.infantry-light": {
     "systemId": "cn.infantry-light",
@@ -1219,7 +1235,7 @@
     "via": "search"
   },
   "cn.h-20": {
-    "none": "appareil jamais montré publiquement : aucune photo réelle"
+    "none": "appareil jamais montré publiquement : aucune photo réelle (pas de vue d'artiste substituée)"
   },
   "us.a-10c-thunderbolt-ii": {
     "systemId": "us.a-10c-thunderbolt-ii",
@@ -2647,7 +2663,23 @@
     "via": "pageimage"
   },
   "eu.eurodrone": {
-    "none": "seule une maquette grandeur nature a été exposée (aucun appareil réel photographié sous licence libre)"
+    "systemId": "eu.eurodrone",
+    "generic": false,
+    "title": "File:EuroMALE ILA 2018 (01) (cropped).jpg",
+    "width": 4482,
+    "height": 2988,
+    "mime": "image/jpeg",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/EuroMALE_ILA_2018_%2801%29_%28cropped%29.jpg/1920px-EuroMALE_ILA_2018_%2801%29_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "thumbWidth": 1920,
+    "thumbHeight": 1280,
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:EuroMALE_ILA_2018_(01)_(cropped).jpg",
+    "credit": "DeffiSK",
+    "license": "CC BY-SA 4.0",
+    "licenseCode": "cc-by-sa-4.0",
+    "restrictions": "",
+    "objectName": "EuroMALE ILA 2018 (01) (cropped)",
+    "focus": "centre",
+    "via": "override"
   },
   "other.akinci": {
     "systemId": "other.akinci",
@@ -2988,7 +3020,8 @@
     "licenseCode": "",
     "restrictions": "",
     "objectName": "DES 2024 100 0104",
-    "focus": "centre",
+    "focus": [0.55, 0.5],
+    "zoom": 1.1,
     "via": "override"
   },
   "eu.challenger-2": {
@@ -4132,7 +4165,23 @@
     "via": "search"
   },
   "ru.s-500": {
-    "none": "aucune photo libre exploitable (seule photo : un autoportrait devant le lanceur)"
+    "systemId": "ru.s-500",
+    "generic": false,
+    "title": "File:С-500 российский зенитный ракетный комплекс.jpg",
+    "width": 900,
+    "height": 600,
+    "mime": "image/jpeg",
+    "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/1/16/%D0%A1-500_%D1%80%D0%BE%D1%81%D1%81%D0%B8%D0%B9%D1%81%D0%BA%D0%B8%D0%B9_%D0%B7%D0%B5%D0%BD%D0%B8%D1%82%D0%BD%D1%8B%D0%B9_%D1%80%D0%B0%D0%BA%D0%B5%D1%82%D0%BD%D1%8B%D0%B9_%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%81.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "thumbWidth": 1920,
+    "thumbHeight": 1280,
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:%D0%A1-500_%D1%80%D0%BE%D1%81%D1%81%D0%B8%D0%B9%D1%81%D0%BA%D0%B8%D0%B9_%D0%B7%D0%B5%D0%BD%D0%B8%D1%82%D0%BD%D1%8B%D0%B9_%D1%80%D0%B0%D0%BA%D0%B5%D1%82%D0%BD%D1%8B%D0%B9_%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%81.jpg",
+    "credit": "Пресс-служба Минобороны РФ",
+    "license": "CC BY 4.0",
+    "licenseCode": "cc-by-4.0",
+    "restrictions": "",
+    "objectName": "С-500 российский зенитный ракетный комплекс",
+    "focus": "left",
+    "via": "override"
   },
   "ru.igla": {
     "systemId": "ru.igla",
@@ -4344,7 +4393,7 @@
     "via": "pageimage"
   },
   "cn.ew-jammer": {
-    "none": "aucune photo libre d'un brouilleur chinois"
+    "none": "aucune photo libre identifiable d'un brouilleur chinois"
   },
   "eu.samp-t": {
     "systemId": "eu.samp-t",
@@ -4898,7 +4947,7 @@
     "via": "pageimage"
   },
   "cn.yj-18": {
-    "none": "aucune photo libre du missile"
+    "none": "aucune photo libre identifiable du missile (missiles YJ du défilé 2025 non identifiés comme YJ-18)"
   },
   "cn.c-802": {
     "systemId": "cn.c-802",
@@ -5072,7 +5121,7 @@
     "via": "override"
   },
   "other.kn-23": {
-    "none": "aucune photo libre du missile"
+    "none": "aucune photo libre du missile sur Commons (seulement des schémas)"
   },
   "us.minuteman-iii": {
     "systemId": "us.minuteman-iii",
@@ -5151,16 +5200,50 @@
     "via": "page"
   },
   "ru.sarmat": {
-    "none": "photos libres (ministère russe de la Défense) uniquement en très basse résolution"
+    "systemId": "ru.sarmat",
+    "generic": false,
+    "title": "File:Sarmat-launch.webm",
+    "width": 1920,
+    "height": 1080,
+    "mime": "video/webm",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/Sarmat-launch.webm/1920px-seek%3D6-Sarmat-launch.webm.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo",
+    "thumbWidth": 1920,
+    "thumbHeight": 1080,
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Sarmat-launch.webm",
+    "credit": "Ministry of Defence of the Russian Federation",
+    "license": "CC BY 4.0",
+    "licenseCode": "cc-by-4.0",
+    "restrictions": "",
+    "objectName": "Sarmat-launch",
+    "focus": [0.6, 0.55],
+    "zoom": 1.5,
+    "via": "override"
   },
   "ru.bulava": {
-    "none": "photos libres (ministère russe de la Défense) uniquement en très basse résolution (550 px)"
+    "none": "photos officielles en 550 px seulement ; dans les vidéos libres, le missile n'est qu'une flamme dans la brume"
   },
   "cn.df-41": {
-    "none": "aucune photo libre exploitable (seule une capture vidéo avec incrustations)"
+    "systemId": "cn.df-41",
+    "generic": false,
+    "title": "File:120秒看大阅兵震撼瞬间！1.png",
+    "width": 1919,
+    "height": 1073,
+    "mime": "image/png",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/120%E7%A7%92%E7%9C%8B%E5%A4%A7%E9%98%85%E5%85%B5%E9%9C%87%E6%92%BC%E7%9E%AC%E9%97%B4%EF%BC%811.png/1280px-120%E7%A7%92%E7%9C%8B%E5%A4%A7%E9%98%85%E5%85%B5%E9%9C%87%E6%92%BC%E7%9E%AC%E9%97%B4%EF%BC%811.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "thumbWidth": 1280,
+    "thumbHeight": 716,
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:120%E7%A7%92%E7%9C%8B%E5%A4%A7%E9%98%85%E5%85%B5%E9%9C%87%E6%92%BC%E7%9E%AC%E9%97%B4%EF%BC%811.png",
+    "credit": "中国新闻社",
+    "license": "CC BY 4.0",
+    "licenseCode": "cc-by-4.0",
+    "restrictions": "",
+    "objectName": "120秒看大阅兵震撼瞬间！1",
+    "focus": [0.55, 0.48],
+    "zoom": 1.79,
+    "via": "override"
   },
   "cn.jl-3": {
-    "none": "aucune photo libre du missile"
+    "none": "aucune photo libre du missile (seule image sur Commons : une sculpture de glace, refusée)"
   },
   "eu.m51": {
     "none": "aucune photo libre (seulement des schémas)"
@@ -5185,7 +5268,7 @@
     "via": "override"
   },
   "other.agni-v": {
-    "none": "seule photo libre mal cadrée (salon) ; les autres sont sous licence GODL-India (non retenue)"
+    "none": "photos DRDO sous licence GODL-India, à valider par Amine (voir rapport) ; la seule photo CC est un schéma"
   },
   "other.shaheen-iii": {
     "none": "aucune photo libre de cette version"
@@ -5309,7 +5392,23 @@
     "via": "pageimage"
   },
   "us.constellation": {
-    "none": "navire en construction : seulement des vues d'artiste"
+    "systemId": "us.constellation",
+    "generic": false,
+    "title": "File:Artist rendering of USS Constellation (FFG-62).jpg",
+    "width": 1876,
+    "height": 869,
+    "mime": "image/jpeg",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Artist_rendering_of_USS_Constellation_%28FFG-62%29.jpg/1280px-Artist_rendering_of_USS_Constellation_%28FFG-62%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "thumbWidth": 1280,
+    "thumbHeight": 593,
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Artist_rendering_of_USS_Constellation_(FFG-62).jpg",
+    "credit": "United States Navy",
+    "license": "Domaine public",
+    "licenseCode": "pd",
+    "restrictions": "",
+    "objectName": "Artist rendering of USS Constellation (FFG-62)",
+    "focus": "centre",
+    "via": "override"
   },
   "us.lcs": {
     "systemId": "us.lcs",
@@ -5922,7 +6021,23 @@
     "via": "override"
   },
   "us.columbia": {
-    "none": "sous-marin en construction : seulement des vues d'artiste"
+    "systemId": "us.columbia",
+    "generic": false,
+    "title": "File:Artist rendering of a Columbia-class ballistic missile submarine, 2019 (190306-N-N0101-125).jpg",
+    "width": 4536,
+    "height": 3277,
+    "mime": "image/jpeg",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Artist_rendering_of_a_Columbia-class_ballistic_missile_submarine%2C_2019_%28190306-N-N0101-125%29.jpg/1920px-Artist_rendering_of_a_Columbia-class_ballistic_missile_submarine%2C_2019_%28190306-N-N0101-125%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "thumbWidth": 1920,
+    "thumbHeight": 1387,
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Artist_rendering_of_a_Columbia-class_ballistic_missile_submarine,_2019_(190306-N-N0101-125).jpg",
+    "credit": "U.S. Navy illustration/released",
+    "license": "Domaine public",
+    "licenseCode": "pd",
+    "restrictions": "",
+    "objectName": "Artist rendering of a Columbia-class ballistic missile submarine, 2019 (190306-N-N0101-125)",
+    "focus": "centre",
+    "via": "override"
   },
   "us.seawolf": {
     "systemId": "us.seawolf",
@@ -6020,7 +6135,7 @@
     "via": "search"
   },
   "cn.type-093": {
-    "none": "aucune photo libre de ce sous-marin"
+    "none": "aucune photo libre de ce sous-marin (seulement une silhouette dessinée)"
   },
   "cn.type-094": {
     "systemId": "cn.type-094",
@@ -6712,7 +6827,23 @@
     "via": "override"
   },
   "ru.asat": {
-    "none": "aucune photo libre (système Nudol non montré)"
+    "systemId": "ru.asat",
+    "generic": true,
+    "title": "File:Пуск противоракеты системы ПРО А-235 на полигоне Сары-Шаган.webm",
+    "width": 1920,
+    "height": 1080,
+    "mime": "video/webm",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/%D0%9F%D1%83%D1%81%D0%BA_%D0%BF%D1%80%D0%BE%D1%82%D0%B8%D0%B2%D0%BE%D1%80%D0%B0%D0%BA%D0%B5%D1%82%D1%8B_%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B_%D0%9F%D0%A0%D0%9E_%D0%90-235_%D0%BD%D0%B0_%D0%BF%D0%BE%D0%BB%D0%B8%D0%B3%D0%BE%D0%BD%D0%B5_%D0%A1%D0%B0%D1%80%D1%8B-%D0%A8%D0%B0%D0%B3%D0%B0%D0%BD.webm/1920px-seek%3D29-%D0%9F%D1%83%D1%81%D0%BA_%D0%BF%D1%80%D0%BE%D1%82%D0%B8%D0%B2%D0%BE%D1%80%D0%B0%D0%BA%D0%B5%D1%82%D1%8B_%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B_%D0%9F%D0%A0%D0%9E_%D0%90-235_%D0%BD%D0%B0_%D0%BF%D0%BE%D0%BB%D0%B8%D0%B3%D0%BE%D0%BD%D0%B5_%D0%A1%D0%B0%D1%80%D1%8B-%D0%A8%D0%B0%D0%B3%D0%B0%D0%BD.webm.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo",
+    "thumbWidth": 1920,
+    "thumbHeight": 1080,
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:%D0%9F%D1%83%D1%81%D0%BA_%D0%BF%D1%80%D0%BE%D1%82%D0%B8%D0%B2%D0%BE%D1%80%D0%B0%D0%BA%D0%B5%D1%82%D1%8B_%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B_%D0%9F%D0%A0%D0%9E_%D0%90-235_%D0%BD%D0%B0_%D0%BF%D0%BE%D0%BB%D0%B8%D0%B3%D0%BE%D0%BD%D0%B5_%D0%A1%D0%B0%D1%80%D1%8B-%D0%A8%D0%B0%D0%B3%D0%B0%D0%BD.webm",
+    "credit": "Ministry of Defence of the Russian Federation",
+    "license": "CC BY 4.0",
+    "licenseCode": "cc-by-4.0",
+    "restrictions": "",
+    "objectName": "Пуск противоракеты системы ПРО А-235 на полигоне Сары-Шаган",
+    "focus": "centre",
+    "via": "override"
   },
   "cn.optical-recon-satellite": {
     "systemId": "cn.optical-recon-satellite",
@@ -6791,7 +6922,7 @@
     "via": "override"
   },
   "cn.asat": {
-    "none": "aucune photo libre"
+    "none": "aucune photo libre d'un antisatellite chinois (SC-19/DN-3 jamais montrés hors vidéos non libres)"
   },
   "eu.optical-recon-satellite": {
     "systemId": "eu.optical-recon-satellite",
@@ -7048,7 +7179,7 @@
     "via": "override"
   },
   "ru.container-29b6": {
-    "none": "aucune photo libre trouvée"
+    "none": "seule photo libre (ministère russe de la Défense) en 550 px, trop petite"
   },
   "ru.podsolnukh-e": {
     "none": "aucune photo libre trouvée"
@@ -7092,16 +7223,16 @@
     "via": "override"
   },
   "cn.jy-27a": {
-    "none": "aucune photo libre trouvée"
+    "none": "aucune photo libre trouvée sur Commons"
   },
   "cn.ylc-8b": {
-    "none": "aucune photo libre trouvée"
+    "none": "aucune photo libre trouvée sur Commons"
   },
   "cn.jy-26": {
-    "none": "aucune photo libre trouvée"
+    "none": "aucune photo libre trouvée sur Commons"
   },
   "cn.type-7010-lpar": {
-    "none": "aucune photo libre trouvée"
+    "none": "aucune photo libre trouvée sur Commons"
   },
   "eu.ground-master-400": {
     "systemId": "eu.ground-master-400",
@@ -7180,7 +7311,7 @@
     "via": "override"
   },
   "other.el-m-2080-green-pine": {
-    "none": "aucune photo libre trouvée"
+    "none": "seule image « CC BY-SA » : copie basse définition (825 px) d'une image de constructeur, licence douteuse"
   },
   "other.ghadir-oth": {
     "systemId": "other.ghadir-oth",

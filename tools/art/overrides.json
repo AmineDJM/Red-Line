@@ -39,7 +39,11 @@
     "focus": [0.45, 0.55],
     "zoom": 1.4
   },
-  "eu.challenger-3": "File:DES 2024 100 0104.jpg",
+  "eu.challenger-3": {
+    "file": "File:DES 2024 100 0104.jpg",
+    "focus": [0.55, 0.5],
+    "zoom": 1.1
+  },
   "eu.ground-master-400": "File:Ground Master 403 (KEVA2010) Kokonaisturvallisuus 2015 01.JPG",
   "eu.infantry-light": "File:Italian Army - 8th Alpini Regiment patrol during exercise Picca d’Acciaio - March 2025 02.jpg",
   "eu.infantry-mech": "File:Puma Infantry Fighting Vehicle.jpg",
@@ -184,5 +188,28 @@
   "us.radar-satellite": "File:NROL-37 launch tower view.jpg",
   "us.sigint-satellite": "File:Delta IV NROL-70 Launch (8334017).jpg",
   "us.special-forces": "File:Special Forces Soldiers Shooting Range Training (6135523).jpg",
-  "us.switchblade-600": "File:Switchblade 600 Loitering Munitions Training (8767595).jpg"
+  "us.switchblade-600": "File:Switchblade 600 Loitering Munitions Training (8767595).jpg",
+  "cn.df-41": {
+    "file": "File:120秒看大阅兵震撼瞬间！1.png",
+    "focus": [0.55, 0.48],
+    "zoom": 1.79
+  },
+  "ru.sarmat": {
+    "file": "File:Sarmat-launch.webm",
+    "seek": 6,
+    "focus": [0.6, 0.55],
+    "zoom": 1.5
+  },
+  "ru.asat": {
+    "file": "File:Пуск противоракеты системы ПРО А-235 на полигоне Сары-Шаган.webm",
+    "seek": 29
+  },
+  "ru.s-500": {
+    "file": "File:С-500 российский зенитный ракетный комплекс.jpg",
+    "focus": "left"
+  },
+  "eu.eurodrone": "File:EuroMALE ILA 2018 (01) (cropped).jpg",
+  "us.columbia": "File:Artist rendering of a Columbia-class ballistic missile submarine, 2019 (190306-N-N0101-125).jpg",
+  "us.constellation": "File:Artist rendering of USS Constellation (FFG-62).jpg",
+  "ru.infantry-mech": "File:MechanizedInfantryExercise2018-13.jpg"
 }

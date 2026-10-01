@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "resolve": "tsx src/resolve.ts",
+    "cutout": "NODE_USE_ENV_PROXY=1 tsx src/cutout.ts",
     "build": "tsx src/build.ts",
     "contact": "tsx src/contact.ts",
     "candidates": "tsx src/candidates.ts",
