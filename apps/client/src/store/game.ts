@@ -11,6 +11,8 @@ import {
   type ViewDiff,
 } from '@redline/shared';
 import { applyDiff } from '../net/applyDiff.js';
+import { navigate } from '../router.js';
+import { setFlash } from '../lib/flash.js';
 import type { ConnectionStatus, GameConnection, WelcomeEvent } from '../net/connection.js';
 
 export interface StoredNotification {
@@ -175,6 +177,13 @@ export function bindConnection(conn: GameConnection): () => void {
     conn.on('chat', (m) => useGame.getState().receiveChat([m])),
     conn.on('chatHistory', (list) => useGame.getState().receiveChat(list)),
     conn.on('notice', (n) => useGame.getState().notice(n)),
+    conn.on('error', (e) => {
+      // Partie supprimée par son créateur (autre onglet, autre appareil) : retour à l'accueil.
+      if (e.code === 'game_deleted') {
+        setFlash('game_deleted');
+        navigate('/', { replace: true });
+      }
+    }),
   ];
   conn.start();
   return () => {

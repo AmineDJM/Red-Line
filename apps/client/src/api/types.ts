@@ -84,6 +84,8 @@ export interface Api {
 
   // ——— Phase 5 : multijoueur ———
   myGames(): Promise<MyGame[]>;
+  /** Suppression définitive d'une partie solo (créateur uniquement). */
+  deleteGame(id: string): Promise<void>;
   lobby(): Promise<LobbyGame[]>;
   createLobby(body: CreateLobbyBody): Promise<GameMeta>;
   joinLobby(id: string, nationId: NationId): Promise<GameMeta>;

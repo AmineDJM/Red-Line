@@ -32,6 +32,9 @@ export function backoffDelay(attempt: number, random: () => number = Math.random
  * Connexion WebSocket au serveur : MessagePack, reconnexion avec backoff, synchronisation
  * d'horloge par ping/pong. Après une reconnexion, le serveur renvoie `welcome` (vue complète).
  */
+/** Erreurs du serveur après lesquelles une reconnexion n'a pas de sens. */
+const FATAL_ERRORS = new Set(['game_deleted', 'game_over', 'not_found', 'forbidden']);
+
 export class WsGameConnection extends Emitter implements GameConnection {
   readonly kind = 'ws' as const;
   private ws: WebSocket | null = null;
@@ -45,6 +48,8 @@ export class WsGameConnection extends Emitter implements GameConnection {
   private readonly sync = new ClockSync();
   private pingTimer: ReturnType<typeof setInterval> | null = null;
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+  /** Erreur définitive reçue du serveur (partie supprimée…) : pas de reconnexion. */
+  private fatal = false;
   private readonly opts: Required<Omit<WsOptions, 'url' | 'WebSocketImpl'>> & {
     url: string;
     WebSocketImpl: WsCtor;
@@ -112,6 +117,10 @@ export class WsGameConnection extends Emitter implements GameConnection {
       this.cleanupSocket();
       this.failPending();
       if (this.closed) return;
+      if (this.fatal) {
+        this.emit('status', 'failed');
+        return;
+      }
       // Codes 44xx : refus définitif (authentification, partie introuvable) — pas de reconnexion.
       if (ev.code >= 4400 && ev.code < 4500) {
         this.emit('status', 'failed');
@@ -178,6 +187,7 @@ export class WsGameConnection extends Emitter implements GameConnection {
         this.sync.add(msg.clientTime, msg.serverTime, Date.now());
         break;
       case 'error':
+        if (FATAL_ERRORS.has(msg.code)) this.fatal = true;
         this.emit('error', { code: msg.code, message: msg.message });
         break;
       case 'chat':

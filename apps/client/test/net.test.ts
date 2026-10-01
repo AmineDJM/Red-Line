@@ -184,6 +184,29 @@ describe('WsGameConnection', () => {
     unbind();
   });
 
+  it("partie supprimée : retour à l'accueil, sans reconnexion", () => {
+    const pushed: string[] = [];
+    vi.stubGlobal('window', {
+      location: { origin: 'http://test', pathname: '/game/g1', search: '' },
+      history: {
+        pushState: (_s: unknown, _t: string, url: string) => pushed.push(url),
+        replaceState: (_s: unknown, _t: string, url: string) => pushed.push(url),
+      },
+      addEventListener: () => undefined,
+    });
+    const { sock, unbind } = connect();
+    sock.open();
+    sock.receive(welcome);
+    sock.receive({ t: 'error', code: 'game_deleted', message: 'La partie a été supprimée.' });
+    sock.drop(1000);
+    expect(useGame.getState().status).toBe('failed');
+    expect(pushed).toEqual(['/']);
+    vi.advanceTimersByTime(60_000);
+    expect(FakeSocket.instances).toHaveLength(1);
+    unbind();
+    vi.unstubAllGlobals();
+  });
+
   it("synchronise l'horloge par ping/pong", () => {
     const { conn, sock, unbind } = connect();
     vi.setSystemTime(1_000_000);

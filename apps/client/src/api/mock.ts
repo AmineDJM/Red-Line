@@ -157,6 +157,9 @@ const guestUser: PublicUser = {
   isGuest: true,
 };
 
+/** Parties supprimées pendant la session de démonstration. */
+const deletedGames = new Set<string>();
+
 export class MockApi implements Api {
   readonly kind = 'mock' as const;
   private user: PublicUser | null = null;
@@ -260,7 +263,10 @@ export class MockApi implements Api {
     return demoNationsInfo(f.nations, f.provinces, f.catalog);
   }
   async myGames() {
-    return demoMyGames(mockNation());
+    return demoMyGames(mockNation()).filter((g) => !deletedGames.has(g.game.id));
+  }
+  async deleteGame(id: string) {
+    deletedGames.add(id);
   }
   async lobby() {
     return demoLobby((await loadFixtures()).nations);

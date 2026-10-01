@@ -1,8 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { MyGame } from '@redline/shared';
-import { Badge, Button, EmptyState, Flag, Icon, Spinner, Table } from '@redline/ui';
+import {
+  Badge,
+  Button,
+  Dialog,
+  EmptyState,
+  Flag,
+  Icon,
+  IconButton,
+  Spinner,
+  Table,
+} from '@redline/ui';
 import { getApi } from '../api/index.js';
+import { ApiError } from '../api/types.js';
 import { Page } from '../components/Page.js';
 import { navigate } from '../router.js';
 import { useWorld } from '../store/world.js';
@@ -14,15 +25,41 @@ export function GamesScreen() {
   const load = useWorld((s) => s.load);
   const [games, setGames] = useState<MyGame[] | null>(null);
   const [error, setError] = useState(false);
-  useEffect(() => {
-    void getApi().then((api) => {
-      void load(api);
+  const [toDelete, setToDelete] = useState<MyGame | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const refresh = () =>
+    getApi().then((api) =>
       api
         .myGames()
         .then(setGames)
-        .catch(() => setError(true));
-    });
+        .catch(() => setError(true)),
+    );
+  useEffect(() => {
+    void getApi().then((api) => load(api));
+    void refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [load]);
+  const confirmDelete = async () => {
+    if (!toDelete) return;
+    setDeleting(true);
+    setDeleteError(null);
+    try {
+      await (await getApi()).deleteGame(toDelete.game.id);
+      setToDelete(null);
+      await refresh();
+    } catch (e) {
+      setDeleteError(
+        e instanceof ApiError && e.code === 'game_busy'
+          ? t('games.delete.busy')
+          : e instanceof ApiError && e.message && e.message !== e.code
+            ? e.message
+            : t('games.delete.error'),
+      );
+    } finally {
+      setDeleting(false);
+    }
+  };
   return (
     <Page
       path={[t('games.path')]}
@@ -120,7 +157,9 @@ export function GamesScreen() {
                   dot
                   pulse={g.game.status === 'running'}
                 >
-                  {t(`games.status.${g.game.status}`)}
+                  {g.game.status === 'ended' && g.game.endReason === 'abandoned'
+                    ? t('games.status.abandoned')
+                    : t(`games.status.${g.game.status}`)}
                 </Badge>
               ),
             },
@@ -128,30 +167,72 @@ export function GamesScreen() {
               key: 'act',
               header: '',
               align: 'right',
-              render: (g) =>
-                g.game.status === 'ended' ? (
-                  <Button
-                    size="sm"
-                    variant="subtle"
-                    icon={<Icon name="economy" size={12} />}
-                    onClick={() => navigate(`/game/${encodeURIComponent(g.game.id)}/end`)}
-                  >
-                    {t('games.stats')}
-                  </Button>
-                ) : (
-                  <Button
-                    size="sm"
-                    variant="primary"
-                    icon={<Icon name="play" size={11} />}
-                    onClick={() => navigate(`/game/${encodeURIComponent(g.game.id)}`)}
-                  >
-                    {t('games.resume')}
-                  </Button>
-                ),
+              render: (g) => (
+                <span className="rowactions">
+                  {g.game.status === 'ended' ? (
+                    <Button
+                      size="sm"
+                      variant="subtle"
+                      icon={<Icon name="economy" size={12} />}
+                      onClick={() => navigate(`/game/${encodeURIComponent(g.game.id)}/end`)}
+                    >
+                      {t('games.stats')}
+                    </Button>
+                  ) : (
+                    <Button
+                      size="sm"
+                      variant="primary"
+                      icon={<Icon name="play" size={11} />}
+                      onClick={() => navigate(`/game/${encodeURIComponent(g.game.id)}`)}
+                    >
+                      {t('games.resume')}
+                    </Button>
+                  )}
+                  {g.game.mode === 'solo' ? (
+                    <IconButton
+                      size="sm"
+                      label={t('games.delete.action')}
+                      icon={<Icon name="trash" size={14} />}
+                      onClick={() => {
+                        setDeleteError(null);
+                        setToDelete(g);
+                      }}
+                      data-testid="game-delete"
+                    />
+                  ) : null}
+                </span>
+              ),
             },
           ]}
         />
       )}
+      <Dialog
+        open={!!toDelete}
+        tone="red"
+        title={t('games.delete.title')}
+        path={[t('games.path'), 'suppression']}
+        onClose={() => setToDelete(null)}
+        closeLabel={t('app.close')}
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => setToDelete(null)} disabled={deleting}>
+              {t('app.cancel')}
+            </Button>
+            <Button
+              variant="danger"
+              icon={<Icon name="trash" size={13} />}
+              disabled={deleting}
+              onClick={() => void confirmDelete()}
+              data-testid="game-delete-confirm"
+            >
+              {t('games.delete.confirm')}
+            </Button>
+          </>
+        }
+      >
+        <p>{t('games.delete.text', { name: toDelete?.game.name ?? '' })}</p>
+        {deleteError ? <p className="hint hint--warn">{deleteError}</p> : null}
+      </Dialog>
     </Page>
   );
 }

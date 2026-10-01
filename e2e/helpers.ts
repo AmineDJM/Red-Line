@@ -125,3 +125,14 @@ export async function newPlayerPage(browser: Browser, info: TestInfo, from: Page
   });
   return ctx.newPage();
 }
+
+/** Accepte les documents légaux en attente par l'API (parcours qui ne testent pas l'écran CGU). */
+export async function acceptLegalViaApi(page: Page) {
+  const me = await page.request.get('/api/me');
+  const docs = ((await me.json()) as { legal?: { needsAcceptance?: unknown[] } }).legal
+    ?.needsAcceptance;
+  if (docs?.length) {
+    const r = await page.request.post('/api/legal/accept', { data: { docs } });
+    expect(r.ok()).toBe(true);
+  }
+}

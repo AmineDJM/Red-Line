@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { NationId, ScenarioSummary } from '@redline/shared';
-import { Segmented, Select } from '@redline/ui';
+import { Button, Segmented, Select } from '@redline/ui';
 import { getApi } from '../api/index.js';
+import { ApiError } from '../api/types.js';
 import { NationPicker } from '../components/NationPicker.js';
 import { navigate } from '../router.js';
 import { useWorld } from '../store/world.js';
@@ -21,7 +22,7 @@ export function NewGameScreen() {
   const [scenarios, setScenarios] = useState<ScenarioSummary[]>([]);
   const [scenarioId, setScenarioId] = useState('world-today');
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ReactNode>(null);
 
   useEffect(() => {
     void getApi().then((api) => {
@@ -59,8 +60,18 @@ export function NewGameScreen() {
         aiLevel: level,
       });
       navigate(`/game/${encodeURIComponent(game.id)}`);
-    } catch {
-      setError(t('newGame.error'));
+    } catch (e) {
+      // Quota de parties solo atteint : message du serveur et accès direct à « Mes parties ».
+      if (e instanceof ApiError && e.code === 'too_many_games')
+        setError(
+          <>
+            {e.message !== e.code ? e.message : t('newGame.tooMany')}{' '}
+            <Button size="sm" variant="ghost" onClick={() => navigate('/games')}>
+              {t('newGame.manageGames')}
+            </Button>
+          </>,
+        );
+      else setError(t('newGame.error'));
       setBusy(false);
     }
   };

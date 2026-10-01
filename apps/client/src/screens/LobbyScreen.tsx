@@ -256,8 +256,12 @@ export function LobbyCreateScreen() {
                 ? `/lobby/${encodeURIComponent(game.id)}/room`
                 : `/game/${encodeURIComponent(game.id)}`,
             );
-          } catch {
-            setError(t('lobby.createError'));
+          } catch (e) {
+            setError(
+              e instanceof ApiError && e.code === 'too_many_games' && e.message !== e.code
+                ? e.message
+                : t('lobby.createError'),
+            );
             setBusy(false);
           }
         }}

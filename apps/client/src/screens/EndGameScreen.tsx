@@ -122,6 +122,7 @@ export function EndGameScreen({ id }: { id: string }) {
   const [stats, setStats] = useState<GameStatsView | null>(null);
   const [lapse, setLapse] = useState<TimelapseView | null>(null);
   const [me, setMe] = useState<NationId | null>(null);
+  const [abandoned, setAbandoned] = useState(false);
   const [error, setError] = useState(false);
   useEffect(() => {
     void getApi().then((api) => {
@@ -131,6 +132,7 @@ export function EndGameScreen({ id }: { id: string }) {
           setStats(s);
           setLapse(l);
           setMe(g?.me ?? null);
+          setAbandoned(g?.game.endReason === 'abandoned');
         })
         .catch(() => setError(true));
     });
@@ -164,17 +166,33 @@ export function EndGameScreen({ id }: { id: string }) {
         <Spinner label={t('app.loading')} />
       ) : (
         <div className="vstack">
-          <div className={victory ? 'endbanner endbanner--victory' : 'endbanner endbanner--defeat'}>
+          <div
+            className={
+              abandoned
+                ? 'endbanner endbanner--abandoned'
+                : victory
+                  ? 'endbanner endbanner--victory'
+                  : 'endbanner endbanner--defeat'
+            }
+          >
             {me ? <Flag nationId={me} size={40} /> : null}
             <div>
               <span className="endbanner__kicker">{me ? world.nations[me]?.name : ''}</span>
-              <h2>{victory ? t('game.end.victory') : t('game.end.defeat')}</h2>
+              <h2>
+                {abandoned
+                  ? t('game.end.abandoned')
+                  : victory
+                    ? t('game.end.victory')
+                    : t('game.end.defeat')}
+              </h2>
               <span className="muted">
-                {stats.winner
-                  ? t('endgame.winner', {
-                      nation: world.nations[stats.winner]?.name ?? stats.winner,
-                    })
-                  : t('endgame.noWinner')}{' '}
+                {abandoned
+                  ? t('game.end.abandonedText')
+                  : stats.winner
+                    ? t('endgame.winner', {
+                        nation: world.nations[stats.winner]?.name ?? stats.winner,
+                      })
+                    : t('endgame.noWinner')}{' '}
                 · {t('endgame.days', { count: stats.durationDays })}
               </span>
             </div>

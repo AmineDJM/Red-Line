@@ -4,6 +4,7 @@ import type { PublicUser } from '@redline/shared';
 import { Badge, Button, Field, Icon, Input, Kbd, Prompt, type IconName } from '@redline/ui';
 import { IS_MOCK } from '../config.js';
 import { ApiError, getApi } from '../api/index.js';
+import { takeFlash } from '../lib/flash.js';
 import { navigate } from '../router.js';
 
 type Mode = 'menu' | 'login' | 'register';
@@ -92,6 +93,7 @@ function MenuItem({
 export function HomeScreen() {
   const { t } = useTranslation();
   const [user, setUser] = useState<PublicUser | null>(null);
+  const [flash] = useState(() => takeFlash());
   const [mode, setMode] = useState<Mode>('menu');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -154,6 +156,11 @@ export function HomeScreen() {
             <p className="home__footer-note">{t('home.footer')}</p>
           </section>
           <section className="home__menu" aria-label={t('home.menu')}>
+            {flash ? (
+              <p className="hint hint--warn" role="status" data-testid="home-flash">
+                <Icon name="warning" size={13} /> {t(`home.flash.${flash}`)}
+              </p>
+            ) : null}
             {mode === 'menu' ? (
               <>
                 <div className="home__who">

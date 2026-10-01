@@ -273,3 +273,10 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.endbanner--abandoned {
+  border-color: rgba(255, 176, 32, 0.45);
+  box-shadow: inset 3px 0 0 var(--rl-amber);
+}
+.endbanner--abandoned h2 {
+  color: var(--rl-amber);
+}

@@ -182,6 +182,9 @@ export class HttpApi implements Api {
   async nationsInfo(): Promise<NationInfo[]> {
     return (await request<{ nations: NationInfo[] }>('GET', '/api/nations/info')).nations;
   }
+  async deleteGame(id: string): Promise<void> {
+    await request<{ ok: boolean }>('DELETE', `/api/games/${enc(id)}`);
+  }
   async myGames(): Promise<MyGame[]> {
     return (await request<{ games: MyGame[] }>('GET', '/api/games')).games;
   }

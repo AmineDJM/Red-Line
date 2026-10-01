@@ -32,7 +32,7 @@ export interface NationPickerProps {
   options?: ReactNode;
   confirmLabel: string;
   busy?: boolean;
-  error?: string | null;
+  error?: ReactNode;
   onBack: () => void;
   onConfirm: (nationId: NationId) => void;
   /** Informations en tête (nom de la partie, joueurs). */
@@ -282,7 +282,7 @@ export function NationPicker({
           </ul>
         ) : null}
         <div className="picker__actions">
-          {error ? <p className="error-text">{error}</p> : null}
+          {error ? <div className="error-text">{error}</div> : null}
           <Button variant="subtle" icon={<Icon name="refresh" size={13} />} onClick={random}>
             {t('newGame.random')}
           </Button>
