@@ -17,7 +17,14 @@ import {
   uniqueIndex,
   uuid,
 } from 'drizzle-orm/pg-core';
-import type { Balance, ChangeScope, Role, ShopPolicy, WeaponSystem } from '@redline/shared';
+import type {
+  Balance,
+  ChangeScope,
+  Resource,
+  Role,
+  ShopPolicy,
+  WeaponSystem,
+} from '@redline/shared';
 
 const bytea = customType<{ data: Buffer; driverData: Buffer }>({
   dataType() {
@@ -336,7 +343,8 @@ export const timelapseFrames = pgTable(
 
 // ───────────────────────────── Boutique ─────────────────────────────
 
-export type WalletReason = 'purchase' | 'accelerate' | 'cosmetic' | 'refund' | 'admin';
+export type WalletReason =
+  'purchase' | 'accelerate' | 'cosmetic' | 'refund' | 'admin' | 'resources';
 
 /** Portefeuille de monnaie premium : journal en AJOUT SEUL (déclencheur SQL anti-modification). */
 export const walletLedger = pgTable(
@@ -358,7 +366,7 @@ export const walletLedger = pgTable(
     index('wallet_ledger_game_idx').on(t.gameId, t.userId),
     check(
       'wallet_ledger_reason_check',
-      sql`${t.reason} in ('purchase','accelerate','cosmetic','refund','admin')`,
+      sql`${t.reason} in ('purchase','accelerate','cosmetic','refund','admin','resources')`,
     ),
   ],
 );
@@ -370,6 +378,24 @@ export const shopPacks = pgTable('shop_packs', {
   bonus: integer('bonus').notNull().default(0),
   priceCents: integer('price_cents').notNull(),
   currency: text('currency').$type<'eur' | 'usd'>().notNull().default('eur'),
+  active: boolean('active').notNull().default(true),
+  sort: integer('sort').notNull().default(0),
+  updatedAt: tz('updated_at').notNull().defaultNow(),
+});
+
+/**
+ * Offres de ressources en jeu : monnaie premium échangée contre des dollars du jeu et/ou des ressources
+ * (pétrole, métaux, électronique, nourriture), créditées à la nation par la commande système `grant`.
+ */
+export const shopResourceOffers = pgTable('shop_resource_offers', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  /** Dollars du jeu crédités. */
+  money: doublePrecision('money').notNull().default(0),
+  /** Ressources créditées (pétrole, métaux, électronique, nourriture). */
+  resources: jsonb('resources').$type<Partial<Record<Resource, number>>>().notNull().default({}),
+  /** Prix en monnaie premium. */
+  price: integer('price').notNull(),
   active: boolean('active').notNull().default(true),
   sort: integer('sort').notNull().default(0),
   updatedAt: tz('updated_at').notNull().defaultNow(),
@@ -569,6 +595,7 @@ export const schema = {
   timelapseFrames,
   walletLedger,
   shopPacks,
+  shopResourceOffers,
   shopPromotions,
   purchases,
   stripeEvents,
