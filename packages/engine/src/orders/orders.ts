@@ -12,6 +12,7 @@ import { startProduction } from '../economy/economy.js';
 import { cleanTop, settle } from '../sim/settle.js';
 import { callHook, moduleIntercept, moduleOrder, moduleSystem } from '../modules/registry.js';
 import type { SystemCommand } from '../api.js';
+import { board } from '../modules/kit.js';
 
 /** Commande système (serveur, administration). */
 export function applySystemImpl(state: EngineState, cmd: SystemCommand): OrderResult {
@@ -50,6 +51,12 @@ function coreSystem(state: EngineState, cmd: SystemCommand): OrderResult | null 
       for (const [r, v] of Object.entries(cmd.resources ?? {})) {
         if (r in ns.res) ns.res[r as keyof typeof ns.res] += v;
       }
+      return { ok: true };
+    }
+    case 'dormancy': {
+      const b = board(state);
+      if (cmd.on) b.dormancy = true;
+      else delete b.dormancy;
       return { ok: true };
     }
     default:

@@ -488,6 +488,11 @@ const applySystem: NonNullable<Engine['applySystem']> = (state, cmd) => {
   return { ok: true };
 };
 
+const isDormant: NonNullable<Engine['isDormant']> = (state) => {
+  const last = S(state).sys.findLast((c) => c.kind === 'dormancy');
+  return last?.kind === 'dormancy' && last.on;
+};
+
 const ownersFrame: NonNullable<Engine['ownersFrame']> = (state) => ({ ...S(state).owners });
 
 const stats: NonNullable<Engine['stats']> = (state) => {
@@ -545,7 +550,7 @@ export function createFakeEngine(o: FakeEngineOptions = {}): Engine {
     stateHash,
   };
   if (o.phase2 === false) return base;
-  return { ...base, applySystem, publicView, ownersFrame, stats, battleReportFor };
+  return { ...base, applySystem, publicView, ownersFrame, stats, battleReportFor, isDormant };
 }
 
 /** Accès de test à l'état interne du faux moteur. */

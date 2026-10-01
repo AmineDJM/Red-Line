@@ -29,6 +29,7 @@ import { crossingHits } from '../movement/movement.js';
 import { nextInt } from '../rng/rng.js';
 import { hasPassage } from '../state/war.js';
 import { neighborNations } from './estimate.js';
+import { board } from '../modules/kit.js';
 import {
   STRATEGY,
   captureFailures,
@@ -90,6 +91,7 @@ export function handleAiThink(state: EngineState): void {
   const tick = Math.round(state.time / period);
   const ids = state.nationIds;
   const ctx = thinkContext(state);
+  const awake = awakeNations(state);
   for (let i = 0; i < ids.length; i++) {
     const n = ids[i]!;
     const ns = state.nations[n]!;
@@ -98,6 +100,7 @@ export function handleAiThink(state: EngineState): void {
       continue;
     }
     if (!ns.alive || state.winner) continue;
+    if (awake && !awake.has(n)) continue;
     const neighbors = neighborNations(state, n);
     const hot = isHot(state, n, neighbors, ctx);
     reactiveThink(state, n, ctx);
@@ -114,6 +117,48 @@ export function handleAiThink(state: EngineState): void {
     t: state.time + period,
   });
 }
+
+/**
+ * Veille des IA lointaines (aucun joueur humain connecté, drapeau `dormancy` posé par le serveur) :
+ * seules réfléchissent les IA en guerre avec un joueur humain ou dont une ville est à moins de
+ * `dormancyRadiusKm` d'une ville d'un joueur humain. null = pas de veille, toutes réfléchissent.
+ */
+export function awakeNations(state: EngineState): Set<NationId> | null {
+  if (!board(state).dormancy) return null;
+  const radius = state.world.balance.time.dormancyRadiusKm ?? DEFAULT_DORMANCY_RADIUS_KM;
+  const humans = state.nationIds.filter((n) => {
+    const ns = state.nations[n]!;
+    return ns.isPlayer && ns.alive;
+  });
+  if (humans.length === 0) return null;
+  const awake = new Set<NationId>();
+  for (const n of state.nationIds) {
+    if (humans.some((h) => h !== n && atWar(state, n, h))) awake.add(n);
+  }
+  const provById = wi(state.world).provById;
+  const humanPts: LngLat[] = [];
+  const others: { owner: NationId; at: LngLat }[] = [];
+  const humanSet = new Set(humans);
+  for (const pid of Object.keys(state.provinces)) {
+    const owner = state.provinces[pid]!.owner;
+    const def = provById.get(pid);
+    if (!owner || !def) continue;
+    if (humanSet.has(owner)) humanPts.push(def.cityPoint);
+    else others.push({ owner, at: def.cityPoint });
+  }
+  for (const o of others) {
+    if (awake.has(o.owner)) continue;
+    for (const h of humanPts) {
+      if (distanceKm(o.at, h) <= radius) {
+        awake.add(o.owner);
+        break;
+      }
+    }
+  }
+  return awake;
+}
+
+const DEFAULT_DORMANCY_RADIUS_KM = 2000;
 
 interface Threat {
   id: string;

@@ -6,6 +6,7 @@ export * from './api.js';
 import { battleReportForImpl } from './modules/mil/battles.js';
 import type {
   ApplySystem,
+  IsDormant,
   BattleReportFor,
   GameStats,
   OwnersFrame,
@@ -30,6 +31,7 @@ import { applyOrderImpl, applySystemImpl } from './orders/orders.js';
 import { advanceImpl, nextEventTimeImpl } from './sim/advance.js';
 import { ownersFrameImpl, publicViewImpl, viewForImpl } from './view/view.js';
 import { moduleStats } from './modules/registry.js';
+import { board } from './modules/kit.js';
 import { diffViewsImpl } from './view/diff.js';
 import { notificationsForImpl } from './view/notify.js';
 import { deserializeImpl, serializeImpl, stateHashImpl } from './state/serialize.js';
@@ -53,6 +55,7 @@ export const stateHash: StateHash = (state) => stateHashImpl(S(state));
 
 // ——— Phases 2+ ———
 export const applySystem: ApplySystem = (state, cmd) => applySystemImpl(S(state), cmd);
+export const isDormant: IsDormant = (state) => !!board(S(state)).dormancy;
 export const publicView: PublicView = (state) => publicViewImpl(S(state));
 export const ownersFrame: OwnersFrame = (state) => ownersFrameImpl(S(state));
 export const stats: Stats = (state) => {

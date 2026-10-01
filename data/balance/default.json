@@ -4,7 +4,8 @@
     "speeds": [1, 2, 4, 8, 16],
     "combatRoundMinutes": 20,
     "captureMinutes": 90,
-    "aiThinkMinutes": 30
+    "aiThinkMinutes": 30,
+    "dormancyRadiusKm": 2000
   },
   "combat": {
     "variance": 0.2,
