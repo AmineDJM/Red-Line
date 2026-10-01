@@ -83,8 +83,27 @@ test('conquérir une province ennemie', async ({ page }, info) => {
   });
   expect(capturers.length).toBeGreaterThan(0);
 
-  // 4. Premier geste : sélectionner une unité en touchant son hexagone sur la carte.
-  const first = capturers[0]!;
+  // 4. Premier geste : sélectionner une unité en touchant son pion sur la carte. On prend la plus
+  // isolée (arsenal réel de 2025 : les piles se chevauchent autour des grandes bases).
+  const isolated = await page.evaluate(
+    (ids: string[]) => {
+      const units = Object.values<any>(window.__rl.game.getState().view.units);
+      const d2 = (a: number[], b: number[]) => (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2;
+      let best = ids[0]!;
+      let bestD = -1;
+      for (const id of ids) {
+        const u = units.find((x) => x.id === id);
+        const near = Math.min(...units.filter((x) => x.id !== id).map((x) => d2(x.pos, u.pos)));
+        if (near > bestD) {
+          bestD = near;
+          best = id;
+        }
+      }
+      return best;
+    },
+    capturers.map((c) => c.id),
+  );
+  const first = capturers.find((c) => c.id === isolated)!;
   await page.evaluate((p) => window.__rlMap.map.jumpTo({ center: p, zoom: 9 }), first.pos);
   await page.waitForTimeout(1200);
   const at = await screenPoint(page, first.pos);
