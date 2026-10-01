@@ -65,7 +65,7 @@ console.log('FIN', ((performance.now() - t0) / 1000).toFixed(1), 's');
 console.log(
   [...byKind]
     .sort((a, b) => b[1].ms - a[1].ms)
-    .slice(0, 20)
+    .slice(0, 40)
     .map(([k, v]) => `  ${k}: n=${v.n} ${v.ms.toFixed(0)}ms max=${v.max.toFixed(0)}`)
     .join('\n'),
 );

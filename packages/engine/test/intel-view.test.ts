@@ -155,7 +155,7 @@ describe('renseignement : déterminisme et sérialisation', () => {
 });
 
 describe('renseignement : IA', () => {
-  it('une décision par jour et par nation au plus, contre-espionnage d’abord', () => {
+  it('une décision par jour et par nation au plus, l’ennemi en guerre d’abord', () => {
     const s = intelGame([
       { owner: 'ccc', systemId: 'tst.infantry', pos: cityOf('ccc-1') },
       { owner: 'aaa', systemId: 'tst.infantry', pos: cityOf('aaa-2') },
@@ -165,7 +165,9 @@ describe('renseignement : IA', () => {
     const ops = ist(s).nations.ccc!.ops;
     expect(ops.length).toBeGreaterThan(0);
     expect(ops.length).toBeLessThanOrEqual(3);
-    expect(ops[0]!.kind).toBe('counterintel_sweep');
+    // En guerre et sans incident chez elle : reconnaissance ou agent chez l'ennemi, pas un balayage.
+    expect(['recon_military', 'infiltrate_spy']).toContain(ops[0]!.kind);
+    expect(ops[0]!.target.nationId).toBe('aaa');
     const days = ops.map((o) => Math.floor((o.startedAt - (ops[0]!.startedAt % DAY)) / DAY));
     expect(new Set(days).size).toBe(days.length);
     // Les nations IA en paix et neutres (ddd) restent discrètes.

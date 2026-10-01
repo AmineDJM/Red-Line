@@ -12,7 +12,7 @@ import { board } from '../modules/registry.js';
  */
 
 /** Valeur d'un élément de système (prix unitaire : bon indicateur de puissance relative). */
-function elementValue(state: EngineState, sysId: string): number {
+export function elementValue(state: EngineState, sysId: string): number {
   const s = state.world.catalog.get(sysId);
   if (!s) return 0;
   return Math.max(1, s.cost.money / Math.max(1, s.unitSize));
@@ -64,7 +64,7 @@ export function invalidateForceMemo(): void {
   memo = null;
 }
 
-function contactValue(state: EngineState, c: Contact, mine: OwnForce): number {
+export function contactValue(state: EngineState, c: Contact, mine: OwnForce): number {
   if (c.lvl >= 2 && c.sys) {
     const sys = state.world.catalog.get(c.sys);
     const count = c.lvl >= 3 && c.count !== null ? c.count : (sys?.unitSize ?? 1);
