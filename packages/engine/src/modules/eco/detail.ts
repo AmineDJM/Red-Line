@@ -12,7 +12,9 @@ import type { EngineState } from '../../state/types.js';
 import { wi } from '../../state/world.js';
 import { breakdown, provinceIncome } from './budget.js';
 import { moraleOf, provinceResources } from './buildings.js';
+import { cfg } from './config.js';
 import { ecoNation, orbatOf } from './state.js';
+import { costIndexOf } from './upkeep.js';
 
 /** Postes du grand livre qui relèvent du commerce extérieur (balance commerciale). */
 const TRADE_KEYS: LedgerKey[] = [
@@ -78,7 +80,8 @@ export function economyDetail(state: EngineState, n: NationId): EconomyDetailVie
   for (const k of TRADE_KEYS) tradeBalance += en.lastDay[k] ?? 0;
   const o = orbatOf(state, n);
   return {
-    budgetUsdPerYear: o ? o.defenseBudgetUsd : null,
+    // Budget annuel en dollars du catalogue (conversion des scénarios historiques comprise).
+    budgetUsdPerYear: o ? o.defenseBudgetUsd * cfg(state.world).money.budgetDollarFactor : null,
     income: {
       national: round(b.national),
       provincial: round(b.provincial),
@@ -93,6 +96,11 @@ export function economyDetail(state: EngineState, n: NationId): EconomyDetailVie
         .map((k) => [k, round(b.upkeep[k]!)]),
     ),
     upkeepTotal: round(b.upkeepTotal),
+    upkeepAdjust: {
+      catalog: round(b.upkeepCatalog),
+      factor: b.upkeepCatalog > 0 ? round(b.upkeepTotal / b.upkeepCatalog, 3) : 1,
+      costIndex: round(costIndexOf(state, n), 3),
+    },
     lastDay: { ...en.lastDay } as Partial<Record<LedgerKey, number>>,
     today: { ...en.today } as Partial<Record<LedgerKey, number>>,
     tradeBalance: round(tradeBalance),

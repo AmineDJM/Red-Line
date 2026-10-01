@@ -61,6 +61,7 @@ function init(state: EngineState, setup: GameSetup): void {
             o.defenseBudgetUsd *
               money.budgetPerDayFraction *
               money.budgetMultiplier *
+              (money.budgetDollarFactor ?? 1) *
               c.defaultBudgetShare,
           )
         : c.defaultBudgetUsdPerDay;

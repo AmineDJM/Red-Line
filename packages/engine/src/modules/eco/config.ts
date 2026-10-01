@@ -13,6 +13,21 @@ export const ECO_DEFAULTS = {
     provinceShare: 0.5,
     startingDays: 30,
     tradeShare: 0.3,
+    budgetDollarFactor: 1,
+  },
+  /**
+   * Entretien des unités (voir upkeep.ts) : facteurs par génération (absent = 1), catégories qui n'en
+   * dépendent pas, part locale par catégorie (payée au niveau de prix de la nation), plafond et
+   * plancher de la part du budget absorbée par l'entretien des forces de départ (0 = sans plancher).
+   */
+  upkeep: {
+    generationFactor: {} as Record<string, number>,
+    generationExempt: ['infantry'] as string[],
+    localShare: {} as Record<string, number>,
+    localShareDefault: 0.5,
+    defaultCostIndex: 1,
+    maxStartShare: 0.7,
+    minStartShare: 0,
   },
   research: { durationMultiplier: 1, maxQueue: 5 },
   licences: { priceFactor: 20, productionDiscount: 0.3 },
@@ -206,6 +221,11 @@ export function cfg(world: World): EcoConfig {
   const B = b.buildings;
   c = {
     money: merge(D.money, b.money),
+    upkeep: {
+      ...merge(D.upkeep, b.upkeep),
+      generationFactor: { ...D.upkeep.generationFactor, ...(b.upkeep?.generationFactor ?? {}) },
+      localShare: { ...D.upkeep.localShare, ...(b.upkeep?.localShare ?? {}) },
+    },
     research: merge(D.research, b.research),
     licences: merge(D.licences, b.licences),
     blackMarket: merge(D.blackMarket, b.blackMarket),

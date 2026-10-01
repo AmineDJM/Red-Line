@@ -129,6 +129,11 @@ export interface EcoState {
   straits: Record<string, NationId>;
   /** Agrandissement des piles de départ (cible mondiale de piles). */
   stackScale: number;
+  /**
+   * Facteur national d'entretien calculé à la création (upkeep.ts, valeurs ≠ 1 seulement). Absent
+   * dans une sauvegarde antérieure : recalculé à l'identique au chargement (rebuild).
+   */
+  upk?: Record<NationId, number>;
   seq: number;
 }
 
@@ -165,6 +170,7 @@ export function emptyEco(live: boolean, year: number, set: string): EcoState {
     blockaded: {},
     straits: {},
     stackScale: 1,
+    upk: {},
     seq: 0,
   };
 }
@@ -200,13 +206,15 @@ export interface EcoRuntime {
   provValue: Map<ProvinceId, number> | null;
   /** Produit des effets de recherche par nation et par clé. */
   mods: Map<NationId, Map<string, number>>;
+  /** Facteur d'entretien par nation et par système (upkeep.ts). */
+  upkeep: Map<NationId, Map<string, number>>;
 }
 
 const runtimes = new WeakMap<EngineState, EcoRuntime>();
 
 export function ecoRt(state: EngineState): EcoRuntime {
   let r = runtimes.get(state);
-  if (!r) runtimes.set(state, (r = { provValue: null, mods: new Map() }));
+  if (!r) runtimes.set(state, (r = { provValue: null, mods: new Map(), upkeep: new Map() }));
   return r;
 }
 

@@ -20,6 +20,17 @@ import {
   type WeaponSystem,
 } from '@redline/shared';
 
+const isObj = (v: unknown): v is Record<string, unknown> =>
+  !!v && typeof v === 'object' && !Array.isArray(v);
+
+/** Fusion profonde (objets seulement ; tableaux et scalaires remplacés), comme le serveur. */
+function deepMerge<T>(base: T, over: unknown): T {
+  if (!isObj(base) || !isObj(over)) return (over === undefined ? base : over) as T;
+  const out: Record<string, unknown> = { ...base };
+  for (const [k, v] of Object.entries(over)) out[k] = deepMerge(out[k], v);
+  return out as T;
+}
+
 export interface RealData {
   map: MapData;
   catalog: WeaponSystem[];
@@ -71,7 +82,11 @@ export function loadRealData(scenarioId = 'world-today'): RealData {
       catalog.push(s);
     }
   }
-  const balance = BalanceSchema.parse(j('balance/default.json'));
+  const scenario = ScenarioFileSchema.parse(j(`scenarios/${scenarioId}.json`));
+  // Surcharges d'équilibrage du scénario, comme le serveur (game-host.ts, balanceFor).
+  const balance = BalanceSchema.parse(
+    deepMerge(BalanceSchema.parse(j('balance/default.json')), scenario.balanceOverrides),
+  );
   const research: ResearchNode[] = [];
   for (const f of readdirSync(join(root, 'research')).sort()) {
     if (f.endsWith('.json')) research.push(...ResearchFileSchema.parse(j(`research/${f}`)).nodes);
@@ -84,6 +99,5 @@ export function loadRealData(scenarioId = 'world-today'): RealData {
       .sort()
       .map((f) => OrbatSchema.parse(j(`orbat/${set}/${f}`)));
   }
-  const scenario = ScenarioFileSchema.parse(j(`scenarios/${scenarioId}.json`));
   return { map, catalog, balance, research, orbats, scenario };
 }

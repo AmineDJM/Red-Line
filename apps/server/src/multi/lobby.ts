@@ -276,7 +276,15 @@ export async function lobbyRoutes(app: FastifyInstance, ctx: AppContext): Promis
       (typeof q.scenario === 'string' &&
         cur.scenarios.find((s) => s.id === q.scenario)?.orbatSet) ||
       '2025';
-    const key = `${cur.rev}|${set}`;
+    // Budgets ORBAT exprimés en dollars de leur année : conversion en dollars 2025 (comme le moteur).
+    const scen =
+      (typeof q.scenario === 'string' && cur.scenarios.find((s) => s.id === q.scenario)) ||
+      cur.scenarios.find((s) => s.orbatSet === set);
+    const overrides = scen?.balanceOverrides as
+      { money?: { budgetDollarFactor?: number } } | undefined;
+    const dollarFactor =
+      overrides?.money?.budgetDollarFactor ?? cur.balance?.money?.budgetDollarFactor ?? 1;
+    const key = `${cur.rev}|${set}|${dollarFactor}`;
     let nations = infoCache.get(key);
     if (!nations) {
       const orbats = new Map((cur.orbats[set] ?? []).map((o) => [o.nationId, o]));
@@ -293,7 +301,7 @@ export async function lobbyRoutes(app: FastifyInstance, ctx: AppContext): Promis
           description: o?.description ?? '',
           doctrine: o?.doctrine ?? 'other',
           doctrineText: o?.doctrineText ?? '',
-          defenseBudgetUsd: o?.defenseBudgetUsd ?? 0,
+          defenseBudgetUsd: (o?.defenseBudgetUsd ?? 0) * dollarFactor,
           activePersonnel: o?.activePersonnel ?? null,
           provinceCount: provinceCount.get(n.id) ?? 0,
           highlights: o ? highlights(o.inventory, (id) => costs.get(id) ?? 0) : [],

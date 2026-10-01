@@ -223,6 +223,15 @@ function Dashboard() {
               <FlowRow label={t('economy.intelBudget')} amount={-sum.intel} max={maxFlow} />
             ) : null}
           </ul>
+          {d?.upkeepAdjust && d.upkeepAdjust.catalog > 0 ? (
+            <p className="muted small" title={t('economy.upkeepAdjustedHelp')}>
+              {t('economy.upkeepAdjusted', {
+                factor: formatNumber(d.upkeepAdjust.factor, 2),
+                catalog: formatMoney(d.upkeepAdjust.catalog),
+                index: formatNumber(d.upkeepAdjust.costIndex, 2),
+              })}
+            </p>
+          ) : null}
         </Panel>
       </div>
       {d ? (

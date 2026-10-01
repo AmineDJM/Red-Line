@@ -753,6 +753,41 @@ export const BalanceSchema = z.object({
       startingDays: z.number().min(0).default(30),
       /** Part commerciale du revenu (réduite par les sanctions et le blocus des ports). */
       tradeShare: z.number().min(0).max(1).default(0.3),
+      /**
+       * Conversion des budgets ORBAT en dollars du catalogue (prix 2025) : 1 pour les budgets 2025,
+       * indice des prix à la consommation pour un scénario historique (≈ 2,97 de 1985 à 2025).
+       */
+      budgetDollarFactor: z.number().positive().default(1),
+    })
+    .optional(),
+  /**
+   * Entretien des unités : le prix catalogue (`upkeepPerDay`, dollars 2025) est ajusté à l'âge du
+   * matériel et au coût local de la nation, puis plafonné au départ pour qu'aucune armée réelle ne
+   * coûte plus que son budget (facteur national calculé à la création de la partie).
+   */
+  upkeep: z
+    .object({
+      /** Facteur selon la génération du matériel (clés « 1 » à « 5 » ; absent = 1). */
+      generationFactor: z.record(z.string(), z.number().positive()).default({}),
+      /** Catégories dont l'entretien ne dépend pas de la génération (soldes de l'infanterie). */
+      generationExempt: z.array(z.string()).default(['infantry']),
+      /**
+       * Part locale de l'entretien par catégorie (soldes, carburant, main-d'œuvre), payée au niveau de
+       * prix de la nation (`costIndex` de l'ORBAT) ; le reste (pièces, munitions importées) au prix mondial.
+       */
+      localShare: z.record(z.string(), z.number().min(0).max(1)).default({}),
+      /** Part locale des catégories absentes de `localShare`. */
+      localShareDefault: z.number().min(0).max(1).default(0.5),
+      /** Indice de coût local d'une nation dont l'ORBAT ne précise pas `costIndex` (États-Unis = 1). */
+      defaultCostIndex: z.number().positive().default(1),
+      /**
+       * Part maximale du budget de défense absorbée par l'entretien des forces de départ (après âge et
+       * coût local) ; au-delà, un facteur national réduit l'entretien de toutes ses unités. L'ORBAT
+       * peut la préciser par nation (`upkeepShare`).
+       */
+      maxStartShare: z.number().positive().default(0.7),
+      /** Part minimale (0 = aucune) : relève l'entretien des armées très petites devant leur budget. */
+      minStartShare: z.number().min(0).default(0),
     })
     .optional(),
   /** Industrie et commerce (importations, séries, annulations, marché entre joueurs). */
@@ -1117,6 +1152,13 @@ export const OrbatSchema = z.object({
   defenseBudgetUsd: z.number().min(0),
   /** Effectifs militaires actifs (information, conversion en infanterie). */
   activePersonnel: z.number().int().min(0).optional(),
+  /**
+   * Indice de coût local (niveau des prix en parité de pouvoir d'achat, États-Unis = 1) : la part
+   * locale de l'entretien (soldes, carburant, main-d'œuvre) est payée à ce niveau de prix.
+   */
+  costIndex: z.number().positive().max(3).optional(),
+  /** Part maximale du budget absorbée par l'entretien de départ (sinon `upkeep.maxStartShare`). */
+  upkeepShare: z.number().positive().max(1).optional(),
   /** Inventaire en service estimé : identifiants de data/catalog-ids.json. */
   inventory: z.array(
     z.object({

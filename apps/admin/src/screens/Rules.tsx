@@ -77,6 +77,7 @@ const KEY_SETS: Record<string, readonly string[]> = {
   'buildings.buildCostUsd': BUILDING_TYPES,
   'buildings.levels': BUILDING_TYPES,
   'startingForces.stackMax': CATEGORIES,
+  'upkeep.localShare': CATEGORIES,
   'economy.startingResources': RESOURCES,
 };
 function keyLabel(helpKey: string, key: string): string {

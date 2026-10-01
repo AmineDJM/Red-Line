@@ -26,6 +26,7 @@ import {
   researchBuildingFactor,
 } from './buildings.js';
 import { placeOrbatForces, worldStackScale } from './forces.js';
+import { startUpkeepFactors } from './upkeep.js';
 import { evalSupply, fortificationArmor, supplyEfficiency } from './logistics.js';
 import {
   acceptOfferOrder,
@@ -92,7 +93,10 @@ function init(state: EngineState, setup: { scenario?: { year?: number; orbatSet?
     }
     en.lastMoney = state.nations[n]!.money;
   }
-  if (live) es.stackScale = worldStackScale(state);
+  if (live) {
+    es.stackScale = worldStackScale(state);
+    es.upk = startUpkeepFactors(state);
+  }
 }
 
 function onEvent(state: EngineState, ev: ModEvent): void {
@@ -202,7 +206,9 @@ export const ecoModule: EngineModule = {
   id: 'eco',
   init,
   rebuild(state) {
-    eco(state);
+    const es = eco(state);
+    // Migration : sauvegarde antérieure au facteur d'entretien national, recalculé comme à la création.
+    if (es.live && es.upk === undefined) es.upk = startUpkeepFactors(state);
     resetEcoRt(state);
   },
   onEvent,

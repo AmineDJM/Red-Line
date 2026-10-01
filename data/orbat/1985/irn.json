@@ -3,6 +3,7 @@
   "year": 1985,
   "doctrine": "us",
   "defenseBudgetUsd": 10706000000,
+  "costIndex": 0.4,
   "activePersonnel": 555000,
   "inventory": [
     {

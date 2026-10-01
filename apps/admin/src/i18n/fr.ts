@@ -621,6 +621,12 @@ export const fr = {
     budgetShort: 'Budget annuel ($)',
     perDay: '{v} / jour de jeu',
     personnel: 'Effectifs actifs',
+    costIndex: 'Indice de coût local',
+    costIndexHint:
+      'Niveau des prix en parité de pouvoir d’achat (États-Unis = 1) : soldes, carburant et main-d’œuvre de l’entretien payés à ce niveau. Vide : valeur par défaut des règles.',
+    upkeepShare: 'Part max. du budget en entretien',
+    upkeepShareHint:
+      'Plafond, au départ, de l’entretien de l’armée réelle (0 à 1). Vide : règle générale (Entretien des forces).',
     year: 'Année',
     doctrine: 'Doctrine',
     confidence: 'Confiance',
