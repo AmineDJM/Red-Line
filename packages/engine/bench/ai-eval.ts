@@ -42,6 +42,7 @@ const DAYS = Number(env.AIEVAL_DAYS ?? 14);
 const HUMAN = env.AIEVAL_HUMAN ?? 'fra';
 const VERBOSE = !!env.AIEVAL_VERBOSE;
 const STEP = 6 * HOUR;
+const WATCH = env.AIEVAL_WATCH;
 
 /** Guerres imposées (agresseur, cible), toutes entre IA. */
 const WARS: [NationId, NationId][] = [
@@ -134,6 +135,17 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
     if (o.kind === 'intelOp') tr.intel[String(o.op)] = (tr.intel[String(o.op)] ?? 0) + 1;
     if (o.kind === 'move' || o.kind === 'attack') {
       const ids = (o as { unitIds: string[] }).unitIds;
+      // AIEVAL_WATCH=u123 : chaque ordre donné à cette unité, avec la situation des provinces.
+      if (WATCH && ids.includes(WATCH)) {
+        const to = o.kind === 'move' ? (o as { to: LngLat }).to : null;
+        const pid = to ? provAt(st, to) : null;
+        const mem = (st.mods as { ai?: { mem: Record<string, { commit?: unknown }> } }).ai?.mem[n];
+        console.log(
+          `  [${WATCH}] J${(st.time / DAY).toFixed(2)} ${n} ${o.kind} ${ids.length} unités → ` +
+            `${pid ?? (o as { targetId?: string }).targetId} (à ${pid ? st.provinces[pid]?.owner : '?'})` +
+            ` engagement ${JSON.stringify((mem?.commit as Record<string, unknown> | undefined)?.[WATCH] ?? null)}`,
+        );
+      }
       tr.groupSizes.push(ids.length);
       if (o.kind === 'move') {
         const to = (o as { to: LngLat }).to;

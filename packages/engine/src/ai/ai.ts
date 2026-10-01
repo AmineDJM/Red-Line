@@ -37,6 +37,7 @@ import {
 } from './estimate.js';
 import { board } from '../modules/kit.js';
 import {
+  capitalThreat,
   captureFailures,
   commitments,
   forgetNation,
@@ -431,7 +432,12 @@ function holdKeyPoints(ctx: Ctx): void {
   const { state, n, L } = ctx;
   const cap = capitalOf(state, n);
   if (cap && state.provinces[cap]?.owner === n) {
-    const threat = ctx.threat.get(cap) ?? 0;
+    const threat = capitalThreat(
+      state,
+      n,
+      ctx.threat.get(cap) ?? 0,
+      ctx.T.contactMemoryHours * 3_600_000,
+    );
     if (threat > 0) ctx.critical = true;
     garrison(ctx, cap, L.capitalGarrison, threat * L.attackRatio, 0, true);
   }

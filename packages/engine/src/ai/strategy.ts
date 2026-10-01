@@ -76,6 +76,8 @@ interface Memory {
   invited?: Record<NationId, number>;
   /** Unités engagées dans une offensive : unité → [province visée, jusqu'à] (pas de rappel en renfort). */
   commit?: Record<string, [string, number]>;
+  /** Dernière menace vue sur la capitale : [force, date] (hystérésis de la garnison). */
+  capThreat?: [number, number];
 }
 
 interface AiState {
@@ -118,6 +120,27 @@ export function captureFailures(state: EngineState, n: NationId): Record<string,
   m.capFail ??= {};
   for (const k of sortedKeys(m.capFail)) if (m.capFail[k]! <= state.time) delete m.capFail[k];
   return m.capFail;
+}
+
+/**
+ * Menace retenue sur la capitale : la plus forte vue depuis `memoryMs` (une menace qui disparaît de
+ * la vue un instant ne libère pas la garnison, qui ne fait plus la navette avec le front).
+ */
+export function capitalThreat(
+  state: EngineState,
+  n: NationId,
+  seen: number,
+  memoryMs: number,
+): number {
+  const m = memory(state, n);
+  const last = m.capThreat;
+  if (seen > 0 && (!last || seen >= last[0] || state.time - last[1] >= memoryMs)) {
+    m.capThreat = [seen, state.time];
+    return seen;
+  }
+  if (last && state.time - last[1] < memoryMs) return Math.max(seen, last[0]);
+  delete m.capThreat;
+  return seen;
 }
 
 /** Engagements offensifs en cours d'une nation (unités disparues et engagements échus retirés). */
