@@ -29,6 +29,13 @@
       "when": 1790848067675,
       "tag": "0003_unlimited",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790865389949,
+      "tag": "0004_costs",
+      "breakpoints": true
     }
   ]
 }

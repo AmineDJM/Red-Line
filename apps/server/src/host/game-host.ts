@@ -36,6 +36,7 @@ import type { DataStore } from '../data/store.js';
 import { HttpError } from '../auth/auth.js';
 import { compressSnapshot, decompressSnapshot } from '../persistence/codec.js';
 import type { ProcessMetrics } from '../metrics.js';
+import type { CpuKind, MeteredGame, UsageMeter } from '../costs/usage.js';
 import { gameNow, realTimeFor, reanchor } from './clock.js';
 import { LeaseManager } from './lease.js';
 import { Scheduler } from './scheduler.js';
@@ -128,6 +129,8 @@ export interface HostedGame {
   lastFrame: Record<string, NationId> | null;
   /** Taille du dernier instantané compressé (octets). */
   stateBytes: number;
+  /** Taille brute du dernier état sérialisé (octets) : base de l'estimation de la mémoire résidente. */
+  rawStateBytes: number;
   /** Comptes en mode illimité parmi les joueurs (users.unlimited) : nations illimitées dans le moteur. */
   unlimitedUsers: Set<string>;
 }
@@ -172,6 +175,8 @@ interface HostDeps {
   options: HostOptions;
   /** Vitesses de test ajoutées à celles de l'équilibrage (vide en production). */
   extraSpeeds?: number[];
+  /** Comptabilité des coûts (CPU par partie). */
+  usage?: UsageMeter;
 }
 
 type GameRow = typeof games.$inferSelect;
@@ -240,7 +245,14 @@ export function metaOf(r: GameRow, playerCount?: number): GameMeta {
     createdAt: r.createdAt.toISOString(),
     startedAt: r.startedAt?.toISOString() ?? null,
     ...(r.status === 'ended'
-      ? { endReason: r.pauseReason === 'abandoned' ? ('abandoned' as const) : ('victory' as const) }
+      ? {
+          endReason:
+            r.pauseReason === 'abandoned'
+              ? ('abandoned' as const)
+              : r.pauseReason === 'admin'
+                ? ('admin' as const)
+                : ('victory' as const),
+        }
       : {}),
     ...(r.unranked ? { unranked: true } : {}),
   };
@@ -414,7 +426,10 @@ export class GameHost {
     const releaseId = snap.catalogReleaseId ?? row.catalogReleaseId;
     const pin: WorldPin = { releaseId, balance: row.balance, dataRev: row.dataRev };
     const world = await this.d.worlds.get(pin);
-    const state = engine.deserializeState(world, await decompressSnapshot(snap.codec, snap.state));
+    const raw = await decompressSnapshot(snap.codec, snap.state);
+    const tLoad = nowMs();
+    const state = engine.deserializeState(world, raw);
+    const deserMs = nowMs() - tLoad;
 
     const orders = await this.d.db
       .select()
@@ -423,9 +438,11 @@ export class GameHost {
       .orderBy(asc(gameOrders.seq));
     const nationOfSlot = new Map(players.map((p) => [p.slot, p.nationId]));
     let sliceStart = nowMs();
+    let replayMs = 0;
     for (const o of orders) {
       // Rejeu long (journal volumineux) : on rend la main entre deux tranches.
       if (nowMs() - sliceStart > this.sliceMs) {
+        replayMs += nowMs() - sliceStart;
         await yieldLoop();
         sliceStart = nowMs();
       }
@@ -448,6 +465,8 @@ export class GameHost {
       }
     }
 
+    replayMs += nowMs() - sliceStart;
+    this.cpu(gameId, 'other', deserMs + replayMs);
     // Timelapse : reconstitue la dernière image enregistrée.
     const frames = await this.d.db
       .select()
@@ -509,6 +528,7 @@ export class GameHost {
       lastFrameDay: frames.at(-1)?.day ?? -1,
       lastFrame,
       stateBytes: row.stateBytes,
+      rawStateBytes: raw.length,
       unlimitedUsers: new Set(),
     };
     // Rattrapage du temps écoulé pendant l'arrêt (aucun joueur connecté : pas de notification),
@@ -717,6 +737,15 @@ export class GameHost {
    * partie « en retard » : l'ordonnanceur reprend le rattrapage au tour suivant de la boucle.
    */
   private advance(g: HostedGame, now: number, budgetMs = Infinity): boolean {
+    const tCpu = nowMs();
+    try {
+      return this.advanceInner(g, now, budgetMs);
+    } finally {
+      this.cpu(g.id, 'sim', nowMs() - tCpu);
+    }
+  }
+
+  private advanceInner(g: HostedGame, now: number, budgetMs: number): boolean {
     const engine = this.engine;
     const target = Math.max(g.state.time, gameNow(g.clock, now));
     const t0 = g.state.time;
@@ -800,11 +829,15 @@ export class GameHost {
     }
   }
 
-  private endGame(g: HostedGame, now: number, reason: 'victory' | 'abandoned' = 'victory'): void {
+  private endGame(
+    g: HostedGame,
+    now: number,
+    reason: 'victory' | 'abandoned' | 'admin' = 'victory',
+  ): void {
     g.meta.status = 'ended';
     g.meta.endReason = reason;
     g.clock = reanchor(g.clock, now, g.state.time, { paused: true });
-    g.pauseReason = reason === 'abandoned' ? 'abandoned' : null;
+    g.pauseReason = reason === 'victory' ? null : reason;
     g.dirty = true;
     this.recordFrame(g, g.state.time, true);
     this.persistClock(g, { ended: true });
@@ -1038,6 +1071,7 @@ export class GameHost {
       if (queue.length > 0 && nowMs() - start > this.sliceMs) break;
     }
     g.flushCostMs += nowMs() - start;
+    this.cpu(g.id, 'flush', nowMs() - start);
     if (queue.length === 0) {
       g.flushQueue = null;
       g.flushNotes = [];
@@ -1055,7 +1089,9 @@ export class GameHost {
     if (!nationId) return;
     for (const c of g.connections) {
       if (!c.spectator && c.nationId === nationId) {
+        const t0 = nowMs();
         this.flushKey(g, nationId, []);
+        this.cpu(g.id, 'flush', nowMs() - t0);
         return;
       }
     }
@@ -1111,7 +1147,9 @@ export class GameHost {
       if (!g.errored && !g.clock.paused && this.advance(g, now, this.sliceMs)) {
         this.requestFlush(g, now);
       }
+      const tView = nowMs();
       conn.lastView = this.viewOf(g, conn);
+      this.cpu(g.id, 'flush', nowMs() - tView);
     });
     if (!ok || !conn.lastView) {
       conn.lastView = null;
@@ -1270,7 +1308,9 @@ export class GameHost {
     const t0 = nowMs();
     const ok = this.safely(g, () => {
       this.advance(g, now);
+      const tOrder = nowMs();
       result = this.engine.applyOrder(g.state, conn.nationId, msg.order);
+      this.cpu(g.id, 'sim', nowMs() - tOrder);
     });
     this.slow(g, `ordre ${msg.order.kind}`, t0);
     if (!ok) return reply(false, 'not_allowed', 'Erreur interne : la partie est suspendue');
@@ -1279,6 +1319,7 @@ export class GameHost {
       g.dirty = true;
       const slot = g.players.find((p) => p.nationId === conn.nationId)?.slot ?? 0;
       this.journal(g, { seq: g.orderSeq, slot, time: g.state.time, payload: msg.order });
+      this.d.usage?.order(g.id, conn.userId);
     }
     reply(result.ok, result.error, result.message);
     // Retour immédiat au joueur qui a donné l'ordre ; les autres nations (qui peuvent voir l'effet de
@@ -1572,8 +1613,9 @@ export class GameHost {
       speed: opts.speed,
       ...(opts.victory ? { victory: opts.victory } : {}),
     };
+    const tCreate = nowMs();
     const state = engine.createGame(world, setup);
-    return { world, pin, seed, setup, state };
+    return { world, pin, seed, setup, state, cpuMs: nowMs() - tCreate };
   }
 
   /** Vitesses autorisées (équilibrage + vitesses d'essai). */
@@ -1625,9 +1667,11 @@ export class GameHost {
       lastFrameDay: -1,
       lastFrame: null,
       stateBytes: 0,
+      rawStateBytes: 0,
       unlimitedUsers: new Set(),
     };
     this.games.set(opts.id, g);
+    this.cpu(opts.id, 'other', prepared.cpuMs);
     this.recordFrame(g, g.state.time, true);
     const p = this.snapshot(g, true);
     this.reschedule(g);
@@ -1933,7 +1977,10 @@ export class GameHost {
         this.reschedule(g);
       }
       // Une seule sérialisation (stateHash du moteur resérialiserait l'état : ~110 ms de plus).
+      const tSer = nowMs();
       bytes = engine.serializeState(g.state);
+      this.cpu(g.id, 'other', nowMs() - tSer);
+      g.rawStateBytes = bytes.length;
     });
     this.slow(g, 'instantané', t0);
     if (!ok) return g.writes;
@@ -1997,6 +2044,112 @@ export class GameHost {
 
   // ───────────────────────────── Administration ─────────────────────────────
 
+  /** Imputation du temps CPU d'une partie (comptabilité des coûts). */
+  private cpu(gameId: string, kind: CpuKind, ms: number): void {
+    this.d.usage?.cpu(gameId, kind, ms);
+  }
+
+  /** Parties chargées vues par le compteur de consommation (mémoire estimée, temps de jeu). */
+  *meteredGames(): Iterable<MeteredGame> {
+    for (const g of this.games.values()) {
+      const players: string[] = [];
+      for (const c of g.connections) if (!c.spectator) players.push(c.userId);
+      yield { id: g.id, rawStateBytes: g.rawStateBytes, connections: g.connections.size, players };
+    }
+  }
+
+  /** Paramètres d'exploitation modifiés à chaud (back-office). */
+  setOptions(o: Partial<HostOptions>): void {
+    Object.assign(this.d.options, o);
+  }
+
+  /** Avis à tous les joueurs et spectateurs connectés à cette instance ; renvoie le nombre de connexions. */
+  noticeAll(text: string, level: 'info' | 'warn' = 'info'): number {
+    let n = 0;
+    for (const g of this.games.values()) {
+      n += g.connections.size;
+      this.notice(g, text, level);
+    }
+    return n;
+  }
+
+  /**
+   * Fin de partie imposée par l'administration : partie non classée (aucun point), avis aux joueurs,
+   * fin ('admin'), fermeture des connexions et déchargement. Une partie du salon est terminée en base.
+   */
+  async adminEnd(gameId: string, notice: string): Promise<'ok' | 'not_found' | 'ended' | 'busy'> {
+    const [row] = await this.d.db.select().from(games).where(eq(games.id, gameId)).limit(1);
+    if (!row) return 'not_found';
+    if (row.status === 'ended') return 'ended';
+    const endInDb = () =>
+      this.d.db
+        .update(games)
+        .set({ status: 'ended', pauseReason: 'admin', endedAt: new Date(), unranked: true })
+        .where(eq(games.id, gameId));
+    if (row.status === 'lobby') {
+      await endInDb();
+      return 'ok';
+    }
+    const g = await this.ensureLoaded(gameId);
+    if (!g) {
+      // Restauration impossible (partie en erreur) : fin écrite en base ; sinon simulée ailleurs.
+      if (!this.failed.has(gameId)) return 'busy';
+      await endInDb();
+      return 'ok';
+    }
+    if (g.meta.status === 'ended') return 'ended';
+    if (g.errored) {
+      // État suspect après une erreur : pas d'instantané, fin écrite directement en base.
+      await this.unload(g, false);
+      await endInDb();
+      return 'ok';
+    }
+    const now = Date.now();
+    this.markUnranked(g);
+    this.safely(g, () => {
+      if (!g.clock.paused && !g.errored) this.advance(g, now);
+    });
+    if ((g.meta.status as string) !== 'ended') {
+      this.notice(g, notice, 'warn');
+      g.ended = true;
+      this.endGame(g, now, 'admin');
+    }
+    for (const c of g.connections) c.close(1000, 'Partie terminée');
+    g.connections.clear();
+    await this.unload(g, true);
+    this.log.info({ gameId }, "partie terminée par l'administration");
+    return 'ok';
+  }
+
+  /** Suppression définitive d'une partie (administration) ; refusée si une autre instance la simule. */
+  async adminDelete(gameId: string): Promise<'ok' | 'not_found' | 'busy'> {
+    const g = this.games.get(gameId);
+    if (g) {
+      this.scheduler.delete(g.id);
+      this.games.delete(g.id);
+      for (const c of g.connections) {
+        c.send({ t: 'error', code: 'game_deleted', message: 'La partie a été supprimée.' });
+        c.close(1000, 'Partie supprimée');
+      }
+      g.connections.clear();
+      await g.writes.catch(() => {});
+    }
+    const owner = this.d.instanceId;
+    const deleted = await this.d.sql`
+      DELETE FROM games WHERE id = ${gameId}::uuid
+        AND (lease_owner IS NULL OR lease_owner = ${owner} OR lease_until < now())
+      RETURNING id`;
+    if (deleted.length) {
+      this.log.info({ gameId }, "partie supprimée par l'administration");
+      return 'ok';
+    }
+    const [exists] = await this.d.db
+      .select({ id: games.id })
+      .from(games)
+      .where(eq(games.id, gameId));
+    return exists ? 'busy' : 'not_found';
+  }
+
   async adminSetPaused(gameId: string, paused: boolean): Promise<boolean> {
     let g = this.games.get(gameId);
     if (!paused) {
@@ -2038,8 +2191,10 @@ export class GameHost {
       const now = Date.now();
       const ok = this.safely(g, () => {
         if (!g.clock.paused) this.advance(g, now);
+        const tPin = nowMs();
         const bytes = engine.serializeState(g.state);
         g.state = engine.deserializeState(world, bytes);
+        this.cpu(g.id, 'other', nowMs() - tPin);
         g.world = world;
         g.releaseId = pin.releaseId;
         g.balance = pin.balance;
