@@ -6,9 +6,13 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
 ## État
 
 - **Phase 1 (Socle) : terminée** — bilan dans `docs/phase1-bilan.md`.
-- **Phases 2 à 6 : en cours**, lancées ensemble. Amine a validé les chasseurs et demandé de tout faire **sans
-  validation intermédiaire**. Brief des équipes : `docs/agents-brief-v2.md` (contrats, direction artistique,
-  portes de recherche, signaux entre modules).
+- **Phases 2 à 6 : intégrées** (économie, armée, renseignement, diplomatie, serveur, back-office, interface,
+  optimisation). Brief des équipes : `docs/agents-brief-v2.md` ; charge et capacité : `docs/charge.md` ;
+  déploiement pas à pas : `docs/deploiement.md`.
+- Parties sans joueur (décision d'Amine) : la partie **continue toujours** ; après 5 min sans humain connecté,
+  seules les IA lointaines (> `time.dormancyRadiusKm`) et en paix avec les joueurs mettent leurs décisions en
+  veille (commande système `dormancy`). **Fin pour abandon** et fermeture après **48 h** sans connexion (solo) ou
+  **24 h** sans aucun humain (multijoueur). Quota : 10 parties solo en cours, suppressibles par le joueur.
 - Exigences d'Amine prioritaires : **dollars réels** (prix unitaires réels, budgets de défense réels), **arsenaux
   réels** au départ (ORBAT), production soumise à la R&D, **vraies photos** des matériels, interface **terminal
   moderne extrêmement propre** et carte au niveau de **Conflict of Nations**.
@@ -62,7 +66,7 @@ pnpm install
 pnpm --filter @redline/server db:dev   # PostgreSQL jetable, port 54329 (données dans .pgdata)
 pnpm build && pnpm start               # http://localhost:3000
 pnpm dev                               # serveur :3000, client :5173, admin :5174
-pnpm typecheck && pnpm test            # 203 tests unitaires
+pnpm typecheck && pnpm test            # ~480 tests unitaires (moteur : --no-file-parallelism si machine chargée)
 pnpm e2e                               # bout en bout (build + base requis)
 pnpm format                            # Prettier
 ```
