@@ -197,6 +197,50 @@ export const MilitaryBalanceSchema = z.object({
     space: 0,
     logistics: 5,
   }),
+  /**
+   * Rapport après action (rapports de bataille) : conversion des faits simulés (éléments détruits,
+   * dégâts, rounds de tir) en chiffres de rapport militaire. Personnels par élément : `casualties`.
+   */
+  report: z
+    .object({
+      /** Répartition des personnels d'un élément détruit, par milieu : tués, blessés (le reste : disparus). */
+      killedShare: z.object({ land: num(0.25), air: num(0.35), sea: num(0.3) }).default({}),
+      woundedShare: z.object({ land: num(0.55), air: num(0.3), sea: num(0.45) }).default({}),
+      /** Personnels blessés par élément endommagé (part de l'équipage). */
+      damagedWoundedShare: num(0.3),
+      /** Un élément est compté « endommagé » s'il a encaissé cette part de ses points de vie sans être détruit. */
+      damagedHpShare: num(0.25),
+      /** Disparus devenus prisonniers quand le camp perd la province des combats. */
+      prisonerShare: num(0.6),
+      /** Munitions principales (obus, missiles, bombes) tirées par élément et par round de tir, par catégorie. */
+      munitionsPerRound: z.record(z.string(), z.number().min(0)).default({
+        infantry: 4,
+        tank: 2,
+        ifv: 6,
+        artillery: 8,
+        air_defense: 2,
+        strike_missile: 1,
+        fighter: 2,
+        bomber: 6,
+        air_support: 4,
+        helicopter: 4,
+        drone: 2,
+        surface_ship: 4,
+        submarine: 1,
+        logistics: 0,
+      }),
+      /** Pas de la courbe des pertes et du découpage en phases (minutes). */
+      bucketMinutes: num(30),
+      /** Points de la courbe des pertes conservés au plus (les plus anciens sont fusionnés). */
+      maxPoints: num(32),
+      maxPhases: num(10),
+      /** Fourchette des estimations du camp adverse selon le niveau d'identification (± part). */
+      spreadIdentified: num(0.25),
+      spreadDetected: num(0.6),
+      /** Pertes adverses confirmées par ses propres tirs : fourchette (sous-estimation possible). */
+      killSpread: num(0.3),
+    })
+    .default({}),
 });
 export type MilitaryBalance = z.infer<typeof MilitaryBalanceSchema>;
 
@@ -371,6 +415,178 @@ const aiLevel = (d: AiLevelDefaults) =>
       deepStrikesPerThink: num(d.deepStrikesPerThink),
     })
     .default({});
+
+// ——— Monde vivant : guerres entre IA (rivalités, opportunisme, fin des guerres) ———
+
+interface AiWorldLevelDefaults {
+  fromDays: number;
+  maxWars: number;
+  maxActiveWars: number;
+  rivalryChancePerDay: number;
+  rivalryRatio: number;
+  opportunismChancePerDay: number;
+  opportunismRatio: number;
+  warGoalShare: number;
+  satisfiedPeaceDays: number;
+  capitulationShare: number;
+  capitulationMinDays: number;
+  rematchDays: number;
+  stalemateDays: number;
+}
+
+/** Rythme du monde pour un niveau de difficulté (guerres que les IA se font entre elles). */
+const aiWorldLevel = (d: AiWorldLevelDefaults) =>
+  z
+    .object({
+      /** Pas de guerre entre IA avant ce jour de partie. */
+      fromDays: num(d.fromDays),
+      /** Guerres entre IA qu'une même nation lance et mène à la fois, au plus (0 : jamais). */
+      maxWars: num(d.maxWars),
+      /**
+       * Guerres entre IA en cours dans le monde au plus (multiplié par l'intensité) : au-delà, aucune
+       * nouvelle agression entre IA (vraisemblance et coût de calcul). Les guerres d'alliance ne sont
+       * pas bloquées.
+       */
+      maxActiveWars: num(d.maxActiveWars),
+      /**
+       * Probabilité par jour qu'une rivalité de poids 1 dégénère en guerre (multipliée par le poids de
+       * la rivalité et par l'intensité), si le rapport de force estimé le permet.
+       */
+      rivalryChancePerDay: z.number().min(0).max(1).default(d.rivalryChancePerDay),
+      /** Rapport de force estimé (sans tricher) exigé pour attaquer un rival historique. */
+      rivalryRatio: num(d.rivalryRatio),
+      /**
+       * Probabilité par jour d'attaquer un voisin affaibli (en guerre et en train de perdre, instable,
+       * capitale perdue), multipliée par l'intensité et réduite par la retenue de son bloc.
+       */
+      opportunismChancePerDay: z.number().min(0).max(1).default(d.opportunismChancePerDay),
+      /** Rapport de force estimé exigé pour attaquer un voisin affaibli. */
+      opportunismRatio: num(d.opportunismRatio),
+      /** Guerre entre IA : part des provinces de la cible au-delà de laquelle l'agresseur s'arrête et propose la paix. */
+      warGoalShare: num(d.warGoalShare),
+      /** Guerre entre IA : l'agresseur qui tient des gains depuis ce délai (jours) propose la paix et les garde. */
+      satisfiedPeaceDays: num(d.satisfiedPeaceDays),
+      /** Capitulation : une IA qui a perdu sa capitale ou cette part de ses provinces accepte la paix. */
+      capitulationShare: num(d.capitulationShare),
+      /** Capitulation par perte de territoire : pas avant ce délai de guerre (jours ; la chute de la capitale suffit toujours). */
+      capitulationMinDays: num(d.capitulationMinDays),
+      /** Après une paix, pas de nouvelle guerre entre IA entre les deux mêmes nations avant ce délai (jours). */
+      rematchDays: num(d.rematchDays),
+      /** Guerre entre IA enlisée (aucune province n'a changé de main depuis ce délai, jours) : paix au statu quo. */
+      stalemateDays: num(d.stalemateDays),
+    })
+    .default({});
+
+/**
+ * Section `ai.world` : le monde des parties solo (guerres que les IA se font entre elles). Les rivalités
+ * et les blocs sont des données (data/balance), pas du code.
+ */
+function AiWorldSchema() {
+  return z
+    .object({
+      /** Intensité du monde : multiplie les probabilités de guerre entre IA et le plafond de guerres (0 : monde figé). */
+      intensity: z.number().min(0).max(5).default(1),
+      levels: z
+        .object({
+          easy: aiWorldLevel({
+            fromDays: 5,
+            maxWars: 1,
+            maxActiveWars: 3,
+            rivalryChancePerDay: 0.006,
+            rivalryRatio: 1.8,
+            opportunismChancePerDay: 0,
+            opportunismRatio: 3,
+            warGoalShare: 0.2,
+            satisfiedPeaceDays: 3,
+            capitulationShare: 0.3,
+            capitulationMinDays: 2,
+            rematchDays: 20,
+            stalemateDays: 4,
+          }),
+          normal: aiWorldLevel({
+            fromDays: 2,
+            maxWars: 1,
+            maxActiveWars: 6,
+            rivalryChancePerDay: 0.03,
+            rivalryRatio: 1.3,
+            opportunismChancePerDay: 0.01,
+            opportunismRatio: 2,
+            warGoalShare: 0.34,
+            satisfiedPeaceDays: 5,
+            capitulationShare: 0.5,
+            capitulationMinDays: 3,
+            rematchDays: 10,
+            stalemateDays: 6,
+          }),
+          hard: aiWorldLevel({
+            fromDays: 1,
+            maxWars: 2,
+            maxActiveWars: 10,
+            rivalryChancePerDay: 0.035,
+            rivalryRatio: 1.15,
+            opportunismChancePerDay: 0.02,
+            opportunismRatio: 1.6,
+            warGoalShare: 0.5,
+            satisfiedPeaceDays: 7,
+            capitulationShare: 0.5,
+            capitulationMinDays: 3,
+            rematchDays: 6,
+            stalemateDays: 9,
+          }),
+        })
+        .default({}),
+      /** Un rival non voisin (frappes à distance, débarquement) est visé si sa capitale est à cette distance (km). */
+      rivalReachKm: num(2500),
+      /** Voisin « affaibli » : stabilité publique sous ce seuil. */
+      weakStability: num(25),
+      /**
+       * Défense mutuelle d'un bloc : un membre IA voisin entre en guerre contre l'agresseur IA d'un autre
+       * membre si leurs forces réunies (estimées) pèsent au moins cette part de celles de l'agresseur.
+       */
+      blocDefenseRatio: num(0.6),
+      /** Défense mutuelle d'un bloc : seulement pendant les premiers jours de la guerre (jours). */
+      blocDefenseDays: num(3),
+      /**
+       * Guerres sans motif (niveau difficile, `casusBelliWaiverRatio`) : permises seulement aux nations
+       * dont la retenue de bloc ne dépasse pas ce seuil.
+       */
+      waiverMaxRestraint: z.number().min(0).max(1).default(0.3),
+      /**
+       * Rivalités et revendications historiques entre nations : poids (0 à 1) de la probabilité de
+       * guerre, motif public invoqué (dépêche). Le déclencheur est réglable (`initiator`).
+       */
+      rivalries: z
+        .array(
+          z.object({
+            a: z.string(),
+            b: z.string(),
+            weight: z.number().min(0).max(1).default(0.5),
+            motive: z.string().default(''),
+            /** Qui peut déclencher la guerre : l'un ou l'autre (both), seulement `a`, seulement `b`. */
+            initiator: z.enum(['both', 'a', 'b']).default('both'),
+          }),
+        )
+        .default([]),
+      /**
+       * Blocs politiques (alliances réelles, unions régionales) : jamais de guerre de choix entre
+       * membres (sauf rivalité déclarée) ; la retenue (0 à 1) réduit les guerres opportunistes ou sans
+       * motif de ses membres contre les autres.
+       */
+      blocs: z
+        .array(
+          z.object({
+            id: z.string(),
+            name: z.string().default(''),
+            members: z.array(z.string()),
+            restraint: z.number().min(0).max(1).default(1),
+            /** Défense mutuelle : les membres IA voisins secourent un membre attaqué par une IA. */
+            mutualDefense: z.boolean().default(false),
+          }),
+        )
+        .default([]),
+    })
+    .default({});
+}
 
 /**
  * Section `ai` de data/balance (optionnelle) : chaque valeur a une valeur par défaut ; le moteur lit
@@ -683,8 +899,11 @@ export const AiBalanceSchema = z.object({
       inviteLeaning: num(0.4),
     })
     .default({}),
+  world: AiWorldSchema(),
 });
 export type AiBalance = z.infer<typeof AiBalanceSchema>;
+export type AiWorldBalance = AiBalance['world'];
+export type AiWorldLevelBalance = AiWorldBalance['levels']['normal'];
 export type AiLevelBalance = AiBalance['levels']['normal'];
 
 /** Chiffres d'équilibrage globaux (data/balance/*.json). Tout est réglable par l'admin. */
