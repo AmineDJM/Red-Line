@@ -1,5 +1,7 @@
 import {
   DAY,
+  HOUR,
+  type LngLat,
   type NationId,
   type Order,
   type ProvinceId,
@@ -12,6 +14,7 @@ import { atWar, provincesOf, sortedKeys, warsOf } from '../state/access.js';
 import { wi } from '../state/world.js';
 import { nextFloat } from '../rng/rng.js';
 import { aiOrder } from './trace.js';
+import { nearestOwnedCityKm } from '../movement/plan-unit.js';
 import { aiCfg, aiLevelCfg } from './config.js';
 import { board } from '../modules/registry.js';
 import {
@@ -28,7 +31,8 @@ import {
 } from '../modules/diplo/state.js';
 import { relationOf } from '../modules/diplo/relations.js';
 import { disputedOf } from '../modules/diplo/unrest.js';
-import { elide } from '../modules/diplo/news.js';
+import { elide, news } from '../modules/diplo/news.js';
+import { capitalPoint } from '../modules/diplo/relations.js';
 import {
   estimateForce,
   invalidateForceMemo,
@@ -36,6 +40,7 @@ import {
   lostTo,
   mutualAllies,
   neighborNations,
+  overseasNations,
   ownForce,
   type OwnForce,
 } from './estimate.js';
@@ -46,6 +51,9 @@ import {
  * droit de savoir (ses unités, ses contacts, la carte politique, le Conseil, ses propositions et votes).
  *
  *  - guerres choisies selon les rapports de force connus (et les alliances adverses) ;
+ *  - menace contre un joueur humain voisin (par la terre ou par la mer) : préparatifs (troupes massées
+ *    à la frontière, plan connu du renseignement adverse), ultimatum public, puis guerre si le rapport
+ *    de force tient toujours ; renonce sinon (dissuasion) ;
  *  - paix ou cessez-le-feu quand elle perd, acceptation raisonnée des propositions ;
  *  - alliances (création, invitations, adhésion), votes d'alliance ;
  *  - Conseil de sécurité : propositions contre ses agresseurs, votes selon ses intérêts ;
@@ -78,6 +86,38 @@ interface Memory {
   commit?: Record<string, [string, number]>;
   /** Dernière menace vue sur la capitale : [force, date] (hystérésis de la garnison). */
   capThreat?: [number, number];
+  /** Menace en cours contre un joueur humain : préparatifs puis ultimatum. */
+  plan?: WarPlan;
+  /** Joueurs humains : pas de nouvelle menace avant cette date (menace abandonnée, paix). */
+  humanCool?: Record<NationId, number>;
+  /** Opérations offensives en cours (rassemblement, débarquement), par province visée. */
+  ops?: Record<ProvinceId, Operation>;
+}
+
+/** Menace contre un joueur humain. */
+export interface WarPlan {
+  t: NationId;
+  stage: 'prep' | 'ultimatum';
+  /** Fin de l'étape en cours. */
+  until: number;
+}
+
+/**
+ * Opération offensive : le groupe se rassemble d'abord en `at` (ville amie proche de l'objectif, port
+ * d'embarquement pour un débarquement), puis part en bloc vers la ville visée.
+ */
+export interface Operation {
+  /** Point de rassemblement. */
+  at: LngLat;
+  units: string[];
+  /** Force exigée pour partir. */
+  need: number;
+  /** Départ au plus tard (avec les unités arrivées). */
+  until: number;
+  /** Débarquement : navires d'escorte envoyés sur la zone. */
+  sea?: string[];
+  /** Groupe lancé : heure de départ de chaque unité (départs échelonnés, arrivée groupée). */
+  go?: Record<string, number>;
 }
 
 interface AiState {
@@ -112,6 +152,8 @@ function memory(state: EngineState, n: NationId): Memory {
 export function forgetNation(state: EngineState, n: NationId): void {
   const s = (state.mods as Record<string, unknown>).ai as AiState | undefined;
   if (s?.mem[n]) delete s.mem[n];
+  const plans = board(state).warPlans;
+  if (plans?.[n]) delete plans[n];
 }
 
 /** Registre des captures impossibles d'une nation (budget de calcul de l'IA tactique). */
@@ -149,6 +191,17 @@ export function commitments(state: EngineState, n: NationId): Record<string, [st
   const c = (m.commit ??= {});
   for (const k of sortedKeys(c)) if (c[k]![1] <= state.time || !state.units[k]) delete c[k];
   return c;
+}
+
+/** Menace en cours d'une nation IA contre un joueur humain, sinon null. */
+export function warPlanOf(state: EngineState, n: NationId): WarPlan | null {
+  const s = (state.mods as Record<string, unknown>).ai as AiState | undefined;
+  return s?.mem[n]?.plan ?? null;
+}
+
+/** Opérations offensives en cours d'une nation (mémoire de l'IA, sérialisée). */
+export function operations(state: EngineState, n: NationId): Record<ProvinceId, Operation> {
+  return (memory(state, n).ops ??= {});
 }
 
 function order(state: EngineState, n: NationId, o: Order): boolean {
@@ -206,7 +259,7 @@ export function isHot(
   neighbors: NationId[],
   ctx: ThinkContext,
 ): boolean {
-  if (warsOf(state, n).length > 0 || ctx.pending.has(n)) return true;
+  if (warsOf(state, n).length > 0 || ctx.pending.has(n) || warPlanOf(state, n)) return true;
   return neighbors.some((x) => ctx.fighting.has(x));
 }
 
@@ -295,6 +348,24 @@ function ratioAgainst(
   return (myForce(state, n, t, mine) + 1) / (sideForce(state, n, t, mine, P) + 1);
 }
 
+/**
+ * Guerre limitée atteinte : agresseur qui tient des provinces de `e` depuis au moins `share` ×
+ * `satisfiedPeaceDays` jours de guerre (il garde ses gains à la paix).
+ */
+function satisfied(
+  state: EngineState,
+  n: NationId,
+  e: NationId,
+  P: LevelProfile,
+  share: number,
+): boolean {
+  if (P.satisfiedPeaceDays <= 0) return false;
+  const key = pairKey(n, e);
+  if (ds(state).aggressor[key] !== n || lostTo(state, e, n) === 0) return false;
+  const since = state.wars[key];
+  return since !== undefined && state.time - since >= P.satisfiedPeaceDays * share * DAY;
+}
+
 function shouldAcceptPeace(
   state: EngineState,
   n: NationId,
@@ -303,6 +374,7 @@ function shouldAcceptPeace(
   P: LevelProfile,
 ): boolean {
   if (state.nations[n]!.aiLevel === 'easy') return true;
+  if (satisfied(state, n, from, P, 0.5)) return true;
   if (stabilityOf(state, n) < 40) return true;
   if (noFront(state, n, from, S(state).unreachablePeaceDays)) return true;
   const ratio = ratioAgainst(state, n, from, mine, P);
@@ -400,6 +472,9 @@ function strategic(state: EngineState, n: NationId, neighbors: NationId[], hot: 
       fund(state, n);
     }
   }
+  if (advancePlan(state, n, mine, P, m)) return;
+  seekHumanWar(state, n, neighbors, mine, P, m, hot);
+  if (m.plan) return;
   seekWar(state, n, neighbors, mine, P, m, hot);
 }
 
@@ -422,12 +497,13 @@ function seekPeace(
     const ratio = ratioAgainst(state, n, e, mine, P);
     const lost = lostTo(state, n, e);
     const losing = (ratio < P.peaceRatio && lost > 0) || ratio < P.peaceRatio * 0.6 || stab < 30;
-    if (!losing && !idle) continue;
+    const done = !losing && satisfied(state, n, e, P, 1);
+    if (!losing && !idle && !done) continue;
     m.peaceAsk[e] = state.time;
     order(state, n, {
       kind: 'proposePeace',
       nationId: e,
-      type: !idle && (stab < 30 || lost > 0) ? 'ceasefire' : 'peace',
+      type: !idle && !done && (stab < 30 || lost > 0) ? 'ceasefire' : 'peace',
     });
   }
   for (const k of sortedKeys(m.peaceAsk)) if (!atWar(state, n, k)) delete m.peaceAsk[k];
@@ -441,7 +517,9 @@ function noFront(state: EngineState, n: NationId, e: NationId, days: number): bo
   const since = state.wars[pairKey(n, e)];
   if (since === undefined || state.time - since < days * DAY) return false;
   if (lostTo(state, n, e) > 0 || lostTo(state, e, n) > 0) return false;
-  return !neighborNations(state, n).includes(e);
+  if (neighborNations(state, n).includes(e)) return false;
+  // Front maritime : un débarquement reste possible (niveau qui les pratique).
+  return !(profile(state, n).amphibious && overseasNations(state, n).includes(e));
 }
 
 function seekWar(
@@ -462,12 +540,12 @@ function seekWar(
   let best: NationId | null = null;
   let bestRatio = P.warRatio;
   for (const t of neighbors) {
-    if (!isRegular(state, t) || !state.nations[t]!.alive) continue;
+    // Joueurs humains : menace progressive (préparatifs, ultimatum), voir seekHumanWar.
+    if (!isRegular(state, t) || !state.nations[t]!.alive || state.nations[t]!.isPlayer) continue;
     const rel = relationOf(state, n, t);
     if (rel !== 'peace') continue;
     if (d.grace[`${n}>${t}`] !== undefined) continue;
-    let r = ratioAgainst(state, n, t, mine, P);
-    if (state.nations[t]!.isPlayer) r *= P.humanTargetBias;
+    const r = ratioAgainst(state, n, t, mine, P);
     if (r < bestRatio) continue;
     // Pas de guerre sur la seule foi de ses alliés (dont la force n'est qu'estimée) : ses propres
     // forces doivent déjà peser une part du rapport voulu.
@@ -481,14 +559,175 @@ function seekWar(
     }
   }
   if (!best) return;
-  // Probabilité par jour ramenée à l'intervalle entre deux réflexions stratégiques de cette nation.
-  const perDay = state.nations[best]!.isPlayer ? P.warChanceHumanPerDay : P.warChancePerDay;
-  if (perDay <= 0) return;
+  if (!roll(state, P.warChancePerDay, hot)) return;
+  order(state, n, { kind: 'declareWar', nationId: best });
+}
+
+/** Tirage d'une probabilité par jour, ramenée à l'intervalle entre deux réflexions stratégiques. */
+function roll(state: EngineState, perDay: number, hot: boolean): boolean {
+  if (perDay <= 0) return false;
   const period = state.world.balance.time.aiThinkMinutes / (24 * 60);
   const every = hot ? S(state).strategicEveryHot : S(state).strategicEveryCalm;
   const chance = 1 - Math.pow(1 - perDay, every * period);
-  if (nextFloat(state.rng) >= chance) return;
-  order(state, n, { kind: 'declareWar', nationId: best });
+  return nextFloat(state.rng) < chance;
+}
+
+/** Nations IA qui menacent `t` (plan en cours) ou l'ont attaquée, hors `except`. */
+function aggressorsOf(state: EngineState, t: NationId, except: NationId): NationId[] {
+  const s = aiState(state);
+  const d = ds(state);
+  return state.nationIds.filter((x) => {
+    if (x === except || !state.nations[x]!.alive) return false;
+    if (s.mem[x]?.plan?.t === t) return true;
+    return atWar(state, x, t) && d.aggressor[pairKey(x, t)] === x;
+  });
+}
+
+/**
+ * Rapport de force contre un joueur humain ; en coalition (difficile), les forces des autres agresseurs
+ * du même joueur (estimées, sans tricher) s'ajoutent aux siennes.
+ */
+function humanRatio(
+  state: EngineState,
+  n: NationId,
+  t: NationId,
+  mine: OwnForce,
+  P: LevelProfile,
+): number {
+  let ours = myForce(state, n, t, mine);
+  if (P.coalition)
+    for (const x of aggressorsOf(state, t, n)) ours += estimateForce(state, n, x, mine, 1);
+  return ((ours + 1) / (sideForce(state, n, t, mine, P) + 1)) * P.humanTargetBias;
+}
+
+/**
+ * Menace contre un joueur humain voisin (par la terre, ou par la mer si le niveau débarque) : rapport
+ * de force estimé suffisant, sans motif exigé (voisin opportuniste), au plus `humanAggressors` IA à la
+ * fois contre le même joueur, pas avant `humanWarFromDays`. Début des préparatifs : le plan est inscrit
+ * (le renseignement adverse peut le découvrir) et les troupes se massent à la frontière (IA tactique).
+ */
+function seekHumanWar(
+  state: EngineState,
+  n: NationId,
+  neighbors: NationId[],
+  mine: OwnForce,
+  P: LevelProfile,
+  m: Memory,
+  hot: boolean,
+): void {
+  if (m.plan || P.warChanceHumanPerDay <= 0) return;
+  if (state.time < P.humanWarFromDays * DAY || state.time < m.calmUntil) return;
+  if (stabilityOf(state, n) < S(state).minStabilityForWar) return;
+  const wars = warsOf(state, n).filter((e) => isRegular(state, e));
+  if (wars.length >= Math.max(1, P.maxWars)) return;
+  const d = ds(state);
+  if (d.coups[n] !== undefined && state.time - d.coups[n]! < 5 * DAY) return;
+  const cool = (m.humanCool ??= {});
+  for (const k of sortedKeys(cool)) if (cool[k]! <= state.time) delete cool[k];
+  const cands = P.amphibious ? [...neighbors, ...overseasNations(state, n)] : neighbors;
+  const w = wi(state.world);
+  let best: NationId | null = null;
+  let bestRatio = P.humanWarRatio;
+  for (const t of cands) {
+    const tn = state.nations[t];
+    if (!tn?.isPlayer || !tn.alive || !isRegular(state, t)) continue;
+    if (relationOf(state, n, t) !== 'peace' || d.grace[`${n}>${t}`] !== undefined) continue;
+    if (cool[t] !== undefined) continue;
+    // Un vrai voisin : sa capitale à portée de ses propres villes (pas un territoire d'outre-mer isolé).
+    const tCap = w.nationById.get(t)?.capitalProvinceId;
+    if (!tCap || state.provinces[tCap]?.owner !== t) continue;
+    if (nearestOwnedCityKm(state, n, w.provById.get(tCap)!.cityPoint) > S(state).threatReachKm)
+      continue;
+    // Paix récente avec ce joueur : pas de nouvelle menace avant le délai.
+    const since = d.since[pairKey(n, t)];
+    if (since !== undefined && state.time - since < P.humanCooldownDays * DAY) continue;
+    if (aggressorsOf(state, t, n).length >= P.humanAggressors) continue;
+    const r = humanRatio(state, n, t, mine, P);
+    if (r < bestRatio) continue;
+    // Guerre motivée : sans motif ni opportunité, il faut une supériorité plus nette (ou jamais).
+    if (!motive(state, n, t)) {
+      if (P.humanMotiveFactor <= 0 || r < P.humanWarRatio * P.humanMotiveFactor) continue;
+    }
+    // Ses propres forces pèsent déjà une part du rapport voulu (moitié en coalition).
+    const own = (mine.value + 1) / (sideForce(state, n, t, mine, P) + 1);
+    if (own < P.humanWarRatio * S(state).ownRatioShare * (P.coalition ? 0.5 : 1)) continue;
+    bestRatio = r;
+    best = t;
+  }
+  if (!best || !roll(state, P.warChanceHumanPerDay, hot)) return;
+  let until = state.time + P.humanPrepHours * HOUR;
+  // Coalition : même échéance que les préparatifs déjà engagés contre ce joueur (attaque coordonnée).
+  for (const x of aggressorsOf(state, best, n)) {
+    const p = aiState(state).mem[x]?.plan;
+    if (p && p.stage === 'prep' && p.until > until) until = p.until;
+  }
+  m.plan = { t: best, stage: 'prep', until };
+  const b = board(state);
+  (b.warPlans ??= {})[n] = [best];
+}
+
+/**
+ * Motif ou opportunité contre `t` : motif public (casusBelli), ou cible déjà en guerre contre une autre
+ * nation régulière, ou instable (stabilité publique basse).
+ */
+function motive(state: EngineState, n: NationId, t: NationId): boolean {
+  if (casusBelli(state, n, t)) return true;
+  if (warsOf(state, t).some((x) => x !== n && isRegular(state, x))) return true;
+  return stabilityOf(state, t) < S(state).minStabilityForWar;
+}
+
+/** Fin d'une menace (guerre déclarée, abandon) ; `cool` : pas de nouvelle menace avant un délai. */
+function endPlan(state: EngineState, n: NationId, m: Memory, cool: boolean): void {
+  const p = m.plan;
+  if (!p) return;
+  delete m.plan;
+  const b = board(state);
+  if (b.warPlans?.[n]) delete b.warPlans[n];
+  if (cool) (m.humanCool ??= {})[p.t] = state.time + profile(state, n).humanCooldownDays * DAY;
+}
+
+/**
+ * Étapes d'une menace en cours : fin des préparatifs → ultimatum public ; fin de l'ultimatum →
+ * déclaration de guerre. À chaque étape, renonciation si le rapport de force estimé s'est dégradé (le
+ * joueur a renforcé sa frontière, trouvé des alliés). Vrai tant que la menace occupe la nation.
+ */
+function advancePlan(
+  state: EngineState,
+  n: NationId,
+  mine: OwnForce,
+  P: LevelProfile,
+  m: Memory,
+): boolean {
+  const p = m.plan;
+  if (!p) return false;
+  const tn = state.nations[p.t];
+  if (!tn?.alive || !tn.isPlayer || relationOf(state, n, p.t) !== 'peace') {
+    endPlan(state, n, m, false);
+    return false;
+  }
+  if (state.time < p.until) return true;
+  const hold = humanRatio(state, n, p.t, mine, P) >= P.humanWarRatio * S(state).planHoldShare;
+  if (!hold) {
+    if (p.stage === 'ultimatum')
+      news(state, 'deescalation', { A: n, B: p.t }, capitalPoint(state, n), [n, p.t]);
+    endPlan(state, n, m, true);
+    return true;
+  }
+  if (p.stage === 'prep') {
+    p.stage = 'ultimatum';
+    p.until = state.time + P.ultimatumHours * HOUR;
+    news(
+      state,
+      'ultimatum',
+      { A: n, B: p.t, X: String(Math.round(P.ultimatumHours)) },
+      capitalPoint(state, p.t),
+      [n, p.t],
+    );
+    return true;
+  }
+  endPlan(state, n, m, false);
+  order(state, n, { kind: 'declareWar', nationId: p.t });
+  return true;
 }
 
 /**

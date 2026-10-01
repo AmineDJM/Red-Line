@@ -6,7 +6,8 @@
 //     free   : aucune guerre imposée, on observe ce que les IA décident d'elles-mêmes ;
 //     duel   : mêmes guerres, l'agresseur et la cible de chaque paire à des niveaux différents
 //              (AIEVAL_DUEL=hard:easy, puis inversé dans une seconde passe).
-//   AIEVAL_LEVELS=easy,normal,hard  AIEVAL_SEEDS=1,2  AIEVAL_DAYS=14  AIEVAL_HUMAN=fra (joueur passif)
+//   AIEVAL_LEVELS=easy,normal,hard  AIEVAL_SEEDS=1,2  AIEVAL_DAYS=14  AIEVAL_HUMAN=fra (joueur passif ;
+//   plusieurs séparés par des virgules : une série de parties par joueur)
 //   AIEVAL_JSON=1 : une ligne JSON par partie (comparaisons avant / après).
 //   AIEVAL_VERBOSE=1 : exemples concrets (captures, guerres, ordres refusés…).
 //
@@ -26,7 +27,7 @@ import type { EngineState, Unit } from '../src/state/types.js';
 import { wi } from '../src/state/world.js';
 import { atWar, nationUnits, sysOf, unitPosAt, warsOf } from '../src/state/access.js';
 import { setAiTracer } from '../src/ai/trace.js';
-import { neighborNations } from '../src/ai/estimate.js';
+import { estimateForce, neighborNations, ownForce } from '../src/ai/estimate.js';
 import { ds } from '../src/modules/diplo/state.js';
 import { ecoNation } from '../src/modules/eco/state.js';
 import { breakdown, budgetDay } from '../src/modules/eco/budget.js';
@@ -39,13 +40,14 @@ const MODE = (env.AIEVAL_MODE ?? 'forced') as 'forced' | 'free' | 'duel';
 const LEVELS = (env.AIEVAL_LEVELS ?? 'easy,normal,hard').split(',') as Level[];
 const SEEDS = (env.AIEVAL_SEEDS ?? '1,2').split(',').map(Number);
 const DAYS = Number(env.AIEVAL_DAYS ?? 14);
-const HUMAN = env.AIEVAL_HUMAN ?? 'fra';
+const HUMANS = (env.AIEVAL_HUMAN ?? 'fra').split(',');
+let HUMAN = HUMANS[0]!;
 const VERBOSE = !!env.AIEVAL_VERBOSE;
 const STEP = 6 * HOUR;
 const WATCH = env.AIEVAL_WATCH;
 
 /** Guerres imposées (agresseur, cible), toutes entre IA. */
-const WARS: [NationId, NationId][] = [
+const ALL_WARS: [NationId, NationId][] = [
   ['rus', 'ukr'],
   ['ind', 'pak'],
   ['prk', 'kor'],
@@ -56,7 +58,8 @@ const WARS: [NationId, NationId][] = [
   ['ven', 'guy'],
   ['chn', 'twn'],
   ['isr', 'irn'],
-].filter(([a, b]) => a !== HUMAN && b !== HUMAN) as [NationId, NationId][];
+];
+let WARS: [NationId, NationId][] = [];
 
 const LAND = new Set(['infantry', 'tank', 'ifv', 'artillery', 'special_forces', 'apc', 'recon']);
 
@@ -83,6 +86,20 @@ interface Track {
   produced: Record<string, number>;
   intel: Record<string, number>;
   examples: string[];
+  /**
+   * Arrivées prévues des unités envoyées prendre une ville : nation|province → [ordre, arrivée]. Les
+   * ordres d'une même nation vers une même ville à moins de 12 h d'écart forment une vague ; l'écart
+   * des arrivées d'une vague mesure la concentration (rassemblement, départs échelonnés).
+   */
+  arrivals: Map<string, { t: number; eta: number }[]>;
+  /** Ordres de capture passant par la mer (débarquements) : unité → province, date. */
+  amph: { uid: string; n: NationId; t: number; pid: string | null }[];
+  /** Ordres aériens par genre (frappes d'unité, de bâtiment, suppression, escortes et couverture). */
+  air: Record<string, number>;
+  /** Productions hors de la capitale / total. */
+  prodSites: [number, number];
+  /** Propositions de paix des IA au joueur humain. */
+  peaceToHuman: number;
 }
 
 function provAt(state: EngineState, p: LngLat): string | null {
@@ -115,6 +132,11 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
     produced: {},
     intel: {},
     examples: [],
+    arrivals: new Map(),
+    amph: [],
+    air: {},
+    prodSites: [0, 0],
+    peaceToHuman: 0,
   };
   setAiTracer((st, n, o, r) => {
     const k = o.kind === 'intelOp' ? `intel:${String(o.op)}` : o.kind;
@@ -131,6 +153,36 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
       const sys = world.catalog.get(String((o as Order & { systemId: string }).systemId));
       const cat = sys?.category ?? '?';
       tr.produced[cat] = (tr.produced[cat] ?? 0) + ((o as { count?: number }).count ?? 1);
+      tr.prodSites[1]++;
+      if ((o as { provinceId: string }).provinceId !== W.nationById.get(n)?.capitalProvinceId)
+        tr.prodSites[0]++;
+    }
+    if (o.kind === 'proposePeace' && (o as { nationId: string }).nationId === HUMAN)
+      tr.peaceToHuman++;
+    if (o.kind === 'strike' || o.kind === 'patrol') {
+      const ids = (o as { unitIds: string[] }).unitIds;
+      const u0 = st.units[ids[0]!];
+      const s0 = u0 ? sysOf(st, u0) : null;
+      let k: string = o.kind;
+      if (o.kind === 'strike' && s0?.movement === 'air') {
+        const tg = (o as { target: { type: string; unitId?: string } }).target;
+        const tu = tg.type === 'unit' ? st.units[tg.unitId!] : null;
+        const ts = tu ? sysOf(st, tu) : null;
+        k =
+          tg.type === 'building'
+            ? 'airDeep'
+            : ts?.category === 'air_defense' || ts?.category === 'radar'
+              ? 'airSead'
+              : 'airGround';
+      } else if (o.kind === 'strike') k = 'missile';
+      else if (s0?.movement === 'sea') k = 'shipPatrol';
+      else if (s0?.category === 'fighter') {
+        const cap = W.nationById.get(n)?.capitalProvinceId;
+        const capPt = cap ? W.provById.get(cap)!.cityPoint : null;
+        const at = (o as { at: LngLat }).at;
+        k = capPt && distanceKm(capPt, at) < 50 ? 'fighterCap' : 'fighterCover';
+      } else k = 'otherPatrol';
+      tr.air[k] = (tr.air[k] ?? 0) + 1;
     }
     if (o.kind === 'intelOp') tr.intel[String(o.op)] = (tr.intel[String(o.op)] ?? 0) + 1;
     if (o.kind === 'move' || o.kind === 'attack') {
@@ -155,8 +207,17 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
           const list = tr.dests.get(id) ?? [];
           list.push({ to, t: st.time });
           tr.dests.set(id, list);
-          if (owner && owner !== n && atWar(st, n, owner))
+          if (owner && owner !== n && atWar(st, n, owner)) {
             tr.captures.push({ uid: id, n, to, t: st.time, pid });
+            const legs = st.units[id]?.move?.legs;
+            const eta = legs?.length ? legs[legs.length - 1]!.t1 : st.time;
+            const key = `${n}|${pid}`;
+            const arr = tr.arrivals.get(key) ?? [];
+            arr.push({ t: st.time, eta });
+            tr.arrivals.set(key, arr);
+            if (legs?.some((l) => l.medium === 'sea'))
+              tr.amph.push({ uid: id, n, t: st.time, pid });
+          }
         }
       }
     }
@@ -205,10 +266,41 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
   const warringAi = new Set<NationId>();
 
   const end = (MODE === 'free' ? 0 : DAY) + DAYS * DAY;
+  // Erreur d'estimation des forces voisines (|ln(estimée / réelle)|), estimation du moteur et
+  // hypothèse miroir (provinces × force par province de l'observateur), relevée à J1, J7, J14.
+  const estErr: Record<string, number[]> = { engine: [], mirror: [] };
+  const estOver: Record<string, number> = { engine: 0, mirror: 0 };
+  const estDays = new Set([1, 7, 14]);
+  const plans = new Map<string, { n: NationId; t: NationId; at: number }>();
   while (s.time < end) {
     const out = advanceTo(s, Math.min(end, s.time + STEP));
     notes.push(...out);
     samples++;
+    const mem =
+      (s.mods as { ai?: { mem: Record<string, { plan?: { t: string } }> } }).ai?.mem ?? {};
+    for (const x of Object.keys(mem).sort()) {
+      const p = mem[x]!.plan;
+      if (p && !plans.has(`${x}>${p.t}`)) plans.set(`${x}>${p.t}`, { n: x, t: p.t, at: s.time });
+    }
+    const dayNow = Math.round(s.time / DAY);
+    if (s.time % DAY === 0 && estDays.has(dayNow)) {
+      estDays.delete(dayNow);
+      for (const n of s.nationIds) {
+        const ns = s.nations[n]!;
+        if (!ns.isAi || !ns.alive) continue;
+        const mine = ownForce(s, n);
+        for (const t of neighborNations(s, n)) {
+          const real = ownForce(s, t).value;
+          if (!s.nations[t]?.alive || real <= 0) continue;
+          const e1 = estimateForce(s, n, t, mine, 1);
+          const e2 = s.nations[t]!.provinceCount * mine.perProvince;
+          if (e1 > 0) estErr.engine!.push(Math.abs(Math.log(e1 / real)));
+          if (e2 > 0) estErr.mirror!.push(Math.abs(Math.log(e2 / real)));
+          if (e1 > real) estOver.engine!++;
+          if (e2 > real) estOver.mirror!++;
+        }
+      }
+    }
     peakWars.n = Math.max(peakWars.n, Object.keys(s.wars).length);
     const ms = mil(s).ms;
     for (const n of s.nationIds) {
@@ -370,6 +462,54 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
       duelScore.targetGain! += s.nations[b]!.provinceCount - start[b]!.provs;
     }
   }
+  // Joueur humain : guerres déclarées contre lui, délai de la première, issue.
+  const humanWars = wars
+    .filter((x) => x.against === HUMAN && isAi(x.by))
+    .map((x) => {
+      const peace = (
+        byKind('peace_signed') as Extract<GameNotification, { kind: 'peace_signed' }>[]
+      )
+        .filter((p) => p.time >= x.time && [p.a, p.b].includes(HUMAN) && [p.a, p.b].includes(x.by))
+        .map((p) => p.time)[0];
+      const taken = captured.filter(
+        (c) => c.by === x.by && c.from === HUMAN && c.time >= x.time && (!peace || c.time <= peace),
+      ).length;
+      return {
+        by: x.by,
+        day: Math.round((x.time / DAY) * 10) / 10,
+        taken,
+        end: peace
+          ? `paix J${(peace / DAY).toFixed(1)}`
+          : atWar(s, x.by, HUMAN)
+            ? 'en cours'
+            : 'finie',
+      };
+    });
+  const newsAll = ds(s).news.filter((x) => x.nations.includes(HUMAN));
+  const spreads: number[] = [];
+  for (const key of [...tr.arrivals.keys()].sort()) {
+    const list = tr.arrivals.get(key)!.sort((a, b) => a.t - b.t);
+    let i = 0;
+    while (i < list.length) {
+      let j = i;
+      while (j + 1 < list.length && list[j + 1]!.t - list[i]!.t <= 12 * HOUR) j++;
+      if (j > i) {
+        const etas = list.slice(i, j + 1).map((x) => x.eta);
+        spreads.push((Math.max(...etas) - Math.min(...etas)) / HOUR);
+      }
+      i = j + 1;
+    }
+  }
+  const median = (xs: number[]) => {
+    if (!xs.length) return 0;
+    const a = [...xs].sort((p, q) => p - q);
+    return Math.round(a[Math.floor(a.length / 2)]! * 100) / 100;
+  };
+  const amphOk = tr.amph.filter((c) => {
+    const ok = c.pid ? capturedBy.get(`${c.n}|${c.pid}`) : undefined;
+    return ok !== undefined && ok >= c.t;
+  }).length;
+  const amphDead = tr.amph.filter((c) => (deadAt.get(c.uid) ?? -1) >= c.t).length;
   const d = ds(s);
   const alliances = Object.values(d.alliances);
   const cpu = process.cpuUsage(c0);
@@ -420,6 +560,39 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
     stuckUnits: stuck.size,
     pingPong,
     idleWarDaysPct: warDays ? Math.round((idleDays / warDays) * 100) : 0,
+    human: HUMAN,
+    humanWars,
+    humanPlans: [...plans.values()]
+      .filter((p) => p.t === HUMAN)
+      .map((p) => `${p.n}@J${(p.at / DAY).toFixed(1)}`),
+    ultimatums: newsAll.filter((x) => /ultimatum/i.test(x.headline) && !/renonce/.test(x.headline))
+      .length,
+    deescalations: newsAll.filter((x) => /renonce|Désescalade/.test(x.headline)).length,
+    humanProvLost: start[HUMAN] ? start[HUMAN]!.provs - (s.nations[HUMAN]?.provinceCount ?? 0) : 0,
+    humanAlive: !!s.nations[HUMAN]?.alive,
+    peaceToHuman: tr.peaceToHuman,
+    waves: spreads.length,
+    spreadAvgH: spreads.length
+      ? Math.round((spreads.reduce((a, b) => a + b, 0) / spreads.length) * 10) / 10
+      : 0,
+    spreadOver3hPct: spreads.length
+      ? Math.round((spreads.filter((x) => x > 3).length / spreads.length) * 100)
+      : 0,
+    amphOrders: tr.amph.length,
+    amphSuccess: amphOk,
+    amphUnitLost: amphDead,
+    air: tr.air,
+    prodOutsideCapitalPct: tr.prodSites[1]
+      ? Math.round((tr.prodSites[0] / tr.prodSites[1]) * 100)
+      : 0,
+    estErrEngine: median(estErr.engine!),
+    estErrMirror: median(estErr.mirror!),
+    estOverEnginePct: estErr.engine!.length
+      ? Math.round((estOver.engine! / estErr.engine!.length) * 100)
+      : 0,
+    estOverMirrorPct: estErr.mirror!.length
+      ? Math.round((estOver.mirror! / estErr.mirror!.length) * 100)
+      : 0,
     eco: { ...eco, minDays: Math.round(eco.minDays * 10) / 10 },
     orders: tr.orders,
     refusals: Object.fromEntries(
@@ -460,21 +633,26 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
 }
 
 const results: Record<string, unknown>[] = [];
-if (MODE === 'duel') {
-  const [x, y] = (env.AIEVAL_DUEL ?? 'hard:easy').split(':') as [Level, Level];
-  for (const seed of SEEDS) {
-    results.push(runGame('normal', seed, [x, y]));
-    results.push(runGame('normal', seed, [y, x]));
+for (const h of HUMANS) {
+  HUMAN = h;
+  WARS = ALL_WARS.filter(([a, b]) => a !== HUMAN && b !== HUMAN);
+  if (MODE === 'duel') {
+    const [x, y] = (env.AIEVAL_DUEL ?? 'hard:easy').split(':') as [Level, Level];
+    for (const seed of SEEDS) {
+      results.push(runGame('normal', seed, [x, y]));
+      results.push(runGame('normal', seed, [y, x]));
+    }
+  } else {
+    for (const level of LEVELS) for (const seed of SEEDS) results.push(runGame(level, seed));
   }
-} else {
-  for (const level of LEVELS) for (const seed of SEEDS) results.push(runGame(level, seed));
 }
 for (const r of results) {
-  const { orders, refusals, research, produced, intel, eco, ...flat } = r as Record<
+  const { orders, refusals, research, produced, intel, eco, humanWars, air, ...flat } = r as Record<
     string,
     unknown
   >;
   console.log('\n' + JSON.stringify(flat));
+  console.log('  joueur', JSON.stringify(humanWars), 'air', JSON.stringify(air));
   console.log('  éco', JSON.stringify(eco));
   console.log('  ordres', JSON.stringify(orders));
   console.log('  refus', JSON.stringify(refusals));

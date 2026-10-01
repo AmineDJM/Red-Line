@@ -374,6 +374,29 @@ export const TEMPLATES = {
     h: ['Salon international de l’armement', 'Grand salon de défense : les prix baissent'],
     b: ['{X}', 'Les industriels multiplient les offres promotionnelles. {X}'],
   },
+  ultimatum: {
+    cat: 'war',
+    h: [
+      'Ultimatum {de:A} {a:B}',
+      '{Le:A} {s:A:adresse|adressent} un ultimatum {a:B}',
+      'Tension extrême : {le:A} {s:A:menace|menacent} {le:B}',
+    ],
+    b: [
+      "{Le:A} {s:A:exige|exigent} des concessions sous {X} heures, sous peine d'intervention militaire. Des troupes sont massées à la frontière.",
+      'Des concentrations de troupes {de:A} sont signalées près {de:B}. Échéance : {X} heures.',
+    ],
+  },
+  deescalation: {
+    cat: 'peace',
+    h: [
+      "{Le:A} {s:A:renonce|renoncent} à l'ultimatum adressé {a:B}",
+      'Désescalade : {A} / {B}',
+    ],
+    b: [
+      'Le rapport de force a changé : les troupes massées à la frontière regagnent leurs casernes.',
+      "Les chancelleries saluent le recul {de:A} : la menace n'a pas été mise à exécution.",
+    ],
+  },
   mercenaries: {
     cat: 'war',
     h: ['Des sociétés militaires privées signalées à {P}'],

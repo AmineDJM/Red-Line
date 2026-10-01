@@ -233,6 +233,22 @@ interface AiLevelDefaults {
   supportStrikes: boolean;
   adaptiveProduction: boolean;
   reconChance: number;
+  humanWarFromDays: number;
+  humanWarRatio: number;
+  humanMotiveFactor: number;
+  satisfiedPeaceDays: number;
+  humanPrepHours: number;
+  ultimatumHours: number;
+  humanAggressors: number;
+  coalition: boolean;
+  humanCooldownDays: number;
+  stageUnits: number;
+  rally: boolean;
+  amphibious: boolean;
+  escortShips: number;
+  airEscorts: number;
+  sead: boolean;
+  deepStrikesPerThink: number;
 }
 
 /** Profil d'un niveau de difficulté (stratégie, tactique, combat, production, renseignement). */
@@ -247,8 +263,9 @@ const aiLevel = (d: AiLevelDefaults) =>
       /** Guerres simultanées voulues au plus (0 : jamais d'agression). */
       maxWars: num(d.maxWars),
       /**
-       * Probabilité par jour de passer à l'acte quand une cible convient (IA visée / joueur humain
-       * visé) : indépendante de la fréquence de réflexion, elle ne s'accumule pas avec l'agitation.
+       * Probabilité par jour de passer à l'acte quand une cible convient (IA visée : déclaration de
+       * guerre ; joueur humain visé : début des préparatifs, puis ultimatum et guerre) : indépendante de
+       * la fréquence de réflexion, elle ne s'accumule pas avec l'agitation.
        */
       warChancePerDay: z.number().min(0).max(1).default(d.warChancePerDay),
       warChanceHumanPerDay: z.number().min(0).max(1).default(d.warChanceHumanPerDay),
@@ -301,6 +318,50 @@ const aiLevel = (d: AiLevelDefaults) =>
       adaptiveProduction: z.boolean().default(d.adaptiveProduction),
       /** Probabilité quotidienne d'une reconnaissance militaire de l'ennemi en guerre. */
       reconChance: z.number().min(0).max(1).default(d.reconChance),
+      // ——— Menace contre un joueur humain (préparatifs, ultimatum, guerre) ———
+      /** Pas de préparatifs contre un joueur humain avant ce jour de partie. */
+      humanWarFromDays: num(d.humanWarFromDays),
+      /**
+       * Rapport de force estimé (sans tricher) exigé pour menacer un joueur humain voisin ; aucun motif
+       * public n'est exigé (voisin opportuniste). La probabilité quotidienne de lancer les préparatifs
+       * est `warChanceHumanPerDay`.
+       */
+      humanWarRatio: num(d.humanWarRatio),
+      /**
+       * Sans motif (territoire revendiqué, revanche, allié attaqué, paria, ou opportunité : la cible est
+       * déjà en guerre ou instable), le rapport exigé est multiplié par ce facteur ; 0 = jamais sans motif.
+       */
+      humanMotiveFactor: num(d.humanMotiveFactor),
+      /**
+       * Guerre limitée : agresseur qui tient des provinces adverses depuis ce délai (jours) propose la
+       * paix (il garde ses gains) et accepte celle qu'on lui propose ; 0 = jamais (va jusqu'au bout).
+       */
+      satisfiedPeaceDays: num(d.satisfiedPeaceDays),
+      /** Durée des préparatifs (troupes massées à la frontière, plan connu du renseignement), heures. */
+      humanPrepHours: num(d.humanPrepHours),
+      /** Délai de l'ultimatum public avant la déclaration de guerre (heures). */
+      ultimatumHours: num(d.ultimatumHours),
+      /** Nations IA menaçant ou attaquant le même joueur humain à la fois, au plus. */
+      humanAggressors: num(d.humanAggressors),
+      /** Coalition : les forces des autres agresseurs du même joueur comptent dans le rapport de force. */
+      coalition: z.boolean().default(d.coalition),
+      /** Après une menace abandonnée ou une paix avec ce joueur : pas de nouvelle menace avant (jours). */
+      humanCooldownDays: num(d.humanCooldownDays),
+      /** Unités massées à la frontière pendant les préparatifs. */
+      stageUnits: num(d.stageUnits),
+      // ——— Opérations ———
+      /** Point de rassemblement avant une offensive dont les unités arriveraient trop étalées. */
+      rally: z.boolean().default(d.rally),
+      /** Débarquements amphibies sur les provinces ennemies accessibles par la mer. */
+      amphibious: z.boolean().default(d.amphibious),
+      /** Navires d'escorte envoyés tenir la zone de débarquement. */
+      escortShips: num(d.escortShips),
+      /** Chasseurs d'escorte (patrouille sur l'objectif) par frappe aérienne hors de son territoire. */
+      airEscorts: num(d.airEscorts),
+      /** Suppression des défenses antiaériennes identifiées avant les frappes profondes. */
+      sead: z.boolean().default(d.sead),
+      /** Frappes profondes par réflexion (installations ennemies révélées par le renseignement). */
+      deepStrikesPerThink: num(d.deepStrikesPerThink),
     })
     .default({});
 
@@ -317,7 +378,7 @@ export const AiBalanceSchema = z.object({
         casusBelliWaiverRatio: 0,
         maxWars: 0,
         warChancePerDay: 0,
-        warChanceHumanPerDay: 0,
+        warChanceHumanPerDay: 0.08,
         warmupDays: 999,
         caution: 1.5,
         peaceRatio: 1.2,
@@ -344,13 +405,29 @@ export const AiBalanceSchema = z.object({
         supportStrikes: false,
         adaptiveProduction: false,
         reconChance: 0.2,
+        humanWarFromDays: 10,
+        humanWarRatio: 3,
+        humanMotiveFactor: 0,
+        satisfiedPeaceDays: 3,
+        humanPrepHours: 72,
+        ultimatumHours: 24,
+        humanAggressors: 1,
+        coalition: false,
+        humanCooldownDays: 12,
+        stageUnits: 2,
+        rally: false,
+        amphibious: false,
+        escortShips: 0,
+        airEscorts: 0,
+        sead: false,
+        deepStrikesPerThink: 0,
       }),
       normal: aiLevel({
         warRatio: 2,
         casusBelliWaiverRatio: 0,
         maxWars: 1,
         warChancePerDay: 0.1,
-        warChanceHumanPerDay: 0.1,
+        warChanceHumanPerDay: 0.2,
         warmupDays: 7,
         caution: 1.2,
         peaceRatio: 0.7,
@@ -377,13 +454,29 @@ export const AiBalanceSchema = z.object({
         supportStrikes: true,
         adaptiveProduction: true,
         reconChance: 0.6,
+        humanWarFromDays: 3,
+        humanWarRatio: 1.6,
+        humanMotiveFactor: 1.5,
+        satisfiedPeaceDays: 5,
+        humanPrepHours: 36,
+        ultimatumHours: 24,
+        humanAggressors: 1,
+        coalition: false,
+        humanCooldownDays: 6,
+        stageUnits: 6,
+        rally: true,
+        amphibious: true,
+        escortShips: 2,
+        airEscorts: 1,
+        sead: true,
+        deepStrikesPerThink: 1,
       }),
       hard: aiLevel({
         warRatio: 2,
         casusBelliWaiverRatio: 3,
         maxWars: 2,
         warChancePerDay: 0.02,
-        warChanceHumanPerDay: 0.25,
+        warChanceHumanPerDay: 0.35,
         warmupDays: 3,
         caution: 1,
         peaceRatio: 0.5,
@@ -410,6 +503,22 @@ export const AiBalanceSchema = z.object({
         supportStrikes: true,
         adaptiveProduction: true,
         reconChance: 0.9,
+        humanWarFromDays: 2,
+        humanWarRatio: 1.3,
+        humanMotiveFactor: 1,
+        satisfiedPeaceDays: 0,
+        humanPrepHours: 24,
+        ultimatumHours: 12,
+        humanAggressors: 2,
+        coalition: true,
+        humanCooldownDays: 3,
+        stageUnits: 10,
+        rally: true,
+        amphibious: true,
+        escortShips: 3,
+        airEscorts: 2,
+        sead: true,
+        deepStrikesPerThink: 2,
       }),
     })
     .default({}),
@@ -445,6 +554,22 @@ export const AiBalanceSchema = z.object({
       /** Productions simultanées maximales (paix / guerre). */
       maxQueuePeace: num(1),
       maxQueueWar: num(2),
+      /** Débarquement : distance maximale entre sa ville côtière d'embarquement et la ville visée (km). */
+      amphibiousReachKm: num(700),
+      /** Débarquement : force exigée multipliée par ce facteur (unités sans défense pendant la traversée). */
+      amphibiousRatio: num(1.5),
+      /** Escorte « sur zone » : navire à moins de cette distance du point de débarquement (km). */
+      escortOnStationKm: num(120),
+      /** Pas de traversée sans escorte si un navire ennemi identifié est à cette distance du débarquement (km). */
+      seaControlKm: num(300),
+      /** Rassemblement : écart des heures d'arrivée au-delà duquel le groupe se regroupe d'abord (heures). */
+      rallySpreadHours: num(3),
+      /** Rassemblement : une unité est « au point » à cette distance (km). */
+      rallyRadiusKm: num(40),
+      /** Rassemblement : attente maximale avant de partir avec les unités arrivées (heures). */
+      rallyMaxHours: num(18),
+      /** Frappes profondes : distance maximale de l'installation visée à son territoire (km). */
+      deepStrikeKm: num(600),
     })
     .default({}),
   economy: z
@@ -480,6 +605,30 @@ export const AiBalanceSchema = z.object({
         .default(['oil_field', 'mine', 'farm', 'electronics_plant', 'local_industry']),
     })
     .default({}),
+  /**
+   * Estimation des forces adverses sans tricher : ORBAT public de départ (inventaire réel publié),
+   * corrigé par la perte de territoire et la production possible (budget de défense public), avec une
+   * incertitude ; jamais en dessous des forces réellement vues (contacts).
+   */
+  estimate: z
+    .object({
+      /** Partir de l'ORBAT public (sinon : hypothèse miroir, autant de forces par province que soi). */
+      useOrbat: z.boolean().default(true),
+      /** Incertitude de départ selon la fiabilité publiée de l'ORBAT (fraction). */
+      uncertaintyHigh: num(0.1),
+      uncertaintyMedium: num(0.2),
+      uncertaintyLow: num(0.35),
+      /** Hausse de l'incertitude par jour de partie (l'ORBAT vieillit), et plafond. */
+      uncertaintyPerDay: num(0.01),
+      maxUncertainty: num(0.6),
+      /** Réduction de l'incertitude par la part du pays couverte par une reconnaissance militaire. */
+      reconDiscount: num(0.6),
+      /** Part du budget de défense public supposée consacrée à de nouveaux matériels chaque jour. */
+      productionShare: num(0.3),
+      /** Part des forces supposée perdue avec le territoire perdu (0 : aucune, 1 : proportionnelle). */
+      territoryLoss: num(0.5),
+    })
+    .default({}),
   strategy: z
     .object({
       /** Réflexions tactiques entre deux réflexions stratégiques (en guerre / au calme). */
@@ -493,6 +642,13 @@ export const AiBalanceSchema = z.object({
       unreachablePeaceDays: num(3),
       /** Pas de guerre d'agression sous cette stabilité. */
       minStabilityForWar: num(45),
+      /**
+       * Menace contre un joueur : à chaque étape (fin des préparatifs, fin de l'ultimatum), elle
+       * renonce si le rapport de force estimé est tombé sous cette part du rapport exigé (dissuasion).
+       */
+      planHoldShare: num(0.8),
+      /** Menace contre un joueur : sa capitale à moins de cette distance d'une de ses villes (km). */
+      threatReachKm: num(1500),
       /** Ses propres forces (sans les alliés) doivent peser cette part du rapport de force voulu. */
       ownRatioShare: num(0.6),
       /** Après une reprise en main (joueur remplacé) : pas de décision brutale pendant ce délai (jours). */

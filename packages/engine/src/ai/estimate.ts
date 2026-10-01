@@ -1,14 +1,29 @@
-import type { NationId } from '@redline/shared';
+import {
+  DAY,
+  distanceKm,
+  type LngLat,
+  type NationId,
+  type Orbat,
+  type ProvinceId,
+} from '@redline/shared';
 import type { Contact, EngineState } from '../state/types.js';
 import { nationUnits, sortedKeys } from '../state/access.js';
 import { wi } from '../state/world.js';
 import { board } from '../modules/registry.js';
+import { budgetDay } from '../modules/eco/budget.js';
+import { eco, orbatOf } from '../modules/eco/state.js';
+import { nationCoverage } from '../modules/intel/provinces.js';
+import { aiCfg } from './config.js';
 
 /**
  * Estimations de rapport de force SANS tricher : une nation connaît ses propres unités, ses contacts
- * (brouillard de guerre : `state.know`) et la carte politique publique (nombre de provinces, alliances).
- * Pour le reste, elle suppose que l'adversaire a autant de forces par province qu'elle-même (hypothèse
- * miroir), majorée par la prudence du niveau de l'IA.
+ * (brouillard de guerre : `state.know`), la carte politique publique (provinces, alliances) et ce qui
+ * est publié de chaque armée : l'ORBAT de départ (inventaire réel, fiabilité de la source) et le budget
+ * de défense. L'estimation part de cet ORBAT public, corrigé par le territoire perdu depuis et par ce
+ * que le budget permet d'avoir produit, majoré d'une incertitude (qui grandit avec le temps et diminue
+ * avec la reconnaissance militaire du pays) puis par la prudence du niveau ; jamais en dessous des
+ * forces réellement vues. Sans ORBAT (bac à sable, données absentes) : hypothèse miroir, autant de
+ * forces par province que soi.
  */
 
 /** Valeur d'un élément de système (prix unitaire : bon indicateur de puissance relative). */
@@ -99,7 +114,59 @@ function knownForce(state: EngineState, n: NationId, t: NationId, mine: OwnForce
   return known;
 }
 
-/** Force estimée de `t` du point de vue de `n`. */
+/** Valeur de l'inventaire publié d'un ORBAT (systèmes du catalogue seulement), par ORBAT. */
+const orbatValueCache = new WeakMap<Orbat, number>();
+
+function orbatValue(state: EngineState, o: Orbat): number {
+  let v = orbatValueCache.get(o);
+  if (v === undefined) {
+    v = 0;
+    for (const it of o.inventory) {
+      if (it.count <= 0 || !state.world.catalog.get(it.systemId)) continue;
+      v += elementValue(state, it.systemId) * it.count;
+    }
+    orbatValueCache.set(o, v);
+  }
+  return v;
+}
+
+/** Fiabilité publiée d'un ORBAT → incertitude de départ. */
+function baseUncertainty(state: EngineState, o: Orbat): number {
+  const E = aiCfg(state.world).estimate;
+  return o.confidence === 'high'
+    ? E.uncertaintyHigh
+    : o.confidence === 'low'
+      ? E.uncertaintyLow
+      : E.uncertaintyMedium;
+}
+
+/**
+ * Force publique de `t` vue par `n` : ORBAT publié, moins une part des forces avec le territoire perdu,
+ * plus la production que son budget de défense (public) a pu financer depuis le début de la partie ;
+ * `sigma` = incertitude relative (fiabilité de la source, âge, reconnaissance militaire de `n`).
+ * null sans ORBAT ou sans économie réelle.
+ */
+export function publicForce(
+  state: EngineState,
+  n: NationId,
+  t: NationId,
+): { mean: number; sigma: number } | null {
+  const E = aiCfg(state.world).estimate;
+  if (!E.useOrbat || !eco(state).live) return null;
+  const o = orbatOf(state, t);
+  if (!o) return null;
+  const init = wi(state.world).provsByNation.get(t)?.length ?? 0;
+  const cur = state.nations[t]?.provinceCount ?? 0;
+  const kept = init > 0 && cur < init ? 1 - E.territoryLoss * (1 - cur / init) : 1;
+  const days = state.time / DAY;
+  const mean = orbatValue(state, o) * kept + budgetDay(state, t) * days * E.productionShare;
+  let sigma = Math.min(E.maxUncertainty, baseUncertainty(state, o) + E.uncertaintyPerDay * days);
+  const cov = nationCoverage(state, n, t, 'm');
+  if (cov.total > 0) sigma *= 1 - E.reconDiscount * (cov.known / cov.total);
+  return { mean, sigma };
+}
+
+/** Force estimée de `t` du point de vue de `n` (pessimiste : moyenne × (1 + incertitude) × prudence). */
 export function estimateForce(
   state: EngineState,
   n: NationId,
@@ -108,6 +175,8 @@ export function estimateForce(
   caution: number,
 ): number {
   const known = knownForce(state, n, t, mine);
+  const pub = publicForce(state, n, t);
+  if (pub) return Math.max(known, pub.mean * (1 + pub.sigma)) * caution;
   const tn = state.nations[t];
   const mirror = (tn?.provinceCount ?? 0) * mine.perProvince;
   return Math.max(known, mirror) * caution;
@@ -161,6 +230,79 @@ export function adjacency(state: EngineState): Map<NationId, NationId[]> {
   for (const [k, s] of sets) map.set(k, [...s].sort());
   adjCache.set(state, { v, map });
   return map;
+}
+
+/**
+ * Provinces côtières (accès à la mer) dont la ville est à moins de `amphibiousReachKm` d'une autre
+ * ville côtière, sans frontière terrestre entre elles : liaisons possibles d'un débarquement (carte
+ * statique, par monde ; triées).
+ */
+const seaLinkCache = new WeakMap<object, Map<ProvinceId, ProvinceId[]>>();
+
+export function seaLinks(state: EngineState): Map<ProvinceId, ProvinceId[]> {
+  let m = seaLinkCache.get(state.world);
+  if (m) return m;
+  m = new Map();
+  const w = wi(state.world);
+  const reach = aiCfg(state.world).tactical.amphibiousReachKm;
+  const coastal = [...w.seaSpawn.keys()].filter((p) => !!w.seaSpawn.get(p)).sort();
+  // Cases de 5° pour borner les comparaisons.
+  const cell = (p: LngLat) => `${Math.floor(p[0] / 5)},${Math.floor(p[1] / 5)}`;
+  const grid = new Map<string, ProvinceId[]>();
+  for (const p of coastal) {
+    const k = cell(w.provById.get(p)!.cityPoint);
+    let list = grid.get(k);
+    if (!list) grid.set(k, (list = []));
+    list.push(p);
+  }
+  const spanY = Math.ceil(reach / 555) + 1;
+  for (const p of coastal) {
+    const def = w.provById.get(p)!;
+    const at = def.cityPoint;
+    const cx = Math.floor(at[0] / 5);
+    const cy = Math.floor(at[1] / 5);
+    const cos = Math.max(0.1, Math.cos((Math.min(89, Math.abs(at[1]) + 5) * Math.PI) / 180));
+    const spanX = Math.min(36, Math.ceil(reach / (555 * cos)) + 1);
+    const out = new Set<ProvinceId>();
+    for (let dx = -spanX; dx <= spanX; dx++) {
+      for (let dy = -spanY; dy <= spanY; dy++) {
+        const x = (((cx + dx) % 72) + 72) % 72;
+        for (const q of grid.get(`${x >= 36 ? x - 72 : x},${cy + dy}`) ?? []) {
+          if (q === p || def.neighbors.includes(q)) continue;
+          if (distanceKm(at, w.provById.get(q)!.cityPoint) <= reach) out.add(q);
+        }
+      }
+    }
+    if (out.size) m.set(p, [...out].sort());
+  }
+  seaLinkCache.set(state.world, m);
+  return m;
+}
+
+/** Nations atteignables par la mer depuis `n` (débarquement), hors voisins terrestres ; triées. */
+const overseasCache = new WeakMap<EngineState, { v: number; map: Map<NationId, NationId[]> }>();
+
+export function overseasNations(state: EngineState, n: NationId): NationId[] {
+  const v = ownerVersion(state);
+  let hit = overseasCache.get(state);
+  if (!hit || hit.v !== v || v < 0) {
+    hit = { v, map: new Map() };
+    overseasCache.set(state, hit);
+  }
+  let list = hit.map.get(n);
+  if (list) return list;
+  const links = seaLinks(state);
+  const land = new Set(neighborNations(state, n));
+  const out = new Set<NationId>();
+  for (const p of state.rt.provsOf.get(n) ?? []) {
+    for (const q of links.get(p) ?? []) {
+      const o = state.provinces[q]?.owner;
+      if (o && o !== n && !land.has(o)) out.add(o);
+    }
+  }
+  list = [...out].sort();
+  hit.map.set(n, list);
+  return list;
 }
 
 /** Provinces d'origine de `n` désormais tenues par `by`. */
