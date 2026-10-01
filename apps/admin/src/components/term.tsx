@@ -357,6 +357,7 @@ const PATHS: Record<string, string> = {
   shop: 'M4 5h2l2 11h10l2-8H7M10 20h0M17 20h0',
   audit: 'M7 3h8l4 4v14H7zM15 3v4h4M10 12h6M10 16h6M10 8h2',
   metrics: 'M3 12h4l2-6 4 12 2-6h6',
+  legal: 'M12 4v16M5 20h14M4 8h16M7 8l-3 6h6zM17 8l-3 6h6z',
   data: 'M12 4c4.4 0 8 1.3 8 3s-3.6 3-8 3-8-1.3-8-3 3.6-3 8-3zM4 7v10c0 1.7 3.6 3 8 3s8-1.3 8-3V7M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3',
   menu: 'M4 7h16M4 12h16M4 17h16',
   search: 'M11 5a6 6 0 100 12 6 6 0 000-12zM20 20l-4.5-4.5',
@@ -385,6 +386,9 @@ const PATHS: Record<string, string> = {
   check: 'M5 12l5 5 9-10',
   warn: 'M12 4l9 16H3zM12 10v4M12 17v0',
   external: 'M14 4h6v6M20 4l-9 9M18 14v6H4V6h6',
+  coin: 'M12 3a9 9 0 100 18 9 9 0 000-18zM15 8.5c-.6-.9-1.7-1.5-3-1.5-1.9 0-3 1-3 2.3 0 3 6 1.6 6 4.6 0 1.3-1.2 2.4-3 2.4-1.4 0-2.6-.6-3.2-1.6M12 5.5v1.5M12 17v1.5',
+  megaphone: 'M4 10v4h3l7 4V6l-7 4zM17 9a4 4 0 010 6M7 14l1.5 5h2.5l-1.2-5',
+  gear: 'M12 9a3 3 0 100 6 3 3 0 000-6zM12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1',
 };
 
 export function Icon({

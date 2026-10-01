@@ -26,6 +26,10 @@ import { useLoad } from '../lib/hooks';
 import { fromLocalInput, toLocalInput } from '../lib/dates';
 import { useNationMap } from '../lib/refs';
 import { href, navigate } from '../lib/router';
+import { UserOpsPanel } from '../components/UserOps';
+import { O } from '../i18n/fr-ops';
+import type { UserFilter } from '../api/ops';
+import { downloadCsv } from '../lib/csv';
 
 const ROLE_TONE: Record<Role, 'off' | 'info' | 'blue' | 'violet'> = {
   player: 'off',
@@ -51,6 +55,7 @@ function statusBadges(u: AdminUser) {
         <Badge tone="warn">{T.users.muted}</Badge>
       )}
       {u.isGuest && <Badge tone="off">{T.users.guest}</Badge>}
+      {u.deletedAt && <Badge tone="crit">{O.user.deleted}</Badge>}
       {u.unlimited && (
         <Badge tone="warn" title={T.users.unlimitedTitle}>
           ∞ {T.users.unlimited}
@@ -68,9 +73,13 @@ export function UsersScreen({ id }: { id?: string }) {
     const t = setTimeout(() => setDebounced(q.trim()), 250);
     return () => clearTimeout(t);
   }, [q]);
+  const [filter, setFilter] = useState<UserFilter | ''>('');
   const list = useLoad(
-    () => api.listUsers({ q: debounced || undefined, limit: 200 }).then((r) => r.users),
-    [api, debounced],
+    () =>
+      api
+        .searchUsers({ q: debounced || undefined, filter: filter || undefined, limit: 500 })
+        .then((r) => r.users),
+    [api, debounced, filter],
     T.roles.superadmin,
   );
   return (
@@ -86,8 +95,42 @@ export function UsersScreen({ id }: { id?: string }) {
           cmd={`Get-User${debounced ? ` -Filter "${debounced}"` : ''}`}
           flush
         >
-          <div style={{ padding: 10 }}>
+          <div className="toolbar" style={{ padding: 10, marginBottom: 0 }}>
             <SearchBox value={q} onChange={setQ} placeholder={T.users.search} autoFocusKey />
+            <select
+              className="input"
+              aria-label={O.user.filter}
+              value={filter}
+              onChange={(e) => setFilter(e.target.value as UserFilter | '')}
+            >
+              {(Object.keys(O.user.filters) as (UserFilter | '')[]).map((f) => (
+                <option key={f} value={f}>
+                  {O.user.filters[f]}
+                </option>
+              ))}
+            </select>
+            <Button
+              small
+              title="CSV"
+              onClick={() =>
+                downloadCsv('redline-utilisateurs.csv', list.data ?? [], [
+                  ['id', (u) => u.id],
+                  ['nom', (u) => u.displayName],
+                  ['email', (u) => u.email],
+                  ['role', (u) => u.role],
+                  ['invite', (u) => u.isGuest],
+                  ['illimite', (u) => !!u.unlimited],
+                  ['monnaie_premium', (u) => u.premiumBalance],
+                  ['cree', (u) => u.createdAt],
+                  ['vu', (u) => u.lastSeenAt],
+                  ['banni', (u) => u.bannedAt],
+                  ['suspendu_jusqu_au', (u) => u.bannedUntil],
+                  ['supprime', (u) => u.deletedAt],
+                ])
+              }
+            >
+              <Icon name="download" size={12} /> CSV
+            </Button>
           </div>
           {list.error && <ErrorBox message={list.error} onRetry={() => void list.reload()} />}
           <DataTable
@@ -436,6 +479,13 @@ function UserDetailPane({ id, onChanged }: { id: string; onChanged: () => void }
           </>
         )}
       </Win>
+      <UserOpsPanel
+        user={u}
+        onChanged={() => {
+          void reload(true);
+          onChanged();
+        }}
+      />
       <Win title={T.users.games} glyph="▶">
         {data.games.length === 0 ? (
           <p className="dim small">{T.users.none}</p>

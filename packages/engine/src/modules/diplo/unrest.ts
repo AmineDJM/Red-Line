@@ -19,7 +19,7 @@ import { destroyUnit } from '../../combat/combat.js';
 import { transferProvince } from '../../combat/capture.js';
 import { applyOrderImpl } from '../../orders/orders.js';
 import { nextFloat, nextInt } from '../../rng/rng.js';
-import { scheduleMod, signal } from '../registry.js';
+import { modifier, scheduleMod, signal } from '../registry.js';
 import {
   PK_NATION,
   REBEL_PREFIX,
@@ -440,7 +440,8 @@ export function unrestDaily(state: EngineState): void {
     if (!P || disputedPids.has(pid) || !isRegular(state, P.owner)) continue;
     const u = d.unrest[pid]!;
     if (u < 10) continue;
-    if (nextFloat(ds(state).rng) < clamp(c.revoltChancePerDay * (u / 50), 0, 1)) {
+    const f = modifier(state, P.owner, 'unrest.risk');
+    if (nextFloat(ds(state).rng) < clamp(c.revoltChancePerDay * (u / 50) * f, 0, 1)) {
       revolt(state, pid, clamp(c.armedUprisingChance * (u / 60), 0, 1));
     }
   }
@@ -451,7 +452,8 @@ export function unrestDaily(state: EngineState): void {
     const s = stabilityOf(state, n);
     if (s >= c.revoltThreshold) continue;
     const term = (c.revoltThreshold - s) / Math.max(1, c.revoltThreshold);
-    if (nextFloat(ds(state).rng) >= clamp(c.revoltChancePerDay * term * 2, 0, 1)) continue;
+    const f = modifier(state, n, 'unrest.risk');
+    if (nextFloat(ds(state).rng) >= clamp(c.revoltChancePerDay * term * 2 * f, 0, 1)) continue;
     const provs = provincesOf(state, n);
     if (provs.length === 0) continue;
     let pid = provs[nextInt(ds(state).rng, provs.length)]!;

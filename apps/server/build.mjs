@@ -41,6 +41,7 @@ const repo = join(root, '..', '..');
 const r = await precompress([
   join(repo, 'apps/client/dist'),
   join(repo, 'apps/admin/dist'),
+  join(repo, 'apps/site/dist/site'),
   join(repo, 'data/basemap'),
 ]);
 console.log(

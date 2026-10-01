@@ -118,6 +118,8 @@ export class PushService {
       subject: string;
       envKeys: VapidKeys | null;
       throttleMs: number;
+      /** Comptabilité des coûts (notifications envoyées par utilisateur). */
+      usage?: { push(userId: string, n: number): void };
     },
   ) {}
 
@@ -338,6 +340,7 @@ export class PushService {
     }
     if (sent) {
       this.deps.metrics.count('push', sent);
+      this.deps.usage?.push(userId, sent);
       await this.deps.db
         .update(pushSubscriptions)
         .set({ lastSentAt: new Date(now) })

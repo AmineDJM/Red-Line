@@ -1,5 +1,6 @@
 import type { GameTime, LngLat, NationId, ProvinceId, SystemId, UnitId } from './ids.js';
 import type { LocText } from './i18n.js';
+import type { InteriorIntelView } from './domestic.js';
 
 /** Trois départements (noms génériques, inspirés du modèle français). */
 export const DEPARTMENTS = ['interior', 'exterior', 'military'] as const;
@@ -156,6 +157,8 @@ export interface IntelView {
   agents: AgentView[];
   /** Agents ennemis démasqués sur notre sol. */
   caughtAgents: { id: string; nationId: NationId; caughtAt: GameTime; turned: boolean }[];
+  /** Renseignement intérieur : priorité, sites protégés, menace par province, effets du budget. */
+  interior?: InteriorIntelView;
 }
 
 /** Coût et durée par opération (data/balance, section intel.ops). */

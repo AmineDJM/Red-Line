@@ -1,6 +1,7 @@
 import type { FeatureCollection } from 'geojson';
 import type {
   Locale,
+  PublicStats,
   BattleReport,
   CosmeticItem,
   CreateGameBody,
@@ -21,6 +22,8 @@ import type {
   Balance,
   ScenarioSummary,
   SeasonView,
+  ResourceBuyResult,
+  ResourceOffer,
   ShopPack,
   TimelapseView,
   WalletEntry,
@@ -115,10 +118,17 @@ export interface Api {
     hours: number,
   ): Promise<{ ok: boolean; balance: number; unlimited?: boolean }>;
   cosmetics(): Promise<{ items: CosmeticItem[]; owned: string[] }>;
+  /** Offres de ressources en jeu (monnaie premium → dollars du jeu et ressources). */
+  resourceOffers(): Promise<ResourceOffer[]>;
+  /** Achat d'une offre de ressources dans une partie en cours (politique de la partie). */
+  buyResources(gameId: string, offerId: string): Promise<ResourceBuyResult>;
   buyCosmetic(id: string): Promise<{ ok: boolean; balance: number }>;
   rankings(season?: string): Promise<{ season: SeasonView; entries: RankingEntry[] }>;
   seasons(): Promise<SeasonView[]>;
-  legal(doc: LegalDocRef['id']): Promise<LegalDoc>;
+  /** Document légal ; `lang` : traduction si elle est à jour (la version française fait foi). */
+  legal(doc: LegalDocRef['id'], lang?: string): Promise<LegalDoc>;
+  /** Chiffres publics de l'accueil (parties en cours, joueurs en ligne). */
+  publicStats(): Promise<PublicStats>;
   acceptLegal(docs: LegalDocRef[]): Promise<void>;
   /** Documents légaux à (re)accepter (champ `legal` de GET /api/me). */
   legalPending(): Promise<LegalDocRef[]>;

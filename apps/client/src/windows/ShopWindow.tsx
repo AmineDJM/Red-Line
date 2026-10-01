@@ -9,7 +9,7 @@ export function ShopWindow({ frame }: WindowContentProps) {
   const meta = useGame((s) => s.meta);
   return (
     <Window {...frame} path={[t('sections.path.shop')]}>
-      <ShopContent policy={meta?.shopPolicy} />
+      <ShopContent policy={meta?.shopPolicy} gameId={meta?.spectator ? null : meta?.id} />
     </Window>
   );
 }

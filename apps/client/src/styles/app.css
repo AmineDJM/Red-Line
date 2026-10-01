@@ -2639,3 +2639,42 @@ code {
 .picker--mobile .picker__options {
   padding: 8px 12px;
 }
+
+/* Accès à la fiche pays depuis une province étrangère */
+.provpanel__country {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 34px;
+  margin: 2px 0 4px;
+  padding: 6px 10px;
+  border: 1px solid var(--rl-line-strong);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-panel-2);
+  color: var(--rl-text);
+  font: inherit;
+  font-size: var(--rl-fs-sm);
+  text-align: left;
+  cursor: pointer;
+}
+.provpanel__country > span:first-of-type {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.provpanel__country svg:last-child {
+  color: var(--rl-text-dim);
+}
+@media (hover: hover) {
+  .provpanel__country:hover {
+    border-color: var(--rl-cyan-line);
+    background: var(--rl-panel-3);
+  }
+}
+.provpanel__country:focus-visible {
+  outline: none;
+  box-shadow: var(--rl-focus);
+}

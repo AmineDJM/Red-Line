@@ -11,6 +11,7 @@ import type {
   Orbat,
   ProvinceDef,
   ResearchNode,
+  Resource,
   Role,
   ScenarioFile,
   ShopPack,
@@ -123,6 +124,10 @@ export interface AdminUser {
   bannedAt: string | null;
   banReason: string | null;
   chatMutedUntil: string | null;
+  /** Suspension temporaire : fin du bannissement (null = définitif). */
+  bannedUntil?: string | null;
+  /** Compte supprimé (RGPD) : données personnelles effacées. */
+  deletedAt?: string | null;
 }
 
 export interface UserDetail {
@@ -172,6 +177,21 @@ export interface AdminPack {
   view: ShopPack;
 }
 export type PackBody = Omit<AdminPack, 'updatedAt' | 'view'>;
+
+/** Offre de ressources en jeu : monnaie premium → dollars du jeu et/ou ressources. */
+export interface AdminResourceOffer {
+  id: string;
+  name: string;
+  /** Dollars du jeu crédités. */
+  money: number;
+  resources: Partial<Record<Resource, number>>;
+  /** Prix en monnaie premium. */
+  price: number;
+  active: boolean;
+  sort: number;
+  updatedAt: string;
+}
+export type ResourceOfferBody = Omit<AdminResourceOffer, 'updatedAt'>;
 
 export interface Promotion {
   id: number;

@@ -6,6 +6,7 @@ import { agentsIn, doubledIn, neighborNations, quality, roll } from './levels.js
 import { publish } from './reports.js';
 import { BUILDING_LABEL, announce, imagery, knowledge, provincesInCircle } from './provinces.js';
 import { ist, nat } from './state.js';
+import { addIncident } from './interior.js';
 import { nationName, natA, natAgree, natDe, natLe, provinceName, sectorOf } from './text.js';
 import { loc } from '@redline/shared';
 
@@ -79,6 +80,11 @@ export function onSignal(state: EngineState, name: string, d: Data): void {
       return blackMarket(state, d);
     case 'imagery':
       return onImagery(state, d);
+    case 'domestic_event': {
+      const n = str(d.nation);
+      if (alive(state, n)) addIncident(state, n, str(d.pid), 'domestic');
+      return;
+    }
   }
 }
 
@@ -151,6 +157,9 @@ function sabotage(state: EngineState, d: Data): void {
   const pid = str(d.pid);
   if (!alive(state, victim) || victim === by) return;
   nat(state, victim).log.sabotage++;
+  addIncident(state, victim, pid, 'sabotage');
+  // Sabotage d'un réseau rebelle intérieur : déjà notifié par la gestion intérieure.
+  if (d.domestic === true) return;
   const b = str(d.building) as BuildingType | undefined;
   const dmg = Math.round(num(d.damage) * 100);
   const known = !!by && roll(state) < 0.5 * quality(state, victim, 'interior');
@@ -180,6 +189,7 @@ function cyber(state: EngineState, d: Data): void {
   const by = str(d.by);
   if (!alive(state, victim) || victim === by) return;
   nat(state, victim).log.cyber++;
+  addIncident(state, victim, wi(state.world).nationById.get(victim)?.capitalProvinceId, 'cyber');
   const kind = str(d.kind) ?? 'orders';
   const known = !!by && roll(state) < 0.4 * quality(state, victim, 'interior') + 0.1;
   publish(state, victim, {
@@ -209,6 +219,7 @@ function rebels(state: EngineState, d: Data): void {
   const q = quality(state, victim, 'interior');
   if (roll(state) >= 0.4 + 0.5 * q) return;
   nat(state, victim).log.rebels++;
+  addIncident(state, victim, pid, 'rebels');
   const known = !!by && roll(state) < 0.5 * q;
   const at = cityOf(state, pid);
   publish(state, victim, {

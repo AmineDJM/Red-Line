@@ -46,6 +46,7 @@ import {
   startListen,
 } from './contacts.js';
 import { ist, nat, nextId, type Agent, type StoredOp } from './state.js';
+import { exposureFactor, onForeignFailed, successFactor, watchOp } from './interior.js';
 import {
   CATEGORY_LABEL,
   fmtTime,
@@ -306,6 +307,7 @@ export function startOp(
   if (r.agentId) op.agentId = r.agentId;
   ni.ops.push(op);
   if (isNationRecon(kind, r.target)) scheduleWaves(state, n, op);
+  watchOp(state, n, op);
   scheduleMod(state, { t: op.completesAt, m: 'intel', e: 'op', d: { n, id: op.id } });
   return { ok: true };
 }
@@ -382,13 +384,16 @@ export function resolveOp(state: EngineState, n: NationId, id: string): void {
   if (op.rn) return finishNationRecon(state, n, op);
   const c = cfg(state).ops[op.kind];
   const victimAlive = !op.victim || !!state.nations[op.victim]?.alive;
-  const ok = victimAlive && state.nations[n]?.alive && roll(state) < op.estimate;
+  const ok =
+    victimAlive && state.nations[n]?.alive && roll(state) < op.estimate * successFactor(state, op);
   if (ok) {
     op.status = 'success';
     applySuccess(state, n, op);
   } else {
     const dq = defenderQuality(state, op);
-    const exposed = victimAlive && roll(state) < c.exposure * (0.5 + dq);
+    const exposed =
+      victimAlive && roll(state) < c.exposure * (0.5 + dq) * exposureFactor(state, op);
+    if (victimAlive) onForeignFailed(state, n, op);
     op.status = exposed ? 'compromised' : 'failed';
     publish(state, n, {
       dept: op.dept,

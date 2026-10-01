@@ -22,6 +22,7 @@ import {
   type ProvinceDef,
   type RankingEntry,
   type SeasonView,
+  type ResourceOffer,
   type ShopPack,
   type TimelapseView,
   type WalletEntry,
@@ -505,6 +506,30 @@ export function demoBattleReport(
 
 // ——— Boutique, classements, légal ———
 
+/** Offres de ressources en jeu (copie de apps/server/shop/config.json). */
+export const DEMO_RESOURCE_OFFERS: ResourceOffer[] = [
+  { id: 'res-credit', name: 'Ligne de crédit', money: 500e6, resources: {}, price: 50 },
+  { id: 'res-loan', name: "Emprunt d'État", money: 2e9, resources: {}, price: 180 },
+  { id: 'res-fund', name: 'Fonds souverain', money: 10e9, resources: {}, price: 800 },
+  { id: 'res-oil', name: 'Cargaison de pétrole', money: 0, resources: { oil: 200 }, price: 40 },
+  { id: 'res-metals', name: 'Minerais et métaux', money: 0, resources: { metals: 200 }, price: 40 },
+  {
+    id: 'res-electronics',
+    name: 'Composants électroniques',
+    money: 0,
+    resources: { electronics: 100 },
+    price: 50,
+  },
+  { id: 'res-food', name: 'Réserves alimentaires', money: 0, resources: { food: 300 }, price: 30 },
+  {
+    id: 'res-logistics',
+    name: 'Lot logistique',
+    money: 0,
+    resources: { oil: 150, metals: 150, electronics: 75, food: 200 },
+    price: 120,
+  },
+];
+
 export const DEMO_PACKS: ShopPack[] = [
   {
     id: 'pack-s',
@@ -696,6 +721,18 @@ Données traitées : identifiant de compte, adresse e-mail (comptes inscrits), h
 
 Le contenu numérique fourni immédiatement après l’achat entraîne, avec votre accord exprès, la renonciation au droit de rétractation de quatorze jours.`,
   ],
+  mentions: [
+    'Mentions légales',
+    `# Mentions légales
+
+**Version de démonstration.** Éditeur, hébergeur et crédits : voir la page publique.`,
+  ],
+  cookies: [
+    'Cookies et stockage local',
+    `# Cookies
+
+**Version de démonstration.** Un seul cookie strictement nécessaire (session), aucun traceur publicitaire.`,
+  ],
 };
 
 export function demoLegal(id: LegalDoc['id']): LegalDoc {
@@ -708,28 +745,28 @@ export function demoLegal(id: LegalDoc['id']): LegalDoc {
  * de section `buildings`. Le client multiplie par le niveau visé.
  */
 const DEMO_BUILD: Record<string, [usd: number, hours: number]> = {
-  refinery: [180e6, 36],
-  power_plant: [140e6, 30],
-  port: [120e6, 30],
-  air_base: [260e6, 42],
-  military_base: [150e6, 30],
-  arms_factory: [320e6, 48],
-  research_center: [220e6, 40],
-  oil_field: [90e6, 24],
-  mine: [60e6, 20],
-  farm: [25e6, 12],
-  electronics_plant: [240e6, 40],
-  local_industry: [45e6, 16],
-  recruiting_office: [20e6, 10],
-  naval_base: [380e6, 48],
-  bunker: [30e6, 12],
-  air_defense_site: [160e6, 28],
-  coastal_battery: [110e6, 24],
-  radar_station: [85e6, 20],
-  missile_silo: [900e6, 72],
-  hospital: [55e6, 18],
-  secret_lab: [480e6, 60],
-  forward_base: [40e6, 8],
+  refinery: [18e6, 36],
+  power_plant: [14e6, 30],
+  port: [12e6, 30],
+  air_base: [26e6, 42],
+  military_base: [15e6, 30],
+  arms_factory: [32e6, 48],
+  research_center: [22e6, 40],
+  oil_field: [9e6, 24],
+  mine: [6e6, 20],
+  farm: [2.5e6, 12],
+  electronics_plant: [24e6, 40],
+  local_industry: [4.5e6, 16],
+  recruiting_office: [2e6, 10],
+  naval_base: [38e6, 48],
+  bunker: [3e6, 12],
+  air_defense_site: [16e6, 28],
+  coastal_battery: [11e6, 24],
+  radar_station: [8.5e6, 20],
+  missile_silo: [90e6, 72],
+  hospital: [5.5e6, 18],
+  secret_lab: [48e6, 60],
+  forward_base: [4e6, 8],
 };
 
 export function withDemoBuildings(balance: Balance | null): Balance | null {

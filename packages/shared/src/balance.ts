@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { CATEGORIES } from './catalog.js';
 import { BUILDING_TYPES } from './map.js';
+import { DOMESTIC_POLICIES, DomesticPolicyEffectsSchema } from './domestic.js';
 
 // ——— Combat complet (phase 3) : chiffres d'équilibrage du module militaire du moteur ———
 
@@ -1039,6 +1040,113 @@ export const BalanceSchema = z.object({
         .optional(),
       /** Âge (heures) au-delà duquel la connaissance d'une province vieillit (état des bâtiments masqué). */
       provinceStaleH: z.number().positive().default(72),
+      /**
+       * Renseignement intérieur (contre-espionnage, protection des sites sensibles, surveillance des
+       * troubles). Valeurs par défaut dans packages/engine/src/modules/intel/interior.ts.
+       */
+      interior: z
+        .object({
+          /**
+           * Effet de la priorité du département (balanced, counterintel, protection, surveillance) :
+           * multiplicateurs de la détection des agents, de la détection des opérations, de la protection
+           * des sites et de la réduction des troubles.
+           */
+          focus: z
+            .record(
+              z.string(),
+              z.object({
+                agentDetect: z.number().min(0).default(1),
+                opDetect: z.number().min(0).default(1),
+                protection: z.number().min(0).default(1),
+                unrest: z.number().min(0).default(1),
+              }),
+            )
+            .default({}),
+          /** Détection d'une opération étrangère en préparation : base × (0,4 + qualité) × priorité. */
+          opDetectBase: z.number().min(0).max(1).optional(),
+          /** Plafond de la chance de détection d'une opération. */
+          opDetectMax: z.number().min(0).max(1).optional(),
+          /** Opération détectée : chance de réussite multipliée par (1 − foilFactor). */
+          foilFactor: z.number().min(0).max(1).optional(),
+          /** Opération détectée : risque d'être démasquée multiplié par ce facteur. */
+          detectedExposure: z.number().min(1).optional(),
+          /** Site protégé : réduction maximale de la réussite adverse (× qualité × priorité). */
+          protectionMax: z.number().min(0).max(1).optional(),
+          /** Sites protégés simultanément : base + par niveau du département (+ bonus de la priorité « protection »). */
+          protectedBase: z.number().int().min(0).optional(),
+          protectedPerLevel: z.number().int().min(0).optional(),
+          protectionFocusBonus: z.number().int().min(0).optional(),
+          /** Réduction maximale du risque de troubles (× qualité × priorité « surveillance »). */
+          unrestReductionMax: z.number().min(0).max(1).optional(),
+          /** Mémoire des incidents par province (menace) : facteur de décroissance quotidien. */
+          threatDecay: z.number().min(0).max(1).optional(),
+          /** Poids des incidents dans la menace d'une province (points). */
+          threatWeights: z.record(z.string(), z.number().min(0)).default({}),
+        })
+        .optional(),
+    })
+    .optional(),
+  /**
+   * Gestion intérieure (onglet Intérieur) : politiques intérieures choisies par le joueur, soutien à la
+   * guerre, événements intérieurs (grèves, manifestations, sabotages). Valeurs par défaut dans
+   * packages/engine/src/modules/diplo/domestic.ts.
+   */
+  domestic: z
+    .object({
+      /** Délai minimal (jours de jeu) avant de pouvoir changer à nouveau une même politique. */
+      changeCooldownDays: z.number().min(0).default(2),
+      /** Effets chiffrés de chaque politique. */
+      policies: z.record(z.enum(DOMESTIC_POLICIES), DomesticPolicyEffectsSchema).default({}),
+      /** Soutien de la population à la guerre (0..100). */
+      warSupport: z
+        .object({
+          start: z.number().min(0).max(100).default(60),
+          /** Rapprochement quotidien vers la valeur visée. */
+          driftPerDay: z.number().min(0).default(2),
+          /** Guerre défensive (agressé) : soutien visé en plus. */
+          defensiveBonus: z.number().default(15),
+          /** Guerre d'agression : soutien visé en moins. */
+          offensivePenalty: z.number().default(10),
+          /** Baisse par unité perdue (plafonnée par jour). */
+          lossPerUnit: z.number().min(0).default(0.3),
+          lossCapPerDay: z.number().min(0).default(5),
+          /** Baisse par province perdue. */
+          provinceLost: z.number().min(0).default(2),
+          /** Sous ce seuil, la lassitude de guerre est multipliée par lowWeariness ; au-dessus de highThreshold, par highWeariness. */
+          lowThreshold: z.number().min(0).max(100).default(35),
+          lowWeariness: z.number().min(0).default(2),
+          highThreshold: z.number().min(0).max(100).default(75),
+          highWeariness: z.number().min(0).default(0.6),
+        })
+        .default({}),
+      /** Événements intérieurs : chances quotidiennes de base (selon moral, stabilité, agitation). */
+      events: z
+        .object({
+          /** Grève : moral moyen sous moraleThreshold ; production ralentie pendant strikeHours. */
+          strikeChance: z.number().min(0).max(1).default(0.25),
+          moraleThreshold: z.number().min(0).max(100).default(55),
+          strikeHours: z.number().positive().default(48),
+          strikeProduction: z.number().positive().max(1).default(0.8),
+          /** Manifestation : stabilité sous stabilityThreshold ; stabilité et agitation locale. */
+          protestChance: z.number().min(0).max(1).default(0.25),
+          stabilityThreshold: z.number().min(0).max(100).default(50),
+          protestStability: z.number().min(0).default(2),
+          protestUnrest: z.number().min(0).default(8),
+          /** Sabotage intérieur (réseaux rebelles) : agitation locale ≥ sabotageUnrest. */
+          sabotageChance: z.number().min(0).max(1).default(0.2),
+          sabotageUnrest: z.number().min(0).max(100).default(25),
+          sabotageDamage: z.tuple([z.number(), z.number()]).default([0.1, 0.3]),
+          /** Émeute : manifestation qui dégénère si la stabilité est sous riotThreshold. */
+          riotThreshold: z.number().min(0).max(100).default(30),
+          riotStability: z.number().min(0).default(4),
+          /** Au plus un événement de chaque type par nation pendant ce délai (jours). */
+          cooldownDays: z.number().min(0).default(3),
+        })
+        .default({}),
+      /** Risque de troubles d'une province occupée (points ajoutés). */
+      occupiedRisk: z.number().min(0).max(100).default(25),
+      /** Politiques de l'IA (règles simples). */
+      ai: z.boolean().default(true),
     })
     .optional(),
   diplomacy: z

@@ -27,6 +27,7 @@ import { useInterval, useLoad } from '../lib/hooks';
 import { useNationMap } from '../lib/refs';
 import { href, navigate } from '../lib/router';
 import { matches } from '../lib/search';
+import { GameOpsPanel } from '../components/GameOps';
 
 const REFRESH_S = 10;
 type AiLevel = 'easy' | 'normal' | 'hard';
@@ -189,13 +190,16 @@ export function GamesScreen({ id }: { id?: string }) {
         </Win>
         <div className="detail-pane stack">
           {game ? (
-            <GameDetail
-              game={game}
-              onChanged={(g) =>
-                setData((l) => (l ?? []).map((x) => (x.game.id === g.game.id ? g : x)))
-              }
-              reload={() => void reload(true)}
-            />
+            <>
+              <GameDetail
+                game={game}
+                onChanged={(g) =>
+                  setData((l) => (l ?? []).map((x) => (x.game.id === g.game.id ? g : x)))
+                }
+                reload={() => void reload(true)}
+              />
+              <GameOpsPanel game={game} onGone={() => void reload(true)} />
+            </>
           ) : (
             <Win title={T.games.title} glyph="?">
               <Empty glyph="▶">{id && data ? T.errors.notFound : T.games.select}</Empty>

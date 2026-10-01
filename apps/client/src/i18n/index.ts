@@ -32,6 +32,7 @@ import frCore from './fr.json';
 import frMap from './fr.map.json';
 import frFeatures from './fr.features.json';
 import frLocale from './fr.locale.json';
+import frAudio from './fr.audio.json';
 
 type Tree = { [k: string]: string | Tree };
 function merge(a: Tree, b: Tree): Tree {
@@ -42,7 +43,10 @@ function merge(a: Tree, b: Tree): Tree {
   }
   return out;
 }
-const fr = [frMap, frFeatures, frLocale].reduce<Tree>((a, b) => merge(a, b as Tree), frCore as Tree);
+const fr = [frMap, frFeatures, frAudio, frLocale].reduce<Tree>(
+  (a, b) => merge(a, b as Tree),
+  frCore as Tree,
+);
 
 // Morceaux chargés à la demande (un fichier par langue).
 const coreFiles = import.meta.glob<Tree>('./locales/*.json', { import: 'default' });

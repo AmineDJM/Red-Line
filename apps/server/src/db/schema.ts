@@ -17,7 +17,15 @@ import {
   uniqueIndex,
   uuid,
 } from 'drizzle-orm/pg-core';
-import type { Balance, ChangeScope, Locale, Role, ShopPolicy, WeaponSystem } from '@redline/shared';
+import type {
+  Balance,
+  ChangeScope,
+  Locale,
+  Resource,
+  Role,
+  ShopPolicy,
+  WeaponSystem,
+} from '@redline/shared';
 
 const bytea = customType<{ data: Buffer; driverData: Buffer }>({
   dataType() {
@@ -44,6 +52,10 @@ export const users = pgTable(
     /** Bannissement (connexion refusée, sessions supprimées). */
     bannedAt: tz('banned_at'),
     banReason: text('ban_reason'),
+    /** Suspension temporaire : le bannissement prend fin à cette date (null = définitif). */
+    bannedUntil: tz('banned_until'),
+    /** Compte supprimé à la demande de l'utilisateur (RGPD) : données personnelles effacées. */
+    deletedAt: tz('deleted_at'),
     /** Messagerie coupée jusqu'à cette date (modération). */
     chatMutedUntil: tz('chat_muted_until'),
     /** Activité par heure UTC (24 compteurs) : détection des multi-comptes. */
@@ -338,7 +350,8 @@ export const timelapseFrames = pgTable(
 
 // ───────────────────────────── Boutique ─────────────────────────────
 
-export type WalletReason = 'purchase' | 'accelerate' | 'cosmetic' | 'refund' | 'admin';
+export type WalletReason =
+  'purchase' | 'accelerate' | 'cosmetic' | 'refund' | 'admin' | 'resources';
 
 /** Portefeuille de monnaie premium : journal en AJOUT SEUL (déclencheur SQL anti-modification). */
 export const walletLedger = pgTable(
@@ -360,7 +373,7 @@ export const walletLedger = pgTable(
     index('wallet_ledger_game_idx').on(t.gameId, t.userId),
     check(
       'wallet_ledger_reason_check',
-      sql`${t.reason} in ('purchase','accelerate','cosmetic','refund','admin')`,
+      sql`${t.reason} in ('purchase','accelerate','cosmetic','refund','admin','resources')`,
     ),
   ],
 );
@@ -372,6 +385,24 @@ export const shopPacks = pgTable('shop_packs', {
   bonus: integer('bonus').notNull().default(0),
   priceCents: integer('price_cents').notNull(),
   currency: text('currency').$type<'eur' | 'usd'>().notNull().default('eur'),
+  active: boolean('active').notNull().default(true),
+  sort: integer('sort').notNull().default(0),
+  updatedAt: tz('updated_at').notNull().defaultNow(),
+});
+
+/**
+ * Offres de ressources en jeu : monnaie premium échangée contre des dollars du jeu et/ou des ressources
+ * (pétrole, métaux, électronique, nourriture), créditées à la nation par la commande système `grant`.
+ */
+export const shopResourceOffers = pgTable('shop_resource_offers', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  /** Dollars du jeu crédités. */
+  money: doublePrecision('money').notNull().default(0),
+  /** Ressources créditées (pétrole, métaux, électronique, nourriture). */
+  resources: jsonb('resources').$type<Partial<Record<Resource, number>>>().notNull().default({}),
+  /** Prix en monnaie premium. */
+  price: integer('price').notNull(),
   active: boolean('active').notNull().default(true),
   sort: integer('sort').notNull().default(0),
   updatedAt: tz('updated_at').notNull().defaultNow(),
@@ -553,6 +584,73 @@ export const dataRevisions = pgTable(
   (t) => [index('data_revisions_key_idx').on(t.kind, t.key, t.id)],
 );
 
+// ───────────────────────────── Économie du service ─────────────────────────────
+
+/**
+ * Consommation mesurée, agrégée par heure ('hour') et par jour ('day') : processus entier ('server'),
+ * partie ('game', clé = id de partie) ou utilisateur ('user', clé = id d'utilisateur). Purge selon
+ * CostSettings.retention (docs/couts.md).
+ */
+export const usageStats = pgTable(
+  'usage_stats',
+  {
+    grain: text('grain').$type<'hour' | 'day'>().notNull(),
+    periodStart: tz('period_start').notNull(),
+    scope: text('scope').$type<'server' | 'game' | 'user'>().notNull(),
+    key: text('key').notNull(),
+    cpuSimMs: doublePrecision('cpu_sim_ms').notNull().default(0),
+    cpuFlushMs: doublePrecision('cpu_flush_ms').notNull().default(0),
+    cpuOtherMs: doublePrecision('cpu_other_ms').notNull().default(0),
+    cpuProcessMs: doublePrecision('cpu_process_ms').notNull().default(0),
+    memMbH: doublePrecision('mem_mb_h').notNull().default(0),
+    rssMbH: doublePrecision('rss_mb_h').notNull().default(0),
+    rssMaxMb: doublePrecision('rss_max_mb').notNull().default(0),
+    wsBytes: bigint('ws_bytes', { mode: 'number' }).notNull().default(0),
+    wsMsgs: bigint('ws_msgs', { mode: 'number' }).notNull().default(0),
+    httpBytes: bigint('http_bytes', { mode: 'number' }).notNull().default(0),
+    playS: doublePrecision('play_s').notNull().default(0),
+    orders: integer('orders').notNull().default(0),
+    pushSent: integer('push_sent').notNull().default(0),
+    stripeCalls: integer('stripe_calls').notNull().default(0),
+    peakPlayers: integer('peak_players').notNull().default(0),
+    peakGames: integer('peak_games').notNull().default(0),
+  },
+  (t) => [
+    primaryKey({ columns: [t.grain, t.periodStart, t.scope, t.key] }),
+    index('usage_stats_scope_idx').on(t.grain, t.scope, t.periodStart),
+  ],
+);
+
+/** Dépenses saisies dans le back-office ou relevées par le serveur (API du studio vidéo, outils…). */
+export const costEntries = pgTable(
+  'cost_entries',
+  {
+    id: serial('id').primaryKey(),
+    day: text('day').notNull(),
+    category: text('category').notNull(),
+    label: text('label').notNull(),
+    amountUsd: doublePrecision('amount_usd').notNull(),
+    monthly: boolean('monthly').notNull().default(false),
+    source: text('source').$type<'manual' | 'measured'>().notNull().default('manual'),
+    ref: text('ref'),
+    createdBy: uuid('created_by').references(() => users.id, { onDelete: 'set null' }),
+    createdAt: tz('created_at').notNull().defaultNow(),
+  },
+  (t) => [index('cost_entries_day_idx').on(t.day)],
+);
+
+/** Annonces globales : envoyées aux joueurs connectés et à chaque connexion pendant leur validité. */
+export const announcements = pgTable('announcements', {
+  id: serial('id').primaryKey(),
+  text: text('text').notNull(),
+  level: text('level').$type<'info' | 'warn'>().notNull().default('info'),
+  startsAt: tz('starts_at').notNull().defaultNow(),
+  endsAt: tz('ends_at').notNull(),
+  active: boolean('active').notNull().default(true),
+  createdBy: uuid('created_by').references(() => users.id, { onDelete: 'set null' }),
+  createdAt: tz('created_at').notNull().defaultNow(),
+});
+
 export const schema = {
   users,
   sessions,
@@ -571,6 +669,7 @@ export const schema = {
   timelapseFrames,
   walletLedger,
   shopPacks,
+  shopResourceOffers,
   shopPromotions,
   purchases,
   stripeEvents,
@@ -582,4 +681,7 @@ export const schema = {
   legalAcceptances,
   userFingerprints,
   dataRevisions,
+  usageStats,
+  costEntries,
+  announcements,
 };

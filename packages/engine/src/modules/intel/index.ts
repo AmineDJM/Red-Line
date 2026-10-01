@@ -15,6 +15,13 @@ import { copyTo, findReport } from './reports.js';
 import { onSignal } from './signals.js';
 import { ist, nat, newNationIntel, type IntelState } from './state.js';
 import { intelView } from './view.js';
+import {
+  interiorDaily,
+  interiorModifier,
+  interiorOnCapture,
+  orderInteriorFocus,
+  orderProtectSite,
+} from './interior.js';
 
 /**
  * Renseignement : trois départements (intérieur, extérieur, militaire), HUMINT et SIGINT, rapports
@@ -144,6 +151,7 @@ function onDailyTick(state: EngineState): void {
   }
   dailyAgents(state);
   agentsReveal(state);
+  interiorDaily(state);
 }
 
 // ——— Ordres ———
@@ -180,6 +188,14 @@ const orders: Partial<Record<Order['kind'], OrderHandler>> = {
     if (o.kind !== 'turnAgent') return fail('Ordre invalide.');
     return startOp(state, n, 'turn_agent', {}, o.agentId);
   },
+  interiorFocus: (state, n, o) => {
+    if (o.kind !== 'interiorFocus') return fail('Ordre invalide.');
+    return orderInteriorFocus(state, n, o.focus);
+  },
+  protectSite: (state, n, o) => {
+    if (o.kind !== 'protectSite') return fail('Ordre invalide.');
+    return orderProtectSite(state, n, o.provinceId, o.on);
+  },
 };
 
 export const intelModule: EngineModule = {
@@ -196,9 +212,14 @@ export const intelModule: EngineModule = {
     onUnitDestroyed: (state, u) => {
       if (state.mods.intel) onUnitGone(state, u.id);
     },
+    modifier: (state, n, key) => {
+      if (!state.mods.intel || (key !== 'unrest.risk' && key !== 'site.protection')) return 1;
+      return interiorModifier(state, n, key);
+    },
     onProvinceCaptured: (state, pid, from) => {
       // L'ancien propriétaire connaît parfaitement ce qu'il vient de perdre (à cette date).
       if (!state.mods.intel || !state.nations[from]) return;
+      interiorOnCapture(state, pid, from);
       const st = ist(state);
       (st.pk[from] ??= {})[pid] = { e: 3, m: 3, t: state.time };
     },

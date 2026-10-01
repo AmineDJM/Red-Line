@@ -37,6 +37,7 @@ import { nationForms, nationName, provinceName } from '../lib/game.js';
 import { useGameTime } from '../shell/helpers.js';
 import type { WindowContentProps } from '../shell/WindowHost.js';
 import { useGame } from '../store/game.js';
+import { IntelInterior } from './IntelInterior.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { orderError, reportTitle } from '../lib/loc.js';
@@ -755,7 +756,7 @@ export function IntelWindow({ win, frame, mobile }: WindowContentProps) {
   const { t } = useTranslation();
   const intel = useGame((s) => s.view?.intel);
   const now = useGameTime(5000);
-  const [source, setSource] = useState<IntelSource>('sigint');
+  const [source, setSource] = useState<IntelSource | 'interior'>('sigint');
   const [dept, setDept] = useState<Department>('military');
   const [openId, setOpenId] = useState<string | null>(null);
   useEffect(() => {
@@ -774,7 +775,10 @@ export function IntelWindow({ win, frame, mobile }: WindowContentProps) {
   return (
     <Window
       {...frame}
-      path={[t('sections.path.intel'), source.toUpperCase()]}
+      path={[
+        t('sections.path.intel'),
+        source === 'interior' ? t('intel.interiorTab').toUpperCase() : source.toUpperCase(),
+      ]}
       flush
       tabs={
         <div className="intel-tabs">
@@ -797,9 +801,16 @@ export function IntelWindow({ win, frame, mobile }: WindowContentProps) {
                 dot: flash('sigint'),
                 icon: <Icon name="radio" size={13} />,
               },
+              {
+                id: 'interior',
+                label: t('intel.interiorTab'),
+                count: intel?.interior?.threats.filter((x) => x.grade !== 'low').length,
+                dot: !!intel?.reports.some((r) => r.dept === 'interior' && r.kind === 'flash'),
+                icon: <Icon name="shield" size={13} />,
+              },
             ]}
           />
-          {mobile ? (
+          {mobile && source !== 'interior' ? (
             <Tabs
               label={t('intel.departments')}
               value={dept}
@@ -822,6 +833,16 @@ export function IntelWindow({ win, frame, mobile }: WindowContentProps) {
     >
       {!intel ? (
         <EmptyState icon="intel" title={t('intel.unavailable')} text={t('intel.unavailableHint')} />
+      ) : source === 'interior' ? (
+        <IntelInterior
+          onOpenReport={(id) => {
+            const r = intel.reports.find((x) => x.id === id);
+            if (!r) return;
+            setSource(r.source);
+            setDept(r.dept);
+            setOpenId(r.id);
+          }}
+        />
       ) : (
         <div className="intel">
           <div className="intel__cols">

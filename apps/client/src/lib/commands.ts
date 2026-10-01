@@ -230,8 +230,15 @@ function resolveNode(text: string, ctx: CommandCtx): ResearchNode | null {
   ]);
 }
 
+/** Noms d'une fenêtre : identifiant, titre, libellé court (« Armées », « Arsenal »…). */
+const windowNames = (w: WindowId, ctx: CommandCtx) => [
+  w,
+  ctx.label(`sections.${w}`),
+  ctx.label(`sections.short.${w}`),
+];
+
 function resolveWindow(text: string, ctx: CommandCtx): WindowId | null {
-  return bestOf([...WINDOW_IDS], text, (w) => [w, ctx.label(`sections.${w}`)]);
+  return bestOf([...WINDOW_IDS], text, (w) => windowNames(w, ctx));
 }
 
 // ——— Analyse ———
@@ -244,7 +251,7 @@ export function parseCommand(input: string, ctx: CommandCtx): CommandAction {
   if (!cmd) {
     // Raccourci : « armée » seul ouvre la fenêtre, un lieu seul centre la carte.
     const w = resolveWindow(line, ctx);
-    if (w && score(line, w, ctx.label(`sections.${w}`)) >= 2) return { type: 'open', window: w };
+    if (w && score(line, ...windowNames(w, ctx)) >= 2) return { type: 'open', window: w };
     return { type: 'error', message: ctx.label('console.errors.unknown', { cmd: head }) };
   }
   const err = (key: string, opts?: Record<string, unknown>): CommandAction => ({
@@ -610,7 +617,7 @@ export function suggest(input: string, ctx: CommandCtx, limit = 8): CommandSugge
         });
       break;
     case 'window':
-      for (const w of rank([...WINDOW_IDS], (w) => [w, ctx.label(`sections.${w}`)]))
+      for (const w of rank([...WINDOW_IDS], (w) => windowNames(w, ctx)))
         push({
           id: `w-${w}`,
           kind: ctx.label('console.kinds.window'),

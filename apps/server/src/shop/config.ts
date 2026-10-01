@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { z } from 'zod';
+import { RESOURCES } from '@redline/shared';
 import { SERVER_ROOT } from '../paths.js';
 
 /**
@@ -29,6 +30,22 @@ export const ShopConfigSchema = z.object({
       purchasable: z.boolean().default(true),
     }),
   ),
+  /**
+   * Offres de ressources en jeu (monnaie premium → dollars du jeu et/ou ressources), insérées si absentes
+   * puis gérées depuis le back-office.
+   */
+  resourceOffers: z
+    .array(
+      z.object({
+        id: z.string().min(1).max(64),
+        name: z.string().min(1).max(80),
+        money: z.number().min(0).default(0),
+        resources: z.record(z.enum(RESOURCES), z.number().min(0)).default({}),
+        price: z.number().int().positive(),
+        sort: z.number().int().default(0),
+      }),
+    )
+    .default([]),
   accelerate: z.object({
     /** Monnaie premium par heure de jeu retirée. */
     pricePerHour: z.number().positive(),

@@ -16,6 +16,9 @@ import type { Fingerprints } from './security/fingerprints.js';
 import type { ChatService } from './chat/chat.js';
 import type { PushService } from './push/push.js';
 import type { RankingService } from './rank/rankings.js';
+import type { UsageMeter } from './costs/usage.js';
+import type { CostService } from './costs/service.js';
+import type { AnnouncementService, RuntimeSettingsStore } from './ops/ops.js';
 
 export interface RuntimeOptions {
   /** Requêtes d'authentification par minute et par IP. */
@@ -74,4 +77,9 @@ export interface AppContext {
   chat: ChatService;
   push: PushService;
   rankings: RankingService;
+  /** Comptabilité des coûts : mesures de consommation et attribution (docs/couts.md). */
+  usage: UsageMeter;
+  costs: CostService;
+  announcements: AnnouncementService;
+  runtimeSettings: RuntimeSettingsStore;
 }

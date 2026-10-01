@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm --parallel --filter @redline/server --filter @redline/client --filter @redline/admin dev",
-    "build": "pnpm --filter @redline/client build && pnpm --filter @redline/admin build && pnpm --filter @redline/server build",
+    "build": "pnpm --filter @redline/client build && pnpm --filter @redline/admin build && pnpm --filter @redline/site build && pnpm --filter @redline/server build",
     "start": "pnpm --filter @redline/server start",
     "test": "pnpm -r --if-present test",
     "typecheck": "pnpm -r --if-present typecheck",

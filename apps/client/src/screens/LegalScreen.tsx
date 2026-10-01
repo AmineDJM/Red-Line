@@ -6,70 +6,181 @@ import { getApi } from '../api/index.js';
 import { Page } from '../components/Page.js';
 import { navigate, useRoute } from '../router.js';
 import { fmtDate } from '../i18n/index.js';
+import '../styles/legal.css';
 
-const DOCS: LegalDocRef['id'][] = ['cgu', 'cgv', 'privacy', 'withdrawal'];
+const DOCS: LegalDocRef['id'][] = ['mentions', 'cgu', 'cgv', 'privacy', 'cookies', 'withdrawal'];
 
-/** Rendu Markdown minimal et sûr (titres, gras, listes, paragraphes) : aucun HTML injecté. */
-export function Markdown({ text }: { text: string }) {
-  const inline = (s: string): ReactNode[] =>
-    s
-      .split(/(\*\*[^*]+\*\*)/g)
-      .map((part, i) =>
-        part.startsWith('**') && part.endsWith('**') ? (
-          <strong key={i}>{part.slice(2, -2)}</strong>
+/** Lien d'un document : « page:legal:x » → écran légal du jeu ; adresses http(s), mailto et internes. */
+function linkTarget(href: string): { href: string; internal: boolean } | null {
+  const legal = /^page:legal:([a-z]+)$/.exec(href);
+  if (legal) return { href: `/legal/${legal[1]}`, internal: true };
+  if (/^(https?:|mailto:)/.test(href)) return { href, internal: false };
+  if (href.startsWith('/')) return { href, internal: false };
+  return null;
+}
+
+/** Texte en ligne : liens, gras, italique, code — jamais de HTML injecté. */
+function inline(s: string): ReactNode[] {
+  const out: ReactNode[] = [];
+  const re =
+    /\[([^\]]+)\]\(([^)\s]+)\)|\*\*([^*]+)\*\*|`([^`]+)`|(^|[\s(«])_([^_]+)_(?=[\s.,;:!?)»]|$)/g;
+  let last = 0;
+  let k = 0;
+  for (let m = re.exec(s); m; m = re.exec(s)) {
+    if (m.index > last) out.push(<Fragment key={k++}>{s.slice(last, m.index)}</Fragment>);
+    if (m[1] !== undefined) {
+      const target = linkTarget(m[2]!);
+      out.push(
+        target ? (
+          <a
+            key={k++}
+            href={target.href}
+            {...(target.internal
+              ? { onClick: (e) => (e.preventDefault(), navigate(target.href)) }
+              : { target: '_blank', rel: 'noopener' })}
+          >
+            {inline(m[1])}
+          </a>
         ) : (
-          <Fragment key={i}>{part}</Fragment>
+          <Fragment key={k++}>{inline(m[1])}</Fragment>
         ),
       );
-  // Découpage ligne à ligne : titres (#), listes (- ou *), paragraphes (lignes consécutives).
+    } else if (m[3] !== undefined) out.push(<strong key={k++}>{inline(m[3])}</strong>);
+    else if (m[4] !== undefined) out.push(<code key={k++}>{m[4]}</code>);
+    else {
+      out.push(<Fragment key={k++}>{m[5]}</Fragment>);
+      out.push(<em key={k++}>{m[6]}</em>);
+    }
+    last = m.index + m[0].length;
+  }
+  if (last < s.length) out.push(<Fragment key={k++}>{s.slice(last)}</Fragment>);
+  return out;
+}
+
+const cells = (l: string) =>
+  l
+    .trim()
+    .replace(/^\||\|$/g, '')
+    .split('|')
+    .map((c) => c.trim());
+
+/**
+ * Rendu Markdown minimal et sûr (titres, paragraphes, listes, tableaux, citations, liens, gras, italique) :
+ * aucun HTML injecté. Les commentaires <!-- … --> (notes internes) sont retirés.
+ */
+export function Markdown({ text }: { text: string }) {
+  const lines = text
+    .replace(/\r\n/g, '\n')
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .split('\n');
   const out: ReactNode[] = [];
-  let para: string[] = [];
-  let list: string[] = [];
-  const flush = () => {
-    if (para.length) out.push(<p key={out.length}>{inline(para.join(' '))}</p>);
-    if (list.length)
-      out.push(
-        <ul key={out.length}>
-          {list.map((l, j) => (
-            <li key={j}>{inline(l)}</li>
-          ))}
-        </ul>,
-      );
-    para = [];
-    list = [];
-  };
-  for (const raw of text.split('\n')) {
-    const line = raw.trim();
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i]!.trim();
+    if (!line) {
+      i++;
+      continue;
+    }
     const h = /^(#{1,3}) (.*)$/.exec(line);
-    if (!line) flush();
-    else if (h) {
-      flush();
+    if (h) {
       const Tag = (['h2', 'h3', 'h4'] as const)[h[1]!.length - 1]!;
       out.push(<Tag key={out.length}>{inline(h[2]!)}</Tag>);
-    } else if (/^[-*] /.test(line)) {
-      if (para.length) flush();
-      list.push(line.slice(2));
-    } else {
-      if (list.length) flush();
-      para.push(line);
+      i++;
+      continue;
     }
+    if (line.startsWith('|')) {
+      const rows: string[][] = [];
+      while (i < lines.length && lines[i]!.trim().startsWith('|')) {
+        const r = lines[i]!.trim();
+        if (!/^\|?\s*:?-{2,}/.test(r)) rows.push(cells(r));
+        i++;
+      }
+      const [head, ...body] = rows;
+      out.push(
+        <div className="md__table" key={out.length}>
+          <table>
+            {head ? (
+              <thead>
+                <tr>
+                  {head.map((c, j) => (
+                    <th key={j} scope="col">
+                      {inline(c)}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+            ) : null}
+            <tbody>
+              {body.map((r, j) => (
+                <tr key={j}>
+                  {r.map((c, n) => (
+                    <td key={n}>{inline(c)}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>,
+      );
+      continue;
+    }
+    if (line.startsWith('>')) {
+      const q: string[] = [];
+      while (i < lines.length && lines[i]!.trim().startsWith('>')) {
+        q.push(lines[i]!.trim().replace(/^>\s?/, ''));
+        i++;
+      }
+      out.push(<blockquote key={out.length}>{inline(q.join(' '))}</blockquote>);
+      continue;
+    }
+    const ol = /^\d+[.)] /;
+    const ul = /^[-*] /;
+    if (ol.test(line) || ul.test(line)) {
+      const marker = ol.test(line) ? ol : ul;
+      const items: string[] = [];
+      while (i < lines.length) {
+        const raw = lines[i]!;
+        const l = raw.trim();
+        if (marker.test(l)) items.push(l.replace(marker, ''));
+        else if (l && /^\s{2,}/.test(raw) && items.length) items[items.length - 1] += ` ${l}`;
+        else break;
+        i++;
+      }
+      const Tag = marker === ol ? 'ol' : 'ul';
+      out.push(
+        <Tag key={out.length}>
+          {items.map((it, j) => (
+            <li key={j}>{inline(it)}</li>
+          ))}
+        </Tag>,
+      );
+      continue;
+    }
+    const para: string[] = [];
+    while (i < lines.length) {
+      const l = lines[i]!.trim();
+      if (!l || /^(#{1,3} |[-*] |\d+[.)] |>|\|)/.test(l)) break;
+      para.push(l);
+      i++;
+    }
+    out.push(<p key={out.length}>{inline(para.join(' '))}</p>);
   }
-  flush();
   return <div className="md">{out}</div>;
 }
 
 /** Pages légales (CGU, CGV, confidentialité, rétractation). */
 export function LegalScreen({ doc }: { doc: LegalDocRef['id'] }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
   const [data, setData] = useState<LegalDoc | null>(null);
   const [error, setError] = useState(false);
   useEffect(() => {
     setData(null);
     void getApi()
-      .then((api) => api.legal(doc))
+      .then((api) => api.legal(doc, lang))
       .then(setData)
       .catch(() => setError(true));
-  }, [doc]);
+  }, [doc, lang]);
   return (
     <Page
       path={[t('legal.path'), doc]}

@@ -71,6 +71,13 @@ import {
   stabilityMark,
 } from './stability.js';
 import { playerView, spectatorView } from './view.js';
+import {
+  domesticDaily,
+  domesticModifier,
+  domesticRebuild,
+  orderDomesticPolicy,
+  warSupportDaily,
+} from './domestic.js';
 
 /** Durée de validité d'une proposition de paix sans réponse. */
 const PROPOSAL_DAYS = 5;
@@ -184,8 +191,10 @@ function onDailyTick(state: EngineState): void {
   for (const k of sortedKeys(d.throttle))
     if (state.time - d.throttle[k]! > 30 * DAY) delete d.throttle[k];
   unrestDaily(state);
+  warSupportDaily(state);
   alliancesDaily(state);
   stabilityDaily(state);
+  domesticDaily(state);
   stabilityMark(state);
   refreshPassage(state);
 }
@@ -471,6 +480,7 @@ export const diploModule: EngineModule = {
   rebuild(state) {
     if (!ds(state)) return;
     board(state).passage ??= {};
+    domesticRebuild(state);
   },
   onEvent,
   orders: {
@@ -499,6 +509,7 @@ export const diploModule: EngineModule = {
     hireMercenaries: h<'hireMercenaries'>((s, n, o) =>
       orderHireMercenaries(s, n, o.provinceId, o.count),
     ),
+    domesticPolicy: h<'domesticPolicy'>((s, n, o) => orderDomesticPolicy(s, n, o.policy, o.on)),
   },
   system: { worldEvent },
   view: (state, nation, view) => {
@@ -534,6 +545,7 @@ export const diploModule: EngineModule = {
       if (!d) return 1;
       let f = 1;
       if (key === 'production.speed' || key === 'income.money') f *= stabilityFactor(state, n);
+      if (d.dom?.[n]) f *= domesticModifier(state, n, key);
       for (const e of d.effects)
         if (e.until > state.time && e.mods[key] !== undefined) f *= e.mods[key]!;
       return f;

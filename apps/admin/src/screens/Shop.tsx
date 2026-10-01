@@ -1,8 +1,11 @@
 /** Boutique : packs de monnaie premium, promotions, achats et remboursements. */
 import { useMemo, useState } from 'react';
 import { useSession } from '../context';
+import { RESOURCES } from '@redline/shared';
 import type {
   AdminPack,
+  AdminResourceOffer,
+  ResourceOfferBody,
   PackBody,
   PromoBody,
   Promotion,
@@ -35,13 +38,21 @@ export function ShopScreen({ tab }: { tab: ShopTab }) {
       <PageHead title={T.shop.title} sub={T.shop.sub} />
       <Tabs
         value={tab}
-        tabs={(['packs', 'promotions', 'purchases'] as const).map((k) => ({
+        tabs={(['packs', 'resources', 'promotions', 'purchases'] as const).map((k) => ({
           key: k,
           label: T.shop.tabs[k],
           href: href({ name: 'shop', tab: k }),
         }))}
       />
-      {tab === 'packs' ? <Packs /> : tab === 'promotions' ? <Promotions /> : <Purchases />}
+      {tab === 'packs' ? (
+        <Packs />
+      ) : tab === 'resources' ? (
+        <ResourceOffers />
+      ) : tab === 'promotions' ? (
+        <Promotions />
+      ) : (
+        <Purchases />
+      )}
     </>
   );
 }
@@ -267,6 +278,224 @@ function Packs() {
                 {T.shop.active}
               </label>
             </div>
+            <div className="row">
+              <Button variant="primary" disabled={!valid || busy} onClick={() => void save()}>
+                <Icon name="save" size={14} /> {busy ? T.app.saving : T.app.save}
+              </Button>
+              <Button variant="ghost" onClick={() => setEdit(null)}>
+                {T.app.cancel}
+              </Button>
+            </div>
+          </div>
+        )}
+      </Win>
+    </div>
+  );
+}
+
+const emptyOffer = (): ResourceOfferBody => ({
+  id: '',
+  name: '',
+  money: 0,
+  resources: {},
+  price: 50,
+  active: true,
+  sort: 0,
+});
+
+/** Contenu lisible d'une offre : « 500 M$ · 200 pétrole ». */
+function offerContents(o: Pick<AdminResourceOffer, 'money' | 'resources'>): string {
+  const parts: string[] = [];
+  if (o.money > 0)
+    parts.push(
+      o.money >= 1e9
+        ? `${num(Math.round(o.money / 1e8) / 10)} Md$`
+        : `${num(Math.round(o.money / 1e6))} M$`,
+    );
+  for (const r of RESOURCES) {
+    const v = o.resources[r];
+    if (v) parts.push(`${num(v)} ${T.shop.resourceNames[r]!.toLowerCase()}`);
+  }
+  return parts.join(' · ');
+}
+
+function ResourceOffers() {
+  const { api } = useSession();
+  const toast = useToast();
+  const { data, error, reload } = useLoad(
+    () => api.listResourceOffers().then((r) => r.offers),
+    [api],
+    T.roles.superadmin,
+  );
+  const [edit, setEdit] = useState<{ body: ResourceOfferBody; isNew: boolean } | null>(null);
+  const [busy, setBusy] = useState(false);
+  const b = edit?.body;
+  const setB = (p: Partial<ResourceOfferBody>) =>
+    setEdit((e) => (e ? { ...e, body: { ...e.body, ...p } } : e));
+  const nonEmpty = !!b && (b.money > 0 || RESOURCES.some((r) => (b.resources[r] ?? 0) > 0));
+  const valid =
+    !!b && /^[a-z0-9._-]+$/.test(b.id) && b.name.trim().length > 0 && b.price > 0 && nonEmpty;
+  const save = async () => {
+    if (!edit) return;
+    setBusy(true);
+    try {
+      if (edit.isNew) await api.createResourceOffer(edit.body);
+      else await api.updateResourceOffer(edit.body.id, edit.body);
+      toast(T.shop.offerSaved);
+      setEdit(null);
+      void reload(true);
+    } catch (e) {
+      toast(errorMessage(e, T.roles.superadmin), 'error');
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <div className="split-side">
+      <Win
+        title={T.shop.tabs.resources}
+        cmd="Get-ResourceOffer | Sort-Object sort"
+        actions={
+          <Button
+            small
+            variant="primary"
+            onClick={() => setEdit({ body: emptyOffer(), isNew: true })}
+          >
+            <Icon name="plus" size={12} /> {T.shop.newOffer}
+          </Button>
+        }
+      >
+        <p className="dim small">{T.shop.offerHelp}</p>
+        {error && <ErrorBox message={error} onRetry={() => void reload()} />}
+        {!data && !error && <Spinner />}
+        {data && (
+          <DataTable
+            rows={data}
+            rowKey={(o) => o.id}
+            selected={edit && !edit.isNew ? edit.body.id : null}
+            onRowClick={(o: AdminResourceOffer) =>
+              setEdit({
+                body: {
+                  id: o.id,
+                  name: o.name,
+                  money: o.money,
+                  resources: { ...o.resources },
+                  price: o.price,
+                  active: o.active,
+                  sort: o.sort,
+                },
+                isNew: false,
+              })
+            }
+            rowClass={(o) => (o.active ? '' : 'off')}
+            columns={[
+              {
+                key: 'o',
+                label: T.shop.sort,
+                align: 'right',
+                sort: (o) => o.sort,
+                render: (o) => <span className="dim">{o.sort}</span>,
+              },
+              {
+                key: 'n',
+                label: T.shop.name,
+                className: 'two',
+                sort: (o) => o.name,
+                render: (o) => (
+                  <>
+                    <b className="bright">{o.name}</b>
+                    <span className="sub">{o.id}</span>
+                  </>
+                ),
+              },
+              {
+                key: 'c',
+                label: T.shop.contents,
+                render: (o) => <span className="val">{offerContents(o)}</span>,
+              },
+              {
+                key: 'p',
+                label: T.shop.pricePremium,
+                align: 'right',
+                sort: (o) => o.price,
+                render: (o) => <span className="val">◆ {num(o.price)}</span>,
+              },
+              {
+                key: 's',
+                label: T.shop.active,
+                render: (o) => (
+                  <Badge tone={o.active ? 'ok' : 'off'}>
+                    {o.active ? T.catalog.active : T.catalog.inactive}
+                  </Badge>
+                ),
+              },
+            ]}
+          />
+        )}
+      </Win>
+      <Win title={edit?.isNew ? T.shop.newOffer : T.shop.editOffer} glyph="◆">
+        {!b ? (
+          <p className="dim small">{T.shop.selectOffer}</p>
+        ) : (
+          <div className="stack">
+            <div className="grid g2">
+              <div className="field">
+                <label htmlFor="o-id">{T.shop.id}</label>
+                <input
+                  id="o-id"
+                  value={b.id}
+                  readOnly={!edit!.isNew}
+                  onChange={(e) => setB({ id: e.target.value.trim() })}
+                />
+              </div>
+              <div className="field">
+                <label htmlFor="o-name">{T.shop.name}</label>
+                <input
+                  id="o-name"
+                  value={b.name}
+                  onChange={(e) => setB({ name: e.target.value })}
+                />
+              </div>
+              <NumIn
+                id="o-money"
+                label={T.shop.money}
+                value={b.money}
+                onChange={(money) => setB({ money })}
+                affix="$"
+              />
+              <NumIn
+                id="o-price"
+                label={T.shop.pricePremium}
+                value={b.price}
+                onChange={(price) => setB({ price })}
+                affix="◆"
+              />
+              {RESOURCES.map((r) => (
+                <NumIn
+                  key={r}
+                  id={`o-${r}`}
+                  label={T.shop.resourceNames[r]!}
+                  value={b.resources[r] ?? 0}
+                  onChange={(v) => setB({ resources: { ...b.resources, [r]: v } })}
+                />
+              ))}
+              <NumIn
+                id="o-sort"
+                label={T.shop.sort}
+                value={b.sort}
+                onChange={(sort) => setB({ sort })}
+              />
+              <label className="switch" style={{ alignSelf: 'end', height: 30 }}>
+                <input
+                  type="checkbox"
+                  checked={b.active}
+                  onChange={(e) => setB({ active: e.target.checked })}
+                />
+                <span className="track" aria-hidden />
+                {T.shop.active}
+              </label>
+            </div>
+            {!nonEmpty ? <p className="small c-amber">{T.shop.emptyOffer}</p> : null}
             <div className="row">
               <Button variant="primary" disabled={!valid || busy} onClick={() => void save()}>
                 <Icon name="save" size={14} /> {busy ? T.app.saving : T.app.save}

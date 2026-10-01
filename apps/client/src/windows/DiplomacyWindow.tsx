@@ -8,14 +8,17 @@ import {
   Dialog,
   EmptyState,
   Field,
+  Flag,
   Gauge,
   Icon,
   Input,
+  KeyValue,
   Money,
   Panel,
   ProgressBar,
   SearchInput,
   Segmented,
+  Select,
   Stat,
   Table,
   Tabs,
@@ -25,7 +28,9 @@ import {
   formatNumber,
   formatPct,
 } from '@redline/ui';
+import { getApi } from '../api/index.js';
 import { Ago, NationTag, RelationBadge } from '../components/Common.js';
+import { NationRecon } from '../components/NationRecon.js';
 import { norm } from '../lib/commands.js';
 import { nationForms, nationName, relationOf } from '../lib/game.js';
 import { useGameTime } from '../shell/helpers.js';
@@ -35,7 +40,7 @@ import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { orderError } from '../lib/loc.js';
 
-type Tab = 'relations' | 'alliances' | 'neutrals' | 'disputed' | 'stability';
+type Tab = 'nation' | 'relations' | 'alliances' | 'neutrals' | 'disputed' | 'stability';
 
 function useSend() {
   const { t } = useTranslation();
@@ -49,12 +54,11 @@ function useSend() {
   };
 }
 
-function Relations() {
+function Relations({ onPick }: { onPick: (id: NationId) => void }) {
   const { t } = useTranslation();
   const view = useGame((s) => s.view);
   const me = useGame((s) => s.me);
   const nations = useWorld((s) => s.nations);
-  const send = useSend();
   const now = useGameTime(5000);
   const [q, setQ] = useState('');
   const [filter, setFilter] = useState<'known' | Relation | 'all'>('known');
@@ -93,73 +97,9 @@ function Relations() {
     [nations, me, filter, q, dip, view?.nations, neighbors],
   );
   const order: Record<Relation, number> = { war: 0, ceasefire: 1, ally: 2, peace: 3 };
-  const relationActions = (r: (typeof rows)[number]) => {
-    const rel = relationOf(view, r.id);
-    const p = r.rel?.pending;
-    if (p && p.from !== me)
-      return (
-        <span className="rowactions">
-          <Badge tone="amber">{t(`diplomacy.proposal.${p.kind}`)}</Badge>
-          <Button
-            size="sm"
-            variant="success"
-            onClick={() =>
-              void send(
-                { kind: 'answerPeace', nationId: r.id, accept: true },
-                t('diplomacy.accepted'),
-              )
-            }
-          >
-            {t('diplomacy.accept')}
-          </Button>
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={() =>
-              void send(
-                { kind: 'answerPeace', nationId: r.id, accept: false },
-                t('diplomacy.refused'),
-              )
-            }
-          >
-            {t('diplomacy.refuse')}
-          </Button>
-        </span>
-      );
-    if (p && p.from === me) return <Badge tone="neutral">{t('diplomacy.sent')}</Badge>;
-    return rel === 'war' ? (
-      <span className="rowactions">
-        <Button
-          size="sm"
-          variant="subtle"
-          onClick={() =>
-            void send(
-              { kind: 'proposePeace', nationId: r.id, type: 'ceasefire' },
-              t('console.done.ceasefire', nationForms(r.id)),
-            )
-          }
-        >
-          {t('diplomacy.ceasefire')}
-        </Button>
-        <Button
-          size="sm"
-          variant="subtle"
-          onClick={() =>
-            void send(
-              { kind: 'proposePeace', nationId: r.id, type: 'peace' },
-              t('console.done.peace', nationForms(r.id)),
-            )
-          }
-        >
-          {t('diplomacy.peace')}
-        </Button>
-      </span>
-    ) : rel !== 'ally' ? (
-      <Button size="sm" variant="danger" onClick={() => setWar(r.id)}>
-        {t('diplomacy.declareWar')}
-      </Button>
-    ) : null;
-  };
+  const relationActions = (r: (typeof rows)[number]) => (
+    <RelationActions nationId={r.id} onWar={setWar} />
+  );
   return (
     <div className="vstack">
       <div className="kpis">
@@ -210,6 +150,7 @@ function Relations() {
         label={t('diplomacy.tabs.relations')}
         rows={rows}
         rowKey={(r) => r.id}
+        onRowClick={(r) => onPick(r.id)}
         empty={
           <EmptyState
             compact
@@ -292,36 +233,353 @@ function Relations() {
           },
         ]}
       />
-      <Dialog
-        open={!!war}
-        tone="red"
-        title={t('diplomacy.warTitle')}
-        path={[t('sections.path.diplomacy'), 'guerre']}
-        onClose={() => setWar(null)}
-        closeLabel={t('app.close')}
-        footer={
-          <>
-            <Button variant="ghost" onClick={() => setWar(null)}>
-              {t('app.cancel')}
-            </Button>
-            <Button
-              variant="danger"
-              onClick={() => {
-                if (war)
-                  void send(
-                    { kind: 'declareWar', nationId: war },
-                    t('console.done.war', nationForms(war)),
-                  );
-                setWar(null);
-              }}
-            >
-              {t('diplomacy.declareWar')}
-            </Button>
-          </>
+      <WarDialog nationId={war} onClose={() => setWar(null)} />
+    </div>
+  );
+}
+
+/** Actions diplomatiques avec une nation : réponse à une proposition, paix, cessez-le-feu, guerre. */
+function RelationActions({
+  nationId,
+  onWar,
+}: {
+  nationId: NationId;
+  onWar: (id: NationId) => void;
+}) {
+  const { t } = useTranslation();
+  const view = useGame((s) => s.view);
+  const me = useGame((s) => s.me);
+  const send = useSend();
+  const rel = relationOf(view, nationId);
+  const p = view?.diplomacy?.relations.find((x) => x.nationId === nationId)?.pending;
+  // Clics et touches ne doivent pas ouvrir la fiche du pays (ligne de tableau cliquable).
+  const stop = (e: { stopPropagation(): void }) => e.stopPropagation();
+  if (p && p.from !== me)
+    return (
+      <span className="rowactions" onClick={stop} onKeyDown={stop}>
+        <Badge tone="amber">{t(`diplomacy.proposal.${p.kind}`)}</Badge>
+        <Button
+          size="sm"
+          variant="success"
+          onClick={() =>
+            void send({ kind: 'answerPeace', nationId, accept: true }, t('diplomacy.accepted'))
+          }
+        >
+          {t('diplomacy.accept')}
+        </Button>
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() =>
+            void send({ kind: 'answerPeace', nationId, accept: false }, t('diplomacy.refused'))
+          }
+        >
+          {t('diplomacy.refuse')}
+        </Button>
+      </span>
+    );
+  if (p && p.from === me) return <Badge tone="neutral">{t('diplomacy.sent')}</Badge>;
+  return rel === 'war' ? (
+    <span className="rowactions" onClick={stop} onKeyDown={stop}>
+      <Button
+        size="sm"
+        variant="subtle"
+        onClick={() =>
+          void send(
+            { kind: 'proposePeace', nationId, type: 'ceasefire' },
+            t('console.done.ceasefire', nationForms(nationId)),
+          )
         }
       >
-        <p>{t('diplomacy.warText', nationForms(war))}</p>
-      </Dialog>
+        {t('diplomacy.ceasefire')}
+      </Button>
+      <Button
+        size="sm"
+        variant="subtle"
+        onClick={() =>
+          void send(
+            { kind: 'proposePeace', nationId, type: 'peace' },
+            t('console.done.peace', nationForms(nationId)),
+          )
+        }
+      >
+        {t('diplomacy.peace')}
+      </Button>
+    </span>
+  ) : rel !== 'ally' ? (
+    <span className="rowactions" onClick={stop} onKeyDown={stop}>
+      <Button size="sm" variant="danger" onClick={() => onWar(nationId)}>
+        {t('diplomacy.declareWar')}
+      </Button>
+    </span>
+  ) : null;
+}
+
+/** Confirmation de déclaration de guerre. */
+function WarDialog({ nationId, onClose }: { nationId: NationId | null; onClose: () => void }) {
+  const { t } = useTranslation();
+  const send = useSend();
+  return (
+    <Dialog
+      open={!!nationId}
+      tone="red"
+      title={t('diplomacy.warTitle')}
+      path={[t('sections.path.diplomacy'), 'guerre']}
+      onClose={onClose}
+      closeLabel={t('app.close')}
+      footer={
+        <>
+          <Button variant="ghost" onClick={onClose}>
+            {t('app.cancel')}
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => {
+              if (nationId)
+                void send(
+                  { kind: 'declareWar', nationId },
+                  t('console.done.war', nationForms(nationId)),
+                );
+              onClose();
+            }}
+          >
+            {t('diplomacy.declareWar')}
+          </Button>
+        </>
+      }
+    >
+      <p>{t('diplomacy.warText', nationForms(nationId))}</p>
+    </Dialog>
+  );
+}
+
+/**
+ * Fiche pays (ouverte depuis une province ou la liste des relations) : identité, dirigeant,
+ * relation et accords, actions diplomatiques, message privé, renseignement connu.
+ */
+function Country({
+  nationId,
+  onPick,
+}: {
+  nationId: NationId | null;
+  onPick: (id: string) => void;
+}) {
+  const { t } = useTranslation();
+  const view = useGame((s) => s.view);
+  const me = useGame((s) => s.me);
+  const nations = useWorld((s) => s.nations);
+  const info = useWorld((s) => (nationId ? s.nationInfo[nationId] : undefined));
+  const openWindow = useUi((s) => s.openWindow);
+  const send = useSend();
+  const now = useGameTime(5000);
+  const [war, setWar] = useState<NationId | null>(null);
+  useEffect(() => {
+    void getApi().then((api) => useWorld.getState().loadNationInfo(api));
+  }, []);
+  const picker = (
+    <Select
+      label={t('diplomacy.country.pick')}
+      value={nationId ?? ''}
+      onChange={onPick}
+      options={[
+        { value: '', label: t('diplomacy.country.pick') },
+        ...Object.values(nations)
+          .filter((n) => n.id !== me && (view?.nations[n.id]?.provinceCount ?? 1) > 0)
+          .sort((a, b) => a.name.localeCompare(b.name, 'fr'))
+          .map((n) => ({ value: n.id, label: n.name })),
+      ]}
+    />
+  );
+  if (!nationId || nationId === me || !view)
+    return (
+      <div className="vstack">
+        <EmptyState
+          icon="flag"
+          title={t('diplomacy.country.none')}
+          text={t('diplomacy.country.noneHint')}
+        />
+        <div className="country__picker">{picker}</div>
+      </div>
+    );
+  const nv = view.nations[nationId];
+  const dip = view.diplomacy;
+  const rel = relationOf(view, nationId);
+  const rv = dip?.relations.find((r) => r.nationId === nationId);
+  const theirAlliance = dip?.alliances.find((a) => a.members.includes(nationId));
+  const myAlliance = dip?.alliances.find((a) => a.id === dip.myAllianceId);
+  const sameAlliance = !!theirAlliance && theirAlliance.id === myAlliance?.id;
+  const canInvite = !!myAlliance && myAlliance.leader === me && !theirAlliance && rel !== 'war';
+  const session = view.council?.session;
+  const channel = me ? `private:${[me, nationId].sort().join('|')}` : 'game';
+  const yes = t('app.yes');
+  const no = t('diplomacy.country.no');
+  return (
+    <div className="country" data-testid="country-panel">
+      <header className="country__head">
+        <Flag nationId={nationId} size={26} color={nv?.color} />
+        <div className="country__titles">
+          <h3>{nationName(nationId)}</h3>
+          <div className="country__badges">
+            <RelationBadge relation={rel} />
+            <Badge tone={nv?.isPlayer ? 'violet' : 'neutral'} variant="outline">
+              {nv?.isPlayer ? t('diplomacy.country.player') : t('diplomacy.country.ai')}
+            </Badge>
+            {theirAlliance ? (
+              <Badge tone={sameAlliance ? 'green' : 'blue'} variant="outline">
+                [{theirAlliance.flag}] {theirAlliance.name}
+              </Badge>
+            ) : null}
+            {nv?.embargoed ? <Badge tone="amber">{t('diplomacy.country.embargoed')}</Badge> : null}
+            {nv?.sanctioned ? (
+              <Badge tone="amber">{t('diplomacy.country.sanctioned')}</Badge>
+            ) : null}
+            {nv?.mobilized ? <Badge tone="red">{t('diplomacy.country.mobilized')}</Badge> : null}
+          </div>
+        </div>
+        <div className="country__picker">{picker}</div>
+      </header>
+      <Panel title={t('diplomacy.country.actions')}>
+        <div className="country__actions">
+          <RelationActions nationId={nationId} onWar={setWar} />
+          {canInvite ? (
+            <Button
+              size="sm"
+              variant="subtle"
+              icon={<Icon name="users" size={12} />}
+              onClick={() =>
+                void send(
+                  { kind: 'inviteToAlliance', nationId },
+                  t('diplomacy.country.invited', nationForms(nationId)),
+                )
+              }
+            >
+              {t('diplomacy.country.invite')}
+            </Button>
+          ) : null}
+          <Button
+            size="sm"
+            variant="subtle"
+            icon={<Icon name="gavel" size={12} />}
+            disabled={session?.phase !== 'proposals'}
+            title={
+              session?.phase !== 'proposals' ? t('diplomacy.country.sanctionsClosed') : undefined
+            }
+            onClick={() =>
+              void send(
+                {
+                  kind: 'proposeResolution',
+                  type: 'economic_sanctions',
+                  target: { nationId },
+                  text: t('diplomacy.country.sanctionsText', nationForms(nationId)),
+                },
+                t('diplomacy.country.sanctionsProposed'),
+              )
+            }
+          >
+            {t('diplomacy.country.sanctions')}
+          </Button>
+          <Button
+            size="sm"
+            icon={<Icon name="chat" size={12} />}
+            onClick={() => openWindow('chat', { channel })}
+            data-testid="country-message"
+          >
+            {t('diplomacy.country.message')}
+          </Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            icon={<Icon name="intel" size={12} />}
+            onClick={() => openWindow('intel', { nationId })}
+          >
+            {t('diplomacy.country.intel')}
+          </Button>
+        </div>
+      </Panel>
+      {info?.description ? <p className="country__desc">{info.description}</p> : null}
+      <div className="cols2 country__cols">
+        <Panel title={t('diplomacy.country.relation')}>
+          <KeyValue
+            items={[
+              {
+                label: t('diplomacy.cols.relation'),
+                value: t(`diplomacy.relation.${rel}`),
+                tone: rel === 'war' ? 'red' : rel === 'ally' ? 'green' : undefined,
+              },
+              {
+                label: t('diplomacy.cols.since'),
+                value: rv ? <Ago from={rv.since} now={now} /> : '—',
+                tone: 'dim',
+              },
+              {
+                label: t('diplomacy.country.pending'),
+                value: rv?.pending
+                  ? t(
+                      rv.pending.from === me
+                        ? 'diplomacy.country.pendingMine'
+                        : 'diplomacy.country.pendingTheirs',
+                      { kind: t(`diplomacy.proposal.${rv.pending.kind}`) },
+                    )
+                  : '—',
+                tone: rv?.pending ? 'amber' : 'dim',
+              },
+              {
+                label: t('diplomacy.country.passage'),
+                value: rel === 'ally' || (sameAlliance && myAlliance?.charter.passage) ? yes : no,
+                tone: rel === 'ally' || sameAlliance ? 'green' : 'dim',
+              },
+              {
+                label: t('diplomacy.country.mutualDefense'),
+                value: sameAlliance && myAlliance?.charter.mutualDefense ? yes : no,
+                tone: sameAlliance && myAlliance?.charter.mutualDefense ? 'green' : 'dim',
+              },
+              {
+                label: t('diplomacy.country.intelSharing'),
+                value: sameAlliance && myAlliance?.charter.intelSharing ? yes : no,
+                tone: sameAlliance && myAlliance?.charter.intelSharing ? 'green' : 'dim',
+              },
+            ]}
+          />
+        </Panel>
+        <Panel title={t('diplomacy.country.profile')}>
+          <KeyValue
+            items={[
+              { label: t('diplomacy.country.provinces'), value: nv?.provinceCount ?? '—' },
+              {
+                label: t('diplomacy.cols.stability'),
+                value: nv?.stability !== undefined ? `${nv.stability} %` : '—',
+                tone:
+                  nv?.stability === undefined
+                    ? 'dim'
+                    : nv.stability < 35
+                      ? 'red'
+                      : nv.stability < 55
+                        ? 'amber'
+                        : undefined,
+              },
+              {
+                label: t('diplomacy.reputation'),
+                value: nv?.reputation !== undefined ? `${nv.reputation}` : '—',
+              },
+              {
+                label: t('diplomacy.country.budget'),
+                value: info?.defenseBudgetUsd ? formatMoney(info.defenseBudgetUsd) : '—',
+                tone: 'amber',
+              },
+              {
+                label: t('diplomacy.country.personnel'),
+                value: info?.activePersonnel ? formatNumber(info.activePersonnel, 0) : '—',
+              },
+              {
+                label: t('diplomacy.country.doctrine'),
+                value: info?.doctrine ? t(`doctrines.${info.doctrine}`) : '—',
+              },
+            ]}
+          />
+        </Panel>
+      </div>
+      <NationRecon nationId={nationId} />
+      <WarDialog nationId={war} onClose={() => setWar(null)} />
     </div>
   );
 }
@@ -823,21 +1081,39 @@ export function DiplomacyWindow({ win, frame }: WindowContentProps) {
   const { t } = useTranslation();
   const dip = useGame((s) => s.view?.diplomacy);
   const me = useGame((s) => s.me);
-  const [tab, setTab] = useState<Tab>((win.params.tab as Tab) ?? 'relations');
+  const [tab, setTab] = useState<Tab>(
+    (win.params.tab as Tab) ?? (win.params.nationId ? 'nation' : 'relations'),
+  );
+  const [nation, setNation] = useState<string | null>(win.params.nationId ?? null);
   useEffect(() => {
-    if (win.params.tab) setTab(win.params.tab as Tab);
-  }, [win.seq, win.params.tab]);
+    if (win.params.nationId) {
+      setNation(win.params.nationId);
+      setTab((win.params.tab as Tab) ?? 'nation');
+    } else if (win.params.tab) setTab(win.params.tab as Tab);
+  }, [win.seq, win.params.tab, win.params.nationId]);
+  const pick = (id: string) => {
+    setNation(id || null);
+    setTab('nation');
+  };
   const pending = dip?.relations.filter((r) => r.pending && r.pending.from !== me).length ?? 0;
   return (
     <Window
       {...frame}
-      path={[t('sections.path.diplomacy'), t(`diplomacy.tabs.${tab}`)]}
+      path={[
+        t('sections.path.diplomacy'),
+        tab === 'nation' && nation ? nationName(nation) : t(`diplomacy.tabs.${tab}`),
+      ]}
       tabs={
         <Tabs
           label={t('sections.diplomacy')}
           value={tab}
           onChange={setTab}
           tabs={[
+            {
+              id: 'nation',
+              label: nation ? nationName(nation) : t('diplomacy.tabs.nation'),
+              icon: nation ? <Flag nationId={nation} size={11} /> : <Icon name="flag" size={13} />,
+            },
             {
               id: 'relations',
               label: t('diplomacy.tabs.relations'),
@@ -872,10 +1148,12 @@ export function DiplomacyWindow({ win, frame }: WindowContentProps) {
         />
       }
     >
-      {!dip && tab !== 'stability' ? (
+      {tab === 'nation' ? (
+        <Country nationId={nation} onPick={pick} />
+      ) : !dip && tab !== 'stability' ? (
         <EmptyState icon="diplomacy" title={t('diplomacy.unavailable')} />
       ) : tab === 'relations' ? (
-        <Relations />
+        <Relations onPick={pick} />
       ) : tab === 'alliances' ? (
         <Alliances />
       ) : tab === 'neutrals' ? (

@@ -25,6 +25,7 @@ import {
 import type {
   AdminChatMessage,
   AdminPack,
+  AdminResourceOffer,
   AdminUser,
   Anomaly,
   AuditEntry,
@@ -652,7 +653,35 @@ export function seedShop(users: AdminUser[]) {
       userEmail: u.email,
     };
   });
-  return { packs, promotions, purchases };
+  const offers: AdminResourceOffer[] = (
+    [
+      ['res-credit', 'Ligne de crédit', 500e6, {}, 50, 1],
+      ['res-loan', "Emprunt d'État", 2e9, {}, 180, 2],
+      ['res-fund', 'Fonds souverain', 10e9, {}, 800, 3],
+      ['res-oil', 'Cargaison de pétrole', 0, { oil: 200 }, 40, 10],
+      ['res-metals', 'Minerais et métaux', 0, { metals: 200 }, 40, 11],
+      ['res-electronics', 'Composants électroniques', 0, { electronics: 100 }, 50, 12],
+      ['res-food', 'Réserves alimentaires', 0, { food: 300 }, 30, 13],
+      [
+        'res-logistics',
+        'Lot logistique',
+        0,
+        { oil: 150, metals: 150, electronics: 75, food: 200 },
+        120,
+        20,
+      ],
+    ] as const
+  ).map(([id, name, money, resources, price, sort]) => ({
+    id,
+    name,
+    money,
+    resources: { ...resources },
+    price,
+    active: true,
+    sort,
+    updatedAt: iso(12 * 24 * H),
+  }));
+  return { packs, promotions, purchases, offers };
 }
 
 export function seedAudit(users: AdminUser[]): AuditEntry[] {

@@ -107,6 +107,7 @@ export function Dialog({
   closeLabel = 'Fermer',
   width = 520,
   tone,
+  className,
 }: {
   open: boolean;
   title: string;
@@ -117,6 +118,8 @@ export function Dialog({
   closeLabel?: string;
   width?: number;
   tone?: 'red' | 'amber' | 'cyan';
+  /** Classe additionnelle du voile (variantes : fiche, feuille mobile). */
+  className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -159,7 +162,7 @@ export function Dialog({
   if (!open) return null;
   return (
     <div
-      className="rl-dialog"
+      className={className ? `rl-dialog ${className}` : 'rl-dialog'}
       role="presentation"
       onMouseDown={(e) => e.target === e.currentTarget && onClose?.()}
     >

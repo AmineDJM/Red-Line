@@ -1,10 +1,16 @@
-import { and, asc, desc, eq, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, inArray, sql } from 'drizzle-orm';
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import {
   AccelerateBodySchema,
+  RESOURCES,
+  ResourceBuyBodySchema,
   type CosmeticItem,
+  type Resource,
+  type ResourceBuyResult,
+  type ResourceOffer,
   type ShopPack,
+  type ShopPolicy,
   type WalletEntry,
 } from '@redline/shared';
 import type { AppContext } from '../context.js';
@@ -14,6 +20,7 @@ import {
   purchases,
   shopPacks,
   shopPromotions,
+  shopResourceOffers,
   stripeEvents,
   userCosmetics,
   walletLedger,
@@ -24,7 +31,7 @@ import { gameAccess, gameIdParam, requireUser } from '../http/access.js';
 import { PURCHASE_REQUIRED } from '../legal/legal.js';
 import type { ShopConfig } from './config.js';
 import type { PaymentEvent } from './payments.js';
-import { lockUser, moveWallet } from './wallet.js';
+import { lockUser, moveWallet, type Tx } from './wallet.js';
 
 export const PAYMENTS_UNAVAILABLE = 'Paiements indisponibles';
 
@@ -45,6 +52,75 @@ export async function seedShop(db: Db, cfg: ShopConfig): Promise<void> {
       .values(cfg.cosmetics.map((c) => ({ ...c })))
       .onConflictDoNothing();
   }
+  if (cfg.resourceOffers.length) {
+    await db
+      .insert(shopResourceOffers)
+      .values(cfg.resourceOffers.map((o) => ({ ...o })))
+      .onConflictDoNothing();
+  }
+}
+
+type OfferRow = typeof shopResourceOffers.$inferSelect;
+
+/** Ressources d'une offre, nettoyées (ressources connues du moteur, quantités positives, ordre fixe). */
+export function offerResources(
+  row: Pick<OfferRow, 'resources'>,
+): Partial<Record<Resource, number>> {
+  const out: Partial<Record<Resource, number>> = {};
+  for (const r of RESOURCES) {
+    const v = row.resources?.[r];
+    if (typeof v === 'number' && Number.isFinite(v) && v > 0) out[r] = v;
+  }
+  return out;
+}
+
+export function offerView(row: OfferRow): ResourceOffer {
+  return {
+    id: row.id,
+    name: row.name,
+    money: row.money,
+    resources: offerResources(row),
+    price: row.price,
+  };
+}
+
+/** Raisons du journal comptées dans le plafond de dépenses d'une partie (politique « limitée »). */
+const GAME_SPEND_REASONS = ['accelerate', 'resources'] as const;
+
+/** Monnaie premium déjà dépensée par un joueur dans une partie (accélérations et ressources). */
+async function gameSpend(tx: Tx, userId: string, gameId: string): Promise<number> {
+  const [s] = await tx
+    .select({ spent: sql<number>`coalesce(-sum(${walletLedger.delta}), 0)::int` })
+    .from(walletLedger)
+    .where(
+      and(
+        eq(walletLedger.userId, userId),
+        eq(walletLedger.gameId, gameId),
+        inArray(walletLedger.reason, [...GAME_SPEND_REASONS]),
+      ),
+    );
+  return s?.spent ?? 0;
+}
+
+/** Plafond de la politique « limitée » : refus si la dépense le dépasserait. */
+async function checkCap(
+  tx: Tx,
+  policy: ShopPolicy,
+  userId: string,
+  gameId: string,
+  cost: number,
+): Promise<{ spent: number; cap: number } | null> {
+  if (policy.mode !== 'limited') return null;
+  const spent = await gameSpend(tx, userId, gameId);
+  const cap = policy.capPerPlayer ?? 0;
+  if (spent + cost > cap) {
+    throw new HttpError(
+      403,
+      'cap_reached',
+      `Plafond de dépenses de la partie atteint (${spent} / ${cap})`,
+    );
+  }
+  return { spent: spent + cost, cap };
 }
 
 /** Promotion active la plus avantageuse pour un pack. */
@@ -412,26 +488,7 @@ export async function shopRoutes(app: FastifyInstance, ctx: AppContext): Promise
         const unlimited = auth.user.unlimited;
         await lockUser(tx, auth.user.id);
         // Mode illimité : ni plafond de partie ni débit (la partie multijoueur est déjà non classée).
-        if (policy.mode === 'limited' && !unlimited) {
-          const [s] = await tx
-            .select({ spent: sql<number>`coalesce(-sum(${walletLedger.delta}), 0)::int` })
-            .from(walletLedger)
-            .where(
-              and(
-                eq(walletLedger.userId, auth.user.id),
-                eq(walletLedger.gameId, gameId),
-                eq(walletLedger.reason, 'accelerate'),
-              ),
-            );
-          const cap = policy.capPerPlayer ?? 0;
-          if ((s?.spent ?? 0) + cost > cap) {
-            throw new HttpError(
-              403,
-              'cap_reached',
-              `Plafond de dépenses de la partie atteint (${s?.spent ?? 0} / ${cap})`,
-            );
-          }
-        }
+        if (!unlimited) await checkCap(tx, policy, auth.user.id, gameId, cost);
         const b = unlimited
           ? auth.user.premiumBalance
           : await moveWallet(tx, {
@@ -462,6 +519,92 @@ export async function shopRoutes(app: FastifyInstance, ctx: AppContext): Promise
         balance,
         cost: auth.user.unlimited ? 0 : cost,
         ...(auth.user.unlimited ? { unlimited: true } : {}),
+      };
+    },
+  );
+
+  await resourceShopRoutes(app, ctx);
+}
+
+/**
+ * Ressources en jeu : offres publiques, et achat dans une partie en cours (monnaie premium → dollars du
+ * jeu et/ou ressources). Politique de la partie (ouverte, limitée avec plafond commun aux accélérations,
+ * désactivée), débit du portefeuille et commande système `grant` journalisée dans la même transaction :
+ * un refus du moteur annule le débit. Compte illimité : gratuit, sans plafond.
+ */
+export async function resourceShopRoutes(app: FastifyInstance, ctx: AppContext): Promise<void> {
+  const { db } = ctx;
+
+  app.get('/api/shop/resources', async () => {
+    const rows = await db
+      .select()
+      .from(shopResourceOffers)
+      .where(eq(shopResourceOffers.active, true))
+      .orderBy(asc(shopResourceOffers.sort), asc(shopResourceOffers.id));
+    return { offers: rows.map(offerView) };
+  });
+
+  app.post(
+    '/api/games/:id/shop/resources',
+    { config: { rateLimit: { max: 30, timeWindow: '1 minute' } } },
+    async (req, reply): Promise<ResourceBuyResult> => {
+      const auth = await requireUser(ctx, req, reply);
+      const gameId = gameIdParam(req);
+      const { offerId } = parseBody(ResourceBuyBodySchema, req.body);
+      const { row, member } = await gameAccess(ctx, gameId, auth);
+      if (!member) throw new HttpError(404, 'not_found', 'Partie introuvable');
+      if (row.status === 'ended') throw new HttpError(409, 'game_over', 'La partie est terminée');
+      if (row.status === 'lobby') throw new HttpError(409, 'not_started', 'Partie non lancée');
+      const policy = row.shopPolicy ?? { mode: 'open' };
+      const unlimited = auth.user.unlimited;
+      if (policy.mode === 'disabled' && !unlimited) {
+        throw new HttpError(403, 'shop_disabled', 'Achats désactivés dans cette partie');
+      }
+      const [offer] = await db
+        .select()
+        .from(shopResourceOffers)
+        .where(and(eq(shopResourceOffers.id, offerId), eq(shopResourceOffers.active, true)));
+      if (!offer) throw new HttpError(404, 'not_found', 'Offre introuvable');
+      const resources = offerResources(offer);
+      const money = offer.money > 0 ? offer.money : 0;
+      if (money <= 0 && Object.keys(resources).length === 0) {
+        throw new HttpError(409, 'empty_offer', 'Offre vide');
+      }
+      const g = await ctx.host.ensureLoaded(gameId);
+      if (!g) throw new HttpError(409, 'game_unavailable', 'Partie momentanément indisponible');
+      const cost = unlimited ? 0 : offer.price;
+      const out = await db.transaction(async (tx) => {
+        await lockUser(tx, auth.user.id);
+        const capInfo = unlimited ? null : await checkCap(tx, policy, auth.user.id, gameId, cost);
+        const balance = unlimited
+          ? auth.user.premiumBalance
+          : await moveWallet(tx, {
+              userId: auth.user.id,
+              delta: -cost,
+              reason: 'resources',
+              ref: offer.id,
+              gameId,
+            });
+        // Crédit par la commande système journalisée (rejouée à la reprise). Refus → exception →
+        // la transaction annule le débit.
+        const r = await ctx.host.system(gameId, {
+          kind: 'grant',
+          nationId: member.nationId,
+          ...(money > 0 ? { money } : {}),
+          ...(Object.keys(resources).length ? { resources } : {}),
+        });
+        if (!r.ok) {
+          throw new HttpError(409, 'grant_refused', r.message ?? 'Crédit refusé par la partie');
+        }
+        return { balance, capInfo };
+      });
+      return {
+        ok: true,
+        balance: out.balance,
+        cost,
+        granted: { money, resources },
+        ...(unlimited ? { unlimited: true } : {}),
+        ...(out.capInfo ? { spent: out.capInfo.spent, cap: out.capInfo.cap } : {}),
       };
     },
   );

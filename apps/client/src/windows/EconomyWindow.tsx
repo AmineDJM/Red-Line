@@ -47,9 +47,17 @@ import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { orderError } from '../lib/loc.js';
+import { DomesticTab } from './DomesticTab.js';
 
 type Tab =
-  'dashboard' | 'resources' | 'buildings' | 'market' | 'deliveries' | 'black' | 'logistics';
+  | 'dashboard'
+  | 'resources'
+  | 'buildings'
+  | 'market'
+  | 'deliveries'
+  | 'black'
+  | 'logistics'
+  | 'interior';
 
 function useSend() {
   const { t } = useTranslation();
@@ -997,6 +1005,11 @@ export function EconomyWindow({ win, frame }: WindowContentProps) {
     { id: 'deliveries', icon: 'truck', count: view?.market?.deliveries.length },
     { id: 'black', icon: 'spy' },
     { id: 'logistics', icon: 'box' },
+    {
+      id: 'interior',
+      icon: 'shield',
+      count: view?.domestic?.policies.filter((p) => p.active).length,
+    },
   ];
   return (
     <Window
@@ -1029,6 +1042,7 @@ export function EconomyWindow({ win, frame }: WindowContentProps) {
       {tab === 'deliveries' ? <Deliveries /> : null}
       {tab === 'black' ? <BlackMarket /> : null}
       {tab === 'logistics' ? <Logistics /> : null}
+      {tab === 'interior' ? <DomesticTab /> : null}
     </Window>
   );
 }

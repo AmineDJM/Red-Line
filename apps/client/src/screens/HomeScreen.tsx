@@ -1,12 +1,16 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { PublicUser } from '@redline/shared';
+import type { PublicStats, PublicUser } from '@redline/shared';
 import { Badge, Button, Field, Icon, Input, Kbd, Prompt, type IconName } from '@redline/ui';
 import { IS_MOCK } from '../config.js';
 import { ApiError, getApi } from '../api/index.js';
 import { LanguageSelect, syncAccountLocale } from '../components/LanguageSelect.js';
+import { WorldBackdrop } from '../components/WorldBackdrop.js';
+import { fmtInt } from '../i18n/index.js';
 import { takeFlash } from '../lib/flash.js';
+import { publicPageUrl, type PublicPage } from '../lib/publicPages.js';
 import { navigate } from '../router.js';
+import '../styles/home.css';
 
 type Mode = 'menu' | 'login' | 'register';
 
@@ -91,11 +95,131 @@ function MenuItem({
   );
 }
 
+/** Chiffres fixes du jeu (données du dépôt) ; complétés par les chiffres en direct si l'API répond. */
+const FIGURES = [
+  ['nations', 201],
+  ['provinces', 2567],
+  ['systems', 406],
+  ['players', 64],
+] as const;
+
+const BLOCKS: { id: string; icon: IconName }[] = [
+  { id: 'map', icon: 'globe' },
+  { id: 'arsenal', icon: 'missile' },
+  { id: 'intel', icon: 'spy' },
+  { id: 'multi', icon: 'users' },
+];
+
+const INFO_LINKS: PublicPage[] = ['howto', 'features', 'nations', 'arsenal', 'faq'];
+
+/** Chiffres, blocs d'information et liens vers les pages publiques, sous la carte de l'accueil. */
+function HomeInfo() {
+  const { t, i18n } = useTranslation();
+  const [stats, setStats] = useState<PublicStats | null>(null);
+  useEffect(() => {
+    let alive = true;
+    void getApi()
+      .then((api) => api.publicStats())
+      .then((s) => alive && setStats(s))
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, []);
+  const value = (k: (typeof FIGURES)[number][0], fallback: number) =>
+    k !== 'players' && stats && stats[k] > 0 ? stats[k] : fallback;
+  const lang = i18n.language;
+  return (
+    <>
+      <section className="home__info" aria-label={t('home.info.title')}>
+        <dl className="home__figs">
+          {FIGURES.map(([k, n]) => (
+            <div key={k}>
+              <dt>{t(`home.info.figures.${k}`)}</dt>
+              <dd>{fmtInt(value(k, n))}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+      {stats && (stats.gamesRunning > 0 || stats.playersOnline > 0) ? (
+        <p className="home__live" data-testid="home-live">
+          {stats.gamesRunning > 0 ? (
+            <span>
+              <i aria-hidden />
+              <b>
+                {t('home.info.live.games', {
+                  count: stats.gamesRunning,
+                  n: fmtInt(stats.gamesRunning),
+                })}
+              </b>
+            </span>
+          ) : null}
+          {stats.playersOnline > 0 ? (
+            <span>
+              {t('home.info.live.players', {
+                count: stats.playersOnline,
+                n: fmtInt(stats.playersOnline),
+              })}
+            </span>
+          ) : null}
+        </p>
+      ) : null}
+      <ul className="home__blocks">
+        {BLOCKS.map((b) => (
+          <li key={b.id} className="home__block">
+            <h2>
+              <Icon name={b.icon} size={14} />
+              {t(`home.info.blocks.${b.id}.title`)}
+            </h2>
+            <p>{t(`home.info.blocks.${b.id}.text`)}</p>
+          </li>
+        ))}
+      </ul>
+      <footer className="home__links">
+        <nav aria-label={t('home.info.about')}>
+          {INFO_LINKS.map((p) => (
+            <a key={p} href={publicPageUrl(p, lang)}>
+              {t(`home.info.links.${p}`)}
+            </a>
+          ))}
+        </nav>
+        <nav aria-label={t('legal.title')}>
+          {(['mentions', 'privacy', 'cookies', 'cgu', 'cgv'] as const).map((d) => (
+            <a
+              key={d}
+              href={`/legal/${d}`}
+              onClick={(e) => (e.preventDefault(), navigate(`/legal/${d}`))}
+            >
+              {t(`legal.docs.${d}`)}
+            </a>
+          ))}
+        </nav>
+      </footer>
+    </>
+  );
+}
+
+/** ?auth=login | register (liens « Se connecter » des pages publiques) : ouvre le formulaire. */
+function initialMode(): Mode {
+  try {
+    const a = new URLSearchParams(window.location.search).get('auth');
+    if (a === 'login' || a === 'register') {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('auth');
+      window.history.replaceState(null, '', url.pathname + url.search);
+      return a;
+    }
+  } catch {
+    /* adresse illisible */
+  }
+  return 'menu';
+}
+
 export function HomeScreen() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [user, setUser] = useState<PublicUser | null>(null);
   const [flash] = useState(() => takeFlash());
-  const [mode, setMode] = useState<Mode>('menu');
+  const [mode, setMode] = useState<Mode>(initialMode);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({ email: '', password: '', displayName: '' });
@@ -142,208 +266,201 @@ export function HomeScreen() {
 
   return (
     <div className="screen home">
+      <WorldBackdrop />
       <div className="home__grid" aria-hidden />
-      <main className="home__card">
-        <header className="home__bar">
-          <span className="rl-win__lights" aria-hidden>
-            <i />
-          </span>
-          <Prompt path={[t('home.path')]} />
-          <LanguageSelect compact />
-          <span className="home__version">v0.6</span>
-        </header>
-        <div className="home__cols">
-          <section className="home__brand">
-            <h1 className="home__title">
-              RED<span>LINE</span>
-            </h1>
-            <p className="home__subtitle">{t('home.subtitle')}</p>
-            <Boot />
-            <p className="home__footer-note">{t('home.footer')}</p>
-          </section>
-          <section className="home__menu" aria-label={t('home.menu')}>
-            {flash ? (
-              <p className="hint hint--warn" role="status" data-testid="home-flash">
-                <Icon name="warning" size={13} /> {t(`home.flash.${flash}`)}
-              </p>
-            ) : null}
-            {mode === 'menu' ? (
-              <>
-                <div className="home__who">
-                  {user ? (
-                    <>
-                      <Icon name="user" size={14} />
-                      <span>{t('home.welcome', { name: user.displayName })}</span>
-                      {user.isGuest ? <Badge tone="neutral">{t('home.guest')}</Badge> : null}
-                    </>
-                  ) : (
-                    <span className="muted">{t('home.notConnected')}</span>
-                  )}
-                </div>
-                <ul className="menu">
-                  {user ? (
+      <div className="home__stack">
+        <main className="home__card">
+          <header className="home__bar">
+            <span className="rl-win__lights" aria-hidden>
+              <i />
+            </span>
+            <Prompt path={[t('home.path')]} />
+            <LanguageSelect compact />
+            <span className="home__version">v0.6</span>
+          </header>
+          <div className="home__cols">
+            <section className="home__brand">
+              <h1 className="home__title">
+                RED<span>LINE</span>
+              </h1>
+              <p className="home__subtitle">{t('home.subtitle')}</p>
+              <Boot />
+              <p className="home__footer-note">{t('home.footer')}</p>
+            </section>
+            <section className="home__menu" aria-label={t('home.menu')}>
+              {flash ? (
+                <p className="hint hint--warn" role="status" data-testid="home-flash">
+                  <Icon name="warning" size={13} /> {t(`home.flash.${flash}`)}
+                </p>
+              ) : null}
+              {mode === 'menu' ? (
+                <>
+                  <div className="home__who">
+                    {user ? (
+                      <>
+                        <Icon name="user" size={14} />
+                        <span>{t('home.welcome', { name: user.displayName })}</span>
+                        {user.isGuest ? <Badge tone="neutral">{t('home.guest')}</Badge> : null}
+                      </>
+                    ) : (
+                      <span className="muted">{t('home.notConnected')}</span>
+                    )}
+                  </div>
+                  <ul className="menu">
+                    {user ? (
+                      <MenuItem
+                        primary
+                        icon="play"
+                        label={t('home.continue')}
+                        hint={t('home.hints.solo')}
+                        onClick={() => navigate('/new')}
+                        testId="menu-new"
+                      />
+                    ) : (
+                      <MenuItem
+                        primary
+                        icon="play"
+                        label={t('home.playGuest')}
+                        hint={t('home.hints.guest')}
+                        disabled={busy}
+                        onClick={() => void run(async () => (await getApi()).guest())}
+                        testId="menu-guest"
+                      />
+                    )}
                     <MenuItem
-                      primary
-                      icon="play"
-                      label={t('home.continue')}
-                      hint={t('home.hints.solo')}
-                      onClick={() => navigate('/new')}
-                      testId="menu-new"
+                      icon="users"
+                      label={t('home.multi')}
+                      hint={t('home.hints.multi')}
+                      onClick={() => void ensure('/lobby')}
                     />
-                  ) : (
                     <MenuItem
-                      primary
-                      icon="play"
-                      label={t('home.playGuest')}
-                      hint={t('home.hints.guest')}
-                      disabled={busy}
-                      onClick={() => void run(async () => (await getApi()).guest())}
-                      testId="menu-guest"
+                      icon="refresh"
+                      label={t('home.resume')}
+                      hint={t('home.hints.resume')}
+                      onClick={() => void ensure('/games')}
                     />
-                  )}
-                  <MenuItem
-                    icon="users"
-                    label={t('home.multi')}
-                    hint={t('home.hints.multi')}
-                    onClick={() => void ensure('/lobby')}
-                  />
-                  <MenuItem
-                    icon="refresh"
-                    label={t('home.resume')}
-                    hint={t('home.hints.resume')}
-                    onClick={() => void ensure('/games')}
-                  />
-                  <MenuItem
-                    icon="trophy"
-                    label={t('home.rankings')}
-                    hint={t('home.hints.rankings')}
-                    onClick={() => navigate('/rankings')}
-                  />
-                  <MenuItem
-                    icon="shop"
-                    label={t('home.shop')}
-                    hint={t('home.hints.shop')}
-                    onClick={() => void ensure('/shop')}
-                  />
-                  <MenuItem
-                    icon="sandbox"
-                    label={t('home.sandbox')}
-                    hint={t('home.hints.sandbox')}
-                    onClick={() => navigate('/sandbox')}
-                  />
-                </ul>
-                <div className="home__auth">
-                  {!user || user.isGuest ? (
-                    <>
-                      <Button size="sm" variant="subtle" onClick={() => setMode('login')}>
-                        {t('home.login')}
+                    <MenuItem
+                      icon="trophy"
+                      label={t('home.rankings')}
+                      hint={t('home.hints.rankings')}
+                      onClick={() => navigate('/rankings')}
+                    />
+                    <MenuItem
+                      icon="shop"
+                      label={t('home.shop')}
+                      hint={t('home.hints.shop')}
+                      onClick={() => void ensure('/shop')}
+                    />
+                    <MenuItem
+                      icon="sandbox"
+                      label={t('home.sandbox')}
+                      hint={t('home.hints.sandbox')}
+                      onClick={() => navigate('/sandbox')}
+                    />
+                  </ul>
+                  <div className="home__auth">
+                    {!user || user.isGuest ? (
+                      <>
+                        <Button size="sm" variant="subtle" onClick={() => setMode('login')}>
+                          {t('home.login')}
+                        </Button>
+                        <Button size="sm" variant="subtle" onClick={() => setMode('register')}>
+                          {t('home.register')}
+                        </Button>
+                      </>
+                    ) : (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        icon={<Icon name="logout" size={13} />}
+                        onClick={() =>
+                          void getApi()
+                            .then((api) => api.logout())
+                            .then(() => setUser(null))
+                        }
+                      >
+                        {t('home.logout')}
                       </Button>
-                      <Button size="sm" variant="subtle" onClick={() => setMode('register')}>
-                        {t('home.register')}
-                      </Button>
-                    </>
-                  ) : (
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      icon={<Icon name="logout" size={13} />}
-                      onClick={() =>
-                        void getApi()
-                          .then((api) => api.logout())
-                          .then(() => setUser(null))
-                      }
-                    >
-                      {t('home.logout')}
-                    </Button>
-                  )}
-                </div>
-                {!user ? <p className="muted small">{t('home.guestNote')}</p> : null}
-                {error ? <p className="error-text">{t(error)}</p> : null}
-              </>
-            ) : (
-              <form className="stack" onSubmit={submit}>
-                <h2 className="home__formtitle">
-                  {mode === 'register' ? t('home.register') : t('home.login')}
-                </h2>
-                {mode === 'register' ? (
-                  <Field label={t('auth.displayName')} htmlFor="f-name">
+                    )}
+                  </div>
+                  {!user ? <p className="muted small">{t('home.guestNote')}</p> : null}
+                  {error ? <p className="error-text">{t(error)}</p> : null}
+                </>
+              ) : (
+                <form className="stack" onSubmit={submit}>
+                  <h2 className="home__formtitle">
+                    {mode === 'register' ? t('home.register') : t('home.login')}
+                  </h2>
+                  {mode === 'register' ? (
+                    <Field label={t('auth.displayName')} htmlFor="f-name">
+                      <Input
+                        id="f-name"
+                        prompt
+                        required
+                        minLength={2}
+                        maxLength={40}
+                        autoComplete="nickname"
+                        value={form.displayName}
+                        onChange={(e) => setForm({ ...form, displayName: e.target.value })}
+                      />
+                    </Field>
+                  ) : null}
+                  <Field label={t('auth.email')} htmlFor="f-mail">
                     <Input
-                      id="f-name"
+                      id="f-mail"
                       prompt
+                      type="email"
                       required
-                      minLength={2}
-                      maxLength={40}
-                      autoComplete="nickname"
-                      value={form.displayName}
-                      onChange={(e) => setForm({ ...form, displayName: e.target.value })}
+                      autoComplete="email"
+                      value={form.email}
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
                     />
                   </Field>
-                ) : null}
-                <Field label={t('auth.email')} htmlFor="f-mail">
-                  <Input
-                    id="f-mail"
-                    prompt
-                    type="email"
-                    required
-                    autoComplete="email"
-                    value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  />
-                </Field>
-                <Field label={t('auth.password')} htmlFor="f-pass">
-                  <Input
-                    id="f-pass"
-                    prompt
-                    type="password"
-                    required
-                    minLength={mode === 'register' ? 8 : 1}
-                    autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
-                    value={form.password}
-                    onChange={(e) => setForm({ ...form, password: e.target.value })}
-                  />
-                </Field>
-                {error ? <p className="error-text">{t(error)}</p> : null}
-                <Button variant="primary" size="lg" block type="submit" disabled={busy}>
-                  {mode === 'register' ? t('auth.submitRegister') : t('auth.submitLogin')}
-                </Button>
-                <div className="row row--between">
-                  <Button variant="ghost" size="sm" onClick={() => setMode('menu')}>
-                    ← {t('app.back')}
+                  <Field label={t('auth.password')} htmlFor="f-pass">
+                    <Input
+                      id="f-pass"
+                      prompt
+                      type="password"
+                      required
+                      minLength={mode === 'register' ? 8 : 1}
+                      autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
+                      value={form.password}
+                      onChange={(e) => setForm({ ...form, password: e.target.value })}
+                    />
+                  </Field>
+                  {error ? <p className="error-text">{t(error)}</p> : null}
+                  <Button variant="primary" size="lg" block type="submit" disabled={busy}>
+                    {mode === 'register' ? t('auth.submitRegister') : t('auth.submitLogin')}
                   </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setMode(mode === 'register' ? 'login' : 'register')}
-                  >
-                    {mode === 'register' ? t('auth.switchToLogin') : t('auth.switchToRegister')}
-                  </Button>
-                </div>
-              </form>
-            )}
-          </section>
-        </div>
-        <footer className="home__foot">
-          {IS_MOCK ? (
-            <Badge tone="amber" variant="outline">
-              {t('app.mockBadge')}
-            </Badge>
-          ) : null}
-          <nav className="home__legal" aria-label={t('legal.title')}>
-            <a href="/legal/cgu" onClick={(e) => (e.preventDefault(), navigate('/legal/cgu'))}>
-              {t('legal.docs.cgu')}
+                  <div className="row row--between">
+                    <Button variant="ghost" size="sm" onClick={() => setMode('menu')}>
+                      ← {t('app.back')}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setMode(mode === 'register' ? 'login' : 'register')}
+                    >
+                      {mode === 'register' ? t('auth.switchToLogin') : t('auth.switchToRegister')}
+                    </Button>
+                  </div>
+                </form>
+              )}
+            </section>
+          </div>
+          <footer className="home__foot">
+            {IS_MOCK ? (
+              <Badge tone="amber" variant="outline">
+                {t('app.mockBadge')}
+              </Badge>
+            ) : null}
+            <a className="home__about" href={publicPageUrl('home', i18n.language)}>
+              {t('home.info.about')} <Icon name="external" size={12} />
             </a>
-            <a href="/legal/cgv" onClick={(e) => (e.preventDefault(), navigate('/legal/cgv'))}>
-              {t('legal.docs.cgv')}
-            </a>
-            <a
-              href="/legal/privacy"
-              onClick={(e) => (e.preventDefault(), navigate('/legal/privacy'))}
-            >
-              {t('legal.docs.privacy')}
-            </a>
-          </nav>
-        </footer>
-      </main>
+          </footer>
+        </main>
+        <HomeInfo />
+      </div>
     </div>
   );
 }

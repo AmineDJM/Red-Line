@@ -16,8 +16,9 @@ function typing(target: EventTarget | null): boolean {
 
 /**
  * Raccourcis clavier (ordinateur) :
- *  Ctrl+K ou « : » console · Espace pause · 1-5 vitesses · lettres : fenêtres (A, P, R, E, I, D, C, N,
- *  B, Y, M, O, « , ») · L légende · « ? » aide · Échap : annule l'ordre, désélectionne, ferme.
+ *  Ctrl+K ou « : » console · Espace pause · 1-5 vitesses · lettres : fenêtres (A, G, P, R, E, I, D, C,
+ *  N, B, M, O, « , ») · L légende · « ? » aide · Échap : annule l'ordre, ferme la fiche,
+ *  désélectionne, ferme la fenêtre.
  */
 export function useShortcuts(onHelp: () => void) {
   useEffect(() => {
@@ -46,6 +47,7 @@ export function useShortcuts(onHelp: () => void) {
         if (clock?.paused) connection.setPaused(false);
       } else if (e.key === 'Escape') {
         if (ui.pendingOrder) ui.setPending(null);
+        else if (ui.sheet) ui.closeSheet();
         else if (ui.alertsOpen) ui.setAlertsOpen(false);
         else if (ui.selection.length || ui.inspected) ui.clearSelection();
         else if (ui.selectedProvince) ui.selectProvince(null);
