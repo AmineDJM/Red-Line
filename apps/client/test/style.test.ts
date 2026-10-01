@@ -103,10 +103,15 @@ describe('performances du calcul des positions', () => {
       t: 5 * HOUR,
     };
     unitFeatures(units, ctx); // chauffe
-    const t0 = performance.now();
-    const runs = 20;
-    for (let i = 0; i < runs; i++) unitFeatures(units, { ...ctx, t: 5 * HOUR + i * 1000 });
-    const ms = (performance.now() - t0) / runs;
+    // Médiane de 30 mesures : insensible aux pauses du ramasse-miettes et aux machines de CI partagées.
+    const samples: number[] = [];
+    for (let i = 0; i < 30; i++) {
+      const t0 = performance.now();
+      unitFeatures(units, { ...ctx, t: 5 * HOUR + i * 1000 });
+      samples.push(performance.now() - t0);
+    }
+    samples.sort((a, b) => a - b);
+    const ms = samples[samples.length >> 1]!;
     // Budget : ~8 ms par mise à jour à 12 Hz reste < 10 % du temps d'une seconde sur mobile.
     expect(ms).toBeLessThan(8);
   });
