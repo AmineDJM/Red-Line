@@ -27,7 +27,8 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
   `apps/admin/dist` (`/admin/`).
 - `apps/client` : jeu (React, Vite, MapLibre, Zustand, i18next). `apps/admin` : back-office.
 - `data/` : catalogue, équilibrage, scénarios, carte (générée), fond de carte, glyphes, tuiles satellite.
-- `tools/map`, `tools/tiles`, `tools/glyphs` : pipelines reproductibles qui produisent `data/`.
+- `tools/map`, `tools/tiles`, `tools/glyphs` : pipelines reproductibles qui produisent `data/` ; `tools/audio` : sons et
+  musiques ElevenLabs → `apps/client/public/audio` (moteur audio : `apps/client/src/audio`).
 - `e2e/` : Playwright contre le vrai serveur. `docs/` : architecture, déploiement, bilans.
 
 ## Décisions prises

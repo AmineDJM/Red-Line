@@ -5,6 +5,7 @@ import frCore from './fr.json';
 // Textes séparés par domaine (évite les conflits entre équipes) : fusion profonde au démarrage.
 import frMap from './fr.map.json';
 import frFeatures from './fr.features.json';
+import frAudio from './fr.audio.json';
 
 type Tree = { [k: string]: string | Tree };
 function merge(a: Tree, b: Tree): Tree {
@@ -15,7 +16,7 @@ function merge(a: Tree, b: Tree): Tree {
   }
   return out;
 }
-const fr = merge(merge(frCore as Tree, frMap as Tree), frFeatures as Tree);
+const fr = merge(merge(merge(frCore as Tree, frMap as Tree), frFeatures as Tree), frAudio as Tree);
 
 export const LOCALE = 'fr-FR';
 
