@@ -1,5 +1,6 @@
 import {
   DEPARTMENTS,
+  type BuildingType,
   type Department,
   type GameTime,
   type IntelOpKind,
@@ -7,6 +8,7 @@ import {
   type IntelReport,
   type LngLat,
   type NationId,
+  type ProvinceId,
   type SystemId,
   type UnitId,
 } from '@redline/shared';
@@ -34,6 +36,20 @@ export interface StoredOp {
   /** Nation visée (résolue au lancement), agent concerné (retournement, exfiltration). */
   victim?: NationId;
   agentId?: string;
+  /** Reconnaissance d'un pays entier (absent : opération en une fois, ou mission d'avant les phases). */
+  rn?: NationRecon;
+}
+
+/**
+ * Déroulement d'une reconnaissance de pays : `n` phases au total, `w` écoulées, `ok` abouties, provinces
+ * couvertes (ordre de couverture) et installations découvertes par province (rapport final).
+ */
+export interface NationRecon {
+  n: number;
+  w: number;
+  ok: number;
+  pids: ProvinceId[];
+  found: [ProvinceId, BuildingType[]][];
 }
 
 /**

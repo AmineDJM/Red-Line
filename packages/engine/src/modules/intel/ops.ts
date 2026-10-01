@@ -15,7 +15,7 @@ import { provincesOf, sightLevel, sortedKeys, warsOf } from '../../state/access.
 import { wi } from '../../state/world.js';
 import { board, scheduleMod } from '../kit.js';
 import { modifier, signal } from '../registry.js';
-import { OP_META, cfg, clamp } from './config.js';
+import { OP_META, cfg, clamp, type OpCost } from './config.js';
 import {
   agentsIn,
   budgetFactor,
@@ -29,6 +29,7 @@ import {
 } from './levels.js';
 import { publish } from './reports.js';
 import { announce, recon } from './provinces.js';
+import { isNationRecon, nationReconReport, opCost, runWave, scheduleWaves } from './recon.js';
 import {
   burn,
   catchQuietly,
@@ -137,8 +138,8 @@ export function successChance(
   n: NationId,
   kind: IntelOpKind,
   victim: NationId | undefined,
+  c: OpCost = cfg(state).ops[kind],
 ): number {
-  const c = cfg(state).ops[kind];
   const meta = OP_META[kind];
   const atk = level(state, n, meta.dept);
   const dd = defenderDept(kind);
@@ -282,7 +283,7 @@ export function startOp(
   const running = ni.ops.filter((o) => o.status === 'running' && o.dept === meta.dept).length;
   if (running >= capacityOf(state, n, meta.dept))
     return fail('capacity', 'Capacité du département atteinte.');
-  const cost = cfg(state).ops[kind];
+  const cost = opCost(state, kind, r.target);
   if (ns.money < cost.money) return fail('insufficient_funds', 'Fonds insuffisants.');
   if (
     r.agentId &&
@@ -298,11 +299,12 @@ export function startOp(
     startedAt: state.time,
     completesAt: state.time + Math.max(0.1, cost.durationH) * HOUR,
     status: 'running',
-    estimate: successChance(state, n, kind, r.victim),
+    estimate: successChance(state, n, kind, r.victim, cost),
   };
   if (r.victim) op.victim = r.victim;
   if (r.agentId) op.agentId = r.agentId;
   ni.ops.push(op);
+  if (isNationRecon(kind, r.target)) scheduleWaves(state, n, op);
   scheduleMod(state, { t: op.completesAt, m: 'intel', e: 'op', d: { n, id: op.id } });
   return { ok: true };
 }
@@ -330,10 +332,48 @@ function trimOps(state: EngineState, n: NationId): void {
 
 // ——— Résolution ———
 
+/** Qualité du service adverse face à une opération (0,3 sans victime ni département). */
+function defenderQuality(state: EngineState, op: StoredOp): number {
+  const dd = defenderDept(op.kind);
+  return op.victim && dd ? quality(state, op.victim, dd) : 0.3;
+}
+
+/** Phase intermédiaire d'une reconnaissance de pays (événement `wave`). */
+export function waveOp(state: EngineState, n: NationId, id: string): void {
+  const op = nat(state, n).ops.find((o) => o.id === id);
+  if (!op || op.status !== 'running' || !op.rn) return;
+  if (runWave(state, n, op, defenderQuality(state, op)) === 'exposed')
+    exposeNationRecon(state, n, op);
+}
+
+function exposeNationRecon(state: EngineState, n: NationId, op: StoredOp): void {
+  op.status = 'compromised';
+  nationReconReport(state, n, op, 'compromised', {
+    title: `${OP_LABEL[op.kind]} — compromise`,
+    source: OP_META[op.kind].source,
+  });
+  onExposed(state, n, op);
+  trimOps(state, n);
+}
+
+/** Dernière phase et bilan d'une reconnaissance de pays : réussie si au moins une phase a abouti. */
+function finishNationRecon(state: EngineState, n: NationId, op: StoredOp): void {
+  if (runWave(state, n, op, defenderQuality(state, op)) === 'exposed')
+    return exposeNationRecon(state, n, op);
+  const ok = op.rn!.ok > 0;
+  op.status = ok ? 'success' : 'failed';
+  nationReconReport(state, n, op, op.status, {
+    title: `${OP_LABEL[op.kind]} — ${ok ? nationName(state, op.victim!) : 'échec'}`,
+    source: OP_META[op.kind].source,
+  });
+  trimOps(state, n);
+}
+
 export function resolveOp(state: EngineState, n: NationId, id: string): void {
   const ni = nat(state, n);
   const op = ni.ops.find((o) => o.id === id);
   if (!op || op.status !== 'running') return;
+  if (op.rn) return finishNationRecon(state, n, op);
   const c = cfg(state).ops[op.kind];
   const victimAlive = !op.victim || !!state.nations[op.victim]?.alive;
   const ok = victimAlive && state.nations[n]?.alive && roll(state) < op.estimate;
@@ -341,8 +381,7 @@ export function resolveOp(state: EngineState, n: NationId, id: string): void {
     op.status = 'success';
     applySuccess(state, n, op);
   } else {
-    const dd = defenderDept(op.kind);
-    const dq = op.victim && dd ? quality(state, op.victim, dd) : 0.3;
+    const dq = defenderQuality(state, op);
     const exposed = victimAlive && roll(state) < c.exposure * (0.5 + dq);
     op.status = exposed ? 'compromised' : 'failed';
     publish(state, n, {

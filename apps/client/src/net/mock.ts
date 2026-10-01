@@ -41,6 +41,7 @@ import {
 import { demoBattleReport } from '../api/mockRest.js';
 import { Emitter, type ChatChannel, type GameConnection, type OrderOutcome } from './connection.js';
 import { demoReply, enrichView } from './mockWorld.js';
+import { useWorld } from '../store/world.js';
 
 export interface MockData {
   nations: NationDef[];
@@ -835,21 +836,29 @@ export class MockGameConnection extends Emitter implements GameConnection {
                   'cyber_orders',
                   'deploy_decoys',
                   'fake_radio_traffic',
+                  'recon_military',
                 ].includes(order.op)
               ? 'military'
               : 'exterior';
         const d = i.departments.find((x) => x.id === dept);
         if (d && d.running >= d.capacity) return { ok: false, error: 'capacity' };
+        // Reconnaissance d'un pays entier : durée et phases de data/balance (intel.reconNation).
+        const rn =
+          (order.op === 'recon_military' || order.op === 'recon_economic') &&
+          !order.target.provinceId
+            ? useWorld.getState().balance?.intel?.reconNation
+            : undefined;
         const op: IntelOpView = {
           id: `io${++this.seq}`,
           kind: order.op,
           dept,
           target: order.target,
           startedAt: t,
-          completesAt: t + 24 * HOUR,
+          completesAt: t + (rn?.ops[order.op]?.durationH ?? 24) * HOUR,
           status: 'running',
           estimate: 0.55,
         };
+        if (rn) op.recon = { waves: rn.waves, done: 0, ok: 0, provinces: 0 };
         this.push({
           intel: {
             ...i,

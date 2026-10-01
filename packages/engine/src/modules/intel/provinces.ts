@@ -9,6 +9,7 @@ import {
   type NationId,
   type PlayerView,
   type ProvinceId,
+  RECON_KNOWN_LEVEL,
 } from '@redline/shared';
 import type { EngineState } from '../../state/types.js';
 import { provincesOf, sortedKeys } from '../../state/access.js';
@@ -162,6 +163,53 @@ export function reconTargets(
     .map((x) => x.pid);
 }
 
+/**
+ * Ordre de reconnaissance d'un pays entier : d'abord les provinces pas encore bien connues sur l'axe
+ * (niveau < `levels`), par importance (capitale, puis rang de la ville, population, haché pour départager),
+ * puis celles à compléter (niveau < 3), dans le même ordre. Première mission : la capitale et les grandes
+ * villes ; missions suivantes : le reste du pays, puis la connaissance complète.
+ */
+export function nationReconTargets(
+  state: EngineState,
+  n: NationId,
+  victim: NationId,
+  axis: Axis,
+  levels: number,
+  count: number,
+): ProvinceId[] {
+  const w = wi(state.world);
+  return provincesOf(state, victim)
+    .map((pid) => {
+      const def = w.provById.get(pid);
+      const lvl = knowledge(state, n, pid)?.[axis] ?? 3;
+      return {
+        pid,
+        lvl,
+        pass: lvl < levels ? 0 : 1,
+        rank: def?.isCapital ? 0 : (def?.cityRank ?? 4),
+        pop: def?.population ?? 0,
+        h: hash01('rn', n, pid),
+      };
+    })
+    .filter((x) => x.lvl < 3)
+    .sort((a, b) => a.pass - b.pass || a.rank - b.rank || b.pop - a.pop || a.h - b.h)
+    .slice(0, count)
+    .map((x) => x.pid);
+}
+
+/** Provinces d'une nation bien connues (niveau ≥ RECON_KNOWN_LEVEL) sur un axe, et leur total. */
+export function nationCoverage(
+  state: EngineState,
+  n: NationId,
+  victim: NationId,
+  axis: Axis,
+): { known: number; total: number } {
+  const all = provincesOf(state, victim);
+  let known = 0;
+  for (const pid of all) if ((knowledge(state, n, pid)?.[axis] ?? 3) >= RECON_KNOWN_LEVEL) known++;
+  return { known, total: all.length };
+}
+
 /** Reconnaissance ciblée : +2 niveaux sur une province, ou +1 sur plusieurs provinces d'une nation. */
 export function recon(
   state: EngineState,
@@ -266,7 +314,14 @@ export function filterProvinces(state: EngineState, n: NationId, view: PlayerVie
       else delete pv.buildingState;
     }
     const level = Math.max(k.e, k.m) as 0 | 1 | 2 | 3;
-    pv.intel = { level, economic: k.e > 0, military: k.m > 0, updatedAt: k.t };
+    pv.intel = {
+      level,
+      economic: k.e > 0,
+      military: k.m > 0,
+      e: k.e as 0 | 1 | 2 | 3,
+      m: k.m as 0 | 1 | 2 | 3,
+      updatedAt: k.t,
+    };
   }
 }
 

@@ -18,6 +18,7 @@ import {
 import { fmtDuration } from '../i18n/index.js';
 import { nationForms, nationName, relationOf } from '../lib/game.js';
 import { BuildingRow, BuildMenu } from '../components/Buildings.js';
+import { NationRecon, axisLevel } from '../components/NationRecon.js';
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
@@ -239,6 +240,7 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
         </>
       ) : (
         <>
+          <NationRecon nationId={p.owner} />
           <div className="provpanel__intel">
             <span className="selpanel__label">{t('province.knowledge')}</span>
             <Gauge
@@ -261,12 +263,14 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
                 tone: 'dim',
               },
               {
-                label: t('province.economicIntel'),
-                value: intel?.economic ? t('app.yes') : t('app.no'),
+                label: t('province.militaryIntel'),
+                value: t(`province.intelLevel.${axisLevel(p, 'recon_military')}`),
+                tone: axisLevel(p, 'recon_military') ? undefined : ('dim' as const),
               },
               {
-                label: t('province.militaryIntel'),
-                value: intel?.military ? t('app.yes') : t('app.no'),
+                label: t('province.economicIntel'),
+                value: t(`province.intelLevel.${axisLevel(p, 'recon_economic')}`),
+                tone: axisLevel(p, 'recon_economic') ? undefined : ('dim' as const),
               },
             ]}
           />

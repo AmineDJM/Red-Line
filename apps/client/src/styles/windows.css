@@ -694,6 +694,12 @@
   color: var(--rl-text-dim);
   font-size: var(--rl-fs-2xs);
 }
+.op__phase {
+  margin-left: auto;
+  color: var(--rl-cyan);
+  font-family: var(--rl-font-mono);
+  white-space: nowrap;
+}
 .agents {
   flex: none;
   display: grid;

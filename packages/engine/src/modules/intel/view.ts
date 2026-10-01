@@ -82,7 +82,7 @@ function opView(o: StoredOp): IntelOpView {
   if (o.target.unitId) target.unitId = o.target.unitId;
   if (o.target.at) target.at = [o.target.at[0], o.target.at[1]];
   if (o.target.radiusKm !== undefined) target.radiusKm = o.target.radiusKm;
-  return {
+  const out: IntelOpView = {
     id: o.id,
     kind: o.kind,
     dept: o.dept,
@@ -92,6 +92,8 @@ function opView(o: StoredOp): IntelOpView {
     status: o.status,
     estimate: o.estimate,
   };
+  if (o.rn) out.recon = { waves: o.rn.n, done: o.rn.w, ok: o.rn.ok, provinces: o.rn.pids.length };
+  return out;
 }
 
 /** Ce que le propriétaire sait de son agent : un agent démasqué ou retourné reste « actif » à ses yeux. */

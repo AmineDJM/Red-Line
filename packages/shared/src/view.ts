@@ -120,6 +120,9 @@ export interface ProvinceView {
     level: 0 | 1 | 2 | 3;
     economic: boolean;
     military: boolean;
+    /** Niveaux par axe (0..3), économique et militaire (absents dans les anciennes vues). */
+    e?: 0 | 1 | 2 | 3;
+    m?: 0 | 1 | 2 | 3;
     /** Dernière mise à jour (temps de jeu) ; au-delà d'un certain âge l'information vieillit. */
     updatedAt: GameTime;
   } | null;

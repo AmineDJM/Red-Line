@@ -9,7 +9,7 @@ import { aiOffset, aiThink } from './ai.js';
 import { cfg } from './config.js';
 import { interceptTick, listenTick, onUnitGone } from './contacts.js';
 import { dailyNotes, scan } from './daily.js';
-import { cancelOp, resolveOp, startOp } from './ops.js';
+import { cancelOp, resolveOp, startOp, waveOp } from './ops.js';
 import { agentsReveal } from './provinces.js';
 import { copyTo, findReport } from './reports.js';
 import { onSignal } from './signals.js';
@@ -90,6 +90,8 @@ function onEvent(state: EngineState, ev: ModEvent): void {
   switch (ev.e) {
     case 'op':
       return resolveOp(state, d.n!, d.id!);
+    case 'wave':
+      return waveOp(state, d.n!, d.id!);
     case 'arrest':
       return handleArrest(state, d.id!);
     case 'listen':

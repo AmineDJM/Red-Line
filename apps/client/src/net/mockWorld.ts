@@ -471,10 +471,14 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
             health: k === 0 && level === 3 ? 0.6 : 1,
           }))
         : undefined;
+    const lv = level as 0 | 1 | 2 | 3;
+    const military = level >= 1 && ctx.hostiles.includes(p.nationId);
     pv.intel = {
-      level: level as 0 | 1 | 2 | 3,
+      level: lv,
       economic: level >= 2,
-      military: level >= 1 && ctx.hostiles.includes(p.nationId),
+      military,
+      e: level >= 2 ? lv : 0,
+      m: military ? lv : 0,
       updatedAt: now - (level === 3 ? 2 : 20 + (p.id.length % 5) * 9) * HOUR,
     };
   }
@@ -950,6 +954,17 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
       completesAt: now + 28 * HOUR,
       status: 'running',
       estimate: 0.62,
+    },
+    {
+      id: 'io6',
+      kind: 'recon_military',
+      dept: 'military',
+      target: { nationId: h1 ?? h0 },
+      startedAt: now - 18 * HOUR,
+      completesAt: now + 30 * HOUR,
+      status: 'running',
+      estimate: 0.7,
+      recon: { waves: 4, done: 1, ok: 1, provinces: 3 },
     },
     {
       id: 'io2',

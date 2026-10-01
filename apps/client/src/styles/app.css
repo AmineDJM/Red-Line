@@ -1282,6 +1282,118 @@ code {
   min-width: 0;
   font-size: var(--rl-fs-xs);
 }
+/* Renseignement sur un pays entier (fiche de province étrangère, fenêtre de lancement) */
+.nrecon {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px 6px;
+  border: 1px solid var(--rl-line);
+  border-left: 2px solid var(--rl-cyan-line);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-bg);
+}
+.nrecon--bare {
+  padding: 6px 10px 4px;
+  border-left-width: 1px;
+}
+.nrecon__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding-bottom: 4px;
+}
+.nrecon__title {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--rl-text);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.nrecon__total {
+  margin-left: auto;
+  flex: none;
+  color: var(--rl-text-faint);
+  font: var(--rl-fs-2xs) / 1 var(--rl-font-mono);
+}
+.nrecon__row {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 2px 10px;
+  padding: 6px 0;
+}
+.nrecon__row--ro {
+  grid-template-columns: 22px minmax(0, 1fr);
+}
+.nrecon__row + .nrecon__row {
+  border-top: 1px dashed var(--rl-line);
+}
+.nrecon__ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--rl-line-strong);
+  border-radius: 3px;
+  color: var(--rl-text-dim);
+}
+.nrecon__ico--recon_military {
+  color: var(--rl-cyan);
+}
+.nrecon__ico--recon_economic {
+  color: var(--rl-amber);
+}
+.nrecon__row--run .nrecon__ico {
+  border-color: var(--rl-cyan-line);
+  background: var(--rl-cyan-dim);
+}
+.nrecon__main {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.nrecon__line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+.nrecon__name {
+  color: var(--rl-text);
+  font-size: var(--rl-fs-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.nrecon__meta {
+  overflow: hidden;
+  color: var(--rl-text-dim);
+  font: var(--rl-fs-2xs) / 1.2 var(--rl-font-mono);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.nrecon__row--run .nrecon__meta {
+  color: var(--rl-cyan);
+}
+.nrecon__count {
+  font-family: var(--rl-font-mono);
+}
+.nrecon__sub {
+  grid-column: 2 / -1;
+  margin-top: -1px;
+  color: var(--rl-text-faint);
+  font-size: var(--rl-fs-2xs);
+}
+.nrecon__row--run .nrecon__sub {
+  color: var(--rl-text-dim);
+}
+.nrecon__row .rl-btn {
+  min-width: 74px;
+}
 .provpanel__unknown {
   margin: 0;
   padding: 10px;

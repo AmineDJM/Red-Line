@@ -568,7 +568,7 @@ describe('data/balance', () => {
       'infiltrate_spy', 'recruit_source', 'turn_agent', 'exfiltrate', 'steal_research', 'sabotage_factory',
       'fund_rebels', 'listen_area', 'intercept_army', 'jam_area', 'cyber_radar', 'cyber_production',
       'cyber_orders', 'disinformation', 'leak_plans', 'plant_fake_report', 'deploy_decoys',
-      'fake_radio_traffic', 'counterintel_sweep',
+      'fake_radio_traffic', 'counterintel_sweep', 'recon_economic', 'recon_military',
     ]; // prettier-ignore
     expect(Object.keys(b.intel!.ops).sort()).toEqual([...OPS].sort());
     for (const [k, op] of Object.entries(b.intel!.ops)) {
@@ -578,6 +578,17 @@ describe('data/balance', () => {
       expect(op.exposure, k).toBeGreaterThanOrEqual(0);
       expect(op.durationH, k).toBeGreaterThan(0);
     }
+    // Reconnaissance d'un pays entier : plus chère et plus longue qu'une province, en phases.
+    const rn = b.intel!.reconNation!;
+    for (const k of ['recon_economic', 'recon_military'] as const) {
+      const op = rn.ops[k]!;
+      expect(op.money, k).toBeGreaterThan(b.intel!.ops[k]!.money);
+      expect(op.durationH, k).toBeGreaterThan(b.intel!.ops[k]!.durationH);
+      expect(op.baseSuccess, k).toBeGreaterThan(0);
+      expect(op.baseSuccess, k).toBeLessThanOrEqual(1);
+    }
+    expect(rn.waves).toBeGreaterThanOrEqual(2);
+    expect(rn.provincesPerWave).toBeGreaterThanOrEqual(1);
   });
 
   it('bâtiments : chaque type a 5 niveaux au coût et à la durée croissants', () => {

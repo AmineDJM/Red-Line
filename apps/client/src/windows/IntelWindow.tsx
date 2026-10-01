@@ -9,6 +9,7 @@ import {
   type IntelSource,
   type NationId,
   type Order,
+  type ReconOpKind,
 } from '@redline/shared';
 import {
   Badge,
@@ -20,6 +21,7 @@ import {
   Icon,
   Money,
   ProgressBar,
+  Segmented,
   Select,
   Tabs,
   Window,
@@ -29,6 +31,7 @@ import {
 } from '@redline/ui';
 import { Ago, Cotation, NationTag, isLowCotation } from '../components/Common.js';
 import { MiniMap } from '../components/MiniMap.js';
+import { NationRecon, reconNationCost } from '../components/NationRecon.js';
 import { fmtDuration } from '../i18n/index.js';
 import { nationForms, nationName, provinceName } from '../lib/game.js';
 import { useGameTime } from '../shell/helpers.js';
@@ -314,9 +317,15 @@ export function LaunchDialog({
       .sort((a, b) => Number(b.capital) - Number(a.capital) || a.name.localeCompare(b.name, 'fr'));
   const targetProvinces = provincesOf(kind === 'ownArea' ? me : nation);
   const [province, setProvince] = useState<string>(initialProvince ?? '');
-  const pid =
-    targetProvinces.find((p) => p.id === province)?.id ??
-    (WHOLE_NATION_OK.has(op) ? '' : (targetProvinces[0]?.id ?? ''));
+  // Reconnaissance : sur tout le pays (par défaut) ou sur une seule province.
+  const recon = WHOLE_NATION_OK.has(op);
+  const [scope, setScope] = useState<'nation' | 'province'>(
+    initialProvince ? 'province' : 'nation',
+  );
+  const wholeNation = recon && scope === 'nation';
+  const pid = wholeNation
+    ? ''
+    : (targetProvinces.find((p) => p.id === province)?.id ?? targetProvinces[0]?.id ?? '');
   const contacts = useMemo(
     () =>
       Object.values(view?.units ?? {})
@@ -326,7 +335,7 @@ export function LaunchDialog({
   );
   const [unitId, setUnitId] = useState<string>('');
   const uid = contacts.find((u) => u.id === unitId)?.id ?? contacts[0]?.id ?? '';
-  const cost = balance?.intel?.ops[op];
+  const cost = wholeNation ? reconNationCost(balance, op as ReconOpKind) : balance?.intel?.ops[op];
   const target: IntelOpTarget = (() => {
     switch (kind) {
       case 'none':
@@ -334,7 +343,7 @@ export function LaunchDialog({
       case 'nation':
         return { nationId: nation };
       case 'province':
-        return pid ? { provinceId: pid } : { nationId: nation };
+        return wholeNation ? { nationId: nation } : { provinceId: pid };
       case 'area':
       case 'ownArea': {
         const at = pid ? defs[pid]?.cityPoint : undefined;
@@ -350,11 +359,12 @@ export function LaunchDialog({
   const ready =
     kind === 'none' ||
     (kind === 'nation' && !!nation) ||
-    (kind === 'province' && (!!pid || !!nation)) ||
+    (kind === 'province' && (wholeNation ? !!nation : !!pid)) ||
     ((kind === 'area' || kind === 'ownArea') && !!target.at) ||
     (kind === 'unit' && !!uid);
   const pickNation = kind === 'nation' || kind === 'province' || kind === 'area';
-  const pickProvince = kind === 'province' || kind === 'area' || kind === 'ownArea';
+  const pickProvince =
+    (kind === 'province' && !wholeNation) || kind === 'area' || kind === 'ownArea';
   return (
     <Dialog
       open
@@ -413,18 +423,33 @@ export function LaunchDialog({
             />
           </Field>
         ) : null}
+        {recon ? (
+          <Field label={t('intel.scope')}>
+            <Segmented
+              label={t('intel.scope')}
+              size="sm"
+              value={scope}
+              onChange={setScope}
+              options={[
+                { value: 'nation', label: t('intel.scopeNation') },
+                { value: 'province', label: t('intel.scopeProvince') },
+              ]}
+              className="intel-scope"
+            />
+          </Field>
+        ) : null}
+        {wholeNation && nation ? (
+          <NationRecon nationId={nation} ops={[op as ReconOpKind]} bare readOnly />
+        ) : null}
         {pickProvince ? (
           <Field label={kind === 'province' ? t('intel.targetProvince') : t('intel.targetArea')}>
             <Select
               value={pid}
               onChange={setProvince}
-              options={[
-                ...(WHOLE_NATION_OK.has(op) ? [{ value: '', label: t('intel.wholeNation') }] : []),
-                ...targetProvinces.map((p) => ({
-                  value: p.id,
-                  label: `${p.capital ? '★ ' : ''}${p.name}`,
-                })),
-              ]}
+              options={targetProvinces.map((p) => ({
+                value: p.id,
+                label: `${p.capital ? '★ ' : ''}${p.name}`,
+              }))}
               data-testid="intel-target-province"
             />
           </Field>
@@ -630,6 +655,15 @@ function DeptColumn({
               <div className="op__target">
                 {o.target.nationId ? <NationTag id={o.target.nationId} size={9} /> : null}
                 {o.target.provinceId ? <span>{provinceName(o.target.provinceId)}</span> : null}
+                {o.recon ? (
+                  <span className="op__phase">
+                    {t('intel.reconPhase', {
+                      done: o.recon.done,
+                      waves: o.recon.waves,
+                      provinces: o.recon.provinces,
+                    })}
+                  </span>
+                ) : null}
                 {o.target.at && !o.target.provinceId ? (
                   <span>{t('intel.zone', { km: o.target.radiusKm ?? 0 })}</span>
                 ) : null}

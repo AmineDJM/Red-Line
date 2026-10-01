@@ -1395,7 +1395,39 @@
         "durationH": 72,
         "baseSuccess": 0.6,
         "exposure": 0.0
+      },
+      "recon_economic": {
+        "money": 1500000,
+        "durationH": 12,
+        "baseSuccess": 0.75,
+        "exposure": 0.2
+      },
+      "recon_military": {
+        "money": 2000000,
+        "durationH": 12,
+        "baseSuccess": 0.7,
+        "exposure": 0.25
       }
+    },
+    "reconNation": {
+      "ops": {
+        "recon_economic": {
+          "money": 6000000,
+          "durationH": 48,
+          "baseSuccess": 0.75,
+          "exposure": 0.2
+        },
+        "recon_military": {
+          "money": 8000000,
+          "durationH": 48,
+          "baseSuccess": 0.7,
+          "exposure": 0.25
+        }
+      },
+      "waves": 4,
+      "provincesPerWave": 3,
+      "levels": 2,
+      "qualityBonus": 0.5
     }
   },
   "diplomacy": {

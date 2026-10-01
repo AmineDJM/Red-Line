@@ -445,6 +445,35 @@
       "listen_area": "Écoute lancée autour de {{province}}"
     }
   },
+  "nationRecon": {
+    "title": "Renseignement sur {{nationLe}}",
+    "aria": "Renseignement sur {{nationLe}}",
+    "provinces_one": "{{count}} province",
+    "provinces_other": "{{count}} provinces",
+    "ops": {
+      "recon_military": "Reco. militaire",
+      "recon_economic": "Reco. économique"
+    },
+    "phase": "Phase {{done}}/{{waves}}",
+    "covered_one": "{{count}} province couverte",
+    "covered_other": "{{count}} provinces couvertes",
+    "priority": "Priorité : capitale et grandes villes",
+    "remaining_one": "Reste {{count}} province à révéler",
+    "remaining_other": "Restent {{count}} provinces à révéler",
+    "complete": "Toutes les provinces révélées",
+    "revealedAria": "Provinces révélées : {{known}} sur {{total}}",
+    "launch": "Lancer",
+    "running": "En cours",
+    "capacity": "Capacité du département atteinte",
+    "started": {
+      "recon_military": "Reconnaissance militaire lancée sur {{nationLe}}",
+      "recon_economic": "Reconnaissance économique lancée sur {{nationLe}}"
+    },
+    "tips": {
+      "recon_military": "Révèle par phases les bases, défenses, radars, silos et bunkers {{deNation}} : capitale et grandes villes d'abord, puis le reste du pays.",
+      "recon_economic": "Révèle par phases la production, les ressources et l'industrie {{deNation}} : capitale et grandes villes d'abord, puis le reste du pays."
+    }
+  },
   "console": {
     "title": "Console de commande",
     "open": "Console",
@@ -925,13 +954,17 @@
       "deploy_decoys": "Déploie des leurres qui trompent la reconnaissance adverse.",
       "fake_radio_traffic": "Simule un trafic radio pour masquer vos mouvements.",
       "counterintel_sweep": "Traque les agents étrangers sur votre territoire.",
-      "recon_economic": "Révèle progressivement les installations économiques (raffineries, usines, centrales…) d'une province ou de toute une nation. Chaque succès améliore la connaissance.",
-      "recon_military": "Révèle progressivement les bases, sites de défense aérienne, radars et silos d'une province ou de toute une nation, visibles ensuite sur la carte."
+      "recon_economic": "Révèle par phases les installations économiques (production, ressources, industrie) de tout un pays — capitale et grandes villes d'abord, puis le reste — ou d'une seule province.",
+      "recon_military": "Révèle par phases les bases, défenses aériennes, radars, silos et bunkers de tout un pays — capitale et grandes villes d'abord, puis le reste — ou d'une seule province. Visibles ensuite sur la carte."
     },
     "targetProvince": "Province visée",
     "targetArea": "Zone (autour de la ville)",
     "targetUnit": "Unité visée",
     "wholeNation": "Toute la nation",
+    "scope": "Portée",
+    "scopeNation": "Pays entier",
+    "scopeProvince": "Une province",
+    "reconPhase": "Phase {{done}}/{{waves}} · {{provinces}} prov.",
     "unknownContact": "contact non identifié",
     "noContacts": "Aucune unité étrangère détectée : rapprochez vos radars ou lancez une reconnaissance."
   },

@@ -109,7 +109,22 @@ export interface IntelOpView {
   status: 'running' | 'success' | 'failed' | 'compromised';
   /** Probabilité estimée affichée au joueur (0..1). */
   estimate: number;
+  /**
+   * Reconnaissance d'un pays entier (cible nation) : phases écoulées sur le total, phases abouties,
+   * provinces couvertes jusqu'ici. Absent pour les autres opérations.
+   */
+  recon?: { waves: number; done: number; ok: number; provinces: number };
 }
+
+/** Missions de reconnaissance (cible : une province, ou un pays entier). */
+export const RECON_OPS = ['recon_military', 'recon_economic'] as const;
+export type ReconOpKind = (typeof RECON_OPS)[number];
+
+/**
+ * Niveau de connaissance (0..3) à partir duquel une province est considérée comme « révélée » sur un axe
+ * (bonne connaissance) : décompte « n provinces révélées sur N » d'un pays.
+ */
+export const RECON_KNOWN_LEVEL = 2;
 
 export interface AgentView {
   id: string;

@@ -3,9 +3,9 @@ import type { EngineState } from '../../state/types.js';
 import { sortedKeys, warsOf } from '../../state/access.js';
 import { board } from '../kit.js';
 import { turnable } from './agents.js';
-import { cfg } from './config.js';
 import { hash01, neighborNations } from './levels.js';
 import { startOp } from './ops.js';
+import { opCost } from './recon.js';
 import { nat } from './state.js';
 
 /**
@@ -32,9 +32,9 @@ export function aiThink(state: EngineState, n: NationId): void {
   const wars = warsOf(state, n);
   // Garnisons neutres en paix : pas de service actif.
   if (!ns.active && wars.length === 0) return;
-  const c = cfg(state);
   const tryOp = (kind: IntelOpKind, target: IntelOpTarget, agentId?: string): boolean =>
-    ns.money >= c.ops[kind].money * RESERVE && startOp(state, n, kind, target, agentId).ok;
+    ns.money >= opCost(state, kind, target).money * RESERVE &&
+    startOp(state, n, kind, target, agentId).ok;
 
   // 1. Contre-espionnage d'abord.
   const caught = turnable(state, n);

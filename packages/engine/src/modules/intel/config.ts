@@ -3,6 +3,7 @@ import type {
   InfoCredibility,
   IntelOpKind,
   IntelSource,
+  ReconOpKind,
   SourceReliability,
 } from '@redline/shared';
 import type { EngineState } from '../../state/types.js';
@@ -44,6 +45,16 @@ export interface IntelConfig {
   reconProvinces: number;
   provinceStaleH: number;
   ops: Record<IntelOpKind, OpCost>;
+  reconNation: ReconNationConfig;
+}
+
+/** Reconnaissance d'un pays entier (balance.intel.reconNation). */
+export interface ReconNationConfig {
+  ops: Record<ReconOpKind, OpCost>;
+  waves: number;
+  provincesPerWave: number;
+  levels: number;
+  qualityBonus: number;
 }
 
 export interface OpCost {
@@ -53,7 +64,7 @@ export interface OpCost {
   exposure: number;
 }
 
-export const DEFAULTS: Omit<IntelConfig, 'ops'> = {
+export const DEFAULTS: Omit<IntelConfig, 'ops' | 'reconNation'> = {
   dailyReportHour: 7,
   reportsPerDay: 1,
   defaultBudgetShare: 0.02,
@@ -111,6 +122,18 @@ export const DEFAULT_OPS: Record<IntelOpKind, OpCost> = {
   recon_military: { money: 2_000_000, durationH: 12, baseSuccess: 0.7, exposure: 0.25 },
 };
 
+/** Reconnaissance d'un pays entier : valeurs par défaut (identiques au schéma de data/balance). */
+export const DEFAULT_RECON_NATION: ReconNationConfig = {
+  ops: {
+    recon_economic: { money: 6_000_000, durationH: 48, baseSuccess: 0.75, exposure: 0.2 },
+    recon_military: { money: 8_000_000, durationH: 48, baseSuccess: 0.7, exposure: 0.25 },
+  },
+  waves: 4,
+  provincesPerWave: 3,
+  levels: 2,
+  qualityBonus: 0.5,
+};
+
 /** Département et source de chaque opération (structure du jeu, pas de l'équilibrage). */
 export const OP_META: Record<IntelOpKind, { dept: Department; source: IntelSource }> = {
   infiltrate_spy: { dept: 'exterior', source: 'humint' },
@@ -142,8 +165,11 @@ export function cfg(state: EngineState): IntelConfig {
   const bal = state.world.balance;
   let c = cache.get(bal);
   if (!c) {
-    const src = (bal.intel ?? {}) as Partial<IntelConfig> & {
+    const src = (bal.intel ?? {}) as Partial<Omit<IntelConfig, 'reconNation'>> & {
       ops?: Record<string, Partial<OpCost>>;
+      reconNation?: Partial<Omit<ReconNationConfig, 'ops'>> & {
+        ops?: Record<string, Partial<OpCost>>;
+      };
     };
     const ops = { ...DEFAULT_OPS };
     for (const k of Object.keys(ops) as IntelOpKind[]) {
@@ -155,7 +181,19 @@ export function cfg(state: EngineState): IntelConfig {
       const v = (src as Record<string, unknown>)[k];
       if (v !== undefined) merged[k] = v;
     }
-    c = { ...(merged as Omit<IntelConfig, 'ops'>), ops };
+    const rs = src.reconNation ?? {};
+    const rd = DEFAULT_RECON_NATION;
+    const reconNation: ReconNationConfig = {
+      ops: {
+        recon_economic: { ...rd.ops.recon_economic, ...rs.ops?.recon_economic },
+        recon_military: { ...rd.ops.recon_military, ...rs.ops?.recon_military },
+      },
+      waves: Math.max(1, Math.round(rs.waves ?? rd.waves)),
+      provincesPerWave: Math.max(1, Math.round(rs.provincesPerWave ?? rd.provincesPerWave)),
+      levels: clamp(Math.round(rs.levels ?? rd.levels), 1, 3),
+      qualityBonus: Math.max(0, rs.qualityBonus ?? rd.qualityBonus),
+    };
+    c = { ...(merged as Omit<IntelConfig, 'ops' | 'reconNation'>), ops, reconNation };
     cache.set(bal, c);
   }
   return c;

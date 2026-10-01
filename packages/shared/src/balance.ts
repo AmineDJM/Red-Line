@@ -479,8 +479,40 @@ export const BalanceSchema = z.object({
       disinformationAmount: z.number().min(0).default(5),
       /** Hausse de tension mondiale quand une opération est démasquée. */
       exposureTension: z.number().min(0).default(2),
-      /** Reconnaissance ciblée sur une nation : provinces dont la connaissance progresse d'un niveau. */
+      /**
+       * Ancienne reconnaissance d'une nation (missions lancées avant les phases, reprises de sauvegarde) :
+       * provinces dont la connaissance progresse d'un niveau.
+       */
       reconProvinces: z.number().int().min(1).default(6),
+      /**
+       * Reconnaissance d'un pays entier (recon_military / recon_economic ciblant une nation) : la mission
+       * se déroule en phases ; chaque phase réussie couvre quelques provinces (capitale et grandes villes
+       * d'abord, puis le reste), dont la connaissance progresse de `levels` niveaux sur l'axe de la mission.
+       */
+      reconNation: z
+        .object({
+          /** Coût, durée, réussite de base (par phase) et exposition d'une mission sur un pays entier. */
+          ops: z
+            .record(
+              z.string(),
+              z.object({
+                money: z.number(),
+                durationH: z.number(),
+                baseSuccess: z.number(),
+                exposure: z.number(),
+              }),
+            )
+            .default({}),
+          /** Phases réparties sur la durée de la mission (révélation progressive). */
+          waves: z.number().int().min(1).max(24).default(4),
+          /** Provinces couvertes par phase réussie (avant l'effet de la qualité du service). */
+          provincesPerWave: z.number().int().min(1).default(3),
+          /** Niveaux de connaissance (sur 3) gagnés par province couverte. */
+          levels: z.number().int().min(1).max(3).default(2),
+          /** Effet de la qualité du service : provinces par phase × (1 + qualityBonus × (qualité − 0,5)). */
+          qualityBonus: z.number().min(0).max(2).default(0.5),
+        })
+        .optional(),
       /** Âge (heures) au-delà duquel la connaissance d'une province vieillit (état des bâtiments masqué). */
       provinceStaleH: z.number().positive().default(72),
     })

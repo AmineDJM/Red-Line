@@ -455,9 +455,45 @@ export const RULE_HELP: Record<string, HelpEntry> = {
   'intel.disinformationAmount': ['Désinformation', 'Baisse de stabilité de la cible.', 'pts'],
   'intel.exposureTension': ['Tension si démasqué', 'Hausse de la tension mondiale.', 'pts'],
   'intel.reconProvinces': [
-    'Reconnaissance ciblée',
-    'Provinces dont la connaissance progresse d’un niveau.',
+    'Reconnaissance d’un pays (ancienne)',
+    'Missions sur un pays lancées avant les phases : provinces dont la connaissance progresse d’un niveau.',
     'n',
+  ],
+  'intel.reconNation': [
+    'Reconnaissance d’un pays entier',
+    'Mission militaire ou économique sur tout un pays : phases successives, capitale et grandes villes d’abord.',
+  ],
+  'intel.reconNation.ops': [
+    'Coût des missions sur un pays',
+    'Coût, durée, réussite de base (par phase) et exposition.',
+  ],
+  'intel.reconNation.ops.money': ['Coût', undefined, '$'],
+  'intel.reconNation.ops.durationH': ['Durée', undefined, 'h'],
+  'intel.reconNation.ops.baseSuccess': ['Réussite par phase', undefined, 'frac'],
+  'intel.reconNation.ops.exposure': [
+    'Exposition',
+    'Probabilité d’être repéré, répartie sur les phases manquées.',
+    'frac',
+  ],
+  'intel.reconNation.waves': [
+    'Phases',
+    'Phases réparties sur la durée : les installations apparaissent progressivement.',
+    'n',
+  ],
+  'intel.reconNation.provincesPerWave': [
+    'Provinces par phase',
+    'Avant l’effet de la qualité du service.',
+    'n',
+  ],
+  'intel.reconNation.levels': [
+    'Niveaux gagnés',
+    'Niveaux de connaissance (sur 3) gagnés par province couverte.',
+    'n',
+  ],
+  'intel.reconNation.qualityBonus': [
+    'Effet de la qualité',
+    'Provinces par phase × (1 + effet × (qualité − 0,5)).',
+    'x',
   ],
   'intel.provinceStaleH': [
     'Connaissance périmée',
