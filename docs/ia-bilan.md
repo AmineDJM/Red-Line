@@ -326,3 +326,158 @@ sans front → paix blanche. Mis à jour : `intel-view` (reconnaissance de l'enn
   français dédiés (`apps/admin/src/i18n/rules.ts`) seraient plus lisibles (non fait : hors périmètre).
 - **Serveur** : il serait plus propre de passer `setup.aiLevel` dans `prepare()` (apps/server) plutôt que de
   compter sur le repli du moteur (non fait : hors périmètre).
+
+## Passe 2 — menace contre le joueur, opérations, aviation, estimation, production
+
+Demande d'Amine : _l'IA ne doit pas être agressive, mais elle doit tout de même attaquer, être smart_. Même banc
+(`bench/ai-eval.ts`, enrichi), deux graines, comparé au moteur juste avant la passe (même économie recalibrée,
+commit `b679bc0`). Les mesures longues ont été arrêtées avant la dernière série : les chiffres « après » des
+parties viennent de la série r5 (code final sauf le dernier réglage du rassemblement, voir « Non terminé ») ;
+duels et coût de calcul sur le code final. Les faiblesses de la passe 1 (amphibie, aviation, groupes,
+estimation miroir, production à la capitale, « normal » pacifique) sont traitées ci-dessous.
+
+### Ce qui a été fait
+
+1. **Menace contre le joueur humain** (`strategy.ts`, `seekHumanWar` / `advancePlan`). Un voisin (par la terre,
+   ou par la mer pour les niveaux qui débarquent ; capitale du joueur à moins de `threatReachKm` de ses villes) le
+   menace si le rapport de force estimé dépasse `humanWarRatio`, avec un **motif** (revendication, revanche,
+   allié attaqué, paria) ou une **opportunité** (cible déjà en guerre ou instable) ; sans motif, il faut
+   `humanMotiveFactor` fois plus (jamais en facile). Pas avant `humanWarFromDays` (facile J10, normal J3,
+   difficile J2), au plus `humanAggressors` IA à la fois contre le même joueur (difficile : 2, en **coalition** :
+   forces cumulées, échéances alignées). Étapes visibles : **préparatifs** (`humanPrepHours` ; plan inscrit dans
+   `board.warPlans`, que le renseignement du joueur peut découvrir ; troupes massées dans la ville frontalière ou
+   le port le plus proche), **ultimatum public** (dépêche, `ultimatumHours`), puis **guerre** — ou
+   **renonciation** (dépêche de désescalade) si le rapport de force est tombé sous `planHoldShare` (le joueur a
+   renforcé sa frontière). Guerres **limitées** : au-delà de `warGoalShare` des provinces de la cible (normal
+   34 %), l'agresseur arrête ses offensives et propose la paix en gardant ses gains (`satisfiedPeaceDays`) ; une
+   victime qui n'a rien perdu accepte le statu quo. Répit (`humanCooldownDays`) après une paix ou une menace
+   abandonnée.
+2. **Opérations navales et amphibies.** Le moteur sait débarquer : une unité terrestre embarque d'elle-même sur un
+   trajet qui passe par la mer (plus lente, sans défense). L'IA vise les provinces côtières ennemies reliées par la
+   mer à un de ses ports (`amphibiousReachKm`), se **rassemble au port**, envoie ses **navires d'escorte**
+   patrouiller la zone de débarquement et ne traverse que lorsqu'ils y sont, ou que la mer est libre de navires
+   ennemis identifiés (`seaControlKm`) ; force exigée majorée (`amphibiousRatio`, et part des forces publiques de
+   l'ennemi par province quand la côte n'est pas vue), groupe double. Une guerre contre une nation atteignable
+   par la mer n'est plus une « guerre sans front » (plus de paix blanche par incapacité). Blocus inchangé.
+3. **Aviation** (`modules/mil/ai.ts`). **Suppression des défenses** : une défense antiaérienne _identifiée_ sur la
+   route ou l'objectif d'une frappe est frappée d'abord ; **escorte** : des chasseurs patrouillent sur l'objectif
+   de chaque frappe hors de son territoire (ils arrivent avant les bombardiers) ; couverture des objectifs et des
+   zones de débarquement ; **frappes profondes** sur les installations _révélées par son renseignement_ (sites
+   antiaériens, radars, bases aériennes, bases et usines d'armement), jamais sous une défense connue non
+   neutralisée. Les salves de missiles ne visent plus que des bâtiments révélés (petite triche corrigée). Aucun
+   vol au-dessus d'un neutre (le survol ouvrait des guerres par accident).
+4. **Groupes.** Départs **échelonnés** (les plus lents d'abord, chacun à l'heure qui fait arriver le groupe
+   ensemble) ; si les unités sont trop dispersées (`rallySpreadHours`), **rassemblement** dans la ville amie voisine
+   de l'objectif, puis départ ; force exigée revue au départ ; poursuites arrêtées avant d'entrer chez un neutre
+   (elles ouvraient, elles aussi, des guerres accidentelles).
+5. **Estimation** (`estimate.ts`, `publicForce`). Plus d'hypothèse miroir : ORBAT **publié** de départ, moins une
+   part des forces avec le territoire perdu, plus la production que le budget de défense public a pu financer,
+   moins ce que l'observateur a **vu détruire** lui-même (nouvelle statistique `vs` du module militaire), majoré
+   d'une **incertitude** (fiabilité de la source, vieillissement, réduite par la reconnaissance militaire), jamais
+   sous les contacts vus. Miroir conservé sans ORBAT (bac à sable).
+6. **Production hors capitale.** Le moteur le permet (bâtiment requis par catégorie). L'IA produit dans la province
+   la mieux équipée et la plus proche du front (hors villes menacées), importe vers la ville sûre la plus proche du
+   front, et revient à la capitale quand celle-ci est menacée ou dégarnie.
+
+Réglages : `ai.levels.*` (17 champs), `ai.tactical` (9), `ai.estimate` (section nouvelle), `ai.strategy`
+(`planHoldShare`, `threatReachKm`), tous optionnels avec défauts, libellés français dans
+`apps/admin/src/i18n/rules.ts`. Calibrage : « difficile » `casusBelliWaiverRatio` 3 → 5 et `warChancePerDay`
+0,02 → 0,01 (l'estimation exacte rendait les petits voisins trop tentants entre IA).
+
+### Le joueur humain (parties libres de 21 jours, joueur passif, 2 graines × Arménie, Estonie, Taïwan, France)
+
+| Niveau    | Avant                                          | Après                                                                                                                                   |
+| --------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Facile    | aucune guerre                                  | aucune guerre (motif et rapport ×3 exigés, pas avant J10 : aucun cas)                                                                   |
+| Normal    | **aucune guerre** contre le joueur (0 sur 8)   | **7 guerres sur 8 parties** (une par partie, sauf la France : ses voisins sont plus faibles), toutes après préparatifs puis ultimatum   |
+| Difficile | 8 guerres (Arménie, Estonie, France), dès J3,7 | 15 guerres sur 8 parties, par paires coordonnées (même échéance), dès J3,6 ; France attaquée à J19,6 par une coalition Allemagne–Italie |
+
+« Normal », après (début des préparatifs → guerre, provinces prises à J21) : Arménie : Turquie J7,8 → J10,2
+(3 prov.), Iran J4,0 → J6,3 (3 prov.) ; Estonie : Russie J4,0 → J6,4 (2 prov.), Finlande par la mer J3,5 → J5,8
+(0 prov.) ; Taïwan : Chine J8,5 → J10,8 (4 prov.) et J5,5 → J7,8 (5 prov., débarquements 10 sur 10 réussis) ;
+France : aucune. Délai de la première guerre : J5,8 à J10,8. Le joueur n'est **jamais éliminé** en « normal » (but
+de guerre limité ; l'agresseur propose 5 à 7 fois la paix, que le joueur passif ne signe pas). En « difficile »,
+l'Arménie, l'Estonie et Taïwan passifs sont rayés de la carte en 21 jours ; la France perd 7 provinces dans une
+graine.
+
+### Guerres imposées entre IA (14 jours, 2 graines, moyennes)
+
+| Mesure                                       |  Normal avant |      Normal après | Difficile avant | Difficile après |
+| -------------------------------------------- | ------------: | ----------------: | --------------: | --------------: |
+| Guerres déclarées par les IA (hors imposées) |             1 |                 1 |              12 |               7 |
+| Paix signées                                 |             3 |               7,5 |               4 |             2,5 |
+| Nations anéanties                            |             5 |               1,5 |              11 |            12,5 |
+| Provinces prises                             |            84 |                31 |             171 |             148 |
+| Écart moyen des arrivées d'une vague (h)     |           9,5 |               4,1 |             8,3 |             2,3 |
+| Vagues arrivant étalées sur plus de 3 h      |          69 % |              25 % |            64 % |            13 % |
+| Unités détruites après un ordre de capture   |           8 % |              21 % |            17 % |            10 % |
+| Capitale menacée sans garnison               |          11 % |               1 % |            15 % |          38 % ¹ |
+| Va-et-vient                                  |            33 |                17 |              12 |              23 |
+| Débarquements (ordres / réussis)             |         0 / 0 |             0 / 0 |         0,5 / 0 |         20 / 12 |
+| Frappes profondes / suppressions / escortes  |    7 / 47 / 0 |     70 / 51 / 100 |     17 / 46 / 0 |  165 / 46 / 178 |
+| Production hors capitale                     |           3 % |              23 % |             3 % |            26 % |
+| Erreur médiane d'estimation des voisins      | ×3,8 (miroir) | ×1,4 (pessimiste) |            ×3,5 |            ×1,4 |
+| CPU de la partie (s)                         |          18,5 |              18,5 |            24,6 |            31,3 |
+
+¹ Relevés dominés par des nations déjà sans armée (Arménie anéantie : 52 relevés, Vatican : 16). En « normal »,
+la Corée du Nord gardait sa capitale vide ; la production revient désormais à la capitale dégarnie.
+
+« Normal » mène des **guerres limitées** qui finissent en paix (7,5 au lieu de 3 ; 1,5 nation anéantie au lieu de
+5). Point faible honnête : la part d'unités détruites après un ordre de capture monte (8 → 21 %), concentrée sur
+Inde → Pakistan et les contre-attaques ukrainiennes ; des variantes montrent que le rassemblement en est la cause
+principale sur une graine (sans lui : 28 pertes au lieu de 64), pas sur l'autre (57 contre 54). D'où le réglage
+final : départs échelonnés sur place, rassemblement seulement au-delà de 6 h d'écart (au lieu de 3) — non mesuré
+en série complète.
+
+Chine → Taïwan (imposée) : en « normal », la Chine ne débarque pas contre un Taïwan IA qui défend ses côtes (force
+jugée insuffisante), mais la guerre continue (frappes profondes et missiles : 67 → 23 unités taïwanaises) au lieu
+de finir en paix blanche ; contre un Taïwan humain passif, elle débarque. En « difficile », Taïwan contre-débarque
+sur le continent (17 à 19 ordres, 8 à 11 réussis).
+
+### Duels de niveaux (code final, 14 jours)
+
+|                           | Gains de l'agresseur | Gains de la cible | Captures réussies | Unités perdues après capture |
+| ------------------------- | -------------------: | ----------------: | ----------------: | ---------------------------: |
+| Difficile → facile, avant |            +75 / +67 |         −68 / −67 |       91 % / 80 % |                      22 / 88 |
+| Difficile → facile, après |            +91 / +82 |         −87 / −82 |       99 % / 99 % |                        0 / 0 |
+| Facile → difficile, avant |            −14 / −19 |         +34 / +44 |       62 % / 81 % |                      87 / 36 |
+| Facile → difficile, après |            −12 / −12 |         +12 / +14 |       69 % / 69 % |                      23 / 26 |
+
+La cible « difficile » reprend son territoire puis accepte la paix (estimation exacte : elle se sait plus faible
+que la plupart des agresseurs imposés) au lieu de contre-envahir.
+
+### Coût de calcul (banc réel, 2 alternances, machine au repos, temps CPU)
+
+| Mesure                     |         Avant |                    Après |
+| -------------------------- | ------------: | -----------------------: |
+| Jour calme                 |  504 / 433 ms |             465 / 463 ms |
+| **Jour de guerre intense** | 12,9 / 11,5 s | **11,7 / 11,7 s** (−4 %) |
+| Jour suivant               |   6,8 / 6,3 s |              4,9 / 5,2 s |
+| Dix jours suivants         | 14,8 / 14,6 s |            12,4 / 13,7 s |
+
+Une partie du gain vient de la fin des guerres accidentelles (29 guerres à J2 avant, 14 après : poursuites et
+survols chez des neutres). Les parties « difficile » du banc d'évaluation coûtent ~25 % de plus (opérations
+aériennes). Reprise et rejeu : « reprise identique », « états identiques » ; tests de déterminisme verts.
+
+### Tests ajoutés
+
+`test/ai-operations.test.ts` : menace en « normal » (rien avant J3, plan visible du renseignement, troupes massées
+à la frontière, ultimatum public 24 h avant la guerre) ; **dissuasion** (le joueur renforce sa frontière pendant
+l'ultimatum, l'IA renonce) ; « facile » n'attaque pas sans motif ; **rassemblement** puis assaut groupé ; **SEAD
+et escorte** (la défense antiaérienne identifiée est la première cible, un chasseur patrouille au-dessus) ;
+**débarquement** escorté sur l'île `ddd`. `ai-tactics` mis à jour (vagues échelonnées, arrivées à moins d'une
+heure d'écart) ; `fuzz` : délai porté à 60 s (4,3 s seul, plus de 5 s sur machine chargée).
+
+### Non terminé, ce qui reste faible
+
+- **Dernier réglage du rassemblement non mesuré en série complète** (départs échelonnés sur place, seuil 6 h) :
+  mesures arrêtées à la demande. À relancer : `node --expose-gc bench/run.mjs ai-eval` et
+  `AIEVAL_MODE=free AIEVAL_DAYS=21 AIEVAL_HUMAN=arm,est,twn,fra node --expose-gc bench/run.mjs ai-eval`.
+- **Pertes en attaque en « normal »** plus élevées qu'avant (8 → 21 % sur les guerres imposées), à surveiller.
+- **Débarquements contre une IA qui défend ses côtes** : la Chine « normal » n'ose pas (prudence) ; le
+  « difficile » réussit environ la moitié de ses traversées.
+- **Le joueur passif** ne signe jamais la paix proposée : en jeu réel, la guerre limitée s'arrête si le joueur
+  accepte ; sinon l'agresseur reste sur ses gains.
+- **Estimation pessimiste par construction** (moyenne × (1 + incertitude)) : elle surestime toujours un peu (×1,4
+  en médiane) ; c'est voulu, mais l'IA ignore les pertes que l'ennemi subit contre des tiers.
+- **Mobilisation** non utilisée pendant les préparatifs (coût économique ; laissée de côté).
