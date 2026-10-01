@@ -22,7 +22,7 @@ test('déclarer la guerre puis proposer la paix', async ({ page }, info) => {
   const row = win.locator('tr', { hasText: 'Belgique' }).first();
   await expect(row).toBeVisible();
   await row.getByRole('button', { name: 'Déclarer la guerre' }).click();
-  const dialog = page.getByRole('dialog');
+  const dialog = page.getByRole('dialog', { name: 'Déclaration de guerre' });
   await expect(dialog).toContainText('Belgique');
   await dialog.getByRole('button', { name: 'Déclarer la guerre' }).click();
   await expect.poll(async () => (await relation())?.relation).toBe('war');

@@ -159,3 +159,16 @@ export function relationOf(view: PlayerView | null, id: NationId) {
     'peace'
   );
 }
+
+/**
+ * Autonomie restante d'un aéronef (heures de jeu) : `fuelH` vaut à l'instant `fuelAt` et baisse
+ * d'une heure par heure de vol.
+ */
+export function fuelLeft(
+  m: { fuelH?: number; fuelAt?: number; airborne?: boolean } | undefined,
+  now: number,
+): number | null {
+  if (!m || m.fuelH === undefined) return null;
+  if (!m.airborne || m.fuelAt === undefined) return m.fuelH;
+  return Math.max(0, m.fuelH - (now - m.fuelAt) / 3_600_000);
+}

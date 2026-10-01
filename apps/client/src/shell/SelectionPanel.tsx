@@ -14,7 +14,7 @@ import {
   pictogramFor,
 } from '@redline/ui';
 import { fmtDuration, fmtKm } from '../i18n/index.js';
-import { nationName, relationOf } from '../lib/game.js';
+import { fuelLeft, nationName, relationOf } from '../lib/game.js';
 import { photoFor, usePhotos } from '../lib/photos.js';
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
@@ -77,11 +77,22 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
       value: t(`army.supplyState.${u.supply}`),
       tone: u.supply === 'supplied' ? 'green' : u.supply === 'limited' ? 'amber' : 'red',
     });
-  if (own && u.mission && u.mission.kind !== 'none')
+  if (own && u.mission && u.mission.kind !== 'none') {
+    const fuel = fuelLeft(u.mission, now);
     rows.push({
       label: t('game.selection.mission'),
-      value: `${t(`army.mission.${u.mission.kind}`)}${u.mission.fuelH !== undefined ? ` · ${t('army.fuel', { value: u.mission.fuelH.toFixed(1) })}` : ''}`,
+      value: `${t(`army.mission.${u.mission.kind}`)}${fuel !== null ? ` · ${t('army.fuel', { value: fuel.toFixed(1) })}` : ''}`,
+      tone: fuel !== null && fuel < 1 ? 'red' : undefined,
     });
+  }
+  if (own && u.mission?.readyAt && u.mission.readyAt > now)
+    rows.push({
+      label: t('game.selection.ready'),
+      value: fmtDuration(u.mission.readyAt - now),
+      tone: 'amber',
+    });
+  if (own && u.mission?.ammo !== undefined && u.mission.ammo !== null)
+    rows.push({ label: t('game.selection.ammo'), value: formatInt(u.mission.ammo) });
   if (general) rows.push({ label: t('game.selection.general'), value: general.name });
   if (sys && u.level !== 'detected') {
     if (sys.weaponRangeKm.max > 0)

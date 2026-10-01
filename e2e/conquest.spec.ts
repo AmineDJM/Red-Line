@@ -105,16 +105,22 @@ test('conquérir une province ennemie', async ({ page }, info) => {
   const target = await page.evaluate(([lng, lat]) => {
     const m = window.__rlMap.map;
     const r = m.getCanvas().getBoundingClientRect();
-    const layers = ['units-hex', 'focus-hex', 'cluster-hex'].filter((l) => m.getLayer(l));
-    for (let k = 0; k < 16; k++) {
-      const a = (k / 16) * 2 * Math.PI;
-      const p = m.project([lng + 0.043 * Math.cos(a), lat + 0.027 * Math.sin(a)]);
-      const box = [
-        [p.x - 40, p.y - 40],
-        [p.x + 40, p.y + 40],
-      ];
-      if (!m.queryRenderedFeatures(box, { layers }).length)
-        return { x: r.left + p.x, y: r.top + p.y };
+    const layers = ['units-hex', 'units-m-hex', 'focus-hex', 'cluster-hex'].filter((l) =>
+      m.getLayer(l),
+    );
+    // Anneaux de 2 à 4 km (rayon de capture : 5 km), 24 directions, zone libre de 60 px.
+    for (const f of [1, 0.75, 0.5, 1.2]) {
+      for (let k = 0; k < 24; k++) {
+        const a = (k / 24) * 2 * Math.PI;
+        const p = m.project([lng + f * 0.043 * Math.cos(a), lat + f * 0.027 * Math.sin(a)]);
+        const box = [
+          [p.x - 30, p.y - 30],
+          [p.x + 30, p.y + 30],
+        ];
+        const inside = p.x > 40 && p.y > 120 && p.x < r.width - 40 && p.y < r.height - 160;
+        if (inside && !m.queryRenderedFeatures(box, { layers }).length)
+          return { x: r.left + p.x, y: r.top + p.y };
+      }
     }
     throw new Error('aucun point libre autour de Bruxelles');
   }, BRUSSELS);

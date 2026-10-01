@@ -318,7 +318,9 @@
       "unknownType": "Type inconnu",
       "owner": "Nation",
       "multi_one": "{{count}} sélectionnée",
-      "multi_other": "{{count}} sélectionnées"
+      "multi_other": "{{count}} sélectionnées",
+      "ready": "Disponible dans",
+      "ammo": "Munitions"
     },
     "orders": {
       "moveTitle": "Ordre de déplacement",

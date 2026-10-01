@@ -14,6 +14,7 @@ import type {
   WeaponSystem,
 } from '@redline/shared';
 import { fmtDuration, fmtInt, fmtKm, t } from '../i18n/index.js';
+import { fuelLeft } from '../lib/game.js';
 import { INTEL_STALE_MS } from './features.js';
 import { REL_COLOR, relationOf, type Rel } from './palette.js';
 
@@ -82,7 +83,8 @@ function unitRows(u: UnitView, sys: WeaponSystem | undefined, ctx: TipCtx): TipR
       tone: u.supply === 'cut' ? RED : u.supply === 'limited' ? AMBER : undefined,
     });
   if (u.mission && u.mission.kind !== 'none') {
-    const fuel = u.mission.fuelH !== undefined ? ` · ${u.mission.fuelH.toFixed(1)} h` : '';
+    const left = fuelLeft(u.mission, ctx.t);
+    const fuel = left !== null ? ` · ${left.toFixed(1)} h` : '';
     rows.push({ k: t('map.tip.mission'), v: `${t(`map.mission.${u.mission.kind}`)}${fuel}` });
   }
   if (sys && u.level !== 'detected') {
