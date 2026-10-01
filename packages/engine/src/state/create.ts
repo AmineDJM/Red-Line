@@ -78,6 +78,14 @@ export function createGameImpl(world: World, setup: GameSetup): EngineState {
     data.provinces[pid] = { id: pid, owner: def.nationId, capture: null, capV: 0 };
     data.totalProvinces++;
   }
+  // Niveau des IA non déclarées : `setup.aiLevel`, sinon le niveau explicite commun à tous les joueurs
+  // déclarés (le serveur pose le niveau choisi pour la partie sur chaque joueur), sinon 'normal'.
+  const explicit = setup.players.map((p) => p.aiLevel);
+  const common =
+    setup.aiLevel ??
+    (explicit.length > 0 && explicit.every((l) => l && l === explicit[0])
+      ? explicit[0]
+      : undefined);
   for (const n of nationIds) {
     const p = players.find((x) => x.nationId === n);
     const res = {} as Record<Resource, number>;
@@ -88,7 +96,7 @@ export function createGameImpl(world: World, setup: GameSetup): EngineState {
       isAi: !p || p.isAi,
       isPlayer: !!p && !p.isAi,
       active: !!p,
-      aiLevel: p?.aiLevel ?? 'normal',
+      aiLevel: p?.aiLevel ?? common ?? 'normal',
       alive: count > 0,
       money: bal.economy.startingMoney,
       res,

@@ -1,115 +1,156 @@
 import type {
   BuildingType,
-  Category,
   NationId,
   ResearchBranch,
   ResearchNode,
   WeaponSystem,
 } from '@redline/shared';
-import { provincesOf, warsOf } from '../../state/access.js';
+import { nationUnits, provincesOf, sysOf, warsOf } from '../../state/access.js';
 import type { EngineState } from '../../state/types.js';
 import { wi } from '../../state/world.js';
-import { applyOrderImpl } from '../../orders/orders.js';
+import { aiOrder } from '../../ai/trace.js';
+import { canAfford } from '../../economy/economy.js';
 import { budgetDay } from './budget.js';
 import { buildingsOf, health, levelOf, provinceProductionSpeed } from './buildings.js';
 import { cfg, requiredBuildings } from './config.js';
 import { importCheck, localCheck } from './production.js';
 import { hasGate, nodeOf } from './research.js';
-import { eco, ecoNation, sortedIds } from './state.js';
+import { eco, ecoNation, orbatOf, sortedIds } from './state.js';
+import { canPay, scaledRes } from './util.js';
+import { aiCfg } from '../../ai/config.js';
+import { aiReserve } from '../../ai/money.js';
 
-/**
- * Réglages de comportement de l'IA économique (heuristiques de décision, pas de l'équilibrage) :
- * part de la trésorerie qu'elle accepte d'engager, priorités de branches, catégories achetées en guerre.
- */
-const AI = {
-  /** Une recherche n'est lancée que si elle coûte moins que cette part de la trésorerie. */
-  researchSpendShare: 0.25,
-  /** Priorité des branches (paix / guerre). */
-  peaceBranches: [
-    'industry',
-    'aero',
-    'land',
-    'sensors',
-    'naval',
-    'missiles',
-    'cyber',
-    'intel',
-  ] as ResearchBranch[],
-  warBranches: [
-    'aero',
-    'missiles',
-    'land',
-    'sensors',
-    'industry',
-    'naval',
-    'cyber',
-    'intel',
-  ] as ResearchBranch[],
-  /** En guerre : catégories achetées ou produites, par ordre de préférence. */
-  warCategories: ['air_defense', 'fighter', 'tank', 'artillery', 'drone'] as Category[],
-  /** Réserve conservée : jours de budget (ou part de la trésorerie sans ORBAT). */
-  reserveDays: 10,
-  reserveShare: 0.5,
-  /** Productions simultanées maximales en guerre. */
-  maxQueueWar: 3,
-  /** Taille d'une série. */
-  batch: 4,
-  /** Une réparation n'est lancée que si l'argent couvre ce multiple de son coût. */
-  repairFactor: 3,
-  /** Investissement en paix : seulement si la trésorerie dépasse ce nombre de jours de budget. */
-  investDays: 60,
-  /** Bâtiments améliorés en priorité (ressources, industrie). */
-  investIn: ['oil_field', 'mine', 'farm', 'electronics_plant', 'local_industry'] as BuildingType[],
-};
+/** Réglages de l'IA économique : data/balance, section ai.economy. */
+function AI(state: EngineState) {
+  return aiCfg(state.world).economy;
+}
 
 function reserve(state: EngineState, n: NationId): number {
   const bd = budgetDay(state, n);
-  return bd > 0 ? bd * AI.reserveDays : state.nations[n]!.money * AI.reserveShare;
+  return bd > 0
+    ? Math.max(bd * AI(state).warReserveDays, aiReserve(state, n, true))
+    : state.nations[n]!.money * AI(state).warReserveShare;
 }
 
-/** Recherche : la génération suivante (plus petit rang disponible) dans la branche prioritaire. */
+/** Branches de recherche connues. */
+const BRANCHES: ResearchBranch[] = [
+  'aero',
+  'cyber',
+  'industry',
+  'intel',
+  'land',
+  'missiles',
+  'naval',
+  'sensors',
+];
+
+/** Préférences de doctrine (ORBAT) : branches favorisées. */
+const DOCTRINE: Record<string, Partial<Record<ResearchBranch, number>>> = {
+  us: { aero: 0.15, naval: 0.1, sensors: 0.05 },
+  ru: { missiles: 0.15, land: 0.1, sensors: 0.05 },
+  cn: { missiles: 0.1, naval: 0.1, aero: 0.05 },
+  eu: { aero: 0.1, sensors: 0.05, land: 0.05 },
+  other: { land: 0.1, industry: 0.05 },
+};
+
+/**
+ * Rang de chaque branche pour une nation : poids de ses forces (valeur des unités par milieu), de sa
+ * doctrine et de la conjoncture (industrie en paix, armement en guerre).
+ */
+function branchRanks(state: EngineState, n: NationId, atWar: boolean): Map<ResearchBranch, number> {
+  const w: Record<string, number> = {
+    industry: atWar ? 0.05 : 0.5,
+    cyber: 0.03,
+    intel: 0.03,
+    missiles: 0.1,
+    sensors: 0.1,
+  };
+  let total = 0;
+  const add = (b: ResearchBranch, v: number) => (w[b] = (w[b] ?? 0) + v);
+  const parts: [ResearchBranch, number][] = [];
+  for (const id of nationUnits(state, n)) {
+    const u = state.units[id]!;
+    const s = sysOf(state, u);
+    const v = s.cost.money * (u.count / Math.max(1, s.unitSize));
+    const b: ResearchBranch | null =
+      s.movement === 'air'
+        ? 'aero'
+        : s.movement === 'sea'
+          ? 'naval'
+          : s.category === 'strike_missile'
+            ? 'missiles'
+            : s.category === 'air_defense' || s.category === 'radar'
+              ? 'sensors'
+              : s.movement === 'land'
+                ? 'land'
+                : null;
+    if (!b) continue;
+    parts.push([b, v]);
+    total += v;
+  }
+  for (const [b, v] of parts) add(b, total > 0 ? v / total : 0);
+  const doc = DOCTRINE[orbatOf(state, n)?.doctrine ?? 'other'] ?? {};
+  for (const b of BRANCHES) add(b, doc[b] ?? 0);
+  const order = [...BRANCHES].sort((a, b) => (w[b] ?? 0) - (w[a] ?? 0) || (a < b ? -1 : 1));
+  return new Map(order.map((b, i) => [b, i]));
+}
+
+/**
+ * Recherche cohérente avec sa doctrine et ses forces : score = rang technologique + rang de la branche ×
+ * `researchFocus` (les branches prioritaires prennent de l'avance sans délaisser les autres). Jamais
+ * au-delà de la part de trésorerie prévue, ni en entamant la réserve, ni sans les ressources.
+ */
 function thinkResearch(state: EngineState, n: NationId, atWar: boolean): void {
   const tree = state.world.research;
   if (!tree) return;
   const en = ecoNation(state, n);
   if (en.cur || en.queue.length > 0) return;
   const money = state.nations[n]!.money;
-  // Meilleur nœud = minimum de (score, identifiant) parmi les nœuds éligibles : les nœuds sont
-  // parcourus dans cet ordre (précalculé par arbre) et le premier éligible est retenu.
+  const ec = aiCfg(state.world).economy;
+  const share = money * ec.researchSpendShare;
+  if (!(share > 0) || share < cheapest(tree)) return;
+  // Réserve (grand livre) lue seulement quand une recherche est envisageable.
+  const budget = Math.min(share, money - aiReserve(state, n, atWar));
+  if (!(budget > 0)) return;
   const done = new Set(en.done);
-  const budget = money * AI.researchSpendShare;
-  for (const id of researchOrder(tree, atWar)) {
-    // Filtres purs, du moins coûteux au plus coûteux (même ensemble éligible).
+  const ranks = branchRanks(state, n, atWar);
+  let best: ResearchNode | null = null;
+  let bestScore = Infinity;
+  for (const id of researchIds(tree)) {
     const raw = tree.get(id)!;
     if (raw.cost.money > budget || done.has(id)) continue;
+    const score = raw.tier + (ranks.get(raw.branch) ?? BRANCHES.length) * ec.researchFocus;
+    if (score >= bestScore) continue;
     const node = nodeOf(state, id);
-    if (!node) continue;
-    if (!node.requires.every((r) => hasGate(state, n, r))) continue;
-    applyOrderImpl(state, n, { kind: 'research', nodeId: id });
-    return;
+    if (!node || !node.requires.every((r) => hasGate(state, n, r))) continue;
+    if (canPay(state, n, { money: node.cost.money, res: scaledRes(node.cost.resources, 1) }))
+      continue;
+    best = node;
+    bestScore = score;
   }
+  if (best) aiOrder(state, n, { kind: 'research', nodeId: best.id });
 }
 
-/** Identifiants de l'arbre triés par (score de l'IA, identifiant), en paix et en guerre. */
-const researchOrders = new WeakMap<object, { war: string[]; peace: string[] }>();
+/** Coût du nœud de recherche le moins cher (par arbre). */
+const cheapestCache = new WeakMap<object, number>();
 
-function researchOrder(tree: ReadonlyMap<string, ResearchNode>, atWar: boolean): string[] {
-  let o = researchOrders.get(tree);
-  if (!o) {
-    const sorted = (order: readonly string[]): string[] => {
-      const score = new Map<string, number>();
-      for (const [id, node] of tree) {
-        const bi = order.indexOf(node.branch);
-        score.set(id, node.tier * 100 + (bi < 0 ? 99 : bi));
-      }
-      return [...tree.keys()].sort(
-        (a, b) => score.get(a)! - score.get(b)! || (a < b ? -1 : a > b ? 1 : 0),
-      );
-    };
-    o = { war: sorted(AI.warBranches), peace: sorted(AI.peaceBranches) };
-    researchOrders.set(tree, o);
+function cheapest(tree: ReadonlyMap<string, ResearchNode>): number {
+  let c = cheapestCache.get(tree);
+  if (c === undefined) {
+    c = Infinity;
+    for (const node of tree.values()) c = Math.min(c, node.cost.money);
+    cheapestCache.set(tree, c);
   }
-  return atWar ? o.war : o.peace;
+  return c;
+}
+
+/** Identifiants de l'arbre triés (par arbre). */
+const researchIdsCache = new WeakMap<object, string[]>();
+
+function researchIds(tree: ReadonlyMap<string, ResearchNode>): string[] {
+  let ids = researchIdsCache.get(tree);
+  if (!ids) researchIdsCache.set(tree, (ids = [...tree.keys()].sort()));
+  return ids;
 }
 
 /** Réparations des bâtiments endommagés, si la trésorerie le permet. */
@@ -126,8 +167,8 @@ function thinkRepairs(state: EngineState, n: NationId): void {
         Math.pow(c.buildings.levelCostGrowth, levelOf(state, pid, b) - 1) *
         (1 - h) *
         c.industry.repairCostFactor;
-      if (state.nations[n]!.money < cost * AI.repairFactor) continue;
-      applyOrderImpl(state, n, { kind: 'repair', provinceId: pid, building: b });
+      if (state.nations[n]!.money < cost * AI(state).repairFactor) continue;
+      aiOrder(state, n, { kind: 'repair', provinceId: pid, building: b });
     }
   }
 }
@@ -135,30 +176,34 @@ function thinkRepairs(state: EngineState, n: NationId): void {
 /** Investissement : améliore le bâtiment de ressources le moins avancé (un chantier à la fois). */
 function thinkInvest(state: EngineState, n: NationId): void {
   const bd = budgetDay(state, n);
-  if (bd <= 0 || state.nations[n]!.money < bd * AI.investDays) return;
+  if (bd <= 0 || state.nations[n]!.money < bd * AI(state).investDays) return;
   const es = eco(state);
   for (const id of sortedIds(es.jobs)) if (es.jobs[id]!.n === n) return;
   const max = cfg(state.world).buildings.maxLevel;
   let best: { pid: string; b: BuildingType; lvl: number } | null = null;
   for (const pid of provincesOf(state, n)) {
-    for (const b of AI.investIn) {
+    for (const b of AI(state).investIn) {
       const lvl = levelOf(state, pid, b);
       if (lvl <= 0 || lvl >= max || health(state, pid, b) < 1) continue;
       if (!best || lvl < best.lvl) best = { pid, b, lvl };
     }
   }
-  if (best) applyOrderImpl(state, n, { kind: 'build', provinceId: best.pid, building: best.b });
+  if (!best) return;
+  const c = cfg(state.world).buildings;
+  const cost = (c.buildCostUsd[best.b] ?? 0) * Math.pow(c.levelCostGrowth, best.lvl);
+  if (state.nations[n]!.money - cost < aiReserve(state, n, false)) return;
+  aiOrder(state, n, { kind: 'build', provinceId: best.pid, building: best.b });
 }
 
 /** En guerre : production locale ou importation de défenses selon le budget. */
 function thinkWarProduction(state: EngineState, n: NationId): void {
   const ns = state.nations[n]!;
-  if (ns.production.length >= AI.maxQueueWar) return;
+  if (ns.production.length >= AI(state).warMaxQueue) return;
   const spare = ns.money - reserve(state, n);
   if (spare <= 0) return;
   const w = wi(state.world);
   const provs = provincesOf(state, n);
-  for (const cat of AI.warCategories) {
+  for (const cat of AI(state).warCategories) {
     const options: { sys: WeaponSystem; pid: string; local: boolean }[] = [];
     for (const id of w.systemIds) {
       const sys = state.world.catalog.get(id)!;
@@ -178,15 +223,36 @@ function thinkWarProduction(state: EngineState, n: NationId): void {
     );
     for (const o of options) {
       const unit = o.sys.cost.money * (o.local ? 1 : cfg(state.world).industry.importPriceFactor);
-      const count = Math.min(AI.batch, Math.floor(spare / Math.max(1, unit)));
+      const count = Math.min(AI(state).warBatch, Math.floor(spare / Math.max(1, unit)));
       if (count < 1) continue;
-      if (
-        applyOrderImpl(state, n, { kind: 'produce', provinceId: o.pid, systemId: o.sys.id, count })
-          .ok
-      )
+      if (aiOrder(state, n, { kind: 'produce', provinceId: o.pid, systemId: o.sys.id, count }).ok)
         return;
     }
   }
+}
+
+/**
+ * Coût d'une unité produite par l'IA tactique dans une province : fabrication locale (recherche ou
+ * licence, bâtiment requis, ressources) ou, à défaut, importation au prix majoré ; null si impossible.
+ * Hors économie réelle : prix du catalogue.
+ */
+export function aiUnitPrice(
+  state: EngineState,
+  n: NationId,
+  sys: WeaponSystem,
+  pid: string,
+): number | null {
+  if (!eco(state).live) return canAfford(state, n, sys) ? sys.cost.money : null;
+  const local = localCheck(state, n, sys, pid);
+  if (!local) {
+    const licensed = ecoNation(state, n).licences[sys.id] !== undefined;
+    const discount = licensed ? 1 - cfg(state.world).licences.productionDiscount : 1;
+    const paid = { money: sys.cost.money * discount, res: scaledRes(sys.cost.resources, 1) };
+    return canPay(state, n, paid) ? null : paid.money;
+  }
+  if (local !== 'research_required' && local !== 'not_allowed') return null;
+  if (importCheck(state, n, sys)) return null;
+  return sys.cost.money * cfg(state.world).industry.importPriceFactor;
 }
 
 export function ecoAiThink(state: EngineState, n: NationId): void {

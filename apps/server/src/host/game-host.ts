@@ -1565,6 +1565,8 @@ export class GameHost {
     const setup: GameSetup = {
       seed,
       players: opts.players.map((p) => ({ ...p, aiLevel: opts.aiLevel })),
+      // Niveau de toutes les IA de la partie (nations non déclarées comprises).
+      aiLevel: opts.aiLevel,
       ...(opts.scenario.nationIds ? { nationIds: opts.scenario.nationIds } : {}),
       scenario: opts.scenario,
       speed: opts.speed,

@@ -3,14 +3,16 @@ import {
   type NationId,
   type Order,
   type ProvinceId,
+  type AiBalance,
+  type AiLevelBalance,
   type ResolutionType,
 } from '@redline/shared';
 import type { EngineState } from '../state/types.js';
-import type { AiLevel } from '../state/types.js';
 import { atWar, provincesOf, sortedKeys, warsOf } from '../state/access.js';
 import { wi } from '../state/world.js';
 import { nextFloat } from '../rng/rng.js';
-import { applyOrderImpl } from '../orders/orders.js';
+import { aiOrder } from './trace.js';
+import { aiCfg, aiLevelCfg } from './config.js';
 import { board } from '../modules/registry.js';
 import {
   allianceOf,
@@ -50,98 +52,16 @@ import {
  *  - guerres par procuration : courtiser des neutres, financer des rebelles chez l'ennemi.
  */
 
-interface LevelProfile {
-  /** Rapport de force minimal pour déclarer une guerre (Infinity : jamais). */
-  warRatio: number;
-  /** Il faut un motif (territoire revendiqué, allié attaqué, nation paria), sauf écrasante supériorité. */
-  needsCasusBelli: boolean;
-  /** Supériorité qui dispense de motif. */
-  overwhelmingRatio: number;
-  maxWars: number;
-  /** Probabilité de passer à l'acte quand une cible convient (par réflexion stratégique). */
-  warChance: number;
-  warmupDays: number;
-  /** Majoration de la force supposée de l'adversaire. */
-  caution: number;
-  /** Sous ce rapport (et avec des pertes), elle demande la paix. */
-  peaceRatio: number;
-  /** Sous ce rapport, elle accepte une proposition de paix. */
-  acceptRatio: number;
-  alliances: boolean;
-  court: boolean;
-  fund: boolean;
-  council: boolean;
+type LevelProfile = AiLevelBalance;
+
+/** Réglages stratégiques de l'IA (data/balance, section ai.strategy). */
+function S(state: EngineState): AiBalance['strategy'] {
+  return aiCfg(state.world).strategy;
 }
 
-export const PROFILES: Record<AiLevel, LevelProfile> = {
-  easy: {
-    warRatio: Infinity,
-    needsCasusBelli: true,
-    overwhelmingRatio: Infinity,
-    maxWars: 0,
-    warChance: 0,
-    warmupDays: Infinity,
-    caution: 1.5,
-    peaceRatio: 1.2,
-    acceptRatio: 3,
-    alliances: false,
-    court: false,
-    fund: false,
-    council: false,
-  },
-  normal: {
-    warRatio: 2,
-    needsCasusBelli: true,
-    overwhelmingRatio: Infinity,
-    maxWars: 1,
-    warChance: 0.05,
-    warmupDays: 7,
-    caution: 1.2,
-    peaceRatio: 0.7,
-    acceptRatio: 1.3,
-    alliances: true,
-    court: true,
-    fund: true,
-    council: true,
-  },
-  hard: {
-    warRatio: 1.6,
-    needsCasusBelli: false,
-    overwhelmingRatio: 1.6,
-    maxWars: 2,
-    warChance: 0.12,
-    warmupDays: 3,
-    caution: 1,
-    peaceRatio: 0.5,
-    acceptRatio: 1,
-    alliances: true,
-    court: true,
-    fund: true,
-    council: true,
-  },
-};
-
-/** Réglages de comportement (heuristiques de l'IA, pas de l'équilibrage de jeu). */
-const S = {
-  /** Réflexions tactiques entre deux réflexions stratégiques (en guerre / au calme). */
-  strategicEveryHot: 4,
-  strategicEveryCalm: 24,
-  /** Réflexions tactiques espacées pour les nations éloignées de tout conflit. */
-  tacticalEveryCalm: 8,
-  /** Après une reprise en main (joueur remplacé) : pas de décision brutale pendant ce délai. */
-  takeoverCalmDays: 1,
-  peaceAskEveryDays: 2,
-  proxyEveryDays: 3,
-  courtShare: 0.02,
-  fundShare: 0.01,
-  minStabilityForWar: 45,
-  allianceMinProvinces: 4,
-  nationsPerAlliance: 20,
-  /** Au-delà, l'IA ne charge plus l'ordre du jour du Conseil. */
-  maxCouncilProposals: 8,
-  invitesPerThink: 3,
-  inviteLeaning: 0.4,
-};
+function profile(state: EngineState, n: NationId): LevelProfile {
+  return aiLevelCfg(state, state.nations[n]!.aiLevel);
+}
 
 interface Memory {
   /** Pas de guerre ni de départ d'alliance avant cette date (reprise en main). */
@@ -152,6 +72,12 @@ interface Memory {
   proposedSession: number;
   /** Captures impossibles (aucun chemin sans violer un neutre) : province → nouvel essai après. */
   capFail: Record<string, number>;
+  /** Invitations d'alliance envoyées : nation → date (pas de relance avant `inviteCooldownDays`). */
+  invited?: Record<NationId, number>;
+  /** Unités engagées dans une offensive : unité → [province visée, jusqu'à] (pas de rappel en renfort). */
+  commit?: Record<string, [string, number]>;
+  /** Dernière menace vue sur la capitale : [force, date] (hystérésis de la garnison). */
+  capThreat?: [number, number];
 }
 
 interface AiState {
@@ -170,7 +96,7 @@ function memory(state: EngineState, n: NationId): Memory {
   let m = s.mem[n];
   if (!m) {
     // Reprise en cours de partie (joueur inactif remplacé) : transition douce.
-    const calm = state.time > 0 ? state.time + S.takeoverCalmDays * DAY : 0;
+    const calm = state.time > 0 ? state.time + S(state).takeoverCalmDays * DAY : 0;
     s.mem[n] = m = {
       calmUntil: calm,
       peaceAsk: {},
@@ -196,8 +122,37 @@ export function captureFailures(state: EngineState, n: NationId): Record<string,
   return m.capFail;
 }
 
+/**
+ * Menace retenue sur la capitale : la plus forte vue depuis `memoryMs` (une menace qui disparaît de
+ * la vue un instant ne libère pas la garnison, qui ne fait plus la navette avec le front).
+ */
+export function capitalThreat(
+  state: EngineState,
+  n: NationId,
+  seen: number,
+  memoryMs: number,
+): number {
+  const m = memory(state, n);
+  const last = m.capThreat;
+  if (seen > 0 && (!last || seen >= last[0] || state.time - last[1] >= memoryMs)) {
+    m.capThreat = [seen, state.time];
+    return seen;
+  }
+  if (last && state.time - last[1] < memoryMs) return Math.max(seen, last[0]);
+  delete m.capThreat;
+  return seen;
+}
+
+/** Engagements offensifs en cours d'une nation (unités disparues et engagements échus retirés). */
+export function commitments(state: EngineState, n: NationId): Record<string, [string, number]> {
+  const m = memory(state, n);
+  const c = (m.commit ??= {});
+  for (const k of sortedKeys(c)) if (c[k]![1] <= state.time || !state.units[k]) delete c[k];
+  return c;
+}
+
 function order(state: EngineState, n: NationId, o: Order): boolean {
-  const ok = applyOrderImpl(state, n, o).ok;
+  const ok = aiOrder(state, n, o).ok;
   invalidateForceMemo();
   return ok;
 }
@@ -262,8 +217,7 @@ export function reactiveThink(state: EngineState, n: NationId, ctx: ThinkContext
 }
 
 function reactive(state: EngineState, n: NationId): void {
-  const ns = state.nations[n]!;
-  const P = PROFILES[ns.aiLevel];
+  const P = profile(state, n);
   const mine = ownForce(state, n);
   const d = ds(state);
   // Propositions de paix reçues.
@@ -350,6 +304,7 @@ function shouldAcceptPeace(
 ): boolean {
   if (state.nations[n]!.aiLevel === 'easy') return true;
   if (stabilityOf(state, n) < 40) return true;
+  if (noFront(state, n, from, S(state).unreachablePeaceDays)) return true;
   const ratio = ratioAgainst(state, n, from, mine, P);
   if (ratio < P.acceptRatio) return true;
   // Guerre enlisée : aucun gain depuis longtemps.
@@ -360,7 +315,7 @@ function shouldAcceptPeace(
 function acceptInvite(state: EngineState, n: NationId, A: Alliance, P: LevelProfile): boolean {
   if (A.members.some((m) => atWar(state, m, n))) return false;
   const leaning = ds(state).leaning[n]?.[A.id] ?? 0;
-  if (leaning >= S.inviteLeaning) return true;
+  if (leaning >= S(state).inviteLeaning) return true;
   if (!P.alliances) return false;
   if (reputation(state, A.leader) < 35) return false;
   // Une alliance utile : elle combat déjà un de mes ennemis, ou me protège d'un agresseur.
@@ -421,51 +376,72 @@ function councilVote(state: EngineState, n: NationId, r: Resolution): 'yes' | 'n
 }
 
 /** Réflexion stratégique complète (espacée dans le temps). */
-export function strategicThink(state: EngineState, n: NationId, neighbors: NationId[]): void {
+export function strategicThink(
+  state: EngineState,
+  n: NationId,
+  neighbors: NationId[],
+  hot = false,
+): void {
   if (!ds(state)) return;
-  withForceMemo(() => strategic(state, n, neighbors));
+  withForceMemo(() => strategic(state, n, neighbors, hot));
 }
 
-function strategic(state: EngineState, n: NationId, neighbors: NationId[]): void {
-  const ns = state.nations[n]!;
-  const P = PROFILES[ns.aiLevel];
+function strategic(state: EngineState, n: NationId, neighbors: NationId[], hot: boolean): void {
+  const P = profile(state, n);
   const m = memory(state, n);
   const mine = ownForce(state, n);
-  seekPeace(state, n, mine, P, m);
+  seekPeace(state, n, neighbors, mine, P, m);
   if (P.alliances) alliances(state, n, neighbors, P, m);
   if (P.council) council(state, n, mine, P, m);
-  if (state.time - m.lastProxy >= S.proxyEveryDays * DAY) {
+  if (state.time - m.lastProxy >= S(state).proxyEveryDays * DAY) {
     m.lastProxy = state.time;
-    if (P.court) court(state, n, neighbors);
-    if (P.fund) fund(state, n);
+    if (P.proxy) {
+      court(state, n, neighbors);
+      fund(state, n);
+    }
   }
-  seekWar(state, n, neighbors, mine, P, m);
+  seekWar(state, n, neighbors, mine, P, m, hot);
 }
 
 function seekPeace(
   state: EngineState,
   n: NationId,
+  neighbors: NationId[],
   mine: OwnForce,
   P: LevelProfile,
   m: Memory,
 ): void {
   const stab = stabilityOf(state, n);
+  const cfgS = S(state);
   for (const e of warsOf(state, n)) {
     if (!isRegular(state, e)) continue;
     const last = m.peaceAsk[e] ?? -Infinity;
-    if (state.time - last < S.peaceAskEveryDays * DAY) continue;
+    if (state.time - last < cfgS.peaceAskEveryDays * DAY) continue;
+    // Guerre sans front (alliance lointaine) : rien à y gagner, paix blanche.
+    const idle = !neighbors.includes(e) && noFront(state, n, e, cfgS.unreachablePeaceDays);
     const ratio = ratioAgainst(state, n, e, mine, P);
     const lost = lostTo(state, n, e);
     const losing = (ratio < P.peaceRatio && lost > 0) || ratio < P.peaceRatio * 0.6 || stab < 30;
-    if (!losing) continue;
+    if (!losing && !idle) continue;
     m.peaceAsk[e] = state.time;
     order(state, n, {
       kind: 'proposePeace',
       nationId: e,
-      type: stab < 30 || lost > 0 ? 'ceasefire' : 'peace',
+      type: !idle && (stab < 30 || lost > 0) ? 'ceasefire' : 'peace',
     });
   }
   for (const k of sortedKeys(m.peaceAsk)) if (!atWar(state, n, k)) delete m.peaceAsk[k];
+}
+
+/**
+ * Guerre sans front depuis `days` jours : aucune province prise ni perdue entre les deux camps (carte
+ * publique), et pas de frontière commune. Typiquement une guerre d'alliance avec un pays lointain.
+ */
+function noFront(state: EngineState, n: NationId, e: NationId, days: number): boolean {
+  const since = state.wars[pairKey(n, e)];
+  if (since === undefined || state.time - since < days * DAY) return false;
+  if (lostTo(state, n, e) > 0 || lostTo(state, e, n) > 0) return false;
+  return !neighborNations(state, n).includes(e);
 }
 
 function seekWar(
@@ -475,9 +451,10 @@ function seekWar(
   mine: OwnForce,
   P: LevelProfile,
   m: Memory,
+  hot: boolean,
 ): void {
   if (P.maxWars <= 0 || state.time < m.calmUntil || state.time < P.warmupDays * DAY) return;
-  if (stabilityOf(state, n) < S.minStabilityForWar) return;
+  if (stabilityOf(state, n) < S(state).minStabilityForWar) return;
   const wars = warsOf(state, n).filter((e) => isRegular(state, e));
   if (wars.length >= P.maxWars) return;
   const d = ds(state);
@@ -489,14 +466,28 @@ function seekWar(
     const rel = relationOf(state, n, t);
     if (rel !== 'peace') continue;
     if (d.grace[`${n}>${t}`] !== undefined) continue;
-    const r = ratioAgainst(state, n, t, mine, P);
-    if (P.needsCasusBelli && r < P.overwhelmingRatio && !casusBelli(state, n, t)) continue;
+    let r = ratioAgainst(state, n, t, mine, P);
+    if (state.nations[t]!.isPlayer) r *= P.humanTargetBias;
+    if (r < bestRatio) continue;
+    // Pas de guerre sur la seule foi de ses alliés (dont la force n'est qu'estimée) : ses propres
+    // forces doivent déjà peser une part du rapport voulu.
+    const own = (mine.value + 1) / (sideForce(state, n, t, mine, P) + 1);
+    if (own < P.warRatio * S(state).ownRatioShare) continue;
+    const waived = P.casusBelliWaiverRatio > 0 && r >= P.casusBelliWaiverRatio;
+    if (!waived && !casusBelli(state, n, t)) continue;
     if (r >= bestRatio) {
       bestRatio = r;
       best = t;
     }
   }
-  if (!best || nextFloat(state.rng) >= P.warChance) return;
+  if (!best) return;
+  // Probabilité par jour ramenée à l'intervalle entre deux réflexions stratégiques de cette nation.
+  const perDay = state.nations[best]!.isPlayer ? P.warChanceHumanPerDay : P.warChancePerDay;
+  if (perDay <= 0) return;
+  const period = state.world.balance.time.aiThinkMinutes / (24 * 60);
+  const every = hot ? S(state).strategicEveryHot : S(state).strategicEveryCalm;
+  const chance = 1 - Math.pow(1 - perDay, every * period);
+  if (nextFloat(state.rng) >= chance) return;
   order(state, n, { kind: 'declareWar', nationId: best });
 }
 
@@ -529,12 +520,13 @@ function alliances(
       (e) => isRegular(state, e) && d.aggressor[pairKey(n, e)] === e,
     );
     const size = state.nations[n]!.provinceCount;
-    const big = state.nations[n]!.aiLevel === 'hard' && size >= S.allianceMinProvinces;
-    if (!(threatened && size >= S.allianceMinProvinces - 1) && !big) return;
+    const cfgS = S(state);
+    const big = state.nations[n]!.aiLevel === 'hard' && size >= cfgS.allianceMinProvinces;
+    if (!(threatened && size >= cfgS.allianceMinProvinces - 1) && !big) return;
     // Pas de poussière d'alliances : un plafond proportionnel au nombre de nations.
     if (
       Object.keys(d.alliances).length >=
-      Math.max(4, Math.ceil(state.nationIds.length / S.nationsPerAlliance))
+      Math.max(4, Math.ceil(state.nationIds.length / cfgS.nationsPerAlliance))
     )
       return;
     if (state.time < m.calmUntil) return;
@@ -542,9 +534,14 @@ function alliances(
     const cap = w.nationById.get(n)?.capitalProvinceId;
     const place =
       (cap && (w.provById.get(cap)?.cityName ?? w.provById.get(cap)?.name)) || n.toUpperCase();
+    // Nom libre (une alliance dissoute ou homonyme garde le sien).
+    const taken = new Set(Object.values(d.alliances).map((x) => x.name.toLowerCase()));
+    let name = elide(`Pacte de ${place}`).slice(0, 40);
+    if (taken.has(name.toLowerCase())) name = `${name.slice(0, 33)} (${n.toUpperCase()})`;
+    if (taken.has(name.toLowerCase())) return;
     order(state, n, {
       kind: 'createAlliance',
-      name: elide(`Pacte de ${place}`).slice(0, 40),
+      name,
       flag: n.toUpperCase().slice(0, 3),
       charter: { mutualDefense: true, intelSharing: true, passage: true },
     });
@@ -553,16 +550,22 @@ function alliances(
   if (A.leader !== n) return;
   let sent = 0;
   const b = board(state);
+  const cfgS = S(state);
+  const invited = (m.invited ??= {});
+  for (const k of sortedKeys(invited))
+    if (state.time - invited[k]! >= cfgS.inviteCooldownDays * DAY) delete invited[k];
   for (const t of neighbors) {
-    if (sent >= S.invitesPerThink) break;
+    if (sent >= cfgS.invitesPerThink) break;
     if (
       !isRegular(state, t) ||
       !state.nations[t]!.alive ||
       b.allianceOf[t] ||
-      A.invites.includes(t)
+      A.invites.includes(t) ||
+      invited[t] !== undefined
     )
       continue;
     if (A.members.some((x) => atWar(state, x, t))) continue;
+    invited[t] = state.time;
     if (order(state, n, { kind: 'inviteToAlliance', nationId: t })) sent++;
   }
 }
@@ -576,7 +579,7 @@ function council(
 ): void {
   const s = ds(state).session;
   if (s.phase !== 'proposals' || m.proposedSession === s.id) return;
-  if (s.resolutions.length >= S.maxCouncilProposals) return;
+  if (s.resolutions.length >= S(state).maxCouncilProposals) return;
   const d = ds(state);
   for (const e of warsOf(state, n)) {
     if (!isRegular(state, e)) continue;
@@ -614,13 +617,13 @@ function court(state: EngineState, n: NationId, neighbors: NationId[]): void {
       continue;
     if (!best || (d.leaning[t]?.[A.id] ?? 0) > (d.leaning[best]?.[A.id] ?? 0)) best = t;
   }
-  const aid = ns.money * S.courtShare;
+  const aid = ns.money * S(state).courtShare;
   if (best && aid > 0) order(state, n, { kind: 'courtNeutral', nationId: best, aid });
 }
 
 function fund(state: EngineState, n: NationId): void {
   const ns = state.nations[n]!;
-  const amount = ns.money * S.fundShare;
+  const amount = ns.money * S(state).fundShare;
   if (!(amount > 0)) return;
   let target: ProvinceId | null = null;
   const w = wi(state.world);
@@ -640,4 +643,4 @@ function fund(state: EngineState, n: NationId): void {
   if (target) order(state, n, { kind: 'fundRebels', provinceId: target, amount });
 }
 
-export { S as STRATEGY };
+export { S as strategyCfg };

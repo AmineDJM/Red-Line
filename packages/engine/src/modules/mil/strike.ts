@@ -111,7 +111,7 @@ export function isSsbn(sys: WeaponSystem): boolean {
 }
 
 /** Missile tiré depuis les cellules d'un navire : même doctrine de préférence. */
-function missileForShip(
+export function missileForShip(
   state: EngineState,
   ship: WeaponSystem,
   antiShip: boolean,

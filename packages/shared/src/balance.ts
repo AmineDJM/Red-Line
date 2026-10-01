@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { CATEGORIES } from './catalog.js';
+import { BUILDING_TYPES } from './map.js';
 
 // ——— Combat complet (phase 3) : chiffres d'équilibrage du module militaire du moteur ———
 
@@ -196,6 +198,326 @@ export const MilitaryBalanceSchema = z.object({
   }),
 });
 export type MilitaryBalance = z.infer<typeof MilitaryBalanceSchema>;
+
+// ——— Intelligence artificielle : heuristiques de décision des nations tenues par l'IA ———
+
+interface AiLevelDefaults {
+  warRatio: number;
+  casusBelliWaiverRatio: number;
+  maxWars: number;
+  warChancePerDay: number;
+  warChanceHumanPerDay: number;
+  warmupDays: number;
+  caution: number;
+  peaceRatio: number;
+  acceptRatio: number;
+  humanTargetBias: number;
+  alliances: boolean;
+  proxy: boolean;
+  council: boolean;
+  capitalGarrison: number;
+  defendCities: boolean;
+  counterattack: boolean;
+  offensive: 'none' | 'started' | 'all';
+  maxCounterPerThink: number;
+  maxOffensivePerThink: number;
+  groupMax: number;
+  attackRatio: number;
+  pathBudget: number;
+  enemyCapitalBonus: number;
+  salvosPerThink: number;
+  salvoSize: number;
+  blockades: number;
+  airStrikesPerThink: number;
+  caps: number;
+  supportStrikes: boolean;
+  adaptiveProduction: boolean;
+  reconChance: number;
+}
+
+/** Profil d'un niveau de difficulté (stratégie, tactique, combat, production, renseignement). */
+const aiLevel = (d: AiLevelDefaults) =>
+  z
+    .object({
+      // ——— Stratégie : guerres, paix, alliances ———
+      /** Rapport de force minimal (estimé, sans tricher) pour déclarer une guerre. */
+      warRatio: num(d.warRatio),
+      /** Sans motif public (casus belli), il faut au moins cette supériorité ; 0 = jamais sans motif. */
+      casusBelliWaiverRatio: num(d.casusBelliWaiverRatio),
+      /** Guerres simultanées voulues au plus (0 : jamais d'agression). */
+      maxWars: num(d.maxWars),
+      /**
+       * Probabilité par jour de passer à l'acte quand une cible convient (IA visée / joueur humain
+       * visé) : indépendante de la fréquence de réflexion, elle ne s'accumule pas avec l'agitation.
+       */
+      warChancePerDay: z.number().min(0).max(1).default(d.warChancePerDay),
+      warChanceHumanPerDay: z.number().min(0).max(1).default(d.warChanceHumanPerDay),
+      /** Pas d'agression avant ce délai depuis le début de la partie (jours). */
+      warmupDays: num(d.warmupDays),
+      /** Majoration de la force supposée de l'adversaire. */
+      caution: num(d.caution),
+      /** Sous ce rapport (et avec des pertes), elle demande la paix. */
+      peaceRatio: num(d.peaceRatio),
+      /** Sous ce rapport, elle accepte une proposition de paix. */
+      acceptRatio: num(d.acceptRatio),
+      /** Multiplicateur du rapport de force contre un joueur humain (> 1 : cible préférée). */
+      humanTargetBias: num(d.humanTargetBias),
+      alliances: z.boolean().default(d.alliances),
+      /** Guerres par procuration : courtiser des neutres, financer des rebelles. */
+      proxy: z.boolean().default(d.proxy),
+      council: z.boolean().default(d.council),
+      // ——— Tactique terrestre ———
+      /** Unités terrestres gardées en permanence dans la capitale en guerre. */
+      capitalGarrison: num(d.capitalGarrison),
+      /** Renforcer les villes menacées par des forces ennemies vues. */
+      defendCities: z.boolean().default(d.defendCities),
+      /** Reprendre les provinces perdues voisines. */
+      counterattack: z.boolean().default(d.counterattack),
+      /** Offensives : aucune, seulement dans les guerres qu'elle a déclarées, ou contre tout ennemi. */
+      offensive: z.enum(['none', 'started', 'all']).default(d.offensive),
+      maxCounterPerThink: num(d.maxCounterPerThink),
+      maxOffensivePerThink: num(d.maxOffensivePerThink),
+      /** Unités envoyées ensemble au plus (concentration des forces). */
+      groupMax: num(d.groupMax),
+      /** Force engagée / force ennemie connue près de l'objectif (sinon pas d'attaque). */
+      attackRatio: num(d.attackRatio),
+      /** Calculs de trajet par réflexion tactique (budget de calcul). */
+      pathBudget: num(d.pathBudget),
+      /** Attrait d'une capitale ennemie comme objectif (multiplicateur de score). */
+      enemyCapitalBonus: num(d.enemyCapitalBonus),
+      // ——— Combat aérien et missiles ———
+      salvosPerThink: num(d.salvosPerThink),
+      /** Munitions tirées par salve (les stocks sont consommés). */
+      salvoSize: num(d.salvoSize),
+      /** Blocus de ports ennemis tenus à la fois au plus (navires de surface libres). */
+      blockades: num(d.blockades),
+      airStrikesPerThink: num(d.airStrikesPerThink),
+      /** Patrouilles de chasse au-dessus de la capitale en cas de menace aérienne. */
+      caps: num(d.caps),
+      /** Frappes aériennes d'appui sur les défenseurs des objectifs de ses offensives. */
+      supportStrikes: z.boolean().default(d.supportStrikes),
+      // ——— Production et renseignement ———
+      /** Production adaptée aux forces ennemies observées (sinon : meilleur rapport valeur / prix). */
+      adaptiveProduction: z.boolean().default(d.adaptiveProduction),
+      /** Probabilité quotidienne d'une reconnaissance militaire de l'ennemi en guerre. */
+      reconChance: z.number().min(0).max(1).default(d.reconChance),
+    })
+    .default({});
+
+/**
+ * Section `ai` de data/balance (optionnelle) : chaque valeur a une valeur par défaut ; le moteur lit
+ * `AiBalanceSchema.parse(balance.ai ?? {})`. Ce sont des heuristiques de décision, pas des règles :
+ * l'IA joue avec les mêmes ordres et le même brouillard de guerre que les joueurs.
+ */
+export const AiBalanceSchema = z.object({
+  levels: z
+    .object({
+      easy: aiLevel({
+        warRatio: 99,
+        casusBelliWaiverRatio: 0,
+        maxWars: 0,
+        warChancePerDay: 0,
+        warChanceHumanPerDay: 0,
+        warmupDays: 999,
+        caution: 1.5,
+        peaceRatio: 1.2,
+        acceptRatio: 3,
+        humanTargetBias: 1,
+        alliances: false,
+        proxy: false,
+        council: false,
+        capitalGarrison: 1,
+        defendCities: false,
+        counterattack: false,
+        offensive: 'none',
+        maxCounterPerThink: 0,
+        maxOffensivePerThink: 0,
+        groupMax: 2,
+        attackRatio: 1,
+        pathBudget: 4,
+        enemyCapitalBonus: 1,
+        salvosPerThink: 0,
+        salvoSize: 2,
+        blockades: 0,
+        airStrikesPerThink: 0,
+        caps: 1,
+        supportStrikes: false,
+        adaptiveProduction: false,
+        reconChance: 0.2,
+      }),
+      normal: aiLevel({
+        warRatio: 2,
+        casusBelliWaiverRatio: 0,
+        maxWars: 1,
+        warChancePerDay: 0.1,
+        warChanceHumanPerDay: 0.1,
+        warmupDays: 7,
+        caution: 1.2,
+        peaceRatio: 0.7,
+        acceptRatio: 1.3,
+        humanTargetBias: 1,
+        alliances: true,
+        proxy: true,
+        council: true,
+        capitalGarrison: 2,
+        defendCities: true,
+        counterattack: true,
+        offensive: 'started',
+        maxCounterPerThink: 2,
+        maxOffensivePerThink: 1,
+        groupMax: 4,
+        attackRatio: 1.5,
+        pathBudget: 8,
+        enemyCapitalBonus: 1.5,
+        salvosPerThink: 1,
+        salvoSize: 4,
+        blockades: 0,
+        airStrikesPerThink: 1,
+        caps: 1,
+        supportStrikes: true,
+        adaptiveProduction: true,
+        reconChance: 0.6,
+      }),
+      hard: aiLevel({
+        warRatio: 2,
+        casusBelliWaiverRatio: 3,
+        maxWars: 2,
+        warChancePerDay: 0.02,
+        warChanceHumanPerDay: 0.25,
+        warmupDays: 3,
+        caution: 1,
+        peaceRatio: 0.5,
+        acceptRatio: 1,
+        humanTargetBias: 1.25,
+        alliances: true,
+        proxy: true,
+        council: true,
+        capitalGarrison: 3,
+        defendCities: true,
+        counterattack: true,
+        offensive: 'all',
+        maxCounterPerThink: 3,
+        maxOffensivePerThink: 2,
+        groupMax: 6,
+        attackRatio: 2,
+        pathBudget: 12,
+        enemyCapitalBonus: 2.5,
+        salvosPerThink: 2,
+        salvoSize: 8,
+        blockades: 1,
+        airStrikesPerThink: 2,
+        caps: 2,
+        supportStrikes: true,
+        adaptiveProduction: true,
+        reconChance: 0.9,
+      }),
+    })
+    .default({}),
+  tactical: z
+    .object({
+      /** Distance maximale d'intervention défensive (km). */
+      defendReachKm: num(1500),
+      /** Distance maximale entre une unité et l'objectif d'une offensive ou contre-attaque (km). */
+      attackReachKm: num(2500),
+      /** Rayon autour d'une ville dans lequel une force ennemie la menace (km). */
+      threatRadiusKm: num(150),
+      /** Rayon autour d'une ville où l'on compte ses défenseurs et la force ennemie qui la tient (km). */
+      cityRadiusKm: num(25),
+      /** Distance maximale des renforts envoyés vers une ville menacée (km). */
+      reinforceReachKm: num(800),
+      /** Villes menacées renforcées par réflexion. */
+      maxReinforcePerThink: num(2),
+      /** Patrouille de chasse au-dessus de la capitale si un aéronef ennemi est vu à cette distance (km). */
+      capAlertKm: num(600),
+      capRadiusKm: num(250),
+      /** Contacts ennemis perdus de vue retenus comme menace pendant ce délai (heures). */
+      contactMemoryHours: num(12),
+      /** Une unité lancée dans une offensive n'est pas rappelée en renfort pendant ce délai (heures). */
+      commitHours: num(8),
+      /** Délai avant de retenter une capture sans chemin praticable (heures de jeu). */
+      captureRetryHours: num(6),
+      /** Plafond d'unités en paix, par province possédée, plus une base. */
+      peaceUnitsPerProvince: num(0.5),
+      peaceUnitsBase: num(2),
+      /** Plafond d'unités en guerre. */
+      warUnitsPerProvince: num(1.5),
+      warUnitsBase: num(6),
+      /** Productions simultanées maximales (paix / guerre). */
+      maxQueuePeace: num(1),
+      maxQueueWar: num(2),
+    })
+    .default({}),
+  economy: z
+    .object({
+      /** En paix, on ne produit que si l'argent couvre ce multiple du coût. */
+      peaceReserveFactor: num(2),
+      /** Réserve gardée, en jours de budget de défense (guerre / paix). */
+      reserveDaysWar: num(5),
+      reserveDaysPeace: num(20),
+      /** Entretien supérieur aux revenus : la réserve couvre aussi ce nombre de jours de déficit. */
+      deficitDays: num(20),
+      /** Une recherche n'est lancée que si elle coûte moins que cette part de la trésorerie. */
+      researchSpendShare: num(0.25),
+      /** Avance (en rangs) des branches de recherche prioritaires sur les autres. */
+      researchFocus: num(0.6),
+      /** Achats de guerre des IA actives (module eco) : catégories, par ordre de préférence. */
+      warCategories: z
+        .array(z.enum(CATEGORIES))
+        .default(['air_defense', 'fighter', 'tank', 'artillery', 'drone']),
+      /** Réserve des achats de guerre : jours de budget (ou part de la trésorerie sans ORBAT). */
+      warReserveDays: num(10),
+      warReserveShare: num(0.5),
+      /** Achats de guerre simultanés au plus, et taille d'une série. */
+      warMaxQueue: num(3),
+      warBatch: num(4),
+      /** Une réparation n'est lancée que si l'argent couvre ce multiple de son coût. */
+      repairFactor: num(3),
+      /** Investissement en paix : seulement si la trésorerie dépasse ce nombre de jours de budget. */
+      investDays: num(60),
+      /** Bâtiments améliorés en priorité (ressources, industrie). */
+      investIn: z
+        .array(z.enum(BUILDING_TYPES))
+        .default(['oil_field', 'mine', 'farm', 'electronics_plant', 'local_industry']),
+    })
+    .default({}),
+  strategy: z
+    .object({
+      /** Réflexions tactiques entre deux réflexions stratégiques (en guerre / au calme). */
+      strategicEveryHot: num(4),
+      strategicEveryCalm: num(24),
+      /** Réflexions tactiques espacées pour les nations éloignées de tout conflit. */
+      tacticalEveryCalm: num(8),
+      /** Une nation n'est pas réinvitée dans la même alliance avant ce délai (jours). */
+      inviteCooldownDays: num(5),
+      /** Guerre sans front (pas voisins, rien perdu ni pris) : paix blanche proposée après ce délai (jours). */
+      unreachablePeaceDays: num(3),
+      /** Pas de guerre d'agression sous cette stabilité. */
+      minStabilityForWar: num(45),
+      /** Ses propres forces (sans les alliés) doivent peser cette part du rapport de force voulu. */
+      ownRatioShare: num(0.6),
+      /** Après une reprise en main (joueur remplacé) : pas de décision brutale pendant ce délai (jours). */
+      takeoverCalmDays: num(1),
+      /** Délai entre deux demandes de paix au même ennemi (jours). */
+      peaceAskEveryDays: num(2),
+      /** Délai entre deux actions de guerre par procuration (jours). */
+      proxyEveryDays: num(3),
+      /** Part de la trésorerie offerte à un neutre courtisé / versée à des rebelles. */
+      courtShare: num(0.02),
+      fundShare: num(0.01),
+      /** Taille minimale (provinces) pour fonder une alliance. */
+      allianceMinProvinces: num(4),
+      /** Une alliance au plus pour ce nombre de nations (pas de poussière d'alliances). */
+      nationsPerAlliance: num(20),
+      /** Au-delà, l'IA ne charge plus l'ordre du jour du Conseil. */
+      maxCouncilProposals: num(8),
+      invitesPerThink: num(3),
+      /** Penchant (guerre par procuration) au-delà duquel une invitation est acceptée d'office. */
+      inviteLeaning: num(0.4),
+    })
+    .default({}),
+});
+export type AiBalance = z.infer<typeof AiBalanceSchema>;
+export type AiLevelBalance = AiBalance['levels']['normal'];
 
 /** Chiffres d'équilibrage globaux (data/balance/*.json). Tout est réglable par l'admin. */
 export const BalanceSchema = z.object({
@@ -619,6 +941,8 @@ export const BalanceSchema = z.object({
       resources: z.number().positive().default(1e12),
     })
     .optional(),
+  /** Heuristiques de décision de l'IA par niveau de difficulté : voir AiBalanceSchema (défauts). */
+  ai: AiBalanceSchema.optional(),
   /** Armée de départ par nation jouable, posée autour de la capitale (repli si pas d'ORBAT). */
   startingArmy: z.array(z.object({ systemId: z.string(), count: z.number().int().min(1) })),
   /** Armée de départ réduite pour les nations non jouées (IA neutres). */

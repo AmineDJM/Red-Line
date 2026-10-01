@@ -1,13 +1,20 @@
 import { describe, expect, it } from 'vitest';
-import { DAY, HOUR, MINUTE } from '@redline/shared';
-import { advanceTo, applyOrder, createGame, stats, viewFor } from '../src/index.js';
+import { BalanceSchema, DAY, HOUR, MINUTE } from '@redline/shared';
+import { advanceTo, applyOrder, buildWorld, createGame, stats, viewFor } from '../src/index.js';
 import { board } from '../src/modules/kit.js';
 import { signal } from '../src/modules/registry.js';
 import { mil } from '../src/modules/mil/state.js';
 import { atWar, sightLevel } from '../src/state/access.js';
 import type { EngineState } from '../src/state/types.js';
-import { cityOf } from './fixtures.js';
-import { captureSignals, milSandbox, milWorld, notesOf } from './mil-fixtures.js';
+import { BALANCE, cityOf } from './fixtures.js';
+import {
+  MIL_CATALOG,
+  captureSignals,
+  milMap,
+  milSandbox,
+  milWorld,
+  notesOf,
+} from './mil-fixtures.js';
 
 describe('forces spéciales, matériel capturé, piles', () => {
   it('sabotage par forces spéciales : building_hit ou échec, guerre déclarée', () => {
@@ -278,20 +285,42 @@ describe('statistiques et IA de combat', () => {
     });
   });
 
+  /** Hélicoptère ennemi vu à ~900 km de la capitale de bbb (IA 'hard'), sur la petite carte de test. */
+  const capGame = (capAlertKm?: number) =>
+    createGame(
+      capAlertKm
+        ? buildWorld(
+            milMap(),
+            MIL_CATALOG,
+            BalanceSchema.parse({ ...BALANCE, ai: { tactical: { capAlertKm } } }),
+          )
+        : milWorld(),
+      {
+        seed: 3,
+        players: [
+          { nationId: 'aaa', isAi: false },
+          { nationId: 'bbb', isAi: true, aiLevel: 'hard' },
+        ],
+        units: [
+          { owner: 'bbb', systemId: 'tst.jet', pos: cityOf('bbb-2'), count: 2 },
+          { owner: 'bbb', systemId: 'tst.cruise', pos: cityOf('bbb-2'), count: 10 },
+          { owner: 'bbb', systemId: 'tst.radar', pos: [9, 40.5] },
+          { owner: 'aaa', systemId: 'tst.helo', pos: [4.9, 40.5] }, // u4 : menace aérienne
+        ],
+      },
+    ) as EngineState;
+
+  it('IA en guerre : menace aérienne lointaine, pas de patrouille de chasse inutile', () => {
+    const s = capGame();
+    applyOrder(s, 'aaa', { kind: 'move', unitIds: ['u4'], to: [8, 40.5] });
+    advanceTo(s, 2 * HOUR);
+    expect(atWar(s, 'aaa', 'bbb')).toBe(true);
+    expect(mil(s).ms.u1!.mis).toBe('none');
+  });
+
   it('IA en guerre : patrouille de chasse au-dessus de la capitale et salve de missiles', () => {
-    const s = createGame(milWorld(), {
-      seed: 3,
-      players: [
-        { nationId: 'aaa', isAi: false },
-        { nationId: 'bbb', isAi: true, aiLevel: 'hard' },
-      ],
-      units: [
-        { owner: 'bbb', systemId: 'tst.jet', pos: cityOf('bbb-2'), count: 2 },
-        { owner: 'bbb', systemId: 'tst.cruise', pos: cityOf('bbb-2'), count: 10 },
-        { owner: 'bbb', systemId: 'tst.radar', pos: [9, 40.5] },
-        { owner: 'aaa', systemId: 'tst.helo', pos: [4.9, 40.5] }, // u4 : menace aérienne
-      ],
-    }) as EngineState;
+    // Rayon d'alerte élargi : sur la petite carte de test, la menace est à ~900 km de la capitale.
+    const s = capGame(1200);
     applyOrder(s, 'aaa', { kind: 'move', unitIds: ['u4'], to: [8, 40.5] });
     advanceTo(s, 2 * HOUR);
     expect(atWar(s, 'aaa', 'bbb')).toBe(true);

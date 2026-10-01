@@ -85,6 +85,27 @@ export function nearestCity(
   return best === null ? null : { pid: best, d: bestD };
 }
 
+/**
+ * Provinces dont la ville est à ≤ rKm de `p` (distanceKm(ville, p)), avec leur distance. L'ordre de la
+ * liste n'est pas significatif : l'appelant qui en dépend la trie.
+ */
+export function citiesNear(world: World, p: LngLat, rKm: number): { pid: ProvinceId; d: number }[] {
+  const idx = cityIndex(world);
+  const w = wi(world);
+  const out: { pid: ProvinceId; d: number }[] = [];
+  const cells = new Set<number>();
+  coverCap(p, rKm + 1, cells);
+  for (const c of cells) {
+    const list = idx.cells.get(c);
+    if (!list) continue;
+    for (const pid of list) {
+      const d = distanceKm(w.provById.get(pid)!.cityPoint, p);
+      if (d <= rKm) out.push({ pid, d });
+    }
+  }
+  return out;
+}
+
 /** En dessous de ce nombre de provinces, le parcours direct est plus rapide que l'index. */
 const DIRECT_SCAN_MAX = 48;
 
