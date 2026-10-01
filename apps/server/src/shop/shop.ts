@@ -400,7 +400,8 @@ export async function shopRoutes(app: FastifyInstance, ctx: AppContext): Promise
       if (row.status === 'ended') throw new HttpError(409, 'game_over', 'La partie est terminée');
       if (row.status === 'lobby') throw new HttpError(409, 'not_started', 'Partie non lancée');
       const policy = row.shopPolicy ?? { mode: 'open' };
-      if (policy.mode === 'disabled') {
+      // Compte illimité (décision d'Amine) : accélérations partout, même boutique désactivée.
+      if (policy.mode === 'disabled' && !auth.user.unlimited) {
         throw new HttpError(403, 'shop_disabled', 'Achats désactivés dans cette partie');
       }
       const cfg = ctx.shop.accelerate;
