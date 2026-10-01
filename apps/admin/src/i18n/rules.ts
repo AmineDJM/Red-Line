@@ -580,6 +580,146 @@ const AI_HELP: Record<string, HelpEntry> = {
   ],
 };
 
+/** Monde vivant des parties solo (section `ai.world`) : mêmes libellés pour les trois niveaux. */
+const AI_WORLD_LEVEL_HELP: Record<string, HelpEntry> = {
+  fromDays: ['Début des guerres entre IA', 'Aucune guerre entre IA avant ce jour de partie.', 'j'],
+  maxWars: [
+    'Guerres par nation',
+    'Guerres entre IA qu’une même nation lance et mène à la fois, au plus (0 : jamais).',
+    'n',
+  ],
+  maxActiveWars: [
+    'Plafond mondial',
+    'Guerres entre IA en cours dans le monde au plus (× intensité) : vraisemblance et coût de calcul.',
+    'n',
+  ],
+  rivalryChancePerDay: [
+    'Probabilité d’une guerre de rivalité',
+    'Par jour, pour une rivalité de poids 1 (× poids × intensité), si le rapport de force le permet.',
+    'frac',
+  ],
+  rivalryRatio: [
+    'Rapport de force contre un rival',
+    'Supériorité estimée (sans tricher) exigée pour attaquer un rival historique.',
+    'x',
+  ],
+  opportunismChancePerDay: [
+    'Probabilité d’une guerre opportuniste',
+    'Par jour, contre un voisin affaibli (capitale perdue, instable, en train de perdre une autre guerre).',
+    'frac',
+  ],
+  opportunismRatio: [
+    'Rapport de force contre un voisin affaibli',
+    'Supériorité estimée exigée pour une guerre opportuniste.',
+    'x',
+  ],
+  warGoalShare: [
+    'But de guerre',
+    'Part des provinces de la cible au-delà de laquelle l’agresseur s’arrête et propose la paix.',
+    'frac',
+  ],
+  satisfiedPeaceDays: [
+    'Paix de l’agresseur satisfait',
+    'L’agresseur qui tient des gains depuis ce délai propose la paix et les garde.',
+    'j',
+  ],
+  capitulationShare: [
+    'Seuil de capitulation',
+    'Une IA qui a perdu sa capitale ou cette part de ses provinces accepte la paix.',
+    'frac',
+  ],
+  capitulationMinDays: [
+    'Délai avant capitulation',
+    'Capitulation par perte de territoire : pas avant ce délai de guerre (la chute de la capitale suffit toujours).',
+    'j',
+  ],
+  rematchDays: [
+    'Répit après une paix',
+    'Pas de nouvelle guerre entre les deux mêmes IA avant ce délai.',
+    'j',
+  ],
+  stalemateDays: [
+    'Enlisement',
+    'Aucune province n’a changé de main depuis ce délai : paix au statu quo.',
+    'j',
+  ],
+};
+
+const AI_WORLD_HELP: Record<string, HelpEntry> = {
+  'ai.world': [
+    'Monde vivant',
+    'Guerres que les IA se font entre elles en partie solo : rivalités, opportunisme, blocs, fin des guerres.',
+  ],
+  'ai.world.intensity': [
+    'Intensité du monde',
+    'Multiplie les probabilités de guerre entre IA et le plafond de guerres (0 : monde figé, 2 : très agité).',
+    'x',
+  ],
+  'ai.world.levels': ['Rythme par niveau', 'Guerres entre IA selon le niveau de la partie.'],
+  ...Object.fromEntries(
+    AI_LEVELS.flatMap(([lv, label]): [string, HelpEntry][] => [
+      [`ai.world.levels.${lv}`, [label, `Rythme du monde au niveau « ${label.toLowerCase()} ».`]],
+      ...Object.entries(AI_WORLD_LEVEL_HELP).map(([k, h]): [string, HelpEntry] => [
+        `ai.world.levels.${lv}.${k}`,
+        h,
+      ]),
+    ]),
+  ),
+  'ai.world.rivalReachKm': [
+    'Portée d’un rival lointain',
+    'Un rival non voisin est visé si sa capitale est à cette distance (frappes, débarquement).',
+    'km',
+  ],
+  'ai.world.weakStability': [
+    'Voisin instable',
+    'Sous cette stabilité publique, un voisin est jugé affaibli (cible d’opportunisme).',
+    'pts',
+  ],
+  'ai.world.blocDefenseRatio': [
+    'Défense mutuelle d’un bloc',
+    'Un membre voisin secourt un membre attaqué si leurs forces réunies pèsent cette part de l’agresseur.',
+    'frac',
+  ],
+  'ai.world.blocDefenseDays': [
+    'Délai de la défense mutuelle',
+    'Les membres d’un bloc n’entrent en guerre que pendant les premiers jours du conflit.',
+    'j',
+  ],
+  'ai.world.waiverMaxRestraint': [
+    'Retenue maximale des guerres sans motif',
+    'Guerres sans motif (difficile) permises seulement aux nations dont la retenue de bloc ne dépasse pas ce seuil.',
+    'frac',
+  ],
+  'ai.world.rivalries': [
+    'Rivalités historiques',
+    'Paires de nations rivales : poids (0 à 1), motif public (dépêche), déclencheur (l’une ou l’autre, a, b).',
+  ],
+  'ai.world.rivalries.a': ['Nation A'],
+  'ai.world.rivalries.b': ['Nation B'],
+  'ai.world.rivalries.weight': ['Poids', 'Probabilité relative que la rivalité dégénère.', 'frac'],
+  'ai.world.rivalries.motive': ['Motif', 'Motif invoqué dans la dépêche de déclaration de guerre.'],
+  'ai.world.rivalries.initiator': [
+    'Déclencheur',
+    '« both » : l’une ou l’autre ; « a » ou « b » : seule cette nation attaque.',
+  ],
+  'ai.world.blocs': [
+    'Blocs politiques',
+    'Alliances réelles et unions régionales : pas de guerre de choix entre membres ; retenue ; défense mutuelle.',
+  ],
+  'ai.world.blocs.id': ['Identifiant'],
+  'ai.world.blocs.name': ['Nom'],
+  'ai.world.blocs.members': ['Membres'],
+  'ai.world.blocs.restraint': [
+    'Retenue',
+    'Réduit les guerres opportunistes ou sans motif des membres (1 : aucune).',
+    'frac',
+  ],
+  'ai.world.blocs.mutualDefense': [
+    'Défense mutuelle',
+    'Les membres IA voisins secourent un membre attaqué par une IA extérieure.',
+  ],
+};
+
 export const RULE_HELP: Record<string, HelpEntry> = {
   version: ['Version', 'Incrémentez-la à chaque refonte importante.', 'n'],
   'time.speeds': [
@@ -752,6 +892,7 @@ export const RULE_HELP: Record<string, HelpEntry> = {
     'frac',
   ],
   ...AI_HELP,
+  ...AI_WORLD_HELP,
   'industry.importPriceFactor': [
     'Prix des importations',
     'Achat au catalogue d’un fournisseur étranger : prix × ce facteur.',

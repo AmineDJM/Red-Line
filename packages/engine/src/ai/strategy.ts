@@ -32,7 +32,23 @@ import {
 import { relationOf } from '../modules/diplo/relations.js';
 import { disputedOf } from '../modules/diplo/unrest.js';
 import { elide, news } from '../modules/diplo/news.js';
-import { capitalPoint } from '../modules/diplo/relations.js';
+import { capitalPoint, declareBlocDefense } from '../modules/diplo/relations.js';
+import {
+  activeAiWars,
+  aiNation,
+  blocDefenders,
+  blocsOf,
+  frontScore,
+  isWeak,
+  recentPeace,
+  restraintOf,
+  rivalry,
+  rivalsOf,
+  sameBloc,
+  warYoungerThan,
+  worldIntensity,
+  worldLevel,
+} from './world.js';
 import {
   estimateForce,
   invalidateForceMemo,
@@ -92,6 +108,8 @@ interface Memory {
   humanCool?: Record<NationId, number>;
   /** Opérations offensives en cours (rassemblement, débarquement), par province visée. */
   ops?: Record<ProvinceId, Operation>;
+  /** Guerres contre d'autres IA : ennemi → [état du front, depuis] (enlisement). */
+  front?: Record<NationId, [number, number]>;
 }
 
 /** Menace contre un joueur humain. */
@@ -360,10 +378,52 @@ function ratioAgainst(
  * (guerre limitée : il arrête ses offensives contre elle et propose la paix).
  */
 export function warGoalReached(state: EngineState, n: NationId, e: NationId): boolean {
-  const P = profile(state, n);
-  if (P.warGoalShare >= 1 || ds(state)?.aggressor[pairKey(n, e)] !== n) return false;
+  const share = aiNation(state, e)
+    ? worldLevel(state, n).warGoalShare
+    : profile(state, n).warGoalShare;
+  if (share >= 1 || ds(state)?.aggressor[pairKey(n, e)] !== n) return false;
   const init = wi(state.world).provsByNation.get(e)?.length ?? 0;
-  return init > 0 && lostTo(state, e, n) >= Math.max(1, Math.ceil(P.warGoalShare * init));
+  return init > 0 && lostTo(state, e, n) >= Math.max(1, Math.ceil(share * init));
+}
+
+/**
+ * Capitulation d'une IA face à une autre IA : capitale tenue par l'ennemi, ou part `capitulationShare`
+ * de ses provinces d'origine perdue à son profit. Elle accepte alors la paix (l'ennemi garde ses gains).
+ */
+export function capitulates(state: EngineState, n: NationId, e: NationId): boolean {
+  if (!aiNation(state, e) || !aiNation(state, n)) return false;
+  const w = wi(state.world);
+  const cap = w.nationById.get(n)?.capitalProvinceId;
+  if (cap && state.provinces[cap]?.owner === e) return true;
+  const init = w.provsByNation.get(n)?.length ?? 0;
+  const WL = worldLevel(state, n);
+  if (init <= 0 || WL.capitulationShare <= 0) return false;
+  if (warYoungerThan(state, n, e, WL.capitulationMinDays)) return false;
+  return lostTo(state, n, e) >= Math.max(1, Math.ceil(WL.capitulationShare * init));
+}
+
+/**
+ * Guerre enlisée entre deux IA : aucune province n'a changé de main entre elles depuis
+ * `stalemateDays` (mémoire de l'IA, mise à jour à chaque réflexion stratégique).
+ */
+function stalemate(state: EngineState, n: NationId, e: NationId, m: Memory): boolean {
+  if (!aiNation(state, e)) return false;
+  const days = worldLevel(state, n).stalemateDays;
+  if (days <= 0) return false;
+  const f = m.front?.[e];
+  return !!f && state.time - f[1] >= days * DAY;
+}
+
+/** Mise à jour de l'état des fronts contre les autres IA (enlisement). */
+function trackFronts(state: EngineState, n: NationId, m: Memory): void {
+  const front = (m.front ??= {});
+  for (const e of warsOf(state, n)) {
+    if (!aiNation(state, e)) continue;
+    const score = frontScore(state, n, e);
+    const cur = front[e];
+    if (!cur || cur[0] !== score) front[e] = [score, state.time];
+  }
+  for (const k of sortedKeys(front)) if (!atWar(state, n, k)) delete front[k];
 }
 
 /**
@@ -377,11 +437,12 @@ function satisfied(
   P: LevelProfile,
   share: number,
 ): boolean {
-  if (P.satisfiedPeaceDays <= 0) return false;
+  const days = aiNation(state, e) ? worldLevel(state, n).satisfiedPeaceDays : P.satisfiedPeaceDays;
+  if (days <= 0) return false;
   const key = pairKey(n, e);
   if (ds(state).aggressor[key] !== n || lostTo(state, e, n) === 0) return false;
   const since = state.wars[key];
-  return since !== undefined && state.time - since >= P.satisfiedPeaceDays * share * DAY;
+  return since !== undefined && state.time - since >= days * share * DAY;
 }
 
 function shouldAcceptPeace(
@@ -393,6 +454,10 @@ function shouldAcceptPeace(
 ): boolean {
   if (state.nations[n]!.aiLevel === 'easy') return true;
   if (satisfied(state, n, from, P, 0.5) || warGoalReached(state, n, from)) return true;
+  // Guerre entre IA : capitulation (capitale perdue, territoire largement perdu), victoire acquise
+  // (capitale ennemie tenue) ou enlisement.
+  if (capitulates(state, n, from) || capitulates(state, from, n)) return true;
+  if (stalemate(state, n, from, memory(state, n))) return true;
   // Victime qui n'a rien perdu et ne mène pas d'offensive dans cette guerre : le statu quo lui suffit.
   if (
     P.offensive !== 'all' &&
@@ -497,10 +562,12 @@ function strategic(state: EngineState, n: NationId, neighbors: NationId[], hot: 
       fund(state, n);
     }
   }
+  blocDefense(state, n, mine, P);
   if (advancePlan(state, n, mine, P, m)) return;
   seekHumanWar(state, n, neighbors, mine, P, m, hot);
   if (m.plan) return;
   seekWar(state, n, neighbors, mine, P, m, hot);
+  seekWorldWar(state, n, neighbors, mine, P, m, hot);
 }
 
 function seekPeace(
@@ -513,6 +580,7 @@ function seekPeace(
 ): void {
   const stab = stabilityOf(state, n);
   const cfgS = S(state);
+  trackFronts(state, n, m);
   for (const e of warsOf(state, n)) {
     if (!isRegular(state, e)) continue;
     const last = m.peaceAsk[e] ?? -Infinity;
@@ -523,12 +591,14 @@ function seekPeace(
     const lost = lostTo(state, n, e);
     const losing = (ratio < P.peaceRatio && lost > 0) || ratio < P.peaceRatio * 0.6 || stab < 30;
     const done = !losing && (satisfied(state, n, e, P, 1) || warGoalReached(state, n, e));
-    if (!losing && !idle && !done) continue;
+    // Guerre entre IA : capitulation (la paix cède le territoire perdu) ou enlisement (statu quo).
+    const ends = capitulates(state, n, e) || stalemate(state, n, e, m);
+    if (!losing && !idle && !done && !ends) continue;
     m.peaceAsk[e] = state.time;
     order(state, n, {
       kind: 'proposePeace',
       nationId: e,
-      type: !idle && !done && (stab < 30 || lost > 0) ? 'ceasefire' : 'peace',
+      type: !ends && !idle && !done && (stab < 30 || lost > 0) ? 'ceasefire' : 'peace',
     });
   }
   for (const k of sortedKeys(m.peaceAsk)) if (!atWar(state, n, k)) delete m.peaceAsk[k];
@@ -570,13 +640,19 @@ function seekWar(
     const rel = relationOf(state, n, t);
     if (rel !== 'peace') continue;
     if (d.grace[`${n}>${t}`] !== undefined) continue;
+    // Monde crédible : pas de guerre de choix entre membres d'un même bloc (rivalités : seekWorldWar).
+    if (sameBloc(state, n, t)) continue;
     const r = ratioAgainst(state, n, t, mine, P);
     if (r < bestRatio) continue;
     // Pas de guerre sur la seule foi de ses alliés (dont la force n'est qu'estimée) : ses propres
     // forces doivent déjà peser une part du rapport voulu.
     const own = (mine.value + 1) / (sideForce(state, n, t, mine, P) + 1);
     if (own < P.warRatio * S(state).ownRatioShare) continue;
-    const waived = P.casusBelliWaiverRatio > 0 && r >= P.casusBelliWaiverRatio;
+    // Guerre sans motif : jamais pour une nation retenue par son bloc (démocraties alliées…).
+    const waived =
+      P.casusBelliWaiverRatio > 0 &&
+      r >= P.casusBelliWaiverRatio &&
+      restraintOf(state, n) <= aiCfg(state.world).world.waiverMaxRestraint;
     if (!waived && !casusBelli(state, n, t)) continue;
     if (r >= bestRatio) {
       bestRatio = r;
@@ -584,8 +660,139 @@ function seekWar(
     }
   }
   if (!best) return;
+  if (aiNation(state, best) && worldFull(state, n)) return;
   if (!roll(state, P.warChancePerDay, hot)) return;
   order(state, n, { kind: 'declareWar', nationId: best });
+}
+
+/** Plafond mondial de guerres entre IA atteint (vraisemblance, coût de calcul). */
+function worldFull(state: EngineState, n: NationId): boolean {
+  const cap = Math.round(worldLevel(state, n).maxActiveWars * worldIntensity(state));
+  return activeAiWars(state) >= cap;
+}
+
+/**
+ * Monde vivant : guerres entre IA. Deux motifs, tous deux publics et crédibles :
+ *  - rivalité historique (données : Russie–Ukraine, Inde–Pakistan, Corées…) : probabilité par jour
+ *    `rivalryChancePerDay` × poids × intensité, si le rapport de force estimé atteint `rivalryRatio`
+ *    (le rival voisin, ou à portée de frappe ou de débarquement) ;
+ *  - opportunisme : voisin affaibli (capitale perdue, instable, en train de perdre une autre guerre),
+ *    `opportunismChancePerDay` × intensité × (1 − retenue de son bloc), rapport `opportunismRatio`.
+ * Jamais contre un membre de son bloc (sauf rivalité), ni au-delà des plafonds (guerres de la nation,
+ * guerres entre IA dans le monde), ni juste après une paix avec la même nation (`rematchDays`).
+ * Les forces des alliés de la cible, et des membres de ses blocs à défense mutuelle qui viendraient à
+ * son secours, comptent dans le rapport de force (dissuasion).
+ */
+function seekWorldWar(
+  state: EngineState,
+  n: NationId,
+  neighbors: NationId[],
+  mine: OwnForce,
+  P: LevelProfile,
+  m: Memory,
+  hot: boolean,
+): void {
+  const WL = worldLevel(state, n);
+  const intensity = worldIntensity(state);
+  if (WL.maxWars <= 0 || intensity <= 0 || !aiNation(state, n)) return;
+  if (state.time < m.calmUntil || state.time < WL.fromDays * DAY) return;
+  if (stabilityOf(state, n) < S(state).minStabilityForWar) return;
+  const wars = warsOf(state, n).filter((e) => isRegular(state, e));
+  if (wars.length >= WL.maxWars) return;
+  const d = ds(state);
+  if (d.coups[n] !== undefined && state.time - d.coups[n]! < 5 * DAY) return;
+  if (worldFull(state, n)) return;
+  const reach = aiCfg(state.world).world.rivalReachKm;
+  const w = wi(state.world);
+  const cands = new Set<NationId>(neighbors);
+  for (const r of rivalsOf(state, n)) cands.add(r.t);
+  const restraint = restraintOf(state, n);
+  const A = allianceOf(state, n);
+  let best: { t: NationId; chance: number; motive: string } | null = null;
+  for (const t of [...cands].sort()) {
+    if (!aiNation(state, t) || relationOf(state, n, t) !== 'peace') continue;
+    if (d.grace[`${n}>${t}`] !== undefined) continue;
+    if (recentPeace(state, n, t, WL.rematchDays)) continue;
+    const rival = rivalry(state, n, t);
+    if (!rival && sameBloc(state, n, t)) continue;
+    // Rivalité dont elle n'est pas l'initiatrice (la Corée du Sud n'envahit pas le Nord) : seulement
+    // l'opportunisme ordinaire, s'il s'applique.
+    const starter = rival?.starts ? rival : null;
+    if (A && A.members.includes(t)) continue;
+    const near = neighbors.includes(t);
+    if (!near) {
+      // Rival non voisin : sa capitale à portée (frappes, débarquement).
+      if (!starter) continue;
+      const tCap = w.nationById.get(t)?.capitalProvinceId;
+      if (!tCap || nearestOwnedCityKm(state, n, w.provById.get(tCap)!.cityPoint) > reach) continue;
+    }
+    const weak = isWeak(state, t, n);
+    let chance = 0;
+    let need = Infinity;
+    if (starter) {
+      chance = WL.rivalryChancePerDay * starter.weight * (weak ? 2 : 1);
+      need = WL.rivalryRatio;
+    } else if (weak && near && wars.length === 0) {
+      // Vautour : seulement libre de toute autre guerre.
+      chance = WL.opportunismChancePerDay * (1 - restraint);
+      need = WL.opportunismRatio;
+    }
+    chance *= intensity;
+    if (chance <= 0 || (best && chance <= best.chance)) continue;
+    // Dissuasion : alliés de la cible et membres de ses blocs à défense mutuelle.
+    let theirs = sideForce(state, n, t, mine, P);
+    for (const x of blocDefenders(state, t, n))
+      theirs += estimateForce(state, n, x, mine, P.caution);
+    const r = (myForce(state, n, t, mine) + 1) / (theirs + 1);
+    if (r < need) continue;
+    if ((mine.value + 1) / (theirs + 1) < need * S(state).ownRatioShare) continue;
+    best = { t, chance: Math.min(1, chance), motive: starter?.motive ?? '' };
+  }
+  if (!best || !roll(state, best.chance, hot)) return;
+  if (order(state, n, { kind: 'declareWar', nationId: best.t })) {
+    warMotive(state, n, best.t, best.motive || null);
+  }
+}
+
+/** Ajoute le motif invoqué à la dépêche de déclaration de guerre qui vient d'être publiée. */
+function warMotive(state: EngineState, n: NationId, t: NationId, motive: string | null): void {
+  const list = ds(state).news;
+  const it = list[list.length - 1];
+  if (!it || it.time !== state.time || it.category !== 'war') return;
+  if (!it.nations.includes(n) || !it.nations.includes(t)) return;
+  it.body = motive
+    ? `${it.body} Motif invoqué : ${motive}.`
+    : `${it.body} Le pays attaqué était déjà affaibli.`;
+}
+
+/**
+ * Défense mutuelle d'un bloc (données) : membre IA voisin de l'agresseur ou de la victime, quand une
+ * IA d'un bloc à défense mutuelle est attaquée par une IA extérieure au bloc, dans les premiers jours de
+ * la guerre, si leurs forces réunies pèsent assez face à l'agresseur.
+ */
+function blocDefense(state: EngineState, n: NationId, mine: OwnForce, P: LevelProfile): void {
+  if (!aiNation(state, n)) return;
+  const blocs = blocsOf(state, n).filter((b) => b.mutualDefense);
+  if (blocs.length === 0) return;
+  const W = aiCfg(state.world).world;
+  const d = ds(state);
+  for (const b of blocs) {
+    for (const v of b.members) {
+      if (v === n || !aiNation(state, v)) continue;
+      for (const x of warsOf(state, v)) {
+        if (!aiNation(state, x) || b.members.includes(x) || atWar(state, n, x)) continue;
+        if (d.aggressor[pairKey(v, x)] !== x) continue;
+        if (!warYoungerThan(state, v, x, W.blocDefenseDays)) continue;
+        if (!blocDefenders(state, v, x).includes(n)) continue;
+        if (relationOf(state, n, x) !== 'peace') continue;
+        const ours = mine.value + estimateForce(state, n, v, mine, 1);
+        const theirs = estimateForce(state, n, x, mine, P.caution);
+        if ((ours + 1) / (theirs + 1) < W.blocDefenseRatio) continue;
+        declareBlocDefense(state, n, x, b.name);
+        return;
+      }
+    }
+  }
 }
 
 /** Tirage d'une probabilité par jour, ramenée à l'intervalle entre deux réflexions stratégiques. */
@@ -696,7 +903,7 @@ function seekHumanWar(
  * nation régulière, ou instable (stabilité publique basse).
  */
 function motive(state: EngineState, n: NationId, t: NationId): boolean {
-  if (casusBelli(state, n, t)) return true;
+  if (casusBelli(state, n, t) || rivalry(state, n, t)) return true;
   if (warsOf(state, t).some((x) => x !== n && isRegular(state, x))) return true;
   return stabilityOf(state, t) < S(state).minStabilityForWar;
 }

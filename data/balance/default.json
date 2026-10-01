@@ -1708,6 +1708,611 @@
       "maxCouncilProposals": 8,
       "invitesPerThink": 3,
       "inviteLeaning": 0.4
+    },
+    "world": {
+      "intensity": 1,
+      "levels": {
+        "easy": {
+          "fromDays": 5,
+          "maxWars": 1,
+          "maxActiveWars": 3,
+          "rivalryChancePerDay": 0.006,
+          "rivalryRatio": 1.8,
+          "opportunismChancePerDay": 0,
+          "opportunismRatio": 3,
+          "warGoalShare": 0.2,
+          "satisfiedPeaceDays": 3,
+          "capitulationShare": 0.3,
+          "rematchDays": 20,
+          "stalemateDays": 4,
+          "capitulationMinDays": 2
+        },
+        "normal": {
+          "fromDays": 2,
+          "maxWars": 1,
+          "maxActiveWars": 6,
+          "rivalryChancePerDay": 0.02,
+          "rivalryRatio": 1.3,
+          "opportunismChancePerDay": 0.01,
+          "opportunismRatio": 2,
+          "warGoalShare": 0.34,
+          "satisfiedPeaceDays": 5,
+          "capitulationShare": 0.5,
+          "rematchDays": 10,
+          "stalemateDays": 6,
+          "capitulationMinDays": 3
+        },
+        "hard": {
+          "fromDays": 1,
+          "maxWars": 2,
+          "maxActiveWars": 10,
+          "rivalryChancePerDay": 0.035,
+          "rivalryRatio": 1.15,
+          "opportunismChancePerDay": 0.02,
+          "opportunismRatio": 1.6,
+          "warGoalShare": 0.5,
+          "satisfiedPeaceDays": 7,
+          "capitulationShare": 0.5,
+          "rematchDays": 6,
+          "stalemateDays": 9,
+          "capitulationMinDays": 3
+        }
+      },
+      "rivalReachKm": 2500,
+      "weakStability": 25,
+      "blocDefenseRatio": 0.6,
+      "blocDefenseDays": 3,
+      "waiverMaxRestraint": 0.3,
+      "rivalries": [
+        {
+          "a": "rus",
+          "b": "ukr",
+          "weight": 1.0,
+          "motive": "la Crimée, le Donbass et la sécurité de la Russie",
+          "initiator": "a"
+        },
+        {
+          "a": "ind",
+          "b": "pak",
+          "weight": 0.7,
+          "motive": "le Cachemire",
+          "initiator": "both"
+        },
+        {
+          "a": "isr",
+          "b": "gaza",
+          "weight": 0.7,
+          "motive": "les attaques venues de Gaza",
+          "initiator": "both"
+        },
+        {
+          "a": "aze",
+          "b": "arm",
+          "weight": 0.7,
+          "motive": "le Haut-Karabakh et le corridor de Zanguezour",
+          "initiator": "a"
+        },
+        {
+          "a": "isr",
+          "b": "irn",
+          "weight": 0.6,
+          "motive": "le programme nucléaire iranien et les milices alliées de Téhéran",
+          "initiator": "both"
+        },
+        {
+          "a": "eth",
+          "b": "eri",
+          "weight": 0.6,
+          "motive": "l’accès à la mer Rouge et le port d’Assab",
+          "initiator": "both"
+        },
+        {
+          "a": "mar",
+          "b": "esh",
+          "weight": 0.6,
+          "motive": "le Sahara occidental",
+          "initiator": "both"
+        },
+        {
+          "a": "cod",
+          "b": "rwa",
+          "weight": 0.6,
+          "motive": "le Kivu et la rébellion du M23",
+          "initiator": "both"
+        },
+        {
+          "a": "chn",
+          "b": "twn",
+          "weight": 0.5,
+          "motive": "la réunification revendiquée par Pékin",
+          "initiator": "a"
+        },
+        {
+          "a": "isr",
+          "b": "lbn",
+          "weight": 0.5,
+          "motive": "le Hezbollah et la frontière nord",
+          "initiator": "both"
+        },
+        {
+          "a": "sdn",
+          "b": "ssd",
+          "weight": 0.5,
+          "motive": "Abyei et le pétrole frontalier",
+          "initiator": "both"
+        },
+        {
+          "a": "ven",
+          "b": "guy",
+          "weight": 0.5,
+          "motive": "l’Essequibo",
+          "initiator": "a"
+        },
+        {
+          "a": "som",
+          "b": "sol",
+          "weight": 0.5,
+          "motive": "l’indépendance proclamée du Somaliland",
+          "initiator": "a"
+        },
+        {
+          "a": "sau",
+          "b": "yem",
+          "weight": 0.5,
+          "motive": "l’insurrection houthie",
+          "initiator": "both"
+        },
+        {
+          "a": "afg",
+          "b": "pak",
+          "weight": 0.5,
+          "motive": "la ligne Durand",
+          "initiator": "both"
+        },
+        {
+          "a": "tjk",
+          "b": "kgz",
+          "weight": 0.5,
+          "motive": "les enclaves de la vallée de Ferghana",
+          "initiator": "both"
+        },
+        {
+          "a": "prk",
+          "b": "kor",
+          "weight": 0.4,
+          "motive": "la péninsule divisée depuis 1953",
+          "initiator": "a"
+        },
+        {
+          "a": "isr",
+          "b": "syr",
+          "weight": 0.4,
+          "motive": "le plateau du Golan",
+          "initiator": "both"
+        },
+        {
+          "a": "tur",
+          "b": "syr",
+          "weight": 0.4,
+          "motive": "les milices kurdes du nord de la Syrie",
+          "initiator": "a"
+        },
+        {
+          "a": "tha",
+          "b": "khm",
+          "weight": 0.4,
+          "motive": "les temples frontaliers",
+          "initiator": "both"
+        },
+        {
+          "a": "srb",
+          "b": "xkx",
+          "weight": 0.4,
+          "motive": "le Kosovo",
+          "initiator": "a"
+        },
+        {
+          "a": "dza",
+          "b": "mar",
+          "weight": 0.3,
+          "motive": "le Sahara occidental et la frontière fermée",
+          "initiator": "both"
+        },
+        {
+          "a": "chn",
+          "b": "ind",
+          "weight": 0.3,
+          "motive": "l’Aksai Chin et l’Arunachal Pradesh",
+          "initiator": "both"
+        },
+        {
+          "a": "rus",
+          "b": "geo",
+          "weight": 0.3,
+          "motive": "l’Abkhazie et l’Ossétie du Sud",
+          "initiator": "a"
+        },
+        {
+          "a": "sdn",
+          "b": "tcd",
+          "weight": 0.3,
+          "motive": "le soutien aux milices du Darfour",
+          "initiator": "both"
+        },
+        {
+          "a": "eth",
+          "b": "som",
+          "weight": 0.3,
+          "motive": "l’Ogaden et l’accès à la mer",
+          "initiator": "both"
+        },
+        {
+          "a": "cyp",
+          "b": "cyn",
+          "weight": 0.3,
+          "motive": "la partition de Chypre",
+          "initiator": "both"
+        },
+        {
+          "a": "egy",
+          "b": "eth",
+          "weight": 0.25,
+          "motive": "le barrage de la Renaissance sur le Nil",
+          "initiator": "both"
+        },
+        {
+          "a": "col",
+          "b": "ven",
+          "weight": 0.2,
+          "motive": "les guérillas frontalières",
+          "initiator": "both"
+        },
+        {
+          "a": "chn",
+          "b": "phl",
+          "weight": 0.2,
+          "motive": "les récifs de la mer de Chine méridionale",
+          "initiator": "a"
+        },
+        {
+          "a": "irn",
+          "b": "sau",
+          "weight": 0.2,
+          "motive": "la rivalité pour le Golfe",
+          "initiator": "both"
+        },
+        {
+          "a": "bdi",
+          "b": "rwa",
+          "weight": 0.2,
+          "motive": "le soutien prêté aux rebelles",
+          "initiator": "both"
+        },
+        {
+          "a": "ner",
+          "b": "ben",
+          "weight": 0.2,
+          "motive": "la frontière fermée et l’oléoduc",
+          "initiator": "a"
+        },
+        {
+          "a": "chn",
+          "b": "vnm",
+          "weight": 0.15,
+          "motive": "les îles Paracel et Spratleys",
+          "initiator": "a"
+        },
+        {
+          "a": "irn",
+          "b": "irq",
+          "weight": 0.15,
+          "motive": "le Chatt-el-Arab et les milices",
+          "initiator": "a"
+        },
+        {
+          "a": "mli",
+          "b": "dza",
+          "weight": 0.15,
+          "motive": "les rebelles touaregs et les drones abattus",
+          "initiator": "both"
+        },
+        {
+          "a": "bfa",
+          "b": "civ",
+          "weight": 0.15,
+          "motive": "les accusations de déstabilisation",
+          "initiator": "a"
+        },
+        {
+          "a": "eri",
+          "b": "dji",
+          "weight": 0.15,
+          "motive": "Ras Doumeira",
+          "initiator": "a"
+        },
+        {
+          "a": "pak",
+          "b": "irn",
+          "weight": 0.1,
+          "motive": "les frappes transfrontalières au Baloutchistan",
+          "initiator": "both"
+        },
+        {
+          "a": "grc",
+          "b": "tur",
+          "weight": 0.1,
+          "motive": "la mer Égée et Chypre",
+          "initiator": "both"
+        },
+        {
+          "a": "rus",
+          "b": "est",
+          "weight": 0.1,
+          "motive": "la minorité russophone",
+          "initiator": "a"
+        },
+        {
+          "a": "rus",
+          "b": "lva",
+          "weight": 0.1,
+          "motive": "la minorité russophone",
+          "initiator": "a"
+        },
+        {
+          "a": "ecu",
+          "b": "per",
+          "weight": 0.1,
+          "motive": "la cordillère du Condor",
+          "initiator": "both"
+        },
+        {
+          "a": "bol",
+          "b": "chl",
+          "weight": 0.1,
+          "motive": "l’accès à la mer",
+          "initiator": "a"
+        },
+        {
+          "a": "gtm",
+          "b": "blz",
+          "weight": 0.1,
+          "motive": "la revendication guatémaltèque sur le Belize",
+          "initiator": "a"
+        }
+      ],
+      "blocs": [
+        {
+          "id": "otan",
+          "name": "OTAN",
+          "members": [
+            "usa",
+            "can",
+            "gbr",
+            "fra",
+            "deu",
+            "ita",
+            "esp",
+            "prt",
+            "bel",
+            "nld",
+            "lux",
+            "dnk",
+            "nor",
+            "isl",
+            "pol",
+            "cze",
+            "svk",
+            "hun",
+            "svn",
+            "hrv",
+            "alb",
+            "mne",
+            "mkd",
+            "bgr",
+            "rou",
+            "grc",
+            "tur",
+            "est",
+            "lva",
+            "ltu",
+            "fin",
+            "swe"
+          ],
+          "restraint": 1,
+          "mutualDefense": true
+        },
+        {
+          "id": "europe-neutre",
+          "name": "Europe neutre",
+          "members": ["aut", "che", "irl", "mlt", "cyp", "lie", "mco", "smr", "vat", "and"],
+          "restraint": 1,
+          "mutualDefense": false
+        },
+        {
+          "id": "otsc",
+          "name": "OTSC",
+          "members": ["rus", "blr", "kaz", "kgz", "tjk"],
+          "restraint": 0.3,
+          "mutualDefense": true
+        },
+        {
+          "id": "aes",
+          "name": "Alliance des États du Sahel",
+          "members": ["mli", "bfa", "ner"],
+          "restraint": 0.3,
+          "mutualDefense": true
+        },
+        {
+          "id": "ccg",
+          "name": "Conseil de coopération du Golfe",
+          "members": ["sau", "are", "kwt", "qat", "omn", "bhr"],
+          "restraint": 0.5,
+          "mutualDefense": false
+        },
+        {
+          "id": "asean",
+          "name": "ASEAN",
+          "members": ["idn", "mys", "sgp", "tha", "phl", "vnm", "khm", "lao", "mmr", "brn", "tls"],
+          "restraint": 0.7,
+          "mutualDefense": false
+        },
+        {
+          "id": "mercosur",
+          "name": "Mercosur",
+          "members": ["arg", "bra", "ury", "pry", "bol"],
+          "restraint": 0.8,
+          "mutualDefense": false
+        },
+        {
+          "id": "andine",
+          "name": "Communauté andine",
+          "members": ["col", "ecu", "per", "bol"],
+          "restraint": 0.6,
+          "mutualDefense": false
+        },
+        {
+          "id": "sica",
+          "name": "Système d’intégration centraméricain",
+          "members": ["gtm", "hnd", "slv", "nic", "cri", "pan", "dom", "blz"],
+          "restraint": 0.8,
+          "mutualDefense": false
+        },
+        {
+          "id": "caricom",
+          "name": "CARICOM",
+          "members": [
+            "jam",
+            "tto",
+            "brb",
+            "bhs",
+            "atg",
+            "dma",
+            "grd",
+            "kna",
+            "lca",
+            "vct",
+            "guy",
+            "sur",
+            "hti"
+          ],
+          "restraint": 1,
+          "mutualDefense": false
+        },
+        {
+          "id": "pacifique",
+          "name": "Partenaires du Pacifique",
+          "members": [
+            "aus",
+            "nzl",
+            "jpn",
+            "kor",
+            "fji",
+            "png",
+            "slb",
+            "vut",
+            "wsm",
+            "ton",
+            "kir",
+            "tuv",
+            "nru",
+            "plw",
+            "fsm",
+            "mhl"
+          ],
+          "restraint": 1,
+          "mutualDefense": false
+        },
+        {
+          "id": "sacu",
+          "name": "Union douanière d’Afrique australe",
+          "members": ["zaf", "lso", "swz", "bwa", "nam"],
+          "restraint": 0.8,
+          "mutualDefense": false
+        },
+        {
+          "id": "sadc",
+          "name": "SADC",
+          "members": ["ago", "moz", "zmb", "zwe", "mwi", "tza", "mdg", "mus", "syc", "com", "cod"],
+          "restraint": 0.5,
+          "mutualDefense": false
+        },
+        {
+          "id": "cedeao",
+          "name": "CEDEAO",
+          "members": [
+            "nga",
+            "gha",
+            "sen",
+            "civ",
+            "ben",
+            "tgo",
+            "gin",
+            "sle",
+            "lbr",
+            "gmb",
+            "gnb",
+            "cpv"
+          ],
+          "restraint": 0.6,
+          "mutualDefense": false
+        },
+        {
+          "id": "cae",
+          "name": "Communauté d’Afrique de l’Est",
+          "members": ["ken", "uga", "tza", "rwa", "bdi", "cod", "ssd", "som"],
+          "restraint": 0.4,
+          "mutualDefense": false
+        },
+        {
+          "id": "ceeac",
+          "name": "CEEAC",
+          "members": ["cmr", "caf", "tcd", "cog", "gab", "gnq", "stp"],
+          "restraint": 0.4,
+          "mutualDefense": false
+        },
+        {
+          "id": "maghreb",
+          "name": "Union du Maghreb arabe",
+          "members": ["dza", "mar", "tun", "lby", "mrt"],
+          "restraint": 0.3,
+          "mutualDefense": false
+        },
+        {
+          "id": "ocs",
+          "name": "Organisation de coopération de Shanghai",
+          "members": ["chn", "rus", "kaz", "kgz", "tjk", "uzb", "ind", "pak", "irn", "blr"],
+          "restraint": 0.6,
+          "mutualDefense": false
+        },
+        {
+          "id": "saarc",
+          "name": "Association sud-asiatique",
+          "members": ["ind", "pak", "bgd", "npl", "btn", "lka", "mdv", "afg"],
+          "restraint": 0.6,
+          "mutualDefense": false
+        },
+        {
+          "id": "aceum",
+          "name": "Accord Canada–États-Unis–Mexique",
+          "members": ["usa", "can", "mex"],
+          "restraint": 1,
+          "mutualDefense": false
+        },
+        {
+          "id": "balkans",
+          "name": "Balkans occidentaux",
+          "members": ["srb", "bih", "mne", "mkd", "alb", "xkx", "hrv"],
+          "restraint": 0.7,
+          "mutualDefense": false
+        },
+        {
+          "id": "trio-associe",
+          "name": "Trio associé (Ukraine, Moldavie, Géorgie)",
+          "members": ["ukr", "mda", "geo"],
+          "restraint": 0.8,
+          "mutualDefense": false
+        }
+      ]
     }
   },
   "startingArmy": [

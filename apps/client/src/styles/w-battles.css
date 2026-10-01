@@ -1,0 +1,412 @@
+/* ——— Rapport après action (fenêtre Batailles) ——— */
+.aar-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 8px 10px;
+  border: 1px dashed var(--rl-line-strong);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-panel);
+  font-size: var(--rl-fs-xs);
+}
+.aar-ref {
+  flex-basis: 100%;
+  color: var(--rl-amber);
+  font: 700 var(--rl-fs-2xs) / 1.4 var(--rl-font-mono);
+  letter-spacing: 0.12em;
+}
+.aar-place {
+  display: flex;
+  flex: 1 1 260px;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  min-width: 0;
+}
+.aar-place b {
+  color: var(--rl-text-muted);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Chiffres clés des deux camps */
+.aar-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+.aar-kpi {
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--rl-line);
+  border-left: 3px solid var(--rl-red);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-panel);
+}
+.aar-kpi--cyan {
+  border-left-color: var(--rl-cyan);
+}
+.aar-kpi header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-bottom: 8px;
+}
+.aar-kpi__side {
+  font: 700 var(--rl-fs-xs) / 1.3 var(--rl-font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.aar-grade {
+  margin-left: auto;
+  padding: 1px 6px;
+  border: 1px solid var(--rl-amber);
+  border-radius: 3px;
+  color: var(--rl-amber);
+  font: 700 var(--rl-fs-2xs) / 1.5 var(--rl-font-mono);
+  cursor: help;
+}
+.aar-grade--own {
+  border-color: var(--rl-line-strong);
+  color: var(--rl-text-muted);
+  cursor: default;
+}
+.aar-kpi dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 12px;
+  margin: 0;
+}
+.aar-kpi dt {
+  color: var(--rl-text-muted);
+  font-size: var(--rl-fs-2xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.aar-kpi dd {
+  margin: 2px 0 0;
+  font: 700 var(--rl-fs-md) / 1.3 var(--rl-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Estimations : meilleure valeur et fourchette */
+.aar-est {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+.aar-kpi .aar-est {
+  align-items: flex-start;
+}
+.aar-est small {
+  color: var(--rl-text-faint);
+  font-size: var(--rl-fs-2xs);
+  font-weight: 400;
+}
+
+/* Tableaux */
+.aar-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.aar-table {
+  width: 100%;
+  min-width: 520px;
+}
+.aar-table th:nth-child(n + 2),
+.aar-table td:nth-child(n + 2) {
+  text-align: right;
+  white-space: nowrap;
+}
+.aar-table .qrow {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  max-width: 260px;
+}
+.aar-table .qrow b {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.aar-unknown {
+  display: inline-grid;
+  flex: none;
+  width: 34px;
+  height: 22px;
+  margin-right: 8px;
+  place-items: center;
+  border: 1px dashed var(--rl-line-strong);
+  border-radius: 2px;
+  color: var(--rl-text-muted);
+  font: 700 var(--rl-fs-xs) var(--rl-font-mono);
+}
+.aar-balance {
+  min-width: 0;
+}
+.aar-balance tbody th {
+  color: var(--rl-text-dim);
+  font-weight: 400;
+  text-align: left;
+}
+.aar-sep th {
+  padding-top: 10px;
+  color: var(--rl-amber) !important;
+  font: 700 var(--rl-fs-2xs) / 1.4 var(--rl-font-mono) !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.aar-col--red {
+  border-bottom: 2px solid var(--rl-red);
+}
+.aar-col--cyan {
+  border-bottom: 2px solid var(--rl-cyan);
+}
+.aar-cols {
+  align-items: start;
+}
+
+/* Courbe des pertes */
+.aar-legend {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  font-size: var(--rl-fs-2xs);
+}
+.aar-sw {
+  display: inline-block;
+  width: 10px;
+  height: 3px;
+  margin-right: 4px;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+.aar-sw--red {
+  background: var(--rl-red);
+}
+.aar-sw--cyan {
+  background: var(--rl-cyan);
+}
+.aar-chart {
+  position: relative;
+  margin: 0;
+}
+.aar-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  touch-action: pan-y;
+}
+.aar-grid {
+  stroke: var(--rl-line);
+  stroke-width: 1;
+}
+.aar-axis {
+  fill: var(--rl-text-muted);
+  font: 10px var(--rl-font-mono);
+}
+.aar-direct {
+  fill: var(--rl-text);
+  font: 700 11px var(--rl-font-mono);
+}
+.aar-line {
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.aar-line--red {
+  stroke: var(--rl-red);
+}
+.aar-line--cyan {
+  stroke: var(--rl-cyan);
+}
+.aar-cross {
+  stroke: var(--rl-text-faint);
+  stroke-dasharray: 3 3;
+}
+.aar-dot {
+  stroke: var(--rl-panel-solid);
+  stroke-width: 2;
+}
+.aar-dot--red {
+  fill: var(--rl-red);
+}
+.aar-dot--cyan {
+  fill: var(--rl-cyan);
+}
+.aar-band {
+  fill: var(--rl-text);
+  opacity: 0.04;
+}
+.aar-band--preparation,
+.aar-band--strikes {
+  fill: var(--rl-amber);
+  opacity: 0.08;
+}
+.aar-band--assault,
+.aar-band--counter {
+  fill: var(--rl-red);
+  opacity: 0.07;
+}
+.aar-band--defense {
+  fill: var(--rl-cyan);
+  opacity: 0.07;
+}
+.aar-band--capture {
+  fill: var(--rl-green);
+  opacity: 0.5;
+}
+.aar-tip {
+  position: absolute;
+  top: 4px;
+  display: flex;
+  gap: 8px;
+  padding: 3px 8px;
+  border: 1px solid var(--rl-line-strong);
+  border-radius: 3px;
+  background: var(--rl-panel-solid);
+  font: var(--rl-fs-2xs) var(--rl-font-mono);
+  pointer-events: none;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+/* Déroulé */
+.aar-phases {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.aar-phase {
+  display: grid;
+  grid-template-columns: 11ch 1fr;
+  gap: 10px;
+  padding: 6px 0 6px 10px;
+  border-left: 2px solid var(--rl-line-strong);
+  font-size: var(--rl-fs-xs);
+}
+.aar-phase p {
+  margin: 2px 0 0;
+  color: var(--rl-text-dim);
+  line-height: 1.45;
+}
+.aar-phase__time {
+  color: var(--rl-amber);
+  font: 700 var(--rl-fs-2xs) / 1.6 var(--rl-font-mono);
+}
+.aar-phase--preparation,
+.aar-phase--strikes {
+  border-left-color: var(--rl-amber);
+}
+.aar-phase--assault,
+.aar-phase--counter {
+  border-left-color: var(--rl-red);
+}
+.aar-phase--defense {
+  border-left-color: var(--rl-cyan);
+}
+.aar-phase--capture {
+  border-left-color: var(--rl-green);
+}
+
+/* Facteurs */
+.aar-factors {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.aar-factor {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 8px;
+  font-size: var(--rl-fs-xs);
+}
+.aar-factor p {
+  margin: 2px 0 4px;
+  color: var(--rl-text-dim);
+}
+.aar-sign {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border-radius: 2px;
+  font: 800 var(--rl-fs-sm) var(--rl-font-mono);
+}
+.aar-sign--plus {
+  background: var(--rl-green-dim);
+  color: var(--rl-green);
+}
+.aar-sign--minus {
+  background: var(--rl-red-dim);
+  color: var(--rl-red);
+}
+.aar-weight {
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--rl-red);
+}
+.aar-factor--cyan .aar-weight {
+  background: var(--rl-cyan);
+}
+.aar-sub {
+  margin: 12px 0 6px;
+  color: var(--rl-text-muted);
+  font: 700 var(--rl-fs-2xs) / 1.4 var(--rl-font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .aar-kpi {
+    padding: 8px 10px;
+  }
+  .aar-kpi dd {
+    font-size: var(--rl-fs-sm);
+  }
+  .aar-phase {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
+
+/* Les tableaux du rapport gardent une largeur naturelle (défilement horizontal dans leur cadre). */
+.battle__sides {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+}
+.aar-kpis {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+}
+.battle__sides .aar-table {
+  table-layout: auto;
+}
+.battle__sides .aar-table th:nth-child(n + 2),
+.battle__sides .aar-table td:nth-child(n + 2) {
+  width: auto;
+}
+.aar-cols {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+}
+.aar-cols > *,
+.aar-kpis > * {
+  min-width: 0;
+}
+
+/* En-têtes de panneaux du rapport : le complément passe à la ligne plutôt que d'être coupé. */
+.battle .rl-panel__head {
+  flex-wrap: wrap;
+  row-gap: 2px;
+}

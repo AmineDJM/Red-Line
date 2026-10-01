@@ -1141,7 +1141,7 @@ export class MockGameConnection extends Emitter implements GameConnection {
   /** Rapport de bataille détaillé (REST /battle-reports/:id en mode démonstration). */
   battleReport(id: string): BattleReport | null {
     const s = this.view.battleReports?.find((r) => r.id === id);
-    return s ? demoBattleReport(s, this.catalog) : null;
+    return s ? demoBattleReport(s, this.catalog, this.opts.me) : null;
   }
 
   sendChat(channel: ChatChannel, text: string, to?: string) {

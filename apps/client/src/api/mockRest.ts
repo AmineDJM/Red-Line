@@ -8,6 +8,8 @@ import {
   destination,
   distanceKm,
   type Balance,
+  type BattleAar,
+  type BattleAarSide,
   type BattleReport,
   type BattleReportSummary,
   type CosmeticItem,
@@ -398,9 +400,202 @@ export function demoStats(
 
 // ——— Rapport de bataille détaillé ———
 
+const CREW: Partial<Record<WeaponSystem['category'], number>> = {
+  infantry: 600,
+  tank: 4,
+  ifv: 8,
+  artillery: 6,
+  air_defense: 6,
+  fighter: 1,
+  bomber: 4,
+  helicopter: 3,
+  surface_ship: 250,
+  logistics: 5,
+};
+
+/** Rapport après action de démonstration (même forme que celui du moteur). */
+export function demoAar(
+  s: BattleReportSummary,
+  catalog: Map<string, WeaponSystem>,
+  me: NationId | null,
+): BattleAar {
+  const rnd = prng(hash(`${s.id}:aar`));
+  const t0 = s.startedAt;
+  const t1 = s.endedAt ?? s.startedAt + 3 * HOUR;
+  const mine: 'attacker' | 'defender' = s.defender.nations.includes(me ?? '')
+    ? 'defender'
+    : 'attacker';
+  const ex = (v: number) => ({ best: v, min: v, max: v });
+  const rg = (v: number, k: number) => ({
+    best: v,
+    min: Math.round(v * (1 - k)),
+    max: Math.round(v * (1 + k)),
+  });
+  const mk = (key: 'attacker' | 'defender'): BattleAarSide => {
+    const b = key === 'attacker' ? s.attacker : s.defender;
+    const own = key === mine;
+    const k = own ? 0 : 0.25;
+    const est = (v: number) => (own ? ex(v) : rg(v, k));
+    const forces = b.engaged.map((e) => {
+      const sys = catalog.get(e.systemId);
+      const lost = b.losses.find((l) => l.systemId === e.systemId)?.count ?? 0;
+      const crew = sys ? (CREW[sys.category] ?? 2) : 2;
+      const medium: 'land' | 'air' | 'sea' =
+        sys?.movement === 'air' ? 'air' : sys?.movement === 'sea' ? 'sea' : 'land';
+      return {
+        systemId: e.systemId,
+        medium,
+        engaged: est(e.count),
+        destroyed: est(lost),
+        damaged: est(Math.round(lost * (0.5 + rnd()))),
+        captured: ex(0),
+        personnel: est(e.count * crew),
+        munitions: own ? ex(Math.round(e.count * (20 + rnd() * 60))) : ex(0),
+      };
+    });
+    if (!own)
+      forces.push({
+        systemId: null as unknown as string,
+        medium: 'land',
+        engaged: { best: 4, min: 2, max: 6 },
+        destroyed: ex(1),
+        damaged: { best: 1, min: 1, max: 2 },
+        captured: ex(0),
+        personnel: { best: 80, min: 6, max: 3600 },
+        munitions: ex(0),
+      });
+    const sum = (f: (x: (typeof forces)[number]) => { best: number; min: number; max: number }) =>
+      forces.reduce(
+        (a, x) => ({ best: a.best + f(x).best, min: a.min + f(x).min, max: a.max + f(x).max }),
+        { best: 0, min: 0, max: 0 },
+      );
+    const pers = sum((x) => x.destroyed);
+    const killed = Math.round(pers.best * 1.8 + rnd() * 6);
+    return {
+      side: key,
+      nations: [...b.nations],
+      own,
+      ...(own ? {} : { grade: { source: 'B' as const, credibility: 3 as const } }),
+      forces: forces.map((f) => ({ ...f, systemId: f.systemId ?? null })),
+      totals: {
+        personnel: sum((x) => x.personnel),
+        vehicles: sum((x) => (x.medium === 'land' ? x.engaged : ex(0))),
+        aircraft: sum((x) => (x.medium === 'air' ? x.engaged : ex(0))),
+        ships: sum((x) => (x.medium === 'sea' ? x.engaged : ex(0))),
+      },
+      casualties: {
+        killed: est(killed),
+        wounded: est(killed * 2 + 3),
+        missing: est(Math.round(killed / 3)),
+        prisoners: est(key === 'defender' && s.outcome === 'attacker' ? Math.round(killed / 2) : 0),
+      },
+      materiel: { destroyed: pers, damaged: sum((x) => x.damaged), captured: ex(0) },
+      lossesUsd: est(Math.round(pers.best * 4.2e6)),
+      missiles: { launched: est(own ? 12 : 8), shotDown: est(own ? 3 : 5) },
+      interceptions: est(own ? 5 : 3),
+      sorties: sum((x) => (x.medium === 'air' ? x.engaged : ex(0))),
+      munitions: own ? sum((x) => x.munitions) : { best: 900, min: 300, max: 2400 },
+      ...(own ? { generals: ['Gal. Morel'], veterancy: 1.2 } : {}),
+    };
+  };
+  const sides: [BattleAarSide, BattleAarSide] = [mk('attacker'), mk('defender')];
+  const la = sides[0].materiel.destroyed.best;
+  const ld = sides[1].materiel.destroyed.best;
+  const N = 10;
+  const losses = Array.from({ length: N + 1 }, (_, i) => {
+    const f = i / N;
+    const ease = (x: number) => Math.round(x * Math.min(1, f * f * 1.6));
+    return { t: t0 + (t1 - t0) * f, attacker: ease(la), defender: ease(ld) };
+  });
+  const at = (f: number) => t0 + (t1 - t0) * f;
+  return {
+    place: {
+      provinceId: s.provinceId,
+      province: s.title.replace(/^(Bataille|Combats autour) d[e’'] ?/, '') || null,
+      city: null,
+      owner: s.defender.nations[0] ?? null,
+      domain: s.provinceId ? 'land' : 'air',
+      urban: !!s.provinceId,
+    },
+    mySide: mine,
+    sides,
+    phases: [
+      {
+        kind: 'preparation',
+        t0: at(0),
+        t1: at(0.25),
+        side: 'attacker',
+        attackerLosses: 0,
+        defenderLosses: Math.round(ld * 0.2),
+      },
+      {
+        kind: 'assault',
+        t0: at(0.25),
+        t1: at(0.6),
+        side: 'attacker',
+        attackerLosses: Math.round(la * 0.6),
+        defenderLosses: Math.round(ld * 0.5),
+      },
+      {
+        kind: 'counter',
+        t0: at(0.6),
+        t1: at(0.8),
+        side: 'defender',
+        attackerLosses: Math.round(la * 0.4),
+        defenderLosses: Math.round(ld * 0.2),
+      },
+      {
+        kind: 'retreat',
+        t0: at(0.8),
+        t1: at(1),
+        side: 'defender',
+        attackerLosses: 0,
+        defenderLosses: Math.round(ld * 0.1),
+      },
+    ],
+    losses,
+    factors: [
+      { kind: 'numbers', side: 'attacker', positive: true, weight: 0.6, params: { ratio: 2.1 } },
+      {
+        kind: 'air_superiority',
+        side: 'attacker',
+        positive: true,
+        weight: 0.5,
+        params: { kills: 3, strikes: 14 },
+      },
+      { kind: 'entrenched', side: 'defender', positive: true, weight: 0.45, params: { share: 62 } },
+      { kind: 'electronic_warfare', side: mine, positive: true, weight: 0.3, params: { hits: 9 } },
+      { kind: 'supply', side: mine, positive: false, weight: 0.2, params: { share: 35 } },
+    ],
+    result: {
+      verdict:
+        s.outcome === 'ongoing'
+          ? 'ongoing'
+          : s.outcome === 'attacker'
+            ? 'decisive_attacker'
+            : s.outcome === 'defender'
+              ? 'defender'
+              : 'stalemate',
+      captured:
+        s.outcome === 'attacker' && s.provinceId
+          ? [
+              {
+                provinceId: s.provinceId,
+                name: s.title.replace(/^Bataille d[e’'] ?/, ''),
+                by: s.attacker.nations[0]!,
+                at: t1,
+              },
+            ]
+          : [],
+      held: s.outcome === 'defender' ? s.provinceId : null,
+    },
+  };
+}
+
 export function demoBattleReport(
   s: BattleReportSummary,
   catalog: Map<string, WeaponSystem>,
+  me: NationId | null = null,
 ): BattleReport {
   const rnd = prng(hash(s.id));
   const t0 = s.startedAt;
@@ -500,6 +695,7 @@ export function demoBattleReport(
       },
     ],
     replay: { t0, t1, frames, shots },
+    aar: demoAar(s, catalog, me),
   };
 }
 

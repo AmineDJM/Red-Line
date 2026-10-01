@@ -127,6 +127,14 @@ describe('routes', () => {
 });
 
 describe('règles : libellés et fusion', () => {
+  it('monde vivant (ai.world) : intensité, rythme par niveau, rivalités et blocs libellés', () => {
+    expect(ruleLabel('ai.world.intensity')).toBe('Intelligence artificielle › Intensité du monde');
+    expect(ruleLabel('ai.world.levels.normal.rivalryChancePerDay')).toBe(
+      'Intelligence artificielle › Probabilité d’une guerre de rivalité',
+    );
+    expect(RULE_HELP[helpKeyOf('ai.world.rivalries.3.motive')]?.[0]).toBe('Motif');
+    expect(RULE_HELP[helpKeyOf('ai.world.blocs.0.mutualDefense')]?.[0]).toBe('Défense mutuelle');
+  });
   it('clé d’aide sans index', () => {
     expect(helpKeyOf('combat.veterancyXp.1')).toBe('combat.veterancyXp');
     expect(helpKeyOf('buildings.levels.mine.2.costUsd')).toBe('buildings.levels.costUsd');
