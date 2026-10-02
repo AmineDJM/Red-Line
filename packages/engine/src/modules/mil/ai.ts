@@ -237,7 +237,7 @@ export function combatAi(state: EngineState, n: NationId): void {
       ) {
         strikes--;
         if (isSam(t.sys) || !nearOwn(state, n, t.pos))
-          escortStrike(state, n, units, t.pos, L.airEscorts);
+          escortStrike(state, n, units, t.pos, L.airEscorts, null);
       }
     }
   }
@@ -316,8 +316,10 @@ function cover(state: EngineState, n: NationId, units: Unit[], at: LngLat, want:
 const COVER_KM = 80;
 
 /**
- * Escorte d'une frappe hors de son territoire : des chasseurs patrouillent sur l'objectif (plus
- * rapides, ils arrivent avant les bombardiers et engagent les intercepteurs ennemis).
+ * Escorte d'une frappe hors de son territoire. Frappe profonde (`striker` donné) : des chasseurs prêts
+ * escortent l'appareil de frappe (ordre « escorter » : vol en formation, interception des chasseurs
+ * ennemis qui le menacent). Sinon, ou à défaut de chasseurs disponibles, patrouille de chasse sur
+ * l'objectif (plus rapides, ils arrivent avant les bombardiers).
  */
 function escortStrike(
   state: EngineState,
@@ -325,9 +327,21 @@ function escortStrike(
   units: Unit[],
   at: LngLat,
   want: number,
+  striker: Unit | null,
 ): void {
   if (want <= 0) return;
-  cover(state, n, units, at, want);
+  let tries = striker ? 4 : 0;
+  for (const u of units) {
+    if (!striker) break;
+    if (want <= 0 || tries <= 0) break;
+    if (u.id === striker.id || !state.units[striker.id]) continue;
+    const s = sysOf(state, u);
+    if (!isFighter(s) || !ready(state, u)) continue;
+    tries--;
+    if (!canFly(state, n, u, at)) continue;
+    if (order(state, n, { kind: 'escort', unitIds: [u.id], targetId: striker.id })) want--;
+  }
+  if (want > 0) cover(state, n, units, at, want);
 }
 
 /** Installations visées par les frappes profondes, par priorité décroissante. */
@@ -414,7 +428,7 @@ function deepStrikes(
     strikers.splice(i, 1);
     if (order(state, n, { kind: 'strike', unitIds: [u.id], target })) {
       left--;
-      escortStrike(state, n, units, aim, L.airEscorts);
+      escortStrike(state, n, units, aim, L.airEscorts, u);
       if (sam) sams.splice(sams.indexOf(sam), 1);
     }
   }

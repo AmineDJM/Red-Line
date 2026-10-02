@@ -21,6 +21,34 @@
     "roadSnapKm": 80,
     "roadNetwork": true
   },
+  "military": {
+    "transport": {
+      "placesPerTransport": 50,
+      "places": {
+        "infantry": 40,
+        "tank": 4,
+        "ifv": 2,
+        "artillery": 3,
+        "air_defense": 3,
+        "radar": 2,
+        "logistics": 2
+      },
+      "defaultPlaces": 3,
+      "embarkKm": 60,
+      "portKm": 60,
+      "portMinutes": 60,
+      "coastFactor": 3,
+      "landingKm": 60,
+      "landingPenalty": 0.5,
+      "landingPenaltyHours": 3
+    },
+    "escort": {
+      "followKm": 15,
+      "engageKm": 80,
+      "leashKm": 150,
+      "refreshMinutes": 5
+    }
+  },
   "sensors": {
     "provinceDetectionKm": 60,
     "identifiedAtFraction": 0.7,

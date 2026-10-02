@@ -10,6 +10,7 @@ import type { EngineState, StackPart, Unit } from '../../state/types.js';
 import { spawnStack } from '../../state/units.js';
 import { armFuel, newMission } from './air.js';
 import { mil, milBal } from './state.js';
+import { transportRefusal } from './transport.js';
 import { OK, fail, posOf, resolveOwn } from './util.js';
 
 /**
@@ -57,6 +58,8 @@ export function orderSplit(
   const u = res[0]!;
   const m = mil(state);
   if (m.fixedOf[u.id]) return fail('not_allowed', 'Unité fixe.');
+  const busy = transportRefusal(state, [u]);
+  if (busy) return busy;
   const kinds = (o.count !== undefined ? 1 : 0) + (o.parts ? 1 : 0) + (o.mode ? 1 : 0);
   if (kinds !== 1)
     return fail('invalid_target', 'Préciser un effectif, des matériels ou un mode de scission.');
@@ -184,6 +187,8 @@ function splitInto(state: EngineState, u: Unit, cur: StackPart[], pieces: number
 /** Les piles peuvent-elles être réunies ? null si oui, sinon le refus. */
 export function mergeRefusal(state: EngineState, units: Unit[]): OrderResult | null {
   if (units.length < 2) return fail('invalid_target', 'Il faut au moins deux unités.');
+  const busy = transportRefusal(state, units);
+  if (busy) return busy;
   const m = mil(state);
   const sb = stackBal(state.world);
   const first = units[0]!;

@@ -174,6 +174,24 @@ const BASE_ORDERS = [
     mode: z.enum(['half', 'type']).optional(),
   }),
   z.object({ kind: z.literal('merge'), unitIds }),
+  /**
+   * Escorte : les piles suivent une pile amie (`targetId`) et engagent ce qui la menace (chasseurs
+   * escortant des bombardiers, frégates escortant un transport, défense antiaérienne mobile). Fin : ordre
+   * d'arrêt ou de déplacement, cible détruite, carburant (aéronefs).
+   */
+  z.object({ kind: z.literal('escort'), unitIds, targetId: id }),
+  /** Transport naval : des piles terrestres embarquent sur un navire de transport ami tout proche. */
+  z.object({ kind: z.literal('embark'), unitIds, transportId: id }),
+  /**
+   * Débarquement des troupes d'un navire de transport : sur place (côte ou port proche), ou après la
+   * traversée vers `to` (point côtier, débarquement amphibie). `unitIds` : une partie de la cargaison.
+   */
+  z.object({
+    kind: z.literal('disembark'),
+    transportId: id,
+    unitIds: z.array(z.string().max(32)).min(1).max(200).optional(),
+    to: lngLat.optional(),
+  }),
   z.object({ kind: z.literal('appointGeneral'), generalId: id, unitIds: z.array(id).max(200) }),
   z.object({
     kind: z.literal('delegate'),
@@ -367,6 +385,21 @@ export const ORDER_REASONS = [
   'partial',
   'munition_use_strike',
   'ceasefire',
+  // Escorte
+  'escort_self',
+  'escort_target_invalid',
+  'escort_incapable',
+  'escort_domain',
+  // Transport naval
+  'transport_not_ship',
+  'transport_not_land',
+  'transport_capacity',
+  'transport_too_far',
+  'transport_moving',
+  'transport_no_shore',
+  'transport_empty',
+  'transport_embarked',
+  'transport_busy',
 ] as const;
 export type OrderReason = (typeof ORDER_REASONS)[number];
 

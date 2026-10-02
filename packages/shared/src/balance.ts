@@ -181,6 +181,54 @@ export const MilitaryBalanceSchema = z.object({
     })
     .default({}),
   blockade: z.object({ radiusKm: num(80) }).default({}),
+  /**
+   * Transport naval de troupes (ordres embark / disembark). Capacité d'un navire = Σ éléments ×
+   * `payload.transport` du catalogue × `placesPerTransport` ; une pile terrestre occupe Σ éléments ×
+   * places de sa catégorie (`places`, sinon `defaultPlaces`).
+   */
+  transport: z
+    .object({
+      placesPerTransport: num(50),
+      /** Places par élément, selon la catégorie (bataillon d'infanterie, char, véhicule…). */
+      places: z.record(z.string(), z.number().min(0)).default({
+        infantry: 40,
+        tank: 4,
+        ifv: 2,
+        artillery: 3,
+        air_defense: 3,
+        radar: 2,
+        logistics: 2,
+      }),
+      defaultPlaces: num(3),
+      /** Distance maximale entre la pile et le navire pour embarquer (km). */
+      embarkKm: num(60),
+      /** Navire à moins de cette distance d'un port ami : embarquement / débarquement au port (km). */
+      portKm: num(60),
+      /** Durée d'un embarquement ou d'un débarquement au port (minutes). */
+      portMinutes: num(60),
+      /** Depuis une côte (hors port) : durée multipliée par ce facteur. */
+      coastFactor: num(3),
+      /** Distance maximale entre le navire et le point de mise à terre (km). */
+      landingKm: num(60),
+      /** Débarquement contesté (ennemi au contact) : dégâts infligés réduits de cette part… */
+      landingPenalty: num(0.5),
+      /** … pendant ce délai après la mise à terre (heures). */
+      landingPenaltyHours: num(3),
+    })
+    .default({}),
+  /** Escorte (ordre escort) : suivi de la pile protégée et engagement des menaces. */
+  escort: z
+    .object({
+      /** Distance de suivi : au-delà, l'escorte se rapproche de la pile protégée (km). */
+      followKm: num(15),
+      /** Rayon de protection : menaces engagées autour de la pile protégée (km). */
+      engageKm: num(80),
+      /** Laisse : une poursuite qui entraîne au-delà de cette distance est abandonnée (km). */
+      leashKm: num(150),
+      /** Période de suivi (minutes de jeu). */
+      refreshMinutes: num(5),
+    })
+    .default({}),
   capture: z
     .object({
       /** Types de matériel récupérés en prenant une base ennemie. */

@@ -146,6 +146,25 @@ function distKm(A: Piece[], B: Piece[], t: number): { d: number; dot: number } {
   return { d: Math.acos(Math.max(-1, Math.min(1, dot))) * EARTH_RADIUS_KM, dot };
 }
 
+/**
+ * Distance cohérente avec les bandes des seuils. Les franchissements sont calculés sur le produit
+ * scalaire (dot ≥ cos(r/R) ⇔ dedans) ; la distance en km passe par acos, dont l'arrondi peut placer
+ * d de l'autre côté du seuil à l'instant exact du franchissement (d = 5,000000001 km alors que la
+ * bande dit « à 5 km »). Sans correction, une unité qui finit son trajet sur un seuil (ville au
+ * rayon de capture, ennemi à portée de tir) restait classée dehors pour toujours : aucun autre
+ * franchissement n'était à venir, donc ni capture ni combat. On aligne d sur la bande (écart < 1 µm).
+ */
+export function consistentDist(x: { d: number; dot: number }, radii: readonly number[]): number {
+  let d = x.d;
+  for (const r of radii) {
+    if (!(r > 0)) continue;
+    if (x.dot >= Math.cos(r / EARTH_RADIUS_KM)) {
+      if (d > r) d = r;
+    } else if (d <= r) d = r * (1 + 1e-12) + 1e-12;
+  }
+  return d;
+}
+
 /* ------------------------------------------------------------------------------------------------ */
 /* Index spatial                                                                                     */
 /* ------------------------------------------------------------------------------------------------ */
@@ -257,7 +276,7 @@ function evalUnitPair(state: EngineState, key: string): void {
     return;
   }
   const cosThr = toCos(radii);
-  const { d } = distKm(pa, pb, t);
+  const d = consistentDist(distKm(pa, pb, t), radii);
   const next = nextBandChange(pa, pb, cosThr, t);
   const inRel = d <= maxRadius(cosThr);
   if (!inRel && next === null) {
@@ -326,7 +345,7 @@ function evalProvPair(state: EngineState, key: string): void {
     return;
   }
   const cosThr = toCos(radii);
-  const { d } = distKm(pp, pu, t);
+  const d = consistentDist(distKm(pp, pu, t), radii);
   const next = nextBandChange(pp, pu, cosThr, t);
   const inRel = d <= maxRadius(cosThr);
   if (!inRel && next === null) {
