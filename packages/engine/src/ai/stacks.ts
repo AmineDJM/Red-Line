@@ -7,6 +7,7 @@ import type { EngineState, Unit } from '../state/types.js';
 import { citiesNear } from '../state/cities.js';
 import { wi } from '../state/world.js';
 import { aiCfg, aiLevelCfg } from './config.js';
+import { cfg } from '../modules/eco/config.js';
 import { unitValue } from './estimate.js';
 import { aiOrder } from './trace.js';
 
@@ -56,6 +57,28 @@ export function manageStacks(state: EngineState, n: NationId, atWarNow: boolean)
       )
     : Math.ceil(sb.peaceStacksPerProvince * ns.provinceCount) + 1;
   let count = land.length;
+  // En guerre, la capitale garde des piles distinctes (garnison + au moins une pile de manœuvre) :
+  // ses grosses piles à l'arrêt y sont divisées d'abord, sinon la garnison partirait avec la pile.
+  const capPid = w.nationById.get(n)?.capitalProvinceId;
+  if (atWarNow && capPid && state.provinces[capPid]?.owner === n) {
+    const at = w.provById.get(capPid)!.cityPoint;
+    const gc = state.world.balance.combat.groundContactKm;
+    const atCap = land.filter(
+      (u) => !u.move && !u.target && distanceKm(unitPosAt(state, u, state.time), at) <= gc,
+    );
+    let have = atCap.length;
+    const big = atCap
+      .filter((u) => u.count >= sb.minSplitElements)
+      .sort((a, b) => b.count - a.count || (a.id < b.id ? -1 : 1));
+    for (const u of big) {
+      if (have > L.capitalGarrison || ops <= 0) break;
+      ops--;
+      if (aiOrder(state, n, { kind: 'split', unitId: u.id, mode: 'half' }).ok) {
+        have++;
+        count++;
+      }
+    }
+  }
   if (atWarNow ? count >= want && count <= want * sb.mergeAbove : count <= want * sb.mergeAbove)
     return;
   const nav = w.nav;
@@ -129,11 +152,26 @@ export function manageStacks(state: EngineState, n: NationId, atWarNow: boolean)
 
 /**
  * Nombre d'unités « équivalentes » d'une nation pour ses plafonds de production : une pile mixte
- * compte pour autant de piles qu'elle réunit de matériels (une pile par matériel avant le
- * regroupement) ; une pile simple compte pour une.
+ * compte pour les piles d'origine qu'elle remplace (somme, par matériel, de son effectif rapporté à la
+ * taille de pile de départ de sa catégorie, `startingForces.stackMax`, arrondie au supérieur, au moins
+ * une) ; une pile simple compte pour une.
  */
 export function stackEquivalents(state: EngineState, n: NationId): number {
+  const max = cfg(state.world).startingForces.stackMax;
   let k = 0;
-  for (const id of state.rt.byNation.get(n) ?? []) k += state.units[id]?.mix?.length ?? 1;
+  for (const id of state.rt.byNation.get(n) ?? []) {
+    const u = state.units[id];
+    if (!u) continue;
+    if (!u.mix) {
+      k++;
+      continue;
+    }
+    let m = 0;
+    for (const p of u.mix) {
+      const cat = state.world.catalog.get(p.sys)?.category;
+      m += p.c / Math.max(1, (cat && max[cat]) || 24);
+    }
+    k += Math.max(1, Math.ceil(m - 1e-9));
+  }
   return k;
 }

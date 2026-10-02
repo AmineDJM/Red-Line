@@ -156,6 +156,14 @@ bornés par bataille et en nombre de rapports) : les grosses piles livrent des c
 des rapports plus remplis ; l'état des unités et des paires reste plus petit. À surveiller par l'équipe
 des rapports de bataille (`military.battle.maxFrames`, `maxShots`, `maxReports`).
 
+IA (`bench/ai-eval.ts`, guerres forcées, niveau normal, graines 1 et 2, 5 jours ; moyenne des deux
+graines, avant → après) : provinces prises 31,5 → 30, captures réussies 172 → 156, unités perdues en
+capture 37 → 33, capitales perdues 1 → 0,5, forces terrestres inactives 80 % → 65 %, CPU 23 s → 26 s
+(machine chargée). L'IA donne ~450 ordres `split` (détachements, garnison de la capitale divisée en
+premier) et refond ses piles en paix. Points à reprendre : capitale menacée sans garnison plus souvent
+(`capBarePct` 2 % → 15 %) et production de défense antiaérienne et d'infanterie en baisse (les piles
+mixtes comptent comme leur matériel principal dans les choix de production).
+
 ```bash
 cd packages/engine
 node --expose-gc bench/run.mjs stacks                                   # recensement 2025 + 1985
