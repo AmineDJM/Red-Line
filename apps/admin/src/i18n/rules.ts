@@ -70,6 +70,10 @@ export const RULE_SECTIONS: Record<string, [label: string, help: string]> = {
     'Renseignement',
     'Rapports, opérations, budgets des services, écoutes, leurres et agents.',
   ],
+  domestic: [
+    'Gestion intérieure',
+    'Politiques intérieures du joueur, soutien à la guerre, grèves, manifestations et sabotages intérieurs.',
+  ],
   diplomacy: [
     'Diplomatie',
     'Conseil de sécurité, alliances, cessez-le-feu, sanctions, rebelles et mercenaires.',
@@ -580,6 +584,146 @@ const AI_HELP: Record<string, HelpEntry> = {
   ],
 };
 
+/** Monde vivant des parties solo (section `ai.world`) : mêmes libellés pour les trois niveaux. */
+const AI_WORLD_LEVEL_HELP: Record<string, HelpEntry> = {
+  fromDays: ['Début des guerres entre IA', 'Aucune guerre entre IA avant ce jour de partie.', 'j'],
+  maxWars: [
+    'Guerres par nation',
+    'Guerres entre IA qu’une même nation lance et mène à la fois, au plus (0 : jamais).',
+    'n',
+  ],
+  maxActiveWars: [
+    'Plafond mondial',
+    'Guerres entre IA en cours dans le monde au plus (× intensité) : vraisemblance et coût de calcul.',
+    'n',
+  ],
+  rivalryChancePerDay: [
+    'Probabilité d’une guerre de rivalité',
+    'Par jour, pour une rivalité de poids 1 (× poids × intensité), si le rapport de force le permet.',
+    'frac',
+  ],
+  rivalryRatio: [
+    'Rapport de force contre un rival',
+    'Supériorité estimée (sans tricher) exigée pour attaquer un rival historique.',
+    'x',
+  ],
+  opportunismChancePerDay: [
+    'Probabilité d’une guerre opportuniste',
+    'Par jour, contre un voisin affaibli (capitale perdue, instable, en train de perdre une autre guerre).',
+    'frac',
+  ],
+  opportunismRatio: [
+    'Rapport de force contre un voisin affaibli',
+    'Supériorité estimée exigée pour une guerre opportuniste.',
+    'x',
+  ],
+  warGoalShare: [
+    'But de guerre',
+    'Part des provinces de la cible au-delà de laquelle l’agresseur s’arrête et propose la paix.',
+    'frac',
+  ],
+  satisfiedPeaceDays: [
+    'Paix de l’agresseur satisfait',
+    'L’agresseur qui tient des gains depuis ce délai propose la paix et les garde.',
+    'j',
+  ],
+  capitulationShare: [
+    'Seuil de capitulation',
+    'Une IA qui a perdu sa capitale ou cette part de ses provinces accepte la paix.',
+    'frac',
+  ],
+  capitulationMinDays: [
+    'Délai avant capitulation',
+    'Capitulation par perte de territoire : pas avant ce délai de guerre (la chute de la capitale suffit toujours).',
+    'j',
+  ],
+  rematchDays: [
+    'Répit après une paix',
+    'Pas de nouvelle guerre entre les deux mêmes IA avant ce délai.',
+    'j',
+  ],
+  stalemateDays: [
+    'Enlisement',
+    'Aucune province n’a changé de main depuis ce délai : paix au statu quo.',
+    'j',
+  ],
+};
+
+const AI_WORLD_HELP: Record<string, HelpEntry> = {
+  'ai.world': [
+    'Monde vivant',
+    'Guerres que les IA se font entre elles en partie solo : rivalités, opportunisme, blocs, fin des guerres.',
+  ],
+  'ai.world.intensity': [
+    'Intensité du monde',
+    'Multiplie les probabilités de guerre entre IA et le plafond de guerres (0 : monde figé, 2 : très agité).',
+    'x',
+  ],
+  'ai.world.levels': ['Rythme par niveau', 'Guerres entre IA selon le niveau de la partie.'],
+  ...Object.fromEntries(
+    AI_LEVELS.flatMap(([lv, label]): [string, HelpEntry][] => [
+      [`ai.world.levels.${lv}`, [label, `Rythme du monde au niveau « ${label.toLowerCase()} ».`]],
+      ...Object.entries(AI_WORLD_LEVEL_HELP).map(([k, h]): [string, HelpEntry] => [
+        `ai.world.levels.${lv}.${k}`,
+        h,
+      ]),
+    ]),
+  ),
+  'ai.world.rivalReachKm': [
+    'Portée d’un rival lointain',
+    'Un rival non voisin est visé si sa capitale est à cette distance (frappes, débarquement).',
+    'km',
+  ],
+  'ai.world.weakStability': [
+    'Voisin instable',
+    'Sous cette stabilité publique, un voisin est jugé affaibli (cible d’opportunisme).',
+    'pts',
+  ],
+  'ai.world.blocDefenseRatio': [
+    'Défense mutuelle d’un bloc',
+    'Un membre voisin secourt un membre attaqué si leurs forces réunies pèsent cette part de l’agresseur.',
+    'frac',
+  ],
+  'ai.world.blocDefenseDays': [
+    'Délai de la défense mutuelle',
+    'Les membres d’un bloc n’entrent en guerre que pendant les premiers jours du conflit.',
+    'j',
+  ],
+  'ai.world.waiverMaxRestraint': [
+    'Retenue maximale des guerres sans motif',
+    'Guerres sans motif (difficile) permises seulement aux nations dont la retenue de bloc ne dépasse pas ce seuil.',
+    'frac',
+  ],
+  'ai.world.rivalries': [
+    'Rivalités historiques',
+    'Paires de nations rivales : poids (0 à 1), motif public (dépêche), déclencheur (l’une ou l’autre, a, b).',
+  ],
+  'ai.world.rivalries.a': ['Nation A'],
+  'ai.world.rivalries.b': ['Nation B'],
+  'ai.world.rivalries.weight': ['Poids', 'Probabilité relative que la rivalité dégénère.', 'frac'],
+  'ai.world.rivalries.motive': ['Motif', 'Motif invoqué dans la dépêche de déclaration de guerre.'],
+  'ai.world.rivalries.initiator': [
+    'Déclencheur',
+    '« both » : l’une ou l’autre ; « a » ou « b » : seule cette nation attaque.',
+  ],
+  'ai.world.blocs': [
+    'Blocs politiques',
+    'Alliances réelles et unions régionales : pas de guerre de choix entre membres ; retenue ; défense mutuelle.',
+  ],
+  'ai.world.blocs.id': ['Identifiant'],
+  'ai.world.blocs.name': ['Nom'],
+  'ai.world.blocs.members': ['Membres'],
+  'ai.world.blocs.restraint': [
+    'Retenue',
+    'Réduit les guerres opportunistes ou sans motif des membres (1 : aucune).',
+    'frac',
+  ],
+  'ai.world.blocs.mutualDefense': [
+    'Défense mutuelle',
+    'Les membres IA voisins secourent un membre attaqué par une IA extérieure.',
+  ],
+};
+
 export const RULE_HELP: Record<string, HelpEntry> = {
   version: ['Version', 'Incrémentez-la à chaque refonte importante.', 'n'],
   'time.speeds': [
@@ -752,6 +896,7 @@ export const RULE_HELP: Record<string, HelpEntry> = {
     'frac',
   ],
   ...AI_HELP,
+  ...AI_WORLD_HELP,
   'industry.importPriceFactor': [
     'Prix des importations',
     'Achat au catalogue d’un fournisseur étranger : prix × ce facteur.',
@@ -1039,6 +1184,125 @@ export const RULE_HELP: Record<string, HelpEntry> = {
     'Âge au-delà duquel l’état des bâtiments est masqué.',
     'h',
   ],
+  'intel.interior': [
+    'Renseignement intérieur',
+    'Contre-espionnage, protection des sites sensibles, surveillance des troubles.',
+  ],
+  'intel.interior.focus': [
+    'Priorités du département',
+    'Multiplicateurs par priorité (équilibrée, contre-espionnage, protection, surveillance).',
+  ],
+  'intel.interior.focus.agentDetect': ['Détection des agents', undefined, 'x'],
+  'intel.interior.focus.opDetect': ['Détection des opérations', undefined, 'x'],
+  'intel.interior.focus.protection': ['Protection des sites', undefined, 'x'],
+  'intel.interior.focus.unrest': ['Réduction des troubles', undefined, 'x'],
+  'intel.interior.opDetectBase': [
+    'Détection d’une opération',
+    'Chance de base × (0,4 + qualité) × priorité de repérer une opération étrangère en préparation.',
+    'frac',
+  ],
+  'intel.interior.opDetectMax': ['Détection maximale', undefined, 'frac'],
+  'intel.interior.foilFactor': [
+    'Opération repérée',
+    'Réduction de la réussite d’une opération repérée.',
+    'frac',
+  ],
+  'intel.interior.detectedExposure': [
+    'Exposition si repérée',
+    'Risque d’être démasquée multiplié par ce facteur.',
+    'x',
+  ],
+  'intel.interior.protectionMax': [
+    'Protection maximale',
+    'Réduction de la réussite adverse sur un site protégé (× qualité × priorité).',
+    'frac',
+  ],
+  'intel.interior.protectedBase': ['Sites protégés (base)', undefined, 'n'],
+  'intel.interior.protectedPerLevel': ['Sites protégés par niveau', undefined, 'n'],
+  'intel.interior.protectionFocusBonus': ['Sites en plus (priorité protection)', undefined, 'n'],
+  'intel.interior.unrestReductionMax': [
+    'Réduction des troubles max.',
+    'Réduction du risque de troubles (× qualité × priorité).',
+    'frac',
+  ],
+  'intel.interior.threatDecay': [
+    'Mémoire des incidents',
+    'Facteur de décroissance quotidien de la menace par province.',
+    'x',
+  ],
+  'intel.interior.threatWeights': [
+    'Poids des incidents',
+    'Points de menace par incident (sabotage, rebelles, cyber, alerte…) et par facteur.',
+    'pts',
+  ],
+  'domestic.changeCooldownDays': [
+    'Délai entre changements',
+    'Jours de jeu avant de pouvoir changer à nouveau une même politique.',
+    'j',
+  ],
+  'domestic.policies': [
+    'Politiques',
+    'Effets de chaque politique (propagande, conscription, effort de guerre, austérité, relance, loi martiale).',
+  ],
+  'domestic.policies.income': ['Revenus', undefined, 'x'],
+  'domestic.policies.production': ['Production', undefined, 'x'],
+  'domestic.policies.infantry': ['Production d’infanterie', undefined, 'x'],
+  'domestic.policies.research': ['Recherche', undefined, 'x'],
+  'domestic.policies.upkeep': ['Entretien', undefined, 'x'],
+  'domestic.policies.stabilityPerDay': ['Stabilité par jour', undefined, 'pts'],
+  'domestic.policies.morale': ['Moral visé', undefined, 'pts'],
+  'domestic.policies.warSupport': ['Soutien à la guerre visé', undefined, 'pts'],
+  'domestic.policies.unrest': ['Risque de troubles', undefined, 'x'],
+  'domestic.policies.strikes': ['Risque de grèves', undefined, 'x'],
+  'domestic.policies.excludes': ['Politiques incompatibles'],
+  'domestic.warSupport': ['Soutien à la guerre', 'Soutien de la population (0 à 100).'],
+  'domestic.warSupport.start': ['Soutien de départ', undefined, 'pts'],
+  'domestic.warSupport.driftPerDay': ['Rapprochement quotidien', undefined, 'pts'],
+  'domestic.warSupport.defensiveBonus': ['Guerre défensive', 'Soutien visé en plus.', 'pts'],
+  'domestic.warSupport.offensivePenalty': ['Guerre d’agression', 'Soutien visé en moins.', 'pts'],
+  'domestic.warSupport.lossPerUnit': ['Baisse par unité perdue', undefined, 'pts'],
+  'domestic.warSupport.lossCapPerDay': ['Baisse max. par jour', undefined, 'pts'],
+  'domestic.warSupport.provinceLost': ['Baisse par province perdue', undefined, 'pts'],
+  'domestic.warSupport.lowThreshold': ['Seuil bas', undefined, 'pts'],
+  'domestic.warSupport.lowWeariness': [
+    'Lassitude (soutien bas)',
+    'Multiplicateur de la lassitude de guerre.',
+    'x',
+  ],
+  'domestic.warSupport.highThreshold': ['Seuil haut', undefined, 'pts'],
+  'domestic.warSupport.highWeariness': [
+    'Lassitude (soutien haut)',
+    'Multiplicateur de la lassitude de guerre.',
+    'x',
+  ],
+  'domestic.events': [
+    'Événements intérieurs',
+    'Grèves, manifestations, émeutes et sabotages (chances quotidiennes de base).',
+  ],
+  'domestic.events.strikeChance': ['Grève', 'Chance de base (moral sous le seuil).', 'frac'],
+  'domestic.events.moraleThreshold': ['Seuil de moral', undefined, 'pts'],
+  'domestic.events.strikeHours': ['Durée d’une grève', undefined, 'h'],
+  'domestic.events.strikeProduction': ['Production pendant une grève', undefined, 'x'],
+  'domestic.events.protestChance': [
+    'Manifestation',
+    'Chance de base (stabilité sous le seuil).',
+    'frac',
+  ],
+  'domestic.events.stabilityThreshold': ['Seuil de stabilité', undefined, 'pts'],
+  'domestic.events.protestStability': ['Stabilité perdue', undefined, 'pts'],
+  'domestic.events.protestUnrest': ['Agitation locale', undefined, 'pts'],
+  'domestic.events.sabotageChance': [
+    'Sabotage intérieur',
+    'Chance de base (agitation locale suffisante).',
+    'frac',
+  ],
+  'domestic.events.sabotageUnrest': ['Agitation minimale', undefined, 'pts'],
+  'domestic.events.sabotageDamage': ['Dégâts', 'Minimum et maximum.', 'frac'],
+  'domestic.events.riotThreshold': ['Seuil d’émeute', undefined, 'pts'],
+  'domestic.events.riotStability': ['Stabilité perdue (émeute)', undefined, 'pts'],
+  'domestic.events.cooldownDays': ['Délai entre événements', undefined, 'j'],
+  'domestic.occupiedRisk': ['Province occupée', 'Risque de troubles ajouté.', 'pts'],
+  'domestic.ai': ['Politiques de l’IA', 'Effort de guerre et loi martiale pour les IA.'],
   'diplomacy.councilEveryDays': ['Conseil de sécurité', 'Période des sessions ordinaires.', 'j'],
   'diplomacy.voteWindowRealHours': [
     'Fenêtre de vote',

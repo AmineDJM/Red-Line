@@ -3,6 +3,8 @@ import { join, normalize, sep } from 'node:path';
 import fastifyStatic from '@fastify/static';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import type { AppContext } from '../context.js';
+import { publicOrigin } from './origin.js';
+import type { SitePages } from './site.js';
 
 /** Chemin relatif sûr (pas de remontée, pas de fichier caché). */
 function safeRel(rel: string | undefined): string | null {
@@ -26,7 +28,11 @@ function missingDistPage(what: string, dir: string): string {
   return `Red Line — ${what} non construit.\n\nDossier attendu : ${dir}\nLancez « pnpm build » (ou le serveur Vite en développement).\n`;
 }
 
-export async function staticRoutes(app: FastifyInstance, ctx: AppContext): Promise<void> {
+export async function staticRoutes(
+  app: FastifyInstance,
+  ctx: AppContext,
+  site?: SitePages,
+): Promise<void> {
   const { config } = ctx;
   // Décore reply.sendFile (Range, ETag, Last-Modified, If-None-Match gérés par @fastify/send).
   // preCompressed : fichiers .br/.gz produits au build (scripts/precompress.mjs), choisis selon
@@ -64,7 +70,13 @@ export async function staticRoutes(app: FastifyInstance, ctx: AppContext): Promi
   );
 
   /** Application monopage : fichier s'il existe, sinon index.html. */
-  const spa = (dist: string, rel: string, reply: FastifyReply, label: string) => {
+  const spa = (
+    dist: string,
+    rel: string,
+    reply: FastifyReply,
+    label: string,
+    req?: FastifyRequest,
+  ) => {
     if (!existsSync(join(dist, 'index.html'))) {
       return reply.type('text/plain; charset=utf-8').send(missingDistPage(label, dist));
     }
@@ -79,6 +91,14 @@ export async function staticRoutes(app: FastifyInstance, ctx: AppContext): Promi
         immutable: hashed,
         dotfiles: 'deny',
       });
+    }
+    // Jeu : index.html complété par l'en-tête SEO des pages publiques (canonique, partage, JSON-LD).
+    const page =
+      req && site && dist === config.clientDist
+        ? site.spaIndex(join(dist, 'index.html'), publicOrigin(config, req))
+        : null;
+    if (req && site && page) {
+      return site.send(req, reply, page, { type: 'text/html; charset=utf-8', cache: 'no-cache' });
     }
     reply.header('Cache-Control', 'no-cache');
     return reply.sendFile('index.html', dist, { cacheControl: false });
@@ -105,7 +125,7 @@ export async function staticRoutes(app: FastifyInstance, ctx: AppContext): Promi
       } catch {
         return reply.code(400).send({ error: 'bad_request', message: 'Adresse invalide' });
       }
-      return spa(config.clientDist, path.replace(/^\/+/, ''), reply, 'Client');
+      return spa(config.clientDist, path.replace(/^\/+/, ''), reply, 'Client', req);
     }
     return reply.code(404).send({ error: 'not_found', message: 'Route inconnue' });
   });

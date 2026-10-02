@@ -163,14 +163,14 @@ describe.skipIf(!hasDb)('boutique : Stripe Checkout, webhooks, portefeuille, acc
     expect(refused.json()).toMatchObject({
       error: 'legal_required',
       needsAcceptance: [
-        { id: 'cgv', version: 1 },
-        { id: 'withdrawal', version: 1 },
+        { id: 'cgv', version: 2 },
+        { id: 'withdrawal', version: 2 },
       ],
     });
     await req('POST', '/api/legal/accept', {
       docs: [
-        { id: 'cgv', version: 1 },
-        { id: 'withdrawal', version: 1 },
+        { id: 'cgv', version: 2 },
+        { id: 'withdrawal', version: 2 },
       ],
     });
     expect((await req('POST', '/api/shop/checkout', { packId: 'nope' })).statusCode).toBe(404);

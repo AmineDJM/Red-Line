@@ -1,7 +1,7 @@
-import { and, desc, eq, ilike, or, sql, type SQL } from 'drizzle-orm';
+import { and, desc, eq, gte, ilike, isNotNull, like, lte, or, sql, type SQL } from 'drizzle-orm';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
-import { ROLES, WorldEventBodySchema, type Role } from '@redline/shared';
+import { RESOURCES, ROLES, WorldEventBodySchema, type Role } from '@redline/shared';
 import type { AppContext } from '../context.js';
 import {
   adminAudit,
@@ -11,6 +11,7 @@ import {
   purchases,
   shopPacks,
   shopPromotions,
+  shopResourceOffers,
   userFingerprints,
   users,
   walletLedger,
@@ -19,7 +20,7 @@ import { HttpError, checkRole, toPublicUser, type AuthState } from '../auth/auth
 import { parseBody } from '../http/util.js';
 import { gameIdParam } from '../http/access.js';
 import { toChatMessage } from '../chat/chat.js';
-import { packView, refundPurchase } from '../shop/shop.js';
+import { offerResources, packView, refundPurchase } from '../shop/shop.js';
 
 const PackBodySchema = z.object({
   id: z
@@ -35,6 +36,25 @@ const PackBodySchema = z.object({
   active: z.boolean().default(true),
   sort: z.number().int().default(0),
 });
+
+/** Offre de ressources en jeu (monnaie premium → dollars du jeu et/ou ressources). */
+const ResourceOfferBodySchema = z
+  .object({
+    id: z
+      .string()
+      .min(1)
+      .max(64)
+      .regex(/^[a-z0-9._-]+$/),
+    name: z.string().min(1).max(80),
+    money: z.number().min(0).max(1e13).default(0),
+    resources: z.record(z.enum(RESOURCES), z.number().min(0).max(1e7)).default({}),
+    price: z.number().int().positive().max(1_000_000),
+    active: z.boolean().default(true),
+    sort: z.number().int().default(0),
+  })
+  .refine((b) => b.money > 0 || Object.values(b.resources).some((v) => (v ?? 0) > 0), {
+    message: 'Offre vide : dollars ou ressources requis',
+  });
 
 const PromoBodySchema = z.object({
   packId: z.string().max(64).nullable().default(null),
@@ -194,6 +214,8 @@ export async function adminOpsRoutes(app: FastifyInstance, ctx: AppContext): Pro
     lastSeenAt: u.lastSeenAt.toISOString(),
     bannedAt: u.bannedAt?.toISOString() ?? null,
     banReason: u.banReason,
+    bannedUntil: u.bannedUntil?.toISOString() ?? null,
+    deletedAt: u.deletedAt?.toISOString() ?? null,
     chatMutedUntil: u.chatMutedUntil?.toISOString() ?? null,
   });
 
@@ -201,15 +223,38 @@ export async function adminOpsRoutes(app: FastifyInstance, ctx: AppContext): Pro
     const q = parseBody(
       z.object({
         q: z.string().max(200).optional(),
-        limit: z.coerce.number().int().min(1).max(500).default(100),
+        /** Filtre : comptes bannis, invités, équipe (rôle ≠ joueur), illimités, payants, supprimés. */
+        filter: z.enum(['banned', 'guest', 'staff', 'unlimited', 'paying', 'deleted']).optional(),
+        limit: z.coerce.number().int().min(1).max(1000).default(100),
       }),
       req.query,
     );
-    const like = q.q ? `%${q.q.replace(/[%_\\]/g, (c) => `\\${c}`)}%` : null;
+    const pattern = q.q ? `%${q.q.replace(/[%_\\]/g, (c) => `\\${c}`)}%` : null;
+    const conds: SQL[] = [];
+    if (pattern) {
+      const byId = z.string().uuid().safeParse(q.q?.trim());
+      conds.push(
+        or(
+          ilike(users.displayName, pattern),
+          ilike(users.email, pattern),
+          ...(byId.success ? [eq(users.id, byId.data)] : []),
+        )!,
+      );
+    }
+    if (q.filter === 'banned') conds.push(isNotNull(users.bannedAt));
+    if (q.filter === 'guest') conds.push(eq(users.isGuest, true));
+    if (q.filter === 'staff') conds.push(sql`${users.role} <> 'player'`);
+    if (q.filter === 'unlimited') conds.push(eq(users.unlimited, true));
+    if (q.filter === 'deleted') conds.push(isNotNull(users.deletedAt));
+    if (q.filter === 'paying') {
+      conds.push(
+        sql`EXISTS (SELECT 1 FROM purchases p WHERE p.user_id = ${users.id} AND p.status = 'paid')`,
+      );
+    }
     const rows = await db
       .select()
       .from(users)
-      .where(like ? or(ilike(users.displayName, like), ilike(users.email, like)) : undefined)
+      .where(conds.length ? and(...conds) : undefined)
       .orderBy(desc(users.lastSeenAt))
       .limit(q.limit);
     return { users: rows.map(userView) };
@@ -290,9 +335,11 @@ export async function adminOpsRoutes(app: FastifyInstance, ctx: AppContext): Pro
     if (body.banned === true) {
       patch.bannedAt = new Date();
       patch.banReason = body.banReason ?? null;
+      patch.bannedUntil = null;
     } else if (body.banned === false) {
       patch.bannedAt = null;
       patch.banReason = null;
+      patch.bannedUntil = null;
     }
     const [after] = await db.update(users).set(patch).where(eq(users.id, id)).returning();
     if (body.banned === true) {
@@ -349,6 +396,49 @@ export async function adminOpsRoutes(app: FastifyInstance, ctx: AppContext): Pro
       .returning();
     await audit(req, 'shop.pack.update', `pack:${id}`, before, row);
     return { pack: row };
+  });
+
+  app.get('/admin/api/shop/resources', superadmin, async () => ({
+    offers: (
+      await db
+        .select()
+        .from(shopResourceOffers)
+        .orderBy(shopResourceOffers.sort, shopResourceOffers.id)
+    ).map((o) => ({
+      ...o,
+      resources: offerResources(o),
+      updatedAt: o.updatedAt.toISOString(),
+    })),
+  }));
+
+  app.post('/admin/api/shop/resources', superadmin, async (req, reply) => {
+    const body = parseBody(ResourceOfferBodySchema, req.body);
+    const [row] = await db
+      .insert(shopResourceOffers)
+      .values({ ...body, resources: offerResources(body) })
+      .onConflictDoNothing()
+      .returning();
+    if (!row) throw new HttpError(409, 'already_exists', 'Cette offre existe déjà');
+    await audit(req, 'shop.resources.create', `offer:${body.id}`, null, body);
+    reply.code(201);
+    return { offer: row };
+  });
+
+  app.put('/admin/api/shop/resources/:id', superadmin, async (req) => {
+    const id = String((req.params as { id: string }).id);
+    const body = parseBody(ResourceOfferBodySchema, { ...(req.body as object), id });
+    const [before] = await db
+      .select()
+      .from(shopResourceOffers)
+      .where(eq(shopResourceOffers.id, id));
+    if (!before) throw new HttpError(404, 'not_found', 'Offre introuvable');
+    const [row] = await db
+      .update(shopResourceOffers)
+      .set({ ...body, resources: offerResources(body), updatedAt: new Date() })
+      .where(eq(shopResourceOffers.id, id))
+      .returning();
+    await audit(req, 'shop.resources.update', `offer:${id}`, before, row);
+    return { offer: row };
   });
 
   app.get('/admin/api/shop/promotions', superadmin, async () => ({
@@ -422,13 +512,31 @@ export async function adminOpsRoutes(app: FastifyInstance, ctx: AppContext): Pro
 
   app.get('/admin/api/audit', superadmin, async (req) => {
     const q = parseBody(
-      z.object({ limit: z.coerce.number().int().min(1).max(1000).default(200) }),
+      z.object({
+        limit: z.coerce.number().int().min(1).max(5000).default(200),
+        /** Préfixe d'action (« user. », « game.end »), administrateur, cible (préfixe), dates. */
+        action: z.string().max(80).optional(),
+        adminId: z.string().uuid().optional(),
+        target: z.string().max(200).optional(),
+        from: z.string().datetime({ offset: true }).optional(),
+        to: z.string().datetime({ offset: true }).optional(),
+        before: z.coerce.number().int().positive().optional(),
+      }),
       req.query,
     );
+    const esc = (v: string) => v.replace(/[%_\\]/g, (c) => `\\${c}`);
+    const conds: SQL[] = [];
+    if (q.action) conds.push(like(adminAudit.action, `${esc(q.action)}%`));
+    if (q.adminId) conds.push(eq(adminAudit.adminId, q.adminId));
+    if (q.target) conds.push(like(adminAudit.target, `${esc(q.target)}%`));
+    if (q.from) conds.push(gte(adminAudit.createdAt, new Date(q.from)));
+    if (q.to) conds.push(lte(adminAudit.createdAt, new Date(q.to)));
+    if (q.before) conds.push(sql`${adminAudit.id} < ${q.before}`);
     const rows = await db
       .select({ a: adminAudit, name: users.displayName })
       .from(adminAudit)
       .leftJoin(users, eq(users.id, adminAudit.adminId))
+      .where(conds.length ? and(...conds) : undefined)
       .orderBy(desc(adminAudit.id))
       .limit(q.limit);
     return {

@@ -40,6 +40,7 @@ import {
   type UnitView,
   type WeaponSystem,
 } from '@redline/shared';
+import { demoDomestic } from './mockDomestic.js';
 
 export interface WorldCtx {
   me: NationId;
@@ -1282,6 +1283,7 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
     ],
     coupRisk: 0.04,
   };
+  demoDomestic(view, mine, now);
 
   // ——— Actualité mondiale ———
   const news = (

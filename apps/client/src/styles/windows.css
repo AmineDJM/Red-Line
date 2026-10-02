@@ -115,6 +115,7 @@
   flex-direction: column;
   height: 100%;
   min-height: 0;
+  container-type: inline-size;
 }
 .arsenal__tabs {
   flex: none;
@@ -133,7 +134,7 @@
   background: var(--rl-panel);
 }
 .arsenal__search {
-  width: 200px;
+  width: 240px;
 }
 .arsenal__filters .rl-select {
   width: 180px;
@@ -154,7 +155,183 @@
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 460px;
+  grid-template-columns: 232px minmax(0, 1fr) 440px;
+}
+
+@container (max-width: 1060px) {
+  .arsenal__split {
+    grid-template-columns: 200px minmax(0, 1fr) 360px;
+  }
+}
+@container (max-width: 820px) {
+  .arsenal__split {
+    grid-template-columns: 164px minmax(0, 1fr) 300px;
+  }
+}
+
+/* Navigation par catégories : colonne (ordinateur) ou bandeau défilant (mobile). */
+.catnav {
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 8px 6px 12px;
+  border-right: 1px solid var(--rl-line);
+  background: var(--rl-panel);
+  scrollbar-width: thin;
+}
+.catnav__group {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.catnav__title {
+  padding: 12px 8px 5px;
+  color: var(--rl-text-faint);
+  font-size: var(--rl-fs-2xs);
+  font-weight: 600;
+  letter-spacing: var(--rl-track);
+  text-transform: uppercase;
+}
+.catnav__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--rl-radius-sm);
+  background: none;
+  color: var(--rl-text-dim);
+  font: inherit;
+  font-size: var(--rl-fs-sm);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background var(--rl-dur) var(--rl-ease),
+    color var(--rl-dur) var(--rl-ease);
+}
+.catnav__icon {
+  flex: none;
+  display: inline-flex;
+  width: 18px;
+  justify-content: center;
+  color: var(--rl-text-faint);
+}
+.catnav__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.catnav__count {
+  flex: none;
+  min-width: 22px;
+  color: var(--rl-text-faint);
+  font-size: var(--rl-fs-2xs);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.catnav__item--empty {
+  opacity: 0.45;
+}
+.catnav__item--on {
+  border-color: var(--rl-cyan-line);
+  background: var(--rl-cyan-dim);
+  color: var(--rl-text-strong);
+}
+.catnav__item--on::before {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--rl-cyan);
+}
+.catnav__item--on .catnav__icon,
+.catnav__item--on .catnav__count {
+  color: var(--rl-cyan);
+}
+@media (hover: hover) {
+  .catnav__item:not(.catnav__item--on):hover {
+    background: var(--rl-panel-2);
+    color: var(--rl-text);
+  }
+}
+.catnav__item:focus-visible {
+  outline: none;
+  box-shadow: var(--rl-focus);
+}
+.catnav--strip {
+  flex: none;
+  flex-direction: row;
+  gap: 6px;
+  padding: 8px 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-right: 0;
+  border-bottom: 1px solid var(--rl-line);
+  scrollbar-width: none;
+  scroll-padding-inline: 12px;
+}
+.catnav--strip::-webkit-scrollbar {
+  display: none;
+}
+.catnav--strip .catnav__item {
+  flex: none;
+  min-height: 34px;
+  padding: 4px 10px;
+  border-color: var(--rl-line);
+  border-radius: 17px;
+  background: var(--rl-panel-2);
+}
+.catnav--strip .catnav__item--on {
+  border-color: var(--rl-cyan-line);
+  background: var(--rl-cyan-dim);
+}
+.catnav--strip .catnav__item--on::before {
+  display: none;
+}
+.catnav--strip .catnav__label {
+  overflow: visible;
+}
+
+/* Sections (tout l'arsenal, recherche globale) */
+.arsenal__section + .arsenal__section {
+  margin-top: 18px;
+}
+.arsenal__sectitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rl-line);
+  color: var(--rl-text);
+  font-size: var(--rl-fs-xs);
+  font-weight: 600;
+  letter-spacing: var(--rl-track);
+  text-transform: uppercase;
+}
+.arsenal__sectitle svg {
+  color: var(--rl-cyan);
+}
+.arsenal__sectitle span {
+  color: var(--rl-text-faint);
+  font-weight: 400;
+}
+.arsenal__scope {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 10px;
+  color: var(--rl-cyan);
+  font-size: var(--rl-fs-xs);
 }
 .arsenal__list {
   min-height: 0;
@@ -761,4 +938,96 @@
 .opcost dd {
   margin: 0;
   font-weight: 700;
+}
+
+/* ——— Fiche d'arme seule (modale légère, feuille sur mobile) ——— */
+.wsheet .rl-dialog__body {
+  padding: 12px;
+}
+.wsheet .rl-dialog__foot {
+  justify-content: space-between;
+}
+.wsheet__unit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-panel-2);
+  font-size: var(--rl-fs-sm);
+}
+.wsheet--mobile {
+  align-items: flex-end;
+  padding: 0;
+}
+.wsheet--mobile .rl-dialog__card {
+  max-width: none !important;
+  max-height: 92dvh;
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  animation: rl-sheet-in 200ms var(--rl-ease);
+}
+.wsheet--mobile .rl-dialog__foot {
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+}
+.wsheet--mobile .rl-win__btn {
+  width: var(--rl-touch);
+  height: var(--rl-touch);
+}
+
+/* ——— Fiche pays (Diplomatie) ——— */
+.country {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.country__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.country__titles {
+  flex: 1;
+  min-width: 0;
+}
+.country__titles h3 {
+  margin: 0 0 6px;
+  color: var(--rl-text-strong);
+  font-size: var(--rl-fs-xl);
+}
+.country__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.country__picker .rl-select {
+  width: 220px;
+}
+.country__desc {
+  margin: 0;
+  color: var(--rl-text-dim);
+  line-height: 1.55;
+}
+.country__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.country__actions .rowactions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+@media (max-width: 719px) {
+  .country__cols {
+    grid-template-columns: 1fr;
+  }
+  .country__picker,
+  .country__picker .rl-select {
+    width: 100%;
+  }
 }

@@ -1,5 +1,6 @@
 import { useCallback, useState, type ReactNode } from 'react';
 import type { LngLat } from '@redline/shared';
+import { AudioBridge } from '../audio/AudioBridge.js';
 import { MapView } from '../map/MapView.js';
 import { navigate } from '../router.js';
 import { useUi } from '../store/ui.js';
@@ -20,6 +21,7 @@ import { useShortcuts } from './shortcuts.js';
 import { TopBar } from './TopBar.js';
 import { Tutorial } from './Tutorial.js';
 import { useIsMobile } from './useMedia.js';
+import { WeaponSheet } from './WeaponSheet.js';
 import { WindowHost } from './WindowHost.js';
 
 export interface GameShellProps {
@@ -79,6 +81,7 @@ export function GameShell({
       ) : null}
       {!sheetOpen ? <OrderBar /> : null}
       <WindowHost />
+      <WeaponSheet />
       <AlertCenter mobile={mobile} />
       {children}
       <CommandConsole />
@@ -86,6 +89,7 @@ export function GameShell({
       {help ? <ShortcutsHelp onClose={() => setHelp(false)} /> : null}
       <Toasts />
       <EndOverlay />
+      <AudioBridge />
     </div>
   );
 }

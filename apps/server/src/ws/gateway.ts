@@ -35,10 +35,18 @@ interface WsIdentity {
 
 let nextConnId = 1;
 
+/** Socket TCP sous-jacente (octets réellement écrits, après compression permessage-deflate). */
+type NetSocket = { bytesWritten?: number } | undefined;
+
 class WsConnection implements Connection {
   readonly id = nextConnId++;
   lastView: PlayerView | null = null;
   unlimited?: boolean;
+  /** Comptabilité des coûts : partie, octets déjà imputés, messages envoyés depuis le dernier relevé. */
+  gameId: string | null = null;
+  wireSeen = 0;
+  msgsSince = 0;
+  readonly net: NetSocket;
   alive = true;
   private tokens: number;
   private lastRefill = Date.now();
@@ -55,6 +63,8 @@ class WsConnection implements Connection {
     private readonly metrics: ProcessMetrics,
   ) {
     this.tokens = rate.burst;
+    this.net = (socket as unknown as { _socket?: NetSocket })._socket;
+    this.wireSeen = this.net?.bytesWritten ?? 0;
   }
 
   send(msg: ServerMessage): void {
@@ -67,6 +77,7 @@ class WsConnection implements Connection {
     const bytes = encodeMessage(msg);
     this.metrics.count('wsBytesOut', bytes.byteLength);
     this.metrics.count('wsMessagesOut');
+    this.msgsSince++;
     this.socket.send(bytes);
   }
 
@@ -128,6 +139,19 @@ function originAllowed(req: FastifyRequest, isProd: boolean): boolean {
 export async function wsGateway(app: FastifyInstance, ctx: AppContext): Promise<void> {
   const { host, auth, db, log } = ctx;
   const sockets = new Set<WsConnection>();
+
+  /** Octets écrits sur la socket depuis le dernier relevé, imputés au joueur et à la partie. */
+  const meter = (c: WsConnection) => {
+    const total = c.net?.bytesWritten;
+    if (total === undefined) return;
+    const d = total - c.wireSeen;
+    c.wireSeen = total;
+    ctx.usage.ws(c.userId, c.gameId, d, c.msgsSince);
+    c.msgsSince = 0;
+  };
+  ctx.usage.samplers.push(() => {
+    for (const c of sockets) meter(c);
+  });
 
   const pinger = setInterval(() => {
     for (const c of sockets) {
@@ -219,6 +243,7 @@ export async function wsGateway(app: FastifyInstance, ctx: AppContext): Promise<
         ctx.metrics,
       );
       conn.unlimited = ident.unlimited;
+      conn.gameId = ident.gameId;
       sockets.add(conn);
       let game: HostedGame | null = null;
       let closed = false;
@@ -289,6 +314,7 @@ export async function wsGateway(app: FastifyInstance, ctx: AppContext): Promise<
       });
       socket.on('close', () => {
         closed = true;
+        meter(conn);
         sockets.delete(conn);
         host.detach(ident.gameId, conn);
       });
@@ -311,6 +337,7 @@ export async function wsGateway(app: FastifyInstance, ctx: AppContext): Promise<
             return;
           }
           game = g;
+          await ctx.announcements.greet(conn).catch(() => {});
           if (!conn.spectator) await ctx.chat.sendHistory(g, conn);
           for (const [raw, bin] of queue.splice(0)) handle(raw, bin);
         } catch (err) {

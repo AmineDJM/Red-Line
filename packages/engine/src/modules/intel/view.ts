@@ -15,6 +15,7 @@ import { cfg } from './config.js';
 import { decoyView } from './contacts.js';
 import { capacity, level, researchDone } from './levels.js';
 import { filterProvinces } from './provinces.js';
+import { interiorView } from './interior.js';
 import { ist, type Agent, type StoredOp, type StoredReport } from './state.js';
 
 /**
@@ -158,6 +159,7 @@ export function intelView(state: EngineState, n: NationId, view: PlayerView): vo
     operations: ni.ops.map(opView),
     agents,
     caughtAgents,
+    interior: interiorView(state, n),
   };
   filterProvinces(state, n, view);
   for (const id of sortedKeys(st.decoys)) {

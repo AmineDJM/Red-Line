@@ -127,6 +127,14 @@ describe('routes', () => {
 });
 
 describe('règles : libellés et fusion', () => {
+  it('monde vivant (ai.world) : intensité, rythme par niveau, rivalités et blocs libellés', () => {
+    expect(ruleLabel('ai.world.intensity')).toBe('Intelligence artificielle › Intensité du monde');
+    expect(ruleLabel('ai.world.levels.normal.rivalryChancePerDay')).toBe(
+      'Intelligence artificielle › Probabilité d’une guerre de rivalité',
+    );
+    expect(RULE_HELP[helpKeyOf('ai.world.rivalries.3.motive')]?.[0]).toBe('Motif');
+    expect(RULE_HELP[helpKeyOf('ai.world.blocs.0.mutualDefense')]?.[0]).toBe('Défense mutuelle');
+  });
   it('clé d’aide sans index', () => {
     expect(helpKeyOf('combat.veterancyXp.1')).toBe('combat.veterancyXp');
     expect(helpKeyOf('buildings.levels.mine.2.costUsd')).toBe('buildings.levels.costUsd');
@@ -139,7 +147,7 @@ describe('règles : libellés et fusion', () => {
       keys.push(k);
       if (n.t === 'object') for (const [c, v] of Object.entries(n.shape)) walk(v, `${k}.${c}`);
     };
-    for (const sec of ['money', 'upkeep', 'ai']) walk(root.shape[sec]!, sec);
+    for (const sec of ['money', 'upkeep', 'ai', 'domestic']) walk(root.shape[sec]!, sec);
     expect(keys.length).toBeGreaterThan(150);
     expect(keys.filter((k) => k.includes('.') && !RULE_HELP[k])).toEqual([]);
     expect(RULE_SECTIONS.ai![0]).toBe('Intelligence artificielle');

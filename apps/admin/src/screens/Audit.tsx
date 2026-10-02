@@ -21,6 +21,10 @@ import { ago, dateLong } from '../lib/format';
 import { useLoad } from '../lib/hooks';
 import { href, type Route } from '../lib/router';
 import { matches } from '../lib/search';
+import { O } from '../i18n/fr-ops';
+import { downloadCsv } from '../lib/csv';
+import { errorMessage } from '../lib/errors';
+import { useToast } from '../components/overlay';
 
 const FAMILY_TONE: Record<string, 'info' | 'blue' | 'warn' | 'violet' | 'ok' | 'crit' | 'off'> = {
   system: 'info',
@@ -30,7 +34,25 @@ const FAMILY_TONE: Record<string, 'info' | 'blue' | 'warn' | 'violet' | 'ok' | '
   chat: 'warn',
   user: 'violet',
   shop: 'crit',
+  costs: 'warn',
+  announcement: 'info',
+  server: 'blue',
 };
+
+/** Familles connues (le filtre interroge le serveur : tout l'historique, pas seulement les 500 derniers). */
+const KNOWN_FAMILIES = [
+  'system',
+  'catalog',
+  'data',
+  'game',
+  'chat',
+  'user',
+  'shop',
+  'costs',
+  'announcement',
+  'server',
+];
+const PAGE = 500;
 
 /** Lien vers l'objet visé par une entrée (« system:us.f-16 » → fiche). */
 export function targetRoute(target: string | null): Route | null {
@@ -56,6 +78,14 @@ export function targetRoute(target: string | null): Route | null {
       return { name: 'map', tab: 'disputed', id };
     case 'scenario':
       return { name: 'scenarios', id };
+    case 'announcement':
+      return { name: 'announcements' };
+    case 'cost':
+      return { name: 'economy', tab: 'entries' };
+    case 'costs':
+      return { name: 'economy', tab: 'settings' };
+    case 'server':
+      return { name: 'settings' };
     case 'orbat': {
       const [set, nation] = id.split('/');
       return { name: 'orbat', set, nation };
@@ -67,25 +97,45 @@ export function targetRoute(target: string | null): Route | null {
 
 export function AuditScreen() {
   const { api } = useSession();
-  const { data, error, loading, reload } = useLoad(
-    () => api.audit(500).then((r) => r.entries),
-    [api],
+  const toast = useToast();
+  const [family, setFamily] = useState('');
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+  const filters = useMemo(
+    () => ({
+      action: family ? `${family}.` : undefined,
+      from: from ? new Date(`${from}T00:00:00`).toISOString() : undefined,
+      to: to ? new Date(`${to}T23:59:59.999`).toISOString() : undefined,
+    }),
+    [family, from, to],
+  );
+  const { data, setData, error, loading, reload } = useLoad(
+    () => api.auditQuery({ limit: PAGE, ...filters }).then((r) => r.entries),
+    [api, filters],
     T.roles.superadmin,
   );
+  const [more, setMore] = useState(true);
   const [q, setQ] = useState('');
-  const [family, setFamily] = useState('');
   const [sel, setSel] = useState<number | null>(null);
   const families = useMemo(
-    () => [...new Set((data ?? []).map((e) => e.action.split('.')[0]!))].sort(),
+    () =>
+      [...new Set([...KNOWN_FAMILIES, ...(data ?? []).map((e) => e.action.split('.')[0]!)])].sort(),
     [data],
   );
+  const loadMore = async () => {
+    const last = data?.at(-1);
+    if (!last) return;
+    try {
+      const r = await api.auditQuery({ limit: PAGE, ...filters, before: last.id });
+      setData([...(data ?? []), ...r.entries]);
+      setMore(r.entries.length === PAGE);
+    } catch (e) {
+      toast(errorMessage(e, T.roles.superadmin), 'error');
+    }
+  };
   const rows = useMemo(
     () =>
-      (data ?? []).filter(
-        (e) =>
-          (!family || e.action.startsWith(`${family}.`)) &&
-          matches(`${e.action} ${e.target ?? ''} ${e.adminName ?? ''}`, q),
-      ),
+      (data ?? []).filter((e) => matches(`${e.action} ${e.target ?? ''} ${e.adminName ?? ''}`, q)),
     [data, q, family],
   );
   const cur: AuditEntry | null = rows.find((e) => e.id === sel) ?? null;
@@ -98,9 +148,26 @@ export function AuditScreen() {
         title={T.audit.title}
         sub={T.audit.sub}
         actions={
-          <Button onClick={() => void reload()}>
-            <Icon name="refresh" size={14} /> {T.app.refresh}
-          </Button>
+          <>
+            <Button
+              onClick={() =>
+                downloadCsv('redline-journal.csv', rows, [
+                  ['id', (e) => e.id],
+                  ['date', (e) => e.createdAt],
+                  ['administrateur', (e) => e.adminName],
+                  ['action', (e) => e.action],
+                  ['cible', (e) => e.target],
+                  ['avant', (e) => (e.before == null ? '' : JSON.stringify(e.before))],
+                  ['apres', (e) => (e.after == null ? '' : JSON.stringify(e.after))],
+                ])
+              }
+            >
+              <Icon name="download" size={14} /> {O.audit.exportCsv}
+            </Button>
+            <Button onClick={() => void reload()}>
+              <Icon name="refresh" size={14} /> {T.app.refresh}
+            </Button>
+          </>
         }
       />
       {error && <ErrorBox message={error} onRetry={() => void reload()} />}
@@ -121,6 +188,22 @@ export function AuditScreen() {
                 </option>
               ))}
             </select>
+            <input
+              type="date"
+              className="input"
+              aria-label={O.audit.from}
+              title={O.audit.from}
+              value={from}
+              onChange={(e) => setFrom(e.target.value)}
+            />
+            <input
+              type="date"
+              className="input"
+              aria-label={O.audit.to}
+              title={O.audit.to}
+              value={to}
+              onChange={(e) => setTo(e.target.value)}
+            />
             <span className="meta">{rows.length}</span>
           </div>
           {loading && !data ? (
@@ -165,6 +248,13 @@ export function AuditScreen() {
                 },
               ]}
             />
+          )}
+          {data && data.length >= PAGE && more && (
+            <div style={{ padding: 10 }}>
+              <Button small onClick={() => void loadMore()}>
+                {O.audit.more}
+              </Button>
+            </div>
           )}
         </Win>
         <Win

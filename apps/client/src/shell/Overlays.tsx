@@ -490,7 +490,7 @@ export function ShortcutsHelp({ onClose }: { onClose: () => void }) {
     [[':'], t('shortcuts.console')],
     [[t('keys.space')], t('shortcuts.pause')],
     [['1', '…', '5'], t('shortcuts.speed')],
-    [['A', 'P', 'R', 'E', 'I'], t('shortcuts.windows')],
+    [['A', 'G', 'P', 'R', 'E', 'I'], t('shortcuts.windows')],
     [['Échap'], t('shortcuts.escape')],
     [['Entrée'], t('shortcuts.confirm')],
     [['L'], t('shortcuts.legend')],

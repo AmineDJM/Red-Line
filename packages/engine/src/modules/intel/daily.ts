@@ -44,8 +44,10 @@ import {
   nationName,
   natDe,
   natLe,
+  provinceName,
   sectorOf,
 } from './text.js';
+import { interiorView } from './interior.js';
 
 /**
  * Notes quotidiennes et rapports flash. Textes courts et génériques, construits à partir de l'état du
@@ -285,6 +287,18 @@ function interiorNote(state: EngineState, n: NationId): void {
   if (doubles) lines.push(`${plural(doubles, 'agent double actif', 'agents doubles actifs')}.`);
   const stab = board(state).stability[n];
   if (stab !== undefined) lines.push(`Stabilité : ${Math.round(stab)}/100.`);
+  const iv = interiorView(state, n);
+  const hot = iv.threats[0];
+  lines.push(
+    `Menace intérieure : ${iv.threatLevel}/100` +
+      (hot
+        ? `, foyer principal : ${provinceName(state, hot.provinceId)} (${hot.level}/100).`
+        : '.'),
+  );
+  if (iv.stats.foiled || iv.stats.alerts)
+    lines.push(
+      `Alertes émises : ${iv.stats.alerts} ; opérations étrangères déjouées : ${iv.stats.foiled}.`,
+    );
   lines.push(opsLine(state, n, 'interior'));
   ni.log = { sabotage: 0, cyber: 0, rebels: 0, caught: 0, strikes: 0, found: ni.log.found };
   publish(state, n, {

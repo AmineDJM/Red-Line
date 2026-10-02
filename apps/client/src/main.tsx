@@ -9,6 +9,7 @@ import './styles/w-research.css';
 import './styles/w-economy.css';
 import './styles/w-army.css';
 import './styles/w-world.css';
+import './styles/w-battles.css';
 import './styles/pages.css';
 import './i18n/index.js';
 import { App } from './App.js';
