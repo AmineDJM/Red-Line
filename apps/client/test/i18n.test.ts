@@ -1,5 +1,3 @@
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { createInstance } from 'i18next';
 import {
@@ -14,8 +12,12 @@ import {
 } from '@redline/shared';
 import { detectLocale, fillPlurals, localeFromPath, stripLocalePrefix } from '../src/i18n/index.js';
 
-const DIR = join(import.meta.dirname, '../src/i18n/locales');
-const load = (l: Locale) => JSON.parse(readFileSync(join(DIR, `${l}.json`), 'utf8'));
+const FILES = import.meta.glob<Record<string, unknown>>('../src/i18n/locales/*.json', {
+  eager: true,
+  import: 'default',
+});
+const load = (l: Locale) =>
+  structuredClone(FILES[`../src/i18n/locales/${l}.json`]!) as Parameters<typeof fillPlurals>[0];
 
 describe('détection de la langue', () => {
   const base = { pathname: '/', search: '', stored: null, languages: [] as string[] };
