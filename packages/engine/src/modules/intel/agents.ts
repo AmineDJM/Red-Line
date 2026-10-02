@@ -11,6 +11,7 @@ import { addIncident, agentDetectFactor } from './interior.js';
 import { ist, nat, nextId, type Agent } from './state.js';
 import { codename, fmtTime, nationName, natAgree, natDe, natLe } from './text.js';
 import { noteLoc } from '../../state/loc.js';
+import { agentRisk, arrestTension, coverOf, expulsionNote } from './deep.js';
 import { loc } from '@redline/shared';
 
 export function createAgent(
@@ -51,6 +52,7 @@ export function detectionChance(state: EngineState, a: Agent, bonus = 1): number
       (0.5 + budgetFactor(state, a.host, 'interior')) *
       (a.kind === 'source' ? 0.6 : 1) *
       agentDetectFactor(state, a.host) *
+      agentRisk(state, a) *
       bonus) /
     (1 + 0.3 * lo);
   return clamp(p, 0, 0.9);
@@ -135,21 +137,29 @@ export function publicArrest(state: EngineState, a: Agent): void {
   a.caughtAt ??= state.time;
   const at = capitalPoint(state, a.host);
   signal(state, 'agent_caught', { spyNation: a.owner, onNation: a.host });
-  signal(state, 'alert', { amount: cfg(state).exposureTension, reason: 'agent_caught' });
-  notify(
-    state,
-    {
-      kind: 'generic',
-      time: state.time,
-      at,
-      category: 'intel',
-      title: 'Agent démasqué',
-      text: `${natLe(state, a.host, true)} ${natAgree(state, a.host, 'annonce', 'annoncent')} l'arrestation d'un agent ${natDe(state, a.owner)}.`,
-      severity: 'warn',
-      loc: noteLoc('agentCaught', { host: { nation: a.host }, owner: { nation: a.owner } }),
-    },
-    [a.owner, a.host],
-  );
+  signal(state, 'alert', {
+    amount: cfg(state).exposureTension * arrestTension(state, a),
+    reason: 'agent_caught',
+  });
+  // Couverture diplomatique : expulsion (crise moindre) plutôt qu'arrestation.
+  if (coverOf(a) === 'diplomatic') {
+    a.ex = 1;
+    expulsionNote(state, a, at);
+  } else
+    notify(
+      state,
+      {
+        kind: 'generic',
+        time: state.time,
+        at,
+        category: 'intel',
+        title: 'Agent démasqué',
+        text: `${natLe(state, a.host, true)} ${natAgree(state, a.host, 'annonce', 'annoncent')} l'arrestation d'un agent ${natDe(state, a.owner)}.`,
+        severity: 'warn',
+        loc: noteLoc('agentCaught', { host: { nation: a.host }, owner: { nation: a.owner } }),
+      },
+      [a.owner, a.host],
+    );
   publish(state, a.host, {
     dept: 'interior',
     source: 'humint',

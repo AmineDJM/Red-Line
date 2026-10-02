@@ -1329,7 +1329,8 @@
       "burned": "yandı",
       "double": "çift taraflı ajan",
       "exfiltrated": "tahliye edildi",
-      "captured": "yakalandı"
+      "captured": "yakalandı",
+      "expelled": "Sınır dışı edildi"
     },
     "ops": {
       "infiltrate_spy": "Casus sız",
@@ -1352,7 +1353,16 @@
       "fake_radio_traffic": "Sahte telsiz trafiği",
       "counterintel_sweep": "Karşı istihbarat",
       "recon_economic": "Ekonomik keşif",
-      "recon_military": "Askerî keşif"
+      "recon_military": "Askerî keşif",
+      "cryptanalysis": "Kriptanaliz",
+      "intercept_comms": "İletişim dinleme",
+      "geolocate_emitters": "Yayıcıların konumlandırılması",
+      "cultivate_source": "Kaynak geliştirme",
+      "vet_agents": "Ajan doğrulama",
+      "designate_targets": "Hedef belirleme",
+      "dismantle_network": "Şebeke çökertme",
+      "deception_plan": "Aldatma operasyonu",
+      "harden_sites": "Tesislerin güçlendirilmesi"
     },
     "opsHelp": {
       "infiltrate_spy": "Hedef ülkeye bir ajan sızdırır: illerini, binalarını ve niyetlerini aşamalı olarak ortaya çıkarır.",
@@ -1375,7 +1385,16 @@
       "fake_radio_traffic": "Hareketlerinizi gizlemek için telsiz trafiği taklit eder.",
       "counterintel_sweep": "Topraklarınızdaki yabancı ajanların peşine düşer.",
       "recon_economic": "Tüm bir ülkenin — önce başkent ve büyük şehirler, sonra geri kalanı — veya tek bir ilin ekonomik tesislerini (üretim, kaynaklar, sanayi) aşamalı olarak ortaya çıkarır.",
-      "recon_military": "Tüm bir ülkenin — önce başkent ve büyük şehirler, sonra geri kalanı — veya tek bir ilin üslerini, hava savunmalarını, radarlarını, silolarını ve sığınaklarını aşamalı olarak ortaya çıkarır. Ardından haritada görünür."
+      "recon_military": "Tüm bir ülkenin — önce başkent ve büyük şehirler, sonra geri kalanı — veya tek bir ilin üslerini, hava savunmalarını, radarlarını, silolarını ve sığınaklarını aşamalı olarak ortaya çıkarır. Ardından haritada görünür.",
+      "cryptanalysis": "Bir ülkenin şifrelemesini adım adım kırar: %25'te hareket emirleri, %50'de niyetleri okunur hâle gelir. Güçlü şifreleme (gelişmiş servisler) ilerlemeyi yavaşlatır.",
+      "intercept_comms": "Bir ülkenin iletişimini dinler: trafik hacmi, hareket emirleri ve şifre çözümüne göre savaş planları. Güçlü bir düşman karşı istihbaratı sahte trafik ekleyebilir.",
+      "geolocate_emitters": "Bir ülkenin radarlarını, hava savunmalarını ve komuta noktalarını yayınlarından bulur. Hizmetteki dinleme uyduları ve uçakları bulunan yayıcı sayısını artırır.",
+      "cultivate_source": "Güvenilir bir ajanın erişimini yükseltir: bakanlık (bütçe, araştırma), ardından genelkurmay (savaş planları). Erişim arttıkça risk de artar.",
+      "vet_agents": "Bir ülkedeki ajanlarınızı denetler: çift ajanları açığa çıkarır, izlenenleri tespit eder. Risksiz.",
+      "designate_targets": "Düşman bir ilin görüntü analizi: kuvvetler tespit edilip konumlandırılır, tesisler haritalanır, birlik birlik saldırı önerilir.",
+      "dismantle_network": "Bir ülkenin topraklarınızdaki şebekesini çökertir: tespit edilen ajanları tutuklar, diğerlerini arar.",
+      "deception_plan": "Düşman servislerine sahte savaş planları ulaştırır. Düşmanın ülkenizde ajanları, özellikle devşirilmiş bir ajanı varsa daha inandırıcıdır.",
+      "harden_sites": "Birkaç gün boyunca tüm tesislerinizin korumasını artırır: sabotaj, isyancı finansmanı ve sanayi siber saldırıları yavaşlar."
     },
     "targetProvince": "Hedef il",
     "targetArea": "Bölge (şehir çevresi)",
@@ -1386,7 +1405,67 @@
     "scopeProvince": "Tek il",
     "reconPhase": "Aşama {{done}}/{{waves}} · {{provinces}} il",
     "unknownContact": "tanımlanmamış temas",
-    "noContacts": "Yabancı birlik tespit edilmedi: radarlarınızı yaklaştırın veya keşif başlatın."
+    "noAgents": "Uygun ajan yok.",
+    "noContacts": "Yabancı birlik tespit edilmedi: radarlarınızı yaklaştırın veya keşif başlatın.",
+    "tabs": {
+      "military": "Askerî",
+      "dossiers": "Ülke dosyaları",
+      "reports": "Raporlar"
+    },
+    "cover": "Örtü",
+    "covers": {
+      "diplomatic": "Diplomatik",
+      "nonofficial": "Gayriresmî"
+    },
+    "accessLevels": {
+      "street": "Saha",
+      "ministry": "Bakanlık",
+      "staff": "Genelkurmay"
+    },
+    "agentActions": {
+      "cultivate": "Geliştir",
+      "vet": "Doğrula"
+    },
+    "targetAgent": "Ajan",
+    "quick": "Eylemler",
+    "hardened": "Tesisler güçlendirildi",
+    "allReports": "Tümü",
+    "sensors": {
+      "title": "Hizmetteki sensörler",
+      "sigint": "Dinleme",
+      "imagery": "Görüntüleme",
+      "ew": "Elektronik harp"
+    },
+    "crypto": {
+      "title": "Şifre çözme",
+      "encryption": "Şifreleme",
+      "empty": "İzlenen ülke yok: bir kriptanaliz veya dinleme başlatın."
+    },
+    "threat": {
+      "title": "Tehdit haritası",
+      "alert": "ALARM",
+      "empty": "Henüz değerlendirme yok: 07:00 günlük bülteni komşu, düşman veya hedef ülkeleri değerlendirir."
+    },
+    "indicators": {
+      "war": "Savaş sürüyor",
+      "massing": "Kuvvet yığınağı",
+      "plans": "Savaş planları",
+      "comms": "Komuta trafiği",
+      "mobilization": "Sanayi seferberliği",
+      "covert": "Gizli operasyonlar"
+    },
+    "dossier": {
+      "forces": "Tahmini kuvvetler",
+      "intentions": "Niyetler",
+      "plansAgainst": "Şuna karşı savaş planları",
+      "noPlans": "Bilinen savaş planı yok",
+      "economy": "Tahmini hazine",
+      "research": "Süren araştırma",
+      "services": "Servis düzeyi",
+      "agents": "Sahadaki ajanlar",
+      "reliability": "Dosya güvenilirliği",
+      "empty": "Dosya yok: servisleriniz komşu, düşman veya operasyonlarınızın hedefindeki ülkeleri izler."
+    }
   },
   "sheet": {
     "path": "Künye",
@@ -3185,7 +3264,16 @@
       "fake_radio_traffic": "Sahte telsiz trafiği",
       "counterintel_sweep": "Karşı istihbarat operasyonu",
       "recon_economic": "Ekonomik keşif",
-      "recon_military": "Askerî keşif"
+      "recon_military": "Askerî keşif",
+      "cryptanalysis": "Kriptanaliz",
+      "intercept_comms": "İletişim dinleme",
+      "geolocate_emitters": "Yayıcıların konumlandırılması",
+      "cultivate_source": "Kaynak geliştirme",
+      "vet_agents": "Ajan doğrulama",
+      "designate_targets": "Hedef belirleme",
+      "dismantle_network": "Şebeke çökertme",
+      "deception_plan": "Aldatma operasyonu",
+      "harden_sites": "Hassas tesislerin güçlendirilmesi"
     },
     "council": {
       "open_one": "Güvenlik Konseyi oturumu açıldı: {{count}} karar oylamada.",
@@ -3233,7 +3321,19 @@
       "rebelsFunded": "Silahlı gruplar finanse edildi",
       "programDone": "Program tamamlandı — {{nation}}",
       "blackMarket": "Kara borsa — {{nation}}",
-      "imagery": "Görüntü — {{nation}}"
+      "imagery": "Görüntü — {{nation}}",
+      "crypto": "Kriptanaliz — {{nation}}",
+      "comint": "İletişim dinleme — {{nation}}",
+      "emitters": "Yayıcılar bulundu — {{nation}}",
+      "targets": "Hedef belirleme — {{province}}",
+      "bda": "Hasar değerlendirmesi — {{sector}}",
+      "sourceAccess": "Kaynak {{codename}} — erişim genişledi",
+      "vet": "Ajan doğrulama — {{nation}}",
+      "highLevel": "Üst düzey kaynak — {{nation}}",
+      "dismantle": "{{nation}} şebekesinin çökertilmesi",
+      "deception": "Aldatma operasyonu — {{nation}}",
+      "hardened": "Hassas tesisler güçlendirildi",
+      "strategicAlert": "STRATEJİK ALARM — {{nation}}"
     },
     "note": {
       "allianceInvite": {
@@ -3345,6 +3445,10 @@
       "agentCaught": {
         "title": "Ajan deşifre edildi",
         "text": "{{host}}, {{owner}} adına çalışan bir ajanın tutuklandığını duyurdu."
+      },
+      "agentExpelled": {
+        "title": "Diplomatlar sınır dışı edildi",
+        "text": "{{host}}, casusluk nedeniyle {{owner}} diplomatlarını sınır dışı ediyor."
       }
     }
   }

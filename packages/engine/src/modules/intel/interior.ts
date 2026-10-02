@@ -20,6 +20,7 @@ import { cfg, clamp } from './config.js';
 import { budgetFactor, hash01, quality } from './levels.js';
 import { publish } from './reports.js';
 import { ist, nat, type StoredOp } from './state.js';
+import { hardenFactor } from './deep.js';
 import { natDe, natLe, provinceName } from './text.js';
 
 /**
@@ -440,7 +441,13 @@ export function watchOp(state: EngineState, by: NationId, op: StoredOp): void {
   });
 }
 
-/** Multiplicateur de réussite au dénouement : opération repérée, site protégé. */
+const HARDENED_OPS: ReadonlySet<string> = new Set([
+  'sabotage_factory',
+  'cyber_production',
+  'fund_rebels',
+]);
+
+/** Multiplicateur de réussite au dénouement : opération repérée, site protégé, sites durcis. */
 export function successFactor(state: EngineState, op: StoredOp): number {
   let f = 1;
   if (op.dt) f *= 1 - icfg(state).foilFactor;
@@ -448,6 +455,8 @@ export function successFactor(state: EngineState, op: StoredOp): number {
   const pid = op.target.provinceId;
   if (v && pid && PROTECTED_OPS.has(op.kind) && board(state).protectedSites?.[pid] === v)
     f *= 1 - protectionOf(state, v);
+  // Sites durcis (opération « durcissement ») : sabotages et cyberattaques industrielles freinés.
+  if (v && HARDENED_OPS.has(op.kind)) f *= hardenFactor(state, v);
   return f;
 }
 

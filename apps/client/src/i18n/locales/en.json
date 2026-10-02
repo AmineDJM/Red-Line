@@ -1329,7 +1329,8 @@
       "burned": "burned",
       "double": "double agent",
       "exfiltrated": "exfiltrated",
-      "captured": "captured"
+      "captured": "captured",
+      "expelled": "Expelled"
     },
     "ops": {
       "infiltrate_spy": "Infiltrate a spy",
@@ -1352,7 +1353,16 @@
       "fake_radio_traffic": "Fake radio traffic",
       "counterintel_sweep": "Counterintelligence",
       "recon_economic": "Economic reconnaissance",
-      "recon_military": "Military reconnaissance"
+      "recon_military": "Military reconnaissance",
+      "cryptanalysis": "Cryptanalysis",
+      "intercept_comms": "Communications intercept",
+      "geolocate_emitters": "Emitter geolocation",
+      "cultivate_source": "Source development",
+      "vet_agents": "Agent vetting",
+      "designate_targets": "Target designation",
+      "dismantle_network": "Network takedown",
+      "deception_plan": "Deception operation",
+      "harden_sites": "Site hardening"
     },
     "opsHelp": {
       "infiltrate_spy": "Plants an agent in the target country: gradually reveals its provinces, buildings and intentions.",
@@ -1375,7 +1385,16 @@
       "fake_radio_traffic": "Simulates radio traffic to mask your movements.",
       "counterintel_sweep": "Hunts foreign agents on your territory.",
       "recon_economic": "Reveals in phases the economic facilities (production, resources, industry) of an entire country — capital and major cities first, then the rest — or of a single province.",
-      "recon_military": "Reveals in phases the bases, air defenses, radars, silos and bunkers of an entire country — capital and major cities first, then the rest — or of a single province. Then visible on the map."
+      "recon_military": "Reveals in phases the bases, air defenses, radars, silos and bunkers of an entire country — capital and major cities first, then the rest — or of a single province. Then visible on the map.",
+      "cryptanalysis": "Gradually breaks a nation's encryption: at 25% its movement orders become readable, at 50% its intentions. Strong encryption (advanced services) slows progress.",
+      "intercept_comms": "Intercepts a nation's communications: traffic volume, movement orders and war plans depending on decryption. A strong enemy counterintelligence can inject fake traffic.",
+      "geolocate_emitters": "Locates a nation's radars, air defenses and command posts from their emissions. SIGINT satellites and aircraft in service increase the number of emitters found.",
+      "cultivate_source": "Raises a reliable agent's access: ministry (budget, research), then general staff (war plans). The higher the access, the more exposed the agent.",
+      "vet_agents": "Checks your agents in a country: unmasks double agents and spots those under surveillance. No risk.",
+      "designate_targets": "Imagery analysis of an enemy province: forces identified and located, facilities mapped, strikes proposed unit by unit.",
+      "dismantle_network": "Dismantles a nation's network on your soil: arrests agents already spotted and hunts the others.",
+      "deception_plan": "Feeds fake war plans to enemy services. More credible if the enemy has agents in your country, especially a turned agent.",
+      "harden_sites": "Strengthens protection of all your facilities for a few days: sabotage, rebel funding and industrial cyberattacks are hampered."
     },
     "targetProvince": "Target province",
     "targetArea": "Area (around the city)",
@@ -1386,7 +1405,67 @@
     "scopeProvince": "One province",
     "reconPhase": "Phase {{done}}/{{waves}} · {{provinces}} prov.",
     "unknownContact": "unidentified contact",
-    "noContacts": "No foreign unit detected: move your radars closer or launch a reconnaissance."
+    "noAgents": "No agent available.",
+    "noContacts": "No foreign unit detected: move your radars closer or launch a reconnaissance.",
+    "tabs": {
+      "military": "Military",
+      "dossiers": "Country files",
+      "reports": "Reports"
+    },
+    "cover": "Cover",
+    "covers": {
+      "diplomatic": "Diplomatic",
+      "nonofficial": "Non-official"
+    },
+    "accessLevels": {
+      "street": "Field",
+      "ministry": "Ministry",
+      "staff": "General staff"
+    },
+    "agentActions": {
+      "cultivate": "Develop",
+      "vet": "Vet"
+    },
+    "targetAgent": "Agent",
+    "quick": "Actions",
+    "hardened": "Sites hardened",
+    "allReports": "All",
+    "sensors": {
+      "title": "Sensors in service",
+      "sigint": "Listening",
+      "imagery": "Imagery",
+      "ew": "Electronic warfare"
+    },
+    "crypto": {
+      "title": "Decryption",
+      "encryption": "Encryption",
+      "empty": "No nation tracked: launch a cryptanalysis or an intercept."
+    },
+    "threat": {
+      "title": "Threat map",
+      "alert": "ALERT",
+      "empty": "No assessment yet: the 07:00 daily bulletin assesses neighboring, enemy or targeted nations."
+    },
+    "indicators": {
+      "war": "War under way",
+      "massing": "Force buildup",
+      "plans": "War plans",
+      "comms": "Command traffic",
+      "mobilization": "Industrial mobilization",
+      "covert": "Covert operations"
+    },
+    "dossier": {
+      "forces": "Estimated forces",
+      "intentions": "Intentions",
+      "plansAgainst": "War plans against",
+      "noPlans": "No known war plan",
+      "economy": "Estimated treasury",
+      "research": "Current research",
+      "services": "Service level",
+      "agents": "Agents in place",
+      "reliability": "File reliability",
+      "empty": "No files: your services track neighboring and enemy nations and those targeted by your operations."
+    }
   },
   "sheet": {
     "path": "Sheet",
@@ -3185,7 +3264,16 @@
       "fake_radio_traffic": "Fake radio traffic",
       "counterintel_sweep": "Counterintelligence operation",
       "recon_economic": "Economic reconnaissance",
-      "recon_military": "Military reconnaissance"
+      "recon_military": "Military reconnaissance",
+      "cryptanalysis": "Cryptanalysis",
+      "intercept_comms": "Communications intercept",
+      "geolocate_emitters": "Emitter geolocation",
+      "cultivate_source": "Source development",
+      "vet_agents": "Agent vetting",
+      "designate_targets": "Target designation",
+      "dismantle_network": "Network takedown",
+      "deception_plan": "Deception operation",
+      "harden_sites": "Hardening of sensitive sites"
     },
     "council": {
       "open_one": "Security Council session open: {{count}} resolution put to the vote.",
@@ -3233,7 +3321,19 @@
       "rebelsFunded": "Armed groups funded",
       "programDone": "Program completed — {{nation}}",
       "blackMarket": "Black market — {{nation}}",
-      "imagery": "Imagery — {{nation}}"
+      "imagery": "Imagery — {{nation}}",
+      "crypto": "Cryptanalysis — {{nation}}",
+      "comint": "Communications intercept — {{nation}}",
+      "emitters": "Emitters located — {{nation}}",
+      "targets": "Target designation — {{province}}",
+      "bda": "Damage assessment — {{sector}}",
+      "sourceAccess": "Source {{codename}} — wider access",
+      "vet": "Agent vetting — {{nation}}",
+      "highLevel": "High-level source — {{nation}}",
+      "dismantle": "Takedown of {{nation}}'s network",
+      "deception": "Deception operation — {{nation}}",
+      "hardened": "Sensitive sites hardened",
+      "strategicAlert": "STRATEGIC ALERT — {{nation}}"
     },
     "note": {
       "allianceInvite": {
@@ -3345,6 +3445,10 @@
       "agentCaught": {
         "title": "Agent exposed",
         "text": "{{host}} announces the arrest of an agent of {{owner}}."
+      },
+      "agentExpelled": {
+        "title": "Diplomats expelled",
+        "text": "{{host}} expels diplomats of {{owner}} for espionage."
       }
     }
   }

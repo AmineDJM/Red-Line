@@ -1304,6 +1304,99 @@ export const BalanceSchema = z.object({
       /** Âge (heures) au-delà duquel la connaissance d'une province vieillit (état des bâtiments masqué). */
       provinceStaleH: z.number().positive().default(72),
       /**
+       * Profondeur du renseignement (SIGINT, HUMINT, renseignement militaire, sécurité intérieure).
+       * Tous les champs sont optionnels ; valeurs par défaut dans packages/engine/src/modules/intel/deep.ts.
+       */
+      deep: z
+        .object({
+          /** Poids des capteurs : satellite d'écoute, appareil SIGINT/ELINT, satellite ou drone d'imagerie, brouilleur. */
+          sigintSatWeight: z.number().min(0).optional(),
+          sigintAirWeight: z.number().min(0).optional(),
+          imagerySatWeight: z.number().min(0).optional(),
+          imageryAirWeight: z.number().min(0).optional(),
+          ewWeight: z.number().min(0).optional(),
+          /** Score de capteurs donnant la moitié du bonus maximal. */
+          sensorRef: z.number().positive().optional(),
+          /** Bonus maximal des capteurs sur la réussite des opérations SIGINT/imagerie. */
+          sensorBonusMax: z.number().min(0).max(2).optional(),
+          /** Chiffrement d'une nation : base + par niveau de service (intérieur et militaire) au-delà de 1. */
+          encryptionBase: z.number().min(0).max(1).optional(),
+          encryptionPerLevel: z.number().min(0).max(1).optional(),
+          /** Cryptanalyse réussie : progression du décryptage (× qualité / chiffrement). */
+          cryptoStep: z.number().min(0).max(1).optional(),
+          /** Perte quotidienne du décryptage (changements de clés). */
+          cryptoDecayPerDay: z.number().min(0).max(1).optional(),
+          /** Décryptage minimal pour lire les ordres de mouvement, puis les intentions. */
+          decryptOrders: z.number().min(0).max(1).optional(),
+          decryptPlans: z.number().min(0).max(1).optional(),
+          /** Unités dont les ordres de mouvement sont révélés par interception, au maximum. */
+          interceptMaxUnits: z.number().int().min(1).optional(),
+          /** Risque de faux trafic : base × qualité du contre-espionnage adverse × (1 − décryptage). */
+          disinfoBase: z.number().min(0).max(1).optional(),
+          /** Émetteurs géolocalisés au maximum, incertitude de position (km). */
+          geolocateMax: z.number().int().min(1).optional(),
+          geolocateUncKm: z.number().min(0).optional(),
+          /** Brouillage adverse : incertitude multipliée sur les contacts révélés dans la zone. */
+          jamUncFactor: z.number().min(1).optional(),
+          /** Brouillage : rayon augmenté par les brouilleurs en service (× (1 + bonus × part)). */
+          ewJamBonus: z.number().min(0).optional(),
+          /** Détection quotidienne d'un agent selon sa couverture (multiplicateur). */
+          coverDetect: z
+            .object({ diplomatic: z.number().min(0), nonofficial: z.number().min(0) })
+            .partial()
+            .optional(),
+          /** Tension ajoutée à l'arrestation selon la couverture (× exposureTension). */
+          coverTension: z
+            .object({ diplomatic: z.number().min(0), nonofficial: z.number().min(0) })
+            .partial()
+            .optional(),
+          /** Fiabilité perçue d'un agent : départ, progression quotidienne, plafond. */
+          reliabilityStart: z.number().min(0).max(1).optional(),
+          reliabilityPerDay: z.number().min(0).max(1).optional(),
+          reliabilityMax: z.number().min(0).max(1).optional(),
+          /** Officier traitant présent dans le pays : progression des sources multipliée. */
+          handlerBonus: z.number().min(1).optional(),
+          /** Culture d'une source : fiabilité minimale requise ; détection multipliée par niveau d'accès. */
+          cultivateMinReliability: z.number().min(0).max(1).optional(),
+          accessDetect: z.number().min(1).optional(),
+          /** Vérification des agents : chance de démasquer un agent double (× qualité). */
+          vetDetect: z.number().min(0).max(1).optional(),
+          /** Ordre de bataille estimé : écart relatif maximal (service faible) et minimal (excellent). */
+          orbatSpreadMax: z.number().min(0).max(2).optional(),
+          orbatSpreadMin: z.number().min(0).max(1).optional(),
+          /** Nations suivies dans les dossiers. */
+          dossierNations: z.number().int().min(1).max(20).optional(),
+          /** Indice de menace : poids (points) des indicateurs. */
+          threatWeights: z
+            .object({
+              war: z.number(),
+              massing: z.number(),
+              plans: z.number(),
+              comms: z.number(),
+              mobilization: z.number(),
+              covert: z.number(),
+            })
+            .partial()
+            .optional(),
+          /** Éléments (chars, avions, bataillons…) près de la frontière donnant le poids « concentration » complet. */
+          massingRef: z.number().positive().optional(),
+          /** Seuil d'alerte stratégique et délai minimal entre deux alertes (heures). */
+          alertThreshold: z.number().min(0).max(100).optional(),
+          alertCooldownH: z.number().positive().optional(),
+          /** Évaluation des dégâts après frappe : rayon (km). */
+          bdaRadiusKm: z.number().positive().optional(),
+          /** Désignation de cibles : rayon autour de la ville de la province, incertitude (km), cibles max. */
+          designateRadiusKm: z.number().positive().optional(),
+          designateUncKm: z.number().min(0).optional(),
+          designateMax: z.number().int().min(1).optional(),
+          /** Démantèlement d'un réseau : chance de capture de chaque agent (× qualité + 0,5). */
+          dismantleCatch: z.number().min(0).max(1).optional(),
+          /** Sites durcis : durée (jours) et réduction de la réussite des sabotages et cyberattaques industrielles. */
+          hardenDays: z.number().positive().optional(),
+          hardenReduction: z.number().min(0).max(1).optional(),
+        })
+        .optional(),
+      /**
        * Renseignement intérieur (contre-espionnage, protection des sites sensibles, surveillance des
        * troubles). Valeurs par défaut dans packages/engine/src/modules/intel/interior.ts.
        */

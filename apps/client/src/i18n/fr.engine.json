@@ -58,7 +58,16 @@
       "fake_radio_traffic": "Faux trafic radio",
       "counterintel_sweep": "Opération de contre-espionnage",
       "recon_economic": "Reconnaissance économique",
-      "recon_military": "Reconnaissance militaire"
+      "recon_military": "Reconnaissance militaire",
+      "cryptanalysis": "Cryptanalyse",
+      "intercept_comms": "Interception des communications",
+      "geolocate_emitters": "Géolocalisation des émetteurs",
+      "cultivate_source": "Culture d'une source",
+      "vet_agents": "Vérification des agents",
+      "designate_targets": "Désignation de cibles",
+      "dismantle_network": "Démantèlement d'un réseau",
+      "deception_plan": "Opération de déception",
+      "harden_sites": "Durcissement des sites sensibles"
     },
     "council": {
       "open_one": "Séance du Conseil de sécurité ouverte : {{count}} résolution au vote.",
@@ -106,7 +115,19 @@
       "rebelsFunded": "Groupes armés financés",
       "programDone": "Programme achevé — {{nation}}",
       "blackMarket": "Marché noir — {{nation}}",
-      "imagery": "Imagerie — {{nation}}"
+      "imagery": "Imagerie — {{nation}}",
+      "crypto": "Cryptanalyse — {{nation}}",
+      "comint": "Interception des communications — {{nation}}",
+      "emitters": "Émetteurs géolocalisés — {{nation}}",
+      "targets": "Désignation de cibles — {{province}}",
+      "bda": "Évaluation des dégâts — {{sector}}",
+      "sourceAccess": "Source {{codename}} — accès élargi",
+      "vet": "Vérification des agents — {{nation}}",
+      "highLevel": "Source de haut niveau — {{nation}}",
+      "dismantle": "Démantèlement du réseau de {{nation}}",
+      "deception": "Opération de déception — {{nation}}",
+      "hardened": "Sites sensibles durcis",
+      "strategicAlert": "ALERTE STRATÉGIQUE — {{nation}}"
     },
     "note": {
       "allianceInvite": {
@@ -218,6 +239,10 @@
       "agentCaught": {
         "title": "Agent démasqué",
         "text": "{{host}} annonce l'arrestation d'un agent de {{owner}}."
+      },
+      "agentExpelled": {
+        "title": "Diplomates expulsés",
+        "text": "{{host}} expulse des diplomates de {{owner}} pour espionnage."
       }
     }
   }

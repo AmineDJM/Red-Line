@@ -1312,7 +1312,8 @@
       "burned": "terbakar",
       "double": "agen ganda",
       "exfiltrated": "dievakuasi",
-      "captured": "tertangkap"
+      "captured": "tertangkap",
+      "expelled": "Diusir"
     },
     "ops": {
       "infiltrate_spy": "Susupkan mata-mata",
@@ -1335,7 +1336,16 @@
       "fake_radio_traffic": "Lalu lintas radio palsu",
       "counterintel_sweep": "Kontra-intelijen",
       "recon_economic": "Pengintaian ekonomi",
-      "recon_military": "Pengintaian militer"
+      "recon_military": "Pengintaian militer",
+      "cryptanalysis": "Kriptanalisis",
+      "intercept_comms": "Penyadapan komunikasi",
+      "geolocate_emitters": "Geolokasi pemancar",
+      "cultivate_source": "Pengembangan sumber",
+      "vet_agents": "Verifikasi agen",
+      "designate_targets": "Penetapan sasaran",
+      "dismantle_network": "Pembongkaran jaringan",
+      "deception_plan": "Operasi penyesatan",
+      "harden_sites": "Pengamanan fasilitas"
     },
     "opsHelp": {
       "infiltrate_spy": "Menanam agen di negara sasaran: mengungkap provinsi, bangunan, dan niatnya secara bertahap.",
@@ -1358,7 +1368,16 @@
       "fake_radio_traffic": "Menyimulasikan lalu lintas radio untuk menyamarkan pergerakan Anda.",
       "counterintel_sweep": "Memburu agen asing di wilayah Anda.",
       "recon_economic": "Mengungkap secara bertahap fasilitas ekonomi (produksi, sumber daya, industri) seluruh negara — ibu kota dan kota besar dahulu, lalu sisanya — atau satu provinsi.",
-      "recon_military": "Mengungkap secara bertahap pangkalan, pertahanan udara, radar, silo, dan bunker seluruh negara — ibu kota dan kota besar dahulu, lalu sisanya — atau satu provinsi. Setelah itu terlihat di peta."
+      "recon_military": "Mengungkap secara bertahap pangkalan, pertahanan udara, radar, silo, dan bunker seluruh negara — ibu kota dan kota besar dahulu, lalu sisanya — atau satu provinsi. Setelah itu terlihat di peta.",
+      "cryptanalysis": "Memecahkan enkripsi suatu negara secara bertahap: pada 25% perintah pergerakannya terbaca, pada 50% niatnya. Enkripsi kuat (dinas maju) memperlambat kemajuan.",
+      "intercept_comms": "Menyadap komunikasi suatu negara: volume lalu lintas, perintah pergerakan, dan rencana perang sesuai dekripsi. Kontraintelijen musuh yang kuat dapat menyisipkan lalu lintas palsu.",
+      "geolocate_emitters": "Menemukan radar, pertahanan udara, dan pos komando suatu negara dari pancarannya. Satelit dan pesawat penyadap yang aktif menambah jumlah pemancar yang ditemukan.",
+      "cultivate_source": "Meningkatkan akses agen tepercaya: kementerian (anggaran, riset), lalu staf umum (rencana perang). Makin tinggi aksesnya, makin besar risikonya.",
+      "vet_agents": "Memeriksa agen Anda di suatu negara: membongkar agen ganda dan mengenali yang diawasi. Tanpa risiko.",
+      "designate_targets": "Analisis citra provinsi musuh: pasukan dikenali dan dilokalisasi, fasilitas dipetakan, serangan diusulkan per unit.",
+      "dismantle_network": "Membongkar jaringan suatu negara di wilayah Anda: menangkap agen yang sudah terdeteksi dan memburu sisanya.",
+      "deception_plan": "Mengirim rencana perang palsu ke dinas musuh. Lebih meyakinkan jika musuh punya agen di negara Anda, terutama agen yang dibalik.",
+      "harden_sites": "Memperkuat perlindungan semua fasilitas Anda selama beberapa hari: sabotase, pendanaan pemberontak, dan serangan siber industri dihambat."
     },
     "targetProvince": "Provinsi sasaran",
     "targetArea": "Zona (sekitar kota)",
@@ -1369,7 +1388,67 @@
     "scopeProvince": "Satu provinsi",
     "reconPhase": "Fase {{done}}/{{waves}} · {{provinces}} prov.",
     "unknownContact": "kontak tak dikenal",
-    "noContacts": "Tidak ada unit asing terdeteksi: dekatkan radar Anda atau luncurkan pengintaian."
+    "noAgents": "Tidak ada agen tersedia.",
+    "noContacts": "Tidak ada unit asing terdeteksi: dekatkan radar Anda atau luncurkan pengintaian.",
+    "tabs": {
+      "military": "Militer",
+      "dossiers": "Berkas negara",
+      "reports": "Laporan"
+    },
+    "cover": "Penyamaran",
+    "covers": {
+      "diplomatic": "Diplomatik",
+      "nonofficial": "Tidak resmi"
+    },
+    "accessLevels": {
+      "street": "Lapangan",
+      "ministry": "Kementerian",
+      "staff": "Staf umum"
+    },
+    "agentActions": {
+      "cultivate": "Kembangkan",
+      "vet": "Periksa"
+    },
+    "targetAgent": "Agen",
+    "quick": "Aksi",
+    "hardened": "Fasilitas diperkuat",
+    "allReports": "Semua",
+    "sensors": {
+      "title": "Sensor aktif",
+      "sigint": "Penyadapan",
+      "imagery": "Citra",
+      "ew": "Peperangan elektronik"
+    },
+    "crypto": {
+      "title": "Dekripsi",
+      "encryption": "Enkripsi",
+      "empty": "Tidak ada negara dipantau: luncurkan kriptanalisis atau penyadapan."
+    },
+    "threat": {
+      "title": "Peta ancaman",
+      "alert": "SIAGA",
+      "empty": "Belum ada penilaian: buletin harian pukul 07:00 menilai negara tetangga, musuh, atau sasaran."
+    },
+    "indicators": {
+      "war": "Perang berlangsung",
+      "massing": "Pemusatan pasukan",
+      "plans": "Rencana perang",
+      "comms": "Lalu lintas komando",
+      "mobilization": "Mobilisasi industri",
+      "covert": "Operasi rahasia"
+    },
+    "dossier": {
+      "forces": "Perkiraan kekuatan",
+      "intentions": "Niat",
+      "plansAgainst": "Rencana perang terhadap",
+      "noPlans": "Tidak ada rencana perang diketahui",
+      "economy": "Perkiraan kas",
+      "research": "Riset berjalan",
+      "services": "Tingkat dinas",
+      "agents": "Agen di lapangan",
+      "reliability": "Keandalan berkas",
+      "empty": "Belum ada berkas: dinas Anda memantau negara tetangga, musuh, atau sasaran operasi Anda."
+    }
   },
   "sheet": {
     "path": "Lembar data",
@@ -3140,7 +3219,16 @@
       "fake_radio_traffic": "Lalu lintas radio palsu",
       "counterintel_sweep": "Operasi kontra-intelijen",
       "recon_economic": "Pengintaian ekonomi",
-      "recon_military": "Pengintaian militer"
+      "recon_military": "Pengintaian militer",
+      "cryptanalysis": "Kriptanalisis",
+      "intercept_comms": "Penyadapan komunikasi",
+      "geolocate_emitters": "Geolokasi pemancar",
+      "cultivate_source": "Pengembangan sumber",
+      "vet_agents": "Verifikasi agen",
+      "designate_targets": "Penetapan sasaran",
+      "dismantle_network": "Pembongkaran jaringan",
+      "deception_plan": "Operasi penyesatan",
+      "harden_sites": "Pengamanan fasilitas sensitif"
     },
     "council": {
       "open_other": "Sidang Dewan Keamanan dibuka: {{count}} resolusi untuk dipilih.",
@@ -3187,7 +3275,19 @@
       "rebelsFunded": "Kelompok bersenjata didanai",
       "programDone": "Program selesai — {{nation}}",
       "blackMarket": "Pasar gelap — {{nation}}",
-      "imagery": "Citra — {{nation}}"
+      "imagery": "Citra — {{nation}}",
+      "crypto": "Kriptanalisis — {{nation}}",
+      "comint": "Penyadapan komunikasi — {{nation}}",
+      "emitters": "Pemancar ditemukan — {{nation}}",
+      "targets": "Penetapan sasaran — {{province}}",
+      "bda": "Penilaian kerusakan — {{sector}}",
+      "sourceAccess": "Sumber {{codename}} — akses diperluas",
+      "vet": "Verifikasi agen — {{nation}}",
+      "highLevel": "Sumber tingkat tinggi — {{nation}}",
+      "dismantle": "Pembongkaran jaringan {{nation}}",
+      "deception": "Operasi penyesatan — {{nation}}",
+      "hardened": "Fasilitas sensitif diperkuat",
+      "strategicAlert": "SIAGA STRATEGIS — {{nation}}"
     },
     "note": {
       "allianceInvite": {
@@ -3298,6 +3398,10 @@
       "agentCaught": {
         "title": "Agen terbongkar",
         "text": "{{host}} mengumumkan penangkapan agen {{owner}}."
+      },
+      "agentExpelled": {
+        "title": "Diplomat diusir",
+        "text": "{{host}} mengusir diplomat {{owner}} karena spionase."
       }
     }
   }

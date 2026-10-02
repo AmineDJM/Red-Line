@@ -48,6 +48,11 @@ export function aiThink(state: EngineState, n: NationId): void {
   const caught = turnable(state, n);
   if (caught.length && tryOp('turn_agent', {}, caught[0]!.id)) return;
   const log = ni.log;
+  const day0 = Math.floor(state.time / DAY);
+  // Réseau adverse nombreux sur notre sol : démantèlement ; sabotages répétés : sites durcis.
+  if (caught.length >= 2 && tryOp('dismantle_network', { nationId: caught[0]!.owner })) return;
+  if (log.sabotage + log.cyber >= 2 && hash01('hd', n, day0) < 0.5 && tryOp('harden_sites', {}))
+    return;
   const incidents = log.sabotage + log.cyber + log.rebels + log.caught + log.strikes;
   ni.log = { sabotage: 0, cyber: 0, rebels: 0, caught: 0, strikes: 0, found: 0 };
   const plans = board(state).warPlans ?? {};
@@ -64,6 +69,12 @@ export function aiThink(state: EngineState, n: NationId): void {
   if (enemy) {
     const chance = aiLevelCfg(state, ns.aiLevel).reconChance;
     if (hash01('rm', n, day) < chance && tryOp('recon_military', { nationId: enemy })) return;
+    // Écoute de l'ennemi : cryptanalyse, puis interceptions et géolocalisation des émetteurs.
+    const sg = hash01('sg', n, day);
+    if (sg < 0.15) {
+      const p = ni.cr?.[enemy] ?? 0;
+      if (tryOp(p < 0.25 ? 'cryptanalysis' : 'intercept_comms', { nationId: enemy })) return;
+    } else if (sg < 0.25 && tryOp('geolocate_emitters', { nationId: enemy })) return;
     if (tryOp('infiltrate_spy', { nationId: enemy })) return;
     if (targeted || hash01('ci', n, day) < 0.2) tryOp('counterintel_sweep', {});
     return;

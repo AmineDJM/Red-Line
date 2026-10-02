@@ -1312,7 +1312,8 @@
       "burned": "已暴露",
       "double": "双面间谍",
       "exfiltrated": "已撤离",
-      "captured": "被捕"
+      "captured": "被捕",
+      "expelled": "已驱逐"
     },
     "ops": {
       "infiltrate_spy": "渗透间谍",
@@ -1335,7 +1336,16 @@
       "fake_radio_traffic": "虚假无线电通信",
       "counterintel_sweep": "反间谍",
       "recon_economic": "经济侦察",
-      "recon_military": "军事侦察"
+      "recon_military": "军事侦察",
+      "cryptanalysis": "密码分析",
+      "intercept_comms": "通信截获",
+      "geolocate_emitters": "辐射源定位",
+      "cultivate_source": "发展线人",
+      "vet_agents": "审查特工",
+      "designate_targets": "目标指示",
+      "dismantle_network": "摧毁情报网",
+      "deception_plan": "欺骗行动",
+      "harden_sites": "设施加固"
     },
     "opsHelp": {
       "infiltrate_spy": "在目标国安插特工：逐步揭示其省份、建筑和意图。",
@@ -1358,7 +1368,16 @@
       "fake_radio_traffic": "模拟无线电通信以掩盖您的行动。",
       "counterintel_sweep": "搜捕您领土上的外国特工。",
       "recon_economic": "分阶段揭示整个国家（先首都和大城市，再其他地区）或单个省份的经济设施（生产、资源、工业）。",
-      "recon_military": "分阶段揭示整个国家（先首都和大城市，再其他地区）或单个省份的基地、防空、雷达、发射井和掩体。之后在地图上可见。"
+      "recon_military": "分阶段揭示整个国家（先首都和大城市，再其他地区）或单个省份的基地、防空、雷达、发射井和掩体。之后在地图上可见。",
+      "cryptanalysis": "逐步破解一国的加密：达到 25% 时可读取其调动命令，达到 50% 时可读取其意图。强加密（先进情报机构）会减缓进度。",
+      "intercept_comms": "截获一国的通信：根据破译程度获取通信量、调动命令和战争计划。敌方强大的反情报可能注入虚假通信。",
+      "geolocate_emitters": "根据辐射定位一国的雷达、防空系统和指挥所。在役的电子侦察卫星和飞机会增加发现的辐射源数量。",
+      "cultivate_source": "提升可靠特工的接触层级：部委（预算、研究），然后总参谋部（战争计划）。层级越高，暴露风险越大。",
+      "vet_agents": "审查你在某国的特工：揭露双面特工，发现被监视者。无风险。",
+      "designate_targets": "对敌方省份进行图像分析：识别并定位部队，标绘设施，逐个单位提出打击建议。",
+      "dismantle_network": "摧毁某国在你境内的情报网：逮捕已发现的特工并追查其余人员。",
+      "deception_plan": "向敌方情报机构传递虚假战争计划。若敌方在你国内有特工，尤其是已被策反的特工，则更可信。",
+      "harden_sites": "在几天内加强所有设施的防护：破坏、资助叛军和针对工业的网络攻击受到遏制。"
     },
     "targetProvince": "目标省份",
     "targetArea": "区域（城市周边）",
@@ -1369,7 +1388,67 @@
     "scopeProvince": "单个省份",
     "reconPhase": "阶段 {{done}}/{{waves}} · {{provinces}} 个省",
     "unknownContact": "未识别目标",
-    "noContacts": "未发现外国单位：将雷达靠近或发起侦察。"
+    "noAgents": "没有可用的特工。",
+    "noContacts": "未发现外国单位：将雷达靠近或发起侦察。",
+    "tabs": {
+      "military": "军事",
+      "dossiers": "国家档案",
+      "reports": "报告"
+    },
+    "cover": "掩护身份",
+    "covers": {
+      "diplomatic": "外交",
+      "nonofficial": "非官方"
+    },
+    "accessLevels": {
+      "street": "基层",
+      "ministry": "部委",
+      "staff": "总参谋部"
+    },
+    "agentActions": {
+      "cultivate": "发展",
+      "vet": "审查"
+    },
+    "targetAgent": "特工",
+    "quick": "行动",
+    "hardened": "设施已加固",
+    "allReports": "全部",
+    "sensors": {
+      "title": "在役传感器",
+      "sigint": "监听",
+      "imagery": "图像侦察",
+      "ew": "电子战"
+    },
+    "crypto": {
+      "title": "破译",
+      "encryption": "加密",
+      "empty": "尚未跟踪任何国家：请发起密码分析或通信截获。"
+    },
+    "threat": {
+      "title": "威胁地图",
+      "alert": "警报",
+      "empty": "尚无评估：每日 07:00 简报会评估邻国、敌国或目标国家。"
+    },
+    "indicators": {
+      "war": "战争进行中",
+      "massing": "兵力集结",
+      "plans": "战争计划",
+      "comms": "指挥通信",
+      "mobilization": "工业动员",
+      "covert": "秘密行动"
+    },
+    "dossier": {
+      "forces": "估计兵力",
+      "intentions": "意图",
+      "plansAgainst": "战争计划针对",
+      "noPlans": "无已知战争计划",
+      "economy": "估计国库",
+      "research": "当前研究",
+      "services": "情报机构水平",
+      "agents": "当地特工",
+      "reliability": "档案可靠性",
+      "empty": "暂无档案：你的情报机构跟踪邻国、敌国以及你的行动目标国家。"
+    }
   },
   "sheet": {
     "path": "档案",
@@ -3140,7 +3219,16 @@
       "fake_radio_traffic": "虚假无线电通信",
       "counterintel_sweep": "反间谍行动",
       "recon_economic": "经济侦察",
-      "recon_military": "军事侦察"
+      "recon_military": "军事侦察",
+      "cryptanalysis": "密码分析",
+      "intercept_comms": "通信截获",
+      "geolocate_emitters": "辐射源定位",
+      "cultivate_source": "发展线人",
+      "vet_agents": "审查特工",
+      "designate_targets": "目标指示",
+      "dismantle_network": "摧毁情报网",
+      "deception_plan": "欺骗行动",
+      "harden_sites": "敏感设施加固"
     },
     "council": {
       "open_other": "安全理事会会议开幕：{{count}} 项决议待表决。",
@@ -3187,7 +3275,19 @@
       "rebelsFunded": "武装团体获得资助",
       "programDone": "项目完成 — {{nation}}",
       "blackMarket": "黑市 — {{nation}}",
-      "imagery": "图像 — {{nation}}"
+      "imagery": "图像 — {{nation}}",
+      "crypto": "密码分析 — {{nation}}",
+      "comint": "通信截获 — {{nation}}",
+      "emitters": "辐射源已定位 — {{nation}}",
+      "targets": "目标指示 — {{province}}",
+      "bda": "毁伤评估 — {{sector}}",
+      "sourceAccess": "线人 {{codename}} — 接触层级提升",
+      "vet": "审查特工 — {{nation}}",
+      "highLevel": "高层线人 — {{nation}}",
+      "dismantle": "摧毁 {{nation}} 的情报网",
+      "deception": "欺骗行动 — {{nation}}",
+      "hardened": "敏感设施已加固",
+      "strategicAlert": "战略警报 — {{nation}}"
     },
     "note": {
       "allianceInvite": {
@@ -3298,6 +3398,10 @@
       "agentCaught": {
         "title": "特工暴露",
         "text": "{{host}} 宣布逮捕一名 {{owner}} 特工。"
+      },
+      "agentExpelled": {
+        "title": "外交官被驱逐",
+        "text": "{{host}} 以间谍罪驱逐 {{owner}} 的外交官。"
       }
     }
   }

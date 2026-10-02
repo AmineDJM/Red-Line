@@ -1312,7 +1312,8 @@
       "burned": "신분 노출",
       "double": "이중 간첩",
       "exfiltrated": "탈출함",
-      "captured": "체포됨"
+      "captured": "체포됨",
+      "expelled": "추방됨"
     },
     "ops": {
       "infiltrate_spy": "간첩 침투",
@@ -1335,7 +1336,16 @@
       "fake_radio_traffic": "허위 무선 교신",
       "counterintel_sweep": "방첩",
       "recon_economic": "경제 정찰",
-      "recon_military": "군사 정찰"
+      "recon_military": "군사 정찰",
+      "cryptanalysis": "암호 해독",
+      "intercept_comms": "통신 감청",
+      "geolocate_emitters": "전파 발신원 위치 추적",
+      "cultivate_source": "정보원 육성",
+      "vet_agents": "요원 검증",
+      "designate_targets": "표적 지정",
+      "dismantle_network": "정보망 와해",
+      "deception_plan": "기만 작전",
+      "harden_sites": "시설 방호 강화"
     },
     "opsHelp": {
       "infiltrate_spy": "대상국에 요원을 심어 주, 건물, 의도를 단계적으로 밝혀냅니다.",
@@ -1358,7 +1368,16 @@
       "fake_radio_traffic": "무선 교신을 위장해 아군 이동을 숨깁니다.",
       "counterintel_sweep": "자국 영토의 외국 요원을 추적합니다.",
       "recon_economic": "국가 전체(수도와 대도시 먼저, 이후 나머지) 또는 단일 주의 경제 시설(생산, 자원, 산업)을 단계적으로 밝혀냅니다.",
-      "recon_military": "국가 전체(수도와 대도시 먼저, 이후 나머지) 또는 단일 주의 기지, 방공, 레이더, 사일로, 벙커를 단계적으로 밝혀냅니다. 이후 지도에 표시됩니다."
+      "recon_military": "국가 전체(수도와 대도시 먼저, 이후 나머지) 또는 단일 주의 기지, 방공, 레이더, 사일로, 벙커를 단계적으로 밝혀냅니다. 이후 지도에 표시됩니다.",
+      "cryptanalysis": "한 국가의 암호를 단계적으로 해독합니다. 25%에서 이동 명령, 50%에서 의도를 읽을 수 있습니다. 강력한 암호(발전된 정보기관)는 진행을 늦춥니다.",
+      "intercept_comms": "한 국가의 통신을 감청합니다. 해독 수준에 따라 통신량, 이동 명령, 전쟁 계획을 파악합니다. 적의 방첩이 강하면 가짜 통신이 섞일 수 있습니다.",
+      "geolocate_emitters": "전파 방출로 한 국가의 레이더, 방공망, 지휘소 위치를 찾습니다. 운용 중인 신호정보 위성과 항공기가 많을수록 더 많이 찾습니다.",
+      "cultivate_source": "신뢰할 수 있는 요원의 접근 범위를 넓힙니다: 정부 부처(예산, 연구), 이어서 총참모부(전쟁 계획). 접근이 높을수록 노출 위험이 큽니다.",
+      "vet_agents": "한 국가에 있는 요원을 검증합니다. 이중간첩을 밝혀내고 감시받는 요원을 찾아냅니다. 위험 없음.",
+      "designate_targets": "적 지역의 영상 분석: 병력을 식별하고 위치를 파악하며 시설을 지도화하고 부대별 타격을 제안합니다.",
+      "dismantle_network": "자국 내 타국 정보망을 와해합니다. 이미 파악된 요원을 체포하고 나머지를 추적합니다.",
+      "deception_plan": "적 정보기관에 가짜 전쟁 계획을 흘립니다. 적이 자국에 요원, 특히 포섭된 요원을 두고 있으면 더 그럴듯합니다.",
+      "harden_sites": "며칠 동안 모든 시설의 방호를 강화합니다. 사보타주, 반군 자금 지원, 산업 사이버 공격을 억제합니다."
     },
     "targetProvince": "대상 주",
     "targetArea": "구역(도시 주변)",
@@ -1369,7 +1388,67 @@
     "scopeProvince": "단일 주",
     "reconPhase": "단계 {{done}}/{{waves}} · 주 {{provinces}}개",
     "unknownContact": "미확인 접촉",
-    "noContacts": "탐지된 외국 유닛 없음: 레이더를 가까이 두거나 정찰을 개시하세요."
+    "noAgents": "가용 요원이 없습니다.",
+    "noContacts": "탐지된 외국 유닛 없음: 레이더를 가까이 두거나 정찰을 개시하세요.",
+    "tabs": {
+      "military": "군사",
+      "dossiers": "국가 파일",
+      "reports": "보고서"
+    },
+    "cover": "위장 신분",
+    "covers": {
+      "diplomatic": "외교관",
+      "nonofficial": "비공식"
+    },
+    "accessLevels": {
+      "street": "현장",
+      "ministry": "정부 부처",
+      "staff": "총참모부"
+    },
+    "agentActions": {
+      "cultivate": "육성",
+      "vet": "검증"
+    },
+    "targetAgent": "요원",
+    "quick": "행동",
+    "hardened": "시설 방호 강화됨",
+    "allReports": "전체",
+    "sensors": {
+      "title": "운용 중인 센서",
+      "sigint": "감청",
+      "imagery": "영상 정보",
+      "ew": "전자전"
+    },
+    "crypto": {
+      "title": "해독",
+      "encryption": "암호 강도",
+      "empty": "추적 중인 국가가 없습니다. 암호 해독이나 감청을 시작하세요."
+    },
+    "threat": {
+      "title": "위협 지도",
+      "alert": "경보",
+      "empty": "아직 평가가 없습니다. 매일 07:00 브리핑이 인접국, 적국, 표적국을 평가합니다."
+    },
+    "indicators": {
+      "war": "전쟁 중",
+      "massing": "병력 집결",
+      "plans": "전쟁 계획",
+      "comms": "지휘 통신",
+      "mobilization": "산업 동원",
+      "covert": "비밀 작전"
+    },
+    "dossier": {
+      "forces": "추정 전력",
+      "intentions": "의도",
+      "plansAgainst": "전쟁 계획 대상",
+      "noPlans": "알려진 전쟁 계획 없음",
+      "economy": "추정 국고",
+      "research": "진행 중인 연구",
+      "services": "정보기관 수준",
+      "agents": "현지 요원",
+      "reliability": "파일 신뢰도",
+      "empty": "파일 없음: 정보기관이 인접국, 적국, 작전 대상국을 추적합니다."
+    }
   },
   "sheet": {
     "path": "제원",
@@ -3140,7 +3219,16 @@
       "fake_radio_traffic": "허위 무선 교신",
       "counterintel_sweep": "방첩 작전",
       "recon_economic": "경제 정찰",
-      "recon_military": "군사 정찰"
+      "recon_military": "군사 정찰",
+      "cryptanalysis": "암호 해독",
+      "intercept_comms": "통신 감청",
+      "geolocate_emitters": "전파 발신원 위치 추적",
+      "cultivate_source": "정보원 육성",
+      "vet_agents": "요원 검증",
+      "designate_targets": "표적 지정",
+      "dismantle_network": "정보망 와해",
+      "deception_plan": "기만 작전",
+      "harden_sites": "주요 시설 방호 강화"
     },
     "council": {
       "open_other": "안전보장이사회 회의 개회: 결의안 {{count}}건 표결.",
@@ -3187,7 +3275,19 @@
       "rebelsFunded": "무장 단체 자금 지원",
       "programDone": "계획 완료 — {{nation}}",
       "blackMarket": "암시장 — {{nation}}",
-      "imagery": "영상 정보 — {{nation}}"
+      "imagery": "영상 정보 — {{nation}}",
+      "crypto": "암호 해독 — {{nation}}",
+      "comint": "통신 감청 — {{nation}}",
+      "emitters": "발신원 위치 확인 — {{nation}}",
+      "targets": "표적 지정 — {{province}}",
+      "bda": "피해 평가 — {{sector}}",
+      "sourceAccess": "정보원 {{codename}} — 접근 확대",
+      "vet": "요원 검증 — {{nation}}",
+      "highLevel": "고위급 정보원 — {{nation}}",
+      "dismantle": "{{nation}} 정보망 와해",
+      "deception": "기만 작전 — {{nation}}",
+      "hardened": "주요 시설 방호 강화",
+      "strategicAlert": "전략 경보 — {{nation}}"
     },
     "note": {
       "allianceInvite": {
@@ -3298,6 +3398,10 @@
       "agentCaught": {
         "title": "요원 적발",
         "text": "{{host}}, {{owner}} 요원 체포 발표."
+      },
+      "agentExpelled": {
+        "title": "외교관 추방",
+        "text": "{{host}}, 간첩 혐의로 {{owner}} 외교관 추방."
       }
     }
   }

@@ -46,6 +46,21 @@ import {
   startListen,
 } from './contacts.js';
 import { ist, nat, nextId, type Agent, type StoredOp } from './state.js';
+import {
+  applyCryptanalysis,
+  applyCultivate,
+  applyDeception,
+  applyDesignate,
+  applyDismantle,
+  applyGeolocate,
+  applyHarden,
+  applyInterceptComms,
+  applyVet,
+  cultivable,
+  dcfg,
+  reliabilityOfAgent,
+  sensorBonus,
+} from './deep.js';
 import { exposureFactor, onForeignFailed, successFactor, watchOp } from './interior.js';
 import {
   CATEGORY_LABEL,
@@ -82,6 +97,15 @@ export const OP_LABEL: Record<IntelOpKind, string> = {
   counterintel_sweep: 'Opération de contre-espionnage',
   recon_economic: 'Reconnaissance économique',
   recon_military: 'Reconnaissance militaire',
+  cryptanalysis: 'Cryptanalyse',
+  intercept_comms: 'Interception des communications',
+  geolocate_emitters: 'Géolocalisation des émetteurs',
+  cultivate_source: "Culture d'une source",
+  vet_agents: 'Vérification des agents',
+  designate_targets: 'Désignation de cibles',
+  dismantle_network: "Démantèlement d'un réseau",
+  deception_plan: 'Opération de déception',
+  harden_sites: 'Durcissement des sites sensibles',
 };
 
 /** Opérations HUMINT contre une nation qui profitent des agents implantés. */
@@ -104,7 +128,21 @@ const NEEDS_NATION: ReadonlySet<IntelOpKind> = new Set([
   'cyber_production',
   'cyber_orders',
   'fake_radio_traffic',
+  'cryptanalysis',
+  'intercept_comms',
+  'geolocate_emitters',
+  'vet_agents',
+  'dismantle_network',
+  'deception_plan',
 ]);
+/** Opérations d'écoute (bonus des capteurs SIGINT) et d'imagerie (bonus des capteurs d'imagerie). */
+const SIGINT_SENSED: ReadonlySet<IntelOpKind> = new Set([
+  'listen_area',
+  'intercept_army',
+  'intercept_comms',
+  'geolocate_emitters',
+]);
+const IMAGERY_SENSED: ReadonlySet<IntelOpKind> = new Set(['recon_military', 'designate_targets']);
 const CYBER: Record<string, 'radar' | 'production' | 'orders'> = {
   cyber_radar: 'radar',
   cyber_production: 'production',
@@ -123,11 +161,18 @@ function defenderDept(kind: IntelOpKind): Department | null {
     case 'deploy_decoys':
     case 'fake_radio_traffic':
     case 'recon_military':
+    case 'cryptanalysis':
+    case 'geolocate_emitters':
+    case 'designate_targets':
       return 'military';
     case 'turn_agent':
+    case 'dismantle_network':
+    case 'deception_plan':
       return 'exterior';
     case 'jam_area':
     case 'counterintel_sweep':
+    case 'vet_agents':
+    case 'harden_sites':
       return null;
     default:
       return 'interior';
@@ -152,6 +197,14 @@ export function successChance(
     p *= ag > 0 ? 1 + 0.15 * Math.min(4, ag) : kind === 'disinformation' ? 1 : 0.6;
     // Un agent retourné prévient le pays hôte.
     if (doubledIn(state, n, victim)) p *= 0.7;
+  }
+  if (SIGINT_SENSED.has(kind)) p *= 1 + sensorBonus(state, n, 's');
+  if (IMAGERY_SENSED.has(kind)) p *= 1 + sensorBonus(state, n, 'i');
+  // Déception : plus crédible si l'adversaire a des agents chez nous, surtout un agent retourné.
+  if (victim && kind === 'deception_plan') {
+    if (doubledIn(state, victim, n)) p *= 1.5;
+    else if (agentsIn(state, victim, n) > 0) p *= 1.2;
+    else p *= 0.7;
   }
   if (victim && CYBER[kind]) {
     p *=
@@ -247,7 +300,27 @@ function resolveTarget(
       return { victim: t.nationId!, target: { nationId: t.nationId!, at: target.at } };
     }
     case 'counterintel_sweep':
+    case 'harden_sites':
       return { target: {} };
+    case 'infiltrate_spy':
+    case 'recruit_source': {
+      const out: IntelOpTarget = { nationId: t.nationId! };
+      if (target.cover === 'diplomatic' || target.cover === 'nonofficial') out.cover = target.cover;
+      return { victim: t.nationId!, target: out };
+    }
+    case 'cultivate_source': {
+      const a = cultivable(state, n, target.nationId, target.agentId)[0];
+      if (!a) return fail('invalid_target', 'Aucun agent à faire progresser.');
+      if (reliabilityOfAgent(state, a) < dcfg(state).cultivateMinReliability)
+        return fail('not_allowed', 'Fiabilité de l’agent insuffisante.');
+      return { victim: a.host, agentId: a.id, target: { nationId: a.host, agentId: a.id } };
+    }
+    case 'designate_targets': {
+      const pid = target.provinceId;
+      const P = pid ? state.provinces[pid] : undefined;
+      if (!pid || !P || P.owner === n) return fail('invalid_target', 'Province cible invalide.');
+      return { victim: P.owner, target: { provinceId: pid, nationId: P.owner } };
+    }
     case 'recon_economic':
     case 'recon_military': {
       if (target.provinceId) {
@@ -440,7 +513,7 @@ function onExposed(state: EngineState, n: NationId, op: StoredOp): void {
     if (a) burn(state, a);
     return;
   }
-  if (op.kind === 'exfiltrate') {
+  if (op.kind === 'exfiltrate' || op.kind === 'cultivate_source') {
     const a = op.agentId ? ist(state).agents[op.agentId] : undefined;
     if (a && (a.state === 'active' || a.state === 'caught' || a.state === 'double'))
       publicArrest(state, a);
@@ -512,6 +585,7 @@ function applySuccess(state: EngineState, n: NationId, op: StoredOp): void {
     case 'infiltrate_spy':
     case 'recruit_source': {
       const a = createAgent(state, n, v!, op.kind === 'infiltrate_spy' ? 'officer' : 'source');
+      if (op.target.cover) a.cv = op.target.cover;
       result([
         op.kind === 'infiltrate_spy'
           ? `Agent ${a.codename} implanté sur le territoire ${vDe}. Premières remontées sous 24 heures.`
@@ -605,7 +679,12 @@ function applySuccess(state: EngineState, n: NationId, op: StoredOp): void {
       return;
     case 'jam_area': {
       const id = nextId(state, 'j');
-      const r = op.target.radiusKm ?? c.listenRadiusKm;
+      // Brouilleurs en service : rayon élargi.
+      const dc = dcfg(state);
+      const r = Math.round(
+        (op.target.radiusKm ?? c.listenRadiusKm) *
+          (1 + (dc.ewJamBonus * sensorBonus(state, n, 'e')) / Math.max(1e-6, dc.sensorBonusMax)),
+      );
       const until = state.time + c.jamHours * HOUR;
       ist(state).jams[id] = { id, owner: n, at: op.target.at!, r, until };
       scheduleMod(state, { t: until, m: 'intel', e: 'expire', d: { kind: 'jam', id } });
@@ -666,6 +745,24 @@ function applySuccess(state: EngineState, n: NationId, op: StoredOp): void {
     case 'counterintel_sweep':
       sweep(state, n);
       return;
+    case 'cryptanalysis':
+      return applyCryptanalysis(state, n, v!, result);
+    case 'intercept_comms':
+      return applyInterceptComms(state, n, v!, result);
+    case 'geolocate_emitters':
+      return applyGeolocate(state, n, v!, result);
+    case 'designate_targets':
+      return applyDesignate(state, n, op, result);
+    case 'cultivate_source':
+      return applyCultivate(state, n, op, result);
+    case 'vet_agents':
+      return applyVet(state, n, v!, result);
+    case 'dismantle_network':
+      return applyDismantle(state, n, v!, result);
+    case 'deception_plan':
+      return applyDeception(state, n, v!, result);
+    case 'harden_sites':
+      return applyHarden(state, n, result);
     case 'recon_economic':
     case 'recon_military': {
       const axis = op.kind === 'recon_economic' ? 'e' : 'm';

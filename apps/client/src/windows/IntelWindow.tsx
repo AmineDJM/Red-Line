@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  DEPARTMENTS,
+  type AgentCover,
   type Department,
   type IntelOpKind,
   type IntelOpTarget,
   type IntelReport,
-  type IntelSource,
   type NationId,
   type Order,
   type ReconOpKind,
@@ -34,80 +33,40 @@ import { MiniMap } from '../components/MiniMap.js';
 import { NationRecon, reconNationCost } from '../components/NationRecon.js';
 import { compareNames, fmtDuration } from '../i18n/index.js';
 import { nationForms, nationName, provinceName } from '../lib/game.js';
+import {
+  COVER_OPS,
+  INTEL_TABS,
+  TAB_DEPT,
+  TAB_OPS,
+  TARGET_KIND,
+  WHOLE_NATION_OK,
+  tabOfReport,
+  type IntelTab,
+  type OpsTab,
+} from '../lib/intelTabs.js';
 import { useGameTime } from '../shell/helpers.js';
 import type { WindowContentProps } from '../shell/WindowHost.js';
 import { useGame } from '../store/game.js';
 import { IntelInterior } from './IntelInterior.js';
+import { Dossiers, SigintPanel, ThreatList, ThreatMap } from './IntelDossiers.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { orderError, reportTitle } from '../lib/loc.js';
-
-/** Opérations proposées par département et par source (identique à OP_META du moteur). */
-export const OPS_BY_DEPT: Record<Department, Record<IntelSource, IntelOpKind[]>> = {
-  interior: { humint: ['counterintel_sweep', 'turn_agent'], sigint: [] },
-  exterior: {
-    humint: [
-      'recon_economic',
-      'infiltrate_spy',
-      'recruit_source',
-      'steal_research',
-      'sabotage_factory',
-      'fund_rebels',
-      'exfiltrate',
-      'leak_plans',
-      'disinformation',
-      'plant_fake_report',
-    ],
-    sigint: [],
-  },
-  military: {
-    humint: [],
-    sigint: [
-      'recon_military',
-      'listen_area',
-      'intercept_army',
-      'jam_area',
-      'cyber_radar',
-      'cyber_production',
-      'cyber_orders',
-      'deploy_decoys',
-      'fake_radio_traffic',
-    ],
-  },
-};
-
-/** Nature de la cible attendue par le moteur pour chaque opération. */
-type TargetKind = 'none' | 'nation' | 'province' | 'area' | 'ownArea' | 'unit';
-const TARGET_KIND: Record<IntelOpKind, TargetKind> = {
-  infiltrate_spy: 'nation',
-  recruit_source: 'nation',
-  turn_agent: 'nation',
-  exfiltrate: 'nation',
-  steal_research: 'nation',
-  sabotage_factory: 'province',
-  fund_rebels: 'province',
-  listen_area: 'area',
-  intercept_army: 'unit',
-  jam_area: 'area',
-  cyber_radar: 'nation',
-  cyber_production: 'nation',
-  cyber_orders: 'nation',
-  disinformation: 'nation',
-  leak_plans: 'nation',
-  plant_fake_report: 'nation',
-  deploy_decoys: 'ownArea',
-  fake_radio_traffic: 'area',
-  counterintel_sweep: 'none',
-  recon_economic: 'province',
-  recon_military: 'province',
-};
-/** Opérations de reconnaissance : la cible peut être une province ou toute la nation. */
-const WHOLE_NATION_OK = new Set<IntelOpKind>(['recon_economic', 'recon_military']);
+import '../styles/w-intel.css';
 
 const DEPT_ICON: Record<Department, IconName> = {
   interior: 'shield',
   exterior: 'globe',
   military: 'target',
+};
+
+const TAB_ICON: Record<IntelTab, IconName> = {
+  sigint: 'radio',
+  humint: 'spy',
+  military: 'target',
+  interior: 'shield',
+  dossiers: 'intel',
+  reports: 'news',
 };
 
 function useSend() {
@@ -273,18 +232,20 @@ const ACTION_ICON: Record<IntelReport['actions'][number]['kind'], IconName> = {
 
 export function LaunchDialog({
   dept,
-  source,
+  ops,
   onClose,
   initialOp,
   initialNation,
   initialProvince,
+  initialAgent,
 }: {
   dept: Department;
-  source: IntelSource;
+  ops: IntelOpKind[];
   onClose: () => void;
   initialOp?: IntelOpKind;
   initialNation?: NationId;
   initialProvince?: string;
+  initialAgent?: string;
 }) {
   const { t } = useTranslation();
   const view = useGame((s) => s.view);
@@ -294,7 +255,6 @@ export function LaunchDialog({
   const defs = useWorld((s) => s.provinces);
   const catalog = useWorld((s) => s.catalog);
   const send = useSend();
-  const ops = OPS_BY_DEPT[dept][source];
   const [op, setOp] = useState<IntelOpKind>(
     initialOp && ops.includes(initialOp) ? initialOp : (ops[0] ?? 'infiltrate_spy'),
   );
@@ -323,6 +283,12 @@ export function LaunchDialog({
   const [scope, setScope] = useState<'nation' | 'province'>(
     initialProvince ? 'province' : 'nation',
   );
+  const [cover, setCover] = useState<AgentCover>('diplomatic');
+  const agents = (view?.intel?.agents ?? []).filter(
+    (a) => a.status === 'active' && a.access !== 'staff',
+  );
+  const [agentId, setAgentId] = useState<string>(initialAgent ?? '');
+  const aid = agents.find((a) => a.id === agentId)?.id ?? agents[0]?.id ?? '';
   const wholeNation = recon && scope === 'nation';
   const pid = wholeNation
     ? ''
@@ -342,7 +308,7 @@ export function LaunchDialog({
       case 'none':
         return {};
       case 'nation':
-        return { nationId: nation };
+        return COVER_OPS.has(op) ? { nationId: nation, cover } : { nationId: nation };
       case 'province':
         return wholeNation ? { nationId: nation } : { provinceId: pid };
       case 'area':
@@ -355,6 +321,10 @@ export function LaunchDialog({
       }
       case 'unit':
         return { unitId: uid };
+      case 'agent': {
+        const a = agents.find((x) => x.id === aid);
+        return a ? { nationId: a.nationId, agentId: a.id } : {};
+      }
     }
   })();
   const ready =
@@ -362,10 +332,12 @@ export function LaunchDialog({
     (kind === 'nation' && !!nation) ||
     (kind === 'province' && (wholeNation ? !!nation : !!pid)) ||
     ((kind === 'area' || kind === 'ownArea') && !!target.at) ||
-    (kind === 'unit' && !!uid);
+    (kind === 'unit' && !!uid) ||
+    (kind === 'agent' && !!aid);
   const pickNation = kind === 'nation' || kind === 'province' || kind === 'area';
   const pickProvince =
     (kind === 'province' && !wholeNation) || kind === 'area' || kind === 'ownArea';
+  const dossier = view?.intel?.dossiers?.find((d) => d.nationId === nation);
   return (
     <Dialog
       open
@@ -424,6 +396,36 @@ export function LaunchDialog({
             />
           </Field>
         ) : null}
+        {COVER_OPS.has(op) ? (
+          <Field label={t('intel.cover')}>
+            <Segmented
+              label={t('intel.cover')}
+              size="sm"
+              value={cover}
+              onChange={setCover}
+              options={[
+                { value: 'diplomatic', label: t('intel.covers.diplomatic') },
+                { value: 'nonofficial', label: t('intel.covers.nonofficial') },
+              ]}
+            />
+          </Field>
+        ) : null}
+        {kind === 'agent' ? (
+          <Field label={t('intel.targetAgent')}>
+            {agents.length ? (
+              <Select
+                value={aid}
+                onChange={setAgentId}
+                options={agents.map((a) => ({
+                  value: a.id,
+                  label: `${a.codename} · ${nationName(a.nationId)} · ${t(`intel.accessLevels.${a.access ?? 'street'}`)} · ${a.reliability ?? '—'}`,
+                }))}
+              />
+            ) : (
+              <p className="hint">{t('intel.noAgents')}</p>
+            )}
+          </Field>
+        ) : null}
         {recon ? (
           <Field label={t('intel.scope')}>
             <Segmented
@@ -475,220 +477,253 @@ export function LaunchDialog({
             )}
           </Field>
         ) : null}
-        <dl className="opcost">
-          <div>
-            <dt>{t('intel.cost')}</dt>
-            <dd className="rl-money">{cost ? formatMoney(cost.money) : '—'}</dd>
-          </div>
-          <div>
-            <dt>{t('intel.duration')}</dt>
-            <dd>{cost ? `${cost.durationH} h` : '—'}</dd>
-          </div>
-          <div>
-            <dt>{t('intel.success')}</dt>
-            <dd>{cost ? formatPct(cost.baseSuccess) : '—'}</dd>
-          </div>
-          <div>
-            <dt>{t('intel.exposure')}</dt>
-            <dd className="rl-tone-red">{cost ? formatPct(cost.exposure) : '—'}</dd>
-          </div>
-        </dl>
+        {pickNation && dossier && (op === 'intercept_comms' || op === 'cryptanalysis') ? (
+          <ProgressBar
+            value={dossier.crypto}
+            size="xs"
+            tone="cyan"
+            label={t('intel.crypto.title')}
+            trailing={`${t('intel.crypto.title')} ${formatPct(dossier.crypto)} · ${t('intel.crypto.encryption')} ${formatPct(dossier.encryption)}`}
+          />
+        ) : null}
+        <OpCost op={op} cost={cost} />
       </div>
     </Dialog>
   );
 }
 
-function DeptColumn({
-  dept,
-  source,
+/** Coût, durée, réussite de base et risque d'une opération. */
+function OpCost({
+  cost,
+}: {
+  op: IntelOpKind;
+  cost?: { money: number; durationH: number; baseSuccess: number; exposure: number };
+}) {
+  const { t } = useTranslation();
+  return (
+    <dl className="opcost">
+      <div>
+        <dt>{t('intel.cost')}</dt>
+        <dd className="rl-money">{cost ? formatMoney(cost.money) : '—'}</dd>
+      </div>
+      <div>
+        <dt>{t('intel.duration')}</dt>
+        <dd>{cost ? `${cost.durationH} h` : '—'}</dd>
+      </div>
+      <div>
+        <dt>{t('intel.success')}</dt>
+        <dd>{cost ? formatPct(cost.baseSuccess) : '—'}</dd>
+      </div>
+      <div>
+        <dt>{t('intel.exposure')}</dt>
+        <dd className="rl-tone-red">{cost ? formatPct(cost.exposure) : '—'}</dd>
+      </div>
+    </dl>
+  );
+}
+
+/** Budget et capacité d'un département. */
+function DeptBar({ dept }: { dept: Department }) {
+  const { t } = useTranslation();
+  const intel = useGame((s) => s.view?.intel);
+  const send = useSend();
+  const d = intel?.departments.find((x) => x.id === dept);
+  if (!d) return null;
+  // Pas de réglage : 10 % du budget courant (au moins 50 k$).
+  const step = Math.max(50_000, Math.round(d.budgetPerDay * 0.1));
+  return (
+    <header className={`dept__head dept--${dept}`}>
+      <span className="dept__icon">
+        <Icon name={DEPT_ICON[dept]} size={15} />
+      </span>
+      <span className="dept__titles">
+        <h3>{t(`intel.depts.${dept}`)}</h3>
+        <span>{t(`intel.deptsShort.${dept}`)}</span>
+      </span>
+      <Badge tone="cyan" variant="outline">
+        {t('intel.level', { level: d.level })}
+      </Badge>
+      <span className="dept__budget-ctl">
+        <button
+          type="button"
+          onClick={() =>
+            void send(
+              { kind: 'intelBudget', dept, budgetPerDay: Math.max(0, d.budgetPerDay - step) },
+              t('intel.budgetSet'),
+            )
+          }
+          aria-label={t('intel.budgetDown')}
+        >
+          <Icon name="minus" size={11} />
+        </button>
+        <Money value={d.budgetPerDay} suffix={t('game.topbar.perDay')} />
+        <button
+          type="button"
+          onClick={() =>
+            void send(
+              { kind: 'intelBudget', dept, budgetPerDay: d.budgetPerDay + step },
+              t('intel.budgetSet'),
+            )
+          }
+          aria-label={t('intel.budgetUp')}
+        >
+          <Icon name="plus" size={11} />
+        </button>
+      </span>
+      <Gauge
+        value={d.running / Math.max(1, d.capacity)}
+        cells={d.capacity}
+        tone={d.running >= d.capacity ? 'amber' : 'cyan'}
+        valueText={`${d.running}/${d.capacity}`}
+      />
+    </header>
+  );
+}
+
+/** Actions en deux clics : une carte par opération (coût, durée, chance, risque) → dialogue prérempli. */
+function OpCards({ tab, onLaunch }: { tab: OpsTab; onLaunch: (op: IntelOpKind) => void }) {
+  const { t } = useTranslation();
+  const balance = useWorld((s) => s.balance);
+  return (
+    <div className="opcards" role="list" aria-label={t('intel.quick')}>
+      {TAB_OPS[tab].map((op) => {
+        const c = balance?.intel?.ops[op];
+        return (
+          <button
+            key={op}
+            type="button"
+            role="listitem"
+            className="opcard"
+            onClick={() => onLaunch(op)}
+            title={t(`intel.opsHelp.${op}`)}
+            data-testid={`intel-op-${op}`}
+          >
+            <span className="opcard__name">{t(`intel.ops.${op}`)}</span>
+            {c ? (
+              <span className="opcard__meta">
+                <span className="rl-money">{formatMoney(c.money)}</span>
+                <span>{c.durationH} h</span>
+                <span className="rl-tone-green">{formatPct(c.baseSuccess)}</span>
+                <span className="rl-tone-red">{formatPct(c.exposure)}</span>
+              </span>
+            ) : null}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/** Opérations en cours et terminées d'une liste. */
+function OpsList({ kinds, now }: { kinds: IntelOpKind[]; now: number }) {
+  const { t } = useTranslation();
+  const intel = useGame((s) => s.view?.intel);
+  const send = useSend();
+  const ops = (intel?.operations ?? []).filter((o) => kinds.includes(o.kind));
+  if (!ops.length) return null;
+  return (
+    <div className="dept__ops">
+      <span className="dept__label">
+        {t('intel.operations')} <b>{ops.length}</b>
+      </span>
+      {ops.map((o) => {
+        const f = (now - o.startedAt) / Math.max(1, o.completesAt - o.startedAt);
+        return (
+          <div key={o.id} className={`op op--${o.status}`}>
+            <div className="op__row">
+              <span className="op__name">{t(`intel.ops.${o.kind}`)}</span>
+              {o.status === 'running' ? (
+                <span className="op__est" title={t('intel.estimate')}>
+                  {formatPct(o.estimate)}
+                </span>
+              ) : (
+                <Badge
+                  tone={
+                    o.status === 'success' ? 'green' : o.status === 'compromised' ? 'red' : 'amber'
+                  }
+                >
+                  {t(`intel.opStatus.${o.status}`)}
+                </Badge>
+              )}
+              {o.status === 'running' ? (
+                <button
+                  type="button"
+                  className="op__cancel"
+                  onClick={() =>
+                    void send({ kind: 'cancelIntelOp', opId: o.id }, t('intel.opCancelled'))
+                  }
+                  aria-label={t('app.cancel')}
+                >
+                  <Icon name="close" size={11} />
+                </button>
+              ) : null}
+            </div>
+            <div className="op__target">
+              {o.target.nationId ? <NationTag id={o.target.nationId} size={9} /> : null}
+              {o.target.provinceId ? <span>{provinceName(o.target.provinceId)}</span> : null}
+              {o.recon ? (
+                <span className="op__phase">
+                  {t('intel.reconPhase', {
+                    done: o.recon.done,
+                    waves: o.recon.waves,
+                    provinces: o.recon.provinces,
+                  })}
+                </span>
+              ) : null}
+              {o.target.at && !o.target.provinceId ? (
+                <span>{t('intel.zone', { km: o.target.radiusKm ?? 0 })}</span>
+              ) : null}
+            </div>
+            {o.status === 'running' ? (
+              <ProgressBar
+                value={f}
+                size="xs"
+                trailing={fmtDuration(Math.max(0, o.completesAt - now))}
+                label={t('intel.progress')}
+              />
+            ) : null}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/** Liste de rapports cotés (dépliables). */
+function ReportList({
+  reports,
   now,
   openId,
   setOpenId,
 }: {
-  dept: Department;
-  source: IntelSource;
+  reports: IntelReport[];
   now: number;
   openId: string | null;
   setOpenId: (id: string | null) => void;
 }) {
   const { t } = useTranslation();
-  const intel = useGame((s) => s.view?.intel);
-  const send = useSend();
-  const [launch, setLaunch] = useState(false);
-  if (!intel) return null;
-  const d = intel.departments.find((x) => x.id === dept);
-  const reports = intel.reports.filter((r) => r.dept === dept && r.source === source);
-  const ops = intel.operations.filter((o) => o.dept === dept);
-  const canLaunch = OPS_BY_DEPT[dept][source].length > 0;
-  // Pas de réglage : 10 % du budget courant (au moins 50 k$).
-  const step = Math.max(50_000, Math.round((d?.budgetPerDay ?? 0) * 0.1));
+  if (!reports.length) return <EmptyState compact icon="intel" title={t('intel.noReports')} />;
   return (
-    <section className={`dept dept--${dept}`} aria-label={t(`intel.depts.${dept}`)}>
-      <header className="dept__head">
-        <span className="dept__icon">
-          <Icon name={DEPT_ICON[dept]} size={15} />
-        </span>
-        <span className="dept__titles">
-          <h3>{t(`intel.depts.${dept}`)}</h3>
-          <span>{t(`intel.deptsShort.${dept}`)}</span>
-        </span>
-        {d ? (
-          <Badge tone="cyan" variant="outline">
-            {t('intel.level', { level: d.level })}
-          </Badge>
-        ) : null}
-      </header>
-      {d ? (
-        <div className="dept__stats">
-          <div className="dept__budget">
-            <span className="dept__label">{t('intel.budget')}</span>
-            <span className="dept__budget-ctl">
-              <button
-                type="button"
-                onClick={() =>
-                  void send(
-                    { kind: 'intelBudget', dept, budgetPerDay: Math.max(0, d.budgetPerDay - step) },
-                    t('intel.budgetSet'),
-                  )
-                }
-                aria-label={t('intel.budgetDown')}
-              >
-                <Icon name="minus" size={11} />
-              </button>
-              <Money value={d.budgetPerDay} suffix={t('game.topbar.perDay')} />
-              <button
-                type="button"
-                onClick={() =>
-                  void send(
-                    { kind: 'intelBudget', dept, budgetPerDay: d.budgetPerDay + step },
-                    t('intel.budgetSet'),
-                  )
-                }
-                aria-label={t('intel.budgetUp')}
-              >
-                <Icon name="plus" size={11} />
-              </button>
-            </span>
-          </div>
-          <div className="dept__cap">
-            <span className="dept__label">{t('intel.capacity')}</span>
-            <Gauge
-              value={d.running / Math.max(1, d.capacity)}
-              cells={d.capacity}
-              tone={d.running >= d.capacity ? 'amber' : 'cyan'}
-              valueText={`${d.running}/${d.capacity}`}
-            />
-          </div>
-        </div>
-      ) : null}
-      <div className="dept__reports">
-        {reports.length ? (
-          reports.map((r) => (
-            <ReportCard
-              key={r.id}
-              r={r}
-              now={now}
-              open={openId === r.id}
-              onToggle={() => setOpenId(openId === r.id ? null : r.id)}
-            />
-          ))
-        ) : (
-          <EmptyState
-            compact
-            icon={source === 'humint' ? 'spy' : 'radio'}
-            title={t('intel.noReports')}
-          />
-        )}
-      </div>
-      <div className="dept__ops">
-        <div className="dept__ops-head">
-          <span className="dept__label">
-            {t('intel.operations')} <b>{ops.length}</b>
-          </span>
-          {canLaunch ? (
-            <Button
-              size="sm"
-              variant="subtle"
-              icon={<Icon name="plus" size={12} />}
-              onClick={() => setLaunch(true)}
-              data-testid={`intel-launch-${dept}`}
-            >
-              {t('intel.launchShort')}
-            </Button>
-          ) : null}
-        </div>
-        {ops.map((o) => {
-          const f = (now - o.startedAt) / Math.max(1, o.completesAt - o.startedAt);
-          return (
-            <div key={o.id} className={`op op--${o.status}`}>
-              <div className="op__row">
-                <span className="op__name">{t(`intel.ops.${o.kind}`)}</span>
-                {o.status === 'running' ? (
-                  <span className="op__est" title={t('intel.estimate')}>
-                    {formatPct(o.estimate)}
-                  </span>
-                ) : (
-                  <Badge
-                    tone={
-                      o.status === 'success'
-                        ? 'green'
-                        : o.status === 'compromised'
-                          ? 'red'
-                          : 'amber'
-                    }
-                  >
-                    {t(`intel.opStatus.${o.status}`)}
-                  </Badge>
-                )}
-                {o.status === 'running' ? (
-                  <button
-                    type="button"
-                    className="op__cancel"
-                    onClick={() =>
-                      void send({ kind: 'cancelIntelOp', opId: o.id }, t('intel.opCancelled'))
-                    }
-                    aria-label={t('app.cancel')}
-                  >
-                    <Icon name="close" size={11} />
-                  </button>
-                ) : null}
-              </div>
-              <div className="op__target">
-                {o.target.nationId ? <NationTag id={o.target.nationId} size={9} /> : null}
-                {o.target.provinceId ? <span>{provinceName(o.target.provinceId)}</span> : null}
-                {o.recon ? (
-                  <span className="op__phase">
-                    {t('intel.reconPhase', {
-                      done: o.recon.done,
-                      waves: o.recon.waves,
-                      provinces: o.recon.provinces,
-                    })}
-                  </span>
-                ) : null}
-                {o.target.at && !o.target.provinceId ? (
-                  <span>{t('intel.zone', { km: o.target.radiusKm ?? 0 })}</span>
-                ) : null}
-              </div>
-              {o.status === 'running' ? (
-                <ProgressBar
-                  value={f}
-                  size="xs"
-                  trailing={fmtDuration(Math.max(0, o.completesAt - now))}
-                  label={t('intel.progress')}
-                />
-              ) : null}
-            </div>
-          );
-        })}
-      </div>
-      {launch ? (
-        <LaunchDialog dept={dept} source={source} onClose={() => setLaunch(false)} />
-      ) : null}
-    </section>
+    <div className="dept__reports">
+      {reports.map((r) => (
+        <ReportCard
+          key={r.id}
+          r={r}
+          now={now}
+          open={openId === r.id}
+          onToggle={() => setOpenId(openId === r.id ? null : r.id)}
+        />
+      ))}
+    </div>
   );
 }
 
-function Agents() {
+/** Réseau d'agents : couverture, accès, fiabilité, statut ; actions directes. */
+function Agents({
+  onLaunch,
+}: {
+  onLaunch: (op: IntelOpKind, n: NationId, agent?: string) => void;
+}) {
   const { t } = useTranslation();
   const intel = useGame((s) => s.view?.intel);
   const send = useSend();
@@ -698,11 +733,17 @@ function Agents() {
     <div className="agents">
       <div className="agents__col">
         <span className="dept__label">{t('intel.agents')}</span>
+        {intel.agents.length ? null : <p className="hint">{t('intel.noAgents')}</p>}
         <ul>
           {intel.agents.map((a) => (
-            <li key={a.id} className={`agent agent--${a.status}`}>
+            <li key={a.id} className={`agent agent--${a.status}`} data-testid={`agent-${a.id}`}>
               <span className="agent__code">{a.codename}</span>
               <NationTag id={a.nationId} size={9} />
+              <span className="agent__info">
+                {a.cover ? t(`intel.covers.${a.cover}`) : '—'} ·{' '}
+                {t(`intel.accessLevels.${a.access ?? 'street'}`)} ·{' '}
+                <b title={t('intel.dossier.reliability')}>{a.reliability ?? '—'}</b>
+              </span>
               <Badge
                 tone={
                   a.status === 'active'
@@ -716,6 +757,35 @@ function Agents() {
               >
                 {t(`intel.agentStatus.${a.status}`)}
               </Badge>
+              <span className="agent__acts">
+                {a.status === 'active' && a.access !== 'staff' ? (
+                  <Button
+                    size="sm"
+                    variant="subtle"
+                    onClick={() => onLaunch('cultivate_source', a.nationId, a.id)}
+                  >
+                    {t('intel.agentActions.cultivate')}
+                  </Button>
+                ) : null}
+                {a.status === 'active' || a.status === 'burned' ? (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => onLaunch('vet_agents', a.nationId)}
+                  >
+                    {t('intel.agentActions.vet')}
+                  </Button>
+                ) : null}
+                {a.status === 'active' || a.status === 'burned' || a.status === 'double' ? (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => onLaunch('exfiltrate', a.nationId)}
+                  >
+                    {t('intel.ops.exfiltrate')}
+                  </Button>
+                ) : null}
+              </span>
               <Ago from={a.since} now={now} />
             </li>
           ))}
@@ -750,80 +820,142 @@ function Agents() {
   );
 }
 
-/** Console de renseignement : HUMINT / SIGINT, trois départements, rapports cotés, opérations. */
+interface LaunchState {
+  dept: Department;
+  ops: IntelOpKind[];
+  op?: IntelOpKind;
+  nation?: NationId;
+  agent?: string;
+}
+
+/**
+ * Console de renseignement : SIGINT (écoutes, décryptage, émetteurs), HUMINT (réseaux d'agents),
+ * militaire (reconnaissance, ciblage, menaces), intérieur (contre-espionnage), dossiers pays et
+ * rapports cotés. Chaque onglet : département, actions en deux clics, opérations, rapports.
+ */
 export function IntelWindow({ win, frame, mobile }: WindowContentProps) {
   const { t } = useTranslation();
   const intel = useGame((s) => s.view?.intel);
   const now = useGameTime(5000);
-  const [source, setSource] = useState<IntelSource | 'interior'>('sigint');
-  const [dept, setDept] = useState<Department>('military');
+  const [tab, setTab] = useState<IntelTab>('military');
+  const [filter, setFilter] = useState<'all' | OpsTab>('all');
   const [openId, setOpenId] = useState<string | null>(null);
+  const [launch, setLaunch] = useState<LaunchState | null>(null);
   useEffect(() => {
     const r = win.params.reportId ? intel?.reports.find((x) => x.id === win.params.reportId) : null;
     if (r) {
-      setSource(r.source);
-      setDept(r.dept);
+      setTab('reports');
+      setFilter('all');
       setOpenId(r.id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [win.seq]);
-  const count = (s: IntelSource) => intel?.reports.filter((r) => r.source === s).length ?? 0;
-  const flash = (s: IntelSource) =>
-    !!intel?.reports.some((r) => r.source === s && r.kind === 'flash');
+  const reports = intel?.reports ?? [];
+  const byTab = (x: OpsTab) => reports.filter((r) => tabOfReport(r) === x);
+  const flashIn = (x: OpsTab) => byTab(x).some((r) => r.kind === 'flash');
+  const dossiers = intel?.dossiers ?? [];
   const totalBudget = intel?.departments.reduce((s, d) => s + d.budgetPerDay, 0) ?? 0;
+  const open = (x: OpsTab, op?: IntelOpKind, nation?: NationId, agent?: string) =>
+    setLaunch({ dept: TAB_DEPT[x], ops: TAB_OPS[x], op, nation, agent });
+  const label = (x: IntelTab) =>
+    x === 'sigint'
+      ? t('intel.sigint')
+      : x === 'humint'
+        ? t('intel.humint')
+        : x === 'interior'
+          ? t('intel.interiorTab')
+          : t(`intel.tabs.${x}`);
+  const opsTab = (x: OpsTab) => (
+    <div className={`intel__tab intel__tab--${x}`}>
+      <DeptBar dept={TAB_DEPT[x]} />
+      <div className="intel__body">
+        <div className="intel__main">
+          {x === 'sigint' ? <SigintPanel /> : null}
+          {x === 'military' ? (
+            <div className="intel__threats">
+              <span className="dept__label">{t('intel.threat.title')}</span>
+              <ThreatMap dossiers={dossiers} />
+              <ThreatList
+                dossiers={dossiers}
+                onOpen={() => {
+                  setTab('dossiers');
+                }}
+              />
+            </div>
+          ) : null}
+          {x === 'humint' ? <Agents onLaunch={(op, n, a) => open('humint', op, n, a)} /> : null}
+          {x === 'interior' ? (
+            <IntelInterior
+              onOpenReport={(id) => {
+                setTab('reports');
+                setOpenId(id);
+              }}
+            />
+          ) : null}
+          <ReportList
+            reports={byTab(x).slice(0, 8)}
+            now={now}
+            openId={openId}
+            setOpenId={setOpenId}
+          />
+        </div>
+        <aside className="intel__side">
+          <div className="dept__ops-head">
+            <span className="dept__label">{t('intel.quick')}</span>
+            <Button
+              size="sm"
+              variant="subtle"
+              icon={<Icon name="plus" size={12} />}
+              onClick={() => open(x)}
+              data-testid={`intel-launch-${x}`}
+            >
+              {t('intel.launchShort')}
+            </Button>
+          </div>
+          <OpCards tab={x} onLaunch={(op) => open(x, op)} />
+          <OpsList kinds={TAB_OPS[x]} now={now} />
+        </aside>
+      </div>
+    </div>
+  );
   return (
     <Window
       {...frame}
-      path={[
-        t('sections.path.intel'),
-        source === 'interior' ? t('intel.interiorTab').toUpperCase() : source.toUpperCase(),
-      ]}
+      path={[t('sections.path.intel'), label(tab).toUpperCase()]}
       flush
       tabs={
         <div className="intel-tabs">
           <Tabs
             label={t('intel.sources')}
-            value={source}
-            onChange={setSource}
-            tabs={[
-              {
-                id: 'humint',
-                label: t('intel.humint'),
-                count: count('humint'),
-                dot: flash('humint'),
-                icon: <Icon name="spy" size={13} />,
-              },
-              {
-                id: 'sigint',
-                label: t('intel.sigint'),
-                count: count('sigint'),
-                dot: flash('sigint'),
-                icon: <Icon name="radio" size={13} />,
-              },
-              {
-                id: 'interior',
-                label: t('intel.interiorTab'),
-                count: intel?.interior?.threats.filter((x) => x.grade !== 'low').length,
-                dot: !!intel?.reports.some((r) => r.dept === 'interior' && r.kind === 'flash'),
-                icon: <Icon name="shield" size={13} />,
-              },
-            ]}
+            value={tab}
+            onChange={setTab}
+            variant={mobile ? 'pill' : 'line'}
+            tabs={INTEL_TABS.map((x) => ({
+              id: x,
+              label: label(x),
+              icon: <Icon name={TAB_ICON[x]} size={13} />,
+              ...(x === 'dossiers'
+                ? { count: dossiers.length, dot: dossiers.some((d) => d.alert) }
+                : x === 'reports'
+                  ? { count: reports.length }
+                  : x === 'interior'
+                    ? {
+                        count: intel?.interior?.threats.filter((y) => y.grade !== 'low').length,
+                        dot: flashIn('interior'),
+                      }
+                    : { count: byTab(x).length, dot: flashIn(x) }),
+            }))}
           />
-          {mobile && source !== 'interior' ? (
-            <Tabs
-              label={t('intel.departments')}
-              value={dept}
-              onChange={setDept}
-              variant="pill"
-              fill
-              tabs={DEPARTMENTS.map((d) => ({ id: d, label: t(`intel.deptsShort.${d}`) }))}
-            />
-          ) : null}
         </div>
       }
       headerExtra={
         !mobile ? (
           <span className="win-meta">
+            {intel?.hardenedUntil ? (
+              <Badge tone="green" variant="outline">
+                {t('intel.hardened')}
+              </Badge>
+            ) : null}
             <span>{t('intel.totalBudget')}</span>{' '}
             <Money value={totalBudget} suffix={t('game.topbar.perDay')} />
           </span>
@@ -832,33 +964,43 @@ export function IntelWindow({ win, frame, mobile }: WindowContentProps) {
     >
       {!intel ? (
         <EmptyState icon="intel" title={t('intel.unavailable')} text={t('intel.unavailableHint')} />
-      ) : source === 'interior' ? (
-        <IntelInterior
-          onOpenReport={(id) => {
-            const r = intel.reports.find((x) => x.id === id);
-            if (!r) return;
-            setSource(r.source);
-            setDept(r.dept);
-            setOpenId(r.id);
-          }}
-        />
-      ) : (
-        <div className="intel">
-          <div className="intel__cols">
-            {(mobile ? [dept] : DEPARTMENTS).map((d) => (
-              <DeptColumn
-                key={d}
-                dept={d}
-                source={source}
-                now={now}
-                openId={openId}
-                setOpenId={setOpenId}
-              />
-            ))}
-          </div>
-          {source === 'humint' ? <Agents /> : null}
+      ) : tab === 'dossiers' ? (
+        <Dossiers mobile={mobile} />
+      ) : tab === 'reports' ? (
+        <div className="intel__reports">
+          <Segmented
+            label={t('intel.sources')}
+            size="sm"
+            value={filter}
+            onChange={setFilter}
+            options={[
+              { value: 'all', label: t('intel.allReports') },
+              ...(['sigint', 'humint', 'military', 'interior'] as const).map((x) => ({
+                value: x,
+                label: label(x),
+              })),
+            ]}
+          />
+          <ReportList
+            reports={filter === 'all' ? reports : byTab(filter)}
+            now={now}
+            openId={openId}
+            setOpenId={setOpenId}
+          />
         </div>
+      ) : (
+        opsTab(tab)
       )}
+      {launch ? (
+        <LaunchDialog
+          dept={launch.dept}
+          ops={launch.ops}
+          initialOp={launch.op}
+          initialNation={launch.nation}
+          initialAgent={launch.agent}
+          onClose={() => setLaunch(null)}
+        />
+      ) : null}
     </Window>
   );
 }

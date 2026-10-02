@@ -1329,7 +1329,8 @@
       "burned": "verbrannt",
       "double": "Doppelagent",
       "exfiltrated": "exfiltriert",
-      "captured": "gefangen"
+      "captured": "gefangen",
+      "expelled": "Ausgewiesen"
     },
     "ops": {
       "infiltrate_spy": "Spion einschleusen",
@@ -1352,7 +1353,16 @@
       "fake_radio_traffic": "Falscher Funkverkehr",
       "counterintel_sweep": "Spionageabwehr",
       "recon_economic": "Wirtschaftsaufklärung",
-      "recon_military": "Militärische Aufklärung"
+      "recon_military": "Militärische Aufklärung",
+      "cryptanalysis": "Kryptoanalyse",
+      "intercept_comms": "Abfangen der Kommunikation",
+      "geolocate_emitters": "Ortung von Emittern",
+      "cultivate_source": "Ausbau einer Quelle",
+      "vet_agents": "Überprüfung der Agenten",
+      "designate_targets": "Zielzuweisung",
+      "dismantle_network": "Zerschlagung eines Netzes",
+      "deception_plan": "Täuschungsoperation",
+      "harden_sites": "Härtung der Anlagen"
     },
     "opsHelp": {
       "infiltrate_spy": "Schleust einen Agenten ins Zielland ein: deckt nach und nach Provinzen, Gebäude und Absichten auf.",
@@ -1375,7 +1385,16 @@
       "fake_radio_traffic": "Simuliert Funkverkehr, um Ihre Bewegungen zu verschleiern.",
       "counterintel_sweep": "Jagt ausländische Agenten auf Ihrem Territorium.",
       "recon_economic": "Deckt in Phasen die Wirtschaftsanlagen (Produktion, Ressourcen, Industrie) eines ganzen Landes auf — zuerst Hauptstadt und Großstädte, dann der Rest — oder einer einzelnen Provinz.",
-      "recon_military": "Deckt in Phasen Stützpunkte, Luftabwehr, Radare, Silos und Bunker eines ganzen Landes auf — zuerst Hauptstadt und Großstädte, dann der Rest — oder einer einzelnen Provinz. Danach auf der Karte sichtbar."
+      "recon_military": "Deckt in Phasen Stützpunkte, Luftabwehr, Radare, Silos und Bunker eines ganzen Landes auf — zuerst Hauptstadt und Großstädte, dann der Rest — oder einer einzelnen Provinz. Danach auf der Karte sichtbar.",
+      "cryptanalysis": "Bricht schrittweise die Verschlüsselung einer Nation: ab 25 % sind ihre Marschbefehle lesbar, ab 50 % ihre Absichten. Starke Verschlüsselung (fortgeschrittene Dienste) bremst.",
+      "intercept_comms": "Fängt die Kommunikation einer Nation ab: Verkehrsaufkommen, Marschbefehle und Kriegspläne je nach Entschlüsselung. Eine starke gegnerische Spionageabwehr kann falschen Funkverkehr einspeisen.",
+      "geolocate_emitters": "Ortet Radare, Luftabwehr und Gefechtsstände einer Nation anhand ihrer Emissionen. Aufklärungssatelliten und -flugzeuge im Dienst erhöhen die Zahl gefundener Emitter.",
+      "cultivate_source": "Erweitert den Zugang eines zuverlässigen Agenten: Ministerium (Haushalt, Forschung), dann Generalstab (Kriegspläne). Je höher der Zugang, desto größer das Risiko.",
+      "vet_agents": "Überprüft Ihre Agenten in einem Land: enttarnt Doppelagenten und erkennt überwachte Agenten. Ohne Risiko.",
+      "designate_targets": "Bildauswertung einer feindlichen Provinz: Kräfte erkannt und geortet, Anlagen kartiert, Schläge Einheit für Einheit vorgeschlagen.",
+      "dismantle_network": "Zerschlägt das Netz einer Nation auf Ihrem Boden: Festnahme bereits erkannter Agenten und Jagd auf die übrigen.",
+      "deception_plan": "Spielt den gegnerischen Diensten falsche Kriegspläne zu. Glaubwürdiger, wenn der Gegner Agenten bei Ihnen hat, besonders einen umgedrehten.",
+      "harden_sites": "Verstärkt einige Tage lang den Schutz aller Ihrer Anlagen: Sabotage, Rebellenfinanzierung und industrielle Cyberangriffe werden gebremst."
     },
     "targetProvince": "Zielprovinz",
     "targetArea": "Zone (um die Stadt)",
@@ -1386,7 +1405,67 @@
     "scopeProvince": "Eine Provinz",
     "reconPhase": "Phase {{done}}/{{waves}} · {{provinces}} Prov.",
     "unknownContact": "unidentifizierter Kontakt",
-    "noContacts": "Keine fremde Einheit erfasst: Bringen Sie Ihre Radare näher heran oder starten Sie eine Aufklärung."
+    "noAgents": "Kein Agent verfügbar.",
+    "noContacts": "Keine fremde Einheit erfasst: Bringen Sie Ihre Radare näher heran oder starten Sie eine Aufklärung.",
+    "tabs": {
+      "military": "Militär",
+      "dossiers": "Länderdossiers",
+      "reports": "Berichte"
+    },
+    "cover": "Tarnung",
+    "covers": {
+      "diplomatic": "Diplomatisch",
+      "nonofficial": "Inoffiziell"
+    },
+    "accessLevels": {
+      "street": "Basis",
+      "ministry": "Ministerium",
+      "staff": "Generalstab"
+    },
+    "agentActions": {
+      "cultivate": "Ausbauen",
+      "vet": "Überprüfen"
+    },
+    "targetAgent": "Agent",
+    "quick": "Aktionen",
+    "hardened": "Anlagen gehärtet",
+    "allReports": "Alle",
+    "sensors": {
+      "title": "Sensoren im Dienst",
+      "sigint": "Abhören",
+      "imagery": "Bildaufklärung",
+      "ew": "Elektronische Kampfführung"
+    },
+    "crypto": {
+      "title": "Entschlüsselung",
+      "encryption": "Verschlüsselung",
+      "empty": "Keine Nation verfolgt: starten Sie eine Kryptoanalyse oder ein Abfangen."
+    },
+    "threat": {
+      "title": "Bedrohungskarte",
+      "alert": "ALARM",
+      "empty": "Noch keine Bewertung: das Tagesbulletin um 07:00 bewertet benachbarte, feindliche oder anvisierte Nationen."
+    },
+    "indicators": {
+      "war": "Krieg im Gange",
+      "massing": "Truppenkonzentration",
+      "plans": "Kriegspläne",
+      "comms": "Führungsfunkverkehr",
+      "mobilization": "Industrielle Mobilmachung",
+      "covert": "Verdeckte Operationen"
+    },
+    "dossier": {
+      "forces": "Geschätzte Kräfte",
+      "intentions": "Absichten",
+      "plansAgainst": "Kriegspläne gegen",
+      "noPlans": "Kein bekannter Kriegsplan",
+      "economy": "Geschätzte Staatskasse",
+      "research": "Laufende Forschung",
+      "services": "Niveau der Dienste",
+      "agents": "Agenten vor Ort",
+      "reliability": "Zuverlässigkeit des Dossiers",
+      "empty": "Keine Dossiers: Ihre Dienste verfolgen benachbarte und feindliche Nationen sowie Ziele Ihrer Operationen."
+    }
   },
   "sheet": {
     "path": "Datenblatt",
@@ -3185,7 +3264,16 @@
       "fake_radio_traffic": "Falscher Funkverkehr",
       "counterintel_sweep": "Spionageabwehroperation",
       "recon_economic": "Wirtschaftsaufklärung",
-      "recon_military": "Militärische Aufklärung"
+      "recon_military": "Militärische Aufklärung",
+      "cryptanalysis": "Kryptoanalyse",
+      "intercept_comms": "Abfangen der Kommunikation",
+      "geolocate_emitters": "Ortung von Emittern",
+      "cultivate_source": "Ausbau einer Quelle",
+      "vet_agents": "Überprüfung der Agenten",
+      "designate_targets": "Zielzuweisung",
+      "dismantle_network": "Zerschlagung eines Netzes",
+      "deception_plan": "Täuschungsoperation",
+      "harden_sites": "Härtung sensibler Anlagen"
     },
     "council": {
       "open_one": "Sitzung des Sicherheitsrats eröffnet: {{count}} Resolution zur Abstimmung.",
@@ -3233,7 +3321,19 @@
       "rebelsFunded": "Bewaffnete Gruppen finanziert",
       "programDone": "Programm abgeschlossen — {{nation}}",
       "blackMarket": "Schwarzmarkt — {{nation}}",
-      "imagery": "Bildaufklärung — {{nation}}"
+      "imagery": "Bildaufklärung — {{nation}}",
+      "crypto": "Kryptoanalyse — {{nation}}",
+      "comint": "Abfangen der Kommunikation — {{nation}}",
+      "emitters": "Emitter geortet — {{nation}}",
+      "targets": "Zielzuweisung — {{province}}",
+      "bda": "Schadensbewertung — {{sector}}",
+      "sourceAccess": "Quelle {{codename}} — erweiterter Zugang",
+      "vet": "Überprüfung der Agenten — {{nation}}",
+      "highLevel": "Hochrangige Quelle — {{nation}}",
+      "dismantle": "Zerschlagung des Netzes von {{nation}}",
+      "deception": "Täuschungsoperation — {{nation}}",
+      "hardened": "Sensible Anlagen gehärtet",
+      "strategicAlert": "STRATEGISCHER ALARM — {{nation}}"
     },
     "note": {
       "allianceInvite": {
@@ -3345,6 +3445,10 @@
       "agentCaught": {
         "title": "Agent enttarnt",
         "text": "{{host}} meldet die Festnahme eines Agenten von {{owner}}."
+      },
+      "agentExpelled": {
+        "title": "Diplomaten ausgewiesen",
+        "text": "{{host}} weist Diplomaten von {{owner}} wegen Spionage aus."
       }
     }
   }

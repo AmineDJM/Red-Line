@@ -1,5 +1,9 @@
 import {
   DEPARTMENTS,
+  type AgentCover,
+  type IntelSource,
+  type OrbatEstimate,
+  type ThreatIndicator,
   type BuildingType,
   type Department,
   type GameTime,
@@ -67,6 +71,14 @@ export interface Agent {
   kind: 'officer' | 'source';
   since: GameTime;
   state: 'active' | 'caught' | 'double' | 'captured' | 'exfiltrated';
+  /** Couverture (absente : diplomatique pour un officier, non officielle pour une source). */
+  cv?: AgentCover;
+  /** Accès : 0 rue, 1 ministère, 2 état-major (absent : 0). */
+  ac?: number;
+  /** Fiabilité perçue par le propriétaire, 0..1 (absente : valeur de départ). */
+  rl?: number;
+  /** Expulsé (couverture diplomatique) plutôt qu'emprisonné. */
+  ex?: 1;
   /** Le propriétaire sait que l'agent est grillé. */
   burned?: boolean;
   caughtAt?: GameTime;
@@ -135,6 +147,40 @@ export interface NationIntel {
   aiNext: GameTime;
   /** Renseignement intérieur (priorité, sites protégés, menace) ; absent = réglages par défaut. */
   int?: InteriorState;
+  /** Capteurs en service (recalculés chaque jour) : écoute, imagerie, guerre électronique. */
+  sx?: { s: number; i: number; e: number };
+  /** Décryptage des communications de chaque nation, 0..1. */
+  cr?: Record<NationId, number>;
+  /** Évaluations par nation (dossiers) : forces, menace, intentions, économie, technologie. */
+  ev?: Record<NationId, Assessment>;
+  /** Sites durcis contre le sabotage jusqu'à cette date. */
+  hd?: GameTime;
+}
+
+/**
+ * Ce que les services d'une nation croient savoir d'une autre. Les intentions peuvent être truquées
+ * (`fk`, intoxication, agent double) : le drapeau ne sort jamais du moteur.
+ */
+export interface Assessment {
+  /** Dernière mise à jour. */
+  t: GameTime;
+  /** Indice de menace courant et de la veille, dernière alerte stratégique. */
+  th: number;
+  tp?: number;
+  al?: GameTime;
+  ind: ThreatIndicator[];
+  /** Ordre de bataille estimé. */
+  ob?: OrbatEstimate;
+  /** Intentions : nations visées par des plans de guerre, source, qualité 0..1, date. */
+  pl?: { t: GameTime; v: NationId[]; s: IntelSource; q: number; fk?: 1 };
+  /** Économie : trésor estimé. */
+  ec?: { t: GameTime; m: [number, number] };
+  /** Technologie : recherche en cours connue, niveau de service estimé. */
+  te?: { t: GameTime; r?: string; l?: number };
+  /** Trafic de commandement en hausse (interception récente). */
+  cm?: GameTime;
+  /** Chiffrement estimé de ses communications (0..1). */
+  en?: number;
 }
 
 export interface IntelState {
