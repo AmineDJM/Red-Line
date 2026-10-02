@@ -1226,7 +1226,8 @@
       "burned": "身元露見",
       "double": "二重スパイ",
       "exfiltrated": "脱出済み",
-      "captured": "拘束"
+      "captured": "拘束",
+      "expelled": "国外追放"
     },
     "ops": {
       "infiltrate_spy": "スパイを潜入させる",
@@ -1249,7 +1250,16 @@
       "fake_radio_traffic": "偽の無線通信",
       "counterintel_sweep": "防諜",
       "recon_economic": "経済偵察",
-      "recon_military": "軍事偵察"
+      "recon_military": "軍事偵察",
+      "cryptanalysis": "暗号解読",
+      "intercept_comms": "通信傍受",
+      "geolocate_emitters": "電波発信源の特定",
+      "cultivate_source": "情報源の育成",
+      "vet_agents": "工作員の審査",
+      "designate_targets": "目標指定",
+      "dismantle_network": "ネットワークの摘発",
+      "deception_plan": "欺瞞作戦",
+      "harden_sites": "施設の防護強化"
     },
     "opsHelp": {
       "infiltrate_spy": "標的国に工作員を潜入させ、州、建物、意図を段階的に明らかにします。",
@@ -1272,7 +1282,16 @@
       "fake_radio_traffic": "無線通信を偽装して自軍の移動を隠します。",
       "counterintel_sweep": "自国領内の外国工作員を追跡します。",
       "recon_economic": "国全体（まず首都と大都市、次に残り）または単一の州の経済施設（生産、資源、産業）を段階的に明らかにします。",
-      "recon_military": "国全体（まず首都と大都市、次に残り）または単一の州の基地、防空、レーダー、サイロ、掩蔽壕を段階的に明らかにします。以後は地図上に表示されます。"
+      "recon_military": "国全体（まず首都と大都市、次に残り）または単一の州の基地、防空、レーダー、サイロ、掩蔽壕を段階的に明らかにします。以後は地図上に表示されます。",
+      "cryptanalysis": "国家の暗号を段階的に解読する。25%で移動命令、50%で意図が読めるようになる。強力な暗号（高度な情報機関）は進行を遅らせる。",
+      "intercept_comms": "国家の通信を傍受する。解読度に応じて通信量、移動命令、戦争計画が判明する。敵の防諜が強いと偽の通信を混ぜられることがある。",
+      "geolocate_emitters": "電波放射から国家のレーダー、防空、指揮所の位置を特定する。運用中の電子偵察衛星や航空機が多いほど発見数が増える。",
+      "cultivate_source": "信頼できる工作員の接触範囲を広げる：省庁（予算・研究）、次に参謀本部（戦争計画）。接触範囲が広いほど露見しやすい。",
+      "vet_agents": "ある国の自国工作員を審査し、二重スパイを暴き、監視下の者を見つける。リスクなし。",
+      "designate_targets": "敵州の画像解析：部隊を識別・特定し、施設を地図化し、部隊ごとに攻撃を提案する。",
+      "dismantle_network": "自国内にある他国のネットワークを摘発する。判明済みの工作員を逮捕し、残りを追跡する。",
+      "deception_plan": "偽の戦争計画を敵情報機関に流す。敵が自国内に工作員、特に寝返った工作員を持っていればより信憑性が高い。",
+      "harden_sites": "数日間すべての施設の防護を強化する。破壊工作、反乱勢力への資金提供、産業へのサイバー攻撃を抑える。"
     },
     "targetProvince": "対象の州",
     "targetArea": "地域（都市周辺）",
@@ -1283,7 +1302,67 @@
     "scopeProvince": "単一の州",
     "reconPhase": "フェーズ {{done}}/{{waves}} · {{provinces}} 州",
     "unknownContact": "未確認の接触",
-    "noContacts": "外国ユニットは探知されていません：レーダーを近づけるか偵察を行ってください。"
+    "noAgents": "利用できる工作員がいません。",
+    "noContacts": "外国ユニットは探知されていません：レーダーを近づけるか偵察を行ってください。",
+    "tabs": {
+      "military": "軍事",
+      "dossiers": "国別ファイル",
+      "reports": "報告"
+    },
+    "cover": "偽装身分",
+    "covers": {
+      "diplomatic": "外交官",
+      "nonofficial": "非公式"
+    },
+    "accessLevels": {
+      "street": "現場",
+      "ministry": "省庁",
+      "staff": "参謀本部"
+    },
+    "agentActions": {
+      "cultivate": "育成",
+      "vet": "審査"
+    },
+    "targetAgent": "工作員",
+    "quick": "アクション",
+    "hardened": "施設防護強化中",
+    "allReports": "すべて",
+    "sensors": {
+      "title": "運用中のセンサー",
+      "sigint": "傍受",
+      "imagery": "画像偵察",
+      "ew": "電子戦"
+    },
+    "crypto": {
+      "title": "解読",
+      "encryption": "暗号強度",
+      "empty": "追跡中の国家はありません。暗号解読か傍受を開始してください。"
+    },
+    "threat": {
+      "title": "脅威マップ",
+      "alert": "警報",
+      "empty": "評価はまだありません。毎日07:00の速報が隣国・敵国・標的国を評価します。"
+    },
+    "indicators": {
+      "war": "戦争中",
+      "massing": "兵力集中",
+      "plans": "戦争計画",
+      "comms": "指揮通信",
+      "mobilization": "産業動員",
+      "covert": "秘密工作"
+    },
+    "dossier": {
+      "forces": "推定戦力",
+      "intentions": "意図",
+      "plansAgainst": "戦争計画の対象",
+      "noPlans": "既知の戦争計画なし",
+      "economy": "推定国庫",
+      "research": "進行中の研究",
+      "services": "情報機関の水準",
+      "agents": "現地の工作員",
+      "reliability": "ファイルの信頼性",
+      "empty": "ファイルなし：情報機関は隣国・敵国・作戦対象国を追跡します。"
+    }
   },
   "sheet": {
     "path": "諸元",
@@ -3050,7 +3129,16 @@
       "fake_radio_traffic": "偽の無線通信",
       "counterintel_sweep": "防諜作戦",
       "recon_economic": "経済偵察",
-      "recon_military": "軍事偵察"
+      "recon_military": "軍事偵察",
+      "cryptanalysis": "暗号解読",
+      "intercept_comms": "通信傍受",
+      "geolocate_emitters": "電波発信源の特定",
+      "cultivate_source": "情報源の育成",
+      "vet_agents": "工作員の審査",
+      "designate_targets": "目標指定",
+      "dismantle_network": "ネットワークの摘発",
+      "deception_plan": "欺瞞作戦",
+      "harden_sites": "重要施設の防護強化"
     },
     "council": {
       "open_other": "安全保障理事会の会合開始：決議 {{count}} 件を採決。",
@@ -3097,7 +3185,19 @@
       "rebelsFunded": "武装集団に資金提供",
       "programDone": "計画完了 — {{nation}}",
       "blackMarket": "闇市場 — {{nation}}",
-      "imagery": "画像情報 — {{nation}}"
+      "imagery": "画像情報 — {{nation}}",
+      "crypto": "暗号解読 — {{nation}}",
+      "comint": "通信傍受 — {{nation}}",
+      "emitters": "発信源特定 — {{nation}}",
+      "targets": "目標指定 — {{province}}",
+      "bda": "損害評価 — {{sector}}",
+      "sourceAccess": "情報源 {{codename}} — 接触範囲拡大",
+      "vet": "工作員の審査 — {{nation}}",
+      "highLevel": "高位の情報源 — {{nation}}",
+      "dismantle": "{{nation}} のネットワーク摘発",
+      "deception": "欺瞞作戦 — {{nation}}",
+      "hardened": "重要施設の防護を強化",
+      "strategicAlert": "戦略警報 — {{nation}}"
     },
     "note": {
       "allianceInvite": {
@@ -3202,6 +3302,10 @@
       "agentCaught": {
         "title": "工作員が摘発",
         "text": "{{host}} が {{owner}} の工作員の逮捕を発表。"
+      },
+      "agentExpelled": {
+        "title": "外交官追放",
+        "text": "{{host}} がスパイ行為を理由に {{owner}} の外交官を追放。"
       }
     }
   }

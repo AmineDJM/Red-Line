@@ -1277,7 +1277,8 @@
       "burned": "spalony",
       "double": "podwójny agent",
       "exfiltrated": "ewakuowany",
-      "captured": "schwytany"
+      "captured": "schwytany",
+      "expelled": "Wydalony"
     },
     "ops": {
       "infiltrate_spy": "Wprowadź szpiega",
@@ -1300,7 +1301,16 @@
       "fake_radio_traffic": "Fałszywy ruch radiowy",
       "counterintel_sweep": "Kontrwywiad",
       "recon_economic": "Rozpoznanie gospodarcze",
-      "recon_military": "Rozpoznanie wojskowe"
+      "recon_military": "Rozpoznanie wojskowe",
+      "cryptanalysis": "Kryptoanaliza",
+      "intercept_comms": "Przechwytywanie łączności",
+      "geolocate_emitters": "Geolokalizacja emiterów",
+      "cultivate_source": "Rozwój źródła",
+      "vet_agents": "Weryfikacja agentów",
+      "designate_targets": "Wskazywanie celów",
+      "dismantle_network": "Rozbicie siatki",
+      "deception_plan": "Operacja dezinformacyjna",
+      "harden_sites": "Wzmocnienie ochrony obiektów"
     },
     "opsHelp": {
       "infiltrate_spy": "Wprowadza agenta do kraju docelowego: stopniowo ujawnia jego prowincje, budynki i zamiary.",
@@ -1323,7 +1333,16 @@
       "fake_radio_traffic": "Symuluje ruch radiowy, by ukryć twoje przemieszczenia.",
       "counterintel_sweep": "Tropi obcych agentów na twoim terytorium.",
       "recon_economic": "Etapami ujawnia obiekty gospodarcze (produkcja, zasoby, przemysł) całego kraju — najpierw stolica i duże miasta, potem reszta — lub pojedynczej prowincji.",
-      "recon_military": "Etapami ujawnia bazy, obronę przeciwlotniczą, radary, silosy i bunkry całego kraju — najpierw stolica i duże miasta, potem reszta — lub pojedynczej prowincji. Następnie widoczne na mapie."
+      "recon_military": "Etapami ujawnia bazy, obronę przeciwlotniczą, radary, silosy i bunkry całego kraju — najpierw stolica i duże miasta, potem reszta — lub pojedynczej prowincji. Następnie widoczne na mapie.",
+      "cryptanalysis": "Stopniowo łamie szyfry państwa: przy 25% czytelne stają się rozkazy przemieszczeń, przy 50% jego zamiary. Silne szyfrowanie (rozwinięte służby) spowalnia postęp.",
+      "intercept_comms": "Przechwytuje łączność państwa: natężenie ruchu, rozkazy przemieszczeń i plany wojenne zależnie od deszyfracji. Silny kontrwywiad wroga może wprowadzić fałszywy ruch.",
+      "geolocate_emitters": "Lokalizuje radary, obronę przeciwlotniczą i stanowiska dowodzenia państwa po ich emisjach. Satelity i samoloty nasłuchowe w służbie zwiększają liczbę wykrytych emiterów.",
+      "cultivate_source": "Podnosi dostęp wiarygodnego agenta: ministerstwo (budżet, badania), potem sztab generalny (plany wojenne). Im wyższy dostęp, tym większe ryzyko.",
+      "vet_agents": "Sprawdza twoich agentów w danym kraju: demaskuje podwójnych agentów i wykrywa inwigilowanych. Bez ryzyka.",
+      "designate_targets": "Analiza zobrazowań wrogiej prowincji: siły rozpoznane i zlokalizowane, obiekty zmapowane, uderzenia proponowane dla każdej jednostki.",
+      "dismantle_network": "Rozbija siatkę państwa na twoim terytorium: aresztuje wykrytych agentów i ściga pozostałych.",
+      "deception_plan": "Przekazuje wrogim służbom fałszywe plany wojenne. Bardziej wiarygodne, jeśli wróg ma u ciebie agentów, zwłaszcza przewerbowanego.",
+      "harden_sites": "Na kilka dni wzmacnia ochronę wszystkich twoich obiektów: sabotaże, finansowanie rebeliantów i przemysłowe cyberataki są utrudnione."
     },
     "targetProvince": "Prowincja docelowa",
     "targetArea": "Strefa (wokół miasta)",
@@ -1334,7 +1353,67 @@
     "scopeProvince": "Jedna prowincja",
     "reconPhase": "Faza {{done}}/{{waves}} · {{provinces}} prow.",
     "unknownContact": "niezidentyfikowany kontakt",
-    "noContacts": "Nie wykryto obcych jednostek: przybliż radary lub rozpocznij rozpoznanie."
+    "noAgents": "Brak dostępnego agenta.",
+    "noContacts": "Nie wykryto obcych jednostek: przybliż radary lub rozpocznij rozpoznanie.",
+    "tabs": {
+      "military": "Wojsko",
+      "dossiers": "Teczki państw",
+      "reports": "Raporty"
+    },
+    "cover": "Przykrywka",
+    "covers": {
+      "diplomatic": "Dyplomatyczna",
+      "nonofficial": "Nieoficjalna"
+    },
+    "accessLevels": {
+      "street": "Teren",
+      "ministry": "Ministerstwo",
+      "staff": "Sztab generalny"
+    },
+    "agentActions": {
+      "cultivate": "Rozwijaj",
+      "vet": "Sprawdź"
+    },
+    "targetAgent": "Agent",
+    "quick": "Akcje",
+    "hardened": "Obiekty wzmocnione",
+    "allReports": "Wszystkie",
+    "sensors": {
+      "title": "Czujniki w służbie",
+      "sigint": "Nasłuch",
+      "imagery": "Zobrazowania",
+      "ew": "Walka elektroniczna"
+    },
+    "crypto": {
+      "title": "Deszyfracja",
+      "encryption": "Szyfrowanie",
+      "empty": "Brak śledzonych państw: zleć kryptoanalizę lub przechwytywanie."
+    },
+    "threat": {
+      "title": "Mapa zagrożeń",
+      "alert": "ALARM",
+      "empty": "Brak oceny: codzienny biuletyn o 07:00 ocenia państwa sąsiednie, wrogie lub będące celem."
+    },
+    "indicators": {
+      "war": "Trwa wojna",
+      "massing": "Koncentracja sił",
+      "plans": "Plany wojenne",
+      "comms": "Ruch dowodzenia",
+      "mobilization": "Mobilizacja przemysłu",
+      "covert": "Operacje tajne"
+    },
+    "dossier": {
+      "forces": "Szacowane siły",
+      "intentions": "Zamiary",
+      "plansAgainst": "Plany wojenne przeciw",
+      "noPlans": "Brak znanych planów wojennych",
+      "economy": "Szacowany skarbiec",
+      "research": "Bieżące badania",
+      "services": "Poziom służb",
+      "agents": "Agenci na miejscu",
+      "reliability": "Wiarygodność teczki",
+      "empty": "Brak teczek: twoje służby śledzą państwa sąsiednie, wrogie lub będące celem twoich operacji."
+    }
   },
   "sheet": {
     "path": "Karta",
@@ -3179,7 +3258,16 @@
       "fake_radio_traffic": "Fałszywy ruch radiowy",
       "counterintel_sweep": "Operacja kontrwywiadowcza",
       "recon_economic": "Rozpoznanie gospodarcze",
-      "recon_military": "Rozpoznanie wojskowe"
+      "recon_military": "Rozpoznanie wojskowe",
+      "cryptanalysis": "Kryptoanaliza",
+      "intercept_comms": "Przechwytywanie łączności",
+      "geolocate_emitters": "Geolokalizacja emiterów",
+      "cultivate_source": "Rozwój źródła",
+      "vet_agents": "Weryfikacja agentów",
+      "designate_targets": "Wskazywanie celów",
+      "dismantle_network": "Rozbicie siatki",
+      "deception_plan": "Operacja dezinformacyjna",
+      "harden_sites": "Wzmocnienie ochrony obiektów wrażliwych"
     },
     "council": {
       "open_one": "Otwarto posiedzenie Rady Bezpieczeństwa: {{count}} rezolucja w głosowaniu.",
@@ -3229,7 +3317,19 @@
       "rebelsFunded": "Finansowanie grup zbrojnych",
       "programDone": "Program ukończony — {{nation}}",
       "blackMarket": "Czarny rynek — {{nation}}",
-      "imagery": "Zobrazowanie — {{nation}}"
+      "imagery": "Zobrazowanie — {{nation}}",
+      "crypto": "Kryptoanaliza — {{nation}}",
+      "comint": "Przechwytywanie łączności — {{nation}}",
+      "emitters": "Zlokalizowane emitery — {{nation}}",
+      "targets": "Wskazywanie celów — {{province}}",
+      "bda": "Ocena zniszczeń — {{sector}}",
+      "sourceAccess": "Źródło {{codename}} — szerszy dostęp",
+      "vet": "Weryfikacja agentów — {{nation}}",
+      "highLevel": "Źródło wysokiego szczebla — {{nation}}",
+      "dismantle": "Rozbicie siatki: {{nation}}",
+      "deception": "Operacja dezinformacyjna — {{nation}}",
+      "hardened": "Obiekty wrażliwe wzmocnione",
+      "strategicAlert": "ALARM STRATEGICZNY — {{nation}}"
     },
     "note": {
       "allianceInvite": {
@@ -3337,6 +3437,10 @@
       "agentCaught": {
         "title": "Agent zdemaskowany",
         "text": "{{host}} ogłasza aresztowanie agenta, mocodawca: {{owner}}."
+      },
+      "agentExpelled": {
+        "title": "Dyplomaci wydaleni",
+        "text": "{{host}} wydala dyplomatów {{owner}} za szpiegostwo."
       }
     }
   }
