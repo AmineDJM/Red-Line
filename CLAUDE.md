@@ -63,6 +63,9 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
 - Armées de départ en **piles mixtes** (brigades, escadres ; `data/balance` `stacks`, désactivable) : une pile vaut
   la somme de ses éléments (`Unit.mix`), ordres `split` / `merge` ; mesures dans `docs/charge.md`.
 - Couleurs de nations : jamais de violet (réservé au joueur), deux voisins jamais identiques.
+- Ressources des provinces (`pnpm --filter @redline/tools-map resources`) : aucune nation sans ressource (micro-États
+  exceptés), **plancher national** de production pour chaque ressource (`resources.nationalFloor`) ; menu Construire
+  limité aux bâtiments ouverts pour la province ; insigne de ressources devant le nom des villes. `docs/ressources.md`.
 
 ## Conventions
 

@@ -726,7 +726,7 @@ export function drawFort(level: number): SpriteImage {
 // ——— Ressources des provinces ———
 
 /** Dimensions (px CSS) de l'insigne de ressources : tuile principale, secondaire plus petite. */
-export const RES_TILE = 15;
+export const RES_TILE = 16;
 export const RES_TILE_2 = 11;
 
 /** Pictogramme d'interface (viewBox 24, au trait) tracé au canevas : mêmes icônes que la barre du haut. */
@@ -737,6 +737,7 @@ function drawIcon(
   y: number,
   size: number,
   color: string,
+  width: number,
 ) {
   const paths = ICONS[name] as readonly string[] | undefined;
   if (!paths) return;
@@ -744,7 +745,7 @@ function drawIcon(
   ctx.translate(x, y);
   ctx.scale(size / 24, size / 24);
   ctx.strokeStyle = color;
-  ctx.lineWidth = 2.1;
+  ctx.lineWidth = (width * 24) / size;
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
   for (const d of paths) ctx.stroke(new Path2D(d));
@@ -763,9 +764,10 @@ export function drawResource(
 ): SpriteImage {
   const T = RES_TILE;
   const T2 = RES_TILE_2;
+  const y0 = 1;
   const pipX = 1 + T + 2;
   const w = pipX + 3 + (secondary ? 3 + T2 : 0) + 1;
-  const h = T + 2;
+  const h = y0 + T + 1;
   const { c, ctx } = canvas(w, h);
   const tile = (x: number, y: number, size: number, edge: string) => {
     ctx.save();
@@ -781,16 +783,17 @@ export function drawResource(
     ctx.stroke();
   };
   const rich = Math.max(1, Math.min(3, Math.round(richness)));
-  tile(1, 1, T, rich === 3 ? C.amber : 'rgba(214,221,230,0.45)');
-  drawIcon(ctx, main, 3, 3, T - 4, C.text);
+  tile(1, y0, T, rich === 3 ? C.amber : 'rgba(214,221,230,0.5)');
+  drawIcon(ctx, main, 3, y0 + 2, T - 4, '#eef3f8', 1.25);
   for (let i = 0; i < 3; i++) {
     ctx.fillStyle = i < rich ? C.amber : '#2a3644';
-    ctx.fillRect(pipX, 1 + T - 3.4 - i * 4.6, 2.6, 2.6);
+    ctx.fillRect(pipX, y0 + T - 3.6 - i * 5, 2.8, 2.8);
   }
   if (secondary) {
     const x = pipX + 3 + 3;
-    tile(x, 1 + (T - T2) / 2, T2, 'rgba(214,221,230,0.28)');
-    drawIcon(ctx, secondary, x + 1.75, 1 + (T - T2) / 2 + 1.75, T2 - 3.5, '#9aa8b6');
+    const y = y0 + (T - T2) / 2;
+    tile(x, y, T2, 'rgba(214,221,230,0.3)');
+    drawIcon(ctx, secondary, x + 1.5, y + 1.5, T2 - 3, '#a9b6c3', 1);
   }
   return out(c);
 }

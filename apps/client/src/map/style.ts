@@ -1582,20 +1582,24 @@ const CITY_SPECS: [number, number, number, string, number, number][] = [
   [3, 6.3, 10, FONTS.regular, 1.2, 8.2],
 ];
 
-/** Zoom à partir duquel l'insigne de ressources précède le nom des villes (pas au zoom monde). */
-export const RESOURCE_ICON_ZOOM = 4.8;
+/**
+ * Zoom à partir duquel l'insigne de ressources précède le nom des villes (pas au zoom monde). Les
+ * propriétés de mise en page sont évaluées au zoom entier de la tuile : paliers entiers.
+ */
+export const RESOURCE_ICON_ZOOM = 5;
 
 /**
  * Nom d'une ville (villes des provinces, glyphes disponibles) : nom seul, puis population en seconde
  * ligne de près, et, si `resources`, insigne de ressources de la province en ligne devant le nom à
- * partir de RESOURCE_ICON_ZOOM (image `res|…` de la propriété `res`, centrée sur la ligne). L'insigne
+ * partir de RESOURCE_ICON_ZOOM (image `res|…` de la propriété `res`). L'insigne
  * fait partie de l'étiquette : il hérite de son placement (au-dessus du pion posé sur la ville) et de
  * ses collisions, sans jamais chevaucher le nom ni le pion.
  */
 export function cityTextField(cls: number, resources: boolean): ExpressionSpecification {
   const spec = CITY_SPECS.find((x) => x[0] === cls) ?? CITY_SPECS[CITY_SPECS.length - 1]!;
   const popZoom = spec[5];
-  const resZoom = Math.max(spec[1], RESOURCE_ICON_ZOOM);
+  // Palier entier (zoom de tuile) : dès l'apparition des petites villes (6,3 → tuiles de zoom 6).
+  const resZoom = Math.max(Math.floor(spec[1]), RESOURCE_ICON_ZOOM);
   const name: ExpressionSpecification = ['get', 'name'];
   const noPop: ExpressionSpecification = ['==', ['coalesce', ['get', 'pop'], ''], ''];
   const noRes: ExpressionSpecification = ['==', ['coalesce', ['get', 'res'], ''], ''];
@@ -1605,10 +1609,19 @@ export function cityTextField(cls: number, resources: boolean): ExpressionSpecif
     ['get', 'pop'],
     { 'font-scale': 0.78, 'text-color': 'rgba(170,184,199,0.92)' },
   ];
-  const resPart = [['image', ['get', 'res']], { 'vertical-align': 'center' }, ' ', {}];
+  // Insigne et nom centrés tous deux sur la ligne (l'image, plus haute que le texte, fixe la hauteur
+  // de ligne ; aligné par le bas, le nom tomberait sous l'insigne).
+  const mid = { 'vertical-align': 'center' };
+  const resPart = [['image', ['get', 'res']], mid, ' ', mid];
   const text = (res: boolean, pop: boolean): ExpressionSpecification => {
     const fmt = (r: boolean, p: boolean): ExpressionSpecification =>
-      ['format', ...(r ? resPart : []), name, {}, ...(p ? popPart : [])] as ExpressionSpecification;
+      [
+        'format',
+        ...(r ? resPart : []),
+        name,
+        r ? mid : {},
+        ...(p ? popPart : []),
+      ] as ExpressionSpecification;
     if (!res && !pop) return name;
     if (res && pop)
       return [
