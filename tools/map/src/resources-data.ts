@@ -2427,7 +2427,7 @@ export const RESOURCE_ZONES: ResourceZone[] = [
     name: 'Mitidja et hautes plaines céréalières',
     resource: 'food',
     richness: 2,
-    provinces: ['dza:Wilaya de Blida', 'dza:Sétif', 'dza:Tiaret', 'dza:Médéa'],
+    provinces: ['dza:Blida', 'dza:Sétif', 'dza:Tiaret', 'dza:Médéa'],
     source: FAO,
   },
   {

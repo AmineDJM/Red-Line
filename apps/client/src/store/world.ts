@@ -24,7 +24,7 @@ import {
   localizeProvincesGeo,
   localizeResearch,
 } from '../lib/localize.js';
-import { NON_LATIN_SCRIPT } from '../i18n/index.js';
+import { isFrench, lang, NON_LATIN_SCRIPT, setMapNames } from '../i18n/index.js';
 
 /** Données statiques de la carte et du catalogue (chargées une fois). */
 export interface WorldState {
@@ -48,7 +48,15 @@ export interface WorldState {
   routes: RoutesFile | null;
   roads: RoadNet | null;
   roadsStatus: 'idle' | 'loading' | 'ready';
-  load(api: Api): Promise<void>;
+  /**
+   * Carte demandée : null = carte courante (nouvelles parties), sinon version épinglée par une partie
+   * créée avant un changement d'identifiants de province.
+   */
+  requestedMap: number | null;
+  /** Version de la carte chargée (réponse du serveur), null si inconnue (démo). */
+  mapVersion: number | null;
+  /** Charge la carte courante, ou la version `map` (partie ancienne). Idempotent. */
+  load(api: Api, map?: number): Promise<void>;
   loadRoads(api: Api): Promise<void>;
   loadExtras(api: Api): Promise<void>;
   loadNationInfo(api: Api): Promise<void>;
@@ -74,10 +82,14 @@ export const useWorld = create<WorldState>((set, get) => ({
   routes: null,
   roads: null,
   roadsStatus: 'idle',
+  requestedMap: null,
+  mapVersion: null,
   async loadRoads(api) {
     if (get().roadsStatus !== 'idle' || !api.routes) return;
     set({ roadsStatus: 'loading' });
-    const routes = await api.routes().catch(() => null);
+    const map = get().requestedMap;
+    const routes = await api.routes(map ?? undefined).catch(() => null);
+    if (get().requestedMap !== map) return; // carte changée entre-temps
     let roads: RoadNet | null = null;
     try {
       roads = routes ? new RoadNet(routes) : null;
@@ -100,18 +112,40 @@ export const useWorld = create<WorldState>((set, get) => ({
     const list = await api.nationsInfo().catch(() => []);
     set({ nationInfo: byId(await localizeNationInfo(list)) });
   },
-  async load(api) {
+  async load(api, map) {
     void get().loadExtras(api);
+    const want = map ?? null;
+    const cur = get();
+    const same =
+      want === null
+        ? cur.requestedMap === null
+        : cur.requestedMap === want || (cur.mapVersion !== null && cur.mapVersion === want);
+    if (same && (cur.status === 'ready' || cur.status === 'loading')) {
+      void get().loadRoads(api);
+      return;
+    }
+    // Autre carte : les données de la précédente (et ses routes) sont remplacées.
+    set({
+      status: 'loading',
+      error: null,
+      requestedMap: want,
+      routes: null,
+      roads: null,
+      roadsStatus: 'idle',
+    });
     void get().loadRoads(api);
-    if (get().status === 'ready' || get().status === 'loading') return;
-    set({ status: 'loading', error: null });
     try {
+      // Noms localisés d'une carte archivée (avant la localisation des provinces).
+      const archivedNames =
+        want !== null && !isFrench && api.mapNames
+          ? api.mapNames(want, lang).catch(() => ({ provinces: {}, cities: {} }))
+          : Promise.resolve(null);
       // Les éléments facultatifs (fond, tuiles, glyphes) n'échouent jamais.
-      const [nations, provinces, provincesGeo, catalog, tiles, basemap, glyphs] = await Promise.all(
-        [
-          api.nations(),
-          api.provinces(),
-          api.provincesGeoJSON(),
+      const [mapNations, provinces, provincesGeo, catalog, tiles, basemap, glyphs, names] =
+        await Promise.all([
+          api.nations(map),
+          api.provinces(map),
+          api.provincesGeoJSON(map),
           api.catalog(),
           api.tiles().catch(() => null),
           api.basemap().catch(() => ({
@@ -122,10 +156,16 @@ export const useWorld = create<WorldState>((set, get) => ({
             cities: null,
           })),
           api.glyphsAvailable().catch(() => false),
-        ],
-      );
+          archivedNames,
+        ]);
+      if (get().requestedMap !== want) return; // une autre carte a été demandée entre-temps
+      // Carte courante servie (même version que demandée) : noms embarqués.
+      const archived = want !== null && mapNations.mapVersion !== null && names !== null;
+      setMapNames(archived ? names : null);
+      const nations = mapNations.nations;
       set({
         status: 'ready',
+        mapVersion: mapNations.mapVersion,
         nations: byId(localizeNations(nations)),
         provinces: byId(localizeProvinces(provinces)),
         provincesGeo: localizeProvincesGeo(provincesGeo),
@@ -136,6 +176,7 @@ export const useWorld = create<WorldState>((set, get) => ({
         glyphs: glyphs && !NON_LATIN_SCRIPT,
       });
     } catch (e) {
+      if (get().requestedMap !== want) return;
       set({ status: 'error', error: e instanceof Error ? e.message : String(e) });
     }
   },

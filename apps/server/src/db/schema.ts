@@ -177,6 +177,11 @@ export const games = pgTable(
     startedAt: tz('started_at'),
     /** Révision des données d'administration (data_revisions.id) épinglée par la partie. */
     dataRev: integer('data_rev').notNull().default(0),
+    /**
+     * Version de la carte épinglée (identifiants de province) : data/map/version.json à la création ;
+     * les parties d'avant le versionnage valent 1 (data/map/archive/1).
+     */
+    mapVersion: integer('map_version').notNull().default(1),
     winner: text('winner'),
     /** Statistiques de fin de partie (moteur.stats). */
     finalStats: jsonb('final_stats').$type<Record<string, unknown> | null>(),
@@ -580,6 +585,8 @@ export const dataRevisions = pgTable(
     scope: text('scope').$type<ChangeScope>().notNull().default('new_games'),
     authorId: uuid('author_id').references(() => users.id, { onDelete: 'set null' }),
     createdAt: tz('created_at').notNull().defaultNow(),
+    /** Version de la carte en vigueur à l'écriture (nations, provinces, zones disputées). */
+    mapVersion: integer('map_version').notNull().default(1),
   },
   (t) => [index('data_revisions_key_idx').on(t.kind, t.key, t.id)],
 );

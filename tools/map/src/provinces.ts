@@ -41,7 +41,10 @@ const num = (v: unknown): number => (typeof v === 'number' && Number.isFinite(v)
 /** Nettoie un nom Natural Earth (« d'Arkhangelsk » → « Arkhangelsk », « la Mecque » → « La Mecque »). */
 export function cleanName(s: string): string {
   let n = s.trim();
-  n = n.replace(/^(Préfecture|préfecture|cité|Cité)\s+(de la |de l['’]|du |des |de |d['’])/u, '');
+  n = n.replace(
+    /^(Préfecture|préfecture|cité|Cité|Wilaya|wilaya)\s+(de la |de l['’]|du |des |de |d['’])/u,
+    '',
+  );
   n = n.replace(/^(de la |de l['’]|du |des |de |d['’])/u, '');
   return n.charAt(0).toUpperCase() + n.slice(1);
 }
@@ -562,6 +565,14 @@ export interface ProvinceShape {
   sortKey: string;
   pop: number;
   disputed?: string;
+  /** Domaine (territoire principal ou dépendance : clé de population admin-0). */
+  domain: string;
+  /** Région Natural Earth dominante (superficie) des unités membres, ou chaîne vide. */
+  region: string;
+  /** Nom avant dédoublonnage (« Moscou » pour « Moscou (ville) »). */
+  rawName: string;
+  /** Nom de l'unité découpée, pour une partie issue d'une découpe (« Adrar » pour « Adrar Nord »). */
+  baseName?: string;
 }
 
 export async function buildProvinceShapes(
@@ -634,6 +645,9 @@ export async function buildProvinceShapes(
             GROUPING.splitMax,
             Math.round(Math.sqrt(area / GROUPING.splitAreaKm2) + pop / GROUPING.splitPop),
           );
+    const regionArea = new Map<string, number>();
+    for (const u of list) regionArea.set(u.region, (regionArea.get(u.region) ?? 0) + u.area);
+    const region = [...regionArea].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0]![0];
     const base: ProvinceShape = {
       key: gid,
       nation,
@@ -642,6 +656,9 @@ export async function buildProvinceShapes(
       sortKey,
       pop,
       ...(list[0]!.disputed ? { disputed: list[0]!.disputed } : {}),
+      domain: list[0]!.popKey,
+      region,
+      rawName: name,
     };
     if (k < 2 || geom.length === 0) {
       shapes.push(base);
@@ -662,8 +679,15 @@ export async function buildProvinceShapes(
     }
     shapes.push(...parts);
   }
-  // Noms en double dans une même nation (ex. Moscou ville / oblast)
-  const byName = new Map<string, ProvinceShape[]>();
+  dedupeNames(shapes);
+  return shapes;
+}
+
+/** Noms en double dans une même nation (ex. Moscou ville / oblast) : suffixe « (ville) » ou numéro. */
+export function dedupeNames<T extends { nation: string; name: string; geom: MultiPolygon }>(
+  shapes: T[],
+): void {
+  const byName = new Map<string, T[]>();
   for (const s of shapes) {
     const k = `${s.nation}|${s.name}`;
     const l = byName.get(k) ?? [];
@@ -678,7 +702,6 @@ export async function buildProvinceShapes(
       s.name = a < 5000 && i === sized.length - 1 ? `${s.name} (ville)` : `${s.name} ${i + 1}`;
     });
   }
-  return shapes;
 }
 
 // ---------- Découpe (k-moyennes + Voronoï, découpe exacte par mapshaper) ----------
@@ -702,7 +725,7 @@ function clipHalf(poly: Pos[], nx: number, ny: number, c: number): Pos[] {
 const DIRS = ['Est', 'Nord-Est', 'Nord', 'Nord-Ouest', 'Ouest', 'Sud-Ouest', 'Sud', 'Sud-Est'];
 
 /** Nomme les parties par direction, sans doublon (affectation gloutonne au coût minimal). */
-function directionNames(centers: Pos[]): string[] {
+export function directionNames(centers: Pos[]): string[] {
   const gc: Pos = [
     centers.reduce((s, c) => s + c[0], 0) / centers.length,
     centers.reduce((s, c) => s + c[1], 0) / centers.length,
@@ -849,6 +872,8 @@ async function splitShape(shape: ProvinceShape, k: number): Promise<ProvinceShap
     key: `${shape.key}#${idx}`,
     geom: p.geom,
     name: `${shape.name} ${labels[idx]}`,
+    rawName: `${shape.name} ${labels[idx]}`,
+    baseName: shape.name,
     sortKey: `${shape.sortKey}#${String(idx).padStart(2, '0')}`,
   }));
 }

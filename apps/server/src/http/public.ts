@@ -1,4 +1,5 @@
 import { existsSync } from 'node:fs';
+import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { and, desc, eq } from 'drizzle-orm';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
@@ -64,55 +65,95 @@ export async function publicRoutes(app: FastifyInstance, ctx: AppContext): Promi
   app.get('/api/research', async () => ({ nodes: ctx.store.current().research }));
   app.get('/api/balance', async () => ({ balance: ctx.store.current().balance }));
 
-  // Données effectives (dépôt + modifications du back-office), mises en cache par révision.
-  const requireMap = () => {
+  // Données effectives (dépôt + modifications du back-office), mises en cache par révision et par
+  // version de carte. `?map=<version>` : carte d'une partie créée avant un changement d'identifiants de
+  // province (data/map/archive/<version>), sinon la carte courante.
+  const mapVersionOf = async (req: FastifyRequest): Promise<number> => {
+    const raw = (req.query as { map?: string }).map;
+    if (raw === undefined || raw === '') return ctx.store.mapVersion;
+    const v = Number(raw);
+    if (!Number.isInteger(v) || !ctx.store.hasMap(v))
+      throw new HttpError(404, 'unknown_map', 'Version de carte inconnue');
+    await ctx.store.ensureMap(v);
+    return v;
+  };
+  const requireMap = async (req: FastifyRequest) => {
+    const version = await mapVersionOf(req);
     const cur = ctx.store.current();
     if (!cur.map) throw unavailable('data_unavailable', data.mapError ?? 'Carte indisponible');
-    return { map: cur.map, rev: cur.rev };
+    const eff = version === cur.mapVersion ? cur : ctx.store.effective(cur.rev, version);
+    return { map: eff.map!, key: `${eff.rev}:${version}`, version };
+  };
+  const cached = (build: (map: NonNullable<typeof data.map>, version: number) => unknown) => {
+    const cache = new Map<string, StaticAsset>();
+    return async (req: FastifyRequest, reply: FastifyReply) => {
+      const { map, key, version } = await requireMap(req);
+      let a = cache.get(key);
+      if (!a) {
+        if (cache.size >= 4) cache.clear();
+        a = asset(Buffer.from(JSON.stringify(build(map, version))));
+        cache.set(key, a);
+      }
+      return sendAsset(req, reply, a, 'application/json; charset=utf-8');
+    };
   };
 
-  let nationsAsset: { rev: number; a: StaticAsset } | null = null;
-  let provincesAsset: { rev: number; a: StaticAsset } | null = null;
-
-  app.get('/api/map/nations', async (req, reply) => {
-    const { map, rev } = requireMap();
-    if (nationsAsset?.rev !== rev) {
-      nationsAsset = { rev, a: asset(Buffer.from(JSON.stringify({ nations: map.nations }))) };
-    }
-    return sendAsset(req, reply, nationsAsset.a, 'application/json; charset=utf-8');
-  });
-
-  app.get('/api/map/provinces', async (req, reply) => {
-    const { map, rev } = requireMap();
-    if (provincesAsset?.rev !== rev) {
-      provincesAsset = {
-        rev,
-        a: asset(Buffer.from(JSON.stringify({ provinces: map.provinces }))),
-      };
-    }
-    return sendAsset(req, reply, provincesAsset.a, 'application/json; charset=utf-8');
-  });
+  app.get(
+    '/api/map/nations',
+    cached((map, version) => ({ nations: map.nations, mapVersion: version })),
+  );
+  app.get(
+    '/api/map/provinces',
+    cached((map) => ({ provinces: map.provinces })),
+  );
 
   app.get('/api/map/provinces.geojson', async (req, reply) => {
-    if (!data.provincesGeojson) {
+    const version = await mapVersionOf(req);
+    const geo =
+      version === ctx.store.mapVersion
+        ? data.provincesGeojson
+        : (ctx.store.archived(version)?.provincesGeojson ?? null);
+    if (!geo) {
       throw unavailable(
         'data_unavailable',
         'Géométrie des provinces indisponible (data/map/provinces.geojson)',
       );
     }
-    return sendAsset(req, reply, data.provincesGeojson, 'application/geo+json; charset=utf-8');
+    return sendAsset(req, reply, geo, 'application/geo+json; charset=utf-8');
   });
 
   // Réseau de routes des unités terrestres (couche « routes », aperçu des trajets, accrochage).
-  let routesAsset: { rev: number; a: StaticAsset } | null = null;
-  app.get('/api/map/routes', async (req, reply) => {
-    const { map, rev } = requireMap();
+  const routes = cached((map) => {
     if (!map.routes)
       throw unavailable('data_unavailable', 'Réseau de routes indisponible (data/map/routes.json)');
-    if (routesAsset?.rev !== rev) {
-      routesAsset = { rev, a: asset(Buffer.from(JSON.stringify(map.routes))) };
+    return map.routes;
+  });
+  app.get('/api/map/routes', routes);
+
+  // Noms localisés des provinces et de leurs villes d'une carte archivée (la carte courante est
+  // embarquée dans le client) : { provinces: {id: nom}, cities: {id: ville} }.
+  const namesCache = new Map<string, StaticAsset>();
+  app.get('/api/map/names/:lang', async (req, reply) => {
+    const version = await mapVersionOf(req);
+    const lang = (req.params as { lang: string }).lang;
+    if (!/^[a-z]{2}$/.test(lang)) throw new HttpError(404, 'not_found', 'Langue inconnue');
+    const dir =
+      version === ctx.store.mapVersion
+        ? join(data.dataDir, 'map', 'names')
+        : ctx.store.archived(version)!.namesDir;
+    const k = `${version}:${lang}`;
+    let a = namesCache.get(k);
+    if (!a) {
+      const file = join(dir, `${lang}.json`);
+      const all = existsSync(file)
+        ? (JSON.parse(await readFile(file, 'utf8')) as Record<string, unknown>)
+        : {};
+      a = asset(
+        Buffer.from(JSON.stringify({ provinces: all.provinces ?? {}, cities: all.cities ?? {} })),
+      );
+      namesCache.set(k, a);
     }
-    return sendAsset(req, reply, routesAsset.a, 'application/json; charset=utf-8');
+    return sendAsset(req, reply, a, 'application/json; charset=utf-8');
   });
 
   app.get('/api/map/tiles', async () => {

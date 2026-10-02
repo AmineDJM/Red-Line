@@ -313,6 +313,11 @@ export interface GameMeta {
   endReason?: 'victory' | 'abandoned' | 'admin';
   /** Partie multijoueur non classée : un joueur en mode illimité y joue (aucun point de classement). */
   unranked?: boolean;
+  /**
+   * Version de la carte épinglée par la partie (identifiants de province). Une partie créée avant un
+   * changement de carte garde la sienne : le client charge alors `/api/map/*?map=<version>`.
+   */
+  mapVersion?: number;
 }
 
 export interface ShopPolicy {

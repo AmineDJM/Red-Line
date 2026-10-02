@@ -168,7 +168,13 @@ export class PushService {
       ].includes(n.kind),
     );
     if (major.length === 0) return;
-    const data = this.deps.store.current();
+    const store = this.deps.store;
+    // Carte de la partie (une partie ancienne garde ses identifiants de province).
+    const data =
+      g.mapVersion === store.mapVersion || !store.archived(g.mapVersion)
+        ? store.current()
+        : store.effective(g.dataRev, g.mapVersion);
+    const namesDir = store.archived(g.mapVersion)?.namesDir;
     // Français : noms accordés (« Le Maroc vous déclare la guerre », « Les États-Unis attaquent… »).
     const nation = (id: string) => {
       const d = data.nationsById.get(id);
@@ -178,7 +184,8 @@ export class PushService {
     // Autres langues : gabarits traduits (apps/server/src/i18n) et noms localisés.
     const nationIn = (l: Locale, id: string) =>
       placeName(l, 'nations', id, data.nationsById.get(id)?.name ?? id);
-    const provinceIn = (l: Locale, id: string) => placeName(l, 'provinces', id, provinceFr(id));
+    const provinceIn = (l: Locale, id: string) =>
+      placeName(l, 'provinces', id, provinceFr(id), namesDir);
     let owners: Record<string, NationId> | null = null;
     const ownerOf = (pid: string) => {
       if (!engine.ownersFrame) return null;

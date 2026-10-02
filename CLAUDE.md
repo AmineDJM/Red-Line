@@ -60,6 +60,11 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
 - Fond vectoriel en GeoJSON statique (`data/basemap`) plutôt qu'en PMTiles vectoriel (petit volume, pas de tippecanoe).
 - Cibles stratégiques : bâtiments **génériques** par province, jamais de vrais sites nommés. De l'image de référence,
   on ne reprend que les codes visuels.
+- **Provinces fusionnées** (demande d'Amine, « divise par deux ») : étape `tools/map/src/consolidate.ts`
+  (réglages `consolidate-config.ts`), 2 567 → ~1 300 provinces ; capitales et petites nations inchangées.
+  **Carte versionnée** : `data/map/version.json`, chaque partie épingle sa version (`games.map_version`), les
+  cartes précédentes restent dans `data/map/archive/<version>/` (jamais modifiées). Changer les identifiants
+  de province = archiver l'ancienne carte et incrémenter la version (test `map.test.ts`).
 - Armées de départ en **piles mixtes** (brigades, escadres ; `data/balance` `stacks`, désactivable) : une pile vaut
   la somme de ses éléments (`Unit.mix`), ordres `split` / `merge` ; mesures dans `docs/charge.md`.
 - Couleurs de nations : jamais de violet (réservé au joueur), deux voisins jamais identiques.

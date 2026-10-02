@@ -6,7 +6,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#b5e04a",
-    "capitalProvinceId": "afg-20"
+    "capitalProvinceId": "afg-9"
   },
   {
     "id": "ago",
@@ -15,7 +15,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#9debc0",
-    "capitalProvinceId": "ago-7"
+    "capitalProvinceId": "ago-5"
   },
   {
     "id": "alb",
@@ -24,7 +24,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#9debc0",
-    "capitalProvinceId": "alb-5"
+    "capitalProvinceId": "alb-4"
   },
   {
     "id": "and",
@@ -42,7 +42,7 @@
     "article": "les",
     "kind": "state",
     "color": "#44c76a",
-    "capitalProvinceId": "are-7"
+    "capitalProvinceId": "are-4"
   },
   {
     "id": "arg",
@@ -51,7 +51,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#3f95ee",
-    "capitalProvinceId": "arg-34"
+    "capitalProvinceId": "arg-15"
   },
   {
     "id": "arm",
@@ -60,7 +60,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#ffb8a6",
-    "capitalProvinceId": "arm-5"
+    "capitalProvinceId": "arm-4"
   },
   {
     "id": "atg",
@@ -78,7 +78,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#e0662e",
-    "capitalProvinceId": "aus-14"
+    "capitalProvinceId": "aus-7"
   },
   {
     "id": "aut",
@@ -87,7 +87,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#9debc0",
-    "capitalProvinceId": "aut-8"
+    "capitalProvinceId": "aut-4"
   },
   {
     "id": "aze",
@@ -105,7 +105,7 @@
     "article": "le",
     "kind": "state",
     "color": "#b4d6ff",
-    "capitalProvinceId": "bdi-4"
+    "capitalProvinceId": "bdi-3"
   },
   {
     "id": "bel",
@@ -123,7 +123,7 @@
     "article": "le",
     "kind": "state",
     "color": "#ff5a4e",
-    "capitalProvinceId": "ben-6"
+    "capitalProvinceId": "ben-3"
   },
   {
     "id": "bfa",
@@ -132,7 +132,7 @@
     "article": "le",
     "kind": "state",
     "color": "#eeeaa0",
-    "capitalProvinceId": "bfa-9"
+    "capitalProvinceId": "bfa-6"
   },
   {
     "id": "bgd",
@@ -150,7 +150,7 @@
     "article": "la",
     "kind": "state",
     "color": "#eeeaa0",
-    "capitalProvinceId": "bgr-4"
+    "capitalProvinceId": "bgr-3"
   },
   {
     "id": "bhr",
@@ -177,7 +177,7 @@
     "article": "la",
     "kind": "state",
     "color": "#b4d6ff",
-    "capitalProvinceId": "bih-4"
+    "capitalProvinceId": "bih-2"
   },
   {
     "id": "blr",
@@ -186,7 +186,7 @@
     "article": "la",
     "kind": "state",
     "color": "#b5e04a",
-    "capitalProvinceId": "blr-7"
+    "capitalProvinceId": "blr-4"
   },
   {
     "id": "blz",
@@ -204,7 +204,7 @@
     "article": "la",
     "kind": "state",
     "color": "#44c76a",
-    "capitalProvinceId": "bol-6"
+    "capitalProvinceId": "bol-5"
   },
   {
     "id": "bra",
@@ -213,7 +213,7 @@
     "article": "le",
     "kind": "state",
     "color": "#ffd84d",
-    "capitalProvinceId": "bra-30"
+    "capitalProvinceId": "bra-14"
   },
   {
     "id": "brb",
@@ -249,7 +249,7 @@
     "article": "le",
     "kind": "state",
     "color": "#eeeaa0",
-    "capitalProvinceId": "bwa-12"
+    "capitalProvinceId": "bwa-8"
   },
   {
     "id": "caf",
@@ -267,7 +267,7 @@
     "article": "le",
     "kind": "state",
     "color": "#9debc0",
-    "capitalProvinceId": "can-32"
+    "capitalProvinceId": "can-14"
   },
   {
     "id": "che",
@@ -276,7 +276,7 @@
     "article": "la",
     "kind": "state",
     "color": "#eeeaa0",
-    "capitalProvinceId": "che-6"
+    "capitalProvinceId": "che-4"
   },
   {
     "id": "chl",
@@ -285,7 +285,7 @@
     "article": "le",
     "kind": "state",
     "color": "#2fd4b8",
-    "capitalProvinceId": "chl-9"
+    "capitalProvinceId": "chl-6"
   },
   {
     "id": "chn",
@@ -294,7 +294,7 @@
     "article": "la",
     "kind": "state",
     "color": "#b4d6ff",
-    "capitalProvinceId": "chn-19"
+    "capitalProvinceId": "chn-7"
   },
   {
     "id": "civ",
@@ -303,7 +303,7 @@
     "article": "la",
     "kind": "state",
     "color": "#ffb8a6",
-    "capitalProvinceId": "civ-15"
+    "capitalProvinceId": "civ-7"
   },
   {
     "id": "cmr",
@@ -321,7 +321,7 @@
     "article": "la",
     "kind": "state",
     "color": "#ffb8a6",
-    "capitalProvinceId": "cod-12"
+    "capitalProvinceId": "cod-6"
   },
   {
     "id": "cog",
@@ -330,7 +330,7 @@
     "article": "le",
     "kind": "state",
     "color": "#b4d6ff",
-    "capitalProvinceId": "cog-11"
+    "capitalProvinceId": "cog-6"
   },
   {
     "id": "col",
@@ -339,7 +339,7 @@
     "article": "la",
     "kind": "state",
     "color": "#ffa040",
-    "capitalProvinceId": "col-9"
+    "capitalProvinceId": "col-6"
   },
   {
     "id": "com",
@@ -366,7 +366,7 @@
     "article": "le",
     "kind": "state",
     "color": "#9debc0",
-    "capitalProvinceId": "cri-4"
+    "capitalProvinceId": "cri-3"
   },
   {
     "id": "cub",
@@ -375,7 +375,7 @@
     "article": "",
     "kind": "state",
     "color": "#3f95ee",
-    "capitalProvinceId": "cub-7"
+    "capitalProvinceId": "cub-4"
   },
   {
     "id": "cyn",
@@ -402,7 +402,7 @@
     "article": "la",
     "kind": "state",
     "color": "#3f95ee",
-    "capitalProvinceId": "cze-6"
+    "capitalProvinceId": "cze-4"
   },
   {
     "id": "deu",
@@ -411,7 +411,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#d39a5c",
-    "capitalProvinceId": "deu-13"
+    "capitalProvinceId": "deu-7"
   },
   {
     "id": "dji",
@@ -438,7 +438,7 @@
     "article": "le",
     "kind": "state",
     "color": "#b4d6ff",
-    "capitalProvinceId": "dnk-4"
+    "capitalProvinceId": "dnk-3"
   },
   {
     "id": "dom",
@@ -447,7 +447,7 @@
     "article": "la",
     "kind": "state",
     "color": "#b5e04a",
-    "capitalProvinceId": "dom-7"
+    "capitalProvinceId": "dom-4"
   },
   {
     "id": "dza",
@@ -456,7 +456,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#ffd84d",
-    "capitalProvinceId": "dza-26"
+    "capitalProvinceId": "dza-13"
   },
   {
     "id": "ecu",
@@ -465,7 +465,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#b4d6ff",
-    "capitalProvinceId": "ecu-10"
+    "capitalProvinceId": "ecu-7"
   },
   {
     "id": "egy",
@@ -474,7 +474,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#ff5a4e",
-    "capitalProvinceId": "egy-4"
+    "capitalProvinceId": "egy-3"
   },
   {
     "id": "eri",
@@ -501,7 +501,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#b5e04a",
-    "capitalProvinceId": "esp-18"
+    "capitalProvinceId": "esp-9"
   },
   {
     "id": "est",
@@ -519,7 +519,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#ffd84d",
-    "capitalProvinceId": "eth-12"
+    "capitalProvinceId": "eth-6"
   },
   {
     "id": "fin",
@@ -528,7 +528,7 @@
     "article": "la",
     "kind": "state",
     "color": "#ffd84d",
-    "capitalProvinceId": "fin-12"
+    "capitalProvinceId": "fin-6"
   },
   {
     "id": "fji",
@@ -546,7 +546,7 @@
     "article": "la",
     "kind": "state",
     "color": "#b4d6ff",
-    "capitalProvinceId": "fra-24"
+    "capitalProvinceId": "fra-13"
   },
   {
     "id": "fsm",
@@ -582,7 +582,7 @@
     "article": "le",
     "kind": "state",
     "color": "#ff5a4e",
-    "capitalProvinceId": "gbr-15"
+    "capitalProvinceId": "gbr-9"
   },
   {
     "id": "geo",
@@ -591,7 +591,7 @@
     "article": "la",
     "kind": "state",
     "color": "#e0662e",
-    "capitalProvinceId": "geo-7"
+    "capitalProvinceId": "geo-4"
   },
   {
     "id": "gha",
@@ -600,7 +600,7 @@
     "article": "le",
     "kind": "state",
     "color": "#b5e04a",
-    "capitalProvinceId": "gha-9"
+    "capitalProvinceId": "gha-5"
   },
   {
     "id": "gin",
@@ -663,7 +663,7 @@
     "article": "le",
     "kind": "state",
     "color": "#b5e04a",
-    "capitalProvinceId": "gtm-8"
+    "capitalProvinceId": "gtm-4"
   },
   {
     "id": "guy",
@@ -672,7 +672,7 @@
     "article": "le",
     "kind": "state",
     "color": "#eeeaa0",
-    "capitalProvinceId": "guy-7"
+    "capitalProvinceId": "guy-4"
   },
   {
     "id": "hnd",
@@ -690,7 +690,7 @@
     "article": "la",
     "kind": "state",
     "color": "#b5e04a",
-    "capitalProvinceId": "hrv-5"
+    "capitalProvinceId": "hrv-4"
   },
   {
     "id": "hti",
@@ -699,7 +699,7 @@
     "article": "",
     "kind": "state",
     "color": "#ffb8a6",
-    "capitalProvinceId": "hti-6"
+    "capitalProvinceId": "hti-4"
   },
   {
     "id": "hun",
@@ -708,7 +708,7 @@
     "article": "la",
     "kind": "state",
     "color": "#62d8f5",
-    "capitalProvinceId": "hun-4"
+    "capitalProvinceId": "hun-2"
   },
   {
     "id": "idn",
@@ -717,7 +717,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#ff5a4e",
-    "capitalProvinceId": "idn-8"
+    "capitalProvinceId": "idn-6"
   },
   {
     "id": "ind",
@@ -726,7 +726,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#ffb8a6",
-    "capitalProvinceId": "ind-7"
+    "capitalProvinceId": "ind-4"
   },
   {
     "id": "irl",
@@ -735,7 +735,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#44c76a",
-    "capitalProvinceId": "irl-6"
+    "capitalProvinceId": "irl-4"
   },
   {
     "id": "irn",
@@ -744,7 +744,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#b4d6ff",
-    "capitalProvinceId": "irn-10"
+    "capitalProvinceId": "irn-6"
   },
   {
     "id": "irq",
@@ -753,7 +753,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#d39a5c",
-    "capitalProvinceId": "irq-8"
+    "capitalProvinceId": "irq-6"
   },
   {
     "id": "isl",
@@ -771,7 +771,7 @@
     "article": "",
     "kind": "state",
     "color": "#9debc0",
-    "capitalProvinceId": "isr-6"
+    "capitalProvinceId": "isr-4"
   },
   {
     "id": "ita",
@@ -780,7 +780,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#ffb8a6",
-    "capitalProvinceId": "ita-8"
+    "capitalProvinceId": "ita-6"
   },
   {
     "id": "jam",
@@ -807,7 +807,7 @@
     "article": "le",
     "kind": "state",
     "color": "#b5e04a",
-    "capitalProvinceId": "jpn-17"
+    "capitalProvinceId": "jpn-9"
   },
   {
     "id": "kaz",
@@ -816,7 +816,7 @@
     "article": "le",
     "kind": "state",
     "color": "#ffa040",
-    "capitalProvinceId": "kaz-28"
+    "capitalProvinceId": "kaz-13"
   },
   {
     "id": "ken",
@@ -825,7 +825,7 @@
     "article": "le",
     "kind": "state",
     "color": "#ffa040",
-    "capitalProvinceId": "ken-4"
+    "capitalProvinceId": "ken-3"
   },
   {
     "id": "kgz",
@@ -843,7 +843,7 @@
     "article": "le",
     "kind": "state",
     "color": "#9debc0",
-    "capitalProvinceId": "khm-8"
+    "capitalProvinceId": "khm-4"
   },
   {
     "id": "kir",
@@ -870,7 +870,7 @@
     "article": "la",
     "kind": "state",
     "color": "#3f95ee",
-    "capitalProvinceId": "kor-4"
+    "capitalProvinceId": "kor-3"
   },
   {
     "id": "kwt",
@@ -888,7 +888,7 @@
     "article": "le",
     "kind": "state",
     "color": "#b5e04a",
-    "capitalProvinceId": "lao-5"
+    "capitalProvinceId": "lao-4"
   },
   {
     "id": "lbn",
@@ -906,7 +906,7 @@
     "article": "le",
     "kind": "state",
     "color": "#9debc0",
-    "capitalProvinceId": "lbr-6"
+    "capitalProvinceId": "lbr-4"
   },
   {
     "id": "lby",
@@ -915,7 +915,7 @@
     "article": "la",
     "kind": "state",
     "color": "#62d8f5",
-    "capitalProvinceId": "lby-17"
+    "capitalProvinceId": "lby-8"
   },
   {
     "id": "lca",
@@ -942,7 +942,7 @@
     "article": "le",
     "kind": "state",
     "color": "#b4d6ff",
-    "capitalProvinceId": "lka-9"
+    "capitalProvinceId": "lka-4"
   },
   {
     "id": "lso",
@@ -960,7 +960,7 @@
     "article": "la",
     "kind": "state",
     "color": "#62d8f5",
-    "capitalProvinceId": "ltu-6"
+    "capitalProvinceId": "ltu-4"
   },
   {
     "id": "lux",
@@ -978,7 +978,7 @@
     "article": "la",
     "kind": "state",
     "color": "#ff5a4e",
-    "capitalProvinceId": "lva-6"
+    "capitalProvinceId": "lva-4"
   },
   {
     "id": "mar",
@@ -987,7 +987,7 @@
     "article": "le",
     "kind": "state",
     "color": "#ff5a4e",
-    "capitalProvinceId": "mar-7"
+    "capitalProvinceId": "mar-4"
   },
   {
     "id": "mco",
@@ -1005,7 +1005,7 @@
     "article": "la",
     "kind": "state",
     "color": "#ffb8a6",
-    "capitalProvinceId": "mda-5"
+    "capitalProvinceId": "mda-4"
   },
   {
     "id": "mdg",
@@ -1032,7 +1032,7 @@
     "article": "le",
     "kind": "state",
     "color": "#2fd4b8",
-    "capitalProvinceId": "mex-26"
+    "capitalProvinceId": "mex-15"
   },
   {
     "id": "mhl",
@@ -1059,7 +1059,7 @@
     "article": "le",
     "kind": "state",
     "color": "#b5e04a",
-    "capitalProvinceId": "mli-8"
+    "capitalProvinceId": "mli-4"
   },
   {
     "id": "mlt",
@@ -1095,7 +1095,7 @@
     "article": "la",
     "kind": "state",
     "color": "#3f95ee",
-    "capitalProvinceId": "mng-22"
+    "capitalProvinceId": "mng-10"
   },
   {
     "id": "moz",
@@ -1104,7 +1104,7 @@
     "article": "le",
     "kind": "state",
     "color": "#d39a5c",
-    "capitalProvinceId": "moz-12"
+    "capitalProvinceId": "moz-6"
   },
   {
     "id": "mrt",
@@ -1113,7 +1113,7 @@
     "article": "la",
     "kind": "state",
     "color": "#b4d6ff",
-    "capitalProvinceId": "mrt-6"
+    "capitalProvinceId": "mrt-4"
   },
   {
     "id": "mus",
@@ -1131,7 +1131,7 @@
     "article": "le",
     "kind": "state",
     "color": "#ffd84d",
-    "capitalProvinceId": "mwi-7"
+    "capitalProvinceId": "mwi-4"
   },
   {
     "id": "mys",
@@ -1140,7 +1140,7 @@
     "article": "la",
     "kind": "state",
     "color": "#62d8f5",
-    "capitalProvinceId": "mys-15"
+    "capitalProvinceId": "mys-7"
   },
   {
     "id": "nam",
@@ -1149,7 +1149,7 @@
     "article": "la",
     "kind": "state",
     "color": "#3f95ee",
-    "capitalProvinceId": "nam-4"
+    "capitalProvinceId": "nam-3"
   },
   {
     "id": "ner",
@@ -1158,7 +1158,7 @@
     "article": "le",
     "kind": "state",
     "color": "#ffa040",
-    "capitalProvinceId": "ner-11"
+    "capitalProvinceId": "ner-6"
   },
   {
     "id": "nga",
@@ -1167,7 +1167,7 @@
     "article": "le",
     "kind": "state",
     "color": "#e0662e",
-    "capitalProvinceId": "nga-31"
+    "capitalProvinceId": "nga-14"
   },
   {
     "id": "nic",
@@ -1176,7 +1176,7 @@
     "article": "le",
     "kind": "state",
     "color": "#d39a5c",
-    "capitalProvinceId": "nic-8"
+    "capitalProvinceId": "nic-4"
   },
   {
     "id": "nld",
@@ -1185,7 +1185,7 @@
     "article": "les",
     "kind": "state",
     "color": "#eeeaa0",
-    "capitalProvinceId": "nld-5"
+    "capitalProvinceId": "nld-4"
   },
   {
     "id": "nor",
@@ -1194,7 +1194,7 @@
     "article": "la",
     "kind": "state",
     "color": "#e0662e",
-    "capitalProvinceId": "nor-13"
+    "capitalProvinceId": "nor-7"
   },
   {
     "id": "npl",
@@ -1203,7 +1203,7 @@
     "article": "le",
     "kind": "state",
     "color": "#2fd4b8",
-    "capitalProvinceId": "npl-7"
+    "capitalProvinceId": "npl-4"
   },
   {
     "id": "nru",
@@ -1221,7 +1221,7 @@
     "article": "la",
     "kind": "state",
     "color": "#3f95ee",
-    "capitalProvinceId": "nzl-11"
+    "capitalProvinceId": "nzl-5"
   },
   {
     "id": "omn",
@@ -1230,7 +1230,7 @@
     "article": "",
     "kind": "state",
     "color": "#9debc0",
-    "capitalProvinceId": "omn-9"
+    "capitalProvinceId": "omn-6"
   },
   {
     "id": "pak",
@@ -1239,7 +1239,7 @@
     "article": "le",
     "kind": "state",
     "color": "#ff5a4e",
-    "capitalProvinceId": "pak-6"
+    "capitalProvinceId": "pak-4"
   },
   {
     "id": "pan",
@@ -1257,7 +1257,7 @@
     "article": "le",
     "kind": "state",
     "color": "#ff5a4e",
-    "capitalProvinceId": "per-23"
+    "capitalProvinceId": "per-12"
   },
   {
     "id": "phl",
@@ -1266,7 +1266,7 @@
     "article": "les",
     "kind": "state",
     "color": "#ffd84d",
-    "capitalProvinceId": "phl-20"
+    "capitalProvinceId": "phl-12"
   },
   {
     "id": "plw",
@@ -1284,7 +1284,7 @@
     "article": "la",
     "kind": "state",
     "color": "#ffd84d",
-    "capitalProvinceId": "png-13"
+    "capitalProvinceId": "png-7"
   },
   {
     "id": "pol",
@@ -1293,7 +1293,7 @@
     "article": "la",
     "kind": "state",
     "color": "#ffd84d",
-    "capitalProvinceId": "pol-10"
+    "capitalProvinceId": "pol-5"
   },
   {
     "id": "prk",
@@ -1302,7 +1302,7 @@
     "article": "la",
     "kind": "state",
     "color": "#e0662e",
-    "capitalProvinceId": "prk-3"
+    "capitalProvinceId": "prk-2"
   },
   {
     "id": "prt",
@@ -1347,7 +1347,7 @@
     "article": "la",
     "kind": "state",
     "color": "#ff5a4e",
-    "capitalProvinceId": "rou-3"
+    "capitalProvinceId": "rou-2"
   },
   {
     "id": "rus",
@@ -1356,7 +1356,7 @@
     "article": "la",
     "kind": "state",
     "color": "#d39a5c",
-    "capitalProvinceId": "rus-38"
+    "capitalProvinceId": "rus-21"
   },
   {
     "id": "rwa",
@@ -1365,7 +1365,7 @@
     "article": "le",
     "kind": "state",
     "color": "#ff5a4e",
-    "capitalProvinceId": "rwa-5"
+    "capitalProvinceId": "rwa-4"
   },
   {
     "id": "sau",
@@ -1383,7 +1383,7 @@
     "article": "le",
     "kind": "state",
     "color": "#e0662e",
-    "capitalProvinceId": "sdn-8"
+    "capitalProvinceId": "sdn-5"
   },
   {
     "id": "sen",
@@ -1392,7 +1392,7 @@
     "article": "le",
     "kind": "state",
     "color": "#ffa040",
-    "capitalProvinceId": "sen-5"
+    "capitalProvinceId": "sen-4"
   },
   {
     "id": "sgp",
@@ -1428,7 +1428,7 @@
     "article": "le",
     "kind": "state",
     "color": "#3f95ee",
-    "capitalProvinceId": "slv-4"
+    "capitalProvinceId": "slv-3"
   },
   {
     "id": "smr",
@@ -1455,7 +1455,7 @@
     "article": "la",
     "kind": "state",
     "color": "#44c76a",
-    "capitalProvinceId": "som-7"
+    "capitalProvinceId": "som-5"
   },
   {
     "id": "srb",
@@ -1464,7 +1464,7 @@
     "article": "la",
     "kind": "state",
     "color": "#e0662e",
-    "capitalProvinceId": "srb-7"
+    "capitalProvinceId": "srb-4"
   },
   {
     "id": "ssd",
@@ -1473,7 +1473,7 @@
     "article": "le",
     "kind": "state",
     "color": "#9debc0",
-    "capitalProvinceId": "ssd-4"
+    "capitalProvinceId": "ssd-3"
   },
   {
     "id": "stp",
@@ -1491,7 +1491,7 @@
     "article": "le",
     "kind": "state",
     "color": "#ffb8a6",
-    "capitalProvinceId": "sur-7"
+    "capitalProvinceId": "sur-4"
   },
   {
     "id": "svk",
@@ -1518,7 +1518,7 @@
     "article": "la",
     "kind": "state",
     "color": "#62d8f5",
-    "capitalProvinceId": "swe-13"
+    "capitalProvinceId": "swe-7"
   },
   {
     "id": "swz",
@@ -1545,7 +1545,7 @@
     "article": "la",
     "kind": "state",
     "color": "#eeeaa0",
-    "capitalProvinceId": "syr-12"
+    "capitalProvinceId": "syr-6"
   },
   {
     "id": "tcd",
@@ -1554,7 +1554,7 @@
     "article": "le",
     "kind": "state",
     "color": "#9debc0",
-    "capitalProvinceId": "tcd-14"
+    "capitalProvinceId": "tcd-8"
   },
   {
     "id": "tgo",
@@ -1572,7 +1572,7 @@
     "article": "la",
     "kind": "state",
     "color": "#eeeaa0",
-    "capitalProvinceId": "tha-13"
+    "capitalProvinceId": "tha-7"
   },
   {
     "id": "tjk",
@@ -1581,7 +1581,7 @@
     "article": "le",
     "kind": "state",
     "color": "#62d8f5",
-    "capitalProvinceId": "tjk-5"
+    "capitalProvinceId": "tjk-4"
   },
   {
     "id": "tkm",
@@ -1626,7 +1626,7 @@
     "article": "la",
     "kind": "state",
     "color": "#b4d6ff",
-    "capitalProvinceId": "tun-4"
+    "capitalProvinceId": "tun-3"
   },
   {
     "id": "tur",
@@ -1635,7 +1635,7 @@
     "article": "la",
     "kind": "state",
     "color": "#ffd84d",
-    "capitalProvinceId": "tur-21"
+    "capitalProvinceId": "tur-11"
   },
   {
     "id": "tuv",
@@ -1653,7 +1653,7 @@
     "article": "",
     "kind": "entity",
     "color": "#44c76a",
-    "capitalProvinceId": "twn-5"
+    "capitalProvinceId": "twn-3"
   },
   {
     "id": "tza",
@@ -1662,7 +1662,7 @@
     "article": "la",
     "kind": "state",
     "color": "#3f95ee",
-    "capitalProvinceId": "tza-9"
+    "capitalProvinceId": "tza-8"
   },
   {
     "id": "uga",
@@ -1671,7 +1671,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#b5e04a",
-    "capitalProvinceId": "uga-10"
+    "capitalProvinceId": "uga-5"
   },
   {
     "id": "ukr",
@@ -1680,7 +1680,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#ffa040",
-    "capitalProvinceId": "ukr-19"
+    "capitalProvinceId": "ukr-9"
   },
   {
     "id": "ury",
@@ -1689,7 +1689,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#d39a5c",
-    "capitalProvinceId": "ury-8"
+    "capitalProvinceId": "ury-4"
   },
   {
     "id": "usa",
@@ -1698,7 +1698,7 @@
     "article": "les",
     "kind": "state",
     "color": "#62d8f5",
-    "capitalProvinceId": "usa-84"
+    "capitalProvinceId": "usa-40"
   },
   {
     "id": "uzb",
@@ -1707,7 +1707,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#ffd84d",
-    "capitalProvinceId": "uzb-15"
+    "capitalProvinceId": "uzb-7"
   },
   {
     "id": "vat",
@@ -1734,7 +1734,7 @@
     "article": "le",
     "kind": "state",
     "color": "#b4d6ff",
-    "capitalProvinceId": "ven-19"
+    "capitalProvinceId": "ven-10"
   },
   {
     "id": "vnm",
@@ -1743,7 +1743,7 @@
     "article": "le",
     "kind": "state",
     "color": "#d39a5c",
-    "capitalProvinceId": "vnm-8"
+    "capitalProvinceId": "vnm-6"
   },
   {
     "id": "vut",
@@ -1779,7 +1779,7 @@
     "article": "le",
     "kind": "state",
     "color": "#ffa040",
-    "capitalProvinceId": "yem-16"
+    "capitalProvinceId": "yem-9"
   },
   {
     "id": "zaf",
@@ -1788,7 +1788,7 @@
     "article": "l'",
     "kind": "state",
     "color": "#44c76a",
-    "capitalProvinceId": "zaf-9"
+    "capitalProvinceId": "zaf-5"
   },
   {
     "id": "zmb",
@@ -1797,7 +1797,7 @@
     "article": "la",
     "kind": "state",
     "color": "#e0662e",
-    "capitalProvinceId": "zmb-6"
+    "capitalProvinceId": "zmb-4"
   },
   {
     "id": "zwe",

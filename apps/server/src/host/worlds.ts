@@ -13,11 +13,14 @@ export interface WorldPin {
   balance: Balance;
   /** Révision des données d'administration (carte, recherche, ORBAT). */
   dataRev: number;
+  /** Version de la carte (identifiants de province) : courante ou archivée (data/map/archive). */
+  mapVersion: number;
 }
 
 /**
- * Mondes (données statiques du moteur) construits une seule fois par triplet
- * (release du catalogue, équilibrage, révision des données) et partagés entre les parties qui les épinglent.
+ * Mondes (données statiques du moteur) construits une seule fois par quadruplet
+ * (release du catalogue, équilibrage, révision des données, version de la carte) et partagés entre les
+ * parties qui les épinglent.
  */
 export class WorldRegistry {
   private readonly cache = new Map<string, Promise<World>>();
@@ -62,7 +65,7 @@ export class WorldRegistry {
   }
 
   key(pin: WorldPin): string {
-    return `${pin.releaseId ?? 0}:${hashJson(pin.balance)}:${pin.dataRev}`;
+    return `${pin.releaseId ?? 0}:${hashJson(pin.balance)}:${pin.dataRev}:m${pin.mapVersion}`;
   }
 
   get(pin: WorldPin): Promise<World> {
@@ -73,7 +76,8 @@ export class WorldRegistry {
       p = (async () => {
         const catalog =
           pin.releaseId === null ? [] : ((await releaseSnapshot(this.db, pin.releaseId)) ?? []);
-        const data = this.store.effective(pin.dataRev);
+        await this.store.ensureMap(pin.mapVersion);
+        const data = this.store.effective(pin.dataRev, pin.mapVersion);
         if (!data.map) throw new HttpError(503, 'data_unavailable', 'Carte indisponible');
         return engine.buildWorld(data.map, catalog, pin.balance, {
           research: data.research,
@@ -93,6 +97,7 @@ export class WorldRegistry {
       releaseId: this.currentReleaseId,
       balance: balance ?? this.store.current().balance!,
       dataRev: this.store.currentRev,
+      mapVersion: this.store.mapVersion,
     };
   }
 

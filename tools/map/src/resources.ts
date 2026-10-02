@@ -17,6 +17,7 @@
  *    (plancher par richesse) ; les autres provinces n'en produisent plus. Idempotent.
  */
 import type { ProvinceDef } from '@redline/shared';
+import { MAP_ALIASES } from './aliases.js';
 import { RESOURCE_ZONES, type Res, type ResourceZone } from './resources-data.js';
 
 export type { Res } from './resources-data.js';
@@ -77,14 +78,24 @@ function haversineKm(a: [number, number], b: [number, number]): number {
   return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
 }
 
-/** Provinces désignées par « nation:Nom » : nom de province d'abord, sinon nom de ville. */
-export function resolveRef<P extends Prov>(ref: string, provs: readonly P[]): P[] {
+/**
+ * Provinces désignées par « nation:Nom » : nom de province d'abord, sinon ancien nom d'une province
+ * fusionnée (data/map/aliases.json), sinon nom de ville.
+ */
+export function resolveRef<P extends Prov>(
+  ref: string,
+  provs: readonly P[],
+  aliases: Record<string, string> = MAP_ALIASES,
+): P[] {
   const i = ref.indexOf(':');
   const nation = ref.slice(0, i);
   const name = ref.slice(i + 1);
   const own = provs.filter((p) => p.nationId === nation);
   const byName = own.filter((p) => p.name === name);
-  return byName.length > 0 ? byName : own.filter((p) => p.cityName === name);
+  if (byName.length > 0) return byName;
+  const id = aliases[ref];
+  if (id) return own.filter((p) => p.id === id);
+  return own.filter((p) => p.cityName === name);
 }
 
 /** Provinces d'une zone sourcée (un cercle n'atteint jamais une capitale). */

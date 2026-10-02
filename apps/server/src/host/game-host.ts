@@ -90,6 +90,8 @@ export interface HostedGame {
   releaseId: number | null;
   balance: Balance;
   dataRev: number;
+  /** Version de la carte épinglée (games.map_version). */
+  mapVersion: number;
   world: World;
   state: GameState;
   clock: ClockState;
@@ -271,6 +273,7 @@ export function metaOf(r: GameRow, playerCount?: number): GameMeta {
         }
       : {}),
     ...(r.unranked ? { unranked: true } : {}),
+    mapVersion: r.mapVersion,
   };
 }
 
@@ -324,7 +327,12 @@ export class GameHost {
   }
 
   pinOf(g: HostedGame): WorldPin {
-    return { releaseId: g.releaseId, balance: g.balance, dataRev: g.dataRev };
+    return {
+      releaseId: g.releaseId,
+      balance: g.balance,
+      dataRev: g.dataRev,
+      mapVersion: g.mapVersion,
+    };
   }
 
   // ───────────────────────────── Cycle de vie ─────────────────────────────
@@ -440,7 +448,12 @@ export class GameHost {
       .limit(1);
     if (!snap) throw new Error('aucun instantané');
     const releaseId = snap.catalogReleaseId ?? row.catalogReleaseId;
-    const pin: WorldPin = { releaseId, balance: row.balance, dataRev: row.dataRev };
+    const pin: WorldPin = {
+      releaseId,
+      balance: row.balance,
+      dataRev: row.dataRev,
+      mapVersion: row.mapVersion,
+    };
     const world = await this.d.worlds.get(pin);
     const raw = await decompressSnapshot(snap.codec, snap.state);
     const tLoad = nowMs();
@@ -500,6 +513,7 @@ export class GameHost {
       releaseId,
       balance: row.balance,
       dataRev: row.dataRev,
+      mapVersion: row.mapVersion,
       world,
       state,
       clock: {
@@ -1678,6 +1692,7 @@ export class GameHost {
       releaseId: prepared.pin.releaseId,
       balance: prepared.pin.balance,
       dataRev: prepared.pin.dataRev,
+      mapVersion: prepared.pin.mapVersion,
       world: prepared.world,
       state: prepared.state,
       clock: opts.clock,
@@ -1755,6 +1770,7 @@ export class GameHost {
           catalogReleaseId: prepared.pin.releaseId,
           balance: prepared.pin.balance,
           dataRev: prepared.pin.dataRev,
+          mapVersion: prepared.pin.mapVersion,
           setup: {
             ...prepared.setup,
             scenario: undefined,
@@ -1844,6 +1860,7 @@ export class GameHost {
         catalogReleaseId: prepared.pin.releaseId,
         balance: prepared.pin.balance,
         dataRev: prepared.pin.dataRev,
+        mapVersion: prepared.pin.mapVersion,
         setup: {
           ...prepared.setup,
           scenario: undefined,
