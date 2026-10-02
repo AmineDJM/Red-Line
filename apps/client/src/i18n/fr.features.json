@@ -5,8 +5,6 @@
     "more_one": "+ {{count}} autre matériel",
     "more_other": "+ {{count}} autres matériels",
     "elements": "éléments",
-    "pick": "Sélectionner cette pile",
-    "panel": "Piles : diviser et fusionner",
     "manage": "Piles…",
     "half": "Diviser en 2",
     "detach": "Détacher…",

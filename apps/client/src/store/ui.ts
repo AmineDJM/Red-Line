@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { LngLat, ProvinceId, UnitId } from '@redline/shared';
 import type { WindowRect } from '@redline/ui';
 import { STORAGE } from '../config.js';
+import { isRtl } from '../i18n/index.js';
 
 export type PendingOrder =
   | { kind: 'move'; unitIds: UnitId[]; to: LngLat }
@@ -168,11 +169,14 @@ const WINDOW_SIZE: Record<WindowId, { w: number; h: number }> = {
   settings: { w: 520, h: 720 },
 };
 
-/** Zone utile des fenêtres flottantes (sous la barre supérieure, à droite du rail). */
+/** Zone utile des fenêtres flottantes (sous la barre supérieure, à côté du rail). */
 export function windowBounds() {
   const w = typeof window !== 'undefined' ? window.innerWidth : 1440;
   const h = typeof window !== 'undefined' ? window.innerHeight : 900;
-  return { top: 52, left: 60, right: w - 8, bottom: h - 8 };
+  // Arabe : le rail de navigation est à droite (mise en page miroir).
+  return isRtl
+    ? { top: 52, left: 8, right: w - 60, bottom: h - 8 }
+    : { top: 52, left: 60, right: w - 8, bottom: h - 8 };
 }
 
 function defaultRect(id: WindowId) {
@@ -180,7 +184,7 @@ function defaultRect(id: WindowId) {
   const size = WINDOW_SIZE[id];
   const w = Math.min(size.w, b.right - b.left - 16);
   const h = Math.min(size.h, b.bottom - b.top - 16);
-  const x = Math.min(b.left + 12, b.right - w);
+  const x = isRtl ? Math.max(b.right - w - 12, b.left) : Math.min(b.left + 12, b.right - w);
   const y = Math.min(b.top + 10, b.bottom - h);
   return { x, y, w, h };
 }

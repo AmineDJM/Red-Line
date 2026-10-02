@@ -1,0 +1,15 @@
+{
+  "push": {
+    "title": "Red Line — {{game}}",
+    "war": "{{nation}} تعلن الحرب عليك.",
+    "attack": "{{nation}} تهاجم {{province}}.",
+    "losses": "قواتك تتكبد خسائر.",
+    "provinceLost": "{{province}}: استولت عليها {{nation}}.",
+    "provinceTaken": "سيطرت قواتك على {{province}}.",
+    "flash": "عاجل من الاستخبارات: تقرير عاجل بانتظارك.",
+    "council": "مجلس الأمن: جلسة تتطلب تصويتك.",
+    "victory": "نصر! دولتك تنتصر.",
+    "victoryOf": "انتصار {{nation}}. انتهت المباراة.",
+    "defeated": "هُزمت دولتك."
+  }
+}

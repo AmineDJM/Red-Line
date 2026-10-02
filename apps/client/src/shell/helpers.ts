@@ -6,6 +6,7 @@ import { gameNow, useGame } from '../store/game.js';
 import { useWorld } from '../store/world.js';
 import type { WindowId, WindowParams } from '../store/ui.js';
 import { nationForms, nationPair } from '../lib/game.js';
+import { battleTitle, newsHeadline, renderLoc, reportTitle } from '../lib/loc.js';
 
 /** Temps de jeu courant, rafraîchi toutes les `ms` millisecondes. */
 export function useGameTime(ms = 1000): number {
@@ -234,7 +235,7 @@ export function describeNotification(
     case 'intel_report': {
       const r = view?.intel?.reports.find((x) => x.id === n.reportId);
       return {
-        text: r ? r.title : k('intel_report'),
+        text: r ? reportTitle(r) : k('intel_report'),
         critical: n.flash,
         major: true,
         at: n.at,
@@ -245,7 +246,7 @@ export function describeNotification(
     case 'battle_report': {
       const r = view?.battleReports?.find((x) => x.id === n.reportId);
       return {
-        text: r ? k('battle_report_named', { title: r.title }) : k('battle_report'),
+        text: r ? k('battle_report_named', { title: battleTitle(r) }) : k('battle_report'),
         critical: false,
         major: true,
         at,
@@ -274,7 +275,7 @@ export function describeNotification(
       };
     case 'council':
       return {
-        text: n.text,
+        text: renderLoc(n.loc, n.text),
         critical: false,
         major: true,
         at: null,
@@ -284,7 +285,7 @@ export function describeNotification(
     case 'news': {
       const item = view?.news?.find((x) => x.id === n.newsId);
       return {
-        text: item?.headline ?? k('news'),
+        text: item ? newsHeadline(item) : k('news'),
         critical: false,
         major: false,
         at: n.at,
@@ -292,14 +293,17 @@ export function describeNotification(
         open: { id: 'news' },
       };
     }
-    case 'generic':
+    case 'generic': {
+      const title = renderLoc(n.loc?.title, n.title);
+      const text = renderLoc(n.loc?.text, n.text);
       return {
-        text: n.title ? `${n.title} : ${n.text}` : n.text,
+        text: title ? t('game.alerts.titled', { title, text }) : text,
         critical: n.severity === 'critical',
         major: n.severity !== 'info',
         at: n.at,
         icon: n.severity === 'info' ? 'info' : 'warning',
       };
+    }
   }
 }
 

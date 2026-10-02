@@ -300,11 +300,24 @@ export interface IconProps {
   title?: string;
 }
 
+/** Icônes orientées (sens de lecture) : retournées en écriture de droite à gauche (CSS `[dir=rtl]`). */
+const DIRECTIONAL = new Set<IconName>([
+  'chevronRight',
+  'chevronLeft',
+  'arrowRight',
+  'send',
+  'forward',
+  'logout',
+  'external',
+  'replay',
+]);
+
 export function Icon({ name, size = 18, strokeWidth = 1.6, className, style, title }: IconProps) {
   const paths = ICONS[name];
+  const base = DIRECTIONAL.has(name) ? 'rl-icon rl-icon--dir' : 'rl-icon';
   return (
     <svg
-      className={className ? `rl-icon ${className}` : 'rl-icon'}
+      className={className ? `${base} ${className}` : base}
       style={style}
       width={size}
       height={size}

@@ -1,0 +1,3122 @@
+{
+  "app": {
+    "name": "Red Line",
+    "tagline": "Strategi geopolitik waktu nyata",
+    "loading": "Memuat…",
+    "loadingPath": "memuat",
+    "errorPath": "galat",
+    "loadingMap": "Menyiapkan medan operasi…",
+    "error": "Terjadi kesalahan.",
+    "retry": "Coba lagi",
+    "back": "Kembali",
+    "close": "Tutup",
+    "clear": "Hapus",
+    "cancel": "Batal",
+    "confirm": "Konfirmasi",
+    "next": "Berikutnya",
+    "previous": "Sebelumnya",
+    "skip": "Lewati",
+    "done": "Selesai",
+    "search": "Cari",
+    "maximize": "Perbesar",
+    "soon": "segera",
+    "yes": "ya",
+    "no": "tidak",
+    "all": "Semua",
+    "none": "Tidak ada",
+    "mockBadge": "Demo luring",
+    "notFound": "Halaman tidak ditemukan."
+  },
+  "keys": {
+    "space": "Spasi",
+    "enter": "Enter",
+    "escape": "Esc"
+  },
+  "time": {
+    "dayUnit": "h",
+    "ago": "{{value}} lalu",
+    "in": "dalam {{value}}"
+  },
+  "sections": {
+    "armies": "Pasukan saya",
+    "army": "Gudang senjata perang",
+    "production": "Produksi",
+    "research": "Riset",
+    "economy": "Ekonomi",
+    "intel": "Intelijen",
+    "diplomacy": "Diplomasi",
+    "council": "Dewan Keamanan",
+    "news": "Berita",
+    "battles": "Laporan pertempuran",
+    "chat": "Pesan",
+    "shop": "Toko",
+    "settings": "Pengaturan",
+    "short": {
+      "armies": "Pasukan",
+      "army": "Gudang senjata",
+      "production": "Produksi",
+      "research": "Litbang",
+      "economy": "Ekonomi",
+      "intel": "Intel",
+      "diplomacy": "Diplo",
+      "council": "Dewan",
+      "news": "Berita",
+      "battles": "Pertempuran",
+      "chat": "Pesan",
+      "shop": "Toko",
+      "settings": "Pengaturan"
+    },
+    "path": {
+      "armies": "Pasukan saya",
+      "army": "Gudang senjata perang",
+      "production": "Produksi",
+      "research": "Litbang",
+      "economy": "Ekonomi",
+      "intel": "Intelijen",
+      "diplomacy": "Diplomasi",
+      "council": "PBB\\Dewan",
+      "news": "Kawat-berita",
+      "battles": "Pertempuran",
+      "chat": "Pesan",
+      "shop": "Toko",
+      "settings": "Pengaturan"
+    }
+  },
+  "home": {
+    "title": "Red Line",
+    "path": "beranda",
+    "menu": "Menu utama",
+    "subtitle": "Strategi geopolitik waktu nyata di peta dunia yang sebenarnya. Persenjataan nyata, anggaran nyata, kemenangan hanya lewat militer.",
+    "playGuest": "Main sebagai tamu",
+    "login": "Masuk",
+    "register": "Daftar",
+    "logout": "Keluar",
+    "continue": "Permainan baru",
+    "multi": "Multipemain",
+    "resume": "Lanjutkan permainan",
+    "rankings": "Peringkat",
+    "shop": "Toko",
+    "sandbox": "Kotak pasir",
+    "guest": "tamu",
+    "notConnected": "Belum masuk",
+    "welcome": "Masuk sebagai: {{name}}",
+    "guestNote": "Akun tamu disimpan di perangkat ini.",
+    "footer": "Kemenangan hanya lewat militer. Tidak ada situs nyata yang menjadi sasaran: bangunan generik per provinsi.",
+    "hints": {
+      "guest": "Permainan solo langsung, tanpa pendaftaran",
+      "solo": "Solo melawan AI, di peta dunia",
+      "multi": "Hingga 64 pemain, negara lain dikendalikan AI",
+      "resume": "Permainan Anda yang berjalan dan selesai",
+      "rankings": "Musim dan peringkat dunia",
+      "shop": "Mata uang premium, kosmetik, percepatan",
+      "sandbox": "Penempatan bebas dan mesin lokal"
+    },
+    "boot": {
+      "link": "Tautan satelit tersambung",
+      "map": "Peta: 2 567 provinsi · 201 negara",
+      "catalog": "Katalog: 406 sistem senjata",
+      "engine": "Mesin simulasi tersinkron",
+      "ready": "Pos komando siap."
+    },
+    "flash": {
+      "game_deleted": "Permainan ini telah dihapus: Anda kembali ke beranda."
+    },
+    "info": {
+      "title": "Gim secara singkat",
+      "about": "Kenali gim ini",
+      "figures": {
+        "nations": "negara yang dapat dimainkan",
+        "provinces": "provinsi",
+        "systems": "sistem senjata nyata",
+        "players": "pemain per permainan"
+      },
+      "live": {
+        "games_other": "{{n}} permainan berlangsung",
+        "players_other": "{{n}} pemain daring"
+      },
+      "blocks": {
+        "map": {
+          "title": "Waktu nyata, peta nyata",
+          "text": "Citra satelit, 2.567 provinsi, rute lingkaran besar. Dunia terus berjalan saat Anda luring."
+        },
+        "arsenal": {
+          "title": "Gudang senjata dan anggaran nyata",
+          "text": "Susunan tempur 2025, anggaran pertahanan dalam dolar, 406 sistem senjata nyata yang diproduksi sesuai R&D Anda."
+        },
+        "intel": {
+          "title": "Intelijen dan diplomasi",
+          "text": "Mata-mata, satelit, dan kabut perang; aliansi, lisensi, dan pemungutan suara di Dewan Keamanan."
+        },
+        "multi": {
+          "title": "Solo atau hingga 64 pemain",
+          "text": "Sendirian melawan lebih dari dua ratus AI, atau dalam permainan multipemain yang persisten. Peringkat per musim."
+        }
+      },
+      "links": {
+        "howto": "Cara bermain",
+        "features": "Fitur",
+        "nations": "Negara",
+        "arsenal": "Gudang senjata",
+        "faq": "FAQ"
+      }
+    }
+  },
+  "auth": {
+    "email": "Alamat email",
+    "password": "Kata sandi",
+    "displayName": "Nama tampilan",
+    "submitLogin": "Masuk",
+    "submitRegister": "Buat akun",
+    "switchToRegister": "Buat akun",
+    "switchToLogin": "Sudah terdaftar?",
+    "errors": {
+      "invalid": "Kredensial salah.",
+      "exists": "Alamat ini sudah digunakan.",
+      "weak": "Kata sandi terlalu pendek (minimal 8 karakter).",
+      "network": "Server tidak dapat dijangkau.",
+      "generic": "Operasi gagal."
+    }
+  },
+  "newGame": {
+    "title": "Permainan baru",
+    "path": "permainan-baru",
+    "subtitle": "Pilih negara Anda",
+    "nation": "Negara",
+    "searchPlaceholder": "Cari negara…",
+    "pickOnMap": "Klik negara di peta atau pilih dari daftar.",
+    "pickHint": "Ketuk negara di peta, atau pilih dari daftar.",
+    "selected": "Negara terpilih",
+    "none": "Tidak ada negara",
+    "provinces_other": "{{count}} provinsi",
+    "count_other": "{{count}} negara",
+    "taken_other": "{{count}} diambil",
+    "human": "pemain",
+    "scenario": "Skenario",
+    "speed": "Kecepatan",
+    "difficulty": "Kesulitan",
+    "levels": {
+      "easy": "Mudah",
+      "normal": "Normal",
+      "hard": "Sulit"
+    },
+    "budget": "Anggaran pertahanan",
+    "personnel": "Personel",
+    "doctrine": "Doktrin",
+    "highlights": "Sistem utama",
+    "loadingInfo": "Memuat profil…",
+    "random": "Negara acak",
+    "start": "Mulai permainan",
+    "creating": "Membuat permainan…",
+    "entity": "entitas",
+    "error": "Tidak dapat membuat permainan.",
+    "mapLabel": "Peta dunia: klik sebuah negara untuk memilihnya",
+    "tooMany": "Anda sudah memiliki 10 permainan solo yang berjalan: lanjutkan salah satunya atau hapus satu.",
+    "manageGames": "Kelola permainan saya"
+  },
+  "game": {
+    "connecting": "Menyambung ke permainan…",
+    "reconnecting": "Koneksi terputus, menyambung ulang…",
+    "failed": "Koneksi ditolak oleh server.",
+    "spectator": "Penonton",
+    "exit": "Keluar ke beranda",
+    "clock": {
+      "day": "H+{{day}}",
+      "paused": "Jeda",
+      "pause": "Jeda",
+      "play": "Lanjutkan",
+      "speed": "Kecepatan ×{{speed}}",
+      "speedShort": "×{{speed}}",
+      "nextSpeed": "Ubah kecepatan (saat ini ×{{speed}})"
+    },
+    "topbar": {
+      "treasury": "Kas",
+      "perDay": "/h",
+      "budgetTip": "Kas dan pendapatan bersih per hari — buka ekonomi",
+      "resources": "Sumber daya",
+      "resourceTip": "{{name}}: stok {{stock}}, {{net}} per hari"
+    },
+    "alertLevel": {
+      "title": "Siaga",
+      "short": "AL",
+      "tooltip": "Tingkat siaga dunia {{level}} — {{label}}",
+      "labels": {
+        "1": "krisis nuklir",
+        "2": "perang menyeluruh",
+        "3": "ketegangan bersenjata",
+        "4": "waspada",
+        "5": "tenang"
+      }
+    },
+    "resources": {
+      "money": "Uang",
+      "oil": "Minyak",
+      "metals": "Logam",
+      "electronics": "Elektronik",
+      "food": "Pangan",
+      "perDay": "{{value}} / hari"
+    },
+    "toolbar": {
+      "army": "Pasukan saya",
+      "production": "Produksi",
+      "alerts": "Peringatan",
+      "layers": "Lapisan",
+      "legend": "Legenda",
+      "menu": "Navigasi",
+      "map": "Peta",
+      "more": "Lainnya",
+      "allSections": "Semua bidang",
+      "recenter": "Pusatkan ulang"
+    },
+    "layers": {
+      "title": "Lapisan",
+      "military": "Militer",
+      "intel": "Intelijen",
+      "economy": "Ekonomi",
+      "diplomacy": "Diplomasi",
+      "soon": "segera",
+      "fog": "Kabut perang",
+      "labels": "Label"
+    },
+    "legend": {
+      "title": "Legenda",
+      "ownForces": "Pasukan Anda",
+      "allyForces": "Pasukan sekutu",
+      "enemyForces": "Pasukan musuh (berperang)",
+      "detected": "Kontak tak dikenal",
+      "building": "Bangunan strategis",
+      "ownTerritory": "Wilayah Anda",
+      "range": "Jangkauan senjata (min. – maks.)",
+      "route": "Lintasan / perintah",
+      "launch": "Lokasi peluncuran",
+      "border": "Perbatasan",
+      "disputed": "Wilayah sengketa",
+      "fog": "Zona tak terpantau",
+      "capture": "Perebutan berlangsung",
+      "neutralForces": "Pasukan netral"
+    },
+    "alerts": {
+      "title": "Pusat peringatan",
+      "empty": "Belum ada peringatan.",
+      "markRead": "Tandai semua sudah dibaca",
+      "center": "Pusatkan peta",
+      "filter": "Filter",
+      "filters": {
+        "all": "Semua",
+        "critical": "Kritis"
+      },
+      "kinds": {
+        "combat_started": "Pertempuran dimulai",
+        "unit_destroyed": "Unit musuh dihancurkan: {{unit}}",
+        "unit_destroyed_own": "Unit hilang: {{unit}}",
+        "unit_detected": "Kontak terdeteksi",
+        "unit_detected_known": "Kontak: {{unit}} · {{nation}}",
+        "province_capture_started": "{{province}}: upaya perebutan oleh {{nationLe}}",
+        "province_capture_started_own": "Perebutan {{province}} berlangsung",
+        "province_capture_started_threat": "{{province}} diserang oleh {{nationLe}}",
+        "province_captured": "{{province}} direbut oleh {{nationLe}}",
+        "province_captured_own": "{{province}} ditaklukkan",
+        "province_lost": "{{province}} lepas",
+        "production_complete": "Produksi selesai: {{unit}}",
+        "arrived": "Unit tiba di tujuan",
+        "nation_defeated": "Negara kalah: {{nation}}",
+        "victory": "Kemenangan {{deNation}}",
+        "research_complete": "Riset selesai: {{node}}",
+        "war_declared": "{{aDe}} menyatakan perang terhadap {{bA}}",
+        "peace_signed": "Perdamaian ditandatangani antara {{aLe}} dan {{bLe}}",
+        "missile_launch": "Peluncuran rudal terdeteksi",
+        "building_hit": "{{building}} terkena di {{province}} ({{health}} %)",
+        "delivery_arrived": "Pengiriman tiba",
+        "delivery_intercepted": "Pengiriman dicegat",
+        "intel_report": "Laporan intelijen baru",
+        "battle_report": "Laporan pertempuran baru",
+        "battle_report_named": "Laporan: {{title}}",
+        "operation": "Operasi gabungan: {{status}}",
+        "alert_level": "Tingkat siaga dunia: {{level}}",
+        "news": "Kawat berita baru"
+      },
+      "titled": "{{title}}: {{text}}"
+    },
+    "army": {
+      "count": "×{{count}}"
+    },
+    "selection": {
+      "title": "Pilihan",
+      "count": "Kekuatan",
+      "hp": "Kondisi",
+      "status": "Status",
+      "stance": "Sikap",
+      "supply": "Pasokan",
+      "mission": "Misi",
+      "general": "Jenderal",
+      "xp": "Pengalaman",
+      "stop": "Hentikan",
+      "sheet": "Profil",
+      "deselect": "Batalkan pilihan",
+      "hint": "Ketuk peta untuk bergerak, unit musuh untuk menyerang. Konsol: Ctrl+K.",
+      "lastSeen": "Terlihat {{value}} lalu",
+      "lastSeenLabel": "Pengamatan terakhir",
+      "uncertainty": "Ketidakpastian: ±{{value}}",
+      "uncertaintyLabel": "Ketidakpastian",
+      "unknownType": "Jenis tidak diketahui",
+      "owner": "Negara",
+      "multi_other": "{{count}} dipilih",
+      "ready": "Tersedia dalam",
+      "ammo": "Amunisi"
+    },
+    "orders": {
+      "moveTitle": "Perintah bergerak",
+      "attackTitle": "Perintah serang",
+      "distance": "Jarak",
+      "eta": "Tiba",
+      "warning": "Perhatian",
+      "outOfRange": "Sasaran di luar jangkauan",
+      "confirm": "Konfirmasi",
+      "cancel": "Batal",
+      "sent": "Perintah terkirim",
+      "destination": "Tujuan",
+      "target": "Sasaran",
+      "errors": {
+        "not_owner": "Unit ini bukan milik Anda.",
+        "unknown_unit": "Unit tidak dikenal.",
+        "unreachable": "Tujuan tidak dapat dicapai.",
+        "out_of_range": "Sasaran di luar jangkauan.",
+        "insufficient_funds": "Dana tidak cukup.",
+        "invalid_target": "Sasaran tidak valid.",
+        "not_allowed": "Perintah tidak mungkin.",
+        "game_over": "Permainan telah berakhir.",
+        "unknown": "Perintah tidak dikenali.",
+        "locked": "Aksi diblokir (siaga, resolusi, atau embargo).",
+        "research_required": "Riset diperlukan.",
+        "capacity": "Kapasitas maksimum tercapai.",
+        "cooldown": "Aksi sedang jeda.",
+        "insufficient_resources": "Sumber daya tidak cukup.",
+        "disconnected": "Luring: perintah tidak terkirim.",
+        "timeout": "Tidak ada respons dari server."
+      }
+    },
+    "status": {
+      "idle": "Siaga",
+      "moving": "Bergerak",
+      "combat": "Bertempur",
+      "embarked": "Diangkut",
+      "destroyed": "Hancur"
+    },
+    "stance": {
+      "hold": "Bertahan di tempat",
+      "defend": "Defensif",
+      "aggressive": "Ofensif"
+    },
+    "level": {
+      "own": "Unit kawan",
+      "precise": "Presisi",
+      "identified": "Teridentifikasi",
+      "detected": "Terdeteksi"
+    },
+    "callout": {
+      "capital": "Ibu kota",
+      "moving": "Dalam perjalanan · {{value}}",
+      "combat": "Bertempur",
+      "capture": "Perebutan {{value}} %"
+    },
+    "end": {
+      "victory": "Kemenangan",
+      "defeat": "Kekalahan",
+      "victoryText": "Negara Anda memaksakan dominasi militernya.",
+      "defeatText": "Kemenangan {{deNation}}. Negara Anda kalah.",
+      "defeatTextAlone": "Negara Anda tidak lagi mampu bertempur. Perang berlanjut tanpa Anda.",
+      "newGame": "Permainan baru",
+      "home": "Beranda",
+      "stats": "Ringkasan permainan",
+      "observe": "Terus mengamati",
+      "abandoned": "Ditinggalkan",
+      "kickerEnded": "Permainan selesai",
+      "abandonedText": "Tidak ada koneksi selama 48 jam (solo) atau 24 jam (multipemain): permainan ditutup."
+    },
+    "time": {
+      "minutes": "{{value}} mnt",
+      "hours": "{{h}} j {{m}}",
+      "days": "{{d}} h {{h}} j"
+    },
+    "unlimited": {
+      "badge": "TANPA BATAS",
+      "value": "∞",
+      "tip": "Mode tanpa batas: uang dan sumber daya tidak pernah membatasi. Litbang tetap diperlukan untuk produksi.",
+      "reserve": "Cadangan tanpa batas",
+      "stockTip": "{{name}}: stok tanpa batas",
+      "budgetTip": "Kas tanpa batas — buka ekonomi"
+    }
+  },
+  "province": {
+    "title": "Provinsi",
+    "population": "Populasi",
+    "income": "Pendapatan / hari",
+    "fortification": "Benteng",
+    "level": "tingkat {{level}}",
+    "unrest": "Ketegangan lokal",
+    "buildings": "Bangunan",
+    "noBuildings": "Tidak ada bangunan.",
+    "produceHere": "Produksi di sini",
+    "fortify": "Perkuat",
+    "capture": "Perebutan",
+    "captureOwn": "Pasukan Anda sedang merebut",
+    "captureBy": "Sedang direbut oleh {{nationLe}}",
+    "knowledge": "Pengetahuan",
+    "intelLevel": {
+      "0": "tidak diketahui",
+      "1": "sekilas",
+      "2": "baik",
+      "3": "lengkap"
+    },
+    "updated": "Pembaruan",
+    "ago": "{{value}} lalu",
+    "economicIntel": "Intelijen ekonomi",
+    "militaryIntel": "Intelijen militer",
+    "knownBuildings": "Bangunan diketahui",
+    "moreUnknown": "Bangunan lain belum terungkap…",
+    "unknownHint": "Tidak ada intelijen tentang provinsi ini. Luncurkan misi pengintaian untuk mengungkap bangunan dan pertahanannya.",
+    "recon": "Intai militer",
+    "listen": "Penyadapan SIGINT",
+    "morale": "Moral",
+    "fortifyLevel": "Perkuat (T{{level}})",
+    "fortifyStarted": "Pembentengan dimulai di {{province}}",
+    "reconEco": "Intai ekonomi",
+    "reconRunning": "Misi berlangsung…",
+    "reconMilitaryTip": "Intelijen militer (SIGINT): secara bertahap mengungkap pangkalan, pertahanan, dan situs militer provinsi.",
+    "reconEconomicTip": "Intelijen luar negeri (HUMINT): secara bertahap mengungkap fasilitas ekonomi provinsi.",
+    "opStarted": {
+      "recon_military": "Pengintaian militer dimulai atas {{province}}",
+      "recon_economic": "Pengintaian ekonomi dimulai atas {{province}}",
+      "listen_area": "Penyadapan dimulai di sekitar {{province}}"
+    }
+  },
+  "nationRecon": {
+    "title": "Intelijen tentang {{nationLe}}",
+    "aria": "Intelijen tentang {{nationLe}}",
+    "provinces_other": "{{count}} provinsi",
+    "ops": {
+      "recon_military": "Intai militer",
+      "recon_economic": "Intai ekonomi"
+    },
+    "phase": "Fase {{done}}/{{waves}}",
+    "covered_other": "{{count}} provinsi tercakup",
+    "priority": "Prioritas: ibu kota dan kota besar",
+    "remaining_other": "Tersisa {{count}} provinsi untuk diungkap",
+    "complete": "Semua provinsi terungkap",
+    "revealedAria": "Provinsi terungkap: {{known}} dari {{total}}",
+    "launch": "Luncurkan",
+    "running": "Berlangsung",
+    "capacity": "Kapasitas departemen penuh",
+    "started": {
+      "recon_military": "Pengintaian militer dimulai atas {{nationLe}}",
+      "recon_economic": "Pengintaian ekonomi dimulai atas {{nationLe}}"
+    },
+    "tips": {
+      "recon_military": "Mengungkap secara bertahap pangkalan, pertahanan, radar, silo, dan bunker {{deNation}}: ibu kota dan kota besar dahulu, lalu sisa negeri.",
+      "recon_economic": "Mengungkap secara bertahap produksi, sumber daya, dan industri {{deNation}}: ibu kota dan kota besar dahulu, lalu sisa negeri."
+    }
+  },
+  "console": {
+    "title": "Konsol komando",
+    "open": "Konsol",
+    "path": "konsol",
+    "placeholder": "move sel alger · produce 4 rafale · research aero.gen5 · help",
+    "examples": "Contoh:",
+    "selection_other": "{{count}} unit",
+    "hints": {
+      "complete": "lengkapi",
+      "run": "jalankan",
+      "close": "tutup",
+      "navigate": "pilih"
+    },
+    "kinds": {
+      "cmd": "cmd",
+      "unit": "unit",
+      "target": "sasaran",
+      "system": "sistem",
+      "place": "lokasi",
+      "nation": "negara",
+      "node": "Litbang",
+      "op": "op.",
+      "window": "jendela",
+      "value": "nilai"
+    },
+    "args": {
+      "units": "unit",
+      "place": "lokasi",
+      "target": "sasaran",
+      "count": "n",
+      "system": "sistem",
+      "node": "simpul",
+      "speed": "kecepatan",
+      "op": "operasi",
+      "nation": "negara",
+      "window": "jendela",
+      "onoff": "on|off"
+    },
+    "help": {
+      "move": "Pindahkan unit ke suatu lokasi",
+      "attack": "Serang unit musuh",
+      "stop": "Hentikan unit",
+      "produce": "Produksi sistem di suatu provinsi",
+      "research": "Mulai riset",
+      "goto": "Pusatkan peta pada suatu lokasi",
+      "speed": "Ubah kecepatan (solo)",
+      "pause": "Jeda (solo)",
+      "resume": "Lanjutkan (solo)",
+      "intel": "Luncurkan operasi intelijen",
+      "peace": "Usulkan perdamaian",
+      "ceasefire": "Usulkan gencatan senjata",
+      "war": "Nyatakan perang",
+      "open": "Buka jendela",
+      "select": "Pilih unit",
+      "mobilize": "Mobilisasi umum",
+      "help": "Tampilkan bantuan",
+      "clear": "Hapus log"
+    },
+    "errors": {
+      "empty": "Perintah kosong.",
+      "unknown": "Perintah tidak dikenal: {{cmd}}. Ketik «help».",
+      "units": "Tidak ada unit yang cocok (pengenal, «sel», atau nama sistem).",
+      "place": "Lokasi tidak ditemukan: {{place}}",
+      "target": "Sasaran tidak ditemukan: {{target}}",
+      "system": "Sistem tidak ditemukan: {{system}}",
+      "province": "Tidak ada provinsi Anda yang cocok: {{place}}",
+      "node": "Riset tidak ditemukan: {{node}}",
+      "op": "Operasi tidak dikenal: {{op}}",
+      "nation": "Negara tidak ditemukan: {{nation}}",
+      "speed": "Kecepatan tidak valid.",
+      "window": "Jendela tidak dikenal."
+    },
+    "done": {
+      "goto": "Peta dipusatkan pada {{place}}.",
+      "select_other": "{{count}} unit dipilih.",
+      "stop_other": "{{count}} unit dihentikan.",
+      "move_other": "{{count}} unit menuju {{place}}.",
+      "attack_other": "{{count}} unit menyerang {{target}}.",
+      "produce": "Produksi dimulai: {{count}} × {{system}} di {{place}}.",
+      "research": "Riset dimulai: {{node}}.",
+      "intel": "Operasi «{{op}}» diluncurkan terhadap {{target}}.",
+      "peace": "Usulan perdamaian dikirim ke {{aNation}}.",
+      "ceasefire": "Usulan gencatan senjata dikirim ke {{aNation}}.",
+      "war": "Perang dinyatakan terhadap {{aNation}}.",
+      "speed": "Kecepatan ×{{speed}}.",
+      "pause": "Permainan dijeda.",
+      "resume": "Permainan dilanjutkan.",
+      "mobilizeOn": "Mobilisasi umum diumumkan.",
+      "mobilizeOff": "Mobilisasi umum berakhir."
+    }
+  },
+  "shortcuts": {
+    "title": "Pintasan keyboard",
+    "console": "Konsol komando",
+    "pause": "Jeda / lanjutkan",
+    "speed": "Kecepatan",
+    "windows": "Pasukan saya, Gudang senjata perang, Produksi, Riset, Ekonomi, Intelijen…",
+    "escape": "Batalkan perintah, batalkan pilihan, tutup",
+    "confirm": "Konfirmasi perintah",
+    "legend": "Legenda",
+    "news": "Berita",
+    "help": "Bantuan ini"
+  },
+  "tutorial": {
+    "title": "Tutorial",
+    "path": "tutorial",
+    "skip": "Keluar dari tutorial",
+    "skipStep": "Lewati langkah",
+    "waiting": "Menunggu tindakan Anda…",
+    "steps": {
+      "welcome": {
+        "title": "Selamat datang di pos komando",
+        "text": "Anda memimpin angkatan bersenjata negara Anda di peta dunia yang sebenarnya. Persenjataan nyata, anggaran nyata dalam dolar, kemenangan hanya lewat militer."
+      },
+      "select": {
+        "title": "Pilih sebuah unit",
+        "text": "Ketuk salah satu bidak Anda (bingkai hijau) di peta: profil, kondisi, dan jangkauannya akan tampil."
+      },
+      "order": {
+        "title": "Beri perintah",
+        "text": "Ketuk titik di peta untuk bergerak, atau unit musuh untuk menyerangnya."
+      },
+      "confirm": {
+        "title": "Konfirmasi",
+        "text": "Periksa lintasan, jarak, dan waktu tiba, lalu konfirmasi. Tiga gerakan: pilih, perintahkan, konfirmasi."
+      },
+      "production": {
+        "title": "Produksi pasukan",
+        "text": "Buka Produksi: persenjataan doktrin Anda dan para pemasok, dengan foto, harga, dan syarat litbang."
+      },
+      "research": {
+        "title": "Berinvestasi dalam riset",
+        "text": "Memiliki sebuah sistem tidak berarti bisa memproduksinya: litbang membuka produksi generasi yang lebih tinggi."
+      },
+      "console": {
+        "title": "Semua lewat keyboard",
+        "text": "Konsol komando memungkinkan semuanya dilakukan lewat keyboard (move, produce, research, goto…). Buka dengan"
+      },
+      "time": {
+        "title": "Kuasai waktu",
+        "text": "Dalam solo: jeda dan kecepatan di atas layar, atau Spasi dan 1 sampai 5."
+      },
+      "alerts": {
+        "title": "Tetap terinformasi",
+        "text": "Pusat peringatan menghimpun pertempuran, laporan intelijen, pemungutan suara Dewan, dan pengiriman. Sekali klik memusatkan peta atau membuka laporan."
+      },
+      "end": {
+        "title": "Giliran Anda",
+        "text": "Kuasai 60 % provinsi dunia atau semua ibu kota musuh. Tutorial tetap tersedia di Pengaturan."
+      },
+      "province": {
+        "title": "Provinsi Anda",
+        "text": "Ketuk sebuah provinsi: bangunan dan tingkat (1 sampai 5), konstruksi dengan biaya pasti, benteng. Di negara tetangga, luncurkan pengintaian untuk mengungkap fasilitasnya."
+      }
+    }
+  },
+  "sandbox": {
+    "title": "Kotak pasir",
+    "path": "kotak-pasir",
+    "subtitle": "Mesin lokal · penempatan bebas",
+    "nation": "Negara",
+    "system": "Sistem",
+    "placeHint": "Ketuk peta untuk menempatkan unit yang dipilih.",
+    "placed_other": "{{count}} unit ditempatkan",
+    "clear": "Hapus semua",
+    "launch": "Mulai simulasi",
+    "reset": "Atur ulang",
+    "observer": "Sudut pandang",
+    "engineMissing": "Mesin tidak tersedia: fungsi hilang ({{list}}).",
+    "engineLoading": "Memuat mesin…",
+    "dataMissing": "Data simulasi hilang ({{list}}).",
+    "running": "Simulasi berjalan",
+    "count": "Jumlah"
+  },
+  "categories": {
+    "fighter": "Pesawat tempur",
+    "bomber": "Pembom",
+    "air_support": "Dukungan udara",
+    "helicopter": "Helikopter",
+    "drone": "Drone",
+    "tank": "Tank tempur",
+    "ifv": "Kendaraan tempur infanteri",
+    "artillery": "Artileri",
+    "air_defense": "Pertahanan udara",
+    "strike_missile": "Rudal serang",
+    "nuclear": "Senjata nuklir",
+    "surface_ship": "Kapal permukaan",
+    "submarine": "Kapal selam",
+    "infantry": "Infanteri",
+    "space": "Sistem antariksa",
+    "logistics": "Logistik",
+    "radar": "Radar"
+  },
+  "doctrines": {
+    "us": "Amerika Serikat",
+    "ru": "Rusia",
+    "cn": "Tiongkok",
+    "eu": "Eropa",
+    "other": "Lainnya"
+  },
+  "buildings": {
+    "refinery": "Kilang",
+    "power_plant": "Pembangkit listrik",
+    "port": "Pelabuhan",
+    "air_base": "Pangkalan udara",
+    "military_base": "Pangkalan militer",
+    "arms_factory": "Pabrik senjata",
+    "research_center": "Pusat riset",
+    "oil_field": "Ladang minyak",
+    "mine": "Tambang",
+    "farm": "Pertanian",
+    "electronics_plant": "Pabrik elektronik",
+    "local_industry": "Industri lokal",
+    "recruiting_office": "Kantor rekrutmen",
+    "naval_base": "Pangkalan laut",
+    "bunker": "Bunker",
+    "air_defense_site": "Situs pertahanan udara",
+    "coastal_battery": "Baterai pantai",
+    "radar_station": "Stasiun radar",
+    "missile_silo": "Silo rudal",
+    "hospital": "Rumah sakit militer",
+    "secret_lab": "Laboratorium rahasia",
+    "forward_base": "Pangkalan depan",
+    "groups": {
+      "resources": "Sumber daya",
+      "industry": "Industri",
+      "military": "Militer",
+      "defense": "Pertahanan"
+    },
+    "effects": {
+      "refinery": "Menghasilkan minyak olahan",
+      "power_plant": "Mempercepat produksi dan riset",
+      "port": "Produksi kapal dan perdagangan laut",
+      "air_base": "Produksi dan pangkalan pesawat",
+      "military_base": "Produksi darat, depot, garnisun",
+      "arms_factory": "Persenjataan berat: lapis baja, artileri, rudal",
+      "research_center": "Poin riset",
+      "oil_field": "Ekstraksi minyak",
+      "mine": "Ekstraksi logam",
+      "farm": "Produksi pangan",
+      "electronics_plant": "Komponen elektronik",
+      "local_industry": "Pendapatan dan kecepatan konstruksi",
+      "recruiting_office": "Infanteri, mobilisasi lebih cepat",
+      "naval_base": "Produksi dan perbaikan kapal",
+      "bunker": "Perlindungan kuat bagi pihak bertahan",
+      "air_defense_site": "Menyerang pesawat dan rudal",
+      "coastal_battery": "Pertahanan antikapal",
+      "radar_station": "Deteksi udara diperluas",
+      "missile_silo": "Peluncuran rudal balistik",
+      "hospital": "Pemulihan unit lebih cepat",
+      "secret_lab": "Riset lanjutan lebih cepat",
+      "forward_base": "Depot logistik garis depan",
+      "fortification": "Benteng lapangan: lapis baja bagi pihak bertahan di provinsi (tingkat 1 sampai 3)."
+    },
+    "ui": {
+      "build": "Bangun",
+      "upgrade": "Tingkat {{level}}",
+      "upgrading": "Peningkatan T{{level}}",
+      "repair": "Perbaiki",
+      "repairing": "Perbaikan",
+      "health": "Kondisi bangunan",
+      "operational": "Operasional",
+      "already": "Sudah dibangun",
+      "coastalOnly": "Hanya provinsi pesisir",
+      "costTip": "Biaya {{cost}} · durasi {{time}}",
+      "buildStarted": "Konstruksi dimulai: {{name}}",
+      "upgradeStarted": "Peningkatan dimulai: {{name}} (T{{level}})",
+      "repairStarted": "Perbaikan dimulai: {{name}}",
+      "constructing": "Sedang dibangun",
+      "maxLevel": "Tingkat maks.",
+      "blocked": {
+        "in_progress": "Pekerjaan sedang berlangsung",
+        "damaged": "Perbaiki dahulu",
+        "max_level": "Tingkat maksimum tercapai"
+      }
+    },
+    "fortification": "Benteng"
+  },
+  "weapon": {
+    "engine": "Mesin",
+    "length": "Panjang",
+    "wingspan": "Rentang sayap",
+    "mtow": "Bobot maks.",
+    "warhead": "Hulu ledak",
+    "speed": "Kecepatan",
+    "range": "Jarak tempuh",
+    "weaponRange": "Jangkauan senjata",
+    "subtitle": "{{category}} · {{country}}",
+    "subtitleDoctrine": "{{category}} · doktrin {{doctrine}}",
+    "doctrineAdj": {
+      "us": "Amerika",
+      "ru": "Rusia",
+      "cn": "Tiongkok",
+      "eu": "Eropa",
+      "other": "generik"
+    },
+    "photo": "Foto",
+    "noPhoto": "Foto tidak tersedia",
+    "gen": "Gen.",
+    "sheet": "Lembar teknis",
+    "units": {
+      "m": "m",
+      "kg": "kg",
+      "km": "km"
+    },
+    "genericOrigin": "Generik"
+  },
+  "units": {
+    "km": "{{value}} km"
+  },
+  "map": {
+    "attribution": "Citra NASA Blue Marble · Natural Earth",
+    "noImagery": "Citra satelit tidak tersedia: latar vektor",
+    "tip": {
+      "nation": "Negara",
+      "count": "Kekuatan",
+      "state": "Kondisi",
+      "hp": "Integritas",
+      "supply": "Pasokan",
+      "mission": "Misi",
+      "speed": "Kecepatan",
+      "range": "Jangkauan",
+      "seen": "Terlihat",
+      "seenAgo": "{{value}} lalu",
+      "seenNow": "baru saja",
+      "uncertainty": "Posisi",
+      "uncertaintyValue": "± {{value}}",
+      "stack": "Tumpukan",
+      "stackValue": "{{count}} unit",
+      "stackMore": "+ {{count}} lainnya",
+      "unknown": "Kontak tak dikenal",
+      "unknownType": "Jenis tidak diketahui",
+      "missile": "Rudal di udara",
+      "impact": "Hantaman",
+      "impactIn": "dalam {{value}}",
+      "city": "Kota",
+      "capital": "Ibu kota",
+      "population": "Populasi",
+      "owner": "Kendali",
+      "buildings": "Bangunan",
+      "intel": "Intelijen",
+      "capture": "Perebutan",
+      "fortification": "Benteng",
+      "fortLevel": "tingkat {{value}}",
+      "blockaded": "Blokade berlangsung",
+      "noFlyZone": "Zona larangan terbang",
+      "disputed": "Wilayah sengketa",
+      "unrest": "Ketegangan",
+      "prompt": "inspect"
+    },
+    "rel": {
+      "own": "Pasukan Anda",
+      "ally": "Sekutu",
+      "neutral": "Netral",
+      "enemy": "Musuh"
+    },
+    "status": {
+      "idle": "Di posisi",
+      "moving": "Bergerak",
+      "combat": "Bertempur",
+      "embarked": "Diangkut",
+      "destroyed": "Hancur"
+    },
+    "supply": {
+      "supplied": "Terjamin",
+      "limited": "Terbatas",
+      "cut": "Terputus"
+    },
+    "mission": {
+      "none": "Tidak ada",
+      "patrol": "Patroli",
+      "strike": "Serangan",
+      "escort": "Pengawalan",
+      "refuel": "Pengisian bahan bakar udara",
+      "awacs": "Peringatan dini udara",
+      "recon": "Pengintaian",
+      "blockade": "Blokade",
+      "rtb": "Kembali ke pangkalan"
+    },
+    "flag": {
+      "decoy": "Umpan (hanya terlihat oleh Anda)",
+      "submerged": "Menyelam",
+      "sonar": "Kontak sonar",
+      "jamming": "Pengacauan aktif"
+    },
+    "intel": {
+      "0": "Tidak diketahui",
+      "1": "Sekilas",
+      "2": "Pengetahuan baik",
+      "3": "Pengetahuan lengkap",
+      "old": "informasi lama"
+    },
+    "bld": {
+      "refinery": "Kilang",
+      "power_plant": "Pembangkit listrik",
+      "port": "Pelabuhan",
+      "air_base": "Pangkalan udara",
+      "military_base": "Pangkalan militer",
+      "arms_factory": "Pabrik senjata",
+      "research_center": "Pusat riset",
+      "oil_field": "Ladang minyak",
+      "mine": "Tambang",
+      "farm": "Pertanian",
+      "electronics_plant": "Pabrik elektronik",
+      "local_industry": "Industri lokal",
+      "recruiting_office": "Kantor rekrutmen",
+      "naval_base": "Pangkalan laut",
+      "bunker": "Bunker",
+      "air_defense_site": "Situs pertahanan udara",
+      "coastal_battery": "Baterai pantai",
+      "radar_station": "Stasiun radar",
+      "missile_silo": "Silo rudal",
+      "hospital": "Rumah sakit militer",
+      "secret_lab": "Laboratorium rahasia",
+      "forward_base": "Pangkalan depan",
+      "level": "tk. {{value}}",
+      "damaged": "rusak",
+      "down": "tidak berfungsi",
+      "repair": "dalam perbaikan",
+      "upgrade": "sedang dibangun"
+    },
+    "ring": {
+      "max": "JANGKAUAN {{value}}",
+      "min": "MIN {{value}}",
+      "radius": "RADIUS {{value}}",
+      "radar": "RADAR {{value}}",
+      "sonar": "SONAR {{value}}",
+      "sensor": "DETEKSI {{value}}",
+      "sat": "SAT · melintas dalam {{value}}"
+    },
+    "order": {
+      "eta": "{{distance}} · {{eta}}"
+    },
+    "minimap": {
+      "label": "Peta mini",
+      "km": "{{value}} km"
+    },
+    "pion": {
+      "decoy": "UMPAN"
+    }
+  },
+  "legal": {
+    "title": "Informasi hukum",
+    "docs": {
+      "cgu": "Ketentuan penggunaan",
+      "cgv": "Ketentuan penjualan",
+      "privacy": "Privasi",
+      "withdrawal": "Pembatalan",
+      "mentions": "Pemberitahuan hukum",
+      "cookies": "Cookie"
+    },
+    "path": "legal",
+    "version": "Versi {{version}} · diperbarui {{date}}",
+    "error": "Dokumen tidak tersedia.",
+    "gateTitle": "Ketentuan penggunaan",
+    "gateText": "Sebelum bermain, harap baca dan setujui ketentuan penggunaan dan kebijakan privasi kami (atau versi barunya).",
+    "read": "Baca dokumen",
+    "checkbox": "Saya telah membaca dan menyetujui dokumen di atas.",
+    "accept": "Setujui dan lanjutkan"
+  },
+  "interior": {
+    "unavailable": "Keamanan dalam negeri tidak tersedia",
+    "kpi": {
+      "threat": "Ancaman dalam negeri",
+      "quality": "Kualitas layanan",
+      "level": "tingkat {{level}} · anggaran termasuk",
+      "foiled": "Operasi yang digagalkan",
+      "alerts": "{{count}} peringatan dikeluarkan",
+      "caught": "Agen yang terbongkar",
+      "doubles": "{{count}} di antaranya dibalik"
+    },
+    "grades": {
+      "low": "Rendah",
+      "moderate": "Sedang",
+      "high": "Tinggi",
+      "critical": "Kritis"
+    },
+    "focusTitle": "Prioritas departemen",
+    "focusSet": "Prioritas: {{name}}",
+    "focus": {
+      "balanced": {
+        "name": "Seimbang",
+        "desc": "Upaya dibagi antara kontra-spionase, perlindungan lokasi, dan pemantauan kerusuhan."
+      },
+      "counterintel": {
+        "name": "Kontra-spionase",
+        "desc": "Memburu agen asing dan operasi yang sedang disiapkan: deteksi meningkat tajam."
+      },
+      "protection": {
+        "name": "Perlindungan",
+        "desc": "Lokasi sensitif dijaga: dua lokasi terlindungi tambahan, sabotase dan pengintaian musuh terhambat."
+      },
+      "surveillance": {
+        "name": "Pengawasan",
+        "desc": "Jaringan pemberontak dan keresahan diawasi: risiko kerusuhan berkurang drastis."
+      }
+    },
+    "budget": "Anggaran departemen",
+    "budgetSet": "Anggaran keamanan dalam negeri diubah",
+    "metricsTitle": "Efek terukur",
+    "metricsMeta": "tingkat × anggaran × prioritas",
+    "metrics": {
+      "agentDetect": "Membongkar agen (per hari)",
+      "agentDetectHint": "peluang harian dasar per agen asing aktif",
+      "opDetect": "Mendeteksi operasi yang sedang disiapkan",
+      "opDetectHint": "peringatan dinilai; keberhasilan musuh dipangkas setengah",
+      "protection": "Perlindungan lokasi sensitif",
+      "protectionHint": "menurunkan keberhasilan sabotase dan pengintaian",
+      "unrestReduction": "Pengurangan kerusuhan",
+      "unrestReductionHint": "pemberontakan, demonstrasi, sabotase dalam negeri"
+    },
+    "threatsTitle": "Ancaman per provinsi",
+    "protectedCount": "lokasi terlindungi: {{n}} / {{max}}",
+    "noThreat": "Tidak ada ancaman teridentifikasi",
+    "protectedShort": "terlindungi",
+    "cols": {
+      "threat": "Ancaman",
+      "factors": "Faktor"
+    },
+    "protect": "Lindungi",
+    "unprotect": "Cabut",
+    "protectedOk": "{{name}}: lokasi ditempatkan di bawah perlindungan",
+    "unprotected": "{{name}}: perlindungan dicabut",
+    "reportsTitle": "Laporan dalam negeri",
+    "noReports": "Tidak ada laporan dalam negeri"
+  },
+  "intel": {
+    "flash": "FLASH",
+    "title": "Intelijen",
+    "sources": "Sumber",
+    "humint": "HUMINT",
+    "sigint": "SIGINT",
+    "interiorTab": "Dalam negeri",
+    "departments": "Departemen",
+    "totalBudget": "Anggaran total",
+    "unavailable": "Layanan intelijen tidak tersedia.",
+    "unavailableHint": "Modul intelijen tidak aktif dalam permainan ini.",
+    "depts": {
+      "interior": "Keamanan dalam negeri",
+      "exterior": "Intelijen luar negeri",
+      "military": "Intelijen militer"
+    },
+    "deptsShort": {
+      "interior": "Dalam negeri",
+      "exterior": "Luar negeri",
+      "military": "Militer"
+    },
+    "level": "T{{level}}",
+    "budget": "Anggaran",
+    "budgetUp": "Naikkan anggaran",
+    "budgetDown": "Turunkan anggaran",
+    "budgetSet": "Anggaran departemen disesuaikan",
+    "capacity": "Operasi",
+    "noReports": "Tidak ada laporan untuk sumber ini.",
+    "operations": "Operasi",
+    "launch": "Luncurkan operasi",
+    "launchShort": "Luncurkan",
+    "operation": "Operasi",
+    "target": "Sasaran",
+    "cost": "Biaya",
+    "duration": "Durasi",
+    "success": "Keberhasilan",
+    "exposure": "Risiko",
+    "estimate": "Perkiraan peluang berhasil",
+    "progress": "Kemajuan",
+    "zone": "zona {{km}} km",
+    "opLaunched": "Operasi diluncurkan: {{op}}",
+    "opCancelled": "Operasi dibatalkan",
+    "reconSent": "Penyadapan zona dimulai",
+    "shared": "Laporan dibagikan dengan {{nationLe}}",
+    "sharedBy": "dibagikan oleh {{nationLe}}",
+    "subject": "Subjek:",
+    "minimap": "Zona laporan",
+    "lowCotation": "Penilaian rendah: informasi belum dikonfirmasi silang, mungkin disinformasi. Pastikan sebelum bertindak.",
+    "cotationTip": "Keandalan sumber: {{r}} · kredibilitas informasi: {{c}}",
+    "agents": "Agen",
+    "caught": "Agen musuh yang terbongkar",
+    "caughtAgent": "TAK DIKENAL",
+    "turned": "Dibelokkan",
+    "turn": "Belokkan",
+    "turnedOk": "Agen dibelokkan menjadi agen ganda",
+    "reliability": {
+      "A": "A — andal",
+      "B": "B — umumnya andal",
+      "C": "C — cukup andal",
+      "D": "D — kurang andal",
+      "E": "E — tidak andal",
+      "F": "F — tak dapat dinilai"
+    },
+    "credibility": {
+      "1": "1 — terkonfirmasi",
+      "2": "2 — mungkin sekali",
+      "3": "3 — mungkin",
+      "4": "4 — meragukan",
+      "5": "5 — tidak mungkin",
+      "6": "6 — tak dapat dinilai"
+    },
+    "kinds": {
+      "daily": "Catatan harian",
+      "flash": "Flash",
+      "order_of_battle": "Susunan tempur",
+      "intentions": "Niat",
+      "counterintel": "Kontra-intelijen",
+      "leak": "Bocoran",
+      "cyber": "Siber",
+      "result": "Hasil operasi"
+    },
+    "actions": {
+      "plan_strike": "Rencanakan serangan",
+      "send_recon": "Kirim pengintai",
+      "share": "Bagikan",
+      "open_unit": "Lihat unit",
+      "open_province": "Lihat provinsi"
+    },
+    "opStatus": {
+      "running": "berlangsung",
+      "success": "berhasil",
+      "failed": "gagal",
+      "compromised": "terbongkar"
+    },
+    "agentStatus": {
+      "active": "aktif",
+      "burned": "terbakar",
+      "double": "agen ganda",
+      "exfiltrated": "dievakuasi",
+      "captured": "tertangkap"
+    },
+    "ops": {
+      "infiltrate_spy": "Susupkan mata-mata",
+      "recruit_source": "Rekrut sumber",
+      "turn_agent": "Belokkan agen",
+      "exfiltrate": "Evakuasi agen",
+      "steal_research": "Curi riset",
+      "sabotage_factory": "Sabotase pabrik",
+      "fund_rebels": "Danai pemberontak",
+      "listen_area": "Sadap zona",
+      "intercept_army": "Cegat transmisi",
+      "jam_area": "Acak zona",
+      "cyber_radar": "Serangan siber: radar",
+      "cyber_production": "Serangan siber: produksi",
+      "cyber_orders": "Serangan siber: perintah",
+      "disinformation": "Disinformasi",
+      "leak_plans": "Bocorkan rencana",
+      "plant_fake_report": "Penyesatan: laporan palsu",
+      "deploy_decoys": "Kerahkan umpan",
+      "fake_radio_traffic": "Lalu lintas radio palsu",
+      "counterintel_sweep": "Kontra-intelijen",
+      "recon_economic": "Pengintaian ekonomi",
+      "recon_military": "Pengintaian militer"
+    },
+    "opsHelp": {
+      "infiltrate_spy": "Menanam agen di negara sasaran: mengungkap provinsi, bangunan, dan niatnya secara bertahap.",
+      "recruit_source": "Merekrut sumber lokal: laporan niat berkala, penilaian bervariasi.",
+      "turn_agent": "Membelokkan agen musuh yang terbongkar untuk menyesatkan dinasnya.",
+      "exfiltrate": "Memulangkan agen yang terancam sebelum tertangkap.",
+      "steal_research": "Mencuri hasil riset: mempercepat atau membuka sebuah simpul.",
+      "sabotage_factory": "Merusak bangunan industri sasaran.",
+      "fund_rebels": "Mendanai pemberontakan di sebuah provinsi: stabilitas turun.",
+      "listen_area": "Penyadapan radio di sebuah zona: mengungkap unit yang ada.",
+      "intercept_army": "Mengikuti transmisi sebuah tentara: perintah dan pergerakan.",
+      "jam_area": "Mengacak komunikasi dan radar di sebuah zona.",
+      "cyber_radar": "Membutakan radar sasaran untuk sementara.",
+      "cyber_production": "Memperlambat produksi industri sasaran.",
+      "cyber_orders": "Menunda pelaksanaan perintah sasaran.",
+      "disinformation": "Kampanye disinformasi: stabilitas sasaran turun.",
+      "leak_plans": "Menerbitkan rencana curian di kanal berita dunia.",
+      "plant_fake_report": "Menyampaikan laporan palsu ke dinas lawan.",
+      "deploy_decoys": "Mengerahkan umpan yang menipu pengintaian lawan.",
+      "fake_radio_traffic": "Menyimulasikan lalu lintas radio untuk menyamarkan pergerakan Anda.",
+      "counterintel_sweep": "Memburu agen asing di wilayah Anda.",
+      "recon_economic": "Mengungkap secara bertahap fasilitas ekonomi (produksi, sumber daya, industri) seluruh negara — ibu kota dan kota besar dahulu, lalu sisanya — atau satu provinsi.",
+      "recon_military": "Mengungkap secara bertahap pangkalan, pertahanan udara, radar, silo, dan bunker seluruh negara — ibu kota dan kota besar dahulu, lalu sisanya — atau satu provinsi. Setelah itu terlihat di peta."
+    },
+    "targetProvince": "Provinsi sasaran",
+    "targetArea": "Zona (sekitar kota)",
+    "targetUnit": "Unit sasaran",
+    "wholeNation": "Seluruh negara",
+    "scope": "Cakupan",
+    "scopeNation": "Seluruh negara",
+    "scopeProvince": "Satu provinsi",
+    "reconPhase": "Fase {{done}}/{{waves}} · {{provinces}} prov.",
+    "unknownContact": "kontak tak dikenal",
+    "noContacts": "Tidak ada unit asing terdeteksi: dekatkan radar Anda atau luncurkan pengintaian."
+  },
+  "sheet": {
+    "path": "Lembar data",
+    "catalog": "Lihat di katalog",
+    "pile": "Tumpukan {{id}}"
+  },
+  "arsenal": {
+    "title": "Arsenal",
+    "doctrines": "Doktrin dan pemasok",
+    "all": "Semua",
+    "search": "Cari sistem…",
+    "category": "Kategori",
+    "categories": "Kategori peralatan",
+    "allCategories": "Seluruh gudang senjata",
+    "searchAll_other": "Pencarian di seluruh gudang senjata: {{count}} hasil",
+    "emptyCategory": "Tidak ada sistem dalam kategori «{{category}}» untuk doktrin dan filter ini.",
+    "groups": {
+      "air": "Udara",
+      "land": "Darat",
+      "defense": "Pertahanan dan deteksi",
+      "strike": "Serangan dan strategis",
+      "sea": "Laut",
+      "support": "Dukungan"
+    },
+    "cats": {
+      "fighter": "Jet tempur",
+      "bomber": "Pengebom",
+      "air_support": "Dukungan udara",
+      "helicopter": "Helikopter",
+      "drone": "Drone",
+      "tank": "Tank",
+      "ifv": "Kendaraan lapis baja (IFV)",
+      "artillery": "Artileri",
+      "infantry": "Infanteri",
+      "air_defense": "Pertahanan udara",
+      "radar": "Radar",
+      "strike_missile": "Rudal serang",
+      "nuclear": "Nuklir",
+      "space": "Antariksa",
+      "surface_ship": "Armada permukaan",
+      "submarine": "Kapal selam",
+      "logistics": "Logistik"
+    },
+    "allGen": "Semua",
+    "producible": "Dapat diproduksi",
+    "importable": "Dapat diimpor",
+    "import": "Impor",
+    "ownedFilter": "Dimiliki",
+    "rdRequired": "Perlu litbang",
+    "licence": "Lisensi",
+    "count_other": "{{count}} sistem",
+    "layout": "Tampilan",
+    "grid": "Kisi",
+    "list": "Daftar",
+    "empty": "Tidak ada sistem yang sesuai filter.",
+    "emptyHint": "Perluas pencarian atau ganti doktrin.",
+    "pick": "Pilih sebuah sistem",
+    "pickHint": "Lembar rinci, foto, dan syarat produksi ditampilkan di sini.",
+    "back": "Kembali ke arsenal",
+    "price": "Harga",
+    "unitPrice": "Harga satuan",
+    "elements": "elemen",
+    "upkeep": "Perawatan",
+    "perDay": "/ hari",
+    "buildTime": "Waktu produksi",
+    "owned": "Dimiliki",
+    "ownedShort": "Dimiliki: {{count}}",
+    "producibleLabel": "Dapat diproduksi",
+    "yesLicence": "ya (di bawah lisensi)",
+    "noResearch": "tidak (perlu litbang: {{nodes}})",
+    "importLabel": "Impor",
+    "importPossible": "mungkin",
+    "embargo": "tidak mungkin (embargo)",
+    "notExportable": "tidak dapat diekspor",
+    "licenceLabel": "Lisensi produksi",
+    "licenceOwned": "dimiliki",
+    "licenceAvailable": "tersedia",
+    "licenceNone": "tidak ditawarkan",
+    "stealth": "Siluman",
+    "cols": {
+      "name": "Sistem",
+      "category": "Kategori",
+      "owned": "Dimiliki",
+      "status": "Status"
+    }
+  },
+  "production": {
+    "tabs": {
+      "arsenal": "Arsenal",
+      "queue": "Antrean produksi",
+      "licences": "Lisensi"
+    },
+    "treasury": "Kas",
+    "sites_other": "{{count}} provinsi",
+    "site": "Lokasi produksi",
+    "quantity": "Jumlah",
+    "total": "Biaya total",
+    "insufficient": "Dana tidak cukup",
+    "produce": "Produksi",
+    "import": "Impor",
+    "buyLicence": "Lisensi · {{price}}",
+    "blackMarket": "Pasar gelap",
+    "blackMarketOrdered": "Pesanan dilakukan di pasar gelap",
+    "goResearch": "Litbang: {{node}}",
+    "needBuilding": "Lokasi ini tidak memiliki {{building}}: produksi lebih lambat atau tidak mungkin.",
+    "ordered": "Produksi dimulai: {{count}} × {{unit}}",
+    "imported": "Impor dipesan: {{count}} × {{unit}}",
+    "licenceBought": "Lisensi dibeli: {{unit}}",
+    "queue": "Antrean produksi",
+    "queueEmpty": "Tidak ada produksi berjalan.",
+    "queueHint": "Pilih sistem di arsenal dan lokasi produksi.",
+    "cols": {
+      "unit": "Sistem",
+      "progress": "Kemajuan",
+      "eta": "Sisa"
+    },
+    "accelerate": "Percepat (mata uang premium)",
+    "accelerateShort": "−6 j",
+    "cancel": "Batalkan produksi",
+    "cancelled": "Produksi dibatalkan",
+    "noLicences": "Tidak ada lisensi produksi.",
+    "licenceHint": "Lisensi memungkinkan produksi sistem asing tanpa litbang, dengan potongan biaya produksi.",
+    "acquired": "diperoleh {{value}} hari lalu",
+    "importTotal": "Impor",
+    "source": {
+      "import": "impor",
+      "black_market": "pasar gelap"
+    }
+  },
+  "shop": {
+    "consent": {
+      "title": "Konfirmasi pembelian",
+      "summary": "{{label}}:",
+      "cgv": "Saya telah membaca dan menyetujui",
+      "waiver": "Saya meminta penyediaan mata uang premium segera dan secara tegas melepaskan hak penarikan kembali saya sejak penyerahannya (pasal L221-28 13° Kode Konsumen Prancis).",
+      "pay": "Pesan dengan kewajiban membayar · {{price}}",
+      "error": "Tidak dapat membuka pembayaran. Coba lagi."
+    },
+    "accelerated": "Percepatan diterapkan · saldo {{balance}}",
+    "notEnough": "Saldo mata uang premium tidak cukup.",
+    "unavailable": "Toko tidak tersedia.",
+    "title": "Toko",
+    "path": "toko",
+    "unavailableHint": "Server pembayaran tidak merespons.",
+    "balance": "Saldo",
+    "currency": "kredit komando",
+    "policy": "Pembelian dalam permainan ini",
+    "policies": {
+      "open": "Diizinkan",
+      "limited": "Terbatas",
+      "disabled": "Dinonaktifkan"
+    },
+    "cap": "batas: {{cap}} kredit per pemain",
+    "policyHint": "ditentukan oleh pembuat permainan",
+    "fair": "Tanpa loot box: setiap pembelian menyebutkan isinya dengan tepat. Permainan kompetitif dapat menonaktifkan pembelian.",
+    "packs": "Kredit komando",
+    "best": "Penawaran terbaik",
+    "bonus": "+{{value}} gratis",
+    "credited": "Kredit ditambahkan ke saldo Anda",
+    "cosmetics": "Kosmetik",
+    "owned": "Dimiliki",
+    "cosmeticBought": "Kosmetik terbuka",
+    "kinds": {
+      "unit_skin": "Bidak",
+      "flag": "Bendera",
+      "map_theme": "Peta",
+      "terminal_theme": "Terminal"
+    },
+    "accelerations": "Percepatan",
+    "accelerationsHelp": "Kurangi durasi produksi, riset, konstruksi, atau perbaikan dari antrean terkait (tombol «−6 j»), jika kebijakan permainan mengizinkan.",
+    "history": "Riwayat",
+    "reasons": {
+      "purchase": "Pembelian",
+      "accelerate": "Percepatan",
+      "cosmetic": "Kosmetik",
+      "refund": "Pengembalian dana",
+      "admin": "Kredit administrator",
+      "resources": "Sumber daya dalam permainan"
+    },
+    "subtitle": "Kredit komando, kosmetik, dan percepatan. Tanpa loot box.",
+    "unlimited": "Saldo tanpa batas",
+    "unlimitedHint": "Akun mode tanpa batas: tidak ada yang didebit.",
+    "acceleratedUnlimited": "Percepatan diterapkan (saldo tanpa batas)",
+    "resources": {
+      "title": "Sumber daya",
+      "help": "Tukarkan kredit komando dengan dolar gim atau sumber daya, yang langsung dikirim ke negara Anda dalam permainan ini.",
+      "dollars": "dolar",
+      "price": "Harga",
+      "buy": "Beli",
+      "short": "Saldo tidak cukup",
+      "free": "Gratis (akun tanpa batas)",
+      "after": "saldo setelahnya: {{value}}",
+      "balanceAfter": "Saldo setelah pembelian",
+      "delivered": "Terkirim",
+      "confirmTitle": "Konfirmasi pembelian",
+      "confirm": "Bayar {{price}} kredit",
+      "confirmHelp": "Pengiriman langsung di permainan yang sedang berjalan. Pembelian final, tanpa pengembalian dalam bentuk kredit.",
+      "done": "{{name}} terkirim · saldo {{balance}}",
+      "doneUnlimited": "{{name}} terkirim (akun tanpa batas)",
+      "capUsed": "{{spent}} / {{cap}} kredit terpakai di permainan ini",
+      "disabled": "Pembelian dinonaktifkan di permainan ini (server kompetitif).",
+      "unavailable": "Penawaran tidak tersedia.",
+      "errors": {
+        "cap_reached": "Batas pengeluaran permainan tercapai.",
+        "shop_disabled": "Pembelian dinonaktifkan di permainan ini.",
+        "insufficient_premium": "Saldo kredit tidak cukup.",
+        "generic": "Pembelian tidak dapat dilakukan."
+      }
+    }
+  },
+  "researchNodes": {
+    "aero_gen2": "Pesawat tempur generasi ke-2",
+    "aero_gen3": "Pesawat tempur generasi ke-3",
+    "aero_gen4": "Pesawat tempur generasi ke-4",
+    "aero_gen4plus": "Pesawat tempur generasi 4+",
+    "aero_gen5": "Pesawat tempur generasi ke-5",
+    "aero_bomber1": "Pembom subsonik",
+    "aero_bomber2": "Pembom supersonik",
+    "aero_stealth-bomber": "Pembom siluman",
+    "aero_helo1": "Helikopter angkut",
+    "aero_helo2": "Helikopter serang",
+    "aero_helo3": "Helikopter serang modern",
+    "aero_drones1": "Drone taktis",
+    "aero_drones2": "Drone MALE bersenjata dan HALE",
+    "aero_drones3": "Drone tempur siluman",
+    "aero_aew": "Peringatan dini udara",
+    "aero_tanker": "Pengisian bahan bakar di udara",
+    "aero_transport": "Angkutan strategis",
+    "land_gen1": "Lapis baja generasi ke-1",
+    "land_gen2": "Lapis baja generasi ke-2",
+    "land_gen3": "Lapis baja generasi ke-3",
+    "land_gen4": "Lapis baja generasi ke-4",
+    "land_gen5": "Lapis baja generasi ke-5",
+    "land_mlrs": "Peluncur roket berat",
+    "land_ew": "Peperangan elektronik darat",
+    "naval_gen1": "Kapal generasi ke-1",
+    "naval_gen2": "Kapal generasi ke-2",
+    "naval_gen3": "Kapal generasi ke-3",
+    "naval_gen4": "Kapal generasi ke-4",
+    "naval_gen5": "Kapal generasi ke-5",
+    "naval_carrier": "Kapal induk",
+    "naval_sub1": "Kapal selam konvensional",
+    "naval_sub2": "Kapal selam modern (AIP)",
+    "naval_sub3": "Kapal selam serang nuklir",
+    "naval_ssbn": "Kapal selam rudal balistik",
+    "missiles_sam1": "Pertahanan udara jarak pendek",
+    "missiles_sam2": "Pertahanan udara jarak menengah",
+    "missiles_sam3": "Pertahanan udara jarak jauh",
+    "missiles_sam4": "Pertahanan udara berlapis",
+    "missiles_sam5": "Pertahanan udara generasi baru",
+    "missiles_abm": "Pertahanan rudal balistik",
+    "missiles_cruise1": "Rudal jelajah",
+    "missiles_cruise2": "Rudal jelajah siluman",
+    "missiles_antiship": "Rudal antikapal",
+    "missiles_ballistic1": "Rudal balistik taktis",
+    "missiles_ballistic2": "Rudal balistik jarak menengah",
+    "missiles_ballistic3": "Rudal balistik jarak antara",
+    "missiles_hypersonic": "Senjata hipersonik",
+    "nuclear_weapons": "Senjata nuklir",
+    "nuclear_icbm": "Rudal antarbenua",
+    "nuclear_slbm": "Rudal balistik kapal selam",
+    "sensors_radar1": "Radar pengawas",
+    "sensors_radar2": "Radar larik aktif",
+    "sensors_radar3": "Radar lintas cakrawala dan antisiluman",
+    "sensors_space1": "Satelit pengamat",
+    "sensors_space2": "Konstelasi intelijen",
+    "sensors_asat": "Senjata antisatelit",
+    "cyber_l1": "Pertahanan siber",
+    "cyber_l2": "Serangan siber ofensif",
+    "cyber_l3": "Perang siber lanjutan",
+    "intel_interior1": "Keamanan dalam negeri T1",
+    "intel_interior2": "Keamanan dalam negeri T2",
+    "intel_interior3": "Keamanan dalam negeri T3",
+    "intel_exterior1": "Intelijen luar negeri T1",
+    "intel_exterior2": "Intelijen luar negeri T2",
+    "intel_exterior3": "Intelijen luar negeri T3",
+    "intel_military1": "Intelijen militer T1",
+    "intel_military2": "Intelijen militer T2",
+    "intel_military3": "Intelijen militer T3",
+    "industry_l1": "Industri pertahanan T1",
+    "industry_l2": "Industri pertahanan T2",
+    "industry_l3": "Industri pertahanan T3",
+    "desc": {
+      "aero": "Penerbangan tempur, dukungan, dan drone.",
+      "land": "Lapis baja, artileri, dan infanteri mekanis.",
+      "naval": "Armada permukaan dan kapal selam.",
+      "missiles": "Pertahanan udara, serangan, antirudal.",
+      "nuclear": "Penangkalan nuklir dan wahana strategis.",
+      "sensors": "Radar, satelit, peperangan elektronik.",
+      "cyber": "Pertahanan dan serangan siber.",
+      "intel": "Tingkat dinas intelijen.",
+      "industry": "Produksi, logistik, dan biaya."
+    }
+  },
+  "research": {
+    "branchesLabel": "Cabang riset",
+    "branches": {
+      "aero": "Aeronautika",
+      "land": "Darat",
+      "naval": "Laut",
+      "missiles": "Rudal",
+      "sensors": "Sensor",
+      "cyber": "Siber",
+      "intel": "Intelijen",
+      "industry": "Industri"
+    },
+    "current": "Riset berjalan",
+    "progress": "Kemajuan",
+    "idle": "Tidak ada riset berjalan.",
+    "queue": "Antrean",
+    "queueEmpty": "Antrean kosong.",
+    "remove": "Keluarkan dari antrean",
+    "removed": "Riset dikeluarkan",
+    "effects": "Efek kumulatif",
+    "requires": "Prasyarat",
+    "unlocks": "Membuka produksi",
+    "cost": "Biaya",
+    "duration": "Durasi",
+    "start": "Mulai riset",
+    "enqueue": "Tambahkan ke antrean",
+    "cancel": "Batal",
+    "started": "Riset dimulai: {{node}}",
+    "queued": "Ditambahkan ke antrean: {{node}}",
+    "pick": "Pilih sebuah simpul dari pohon.",
+    "noTree": "Pohon teknologi tidak tersedia.",
+    "noTreeHint": "Data riset (data/research) belum dimuat.",
+    "status": {
+      "done": "diperoleh",
+      "current": "berjalan",
+      "queued": "dalam antrean",
+      "available": "tersedia",
+      "locked": "terkunci"
+    },
+    "enqueueChain": "Rencanakan bersama prasyarat ({{count}} · {{cost}})",
+    "chainQueued": "{{count}} riset direncanakan hingga: {{node}}"
+  },
+  "modifiers": {
+    "production_speed": "Kecepatan produksi",
+    "production_cost": "Biaya produksi",
+    "research_speed": "Kecepatan riset",
+    "income_money": "Pendapatan",
+    "income_oil": "Minyak",
+    "income_metals": "Logam",
+    "income_electronics": "Elektronik",
+    "income_food": "Pangan",
+    "upkeep": "Perawatan",
+    "supply_range": "Jangkauan logistik",
+    "combat_damage": "Kerusakan",
+    "combat_armor": "Lapis baja",
+    "air_range": "Radius aksi udara",
+    "air_fuel": "Daya tahan udara",
+    "sensors_radarRange": "Jangkauan radar",
+    "sensors_stealthDetect": "Deteksi siluman",
+    "sensors_satellitePasses": "Lintasan satelit",
+    "ew_jamming": "Pengacauan",
+    "ew_jamResistance": "Ketahanan pengacauan",
+    "missiles_accuracy": "Presisi rudal",
+    "missiles_interception": "Intersepsi",
+    "naval_sonar": "Sonar",
+    "cyber_attack": "Serangan siber",
+    "cyber_defense": "Pertahanan siber",
+    "intel_interior_level": "Keamanan dalam negeri (tingkat)",
+    "intel_exterior_level": "Intelijen luar negeri (tingkat)",
+    "intel_military_level": "Intelijen militer (tingkat)",
+    "intel_capacity": "Kapasitas intelijen",
+    "stability_recovery": "Pemulihan stabilitas"
+  },
+  "domestic": {
+    "unavailable": "Pengelolaan dalam negeri tidak tersedia",
+    "unavailableHint": "Server permainan belum menerbitkan data ini.",
+    "kpi": {
+      "stability": "Stabilitas",
+      "stabilityHint": "ketertiban umum dan kepercayaan",
+      "trend": "tren {{value}} / hari",
+      "morale": "Moral",
+      "moraleHint": "rata-rata provinsi",
+      "moraleShift": "target {{value}} (kebijakan)",
+      "warSupport": "Dukungan perang",
+      "warSupportTarget": "target {{value}} · kelelahan ×{{factor}}",
+      "unrest": "Risiko kerusuhan",
+      "unrestFactor": "kebijakan dan keamanan dalam negeri: {{value}}"
+    },
+    "strike": "Mogok sedang berlangsung: produksi melambat {{wait}} lagi.",
+    "policiesTitle": "Kebijakan dalam negeri",
+    "activeCount": "{{count}} berlaku",
+    "active": "Berlaku",
+    "inForce": "Berlaku",
+    "suspended": "Ditangguhkan",
+    "locked": "Dapat diubah dalam {{wait}}",
+    "enabled": "Kebijakan «{{name}}» diberlakukan",
+    "disabled": "Kebijakan «{{name}}» dicabut",
+    "excludes": "Tidak sejalan dengan: {{list}}",
+    "policies": {
+      "propaganda": {
+        "name": "Propaganda",
+        "desc": "Media negara dimobilisasi: moral dan dukungan perang naik, membebani ekonomi."
+      },
+      "conscription": {
+        "name": "Wajib militer",
+        "desc": "Dinas militer wajib: infanteri dilatih lebih cepat, tenaga kerja ditarik dari ekonomi."
+      },
+      "war_economy": {
+        "name": "Upaya perang",
+        "desc": "Industri direkuisisi: produksi dipercepat, stabilitas dan moral terkikis, mogok lebih sering."
+      },
+      "austerity": {
+        "name": "Penghematan",
+        "desc": "Belanja sipil dipangkas: anggaran dan pemeliharaan lebih ringan, moral rendah, mogok dan kerusuhan."
+      },
+      "stimulus": {
+        "name": "Stimulus",
+        "desc": "Paket dukungan bagi penduduk: moral dan stabilitas naik, pendapatan berkurang."
+      },
+      "martial_law": {
+        "name": "Darurat militer",
+        "desc": "Tentara di jalanan: stabilitas pulih dan kerusuhan ditekan, moral dan dukungan anjlok."
+      }
+    },
+    "fx": {
+      "income": "Pendapatan",
+      "production": "Produksi",
+      "infantry": "Infanteri",
+      "research": "Riset",
+      "upkeep": "Pemeliharaan",
+      "stability": "Stabilitas",
+      "perDay": "/hari",
+      "morale": "Moral",
+      "moraleTarget": "Target moral",
+      "warSupport": "Dukungan",
+      "unrest": "Kerusuhan",
+      "strikes": "Mogok"
+    },
+    "totalsTitle": "Efek kumulatif",
+    "eventsTitle": "Peristiwa dalam negeri",
+    "noEvents": "Tidak ada peristiwa terbaru",
+    "ago": "{{value}} lalu",
+    "riskTitle": "Risiko kerusuhan per provinsi",
+    "riskMeta": "keresahan, pendudukan, stabilitas",
+    "noRisk": "Tidak ada provinsi yang terancam",
+    "occupied": "Diduduki",
+    "protected": "Terlindungi",
+    "cols": {
+      "risk": "Risiko",
+      "unrest": "Keresahan"
+    },
+    "help": "Mogok jika moral melemah, demonstrasi dan kerusuhan jika stabilitas turun, sabotase jaringan pemberontak di provinsi yang resah. Keamanan dalam negeri (Intelijen › Dalam negeri) mengurangi risiko ini."
+  },
+  "economy": {
+    "tabs": {
+      "dashboard": "Dasbor",
+      "resources": "Sumber daya",
+      "buildings": "Bangunan",
+      "market": "Pasar",
+      "deliveries": "Pengiriman",
+      "black": "Pasar gelap",
+      "logistics": "Logistik",
+      "interior": "Dalam negeri"
+    },
+    "treasury": "Kas",
+    "annualBudget": "Anggaran tahunan",
+    "budgetSource": "pertahanan, dibayarkan setiap hari",
+    "income": "Pendapatan",
+    "expenses": "Pengeluaran",
+    "balance": "Neraca",
+    "perDay": "per hari",
+    "runway": "cadangan: {{days}} h",
+    "incomeDetail": "Pendapatan / hari",
+    "expenseDetail": "Perawatan dan layanan / hari",
+    "upkeepAdjusted": "Perawatan disesuaikan biaya lokal: ×{{factor}} dari harga katalog ({{catalog}} / hari), indeks biaya {{index}}.",
+    "upkeepAdjustedHelp": "Peralatan lama lebih murah dirawat dan porsi lokal (gaji, bahan bakar, tenaga kerja) mengikuti tingkat harga negara; di awal, perawatan tentara nyata tidak pernah melebihi porsi realistis dari anggaran pertahanan.",
+    "incomeKeys": {
+      "trade": "Perdagangan (sanksi, blokade)",
+      "national": "Anggaran nasional",
+      "provincial": "Bagian provinsi",
+      "mobilization": "Mobilisasi",
+      "modifiers": "Riset dan bonus"
+    },
+    "construction": "Proyek",
+    "noConstruction": "Tidak ada proyek berjalan.",
+    "work": {
+      "build": "Konstruksi T{{level}}",
+      "upgrade": "Peningkatan T{{level}}",
+      "repair": "Perbaikan"
+    },
+    "cols": {
+      "building": "Bangunan",
+      "province": "Provinsi",
+      "work": "Pekerjaan",
+      "eta": "Sisa",
+      "resource": "Sumber daya",
+      "stock": "Stok",
+      "production": "Produksi / h",
+      "consumption": "Konsumsi / h",
+      "net": "Bersih / h",
+      "autonomy": "Ketahanan",
+      "seller": "Penjual",
+      "item": "Barang",
+      "price": "Harga",
+      "expires": "Kedaluwarsa",
+      "from": "Asal",
+      "range": "Radius",
+      "population": "Populasi",
+      "morale": "Moral",
+      "income": "Pendapatan / h"
+    },
+    "shortage": "kekurangan",
+    "days_other": "{{count}} hari",
+    "searchProvince": "Cari provinsi…",
+    "filter": "Filter",
+    "damaged": "Rusak",
+    "works": "Pekerjaan",
+    "buildingsCount_other": "{{count}} bangunan",
+    "noProvince": "Tidak ada provinsi yang cocok.",
+    "items": {
+      "units": "Peralatan",
+      "resource": "Sumber daya",
+      "licence": "Lisensi"
+    },
+    "licenceOf": "Lisensi: {{name}}",
+    "embargoed": "Di bawah embargo",
+    "noOffers": "Tidak ada penawaran di pasar.",
+    "reserved": "dipesan",
+    "withdraw": "Tarik",
+    "offerCancelled": "Penawaran ditarik",
+    "buy": "Beli",
+    "bought": "Pembelian berhasil: pengiriman dalam perjalanan",
+    "sell": "Jual",
+    "quantity": "Jumlah",
+    "priceM": "Harga (M$)",
+    "post": "Terbitkan penawaran",
+    "offerPosted": "Penawaran diterbitkan di pasar",
+    "noDeliveries": "Tidak ada pengiriman berjalan.",
+    "unknownSeller": "Penjual anonim",
+    "covert": "rahasia",
+    "official": "resmi",
+    "track": "Lacak",
+    "blackTitle": "Pasar gelap",
+    "blackText": "Harga dikalikan {{factor}}, pengiriman rahasia, risiko terdeteksi {{risk}} (insiden diplomatik jika ketahuan).",
+    "mobilization": "Mobilisasi umum",
+    "mobilized": "Mobilisasi berlaku",
+    "notMobilized": "Masa damai",
+    "mobilizeHelp": "+{{inf}} batalion infanteri per provinsi, pendapatan −{{penalty}}, stabilitas {{stab}} / hari.",
+    "since": "sejak {{value}} j",
+    "depots": "Depot dan pangkalan depan",
+    "noDepots": "Tidak ada depot.",
+    "show": "Lihat",
+    "blockades": "Blokade",
+    "forecast": "7 h: {{d7}} · 30 h: {{d30}}",
+    "deficitHint": "Defisit: perawatan pasukan Anda melebihi pendapatan. Taklukkan provinsi, kurangi anggaran intelijen, atau hentikan mobilisasi untuk menghindari kebangkrutan.",
+    "intelBudget": "Intelijen",
+    "ledgerTitle": "Arus nyata · 24 jam terakhir",
+    "ledgerEmpty": "Belum ada arus tercatat: buku besar terisi pada hari pertama permainan.",
+    "tradeBalance": "neraca perdagangan {{value}}",
+    "ledger": {
+      "budgetNational": "Anggaran nasional",
+      "budgetProvincial": "Bagian provinsi",
+      "trade": "Perdagangan",
+      "mobilization": "Mobilisasi",
+      "modifiers": "Bonus",
+      "upkeep": "Perawatan pasukan",
+      "production": "Produksi",
+      "imports": "Impor",
+      "research": "Riset",
+      "buildings": "Proyek",
+      "licences": "Lisensi",
+      "blackMarket": "Pasar gelap",
+      "marketPurchases": "Pembelian di pasar",
+      "marketSales": "Penjualan di pasar",
+      "transfersIn": "Penyerahan diterima",
+      "transfersOut": "Penyerahan diberikan",
+      "other": "Lainnya (intelijen, aliansi…)"
+    },
+    "constructionHint": "Tingkatkan bangunan atau bangun yang baru dari tab Bangunan atau panel provinsi.",
+    "provincesTitle": "Provinsi",
+    "populationMorale": "{{pop}} penduduk · moral {{morale}}",
+    "showAll": "Tampilkan {{count}} provinsi",
+    "showLess": "Ciutkan",
+    "resourcesHint": "Sumber daya diproduksi oleh provinsi dan bangunannya (sumur, tambang, pertanian, pabrik elektronik, kilang) dan dikonsumsi oleh unit Anda. Kekurangan memperlambat produksi; pangan memengaruhi moral.",
+    "ledgerToday": "Arus nyata · hari ini"
+  },
+  "armies": {
+    "tabs": {
+      "armies": "Pasukan",
+      "generals": "Jenderal",
+      "operations": "Operasi"
+    },
+    "name": {
+      "land": "Pasukan {{n}}",
+      "air": "Skuadron {{n}}",
+      "sea": "Armada {{n}}"
+    },
+    "kpi": {
+      "armies": "Pasukan",
+      "armiesSub": "{{combat}} bertempur · {{moving}} dalam perjalanan",
+      "land": "Darat",
+      "air": "Udara",
+      "sea": "Laut",
+      "static": "Lokasi tetap",
+      "piles_other": "{{count}} tumpukan",
+      "value": "Nilai",
+      "valueSub": "pada harga katalog"
+    },
+    "domain": "Matra",
+    "domains": {
+      "all": "Semua",
+      "land": "Darat",
+      "air": "Udara",
+      "sea": "Laut"
+    },
+    "state": {
+      "combat": "Bertempur",
+      "moving": "Bergerak",
+      "resupply": "Pengisian logistik",
+      "embarked": "Di atas kapal",
+      "idle": "Siaga"
+    },
+    "stateFilter": "Status",
+    "allStates": "Semua status",
+    "sort": "Urutkan menurut",
+    "sortBy": {
+      "state": "Urutan: pertempuran dulu",
+      "elements": "Urutan: kekuatan",
+      "hp": "Urutan: kondisi",
+      "name": "Urutan: nama"
+    },
+    "search": "Pasukan, peralatan, kota…",
+    "empty": "Tidak ada pasukan di peta.",
+    "noMatch": "Tidak ada pasukan yang cocok dengan filter.",
+    "pick": "Pilih pasukan",
+    "pickHint": "Komposisi, status, lokasi, dan perintah tampil di sini, beserta aksi langsung.",
+    "back": "Kembali ke pasukan",
+    "cols": {
+      "army": "Pasukan",
+      "strength": "Kekuatan",
+      "hp": "Kondisi",
+      "state": "Status",
+      "location": "Lokasi",
+      "orders": "Perintah berjalan",
+      "general": "Jenderal"
+    },
+    "elements_other": "{{count}} elemen",
+    "piles_other": "{{count}} tumpukan",
+    "supply": "Pasokan",
+    "veterancy": "Veteran",
+    "composition": "Komposisi",
+    "order": {
+      "move": "Menuju {{place}} · tiba dalam {{eta}}",
+      "attack": "Serangan: {{target}}",
+      "delegated": "Didelegasikan ke jenderal: {{directive}}",
+      "none": "Menunggu perintah"
+    },
+    "rename": "Ganti nama pasukan",
+    "save": "Konfirmasi",
+    "actions": {
+      "center": "Pusatkan",
+      "select": "Pilih",
+      "move": "Pindahkan",
+      "stop": "Hentikan",
+      "patrol": "Patroli di area",
+      "merge": "Gabungkan tumpukan",
+      "split": "Bagi tumpukan menjadi dua",
+      "selectPile": "Pilih tumpukan"
+    },
+    "mergeNone": "Tidak ada tumpukan peralatan yang sama yang berhenti dalam radius 10 km.",
+    "moveHint": "{{name}} dipilih: ketuk peta untuk menetapkan tujuan.",
+    "done": {
+      "stop": "Perintah berhenti diteruskan",
+      "patrol": "Patroli dimulai",
+      "rtb": "Kembali ke pangkalan diperintahkan",
+      "merge": "Tumpukan digabungkan",
+      "split": "Tumpukan dibagi"
+    }
+  },
+  "inventory": {
+    "tabs": {
+      "inventory": "Inventaris",
+      "catalog": "Katalog"
+    },
+    "kpi": {
+      "elements": "Bertugas",
+      "systems_other": "{{count}} peralatan berbeda",
+      "value": "Nilai inventaris",
+      "upkeep": "pemeliharaan {{value}} / hari",
+      "available": "Ketersediaan",
+      "availableSub": "{{available}} tersedia · {{engaged}} bertempur",
+      "production": "Dalam produksi",
+      "productionSub_other": "{{count}} pesanan berjalan",
+      "losses": "Kerugian",
+      "lossesSub": "menurut laporan pertempuran"
+    },
+    "search": "Cari peralatan…",
+    "toProduction": "Produksi",
+    "empty": "Tidak ada peralatan yang bertugas.",
+    "noMatch": "Tidak ada peralatan dalam kategori ini.",
+    "mobileLine": "{{n}} bertugas · {{available}} tersedia · {{value}}",
+    "cols": {
+      "system": "Peralatan",
+      "inService": "Bertugas",
+      "available": "Tersedia",
+      "engaged": "Tempur · dikerahkan",
+      "hp": "Kondisi",
+      "production": "Dalam produksi",
+      "losses": "Kerugian",
+      "value": "Nilai"
+    },
+    "hint": "Tersedia: diam, di luar pertempuran, dan siap. Dikerahkan: bergerak, bertugas, di atas kapal, atau sedang dipulihkan. Ketuk baris untuk membuka lembar data."
+  },
+  "army": {
+    "supply": {
+      "supplied": "Terpasok",
+      "limited": "Pasokan terbatas",
+      "cut": "Terputus"
+    },
+    "loc": {
+      "near": "{{city}} · {{km}} km",
+      "sea": "Di laut",
+      "air": "Di udara",
+      "embarked": "Diangkut",
+      "center": "Pusatkan peta pada unit",
+      "title": "Kota terdekat: {{city}} ({{km}} km) · klik untuk memusatkan peta"
+    },
+    "supplyState": {
+      "supplied": "terpasok",
+      "limited": "terbatas",
+      "cut": "terputus"
+    },
+    "mission": {
+      "none": "tidak ada",
+      "patrol": "patroli",
+      "strike": "serangan",
+      "escort": "pengawalan",
+      "refuel": "pengisian bahan bakar",
+      "awacs": "peringatan udara",
+      "recon": "pengintaian",
+      "blockade": "blokade",
+      "rtb": "kembali ke pangkalan"
+    },
+    "fuel": "bahan bakar {{value}} j",
+    "veterancy": "veteran",
+    "jamming": "Pengacauan",
+    "rtb": "Kembali ke pangkalan",
+    "unitsCount_other": "{{count}} unit",
+    "delegated": "Didelegasikan ke AI",
+    "noGenerals": "Tidak ada jenderal tersedia.",
+    "directive": "Arahan",
+    "directives": {
+      "none": "Manual",
+      "defend": "Bertahan",
+      "advance": "Maju",
+      "harass": "Mengganggu"
+    },
+    "traits": {
+      "offensive": "Ofensif",
+      "defender": "Bertahan",
+      "logistician": "Ahli logistik",
+      "aviator": "Penerbang",
+      "admiral": "Laksamana"
+    },
+    "delegationOn": "Komando didelegasikan ke {{name}}",
+    "delegationOff": "Komando diambil kembali",
+    "selectGroup": "Pilih kelompok",
+    "assignSelection_other": "Tugaskan pilihan ({{count}})",
+    "assigned": "Unit ditugaskan ke {{name}}",
+    "ops": {
+      "help": "Rencanakan tahap-tahap tersinkron di sekitar jam J (serangan pendahuluan, pengacauan, serbuan, eksploitasi).",
+      "new": "Operasi baru",
+      "none": "Tidak ada operasi terencana.",
+      "defaultName": "Operasi Badai",
+      "name": "Nama operasi",
+      "hHour": "Jam J",
+      "hHourHint": "dalam {{value}} (waktu permainan)",
+      "offset": "Selisih dalam menit",
+      "kind": "Jenis perintah",
+      "label": "Label tahap",
+      "useSelection_other": "Pilihan ({{count}})",
+      "unitsCount_other": "{{count}} unit",
+      "noUnits": "tidak ada unit",
+      "pickTarget": "Pilih sasaran…",
+      "place": "Lokasi (kota, provinsi, «lat,lng»)",
+      "removeStep": "Hapus tahap",
+      "addStep": "Tambah tahap",
+      "plan": "Rencanakan",
+      "planned": "Operasi direncanakan: {{name}}",
+      "cancelled": "Operasi dibatalkan",
+      "invalid": "Setiap tahap harus memiliki unit dan sasaran valid (lokasi dikenal atau unit musuh).",
+      "examples": {
+        "prep": "Serangan pendahuluan",
+        "assault": "Serbuan"
+      },
+      "kinds": {
+        "move": "Pergerakan",
+        "attack": "Serangan",
+        "strike": "Serangan presisi",
+        "patrol": "Patroli",
+        "jam": "Pengacauan",
+        "stop": "Berhenti",
+        "rtb": "Kembali ke pangkalan"
+      },
+      "status": {
+        "planned": "terencana",
+        "running": "berjalan",
+        "done": "selesai",
+        "cancelled": "dibatalkan",
+        "failed": "gagal"
+      },
+      "stepStatus": {
+        "pending": "menunggu",
+        "done": "dilaksanakan",
+        "failed": "gagal"
+      }
+    }
+  },
+  "diplomacy": {
+    "unavailable": "Diplomasi tidak tersedia dalam permainan ini.",
+    "country": {
+      "pick": "Pilih negara…",
+      "none": "Belum ada negara dipilih",
+      "noneHint": "Ketuk provinsi asing di peta lalu «Negara», atau pilih negara di bawah.",
+      "open": "Negara: {{nation}}",
+      "openTip": "Hubungan, perjanjian, aksi diplomatik, pesan, intelijen",
+      "player": "Pemain manusia",
+      "ai": "Dipimpin AI",
+      "embargoed": "Diembargo",
+      "sanctioned": "Terkena sanksi",
+      "mobilized": "Dimobilisasi",
+      "relation": "Hubungan dan perjanjian",
+      "pending": "Usulan",
+      "pendingMine": "{{kind}} terkirim",
+      "pendingTheirs": "{{kind}} diterima",
+      "passage": "Hak lintas",
+      "mutualDefense": "Pertahanan bersama",
+      "intelSharing": "Berbagi intelijen",
+      "no": "tidak",
+      "profile": "Profil",
+      "provinces": "Provinsi",
+      "budget": "Anggaran pertahanan",
+      "personnel": "Personel aktif",
+      "doctrine": "Doktrin",
+      "actions": "Aksi",
+      "invite": "Undang ke aliansi",
+      "invited": "Undangan terkirim ke {{aNation}}",
+      "sanctions": "Usulkan sanksi (Dewan)",
+      "sanctionsClosed": "Usulan ke Dewan Keamanan belum dibuka.",
+      "sanctionsText": "Sanksi ekonomi terhadap {{nationLe}}.",
+      "sanctionsProposed": "Resolusi sanksi diajukan ke Dewan",
+      "message": "Kirim pesan",
+      "intel": "Intelijen"
+    },
+    "tabs": {
+      "nation": "Negara",
+      "relations": "Hubungan",
+      "alliances": "Aliansi",
+      "neutrals": "Netral",
+      "disputed": "Wilayah sengketa",
+      "stability": "Stabilitas"
+    },
+    "relation": {
+      "war": "Perang",
+      "peace": "Damai",
+      "ceasefire": "Gencatan senjata",
+      "ally": "Sekutu"
+    },
+    "reputation": "Reputasi",
+    "reputationHint": "memengaruhi pemungutan suara dan negara netral",
+    "atWar": "Berperang",
+    "allies": "Sekutu",
+    "pending": "Usulan diterima",
+    "filter": "Filter",
+    "filters": {
+      "known": "Tetangga dan relasi"
+    },
+    "cols": {
+      "nation": "Negara",
+      "relation": "Hubungan",
+      "since": "Sejak",
+      "alliance": "Aliansi",
+      "stability": "Stabilitas",
+      "leaning": "Kecenderungan"
+    },
+    "proposal": {
+      "peace": "mengusulkan perdamaian",
+      "ceasefire": "mengusulkan gencatan senjata"
+    },
+    "accept": "Terima",
+    "refuse": "Tolak",
+    "accepted": "Usulan diterima",
+    "refused": "Usulan ditolak",
+    "sent": "usulan terkirim",
+    "ceasefire": "Gencatan senjata",
+    "peace": "Perdamaian",
+    "declareWar": "Nyatakan perang",
+    "warTitle": "Pernyataan perang",
+    "warText": "Nyatakan perang terhadap {{aNation}}? Sekutu Anda yang terikat pertahanan bersama dapat terseret, ketegangan dunia akan naik dan reputasi Anda akan turun.",
+    "members_other": "{{count}} anggota",
+    "yourAlliance": "Aliansi Anda",
+    "leader": "Pemimpin:",
+    "charter": {
+      "mutualDefense": "Pertahanan bersama",
+      "intelSharing": "Berbagi intelijen",
+      "passage": "Hak lintas"
+    },
+    "charterHelp": {
+      "mutualDefense": "Serangan terhadap satu anggota melibatkan semua anggota.",
+      "intelSharing": "Laporan intelijen dibagikan secara otomatis.",
+      "passage": "Pasukan anggota bebas melintasi provinsi Anda."
+    },
+    "treasury": "Kas bersama",
+    "deposited": "Setoran {{amount}} ke kas aliansi",
+    "votes": {
+      "replace_leader": "Ganti pemimpin dengan {{nationLe}}",
+      "skip_mutual_defense": "Bebaskan {{nationLe}} dari pertahanan bersama",
+      "expel": "Keluarkan {{nationLe}}"
+    },
+    "yes": "Setuju",
+    "no": "Menolak",
+    "voted": "Suara tercatat",
+    "hasVoted": "telah memilih",
+    "invited": "Undangan terkirim:",
+    "allianceChat": "Ruang aliansi",
+    "leave": "Keluar dari aliansi",
+    "left": "Anda telah keluar dari aliansi",
+    "create": "Dirikan aliansi",
+    "allianceName": "Nama",
+    "allianceFlag": "Singkatan (4 huruf)",
+    "createBtn": "Dirikan aliansi",
+    "created": "Aliansi didirikan: {{name}}",
+    "invitation": "Undangan bergabung dengan «{{name}}»",
+    "joined": "Anda bergabung dengan {{name}}",
+    "noNeutrals": "Tidak ada negara netral untuk dirangkul.",
+    "neutralsHelp": "Bantuan ekonomi untuk mendekatkan negara netral ke aliansi Anda.",
+    "aid": "Jumlah bantuan",
+    "court": "Bantu · {{amount}}",
+    "courted": "Bantuan dikirim ke {{aNation}}",
+    "noDisputed": "Tidak ada wilayah sengketa.",
+    "provinces_other": "{{count}} provinsi",
+    "holder": "Pemegang",
+    "claimants": "Klaim",
+    "tension": "Ketegangan",
+    "fundRebels": "Danai pemberontak",
+    "rebelsFunded": "Pendanaan pemberontak dimulai",
+    "noStability": "Stabilitas tidak dipublikasikan.",
+    "stability": "Stabilitas",
+    "trend": "Tren",
+    "coupRisk": "Risiko kudeta",
+    "coupHint": "di bawah 15 % stabilitas: bahaya",
+    "factors": "Faktor",
+    "noRelations": "Tidak ada negara dalam filter ini.",
+    "noRelationsHint": "Anda berdamai dengan semua negara. Pilih «Semua» untuk menyatakan perang atau mengusulkan aliansi.",
+    "neutralsNeedAlliance": "Merangkul negara netral mengharuskan Anda tergabung dalam aliansi: dirikan atau bergabunglah dengan aliansi di tab Aliansi.",
+    "noLeaning": "tidak ada kecenderungan",
+    "moreNeutrals": "… dan {{count}} lainnya: persempit pencarian."
+  },
+  "council": {
+    "unavailable": "Dewan Keamanan tidak tersedia.",
+    "permanent": "Kursi tetap",
+    "rotating": "Kursi bergilir",
+    "majority": {
+      "simple": "Mayoritas sederhana",
+      "two_thirds": "Mayoritas dua pertiga"
+    },
+    "veto": "Hak veto",
+    "phase": {
+      "proposals": "Pengajuan usulan",
+      "voting": "Pemungutan suara berlangsung",
+      "closed": "Sidang ditutup"
+    },
+    "recess": "Di luar sesi",
+    "agenda_other": "{{count}} resolusi dalam agenda",
+    "closesIn": "Ditutup dalam",
+    "nextSession": "Sidang berikutnya",
+    "propose": "Usulkan resolusi",
+    "noResolutions": "Tidak ada resolusi dalam agenda.",
+    "inForce": "Resolusi yang berlaku",
+    "until": "hingga",
+    "zone": "zona {{km}} km",
+    "proposer": "Diusulkan oleh",
+    "duration": "Masa berlaku: {{days}} h",
+    "waiting_other": "{{count}} menunggu",
+    "vetoThreat": "Veto: {{nations}}",
+    "yourVote": "Suara Anda",
+    "voted": "Suara tercatat",
+    "type": "Jenis",
+    "target": "Negara sasaran",
+    "pickTarget": "Pilih…",
+    "text": "Teks resolusi",
+    "textHint": "10 sampai 500 karakter, gaya resolusi.",
+    "textPlaceholder": "Dewan Keamanan, prihatin atas…",
+    "submit": "Ajukan",
+    "proposed": "Resolusi diajukan",
+    "types": {
+      "arms_embargo": "Embargo senjata",
+      "economic_sanctions": "Sanksi ekonomi",
+      "ceasefire": "Gencatan senjata",
+      "no_fly_zone": "Zona larangan terbang",
+      "peacekeeping": "Penjaga perdamaian",
+      "condemnation": "Kecaman"
+    },
+    "status": {
+      "proposed": "diajukan",
+      "voting": "dalam pemungutan suara",
+      "passed": "diadopsi",
+      "rejected": "ditolak",
+      "vetoed": "diveto",
+      "expired": "kedaluwarsa"
+    },
+    "votes": {
+      "yes": "Setuju",
+      "no": "Menolak",
+      "abstain": "Abstain",
+      "none": "belum memilih"
+    },
+    "noPermanent": "tidak ada (belum ada aliansi)",
+    "votingIn": "Pemungutan suara dibuka dalam"
+  },
+  "news": {
+    "filter": "Kategori",
+    "empty": "Tidak ada kawat berita.",
+    "urgent": "MENDESAK",
+    "source": "PERS RED LINE",
+    "locate": "Temukan",
+    "cats": {
+      "strike": "Serangan",
+      "war": "Perang",
+      "peace": "Damai",
+      "council": "PBB",
+      "leak": "Bocoran",
+      "revolt": "Pemberontakan",
+      "coup": "Kudeta",
+      "alliance": "Aliansi",
+      "economy": "Ekonomi",
+      "nuclear": "Nuklir",
+      "capture": "Penaklukan",
+      "refugees": "Pengungsi",
+      "event": "Peristiwa"
+    },
+    "war": {
+      "h0": "{{A}} / {{B}}: permusuhan pecah",
+      "h1": "Perang terbuka: {{A}} melawan {{B}}",
+      "h2": "{{A}} melewati garis merah: keadaan perang dengan {{B}}",
+      "h3": "Pemutusan diplomatik total: {{A}} / {{B}}",
+      "b0": "Kementerian luar negeri mengonfirmasi keadaan perang. Agresor yang ditunjuk: {{A}}.",
+      "b1": "Pergerakan pasukan pertama dilaporkan. {{B}} mengecam agresi {{A}}.",
+      "b2": "Seruan untuk menahan diri berlipat setelah {{A}} memulai permusuhan."
+    },
+    "war_alliance": {
+      "h0": "{{X}}: {{A}} berperang melawan {{B}} atas nama pertahanan bersama",
+      "h1": "Pertahanan bersama aktif: {{A}} ikut dalam konflik melawan {{B}}",
+      "h2": "Solidaritas aliansi: {{A}} menyatakan perang terhadap {{B}}",
+      "b0": "{{A}} memenuhi piagam aliansi {{X}} setelah seorang anggota diserang.",
+      "b1": "Klausul pertahanan bersama aliansi {{X}} memperluas konflik."
+    },
+    "peace": {
+      "h0": "{{A}} / {{B}}: perjanjian damai ditandatangani",
+      "h1": "Permusuhan antara {{A}} dan {{B}} berakhir",
+      "h2": "Perdamaian tercapai: {{A}} / {{B}}",
+      "b0": "Para delegasi telah memaraf perjanjian. Pasukan diberi tenggat untuk mundur.",
+      "b1": "Perjanjian mengatur penarikan pasukan yang dikerahkan di wilayah lawan."
+    },
+    "peace_annexation": {
+      "h0": "{{A}} / {{B}}: perdamaian mengukuhkan penaklukan {{A}}",
+      "h1": "Perjanjian damai: {{B}} menyerahkan {{X}} provinsi kepada {{A}}",
+      "h2": "Akhir perang: perbatasan {{B}} digambar ulang",
+      "b0": "Wilayah pendudukan tetap di bawah kendali {{A}}: {{X}} provinsi berpindah tangan.",
+      "b1": "{{B}} menandatangani perdamaian tanpa memperoleh kembali {{X}} provinsi yang hilang."
+    },
+    "capitulation": {
+      "h0": "{{B}} menyerah kepada {{A}}",
+      "h1": "{{B}} menyerah: {{A}} memaksakan perdamaian",
+      "h2": "Kekalahan {{B}}: gencatan senjata ditandatangani dengan {{A}}",
+      "b0": "Setelah ibu kotanya jatuh, pemerintah {{B}} menerima syarat {{A}}. {{X}} provinsi beralih ke kendalinya.",
+      "b1": "Pasukan {{B}} meletakkan senjata. {{A}} menganeksasi {{X}} provinsi."
+    },
+    "ceasefire": {
+      "h0": "{{A}} / {{B}}: gencatan senjata berlaku",
+      "h1": "Senjata terdiam: gencatan antara {{A}} dan {{B}}",
+      "h2": "Gencatan senjata tercapai: {{A}} / {{B}}",
+      "b0": "Gencatan membekukan garis depan. Pelanggarnya terancam sanksi.",
+      "b1": "Pengamat internasional menyambut langkah pertama. Durasi direncanakan: {{X}} hari."
+    },
+    "ceasefire_violated": {
+      "h0": "{{A}} melanggar gencatan senjata dengan {{B}}",
+      "h1": "Gencatan runtuh: {{A}} kembali menyerang {{B}}",
+      "h2": "Pelanggaran gencatan senjata: {{A}} dituding",
+      "b0": "Komunitas internasional mengecam pelanggaran gencatan. Pemungutan suara sanksi dimulai.",
+      "b1": "Pelanggaran oleh {{A}} otomatis diajukan ke Dewan Keamanan."
+    },
+    "alliance_created": {
+      "h0": "Aliansi baru: {{X}}, dipimpin {{A}}",
+      "h1": "{{A}} mendirikan aliansi {{X}}",
+      "h2": "Penataan ulang strategis: lahirnya {{X}}",
+      "b0": "Piagam: {{Y}}.",
+      "b1": "Blok baru dipimpin oleh {{A}}. Piagam: {{Y}}."
+    },
+    "alliance_joined": {
+      "h0": "{{A}} bergabung dengan aliansi {{X}}",
+      "h1": "{{X}} meluas: {{A}} bergabung",
+      "h2": "Keanggotaan: {{A}} / {{X}}",
+      "b0": "Aliansi kini beranggotakan {{Y}} negara.",
+      "b1": "{{A}} menandatangani piagam {{X}}."
+    },
+    "alliance_left": {
+      "h0": "{{A}} keluar dari aliansi {{X}}",
+      "h1": "Kepergian mengejutkan: {{A}} / {{X}}",
+      "h2": "{{X}} kehilangan anggota: {{A}}",
+      "b0": "Mundurnya {{A}} melemahkan {{X}}.",
+      "b1": "Mitra {{A}} mencatat kepergiannya."
+    },
+    "alliance_expelled": {
+      "h0": "{{X}} mengeluarkan {{A}}",
+      "h1": "Dikeluarkan: {{A}} bukan lagi anggota {{X}}",
+      "b0": "Anggota {{X}} memilih mengeluarkan {{A}}."
+    },
+    "leader_replaced": {
+      "h0": "{{X}}: {{A}} memimpin aliansi",
+      "h1": "Pergantian pimpinan di {{X}}",
+      "b0": "Anggota {{X}} menunjuk {{A}} sebagai pemimpin baru aliansi."
+    },
+    "mutual_skipped": {
+      "h0": "{{X}} melepaskan pertahanan bersama terhadap {{A}}",
+      "h1": "Pertahanan bersama ditangguhkan: {{X}} / {{A}}",
+      "b0": "Anggota {{X}} memilih pengecualian: tidak ada perang otomatis melawan {{A}}."
+    },
+    "council_open": {
+      "h0": "Dewan Keamanan: sidang dibuka",
+      "h1": "Dewan Keamanan bersidang",
+      "h2": "Sidang Dewan Keamanan: {{X}} naskah untuk dipilih",
+      "b0": "{{X}} rancangan resolusi diajukan untuk dipilih. Anggota: {{Y}}.",
+      "b1": "Para delegasi punya waktu pemungutan suara untuk memutuskan {{X}} naskah."
+    },
+    "emergency_council": {
+      "h0": "Rapat darurat Dewan Keamanan",
+      "h1": "Dewan Keamanan dipanggil secara darurat",
+      "b0": "{{X}}",
+      "b1": "Presidensi memanggil anggota tanpa menunda. {{X}}"
+    },
+    "resolution_passed": {
+      "h0": "Dewan Keamanan: {{X}} diadopsi terhadap {{A}}",
+      "h1": "Resolusi diadopsi: {{X}} ({{A}})",
+      "h2": "Resolusi terhadap {{A}}: {{X}}",
+      "b0": "Naskah berlaku selama {{Y}} hari.",
+      "b1": "Suara: {{Y}}."
+    },
+    "resolution_zone_passed": {
+      "h0": "Dewan Keamanan: {{X}} diadopsi",
+      "h1": "Resolusi diadopsi: {{X}}",
+      "b0": "Zona terkait: {{Y}}.",
+      "b1": "Cakupan ketentuan: {{Y}}."
+    },
+    "resolution_rejected": {
+      "h0": "Dewan Keamanan: {{X}} ditolak",
+      "h1": "Tidak ada mayoritas untuk {{X}}",
+      "b0": "Rancangan yang diajukan {{A}} tidak meraih mayoritas yang diperlukan."
+    },
+    "resolution_vetoed": {
+      "h0": "Veto di Dewan Keamanan: {{X}} terhalang",
+      "h1": "{{A}} menjatuhkan veto: {{X}}",
+      "b0": "Veto {{A}} menghalangi adopsi naskah."
+    },
+    "strike": {
+      "h0": "Serangan {{X}} oleh {{A}} dilaporkan dekat {{P}}",
+      "h1": "{{B}}: serangan {{X}} dekat {{P}}",
+      "h2": "{{A}} / {{B}}: serangan {{X}} baru",
+      "b0": "Ledakan terdengar dekat {{P}}. {{B}} menuduh {{A}}.",
+      "b1": "Kerugian sedang dinilai setelah serangan {{X}} dekat {{P}}."
+    },
+    "nuclear": {
+      "h0": "Ledakan nuklir dekat {{P}}",
+      "h1": "Tabu nuklir dilanggar: {{A}} menyerang {{B}}",
+      "h2": "Serangan nuklir: dunia terguncang",
+      "b0": "Senjata nuklir digunakan oleh {{A}} dekat {{P}}. Siaga dunia di tingkat maksimum.",
+      "b1": "Ibu kota dunia serentak mengecam penggunaan senjata atom oleh {{A}}."
+    },
+    "battle": {
+      "h0": "Pertempuran sengit dekat {{P}}",
+      "h1": "Pertempuran dekat {{P}}: {{A}} menang",
+      "h2": "Front: {{P}}",
+      "b0": "Pihak bertikai: {{X}}.",
+      "b1": "Pertempuran mempertemukan {{X}}. Unggul: {{A}}."
+    },
+    "capital": {
+      "h0": "Ibu kota {{B}} jatuh ke tangan {{A}}",
+      "h1": "{{P}}: ibu kota {{B}} direbut oleh {{A}}",
+      "h2": "Kejutan besar: {{A}} merebut {{P}}",
+      "b0": "Pemerintah {{B}} dikabarkan telah meninggalkan {{P}}.",
+      "b1": "Jatuhnya {{P}} menandai titik balik konflik."
+    },
+    "capture": {
+      "h0": "{{A}} menguasai {{P}}",
+      "h1": "{{P}} berada di bawah kendali {{A}}",
+      "b0": "{{B}} kehilangan provinsi {{P}}."
+    },
+    "agent_caught": {
+      "h0": "Kasus spionase: {{B}} menuduh {{A}}",
+      "h1": "Agen {{A}} ditangkap oleh {{B}}",
+      "h2": "Spionase: insiden diplomatik antara {{A}} dan {{B}}",
+      "b0": "{{B}} mengecam operasi intelijen {{A}} di wilayahnya."
+    },
+    "blockade": {
+      "h0": "Blokade: {{A}} mengunci {{P}}",
+      "h1": "Lalu lintas laut terganggu: blokade {{P}}",
+      "b0": "Perdagangan di sekitar {{P}} melambat tajam."
+    },
+    "blockade_lifted": {
+      "h0": "Blokade {{P}} dicabut",
+      "b0": "Lalu lintas berangsur pulih di sekitar {{P}}."
+    },
+    "revolt": {
+      "h0": "Kerusuhan di {{P}}: demonstrasi melawan kekuasaan {{B}}",
+      "h1": "{{B}}: huru-hara di {{P}}",
+      "h2": "Gejolak di {{P}}",
+      "b0": "Ribuan demonstran menantang otoritas {{B}}.",
+      "b1": "Aparat keamanan {{B}} dikerahkan di {{P}}."
+    },
+    "revolt_disputed": {
+      "h0": "{{X}}: pemberontakan di {{P}} melawan {{B}}",
+      "h1": "Wilayah sengketa: pemberontakan rakyat di {{P}}",
+      "h2": "{{X}}: ketegangan meningkat di {{P}}",
+      "b0": "Di wilayah yang diklaim {{Y}} ini, penduduk menentang otoritas {{B}}.",
+      "b1": "Kawasan {{X}} kembali dilanda kekerasan. Pemegang: {{B}}."
+    },
+    "uprising": {
+      "h0": "Pemberontakan bersenjata di {{P}}",
+      "h1": "{{B}}: kelompok bersenjata angkat senjata di {{P}}",
+      "h2": "Pemberontakan di {{P}}",
+      "b0": "Pejuang pemberontak menantang tentara {{B}}.",
+      "b1": "Para pemberontak dikabarkan menguasai beberapa jalur di sekitar {{P}}."
+    },
+    "rallied": {
+      "h0": "{{P}}: pemberontak bergabung dengan {{A}}",
+      "h1": "Wilayah sengketa: {{P}} berada di bawah kendali {{A}}",
+      "b0": "Setelah runtuhnya otoritas {{B}}, para pemberontak menyatakan bergabung dengan {{A}}."
+    },
+    "coup": {
+      "h0": "Kudeta: {{A}}",
+      "h1": "{{A}}: militer merebut kekuasaan",
+      "h2": "{{A}}: pemerintah digulingkan",
+      "b0": "Junta mengumumkan penangguhan lembaga negara. Politik luar negeri {{A}} berubah arah.",
+      "b1": "Setelah berminggu-minggu tidak stabil, militer merebut kekuasaan."
+    },
+    "refugees": {
+      "h0": "Arus pengungsi melarikan diri dari {{A}}",
+      "h1": "Krisis kemanusiaan: warga sipil melarikan diri dari {{A}}",
+      "h2": "Eksodus: {{A}}",
+      "b0": "Negara penerima di bawah tekanan: {{X}}.",
+      "b1": "Negara tetangga kedatangan keluarga yang lari dari pertempuran: {{X}}."
+    },
+    "embargo_import_blocked": {
+      "h0": "Embargo: pembelian senjata dilarang bagi {{A}}",
+      "b0": "Para pemasok mematuhi resolusi Dewan."
+    },
+    "black_market": {
+      "h0": "Penyelundupan senjata: {{A}} dituding",
+      "h1": "Pasar gelap: jalur ke {{A}} dibongkar",
+      "b0": "Pengiriman ilegal tujuan {{A}} terdeteksi."
+    },
+    "peacekeepers": {
+      "h0": "Penempatan pasukan penjaga perdamaian: {{P}}",
+      "h1": "Pasukan penjaga perdamaian dikerahkan di {{P}}",
+      "b0": "Pasukan penjaga perdamaian mengambil posisi. Menyerang mereka berarti kecaman."
+    },
+    "peacekeepers_attacked": {
+      "h0": "Penjaga perdamaian diserang: {{A}} dituding",
+      "h1": "{{A}} menembaki penjaga perdamaian",
+      "b0": "Dewan Keamanan menangani kasus ini. Sanksi diajukan untuk dipilih."
+    },
+    "oil_crisis": {
+      "h0": "Guncangan minyak: harga melonjak",
+      "h1": "Krisis minyak dunia",
+      "b0": "{{X}}",
+      "b1": "Ekonomi yang bergantung pada hidrokarbon terpukul. {{X}}"
+    },
+    "market_crash": {
+      "h0": "Kejatuhan bursa global",
+      "h1": "Pasar runtuh",
+      "b0": "{{X}}",
+      "b1": "Anggaran publik tertekan. {{X}}"
+    },
+    "pandemic": {
+      "h0": "Pandemi: siaga kesehatan diumumkan",
+      "h1": "Epidemi global: industri melambat",
+      "b0": "{{X}}",
+      "b1": "Rantai produksi berjalan lambat. {{X}}"
+    },
+    "arms_fair": {
+      "h0": "Pameran senjata internasional",
+      "h1": "Pameran pertahanan besar: harga turun",
+      "b0": "{{X}}",
+      "b1": "Para produsen menebar promosi. {{X}}"
+    },
+    "ultimatum": {
+      "h0": "Ultimatum {{A}} kepada {{B}}",
+      "h1": "{{A}} mengirim ultimatum kepada {{B}}",
+      "h2": "Ketegangan ekstrem: {{A}} mengancam {{B}}",
+      "b0": "{{A}} menuntut konsesi dalam {{X}} jam, atau akan melakukan intervensi militer. Pasukan berkumpul di perbatasan.",
+      "b1": "Konsentrasi pasukan {{A}} dilaporkan dekat {{B}}. Tenggat: {{X}} jam."
+    },
+    "deescalation": {
+      "h0": "{{A}} membatalkan ultimatum kepada {{B}}",
+      "h1": "Deeskalasi: {{A}} / {{B}}",
+      "b0": "Perimbangan kekuatan berubah: pasukan di perbatasan kembali ke barak.",
+      "b1": "Para ibu kota menyambut mundurnya {{A}}: ancaman tidak dilaksanakan."
+    },
+    "mercenaries": {
+      "h0": "Perusahaan militer swasta terlihat di {{P}}",
+      "b0": "Pejuang bayaran dikabarkan direkrut oleh {{A}}."
+    }
+  },
+  "battles": {
+    "empty": "Tidak ada laporan pertempuran.",
+    "back": "Semua laporan",
+    "losses": "kerugian",
+    "lasted": "durasi {{value}}",
+    "noDetail": "Rincian laporan tidak tersedia.",
+    "attacker": "Penyerang",
+    "defender": "Pihak bertahan",
+    "you": "Anda",
+    "system": "Sistem",
+    "engaged": "Dikerahkan",
+    "lost": "Hilang",
+    "total": "Total",
+    "countermeasures": "Tindakan balasan",
+    "timeline": "Kronologi",
+    "replay": "Tayangan ulang pertempuran",
+    "scrub": "Posisi tayangan ulang",
+    "speed": "Kecepatan tayangan ulang",
+    "outcome": {
+      "victory": "Kemenangan",
+      "defeat": "Kekalahan",
+      "draw": "Belum pasti",
+      "ongoing": "Berlangsung"
+    },
+    "aar": {
+      "ref": "LAPORAN PASCAAKSI {{id}}",
+      "classification": "distribusi terbatas",
+      "where": "Lokasi",
+      "openSea": "di laut",
+      "terrain": "Matra",
+      "urban": "kawasan perkotaan",
+      "domain": {
+        "land": "darat",
+        "coast": "pesisir (darat dan laut)",
+        "sea": "maritim",
+        "air": "udara"
+      },
+      "medium": {
+        "land": "darat",
+        "air": "udara",
+        "sea": "laut"
+      },
+      "verdict": {
+        "decisive_attacker": "Kemenangan telak penyerang",
+        "attacker": "Keunggulan penyerang",
+        "stalemate": "Hasil belum pasti",
+        "defender": "Keunggulan bertahan",
+        "decisive_defender": "Kemenangan telak pihak bertahan",
+        "ongoing": "Pertempuran berlangsung"
+      },
+      "grade": "Intelijen",
+      "gradeHelp": "Sumber {{source}} · informasi {{cred}}",
+      "source": {
+        "A": "andal",
+        "B": "umumnya andal",
+        "C": "cukup andal",
+        "D": "tidak selalu andal",
+        "E": "kurang andal",
+        "F": "keandalan tidak diketahui"
+      },
+      "cred": {
+        "1": "terkonfirmasi",
+        "2": "kemungkinan benar",
+        "3": "mungkin benar",
+        "4": "meragukan",
+        "5": "kecil kemungkinannya",
+        "6": "tidak dapat diverifikasi"
+      },
+      "exact": "angka pasti",
+      "estimated": "perkiraan intelijen",
+      "personnel": "Personel",
+      "casualties": "Korban jiwa",
+      "materielLost": "Peralatan hancur",
+      "lossesUsd": "Nilai yang hilang",
+      "orbat": "Susunan tempur",
+      "unidentified": "Kontak {{medium}} tak dikenal",
+      "noContact": "Tidak ada pasukan lawan yang teramati.",
+      "destroyed": "Hancur",
+      "damaged": "Rusak",
+      "captured": "Direbut",
+      "munitions": "Amunisi",
+      "munitionsHelp": "Amunisi utama yang ditembakkan: peluru, roket, rudal, bom (perkiraan berdasarkan tembakan yang disimulasikan).",
+      "balance": "Ringkasan",
+      "human": "Korban jiwa",
+      "killed": "Tewas",
+      "wounded": "Luka-luka",
+      "missing": "Hilang",
+      "prisoners": "Tawanan",
+      "materiel": "Peralatan",
+      "vehicles": "Kendaraan yang dikerahkan",
+      "aircraft": "Pesawat yang dikerahkan",
+      "ships": "Kapal yang dikerahkan",
+      "fires": "Tembakan",
+      "missilesLaunched": "Rudal ditembakkan",
+      "missilesShotDown": "di antaranya ditembak jatuh",
+      "interceptions": "Rudal lawan ditembak jatuh",
+      "sorties": "Sorti udara",
+      "lossChart": "Kerugian kumulatif",
+      "lossChartAria": "Kerugian kumulatif: penyerang {{a}}, bertahan {{d}} elemen",
+      "lossChartHelp": "Elemen yang hilang (tank, pesawat, kapal, batalion): pasti untuk pihak Anda, dikonfirmasi oleh tembakan Anda untuk lawan. Pita: fase pertempuran.",
+      "phases": "Jalannya pertempuran",
+      "phaseLosses": "kerugian {{a}} / {{d}}",
+      "phase": {
+        "preparation": "Persiapan tembakan",
+        "strikes": "Serangan jarak jauh",
+        "assault": "Serbuan",
+        "defense": "Pertahanan",
+        "counter": "Serangan balik",
+        "air": "Pertempuran udara",
+        "naval": "Pertempuran laut",
+        "retreat": "Mundur",
+        "capture": "Perebutan kota"
+      },
+      "phaseText": {
+        "preparation": "Artileri, rudal, dan pesawat menghantam posisi lawan sebelum kontak.",
+        "strikes": "Saling serang jarak jauh tanpa kontak darat.",
+        "assault": "Pasukan darat melakukan kontak dan unggul.",
+        "defense": "Serbuan membentur pertahanan, yang menimbulkan kerugian terberat.",
+        "counter": "Pihak bertahan merebut kembali inisiatif dan menyerang balik.",
+        "air": "Pertempuran berlangsung di udara: pesawat tempur, pertahanan udara, drone.",
+        "naval": "Pertempuran antarpasukan laut.",
+        "retreat": "Satu pihak menderita kerugian tanpa membalas: melepaskan diri atau pengejaran.",
+        "capture": "Kota jatuh: provinsi berpindah tangan."
+      },
+      "factors": "Faktor penentu",
+      "noFactor": "Tidak ada faktor penentu yang teramati.",
+      "factorName": {
+        "numbers": "Perbandingan kekuatan",
+        "air_superiority": "Keunggulan udara",
+        "electronic_warfare": "Perang elektronik",
+        "stealth": "Siluman",
+        "entrenched": "Pertahanan berkubu",
+        "air_defense": "Pertahanan udara",
+        "supply": "Pasokan",
+        "veterancy": "Pengalaman",
+        "generals": "Komando",
+        "morale": "Moral"
+      },
+      "factor": {
+        "numbers": "Perkiraan keunggulan ×{{ratio}} dalam nilai peralatan yang dikerahkan.",
+        "air_superiority": "Penguasaan udara: {{kills}} pesawat lawan ditembak jatuh, {{strikes}} serangan udara-ke-darat tepat sasaran.",
+        "electronic_warfare": "Pengacauan: {{hits}} tembakan lawan terdegradasi.",
+        "stealth": "{{hits}} tembakan kena dari unit yang tak pernah terdeteksi.",
+        "entrenched": "{{share}}% tembakan yang diterima di posisi berkubu atau di kota.",
+        "air_defense": "{{intercepted}} rudal lawan ditembak jatuh.",
+        "supply": "{{share}}% tembakan berasal dari unit yang kekurangan pasokan.",
+        "veterancy": "Unit berpengalaman: rata-rata pengalaman {{level}}.",
+        "generals": "Di bawah komando {{names}}.",
+        "morale": "Moral merosot: stabilitas {{nation}} di {{stability}}."
+      },
+      "consequences": "Akibat",
+      "captured1": "Perebutan {{name}} ({{by}})",
+      "held": "{{name}}: posisi dipertahankan pemiliknya",
+      "noChange": "Tidak ada perubahan wilayah.",
+      "noCountermeasure": "Tidak ada tindakan balasan berarti.",
+      "showAll": "Tampilkan {{n}} peralatan lainnya",
+      "showLess": "Ciutkan daftar"
+    },
+    "titleAt": "Pertempuran {{place}}",
+    "titleSea": "Pertempuran di laut"
+  },
+  "chat": {
+    "game": "Ruang permainan",
+    "alliance": "Aliansi · {{name}}",
+    "channels": "Kanal",
+    "newPrivate": "Pesan pribadi",
+    "pickNation": "Pilih negara…",
+    "empty": "Tidak ada pesan.",
+    "hidden": "Pesan disembunyikan oleh moderasi.",
+    "placeholder": "Tulis ke: {{channel}}",
+    "message": "Pesan",
+    "send": "Kirim"
+  },
+  "settings": {
+    "display": "Tampilan",
+    "legend": "Legenda peta",
+    "legendHelp": "Panel kanan bawah (tombol L).",
+    "notifications": "Notifikasi",
+    "browserNotifications": "Notifikasi peramban",
+    "notifHelp": "Peringatan kritis saat tab berada di latar belakang; Web Push jika server menyediakannya.",
+    "notif": {
+      "push": "Notifikasi Web Push aktif",
+      "local": "Notifikasi lokal aktif",
+      "denied": "Izin ditolak oleh peramban",
+      "unsupported": "Peramban ini tidak mendukung notifikasi"
+    },
+    "help": "Bantuan",
+    "restartTutorial": "Mulai ulang tutorial",
+    "game": "Permainan"
+  },
+  "lobby": {
+    "title": "Multipemain",
+    "path": "lobi",
+    "subtitle": "Hingga 64 pemain manusia per permainan; semua negara lain dikendalikan AI.",
+    "create": "Buat permainan",
+    "createPath": "baru",
+    "createSubtitle": "Pengaturan permainan, lalu pilih negara Anda.",
+    "join": "Gabung permainan",
+    "filter": "Filter",
+    "openOnly": "Slot kosong",
+    "aiNote": "Negara yang tak dipilih: AI · pemain tidak aktif digantikan AI",
+    "error": "Lobi tidak tersedia.",
+    "empty": "Tidak ada permainan terbuka.",
+    "by": "oleh {{name}}",
+    "capitals": "ibu kota",
+    "spectate": "Tonton",
+    "cols": {
+      "game": "Permainan",
+      "players": "Pemain",
+      "speed": "Kecepatan",
+      "victory": "Kemenangan",
+      "shop": "Pembelian"
+    },
+    "defaultName": "Perang dunia baru",
+    "worldToday": "Dunia hari ini",
+    "sections": {
+      "game": "Permainan",
+      "victory": "Syarat kemenangan",
+      "rules": "Aturan"
+    },
+    "name": "Nama permainan",
+    "maxPlayers": "Pemain manusia",
+    "maxPlayersHint": "Maksimal 64; negara lain dikendalikan AI.",
+    "private": "Permainan privat",
+    "privateHint": "Hanya dapat diakses lewat tautan.",
+    "provinceShare": "Porsi provinsi dunia yang harus dikuasai",
+    "capitalsToggle": "Atau rebut semua ibu kota musuh",
+    "shopPolicy": "Pembelian dalam permainan",
+    "shopHint": "Nonaktifkan untuk permainan kompetitif.",
+    "cap": "Batas kredit per pemain",
+    "inactive": "Pemain tidak aktif digantikan AI setelah",
+    "next": "Pilih negara saya",
+    "pickNation": "Pilih negara Anda",
+    "createConfirm": "Buat permainan",
+    "createError": "Tidak dapat membuat permainan.",
+    "humans": "pemain",
+    "aiRest": "tetap AI",
+    "joining": "Menyambung…",
+    "joinConfirm": "Gabung",
+    "joinError": "Tidak dapat bergabung (negara sudah diambil?).",
+    "nationTaken": "Negara ini baru saja diambil: pilih yang lain.",
+    "room": {
+      "title": "Ruang tunggu",
+      "path": "ruang-tunggu",
+      "players": "Pemain terdaftar",
+      "waiting": "menunggu dimulai",
+      "aiRest": "{{count}} slot kosong · negara lain dikendalikan AI",
+      "host": "tuan rumah",
+      "you": "Anda",
+      "invite": "Undang",
+      "inviteHint": "Bagikan tautan ini: teman Anda memilih negara lalu menunggu di sini hingga dimulai.",
+      "copy": "Salin tautan",
+      "copied": "Tautan disalin",
+      "rules": "Aturan permainan",
+      "speed": "Kecepatan ×{{speed}}",
+      "victory": "Kemenangan: {{share}} provinsi",
+      "hostHint": "Mulai permainan saat semua siap; slot kosong tetap terbuka selama permainan.",
+      "guestHint": "Tuan rumah akan memulai permainan; Anda akan diarahkan otomatis.",
+      "start": "Mulai permainan",
+      "startError": "Belum dapat dimulai saat ini.",
+      "leave": "Tinggalkan ruang",
+      "ended": "Permainan ini telah berakhir.",
+      "notFound": "Ruang tidak ditemukan.",
+      "shop": "Pembelian dalam permainan: {{policy}}"
+    },
+    "unlimited": "Mode tanpa batas aktif untuk {{nations}} — permainan tanpa peringkat",
+    "unranked": "Permainan tanpa peringkat"
+  },
+  "games": {
+    "title": "Permainan saya",
+    "path": "permainan",
+    "subtitle": "Lanjutkan permainan yang berjalan atau lihat ringkasan permainan yang selesai.",
+    "error": "Tidak dapat memuat permainan Anda.",
+    "empty": "Belum ada permainan.",
+    "cols": {
+      "game": "Permainan",
+      "nation": "Negara",
+      "players": "Pemain",
+      "status": "Status"
+    },
+    "mode": {
+      "solo": "Solo",
+      "multi": "Multipemain"
+    },
+    "status": {
+      "lobby": "menunggu",
+      "running": "berjalan",
+      "paused": "dijeda",
+      "ended": "selesai",
+      "abandoned": "selesai · ditinggalkan"
+    },
+    "resume": "Lanjutkan",
+    "stats": "Ringkasan",
+    "delete": {
+      "action": "Hapus permainan",
+      "title": "Hapus permainan",
+      "text": "Hapus permainan ini secara permanen? «{{name}}» dan seluruh kemajuannya akan terhapus; tindakan ini tidak dapat dibatalkan.",
+      "confirm": "Hapus permanen",
+      "busy": "Permainan sedang berjalan di server lain: coba lagi sebentar lagi.",
+      "error": "Belum dapat dihapus saat ini."
+    }
+  },
+  "rankings": {
+    "title": "Peringkat",
+    "path": "peringkat",
+    "subtitle": "Poin musim yang diraih dalam permainan multipemain.",
+    "season": "Musim",
+    "error": "Peringkat tidak tersedia.",
+    "remaining": "Akhir musim",
+    "days_other": "{{count}} hari",
+    "players": "Berperingkat",
+    "rewards": "Hadiah musim",
+    "top": "Top {{rank}}",
+    "cols": {
+      "player": "Pemain",
+      "points": "Poin",
+      "wins": "Kemenangan",
+      "games": "Permainan",
+      "rate": "Rasio"
+    }
+  },
+  "endgame": {
+    "title": "Ringkasan permainan",
+    "path": "akhir-permainan",
+    "error": "Statistik tidak tersedia.",
+    "winner": "Pemenang: {{nation}}",
+    "ended": "Permainan selesai",
+    "noWinner": "Tidak ada pemenang",
+    "noStats": "Ringkasan rinci tidak tercatat: permainan ditutup secara luring. Kronologi perbatasan tetap tersedia.",
+    "days_other": "{{count}} hari",
+    "day": "H+{{day}}",
+    "provincesHeld_other": "{{count}} provinsi",
+    "timelapse": "Perubahan perbatasan",
+    "provinces": "Provinsi",
+    "conquered": "Penaklukan",
+    "kills": "Penghancuran",
+    "losses": "Kerugian",
+    "spent": "Pengeluaran",
+    "bestUnits": "Unit terbaik",
+    "killsCount_other": "{{count}} penghancuran",
+    "table": "Statistik per negara",
+    "cols": {
+      "nation": "Negara",
+      "player": "Pemain",
+      "provinces": "Provinsi",
+      "conquered": "Penaklukan",
+      "kills": "Penghancuran",
+      "losses": "Kerugian",
+      "spent": "Pengeluaran"
+    }
+  },
+  "stacks": {
+    "composition_other": "Komposisi · {{count}} sistem",
+    "more_other": "+ {{count}} sistem lain",
+    "elements": "elemen",
+    "manage": "Tumpukan…",
+    "half": "Bagi 2",
+    "detach": "Pisahkan…",
+    "detachCount": "Elemen yang dipisahkan",
+    "detachOf": "{{count}} / {{total}}",
+    "detachConfirm_other": "Pisahkan {{count}} elemen",
+    "detachHint": "Tumpukan campuran: elemen yang dipisahkan diambil secara proporsional dari setiap sistem.",
+    "byType": "Pisahkan per jenis",
+    "byTypeShort": "Per jenis",
+    "merge_other": "Gabungkan {{count}} tumpukan",
+    "block": {
+      "count": "Pilih setidaknya dua tumpukan.",
+      "owner": "Hanya tumpukan milik Anda yang dapat digabungkan.",
+      "moving": "Tumpukan harus berhenti untuk digabungkan.",
+      "distance": "Tumpukan terlalu jauh untuk digabungkan (dekatkan).",
+      "domain": "Peralatan tidak cocok: pasukan darat, helikopter, pesawat, dan drone tidak bercampur; rudal, pertahanan udara, radar, dan kapal hanya bergabung dengan jenisnya sendiri."
+    }
+  },
+  "audio": {
+    "title": "Suara",
+    "mute": "Bisukan suara",
+    "muteHelp": "Tidak ada yang diunduh selama suara dibisukan. Pengaturan disimpan di perangkat ini.",
+    "levels": {
+      "master": "Volume utama",
+      "music": "Musik dan suasana",
+      "sfx": "Efek",
+      "ui": "Antarmuka"
+    },
+    "reduced": "Suara dikurangi",
+    "reducedHelp": "Tanpa suasana pertempuran, isyarat lebih lembut, transisi lebih lambat (aktif otomatis jika sistem meminta pengurangan animasi).",
+    "credits": "Suara dan musik dibuat untuk Red Line dengan ElevenLabs."
+  },
+  "format": {
+    "k": "rb",
+    "M": "jt",
+    "B": "M"
+  },
+  "language": {
+    "label": "Bahasa",
+    "choose": "Pilih bahasa antarmuka",
+    "help": "Antarmuka, kawat berita, dan nama tempat. Halaman akan dimuat ulang.",
+    "current": "Bahasa saat ini: {{name}}",
+    "machine": "Terjemahan dibuat otomatis, istilah militer ditinjau.",
+    "fallback": "Beberapa teks tetap dalam bahasa Prancis."
+  },
+  "engine": {
+    "place": {
+      "sea": "di laut"
+    },
+    "sector": {
+      "at": "sektor {{province}}",
+      "near": "{{km}} km dari {{province}}",
+      "unknown": "sektor tak teridentifikasi"
+    },
+    "strikeKind": {
+      "missile": "rudal",
+      "air": "udara",
+      "artillery": "artileri"
+    },
+    "resolution": {
+      "arms_embargo": "embargo senjata",
+      "economic_sanctions": "sanksi ekonomi",
+      "ceasefire": "gencatan senjata",
+      "no_fly_zone": "zona larangan terbang",
+      "peacekeeping": "pasukan penjaga perdamaian",
+      "condemnation": "kecaman"
+    },
+    "vote": {
+      "yes": "{{nation}} setuju",
+      "no": "{{nation}} menolak",
+      "abstain": "{{nation}} abstain"
+    },
+    "charter": {
+      "mutualDefense": "pertahanan bersama",
+      "intelSharing": "berbagi intelijen",
+      "passage": "hak lintas",
+      "simple": "kerja sama sederhana"
+    },
+    "mission": {
+      "raid": "Serbuan",
+      "sabotage": "Sabotase",
+      "rescue": "Penyelamatan"
+    },
+    "intelOp": {
+      "infiltrate_spy": "Penyusupan agen",
+      "recruit_source": "Perekrutan sumber",
+      "turn_agent": "Pembelokan agen",
+      "exfiltrate": "Evakuasi",
+      "steal_research": "Pencurian riset",
+      "sabotage_factory": "Sabotase industri",
+      "fund_rebels": "Pendanaan pemberontak",
+      "listen_area": "Penyadapan zona",
+      "intercept_army": "Penyadapan komunikasi",
+      "jam_area": "Pengacauan zona",
+      "cyber_radar": "Serangan siber (radar)",
+      "cyber_production": "Serangan siber (industri)",
+      "cyber_orders": "Serangan siber (komando)",
+      "disinformation": "Kampanye disinformasi",
+      "leak_plans": "Bocoran terencana",
+      "plant_fake_report": "Penyesatan (laporan palsu)",
+      "deploy_decoys": "Pengerahan umpan",
+      "fake_radio_traffic": "Lalu lintas radio palsu",
+      "counterintel_sweep": "Operasi kontra-intelijen",
+      "recon_economic": "Pengintaian ekonomi",
+      "recon_military": "Pengintaian militer"
+    },
+    "council": {
+      "open_other": "Sidang Dewan Keamanan dibuka: {{count}} resolusi untuk dipilih.",
+      "closed": "Sidang ditutup: {{passed}} dari {{count}} resolusi diadopsi."
+    },
+    "news": {
+      "nuclear": {
+        "headline": "Ledakan nuklir: {{place}}",
+        "body": "Senjata nuklir yang ditembakkan {{nation}} meledak: {{place}}."
+      }
+    },
+    "intel": {
+      "failed": "gagal",
+      "compromised": "terbongkar",
+      "agentExposed": "Agen {{nation}} terbongkar",
+      "agentCompromised": "Agen {{codename}} terbongkar",
+      "agentArrest": "Penangkapan agen {{nation}}",
+      "agentArrested": "Agen {{codename}} ditangkap",
+      "listening": "Penyadapan — {{sector}}",
+      "interception": "Penyadapan — {{nation}}",
+      "decoysIdentified": "Umpan teridentifikasi",
+      "flashMovement": "FLASH — Pergerakan pasukan {{nation}}",
+      "flashMassive": "FLASH — Pergerakan besar pasukan {{nation}}",
+      "dailyInterior": "Catatan harian — Keamanan dalam negeri",
+      "dailyForeign": "Catatan harian — Intelijen luar negeri",
+      "dailyMilitary": "Catatan harian — Intelijen militer",
+      "opCompromised": "{{op}} — terbongkar",
+      "opOutcome": "{{op}} — {{outcome}}",
+      "opAttributed": "{{op}} dikaitkan dengan {{nation}}",
+      "opSuccess": "{{op}} — berhasil",
+      "sweepReport": "Operasi kontra-intelijen — ringkasan",
+      "radioSuspect": "Lalu lintas radio mencurigakan",
+      "intoxFoiled": "Upaya penyesatan digagalkan",
+      "intentions": "Niat {{nation}}",
+      "strikeSuffered": {
+        "missile": "FLASH — Terkena serangan rudal",
+        "air": "FLASH — Terkena serangan udara",
+        "artillery": "FLASH — Terkena tembakan artileri",
+        "other": "FLASH — Terkena serangan"
+      },
+      "flashNuclear": "FLASH — Ledakan nuklir",
+      "sabotage": "Sabotase",
+      "cyber": "Serangan siber",
+      "rebelsFunded": "Kelompok bersenjata didanai",
+      "programDone": "Program selesai — {{nation}}",
+      "blackMarket": "Pasar gelap — {{nation}}",
+      "imagery": "Citra — {{nation}}"
+    },
+    "note": {
+      "allianceInvite": {
+        "title": "Undangan aliansi",
+        "text": "Aliansi {{alliance}} mengundang Anda untuk bergabung."
+      },
+      "inviteDeclined": {
+        "title": "Undangan ditolak",
+        "text": "{{nation}} menolak undangan."
+      },
+      "allianceVote": {
+        "title": "Pemungutan suara aliansi",
+        "replace_leader": "{{alliance}}: pemimpin diganti oleh {{nation}}.",
+        "expel": "{{alliance}}: {{nation}} dikeluarkan.",
+        "skip_mutual_defense": "{{alliance}}: pengecualian pertahanan bersama terhadap {{nation}}."
+      },
+      "strikeNoEffect": {
+        "title": "Serangan tanpa efek",
+        "text": "{{system}}: sasaran tidak tercapai."
+      },
+      "asatHit": {
+        "title": "Satelit dihancurkan",
+        "text": "{{system}} ({{owner}})"
+      },
+      "asatMiss": {
+        "title": "Tembakan antisatelit meleset",
+        "text": "{{system}} ({{owner}})"
+      },
+      "radarsBlinded": {
+        "title": "Radar dibutakan",
+        "text": "Sebuah serangan siber mengganggu radar kita."
+      },
+      "satPass": {
+        "title": "Lintasan satelit",
+        "text_other": "{{system}}: {{count}} kontak di bawah sapuan."
+      },
+      "nuclearRevoked": {
+        "title": "Otorisasi nuklir dicabut",
+        "text": "Kekuatan nuklir kembali ke kendali normal."
+      },
+      "nuclearAuthorized": {
+        "title": "Penggunaan nuklir diizinkan",
+        "text": "Serangan nuklir dimungkinkan selama tingkat siaga mengizinkan."
+      },
+      "nuclearDetonation": {
+        "title": "Ledakan nuklir",
+        "text": "Serangan nuklir: {{place}}."
+      },
+      "fuelLost": {
+        "title": "Pesawat hilang",
+        "text": "{{system}}: bahan bakar habis sebelum kembali ke pangkalan."
+      },
+      "specialOk": {
+        "title": "Operasi khusus berhasil",
+        "text": "{{mission}}: {{place}}."
+      },
+      "specialEnemy": {
+        "title": "Aksi pasukan khusus",
+        "text": "{{mission}} musuh: {{place}}."
+      },
+      "specialFailed": {
+        "title": "Operasi khusus gagal",
+        "text": "{{mission}}: {{place}}."
+      },
+      "blockadeOn": {
+        "title": "Blokade efektif",
+        "text": "{{place}} ({{nation}})"
+      },
+      "blockadeOff": {
+        "title": "Blokade dicabut",
+        "text": "{{place}} ({{nation}})"
+      },
+      "captured": {
+        "title": "Peralatan direbut",
+        "text": "{{place}}: {{items}}.",
+        "item": "{{count}} {{system}}"
+      },
+      "generalReleased": {
+        "title": "Kendali diambil kembali",
+        "text": "{{general}} menyerahkan kembali komando langsung kelompoknya."
+      },
+      "coup": {
+        "title": "Kudeta",
+        "text": "{{nation}}: militer telah merebut kekuasaan."
+      },
+      "ceasefire": {
+        "title": "Gencatan senjata",
+        "text": "Gencatan senjata berlaku: {{a}} / {{b}}."
+      },
+      "peaceProposal": {
+        "title": "Usulan perdamaian",
+        "text": "{{nation}} mengusulkan perdamaian."
+      },
+      "ceasefireProposal": {
+        "title": "Usulan gencatan senjata",
+        "text": "{{nation}} mengusulkan gencatan senjata."
+      },
+      "proposalRefused": {
+        "title": "Usulan ditolak",
+        "text": "{{nation}} menolak usulan Anda."
+      },
+      "agentCaught": {
+        "title": "Agen terbongkar",
+        "text": "{{host}} mengumumkan penangkapan agen {{owner}}."
+      }
+    }
+  }
+}

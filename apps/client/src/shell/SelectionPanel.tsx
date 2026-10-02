@@ -23,6 +23,7 @@ import { useGameTime, weaponLabels, weaponSubtitle } from './helpers.js';
 import { ProvincePanel } from './ProvincePanel.js';
 import { isMixed, stackSummary } from '../lib/stacks.js';
 import { StackActions, StackComposition } from './StackActions.js';
+import { orderError } from '../lib/loc.js';
 
 const STANCES: UnitStance[] = ['hold', 'defend', 'aggressive'];
 
@@ -53,8 +54,7 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
   const general = u.generalId ? view?.generals?.find((g) => g.id === u.generalId) : null;
   const send = async (order: Parameters<NonNullable<typeof conn>['sendOrder']>[0]) => {
     const res = await conn?.sendOrder(order);
-    if (res && !res.ok)
-      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    if (res && !res.ok) toast(orderError(res), 'error');
   };
 
   const rows: {

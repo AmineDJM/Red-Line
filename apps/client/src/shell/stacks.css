@@ -68,15 +68,6 @@
   font-size: var(--rl-fs-xs);
   line-height: 1.4;
 }
-/* Libellé réservé aux lecteurs d'écran (case de sélection de la fenêtre Armée). */
-.stack-sr {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
 /* Mobile : le détail occupe toute la largeur de la rangée d'actions. */
 .stackact--wide {
   flex: 1 1 100%;

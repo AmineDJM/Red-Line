@@ -1,0 +1,15 @@
+{
+  "push": {
+    "title": "Red Line — {{game}}",
+    "war": "{{nation}} 向您宣战。",
+    "attack": "{{nation}} 正在进攻 {{province}}。",
+    "losses": "您的部队正在遭受损失。",
+    "provinceLost": "{{province}}：被 {{nation}} 占领。",
+    "provinceTaken": "您的部队已攻占 {{province}}。",
+    "flash": "情报快讯：一份紧急报告等待您查看。",
+    "council": "安全理事会：一次会议需要您投票。",
+    "victory": "胜利！您的国家获胜。",
+    "victoryOf": "{{nation}} 获胜。游戏已结束。",
+    "defeated": "您的国家已战败。"
+  }
+}

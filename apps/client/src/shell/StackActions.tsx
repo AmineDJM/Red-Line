@@ -11,6 +11,7 @@ import {
   splitHalfOrder,
   stackParts,
 } from '../lib/stacks.js';
+import { orderError } from '../lib/loc.js';
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
@@ -33,7 +34,7 @@ export function useSendStackOrder(): (order: Order | null) => Promise<boolean> {
     if (!order || !conn) return false;
     const res = await conn.sendOrder(order);
     if (res && !res.ok) {
-      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+      toast(orderError(res), 'error');
       return false;
     }
     return true;

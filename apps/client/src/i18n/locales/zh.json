@@ -1,0 +1,3122 @@
+{
+  "app": {
+    "name": "Red Line",
+    "tagline": "实时地缘政治战略",
+    "loading": "加载中…",
+    "loadingPath": "加载中",
+    "errorPath": "错误",
+    "loadingMap": "正在准备作战区域…",
+    "error": "发生错误。",
+    "retry": "重试",
+    "back": "返回",
+    "close": "关闭",
+    "clear": "清除",
+    "cancel": "取消",
+    "confirm": "确认",
+    "next": "下一步",
+    "previous": "上一步",
+    "skip": "跳过",
+    "done": "完成",
+    "search": "搜索",
+    "maximize": "最大化",
+    "soon": "即将推出",
+    "yes": "是",
+    "no": "否",
+    "all": "全部",
+    "none": "无",
+    "mockBadge": "离线演示",
+    "notFound": "页面不存在。"
+  },
+  "keys": {
+    "space": "空格",
+    "enter": "回车",
+    "escape": "Esc"
+  },
+  "time": {
+    "dayUnit": "天",
+    "ago": "{{value}}前",
+    "in": "{{value}}后"
+  },
+  "sections": {
+    "armies": "我的军队",
+    "army": "战争军械库",
+    "production": "生产",
+    "research": "研究",
+    "economy": "经济",
+    "intel": "情报",
+    "diplomacy": "外交",
+    "council": "安全理事会",
+    "news": "新闻",
+    "battles": "战斗报告",
+    "chat": "消息",
+    "shop": "商店",
+    "settings": "设置",
+    "short": {
+      "armies": "军队",
+      "army": "军械库",
+      "production": "生产",
+      "research": "研发",
+      "economy": "经济",
+      "intel": "情报",
+      "diplomacy": "外交",
+      "council": "安理会",
+      "news": "新闻",
+      "battles": "战斗",
+      "chat": "消息",
+      "shop": "商店",
+      "settings": "设置"
+    },
+    "path": {
+      "armies": "我的军队",
+      "army": "战争军械库",
+      "production": "生产",
+      "research": "研发",
+      "economy": "经济",
+      "intel": "情报",
+      "diplomacy": "外交",
+      "council": "联合国\\安理会",
+      "news": "电讯",
+      "battles": "战斗",
+      "chat": "消息",
+      "shop": "商店",
+      "settings": "设置"
+    }
+  },
+  "home": {
+    "title": "Red Line",
+    "path": "主页",
+    "menu": "主菜单",
+    "subtitle": "在真实世界地图上进行的实时地缘政治战略。真实武库，真实预算，唯有军事胜利。",
+    "playGuest": "以游客身份游玩",
+    "login": "登录",
+    "register": "注册",
+    "logout": "退出登录",
+    "continue": "新游戏",
+    "multi": "多人游戏",
+    "resume": "继续游戏",
+    "rankings": "排行榜",
+    "shop": "商店",
+    "sandbox": "沙盒",
+    "guest": "游客",
+    "notConnected": "未登录",
+    "welcome": "已登录：{{name}}",
+    "guestNote": "游客账号保存在此设备上。",
+    "footer": "唯有军事胜利。不针对任何真实地点：每个省份均为通用建筑。",
+    "hints": {
+      "guest": "立即开始单人游戏，无需注册",
+      "solo": "在世界地图上与 AI 单人对战",
+      "multi": "最多 64 名玩家，其余国家由 AI 控制",
+      "resume": "进行中和已结束的游戏",
+      "rankings": "赛季与全球排名",
+      "shop": "高级货币、外观、加速",
+      "sandbox": "自由布置与本地引擎"
+    },
+    "boot": {
+      "link": "卫星链路已建立",
+      "map": "地图：2 567 个省份 · 201 个国家",
+      "catalog": "目录：406 种武器系统",
+      "engine": "模拟引擎已同步",
+      "ready": "指挥所就绪。"
+    },
+    "flash": {
+      "game_deleted": "该游戏已被删除：您已返回主页。"
+    },
+    "info": {
+      "title": "游戏速览",
+      "about": "了解游戏",
+      "figures": {
+        "nations": "个可玩国家",
+        "provinces": "个省份",
+        "systems": "种真实武器系统",
+        "players": "名玩家/局"
+      },
+      "live": {
+        "games_other": "{{n}} 局进行中",
+        "players_other": "{{n}} 名玩家在线"
+      },
+      "blocks": {
+        "map": {
+          "title": "实时，真实地图",
+          "text": "卫星影像，2567 个省份，大圆航线。你离线时，世界依然运转。"
+        },
+        "arsenal": {
+          "title": "真实的军械库与预算",
+          "text": "2025 年作战序列、以美元计的国防预算、按你的研发进度生产的 406 种真实武器系统。"
+        },
+        "intel": {
+          "title": "情报与外交",
+          "text": "间谍、卫星与战争迷雾；联盟、许可证与安理会投票。"
+        },
+        "multi": {
+          "title": "单人或最多 64 名玩家",
+          "text": "单人对抗两百多个 AI，或加入持久的多人对局。赛季排名。"
+        }
+      },
+      "links": {
+        "howto": "玩法说明",
+        "features": "功能",
+        "nations": "国家",
+        "arsenal": "军械库",
+        "faq": "常见问题"
+      }
+    }
+  },
+  "auth": {
+    "email": "电子邮箱",
+    "password": "密码",
+    "displayName": "显示名称",
+    "submitLogin": "登录",
+    "submitRegister": "创建账号",
+    "switchToRegister": "创建账号",
+    "switchToLogin": "已有账号？",
+    "errors": {
+      "invalid": "凭据错误。",
+      "exists": "该地址已被使用。",
+      "weak": "密码太短（至少 8 个字符）。",
+      "network": "无法连接服务器。",
+      "generic": "操作失败。"
+    }
+  },
+  "newGame": {
+    "title": "新游戏",
+    "path": "新游戏",
+    "subtitle": "选择您的国家",
+    "nation": "国家",
+    "searchPlaceholder": "搜索国家…",
+    "pickOnMap": "点击地图上的国家或从列表中选择。",
+    "pickHint": "点按地图上的国家，或从列表中选择。",
+    "selected": "已选国家",
+    "none": "未选国家",
+    "provinces_other": "{{count}} 个省份",
+    "count_other": "{{count}} 个国家",
+    "taken_other": "已占 {{count}} 个",
+    "human": "玩家",
+    "scenario": "剧本",
+    "speed": "速度",
+    "difficulty": "难度",
+    "levels": {
+      "easy": "简单",
+      "normal": "普通",
+      "hard": "困难"
+    },
+    "budget": "国防预算",
+    "personnel": "兵力",
+    "doctrine": "军事学说",
+    "highlights": "主要系统",
+    "loadingInfo": "正在加载档案…",
+    "random": "随机国家",
+    "start": "开始游戏",
+    "creating": "正在创建游戏…",
+    "entity": "实体",
+    "error": "无法创建游戏。",
+    "mapLabel": "世界地图：点击国家进行选择",
+    "tooMany": "您已有 10 局进行中的单人游戏：请继续其中一局或删除一局。",
+    "manageGames": "管理我的游戏"
+  },
+  "game": {
+    "connecting": "正在连接游戏…",
+    "reconnecting": "连接中断，正在重连…",
+    "failed": "服务器拒绝连接。",
+    "spectator": "观战者",
+    "exit": "退出到主页",
+    "clock": {
+      "day": "D+{{day}}",
+      "paused": "暂停",
+      "pause": "暂停",
+      "play": "继续",
+      "speed": "速度 ×{{speed}}",
+      "speedShort": "×{{speed}}",
+      "nextSpeed": "切换速度（当前 ×{{speed}}）"
+    },
+    "topbar": {
+      "treasury": "国库",
+      "perDay": "/天",
+      "budgetTip": "国库与每日净收入 — 打开经济",
+      "resources": "资源",
+      "resourceTip": "{{name}}：库存 {{stock}}，每天 {{net}}"
+    },
+    "alertLevel": {
+      "title": "警戒",
+      "short": "AL",
+      "tooltip": "全球警戒等级 {{level}} — {{label}}",
+      "labels": {
+        "1": "核危机",
+        "2": "全面战争",
+        "3": "武装紧张",
+        "4": "警惕",
+        "5": "平静"
+      }
+    },
+    "resources": {
+      "money": "资金",
+      "oil": "石油",
+      "metals": "金属",
+      "electronics": "电子元件",
+      "food": "粮食",
+      "perDay": "{{value}} / 天"
+    },
+    "toolbar": {
+      "army": "我的军队",
+      "production": "生产",
+      "alerts": "警报",
+      "layers": "图层",
+      "legend": "图例",
+      "menu": "导航",
+      "map": "地图",
+      "more": "更多",
+      "allSections": "所有领域",
+      "recenter": "重新居中"
+    },
+    "layers": {
+      "title": "图层",
+      "military": "军事",
+      "intel": "情报",
+      "economy": "经济",
+      "diplomacy": "外交",
+      "soon": "即将推出",
+      "fog": "战争迷雾",
+      "labels": "标签"
+    },
+    "legend": {
+      "title": "图例",
+      "ownForces": "我方部队",
+      "allyForces": "盟军部队",
+      "enemyForces": "敌方部队（交战中）",
+      "detected": "未识别目标",
+      "building": "战略建筑",
+      "ownTerritory": "我方领土",
+      "range": "武器射程（最小 – 最大）",
+      "route": "轨迹 / 命令",
+      "launch": "发射场",
+      "border": "边界",
+      "disputed": "争议领土",
+      "fog": "未覆盖区域",
+      "capture": "占领进行中",
+      "neutralForces": "中立部队"
+    },
+    "alerts": {
+      "title": "警报中心",
+      "empty": "暂无警报。",
+      "markRead": "全部标为已读",
+      "center": "地图居中",
+      "filter": "筛选",
+      "filters": {
+        "all": "全部",
+        "critical": "紧急"
+      },
+      "kinds": {
+        "combat_started": "交战开始",
+        "unit_destroyed": "摧毁敌方单位：{{unit}}",
+        "unit_destroyed_own": "损失单位：{{unit}}",
+        "unit_detected": "发现目标",
+        "unit_detected_known": "目标：{{unit}} · {{nation}}",
+        "province_capture_started": "{{province}}：{{nationLe}} 企图占领",
+        "province_capture_started_own": "正在占领 {{province}}",
+        "province_capture_started_threat": "{{province}} 遭 {{nationLe}} 攻击",
+        "province_captured": "{{province}} 被 {{nationLe}} 占领",
+        "province_captured_own": "已攻占 {{province}}",
+        "province_lost": "已失去 {{province}}",
+        "production_complete": "生产完成：{{unit}}",
+        "arrived": "单位已抵达目的地",
+        "nation_defeated": "国家战败：{{nation}}",
+        "victory": "{{deNation}} 获胜",
+        "research_complete": "研究完成：{{node}}",
+        "war_declared": "{{aDe}} 向 {{bA}} 宣战",
+        "peace_signed": "{{aLe}} 与 {{bLe}} 签署和约",
+        "missile_launch": "侦测到导弹发射",
+        "building_hit": "{{province}} 的 {{building}} 被击中（{{health}} %）",
+        "delivery_arrived": "货物已送达",
+        "delivery_intercepted": "货物被拦截",
+        "intel_report": "新的情报报告",
+        "battle_report": "新的战斗报告",
+        "battle_report_named": "报告：{{title}}",
+        "operation": "联合行动：{{status}}",
+        "alert_level": "全球警戒等级：{{level}}",
+        "news": "新电讯"
+      },
+      "titled": "{{title}}：{{text}}"
+    },
+    "army": {
+      "count": "×{{count}}"
+    },
+    "selection": {
+      "title": "选择",
+      "count": "兵力",
+      "hp": "状态",
+      "status": "状况",
+      "stance": "姿态",
+      "supply": "补给",
+      "mission": "任务",
+      "general": "将领",
+      "xp": "经验",
+      "stop": "停止",
+      "sheet": "档案",
+      "deselect": "取消选择",
+      "hint": "点按地图移动，点按敌方单位进攻。控制台：Ctrl+K。",
+      "lastSeen": "{{value}}前发现",
+      "lastSeenLabel": "最后观测",
+      "uncertainty": "误差：±{{value}}",
+      "uncertaintyLabel": "误差",
+      "unknownType": "类型未知",
+      "owner": "国家",
+      "multi_other": "已选 {{count}} 个",
+      "ready": "可用于",
+      "ammo": "弹药"
+    },
+    "orders": {
+      "moveTitle": "移动命令",
+      "attackTitle": "攻击命令",
+      "distance": "距离",
+      "eta": "抵达",
+      "warning": "注意",
+      "outOfRange": "目标超出射程",
+      "confirm": "确认",
+      "cancel": "取消",
+      "sent": "命令已下达",
+      "destination": "目的地",
+      "target": "目标",
+      "errors": {
+        "not_owner": "该单位不属于您。",
+        "unknown_unit": "未知单位。",
+        "unreachable": "目的地无法到达。",
+        "out_of_range": "目标超出射程。",
+        "insufficient_funds": "资金不足。",
+        "invalid_target": "无效目标。",
+        "not_allowed": "无法执行命令。",
+        "game_over": "游戏已结束。",
+        "unknown": "无法识别的命令。",
+        "locked": "操作被阻止（警戒、决议或禁运）。",
+        "research_required": "需要研究。",
+        "capacity": "已达最大容量。",
+        "cooldown": "操作冷却中。",
+        "insufficient_resources": "资源不足。",
+        "disconnected": "离线：命令未发送。",
+        "timeout": "服务器无响应。"
+      }
+    },
+    "status": {
+      "idle": "待命",
+      "moving": "移动中",
+      "combat": "交战中",
+      "embarked": "已搭载",
+      "destroyed": "已摧毁"
+    },
+    "stance": {
+      "hold": "坚守",
+      "defend": "防御",
+      "aggressive": "进攻"
+    },
+    "level": {
+      "own": "友方单位",
+      "precise": "精确",
+      "identified": "已识别",
+      "detected": "已发现"
+    },
+    "callout": {
+      "capital": "首都",
+      "moving": "行进中 · {{value}}",
+      "combat": "交战中",
+      "capture": "占领 {{value}} %"
+    },
+    "end": {
+      "victory": "胜利",
+      "defeat": "失败",
+      "victoryText": "您的国家确立了军事霸权。",
+      "defeatText": "{{deNation}} 获胜。您的国家已战败。",
+      "defeatTextAlone": "您的国家已失去战斗力。战争在没有您的情况下继续。",
+      "newGame": "新游戏",
+      "home": "主页",
+      "stats": "游戏总结",
+      "observe": "继续观战",
+      "abandoned": "放弃",
+      "kickerEnded": "游戏结束",
+      "abandonedText": "48 小时（单人）或 24 小时（多人）无人连接：游戏已关闭。"
+    },
+    "time": {
+      "minutes": "{{value}} 分钟",
+      "hours": "{{h}} 小时 {{m}}",
+      "days": "{{d}} 天 {{h}} 小时"
+    },
+    "unlimited": {
+      "badge": "无限",
+      "value": "∞",
+      "tip": "无限模式：资金和资源永不受限。生产仍需研发。",
+      "reserve": "无限储备",
+      "stockTip": "{{name}}：库存无限",
+      "budgetTip": "国库无限 — 打开经济"
+    }
+  },
+  "province": {
+    "title": "省份",
+    "population": "人口",
+    "income": "收入 / 天",
+    "fortification": "防御工事",
+    "level": "等级 {{level}}",
+    "unrest": "地方紧张度",
+    "buildings": "建筑",
+    "noBuildings": "无建筑。",
+    "produceHere": "在此生产",
+    "fortify": "加固",
+    "capture": "占领",
+    "captureOwn": "我方部队正在占领",
+    "captureBy": "{{nationLe}} 正在占领",
+    "knowledge": "掌握程度",
+    "intelLevel": {
+      "0": "未知",
+      "1": "概略",
+      "2": "良好",
+      "3": "完整"
+    },
+    "updated": "更新",
+    "ago": "{{value}}前",
+    "economicIntel": "经济情报",
+    "militaryIntel": "军事情报",
+    "knownBuildings": "已知建筑",
+    "moreUnknown": "其他建筑未揭示…",
+    "unknownHint": "没有该省份的情报。发起侦察任务以揭示其建筑和防御。",
+    "recon": "军事侦察",
+    "listen": "SIGINT 监听",
+    "morale": "士气",
+    "fortifyLevel": "加固（N{{level}}）",
+    "fortifyStarted": "已开始加固 {{province}}",
+    "reconEco": "经济侦察",
+    "reconRunning": "任务进行中…",
+    "reconMilitaryTip": "军事情报（SIGINT）：逐步揭示该省份的基地、防御和军事设施。",
+    "reconEconomicTip": "对外情报（HUMINT）：逐步揭示该省份的经济设施。",
+    "opStarted": {
+      "recon_military": "已对 {{province}} 发起军事侦察",
+      "recon_economic": "已对 {{province}} 发起经济侦察",
+      "listen_area": "已在 {{province}} 周边开始监听"
+    }
+  },
+  "nationRecon": {
+    "title": "关于 {{nationLe}} 的情报",
+    "aria": "关于 {{nationLe}} 的情报",
+    "provinces_other": "{{count}} 个省份",
+    "ops": {
+      "recon_military": "军事侦察",
+      "recon_economic": "经济侦察"
+    },
+    "phase": "阶段 {{done}}/{{waves}}",
+    "covered_other": "已覆盖 {{count}} 个省份",
+    "priority": "优先：首都和大城市",
+    "remaining_other": "还剩 {{count}} 个省份待揭示",
+    "complete": "所有省份已揭示",
+    "revealedAria": "已揭示省份：{{known}} / {{total}}",
+    "launch": "发起",
+    "running": "进行中",
+    "capacity": "部门容量已满",
+    "started": {
+      "recon_military": "已对 {{nationLe}} 发起军事侦察",
+      "recon_economic": "已对 {{nationLe}} 发起经济侦察"
+    },
+    "tips": {
+      "recon_military": "分阶段揭示 {{deNation}} 的基地、防御、雷达、发射井和掩体：先首都和大城市，再到全国其他地区。",
+      "recon_economic": "分阶段揭示 {{deNation}} 的生产、资源和工业：先首都和大城市，再到全国其他地区。"
+    }
+  },
+  "console": {
+    "title": "指挥控制台",
+    "open": "控制台",
+    "path": "控制台",
+    "placeholder": "move sel alger · produce 4 rafale · research aero.gen5 · help",
+    "examples": "示例：",
+    "selection_other": "{{count}} 个单位",
+    "hints": {
+      "complete": "补全",
+      "run": "执行",
+      "close": "关闭",
+      "navigate": "选择"
+    },
+    "kinds": {
+      "cmd": "cmd",
+      "unit": "单位",
+      "target": "目标",
+      "system": "系统",
+      "place": "地点",
+      "nation": "国家",
+      "node": "研发",
+      "op": "行动",
+      "window": "窗口",
+      "value": "值"
+    },
+    "args": {
+      "units": "单位",
+      "place": "地点",
+      "target": "目标",
+      "count": "n",
+      "system": "系统",
+      "node": "节点",
+      "speed": "速度",
+      "op": "行动",
+      "nation": "国家",
+      "window": "窗口",
+      "onoff": "on|off"
+    },
+    "help": {
+      "move": "将单位移动到某地",
+      "attack": "攻击敌方单位",
+      "stop": "停止单位",
+      "produce": "在省份中生产系统",
+      "research": "开始研究",
+      "goto": "将地图居中于某地",
+      "speed": "更改速度（单人）",
+      "pause": "暂停（单人）",
+      "resume": "继续（单人）",
+      "intel": "发起情报行动",
+      "peace": "提议和平",
+      "ceasefire": "提议停火",
+      "war": "宣战",
+      "open": "打开窗口",
+      "select": "选择单位",
+      "mobilize": "总动员",
+      "help": "显示帮助",
+      "clear": "清除日志"
+    },
+    "errors": {
+      "empty": "空命令。",
+      "unknown": "未知命令：{{cmd}}。请输入「help」。",
+      "units": "没有匹配的单位（标识符、「sel」或系统名称）。",
+      "place": "找不到地点：{{place}}",
+      "target": "找不到目标：{{target}}",
+      "system": "找不到系统：{{system}}",
+      "province": "没有匹配的己方省份：{{place}}",
+      "node": "找不到研究：{{node}}",
+      "op": "未知行动：{{op}}",
+      "nation": "找不到国家：{{nation}}",
+      "speed": "速度无效。",
+      "window": "未知窗口。"
+    },
+    "done": {
+      "goto": "地图已居中于 {{place}}。",
+      "select_other": "已选择 {{count}} 个单位。",
+      "stop_other": "已停止 {{count}} 个单位。",
+      "move_other": "{{count}} 个单位正前往 {{place}}。",
+      "attack_other": "{{count}} 个单位与 {{target}} 交战。",
+      "produce": "已开始生产：{{count}} × {{system}}，地点 {{place}}。",
+      "research": "已开始研究：{{node}}。",
+      "intel": "已对 {{target}} 发起行动「{{op}}」。",
+      "peace": "已向 {{aNation}} 发出和平提议。",
+      "ceasefire": "已向 {{aNation}} 发出停火提议。",
+      "war": "已向 {{aNation}} 宣战。",
+      "speed": "速度 ×{{speed}}。",
+      "pause": "游戏已暂停。",
+      "resume": "游戏已继续。",
+      "mobilizeOn": "已宣布总动员。",
+      "mobilizeOff": "总动员结束。"
+    }
+  },
+  "shortcuts": {
+    "title": "键盘快捷键",
+    "console": "指挥控制台",
+    "pause": "暂停 / 继续",
+    "speed": "速度",
+    "windows": "我的军队、战争军械库、生产、研究、经济、情报…",
+    "escape": "取消命令、取消选择、关闭",
+    "confirm": "确认命令",
+    "legend": "图例",
+    "news": "新闻",
+    "help": "本帮助"
+  },
+  "tutorial": {
+    "title": "教程",
+    "path": "教程",
+    "skip": "退出教程",
+    "skipStep": "跳过此步",
+    "waiting": "等待您的操作…",
+    "steps": {
+      "welcome": {
+        "title": "欢迎来到指挥所",
+        "text": "您在真实世界地图上指挥本国武装力量。真实武库，以美元计的真实预算，唯有军事胜利。"
+      },
+      "select": {
+        "title": "选择一个单位",
+        "text": "点按地图上您的一个棋子（绿色边框）：显示其档案、状态和射程。"
+      },
+      "order": {
+        "title": "下达命令",
+        "text": "点按地图上的某点进行移动，或点按敌方单位发起攻击。"
+      },
+      "confirm": {
+        "title": "确认",
+        "text": "检查路线、距离和抵达时间，然后确认。三步操作：选择、下令、确认。"
+      },
+      "production": {
+        "title": "生产部队",
+        "text": "打开生产：您的军事学说及供应商的武库，附照片、价格和研发条件。"
+      },
+      "research": {
+        "title": "投资研究",
+        "text": "拥有一种系统并不意味着会生产它：研发可解锁更高代系的生产。"
+      },
+      "console": {
+        "title": "全键盘操作",
+        "text": "指挥控制台可用键盘完成一切操作（move、produce、research、goto…）。打开方式："
+      },
+      "time": {
+        "title": "掌控时间",
+        "text": "单人模式：屏幕顶部的暂停和速度，或按空格键和 1 至 5。"
+      },
+      "alerts": {
+        "title": "随时掌握情况",
+        "text": "警报中心汇集战斗、情报报告、安理会投票和交付。点击即可居中地图或打开报告。"
+      },
+      "end": {
+        "title": "轮到您了",
+        "text": "控制全球 60 % 的省份或所有敌方首都。教程可在设置中再次打开。"
+      },
+      "province": {
+        "title": "您的省份",
+        "text": "点按一个省份：建筑及等级（1 至 5）、精确成本的建造、防御工事。在邻国，发起侦察以揭示其设施。"
+      }
+    }
+  },
+  "sandbox": {
+    "title": "沙盒",
+    "path": "沙盒",
+    "subtitle": "本地引擎 · 自由布置",
+    "nation": "国家",
+    "system": "系统",
+    "placeHint": "点按地图放置所选单位。",
+    "placed_other": "已放置 {{count}} 个单位",
+    "clear": "全部清除",
+    "launch": "开始模拟",
+    "reset": "重置",
+    "observer": "视角",
+    "engineMissing": "引擎不可用：缺少函数（{{list}}）。",
+    "engineLoading": "正在加载引擎…",
+    "dataMissing": "缺少模拟数据（{{list}}）。",
+    "running": "模拟进行中",
+    "count": "数量"
+  },
+  "categories": {
+    "fighter": "战斗机",
+    "bomber": "轰炸机",
+    "air_support": "空中支援",
+    "helicopter": "直升机",
+    "drone": "无人机",
+    "tank": "主战坦克",
+    "ifv": "步兵战车",
+    "artillery": "火炮",
+    "air_defense": "防空",
+    "strike_missile": "打击导弹",
+    "nuclear": "核武器",
+    "surface_ship": "水面舰艇",
+    "submarine": "潜艇",
+    "infantry": "步兵",
+    "space": "太空系统",
+    "logistics": "后勤",
+    "radar": "雷达"
+  },
+  "doctrines": {
+    "us": "美国",
+    "ru": "俄罗斯",
+    "cn": "中国",
+    "eu": "欧洲",
+    "other": "其他"
+  },
+  "buildings": {
+    "refinery": "炼油厂",
+    "power_plant": "发电厂",
+    "port": "港口",
+    "air_base": "空军基地",
+    "military_base": "军事基地",
+    "arms_factory": "兵工厂",
+    "research_center": "研究中心",
+    "oil_field": "油田",
+    "mine": "矿山",
+    "farm": "农场",
+    "electronics_plant": "电子工厂",
+    "local_industry": "地方工业",
+    "recruiting_office": "征兵处",
+    "naval_base": "海军基地",
+    "bunker": "掩体",
+    "air_defense_site": "防空阵地",
+    "coastal_battery": "岸防炮台",
+    "radar_station": "雷达站",
+    "missile_silo": "导弹发射井",
+    "hospital": "军医院",
+    "secret_lab": "秘密实验室",
+    "forward_base": "前进基地",
+    "groups": {
+      "resources": "资源",
+      "industry": "工业",
+      "military": "军事",
+      "defense": "防御"
+    },
+    "effects": {
+      "refinery": "生产精炼油",
+      "power_plant": "加快生产和研究",
+      "port": "海军生产与海上贸易",
+      "air_base": "飞机生产与驻扎",
+      "military_base": "地面生产、仓库、驻军",
+      "arms_factory": "重型武器：装甲、火炮、导弹",
+      "research_center": "研究点数",
+      "oil_field": "石油开采",
+      "mine": "金属开采",
+      "farm": "粮食生产",
+      "electronics_plant": "电子元件",
+      "local_industry": "收入与建造速度",
+      "recruiting_office": "步兵，更快动员",
+      "naval_base": "海军生产与维修",
+      "bunker": "为守军提供强力保护",
+      "air_defense_site": "拦截飞机和导弹",
+      "coastal_battery": "反舰防御",
+      "radar_station": "扩展空中探测",
+      "missile_silo": "发射弹道导弹",
+      "hospital": "单位更快恢复",
+      "secret_lab": "更快的高级研究",
+      "forward_base": "前线后勤仓库",
+      "fortification": "野战工事：为本省守军提供装甲（1 至 3 级）。"
+    },
+    "ui": {
+      "build": "建造",
+      "upgrade": "等级 {{level}}",
+      "upgrading": "升级 N{{level}}",
+      "repair": "修复",
+      "repairing": "修复中",
+      "health": "建筑状态",
+      "operational": "运作中",
+      "already": "已建成",
+      "coastalOnly": "仅限沿海省份",
+      "costTip": "成本 {{cost}} · 耗时 {{time}}",
+      "buildStarted": "已开始建造：{{name}}",
+      "upgradeStarted": "已开始升级：{{name}}（N{{level}}）",
+      "repairStarted": "已开始修复：{{name}}",
+      "constructing": "建造中",
+      "maxLevel": "最高等级",
+      "blocked": {
+        "in_progress": "工程已在进行",
+        "damaged": "请先修复",
+        "max_level": "已达最高等级"
+      }
+    },
+    "fortification": "防御工事"
+  },
+  "weapon": {
+    "engine": "发动机",
+    "length": "长度",
+    "wingspan": "翼展",
+    "mtow": "最大重量",
+    "warhead": "战斗部",
+    "speed": "速度",
+    "range": "航程",
+    "weaponRange": "武器射程",
+    "subtitle": "{{category}} · {{country}}",
+    "subtitleDoctrine": "{{category}} · {{doctrine}}学说",
+    "doctrineAdj": {
+      "us": "美式",
+      "ru": "俄式",
+      "cn": "中式",
+      "eu": "欧式",
+      "other": "通用"
+    },
+    "photo": "照片",
+    "noPhoto": "暂无照片",
+    "gen": "代",
+    "sheet": "技术档案",
+    "units": {
+      "m": "m",
+      "kg": "kg",
+      "km": "km"
+    },
+    "genericOrigin": "通用"
+  },
+  "units": {
+    "km": "{{value}} km"
+  },
+  "map": {
+    "attribution": "图像 NASA Blue Marble · Natural Earth",
+    "noImagery": "卫星图像不可用：矢量底图",
+    "tip": {
+      "nation": "国家",
+      "count": "数量",
+      "state": "状态",
+      "hp": "完好度",
+      "supply": "补给",
+      "mission": "任务",
+      "speed": "速度",
+      "range": "射程",
+      "seen": "发现",
+      "seenAgo": "{{value}}前",
+      "seenNow": "刚刚",
+      "uncertainty": "位置",
+      "uncertaintyValue": "± {{value}}",
+      "stack": "堆叠",
+      "stackValue": "{{count}} 个单位",
+      "stackMore": "+ 另外 {{count}} 个",
+      "unknown": "未识别目标",
+      "unknownType": "类型未知",
+      "missile": "飞行中的导弹",
+      "impact": "着弹",
+      "impactIn": "{{value}}后",
+      "city": "城市",
+      "capital": "首都",
+      "population": "人口",
+      "owner": "控制方",
+      "buildings": "建筑",
+      "intel": "情报",
+      "capture": "占领",
+      "fortification": "防御工事",
+      "fortLevel": "等级 {{value}}",
+      "blockaded": "封锁中",
+      "noFlyZone": "禁飞区",
+      "disputed": "争议领土",
+      "unrest": "紧张度",
+      "prompt": "inspect"
+    },
+    "rel": {
+      "own": "我方部队",
+      "ally": "盟友",
+      "neutral": "中立",
+      "enemy": "敌对"
+    },
+    "status": {
+      "idle": "就位",
+      "moving": "移动中",
+      "combat": "交战中",
+      "embarked": "已搭载",
+      "destroyed": "已摧毁"
+    },
+    "supply": {
+      "supplied": "有保障",
+      "limited": "有限",
+      "cut": "中断"
+    },
+    "mission": {
+      "none": "无",
+      "patrol": "巡逻",
+      "strike": "打击",
+      "escort": "护航",
+      "refuel": "空中加油",
+      "awacs": "空中预警",
+      "recon": "侦察",
+      "blockade": "封锁",
+      "rtb": "返回基地"
+    },
+    "flag": {
+      "decoy": "诱饵（仅您可见）",
+      "submerged": "潜航中",
+      "sonar": "声呐接触",
+      "jamming": "正在干扰"
+    },
+    "intel": {
+      "0": "未知",
+      "1": "概略",
+      "2": "掌握良好",
+      "3": "完全掌握",
+      "old": "旧信息"
+    },
+    "bld": {
+      "refinery": "炼油厂",
+      "power_plant": "发电厂",
+      "port": "港口",
+      "air_base": "空军基地",
+      "military_base": "军事基地",
+      "arms_factory": "兵工厂",
+      "research_center": "研究中心",
+      "oil_field": "油田",
+      "mine": "矿山",
+      "farm": "农场",
+      "electronics_plant": "电子工厂",
+      "local_industry": "地方工业",
+      "recruiting_office": "征兵处",
+      "naval_base": "海军基地",
+      "bunker": "掩体",
+      "air_defense_site": "防空阵地",
+      "coastal_battery": "岸防炮台",
+      "radar_station": "雷达站",
+      "missile_silo": "导弹发射井",
+      "hospital": "军医院",
+      "secret_lab": "秘密实验室",
+      "forward_base": "前进基地",
+      "level": "{{value}} 级",
+      "damaged": "受损",
+      "down": "停用",
+      "repair": "维修中",
+      "upgrade": "建造中"
+    },
+    "ring": {
+      "max": "射程 {{value}}",
+      "min": "最小 {{value}}",
+      "radius": "半径 {{value}}",
+      "radar": "雷达 {{value}}",
+      "sonar": "声呐 {{value}}",
+      "sensor": "探测 {{value}}",
+      "sat": "卫星 · {{value}}后过境"
+    },
+    "order": {
+      "eta": "{{distance}} · {{eta}}"
+    },
+    "minimap": {
+      "label": "小地图",
+      "km": "{{value}} km"
+    },
+    "pion": {
+      "decoy": "诱饵"
+    }
+  },
+  "legal": {
+    "title": "法律信息",
+    "docs": {
+      "cgu": "使用条款",
+      "cgv": "销售条款",
+      "privacy": "隐私",
+      "withdrawal": "撤销权",
+      "mentions": "法律声明",
+      "cookies": "Cookie"
+    },
+    "path": "法律",
+    "version": "版本 {{version}} · 更新于 {{date}}",
+    "error": "文档不可用。",
+    "gateTitle": "使用条款",
+    "gateText": "开始游戏前，请阅读并接受我们的使用条款和隐私政策（或其新版本）。",
+    "read": "阅读文档",
+    "checkbox": "我已阅读并接受上述文档。",
+    "accept": "接受并继续"
+  },
+  "interior": {
+    "unavailable": "国内安全不可用",
+    "kpi": {
+      "threat": "国内威胁",
+      "quality": "服务质量",
+      "level": "等级 {{level}} · 含预算",
+      "foiled": "挫败的行动",
+      "alerts": "已发出 {{count}} 次警报",
+      "caught": "揭露的特工",
+      "doubles": "其中 {{count}} 人被策反"
+    },
+    "grades": {
+      "low": "低",
+      "moderate": "中等",
+      "high": "高",
+      "critical": "严重"
+    },
+    "focusTitle": "部门重点",
+    "focusSet": "重点：{{name}}",
+    "focus": {
+      "balanced": {
+        "name": "均衡",
+        "desc": "力量均分于反间谍、场所保护和骚乱监控。"
+      },
+      "counterintel": {
+        "name": "反间谍",
+        "desc": "追查外国特工和筹备中的行动：侦测能力显著提升。"
+      },
+      "protection": {
+        "name": "保护",
+        "desc": "重要场所受到守卫：多保护两处场所，敌方破坏和侦察受阻。"
+      },
+      "surveillance": {
+        "name": "监控",
+        "desc": "叛乱网络与动荡处于监控之下：骚乱风险大幅降低。"
+      }
+    },
+    "budget": "部门预算",
+    "budgetSet": "国内安全预算已调整",
+    "metricsTitle": "可衡量的效果",
+    "metricsMeta": "等级 × 预算 × 重点",
+    "metrics": {
+      "agentDetect": "揭露一名特工（每日）",
+      "agentDetectHint": "每名活跃外国特工的每日基础概率",
+      "opDetect": "发现筹备中的行动",
+      "opDetectHint": "评级警报；敌方成功率减半",
+      "protection": "保护重要场所",
+      "protectionHint": "降低破坏和侦察的成功率",
+      "unrestReduction": "骚乱削减",
+      "unrestReductionHint": "叛乱、示威、国内破坏"
+    },
+    "threatsTitle": "各省威胁",
+    "protectedCount": "受保护场所：{{n}} / {{max}}",
+    "noThreat": "未发现威胁",
+    "protectedShort": "受保护",
+    "cols": {
+      "threat": "威胁",
+      "factors": "因素"
+    },
+    "protect": "保护",
+    "unprotect": "解除",
+    "protectedOk": "{{name}}：场所已置于保护之下",
+    "unprotected": "{{name}}：保护已解除",
+    "reportsTitle": "国内报告",
+    "noReports": "暂无国内报告"
+  },
+  "intel": {
+    "flash": "FLASH",
+    "title": "情报",
+    "sources": "来源",
+    "humint": "HUMINT",
+    "sigint": "SIGINT",
+    "interiorTab": "国内",
+    "departments": "部门",
+    "totalBudget": "总预算",
+    "unavailable": "情报服务不可用。",
+    "unavailableHint": "本局游戏未启用情报模块。",
+    "depts": {
+      "interior": "国内安全",
+      "exterior": "对外情报",
+      "military": "军事情报"
+    },
+    "deptsShort": {
+      "interior": "国内",
+      "exterior": "对外",
+      "military": "军事"
+    },
+    "level": "N{{level}}",
+    "budget": "预算",
+    "budgetUp": "增加预算",
+    "budgetDown": "减少预算",
+    "budgetSet": "部门预算已调整",
+    "capacity": "行动",
+    "noReports": "该来源暂无报告。",
+    "operations": "行动",
+    "launch": "发起行动",
+    "launchShort": "发起",
+    "operation": "行动",
+    "target": "目标",
+    "cost": "成本",
+    "duration": "耗时",
+    "success": "成功率",
+    "exposure": "风险",
+    "estimate": "预估成功概率",
+    "progress": "进度",
+    "zone": "{{km}} km 区域",
+    "opLaunched": "行动已发起：{{op}}",
+    "opCancelled": "行动已取消",
+    "reconSent": "已开始区域监听",
+    "shared": "已与 {{nationLe}} 共享报告",
+    "sharedBy": "由 {{nationLe}} 共享",
+    "subject": "主题：",
+    "minimap": "报告区域",
+    "lowCotation": "可信度低：信息未经交叉核实，可能为虚假情报。行动前请确认。",
+    "cotationTip": "来源可靠性：{{r}} · 信息可信度：{{c}}",
+    "agents": "特工",
+    "caught": "已暴露的敌方特工",
+    "caughtAgent": "未知",
+    "turned": "已策反",
+    "turn": "策反",
+    "turnedOk": "特工已被策反为双面间谍",
+    "reliability": {
+      "A": "A — 可靠",
+      "B": "B — 通常可靠",
+      "C": "C — 较可靠",
+      "D": "D — 不太可靠",
+      "E": "E — 不可靠",
+      "F": "F — 无法评估"
+    },
+    "credibility": {
+      "1": "1 — 已证实",
+      "2": "2 — 很可能",
+      "3": "3 — 可能",
+      "4": "4 — 存疑",
+      "5": "5 — 不太可能",
+      "6": "6 — 无法评估"
+    },
+    "kinds": {
+      "daily": "每日简报",
+      "flash": "快讯",
+      "order_of_battle": "战斗序列",
+      "intentions": "意图",
+      "counterintel": "反间谍",
+      "leak": "泄密",
+      "cyber": "网络",
+      "result": "行动结果"
+    },
+    "actions": {
+      "plan_strike": "计划打击",
+      "send_recon": "派出侦察",
+      "share": "共享",
+      "open_unit": "查看单位",
+      "open_province": "查看省份"
+    },
+    "opStatus": {
+      "running": "进行中",
+      "success": "成功",
+      "failed": "失败",
+      "compromised": "已暴露"
+    },
+    "agentStatus": {
+      "active": "活跃",
+      "burned": "已暴露",
+      "double": "双面间谍",
+      "exfiltrated": "已撤离",
+      "captured": "被捕"
+    },
+    "ops": {
+      "infiltrate_spy": "渗透间谍",
+      "recruit_source": "招募线人",
+      "turn_agent": "策反特工",
+      "exfiltrate": "撤离特工",
+      "steal_research": "窃取研究",
+      "sabotage_factory": "破坏工厂",
+      "fund_rebels": "资助叛军",
+      "listen_area": "监听区域",
+      "intercept_army": "截获通信",
+      "jam_area": "干扰区域",
+      "cyber_radar": "网络攻击：雷达",
+      "cyber_production": "网络攻击：生产",
+      "cyber_orders": "网络攻击：命令",
+      "disinformation": "虚假信息",
+      "leak_plans": "泄露计划",
+      "plant_fake_report": "欺骗：虚假报告",
+      "deploy_decoys": "部署诱饵",
+      "fake_radio_traffic": "虚假无线电通信",
+      "counterintel_sweep": "反间谍",
+      "recon_economic": "经济侦察",
+      "recon_military": "军事侦察"
+    },
+    "opsHelp": {
+      "infiltrate_spy": "在目标国安插特工：逐步揭示其省份、建筑和意图。",
+      "recruit_source": "招募当地线人：定期提供意图报告，可信度不一。",
+      "turn_agent": "策反已暴露的敌方特工，向其机构提供虚假情报。",
+      "exfiltrate": "在被捕前撤回受威胁的特工。",
+      "steal_research": "窃取研究成果：加速或解锁一个节点。",
+      "sabotage_factory": "破坏目标的一座工业建筑。",
+      "fund_rebels": "资助某省的叛乱：降低稳定度。",
+      "listen_area": "截获某区域的无线电：揭示该处单位。",
+      "intercept_army": "跟踪某支军队的通信：命令和动向。",
+      "jam_area": "干扰某区域的通信和雷达。",
+      "cyber_radar": "暂时致盲目标的雷达。",
+      "cyber_production": "减缓目标的工业生产。",
+      "cyber_orders": "延迟目标命令的执行。",
+      "disinformation": "虚假信息宣传：降低目标的稳定度。",
+      "leak_plans": "在全球新闻中公布窃得的计划。",
+      "plant_fake_report": "向敌方机构传递一份虚假报告。",
+      "deploy_decoys": "部署诱饵以欺骗敌方侦察。",
+      "fake_radio_traffic": "模拟无线电通信以掩盖您的行动。",
+      "counterintel_sweep": "搜捕您领土上的外国特工。",
+      "recon_economic": "分阶段揭示整个国家（先首都和大城市，再其他地区）或单个省份的经济设施（生产、资源、工业）。",
+      "recon_military": "分阶段揭示整个国家（先首都和大城市，再其他地区）或单个省份的基地、防空、雷达、发射井和掩体。之后在地图上可见。"
+    },
+    "targetProvince": "目标省份",
+    "targetArea": "区域（城市周边）",
+    "targetUnit": "目标单位",
+    "wholeNation": "整个国家",
+    "scope": "范围",
+    "scopeNation": "整个国家",
+    "scopeProvince": "单个省份",
+    "reconPhase": "阶段 {{done}}/{{waves}} · {{provinces}} 个省",
+    "unknownContact": "未识别目标",
+    "noContacts": "未发现外国单位：将雷达靠近或发起侦察。"
+  },
+  "sheet": {
+    "path": "档案",
+    "catalog": "在目录中查看",
+    "pile": "编组 {{id}}"
+  },
+  "arsenal": {
+    "title": "军火库",
+    "doctrines": "军事学说与供应商",
+    "all": "全部",
+    "search": "搜索系统…",
+    "category": "类别",
+    "categories": "装备类别",
+    "allCategories": "全部军械库",
+    "searchAll_other": "在整个军械库中搜索：{{count}} 个结果",
+    "emptyCategory": "在该学说和筛选条件下，“{{category}}”类别中没有系统。",
+    "groups": {
+      "air": "空中",
+      "land": "陆地",
+      "defense": "防御与探测",
+      "strike": "打击与战略",
+      "sea": "海上",
+      "support": "保障"
+    },
+    "cats": {
+      "fighter": "战斗机",
+      "bomber": "轰炸机",
+      "air_support": "空中支援",
+      "helicopter": "直升机",
+      "drone": "无人机",
+      "tank": "坦克",
+      "ifv": "装甲车（步兵战车）",
+      "artillery": "火炮",
+      "infantry": "步兵",
+      "air_defense": "防空",
+      "radar": "雷达",
+      "strike_missile": "打击导弹",
+      "nuclear": "核力量",
+      "space": "太空",
+      "surface_ship": "水面舰队",
+      "submarine": "潜艇",
+      "logistics": "后勤"
+    },
+    "allGen": "全部",
+    "producible": "可生产",
+    "importable": "可进口",
+    "import": "进口",
+    "ownedFilter": "已拥有",
+    "rdRequired": "需要研发",
+    "licence": "许可证",
+    "count_other": "{{count}} 种系统",
+    "layout": "显示",
+    "grid": "网格",
+    "list": "列表",
+    "empty": "没有符合筛选条件的系统。",
+    "emptyHint": "扩大搜索范围或更换军事学说。",
+    "pick": "选择一个系统",
+    "pickHint": "详细档案、照片和生产条件将显示在这里。",
+    "back": "返回军火库",
+    "price": "价格",
+    "unitPrice": "单价",
+    "elements": "件",
+    "upkeep": "维护",
+    "perDay": "/ 天",
+    "buildTime": "生产周期",
+    "owned": "已拥有",
+    "ownedShort": "已拥有：{{count}}",
+    "producibleLabel": "可生产",
+    "yesLicence": "是（许可生产）",
+    "noResearch": "否（需要研发：{{nodes}}）",
+    "importLabel": "进口",
+    "importPossible": "可行",
+    "embargo": "不可行（禁运）",
+    "notExportable": "不可出口",
+    "licenceLabel": "生产许可证",
+    "licenceOwned": "已持有",
+    "licenceAvailable": "可获取",
+    "licenceNone": "未提供",
+    "stealth": "隐身",
+    "cols": {
+      "name": "系统",
+      "category": "类别",
+      "owned": "已拥有",
+      "status": "状态"
+    }
+  },
+  "production": {
+    "tabs": {
+      "arsenal": "军火库",
+      "queue": "生产队列",
+      "licences": "许可证"
+    },
+    "treasury": "国库",
+    "sites_other": "{{count}} 个省份",
+    "site": "生产地点",
+    "quantity": "数量",
+    "total": "总成本",
+    "insufficient": "资金不足",
+    "produce": "生产",
+    "import": "进口",
+    "buyLicence": "许可证 · {{price}}",
+    "blackMarket": "黑市",
+    "blackMarketOrdered": "已在黑市下单",
+    "goResearch": "研发：{{node}}",
+    "needBuilding": "该地点没有{{building}}：生产更慢或无法生产。",
+    "ordered": "已开始生产：{{count}} × {{unit}}",
+    "imported": "已下单进口：{{count}} × {{unit}}",
+    "licenceBought": "已购买许可证：{{unit}}",
+    "queue": "生产队列",
+    "queueEmpty": "无进行中的生产。",
+    "queueHint": "从军火库中选择系统和生产地点。",
+    "cols": {
+      "unit": "系统",
+      "progress": "进度",
+      "eta": "剩余"
+    },
+    "accelerate": "加速（高级货币）",
+    "accelerateShort": "−6 小时",
+    "cancel": "取消生产",
+    "cancelled": "生产已取消",
+    "noLicences": "无生产许可证。",
+    "licenceHint": "许可证允许在无需研发的情况下生产外国系统，并享受生产折扣。",
+    "acquired": "{{value}} 天前获得",
+    "importTotal": "进口",
+    "source": {
+      "import": "进口",
+      "black_market": "黑市"
+    }
+  },
+  "shop": {
+    "consent": {
+      "title": "确认购买",
+      "summary": "{{label}}：",
+      "cgv": "我已阅读并同意",
+      "waiver": "我要求立即提供高级货币，并明确放弃自交付之时起的撤销权（法国《消费法典》第 L221-28 条第 13 项）。",
+      "pay": "下单并承担付款义务 · {{price}}",
+      "error": "无法打开支付。请重试。"
+    },
+    "accelerated": "已加速 · 余额 {{balance}}",
+    "notEnough": "高级货币余额不足。",
+    "unavailable": "商店不可用。",
+    "title": "商店",
+    "path": "商店",
+    "unavailableHint": "支付服务器无响应。",
+    "balance": "余额",
+    "currency": "指挥点数",
+    "policy": "本局游戏内购买",
+    "policies": {
+      "open": "允许",
+      "limited": "受限",
+      "disabled": "禁用"
+    },
+    "cap": "上限：每名玩家 {{cap}} 点",
+    "policyHint": "由游戏创建者设定",
+    "fair": "没有开箱：每次购买都明确标示所含内容。竞技游戏可以禁用购买。",
+    "packs": "指挥点数",
+    "best": "最超值",
+    "bonus": "赠送 +{{value}}",
+    "credited": "点数已加入您的余额",
+    "cosmetics": "外观",
+    "owned": "已拥有",
+    "cosmeticBought": "外观已解锁",
+    "kinds": {
+      "unit_skin": "棋子",
+      "flag": "旗帜",
+      "map_theme": "地图",
+      "terminal_theme": "终端"
+    },
+    "accelerations": "加速",
+    "accelerationsHelp": "在相应队列中（「−6 小时」按钮）缩短生产、研究、建造或维修的时间，前提是本局规则允许。",
+    "history": "历史",
+    "reasons": {
+      "purchase": "购买",
+      "accelerate": "加速",
+      "cosmetic": "外观",
+      "refund": "退款",
+      "admin": "管理员发放",
+      "resources": "局内资源"
+    },
+    "subtitle": "指挥点数、外观与加速。没有开箱。",
+    "unlimited": "余额无限",
+    "unlimitedHint": "无限模式账号：不扣除任何费用。",
+    "acceleratedUnlimited": "已加速（余额无限）",
+    "resources": {
+      "title": "资源",
+      "help": "用指挥点数兑换游戏美元或资源，在本局中立即交付给你的国家。",
+      "dollars": "美元",
+      "price": "价格",
+      "buy": "购买",
+      "short": "余额不足",
+      "free": "免费（无限账户）",
+      "after": "之后余额：{{value}}",
+      "balanceAfter": "购买后余额",
+      "delivered": "已交付",
+      "confirmTitle": "确认购买",
+      "confirm": "支付 {{price}} 点数",
+      "confirmHelp": "在当前对局中立即交付。购买不可撤销，点数不予退还。",
+      "done": "已交付 {{name}} · 余额 {{balance}}",
+      "doneUnlimited": "已交付 {{name}}（无限账户）",
+      "capUsed": "本局已花费 {{spent}} / {{cap}} 点数",
+      "disabled": "本局已禁用购买（竞技服务器）。",
+      "unavailable": "优惠不可用。",
+      "errors": {
+        "cap_reached": "已达到本局消费上限。",
+        "shop_disabled": "本局已禁用购买。",
+        "insufficient_premium": "点数余额不足。",
+        "generic": "无法购买。"
+      }
+    }
+  },
+  "researchNodes": {
+    "aero_gen2": "第二代战斗机",
+    "aero_gen3": "第三代战斗机",
+    "aero_gen4": "第四代战斗机",
+    "aero_gen4plus": "第四代+战斗机",
+    "aero_gen5": "第五代战斗机",
+    "aero_bomber1": "亚音速轰炸机",
+    "aero_bomber2": "超音速轰炸机",
+    "aero_stealth-bomber": "隐身轰炸机",
+    "aero_helo1": "运输直升机",
+    "aero_helo2": "攻击直升机",
+    "aero_helo3": "现代攻击直升机",
+    "aero_drones1": "战术无人机",
+    "aero_drones2": "武装 MALE 与 HALE 无人机",
+    "aero_drones3": "隐身作战无人机",
+    "aero_aew": "空中预警",
+    "aero_tanker": "空中加油",
+    "aero_transport": "战略运输",
+    "land_gen1": "第一代装甲车辆",
+    "land_gen2": "第二代装甲车辆",
+    "land_gen3": "第三代装甲车辆",
+    "land_gen4": "第四代装甲车辆",
+    "land_gen5": "第五代装甲车辆",
+    "land_mlrs": "重型火箭炮",
+    "land_ew": "陆地电子战",
+    "naval_gen1": "第一代舰艇",
+    "naval_gen2": "第二代舰艇",
+    "naval_gen3": "第三代舰艇",
+    "naval_gen4": "第四代舰艇",
+    "naval_gen5": "第五代舰艇",
+    "naval_carrier": "航空母舰",
+    "naval_sub1": "常规潜艇",
+    "naval_sub2": "现代潜艇（AIP）",
+    "naval_sub3": "攻击型核潜艇",
+    "naval_ssbn": "弹道导弹潜艇",
+    "missiles_sam1": "近程防空",
+    "missiles_sam2": "中程防空",
+    "missiles_sam3": "远程防空",
+    "missiles_sam4": "多层防空",
+    "missiles_sam5": "新一代防空",
+    "missiles_abm": "弹道导弹防御",
+    "missiles_cruise1": "巡航导弹",
+    "missiles_cruise2": "隐身巡航导弹",
+    "missiles_antiship": "反舰导弹",
+    "missiles_ballistic1": "战术弹道导弹",
+    "missiles_ballistic2": "中程弹道导弹",
+    "missiles_ballistic3": "中远程弹道导弹",
+    "missiles_hypersonic": "高超音速武器",
+    "nuclear_weapons": "核武器",
+    "nuclear_icbm": "洲际导弹",
+    "nuclear_slbm": "潜射弹道导弹",
+    "sensors_radar1": "警戒雷达",
+    "sensors_radar2": "有源相控阵雷达",
+    "sensors_radar3": "超视距与反隐身雷达",
+    "sensors_space1": "侦察卫星",
+    "sensors_space2": "情报卫星星座",
+    "sensors_asat": "反卫星武器",
+    "cyber_l1": "网络防御",
+    "cyber_l2": "进攻性网络攻击",
+    "cyber_l3": "高级网络战",
+    "intel_interior1": "国内安全 N1",
+    "intel_interior2": "国内安全 N2",
+    "intel_interior3": "国内安全 N3",
+    "intel_exterior1": "对外情报 N1",
+    "intel_exterior2": "对外情报 N2",
+    "intel_exterior3": "对外情报 N3",
+    "intel_military1": "军事情报 N1",
+    "intel_military2": "军事情报 N2",
+    "intel_military3": "军事情报 N3",
+    "industry_l1": "国防工业 N1",
+    "industry_l2": "国防工业 N2",
+    "industry_l3": "国防工业 N3",
+    "desc": {
+      "aero": "作战航空、支援与无人机。",
+      "land": "装甲、火炮与机械化步兵。",
+      "naval": "水面舰队与潜艇。",
+      "missiles": "防空、打击、反导。",
+      "nuclear": "核威慑与战略投送工具。",
+      "sensors": "雷达、卫星、电子战。",
+      "cyber": "网络防御与网络攻击。",
+      "intel": "情报机构等级。",
+      "industry": "生产、后勤与成本。"
+    }
+  },
+  "research": {
+    "branchesLabel": "研究分支",
+    "branches": {
+      "aero": "航空",
+      "land": "陆地",
+      "naval": "海军",
+      "missiles": "导弹",
+      "sensors": "传感器",
+      "cyber": "网络",
+      "intel": "情报",
+      "industry": "工业"
+    },
+    "current": "进行中的研究",
+    "progress": "进度",
+    "idle": "无进行中的研究。",
+    "queue": "队列",
+    "queueEmpty": "队列为空。",
+    "remove": "移出队列",
+    "removed": "研究已移除",
+    "effects": "累计效果",
+    "requires": "前置条件",
+    "unlocks": "解锁生产",
+    "cost": "成本",
+    "duration": "耗时",
+    "start": "开始研究",
+    "enqueue": "加入队列",
+    "cancel": "取消",
+    "started": "已开始研究：{{node}}",
+    "queued": "已加入队列：{{node}}",
+    "pick": "在技术树中选择一个节点。",
+    "noTree": "技术树不可用。",
+    "noTreeHint": "研究数据（data/research）尚未加载。",
+    "status": {
+      "done": "已获得",
+      "current": "进行中",
+      "queued": "排队中",
+      "available": "可研究",
+      "locked": "已锁定"
+    },
+    "enqueueChain": "连同前置条件一起规划（{{count}} · {{cost}}）",
+    "chainQueued": "已规划 {{count}} 项研究，直至：{{node}}"
+  },
+  "modifiers": {
+    "production_speed": "生产速度",
+    "production_cost": "生产成本",
+    "research_speed": "研究速度",
+    "income_money": "收入",
+    "income_oil": "石油",
+    "income_metals": "金属",
+    "income_electronics": "电子元件",
+    "income_food": "粮食",
+    "upkeep": "维护",
+    "supply_range": "后勤范围",
+    "combat_damage": "伤害",
+    "combat_armor": "装甲",
+    "air_range": "空中作战半径",
+    "air_fuel": "空中续航",
+    "sensors_radarRange": "雷达范围",
+    "sensors_stealthDetect": "隐身目标探测",
+    "sensors_satellitePasses": "卫星过境",
+    "ew_jamming": "干扰",
+    "ew_jamResistance": "抗干扰",
+    "missiles_accuracy": "导弹精度",
+    "missiles_interception": "拦截",
+    "naval_sonar": "声呐",
+    "cyber_attack": "网络攻击",
+    "cyber_defense": "网络防御",
+    "intel_interior_level": "国内安全（等级）",
+    "intel_exterior_level": "对外情报（等级）",
+    "intel_military_level": "军事情报（等级）",
+    "intel_capacity": "情报容量",
+    "stability_recovery": "稳定度恢复"
+  },
+  "domestic": {
+    "unavailable": "国内管理不可用",
+    "unavailableHint": "对局服务器尚未发布这些数据。",
+    "kpi": {
+      "stability": "稳定度",
+      "stabilityHint": "公共秩序与信任",
+      "trend": "趋势 {{value}} / 天",
+      "morale": "士气",
+      "moraleHint": "各省平均",
+      "moraleShift": "目标 {{value}}（政策）",
+      "warSupport": "战争支持度",
+      "warSupportTarget": "目标 {{value}} · 厌战 ×{{factor}}",
+      "unrest": "骚乱风险",
+      "unrestFactor": "政策与国内安全：{{value}}"
+    },
+    "strike": "罢工进行中：生产还将放缓 {{wait}}。",
+    "policiesTitle": "国内政策",
+    "activeCount": "{{count}} 项生效中",
+    "active": "生效中",
+    "inForce": "生效中",
+    "suspended": "已暂停",
+    "locked": "{{wait}}后可更改",
+    "enabled": "已颁布政策“{{name}}”",
+    "disabled": "已废止政策“{{name}}”",
+    "excludes": "与以下政策冲突：{{list}}",
+    "policies": {
+      "propaganda": {
+        "name": "宣传",
+        "desc": "国家媒体动员：士气和战争支持度上升，但增加经济负担。"
+      },
+      "conscription": {
+        "name": "征兵",
+        "desc": "义务兵役：步兵训练更快，劳动力从经济中抽走。"
+      },
+      "war_economy": {
+        "name": "战时体制",
+        "desc": "工业被征用：生产加快，稳定度和士气受损，罢工更频繁。"
+      },
+      "austerity": {
+        "name": "紧缩",
+        "desc": "削减民用开支：预算和维护负担减轻，士气低落，罢工与骚乱增多。"
+      },
+      "stimulus": {
+        "name": "刺激计划",
+        "desc": "民众扶持方案：士气和稳定度上升，收入减少。"
+      },
+      "martial_law": {
+        "name": "戒严",
+        "desc": "军队上街：稳定度恢复，骚乱被镇压，士气和支持度骤降。"
+      }
+    },
+    "fx": {
+      "income": "收入",
+      "production": "生产",
+      "infantry": "步兵",
+      "research": "研究",
+      "upkeep": "维护",
+      "stability": "稳定度",
+      "perDay": "/天",
+      "morale": "士气",
+      "moraleTarget": "目标士气",
+      "warSupport": "支持度",
+      "unrest": "骚乱",
+      "strikes": "罢工"
+    },
+    "totalsTitle": "累计效果",
+    "eventsTitle": "国内事件",
+    "noEvents": "近期无事件",
+    "ago": "{{value}}前",
+    "riskTitle": "各省骚乱风险",
+    "riskMeta": "动荡、占领、稳定度",
+    "noRisk": "没有省份面临风险",
+    "occupied": "被占领",
+    "protected": "受保护",
+    "cols": {
+      "risk": "风险",
+      "unrest": "动荡"
+    },
+    "help": "士气下滑会引发罢工，稳定度下降会引发示威和暴乱，叛乱网络会在动荡省份实施破坏。国内安全（情报 › 国内）可降低这些风险。"
+  },
+  "economy": {
+    "tabs": {
+      "dashboard": "仪表盘",
+      "resources": "资源",
+      "buildings": "建筑",
+      "market": "市场",
+      "deliveries": "交付",
+      "black": "黑市",
+      "logistics": "后勤",
+      "interior": "国内"
+    },
+    "treasury": "国库",
+    "annualBudget": "年度预算",
+    "budgetSource": "国防，每日拨付",
+    "income": "收入",
+    "expenses": "支出",
+    "balance": "差额",
+    "perDay": "每天",
+    "runway": "储备：{{days}} 天",
+    "incomeDetail": "收入 / 天",
+    "expenseDetail": "维护与服务 / 天",
+    "upkeepAdjusted": "维护费按当地成本调整：目录价的 ×{{factor}}（{{catalog}} / 天），成本指数 {{index}}。",
+    "upkeepAdjustedHelp": "旧装备的维护更便宜，本地部分（军饷、燃料、人工）随该国物价水平变化；开局时，真实军队的维护费绝不会超过国防预算的合理比例。",
+    "incomeKeys": {
+      "trade": "贸易（制裁、封锁）",
+      "national": "国家预算",
+      "provincial": "省份分成",
+      "mobilization": "动员",
+      "modifiers": "研究与加成"
+    },
+    "construction": "工程",
+    "noConstruction": "无进行中的工程。",
+    "work": {
+      "build": "建造 N{{level}}",
+      "upgrade": "升级 N{{level}}",
+      "repair": "修复"
+    },
+    "cols": {
+      "building": "建筑",
+      "province": "省份",
+      "work": "工程",
+      "eta": "剩余",
+      "resource": "资源",
+      "stock": "库存",
+      "production": "产量 / 天",
+      "consumption": "消耗 / 天",
+      "net": "净值 / 天",
+      "autonomy": "可维持",
+      "seller": "卖家",
+      "item": "物品",
+      "price": "价格",
+      "expires": "到期",
+      "from": "来源",
+      "range": "半径",
+      "population": "人口",
+      "morale": "士气",
+      "income": "收入 / 天"
+    },
+    "shortage": "短缺",
+    "days_other": "{{count}} 天",
+    "searchProvince": "搜索省份…",
+    "filter": "筛选",
+    "damaged": "受损",
+    "works": "工程",
+    "buildingsCount_other": "{{count}} 座建筑",
+    "noProvince": "没有匹配的省份。",
+    "items": {
+      "units": "装备",
+      "resource": "资源",
+      "licence": "许可证"
+    },
+    "licenceOf": "许可证：{{name}}",
+    "embargoed": "受禁运",
+    "noOffers": "市场上没有报价。",
+    "reserved": "已预订",
+    "withdraw": "撤回",
+    "offerCancelled": "报价已撤回",
+    "buy": "购买",
+    "bought": "交易达成：货物运输中",
+    "sell": "挂牌出售",
+    "quantity": "数量",
+    "priceM": "价格（M$）",
+    "post": "发布报价",
+    "offerPosted": "报价已在市场发布",
+    "noDeliveries": "无进行中的交付。",
+    "unknownSeller": "匿名卖家",
+    "covert": "秘密",
+    "official": "官方",
+    "track": "跟踪",
+    "blackTitle": "黑市",
+    "blackText": "价格乘以 {{factor}}，秘密交付，被发现风险 {{risk}}（一旦暴露将引发外交事件）。",
+    "mobilization": "总动员",
+    "mobilized": "动员生效中",
+    "notMobilized": "和平时期",
+    "mobilizeHelp": "每省 +{{inf}} 个步兵营，收入 −{{penalty}}，稳定度 {{stab}} / 天。",
+    "since": "已持续 {{value}} 小时",
+    "depots": "仓库与前进基地",
+    "noDepots": "无仓库。",
+    "show": "查看",
+    "blockades": "封锁",
+    "forecast": "7 天：{{d7}} · 30 天：{{d30}}",
+    "deficitHint": "赤字：部队维护费超过收入。攻占省份、削减情报预算或解除动员以避免破产。",
+    "intelBudget": "情报",
+    "ledgerTitle": "实际流水 · 最近 24 小时",
+    "ledgerEmpty": "暂无记录：账簿将在游戏第一天开始记录。",
+    "tradeBalance": "贸易差额 {{value}}",
+    "ledger": {
+      "budgetNational": "国家预算",
+      "budgetProvincial": "省份分成",
+      "trade": "贸易",
+      "mobilization": "动员",
+      "modifiers": "加成",
+      "upkeep": "部队维护",
+      "production": "生产",
+      "imports": "进口",
+      "research": "研究",
+      "buildings": "工程",
+      "licences": "许可证",
+      "blackMarket": "黑市",
+      "marketPurchases": "市场购买",
+      "marketSales": "市场销售",
+      "transfersIn": "接收的转让",
+      "transfersOut": "给予的转让",
+      "other": "其他（情报、联盟…）"
+    },
+    "constructionHint": "在建筑标签页或省份面板中升级或新建建筑。",
+    "provincesTitle": "省份",
+    "populationMorale": "{{pop}} 居民 · 士气 {{morale}}",
+    "showAll": "显示全部 {{count}} 个省份",
+    "showLess": "收起",
+    "resourcesHint": "资源由各省及其建筑（油井、矿山、农场、电子工厂、炼油厂）生产，并由您的单位消耗。短缺会减缓生产；粮食影响士气。",
+    "ledgerToday": "实际流水 · 今天"
+  },
+  "armies": {
+    "tabs": {
+      "armies": "军队",
+      "generals": "将领",
+      "operations": "行动"
+    },
+    "name": {
+      "land": "第 {{n}} 集团军",
+      "air": "第 {{n}} 航空联队",
+      "sea": "第 {{n}} 舰队"
+    },
+    "kpi": {
+      "armies": "军队",
+      "armiesSub": "{{combat}} 作战中 · {{moving}} 在途",
+      "land": "陆地",
+      "air": "空中",
+      "sea": "海上",
+      "static": "固定场所",
+      "piles_other": "{{count}} 个编组",
+      "value": "价值",
+      "valueSub": "按目录价格"
+    },
+    "domain": "领域",
+    "domains": {
+      "all": "全部",
+      "land": "陆地",
+      "air": "空中",
+      "sea": "海上"
+    },
+    "state": {
+      "combat": "作战中",
+      "moving": "移动中",
+      "resupply": "补给中",
+      "embarked": "已登舰",
+      "idle": "待命"
+    },
+    "stateFilter": "状态",
+    "allStates": "所有状态",
+    "sort": "排序方式",
+    "sortBy": {
+      "state": "排序：作战优先",
+      "elements": "排序：兵力",
+      "hp": "排序：健康度",
+      "name": "排序：名称"
+    },
+    "search": "军队、装备、城市…",
+    "empty": "地图上没有军队。",
+    "noMatch": "没有符合筛选条件的军队。",
+    "pick": "选择一支军队",
+    "pickHint": "编成、状态、位置和命令显示在此，并附直接操作。",
+    "back": "返回军队",
+    "cols": {
+      "army": "军队",
+      "strength": "兵力",
+      "hp": "健康度",
+      "state": "状态",
+      "location": "位置",
+      "orders": "当前命令",
+      "general": "将领"
+    },
+    "elements_other": "{{count}} 个单位",
+    "piles_other": "{{count}} 个编组",
+    "supply": "补给",
+    "veterancy": "战斗经验",
+    "composition": "编成",
+    "order": {
+      "move": "前往 {{place}} · {{eta}}后抵达",
+      "attack": "攻击：{{target}}",
+      "delegated": "已委托给将领：{{directive}}",
+      "none": "等待命令"
+    },
+    "rename": "重命名军队",
+    "save": "确认",
+    "actions": {
+      "center": "居中",
+      "select": "选择",
+      "move": "移动",
+      "stop": "停止",
+      "patrol": "区域巡逻",
+      "merge": "合并编组",
+      "split": "将编组一分为二",
+      "selectPile": "选择编组"
+    },
+    "mergeNone": "10 公里内没有同类装备的静止编组。",
+    "moveHint": "已选择 {{name}}：点击地图设定目的地。",
+    "done": {
+      "stop": "已下达停止命令",
+      "patrol": "已开始巡逻",
+      "rtb": "已下令返回基地",
+      "merge": "编组已合并",
+      "split": "编组已拆分"
+    }
+  },
+  "inventory": {
+    "tabs": {
+      "inventory": "库存",
+      "catalog": "目录"
+    },
+    "kpi": {
+      "elements": "在役",
+      "systems_other": "{{count}} 种不同装备",
+      "value": "装备总值",
+      "upkeep": "维护费 {{value}} / 天",
+      "available": "可用性",
+      "availableSub": "{{available}} 可用 · {{engaged}} 作战中",
+      "production": "生产中",
+      "productionSub_other": "{{count}} 个订单进行中",
+      "losses": "损失",
+      "lossesSub": "据战斗报告"
+    },
+    "search": "搜索装备…",
+    "toProduction": "生产",
+    "empty": "没有在役装备。",
+    "noMatch": "该类别没有装备。",
+    "mobileLine": "{{n}} 在役 · {{available}} 可用 · {{value}}",
+    "cols": {
+      "system": "装备",
+      "inService": "在役",
+      "available": "可用",
+      "engaged": "作战 · 已部署",
+      "hp": "状态",
+      "production": "生产中",
+      "losses": "损失",
+      "value": "价值"
+    },
+    "hint": "可用：静止、未作战且就绪。已部署：移动中、执行任务、已登舰或整补中。点击一行可打开档案。"
+  },
+  "army": {
+    "supply": {
+      "supplied": "补给充足",
+      "limited": "补给有限",
+      "cut": "补给中断"
+    },
+    "loc": {
+      "near": "{{city}} · {{km}} km",
+      "sea": "海上",
+      "air": "飞行中",
+      "embarked": "已搭载",
+      "center": "将地图居中于该单位",
+      "title": "最近城市：{{city}}（{{km}} km）· 点击居中地图"
+    },
+    "supplyState": {
+      "supplied": "已补给",
+      "limited": "有限",
+      "cut": "中断"
+    },
+    "mission": {
+      "none": "无",
+      "patrol": "巡逻",
+      "strike": "打击",
+      "escort": "护航",
+      "refuel": "加油",
+      "awacs": "空中预警",
+      "recon": "侦察",
+      "blockade": "封锁",
+      "rtb": "返航"
+    },
+    "fuel": "燃料 {{value}} 小时",
+    "veterancy": "老兵",
+    "jamming": "干扰",
+    "rtb": "返航",
+    "unitsCount_other": "{{count}} 个单位",
+    "delegated": "已委托 AI",
+    "noGenerals": "没有可用将领。",
+    "directive": "指令",
+    "directives": {
+      "none": "手动",
+      "defend": "防守",
+      "advance": "推进",
+      "harass": "袭扰"
+    },
+    "traits": {
+      "offensive": "进攻型",
+      "defender": "防守型",
+      "logistician": "后勤专家",
+      "aviator": "飞行员",
+      "admiral": "海军上将"
+    },
+    "delegationOn": "指挥权已委托给 {{name}}",
+    "delegationOff": "已收回指挥权",
+    "selectGroup": "选择编组",
+    "assignSelection_other": "分配所选（{{count}}）",
+    "assigned": "单位已分配给 {{name}}",
+    "ops": {
+      "help": "围绕 H 时规划同步阶段（预备打击、干扰、突击、扩张战果）。",
+      "new": "新行动",
+      "none": "无已规划行动。",
+      "defaultName": "风暴行动",
+      "name": "行动名称",
+      "hHour": "H 时",
+      "hHourHint": "{{value}}后（游戏时间）",
+      "offset": "偏移（分钟）",
+      "kind": "命令类型",
+      "label": "阶段名称",
+      "useSelection_other": "所选（{{count}}）",
+      "unitsCount_other": "{{count}} 个单位",
+      "noUnits": "无单位",
+      "pickTarget": "选择目标…",
+      "place": "地点（城市、省份、「lat,lng」）",
+      "removeStep": "删除阶段",
+      "addStep": "添加阶段",
+      "plan": "规划",
+      "planned": "行动已规划：{{name}}",
+      "cancelled": "行动已取消",
+      "invalid": "每个阶段都必须有单位和有效目标（可识别地点或敌方单位）。",
+      "examples": {
+        "prep": "预备打击",
+        "assault": "突击"
+      },
+      "kinds": {
+        "move": "移动",
+        "attack": "攻击",
+        "strike": "打击",
+        "patrol": "巡逻",
+        "jam": "干扰",
+        "stop": "停止",
+        "rtb": "返航"
+      },
+      "status": {
+        "planned": "已规划",
+        "running": "进行中",
+        "done": "已完成",
+        "cancelled": "已取消",
+        "failed": "失败"
+      },
+      "stepStatus": {
+        "pending": "等待中",
+        "done": "已执行",
+        "failed": "失败"
+      }
+    }
+  },
+  "diplomacy": {
+    "unavailable": "本局游戏不提供外交。",
+    "country": {
+      "pick": "选择国家…",
+      "none": "未选择国家",
+      "noneHint": "在地图上点击一个外国省份，再点“国家”，或在下方选择国家。",
+      "open": "国家：{{nation}}",
+      "openTip": "关系、协议、外交行动、消息、情报",
+      "player": "真人玩家",
+      "ai": "由 AI 控制",
+      "embargoed": "被禁运",
+      "sanctioned": "被制裁",
+      "mobilized": "已动员",
+      "relation": "关系与协议",
+      "pending": "提议",
+      "pendingMine": "已发送{{kind}}",
+      "pendingTheirs": "已收到{{kind}}",
+      "passage": "通行权",
+      "mutualDefense": "共同防御",
+      "intelSharing": "情报共享",
+      "no": "无",
+      "profile": "概况",
+      "provinces": "省份",
+      "budget": "国防预算",
+      "personnel": "现役人员",
+      "doctrine": "学说",
+      "actions": "行动",
+      "invite": "邀请加入联盟",
+      "invited": "已向 {{aNation}} 发出邀请",
+      "sanctions": "提议制裁（安理会）",
+      "sanctionsClosed": "目前不接受向安理会提出提案。",
+      "sanctionsText": "对 {{nationLe}} 实施经济制裁。",
+      "sanctionsProposed": "制裁决议已提交安理会",
+      "message": "发送消息",
+      "intel": "情报"
+    },
+    "tabs": {
+      "nation": "国家",
+      "relations": "关系",
+      "alliances": "联盟",
+      "neutrals": "中立国",
+      "disputed": "争议领土",
+      "stability": "稳定度"
+    },
+    "relation": {
+      "war": "战争",
+      "peace": "和平",
+      "ceasefire": "停火",
+      "ally": "盟友"
+    },
+    "reputation": "声望",
+    "reputationHint": "影响投票和中立国",
+    "atWar": "交战中",
+    "allies": "盟友",
+    "pending": "收到的提议",
+    "filter": "筛选",
+    "filters": {
+      "known": "邻国与有关系的国家"
+    },
+    "cols": {
+      "nation": "国家",
+      "relation": "关系",
+      "since": "自",
+      "alliance": "联盟",
+      "stability": "稳定度",
+      "leaning": "倾向"
+    },
+    "proposal": {
+      "peace": "提议和平",
+      "ceasefire": "提议停火"
+    },
+    "accept": "接受",
+    "refuse": "拒绝",
+    "accepted": "已接受提议",
+    "refused": "已拒绝提议",
+    "sent": "提议已发送",
+    "ceasefire": "停火",
+    "peace": "和平",
+    "declareWar": "宣战",
+    "warTitle": "宣战",
+    "warText": "向 {{aNation}} 宣战？受共同防御约束的盟友可能被卷入，全球紧张度将上升，您的声望将下降。",
+    "members_other": "{{count}} 名成员",
+    "yourAlliance": "您的联盟",
+    "leader": "领袖：",
+    "charter": {
+      "mutualDefense": "共同防御",
+      "intelSharing": "情报共享",
+      "passage": "通行权"
+    },
+    "charterHelp": {
+      "mutualDefense": "对一名成员的攻击即牵动全体成员。",
+      "intelSharing": "情报报告自动共享。",
+      "passage": "成员部队可自由穿越您的省份。"
+    },
+    "treasury": "共同金库",
+    "deposited": "向联盟金库存入 {{amount}}",
+    "votes": {
+      "replace_leader": "由 {{nationLe}} 取代领袖",
+      "skip_mutual_defense": "免除 {{nationLe}} 的共同防御义务",
+      "expel": "开除 {{nationLe}}"
+    },
+    "yes": "赞成",
+    "no": "反对",
+    "voted": "投票已记录",
+    "hasVoted": "已投票",
+    "invited": "已发送邀请：",
+    "allianceChat": "联盟频道",
+    "leave": "退出联盟",
+    "left": "您已退出联盟",
+    "create": "创建联盟",
+    "allianceName": "名称",
+    "allianceFlag": "缩写（4 个字母）",
+    "createBtn": "创建联盟",
+    "created": "联盟已创建：{{name}}",
+    "invitation": "邀请加入「{{name}}」",
+    "joined": "您已加入 {{name}}",
+    "noNeutrals": "没有可拉拢的中立国。",
+    "neutralsHelp": "经济援助，使中立国向您的联盟靠拢。",
+    "aid": "援助金额",
+    "court": "援助 · {{amount}}",
+    "courted": "已向 {{aNation}} 发送援助",
+    "noDisputed": "无争议领土。",
+    "provinces_other": "{{count}} 个省份",
+    "holder": "控制方",
+    "claimants": "主权要求",
+    "tension": "紧张度",
+    "fundRebels": "资助叛军",
+    "rebelsFunded": "已开始资助叛军",
+    "noStability": "稳定度未公开。",
+    "stability": "稳定度",
+    "trend": "趋势",
+    "coupRisk": "政变风险",
+    "coupHint": "稳定度低于 15 %：危险",
+    "factors": "因素",
+    "noRelations": "该筛选下没有国家。",
+    "noRelationsHint": "您与所有国家和平相处。选择「全部」以宣战或提议结盟。",
+    "neutralsNeedAlliance": "拉拢中立国需要加入联盟：在联盟标签页中创建或加入一个。",
+    "noLeaning": "无倾向",
+    "moreNeutrals": "… 以及另外 {{count}} 个：请细化搜索。"
+  },
+  "council": {
+    "unavailable": "安全理事会不可用。",
+    "permanent": "常任席位",
+    "rotating": "轮值席位",
+    "majority": {
+      "simple": "简单多数",
+      "two_thirds": "三分之二多数"
+    },
+    "veto": "否决权",
+    "phase": {
+      "proposals": "提交提案",
+      "voting": "投票进行中",
+      "closed": "会议结束"
+    },
+    "recess": "休会",
+    "agenda_other": "议程上有 {{count}} 项决议",
+    "closesIn": "截止于",
+    "nextSession": "下次会议",
+    "propose": "提出决议",
+    "noResolutions": "议程上没有决议。",
+    "inForce": "生效中的决议",
+    "until": "直至",
+    "zone": "{{km}} km 区域",
+    "proposer": "提出者",
+    "duration": "有效期：{{days}} 天",
+    "waiting_other": "{{count}} 个待定",
+    "vetoThreat": "否决：{{nations}}",
+    "yourVote": "您的投票",
+    "voted": "投票已记录",
+    "type": "类型",
+    "target": "目标国家",
+    "pickTarget": "选择…",
+    "text": "决议文本",
+    "textHint": "10 至 500 个字符，决议体例。",
+    "textPlaceholder": "安全理事会，关切…",
+    "submit": "提交",
+    "proposed": "决议已提交",
+    "types": {
+      "arms_embargo": "武器禁运",
+      "economic_sanctions": "经济制裁",
+      "ceasefire": "停火",
+      "no_fly_zone": "禁飞区",
+      "peacekeeping": "维持和平",
+      "condemnation": "谴责"
+    },
+    "status": {
+      "proposed": "已提交",
+      "voting": "表决中",
+      "passed": "已通过",
+      "rejected": "未通过",
+      "vetoed": "遭否决",
+      "expired": "已失效"
+    },
+    "votes": {
+      "yes": "赞成",
+      "no": "反对",
+      "abstain": "弃权",
+      "none": "未投票"
+    },
+    "noPermanent": "无（尚无联盟）",
+    "votingIn": "投票开始于"
+  },
+  "news": {
+    "filter": "类别",
+    "empty": "无电讯。",
+    "urgent": "紧急",
+    "source": "RED LINE 通讯社",
+    "locate": "定位",
+    "cats": {
+      "strike": "打击",
+      "war": "战争",
+      "peace": "和平",
+      "council": "联合国",
+      "leak": "泄密",
+      "revolt": "叛乱",
+      "coup": "政变",
+      "alliance": "联盟",
+      "economy": "经济",
+      "nuclear": "核",
+      "capture": "征服",
+      "refugees": "难民",
+      "event": "事件"
+    },
+    "war": {
+      "h0": "{{A}} / {{B}}：敌对行动爆发",
+      "h1": "公开战争：{{A}} 对 {{B}}",
+      "h2": "{{A}} 越过红线：与 {{B}} 进入战争状态",
+      "h3": "外交全面破裂：{{A}} / {{B}}",
+      "b0": "各国外交部确认战争状态。认定侵略方：{{A}}。",
+      "b1": "首批部队调动已有报告。{{B}} 谴责 {{A}} 的侵略。",
+      "b2": "{{A}} 挑起敌对行动后，呼吁冷静的声音不断增多。"
+    },
+    "war_alliance": {
+      "h0": "{{X}}：{{A}} 以共同防御之名对 {{B}} 开战",
+      "h1": "共同防御启动：{{A}} 加入对 {{B}} 的冲突",
+      "h2": "联盟团结：{{A}} 向 {{B}} 宣战",
+      "b0": "一名成员遭侵略后，{{A}} 履行 {{X}} 联盟宪章。",
+      "b1": "{{X}} 联盟的共同防御条款使冲突扩大。"
+    },
+    "peace": {
+      "h0": "{{A}} / {{B}}：签署和平条约",
+      "h1": "{{A}} 与 {{B}} 结束敌对行动",
+      "h2": "达成和平：{{A}} / {{B}}",
+      "b0": "代表团已草签协议。部队有一段时间撤离。",
+      "b1": "条约规定撤出部署在对方领土上的部队。"
+    },
+    "peace_annexation": {
+      "h0": "{{A}} / {{B}}：和约确认{{A}}的占领成果",
+      "h1": "和平条约：{{B}}向{{A}}割让 {{X}} 个省份",
+      "h2": "战争结束：{{B}}的边界被重新划定",
+      "b0": "被占领土仍由{{A}}控制：{{X}} 个省份易手。",
+      "b1": "{{B}}签署和约，未能收复失去的 {{X}} 个省份。"
+    },
+    "capitulation": {
+      "h0": "{{B}}向{{A}}投降",
+      "h1": "{{B}}投降：{{A}}强加和平",
+      "h2": "{{B}}战败：与{{A}}签署停战协定",
+      "b0": "首都陷落后，{{B}}政府接受{{A}}的条件。{{X}} 个省份转归其控制。",
+      "b1": "{{B}}军队放下武器。{{A}}吞并 {{X}} 个省份。"
+    },
+    "ceasefire": {
+      "h0": "{{A}} / {{B}}：停火生效",
+      "h1": "枪声停歇：{{A}} 与 {{B}} 休战",
+      "h2": "达成停火：{{A}} / {{B}}",
+      "b0": "休战冻结了战线。任何违约方都将面临制裁。",
+      "b1": "国际观察员称赞这是第一步。预计持续：{{X}} 天。"
+    },
+    "ceasefire_violated": {
+      "h0": "{{A}} 违反与 {{B}} 的停火",
+      "h1": "休战破裂：{{A}} 重启对 {{B}} 的敌对行动",
+      "h2": "违反停火：{{A}} 遭指责",
+      "b0": "国际社会谴责破坏休战。制裁表决已启动。",
+      "b1": "{{A}} 的违约行为已自动提交安全理事会。"
+    },
+    "alliance_created": {
+      "h0": "新联盟：{{X}}，由 {{A}} 领导",
+      "h1": "{{A}} 创建 {{X}} 联盟",
+      "h2": "战略格局重组：{{X}} 诞生",
+      "b0": "宪章：{{Y}}。",
+      "b1": "新集团由 {{A}} 领导。宪章：{{Y}}。"
+    },
+    "alliance_joined": {
+      "h0": "{{A}} 加入 {{X}} 联盟",
+      "h1": "{{X}} 扩大：{{A}} 加入",
+      "h2": "加入：{{A}} / {{X}}",
+      "b0": "该联盟现有 {{Y}} 个成员。",
+      "b1": "{{A}} 签署 {{X}} 宪章。"
+    },
+    "alliance_left": {
+      "h0": "{{A}} 退出 {{X}} 联盟",
+      "h1": "高调退出：{{A}} / {{X}}",
+      "h2": "{{X}} 失去一个成员：{{A}}",
+      "b0": "{{A}} 的退出削弱了 {{X}}。",
+      "b1": "{{A}} 的伙伴对其退出表示知悉。"
+    },
+    "alliance_expelled": {
+      "h0": "{{X}} 开除 {{A}}",
+      "h1": "开除：{{A}} 不再是 {{X}} 成员",
+      "b0": "{{X}} 成员投票开除 {{A}}。"
+    },
+    "leader_replaced": {
+      "h0": "{{X}}：{{A}} 成为联盟领袖",
+      "h1": "{{X}} 领导层更替",
+      "b0": "{{X}} 成员推举 {{A}} 为联盟新领袖。"
+    },
+    "mutual_skipped": {
+      "h0": "{{X}} 放弃对 {{A}} 的共同防御",
+      "h1": "共同防御暂停：{{X}} / {{A}}",
+      "b0": "{{X}} 成员投票通过豁免：不会自动对 {{A}} 开战。"
+    },
+    "council_open": {
+      "h0": "安全理事会：会议开幕",
+      "h1": "安全理事会召开会议",
+      "h2": "安全理事会会议：{{X}} 份文本待表决",
+      "b0": "{{X}} 份决议草案提交表决。成员：{{Y}}。",
+      "b1": "各代表团须在表决期内就 {{X}} 份文本表态。"
+    },
+    "emergency_council": {
+      "h0": "安全理事会紧急会议",
+      "h1": "安全理事会紧急召开",
+      "b0": "{{X}}",
+      "b1": "主席立即召集各成员。{{X}}"
+    },
+    "resolution_passed": {
+      "h0": "安全理事会：针对 {{A}} 通过 {{X}}",
+      "h1": "决议通过：{{X}}（{{A}}）",
+      "h2": "针对 {{A}} 的决议：{{X}}",
+      "b0": "该文本生效 {{Y}} 天。",
+      "b1": "表决：{{Y}}。"
+    },
+    "resolution_zone_passed": {
+      "h0": "安全理事会：通过 {{X}}",
+      "h1": "决议通过：{{X}}",
+      "b0": "相关区域：{{Y}}。",
+      "b1": "措施覆盖：{{Y}}。"
+    },
+    "resolution_rejected": {
+      "h0": "安全理事会：{{X}} 未获通过",
+      "h1": "{{X}} 未获多数",
+      "b0": "{{A}} 提出的草案未获得所需多数。"
+    },
+    "resolution_vetoed": {
+      "h0": "安全理事会否决：{{X}} 受阻",
+      "h1": "{{A}} 行使否决权：{{X}}",
+      "b0": "{{A}} 的否决阻止了文本通过。"
+    },
+    "strike": {
+      "h0": "{{P}} 附近报告 {{A}} 的{{X}}打击",
+      "h1": "{{B}}：{{P}} 附近遭{{X}}打击",
+      "h2": "{{A}} / {{B}}：新一轮{{X}}打击",
+      "b0": "{{P}} 附近传出爆炸声。{{B}} 指责 {{A}}。",
+      "b1": "{{P}} 附近遭{{X}}打击后，损失正在评估中。"
+    },
+    "nuclear": {
+      "h0": "{{P}} 附近发生核爆",
+      "h1": "核禁忌被打破：{{A}} 打击 {{B}}",
+      "h2": "核打击：举世震惊",
+      "b0": "{{A}} 在 {{P}} 附近使用了核武器。全球警戒升至最高。",
+      "b1": "各国首都一致谴责 {{A}} 使用原子武器。"
+    },
+    "battle": {
+      "h0": "{{P}} 附近爆发激战",
+      "h1": "{{P}} 附近之战：{{A}} 获胜",
+      "h2": "前线：{{P}}",
+      "b0": "交战方：{{X}}。",
+      "b1": "交战双方：{{X}}。优势：{{A}}。"
+    },
+    "capital": {
+      "h0": "{{B}} 首都落入 {{A}} 之手",
+      "h1": "{{P}}：{{B}} 首都被 {{A}} 攻占",
+      "h2": "惊天变局：{{A}} 夺取 {{P}}",
+      "b0": "据报 {{B}} 政府已撤离 {{P}}。",
+      "b1": "{{P}} 的陷落标志着冲突的转折点。"
+    },
+    "capture": {
+      "h0": "{{A}} 控制 {{P}}",
+      "h1": "{{P}} 落入 {{A}} 控制",
+      "b0": "{{B}} 失去 {{P}} 省。"
+    },
+    "agent_caught": {
+      "h0": "间谍案：{{B}} 指责 {{A}}",
+      "h1": "{{A}} 的一名特工被 {{B}} 逮捕",
+      "h2": "间谍活动：{{A}} 与 {{B}} 发生外交事件",
+      "b0": "{{B}} 谴责 {{A}} 在其领土上开展情报行动。"
+    },
+    "blockade": {
+      "h0": "封锁：{{A}} 封锁 {{P}}",
+      "h1": "海上交通受扰：{{P}} 遭封锁",
+      "b0": "{{P}} 周边贸易大幅放缓。"
+    },
+    "blockade_lifted": {
+      "h0": "解除对 {{P}} 的封锁",
+      "b0": "{{P}} 周边交通逐步恢复。"
+    },
+    "revolt": {
+      "h0": "{{P}} 动荡：反对 {{B}} 当局的示威",
+      "h1": "{{B}}：{{P}} 发生骚乱",
+      "h2": "{{P}} 局势动荡",
+      "b0": "数千名示威者挑战 {{B}} 当局。",
+      "b1": "{{B}} 安全部队部署至 {{P}}。"
+    },
+    "revolt_disputed": {
+      "h0": "{{X}}：{{P}} 发生反对 {{B}} 的叛乱",
+      "h1": "争议领土：{{P}} 爆发民众起义",
+      "h2": "{{X}}：{{P}} 紧张局势升级",
+      "b0": "在这片由 {{Y}} 主张的领土上，民众质疑 {{B}} 的权威。",
+      "b1": "{{X}} 地区再陷暴力。控制方：{{B}}。"
+    },
+    "uprising": {
+      "h0": "{{P}} 发生武装起义",
+      "h1": "{{B}}：{{P}} 的武装团体拿起武器",
+      "h2": "{{P}} 爆发暴动",
+      "b0": "叛军战士挑战 {{B}} 军队。",
+      "b1": "据称叛乱分子控制了 {{P}} 周边多条要道。"
+    },
+    "rallied": {
+      "h0": "{{P}}：叛乱分子归附 {{A}}",
+      "h1": "争议领土：{{P}} 落入 {{A}} 控制",
+      "b0": "{{B}} 当局垮台后，叛乱分子宣布归附 {{A}}。"
+    },
+    "coup": {
+      "h0": "政变：{{A}}",
+      "h1": "{{A}}：军方夺取政权",
+      "h2": "{{A}}：政府被推翻",
+      "b0": "军政府宣布中止各项制度。{{A}} 的外交政策转向。",
+      "b1": "经过数周动荡，军人夺取了政权。"
+    },
+    "refugees": {
+      "h0": "逃离 {{A}} 的难民潮涌现",
+      "h1": "人道危机：平民逃离 {{A}}",
+      "h2": "大逃亡：{{A}}",
+      "b0": "接收国承受压力：{{X}}。",
+      "b1": "邻国涌入逃离战火的家庭：{{X}}。"
+    },
+    "embargo_import_blocked": {
+      "h0": "禁运：禁止 {{A}} 购买武器",
+      "b0": "供应商遵守安理会决议。"
+    },
+    "black_market": {
+      "h0": "武器走私：{{A}} 遭指责",
+      "h1": "黑市：一条通往 {{A}} 的渠道被捣毁",
+      "b0": "发现运往 {{A}} 的非法货物。"
+    },
+    "peacekeepers": {
+      "h0": "部署维和部队：{{P}}",
+      "h1": "维和部队部署至 {{P}}",
+      "b0": "维和部队就位。攻击他们将招致谴责。"
+    },
+    "peacekeepers_attacked": {
+      "h0": "维和部队遭袭：{{A}} 遭指责",
+      "h1": "{{A}} 向维和部队开火",
+      "b0": "已提交安全理事会。制裁付诸表决。"
+    },
+    "oil_crisis": {
+      "h0": "石油冲击：油价飙升",
+      "h1": "全球石油危机",
+      "b0": "{{X}}",
+      "b1": "依赖油气的经济体受到冲击。{{X}}"
+    },
+    "market_crash": {
+      "h0": "全球股市崩盘",
+      "h1": "市场暴跌",
+      "b0": "{{X}}",
+      "b1": "公共预算承压。{{X}}"
+    },
+    "pandemic": {
+      "h0": "大流行：启动卫生警报",
+      "h1": "全球疫情：工业放缓",
+      "b0": "{{X}}",
+      "b1": "生产链放缓运行。{{X}}"
+    },
+    "arms_fair": {
+      "h0": "国际军火展",
+      "h1": "大型防务展：价格下降",
+      "b0": "{{X}}",
+      "b1": "厂商纷纷推出促销报价。{{X}}"
+    },
+    "ultimatum": {
+      "h0": "{{A}} 向 {{B}} 发出最后通牒",
+      "h1": "{{A}} 对 {{B}} 下达最后通牒",
+      "h2": "极度紧张：{{A}} 威胁 {{B}}",
+      "b0": "{{A}} 要求在 {{X}} 小时内作出让步，否则将进行军事干预。部队已在边境集结。",
+      "b1": "据报 {{A}} 在 {{B}} 附近集结部队。期限：{{X}} 小时。"
+    },
+    "deescalation": {
+      "h0": "{{A}} 放弃对 {{B}} 的最后通牒",
+      "h1": "局势降温：{{A}} / {{B}}",
+      "b0": "力量对比已变：边境集结的部队返回营地。",
+      "b1": "各国称赞 {{A}} 的退让：威胁并未付诸实施。"
+    },
+    "mercenaries": {
+      "h0": "{{P}} 发现私营军事公司",
+      "b0": "据称 {{A}} 雇用了合同武装人员。"
+    }
+  },
+  "battles": {
+    "empty": "无战斗报告。",
+    "back": "所有报告",
+    "losses": "损失",
+    "lasted": "持续 {{value}}",
+    "noDetail": "报告详情不可用。",
+    "attacker": "进攻方",
+    "defender": "防守方",
+    "you": "您",
+    "system": "系统",
+    "engaged": "投入",
+    "lost": "损失",
+    "total": "合计",
+    "countermeasures": "对抗措施",
+    "timeline": "时间线",
+    "replay": "战斗回放",
+    "scrub": "回放位置",
+    "speed": "回放速度",
+    "outcome": {
+      "victory": "胜利",
+      "defeat": "失败",
+      "draw": "未分胜负",
+      "ongoing": "进行中"
+    },
+    "aar": {
+      "ref": "战后行动报告 {{id}}",
+      "classification": "限制分发",
+      "where": "地点",
+      "openSea": "海上",
+      "terrain": "领域",
+      "urban": "城区",
+      "domain": {
+        "land": "陆地",
+        "coast": "沿海（陆地与海上）",
+        "sea": "海上",
+        "air": "空中"
+      },
+      "medium": {
+        "land": "陆上",
+        "air": "空中",
+        "sea": "海上"
+      },
+      "verdict": {
+        "decisive_attacker": "进攻方决定性胜利",
+        "attacker": "进攻方占优",
+        "stalemate": "胜负未分",
+        "defender": "防守方占优",
+        "decisive_defender": "防守方决定性胜利",
+        "ongoing": "战斗进行中"
+      },
+      "grade": "情报",
+      "gradeHelp": "来源 {{source}} · 信息 {{cred}}",
+      "source": {
+        "A": "可靠",
+        "B": "通常可靠",
+        "C": "较为可靠",
+        "D": "不总是可靠",
+        "E": "不太可靠",
+        "F": "可靠性未知"
+      },
+      "cred": {
+        "1": "已证实",
+        "2": "很可能属实",
+        "3": "可能属实",
+        "4": "存疑",
+        "5": "不太可能",
+        "6": "无法核实"
+      },
+      "exact": "精确数字",
+      "estimated": "情报估计",
+      "personnel": "人员",
+      "casualties": "人员伤亡",
+      "materielLost": "被毁装备",
+      "lossesUsd": "损失价值",
+      "orbat": "作战序列",
+      "unidentified": "未识别的{{medium}}目标",
+      "noContact": "未观察到敌方部队。",
+      "destroyed": "被毁",
+      "damaged": "受损",
+      "captured": "被俘获",
+      "munitions": "弹药",
+      "munitionsHelp": "主要消耗弹药：炮弹、火箭弹、导弹、炸弹（根据模拟射击估算）。",
+      "balance": "总结",
+      "human": "人员伤亡",
+      "killed": "阵亡",
+      "wounded": "受伤",
+      "missing": "失踪",
+      "prisoners": "被俘",
+      "materiel": "装备",
+      "vehicles": "投入车辆",
+      "aircraft": "投入飞机",
+      "ships": "投入舰船",
+      "fires": "火力",
+      "missilesLaunched": "发射导弹",
+      "missilesShotDown": "其中被击落",
+      "interceptions": "击落敌方导弹",
+      "sorties": "空中出动架次",
+      "lossChart": "累计损失",
+      "lossChartAria": "累计损失：进攻方 {{a}}，防守方 {{d}} 个单位",
+      "lossChartHelp": "损失单位（坦克、飞机、舰船、营）：己方为精确数字，敌方为经己方火力确认的数字。色带：战斗阶段。",
+      "phases": "战斗经过",
+      "phaseLosses": "损失 {{a}} / {{d}}",
+      "phase": {
+        "preparation": "火力准备",
+        "strikes": "远程打击",
+        "assault": "突击",
+        "defense": "防御",
+        "counter": "反击",
+        "air": "空战",
+        "naval": "海战",
+        "retreat": "撤退",
+        "capture": "攻占城市"
+      },
+      "phaseText": {
+        "preparation": "炮兵、导弹和航空兵在接触前打击敌方阵地。",
+        "strikes": "互相远程打击，没有地面接触。",
+        "assault": "地面部队接敌并占据上风。",
+        "defense": "突击遭遇防御，防御方造成最惨重的损失。",
+        "counter": "防守方重新夺回主动权并发起反击。",
+        "air": "战斗在空中展开：战斗机、防空、无人机。",
+        "naval": "海军部队之间的交战。",
+        "retreat": "一方遭受损失却未还击：脱离接触或追击。",
+        "capture": "城市陷落：省份易手。"
+      },
+      "factors": "决定性因素",
+      "noFactor": "未观察到决定性因素。",
+      "factorName": {
+        "numbers": "力量对比",
+        "air_superiority": "空中优势",
+        "electronic_warfare": "电子战",
+        "stealth": "隐身",
+        "entrenched": "坚固防御",
+        "air_defense": "防空",
+        "supply": "补给",
+        "veterancy": "战斗经验",
+        "generals": "指挥",
+        "morale": "士气"
+      },
+      "factor": {
+        "numbers": "投入装备价值估计优势 ×{{ratio}}。",
+        "air_superiority": "制空权：击落敌机 {{kills}} 架，空对地打击命中 {{strikes}} 次。",
+        "electronic_warfare": "干扰：{{hits}} 次敌方射击受到削弱。",
+        "stealth": "从未被发现的部队命中 {{hits}} 次。",
+        "entrenched": "{{share}}% 的命中发生在工事阵地或城市内。",
+        "air_defense": "击落敌方导弹 {{intercepted}} 枚。",
+        "supply": "{{share}}% 的火力由补给不足的部队发出。",
+        "veterancy": "久经沙场的部队：平均经验 {{level}}。",
+        "generals": "由{{names}}指挥。",
+        "morale": "士气低落：{{nation}}稳定度为 {{stability}}。"
+      },
+      "consequences": "后果",
+      "captured1": "攻占{{name}}（{{by}}）",
+      "held": "{{name}}：阵地由其所有者守住",
+      "noChange": "领土无变化。",
+      "noCountermeasure": "无明显反制措施。",
+      "showAll": "显示其余 {{n}} 种装备",
+      "showLess": "收起列表"
+    },
+    "titleAt": "{{place}}之战",
+    "titleSea": "海战"
+  },
+  "chat": {
+    "game": "游戏频道",
+    "alliance": "联盟 · {{name}}",
+    "channels": "频道",
+    "newPrivate": "私信",
+    "pickNation": "选择国家…",
+    "empty": "无消息。",
+    "hidden": "消息已被管理员隐藏。",
+    "placeholder": "发送至：{{channel}}",
+    "message": "消息",
+    "send": "发送"
+  },
+  "settings": {
+    "display": "显示",
+    "legend": "地图图例",
+    "legendHelp": "右下角面板（L 键）。",
+    "notifications": "通知",
+    "browserNotifications": "浏览器通知",
+    "notifHelp": "标签页在后台时发出紧急警报；如服务器支持则使用 Web Push。",
+    "notif": {
+      "push": "已启用 Web Push 通知",
+      "local": "已启用本地通知",
+      "denied": "浏览器拒绝了权限",
+      "unsupported": "此浏览器不支持通知"
+    },
+    "help": "帮助",
+    "restartTutorial": "重新开始教程",
+    "game": "游戏"
+  },
+  "lobby": {
+    "title": "多人游戏",
+    "path": "大厅",
+    "subtitle": "每局最多 64 名人类玩家；其余国家均由 AI 控制。",
+    "create": "创建游戏",
+    "createPath": "新建",
+    "createSubtitle": "游戏设置，然后选择您的国家。",
+    "join": "加入游戏",
+    "filter": "筛选",
+    "openOnly": "有空位",
+    "aiNote": "未选国家：AI · 不活跃玩家由 AI 接替",
+    "error": "大厅不可用。",
+    "empty": "没有开放的游戏。",
+    "by": "由 {{name}} 创建",
+    "capitals": "首都",
+    "spectate": "观战",
+    "cols": {
+      "game": "游戏",
+      "players": "玩家",
+      "speed": "速度",
+      "victory": "胜利",
+      "shop": "购买"
+    },
+    "defaultName": "新世界大战",
+    "worldToday": "今日世界",
+    "sections": {
+      "game": "游戏",
+      "victory": "胜利条件",
+      "rules": "规则"
+    },
+    "name": "游戏名称",
+    "maxPlayers": "人类玩家",
+    "maxPlayersHint": "最多 64 名；其余国家为 AI。",
+    "private": "私人游戏",
+    "privateHint": "仅可通过链接访问。",
+    "provinceShare": "需控制的全球省份比例",
+    "capitalsToggle": "或攻占所有敌方首都",
+    "shopPolicy": "游戏内购买",
+    "shopHint": "竞技游戏请禁用。",
+    "cap": "每名玩家的点数上限",
+    "inactive": "不活跃玩家由 AI 接替的时限",
+    "next": "选择我的国家",
+    "pickNation": "选择您的国家",
+    "createConfirm": "创建游戏",
+    "createError": "无法创建游戏。",
+    "humans": "玩家",
+    "aiRest": "保留为 AI",
+    "joining": "连接中…",
+    "joinConfirm": "加入",
+    "joinError": "无法加入（国家已被选？）。",
+    "nationTaken": "该国家刚被选走：请另选一个。",
+    "room": {
+      "title": "等候室",
+      "path": "等候室",
+      "players": "已登记玩家",
+      "waiting": "等待开始",
+      "aiRest": "{{count}} 个空位 · 其余国家由 AI 控制",
+      "host": "房主",
+      "you": "您",
+      "invite": "邀请",
+      "inviteHint": "分享此链接：您的朋友选好国家后在此等待开始。",
+      "copy": "复制链接",
+      "copied": "链接已复制",
+      "rules": "游戏规则",
+      "speed": "速度 ×{{speed}}",
+      "victory": "胜利：{{share}} 的省份",
+      "hostHint": "所有人准备就绪后开始游戏；空位在游戏中仍保持开放。",
+      "guestHint": "房主将开始游戏；届时您将被自动带入。",
+      "start": "开始游戏",
+      "startError": "暂时无法开始。",
+      "leave": "离开房间",
+      "ended": "该游戏已结束。",
+      "notFound": "找不到房间。",
+      "shop": "游戏内购买：{{policy}}"
+    },
+    "unlimited": "{{nations}} 已启用无限模式 — 非排名游戏",
+    "unranked": "非排名游戏"
+  },
+  "games": {
+    "title": "我的游戏",
+    "path": "游戏",
+    "subtitle": "继续进行中的游戏，或查看已结束游戏的总结。",
+    "error": "无法加载您的游戏。",
+    "empty": "暂无游戏。",
+    "cols": {
+      "game": "游戏",
+      "nation": "国家",
+      "players": "玩家",
+      "status": "状态"
+    },
+    "mode": {
+      "solo": "单人",
+      "multi": "多人"
+    },
+    "status": {
+      "lobby": "等待中",
+      "running": "进行中",
+      "paused": "已暂停",
+      "ended": "已结束",
+      "abandoned": "已结束 · 放弃"
+    },
+    "resume": "继续",
+    "stats": "总结",
+    "delete": {
+      "action": "删除游戏",
+      "title": "删除游戏",
+      "text": "永久删除此游戏？「{{name}}」及其全部进度将被清除；此操作不可撤销。",
+      "confirm": "永久删除",
+      "busy": "该游戏正在另一台服务器上运行：请稍后重试。",
+      "error": "暂时无法删除。"
+    }
+  },
+  "rankings": {
+    "title": "排行榜",
+    "path": "排行榜",
+    "subtitle": "多人游戏中获得的赛季积分。",
+    "season": "赛季",
+    "error": "排行榜不可用。",
+    "remaining": "赛季结束",
+    "days_other": "{{count}} 天",
+    "players": "上榜玩家",
+    "rewards": "赛季奖励",
+    "top": "前 {{rank}}",
+    "cols": {
+      "player": "玩家",
+      "points": "积分",
+      "wins": "胜场",
+      "games": "场次",
+      "rate": "胜率"
+    }
+  },
+  "endgame": {
+    "title": "游戏总结",
+    "path": "游戏结束",
+    "error": "统计数据不可用。",
+    "winner": "胜利者：{{nation}}",
+    "ended": "游戏结束",
+    "noWinner": "无胜利者",
+    "noStats": "未记录详细总结：游戏在离线状态下关闭。边界变化时间线仍可查看。",
+    "days_other": "{{count}} 天",
+    "day": "D+{{day}}",
+    "provincesHeld_other": "{{count}} 个省份",
+    "timelapse": "边界演变",
+    "provinces": "省份",
+    "conquered": "征服",
+    "kills": "摧毁",
+    "losses": "损失",
+    "spent": "支出",
+    "bestUnits": "最佳单位",
+    "killsCount_other": "摧毁 {{count}} 个",
+    "table": "各国统计",
+    "cols": {
+      "nation": "国家",
+      "player": "玩家",
+      "provinces": "省份",
+      "conquered": "征服",
+      "kills": "摧毁",
+      "losses": "损失",
+      "spent": "支出"
+    }
+  },
+  "stacks": {
+    "composition_other": "编成 · {{count}} 种",
+    "more_other": "+ 另外 {{count}} 种",
+    "elements": "个",
+    "manage": "堆叠…",
+    "half": "一分为二",
+    "detach": "分离…",
+    "detachCount": "分离数量",
+    "detachOf": "{{count}} / {{total}}",
+    "detachConfirm_other": "分离 {{count}} 个",
+    "detachHint": "混编堆叠：分离的单元按比例从每种装备中抽取。",
+    "byType": "按类型拆分",
+    "byTypeShort": "按类型",
+    "merge_other": "合并 {{count}} 个堆叠",
+    "block": {
+      "count": "请至少选择两个堆叠。",
+      "owner": "只能合并自己的堆叠。",
+      "moving": "堆叠必须停止才能合并。",
+      "distance": "堆叠相距太远，无法合并（请靠近）。",
+      "domain": "装备不兼容：地面部队、直升机、飞机和无人机不能混编；导弹、防空、雷达和舰艇只能与同类合并。"
+    }
+  },
+  "audio": {
+    "title": "声音",
+    "mute": "静音",
+    "muteHelp": "静音期间不会下载任何内容。设置保存在此设备上。",
+    "levels": {
+      "master": "总音量",
+      "music": "音乐与环境音",
+      "sfx": "音效",
+      "ui": "界面"
+    },
+    "reduced": "精简音效",
+    "reducedHelp": "无战斗环境音，提示音更柔和，过渡更慢（系统要求减少动画时自动启用）。",
+    "credits": "音效和音乐由 ElevenLabs 为 Red Line 生成。"
+  },
+  "format": {
+    "k": "K",
+    "M": "M",
+    "B": "B"
+  },
+  "language": {
+    "label": "语言",
+    "choose": "选择界面语言",
+    "help": "界面、电讯和地名。页面将重新加载。",
+    "current": "当前语言：{{name}}",
+    "machine": "译文由机器生成，军事术语经过审校。",
+    "fallback": "部分文本仍为法语。"
+  },
+  "engine": {
+    "place": {
+      "sea": "海上"
+    },
+    "sector": {
+      "at": "{{province}} 区域",
+      "near": "距 {{province}} {{km}} km",
+      "unknown": "未识别区域"
+    },
+    "strikeKind": {
+      "missile": "导弹",
+      "air": "空中",
+      "artillery": "炮兵"
+    },
+    "resolution": {
+      "arms_embargo": "武器禁运",
+      "economic_sanctions": "经济制裁",
+      "ceasefire": "停火",
+      "no_fly_zone": "禁飞区",
+      "peacekeeping": "维和部队",
+      "condemnation": "谴责"
+    },
+    "vote": {
+      "yes": "{{nation}} 赞成",
+      "no": "{{nation}} 反对",
+      "abstain": "{{nation}} 弃权"
+    },
+    "charter": {
+      "mutualDefense": "共同防御",
+      "intelSharing": "情报共享",
+      "passage": "通行权",
+      "simple": "简单合作"
+    },
+    "mission": {
+      "raid": "突袭",
+      "sabotage": "破坏",
+      "rescue": "营救"
+    },
+    "intelOp": {
+      "infiltrate_spy": "特工渗透",
+      "recruit_source": "招募线人",
+      "turn_agent": "策反特工",
+      "exfiltrate": "撤离",
+      "steal_research": "窃取研究",
+      "sabotage_factory": "工业破坏",
+      "fund_rebels": "资助叛军",
+      "listen_area": "区域监听",
+      "intercept_army": "通信截获",
+      "jam_area": "区域干扰",
+      "cyber_radar": "网络攻击（雷达）",
+      "cyber_production": "网络攻击（工业）",
+      "cyber_orders": "网络攻击（指挥）",
+      "disinformation": "虚假信息宣传",
+      "leak_plans": "有组织泄密",
+      "plant_fake_report": "欺骗（虚假报告）",
+      "deploy_decoys": "部署诱饵",
+      "fake_radio_traffic": "虚假无线电通信",
+      "counterintel_sweep": "反间谍行动",
+      "recon_economic": "经济侦察",
+      "recon_military": "军事侦察"
+    },
+    "council": {
+      "open_other": "安全理事会会议开幕：{{count}} 项决议待表决。",
+      "closed": "会议结束：{{count}} 项决议中通过 {{passed}} 项。"
+    },
+    "news": {
+      "nuclear": {
+        "headline": "核爆：{{place}}",
+        "body": "{{nation}} 发射的核武器已爆炸：{{place}}。"
+      }
+    },
+    "intel": {
+      "failed": "失败",
+      "compromised": "已暴露",
+      "agentExposed": "{{nation}} 特工身份暴露",
+      "agentCompromised": "特工 {{codename}} 已暴露",
+      "agentArrest": "逮捕一名 {{nation}} 特工",
+      "agentArrested": "特工 {{codename}} 被捕",
+      "listening": "监听 — {{sector}}",
+      "interception": "截获 — {{nation}}",
+      "decoysIdentified": "已识破诱饵",
+      "flashMovement": "FLASH — {{nation}} 部队调动",
+      "flashMassive": "FLASH — {{nation}} 大规模部队调动",
+      "dailyInterior": "每日简报 — 国内安全",
+      "dailyForeign": "每日简报 — 对外情报",
+      "dailyMilitary": "每日简报 — 军事情报",
+      "opCompromised": "{{op}} — 已暴露",
+      "opOutcome": "{{op}} — {{outcome}}",
+      "opAttributed": "{{op}} 被归咎于 {{nation}}",
+      "opSuccess": "{{op}} — 成功",
+      "sweepReport": "反间谍行动 — 总结",
+      "radioSuspect": "可疑无线电通信",
+      "intoxFoiled": "挫败一次欺骗企图",
+      "intentions": "{{nation}} 的意图",
+      "strikeSuffered": {
+        "missile": "FLASH — 遭受导弹打击",
+        "air": "FLASH — 遭受空中打击",
+        "artillery": "FLASH — 遭受炮击",
+        "other": "FLASH — 遭受打击"
+      },
+      "flashNuclear": "FLASH — 核爆",
+      "sabotage": "破坏",
+      "cyber": "网络攻击",
+      "rebelsFunded": "武装团体获得资助",
+      "programDone": "项目完成 — {{nation}}",
+      "blackMarket": "黑市 — {{nation}}",
+      "imagery": "图像 — {{nation}}"
+    },
+    "note": {
+      "allianceInvite": {
+        "title": "联盟邀请",
+        "text": "{{alliance}} 联盟邀请您加入。"
+      },
+      "inviteDeclined": {
+        "title": "邀请被拒",
+        "text": "{{nation}} 拒绝了邀请。"
+      },
+      "allianceVote": {
+        "title": "联盟投票",
+        "replace_leader": "{{alliance}}：由 {{nation}} 取代领袖。",
+        "expel": "{{alliance}}：开除 {{nation}}。",
+        "skip_mutual_defense": "{{alliance}}：免除对 {{nation}} 的共同防御。"
+      },
+      "strikeNoEffect": {
+        "title": "打击无效",
+        "text": "{{system}}：未命中目标。"
+      },
+      "asatHit": {
+        "title": "卫星被摧毁",
+        "text": "{{system}}（{{owner}}）"
+      },
+      "asatMiss": {
+        "title": "反卫星射击未命中",
+        "text": "{{system}}（{{owner}}）"
+      },
+      "radarsBlinded": {
+        "title": "雷达致盲",
+        "text": "一次网络攻击干扰了我方雷达。"
+      },
+      "satPass": {
+        "title": "卫星过境",
+        "text_other": "{{system}}：扫描带下发现 {{count}} 个目标。"
+      },
+      "nuclearRevoked": {
+        "title": "核授权解除",
+        "text": "核力量恢复常规管控。"
+      },
+      "nuclearAuthorized": {
+        "title": "授权使用核武器",
+        "text": "只要警戒等级允许，即可进行核打击。"
+      },
+      "nuclearDetonation": {
+        "title": "核爆",
+        "text": "核打击：{{place}}。"
+      },
+      "fuelLost": {
+        "title": "飞机损失",
+        "text": "{{system}}：返回基地前燃料耗尽。"
+      },
+      "specialOk": {
+        "title": "特种行动成功",
+        "text": "{{mission}}：{{place}}。"
+      },
+      "specialEnemy": {
+        "title": "特种部队行动",
+        "text": "敌方{{mission}}：{{place}}。"
+      },
+      "specialFailed": {
+        "title": "特种行动失败",
+        "text": "{{mission}}：{{place}}。"
+      },
+      "blockadeOn": {
+        "title": "封锁生效",
+        "text": "{{place}}（{{nation}}）"
+      },
+      "blockadeOff": {
+        "title": "封锁解除",
+        "text": "{{place}}（{{nation}}）"
+      },
+      "captured": {
+        "title": "缴获装备",
+        "text": "{{place}}：{{items}}。",
+        "item": "{{count}} {{system}}"
+      },
+      "generalReleased": {
+        "title": "收回指挥",
+        "text": "{{general}} 交还其编组的直接指挥权。"
+      },
+      "coup": {
+        "title": "政变",
+        "text": "{{nation}}：军方夺取了政权。"
+      },
+      "ceasefire": {
+        "title": "停火",
+        "text": "停火生效：{{a}} / {{b}}。"
+      },
+      "peaceProposal": {
+        "title": "和平提议",
+        "text": "{{nation}} 提议和平。"
+      },
+      "ceasefireProposal": {
+        "title": "停火提议",
+        "text": "{{nation}} 提议停火。"
+      },
+      "proposalRefused": {
+        "title": "提议被拒",
+        "text": "{{nation}} 拒绝了您的提议。"
+      },
+      "agentCaught": {
+        "title": "特工暴露",
+        "text": "{{host}} 宣布逮捕一名 {{owner}} 特工。"
+      }
+    }
+  }
+}

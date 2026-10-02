@@ -66,6 +66,7 @@ import {
   schedule,
   strikeRangeKm,
   unitsNear,
+  noteLoc,
 } from './util.js';
 
 /**
@@ -881,6 +882,7 @@ export function deliverAirStrike(state: EngineState, u: Unit, ms: MissionSt): vo
       `${sys.name} : objectif non atteint.`,
       'info',
       here,
+      noteLoc('strikeNoEffect', { system: { system: sys.id } }),
     );
   }
   done();
@@ -902,6 +904,11 @@ function asatShot(state: EngineState, u: Unit, sat: Unit): void {
     ok ? 'Satellite détruit' : 'Tir antisatellite manqué',
     `${sysOf(state, sat).name} (${sat.owner.toUpperCase()})`,
     'warn',
+    null,
+    noteLoc(ok ? 'asatHit' : 'asatMiss', {
+      system: { system: sat.sys },
+      owner: { nation: sat.owner },
+    }),
   );
 }
 

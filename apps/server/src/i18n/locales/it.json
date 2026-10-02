@@ -1,0 +1,15 @@
+{
+  "push": {
+    "title": "Red Line — {{game}}",
+    "war": "{{nation}} ti dichiara guerra.",
+    "attack": "{{nation}} attacca {{province}}.",
+    "losses": "Le tue forze subiscono perdite.",
+    "provinceLost": "{{province}}: conquistata da {{nation}}.",
+    "provinceTaken": "Le tue truppe hanno preso {{province}}.",
+    "flash": "Flash di intelligence: ti attende un rapporto urgente.",
+    "council": "Consiglio di sicurezza: una seduta richiede il tuo voto.",
+    "victory": "Vittoria! La tua nazione prevale.",
+    "victoryOf": "Vittoria di {{nation}}. La partita è terminata.",
+    "defeated": "La tua nazione è stata sconfitta."
+  }
+}

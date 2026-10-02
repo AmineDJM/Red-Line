@@ -18,6 +18,8 @@ import { allied, hash01, quality, roll } from './levels.js';
 import { publish } from './reports.js';
 import { ist, nextId, type Decoy } from './state.js';
 import { CATEGORY_LABEL, approx, cardinal, fmtTime, nationName, natDe, sectorOf } from './text.js';
+import { loc } from '@redline/shared';
+import { sectorLoc } from './text.js';
 
 /**
  * Contacts issus du renseignement : ils enrichissent `state.know` (connaissance de la nation) comme des
@@ -153,6 +155,7 @@ export function listenTick(state: EngineState, id: string): void {
       source: 'sigint',
       kind: 'result',
       title: `Écoute — ${sectorOf(state, L.at)}`,
+      titleLoc: loc('engine.intel.listening', { sector: sectorLoc(state, L.at) }),
       lines,
       at: L.at,
       radiusKm: L.r,
@@ -220,6 +223,7 @@ export function interceptTick(state: EngineState, id: string): void {
         source: 'sigint',
         kind: 'result',
         title: `Interception — ${nationName(state, u.owner)}`,
+        titleLoc: loc('engine.intel.interception', { nation: { nation: u.owner } }),
         lines,
         at,
         radiusKm: 10,
@@ -356,6 +360,7 @@ export function reportExposedDecoys(state: EngineState, n: NationId, found: Deco
     source: 'sigint',
     kind: 'counterintel',
     title: 'Leurres identifiés',
+    titleLoc: loc('engine.intel.decoysIdentified'),
     lines: [
       `${found.length} contact(s) ${natDe(state, found[0]!.owner)} ${sectorOf(state, at)} identifié(s) comme des leurres.`,
       'Signatures thermiques et radio incohérentes ; contacts retirés de la situation tactique.',

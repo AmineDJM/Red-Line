@@ -13,12 +13,15 @@ import { cfg, clamp, credibilityOf, reliabilityOf } from './config.js';
 import { roll, sharingPartners } from './levels.js';
 import { ist, nat, nextId, type StoredReport } from './state.js';
 import { header } from './text.js';
+import type { LocText } from '@redline/shared';
 
 export interface NewReport {
   dept: Department;
   source: IntelSource;
   kind: IntelReportKind;
   title: string;
+  /** Titre localisable (clé `engine.intel.*` du client). */
+  titleLoc?: LocText;
   lines: string[];
   at: LngLat | null;
   radiusKm: number;
@@ -80,6 +83,7 @@ export function publish(state: EngineState, n: NationId, r: NewReport): StoredRe
     actions,
   };
   if (r.subject) rep.subject = r.subject;
+  if (r.titleLoc) rep.loc = { title: r.titleLoc };
   if (r.fake) rep.fk = 1;
   store(state, n, rep, r.kind === 'flash');
   const share = r.share ?? (r.kind !== 'result' && r.kind !== 'counterintel');

@@ -499,6 +499,7 @@ export function seedUsers(): AdminUser[] {
       isGuest: guest,
       // Le compte administrateur initial (ADMIN_EMAIL) est en mode illimité d'office.
       unlimited: i === 0,
+      ...(i % 4 === 3 ? {} : { locale: ['fr', 'en', 'ar', 'es', 'tr', 'de', 'ja'][i % 7] }),
       premiumBalance: (i * 137) % 2400,
       createdAt: iso((200 - i * 7) * 24 * H),
       lastSeenAt: iso(i * 1.7 * H),

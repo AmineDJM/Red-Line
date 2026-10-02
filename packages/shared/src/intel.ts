@@ -1,4 +1,5 @@
 import type { GameTime, LngLat, NationId, ProvinceId, SystemId, UnitId } from './ids.js';
+import type { LocText } from './i18n.js';
 import type { InteriorIntelView } from './domestic.js';
 
 /** Trois départements (noms génériques, inspirés du modèle français). */
@@ -57,6 +58,8 @@ export interface IntelReport {
   sharedBy?: NationId;
   /** Information ancienne (au-delà de balance.intel.staleAfterH) : position incertaine. */
   stale?: boolean;
+  /** Titre localisable (le client traduit ; `title` reste le français, le corps aussi). */
+  loc?: { title?: LocText };
   /**
    * Côté moteur uniquement : vrai si c'est une intoxication. JAMAIS envoyé au client
    * (le client ne voit que la cotation, qu'un bon contre-espionnage rend plus fiable).

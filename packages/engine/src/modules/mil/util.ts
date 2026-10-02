@@ -9,6 +9,7 @@ import {
   type OrderErrorCode,
   type ProvinceId,
   type WeaponSystem,
+  type LocText,
 } from '@redline/shared';
 import type { OrderResult } from '../../api.js';
 import { coverCap } from '../../geo/grid.js';
@@ -257,6 +258,7 @@ export function generic(
   text: string,
   severity: 'info' | 'warn' | 'critical',
   at: LngLat | null = null,
+  locText?: { title: LocText; text: LocText },
 ): void {
   const n: GameNotification = {
     kind: 'generic',
@@ -266,9 +268,12 @@ export function generic(
     title,
     text,
     severity,
+    ...(locText ? { loc: locText } : {}),
   };
   notify(state, n, aud);
 }
+
+export { noteLoc, placeOf } from '../../state/loc.js';
 
 export function nameOfProvince(state: EngineState, pid: ProvinceId | null): string {
   if (!pid) return 'en mer';

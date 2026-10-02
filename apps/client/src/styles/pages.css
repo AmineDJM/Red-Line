@@ -233,7 +233,7 @@
 .timelapse__hud {
   position: absolute;
   top: 8px;
-  left: 8px;
+  inset-inline-start: 8px;
   display: flex;
   gap: 12px;
   padding: 4px 8px;

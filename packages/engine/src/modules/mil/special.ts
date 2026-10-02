@@ -6,6 +6,7 @@ import {
   type NationId,
   type Order,
   type ProvinceId,
+  type LocParam,
 } from '@redline/shared';
 import { cellToLatLng } from 'h3-js';
 import type { OrderResult } from '../../api.js';
@@ -37,6 +38,8 @@ import {
   resolveOwn,
   roll,
   unitsNear,
+  noteLoc,
+  placeOf,
 } from './util.js';
 
 /* ================================================================================================ */
@@ -137,6 +140,10 @@ export function resolveSpecialOp(state: EngineState, u: Unit): void {
       `${label(op.mission)} à ${where}.`,
       'info',
       city,
+      noteLoc('specialOk', {
+        mission: { key: `engine.mission.${op.mission}` },
+        place: placeOf(op.pid),
+      }),
     );
     if (op.mission !== 'rescue') {
       generic(
@@ -147,6 +154,10 @@ export function resolveSpecialOp(state: EngineState, u: Unit): void {
         `${label(op.mission)} ennemi à ${where}.`,
         'warn',
         city,
+        noteLoc('specialEnemy', {
+          mission: { key: `engine.mission.${op.mission}` },
+          place: placeOf(op.pid),
+        }),
       );
     }
   } else {
@@ -158,6 +169,10 @@ export function resolveSpecialOp(state: EngineState, u: Unit): void {
       `${label(op.mission)} à ${where}.`,
       'warn',
       city,
+      noteLoc('specialFailed', {
+        mission: { key: `engine.mission.${op.mission}` },
+        place: placeOf(op.pid),
+      }),
     );
     if (state.units[u.id]) damageUnit(state, null, u, u.maxHp * bal.failureLoss);
   }
@@ -302,6 +317,10 @@ export function checkBlockade(state: EngineState, b: BlkSt): void {
       `${where} (${b.by.toUpperCase()})`,
       active ? 'warn' : 'info',
       b.at,
+      noteLoc(active ? 'blockadeOn' : 'blockadeOff', {
+        place: 'provinceId' in b.target ? { province: b.target.provinceId } : where,
+        nation: { nation: b.by },
+      }),
     );
   }
   if (b.units.length === 0) delete m.blk[b.id];
@@ -378,6 +397,7 @@ export function captureMateriel(
   const blds = buildingsOf(state, pid);
   if (!blds.some((b) => b === 'air_base' || b === 'military_base' || b === 'naval_base')) return;
   const gained: string[] = [];
+  const gainedLoc: LocParam[] = [];
   const land = milBal(state).air.landingKm;
   for (const id of sortedKeys(m.ms)) {
     const ms = m.ms[id]!;
@@ -391,6 +411,10 @@ export function captureMateriel(
     if (k >= 1) {
       spawnUnit(state, to, sysId, city, k);
       gained.push(`${k} ${state.world.catalog.get(sysId)!.name}`);
+      gainedLoc.push({
+        key: 'engine.note.captured.item',
+        params: { count: k, system: { system: sysId } },
+      });
     }
   }
   const counts = new Map<string, number>();
@@ -411,6 +435,10 @@ export function captureMateriel(
     );
     spawnUnit(state, to, sysId, city, k);
     gained.push(`${k} ${state.world.catalog.get(sysId)!.name}`);
+    gainedLoc.push({
+      key: 'engine.note.captured.item',
+      params: { count: k, system: { system: sysId } },
+    });
   }
   if (gained.length > 0) {
     generic(
@@ -421,6 +449,7 @@ export function captureMateriel(
       `${nameOfProvince(state, pid)} : ${gained.join(', ')}.`,
       'info',
       city,
+      noteLoc('captured', { place: placeOf(pid), items: { list: gainedLoc } }),
     );
   }
 }
