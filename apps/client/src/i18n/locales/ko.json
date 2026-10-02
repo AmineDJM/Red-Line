@@ -392,7 +392,8 @@
         "insufficient_resources": "자원 부족.",
         "off_road": "도로망 밖입니다: 도시, 노드 또는 도로를 지정하세요.",
         "disconnected": "오프라인: 명령이 전달되지 않았습니다.",
-        "timeout": "서버 응답 없음."
+        "timeout": "서버 응답 없음.",
+        "resource_required": "건설 불가: 이 주에는 필요한 자원이 없습니다."
       },
       "strikeTitle": "타격 명령",
       "patrolTitle": "초계 명령",
@@ -555,6 +556,21 @@
       "recon_military": "{{province}}에 군사 정찰 시작",
       "recon_economic": "{{province}}에 경제 정찰 시작",
       "listen_area": "{{province}} 주변 감청 시작"
+    },
+    "resources": "자원",
+    "resourceNone": "자금만: 서비스업과 금융 (수입 +{{pct}}%)",
+    "resourceNoneTip": "매장지나 농경지가 없음: 유정, 광산, 농장을 지을 수 없으며 지역 산업의 수익이 더 큽니다(업무 지구).",
+    "primary": "주요",
+    "secondary": "보조",
+    "richness": {
+      "1": "소규모",
+      "2": "중요",
+      "3": "최대"
+    },
+    "richnessTip": {
+      "1": "소규모 매장지 또는 생산",
+      "2": "중요한 매장지 또는 분지",
+      "3": "세계적 수준의 매장지"
     }
   },
   "nationRecon": {
@@ -856,7 +872,10 @@
       "blocked": {
         "in_progress": "이미 공사 중",
         "damaged": "먼저 수리 필요",
-        "max_level": "최대 레벨 도달"
+        "max_level": "최대 레벨 도달",
+        "no_resource": "자원 없음: {{resource}}",
+        "coastal_only": "해안 주 전용",
+        "not_urban": "전자 산업 거점 또는 대도시 필요"
       }
     },
     "fortification": "요새"
@@ -1929,7 +1948,11 @@
     "showAll": "주 {{count}}개 모두 보기",
     "showLess": "접기",
     "resourcesHint": "자원은 주와 그 건물(유정, 광산, 농장, 전자 공장, 정유소)에서 생산되고 유닛이 소비합니다. 부족하면 생산이 느려지고, 식량은 사기에 영향을 줍니다.",
-    "ledgerToday": "실제 흐름 · 오늘"
+    "ledgerToday": "실제 흐름 · 오늘",
+    "byResource": "자원별·주별 생산",
+    "producers_other": "주 {{count}}개",
+    "noProducer": "생산하는 주가 없습니다: 시장에서 구매하세요.",
+    "servicesProvinces_other": "자원이 없는 주 {{count}}개 (자금만: 서비스업, 금융)"
   },
   "armies": {
     "tabs": {

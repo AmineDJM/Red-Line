@@ -15,7 +15,7 @@ import {
 import { provincesOf } from '../../state/access.js';
 import type { EngineState } from '../../state/types.js';
 import { board } from '../kit.js';
-import { buildingsOf, depotsOf, health, levelOf, power } from './buildings.js';
+import { buildRestriction, buildingsOf, depotsOf, health, levelOf, power } from './buildings.js';
 import { cfg, effect } from './config.js';
 import { economyDetail } from './detail.js';
 import { researchModifier } from './research.js';
@@ -153,7 +153,9 @@ export function ecoView(state: EngineState, me: NationId, view: PlayerView): voi
     for (const b of BUILDING_TYPES) {
       if (present.includes(b)) continue;
       const o: BuildOptionView = { type: b, level: 1, ...quote(state, pid, b, 1) };
-      if (jobs.some((j) => j.kind === b)) o.blocked = 'in_progress';
+      const why = buildRestriction(state.world, pid, b);
+      if (why) o.blocked = why;
+      else if (jobs.some((j) => j.kind === b)) o.blocked = 'in_progress';
       options.push(o);
     }
     const fort = (es.forts[pid] ?? 0) + 1;

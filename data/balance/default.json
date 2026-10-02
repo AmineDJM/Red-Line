@@ -1310,6 +1310,15 @@
       ]
     }
   },
+  "resources": {
+    "extraction": { "oil_field": "oil", "mine": "metals", "farm": "food" },
+    "electronicsUrbanRank": 2,
+    "richnessYield": [0.8, 1, 1.25],
+    "secondaryYield": 0.7,
+    "servicesIncomeBonus": 0.1,
+    "servicesIndustryFactor": 1.5,
+    "coastalOnly": ["port", "naval_base", "coastal_battery"]
+  },
   "alert": {
     "thresholds": [20, 45, 70, 90],
     "decayPerDay": 5

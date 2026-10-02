@@ -397,7 +397,8 @@
         "insufficient_resources": "Ressources insuffisantes.",
         "off_road": "Hors du réseau de routes : visez une ville, un nœud ou une route.",
         "disconnected": "Hors ligne : ordre non transmis.",
-        "timeout": "Pas de réponse du serveur."
+        "timeout": "Pas de réponse du serveur.",
+        "resource_required": "Construction impossible : ressource absente dans cette province."
       },
       "strikeTitle": "Ordre de frappe",
       "patrolTitle": "Ordre de patrouille",
@@ -560,6 +561,21 @@
       "recon_military": "Reconnaissance militaire lancée sur {{province}}",
       "recon_economic": "Reconnaissance économique lancée sur {{province}}",
       "listen_area": "Écoute lancée autour de {{province}}"
+    },
+    "resources": "Ressources",
+    "resourceNone": "Argent seulement : services et finances (+{{pct}} % de revenu)",
+    "resourceNoneTip": "Aucun gisement ni grenier : ni puits, ni mine, ni ferme ; l'industrie locale y rapporte davantage (quartier d'affaires).",
+    "primary": "principale",
+    "secondary": "secondaire",
+    "richness": {
+      "1": "modeste",
+      "2": "importante",
+      "3": "majeure"
+    },
+    "richnessTip": {
+      "1": "Gisement ou production modeste",
+      "2": "Gisement ou bassin important",
+      "3": "Gisement de rang mondial"
     }
   },
   "nationRecon": {
@@ -870,7 +886,10 @@
       "blocked": {
         "in_progress": "Chantier déjà en cours",
         "damaged": "Réparer d'abord",
-        "max_level": "Niveau maximal atteint"
+        "max_level": "Niveau maximal atteint",
+        "no_resource": "Ressource absente : {{resource}}",
+        "coastal_only": "Province côtière uniquement",
+        "not_urban": "Pôle électronique ou grande ville requis"
       }
     },
     "fortification": "Fortifications"
@@ -1736,7 +1755,13 @@
     "showAll": "Afficher les {{count}} provinces",
     "showLess": "Réduire",
     "resourcesHint": "Les ressources sont produites par les provinces et leurs bâtiments (puits, mines, fermes, usines d'électronique, raffineries) et consommées par vos unités. Une pénurie ralentit la production ; la nourriture pèse sur le moral.",
-    "ledgerToday": "Flux réels · aujourd'hui"
+    "ledgerToday": "Flux réels · aujourd'hui",
+    "byResource": "Production par ressource et par province",
+    "producers_one": "{{count}} province",
+    "producers_other": "{{count}} provinces",
+    "noProducer": "Aucune province productrice : achetez sur le marché.",
+    "servicesProvinces_one": "{{count}} province sans ressource (argent seulement : services, finances)",
+    "servicesProvinces_other": "{{count}} provinces sans ressource (argent seulement : services, finances)"
   },
   "armies": {
     "tabs": {

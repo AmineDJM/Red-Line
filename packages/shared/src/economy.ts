@@ -107,7 +107,16 @@ export interface BuildingView {
 }
 
 /** Pourquoi un chantier est impossible pour l'instant (hors trésorerie). */
-export type BuildBlock = 'in_progress' | 'damaged' | 'max_level';
+export type BuildBlock =
+  | 'in_progress'
+  | 'damaged'
+  | 'max_level'
+  /** Bâtiment d'extraction sans la ressource dans la province (ProvinceDef.resources). */
+  | 'no_resource'
+  /** Réservé aux provinces côtières (port, base navale, batterie côtière). */
+  | 'coastal_only'
+  /** Usine d'électronique hors pôle électronique et hors grande ville. */
+  | 'not_urban';
 
 /** Option de construction d'une province possédée (bâtiment absent ou fortification). */
 export interface BuildOptionView {

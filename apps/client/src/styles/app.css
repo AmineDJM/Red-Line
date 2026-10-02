@@ -2812,3 +2812,52 @@ code {
 .orderbar__radius dd {
   min-width: 160px;
 }
+
+/* Ressources de la province (principale, secondaire, richesse ; ou argent seulement). */
+.provres {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 4px;
+}
+.provres__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.provres__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-panel-2);
+  color: var(--rl-text);
+  font-size: var(--rl-fs-xs);
+}
+.provres__item--r3 {
+  border-color: var(--rl-amber);
+}
+.provres__rich {
+  color: var(--rl-amber);
+  font-size: var(--rl-fs-2xs);
+  letter-spacing: 1px;
+}
+.provres__dim {
+  color: var(--rl-text-faint);
+}
+.provres__rank {
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-2xs);
+}
+.provres__none {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-xs);
+}

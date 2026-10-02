@@ -286,7 +286,11 @@ test('construire et améliorer un bâtiment', async ({ page }, info) => {
   }, alger);
   expect(opt).not.toBeNull();
   const money0 = await page.evaluate(() => window.__rl.game.getState().view.economy.money);
+  // Alger : capitale « argent seulement » (le pétrole algérien est au Sahara) : ni puits ni mine.
+  await expect(panel.getByTestId('province-resources')).toBeVisible();
   await panel.getByTestId('build-toggle').click();
+  await expect(panel.getByTestId('build-oil_field')).toBeDisabled();
+  await expect(panel.getByTestId('build-mine')).toBeDisabled();
   await panel.getByTestId(`build-${opt.type}`).click();
   await expect
     .poll(() =>

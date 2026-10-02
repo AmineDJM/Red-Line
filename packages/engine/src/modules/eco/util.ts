@@ -13,6 +13,7 @@ import { ecoNation, type Paid } from './state.js';
 const MESSAGES: Partial<Record<OrderErrorCode, string>> = {
   insufficient_funds: 'Fonds insuffisants.',
   insufficient_resources: 'Ressources insuffisantes.',
+  resource_required: 'Ressource absente dans cette province.',
   research_required: 'Recherche requise (ou licence de production).',
   not_owner: 'Cette province ne vous appartient pas.',
   invalid_target: 'Cible invalide.',

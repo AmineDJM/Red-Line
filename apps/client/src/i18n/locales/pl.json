@@ -410,7 +410,8 @@
         "insufficient_resources": "Niewystarczające zasoby.",
         "off_road": "Poza siecią dróg: wskaż miasto, węzeł lub drogę.",
         "disconnected": "Offline: rozkaz nie został przekazany.",
-        "timeout": "Brak odpowiedzi serwera."
+        "timeout": "Brak odpowiedzi serwera.",
+        "resource_required": "Budowa niemożliwa: w tej prowincji brak zasobu."
       },
       "strikeTitle": "Rozkaz uderzenia",
       "patrolTitle": "Rozkaz patrolu",
@@ -573,6 +574,21 @@
       "recon_military": "Rozpoczęto rozpoznanie wojskowe: {{province}}",
       "recon_economic": "Rozpoczęto rozpoznanie gospodarcze: {{province}}",
       "listen_area": "Rozpoczęto nasłuch wokół: {{province}}"
+    },
+    "resources": "Zasoby",
+    "resourceNone": "Tylko pieniądze: usługi i finanse (+{{pct}}% dochodu)",
+    "resourceNoneTip": "Brak złóż i gruntów rolnych: ani szybu, ani kopalni, ani farmy; lokalny przemysł przynosi tu więcej (dzielnica biznesowa).",
+    "primary": "główny",
+    "secondary": "drugorzędny",
+    "richness": {
+      "1": "skromne",
+      "2": "znaczące",
+      "3": "ogromne"
+    },
+    "richnessTip": {
+      "1": "Skromne złoże lub produkcja",
+      "2": "Znaczące złoże lub zagłębie",
+      "3": "Złoże światowej klasy"
     }
   },
   "nationRecon": {
@@ -901,7 +917,10 @@
       "blocked": {
         "in_progress": "Budowa już trwa",
         "damaged": "Najpierw napraw",
-        "max_level": "Osiągnięto maksymalny poziom"
+        "max_level": "Osiągnięto maksymalny poziom",
+        "no_resource": "Brak zasobu: {{resource}}",
+        "coastal_only": "Tylko prowincja nadmorska",
+        "not_urban": "Wymagany ośrodek elektroniki lub duże miasto"
       }
     },
     "fortification": "Fortyfikacje"
@@ -1995,7 +2014,17 @@
     "showAll": "Pokaż wszystkie prowincje ({{count}})",
     "showLess": "Zwiń",
     "resourcesHint": "Zasoby wytwarzają prowincje i ich budynki (szyby, kopalnie, gospodarstwa, fabryki elektroniki, rafinerie), a zużywają je twoje jednostki. Niedobór spowalnia produkcję; żywność wpływa na morale.",
-    "ledgerToday": "Rzeczywiste przepływy · dziś"
+    "ledgerToday": "Rzeczywiste przepływy · dziś",
+    "byResource": "Produkcja według zasobu i prowincji",
+    "producers_one": "{{count}} prowincja",
+    "producers_few": "{{count}} prowincje",
+    "producers_many": "{{count}} prowincji",
+    "producers_other": "{{count}} prowincji",
+    "noProducer": "Brak prowincji produkujących: kupuj na rynku.",
+    "servicesProvinces_one": "{{count}} prowincja bez zasobów (tylko pieniądze: usługi, finanse)",
+    "servicesProvinces_few": "{{count}} prowincje bez zasobów (tylko pieniądze: usługi, finanse)",
+    "servicesProvinces_many": "{{count}} prowincji bez zasobów (tylko pieniądze: usługi, finanse)",
+    "servicesProvinces_other": "{{count}} prowincji bez zasobów (tylko pieniądze: usługi, finanse)"
   },
   "armies": {
     "tabs": {

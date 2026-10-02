@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { CATEGORIES } from './catalog.js';
+import { CATEGORIES, RESOURCES } from './catalog.js';
 import { BUILDING_TYPES } from './map.js';
 import { StacksBalanceSchema } from './stacks.js';
 import { DOMESTIC_POLICIES, DomesticPolicyEffectsSchema } from './domestic.js';
@@ -1144,6 +1144,29 @@ export const BalanceSchema = z.object({
       levelTimeGrowth: z.number().min(0).default(0.25),
       /** Répartir au départ des bâtiments de ressources selon les revenus des provinces. */
       distribute: z.boolean().default(true),
+    })
+    .optional(),
+  /**
+   * Ressources des provinces (data/map, champ `resources`) et constructions : les bâtiments
+   * d'extraction exigent la ressource ; rendement selon la richesse ; provinces « argent seulement »
+   * (services, finances) avec bonus de revenu. Sans `resources` sur la carte : aucune restriction.
+   */
+  resources: z
+    .object({
+      /** Bâtiment d'extraction → ressource exigée dans la province. */
+      extraction: z.record(z.string(), z.enum(RESOURCES)).optional(),
+      /** Usine d'électronique : pôle électronique exigé, sauf ville de rang ≤ cette valeur. */
+      electronicsUrbanRank: z.number().int().min(0).max(4).optional(),
+      /** Facteur du rendement des bâtiments d'extraction par richesse (1, 2, 3). */
+      richnessYield: z.tuple([z.number().min(0), z.number().min(0), z.number().min(0)]).optional(),
+      /** Facteur supplémentaire quand la ressource n'est que secondaire. */
+      secondaryYield: z.number().min(0).optional(),
+      /** Province sans ressource (services, finances) : revenu × (1 + bonus). */
+      servicesIncomeBonus: z.number().min(0).optional(),
+      /** Industrie locale d'une province de services (quartier d'affaires) : effet × facteur. */
+      servicesIndustryFactor: z.number().min(0).optional(),
+      /** Bâtiments réservés aux provinces côtières. */
+      coastalOnly: z.array(z.string()).optional(),
     })
     .optional(),
   /** Moral des provinces (0..100) : en dessous de 50, les revenus de la province baissent. */

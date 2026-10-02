@@ -392,7 +392,8 @@
         "insufficient_resources": "資源不足。",
         "off_road": "道路網の外です：都市、ノード、または道路を指定してください。",
         "disconnected": "オフライン：命令は送信されていません。",
-        "timeout": "サーバーから応答がありません。"
+        "timeout": "サーバーから応答がありません。",
+        "resource_required": "建設できません：この州には必要な資源がありません。"
       },
       "strikeTitle": "攻撃命令（打撃）",
       "patrolTitle": "哨戒命令",
@@ -555,6 +556,21 @@
       "recon_military": "{{province}} への軍事偵察を開始",
       "recon_economic": "{{province}} への経済偵察を開始",
       "listen_area": "{{province}} 周辺の傍受を開始"
+    },
+    "resources": "資源",
+    "resourceNone": "資金のみ：サービス業と金融（収入 +{{pct}}%）",
+    "resourceNoneTip": "鉱床も農地もありません：油井・鉱山・農場は建設不可。地元産業の収益が高くなります（ビジネス街）。",
+    "primary": "主要",
+    "secondary": "副次",
+    "richness": {
+      "1": "小規模",
+      "2": "重要",
+      "3": "最大級"
+    },
+    "richnessTip": {
+      "1": "小規模な鉱床または生産",
+      "2": "重要な鉱床または盆地",
+      "3": "世界有数の鉱床"
     }
   },
   "nationRecon": {
@@ -856,7 +872,10 @@
       "blocked": {
         "in_progress": "既に工事中",
         "damaged": "先に修理が必要",
-        "max_level": "最大レベルに到達"
+        "max_level": "最大レベルに到達",
+        "no_resource": "資源がありません：{{resource}}",
+        "coastal_only": "沿岸の州のみ",
+        "not_urban": "電子産業の拠点または大都市が必要"
       }
     },
     "fortification": "要塞"
@@ -1929,7 +1948,11 @@
     "showAll": "{{count}} 州をすべて表示",
     "showLess": "折りたたむ",
     "resourcesHint": "資源は州とその建物（油井、鉱山、農場、電子機器工場、製油所）で生産され、ユニットが消費します。不足すると生産が遅れ、食料は士気に影響します。",
-    "ledgerToday": "実際の収支 · 本日"
+    "ledgerToday": "実際の収支 · 本日",
+    "byResource": "資源別・州別の生産",
+    "producers_other": "{{count}} 州",
+    "noProducer": "生産している州はありません：市場で購入してください。",
+    "servicesProvinces_other": "資源のない州 {{count}}（資金のみ：サービス業、金融）"
   },
   "armies": {
     "tabs": {

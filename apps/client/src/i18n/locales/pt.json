@@ -404,7 +404,8 @@
         "insufficient_resources": "Recursos insuficientes.",
         "off_road": "Fora da rede de estradas: mire uma cidade, um nó ou uma estrada.",
         "disconnected": "Offline: ordem não transmitida.",
-        "timeout": "Sem resposta do servidor."
+        "timeout": "Sem resposta do servidor.",
+        "resource_required": "Construção impossível: esta província não tem o recurso."
       },
       "strikeTitle": "Ordem de ataque (ataque de precisão)",
       "patrolTitle": "Ordem de patrulha",
@@ -567,6 +568,21 @@
       "recon_military": "Reconhecimento militar lançado sobre {{province}}",
       "recon_economic": "Reconhecimento econômico lançado sobre {{province}}",
       "listen_area": "Escuta iniciada em torno de {{province}}"
+    },
+    "resources": "Recursos",
+    "resourceNone": "Apenas dinheiro: serviços e finanças (+{{pct}}% de renda)",
+    "resourceNoneTip": "Sem jazidas nem terras agrícolas: nem poço, nem mina, nem fazenda; a indústria local rende mais (distrito comercial).",
+    "primary": "principal",
+    "secondary": "secundário",
+    "richness": {
+      "1": "modesto",
+      "2": "importante",
+      "3": "maior"
+    },
+    "richnessTip": {
+      "1": "Jazida ou produção modesta",
+      "2": "Jazida ou bacia importante",
+      "3": "Jazida de nível mundial"
     }
   },
   "nationRecon": {
@@ -886,7 +902,10 @@
       "blocked": {
         "in_progress": "Obra já em andamento",
         "damaged": "Reparar primeiro",
-        "max_level": "Nível máximo atingido"
+        "max_level": "Nível máximo atingido",
+        "no_resource": "Recurso ausente: {{resource}}",
+        "coastal_only": "Apenas província costeira",
+        "not_urban": "Requer polo eletrônico ou grande cidade"
       }
     },
     "fortification": "Fortificações"
@@ -1973,7 +1992,15 @@
     "showAll": "Mostrar as {{count}} províncias",
     "showLess": "Recolher",
     "resourcesHint": "Os recursos são produzidos pelas províncias e seus edifícios (poços, minas, fazendas, fábricas de eletrônicos, refinarias) e consumidos por suas unidades. A escassez desacelera a produção; os alimentos pesam no moral.",
-    "ledgerToday": "Fluxos reais · hoje"
+    "ledgerToday": "Fluxos reais · hoje",
+    "byResource": "Produção por recurso e por província",
+    "producers_one": "{{count}} província",
+    "producers_many": "{{count}} províncias",
+    "producers_other": "{{count}} províncias",
+    "noProducer": "Nenhuma província produtora: compre no mercado.",
+    "servicesProvinces_one": "{{count}} província sem recursos (apenas dinheiro: serviços, finanças)",
+    "servicesProvinces_many": "{{count}} províncias sem recursos (apenas dinheiro: serviços, finanças)",
+    "servicesProvinces_other": "{{count}} províncias sem recursos (apenas dinheiro: serviços, finanças)"
   },
   "armies": {
     "tabs": {

@@ -471,7 +471,70 @@ function Resources() {
           },
         ]}
       />
+      <ResourceProducers />
       <p className="hint">{t('economy.resourcesHint')}</p>
+    </div>
+  );
+}
+
+/**
+ * Production par ressource et par province : provinces productrices de chaque ressource (production
+ * du jour, richesse du gisement), et nombre de provinces « argent seulement » (services).
+ */
+function ResourceProducers() {
+  const { t } = useTranslation();
+  const view = useGame((s) => s.view);
+  const defs = useWorld((s) => s.provinces);
+  const [open, setOpen] = useState<Resource | null>(null);
+  const rows = view?.economy.detail?.provinces ?? [];
+  if (!rows.length) return null;
+  const services = rows.filter((p) => defs[p.id]?.resources?.length === 0).length;
+  return (
+    <div className="ecores" data-testid="eco-resource-producers">
+      <h4 className="ecores__title">{t('economy.byResource')}</h4>
+      {RESOURCES.map((r) => {
+        const list = rows
+          .filter((p) => (p.resources[r] ?? 0) > 0)
+          .sort((a, b) => (b.resources[r] ?? 0) - (a.resources[r] ?? 0) || (a.id < b.id ? -1 : 1));
+        const total = list.reduce((s, p) => s + (p.resources[r] ?? 0), 0);
+        const shown = open === r ? list : list.slice(0, 4);
+        return (
+          <div key={r} className="ecores__group" data-resource={r}>
+            <button
+              type="button"
+              className="ecores__head"
+              onClick={() => setOpen(open === r ? null : r)}
+              aria-expanded={open === r}
+            >
+              <Icon name={RESOURCE_ICON[r]} size={14} />
+              <b>{t(`game.resources.${r}`)}</b>
+              <span className="muted small">{t('economy.producers', { count: list.length })}</span>
+              <span className="rl-tone-green">+{formatNumber(total, 0)}</span>
+            </button>
+            {list.length === 0 ? (
+              <p className="muted small">{t('economy.noProducer')}</p>
+            ) : (
+              <ul className="ecores__list">
+                {shown.map((p) => {
+                  const d = defs[p.id]?.resources?.find((x) => x.type === r);
+                  return (
+                    <li key={p.id}>
+                      <span>{provinceName(p.id)}</span>
+                      {d ? (
+                        <span className="muted small">{t(`province.richness.${d.richness}`)}</span>
+                      ) : null}
+                      <span className="rl-tone-green">+{formatNumber(p.resources[r] ?? 0, 1)}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        );
+      })}
+      {services > 0 ? (
+        <p className="muted small">{t('economy.servicesProvinces', { count: services })}</p>
+      ) : null}
     </div>
   );
 }

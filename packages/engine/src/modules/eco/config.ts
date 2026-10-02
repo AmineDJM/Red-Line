@@ -1,4 +1,4 @@
-import type { Balance, BuildingType, Category } from '@redline/shared';
+import type { Balance, BuildingType, Category, Resource } from '@redline/shared';
 import type { World } from '../../api.js';
 
 /**
@@ -179,6 +179,22 @@ export const ECO_DEFAULTS = {
     levelTimeGrowth: 0.25,
     distribute: true,
   },
+  /**
+   * Ressources des provinces (ProvinceDef.resources) : bâtiments d'extraction réservés aux provinces
+   * qui ont la ressource, rendement selon la richesse (1..3) et le rang (principale / secondaire),
+   * usine d'électronique dans un pôle ou une grande ville (rang ≤ electronicsUrbanRank), bonus de
+   * revenu des provinces « argent seulement » (services, finances) et de leur industrie locale
+   * (quartier d'affaires), bâtiments côtiers. Carte sans `resources` : aucune restriction.
+   */
+  resources: {
+    extraction: { oil_field: 'oil', mine: 'metals', farm: 'food' } as Record<string, Resource>,
+    electronicsUrbanRank: 2,
+    richnessYield: [0.8, 1, 1.25] as [number, number, number],
+    secondaryYield: 0.7,
+    servicesIncomeBonus: 0.1,
+    servicesIndustryFactor: 1.5,
+    coastalOnly: ['port', 'naval_base', 'coastal_battery'] as string[],
+  },
   morale: {
     start: 70,
     occupied: 30,
@@ -247,6 +263,10 @@ export function cfg(world: World): EcoConfig {
       levelCostGrowth: B?.levelCostGrowth ?? D.buildings.levelCostGrowth,
       levelTimeGrowth: B?.levelTimeGrowth ?? D.buildings.levelTimeGrowth,
       distribute: B?.distribute ?? D.buildings.distribute,
+    },
+    resources: {
+      ...merge(D.resources, b.resources),
+      extraction: b.resources?.extraction ?? D.resources.extraction,
     },
     morale: merge(D.morale, b.morale),
     consumption: merge(D.consumption, b.consumption),

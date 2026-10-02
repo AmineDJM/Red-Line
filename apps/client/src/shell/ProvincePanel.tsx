@@ -23,6 +23,7 @@ import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { useGameTime } from './helpers.js';
 import { ProvinceStrip } from './ProvinceStrip.js';
+import { ProvinceResources } from '../components/ProvinceResources.js';
 import { orderError } from '../lib/loc.js';
 
 /**
@@ -146,6 +147,8 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
       ) : null}
 
       <ProvinceStrip id={id} />
+
+      <ProvinceResources def={def} />
 
       {own || allied ? (
         <>

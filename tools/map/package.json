@@ -8,7 +8,8 @@
     "routes": "tsx src/routes-cli.ts",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json",
-    "cities": "node scripts/cities.mjs"
+    "cities": "node scripts/cities.mjs",
+    "resources": "tsx src/resources-cli.ts"
   },
   "dependencies": {
     "@redline/shared": "workspace:*",
