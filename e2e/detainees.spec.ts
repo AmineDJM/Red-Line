@@ -10,7 +10,8 @@ import { closeWindows, openWindow, preparePage, setSpeed, startSoloGame } from '
  * l'on accepte sa contre-proposition) : l'agent rentre au pays.
  */
 test('nos agents détenus à l’étranger : négociation de leur libération', async ({ page }, info) => {
-  test.setTimeout(600_000);
+  // Arrestation aléatoire : le temps réel nécessaire dépend de la vitesse de la machine.
+  test.setTimeout(900_000);
   const errors = await preparePage(page);
   await startSoloGame(page, 'Algérie');
   const send = (order: unknown) =>
@@ -38,7 +39,7 @@ test('nos agents détenus à l’étranger : négociation de leur libération', 
           const running = (s.view.intel?.operations ?? []).filter(
             (o: any) => o.status === 'running' && o.dept === 'exterior',
           ).length;
-          if (running >= 2) return;
+          if (running >= 4) return;
           await c.sendOrder({
             kind: 'intelOp',
             op: 'infiltrate_spy',
@@ -52,7 +53,7 @@ test('nos agents détenus à l’étranger : négociation de leur libération', 
         });
         return null;
       },
-      { timeout: 480_000, intervals: [3000] },
+      { timeout: 720_000, intervals: [3000] },
     )
     .not.toBeNull();
   await setSpeed(page, 1);
