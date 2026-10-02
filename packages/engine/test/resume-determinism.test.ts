@@ -32,6 +32,7 @@ import { sysOf, unitPosAt } from '../src/state/access.js';
 import { wi } from '../src/state/world.js';
 import { planUnitMove } from '../src/movement/plan-unit.js';
 import { setAiTracer } from '../src/ai/trace.js';
+import { PLACES, provinceAt } from './real-places.js';
 import { nextFloat, seedRng } from '../src/rng/rng.js';
 import { loadRealData, type RealData } from '../bench/load.js';
 
@@ -260,8 +261,9 @@ describe(
       const NATIONS = ['fra', 'ita', 'mco', 'mlt', 'esp'];
       const prov = (id: string) => wi(world).provById.get(id)!;
       const sea = (pid: string): LngLat => wi(world).seaSpawn.get(pid)!;
-      const TOULON = 'fra-9';
-      const CAGLIARI = 'ita-3';
+      // Provinces désignées par leur ville (identifiants propres à chaque version de la carte).
+      const TOULON = provinceAt(world.map, PLACES.toulon).id;
+      const CAGLIARI = provinceAt(world.map, PLACES.cagliari).id;
       const units: GameSetup['units'] = [
         { owner: 'fra', systemId: 'eu.mistral-class', pos: sea(TOULON), count: 1 }, // u1
         { owner: 'fra', systemId: 'eu.infantry-light', pos: prov(TOULON).cityPoint, count: 2 }, // u2
