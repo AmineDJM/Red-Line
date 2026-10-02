@@ -332,7 +332,8 @@ export type OrderErrorCode =
   | 'research_required'
   | 'capacity'
   | 'cooldown'
-  | 'insufficient_resources';
+  | 'insufficient_resources'
+  | 'off_road'; // destination trop loin du réseau de routes (unités terrestres)
 
 export type ServerMessage =
   | { t: 'welcome'; game: GameMeta; me: NationId; clock: ClockState; view: PlayerView }

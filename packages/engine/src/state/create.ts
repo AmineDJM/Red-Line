@@ -22,7 +22,7 @@ import {
   type NationState,
   type StateData,
 } from './types.js';
-import { wi } from './world.js';
+import { roadSpawn, wi } from './world.js';
 import { spawnStack, spawnUnit } from './units.js';
 import { mixClassOf, stackBal } from './stack.js';
 import { registerProvinceZone } from '../encounters/pairs.js';
@@ -162,7 +162,7 @@ function placeArmy(state: EngineState, n: NationId): void {
     if (k > 0) {
       const cand = destination(city, (k * 137.508) % 360, gc * 0.3 * (1 + (k % 3) / 3));
       const cell = w.nav.cellAt(cand);
-      if (w.nav.cellProv.get(cell) === site) return cand;
+      if (w.nav.cellProv.get(cell) === site) return roadSpawn(w, cand, gc, site);
     }
     return city;
   };

@@ -28,6 +28,7 @@ import type {
   TimelapseView,
   WalletEntry,
   WeaponSystem,
+  RoutesFile,
 } from '@redline/shared';
 
 export interface TilesInfo {
@@ -72,6 +73,8 @@ export interface Api {
   nations(): Promise<NationDef[]>;
   provinces(): Promise<ProvinceDef[]>;
   provincesGeoJSON(): Promise<FeatureCollection>;
+  /** Réseau de routes des unités terrestres (GET /api/map/routes), null si indisponible. */
+  routes?(): Promise<RoutesFile | null>;
   tiles(): Promise<TilesInfo | null>;
   basemap(): Promise<BasemapData>;
   /** Vrai si les glyphes MapLibre sont servis. */

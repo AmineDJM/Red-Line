@@ -190,6 +190,8 @@ export function SandboxScreen() {
           cells: sim.cells,
           straits: sim.straits,
           disputed: sim.disputed,
+          // Réseau de routes (chargé avec la carte) : mêmes déplacements terrestres qu'en partie.
+          ...(w.routes ? { routes: w.routes } : {}),
         },
         Object.values(w.catalog),
         sim.balance,

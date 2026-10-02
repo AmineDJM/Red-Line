@@ -16,7 +16,9 @@
   },
   "movement": {
     "embarkedSpeedFactor": 0.6,
-    "embarkMinutes": 60
+    "embarkMinutes": 60,
+    "roadSnapKm": 80,
+    "roadNetwork": true
   },
   "sensors": {
     "provinceDetectionKm": 60,

@@ -390,6 +390,7 @@
         "capacity": "Kapasitas maksimum tercapai.",
         "cooldown": "Aksi sedang jeda.",
         "insufficient_resources": "Sumber daya tidak cukup.",
+        "off_road": "Di luar jaringan jalan: arahkan ke kota, simpul, atau jalan.",
         "disconnected": "Luring: perintah tidak terkirim.",
         "timeout": "Tidak ada respons dari server."
       }
@@ -946,7 +947,8 @@
       "sat": "SAT · melintas dalam {{value}}"
     },
     "order": {
-      "eta": "{{distance}} · {{eta}}"
+      "eta": "{{distance}} · {{eta}}",
+      "etaSea": "{{distance}} · {{eta}} · penyeberangan"
     },
     "minimap": {
       "label": "Peta mini",

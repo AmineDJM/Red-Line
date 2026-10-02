@@ -402,6 +402,7 @@
         "capacity": "Capacidade máxima atingida.",
         "cooldown": "Ação em recarga.",
         "insufficient_resources": "Recursos insuficientes.",
+        "off_road": "Fora da rede de estradas: mire uma cidade, um nó ou uma estrada.",
         "disconnected": "Offline: ordem não transmitida.",
         "timeout": "Sem resposta do servidor."
       }
@@ -976,7 +977,8 @@
       "sat": "SAT · passagem em {{value}}"
     },
     "order": {
-      "eta": "{{distance}} · {{eta}}"
+      "eta": "{{distance}} · {{eta}}",
+      "etaSea": "{{distance}} · {{eta}} · travessia"
     },
     "minimap": {
       "label": "Minimapa",

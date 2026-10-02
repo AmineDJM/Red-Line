@@ -199,6 +199,8 @@ function messageFor(code: OrderErrorCode): string {
   switch (code) {
     case 'unreachable':
       return 'Destination inaccessible.';
+    case 'off_road':
+      return 'Hors du réseau de routes : choisissez une ville, un nœud ou une route.';
     case 'out_of_range':
       return "Hors du rayon d'action.";
     case 'insufficient_funds':

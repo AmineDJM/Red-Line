@@ -16,6 +16,7 @@ import {
 } from '@redline/ui';
 import { fmtClock, fmtDuration, fmtKm } from '../i18n/index.js';
 import { unitPosition } from '../map/interpolation.js';
+import { roadPath, roadPathMs } from '../map/routes.js';
 import { nationForms } from '../lib/game.js';
 import { navigate } from '../router.js';
 import { gameNow, useGame } from '../store/game.js';
@@ -32,6 +33,8 @@ export function OrderBar() {
   const view = useGame((s) => s.view);
   const conn = useGame((s) => s.connection);
   const catalog = useWorld((s) => s.catalog);
+  const roads = useWorld((s) => s.roads);
+  const movement = useWorld((s) => s.balance?.movement);
 
   const confirm = useCallback(async () => {
     const p = useUi.getState().pendingOrder;
@@ -69,12 +72,20 @@ export function OrderBar() {
   const target =
     pending.kind === 'move' ? pending.to : targetUnit ? unitPosition(targetUnit, now) : null;
   if (!target) return null;
-  const dist = distanceKm(from, target);
+  const sys = first.systemId ? catalog[first.systemId] : undefined;
+  // Unités terrestres : distance et durée le long des routes (traversée comprise).
+  const road =
+    pending.kind === 'move' && roads && sys?.movement === 'land'
+      ? roadPath(roads, from, target, movement?.embarkedSpeedFactor)
+      : null;
+  const dist = road ? road.km : distanceKm(from, target);
   const speeds = units
     .map((u) => (u.systemId ? catalog[u.systemId]?.speedKmh : undefined) ?? 0)
     .filter((s) => s > 0);
   const slowest = speeds.length ? Math.min(...speeds) : 0;
-  const sys = first.systemId ? catalog[first.systemId] : undefined;
+  const etaMs = road
+    ? roadPathMs(road, slowest, movement?.embarkedSpeedFactor, movement?.embarkMinutes)
+    : (dist / Math.max(slowest, 1e-9)) * HOUR;
   const outOfRange =
     pending.kind === 'attack' && sys?.movement === 'static' && dist > sys.weaponRangeKm.max;
   const title = t(pending.kind === 'move' ? 'game.orders.moveTitle' : 'game.orders.attackTitle');
@@ -133,7 +144,7 @@ export function OrderBar() {
           {slowest > 0 && pending.kind === 'move' ? (
             <div>
               <dt>{t('game.orders.eta')}</dt>
-              <dd>{fmtDuration((dist / slowest) * HOUR)}</dd>
+              <dd>{fmtDuration(etaMs)}</dd>
             </div>
           ) : null}
           {outOfRange ? (

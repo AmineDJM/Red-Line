@@ -390,6 +390,7 @@
         "capacity": "최대 용량에 도달했습니다.",
         "cooldown": "재사용 대기 중.",
         "insufficient_resources": "자원 부족.",
+        "off_road": "도로망 밖입니다: 도시, 노드 또는 도로를 지정하세요.",
         "disconnected": "오프라인: 명령이 전달되지 않았습니다.",
         "timeout": "서버 응답 없음."
       }
@@ -946,7 +947,8 @@
       "sat": "위성 · {{value}} 후 통과"
     },
     "order": {
-      "eta": "{{distance}} · {{eta}}"
+      "eta": "{{distance}} · {{eta}}",
+      "etaSea": "{{distance}} · {{eta}} · 해상 횡단"
     },
     "minimap": {
       "label": "미니맵",

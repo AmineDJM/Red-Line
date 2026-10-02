@@ -4,6 +4,7 @@ import {
   dot3,
   pieceIndexAt,
   piecePos,
+  vecAngle,
   type ArcPiece,
   type Piece,
 } from './sphere.js';
@@ -98,6 +99,12 @@ function scanInterval(
   minT: number,
 ): number | null {
   if (pa.s && pb.s) return null; // distance constante
+  if (pa.s || pb.s) {
+    const arc = (pa.s ? pb : pa) as ArcPiece;
+    const c: Vec3 = pa.s ? pa.v : (pb as { v: Vec3 }).v;
+    if (!arcStaticNear(arc, c, s, e, angles))
+      return safetyNet(A, B, pa, pb, s, e, cosThr, b0, minT);
+  }
   const local = (t: number): number => dot3(piecePos(pa, t), piecePos(pb, t));
   const cands: number[] = [];
 
@@ -151,8 +158,23 @@ function scanInterval(
     }
   }
 
-  // Filet de sécurité : si la bande a changé sans racine détectée (tangence numérique).
+  return safetyNet(A, B, pa, pb, s, e, cosThr, b0, minT);
+}
+
+/** Filet de sécurité : si la bande a changé sans racine détectée (tangence numérique). */
+function safetyNet(
+  A: Piece[],
+  B: Piece[],
+  pa: Piece,
+  pb: Piece,
+  s: number,
+  e: number,
+  cosThr: readonly number[],
+  b0: number,
+  minT: number,
+): number | null {
   if (e !== Infinity && e >= minT) {
+    const local = (t: number): number => dot3(piecePos(pa, t), piecePos(pb, t));
     const be = bandOf(local(e), cosThr);
     if (be !== b0) {
       const t = bisect((x) => bandOf(local(x), cosThr) !== b0, Math.max(s, minT - EPS_MS), e);
@@ -161,6 +183,36 @@ function scanInterval(
     }
   }
   return null;
+}
+
+/**
+ * Arc contre point fixe : un seuil peut-il être franchi sur [s, e] ? Faux si aucun seuil ne tombe
+ * dans l'intervalle des distances possibles (calotte englobant la portion d'arc parcourue) : il n'y
+ * a alors aucune racine, et le calcul exact est inutile (même résultat).
+ */
+function arcStaticNear(
+  arc: ArcPiece,
+  c: Vec3,
+  s: number,
+  e: number,
+  angles: readonly number[],
+): boolean {
+  let th0 = arc.w * (s - arc.t0);
+  let th1 = e === Infinity ? arc.len : arc.w * (e - arc.t0);
+  th0 = th0 < 0 ? 0 : th0 > arc.len ? arc.len : th0;
+  th1 = th1 < 0 ? 0 : th1 > arc.len ? arc.len : th1;
+  const tm = (th0 + th1) / 2;
+  const cm = Math.cos(tm);
+  const sm = Math.sin(tm);
+  const mid: Vec3 = [
+    arc.p0[0] * cm + arc.u[0] * sm,
+    arc.p0[1] * cm + arc.u[1] * sm,
+    arc.p0[2] * cm + arc.u[2] * sm,
+  ];
+  const dc = vecAngle(c, mid);
+  const half = (th1 - th0) / 2 + 1e-7;
+  for (const th of angles) if (th >= dc - half && th <= dc + half) return true;
+  return false;
 }
 
 function pickFirst(

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { RESOURCES } from './catalog.js';
 import { FrArticleSchema } from './french.js';
+import type { RoutesFile } from './routes.js';
 
 /** Bâtiments stratégiques génériques (jamais de sites réels nommés). */
 export const BUILDING_TYPES = [
@@ -114,4 +115,6 @@ export interface MapData {
   cells: CellsFile;
   straits: Strait[];
   disputed: DisputedArea[];
+  /** Réseau de routes des unités terrestres (data/map/routes.json) ; absent : déplacement libre sur la grille. */
+  routes?: RoutesFile;
 }

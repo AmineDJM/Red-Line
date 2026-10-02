@@ -396,6 +396,7 @@
         "capacity": "Maximale Kapazität erreicht.",
         "cooldown": "Aktion lädt nach.",
         "insufficient_resources": "Unzureichende Ressourcen.",
+        "off_road": "Außerhalb des Straßennetzes: Zielen Sie auf eine Stadt, einen Knoten oder eine Straße.",
         "disconnected": "Offline: Befehl nicht übermittelt.",
         "timeout": "Keine Antwort vom Server."
       }
@@ -961,7 +962,8 @@
       "sat": "SAT · Überflug in {{value}}"
     },
     "order": {
-      "eta": "{{distance}} · {{eta}}"
+      "eta": "{{distance}} · {{eta}}",
+      "etaSea": "{{distance}} · {{eta}} · Überfahrt"
     },
     "minimap": {
       "label": "Minikarte",

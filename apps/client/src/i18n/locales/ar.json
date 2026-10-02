@@ -420,6 +420,7 @@
         "capacity": "بلغت السعة القصوى.",
         "cooldown": "الإجراء قيد إعادة الشحن.",
         "insufficient_resources": "الموارد غير كافية.",
+        "off_road": "خارج شبكة الطرق: استهدف مدينة أو عقدة أو طريقًا.",
         "disconnected": "دون اتصال: لم يُرسل الأمر.",
         "timeout": "لا استجابة من الخادم."
       }
@@ -1021,7 +1022,8 @@
       "sat": "قمر · مرور بعد {{value}}"
     },
     "order": {
-      "eta": "{{distance}} · {{eta}}"
+      "eta": "{{distance}} · {{eta}}",
+      "etaSea": "{{distance}} · {{eta}} · عبور بحري"
     },
     "minimap": {
       "label": "خريطة مصغرة",

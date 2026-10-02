@@ -103,6 +103,18 @@ export async function publicRoutes(app: FastifyInstance, ctx: AppContext): Promi
     return sendAsset(req, reply, data.provincesGeojson, 'application/geo+json; charset=utf-8');
   });
 
+  // Réseau de routes des unités terrestres (couche « routes », aperçu des trajets, accrochage).
+  let routesAsset: { rev: number; a: StaticAsset } | null = null;
+  app.get('/api/map/routes', async (req, reply) => {
+    const { map, rev } = requireMap();
+    if (!map.routes)
+      throw unavailable('data_unavailable', 'Réseau de routes indisponible (data/map/routes.json)');
+    if (routesAsset?.rev !== rev) {
+      routesAsset = { rev, a: asset(Buffer.from(JSON.stringify(map.routes))) };
+    }
+    return sendAsset(req, reply, routesAsset.a, 'application/json; charset=utf-8');
+  });
+
   app.get('/api/map/tiles', async () => {
     const info = tilesInfo(ctx);
     if (!info) throw unavailable('tiles_unavailable', 'Aucune imagerie satellite disponible');

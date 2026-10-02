@@ -118,7 +118,8 @@
       "sat": "SAT · passage dans {{value}}"
     },
     "order": {
-      "eta": "{{distance}} · {{eta}}"
+      "eta": "{{distance}} · {{eta}}",
+      "etaSea": "{{distance}} · {{eta}} · traversée"
     },
     "minimap": {
       "label": "Mini-carte",

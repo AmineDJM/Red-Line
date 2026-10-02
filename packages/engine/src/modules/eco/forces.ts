@@ -8,7 +8,7 @@ import {
 import type { EngineState } from '../../state/types.js';
 import { mixClassOf, stackBal } from '../../state/stack.js';
 import { spawnStack } from '../../state/units.js';
-import { wi } from '../../state/world.js';
+import { roadSpawn, wi } from '../../state/world.js';
 import { cfg } from './config.js';
 import { eco, orbatOf } from './state.js';
 
@@ -239,7 +239,7 @@ export function placeOrbatForces(state: EngineState, n: NationId): boolean {
       pos = city;
       if (m > 0) {
         const cand = destination(city, (m * 137.508) % 360, gc * 0.3 * (1 + (m % 5) / 5));
-        if (w.nav.cellProv.get(w.nav.cellAt(cand)) === site) pos = cand;
+        if (w.nav.cellProv.get(w.nav.cellAt(cand)) === site) pos = roadSpawn(w, cand, gc, site);
       }
     }
     spawnStack(state, n, parts, pos);

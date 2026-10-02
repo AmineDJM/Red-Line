@@ -2,7 +2,7 @@
  * Pipeline de la carte de jeu Red Line (Natural Earth, domaine public).
  *   pnpm --filter @redline/tools-map build
  * Sorties : data/map/{nations.json, provinces.json, provinces.geojson, cells.json, straits.json,
- * disputed.json} et data/basemap/*.geojson.
+ * disputed.json, routes.json} et data/basemap/*.geojson.
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -57,6 +57,7 @@ import {
 } from './provinces.js';
 import { loadNE, REPO_DIR, type FeatureCollection } from './sources.js';
 import { adjacency, simplify } from './topology.js';
+import { buildRoutesFile } from './routes-cli.js';
 
 const MAP_DIR = join(REPO_DIR, 'data', 'map');
 const BASEMAP_DIR = join(REPO_DIR, 'data', 'basemap');
@@ -399,6 +400,8 @@ async function main() {
   writeFileSync(join(MAP_DIR, 'provinces.geojson'), simplified);
   sizes.push(['provinces.geojson', Buffer.byteLength(simplified)]);
   log('Carte écrite');
+  sizes.push(['routes.json', buildRoutesFile(MAP_DIR)]);
+  log('Réseau de routes écrit');
 
   // ---- Fond de carte ----
   const coastText = await basemap.coastline(coast);

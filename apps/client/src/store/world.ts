@@ -9,8 +9,10 @@ import type {
   ProvinceId,
   ResearchNode,
   SystemId,
+  RoutesFile,
   WeaponSystem,
 } from '@redline/shared';
+import { RoadNet } from '@redline/shared';
 import type { Api, BasemapData, TilesInfo } from '../api/types.js';
 import { bundledBalance } from '../lib/staticData.js';
 import {
@@ -42,7 +44,12 @@ export interface WorldState {
   /** Fiches nations (écran de sélection), chargées à la demande. */
   nationInfo: Record<NationId, NationInfo>;
   extras: 'idle' | 'loading' | 'ready';
+  /** Réseau de routes des unités terrestres (chargé après la carte, non bloquant). */
+  routes: RoutesFile | null;
+  roads: RoadNet | null;
+  roadsStatus: 'idle' | 'loading' | 'ready';
   load(api: Api): Promise<void>;
+  loadRoads(api: Api): Promise<void>;
   loadExtras(api: Api): Promise<void>;
   loadNationInfo(api: Api): Promise<void>;
 }
@@ -64,6 +71,21 @@ export const useWorld = create<WorldState>((set, get) => ({
   balance: null,
   nationInfo: {},
   extras: 'idle',
+  routes: null,
+  roads: null,
+  roadsStatus: 'idle',
+  async loadRoads(api) {
+    if (get().roadsStatus !== 'idle' || !api.routes) return;
+    set({ roadsStatus: 'loading' });
+    const routes = await api.routes().catch(() => null);
+    let roads: RoadNet | null = null;
+    try {
+      roads = routes ? new RoadNet(routes) : null;
+    } catch (e) {
+      console.warn('[routes]', e);
+    }
+    set({ routes: roads ? routes : null, roads, roadsStatus: 'ready' });
+  },
   async loadExtras(api) {
     if (get().extras !== 'idle') return;
     set({ extras: 'loading' });
@@ -80,6 +102,7 @@ export const useWorld = create<WorldState>((set, get) => ({
   },
   async load(api) {
     void get().loadExtras(api);
+    void get().loadRoads(api);
     if (get().status === 'ready' || get().status === 'loading') return;
     set({ status: 'loading', error: null });
     try {
