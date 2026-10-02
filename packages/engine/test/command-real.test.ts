@@ -111,6 +111,9 @@ describe('centre de commandement : vraies données', { timeout: 600_000 }, () =>
       ]),
     );
     expect(refused).toEqual([]);
+    // Un assaut relancé à l'identique ne répète pas l'entrée du journal.
+    const keys = v.journal.map((e) => JSON.stringify(e.text));
+    expect(keys.filter((k, i) => i > 0 && k === keys[i - 1])).toEqual([]);
   });
 
   it('Débarquement : transport, escorte, traversée et prise de Malte', () => {

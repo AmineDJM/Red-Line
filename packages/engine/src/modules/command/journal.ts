@@ -14,6 +14,17 @@ import { cmdBal, type ArmySt } from './state.js';
 
 type Tone = 'info' | 'good' | 'warn' | 'bad';
 
+/** Comptes rendus d'action qu'une relance identique ne duplique pas. */
+const REPEATABLE = new Set([
+  'offensive',
+  'landing',
+  'counter',
+  'counterFront',
+  'blockade',
+  'strike',
+  'noReinforcements',
+]);
+
 export function journal(
   state: EngineState,
   a: ArmySt,
@@ -21,7 +32,20 @@ export function journal(
   params: Record<string, LocParam> = {},
   tone: Tone = 'info',
 ): void {
-  a.journal.push({ t: state.time, text: loc(`engine.cmd.j.${id}`, params), tone });
+  const text = loc(`engine.cmd.j.${id}`, params);
+  // Une action relancée à l'identique (nouvel assaut sur la même province…) ne répète pas l'entrée :
+  // la dernière est simplement remise à l'heure.
+  const last = a.journal[a.journal.length - 1];
+  if (
+    last &&
+    REPEATABLE.has(id) &&
+    last.text.key === text.key &&
+    JSON.stringify(last.text.params ?? {}) === JSON.stringify(text.params ?? {})
+  ) {
+    last.t = state.time;
+    return;
+  }
+  a.journal.push({ t: state.time, text, tone });
   const max = cmdBal(state).journalMax;
   if (a.journal.length > max) a.journal.splice(0, a.journal.length - max);
 }

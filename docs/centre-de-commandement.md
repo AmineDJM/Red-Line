@@ -63,5 +63,8 @@ Logique pure testée dans `lib/command.ts`.
 ## Coût de calcul
 
 Banc `packages/engine/bench/command.ts` (données réelles, France contre Belgique, armée de piles terrestres) :
-`CMD_SEEDS=1,2 CMD_AGGR=cautious,bold node --expose-gc bench/run.mjs command` (dans `packages/engine`) ; mesure de référence : 726 ms par jour de jeu
-avec l'armée contre 620 ms sans (≈ +17 % sur ce scénario, monde entier simulé).
+`CMD_SEEDS=1,2 CMD_AGGR=cautious,bold node --expose-gc bench/run.mjs command` (dans `packages/engine`). Mesure
+(carte fusionnée, 4 jours, monde entier simulé) : 583 à 900 ms par jour de jeu avec l'armée, contre 347 à
+393 ms sans armée ni guerre. L'écart inclut la guerre que l'armée déclenche (combats, captures, IA belge en
+guerre), pas seulement la réflexion du général ; prise de Charleroi entre J+0,4 et J+1,0, mission réussie
+dans les quatre cas.
