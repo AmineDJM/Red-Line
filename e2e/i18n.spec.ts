@@ -32,7 +32,9 @@ for (const c of CASES) {
     // Invité → choix d'une nation → partie.
     await page.getByTestId('menu-guest').click();
     await page.waitForURL('**/new');
-    await page.locator('.nation-row', { hasText: c.nation }).first().click();
+    const row = page.locator('.nation-row[data-nation="fra"]');
+    await expect(row).toContainText(c.nation);
+    await row.click();
     await page.getByTestId('picker-confirm').click();
     await page.waitForURL('**/game/**');
     await waitGameReady(page);
