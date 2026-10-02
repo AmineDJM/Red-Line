@@ -194,6 +194,16 @@ export const ECO_DEFAULTS = {
     servicesIncomeBonus: 0.1,
     servicesIndustryFactor: 1.5,
     coastalOnly: ['port', 'naval_base', 'coastal_battery'] as string[],
+    /**
+     * Plancher national de production (par jour) : max(minPerDay, economyShare × poids économique de
+     * la nation × production mondiale de la carte). Voir budget.ts `nationalFloor`.
+     */
+    nationalFloor: {
+      economyShare: 0.05,
+      minPerDay: { oil: 1, metals: 1, electronics: 1, food: 2 } as Partial<
+        Record<Resource, number>
+      >,
+    },
   },
   morale: {
     start: 70,
@@ -267,6 +277,11 @@ export function cfg(world: World): EcoConfig {
     resources: {
       ...merge(D.resources, b.resources),
       extraction: b.resources?.extraction ?? D.resources.extraction,
+      nationalFloor: {
+        economyShare:
+          b.resources?.nationalFloor?.economyShare ?? D.resources.nationalFloor.economyShare,
+        minPerDay: b.resources?.nationalFloor?.minPerDay ?? D.resources.nationalFloor.minPerDay,
+      },
     },
     morale: merge(D.morale, b.morale),
     consumption: merge(D.consumption, b.consumption),
