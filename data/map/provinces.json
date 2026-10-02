@@ -939,7 +939,8 @@
     "isCapital": true,
     "coastal": false,
     "income": {
-      "money": 57
+      "money": 57,
+      "food": 2
     },
     "buildings": ["power_plant", "air_base", "military_base", "research_center"],
     "neighbors": ["esp-8", "esp-13", "fra-13"],
@@ -947,7 +948,7 @@
     "cityName": "Andorre-la-Vieille",
     "population": 53998,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "are-1",
@@ -1970,7 +1971,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 40
+      "money": 40,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -1978,7 +1980,7 @@
     "cityName": "Saint John's",
     "population": 35499,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "aus-1",
@@ -6052,7 +6054,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 67
+      "money": 67,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -6060,7 +6063,7 @@
     "cityName": "Bridgetown",
     "population": 191152,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "brn-1",
@@ -12544,7 +12547,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 33
+      "money": 33,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -12552,7 +12556,7 @@
     "cityName": "Moroni",
     "population": 128698,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "cpv-1",
@@ -12582,7 +12586,8 @@
     "isCapital": false,
     "coastal": true,
     "income": {
-      "money": 37
+      "money": 37,
+      "food": 2
     },
     "buildings": ["port"],
     "neighbors": [],
@@ -12590,7 +12595,7 @@
     "cityName": "Mindelo",
     "population": 70611,
     "cityRank": 4,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "cri-1",
@@ -12925,7 +12930,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 45
+      "money": 45,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": ["cyp-1", "cyp-2", "gbr-2"],
@@ -12933,7 +12939,7 @@
     "cityName": "Famagouste",
     "population": 91473,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "cyp-1",
@@ -13221,6 +13227,7 @@
     "coastal": true,
     "income": {
       "money": 293,
+      "oil": 1,
       "food": 111
     },
     "buildings": ["port", "air_base"],
@@ -13241,7 +13248,10 @@
     "cityName": "Hanovre",
     "population": 1643101,
     "cityRank": 3,
-    "resources": [{ "type": "food", "richness": 2, "source": "data" }]
+    "resources": [
+      { "type": "food", "richness": 2, "source": "data" },
+      { "type": "oil", "richness": 1, "source": "data" }
+    ]
   },
   {
     "id": "deu-6",
@@ -13292,6 +13302,7 @@
     "coastal": true,
     "income": {
       "money": 195,
+      "oil": 1,
       "food": 66
     },
     "buildings": ["port"],
@@ -13300,7 +13311,10 @@
     "cityName": "Kiel",
     "population": 367357,
     "cityRank": 3,
-    "resources": [{ "type": "food", "richness": 2, "source": "data" }]
+    "resources": [
+      { "type": "food", "richness": 2, "source": "data" },
+      { "type": "oil", "richness": 1, "source": "data" }
+    ]
   },
   {
     "id": "deu-9",
@@ -13574,7 +13588,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 34
+      "money": 34,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -13582,7 +13597,7 @@
     "cityName": "Roseau",
     "population": 23336,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "dnk-1",
@@ -16017,7 +16032,8 @@
     "isCapital": true,
     "coastal": false,
     "income": {
-      "money": 38
+      "money": 38,
+      "food": 2
     },
     "buildings": ["power_plant", "air_base", "military_base", "research_center"],
     "neighbors": ["dza-10", "mar-14", "mar-15", "mar-16", "mrt-1", "mrt-2", "mrt-4", "mrt-12"],
@@ -16025,7 +16041,7 @@
     "cityName": "Bir Lehlou",
     "population": 500,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "esp-1",
@@ -17792,7 +17808,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 34
+      "money": 34,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -17800,7 +17817,7 @@
     "cityName": "Palikir",
     "population": 4645,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "gab-1",
@@ -17998,7 +18015,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 22
+      "money": 22,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": ["egy-30", "isr-1", "isr-5", "isr-6", "pse-1"],
@@ -18006,7 +18024,7 @@
     "cityName": "Gaza",
     "population": 505700,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "gbr-1",
@@ -19509,7 +19527,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 34
+      "money": 34,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -19517,7 +19536,7 @@
     "cityName": "Saint-Georges",
     "population": 33734,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "gtm-1",
@@ -25447,6 +25466,7 @@
     "coastal": true,
     "income": {
       "money": 219,
+      "metals": 1,
       "electronics": 153
     },
     "buildings": ["port"],
@@ -25455,7 +25475,10 @@
     "cityName": "Kumamoto",
     "population": 1355919,
     "cityRank": 3,
-    "resources": [{ "type": "electronics", "richness": 2, "source": "data" }]
+    "resources": [
+      { "type": "electronics", "richness": 2, "source": "data" },
+      { "type": "metals", "richness": 1, "source": "data" }
+    ]
   },
   {
     "id": "jpn-5",
@@ -25806,6 +25829,7 @@
     "coastal": true,
     "income": {
       "money": 184,
+      "oil": 1,
       "food": 95
     },
     "buildings": ["port"],
@@ -25814,7 +25838,10 @@
     "cityName": "Niigata",
     "population": 765115,
     "cityRank": 3,
-    "resources": [{ "type": "food", "richness": 2, "source": "data" }]
+    "resources": [
+      { "type": "food", "richness": 2, "source": "data" },
+      { "type": "oil", "richness": 1, "source": "data" }
+    ]
   },
   {
     "id": "jpn-23",
@@ -27095,7 +27122,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 24
+      "money": 24,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -27103,7 +27131,7 @@
     "cityName": "Tarawa-Sud",
     "population": 28802,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "kna-1",
@@ -27114,7 +27142,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 37
+      "money": 37,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -27122,7 +27151,7 @@
     "cityName": "Basseterre",
     "population": 21887,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "kor-1",
@@ -28473,7 +28502,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 50
+      "money": 50,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -28481,7 +28511,7 @@
     "cityName": "Castries",
     "population": 37963,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "lie-1",
@@ -28492,7 +28522,8 @@
     "isCapital": true,
     "coastal": false,
     "income": {
-      "money": 65
+      "money": 65,
+      "food": 2
     },
     "buildings": ["power_plant", "air_base", "military_base", "research_center"],
     "neighbors": ["aut-1", "che-3", "che-4", "che-5"],
@@ -28500,7 +28531,7 @@
     "cityName": "Coire",
     "population": 74574,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "lka-1",
@@ -29886,7 +29917,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 69
+      "money": 69,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -29894,7 +29926,7 @@
     "cityName": "Malé",
     "population": 112927,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "mex-1",
@@ -30634,7 +30666,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 27
+      "money": 27,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -30642,7 +30675,7 @@
     "cityName": "Majuro",
     "population": 25400,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "mkd-1",
@@ -30990,7 +31023,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 82
+      "money": 82,
+      "electronics": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -30998,7 +31032,7 @@
     "cityName": "La Valette",
     "population": 368250,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "electronics", "richness": 1, "source": "data" }]
   },
   {
     "id": "mmr-1",
@@ -32415,14 +32449,15 @@
     "isCapital": false,
     "coastal": true,
     "income": {
-      "money": 49
+      "money": 49,
+      "food": 2
     },
     "buildings": [],
     "neighbors": ["mus-2"],
     "areaKm2": 1189,
     "cityRank": 4,
     "cityName": "Flacq",
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "mus-2",
@@ -34984,14 +35019,15 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 24
+      "money": 24,
+      "metals": 2
     },
     "buildings": ["power_plant", "air_base", "military_base", "research_center"],
     "neighbors": [],
     "areaKm2": 29,
     "cityRank": 1,
     "cityName": "Anibare",
-    "resources": []
+    "resources": [{ "type": "metals", "richness": 1, "source": "data" }]
   },
   {
     "id": "nzl-1",
@@ -37038,7 +37074,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 32
+      "money": 32,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -37046,7 +37083,7 @@
     "cityName": "Koror",
     "population": 18226,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "png-1",
@@ -38351,7 +38388,8 @@
     "isCapital": true,
     "coastal": false,
     "income": {
-      "money": 107
+      "money": 107,
+      "food": 2
     },
     "buildings": ["power_plant", "air_base", "military_base", "arms_factory", "research_center"],
     "neighbors": [
@@ -38370,7 +38408,7 @@
     "cityName": "Naplouse",
     "population": 496302,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "qat-1",
@@ -41888,7 +41926,8 @@
     "isCapital": false,
     "coastal": false,
     "income": {
-      "money": 91
+      "money": 91,
+      "food": 2
     },
     "buildings": ["refinery"],
     "neighbors": ["sau-2", "sau-3", "sau-9", "sau-11"],
@@ -41896,7 +41935,7 @@
     "cityName": "Buraydah",
     "population": 398581,
     "cityRank": 3,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "data" }]
   },
   {
     "id": "sau-11",
@@ -41975,7 +42014,8 @@
     "isCapital": false,
     "coastal": true,
     "income": {
-      "money": 85
+      "money": 85,
+      "food": 2
     },
     "buildings": ["refinery", "port"],
     "neighbors": [
@@ -41993,7 +42033,7 @@
     "cityName": "Sakaka",
     "population": 160915,
     "cityRank": 4,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "data" }]
   },
   {
     "id": "sau-15",
@@ -43174,7 +43214,8 @@
     "isCapital": false,
     "coastal": true,
     "income": {
-      "money": 60
+      "money": 60,
+      "food": 2
     },
     "buildings": ["port", "military_base"],
     "neighbors": ["eth-14", "sol-1", "som-1", "som-12"],
@@ -43182,7 +43223,7 @@
     "cityName": "Erigavo",
     "population": 270100,
     "cityRank": 4,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "som-1",
@@ -43807,7 +43848,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 35
+      "money": 35,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -43815,7 +43857,7 @@
     "cityName": "São Tomé",
     "population": 88219,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "sur-1",
@@ -44564,7 +44606,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 47
+      "money": 47,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -44572,7 +44615,7 @@
     "cityName": "Victoria",
     "population": 33576,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "syr-1",
@@ -46173,7 +46216,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 29
+      "money": 29,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -46181,7 +46225,7 @@
     "cityName": "Nukuʻalofa",
     "population": 42620,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "tto-1",
@@ -50931,7 +50975,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 33
+      "money": 33,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -50939,7 +50984,7 @@
     "cityName": "Kingstown",
     "population": 49485,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "ven-1",
@@ -51929,7 +51974,8 @@
     "isCapital": true,
     "coastal": true,
     "income": {
-      "money": 41
+      "money": 41,
+      "food": 2
     },
     "buildings": ["power_plant", "port", "air_base", "military_base", "research_center"],
     "neighbors": [],
@@ -51937,7 +51983,7 @@
     "cityName": "Apia",
     "population": 61916,
     "cityRank": 1,
-    "resources": []
+    "resources": [{ "type": "food", "richness": 1, "source": "heuristic" }]
   },
   {
     "id": "xkx-1",
