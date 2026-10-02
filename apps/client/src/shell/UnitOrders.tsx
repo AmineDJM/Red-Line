@@ -102,7 +102,11 @@ export function UnitOrders({
           >
             <Icon name={a.icon as IconName} size={14} />
             <span className="unitorders__label">{label}</span>
-            {!compact ? <Kbd>{a.key}</Kbd> : null}
+            {!compact ? (
+              <span className="unitorders__key" aria-hidden>
+                {a.key}
+              </span>
+            ) : null}
           </button>
         );
       })}

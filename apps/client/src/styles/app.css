@@ -2692,15 +2692,16 @@ code {
 .unitorders__btn {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   min-height: 32px;
-  padding: 4px 7px;
+  padding: 4px 6px;
   border: 1px solid var(--rl-line);
   border-radius: var(--rl-radius-sm, 3px);
   background: rgba(255, 255, 255, 0.03);
   color: var(--rl-text);
   font: inherit;
-  font-size: 11.5px;
+  font-size: 11px;
+  letter-spacing: 0;
   text-align: start;
   cursor: pointer;
   transition:
@@ -2723,12 +2724,23 @@ code {
 .unitorders__btn[data-action='strike'] svg {
   color: var(--rl-red);
 }
+.unitorders__key {
+  flex: none;
+  font-family: var(--rl-font-mono);
+  font-size: 9.5px;
+  color: var(--rl-text-faint);
+}
 .unitorders__label {
   flex: 1;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.1;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+.unitorders__key {
+  align-self: flex-start;
 }
 .unitorders--compact .unitorders__btn {
   flex-direction: column;

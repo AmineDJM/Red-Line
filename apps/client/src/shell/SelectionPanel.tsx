@@ -279,8 +279,11 @@ export function SelectionPanel({ compact }: { compact: boolean }) {
   const province = useUi((s) => s.selectedProvince);
   const battle = useMapSel((s) => s.battle);
   const view = useGame((s) => s.view);
+  const targeting = useUi((s) => s.targeting);
   const id = selection[0] ?? inspected;
   const u = id ? view?.units[id] : undefined;
+  // Mobile : en mode ciblage, la carte entière reste libre (le bandeau permet d'annuler).
+  if (compact && targeting) return null;
   if (u && view) return <UnitPanel u={u} compact={compact} />;
   if (battle && view) return <BattlePanel compact={compact} />;
   if (province && view?.provinces[province])

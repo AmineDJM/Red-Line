@@ -488,11 +488,11 @@
       "strike": "Frapper",
       "intercept": "Intercepter",
       "patrol": "Patrouiller",
-      "recon": "Reconnaissance",
+      "recon": "Reconnaître",
       "blockade": "Blocus",
       "rtb": "Retour",
       "rtbAir": "Retour base",
-      "rtbSea": "Retour au port",
+      "rtbSea": "Au port",
       "resupply": "Ravitailler",
       "stop": "Arrêter",
       "reasons": {

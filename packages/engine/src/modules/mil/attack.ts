@@ -110,6 +110,18 @@ export function orderAttack(
     }
     if (isLauncher(s)) {
       const k = s.missile!.kind;
+      // Arme nucléaire : jamais par un simple ordre d'attaque (frappe explicite et autorisation).
+      if (s.missile!.warhead === 'nuclear') {
+        refused.push(
+          failR(
+            'locked',
+            'munition_use_strike',
+            `${s.name} : arme nucléaire, utilisez l’ordre de frappe (autorisation requise).`,
+            { name: s.name },
+          ) as Refusal,
+        );
+        continue;
+      }
       if (
         s.damage[tClass] <= 0 ||
         (k === 'antiship' && tSys.movement !== 'sea') ||
