@@ -1313,7 +1313,9 @@
       "double": "agen ganda",
       "exfiltrated": "dievakuasi",
       "captured": "tertangkap",
-      "expelled": "Diusir"
+      "expelled": "Diusir",
+      "executed": "Dieksekusi",
+      "released": "Dibebaskan"
     },
     "ops": {
       "infiltrate_spy": "Susupkan mata-mata",
@@ -1393,7 +1395,8 @@
     "tabs": {
       "military": "Militer",
       "dossiers": "Berkas negara",
-      "reports": "Laporan"
+      "reports": "Laporan",
+      "detainees": "Tahanan"
     },
     "cover": "Penyamaran",
     "covers": {
@@ -1448,6 +1451,173 @@
       "agents": "Agen di lapangan",
       "reliability": "Keandalan berkas",
       "empty": "Belum ada berkas: dinas Anda memantau negara tetangga, musuh, atau sasaran operasi Anda."
+    },
+    "dz": {
+      "title": "Tahanan",
+      "subtitle": "Tahanan, agen yang ditahan, negosiasi",
+      "ourRegime": "Rezim kita: {{regime}}",
+      "ours": "Tahanan kita",
+      "abroad": "Agen kita yang ditahan di luar negeri",
+      "negotiations": "Negosiasi",
+      "relations": "Hubungan bilateral",
+      "noDetainees": "Tidak ada agen asing yang ditahan.",
+      "noAbroad": "Tidak ada agen kita yang ditahan di luar negeri.",
+      "noSwaps": "Tidak ada negosiasi yang berjalan.",
+      "noRelations": "Tidak ada hubungan yang terdampak kasus spionase.",
+      "defaultHint": "Tanpa keputusan sebelum tenggat: penahanan sementara (tekanan diplomatik terus-menerus).",
+      "kinds": {
+        "diplomat": "Perwira dengan kedok diplomatik",
+        "illegal": "Perwira dengan kedok nonresmi",
+        "source": "Sumber lokal",
+        "double": "Agen ganda"
+      },
+      "kindsShort": {
+        "diplomat": "Diplomat",
+        "illegal": "Ilegal",
+        "source": "Sumber",
+        "double": "Ganda"
+      },
+      "status": {
+        "pending": "Menunggu keputusan",
+        "held": "Penahanan sementara",
+        "jailed": "Divonis",
+        "expelled": "Diusir",
+        "returned": "Dipulangkan",
+        "executed": "Dieksekusi",
+        "released": "Dibebaskan",
+        "exchanged": "Ditukar",
+        "served": "Hukuman selesai",
+        "turned": "Dibelot"
+      },
+      "fate": {
+        "held": "Ditahan",
+        "interrogation": "Diinterogasi",
+        "jailed": "Divonis",
+        "expelled": "Diusir",
+        "returned": "Dipulangkan",
+        "executed": "Dieksekusi",
+        "released": "Dibebaskan",
+        "exchanged": "Ditukar",
+        "served": "Hukuman selesai"
+      },
+      "regimes": {
+        "democracy": "Demokrasi",
+        "hybrid": "Rezim hibrida",
+        "authoritarian": "Rezim otoriter"
+      },
+      "regimesShort": {
+        "democracy": "demokrasi",
+        "hybrid": "hibrida",
+        "authoritarian": "otoriter"
+      },
+      "actions": {
+        "arrest": "Tangkap",
+        "interrogate": "Interogasi",
+        "expel": "Usir",
+        "return": "Pulangkan",
+        "jail": "Penjarakan",
+        "execute": "Eksekusi",
+        "turn": "Belotkan",
+        "release": "Bebaskan"
+      },
+      "help": {
+        "arrest": "Penangkapan terbuka: agen menjadi tahanan dan insiden menjadi masalah diplomatik.",
+        "interrogate": "Pemeriksaan terawasi: jaringan, operasi terencana, niat. Pengakuan bisa palsu.",
+        "expel": "Persona non grata: konsekuensi ringan, pengusiran balasan mungkin terjadi.",
+        "return": "Dipulangkan ke negaranya: konsekuensi ringan, tanpa pengadilan.",
+        "jail": "Hukuman penjara: tekanan diplomatik terus-menerus, alat tawar, biaya rendah.",
+        "execute": "Hukuman mati: hubungan runtuh, pembalasan mungkin, efek gentar.",
+        "turn": "Tawarkan bekerja untuk kita: tampak dibebaskan, agen ganda untuk kita.",
+        "release": "Pembebasan tanpa imbalan: isyarat peredaan."
+      },
+      "days": "{{n}} h",
+      "decision": "Keputusan",
+      "sentence": "Lama hukuman",
+      "unavailable": "tidak tersedia",
+      "confirmTitle": "Keputusan — tahanan {{ref}}",
+      "confirm": "Konfirmasi keputusan",
+      "applied": "Keputusan diterapkan: {{action}}",
+      "consequences": "Perkiraan konsekuensi",
+      "fx": {
+        "relations": "Hubungan dengan {{nationLe}}",
+        "reputation": "Reputasi internasional",
+        "stability": "Stabilitas dalam negeri",
+        "retaliation": "Risiko pembalasan",
+        "serviceHit": "Dinas lawan melemah terhadap kita",
+        "serviceDays": "{{pct}} selama {{days}} h",
+        "worldRelations": "Hubungan dengan negara demokrasi",
+        "council": "Pemungutan suara kecaman di Dewan",
+        "chance": "Peluang berhasil",
+        "pressure": "Tekanan diplomatik",
+        "perDay": "{{value}} / hari",
+        "immunity": "Pelanggaran kekebalan diplomatik",
+        "hours": "Durasi",
+        "none": "Tidak ada konsekuensi berarti."
+      },
+      "risk": {
+        "none": "nihil",
+        "low": "rendah",
+        "moderate": "sedang",
+        "high": "tinggi"
+      },
+      "blocked": {
+        "war_only": "Eksekusi tidak mungkin di masa damai bagi rezim kita.",
+        "never": "Hukuman mati telah dihapuskan.",
+        "interrogating": "Interogasi sedang berlangsung.",
+        "done": "Sudah dicoba.",
+        "not_plausible": "Tidak masuk akal untuk tahanan ini.",
+        "final": "Tahanan ini tidak lagi di tangan kita."
+      },
+      "decideIn": "Keputusan dalam {{left}}",
+      "sentenceLeft": "Hukuman {{days}} h · bebas dalam {{left}}",
+      "interrogating": "Interogasi: sisa {{left}}",
+      "revealed": "Pengakuan: {{agents}} agen, {{ops}} operasi",
+      "caughtDuring": "Tertangkap saat: {{op}}",
+      "value": "Nilai",
+      "valueHint": "Perkiraan nilai tukar (perwira > sumber, akses).",
+      "exchange": "Tukar",
+      "negotiate": "Negosiasi",
+      "arrested": "Agen ditangkap",
+      "incoming": "Diterima",
+      "outgoing": "Dikirim",
+      "counter": "Tawaran balik",
+      "swapStatus": {
+        "open": "Menunggu",
+        "accepted": "Disepakati",
+        "refused": "Ditolak",
+        "expired": "Kedaluwarsa",
+        "void": "Batal"
+      },
+      "expires": "Berakhir dalam {{left}}",
+      "weRelease": "Kita membebaskan",
+      "weObtain": "Kita memperoleh",
+      "money": "Uang",
+      "theyPay": "Mereka membayar {{amount}}",
+      "wePay": "Kita membayar {{amount}}",
+      "accord": "Perjanjian nonintervensi",
+      "accordNone": "Tidak ada",
+      "accordShort": "Nonintervensi",
+      "sanctions": "Sanksi",
+      "sanctionsLifted": "Dilonggarkan oleh {{nationLe}}",
+      "accept": "Terima",
+      "refuse": "Tolak",
+      "acceptedOk": "Kesepakatan tercapai",
+      "refusedOk": "Usulan ditolak",
+      "swapTitle": "Negosiasi — {{nation}}",
+      "partner": "Negara",
+      "relationsNow": "Hubungan saat ini: {{value}}",
+      "atWar": "sedang berperang",
+      "noneToRelease": "Tidak ada agen mereka yang kita tahan.",
+      "noneToObtain": "Tidak ada agen kita yang mereka tahan.",
+      "moneyNone": "Tidak ada",
+      "moneyPay": "Kita membayar",
+      "moneyAsk": "Kita meminta",
+      "amount": "Jumlah",
+      "liftSanctions": "Longgarkan sanksi yang kita sponsori terhadap mereka",
+      "balance": "Nilai diserahkan {{give}} · diperoleh {{get}}",
+      "balanceHint": "AI menuntut lebih jika hubungan bermusuhan atau sedang berperang; AI dapat menolak atau mengajukan tawaran balik.",
+      "send": "Kirim usulan",
+      "sent": "Usulan terkirim"
     }
   },
   "sheet": {
@@ -3287,7 +3457,10 @@
       "dismantle": "Pembongkaran jaringan {{nation}}",
       "deception": "Operasi penyesatan — {{nation}}",
       "hardened": "Fasilitas sensitif diperkuat",
-      "strategicAlert": "SIAGA STRATEGIS — {{nation}}"
+      "strategicAlert": "SIAGA STRATEGIS — {{nation}}",
+      "interrogation": "Interogasi — tahanan {{ref}} ({{nation}})",
+      "turnRefused": "Pembelotan ditolak — tahanan {{ref}}",
+      "detaineeTurned": "Tahanan {{ref}} dibelotkan"
     },
     "note": {
       "allianceInvite": {
@@ -3402,7 +3575,77 @@
       "agentExpelled": {
         "title": "Diplomat diusir",
         "text": "{{host}} mengusir diplomat {{owner}} karena spionase."
+      },
+      "detaineeNew": {
+        "title": "Agen asing ditahan",
+        "text": "Seorang agen {{owner}} ada di tangan kita: keputusan diharapkan dalam {{days}} hari."
+      },
+      "detaineeHeld": {
+        "title": "Penahanan sementara",
+        "text": "Tanpa keputusan, agen {{owner}} ditempatkan dalam penahanan sementara."
+      },
+      "spyInterrogated": {
+        "title": "Agen diinterogasi",
+        "text": "{{codename}} sedang diinterogasi oleh dinas {{host}}."
+      },
+      "spyReturned": {
+        "title": "Agen dipulangkan",
+        "text": "{{codename}} telah dipulangkan oleh {{host}}."
+      },
+      "spyJailed": {
+        "title": "Agen divonis",
+        "text": "{{codename}} divonis {{days}} hari penjara oleh {{host}}."
+      },
+      "spyExecuted": {
+        "title": "Agen dieksekusi",
+        "text": "{{codename}} telah dieksekusi oleh {{host}}."
+      },
+      "spyReleased": {
+        "title": "Agen dibebaskan",
+        "text": "{{host}} telah membebaskan {{codename}}."
+      },
+      "spyServed": {
+        "title": "Hukuman berakhir",
+        "text": "{{codename}} telah menjalani hukuman ({{host}}) dan pulang."
+      },
+      "swapProposal": {
+        "title": "Usulan pertukaran",
+        "text": "{{nation}} mengusulkan pertukaran agen."
+      },
+      "swapCounter": {
+        "title": "Tawaran balik",
+        "text": "{{nation}} mengajukan tawaran balik."
+      },
+      "swapAccepted": {
+        "title": "Pertukaran disepakati",
+        "text": "Kesepakatan tentang agen yang ditahan antara {{a}} dan {{b}}."
+      },
+      "swapRefused": {
+        "title": "Pertukaran ditolak",
+        "text": "{{nation}} menolak usulan pertukaran Anda."
+      },
+      "reprisalExecute": {
+        "title": "Pembalasan",
+        "text": "{{nation}} mengeksekusi salah satu agen kita yang ditahan sebagai pembalasan."
+      },
+      "reprisalJail": {
+        "title": "Pembalasan",
+        "text": "{{nation}} memperketat penahanan agen kita (hukuman maksimum)."
+      },
+      "reprisalArrest": {
+        "title": "Pembalasan",
+        "text": "{{nation}} menangkap salah satu agen kita sebagai pembalasan."
+      },
+      "reprisalExpel": {
+        "title": "Pembalasan",
+        "text": "{{nation}} mengusir diplomat kita sebagai pembalasan."
       }
+    },
+    "spyNews": {
+      "executedH": "{{host}}: agen {{owner}} dieksekusi",
+      "executedB": "{{host}} mengumumkan eksekusi seorang agen {{owner}} yang divonis atas spionase. Kecaman internasional.",
+      "swapH": "Pertukaran agen antara {{a}} dan {{b}}",
+      "swapB": "{{a}} dan {{b}} melakukan pertukaran tahanan: {{n}} agen dibebaskan."
     }
   }
 }

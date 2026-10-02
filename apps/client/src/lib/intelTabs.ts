@@ -1,8 +1,8 @@
 import type { Department, IntelOpKind, IntelReport } from '@redline/shared';
 
 /**
- * Organisation de la console de renseignement : six onglets (SIGINT, HUMINT, militaire, intérieur,
- * dossiers, rapports), opérations proposées par onglet, nature de la cible de chaque opération.
+ * Organisation de la console de renseignement : sept onglets (SIGINT, HUMINT, militaire, intérieur,
+ * détenus, dossiers, rapports), opérations proposées par onglet, nature de la cible de chaque opération.
  * Données pures (testées sans navigateur).
  */
 export const INTEL_TABS = [
@@ -10,11 +10,12 @@ export const INTEL_TABS = [
   'humint',
   'military',
   'interior',
+  'detainees',
   'dossiers',
   'reports',
 ] as const;
 export type IntelTab = (typeof INTEL_TABS)[number];
-export type OpsTab = Exclude<IntelTab, 'dossiers' | 'reports'>;
+export type OpsTab = Exclude<IntelTab, 'dossiers' | 'reports' | 'detainees'>;
 
 /** Département qui conduit les opérations d'un onglet (budget et capacité affichés). */
 export const TAB_DEPT: Record<OpsTab, Department> = {

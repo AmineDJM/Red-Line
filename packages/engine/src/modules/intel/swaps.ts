@@ -273,7 +273,7 @@ function conclude(state: EngineState, s: Swap): OrderResult {
         body: loc('engine.spyNews.swapB', {
           a: { nation: s.from },
           b: { nation: s.to },
-          count: s.give.length + s.get.length,
+          n: s.give.length + s.get.length,
         }),
       },
     });

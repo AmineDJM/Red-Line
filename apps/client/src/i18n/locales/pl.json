@@ -1364,7 +1364,9 @@
       "double": "podwójny agent",
       "exfiltrated": "ewakuowany",
       "captured": "schwytany",
-      "expelled": "Wydalony"
+      "expelled": "Wydalony",
+      "executed": "Stracony",
+      "released": "Zwolniony"
     },
     "ops": {
       "infiltrate_spy": "Wprowadź szpiega",
@@ -1444,7 +1446,8 @@
     "tabs": {
       "military": "Wojsko",
       "dossiers": "Teczki państw",
-      "reports": "Raporty"
+      "reports": "Raporty",
+      "detainees": "Zatrzymani"
     },
     "cover": "Przykrywka",
     "covers": {
@@ -1499,6 +1502,173 @@
       "agents": "Agenci na miejscu",
       "reliability": "Wiarygodność teczki",
       "empty": "Brak teczek: twoje służby śledzą państwa sąsiednie, wrogie lub będące celem twoich operacji."
+    },
+    "dz": {
+      "title": "Zatrzymani",
+      "subtitle": "Więźniowie, zatrzymani agenci, negocjacje",
+      "ourRegime": "Nasz ustrój: {{regime}}",
+      "ours": "Nasi więźniowie",
+      "abroad": "Nasi agenci zatrzymani za granicą",
+      "negotiations": "Negocjacje",
+      "relations": "Stosunki dwustronne",
+      "noDetainees": "Brak zatrzymanych agentów zagranicznych.",
+      "noAbroad": "Żaden z naszych agentów nie jest zatrzymany za granicą.",
+      "noSwaps": "Brak trwających negocjacji.",
+      "noRelations": "Żadne stosunki nie ucierpiały w aferze szpiegowskiej.",
+      "defaultHint": "Bez decyzji przed terminem: areszt tymczasowy (stała presja dyplomatyczna).",
+      "kinds": {
+        "diplomat": "Oficer pod przykrywką dyplomatyczną",
+        "illegal": "Oficer pod przykrywką nieoficjalną",
+        "source": "Źródło lokalne",
+        "double": "Podwójny agent"
+      },
+      "kindsShort": {
+        "diplomat": "Dyplomata",
+        "illegal": "Nielegał",
+        "source": "Źródło",
+        "double": "Podwójny"
+      },
+      "status": {
+        "pending": "Oczekuje na decyzję",
+        "held": "Areszt tymczasowy",
+        "jailed": "Skazany",
+        "expelled": "Wydalony",
+        "returned": "Odesłany",
+        "executed": "Stracony",
+        "released": "Zwolniony",
+        "exchanged": "Wymieniony",
+        "served": "Kara odbyta",
+        "turned": "Przewerbowany"
+      },
+      "fate": {
+        "held": "Zatrzymany",
+        "interrogation": "Przesłuchiwany",
+        "jailed": "Skazany",
+        "expelled": "Wydalony",
+        "returned": "Odesłany",
+        "executed": "Stracony",
+        "released": "Zwolniony",
+        "exchanged": "Wymieniony",
+        "served": "Kara odbyta"
+      },
+      "regimes": {
+        "democracy": "Demokracja",
+        "hybrid": "Reżim hybrydowy",
+        "authoritarian": "Reżim autorytarny"
+      },
+      "regimesShort": {
+        "democracy": "demokracja",
+        "hybrid": "hybrydowy",
+        "authoritarian": "autorytarny"
+      },
+      "actions": {
+        "arrest": "Zatrzymaj",
+        "interrogate": "Przesłuchaj",
+        "expel": "Wydal",
+        "return": "Odeślij",
+        "jail": "Uwięź",
+        "execute": "Egzekucja",
+        "turn": "Przewerbuj",
+        "release": "Zwolnij"
+      },
+      "help": {
+        "arrest": "Publiczne zatrzymanie: agent staje się więźniem, a incydent nabiera wymiaru dyplomatycznego.",
+        "interrogate": "Nadzorowane przesłuchania: siatka, planowane operacje, zamiary. Zeznania mogą być fałszywe.",
+        "expel": "Persona non grata: lekkie skutki, możliwe wzajemne wydalenia.",
+        "return": "Odesłanie do kraju: lekkie skutki, bez procesu.",
+        "jail": "Kara więzienia: stała presja dyplomatyczna, karta przetargowa, niski koszt.",
+        "execute": "Kara śmierci: załamanie stosunków, prawdopodobny odwet, efekt odstraszający.",
+        "turn": "Zaproponuj pracę dla nas: pozornie zwolniony, podwójny agent w naszej służbie.",
+        "release": "Zwolnienie bez rekompensaty: gest odprężenia."
+      },
+      "days": "{{n}} d",
+      "decision": "Decyzja",
+      "sentence": "Długość kary",
+      "unavailable": "niedostępne",
+      "confirmTitle": "Decyzja — więzień {{ref}}",
+      "confirm": "Potwierdź decyzję",
+      "applied": "Decyzja wykonana: {{action}}",
+      "consequences": "Przewidywane skutki",
+      "fx": {
+        "relations": "Stosunki z {{nationLe}}",
+        "reputation": "Reputacja międzynarodowa",
+        "stability": "Stabilność wewnętrzna",
+        "retaliation": "Ryzyko odwetu",
+        "serviceHit": "Służba przeciwnika osłabiona wobec nas",
+        "serviceDays": "{{pct}} przez {{days}} d",
+        "worldRelations": "Stosunki z demokracjami",
+        "council": "Głosowanie nad potępieniem w Radzie",
+        "chance": "Szansa powodzenia",
+        "pressure": "Presja dyplomatyczna",
+        "perDay": "{{value}} / dzień",
+        "immunity": "Naruszenie immunitetu dyplomatycznego",
+        "hours": "Czas trwania",
+        "none": "Brak istotnych skutków."
+      },
+      "risk": {
+        "none": "brak",
+        "low": "niskie",
+        "moderate": "umiarkowane",
+        "high": "wysokie"
+      },
+      "blocked": {
+        "war_only": "Egzekucja niemożliwa w czasie pokoju w naszym ustroju.",
+        "never": "Kara śmierci została zniesiona.",
+        "interrogating": "Trwa przesłuchanie.",
+        "done": "Już próbowano.",
+        "not_plausible": "Nieprawdopodobne w przypadku tego więźnia.",
+        "final": "Ten więzień nie jest już w naszych rękach."
+      },
+      "decideIn": "Decyzja za {{left}}",
+      "sentenceLeft": "Kara {{days}} d · zwolnienie za {{left}}",
+      "interrogating": "Przesłuchanie: jeszcze {{left}}",
+      "revealed": "Zeznania: agenci {{agents}}, operacje {{ops}}",
+      "caughtDuring": "Schwytany podczas: {{op}}",
+      "value": "Wartość",
+      "valueHint": "Szacowana wartość wymienna (oficer > źródło, dostęp).",
+      "exchange": "Wymień",
+      "negotiate": "Negocjuj",
+      "arrested": "Agent zatrzymany",
+      "incoming": "Otrzymana",
+      "outgoing": "Wysłana",
+      "counter": "Kontrpropozycja",
+      "swapStatus": {
+        "open": "Oczekuje",
+        "accepted": "Zawarta",
+        "refused": "Odrzucona",
+        "expired": "Wygasła",
+        "void": "Nieważna"
+      },
+      "expires": "Wygasa za {{left}}",
+      "weRelease": "Uwalniamy",
+      "weObtain": "Otrzymujemy",
+      "money": "Pieniądze",
+      "theyPay": "Oni płacą {{amount}}",
+      "wePay": "My płacimy {{amount}}",
+      "accord": "Porozumienie o nieingerencji",
+      "accordNone": "Brak",
+      "accordShort": "Nieingerencja",
+      "sanctions": "Sankcje",
+      "sanctionsLifted": "Złagodzone przez: {{nationLe}}",
+      "accept": "Przyjmij",
+      "refuse": "Odrzuć",
+      "acceptedOk": "Porozumienie zawarte",
+      "refusedOk": "Propozycja odrzucona",
+      "swapTitle": "Negocjacje — {{nation}}",
+      "partner": "Kraj",
+      "relationsNow": "Obecne stosunki: {{value}}",
+      "atWar": "w stanie wojny",
+      "noneToRelease": "Żaden z ich agentów nie jest przez nas zatrzymany.",
+      "noneToObtain": "Żaden z naszych agentów nie jest przez nich zatrzymany.",
+      "moneyNone": "Brak",
+      "moneyPay": "Płacimy",
+      "moneyAsk": "Żądamy",
+      "amount": "Kwota",
+      "liftSanctions": "Złagodź sankcje, które popieramy wobec nich",
+      "balance": "Wartość oddana {{give}} · uzyskana {{get}}",
+      "balanceHint": "SI żąda więcej przy wrogich stosunkach lub w czasie wojny; może odmówić lub złożyć kontrpropozycję.",
+      "send": "Wyślij propozycję",
+      "sent": "Propozycja wysłana"
     }
   },
   "sheet": {
@@ -3425,7 +3595,10 @@
       "dismantle": "Rozbicie siatki: {{nation}}",
       "deception": "Operacja dezinformacyjna — {{nation}}",
       "hardened": "Obiekty wrażliwe wzmocnione",
-      "strategicAlert": "ALARM STRATEGICZNY — {{nation}}"
+      "strategicAlert": "ALARM STRATEGICZNY — {{nation}}",
+      "interrogation": "Przesłuchanie — więzień {{ref}} ({{nation}})",
+      "turnRefused": "Werbunek odrzucony — więzień {{ref}}",
+      "detaineeTurned": "Więzień {{ref}} przewerbowany"
     },
     "note": {
       "allianceInvite": {
@@ -3543,7 +3716,77 @@
       "agentExpelled": {
         "title": "Dyplomaci wydaleni",
         "text": "{{host}} wydala dyplomatów {{owner}} za szpiegostwo."
+      },
+      "detaineeNew": {
+        "title": "Zatrzymano agenta zagranicznego",
+        "text": "Agent kraju {{owner}} jest w naszych rękach: decyzja oczekiwana w ciągu {{days}} dni."
+      },
+      "detaineeHeld": {
+        "title": "Areszt tymczasowy",
+        "text": "Wobec braku decyzji agent kraju {{owner}} trafia do aresztu tymczasowego."
+      },
+      "spyInterrogated": {
+        "title": "Agent przesłuchiwany",
+        "text": "{{codename}} jest przesłuchiwany przez służby kraju {{host}}."
+      },
+      "spyReturned": {
+        "title": "Agent odesłany",
+        "text": "{{host}} odsyła {{codename}} do kraju."
+      },
+      "spyJailed": {
+        "title": "Agent skazany",
+        "text": "{{host}} skazuje {{codename}} na {{days}} dni więzienia."
+      },
+      "spyExecuted": {
+        "title": "Agent stracony",
+        "text": "{{host}} wykonuje egzekucję na {{codename}}."
+      },
+      "spyReleased": {
+        "title": "Agent zwolniony",
+        "text": "{{host}} zwalnia {{codename}}."
+      },
+      "spyServed": {
+        "title": "Koniec kary",
+        "text": "{{codename}} odbył karę ({{host}}) i wraca do kraju."
+      },
+      "swapProposal": {
+        "title": "Propozycja wymiany",
+        "text": "{{nation}} proponuje wymianę agentów."
+      },
+      "swapCounter": {
+        "title": "Kontrpropozycja",
+        "text": "{{nation}} składa kontrpropozycję."
+      },
+      "swapAccepted": {
+        "title": "Wymiana zawarta",
+        "text": "Porozumienie w sprawie zatrzymanych agentów: {{a}} i {{b}}."
+      },
+      "swapRefused": {
+        "title": "Wymiana odrzucona",
+        "text": "{{nation}} odrzuca Twoją propozycję wymiany."
+      },
+      "reprisalExecute": {
+        "title": "Odwet",
+        "text": "{{nation}} w odwecie wykonuje egzekucję na jednym z naszych zatrzymanych agentów."
+      },
+      "reprisalJail": {
+        "title": "Odwet",
+        "text": "{{nation}} zaostrza warunki zatrzymania naszych agentów (najwyższe kary)."
+      },
+      "reprisalArrest": {
+        "title": "Odwet",
+        "text": "{{nation}} w odwecie zatrzymuje jednego z naszych agentów."
+      },
+      "reprisalExpel": {
+        "title": "Odwet",
+        "text": "{{nation}} w odwecie wydala naszych dyplomatów."
       }
+    },
+    "spyNews": {
+      "executedH": "{{host}}: stracono agenta kraju {{owner}}",
+      "executedB": "{{host}} ogłasza egzekucję agenta kraju {{owner}} skazanego za szpiegostwo. Potępienie międzynarodowe.",
+      "swapH": "Wymiana agentów: {{a}} i {{b}}",
+      "swapB": "{{a}} i {{b}} przeprowadziły wymianę więźniów: zwolnieni agenci — {{n}}."
     }
   }
 }

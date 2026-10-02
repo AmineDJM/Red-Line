@@ -1398,7 +1398,9 @@
       "double": "عميل مزدوج",
       "exfiltrated": "تم إجلاؤه",
       "captured": "أُسر",
-      "expelled": "مطرود"
+      "expelled": "مطرود",
+      "executed": "أُعدم",
+      "released": "أُفرج عنه"
     },
     "ops": {
       "infiltrate_spy": "زرع جاسوس",
@@ -1478,7 +1480,8 @@
     "tabs": {
       "military": "العسكري",
       "dossiers": "ملفات الدول",
-      "reports": "التقارير"
+      "reports": "التقارير",
+      "detainees": "المحتجزون"
     },
     "cover": "الغطاء",
     "covers": {
@@ -1533,6 +1536,173 @@
       "agents": "العملاء في الميدان",
       "reliability": "موثوقية الملف",
       "empty": "لا ملفات: أجهزتك تتابع الدول المجاورة والمعادية والمستهدفة بعملياتك."
+    },
+    "dz": {
+      "title": "المحتجزون",
+      "subtitle": "سجناء وعملاء محتجزون ومفاوضات",
+      "ourRegime": "نظامنا: {{regime}}",
+      "ours": "سجناؤنا",
+      "abroad": "عملاؤنا المحتجزون في الخارج",
+      "negotiations": "المفاوضات",
+      "relations": "العلاقات الثنائية",
+      "noDetainees": "لا يوجد عميل أجنبي محتجز.",
+      "noAbroad": "لا أحد من عملائنا محتجز في الخارج.",
+      "noSwaps": "لا توجد مفاوضات جارية.",
+      "noRelations": "لا توجد علاقة متأثرة بقضية تجسس.",
+      "defaultHint": "دون قرار قبل انقضاء المهلة: حبس احتياطي (ضغط دبلوماسي مستمر).",
+      "kinds": {
+        "diplomat": "ضابط بغطاء دبلوماسي",
+        "illegal": "ضابط بغطاء غير رسمي",
+        "source": "مصدر محلي",
+        "double": "عميل مزدوج"
+      },
+      "kindsShort": {
+        "diplomat": "دبلوماسي",
+        "illegal": "سري",
+        "source": "مصدر",
+        "double": "مزدوج"
+      },
+      "status": {
+        "pending": "بانتظار القرار",
+        "held": "حبس احتياطي",
+        "jailed": "محكوم عليه",
+        "expelled": "مطرود",
+        "returned": "مُرحَّل",
+        "executed": "أُعدم",
+        "released": "أُفرج عنه",
+        "exchanged": "تم تبادله",
+        "served": "انقضت العقوبة",
+        "turned": "تم تجنيده"
+      },
+      "fate": {
+        "held": "محتجز",
+        "interrogation": "قيد الاستجواب",
+        "jailed": "محكوم عليه",
+        "expelled": "مطرود",
+        "returned": "مُرحَّل",
+        "executed": "أُعدم",
+        "released": "أُفرج عنه",
+        "exchanged": "تم تبادله",
+        "served": "انقضت العقوبة"
+      },
+      "regimes": {
+        "democracy": "ديمقراطية",
+        "hybrid": "نظام هجين",
+        "authoritarian": "نظام سلطوي"
+      },
+      "regimesShort": {
+        "democracy": "ديمقراطية",
+        "hybrid": "هجين",
+        "authoritarian": "سلطوي"
+      },
+      "actions": {
+        "arrest": "اعتقال",
+        "interrogate": "استجواب",
+        "expel": "طرد",
+        "return": "ترحيل",
+        "jail": "سجن",
+        "execute": "إعدام",
+        "turn": "تجنيد",
+        "release": "إفراج"
+      },
+      "help": {
+        "arrest": "اعتقال علني: يصبح العميل محتجزًا وتتحول الحادثة إلى أزمة دبلوماسية.",
+        "interrogate": "استجوابات خاضعة للرقابة: الشبكة والعمليات المخططة والنوايا. قد تكون الاعترافات كاذبة.",
+        "expel": "شخص غير مرغوب فيه: عواقب خفيفة، وطرد متبادل محتمل.",
+        "return": "إعادة إلى بلده: عواقب خفيفة، دون محاكمة.",
+        "jail": "عقوبة السجن: ضغط دبلوماسي مستمر، ورقة مساومة، كلفة منخفضة.",
+        "execute": "عقوبة الإعدام: انهيار العلاقات، انتقام مرجح، أثر رادع.",
+        "turn": "عرض العمل لصالحنا: يُطلق سراحه ظاهريًا، عميل مزدوج في خدمتنا.",
+        "release": "إفراج دون مقابل: بادرة تهدئة."
+      },
+      "days": "{{n}} يوم",
+      "decision": "القرار",
+      "sentence": "مدة العقوبة",
+      "unavailable": "غير متاح",
+      "confirmTitle": "قرار — المحتجز {{ref}}",
+      "confirm": "تأكيد القرار",
+      "applied": "تم تنفيذ القرار: {{action}}",
+      "consequences": "العواقب المتوقعة",
+      "fx": {
+        "relations": "العلاقات مع {{nationLe}}",
+        "reputation": "السمعة الدولية",
+        "stability": "الاستقرار الداخلي",
+        "retaliation": "خطر الانتقام",
+        "serviceHit": "إضعاف جهاز الخصم ضدنا",
+        "serviceDays": "{{pct}} لمدة {{days}} يوم",
+        "worldRelations": "العلاقات مع الديمقراطيات",
+        "council": "تصويت على الإدانة في المجلس",
+        "chance": "فرصة النجاح",
+        "pressure": "ضغط دبلوماسي",
+        "perDay": "{{value}} / يوم",
+        "immunity": "انتهاك الحصانة الدبلوماسية",
+        "hours": "المدة",
+        "none": "لا عواقب تُذكر."
+      },
+      "risk": {
+        "none": "منعدم",
+        "low": "منخفض",
+        "moderate": "متوسط",
+        "high": "مرتفع"
+      },
+      "blocked": {
+        "war_only": "الإعدام مستحيل في زمن السلم في ظل نظامنا.",
+        "never": "عقوبة الإعدام ملغاة.",
+        "interrogating": "الاستجواب جارٍ.",
+        "done": "سبقت المحاولة.",
+        "not_plausible": "غير معقول بالنسبة لهذا المحتجز.",
+        "final": "لم يعد هذا المحتجز بين أيدينا."
+      },
+      "decideIn": "القرار خلال {{left}}",
+      "sentenceLeft": "عقوبة {{days}} يوم · الإفراج خلال {{left}}",
+      "interrogating": "الاستجواب: يتبقى {{left}}",
+      "revealed": "اعترافات: {{agents}} عميل، {{ops}} عملية",
+      "caughtDuring": "قُبض عليه أثناء: {{op}}",
+      "value": "القيمة",
+      "valueHint": "قيمة التبادل المقدرة (ضابط > مصدر، مستوى الوصول).",
+      "exchange": "تبادل",
+      "negotiate": "تفاوض",
+      "arrested": "تم اعتقال العميل",
+      "incoming": "واردة",
+      "outgoing": "صادرة",
+      "counter": "عرض مضاد",
+      "swapStatus": {
+        "open": "قيد الانتظار",
+        "accepted": "أُبرم",
+        "refused": "مرفوض",
+        "expired": "منتهٍ",
+        "void": "ملغى"
+      },
+      "expires": "ينتهي خلال {{left}}",
+      "weRelease": "نُفرج عن",
+      "weObtain": "نحصل على",
+      "money": "المال",
+      "theyPay": "يدفعون {{amount}}",
+      "wePay": "ندفع {{amount}}",
+      "accord": "اتفاق عدم تدخل",
+      "accordNone": "لا شيء",
+      "accordShort": "عدم تدخل",
+      "sanctions": "العقوبات",
+      "sanctionsLifted": "خففتها {{nationLe}}",
+      "accept": "قبول",
+      "refuse": "رفض",
+      "acceptedOk": "تم إبرام الاتفاق",
+      "refusedOk": "تم رفض الاقتراح",
+      "swapTitle": "تفاوض — {{nation}}",
+      "partner": "الدولة",
+      "relationsNow": "العلاقات الحالية: {{value}}",
+      "atWar": "في حالة حرب",
+      "noneToRelease": "لا أحد من عملائهم محتجز لدينا.",
+      "noneToObtain": "لا أحد من عملائنا محتجز لديهم.",
+      "moneyNone": "لا شيء",
+      "moneyPay": "ندفع",
+      "moneyAsk": "نطلب",
+      "amount": "المبلغ",
+      "liftSanctions": "تخفيف العقوبات التي نرعاها ضدهم",
+      "balance": "القيمة المتنازل عنها {{give}} · المحصّلة {{get}}",
+      "balanceHint": "يطلب الذكاء الاصطناعي المزيد عند العداء أو الحرب؛ وقد يرفض أو يقدّم عرضًا مضادًا.",
+      "send": "إرسال الاقتراح",
+      "sent": "تم إرسال الاقتراح"
     }
   },
   "sheet": {
@@ -3517,7 +3687,10 @@
       "dismantle": "تفكيك شبكة {{nation}}",
       "deception": "عملية خداع — {{nation}}",
       "hardened": "تحصين المنشآت الحساسة",
-      "strategicAlert": "إنذار استراتيجي — {{nation}}"
+      "strategicAlert": "إنذار استراتيجي — {{nation}}",
+      "interrogation": "استجواب — المحتجز {{ref}} ({{nation}})",
+      "turnRefused": "رُفض التجنيد — المحتجز {{ref}}",
+      "detaineeTurned": "تم تجنيد المحتجز {{ref}}"
     },
     "note": {
       "allianceInvite": {
@@ -3637,7 +3810,77 @@
       "agentExpelled": {
         "title": "طرد دبلوماسيين",
         "text": "{{host}} تطرد دبلوماسيين من {{owner}} بتهمة التجسس."
+      },
+      "detaineeNew": {
+        "title": "احتجاز عميل أجنبي",
+        "text": "عميل تابع لـ {{owner}} بين أيدينا: القرار متوقع خلال {{days}} أيام."
+      },
+      "detaineeHeld": {
+        "title": "حبس احتياطي",
+        "text": "في غياب قرار، يوضع عميل {{owner}} رهن الحبس الاحتياطي."
+      },
+      "spyInterrogated": {
+        "title": "استجواب عميل",
+        "text": "تستجوب أجهزة {{host}} العميل {{codename}}."
+      },
+      "spyReturned": {
+        "title": "ترحيل عميل",
+        "text": "رحّلت {{host}} العميل {{codename}} إلى بلده."
+      },
+      "spyJailed": {
+        "title": "الحكم على عميل",
+        "text": "حكمت {{host}} على {{codename}} بالسجن {{days}} يومًا."
+      },
+      "spyExecuted": {
+        "title": "إعدام عميل",
+        "text": "أعدمت {{host}} العميل {{codename}}."
+      },
+      "spyReleased": {
+        "title": "الإفراج عن عميل",
+        "text": "أفرجت {{host}} عن {{codename}}."
+      },
+      "spyServed": {
+        "title": "انتهاء العقوبة",
+        "text": "أنهى {{codename}} عقوبته ({{host}}) ويعود إلى الوطن."
+      },
+      "swapProposal": {
+        "title": "اقتراح تبادل",
+        "text": "تقترح {{nation}} تبادل العملاء."
+      },
+      "swapCounter": {
+        "title": "عرض مضاد",
+        "text": "تقدّم {{nation}} عرضًا مضادًا."
+      },
+      "swapAccepted": {
+        "title": "تم التبادل",
+        "text": "اتفاق بشأن العملاء المحتجزين بين {{a}} و{{b}}."
+      },
+      "swapRefused": {
+        "title": "رُفض التبادل",
+        "text": "ترفض {{nation}} اقتراح التبادل الذي قدمتموه."
+      },
+      "reprisalExecute": {
+        "title": "انتقام",
+        "text": "تُعدم {{nation}} أحد عملائنا المحتجزين انتقامًا."
+      },
+      "reprisalJail": {
+        "title": "انتقام",
+        "text": "تشدد {{nation}} احتجاز عملائنا (أقصى العقوبات)."
+      },
+      "reprisalArrest": {
+        "title": "انتقام",
+        "text": "تعتقل {{nation}} أحد عملائنا انتقامًا."
+      },
+      "reprisalExpel": {
+        "title": "انتقام",
+        "text": "تطرد {{nation}} دبلوماسيينا انتقامًا."
       }
+    },
+    "spyNews": {
+      "executedH": "{{host}}: إعدام عميل تابع لـ {{owner}}",
+      "executedB": "تعلن {{host}} إعدام عميل تابع لـ {{owner}} أُدين بالتجسس. إدانة دولية.",
+      "swapH": "تبادل عملاء بين {{a}} و{{b}}",
+      "swapB": "أجرت {{a}} و{{b}} تبادلًا للأسرى: الإفراج عن {{n}} عميل."
     }
   }
 }

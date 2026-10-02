@@ -45,6 +45,7 @@ import {
 import { demoBattleReport } from '../api/mockRest.js';
 import { Emitter, type ChatChannel, type GameConnection, type OrderOutcome } from './connection.js';
 import { demoReply, enrichView } from './mockWorld.js';
+import { demoDetaineeOrder } from './mockDetainees.js';
 import { demoDomesticOrder } from './mockDomestic.js';
 import { useWorld } from '../store/world.js';
 
@@ -720,6 +721,11 @@ export class MockGameConnection extends Emitter implements GameConnection {
     if (dom) {
       if ('error' in dom) return { ok: false, error: dom.error as OrderOutcome['error'] };
       this.push(dom);
+      return ok;
+    }
+    const dz = demoDetaineeOrder(v, order, t, me);
+    if (dz) {
+      this.push(dz);
       return ok;
     }
     switch (order.kind) {

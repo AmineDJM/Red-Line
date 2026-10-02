@@ -1313,7 +1313,9 @@
       "double": "二重スパイ",
       "exfiltrated": "脱出済み",
       "captured": "拘束",
-      "expelled": "国外追放"
+      "expelled": "国外追放",
+      "executed": "処刑済み",
+      "released": "釈放済み"
     },
     "ops": {
       "infiltrate_spy": "スパイを潜入させる",
@@ -1393,7 +1395,8 @@
     "tabs": {
       "military": "軍事",
       "dossiers": "国別ファイル",
-      "reports": "報告"
+      "reports": "報告",
+      "detainees": "拘束者"
     },
     "cover": "偽装身分",
     "covers": {
@@ -1448,6 +1451,173 @@
       "agents": "現地の工作員",
       "reliability": "ファイルの信頼性",
       "empty": "ファイルなし：情報機関は隣国・敵国・作戦対象国を追跡します。"
+    },
+    "dz": {
+      "title": "拘束者",
+      "subtitle": "捕虜、拘束中の工作員、交渉",
+      "ourRegime": "自国の体制：{{regime}}",
+      "ours": "自国の捕虜",
+      "abroad": "国外で拘束中の自国工作員",
+      "negotiations": "交渉",
+      "relations": "二国間関係",
+      "noDetainees": "拘束中の外国工作員なし。",
+      "noAbroad": "国外で拘束されている自国工作員はいません。",
+      "noSwaps": "進行中の交渉なし。",
+      "noRelations": "スパイ事件で影響を受けた関係なし。",
+      "defaultHint": "期限までに決定がなければ未決勾留（継続的な外交圧力）。",
+      "kinds": {
+        "diplomat": "外交官偽装の将校",
+        "illegal": "非公式偽装の将校",
+        "source": "現地協力者",
+        "double": "二重スパイ"
+      },
+      "kindsShort": {
+        "diplomat": "外交官",
+        "illegal": "イリーガル",
+        "source": "協力者",
+        "double": "二重"
+      },
+      "status": {
+        "pending": "決定待ち",
+        "held": "未決勾留",
+        "jailed": "有罪判決",
+        "expelled": "国外追放",
+        "returned": "送還",
+        "executed": "処刑済み",
+        "released": "釈放済み",
+        "exchanged": "交換済み",
+        "served": "刑期満了",
+        "turned": "寝返り"
+      },
+      "fate": {
+        "held": "拘束中",
+        "interrogation": "尋問中",
+        "jailed": "有罪判決",
+        "expelled": "国外追放",
+        "returned": "送還",
+        "executed": "処刑済み",
+        "released": "釈放済み",
+        "exchanged": "交換済み",
+        "served": "刑期満了"
+      },
+      "regimes": {
+        "democracy": "民主主義",
+        "hybrid": "混合体制",
+        "authoritarian": "権威主義体制"
+      },
+      "regimesShort": {
+        "democracy": "民主主義",
+        "hybrid": "混合",
+        "authoritarian": "権威主義"
+      },
+      "actions": {
+        "arrest": "逮捕",
+        "interrogate": "尋問",
+        "expel": "国外追放",
+        "return": "送還",
+        "jail": "投獄",
+        "execute": "処刑",
+        "turn": "寝返らせる",
+        "release": "釈放"
+      },
+      "help": {
+        "arrest": "公開逮捕：工作員は拘束者となり、事件は外交問題になります。",
+        "interrogate": "監督下の聴取：ネットワーク、計画中の作戦、意図。自白が虚偽の場合もあります。",
+        "expel": "ペルソナ・ノン・グラータ：影響は軽微、報復追放の可能性あり。",
+        "return": "本国へ送還：影響は軽微、裁判なし。",
+        "jail": "禁錮刑：継続的な外交圧力、交渉材料、低コスト。",
+        "execute": "死刑：関係は崩壊、報復の可能性大、抑止効果。",
+        "turn": "自国のための協力を持ちかける：表向きは釈放、自国に仕える二重スパイ。",
+        "release": "無条件の釈放：緊張緩和の意思表示。"
+      },
+      "days": "{{n}} 日",
+      "decision": "決定",
+      "sentence": "刑期",
+      "unavailable": "利用不可",
+      "confirmTitle": "決定 — 拘束者 {{ref}}",
+      "confirm": "決定を確定",
+      "applied": "決定を実行：{{action}}",
+      "consequences": "予想される影響",
+      "fx": {
+        "relations": "{{nationLe}}との関係",
+        "reputation": "国際的評判",
+        "stability": "国内の安定",
+        "retaliation": "報復のリスク",
+        "serviceHit": "敵情報機関の対自国能力が低下",
+        "serviceDays": "{{pct}}（{{days}} 日間）",
+        "worldRelations": "民主主義国との関係",
+        "council": "安保理での非難決議の採決",
+        "chance": "成功率",
+        "pressure": "外交圧力",
+        "perDay": "1日あたり {{value}}",
+        "immunity": "外交特権の侵害",
+        "hours": "所要時間",
+        "none": "特に影響なし。"
+      },
+      "risk": {
+        "none": "なし",
+        "low": "低",
+        "moderate": "中",
+        "high": "高"
+      },
+      "blocked": {
+        "war_only": "自国の体制では平時に処刑できません。",
+        "never": "死刑は廃止されています。",
+        "interrogating": "尋問中です。",
+        "done": "試行済みです。",
+        "not_plausible": "この拘束者には現実的ではありません。",
+        "final": "この拘束者はもはや自国の手中にありません。"
+      },
+      "decideIn": "決定まで {{left}}",
+      "sentenceLeft": "刑期 {{days}} 日 · 釈放まで {{left}}",
+      "interrogating": "尋問：残り {{left}}",
+      "revealed": "自白：工作員 {{agents}} 名、作戦 {{ops}} 件",
+      "caughtDuring": "拘束時の作戦：{{op}}",
+      "value": "価値",
+      "valueHint": "推定交換価値（将校 > 協力者、アクセス）。",
+      "exchange": "交換",
+      "negotiate": "交渉",
+      "arrested": "工作員を逮捕",
+      "incoming": "受信",
+      "outgoing": "送信",
+      "counter": "対案",
+      "swapStatus": {
+        "open": "保留中",
+        "accepted": "成立",
+        "refused": "拒否",
+        "expired": "期限切れ",
+        "void": "無効"
+      },
+      "expires": "期限まで {{left}}",
+      "weRelease": "自国が釈放",
+      "weObtain": "自国が得る",
+      "money": "資金",
+      "theyPay": "相手が {{amount}} を支払う",
+      "wePay": "自国が {{amount}} を支払う",
+      "accord": "内政不干渉協定",
+      "accordNone": "なし",
+      "accordShort": "不干渉",
+      "sanctions": "制裁",
+      "sanctionsLifted": "{{nationLe}}が緩和",
+      "accept": "受諾",
+      "refuse": "拒否",
+      "acceptedOk": "合意成立",
+      "refusedOk": "提案は拒否されました",
+      "swapTitle": "交渉 — {{nation}}",
+      "partner": "国",
+      "relationsNow": "現在の関係：{{value}}",
+      "atWar": "交戦中",
+      "noneToRelease": "相手の工作員は自国に拘束されていません。",
+      "noneToObtain": "自国の工作員は相手に拘束されていません。",
+      "moneyNone": "なし",
+      "moneyPay": "自国が支払う",
+      "moneyAsk": "自国が要求",
+      "amount": "金額",
+      "liftSanctions": "自国が主導する相手への制裁を緩和する",
+      "balance": "譲る価値 {{give}} · 得る価値 {{get}}",
+      "balanceHint": "関係が敵対的または交戦中の場合、AIはより多くを要求し、拒否や対案を示すことがあります。",
+      "send": "提案を送信",
+      "sent": "提案を送信しました"
     }
   },
   "sheet": {
@@ -3287,7 +3457,10 @@
       "dismantle": "{{nation}} のネットワーク摘発",
       "deception": "欺瞞作戦 — {{nation}}",
       "hardened": "重要施設の防護を強化",
-      "strategicAlert": "戦略警報 — {{nation}}"
+      "strategicAlert": "戦略警報 — {{nation}}",
+      "interrogation": "尋問 — 拘束者 {{ref}}（{{nation}}）",
+      "turnRefused": "寝返り拒否 — 拘束者 {{ref}}",
+      "detaineeTurned": "拘束者 {{ref}} が寝返り"
     },
     "note": {
       "allianceInvite": {
@@ -3402,7 +3575,77 @@
       "agentExpelled": {
         "title": "外交官追放",
         "text": "{{host}} がスパイ行為を理由に {{owner}} の外交官を追放。"
+      },
+      "detaineeNew": {
+        "title": "外国工作員を拘束",
+        "text": "{{owner}}の工作員を拘束中：{{days}} 日以内に決定が必要です。"
+      },
+      "detaineeHeld": {
+        "title": "未決勾留",
+        "text": "決定がないため、{{owner}}の工作員は未決勾留となりました。"
+      },
+      "spyInterrogated": {
+        "title": "工作員が尋問中",
+        "text": "{{codename}}は{{host}}の情報機関に尋問されています。"
+      },
+      "spyReturned": {
+        "title": "工作員が送還",
+        "text": "{{codename}}は{{host}}により本国へ送還されました。"
+      },
+      "spyJailed": {
+        "title": "工作員に有罪判決",
+        "text": "{{codename}}は{{host}}により禁錮 {{days}} 日の判決を受けました。"
+      },
+      "spyExecuted": {
+        "title": "工作員が処刑",
+        "text": "{{codename}}は{{host}}により処刑されました。"
+      },
+      "spyReleased": {
+        "title": "工作員が釈放",
+        "text": "{{host}}が{{codename}}を釈放しました。"
+      },
+      "spyServed": {
+        "title": "刑期満了",
+        "text": "{{codename}}は刑期を終え（{{host}}）、帰国します。"
+      },
+      "swapProposal": {
+        "title": "交換の提案",
+        "text": "{{nation}}が工作員の交換を提案しています。"
+      },
+      "swapCounter": {
+        "title": "対案",
+        "text": "{{nation}}が対案を示しました。"
+      },
+      "swapAccepted": {
+        "title": "交換成立",
+        "text": "{{a}}と{{b}}の間で拘束工作員に関する合意が成立。"
+      },
+      "swapRefused": {
+        "title": "交換拒否",
+        "text": "{{nation}}があなたの交換提案を拒否しました。"
+      },
+      "reprisalExecute": {
+        "title": "報復",
+        "text": "{{nation}}が報復として拘束中の自国工作員1名を処刑。"
+      },
+      "reprisalJail": {
+        "title": "報復",
+        "text": "{{nation}}が自国工作員の拘束を強化（最長刑期）。"
+      },
+      "reprisalArrest": {
+        "title": "報復",
+        "text": "{{nation}}が報復として自国工作員1名を逮捕。"
+      },
+      "reprisalExpel": {
+        "title": "報復",
+        "text": "{{nation}}が報復として自国外交官を追放。"
       }
+    },
+    "spyNews": {
+      "executedH": "{{host}}：{{owner}}の工作員を処刑",
+      "executedB": "{{host}}はスパイ罪で有罪となった{{owner}}の工作員の処刑を発表。国際的な非難。",
+      "swapH": "{{a}}と{{b}}が工作員を交換",
+      "swapB": "{{a}}と{{b}}が捕虜交換を実施：工作員 {{n}} 名が釈放。"
     }
   }
 }

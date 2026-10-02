@@ -204,7 +204,7 @@ export function createDetention(
     a.host,
     'detaineeNew',
     'Agent étranger détenu',
-    `Un agent ${natDe(state, a.owner)} est entre nos mains : décision attendue.`,
+    `Un agent ${natDe(state, a.owner)} est entre nos mains : décision attendue sous ${c.decisionDays} jours.`,
     { owner: { nation: a.owner }, days: c.decisionDays },
     'warn',
     capitalPoint(state, a.host),

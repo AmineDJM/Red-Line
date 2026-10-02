@@ -1347,7 +1347,9 @@
       "double": "agente doble",
       "exfiltrated": "exfiltrado",
       "captured": "capturado",
-      "expelled": "Expulsado"
+      "expelled": "Expulsado",
+      "executed": "Ejecutado",
+      "released": "Liberado"
     },
     "ops": {
       "infiltrate_spy": "Infiltrar un espía",
@@ -1427,7 +1429,8 @@
     "tabs": {
       "military": "Militar",
       "dossiers": "Expedientes",
-      "reports": "Informes"
+      "reports": "Informes",
+      "detainees": "Detenidos"
     },
     "cover": "Cobertura",
     "covers": {
@@ -1482,6 +1485,173 @@
       "agents": "Agentes sobre el terreno",
       "reliability": "Fiabilidad del expediente",
       "empty": "Sin expedientes: tus servicios siguen a las naciones vecinas, enemigas u objetivo de tus operaciones."
+    },
+    "dz": {
+      "title": "Detenidos",
+      "subtitle": "Prisioneros, agentes detenidos, negociaciones",
+      "ourRegime": "Nuestro régimen: {{regime}}",
+      "ours": "Nuestros prisioneros",
+      "abroad": "Nuestros agentes detenidos en el extranjero",
+      "negotiations": "Negociaciones",
+      "relations": "Relaciones bilaterales",
+      "noDetainees": "Ningún agente extranjero detenido.",
+      "noAbroad": "Ninguno de nuestros agentes está detenido en el extranjero.",
+      "noSwaps": "Ninguna negociación en curso.",
+      "noRelations": "Ninguna relación afectada por un caso de espionaje.",
+      "defaultHint": "Sin decisión antes del plazo: prisión preventiva (presión diplomática continua).",
+      "kinds": {
+        "diplomat": "Oficial con cobertura diplomática",
+        "illegal": "Oficial con cobertura no oficial",
+        "source": "Fuente local",
+        "double": "Agente doble"
+      },
+      "kindsShort": {
+        "diplomat": "Diplomático",
+        "illegal": "Ilegal",
+        "source": "Fuente",
+        "double": "Doble"
+      },
+      "status": {
+        "pending": "Decisión pendiente",
+        "held": "Prisión preventiva",
+        "jailed": "Condenado",
+        "expelled": "Expulsado",
+        "returned": "Deportado",
+        "executed": "Ejecutado",
+        "released": "Liberado",
+        "exchanged": "Canjeado",
+        "served": "Condena cumplida",
+        "turned": "Captado"
+      },
+      "fate": {
+        "held": "Detenido",
+        "interrogation": "Interrogado",
+        "jailed": "Condenado",
+        "expelled": "Expulsado",
+        "returned": "Deportado",
+        "executed": "Ejecutado",
+        "released": "Liberado",
+        "exchanged": "Canjeado",
+        "served": "Condena cumplida"
+      },
+      "regimes": {
+        "democracy": "Democracia",
+        "hybrid": "Régimen híbrido",
+        "authoritarian": "Régimen autoritario"
+      },
+      "regimesShort": {
+        "democracy": "democracia",
+        "hybrid": "híbrido",
+        "authoritarian": "autoritario"
+      },
+      "actions": {
+        "arrest": "Detener",
+        "interrogate": "Interrogar",
+        "expel": "Expulsar",
+        "return": "Deportar",
+        "jail": "Encarcelar",
+        "execute": "Ejecutar",
+        "turn": "Captar",
+        "release": "Liberar"
+      },
+      "help": {
+        "arrest": "Detención pública: el agente pasa a ser un detenido y el incidente se vuelve diplomático.",
+        "interrogate": "Interrogatorios supervisados: red, operaciones previstas, intenciones. Las confesiones pueden ser falsas.",
+        "expel": "Persona non grata: consecuencia leve, posibles expulsiones recíprocas.",
+        "return": "Devuelto a su país: consecuencia leve, sin juicio.",
+        "jail": "Pena de prisión: presión diplomática continua, moneda de cambio, coste bajo.",
+        "execute": "Pena capital: relaciones hundidas, represalias probables, efecto disuasorio.",
+        "turn": "Proponerle trabajar para nosotros: liberado en apariencia, agente doble a nuestro servicio.",
+        "release": "Liberación sin contrapartida: gesto de distensión."
+      },
+      "days": "{{n}} d",
+      "decision": "Decisión",
+      "sentence": "Duración de la condena",
+      "unavailable": "no disponible",
+      "confirmTitle": "Decisión — detenido {{ref}}",
+      "confirm": "Confirmar la decisión",
+      "applied": "Decisión aplicada: {{action}}",
+      "consequences": "Consecuencias previstas",
+      "fx": {
+        "relations": "Relaciones con {{nationLe}}",
+        "reputation": "Reputación internacional",
+        "stability": "Estabilidad interna",
+        "retaliation": "Riesgo de represalias",
+        "serviceHit": "Servicio adversario debilitado contra nosotros",
+        "serviceDays": "{{pct}} durante {{days}} d",
+        "worldRelations": "Relaciones con las democracias",
+        "council": "Votación de condena en el Consejo",
+        "chance": "Probabilidad de éxito",
+        "pressure": "Presión diplomática",
+        "perDay": "{{value}} / día",
+        "immunity": "Violación de la inmunidad diplomática",
+        "hours": "Duración",
+        "none": "Ninguna consecuencia notable."
+      },
+      "risk": {
+        "none": "nulo",
+        "low": "bajo",
+        "moderate": "moderado",
+        "high": "alto"
+      },
+      "blocked": {
+        "war_only": "Ejecución imposible en tiempo de paz para nuestro régimen.",
+        "never": "La pena capital está abolida.",
+        "interrogating": "Interrogatorio en curso.",
+        "done": "Ya intentado.",
+        "not_plausible": "No es plausible para este detenido.",
+        "final": "Este detenido ya no está en nuestras manos."
+      },
+      "decideIn": "Decisión en {{left}}",
+      "sentenceLeft": "Condena de {{days}} d · liberable en {{left}}",
+      "interrogating": "Interrogatorio: faltan {{left}}",
+      "revealed": "Confesiones: {{agents}} agente(s), {{ops}} operación(es)",
+      "caughtDuring": "Capturado durante: {{op}}",
+      "value": "Valor",
+      "valueHint": "Valor de canje estimado (oficial > fuente, acceso).",
+      "exchange": "Canjear",
+      "negotiate": "Negociar",
+      "arrested": "Agente detenido",
+      "incoming": "Recibida",
+      "outgoing": "Enviada",
+      "counter": "Contraoferta",
+      "swapStatus": {
+        "open": "Pendiente",
+        "accepted": "Cerrado",
+        "refused": "Rechazado",
+        "expired": "Caducado",
+        "void": "Anulado"
+      },
+      "expires": "Caduca en {{left}}",
+      "weRelease": "Liberamos",
+      "weObtain": "Obtenemos",
+      "money": "Dinero",
+      "theyPay": "Ellos pagan {{amount}}",
+      "wePay": "Nosotros pagamos {{amount}}",
+      "accord": "Acuerdo de no injerencia",
+      "accordNone": "Ninguno",
+      "accordShort": "No injerencia",
+      "sanctions": "Sanciones",
+      "sanctionsLifted": "Aliviadas por {{nationLe}}",
+      "accept": "Aceptar",
+      "refuse": "Rechazar",
+      "acceptedOk": "Acuerdo cerrado",
+      "refusedOk": "Propuesta rechazada",
+      "swapTitle": "Negociación — {{nation}}",
+      "partner": "País",
+      "relationsNow": "Relaciones actuales: {{value}}",
+      "atWar": "en guerra",
+      "noneToRelease": "Ninguno de sus agentes está detenido por nosotros.",
+      "noneToObtain": "Ninguno de nuestros agentes está detenido por ellos.",
+      "moneyNone": "Ninguno",
+      "moneyPay": "Pagamos",
+      "moneyAsk": "Pedimos",
+      "amount": "Importe",
+      "liftSanctions": "Aliviar las sanciones que patrocinamos contra ellos",
+      "balance": "Valor cedido {{give}} · obtenido {{get}}",
+      "balanceHint": "Una IA exige más si las relaciones son hostiles o en guerra; puede rechazar o contraofertar.",
+      "send": "Enviar la propuesta",
+      "sent": "Propuesta enviada"
     }
   },
   "sheet": {
@@ -3379,7 +3549,10 @@
       "dismantle": "Desmantelamiento de la red de {{nation}}",
       "deception": "Operación de engaño — {{nation}}",
       "hardened": "Instalaciones sensibles blindadas",
-      "strategicAlert": "ALERTA ESTRATÉGICA — {{nation}}"
+      "strategicAlert": "ALERTA ESTRATÉGICA — {{nation}}",
+      "interrogation": "Interrogatorio — detenido {{ref}} ({{nation}})",
+      "turnRefused": "Captación rechazada — detenido {{ref}}",
+      "detaineeTurned": "Detenido {{ref}} captado"
     },
     "note": {
       "allianceInvite": {
@@ -3496,7 +3669,77 @@
       "agentExpelled": {
         "title": "Diplomáticos expulsados",
         "text": "{{host}} expulsa a diplomáticos de {{owner}} por espionaje."
+      },
+      "detaineeNew": {
+        "title": "Agente extranjero detenido",
+        "text": "Un agente de {{owner}} está en nuestras manos: decisión esperada en {{days}} días."
+      },
+      "detaineeHeld": {
+        "title": "Prisión preventiva",
+        "text": "Sin decisión, el agente de {{owner}} queda en prisión preventiva."
+      },
+      "spyInterrogated": {
+        "title": "Agente interrogado",
+        "text": "{{codename}} está siendo interrogado por los servicios de {{host}}."
+      },
+      "spyReturned": {
+        "title": "Agente deportado",
+        "text": "{{codename}} ha sido devuelto a su país por {{host}}."
+      },
+      "spyJailed": {
+        "title": "Agente condenado",
+        "text": "{{codename}} condenado a {{days}} días de prisión por {{host}}."
+      },
+      "spyExecuted": {
+        "title": "Agente ejecutado",
+        "text": "{{codename}} ha sido ejecutado por {{host}}."
+      },
+      "spyReleased": {
+        "title": "Agente liberado",
+        "text": "{{host}} ha liberado a {{codename}}."
+      },
+      "spyServed": {
+        "title": "Fin de condena",
+        "text": "{{codename}} ha cumplido su condena ({{host}}) y regresa al país."
+      },
+      "swapProposal": {
+        "title": "Propuesta de canje",
+        "text": "{{nation}} propone un canje de agentes."
+      },
+      "swapCounter": {
+        "title": "Contraoferta",
+        "text": "{{nation}} hace una contraoferta."
+      },
+      "swapAccepted": {
+        "title": "Canje cerrado",
+        "text": "Acuerdo sobre los agentes detenidos entre {{a}} y {{b}}."
+      },
+      "swapRefused": {
+        "title": "Canje rechazado",
+        "text": "{{nation}} rechaza su propuesta de canje."
+      },
+      "reprisalExecute": {
+        "title": "Represalias",
+        "text": "{{nation}} ejecuta a uno de nuestros agentes detenidos en represalia."
+      },
+      "reprisalJail": {
+        "title": "Represalias",
+        "text": "{{nation}} endurece la detención de nuestros agentes (penas máximas)."
+      },
+      "reprisalArrest": {
+        "title": "Represalias",
+        "text": "{{nation}} detiene a uno de nuestros agentes en represalia."
+      },
+      "reprisalExpel": {
+        "title": "Represalias",
+        "text": "{{nation}} expulsa a nuestros diplomáticos en represalia."
       }
+    },
+    "spyNews": {
+      "executedH": "{{host}}: ejecutado un agente de {{owner}}",
+      "executedB": "{{host}} anuncia la ejecución de un agente de {{owner}} condenado por espionaje. Condena internacional.",
+      "swapH": "Canje de agentes entre {{a}} y {{b}}",
+      "swapB": "{{a}} y {{b}} realizaron un canje de prisioneros: {{n}} agente(s) liberado(s)."
     }
   }
 }

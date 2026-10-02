@@ -127,7 +127,10 @@
       "dismantle": "Démantèlement du réseau de {{nation}}",
       "deception": "Opération de déception — {{nation}}",
       "hardened": "Sites sensibles durcis",
-      "strategicAlert": "ALERTE STRATÉGIQUE — {{nation}}"
+      "strategicAlert": "ALERTE STRATÉGIQUE — {{nation}}",
+      "interrogation": "Interrogatoire — détenu {{ref}} ({{nation}})",
+      "turnRefused": "Retournement refusé — détenu {{ref}}",
+      "detaineeTurned": "Détenu {{ref}} retourné"
     },
     "note": {
       "allianceInvite": {
@@ -243,7 +246,77 @@
       "agentExpelled": {
         "title": "Diplomates expulsés",
         "text": "{{host}} expulse des diplomates de {{owner}} pour espionnage."
+      },
+      "detaineeNew": {
+        "title": "Agent étranger détenu",
+        "text": "Un agent de {{owner}} est entre nos mains : décision attendue sous {{days}} jours."
+      },
+      "detaineeHeld": {
+        "title": "Détention provisoire",
+        "text": "Sans décision, l'agent de {{owner}} est placé en détention provisoire."
+      },
+      "spyInterrogated": {
+        "title": "Agent interrogé",
+        "text": "{{codename}} est interrogé par les services de {{host}}."
+      },
+      "spyReturned": {
+        "title": "Agent renvoyé",
+        "text": "{{codename}} a été renvoyé dans son pays par {{host}}."
+      },
+      "spyJailed": {
+        "title": "Agent condamné",
+        "text": "{{codename}} condamné à {{days}} jours de prison par {{host}}."
+      },
+      "spyExecuted": {
+        "title": "Agent exécuté",
+        "text": "{{codename}} a été exécuté par {{host}}."
+      },
+      "spyReleased": {
+        "title": "Agent libéré",
+        "text": "{{host}} a libéré {{codename}}."
+      },
+      "spyServed": {
+        "title": "Fin de peine",
+        "text": "{{codename}} a purgé sa peine ({{host}}) et regagne le pays."
+      },
+      "swapProposal": {
+        "title": "Proposition d'échange",
+        "text": "{{nation}} propose un échange d'agents."
+      },
+      "swapCounter": {
+        "title": "Contre-proposition",
+        "text": "{{nation}} fait une contre-proposition."
+      },
+      "swapAccepted": {
+        "title": "Échange conclu",
+        "text": "Accord sur les agents détenus entre {{a}} et {{b}}."
+      },
+      "swapRefused": {
+        "title": "Échange refusé",
+        "text": "{{nation}} refuse votre proposition d'échange."
+      },
+      "reprisalExecute": {
+        "title": "Représailles",
+        "text": "{{nation}} exécute un de nos agents détenus en représailles."
+      },
+      "reprisalJail": {
+        "title": "Représailles",
+        "text": "{{nation}} durcit la détention de nos agents (peines maximales)."
+      },
+      "reprisalArrest": {
+        "title": "Représailles",
+        "text": "{{nation}} arrête un de nos agents en représailles."
+      },
+      "reprisalExpel": {
+        "title": "Représailles",
+        "text": "{{nation}} expulse nos diplomates en représailles."
       }
+    },
+    "spyNews": {
+      "executedH": "{{host}} : un agent de {{owner}} exécuté",
+      "executedB": "{{host}} annonce l'exécution d'un agent de {{owner}} condamné pour espionnage. Réprobation internationale.",
+      "swapH": "Échange d'agents entre {{a}} et {{b}}",
+      "swapB": "{{a}} et {{b}} ont procédé à un échange de prisonniers : {{n}} agent(s) libéré(s)."
     }
   }
 }
