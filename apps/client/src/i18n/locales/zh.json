@@ -424,6 +424,9 @@
         "partial": "命令已发送；{{count}} 支部队被排除：{{detail}}",
         "munition_use_strike": "弹药：请使用打击命令。",
         "ceasefire": "停火生效中。",
+        "ad_cannot_engage": "{{name}} 无法拦截{{cat}}。",
+        "ad_out_of_range": "{{name}} — 超出射程：{{dist}} 公里，对{{cat}}射程 {{min}}–{{max}} 公里。",
+        "ad_no_ammo": "{{name}}：拦截弹已耗尽，正在再装填。",
         "escort_self": "部队不能为自己护航。",
         "escort_target_invalid": "护航目标无效：请选择你的一支机动部队。",
         "escort_incapable": "{{name}} 无法护航（没有武器）。",
@@ -448,6 +451,14 @@
         "submarine": "潜艇",
         "missile": "导弹",
         "building": "设施"
+      },
+      "threats": {
+        "aircraft": "飞机",
+        "helicopter": "直升机",
+        "drone": "无人机",
+        "cruise_missile": "巡航导弹",
+        "ballistic_missile": "弹道导弹",
+        "hypersonic": "高超音速导弹"
       }
     },
     "status": {
@@ -960,7 +971,8 @@
     "genericOrigin": "通用"
   },
   "units": {
-    "km": "{{value}} km"
+    "km": "{{value}} km",
+    "kmRange": "{{min}}–{{max}} km"
   },
   "map": {
     "attribution": "图像 NASA Blue Marble · Natural Earth",
@@ -3160,6 +3172,46 @@
       "losses": "损失",
       "spent": "支出"
     }
+  },
+  "airDefense": {
+    "title": "防空",
+    "legacy": "简化参数",
+    "interceptors": "拦截弹",
+    "fullIn": "{{value}}后满载",
+    "chipTitle": "{{cat}}：{{range}}",
+    "chipNone": "{{cat}}：不拦截",
+    "no": "否",
+    "magazine": "每单元拦截弹",
+    "channels": "火力通道",
+    "reaction": "反应时间",
+    "reload": "完全再装填",
+    "seconds": "{{value}} 秒",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "威胁",
+      "range": "射程",
+      "ceiling": "射高",
+      "pk": "毁伤概率",
+      "shots": "每目标发数"
+    },
+    "threats": {
+      "aircraft": "飞机",
+      "helicopter": "直升机",
+      "drone": "无人机",
+      "cruise_missile": "巡航导弹",
+      "ballistic_missile": "弹道导弹",
+      "hypersonic": "高超音速"
+    },
+    "short": {
+      "aircraft": "机",
+      "helicopter": "直",
+      "drone": "无",
+      "cruise_missile": "巡",
+      "ballistic_missile": "弹",
+      "hypersonic": "高"
+    },
+    "shotDown": "击落：{{cat}}",
+    "fired": "已发射拦截弹"
   },
   "stacks": {
     "composition_other": "编成 · {{count}} 种",

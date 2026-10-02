@@ -6,6 +6,7 @@ import { ceasefire, targetClassOf } from '../../encounters/profile.js';
 import { board } from '../kit.js';
 import type { EngineModule, ModEvent } from '../types.js';
 import { combatAi } from './ai.js';
+import { airDefenseAi, handleAdReload } from './airdefense.js';
 import { orderAttack } from './attack.js';
 import {
   handleBingo,
@@ -104,6 +105,8 @@ function onEvent(state: EngineState, ev: ModEvent): void {
       return handleScan(state, d);
     case 'icpt':
       return handleIntercept(state, d);
+    case 'adrl':
+      return handleAdReload(state, d);
     case 'opstep':
       return handleOpStep(state, d);
     case 'bclose':
@@ -187,7 +190,8 @@ function onSpawn(state: EngineState, u: Unit): void {
 function onGone(state: EngineState, u: Unit): void {
   trackEarlyWarning(state, u, false);
   const m = mil(state);
-  if (u.role === 'missile') forgetMissile(state, u.id);
+  // Salve, aéronef visé ou batterie : engagements de défense antiaérienne en cours oubliés.
+  forgetMissile(state, u.id);
   // Aéronefs embarqués : perdus avec leur porteur (parcours seulement pour une unité porteuse).
   if (carrierCapacity(sysOf(state, u)) > 0) {
     for (const id of sortedKeys(m.ms)) {
@@ -394,6 +398,7 @@ export const milModule: EngineModule = {
     },
     aiThink(state, n) {
       combatAi(state, n);
+      airDefenseAi(state, n);
     },
     stats: fillStats,
   },

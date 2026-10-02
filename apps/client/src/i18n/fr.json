@@ -429,6 +429,9 @@
         "partial": "Ordre transmis ; {{count}} pile(s) écartée(s) : {{detail}}",
         "munition_use_strike": "Munitions : utilisez l'ordre de frappe.",
         "ceasefire": "Cessez-le-feu en vigueur.",
+        "ad_cannot_engage": "{{name}} n'intercepte pas {{cat}}.",
+        "ad_out_of_range": "{{name}} — hors de portée : {{dist}} km, portée {{min}}–{{max}} km contre {{cat}}.",
+        "ad_no_ammo": "{{name}} : plus d'intercepteurs, rechargement en cours.",
         "escort_self": "Une pile ne peut pas s'escorter elle-même.",
         "escort_target_invalid": "Cible d'escorte invalide : choisissez une de vos piles mobiles.",
         "escort_incapable": "{{name}} ne peut pas escorter (aucune arme).",
@@ -453,6 +456,14 @@
         "submarine": "sous-marin",
         "missile": "missile",
         "building": "installation"
+      },
+      "threats": {
+        "aircraft": "les avions",
+        "helicopter": "les hélicoptères",
+        "drone": "les drones",
+        "cruise_missile": "les missiles de croisière",
+        "ballistic_missile": "les missiles balistiques",
+        "hypersonic": "les missiles hypersoniques"
       }
     },
     "status": {
@@ -974,7 +985,8 @@
     "genericOrigin": "Générique"
   },
   "units": {
-    "km": "{{value}} km"
+    "km": "{{value}} km",
+    "kmRange": "{{min}}–{{max}} km"
   },
   "map": {
     "attribution": "Imagerie NASA Blue Marble · Natural Earth",
@@ -2713,5 +2725,45 @@
       "losses": "Pertes",
       "spent": "Dépenses"
     }
+  },
+  "airDefense": {
+    "title": "Défense antiaérienne",
+    "legacy": "Profil simplifié",
+    "interceptors": "Intercepteurs",
+    "fullIn": "Plein dans {{value}}",
+    "chipTitle": "{{cat}} : {{range}}",
+    "chipNone": "{{cat}} : non intercepté",
+    "no": "Non",
+    "magazine": "Intercepteurs par élément",
+    "channels": "Canaux de tir",
+    "reaction": "Réaction",
+    "reload": "Rechargement complet",
+    "seconds": "{{value}} s",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "Menace",
+      "range": "Portée",
+      "ceiling": "Plafond",
+      "pk": "Pk",
+      "shots": "Tirs/cible"
+    },
+    "threats": {
+      "aircraft": "Avions",
+      "helicopter": "Hélicoptères",
+      "drone": "Drones",
+      "cruise_missile": "Missiles de croisière",
+      "ballistic_missile": "Missiles balistiques",
+      "hypersonic": "Hypersoniques"
+    },
+    "short": {
+      "aircraft": "AVN",
+      "helicopter": "HÉLI",
+      "drone": "DRN",
+      "cruise_missile": "CRS",
+      "ballistic_missile": "BAL",
+      "hypersonic": "HYP"
+    },
+    "shotDown": "Abattus : {{cat}}",
+    "fired": "Intercepteurs tirés"
   }
 }

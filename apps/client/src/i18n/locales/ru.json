@@ -442,6 +442,9 @@
         "partial": "Приказ передан; исключено подразделений: {{count}} — {{detail}}",
         "munition_use_strike": "Боеприпасы: используйте приказ на удар.",
         "ceasefire": "Действует прекращение огня.",
+        "ad_cannot_engage": "{{name}} не перехватывает {{cat}}.",
+        "ad_out_of_range": "{{name}} — вне досягаемости: {{dist}} км, дальность {{min}}–{{max}} км (цели: {{cat}}).",
+        "ad_no_ammo": "{{name}}: зенитные ракеты израсходованы, идёт перезарядка.",
         "escort_self": "Соединение не может сопровождать само себя.",
         "escort_target_invalid": "Недопустимая цель сопровождения: выберите одно из своих подвижных соединений.",
         "escort_incapable": "{{name}} не может сопровождать (нет вооружения).",
@@ -466,6 +469,14 @@
         "submarine": "подводная лодка",
         "missile": "ракета",
         "building": "объект"
+      },
+      "threats": {
+        "aircraft": "самолёты",
+        "helicopter": "вертолёты",
+        "drone": "беспилотники",
+        "cruise_missile": "крылатые ракеты",
+        "ballistic_missile": "баллистические ракеты",
+        "hypersonic": "гиперзвуковые ракеты"
       }
     },
     "status": {
@@ -1005,7 +1016,8 @@
     "genericOrigin": "Типовой"
   },
   "units": {
-    "km": "{{value}} км"
+    "km": "{{value}} км",
+    "kmRange": "{{min}}–{{max}} км"
   },
   "map": {
     "attribution": "Снимки NASA Blue Marble · Natural Earth",
@@ -3283,6 +3295,46 @@
       "losses": "Потери",
       "spent": "Расходы"
     }
+  },
+  "airDefense": {
+    "title": "ПВО",
+    "legacy": "Упрощённый профиль",
+    "interceptors": "Зенитные ракеты",
+    "fullIn": "Полный через {{value}}",
+    "chipTitle": "{{cat}}: {{range}}",
+    "chipNone": "{{cat}}: не перехватывает",
+    "no": "Нет",
+    "magazine": "Ракет на элемент",
+    "channels": "Каналы наведения",
+    "reaction": "Время реакции",
+    "reload": "Полная перезарядка",
+    "seconds": "{{value}} с",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "Угроза",
+      "range": "Дальность",
+      "ceiling": "Потолок",
+      "pk": "Pk",
+      "shots": "Ракет на цель"
+    },
+    "threats": {
+      "aircraft": "Самолёты",
+      "helicopter": "Вертолёты",
+      "drone": "Беспилотники",
+      "cruise_missile": "Крылатые ракеты",
+      "ballistic_missile": "Баллистические ракеты",
+      "hypersonic": "Гиперзвуковые"
+    },
+    "short": {
+      "aircraft": "САМ",
+      "helicopter": "ВЕР",
+      "drone": "БПЛА",
+      "cruise_missile": "КР",
+      "ballistic_missile": "БР",
+      "hypersonic": "ГЗ"
+    },
+    "shotDown": "Сбито: {{cat}}",
+    "fired": "Выпущено зенитных ракет"
   },
   "stacks": {
     "composition_one": "Состав · типов: {{count}}",

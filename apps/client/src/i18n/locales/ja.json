@@ -424,6 +424,9 @@
         "partial": "命令を送信しました。{{count}} 部隊を除外：{{detail}}",
         "munition_use_strike": "弾薬：打撃命令を使用してください。",
         "ceasefire": "停戦が発効中です。",
+        "ad_cannot_engage": "{{name}} は{{cat}}を迎撃できません。",
+        "ad_out_of_range": "{{name}} — 射程外：{{dist}} km、{{cat}}に対する射程 {{min}}–{{max}} km。",
+        "ad_no_ammo": "{{name}}：迎撃ミサイルが尽きました。再装填中です。",
         "escort_self": "部隊は自分自身を護衛できません。",
         "escort_target_invalid": "無効な護衛対象です：自軍の移動可能な部隊を選んでください。",
         "escort_incapable": "{{name}} は護衛できません（武装なし）。",
@@ -448,6 +451,14 @@
         "submarine": "潜水艦",
         "missile": "ミサイル",
         "building": "施設"
+      },
+      "threats": {
+        "aircraft": "航空機",
+        "helicopter": "ヘリコプター",
+        "drone": "ドローン",
+        "cruise_missile": "巡航ミサイル",
+        "ballistic_missile": "弾道ミサイル",
+        "hypersonic": "極超音速ミサイル"
       }
     },
     "status": {
@@ -960,7 +971,8 @@
     "genericOrigin": "汎用"
   },
   "units": {
-    "km": "{{value}} km"
+    "km": "{{value}} km",
+    "kmRange": "{{min}}–{{max}} km"
   },
   "map": {
     "attribution": "画像 NASA Blue Marble · Natural Earth",
@@ -3160,6 +3172,46 @@
       "losses": "損失",
       "spent": "支出"
     }
+  },
+  "airDefense": {
+    "title": "防空",
+    "legacy": "簡易プロファイル",
+    "interceptors": "迎撃ミサイル",
+    "fullIn": "満載まで {{value}}",
+    "chipTitle": "{{cat}}：{{range}}",
+    "chipNone": "{{cat}}：迎撃不可",
+    "no": "いいえ",
+    "magazine": "1単位あたりの迎撃ミサイル",
+    "channels": "射撃チャンネル",
+    "reaction": "反応時間",
+    "reload": "完全再装填",
+    "seconds": "{{value}} 秒",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "脅威",
+      "range": "射程",
+      "ceiling": "射高",
+      "pk": "撃破確率",
+      "shots": "目標あたり発射数"
+    },
+    "threats": {
+      "aircraft": "航空機",
+      "helicopter": "ヘリコプター",
+      "drone": "ドローン",
+      "cruise_missile": "巡航ミサイル",
+      "ballistic_missile": "弾道ミサイル",
+      "hypersonic": "極超音速"
+    },
+    "short": {
+      "aircraft": "航",
+      "helicopter": "ヘ",
+      "drone": "ド",
+      "cruise_missile": "巡",
+      "ballistic_missile": "弾",
+      "hypersonic": "極"
+    },
+    "shotDown": "撃墜：{{cat}}",
+    "fired": "発射した迎撃ミサイル"
   },
   "stacks": {
     "composition_other": "編成 · {{count}} 種類",

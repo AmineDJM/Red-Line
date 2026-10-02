@@ -2703,5 +2703,45 @@
       "systemId": "eu.mistral",
       "count": 1
     }
-  ]
+  ],
+  "military": {
+    "airDefense": {
+      "priority": {
+        "hypersonic": 6,
+        "ballistic_missile": 5,
+        "cruise_missile": 4,
+        "aircraft": 3,
+        "helicopter": 2,
+        "drone": 1.5
+      },
+      "protectFactor": 2,
+      "shots": {
+        "hypersonic": 2,
+        "ballistic_missile": 2,
+        "cruise_missile": 2,
+        "aircraft": 2,
+        "helicopter": 1,
+        "drone": 1
+      },
+      "reactionS": 15,
+      "fullPkShare": 0.6,
+      "farPkFactor": 0.5,
+      "stealthPkFactor": 1,
+      "aircraftReengageMinutes": 5,
+      "fighterPkPerDamage": 0.08,
+      "fighterPkMax": 0.6,
+      "fighterMagazine": 4,
+      "ai": {
+        "capital": 2,
+        "airBase": 1,
+        "front": 1,
+        "frontKm": 250,
+        "coverShare": 0.5,
+        "reachKm": 1200,
+        "movesPerThink": 3,
+        "everyThinks": 2,
+        "minAmmoShare": 0.3
+      }
+    }
+  }
 }

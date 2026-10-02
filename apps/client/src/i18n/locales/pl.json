@@ -442,6 +442,9 @@
         "partial": "Rozkaz wysłany; pominięto {{count}} oddział(y): {{detail}}",
         "munition_use_strike": "Amunicja: użyj rozkazu uderzenia.",
         "ceasefire": "Obowiązuje zawieszenie broni.",
+        "ad_cannot_engage": "{{name}} nie przechwytuje {{cat}}.",
+        "ad_out_of_range": "{{name}} — poza zasięgiem: {{dist}} km, zasięg {{min}}–{{max}} km (zwalczanie {{cat}}).",
+        "ad_no_ammo": "{{name}}: brak pocisków przechwytujących, trwa przeładowanie.",
         "escort_self": "Oddział nie może eskortować samego siebie.",
         "escort_target_invalid": "Nieprawidłowy cel eskorty: wybierz jeden ze swoich ruchomych oddziałów.",
         "escort_incapable": "{{name}} nie może eskortować (brak uzbrojenia).",
@@ -466,6 +469,14 @@
         "submarine": "okręt podwodny",
         "missile": "pocisk",
         "building": "instalacja"
+      },
+      "threats": {
+        "aircraft": "samolotów",
+        "helicopter": "śmigłowców",
+        "drone": "dronów",
+        "cruise_missile": "pocisków manewrujących",
+        "ballistic_missile": "pocisków balistycznych",
+        "hypersonic": "pocisków hipersonicznych"
       }
     },
     "status": {
@@ -1005,7 +1016,8 @@
     "genericOrigin": "Ogólny"
   },
   "units": {
-    "km": "{{value}} km"
+    "km": "{{value}} km",
+    "kmRange": "{{min}}–{{max}} km"
   },
   "map": {
     "attribution": "Zobrazowanie NASA Blue Marble · Natural Earth",
@@ -3283,6 +3295,46 @@
       "losses": "Straty",
       "spent": "Wydatki"
     }
+  },
+  "airDefense": {
+    "title": "Obrona przeciwlotnicza",
+    "legacy": "Profil uproszczony",
+    "interceptors": "Pociski przechwytujące",
+    "fullIn": "Pełny za {{value}}",
+    "chipTitle": "{{cat}}: {{range}}",
+    "chipNone": "{{cat}}: nieprzechwytywane",
+    "no": "Nie",
+    "magazine": "Pociski na element",
+    "channels": "Kanały ognia",
+    "reaction": "Czas reakcji",
+    "reload": "Pełne przeładowanie",
+    "seconds": "{{value}} s",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "Zagrożenie",
+      "range": "Zasięg",
+      "ceiling": "Pułap",
+      "pk": "Pk",
+      "shots": "Strzały/cel"
+    },
+    "threats": {
+      "aircraft": "Samoloty",
+      "helicopter": "Śmigłowce",
+      "drone": "Drony",
+      "cruise_missile": "Pociski manewrujące",
+      "ballistic_missile": "Pociski balistyczne",
+      "hypersonic": "Hipersoniczne"
+    },
+    "short": {
+      "aircraft": "SAM",
+      "helicopter": "ŚMG",
+      "drone": "DRN",
+      "cruise_missile": "MAN",
+      "ballistic_missile": "BAL",
+      "hypersonic": "HIP"
+    },
+    "shotDown": "Zestrzelone: {{cat}}",
+    "fired": "Wystrzelone pociski przechwytujące"
   },
   "stacks": {
     "composition_one": "Skład · liczba typów: {{count}}",

@@ -454,6 +454,9 @@
         "partial": "أُرسل الأمر؛ استُبعدت {{count}} وحدة: {{detail}}",
         "munition_use_strike": "الذخائر: استخدم أمر الضربة.",
         "ceasefire": "وقف إطلاق النار سارٍ.",
+        "ad_cannot_engage": "{{name}} لا يعترض {{cat}}.",
+        "ad_out_of_range": "{{name}} — خارج المدى: {{dist}} كم، المدى {{min}}–{{max}} كم ضد {{cat}}.",
+        "ad_no_ammo": "{{name}}: نفدت الصواريخ الاعتراضية، إعادة التذخير جارية.",
         "escort_self": "لا يمكن لوحدة أن ترافق نفسها.",
         "escort_target_invalid": "هدف مرافقة غير صالح: اختر إحدى وحداتك المتحركة.",
         "escort_incapable": "{{name}} لا يمكنه المرافقة (بلا سلاح).",
@@ -478,6 +481,14 @@
         "submarine": "غواصة",
         "missile": "صاروخ",
         "building": "منشأة"
+      },
+      "threats": {
+        "aircraft": "الطائرات",
+        "helicopter": "المروحيات",
+        "drone": "الطائرات المسيّرة",
+        "cruise_missile": "صواريخ كروز",
+        "ballistic_missile": "الصواريخ الباليستية",
+        "hypersonic": "الصواريخ فرط الصوتية"
       }
     },
     "status": {
@@ -1035,7 +1046,8 @@
     "genericOrigin": "عام"
   },
   "units": {
-    "km": "{{value}} كم"
+    "km": "{{value}} كم",
+    "kmRange": "{{min}}–{{max}} كم"
   },
   "map": {
     "attribution": "صور NASA Blue Marble · Natural Earth",
@@ -3365,6 +3377,46 @@
       "losses": "الخسائر",
       "spent": "النفقات"
     }
+  },
+  "airDefense": {
+    "title": "الدفاع الجوي",
+    "legacy": "ملف مبسّط",
+    "interceptors": "الصواريخ الاعتراضية",
+    "fullIn": "ممتلئ خلال {{value}}",
+    "chipTitle": "{{cat}}: {{range}}",
+    "chipNone": "{{cat}}: لا يُعترض",
+    "no": "لا",
+    "magazine": "صواريخ اعتراضية لكل عنصر",
+    "channels": "قنوات الرمي",
+    "reaction": "زمن الاستجابة",
+    "reload": "إعادة تذخير كاملة",
+    "seconds": "{{value}} ث",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "التهديد",
+      "range": "المدى",
+      "ceiling": "السقف",
+      "pk": "احتمال الإصابة",
+      "shots": "رميات/هدف"
+    },
+    "threats": {
+      "aircraft": "طائرات",
+      "helicopter": "مروحيات",
+      "drone": "مسيّرات",
+      "cruise_missile": "صواريخ كروز",
+      "ballistic_missile": "صواريخ باليستية",
+      "hypersonic": "فرط صوتية"
+    },
+    "short": {
+      "aircraft": "طائرة",
+      "helicopter": "مروحية",
+      "drone": "مسيّرة",
+      "cruise_missile": "كروز",
+      "ballistic_missile": "باليستي",
+      "hypersonic": "فرط"
+    },
+    "shotDown": "أُسقط: {{cat}}",
+    "fired": "الصواريخ الاعتراضية المطلقة"
   },
   "stacks": {
     "composition_zero": "التشكيل · عدد الأنواع: {{count}}",

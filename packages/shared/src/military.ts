@@ -191,6 +191,13 @@ export interface BattleAarSide {
   missiles: { launched: Estimate; shotDown: Estimate };
   /** Missiles adverses abattus par ce camp. */
   interceptions: Estimate;
+  /**
+   * Défense antiaérienne de ce camp (optionnel) : menaces abattues par catégorie (avions,
+   * hélicoptères, drones, missiles de croisière, balistiques, hypersoniques) et intercepteurs tirés
+   * (camp du lecteur seulement). Ce que l'adversaire a abattu des siens, le lecteur le sait (ses pertes).
+   */
+  intercepts?: Partial<Record<import('./catalog.js').AirThreat, number>>;
+  interceptorsFired?: number;
   /** Sorties aériennes (appareils engagés). */
   sorties: Estimate;
   munitions: Estimate;

@@ -76,7 +76,9 @@ function canStrike(s: WeaponSystem): boolean {
   if ((s.naval?.launchCells ?? 0) > 0) return true;
   return isFlyer(s) && (s.damage.building > 0 || s.damage.armor > 0 || s.damage.infantry > 0);
 }
+/** Interception : chasseurs (cibles aériennes) et défenses antiaériennes (tout ce qui vole). */
 function canIntercept(s: WeaponSystem): boolean {
+  if (s.interceptor && !isMunition(s) && s.weaponRangeKm.max > 0) return true;
   return isFlyer(s) && AIR_CLASSES.some((c) => s.damage[c] > 0);
 }
 /** Pile capable d'escorter : mobile, armée (ni munition, ni satellite). */

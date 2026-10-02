@@ -1,10 +1,11 @@
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { WeaponSystem } from '@redline/shared';
+import { airDefenseTable, type UnitView, type WeaponSystem } from '@redline/shared';
 import { Badge, WeaponCard, formatHours, formatMoney, type WeaponFact } from '@redline/ui';
 import { ownedCounts, productionStatus, researchName, systemPrice } from '../lib/game.js';
 import { photoFor, usePhotos } from '../lib/photos.js';
-import { weaponLabels, weaponSubtitle } from '../shell/helpers.js';
+import { useGameTime, weaponLabels, weaponSubtitle } from '../shell/helpers.js';
+import { AirDefenseCaps } from './AirDefenseCaps.js';
 import { useGame } from '../store/game.js';
 import { useWorld } from '../store/world.js';
 
@@ -15,6 +16,8 @@ export interface WeaponDetailProps {
   actions?: ReactNode;
   /** Bloc additionnel (état de la pile d'origine). */
   extra?: ReactNode;
+  /** Pile d'origine (à soi) : magasin d'intercepteurs d'une défense antiaérienne. */
+  unit?: UnitView | undefined;
   compact?: boolean;
 }
 
@@ -23,12 +26,20 @@ export interface WeaponDetailProps {
  * l'arsenal (Production, catalogue de l'Arsenal de guerre) et la fiche seule ouverte depuis une
  * armée.
  */
-export function WeaponDetail({ system: cur, mode, actions, extra, compact }: WeaponDetailProps) {
+export function WeaponDetail({
+  system: cur,
+  mode,
+  actions,
+  extra,
+  compact,
+  unit,
+}: WeaponDetailProps) {
   const { t } = useTranslation();
   const research = useWorld((s) => s.research);
   const view = useGame((s) => s.view);
   const me = useGame((s) => s.me);
   const photos = usePhotos();
+  const now = useGameTime(5000);
   const owned = ownedCounts(view, me);
 
   const facts = (s: WeaponSystem): WeaponFact[] => {
@@ -98,7 +109,16 @@ export function WeaponDetail({ system: cur, mode, actions, extra, compact }: Wea
       photo={photoFor(cur, photos)}
       facts={facts(cur)}
       compact={compact}
-      extra={extra}
+      extra={
+        airDefenseTable(cur)?.lines.length ? (
+          <>
+            {extra}
+            <AirDefenseCaps system={cur} unit={unit} now={now} />
+          </>
+        ) : (
+          extra
+        )
+      }
       badges={
         <>
           <Badge tone="neutral">{t(`doctrines.${cur.doctrine}`)}</Badge>

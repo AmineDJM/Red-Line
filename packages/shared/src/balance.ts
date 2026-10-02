@@ -74,6 +74,76 @@ export const MilitaryBalanceSchema = z.object({
       asatPk: num(0.7),
     })
     .default({}),
+  /**
+   * Défense antiaérienne détaillée (systèmes dont la fiche porte `interceptor.envelopes`, voir
+   * docs/defense-aerienne.md) : priorités, doctrine de tir par défaut, dégradation de la probabilité
+   * en limite d'enveloppe, réengagement des aéronefs, placement par l'IA.
+   */
+  airDefense: z
+    .object({
+      /** Priorité de tir par catégorie (plus grand = engagé d'abord). */
+      priority: z
+        .object({
+          hypersonic: num(6),
+          ballistic_missile: num(5),
+          cruise_missile: num(4),
+          aircraft: num(3),
+          helicopter: num(2),
+          drone: num(1.5),
+        })
+        .default({}),
+      /** Menace qui vise un point de la bulle de la batterie (ce qu'elle protège) : priorité × ce facteur. */
+      protectFactor: num(2),
+      /** Intercepteurs par cible quand la fiche ne le précise pas (doctrine). */
+      shots: z
+        .object({
+          hypersonic: num(2),
+          ballistic_missile: num(2),
+          cruise_missile: num(2),
+          aircraft: num(2),
+          helicopter: num(1),
+          drone: num(1),
+        })
+        .default({}),
+      /** Délai de réaction par défaut (secondes). */
+      reactionS: num(15),
+      /** Part de la portée maximale où la probabilité est pleine ; au-delà elle décroît. */
+      fullPkShare: num(0.6),
+      /** Facteur de probabilité à la portée maximale (décroissance linéaire depuis fullPkShare). */
+      farPkFactor: num(0.5),
+      /** Furtivité d'un aéronef : pk × (1 − furtivité × (1 − détection furtive du radar) × ce facteur). */
+      stealthPkFactor: num(1),
+      /** Réengagement d'un avion, hélicoptère ou drone après un tir (minutes). */
+      aircraftReengageMinutes: num(5),
+      /**
+       * Chasseurs (sans fiche `interceptor`) contre missiles de croisière et drones : pk = dégâts
+       * « missile » × ce facteur (plafonné), missiles air-air disponibles par appareil.
+       */
+      fighterPkPerDamage: num(0.08),
+      fighterPkMax: num(0.6),
+      fighterMagazine: num(4),
+      /** IA : placement de la défense antiaérienne (capitale, bases aériennes, front). */
+      ai: z
+        .object({
+          /** Batteries voulues à la capitale, sur chaque base aérienne, dans chaque ville du front. */
+          capital: num(2),
+          airBase: num(1),
+          front: num(1),
+          /** Ville du front : ville à elle à moins de cette distance d'un ennemi vu (km). */
+          frontKm: num(250),
+          /** Une batterie couvre un point si elle est à moins de cette part de sa portée principale. */
+          coverShare: num(0.5),
+          /** Distance maximale d'un redéploiement (km). */
+          reachKm: num(1200),
+          /** Redéploiements au plus par réflexion ; une réflexion sur `everyThinks`. */
+          movesPerThink: num(3),
+          everyThinks: num(2),
+          /** Batterie à moins de cette part de son magasin : relevée du front (stocks). */
+          minAmmoShare: num(0.3),
+        })
+        .default({}),
+    })
+    .default({}),
   nuclear: z
     .object({
       /** Rayon de destruction minimal (km). */

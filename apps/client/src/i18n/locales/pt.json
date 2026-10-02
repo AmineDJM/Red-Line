@@ -436,6 +436,9 @@
         "partial": "Ordem enviada; {{count}} pilha(s) excluída(s): {{detail}}",
         "munition_use_strike": "Munições: use a ordem de ataque de precisão.",
         "ceasefire": "Cessar-fogo em vigor.",
+        "ad_cannot_engage": "{{name}} não intercepta {{cat}}.",
+        "ad_out_of_range": "{{name}} — fora de alcance: {{dist}} km, alcance {{min}}–{{max}} km contra {{cat}}.",
+        "ad_no_ammo": "{{name}}: sem interceptadores, recarga em andamento.",
         "escort_self": "Uma unidade não pode escoltar a si mesma.",
         "escort_target_invalid": "Alvo de escolta inválido: escolha uma de suas unidades móveis.",
         "escort_incapable": "{{name}} não pode escoltar (sem armas).",
@@ -460,6 +463,14 @@
         "submarine": "submarino",
         "missile": "míssil",
         "building": "instalação"
+      },
+      "threats": {
+        "aircraft": "aviões",
+        "helicopter": "helicópteros",
+        "drone": "drones",
+        "cruise_missile": "mísseis de cruzeiro",
+        "ballistic_missile": "mísseis balísticos",
+        "hypersonic": "mísseis hipersônicos"
       }
     },
     "status": {
@@ -990,7 +1001,8 @@
     "genericOrigin": "Genérico"
   },
   "units": {
-    "km": "{{value}} km"
+    "km": "{{value}} km",
+    "kmRange": "{{min}}–{{max}} km"
   },
   "map": {
     "attribution": "Imagens NASA Blue Marble · Natural Earth",
@@ -3242,6 +3254,46 @@
       "losses": "Perdas",
       "spent": "Despesas"
     }
+  },
+  "airDefense": {
+    "title": "Defesa antiaérea",
+    "legacy": "Perfil simplificado",
+    "interceptors": "Interceptadores",
+    "fullIn": "Cheio em {{value}}",
+    "chipTitle": "{{cat}}: {{range}}",
+    "chipNone": "{{cat}}: não interceptado",
+    "no": "Não",
+    "magazine": "Interceptadores por elemento",
+    "channels": "Canais de tiro",
+    "reaction": "Reação",
+    "reload": "Recarga completa",
+    "seconds": "{{value}} s",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "Ameaça",
+      "range": "Alcance",
+      "ceiling": "Teto",
+      "pk": "Pk",
+      "shots": "Disparos/alvo"
+    },
+    "threats": {
+      "aircraft": "Aviões",
+      "helicopter": "Helicópteros",
+      "drone": "Drones",
+      "cruise_missile": "Mísseis de cruzeiro",
+      "ballistic_missile": "Mísseis balísticos",
+      "hypersonic": "Hipersônicos"
+    },
+    "short": {
+      "aircraft": "AVI",
+      "helicopter": "HELI",
+      "drone": "DRN",
+      "cruise_missile": "CRU",
+      "ballistic_missile": "BAL",
+      "hypersonic": "HIP"
+    },
+    "shotDown": "Abatidos: {{cat}}",
+    "fired": "Interceptadores disparados"
   },
   "stacks": {
     "composition_one": "Composição · {{count}} sistema",

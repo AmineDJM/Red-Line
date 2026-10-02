@@ -430,6 +430,9 @@
         "partial": "Emir iletildi; {{count}} birlik dışarıda bırakıldı: {{detail}}",
         "munition_use_strike": "Mühimmat: vuruş emrini kullanın.",
         "ceasefire": "Ateşkes yürürlükte.",
+        "ad_cannot_engage": "{{name}} şu hedefleri önleyemez: {{cat}}.",
+        "ad_out_of_range": "{{name}} — menzil dışında: {{dist}} km, menzil {{min}}–{{max}} km (hedef: {{cat}}).",
+        "ad_no_ammo": "{{name}}: önleyici füze kalmadı, yeniden dolduruluyor.",
         "escort_self": "Bir birlik kendine refakat edemez.",
         "escort_target_invalid": "Geçersiz refakat hedefi: hareketli birliklerinizden birini seçin.",
         "escort_incapable": "{{name}} refakat edemez (silahı yok).",
@@ -454,6 +457,14 @@
         "submarine": "denizaltı",
         "missile": "füze",
         "building": "tesis"
+      },
+      "threats": {
+        "aircraft": "uçaklar",
+        "helicopter": "helikopterler",
+        "drone": "insansız hava araçları",
+        "cruise_missile": "seyir füzeleri",
+        "ballistic_missile": "balistik füzeler",
+        "hypersonic": "hipersonik füzeler"
       }
     },
     "status": {
@@ -975,7 +986,8 @@
     "genericOrigin": "Genel"
   },
   "units": {
-    "km": "{{value}} km"
+    "km": "{{value}} km",
+    "kmRange": "{{min}}–{{max}} km"
   },
   "map": {
     "attribution": "Görüntüler NASA Blue Marble · Natural Earth",
@@ -3201,6 +3213,46 @@
       "losses": "Kayıplar",
       "spent": "Harcamalar"
     }
+  },
+  "airDefense": {
+    "title": "Hava savunması",
+    "legacy": "Basitleştirilmiş profil",
+    "interceptors": "Önleyiciler",
+    "fullIn": "{{value}} içinde dolu",
+    "chipTitle": "{{cat}}: {{range}}",
+    "chipNone": "{{cat}}: önlenmez",
+    "no": "Hayır",
+    "magazine": "Unsur başına önleyici",
+    "channels": "Atış kanalları",
+    "reaction": "Tepki süresi",
+    "reload": "Tam dolum",
+    "seconds": "{{value}} sn",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "Tehdit",
+      "range": "Menzil",
+      "ceiling": "Tavan",
+      "pk": "Pk",
+      "shots": "Atış/hedef"
+    },
+    "threats": {
+      "aircraft": "Uçaklar",
+      "helicopter": "Helikopterler",
+      "drone": "İHA’lar",
+      "cruise_missile": "Seyir füzeleri",
+      "ballistic_missile": "Balistik füzeler",
+      "hypersonic": "Hipersonik"
+    },
+    "short": {
+      "aircraft": "UÇK",
+      "helicopter": "HLK",
+      "drone": "İHA",
+      "cruise_missile": "SYR",
+      "ballistic_missile": "BAL",
+      "hypersonic": "HİP"
+    },
+    "shotDown": "Düşürülen: {{cat}}",
+    "fired": "Ateşlenen önleyiciler"
   },
   "stacks": {
     "composition_one": "Bileşim · {{count}} sistem",

@@ -772,9 +772,10 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         type: 'line',
         source: 'range-lines',
         paint: {
-          'line-color': C.amber,
+          // 'ad' : enveloppes de la défense antiaérienne par catégorie de menace (balistiques…).
+          'line-color': ['match', ['get', 'kind'], 'ad', C.cyan, C.amber],
           'line-width': ['match', ['get', 'kind'], 'max', 1.6, 'min', 1, 1.1],
-          'line-opacity': ['match', ['get', 'kind'], 'max', 0.95, 'min', 0.6, 0.6],
+          'line-opacity': ['match', ['get', 'kind'], 'max', 0.95, 'ad', 0.8, 'min', 0.6, 0.6],
           'line-dasharray': [
             'match',
             ['get', 'kind'],
@@ -782,6 +783,8 @@ export function buildStyle(i: StyleInput): StyleSpecification {
             ['literal', [4, 3]],
             'min',
             ['literal', [2, 2]],
+            'ad',
+            ['literal', [3, 2]],
             ['literal', [1, 0]],
           ],
         },
