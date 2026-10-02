@@ -31,6 +31,7 @@ import {
   supplyOf,
   supplyPill,
   targetReady,
+  journalText,
 } from '../src/lib/command.js';
 import { missionInput, useCommandUi } from '../src/store/command.js';
 import { commandFeatures } from '../src/map/commandLayer.js';
@@ -373,5 +374,30 @@ describe('centre de commandement : assistant et carte', () => {
     expect(kinds).toEqual(['arrow:0', 'aim:0', 'label:0', 'zone:1', 'label:1']);
     const label = fc.features.find((f) => f.properties!.kind === 'label')!;
     expect(String(label.properties!.text)).toContain('1re Armée');
+  });
+
+  it('journal du général : les nombres restent des nombres (pluriels), les sous-textes sont traduits', () => {
+    const calls: [string, Record<string, unknown> | undefined][] = [];
+    const t = (k: string, o?: Record<string, unknown>) => {
+      calls.push([k, o]);
+      return k === 'engine.cmd.mission.conquer' ? 'Conquérir' : `${k}:${JSON.stringify(o)}`;
+    };
+    journalText(
+      { t: 0, tone: 'bad', text: { key: 'engine.cmd.j.lost', params: { count: 3, system: 'x' } } },
+      t,
+    );
+    expect(calls[0]![1]!.count).toBe(3);
+    const out = journalText(
+      {
+        t: 0,
+        tone: 'info',
+        text: {
+          key: 'engine.cmd.j.mission',
+          params: { mission: { key: 'engine.cmd.mission.conquer' }, target: 'Charleroi' },
+        },
+      },
+      t,
+    );
+    expect(out).toContain('"mission":"Conquérir"');
   });
 });

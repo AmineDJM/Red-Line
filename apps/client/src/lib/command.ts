@@ -6,11 +6,13 @@
 import {
   distanceKm,
   generalRating,
+  type ArmyJournalEntry,
   type ArmyView,
   type Category,
   type CommandGeneralView,
   type CommandView,
   type LngLat,
+  type LocParam,
   type MissionDef,
   type NationId,
   type PlayerView,
@@ -20,7 +22,9 @@ import {
   type UnitView,
   type WeaponSystem,
 } from '@redline/shared';
+import { useWorld } from '../store/world.js';
 import { elementPrice, ownPiles, pileDomain, type PileDomain } from './armies.js';
+import { nationName, provinceName, systemName } from './game.js';
 import { nearestCity } from './location.js';
 import { stackParts } from './stacks.js';
 
@@ -438,4 +442,31 @@ export function dominantDomain(units: UnitView[], catalog: Record<string, Weapon
 /** Demandes du général en attente, toutes armées confondues. */
 export function pendingRequests(command: CommandView | undefined): number {
   return (command?.armies ?? []).filter((a) => !!a.request).length;
+}
+
+// ——— Journal du général ———
+
+/** Paramètre d'un texte du moteur ; les nombres restent des nombres (pluriels i18next). */
+function param(
+  p: LocParam,
+  t: (k: string, o?: Record<string, unknown>) => string,
+): string | number {
+  if (typeof p === 'string' || typeof p === 'number') return p;
+  if ('nation' in p) return nationName(p.nation);
+  if ('province' in p)
+    return useWorld.getState().provinces[p.province]?.cityName ?? provinceName(p.province);
+  if ('system' in p) return systemName(p.system);
+  if ('list' in p) return p.list.map((x) => String(param(x, t))).join(', ');
+  const sub: Record<string, string | number> = {};
+  for (const [k, v] of Object.entries(p.params ?? {})) sub[k] = param(v, t);
+  return t(p.key, sub);
+}
+
+export function journalText(
+  e: ArmyJournalEntry,
+  t: (k: string, o?: Record<string, unknown>) => string,
+): string {
+  const ps: Record<string, string | number> = {};
+  for (const [k, v] of Object.entries(e.text.params ?? {})) ps[k] = param(v, t);
+  return t(e.text.key, ps);
 }

@@ -1359,6 +1359,7 @@ button.cmd-gcard:focus-visible {
   }
   .cmd-detail__head {
     padding: 10px 12px;
+    background: var(--rl-panel);
   }
   .cmd-detail__grid {
     grid-template-columns: minmax(0, 1fr);
@@ -1367,11 +1368,24 @@ button.cmd-gcard:focus-visible {
   .cmd-detail__foot {
     padding: 10px 12px;
   }
-  .cmd-detail__foot .rl-btn {
-    flex: 1 1 44%;
+  .cmd-detail__foot {
+    background: var(--rl-panel);
   }
-  .cmd-detail__foot .rl-seg {
-    flex: 1 1 100%;
+  .cmd-detail__foot .rl-btn {
+    flex: 1 1 40%;
+  }
+  .cmd-detail__foot .rl-btn--primary {
+    order: -1;
+    flex-basis: 100%;
+  }
+  .cmd-detail__more {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 12px 16px;
+  }
+  .cmd-detail__more .cmd-detail__spacer {
+    display: none;
   }
   .cmd-skills {
     grid-template-columns: minmax(0, 1fr);
@@ -1390,6 +1404,10 @@ button.cmd-gcard:focus-visible {
   }
   .cmd-stepper button {
     padding: 4px 6px;
+  }
+  /* Petit écran : seule l'étape en cours garde son nom (l'en-tête tient sur une ligne). */
+  .cmd-stepper li:not(.is-cur) .cmd-stepper__label {
+    display: none;
   }
   .cmd-step {
     padding: 12px;
@@ -1497,4 +1515,7 @@ button.cmd-gcard:focus-visible {
 }
 .cmd-onboard > button {
   align-self: flex-start;
+}
+.cmd-onboard-wrap .cmd-onboard {
+  padding: 8px 0;
 }

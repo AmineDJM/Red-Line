@@ -71,6 +71,9 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
   on ne reprend que les codes visuels.
 - Armées de départ en **piles mixtes** (brigades, escadres ; `data/balance` `stacks`, désactivable) : une pile vaut
   la somme de ses éléments (`Unit.mix`), ordres `split` / `merge` ; mesures dans `docs/charge.md`.
+- **Centre de commandement** (module moteur `cmd`, fenêtre QG) : armées nommées de piles, missions
+  (`data/balance` `command`), généraux fictifs payés qui pilotent l'IA militaire sur leurs seules piles ; un ordre
+  direct sur une pile prime jusqu'à sa fin, puis le général la reprend. Voir `docs/centre-de-commandement.md`.
 - Couleurs de nations : jamais de violet (réservé au joueur), deux voisins jamais identiques.
 - Défense antiaérienne : enveloppes par catégorie de menace (avions, hélicoptères, drones, croisière, balistiques,
   hypersoniques) dans `interceptor.envelopes` du catalogue ; tout ce qui vole est engagé par intercepteurs

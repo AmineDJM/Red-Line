@@ -155,7 +155,9 @@ describe('centre de commandement : vraies données', { timeout: 600_000 }, () =>
       armyId: army.id,
     });
     const g = Object.values(cmd(s).gens)[0]!;
-    g.skills = { ...g.skills, naval: 70, logistics: 60, experience: 90 };
+    // Général maîtrisé par le test (le vivier tiré au sort peut donner un général « économe » plus exigeant).
+    g.skills = { ...g.skills, naval: 70, logistics: 60, experience: 90, audacity: 50 };
+    g.traits = [];
     ok(s, 'ita', {
       kind: 'armyMission',
       armyId: army.id,

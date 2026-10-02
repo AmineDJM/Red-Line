@@ -82,7 +82,7 @@ function Stepper({ steps, step }: { steps: WizardStep[]; step: WizardStep }) {
             <span className="cmd-stepper__n">
               {k < i ? <Icon name="check" size={11} /> : k + 1}
             </span>
-            <span>{t(`command.wizard.step.${s}`)}</span>
+            <span className="cmd-stepper__label">{t(`command.wizard.step.${s}`)}</span>
           </button>
         </li>
       ))}

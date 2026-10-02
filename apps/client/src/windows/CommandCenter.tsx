@@ -1,13 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type {
-  ArmyJournalEntry,
-  ArmyView,
-  CommandView,
-  LocParam,
-  PlayerView,
-  ReinforceMode,
-} from '@redline/shared';
+import type { ArmyView, CommandView, PlayerView, ReinforceMode } from '@redline/shared';
 import {
   Badge,
   Button,
@@ -39,6 +32,7 @@ import {
   ratioText,
   strengthOf,
   supplyOf,
+  journalText,
   supplyPill,
   type Pill,
 } from '../lib/command.js';
@@ -67,27 +61,6 @@ function ensureEngineTexts(): void {
   enginePatched = true;
   const cmd = (frEngine as { engine: { cmd?: unknown } }).engine.cmd;
   if (cmd) i18n.addResourceBundle('fr', 'translation', { engine: { cmd } }, true, false);
-}
-
-function param(p: LocParam, t: (k: string, o?: Record<string, unknown>) => string): string {
-  if (typeof p === 'string' || typeof p === 'number') return String(p);
-  if ('nation' in p) return nationName(p.nation);
-  if ('province' in p)
-    return useWorld.getState().provinces[p.province]?.cityName ?? provinceName(p.province);
-  if ('system' in p) return systemName(p.system);
-  if ('list' in p) return p.list.map((x) => param(x, t)).join(', ');
-  const sub: Record<string, string> = {};
-  for (const [k, v] of Object.entries(p.params ?? {})) sub[k] = param(v, t);
-  return t(p.key, sub);
-}
-
-export function journalText(
-  e: ArmyJournalEntry,
-  t: (k: string, o?: Record<string, unknown>) => string,
-): string {
-  const ps: Record<string, string> = {};
-  for (const [k, v] of Object.entries(e.text.params ?? {})) ps[k] = param(v, t);
-  return t(e.text.key, ps);
 }
 
 const STATUS_TONE: Record<ArmyView['status'], Tone> = {
@@ -491,6 +464,27 @@ function ArmyDetail({ a, mobile, onBack }: { a: ArmyView; mobile: boolean; onBac
         : { type: null, aggr: 'balanced', roe: 'standard' },
     });
 
+  const reinforceSeg = (
+    <Segmented<ReinforceMode>
+      size="sm"
+      label={t('command.reinforce.label')}
+      value={a.reinforce}
+      onChange={(v) =>
+        void send({ kind: 'armyEdit', armyId: a.id, reinforce: v }, t('command.toast.saved'))
+      }
+      options={(['off', 'ask', 'auto'] as const).map((v) => ({
+        value: v,
+        label: t(`command.reinforce.${v}`),
+        title: t(`command.reinforce.${v}Help`),
+      }))}
+    />
+  );
+  const dissolveBtn = (
+    <Button size={mobile ? 'lg' : 'md'} variant="danger" onClick={() => setDissolve(true)}>
+      {t('command.actions.dissolve')}
+    </Button>
+  );
+
   return (
     <div className="cmd-detail" data-testid="army-detail">
       <header className="cmd-detail__head">
@@ -582,6 +576,14 @@ function ArmyDetail({ a, mobile, onBack }: { a: ArmyView; mobile: boolean; onBac
         <CompositionPanel a={a} view={view} />
         <JournalPanel a={a} />
       </div>
+      {mobile ? (
+        <section className="cmd-detail__more">
+          <h4 className="cmd-panel__title">{t('command.reinforce.label')}</h4>
+          {reinforceSeg}
+          <p className="cmd-hint">{t(`command.reinforce.${a.reinforce}Help`)}</p>
+          {dissolveBtn}
+        </section>
+      ) : null}
       <footer className="cmd-detail__foot">
         <Button
           size={mobile ? 'lg' : 'md'}
@@ -617,23 +619,13 @@ function ArmyDetail({ a, mobile, onBack }: { a: ArmyView; mobile: boolean; onBac
             {a.status === 'suspended' ? t('command.actions.resume') : t('command.actions.suspend')}
           </Button>
         ) : null}
-        <Segmented<ReinforceMode>
-          size="sm"
-          label={t('command.reinforce.label')}
-          value={a.reinforce}
-          onChange={(v) =>
-            void send({ kind: 'armyEdit', armyId: a.id, reinforce: v }, t('command.toast.saved'))
-          }
-          options={(['off', 'ask', 'auto'] as const).map((v) => ({
-            value: v,
-            label: t(`command.reinforce.${v}`),
-            title: t(`command.reinforce.${v}Help`),
-          }))}
-        />
-        <span className="cmd-detail__spacer" />
-        <Button size={mobile ? 'lg' : 'md'} variant="danger" onClick={() => setDissolve(true)}>
-          {t('command.actions.dissolve')}
-        </Button>
+        {mobile ? null : (
+          <>
+            {reinforceSeg}
+            <span className="cmd-detail__spacer" />
+            {dissolveBtn}
+          </>
+        )}
       </footer>
       <Dialog
         open={dissolve}
@@ -711,6 +703,8 @@ function ArmiesPane({ mobile }: { mobile: boolean }) {
             />
           ))}
         </ul>
+      ) : mobile ? (
+        <Onboarding disabled={full} mobile />
       ) : (
         <EmptyState
           compact
@@ -753,7 +747,7 @@ function ArmiesPane({ mobile }: { mobile: boolean }) {
 }
 
 /** Premier contact : les trois étapes et la règle des ordres directs, avant toute armée. */
-function Onboarding({ disabled }: { disabled: boolean }) {
+function Onboarding({ disabled, mobile }: { disabled: boolean; mobile?: boolean }) {
   const { t } = useTranslation();
   const steps = [
     { key: 'compose', icon: 'layers' as const },
@@ -761,7 +755,10 @@ function Onboarding({ disabled }: { disabled: boolean }) {
     { key: 'general', icon: 'star' as const },
   ];
   return (
-    <div className="cmd-detail cmd-detail--empty" data-testid="command-onboarding">
+    <div
+      className={mobile ? 'cmd-onboard-wrap' : 'cmd-detail cmd-detail--empty'}
+      data-testid="command-onboarding"
+    >
       <div className="cmd-onboard">
         <p className="cmd-onboard__title">{t('command.onboard.title')}</p>
         <ol className="cmd-onboard__steps">
@@ -779,14 +776,16 @@ function Onboarding({ disabled }: { disabled: boolean }) {
         <p className="cmd-onboard__rule">
           <Icon name="info" size={11} /> {t('command.detail.manualRule')}
         </p>
-        <Button
-          variant="primary"
-          icon={<Icon name="plus" size={13} />}
-          disabled={disabled}
-          onClick={() => openNewArmy()}
-        >
-          {t('command.newArmy')}
-        </Button>
+        {mobile ? null : (
+          <Button
+            variant="primary"
+            icon={<Icon name="plus" size={13} />}
+            disabled={disabled}
+            onClick={() => openNewArmy()}
+          >
+            {t('command.newArmy')}
+          </Button>
+        )}
       </div>
     </div>
   );
