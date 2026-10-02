@@ -1028,7 +1028,8 @@
       "burned": "grillé",
       "double": "agent double",
       "exfiltrated": "exfiltré",
-      "captured": "capturé"
+      "captured": "capturé",
+      "expelled": "Expulsé"
     },
     "ops": {
       "infiltrate_spy": "Infiltrer un espion",
@@ -1051,7 +1052,16 @@
       "fake_radio_traffic": "Faux trafic radio",
       "counterintel_sweep": "Contre-espionnage",
       "recon_economic": "Reconnaissance économique",
-      "recon_military": "Reconnaissance militaire"
+      "recon_military": "Reconnaissance militaire",
+      "cryptanalysis": "Cryptanalyse",
+      "intercept_comms": "Interception des communications",
+      "geolocate_emitters": "Géolocalisation des émetteurs",
+      "cultivate_source": "Culture d'une source",
+      "vet_agents": "Vérification des agents",
+      "designate_targets": "Désignation de cibles",
+      "dismantle_network": "Démantèlement d'un réseau",
+      "deception_plan": "Opération de déception",
+      "harden_sites": "Durcissement des sites"
     },
     "opsHelp": {
       "infiltrate_spy": "Implante un agent dans le pays cible : révèle progressivement ses provinces, bâtiments et intentions.",
@@ -1074,7 +1084,16 @@
       "fake_radio_traffic": "Simule un trafic radio pour masquer vos mouvements.",
       "counterintel_sweep": "Traque les agents étrangers sur votre territoire.",
       "recon_economic": "Révèle par phases les installations économiques (production, ressources, industrie) de tout un pays — capitale et grandes villes d'abord, puis le reste — ou d'une seule province.",
-      "recon_military": "Révèle par phases les bases, défenses aériennes, radars, silos et bunkers de tout un pays — capitale et grandes villes d'abord, puis le reste — ou d'une seule province. Visibles ensuite sur la carte."
+      "recon_military": "Révèle par phases les bases, défenses aériennes, radars, silos et bunkers de tout un pays — capitale et grandes villes d'abord, puis le reste — ou d'une seule province. Visibles ensuite sur la carte.",
+      "cryptanalysis": "Casse progressivement le chiffrement d'une nation : à 25 % les ordres de mouvement deviennent lisibles, à 50 % ses intentions. Un chiffrement fort (services avancés) ralentit la progression.",
+      "intercept_comms": "Intercepte les communications d'une nation : volume du trafic, ordres de mouvement et plans de guerre selon le décryptage. Un bon contre-espionnage adverse peut injecter du faux trafic.",
+      "geolocate_emitters": "Localise les radars, défenses aériennes et postes de commandement d'une nation par leurs émissions. Les satellites et avions d'écoute en service augmentent le nombre d'émetteurs trouvés.",
+      "cultivate_source": "Élève l'accès d'un agent fiable : ministère (budget, recherche), puis état-major (plans de guerre). Plus l'accès est élevé, plus l'agent est exposé.",
+      "vet_agents": "Vérifie vos agents dans un pays : démasque les agents doubles et repère ceux qui sont surveillés. Sans risque.",
+      "designate_targets": "Analyse d'imagerie d'une province ennemie : forces identifiées et localisées, installations cartographiées, frappes proposées unité par unité.",
+      "dismantle_network": "Démantèle le réseau d'une nation sur votre sol : arrestation des agents déjà repérés et chasse aux autres.",
+      "deception_plan": "Fait parvenir de faux plans de guerre aux services adverses. Plus crédible si l'adversaire a des agents chez vous, surtout un agent retourné.",
+      "harden_sites": "Renforce la protection de toutes vos installations pendant quelques jours : sabotages, financements rebelles et cyberattaques industrielles freinés."
     },
     "targetProvince": "Province visée",
     "targetArea": "Zone (autour de la ville)",
@@ -1085,7 +1104,68 @@
     "scopeProvince": "Une province",
     "reconPhase": "Phase {{done}}/{{waves}} · {{provinces}} prov.",
     "unknownContact": "contact non identifié",
-    "noContacts": "Aucune unité étrangère détectée : rapprochez vos radars ou lancez une reconnaissance."
+    "noAgents": "Aucun agent disponible.",
+    "noContacts": "Aucune unité étrangère détectée : rapprochez vos radars ou lancez une reconnaissance.",
+    "tabs": {
+      "military": "Militaire",
+      "dossiers": "Dossiers",
+      "reports": "Rapports"
+    },
+    "cover": "Couverture",
+    "covers": {
+      "diplomatic": "Diplomatique",
+      "nonofficial": "Non officielle"
+    },
+    "access": "Accès",
+    "accessLevels": {
+      "street": "Terrain",
+      "ministry": "Ministère",
+      "staff": "État-major"
+    },
+    "agentActions": {
+      "cultivate": "Cultiver",
+      "vet": "Vérifier"
+    },
+    "targetAgent": "Agent",
+    "quick": "Actions",
+    "hardened": "Sites durcis",
+    "allReports": "Tous",
+    "sensors": {
+      "title": "Capteurs en service",
+      "sigint": "Écoute",
+      "imagery": "Imagerie",
+      "ew": "Guerre électronique"
+    },
+    "crypto": {
+      "title": "Décryptage",
+      "encryption": "Chiffrement",
+      "empty": "Aucune nation suivie : lancez une cryptanalyse ou une interception."
+    },
+    "threat": {
+      "title": "Carte des menaces",
+      "alert": "ALERTE",
+      "empty": "Aucune évaluation : le bulletin quotidien de 07:00 évalue les nations voisines, ennemies ou visées."
+    },
+    "indicators": {
+      "war": "Guerre en cours",
+      "massing": "Concentration de forces",
+      "plans": "Plans de guerre",
+      "comms": "Trafic de commandement",
+      "mobilization": "Mobilisation industrielle",
+      "covert": "Opérations clandestines"
+    },
+    "dossier": {
+      "forces": "Forces estimées",
+      "intentions": "Intentions",
+      "plansAgainst": "Plans de guerre contre",
+      "noPlans": "Aucun plan de guerre connu",
+      "economy": "Trésor estimé",
+      "research": "Recherche en cours",
+      "services": "Niveau des services",
+      "agents": "Agents sur place",
+      "reliability": "Fiabilité du dossier",
+      "empty": "Aucun dossier : vos services suivent les nations voisines, ennemies ou visées par vos opérations."
+    }
   },
   "sheet": {
     "path": "Fiche",
