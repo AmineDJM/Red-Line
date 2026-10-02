@@ -1,8 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { DAY, HOUR, type MapData, type ProvinceResource } from '@redline/shared';
+import {
+  BalanceSchema,
+  DAY,
+  HOUR,
+  RESOURCES,
+  type MapData,
+  type ProvinceResource,
+} from '@redline/shared';
 import { advanceTo, applyOrder, buildWorld, viewFor } from '../src/index.js';
+import { transferProvince } from '../src/combat/capture.js';
 import { ecoAiThink } from '../src/modules/eco/ai.js';
-import { provinceIncome } from '../src/modules/eco/budget.js';
+import { breakdown, nationalFloor, provinceIncome } from '../src/modules/eco/budget.js';
 import { buildRestriction, provinceResources } from '../src/modules/eco/buildings.js';
 import { eco } from '../src/modules/eco/state.js';
 import {
@@ -13,6 +21,7 @@ import {
   ecoGame,
   ecoMap,
   ecoWorld,
+  ecoWorldWith,
 } from './eco-fixtures.js';
 
 /**
@@ -169,5 +178,66 @@ describe('ressources des provinces : rendement, revenus, IA, rejeu', () => {
       return JSON.stringify({ a: viewFor(s, 'aaa'), m: s.nations, e: eco(s) });
     };
     expect(run()).toBe(run());
+  });
+});
+
+describe('plancher national de production', () => {
+  const floorWorld = (nationalFloor: object) =>
+    ecoWorldWith(BalanceSchema.parse({ ...ECO_BALANCE, resources: { nationalFloor } }));
+
+  it('toute nation produit au moins un minimum de chaque ressource (carte sans nourriture)', () => {
+    const s = ecoGame();
+    for (const n of ['aaa', 'bbb', 'ccc', 'ddd']) {
+      const b = breakdown(s, n);
+      for (const r of RESOURCES) expect(b.production[r], `${n} ${r}`).toBeGreaterThan(0);
+      // Aucune province ne produit de nourriture ni d'électronique : minimum absolu par défaut.
+      expect(b.production.food, n).toBe(2);
+      expect(b.production.electronics, n).toBe(1);
+      expect(b.floor.food, n).toBe(2);
+    }
+    // Tableau de bord : part due au plancher publiée, absente au-dessus du plancher.
+    const d = viewFor(s, 'aaa').economy.detail!;
+    expect(d.resources.food).toMatchObject({ production: 2, floor: 2 });
+    expect(d.resources.oil.floor).toBeUndefined();
+  });
+
+  it('formule : max(minimum absolu, part × poids économique × production mondiale)', () => {
+    const s = ecoGame({ world: floorWorld({ economyShare: 1, minPerDay: {} }) });
+    const provs = ecoMap().provinces;
+    let money = 0;
+    let oil = 0;
+    for (const p of provs) {
+      money += p.income.money;
+      oil += p.income.oil ?? 0;
+    }
+    for (const n of ['aaa', 'bbb', 'ccc', 'ddd']) {
+      const own = provs.filter((p) => p.nationId === n);
+      const weight = own.reduce((t, p) => t + p.income.money, 0) / money;
+      expect(nationalFloor(s, n).oil, n).toBeCloseTo(weight * oil, 9);
+      expect(nationalFloor(s, n).food, n).toBe(0); // production mondiale nulle, pas de minimum
+      // Production = max(provinces, plancher).
+      const plain = ecoGame({ world: floorWorld({ economyShare: 0, minPerDay: {} }) });
+      expect(breakdown(s, n).production.oil, n).toBeCloseTo(
+        Math.max(breakdown(plain, n).production.oil, weight * oil),
+        9,
+      );
+    }
+  });
+
+  it('au-dessus du plancher, la production des provinces est inchangée ; désactivable', () => {
+    const on = ecoGame();
+    const off = ecoGame({ world: floorWorld({ economyShare: 0, minPerDay: {} }) });
+    // aaa produit du pétrole (raffinerie, provinces) bien au-delà du plancher.
+    expect(breakdown(on, 'aaa').production.oil).toBe(breakdown(off, 'aaa').production.oil);
+    expect(breakdown(on, 'aaa').floor.oil).toBe(0);
+    // Désactivé : plus rien sans province productrice.
+    expect(breakdown(off, 'aaa').production.food).toBe(0);
+  });
+
+  it('le poids économique suit les provinces possédées (conquête)', () => {
+    const s = ecoGame({ world: floorWorld({ economyShare: 1, minPerDay: {} }) });
+    const before = nationalFloor(s, 'aaa').oil;
+    transferProvince(s, 'bbb-2', 'aaa');
+    expect(nationalFloor(s, 'aaa').oil).toBeGreaterThan(before);
   });
 });

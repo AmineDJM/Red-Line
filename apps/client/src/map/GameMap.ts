@@ -23,6 +23,7 @@ import {
   destination,
   distanceKm,
   strikeRangeKm,
+  airDefenseTable,
   type LngLat,
   type NationId,
   type ProvinceView,
@@ -47,6 +48,7 @@ import { fmtDuration, fmtKm, t } from '../i18n/index.js';
 import { gameNow, useGame } from '../store/game.js';
 import { pendingPoint, pendingTargetId, useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
+import { isTransportSys } from '../lib/unitActions.js';
 import { dashSequence, pulse } from './animations.js';
 import { computeBorders } from './borders.js';
 import { buildCallouts } from './calloutContent.js';
@@ -107,8 +109,10 @@ import { pionScale } from './grouping.js';
 import { SourceSync } from './sourceSync.js';
 import { SPRITES_MARK, handleMissingImage, registerSprites } from './sprites.js';
 import {
+  CITY_LABEL_LAYERS,
   LAYER_GROUPS,
   buildStyle,
+  cityTextField,
   revealOpacity,
   revealRingOpacity,
   type MapLayerGroup,
@@ -257,6 +261,8 @@ export class GameMap {
   private box: { x0: number; y0: number; el: HTMLDivElement } | null = null;
   private domListeners: [EventTarget, string, EventListener, AddEventListenerOptions?][] = [];
   private cityThresholds: [number, number] = [Infinity, Infinity];
+  /** Étiquettes de villes en texte MapLibre (villes des provinces et glyphes) : insigne de ressources possible. */
+  private cityText = false;
   /** Couche « routes » (réseau des unités terrestres). */
   private roadLayer: RoadLayer | null = null;
   /** Diagnostic : nombre de résolutions demandées par image. */
@@ -285,6 +291,7 @@ export class GameMap {
       );
     this.cityThresholds = cityClassThresholds(Object.values(w.provinces));
     const hasProvinces = Object.keys(w.provinces).length > 0;
+    this.cityText = hasProvinces && w.glyphs;
     this.map = new MlMap({
       container,
       style: buildStyle({
@@ -304,6 +311,7 @@ export class GameMap {
             })
           : null,
         provinceLabels: hasProvinces ? provinceLabelFeatures(Object.values(w.provinces)) : null,
+        resources: useMapLayers.getState().visible.resources,
       }),
       center: [15, 30],
       zoom: 2.2,
@@ -403,6 +411,13 @@ export class GameMap {
     }
     if (group === 'intel') this.refreshIntelLayer();
     if (group === 'units') this.syncPulses();
+    // Ressources des provinces : insigne en ligne devant le nom des villes (une expression, aucun
+    // calcul par image ; les images `res|…` sont dessinées une fois à la demande).
+    if (group === 'resources' && this.cityText) {
+      for (const [id, cls] of CITY_LABEL_LAYERS)
+        if (this.map.getLayer(id))
+          this.map.setLayoutProperty(id, 'text-field', cityTextField(cls, visible));
+    }
   }
 
   /**
@@ -1493,6 +1508,26 @@ export class GameMap {
           text: t('map.ring.max', { value: fmtKm(max) }),
         });
       }
+      // Défense antiaérienne : enveloppes plus courtes par catégorie (balistiques, croisière…).
+      const adt = airDefenseTable(sys);
+      if (adt?.explicit) {
+        const byR = new Map<number, string[]>();
+        for (const l of adt.lines) {
+          const r = Math.round(l.maxKm * 10) / 10;
+          if (r < 0.5 || Math.abs(r - max) < 0.5) continue;
+          byR.set(r, [...(byR.get(r) ?? []), t(`airDefense.short.${l.threat}`)]);
+        }
+        let k = 0;
+        for (const [r, cats] of [...byR].sort((a, b) => b[0] - a[0])) {
+          lines.push(circleLine(at, r, 'ad'));
+          rings.push({
+            at: destination(at, 35 + 30 * k++, r),
+            center: at,
+            text: t('airDefense.ring', { cat: cats.join('/'), value: fmtKm(r) }),
+            tone: 'cyan',
+          });
+        }
+      }
       if (sys.weaponRangeKm.min > 0.5) {
         lines.push(circleLine(at, sys.weaponRangeKm.min, 'min'));
         rings.push({
@@ -2194,19 +2229,23 @@ export class GameMap {
       e.point.y,
       (this.lastPointer === 'mouse' ? MOUSE_RADIUS : TOUCH_RADIUS) - 4,
     );
-    const enemy = (tok?.ids ?? [])
+    const foes = (tok?.ids ?? [])
       .map((id) => view?.units[id])
-      .find((u) => !!u && u.owner !== me && !u.missile);
+      .filter((u): u is UnitView => !!u && u.owner !== me);
+    const enemy = foes.find((u) => !u.missile);
     const unitIds = tg.unitIds;
     switch (tg.action) {
       case 'attack':
-      case 'intercept':
-        if (!enemy) {
+      case 'intercept': {
+        // Une salve de missiles en vol peut être visée (interception par la défense antiaérienne).
+        const target = enemy ?? foes[0];
+        if (!target) {
           ui.toast(t('game.actions.pick.needEnemy'), 'warn');
           return;
         }
-        ui.setPending({ kind: 'attack', unitIds, targetId: enemy.id });
+        ui.setPending({ kind: 'attack', unitIds, targetId: target.id });
         return;
+      }
       case 'strike':
         ui.setPending({
           kind: 'strike',
@@ -2224,6 +2263,43 @@ export class GameMap {
           recon: tg.action === 'recon',
         });
         return;
+      case 'escort': {
+        // Pile amie à escorter (une des siennes, hors de la sélection).
+        const friend = (tok?.ids ?? [])
+          .map((id) => view?.units[id])
+          .find((u) => !!u && u.owner === me && u.level === 'own' && !unitIds.includes(u.id));
+        if (!friend) {
+          ui.toast(t('game.actions.pick.needFriendly'), 'warn');
+          return;
+        }
+        ui.setPending({ kind: 'escort', unitIds, targetId: friend.id });
+        return;
+      }
+      case 'embark': {
+        const catalog = useWorld.getState().catalog;
+        const ship = (tok?.ids ?? [])
+          .map((id) => view?.units[id])
+          .find((u) => {
+            const s = u?.level === 'own' && u.systemId ? catalog[u.systemId] : undefined;
+            return !!s && isTransportSys(s);
+          });
+        if (!ship) {
+          ui.toast(t('game.actions.pick.needTransport'), 'warn');
+          return;
+        }
+        ui.setPending({ kind: 'embark', unitIds, transportId: ship.id });
+        return;
+      }
+      case 'disembark': {
+        const ship = unitIds[0]!;
+        // Clic sur le navire : débarquement sur place ; ailleurs : traversée puis débarquement.
+        if (tok?.ids.includes(ship)) {
+          ui.setPending({ kind: 'disembark', unitIds: [ship], transportId: ship });
+          return;
+        }
+        ui.setPending({ kind: 'disembark', unitIds: [ship], transportId: ship, to: at });
+        return;
+      }
       case 'blockade': {
         const pf = this.queryRendered(e.point, { layers: ['prov-fill'] })[0];
         const pid = pf ? String(pf.properties?.id ?? pf.id ?? '') : '';

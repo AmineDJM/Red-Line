@@ -41,6 +41,7 @@ import {
   type WeaponSystem,
 } from '@redline/shared';
 import { demoDomestic } from './mockDomestic.js';
+import { demoDetainees } from './mockDetainees.js';
 
 export interface WorldCtx {
   me: NationId;
@@ -1056,6 +1057,7 @@ export function enrichView(view: PlayerView, ctx: WorldCtx): WorldExtras {
       { id: 'c2', nationId: bigFive[0] ?? others[4]!, caughtAt: now - 9 * DAY, turned: true },
     ],
   };
+  demoDetainees(view.intel, me, h0 ?? others[0]!, bigFive[1] ?? others[2]!, now);
 
   // ——— Diplomatie ———
   const alliance: AllianceView = {

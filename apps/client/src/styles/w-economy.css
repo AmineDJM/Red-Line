@@ -201,3 +201,17 @@
 .ecores__list li > :last-child {
   margin-left: auto;
 }
+/* Plancher national : production domestique minimale, à part des provinces. */
+.ecores__floor {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  margin: 2px 0 0;
+  padding: 1px 0;
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-xs);
+  border-bottom: 1px dashed var(--rl-line);
+}
+.ecores__floor > :last-child {
+  margin-inline-start: auto;
+}

@@ -11,6 +11,8 @@ import { declareWar } from '../../state/war.js';
 import { airFeasible, flyTo, missionOf, noFlyAt, startScan } from './air.js';
 import { mil, milBal } from './state.js';
 import { orderStrike } from './strike.js';
+import { isExplicitAd } from './ad-profile.js';
+import { adOrderCheck, forceEngagement, orderInterceptMissile } from './airdefense.js';
 import { OK, fail, failR, isSatellite, launchCells, posOf } from './util.js';
 
 /**
@@ -22,6 +24,9 @@ import { OK, fail, failR, isSatellite, launchCells, posOf } from './util.js';
  *    aller, frappe, retour) ; contre une cible aérienne : interception (veille autour de la cible et
  *    poursuite) ;
  *  - navires sans arme directe contre la cible mais dotés de cellules : missiles de croisière ;
+ *  - défense antiaérienne à enveloppes contre une cible volante (avion, hélicoptère, drone) :
+ *    engagement par intercepteurs, refusé si la catégorie n'est pas interceptée, hors de l'enveloppe ou
+ *    magasin vide (raison précise) ; contre une salve de missiles en vol : interception (airdefense.ts) ;
  *  - autres unités : poursuite et tir en rounds de combat (comportement d'origine).
  * Les piles incapables de toucher la cible sont écartées avec leur raison ; si aucune ne peut agir,
  * l'ordre est refusé avec la raison la plus précise (défense antiaérienne contre une cible au sol,
@@ -77,7 +82,9 @@ export function orderAttack(
     units.push(u);
   }
   const tgt = state.units[o.targetId];
-  if (!tgt || tgt.off || tgt.role === 'missile') {
+  // Salve de missiles en vol : interception par les défenses capables (airdefense.ts).
+  if (tgt && !tgt.off && tgt.role === 'missile') return orderInterceptMissile(state, n, units, tgt);
+  if (!tgt || tgt.off) {
     return failR('invalid_target', 'target_invalid', 'Cible invalide.');
   }
   if (tgt.owner === n) return failR('invalid_target', 'target_friendly', 'Cible amie.');
@@ -99,6 +106,7 @@ export function orderAttack(
   const strike: Unit[] = [];
   const counts = new Map<string, number>();
   const intercept: Unit[] = [];
+  const airDefense: Unit[] = [];
   const combat: Unit[] = [];
   const plans = new Map<string, Leg[]>();
   const refused: Refusal[] = [];
@@ -132,6 +140,13 @@ export function orderAttack(
       }
       strike.push(u);
       counts.set(u.id, salvoFor(state, u, tgt, tClass));
+      continue;
+    }
+    // Défense antiaérienne à enveloppes contre une cible volante : catégorie, portée, magasin.
+    if (air && isExplicitAd(s)) {
+      const err = adOrderCheck(state, u, tgt);
+      if (err) refused.push(err);
+      else airDefense.push(u);
       continue;
     }
     const ms = m.ms[u.id];
@@ -195,7 +210,7 @@ export function orderAttack(
     combat.push(u);
     plans.set(u.id, plan.legs);
   }
-  if (!strike.length && !intercept.length && !combat.length) {
+  if (!strike.length && !intercept.length && !combat.length && !airDefense.length) {
     return refused[0] ?? failR('invalid_target', 'target_invalid', 'Cible invalide.');
   }
 
@@ -214,6 +229,7 @@ export function orderAttack(
     if (!r.ok) return r;
   }
   declareWar(state, n, tgt.owner);
+  for (const u of airDefense) forceEngagement(state, u, tgt);
   const radius = milBal(state).air.interceptRadiusKm;
   for (const u of intercept) {
     const ms = missionOf(state, u);

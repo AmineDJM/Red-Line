@@ -212,7 +212,9 @@
     },
     "settings": {
       "reduceMotion": "Réduire les animations",
-      "reduceMotionHelp": "Coupe les effets de combat (tirs, explosions), les pulsations et les tirets animés de la carte."
+      "reduceMotionHelp": "Coupe les effets de combat (tirs, explosions), les pulsations et les tirets animés de la carte.",
+      "resourceIcons": "Ressources des provinces sur la carte",
+      "resourceIconsHelp": "Icône de la ressource principale (et secondaire) devant le nom de la ville, richesse en points (1 à 3), de près seulement."
     }
   }
 }

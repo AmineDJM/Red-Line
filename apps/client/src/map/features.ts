@@ -1043,7 +1043,17 @@ export function provinceLabelFeatures(defs: Iterable<ProvinceDef>): FeatureColle
   return fc(out);
 }
 
-/** Villes des provinces : marqueur proportionné (capitale distinguée) et nom. */
+/**
+ * Image de l'insigne de ressources d'une province (`res|principale|richesse|secondaire`), affiché
+ * devant le nom de la ville ; '' pour une province « argent seulement » ou une carte sans ressources.
+ */
+export function resourceImageId(d: Pick<ProvinceDef, 'resources'>): string {
+  const [a, b] = d.resources ?? [];
+  if (!a) return '';
+  return `res|${a.type}|${a.richness}|${b?.type ?? ''}`;
+}
+
+/** Villes des provinces : marqueur proportionné (capitale distinguée), nom, ressources. */
 export function cityFeatures(
   defs: Record<string, ProvinceDef>,
   provinces: Record<string, ProvinceView> | null,
@@ -1064,6 +1074,7 @@ export function cityFeatures(
         img: `city|${cls}|${rel}`,
         mine: owner === ctx.me ? 1 : 0,
         pop: popLabel(pop),
+        res: resourceImageId(d),
         // Rang de collision : capitales et grandes villes d'abord, puis la population.
         rank: cls * 100 - Math.min(99, Math.log10(1 + pop) * 10),
       },

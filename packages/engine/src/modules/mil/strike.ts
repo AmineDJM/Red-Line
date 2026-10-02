@@ -12,12 +12,11 @@ import {
   type WeaponSystem,
 } from '@redline/shared';
 import type { OrderResult, World } from '../../api.js';
-import { destroyUnit, inflict, jammingFor, retireUnit, roundDamage } from '../../combat/combat.js';
-import { otherOf, refreshUnitPairs, unitPairKey } from '../../encounters/pairs.js';
+import { destroyUnit, inflict, retireUnit, roundDamage } from '../../combat/combat.js';
+import { refreshUnitPairs } from '../../encounters/pairs.js';
 import {
   ceasefire,
   hostile,
-  inRange,
   isLauncher,
   isRadarSensor,
   targetClassOf,
@@ -37,7 +36,6 @@ import {
   battleFor,
   countermeasure,
   engage,
-  recordInterception,
   recordLaunch,
   shot,
   timeline,
@@ -469,207 +467,10 @@ function warnLaunch(state: EngineState, M: Unit, st: MissileSt): void {
 }
 
 /* ------------------------------------------------------------------------------------------------ */
-/* Interception                                                                                     */
+/* Interception : défense antiaérienne (airdefense.ts)                                              */
 /* ------------------------------------------------------------------------------------------------ */
 
-interface InterceptorProfile {
-  pk: number;
-  magazine: number;
-  against: string[];
-}
-
-export function interceptorOf(state: EngineState, I: Unit): InterceptorProfile | null {
-  if (I.off || I.role) return null;
-  if (weaponRange(state, I).max <= 0) return null;
-  const s = sysOf(state, I);
-  if (s.interceptor) {
-    return {
-      pk: s.interceptor.pk,
-      magazine: s.interceptor.magazine,
-      against: s.interceptor.against,
-    };
-  }
-  if (s.damage.missile > 0) {
-    const b = milBal(state).intercept;
-    const against = ['cruise', 'drone', 'aircraft'];
-    if (s.damage.missile >= 12) against.push('ballistic');
-    return {
-      pk: Math.min(b.fallbackPkMax, s.damage.missile * b.fallbackPkPerDamage),
-      magazine: b.fallbackMagazine,
-      against,
-    };
-  }
-  return null;
-}
-
-function interceptHostile(state: EngineState, I: Unit, M: Unit): boolean {
-  if (I.owner === M.owner) return false;
-  const st = mil(state).msl[M.id];
-  if (atWar(state, I.owner, M.owner)) return !ceasefire(state, I.owner, M.owner);
-  // Défense d'un allié visé (même alliance) : on intercepte ce qui le vise.
-  const b = board(state);
-  const ally =
-    st?.victim && b.allianceOf[I.owner] && b.allianceOf[I.owner] === b.allianceOf[st.victim];
-  return !!ally;
-}
-
-/** Crochet onCombatRefresh : programme les engagements d'interception d'une unité. */
-export function scheduleInterceptions(state: EngineState, I: Unit): void {
-  const prof = interceptorOf(state, I);
-  if (!prof) return;
-  const m = mil(state);
-  // Parcours des salves en vol (peu nombreuses) plutôt que de toutes les paires de l'intercepteur.
-  let any = false;
-  for (const _ in m.msl) {
-    any = true;
-    break;
-  }
-  if (!any) return;
-  const w = weaponRange(state, I);
-  // Seules les salves en paire avec l'intercepteur comptent : on parcourt le plus petit des deux
-  // ensembles, puis on trie (même ordre que le parcours trié de toutes les salves).
-  const pk = state.rt.pairsOf.get(I.id);
-  let mids: string[];
-  if (pk && pk.size < Object.keys(m.msl).length) {
-    mids = [];
-    for (const key of pk) {
-      if (key.includes('#')) continue;
-      const other = otherOf(key, I.id);
-      if (m.msl[other]) mids.push(other);
-    }
-    mids.sort();
-  } else mids = Object.keys(m.msl).sort();
-  for (const mid of mids) {
-    const M = state.units[mid];
-    if (!M || M.owner === I.owner) continue;
-    const pair = state.pairs[unitPairKey(I.id, mid)];
-    if (!pair || !inRange(w, pair.d)) continue;
-    const st = m.msl[mid];
-    if (!st || !prof.against.includes(st.cls)) continue;
-    if (sightLevel(state, I.owner, M.id) === 0) continue;
-    if (!interceptHostile(state, I, M)) continue;
-    const k = `${I.id}>${M.id}`;
-    if (m.icq[k] !== undefined) continue;
-    m.icq[k] = state.time;
-    schedule(state, state.time, 'icpt', { i: I.id, m: M.id });
-  }
-}
-
-export function handleIntercept(state: EngineState, d: { i: string; m: string }): void {
-  const m = mil(state);
-  const k = `${d.i}>${d.m}`;
-  const I = state.units[d.i];
-  const M = state.units[d.m];
-  const st = M ? m.msl[M.id] : undefined;
-  if (m.icq[k] === -1) return;
-  const drop = (): void => {
-    delete m.icq[k];
-  };
-  if (!I || !M || !st || M.role !== 'missile') return drop();
-  const prof = interceptorOf(state, I);
-  if (!prof || !prof.against.includes(st.cls)) return drop();
-  const pair = state.pairs[unitPairKey(I.id, M.id)];
-  if (!pair || !inRange(weaponRange(state, I), pair.d)) return drop();
-  if (sightLevel(state, I.owner, M.id) === 0 || !interceptHostile(state, I, M)) return drop();
-  const bal = milBal(state).intercept;
-  const now = state.time;
-  const full = Math.max(1, Math.round(prof.magazine * I.count));
-  let [left, last] = m.mag[I.id] ?? [full, -1];
-  if (last >= 0 && now - last >= bal.reloadHours * HOUR) left = full;
-  if (left <= 0) {
-    // Munitions épuisées : la salve passe cette défense (compté une fois, pas de ré-engagement).
-    const b = st.battle ? m.battles[st.battle] : undefined;
-    if (b) countermeasure(b, 'saturation', M.count);
-    m.icq[k] = -1;
-    return;
-  }
-  const winMs = bal.reengageMinutes * MINUTE;
-  let [ws, used] = m.icw[I.id] ?? [now, 0];
-  // `now >= ws + winMs` (et non `now - ws >= winMs`) : l'événement de la fenêtre suivante est
-  // programmé à `ws + winMs` ; la soustraction flottante peut donner winMs − ε à cet instant précis,
-  // et l'interception se reprogrammait alors indéfiniment au même instant (boucle infinie).
-  if (now >= ws + winMs) {
-    ws = now;
-    used = 0;
-  }
-  const channels = Math.max(1, Math.round(I.count * bal.channelsPerElement)) - used;
-  if (channels <= 0) {
-    // Tous les canaux sont pris (saturation) : prochaine fenêtre.
-    m.icq[k] = ws + winMs;
-    schedule(state, ws + winMs, 'icpt', d);
-    return;
-  }
-  const msys = sysOf(state, M);
-  const isys = sysOf(state, I);
-  const jam = jammingFor(state, M) * (1 - isys.ew.jamResistance);
-  let pk =
-    prof.pk *
-    (1 - (msys.missile?.evasion ?? 0)) *
-    modifier(state, I.owner, 'missiles.interception') *
-    unitModifier(state, I, 'missiles.interception') *
-    (1 - jam);
-  pk = Math.max(0, Math.min(0.98, pk));
-  const avail = Math.min(left, channels, M.count * Math.max(1, Math.round(bal.shotsPerMissile)));
-  let fired = 0;
-  let killed = 0;
-  let remaining = M.count;
-  for (let pass = 0; pass < Math.max(1, Math.round(bal.shotsPerMissile)) && fired < avail; pass++) {
-    const targets = remaining;
-    for (let j = 0; j < targets && fired < avail; j++) {
-      fired++;
-      if (roll(state) < pk) {
-        remaining--;
-        killed++;
-      }
-    }
-  }
-  m.mag[I.id] = [left - fired, now];
-  m.icw[I.id] = [ws, used + fired];
-  const ipos = posOf(state, I);
-  const mpos = posOf(state, M);
-  const b = st.battle ? m.battles[st.battle] : battleFor(state, I.owner, M.owner, mpos);
-  if (b) {
-    engage(state, b, I);
-    countermeasure(b, 'interception', killed);
-    recordInterception(b, I.owner, M.owner, killed);
-    countermeasure(b, 'evasion', fired - killed);
-    if (jam > 0) countermeasure(b, 'jamming', 1);
-    shot(state, b, ipos, mpos, 'missile', killed > 0, I);
-    timeline(
-      state,
-      b,
-      `${isys.name} (${I.owner.toUpperCase()}) : ${killed}/${M.count} ${msys.name} interceptés (${fired} tirs)`,
-      [I],
-    );
-    touch(state, b);
-  }
-  statOf(state, I.owner).intercepted += killed;
-  I.xp += killed * msys.hp;
-  if (killed >= M.count) {
-    delete m.icq[k];
-    destroyUnit(state, M, I);
-    return;
-  }
-  if (killed > 0) {
-    M.count -= killed;
-    M.hp = Math.min(M.hp, M.count * msys.hp);
-    M.maxHp = M.count * msys.hp;
-    state.rt.dirtyCombat.add(M.id);
-  }
-  const next = now + winMs;
-  if (next < st.impactAt) {
-    m.icq[k] = next;
-    schedule(state, next, 'icpt', d);
-  } else drop();
-}
-
-/** Nettoyage des engagements d'une salve disparue. */
-export function forgetMissile(state: EngineState, id: string): void {
-  const m = mil(state);
-  delete m.msl[id];
-  const suffix = `>${id}`;
-  for (const k of Object.keys(m.icq)) if (k.endsWith(suffix)) delete m.icq[k];
-}
+export { forgetMissile, handleIntercept, scheduleInterceptions } from './airdefense.js';
 
 /* ------------------------------------------------------------------------------------------------ */
 /* Impact                                                                                           */

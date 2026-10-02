@@ -6,6 +6,7 @@ import { ceasefire, targetClassOf } from '../../encounters/profile.js';
 import { board } from '../kit.js';
 import type { EngineModule, ModEvent } from '../types.js';
 import { combatAi } from './ai.js';
+import { airDefenseAi, handleAdReload } from './airdefense.js';
 import { orderAttack } from './attack.js';
 import {
   handleBingo,
@@ -57,6 +58,19 @@ import {
   resolveSpecialOp,
 } from './special.js';
 import { emptyMil, mil, milBal } from './state.js';
+import { handleEscort, orderEscort } from './escort.js';
+import { captureHint } from './capture-hint.js';
+import {
+  embarkedMove,
+  handleLand,
+  handleLoad,
+  landingModifier,
+  orderDisembark,
+  orderEmbark,
+  transportArrived,
+  transportGone,
+  transportMoved,
+} from './transport.js';
 import { countLoss, elementsLost, fillStats } from './stats.js';
 import {
   expose,
@@ -91,6 +105,8 @@ function onEvent(state: EngineState, ev: ModEvent): void {
       return handleScan(state, d);
     case 'icpt':
       return handleIntercept(state, d);
+    case 'adrl':
+      return handleAdReload(state, d);
     case 'opstep':
       return handleOpStep(state, d);
     case 'bclose':
@@ -113,6 +129,12 @@ function onEvent(state: EngineState, ev: ModEvent): void {
       return handleTick(state);
     case 'sites':
       return reconcileSites(state);
+    case 'esc':
+      return handleEscort(state, d);
+    case 'trLoad':
+      return handleLoad(state, d);
+    case 'trLand':
+      return handleLand(state, d);
   }
 }
 
@@ -168,7 +190,8 @@ function onSpawn(state: EngineState, u: Unit): void {
 function onGone(state: EngineState, u: Unit): void {
   trackEarlyWarning(state, u, false);
   const m = mil(state);
-  if (u.role === 'missile') forgetMissile(state, u.id);
+  // Salve, aéronef visé ou batterie : engagements de défense antiaérienne en cours oubliés.
+  forgetMissile(state, u.id);
   // Aéronefs embarqués : perdus avec leur porteur (parcours seulement pour une unité porteuse).
   if (carrierCapacity(sysOf(state, u)) > 0) {
     for (const id of sortedKeys(m.ms)) {
@@ -187,6 +210,7 @@ function onGone(state: EngineState, u: Unit): void {
     }
   }
   blockadeUnitChanged(state, u, true);
+  transportGone(state, u);
   delete m.ms[u.id];
   delete m.reload[u.id];
   delete m.cells[u.id];
@@ -234,6 +258,9 @@ export const milModule: EngineModule = {
     specialOp: h<'specialOp'>(orderSpecialOp),
     split: h<'split'>(orderSplit),
     merge: h<'merge'>(orderMerge),
+    escort: h<'escort'>(orderEscort),
+    embark: h<'embark'>(orderEmbark),
+    disembark: h<'disembark'>(orderDisembark),
     appointGeneral: h<'appointGeneral'>(orderAppoint),
     delegate: h<'delegate'>(orderDelegate),
     nuclearAuth: h<'nuclearAuth'>(orderNuclearAuth),
@@ -280,6 +307,7 @@ export const milModule: EngineModule = {
     onMovementChanged(state, u) {
       onAirMovement(state, u);
       blockadeUnitChanged(state, u, false);
+      transportMoved(state, u);
     },
     onArrived(state, u) {
       if (u.role === 'missile') {
@@ -290,6 +318,8 @@ export const milModule: EngineModule = {
       if (!state.units[u.id]) return;
       onMissionArrived(state, u);
       if (state.units[u.id]) blockadeUnitChanged(state, u, false);
+      if (state.units[u.id]) transportArrived(state, u);
+      if (state.units[u.id] && !u.chasing) captureHint(state, u);
     },
     onCombatRefresh(state, u) {
       scheduleInterceptions(state, u);
@@ -299,12 +329,17 @@ export const milModule: EngineModule = {
       if (order.kind === 'move' || order.kind === 'stop') endMissions(state, n, order);
     },
     interceptOrder(state, n, order) {
-      if (order.kind === 'move') return interceptMove(state, n, order);
+      if (order.kind === 'move')
+        return embarkedMove(state, n, order) ?? interceptMove(state, n, order);
       if (order.kind === 'attack') return orderAttack(state, n, order);
       return null;
     },
     unitModifier(state, u, key) {
-      return generalModifier(state, u, key) * siloModifier(state, u, key);
+      return (
+        generalModifier(state, u, key) *
+        siloModifier(state, u, key) *
+        landingModifier(state, u, key)
+      );
     },
     onProvinceCaptured(state, pid, from, to) {
       // Matériel saisi : unités créées pour le preneur pendant la saisie (rapport de bataille).
@@ -363,6 +398,7 @@ export const milModule: EngineModule = {
     },
     aiThink(state, n) {
       combatAi(state, n);
+      airDefenseAi(state, n);
     },
     stats: fillStats,
   },

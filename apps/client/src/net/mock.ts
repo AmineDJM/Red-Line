@@ -45,6 +45,7 @@ import {
 import { demoBattleReport } from '../api/mockRest.js';
 import { Emitter, type ChatChannel, type GameConnection, type OrderOutcome } from './connection.js';
 import { demoReply, enrichView } from './mockWorld.js';
+import { demoDetaineeOrder } from './mockDetainees.js';
 import { demoDomesticOrder } from './mockDomestic.js';
 import { useWorld } from '../store/world.js';
 
@@ -651,7 +652,7 @@ export class MockGameConnection extends Emitter implements GameConnection {
     }
     const meta = this.applyPhase2(order, t);
     if (meta) return meta;
-    if (!('unitIds' in order)) return { ok: false, error: 'unknown' };
+    if (!('unitIds' in order) || !order.unitIds) return { ok: false, error: 'unknown' };
     const units = order.unitIds.map((id: string) => this.view.units[id]);
     if (units.some((u) => !u)) return { ok: false, error: 'unknown_unit' };
     if (units.some((u) => u!.owner !== me)) return { ok: false, error: 'not_owner' };
@@ -720,6 +721,11 @@ export class MockGameConnection extends Emitter implements GameConnection {
     if (dom) {
       if ('error' in dom) return { ok: false, error: dom.error as OrderOutcome['error'] };
       this.push(dom);
+      return ok;
+    }
+    const dz = demoDetaineeOrder(v, order, t, me);
+    if (dz) {
+      this.push(dz);
       return ok;
     }
     switch (order.kind) {

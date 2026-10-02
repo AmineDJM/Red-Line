@@ -1,6 +1,7 @@
 import { distanceKm, type LngLat, type NationId } from '@redline/shared';
 import { mergeRefusal } from '../modules/mil/stack-orders.js';
 import { mil } from '../modules/mil/state.js';
+import { inTransport } from '../modules/mil/transport.js';
 import { nationUnits, provincesOf, sysOf, unitPosAt, warsOf } from '../state/access.js';
 import { mixClassOf, stackBal } from '../state/stack.js';
 import type { EngineState, Unit } from '../state/types.js';
@@ -34,7 +35,7 @@ export function manageStacks(state: EngineState, n: NationId, atWarNow: boolean)
   const land: Unit[] = [];
   for (const id of nationUnits(state, n)) {
     const u = state.units[id]!;
-    if (u.off || u.role || mil(state).fixedOf[u.id]) continue;
+    if (u.off || u.role || mil(state).fixedOf[u.id] || inTransport(state, u.id)) continue;
     const s = sysOf(state, u);
     if (s.movement !== 'land' || s.speedKmh <= 0) continue;
     // Une pile mixte ne réunit que des matériels mélangeables.

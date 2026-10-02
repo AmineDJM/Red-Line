@@ -10,7 +10,8 @@ import { useWorld } from '../store/world.js';
 
 /**
  * Barre d'ordres de la sélection : Déplacer, Attaquer, Frapper, Intercepter, Patrouiller,
- * Reconnaissance, Blocus, Retour / Ravitailler, Arrêter. Seules les actions valides sont actives ; les
+ * Reconnaissance, Blocus, Escorter, Embarquer (pile terrestre près d'un navire de transport ami),
+ * Débarquer (navire de transport chargé), Retour / Ravitailler, Arrêter. Seules les actions valides sont actives ; les
  * autres restent visibles, grisées, avec la raison en info-bulle. Raccourcis clavier (lettre affichée)
  * quand une sélection existe ; les actions ciblées passent en mode ciblage (curseur en croix, bandeau
  * d'aide, Échap pour annuler), puis la barre de confirmation (aperçu, distance, portée).
@@ -59,7 +60,12 @@ export function UnitOrders({
   const { t } = useTranslation();
   const catalog = useWorld((s) => s.catalog);
   const targeting = useUi((s) => s.targeting);
-  const actions = useMemo(() => unitActions(units, catalog), [units, catalog]);
+  const all = useGame((s) => s.view?.units);
+  const embarkKm = useWorld((s) => s.balance?.military?.transport?.embarkKm);
+  const actions = useMemo(
+    () => unitActions(units, catalog, { units: all, embarkKm }).filter((a) => !a.hidden),
+    [units, catalog, all, embarkKm],
+  );
   const run = useRunAction(onTarget);
 
   useEffect(() => {

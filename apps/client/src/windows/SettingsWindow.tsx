@@ -10,6 +10,7 @@ import {
   notificationsEnabled,
   notificationsSupported,
 } from '../lib/push.js';
+import { useMapLayers } from '../map/layers.js';
 import { useMapPrefs } from '../map/prefs.js';
 import { navigate } from '../router.js';
 import type { WindowContentProps } from '../shell/WindowHost.js';
@@ -23,6 +24,8 @@ export function SettingsWindow({ frame }: WindowContentProps) {
   const setLegendOpen = useUi((s) => s.setLegendOpen);
   const reduceMotion = useMapPrefs((s) => s.reduceMotion);
   const setReduceMotion = useMapPrefs((s) => s.setReduceMotion);
+  const resourceIcons = useMapLayers((s) => s.visible.resources);
+  const setLayer = useMapLayers((s) => s.set);
   const setTutorialStep = useUi((s) => s.setTutorialStep);
   const closeWindow = useUi((s) => s.closeWindow);
   const toast = useUi((s) => s.toast);
@@ -58,6 +61,12 @@ export function SettingsWindow({ frame }: WindowContentProps) {
               onChange={setReduceMotion}
               label={t('map.settings.reduceMotion')}
               description={t('map.settings.reduceMotionHelp')}
+            />
+            <Toggle
+              checked={resourceIcons}
+              onChange={(on) => setLayer('resources', on)}
+              label={t('map.settings.resourceIcons')}
+              description={t('map.settings.resourceIconsHelp')}
             />
           </div>
         </Panel>

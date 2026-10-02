@@ -19,6 +19,7 @@ import type { EngineState, Unit } from '../state/types.js';
 import { otherOf, removeUnitPairs } from '../encounters/pairs.js';
 import { hostile, inRange, isEmitting, targetClassOf, weaponRange } from '../encounters/profile.js';
 import { milBal } from '../modules/mil/state.js';
+import { isExplicitAd, threatOf } from '../modules/mil/ad-profile.js';
 import { vecDistKm } from '../geo/sphere.js';
 import { setMovement } from '../movement/movement.js';
 import { planUnitMove } from '../movement/plan-unit.js';
@@ -58,6 +59,9 @@ function validTargets(state: EngineState, u: Unit): TargetCand[] {
   if (w.max <= 0) return [];
   if (isEmbarked(state, u, state.time)) return [];
   const sys = sysOf(state, u);
+  // Défense antiaérienne à enveloppes : ses cibles aériennes sont engagées par intercepteurs (module
+  // mil, airdefense.ts), jamais en rounds de combat.
+  const adx = isExplicitAd(sys);
   const out: (TargetCand & { key: string })[] = [];
   const keys = state.rt.pairsOf.get(u.id);
   if (!keys) return out;
@@ -69,6 +73,7 @@ function validTargets(state: EngineState, u: Unit): TargetCand[] {
     if (!inRange(w, pair.d)) continue;
     const o = state.units[otherOf(key, u.id)];
     if (!o || o.off || o.role === 'missile') continue;
+    if (adx && threatOf(state, o)) continue;
     if (o.mix ? !canHarm(state, sys, o) : sys.damage[targetClassOf(state, o)] <= 0) continue;
     if (sightLevel(state, u.owner, o.id) === 0) continue;
     if (u.stance === 'hold' && u.target !== o.id) continue;

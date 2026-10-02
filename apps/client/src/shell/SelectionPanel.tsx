@@ -7,13 +7,17 @@ import {
   Gauge,
   Icon,
   KeyValue,
+  ProgressBar,
   Segmented,
   UnitMarker,
   WeaponPhoto,
   formatInt,
   pictogramFor,
 } from '@redline/ui';
+import { distanceKm } from '@redline/shared';
 import { fmtDuration, fmtKm } from '../i18n/index.js';
+import { canCaptureUnit } from '../lib/unitActions.js';
+import { unitPosition } from '../map/interpolation.js';
 import { fuelLeft, nationName, relationOf } from '../lib/game.js';
 import { photoFor, usePhotos } from '../lib/photos.js';
 import { useGame } from '../store/game.js';
@@ -27,6 +31,7 @@ import { isMixed, stackSummary } from '../lib/stacks.js';
 import { StackActions, StackComposition } from './StackActions.js';
 import { orderError } from '../lib/loc.js';
 import { UnitOrders } from './UnitOrders.js';
+import { AirDefenseChips } from '../components/AirDefenseCaps.js';
 
 const STANCES: UnitStance[] = ['hold', 'defend', 'aggressive'];
 
@@ -75,6 +80,22 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
       value:
         `${formatInt(u.count)} ${mixed ? t('stacks.elements') : (sys?.unitLabel ?? '')}`.trim(),
     });
+  // Défense antiaérienne : intercepteurs restants (en tête : visible aussi sur mobile).
+  if (own && u.airDefense)
+    rows.push({
+      label: t('airDefense.interceptors'),
+      value:
+        `${formatInt(u.airDefense.ammo)}/${formatInt(u.airDefense.max)}` +
+        (u.airDefense.fullAt && u.airDefense.fullAt > now
+          ? ` · ${t('airDefense.fullIn', { value: fmtDuration(u.airDefense.fullAt - now) })}`
+          : ''),
+      tone:
+        u.airDefense.ammo < u.airDefense.max * 0.25
+          ? 'red'
+          : u.airDefense.ammo < u.airDefense.max * 0.5
+            ? 'amber'
+            : 'cyan',
+    });
   if (u.status)
     rows.push({
       label: t('game.selection.status'),
@@ -89,9 +110,11 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
     });
   if (own && u.mission && u.mission.kind !== 'none') {
     const fuel = fuelLeft(u.mission, now);
+    const esc = u.mission.escortId ? view?.units[u.mission.escortId] : undefined;
+    const escName = esc?.systemId ? (catalog[esc.systemId]?.name ?? esc.id) : esc?.id;
     rows.push({
       label: t('game.selection.mission'),
-      value: `${t(`army.mission.${u.mission.kind}`)}${fuel !== null ? ` · ${t('army.fuel', { value: fuel.toFixed(1) })}` : ''}`,
+      value: `${t(`army.mission.${u.mission.kind}`)}${escName ? ` · ${escName}` : ''}${fuel !== null ? ` · ${t('army.fuel', { value: fuel.toFixed(1) })}` : ''}`,
       tone: fuel !== null && fuel < 1 ? 'red' : undefined,
     });
   }
@@ -104,6 +127,21 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
   if (own && u.mission?.ammo !== undefined && u.mission.ammo !== null)
     rows.push({ label: t('game.selection.ammo'), value: formatInt(u.mission.ammo) });
   if (general) rows.push({ label: t('game.selection.general'), value: general.name });
+  // Transport naval : navire porteur, embarquement en cours.
+  if (own && u.transportId) {
+    const ship = view?.units[u.transportId];
+    rows.push({
+      label: t('game.selection.aboard'),
+      value: ship?.systemId ? (catalog[ship.systemId]?.name ?? ship.id) : u.transportId,
+      tone: 'cyan',
+    });
+  }
+  if (own && u.loading && u.loading.doneAt > now)
+    rows.push({
+      label: t('game.selection.loading'),
+      value: fmtDuration(u.loading.doneAt - now),
+      tone: 'amber',
+    });
   if (sys && u.level !== 'detected') {
     const range = summary?.rangeKm ?? sys.weaponRangeKm.max;
     const speed = summary?.speedKmh ?? sys.speedKmh;
@@ -213,6 +251,9 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
         </div>
       ) : null}
       <KeyValue items={compact ? rows.slice(0, 4) : rows} columns={compact ? 1 : 1} />
+      {own ? <CaptureStatus u={u} now={now} /> : null}
+      {own && u.cargo ? <CargoPanel u={u} now={now} compact={compact} /> : null}
+      {sys && u.level !== 'detected' && !compact ? <AirDefenseChips system={sys} /> : null}
       {!compact ? <StackComposition u={u} /> : null}
       {own ? (
         <>
@@ -280,6 +321,103 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
         </div>
       ) : null}
     </section>
+  );
+}
+
+/**
+ * Capture vue depuis la pile : arrêtée sur le point de capture d'une province étrangère, la pile
+ * affiche la progression (barre et compte à rebours) ou la raison pour laquelle rien ne se passe.
+ */
+function CaptureStatus({ u, now }: { u: UnitView; now: number }) {
+  const { t } = useTranslation();
+  const view = useGame((s) => s.view);
+  const me = useGame((s) => s.me);
+  const catalog = useWorld((s) => s.catalog);
+  const provinces = useWorld((s) => s.provinces);
+  const sys = u.systemId ? catalog[u.systemId] : undefined;
+  if (!view || !sys || sys.movement !== 'land' || u.transportId) return null;
+  const at = unitPosition(u, now);
+  const def = Object.values(provinces).find((p) => distanceKm(p.cityPoint, at) <= 5);
+  const p = def ? view.provinces[def.id] : undefined;
+  if (!def || !p || p.owner === me) return null;
+  const city = def.cityName ?? def.name;
+  if (p.capture && p.capture.by === me) {
+    const span = Math.max(1, p.capture.completesAt - p.capture.startedAt);
+    const f = Math.max(0, Math.min(1, (now - p.capture.startedAt) / span));
+    return (
+      <div className="selpanel__capture" data-testid="unit-capture">
+        <span>{t('game.capture.progress', { city })}</span>
+        <ProgressBar
+          value={f}
+          tone="violet"
+          trailing={fmtDuration(Math.max(0, p.capture.completesAt - now))}
+          label={t('province.capture')}
+        />
+      </div>
+    );
+  }
+  if (u.status === 'moving') return null;
+  const why = !canCaptureUnit(u, catalog)
+    ? 'noCapturer'
+    : relationOf(view, p.owner) !== 'war'
+      ? 'noWar'
+      : 'defended';
+  return (
+    <p className="selpanel__capture selpanel__capture--blocked" data-testid="unit-capture-blocked">
+      <Icon name="warning" size={13} /> {t(`game.capture.${why}`, { city })}
+    </p>
+  );
+}
+
+/** Cargaison d'un navire de transport : places, troupes à bord, embarquements, débarquement. */
+function CargoPanel({ u, now, compact }: { u: UnitView; now: number; compact: boolean }) {
+  const { t } = useTranslation();
+  const view = useGame((s) => s.view);
+  const catalog = useWorld((s) => s.catalog);
+  const c = u.cargo!;
+  const name = (id: string) => {
+    const x = view?.units[id];
+    const s = x?.systemId ? catalog[x.systemId] : undefined;
+    return `${s?.name ?? id}${x?.count !== undefined ? ` ×${formatInt(x.count)}` : ''}`;
+  };
+  return (
+    <div className="selpanel__cargo" data-testid="ship-cargo">
+      <div className="selpanel__cargohead">
+        <span className="selpanel__label">{t('game.cargo.title')}</span>
+        <span>
+          {t('game.cargo.places', { used: formatInt(c.used), capacity: formatInt(c.capacity) })}
+        </span>
+      </div>
+      <Gauge
+        value={c.capacity > 0 ? c.used / c.capacity : 0}
+        tone="auto"
+        cells={compact ? 10 : 16}
+        label={t('game.cargo.title')}
+      />
+      {c.unitIds.length === 0 && !c.loadingIds?.length ? (
+        <p className="selpanel__hint">{t('game.cargo.empty')}</p>
+      ) : (
+        <ul className="selpanel__cargolist">
+          {c.unitIds.map((id) => (
+            <li key={id}>
+              <Icon name="box" size={12} /> {name(id)}
+            </li>
+          ))}
+          {(c.loadingIds ?? []).map((id) => (
+            <li key={id} className="selpanel__cargo--loading">
+              <Icon name="clock" size={12} /> {name(id)} · {t('game.cargo.loading')}
+            </li>
+          ))}
+        </ul>
+      )}
+      {c.landing ? (
+        <p className="selpanel__hint">
+          {c.landing.doneAt
+            ? t('game.cargo.landing', { eta: fmtDuration(Math.max(0, c.landing.doneAt - now)) })
+            : t('game.cargo.sailing')}
+        </p>
+      ) : null}
+    </div>
   );
 }
 

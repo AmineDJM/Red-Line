@@ -361,7 +361,9 @@
       "owner": "Negara",
       "multi_other": "{{count}} dipilih",
       "ready": "Tersedia dalam",
-      "ammo": "Amunisi"
+      "ammo": "Amunisi",
+      "aboard": "Di atas kapal",
+      "loading": "Naik kapal"
     },
     "orders": {
       "moveTitle": "Perintah bergerak",
@@ -399,6 +401,15 @@
       "patrolTitle": "Perintah patroli",
       "reconTitle": "Misi pengintaian",
       "blockadeTitle": "Perintah blokade",
+      "escortTitle": "Kawal",
+      "embarkTitle": "Naikkan",
+      "disembarkTitle": "Pendaratan amfibi",
+      "disembarkHereTitle": "Turunkan di sini",
+      "places": "Tempat",
+      "placesValue": "{{need}} diperlukan · {{free}} kosong",
+      "aboard": "Pasukan di atas kapal",
+      "overCapacity": "Kapasitas terlampaui: pecah pasukan.",
+      "noCapturer": "Tidak ada unit dalam pilihan ini yang dapat merebut: perlu infanteri atau lapis baja.",
       "radius": "Radius",
       "reasons": {
         "target_invalid": "Sasaran tidak valid.",
@@ -412,7 +423,23 @@
         "aircraft_cooldown": "Pesawat sedang disiapkan di darat (siap dalam {{min}} menit).",
         "partial": "Perintah dikirim; {{count}} satuan dikecualikan: {{detail}}",
         "munition_use_strike": "Amunisi: gunakan perintah serangan.",
-        "ceasefire": "Gencatan senjata berlaku."
+        "ceasefire": "Gencatan senjata berlaku.",
+        "ad_cannot_engage": "{{name}} tidak dapat mencegat {{cat}}.",
+        "ad_out_of_range": "{{name}} — di luar jangkauan: {{dist}} km, jangkauan {{min}}–{{max}} km terhadap {{cat}}.",
+        "ad_no_ammo": "{{name}}: pencegat habis, sedang mengisi ulang.",
+        "escort_self": "Pasukan tidak dapat mengawal dirinya sendiri.",
+        "escort_target_invalid": "Sasaran kawalan tidak valid: pilih salah satu pasukan bergerak Anda.",
+        "escort_incapable": "{{name}} tidak dapat mengawal (tanpa senjata).",
+        "escort_domain": "{{name}} tidak dapat mengikuti pasukan ini (kapal dengan kapal, pasukan darat dengan pasukan darat).",
+        "transport_not_ship": "{{name}} tidak dapat mengangkut pasukan.",
+        "transport_not_land": "{{name}}: hanya pasukan darat yang dapat naik kapal.",
+        "transport_capacity": "Kapasitas terlampaui: perlu {{need}} tempat, {{free}} kosong dari {{cap}}. Pecah pasukan.",
+        "transport_too_far": "{{name}}: terlalu jauh dari kapal ({{dist}} km, paling jauh {{max}} km).",
+        "transport_moving": "Kapal harus berhenti.",
+        "transport_no_shore": "Tidak ada pantai yang dapat digunakan di dekatnya: dekatkan kapal ke pelabuhan atau jalan pesisir.",
+        "transport_empty": "Tidak satu pun pasukan ini berada di atas kapal.",
+        "transport_embarked": "{{name}}: pasukan di atas kapal, gunakan \"Turunkan\" pada kapal.",
+        "transport_busy": "{{name}}: sudah dalam pengangkutan."
       },
       "classes": {
         "infantry": "infanteri",
@@ -424,6 +451,14 @@
         "submarine": "kapal selam",
         "missile": "rudal",
         "building": "instalasi"
+      },
+      "threats": {
+        "aircraft": "pesawat",
+        "helicopter": "helikopter",
+        "drone": "drone",
+        "cruise_missile": "rudal jelajah",
+        "ballistic_missile": "rudal balistik",
+        "hypersonic": "rudal hipersonik"
       }
     },
     "status": {
@@ -486,6 +521,9 @@
       "patrol": "Patroli",
       "recon": "Pengintaian",
       "blockade": "Blokade",
+      "escort": "Kawal",
+      "embark": "Naikkan",
+      "disembark": "Turunkan",
       "rtb": "Kembali",
       "rtbAir": "Kembali ke pangkalan",
       "rtbSea": "Kembali ke pelabuhan",
@@ -499,6 +537,10 @@
         "airSeaOnly": "Patroli hanya untuk pesawat dan kapal.",
         "noRecon": "Pengintaian hanya untuk drone dan pesawat intai.",
         "seaOnly": "Blokade hanya untuk kapal.",
+        "noEscort": "Pengawalan hanya untuk unit bersenjata dan bergerak.",
+        "noLand": "Hanya pasukan darat yang dapat naik kapal.",
+        "noTransport": "Tidak ada kapal angkut kawan yang berhenti di dekatnya.",
+        "noCargo": "Tidak ada pasukan di atas kapal ini.",
         "idle": "Tidak ada yang dihentikan: satuan sudah diam.",
         "none": "Aksi tidak tersedia."
       },
@@ -510,9 +552,28 @@
         "patrol": "klik pusat area patroli.",
         "recon": "klik area yang akan diterbangi.",
         "blockade": "klik provinsi pesisir musuh.",
+        "escort": "klik salah satu pasukan Anda untuk dikawal.",
+        "embark": "klik kapal angkut.",
+        "disembark": "klik pantai tempat mendarat, atau kapal untuk menurunkan di tempat.",
         "needEnemy": "Pilih satuan musuh yang terlihat.",
-        "needPort": "Pilih provinsi pesisir asing."
+        "needPort": "Pilih provinsi pesisir asing.",
+        "needFriendly": "Pilih salah satu pasukan Anda.",
+        "needTransport": "Pilih salah satu kapal angkut Anda."
       }
+    },
+    "capture": {
+      "progress": "Merebut {{city}}",
+      "noCapturer": "{{city}}: pasukan ini tidak dapat merebut (perlu infanteri atau lapis baja).",
+      "noWar": "{{city}}: tidak berperang dengan pemiliknya, tidak ada perebutan.",
+      "defended": "{{city}}: ada pasukan bertahan, perebutan dimulai setelah mereka diusir."
+    },
+    "cargo": {
+      "title": "Muatan",
+      "places": "{{used}} / {{capacity}} tempat",
+      "empty": "Tidak ada pasukan di atas kapal.",
+      "loading": "naik kapal",
+      "landing": "Mendarat dalam {{eta}}",
+      "sailing": "Menyeberang ke zona pendaratan"
     }
   },
   "province": {
@@ -856,13 +917,12 @@
     "ui": {
       "build": "Bangun",
       "upgrade": "Tingkat {{level}}",
+      "upgradeTo": "Tingkatkan ke level {{level}}",
       "upgrading": "Peningkatan T{{level}}",
       "repair": "Perbaiki",
       "repairing": "Perbaikan",
       "health": "Kondisi bangunan",
       "operational": "Operasional",
-      "already": "Sudah dibangun",
-      "coastalOnly": "Hanya provinsi pesisir",
       "costTip": "Biaya {{cost}} · durasi {{time}}",
       "buildStarted": "Konstruksi dimulai: {{name}}",
       "upgradeStarted": "Peningkatan dimulai: {{name}} (T{{level}})",
@@ -876,6 +936,11 @@
         "no_resource": "Sumber daya tidak ada: {{resource}}",
         "coastal_only": "Hanya provinsi pesisir",
         "not_urban": "Butuh pusat elektronik atau kota besar"
+      },
+      "hidden": {
+        "no_resource": "Tidak tersedia di sini, tidak ada cadangan: {{list}}.",
+        "coastal_only": "Tidak tersedia di sini, provinsi tanpa pantai: {{list}}.",
+        "not_urban": "Tidak tersedia di sini, bukan pusat elektronik maupun kota besar: {{list}}."
       }
     },
     "fortification": "Benteng"
@@ -910,7 +975,8 @@
     "genericOrigin": "Generik"
   },
   "units": {
-    "km": "{{value}} km"
+    "km": "{{value}} km",
+    "kmRange": "{{min}}–{{max}} km"
   },
   "map": {
     "attribution": "Citra NASA Blue Marble · Natural Earth",
@@ -1125,7 +1191,9 @@
     },
     "settings": {
       "reduceMotion": "Kurangi animasi",
-      "reduceMotionHelp": "Mematikan efek pertempuran (tembakan, ledakan), denyut, dan garis putus animasi peta."
+      "reduceMotionHelp": "Mematikan efek pertempuran (tembakan, ledakan), denyut, dan garis putus animasi peta.",
+      "resourceIcons": "Sumber daya provinsi di peta",
+      "resourceIconsHelp": "Ikon sumber daya utama (dan sekunder) di depan nama kota, kekayaan dalam titik (1 sampai 3), hanya dari dekat."
     }
   },
   "legal": {
@@ -1313,7 +1381,9 @@
       "double": "agen ganda",
       "exfiltrated": "dievakuasi",
       "captured": "tertangkap",
-      "expelled": "Diusir"
+      "expelled": "Diusir",
+      "executed": "Dieksekusi",
+      "released": "Dibebaskan"
     },
     "ops": {
       "infiltrate_spy": "Susupkan mata-mata",
@@ -1393,7 +1463,8 @@
     "tabs": {
       "military": "Militer",
       "dossiers": "Berkas negara",
-      "reports": "Laporan"
+      "reports": "Laporan",
+      "detainees": "Tahanan"
     },
     "cover": "Penyamaran",
     "covers": {
@@ -1448,6 +1519,173 @@
       "agents": "Agen di lapangan",
       "reliability": "Keandalan berkas",
       "empty": "Belum ada berkas: dinas Anda memantau negara tetangga, musuh, atau sasaran operasi Anda."
+    },
+    "dz": {
+      "title": "Tahanan",
+      "subtitle": "Tahanan, agen yang ditahan, negosiasi",
+      "ourRegime": "Rezim kita: {{regime}}",
+      "ours": "Tahanan kita",
+      "abroad": "Agen kita yang ditahan di luar negeri",
+      "negotiations": "Negosiasi",
+      "relations": "Hubungan bilateral",
+      "noDetainees": "Tidak ada agen asing yang ditahan.",
+      "noAbroad": "Tidak ada agen kita yang ditahan di luar negeri.",
+      "noSwaps": "Tidak ada negosiasi yang berjalan.",
+      "noRelations": "Tidak ada hubungan yang terdampak kasus spionase.",
+      "defaultHint": "Tanpa keputusan sebelum tenggat: penahanan sementara (tekanan diplomatik terus-menerus).",
+      "kinds": {
+        "diplomat": "Perwira dengan kedok diplomatik",
+        "illegal": "Perwira dengan kedok nonresmi",
+        "source": "Sumber lokal",
+        "double": "Agen ganda"
+      },
+      "kindsShort": {
+        "diplomat": "Diplomat",
+        "illegal": "Ilegal",
+        "source": "Sumber",
+        "double": "Ganda"
+      },
+      "status": {
+        "pending": "Menunggu keputusan",
+        "held": "Penahanan sementara",
+        "jailed": "Divonis",
+        "expelled": "Diusir",
+        "returned": "Dipulangkan",
+        "executed": "Dieksekusi",
+        "released": "Dibebaskan",
+        "exchanged": "Ditukar",
+        "served": "Hukuman selesai",
+        "turned": "Dibelot"
+      },
+      "fate": {
+        "held": "Ditahan",
+        "interrogation": "Diinterogasi",
+        "jailed": "Divonis",
+        "expelled": "Diusir",
+        "returned": "Dipulangkan",
+        "executed": "Dieksekusi",
+        "released": "Dibebaskan",
+        "exchanged": "Ditukar",
+        "served": "Hukuman selesai"
+      },
+      "regimes": {
+        "democracy": "Demokrasi",
+        "hybrid": "Rezim hibrida",
+        "authoritarian": "Rezim otoriter"
+      },
+      "regimesShort": {
+        "democracy": "demokrasi",
+        "hybrid": "hibrida",
+        "authoritarian": "otoriter"
+      },
+      "actions": {
+        "arrest": "Tangkap",
+        "interrogate": "Interogasi",
+        "expel": "Usir",
+        "return": "Pulangkan",
+        "jail": "Penjarakan",
+        "execute": "Eksekusi",
+        "turn": "Belotkan",
+        "release": "Bebaskan"
+      },
+      "help": {
+        "arrest": "Penangkapan terbuka: agen menjadi tahanan dan insiden menjadi masalah diplomatik.",
+        "interrogate": "Pemeriksaan terawasi: jaringan, operasi terencana, niat. Pengakuan bisa palsu.",
+        "expel": "Persona non grata: konsekuensi ringan, pengusiran balasan mungkin terjadi.",
+        "return": "Dipulangkan ke negaranya: konsekuensi ringan, tanpa pengadilan.",
+        "jail": "Hukuman penjara: tekanan diplomatik terus-menerus, alat tawar, biaya rendah.",
+        "execute": "Hukuman mati: hubungan runtuh, pembalasan mungkin, efek gentar.",
+        "turn": "Tawarkan bekerja untuk kita: tampak dibebaskan, agen ganda untuk kita.",
+        "release": "Pembebasan tanpa imbalan: isyarat peredaan."
+      },
+      "days": "{{n}} h",
+      "decision": "Keputusan",
+      "sentence": "Lama hukuman",
+      "unavailable": "tidak tersedia",
+      "confirmTitle": "Keputusan — tahanan {{ref}}",
+      "confirm": "Konfirmasi keputusan",
+      "applied": "Keputusan diterapkan: {{action}}",
+      "consequences": "Perkiraan konsekuensi",
+      "fx": {
+        "relations": "Hubungan dengan {{nationLe}}",
+        "reputation": "Reputasi internasional",
+        "stability": "Stabilitas dalam negeri",
+        "retaliation": "Risiko pembalasan",
+        "serviceHit": "Dinas lawan melemah terhadap kita",
+        "serviceDays": "{{pct}} selama {{days}} h",
+        "worldRelations": "Hubungan dengan negara demokrasi",
+        "council": "Pemungutan suara kecaman di Dewan",
+        "chance": "Peluang berhasil",
+        "pressure": "Tekanan diplomatik",
+        "perDay": "{{value}} / hari",
+        "immunity": "Pelanggaran kekebalan diplomatik",
+        "hours": "Durasi",
+        "none": "Tidak ada konsekuensi berarti."
+      },
+      "risk": {
+        "none": "nihil",
+        "low": "rendah",
+        "moderate": "sedang",
+        "high": "tinggi"
+      },
+      "blocked": {
+        "war_only": "Eksekusi tidak mungkin di masa damai bagi rezim kita.",
+        "never": "Hukuman mati telah dihapuskan.",
+        "interrogating": "Interogasi sedang berlangsung.",
+        "done": "Sudah dicoba.",
+        "not_plausible": "Tidak masuk akal untuk tahanan ini.",
+        "final": "Tahanan ini tidak lagi di tangan kita."
+      },
+      "decideIn": "Keputusan dalam {{left}}",
+      "sentenceLeft": "Hukuman {{days}} h · bebas dalam {{left}}",
+      "interrogating": "Interogasi: sisa {{left}}",
+      "revealed": "Pengakuan: {{agents}} agen, {{ops}} operasi",
+      "caughtDuring": "Tertangkap saat: {{op}}",
+      "value": "Nilai",
+      "valueHint": "Perkiraan nilai tukar (perwira > sumber, akses).",
+      "exchange": "Tukar",
+      "negotiate": "Negosiasi",
+      "arrested": "Agen ditangkap",
+      "incoming": "Diterima",
+      "outgoing": "Dikirim",
+      "counter": "Tawaran balik",
+      "swapStatus": {
+        "open": "Menunggu",
+        "accepted": "Disepakati",
+        "refused": "Ditolak",
+        "expired": "Kedaluwarsa",
+        "void": "Batal"
+      },
+      "expires": "Berakhir dalam {{left}}",
+      "weRelease": "Kita membebaskan",
+      "weObtain": "Kita memperoleh",
+      "money": "Uang",
+      "theyPay": "Mereka membayar {{amount}}",
+      "wePay": "Kita membayar {{amount}}",
+      "accord": "Perjanjian nonintervensi",
+      "accordNone": "Tidak ada",
+      "accordShort": "Nonintervensi",
+      "sanctions": "Sanksi",
+      "sanctionsLifted": "Dilonggarkan oleh {{nationLe}}",
+      "accept": "Terima",
+      "refuse": "Tolak",
+      "acceptedOk": "Kesepakatan tercapai",
+      "refusedOk": "Usulan ditolak",
+      "swapTitle": "Negosiasi — {{nation}}",
+      "partner": "Negara",
+      "relationsNow": "Hubungan saat ini: {{value}}",
+      "atWar": "sedang berperang",
+      "noneToRelease": "Tidak ada agen mereka yang kita tahan.",
+      "noneToObtain": "Tidak ada agen kita yang mereka tahan.",
+      "moneyNone": "Tidak ada",
+      "moneyPay": "Kita membayar",
+      "moneyAsk": "Kita meminta",
+      "amount": "Jumlah",
+      "liftSanctions": "Longgarkan sanksi yang kita sponsori terhadap mereka",
+      "balance": "Nilai diserahkan {{give}} · diperoleh {{get}}",
+      "balanceHint": "AI menuntut lebih jika hubungan bermusuhan atau sedang berperang; AI dapat menolak atau mengajukan tawaran balik.",
+      "send": "Kirim usulan",
+      "sent": "Usulan terkirim"
     }
   },
   "sheet": {
@@ -2031,6 +2269,8 @@
     "byResource": "Produksi per sumber daya dan provinsi",
     "producers_other": "{{count}} provinsi",
     "noProducer": "Tidak ada provinsi penghasil: beli di pasar.",
+    "nationalFloor": "Produksi nasional minimum",
+    "nationalFloorTip": "Batas bawah nasional: produksi dalam negeri minimum (pengilangan, daur ulang, cadangan kecil, pertanian subsisten), terjamin meski tanpa provinsi penghasil.",
     "servicesProvinces_other": "{{count}} provinsi tanpa sumber daya (hanya uang: jasa, keuangan)"
   },
   "armies": {
@@ -3111,6 +3351,46 @@
       "spent": "Pengeluaran"
     }
   },
+  "airDefense": {
+    "title": "Pertahanan udara",
+    "legacy": "Profil sederhana",
+    "interceptors": "Pencegat",
+    "fullIn": "Penuh dalam {{value}}",
+    "chipTitle": "{{cat}}: {{range}}",
+    "chipNone": "{{cat}}: tidak dicegat",
+    "no": "Tidak",
+    "magazine": "Pencegat per elemen",
+    "channels": "Kanal tembak",
+    "reaction": "Waktu reaksi",
+    "reload": "Isi ulang penuh",
+    "seconds": "{{value}} dtk",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "Ancaman",
+      "range": "Jangkauan",
+      "ceiling": "Ketinggian maks.",
+      "pk": "Pk",
+      "shots": "Tembakan/sasaran"
+    },
+    "threats": {
+      "aircraft": "Pesawat",
+      "helicopter": "Helikopter",
+      "drone": "Drone",
+      "cruise_missile": "Rudal jelajah",
+      "ballistic_missile": "Rudal balistik",
+      "hypersonic": "Hipersonik"
+    },
+    "short": {
+      "aircraft": "PSW",
+      "helicopter": "HELI",
+      "drone": "DRN",
+      "cruise_missile": "JLJ",
+      "ballistic_missile": "BAL",
+      "hypersonic": "HIP"
+    },
+    "shotDown": "Ditembak jatuh: {{cat}}",
+    "fired": "Pencegat ditembakkan"
+  },
   "stacks": {
     "composition_other": "Komposisi · {{count}} sistem",
     "more_other": "+ {{count}} sistem lain",
@@ -3287,7 +3567,10 @@
       "dismantle": "Pembongkaran jaringan {{nation}}",
       "deception": "Operasi penyesatan — {{nation}}",
       "hardened": "Fasilitas sensitif diperkuat",
-      "strategicAlert": "SIAGA STRATEGIS — {{nation}}"
+      "strategicAlert": "SIAGA STRATEGIS — {{nation}}",
+      "interrogation": "Interogasi — tahanan {{ref}} ({{nation}})",
+      "turnRefused": "Pembelotan ditolak — tahanan {{ref}}",
+      "detaineeTurned": "Tahanan {{ref}} dibelotkan"
     },
     "note": {
       "allianceInvite": {
@@ -3402,7 +3685,102 @@
       "agentExpelled": {
         "title": "Diplomat diusir",
         "text": "{{host}} mengusir diplomat {{owner}} karena spionase."
+      },
+      "detaineeNew": {
+        "title": "Agen asing ditahan",
+        "text": "Seorang agen {{owner}} ada di tangan kita: keputusan diharapkan dalam {{days}} hari."
+      },
+      "detaineeHeld": {
+        "title": "Penahanan sementara",
+        "text": "Tanpa keputusan, agen {{owner}} ditempatkan dalam penahanan sementara."
+      },
+      "spyInterrogated": {
+        "title": "Agen diinterogasi",
+        "text": "{{codename}} sedang diinterogasi oleh dinas {{host}}."
+      },
+      "spyReturned": {
+        "title": "Agen dipulangkan",
+        "text": "{{codename}} telah dipulangkan oleh {{host}}."
+      },
+      "spyJailed": {
+        "title": "Agen divonis",
+        "text": "{{codename}} divonis {{days}} hari penjara oleh {{host}}."
+      },
+      "spyExecuted": {
+        "title": "Agen dieksekusi",
+        "text": "{{codename}} telah dieksekusi oleh {{host}}."
+      },
+      "spyReleased": {
+        "title": "Agen dibebaskan",
+        "text": "{{host}} telah membebaskan {{codename}}."
+      },
+      "spyServed": {
+        "title": "Hukuman berakhir",
+        "text": "{{codename}} telah menjalani hukuman ({{host}}) dan pulang."
+      },
+      "swapProposal": {
+        "title": "Usulan pertukaran",
+        "text": "{{nation}} mengusulkan pertukaran agen."
+      },
+      "swapCounter": {
+        "title": "Tawaran balik",
+        "text": "{{nation}} mengajukan tawaran balik."
+      },
+      "swapAccepted": {
+        "title": "Pertukaran disepakati",
+        "text": "Kesepakatan tentang agen yang ditahan antara {{a}} dan {{b}}."
+      },
+      "swapRefused": {
+        "title": "Pertukaran ditolak",
+        "text": "{{nation}} menolak usulan pertukaran Anda."
+      },
+      "reprisalExecute": {
+        "title": "Pembalasan",
+        "text": "{{nation}} mengeksekusi salah satu agen kita yang ditahan sebagai pembalasan."
+      },
+      "reprisalJail": {
+        "title": "Pembalasan",
+        "text": "{{nation}} memperketat penahanan agen kita (hukuman maksimum)."
+      },
+      "reprisalArrest": {
+        "title": "Pembalasan",
+        "text": "{{nation}} menangkap salah satu agen kita sebagai pembalasan."
+      },
+      "reprisalExpel": {
+        "title": "Pembalasan",
+        "text": "{{nation}} mengusir diplomat kita sebagai pembalasan."
+      },
+      "troopsEmbarked": {
+        "title": "Pasukan naik kapal",
+        "text": "{{system}} di atas {{ship}}."
+      },
+      "troopsLanded": {
+        "title": "Pasukan mendarat",
+        "text_other": "{{count}} pasukan didaratkan: {{place}}."
+      },
+      "troopsLandedContested": {
+        "title": "Pendaratan di bawah tembakan",
+        "text_other": "{{count}} pasukan didaratkan di bawah tembakan: {{place}}."
+      },
+      "transportSunk": {
+        "title": "Kapal angkut tenggelam",
+        "text_other": "{{system}} hilang bersama {{count}} pasukan di atasnya."
+      },
+      "escortEnded": {
+        "title": "Pengawalan berakhir",
+        "text": "{{system}}: pasukan yang dikawal sudah tidak ada."
+      },
+      "captureBlocked": {
+        "title": "Perebutan mustahil",
+        "noCapturer": "{{system}} tidak dapat merebut {{place}}: perlu infanteri atau lapis baja.",
+        "noWar": "Tidak berperang dengan pemilik {{place}}: tidak ada perebutan."
       }
+    },
+    "spyNews": {
+      "executedH": "{{host}}: agen {{owner}} dieksekusi",
+      "executedB": "{{host}} mengumumkan eksekusi seorang agen {{owner}} yang divonis atas spionase. Kecaman internasional.",
+      "swapH": "Pertukaran agen antara {{a}} dan {{b}}",
+      "swapB": "{{a}} dan {{b}} melakukan pertukaran tahanan: {{n}} agen dibebaskan."
     }
   }
 }
