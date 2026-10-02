@@ -1,0 +1,326 @@
+/* ——— Console de renseignement : onglets SIGINT / HUMINT / militaire / intérieur / dossiers ——— */
+.intel__tab {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+.intel__tab .dept__head {
+  flex-wrap: wrap;
+}
+.intel__tab .dept__head .rl-gauge {
+  min-width: 90px;
+}
+.intel__body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 320px);
+}
+.game--mobile .intel__body {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+.intel__main {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  scrollbar-width: thin;
+}
+.intel__main .dept__reports {
+  flex: none;
+  overflow: visible;
+  padding: 0;
+}
+.intel__main .agents,
+.intel__main .agents.agents {
+  max-height: none;
+  border: 1px solid var(--rl-line);
+  border-radius: 3px;
+}
+.intel__side {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 10px;
+  border-inline-start: 1px solid var(--rl-line);
+  background: var(--rl-panel);
+  scrollbar-width: thin;
+}
+.game--mobile .intel__side {
+  border-inline-start: 0;
+  border-top: 1px solid var(--rl-line);
+  overflow: visible;
+}
+.intel__side .dept__ops {
+  max-height: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.intel__reports {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  min-height: 0;
+  padding: 8px;
+}
+.intel__reports .dept__reports {
+  padding: 0;
+}
+
+/* Actions en deux clics */
+.opcards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+.game--mobile .opcards {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+.opcard {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-height: 40px;
+  padding: 6px 8px;
+  border: 1px solid var(--rl-line);
+  border-radius: 3px;
+  background: var(--rl-bg);
+  color: var(--rl-text);
+  text-align: start;
+  cursor: pointer;
+  transition: border-color var(--rl-dur) var(--rl-ease);
+}
+.opcard:hover,
+.opcard:focus-visible {
+  border-color: var(--rl-cyan-line);
+}
+.opcard__name {
+  font-size: var(--rl-fs-xs);
+  font-weight: 700;
+}
+.opcard__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--rl-text-dim);
+  font: 600 var(--rl-fs-2xs) / 1.2 var(--rl-font-mono);
+}
+
+/* Capteurs et décryptage */
+.sigint {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--rl-line);
+  border-radius: 3px;
+  background: var(--rl-panel-2);
+}
+.game--mobile .sigint {
+  grid-template-columns: 1fr;
+}
+.sigint__sensors,
+.sigint__crypto {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.sigint__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  font-size: var(--rl-fs-xs);
+}
+.sigint__chips span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.sigint__row {
+  display: grid;
+  grid-template-columns: minmax(80px, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+}
+
+/* Menaces */
+.intel__threats {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.threatmap {
+  width: 100%;
+  border: 1px solid var(--rl-line);
+  border-radius: 3px;
+}
+.threats {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.threats__row {
+  display: grid;
+  grid-template-columns: minmax(90px, auto) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 30px;
+  padding: 4px 6px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--rl-text);
+  text-align: start;
+  cursor: pointer;
+}
+.threats__row:hover {
+  border-color: var(--rl-line-strong);
+  background: var(--rl-bg);
+}
+.threats__ind {
+  overflow: hidden;
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-2xs);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.threat {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Dossiers pays */
+.dossiers {
+  display: grid;
+  grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+}
+.dossiers--mobile {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+.dossiers__side,
+.dossiers__main {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 10px;
+  scrollbar-width: thin;
+}
+.dossiers__side {
+  border-inline-end: 1px solid var(--rl-line);
+  background: var(--rl-panel);
+}
+.dossiers--mobile .dossiers__side,
+.dossiers--mobile .dossiers__main {
+  overflow: visible;
+  border: 0;
+}
+.dossier {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.dossier__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+.dossier__ind {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.dossier__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 6px;
+  margin: 0;
+}
+.dossier__grid div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 6px 8px;
+  border: 1px solid var(--rl-line);
+  border-radius: 3px;
+  background: var(--rl-bg);
+}
+.dossier__grid dt {
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-2xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.dossier__grid dd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  font-size: var(--rl-fs-xs);
+}
+.orbat {
+  width: 100%;
+  margin-top: 4px;
+  border-collapse: collapse;
+  font-size: var(--rl-fs-xs);
+}
+.orbat th,
+.orbat td {
+  padding: 3px 6px;
+  border-bottom: 1px solid var(--rl-line);
+  text-align: start;
+  font-weight: 500;
+}
+.orbat td {
+  text-align: end;
+  font-family: var(--rl-font-mono);
+}
+.orbat__total th,
+.orbat__total td {
+  color: var(--rl-text-strong);
+  font-weight: 800;
+}
+
+/* Agents : couverture, accès, fiabilité, actions */
+.intel__main .agent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+}
+.agent__info {
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-2xs);
+}
+.agent__acts {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-inline-start: auto;
+}

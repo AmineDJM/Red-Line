@@ -18,7 +18,8 @@ import type {
 import type { FeatureCollection } from 'geojson';
 import { FONTS } from '../config.js';
 import type { BasemapData, TilesInfo } from '../api/types.js';
-import { EMPTY } from './features.js';
+import { COUNT_TEXT, EMPTY } from './features.js';
+import { BATTLE_ICON_DY } from './battles.js';
 import { PION_SCALE_STOPS } from './grouping.js';
 import { C } from './palette.js';
 import { INTEL_COLORS, PION_H } from './pions.js';
@@ -36,6 +37,8 @@ export interface StyleInput {
   clusterUnits: boolean;
   /** Villes des provinces (sinon, villes du fond vectoriel). */
   cities?: FeatureCollection | null;
+  /** Noms des provinces (centroïdes), affichés de près quand ils diffèrent de la ville. */
+  provinceLabels?: FeatureCollection | null;
 }
 
 /** Groupes de calques pilotables par l'interface (`GameMap.setLayerGroup`). */
@@ -56,6 +59,14 @@ export const HIDDEN_BY_DEFAULT: MapLayerGroup[] = ['intel'];
 
 export const LAYER_GROUPS: Record<MapLayerGroup, string[]> = {
   units: [
+    'tracks',
+    'wakes',
+    'air-shadow',
+    'battle-area',
+    'battle-pulse',
+    'battle-pulse-2',
+    'battle-icon',
+    'hover-frame',
     'units-hex',
     'units-hp',
     'units-count',
@@ -82,6 +93,7 @@ export const LAYER_GROUPS: Record<MapLayerGroup, string[]> = {
     'orbit-pts',
     'missile-ahead',
     'trails',
+    'trails-air',
     'impacts',
   ],
   ranges: ['range-fill', 'range-lines', 'detect-line', 'uncert-fill', 'uncert-line'],
@@ -97,6 +109,7 @@ export const LAYER_GROUPS: Record<MapLayerGroup, string[]> = {
   ],
   buildings: ['bld', 'bld-reveal', 'prov-markers'],
   labels: [
+    'prov-labels',
     'sea-labels-0',
     'sea-labels-1',
     'sea-labels-2',
@@ -211,6 +224,11 @@ export function buildStyle(i: StyleInput): StyleSpecification {
     veil: geo(),
     'prov-flags': geo(),
     'prov-sel': geo(),
+    'prov-hover': geo(),
+    'prov-labels': geo(i.provinceLabels ?? null),
+    battles: geo(EMPTY, { promoteId: 'id' }),
+    shadows: dyn(),
+    hover: geo(),
     fog: geo(),
     uncert: geo(),
     range: geo(),
@@ -516,6 +534,31 @@ export function buildStyle(i: StyleInput): StyleSpecification {
       },
     },
     {
+      // Survol d'une province (ordinateur) : voile clair et contour net.
+      id: 'prov-hover-fill',
+      type: 'fill',
+      source: 'prov-hover',
+      paint: { 'fill-color': '#ffffff', 'fill-opacity': 0.05, 'fill-antialias': false },
+    },
+    {
+      id: 'prov-hover-casing',
+      type: 'line',
+      source: 'prov-hover',
+      layout: { 'line-join': 'round' },
+      paint: { 'line-color': 'rgba(0,0,0,0.55)', 'line-width': 3 },
+    },
+    {
+      id: 'prov-hover',
+      type: 'line',
+      source: 'prov-hover',
+      layout: { 'line-join': 'round' },
+      paint: {
+        'line-color': ['case', ['==', ['get', 'mine'], 1], '#d9c8ff', '#eef3f8'],
+        'line-width': 1.4,
+        'line-opacity': 0.9,
+      },
+    },
+    {
       id: 'prov-sel',
       type: 'line',
       source: 'prov-sel',
@@ -632,6 +675,30 @@ export function buildStyle(i: StyleInput): StyleSpecification {
     ),
     country('country-labels-xs', ['>', labelMz, 4.5], 'country-s', 11, 4.8),
   );
+  if (i.glyphs && i.provinceLabels) {
+    // Noms des provinces (de près) : discrets, en capitales espacées, sous les villes.
+    layers.push({
+      id: 'prov-labels',
+      type: 'symbol',
+      source: 'prov-labels',
+      minzoom: 5.8,
+      layout: {
+        'text-field': ['upcase', ['get', 'name']],
+        'text-font': [FONTS.italic],
+        'text-size': ['interpolate', ['linear'], ['zoom'], 5.8, 9.5, 8, 11],
+        'text-letter-spacing': 0.18,
+        'text-max-width': 8,
+        'text-padding': 6,
+        'symbol-sort-key': ['get', 'rank'],
+      },
+      paint: {
+        'text-color': 'rgba(196,206,218,0.5)',
+        'text-halo-color': 'rgba(0,0,0,0.55)',
+        'text-halo-width': 1,
+        'text-opacity': ['interpolate', ['linear'], ['zoom'], 5.8, 0, 6.3, 1],
+      },
+    } as LayerSpecification);
+  }
 
   if (i.mode !== 'picker') {
     layers.push(
@@ -768,18 +835,45 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         layout: { 'line-cap': 'round', 'line-join': 'round' },
         paint: {
           'line-color': 'rgba(0,0,0,0.55)',
-          'line-width': ['case', ['==', ['get', 'sel'], 1], 4.6, 3.2],
+          'line-opacity': ['case', ['==', ['coalesce', ['get', 'dim'], 0], 1], 0.35, 1],
+          'line-width': [
+            'case',
+            ['==', ['get', 'sel'], 1],
+            4.6,
+            ['==', ['coalesce', ['get', 'rel'], 'own'], 'own'],
+            3.2,
+            2.4,
+          ],
         },
       },
       {
+        // Trajectoires : vert (ses forces), cyan (sélection), violet (alliés), gris (neutres),
+        // rouge (ennemis en guerre), tirets qui défilent vers la destination.
         id: 'paths',
         type: 'line',
         source: 'paths',
         layout: { 'line-join': 'round' },
         paint: {
-          'line-color': ['case', ['==', ['get', 'sel'], 1], C.cyan, C.green],
-          'line-width': ['case', ['==', ['get', 'sel'], 1], 2.2, 1.5],
-          'line-opacity': ['case', ['==', ['get', 'sel'], 1], 1, 0.8],
+          'line-color': ['case', ['==', ['get', 'sel'], 1], C.cyan, relColor()],
+          'line-width': [
+            'case',
+            ['==', ['get', 'sel'], 1],
+            2.2,
+            ['==', ['coalesce', ['get', 'rel'], 'own'], 'own'],
+            1.5,
+            1.1,
+          ],
+          'line-opacity': [
+            'case',
+            ['==', ['get', 'sel'], 1],
+            1,
+            // Une sélection existe : les autres trajets passent au second plan.
+            ['==', ['coalesce', ['get', 'dim'], 0], 1],
+            0.32,
+            ['==', ['coalesce', ['get', 'rel'], 'own'], 'own'],
+            0.8,
+            0.65,
+          ],
           'line-dasharray': [2, 2],
         },
       },
@@ -789,16 +883,45 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         source: 'path-heads',
         layout: {
           'icon-image': 'arrow',
-          'icon-size': ['case', ['==', ['get', 'sel'], 1], 0.46, 0.34],
+          'icon-size': [
+            'case',
+            ['==', ['get', 'sel'], 1],
+            0.46,
+            ['==', ['coalesce', ['get', 'rel'], 'own'], 'own'],
+            0.34,
+            0.28,
+          ],
           'icon-rotate': ['get', 'rot'],
           'icon-rotation-alignment': 'map',
           'icon-allow-overlap': true,
           'icon-ignore-placement': true,
+          // Faisceau : nombre de trajets fusionnés, sous la flèche.
+          ...(i.glyphs
+            ? {
+                'text-field': ['coalesce', ['get', 'cnt'], ''],
+                'text-font': [FONTS.title],
+                'text-size': 12,
+                'text-anchor': 'top',
+                'text-offset': [0, 0.7],
+                'text-allow-overlap': true,
+                'text-ignore-placement': true,
+                'text-optional': true,
+              }
+            : {}),
         },
         paint: {
-          'icon-color': ['case', ['==', ['get', 'sel'], 1], C.cyan, C.green],
+          'icon-color': ['case', ['==', ['get', 'sel'], 1], C.cyan, relColor()],
           'icon-halo-color': 'rgba(0,0,0,0.6)',
           'icon-halo-width': 1,
+          'icon-opacity': ['case', ['==', ['coalesce', ['get', 'dim'], 0], 1], 0.45, 1],
+          ...(i.glyphs
+            ? {
+                'text-color': ['case', ['==', ['get', 'sel'], 1], C.cyan, relColor()],
+                'text-halo-color': 'rgba(3,6,10,0.92)',
+                'text-halo-width': 2,
+                'text-opacity': ['case', ['==', ['coalesce', ['get', 'dim'], 0], 1], 0.5, 1],
+              }
+            : {}),
         },
       },
       // ——— Missiles et aéronefs : traînées, trajectoire prévue, impacts ———
@@ -814,12 +937,33 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         },
       },
       {
+        // Traînée de condensation des aéronefs (blanc bleuté).
+        id: 'trails-air',
+        type: 'line',
+        source: 'trails',
+        filter: ['==', ['get', 'kind'], 'air'],
+        layout: { 'line-cap': 'round' },
+        paint: {
+          'line-width': 1.6,
+          'line-gradient': [
+            'interpolate',
+            ['linear'],
+            ['line-progress'],
+            0,
+            'rgba(200,236,255,0)',
+            1,
+            'rgba(226,246,255,0.85)',
+          ],
+        },
+      },
+      {
         id: 'trails',
         type: 'line',
         source: 'trails',
+        filter: ['==', ['get', 'kind'], 'missile'],
         layout: { 'line-cap': 'round' },
         paint: {
-          'line-width': ['match', ['get', 'kind'], 'missile', 2.6, 1.6],
+          'line-width': 2.6,
           'line-gradient': [
             'interpolate',
             ['linear'],
@@ -999,6 +1143,124 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         },
         paint: { 'icon-color': ['case', ['==', ['get', 'own'], 1], C.amber, C.red] },
       },
+      // ——— Mouvements au sol et en mer : sillages, traces (de près) ———
+      {
+        id: 'wakes',
+        type: 'line',
+        source: 'trails',
+        filter: ['==', ['get', 'kind'], 'sea'],
+        layout: { 'line-cap': 'round' },
+        paint: {
+          'line-width': ['interpolate', ['linear'], ['zoom'], 4, 2.5, 8, 5],
+          'line-blur': 1.6,
+          'line-gradient': [
+            'interpolate',
+            ['linear'],
+            ['line-progress'],
+            0,
+            'rgba(220,240,255,0)',
+            1,
+            'rgba(230,245,255,0.55)',
+          ],
+        },
+      },
+      {
+        id: 'tracks',
+        type: 'line',
+        source: 'trails',
+        filter: ['==', ['get', 'kind'], 'land'],
+        layout: { 'line-cap': 'round' },
+        paint: {
+          'line-width': ['interpolate', ['linear'], ['zoom'], 4, 2, 8, 3.4],
+          'line-blur': 1,
+          'line-gradient': [
+            'interpolate',
+            ['linear'],
+            ['line-progress'],
+            0,
+            'rgba(214,200,170,0)',
+            1,
+            'rgba(226,214,186,0.5)',
+          ],
+        },
+      },
+      // ——— Combats : zone, pulsations (animées), marqueur ———
+      {
+        id: 'battle-area',
+        type: 'circle',
+        source: 'battles',
+        paint: {
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 2, 10, 6, 26, 9, 40],
+          'circle-color': C.red,
+          'circle-opacity': ['*', 0.16, ['get', 'heat']],
+          'circle-blur': 0.85,
+        },
+      },
+      {
+        // Ondes des combats actifs (heat ≥ 0,5) : rayon et opacité animés par valeurs constantes.
+        id: 'battle-pulse',
+        type: 'circle',
+        source: 'battles',
+        filter: ['>=', ['get', 'heat'], 0.5],
+        paint: {
+          'circle-radius': 16,
+          'circle-color': 'rgba(0,0,0,0)',
+          'circle-stroke-color': C.red,
+          'circle-stroke-width': 1.4,
+          'circle-stroke-opacity': 0.6,
+        },
+      },
+      {
+        id: 'battle-pulse-2',
+        type: 'circle',
+        source: 'battles',
+        filter: ['>=', ['get', 'heat'], 0.5],
+        paint: {
+          'circle-radius': 24,
+          'circle-color': 'rgba(0,0,0,0)',
+          'circle-stroke-color': C.red,
+          'circle-stroke-width': 1,
+          'circle-stroke-opacity': 0.3,
+        },
+      },
+      // Ombres des aéronefs en vol (au sol, sous le pion soulevé).
+      {
+        id: 'air-shadow',
+        type: 'symbol',
+        source: 'shadows',
+        layout: {
+          'icon-image': 'air-shadow',
+          'icon-size': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            ...PION_SCALE_STOPS.flatMap(([z, v]) => [z, ['*', v, ['get', 'sz']]]),
+          ] as unknown as ExpressionSpecification,
+          'icon-offset': offsetProp('off'),
+          'icon-allow-overlap': true,
+          'icon-ignore-placement': true,
+        },
+        paint: { 'icon-opacity': ['get', 'op'] },
+      },
+      // Survol d'un pion (ordinateur) : crochets discrets.
+      {
+        id: 'hover-frame',
+        type: 'symbol',
+        source: 'hover',
+        layout: {
+          'icon-image': 'sel-frame',
+          'icon-size': PION_SIZE,
+          'icon-offset': offsetProp('foff'),
+          'icon-allow-overlap': true,
+          'icon-ignore-placement': true,
+        },
+        paint: {
+          'icon-color': '#eef3f8',
+          'icon-opacity': 0.55,
+          'icon-halo-color': 'rgba(0,0,0,0.5)',
+          'icon-halo-width': 1,
+        },
+      },
       // ——— Unités ———
       {
         id: 'units-hex',
@@ -1100,6 +1362,50 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         layout: headingLayout(),
         paint: headingPaint(),
       },
+      // Marqueur de bataille au-dessus des pions, décalé vers le haut (ne masque pas la cible).
+      {
+        id: 'battle-icon',
+        type: 'symbol',
+        source: 'battles',
+        layout: {
+          'icon-image': [
+            'concat',
+            'battle|',
+            ['get', 'side'],
+            '|',
+            ['case', ['>=', ['get', 'heat'], 0.6], '1', '0'],
+          ],
+          'icon-size': ['interpolate', ['linear'], ['zoom'], 2, 0.75, 6, 1, 9, 1.12],
+          // Au-dessus du nom de la ville (qui reste lisible), bilan des pertes à droite de l'icône.
+          'icon-offset': [0, -BATTLE_ICON_DY],
+          'icon-allow-overlap': true,
+          'icon-ignore-placement': true,
+          'symbol-sort-key': ['-', 0, ['get', 'heat']],
+          ...(i.glyphs
+            ? {
+                'text-field': ['get', 'label'],
+                'text-font': [FONTS.semibold],
+                'text-size': 10.5,
+                'text-anchor': 'left',
+                'text-offset': [1.5, -BATTLE_ICON_DY / 10.5],
+                'text-allow-overlap': true,
+                'text-ignore-placement': true,
+                'text-optional': true,
+              }
+            : {}),
+        },
+        paint: {
+          ...(i.glyphs
+            ? {
+                'text-color': '#ffd1d6',
+                'text-halo-color': 'rgba(22,11,15,0.95)',
+                'text-halo-width': 2.2,
+                // Bilan des pertes à partir de l'échelle régionale (à petite échelle : l'icône seule).
+                'text-opacity': ['interpolate', ['linear'], ['zoom'], 4.8, 0, 5.4, 1],
+              }
+            : {}),
+        },
+      } as LayerSpecification,
     );
   }
 
@@ -1149,6 +1455,7 @@ function pionPartLayers(prefix: string, source: string, glyphs: boolean): LayerS
       off: string,
       anchor: 'right' | 'center',
       color: string,
+      font: string = FONTS.semibold,
     ) =>
       ({
         id,
@@ -1157,7 +1464,7 @@ function pionPartLayers(prefix: string, source: string, glyphs: boolean): LayerS
         filter: ['!=', ['get', field], ''],
         layout: {
           'text-field': ['get', field],
-          'text-font': [FONTS.semibold],
+          'text-font': [font],
           'text-size': scaled(size),
           'text-offset': offsetProp(off),
           'text-anchor': anchor,
@@ -1168,7 +1475,7 @@ function pionPartLayers(prefix: string, source: string, glyphs: boolean): LayerS
         paint: { 'text-color': color, 'text-opacity': ['get', 'op'] },
       }) as LayerSpecification;
     out.push(
-      text(`${prefix}-count`, 'cnt', 11, 'toff', 'right', '#eef3f8'),
+      text(`${prefix}-count`, 'cnt', COUNT_TEXT, 'toff', 'right', '#eef3f8', FONTS.title),
       text(`${prefix}-stack`, 'stk', 8.5, 'soff', 'center', C.bg),
     );
   } else {
@@ -1189,7 +1496,7 @@ function pionPartLayers(prefix: string, source: string, glyphs: boolean): LayerS
         paint: { 'icon-opacity': ['get', 'op'] },
       }) as LayerSpecification;
     out.push(
-      img(`${prefix}-count`, 'cnt', 11 / 12, 'tpx', 'right'),
+      img(`${prefix}-count`, 'cnt', COUNT_TEXT / 12, 'tpx', 'right'),
       img(`${prefix}-stack`, 'stk', 8.5 / 12, 'spx', 'center'),
     );
   }
@@ -1211,6 +1518,21 @@ export function revealOpacity(phase: number): ExpressionSpecification {
 /** Anneau de révélation : visible pendant l'animation, puis éteint. */
 export function revealRingOpacity(phase: number): ExpressionSpecification {
   return ['case', ['boolean', ['feature-state', 'reveal'], false], phase, 0];
+}
+
+/** Couleur de relation (vert, violet, gris, rouge) lue dans la propriété `rel`. */
+function relColor(): ExpressionSpecification {
+  return [
+    'match',
+    ['coalesce', ['get', 'rel'], 'own'],
+    'own',
+    C.green,
+    'ally',
+    C.violet,
+    'neutral',
+    C.grey,
+    C.red,
+  ];
 }
 
 function headingLayout(): SymbolLayerSpecification['layout'] {
@@ -1251,12 +1573,12 @@ function headingPaint(): SymbolLayerSpecification['paint'] {
 function cityLayers(i: StyleInput): LayerSpecification[] {
   const src = i.cities ? 'cities' : 'basemap-cities';
   const out: LayerSpecification[] = [];
-  const specs: [number, number, number, string, number][] = [
-    // classe, zoom mini, taille du texte, police, halo
-    [0, 2.2, 12.5, FONTS.semibold, 1.5],
-    [1, 3.6, 11, FONTS.semibold, 1.3],
-    [2, 5, 10.5, FONTS.regular, 1.2],
-    [3, 6.3, 10, FONTS.regular, 1.2],
+  const specs: [number, number, number, string, number, number][] = [
+    // classe, zoom mini, taille du texte, police, halo, zoom de la ligne « population »
+    [0, 2.2, 12.5, FONTS.semibold, 1.5, 4.6],
+    [1, 3.6, 11, FONTS.semibold, 1.3, 5.6],
+    [2, 5, 10.5, FONTS.regular, 1.2, 7],
+    [3, 6.3, 10, FONTS.regular, 1.2, 8.2],
   ];
   const clsExpr: ExpressionSpecification = i.cities
     ? ['get', 'cls']
@@ -1270,7 +1592,7 @@ function cityLayers(i: StyleInput): LayerSpecification[] {
         2,
         3,
       ];
-  for (const [cls, minzoom, size, font, halo] of specs) {
+  for (const [cls, minzoom, size, font, halo, popZoom] of specs) {
     const l = label(i.glyphs, ['get', 'name'], {
       style: `city-${cls}` as TextStyle,
       font,
@@ -1282,14 +1604,43 @@ function cityLayers(i: StyleInput): LayerSpecification[] {
       upper: false,
     });
     const icon = i.cities ? ['get', 'img'] : `city|${cls}|none`;
+    // Population en seconde ligne (plus petite, atténuée) à partir d'un zoom propre à la classe.
+    const name: ExpressionSpecification = ['get', 'name'];
+    const withPop: ExpressionSpecification = [
+      'case',
+      ['==', ['coalesce', ['get', 'pop'], ''], ''],
+      name,
+      [
+        'format',
+        name,
+        {},
+        '\n',
+        {},
+        ['get', 'pop'],
+        { 'font-scale': 0.78, 'text-color': 'rgba(170,184,199,0.92)' },
+      ],
+    ];
     const layout: Record<string, unknown> = i.glyphs
       ? {
           ...l.layout!,
+          ...(i.cities ? { 'text-field': ['step', ['zoom'], name, popZoom, withPop] } : {}),
           'icon-image': icon,
           'icon-allow-overlap': true,
           'text-optional': true,
-          'text-anchor': 'left',
-          'text-offset': [cls === 0 ? 0.95 : 0.7, 0],
+          // Nom au-dessus du marqueur (une garnison posée sur la ville masquerait un nom à droite) ;
+          // à gauche ou à droite seulement s'il entre en collision avec une autre étiquette.
+          'text-variable-anchor': ['bottom', 'left', 'right'],
+          // Au-dessus d'un pion posé sur la ville (demi-hauteur + onglet de pile), à toute échelle.
+          'text-radial-offset': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            ...PION_SCALE_STOPS.flatMap(([z, v]) => [
+              z,
+              Math.max(cls === 0 ? 1.55 : 1.45, ((PION_H / 2 + 14) * v) / size),
+            ]),
+          ],
+          'text-justify': 'auto',
           'text-max-width': 9,
           'symbol-sort-key': ['get', 'rank'],
         }
@@ -1321,7 +1672,19 @@ function cityLayers(i: StyleInput): LayerSpecification[] {
       minzoom,
       filter: ['==', clsExpr, cls],
       layout,
-      paint: l.paint!,
+      paint:
+        i.glyphs && i.cities
+          ? {
+              ...l.paint!,
+              // Villes du joueur : blanc teinté de violet.
+              'text-color': [
+                'case',
+                ['==', ['get', 'mine'], 1],
+                cls === 3 ? '#cbbcf0' : '#ece4ff',
+                cls === 3 ? '#b9c4cf' : cls === 2 ? '#dfe6ee' : '#ffffff',
+              ],
+            }
+          : l.paint!,
     } as LayerSpecification);
   }
   return out;

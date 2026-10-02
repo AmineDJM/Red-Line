@@ -16,12 +16,15 @@ import {
 } from '@redline/shared';
 import type { World, WorldExtras } from '../api.js';
 import { NavGraph } from '../nav/graph.js';
+import { RoadNet } from '@redline/shared';
 
 /** Rayon autour du point de ville dans lequel une unité capture la province (km). */
 export const CAPTURE_RADIUS_KM = 5;
 
 export interface WorldInternal {
   nav: NavGraph;
+  /** Réseau de routes des unités terrestres (null : déplacement libre sur la grille H3). */
+  roads: RoadNet | null;
   provById: Map<ProvinceId, ProvinceDef>;
   nationById: Map<NationId, NationDef>;
   provIds: ProvinceId[];
@@ -78,6 +81,7 @@ export function buildWorld(
   for (const s of catalog) catalogMap.set(s.id, s);
   const internal: WorldInternal = {
     nav,
+    roads: map.routes && balance.movement.roadNetwork !== false ? new RoadNet(map.routes) : null,
     provById,
     nationById,
     provIds,
@@ -181,4 +185,15 @@ function findSeaSpawns(
   const out = new Map<ProvinceId, LngLat | null>();
   for (const pid of [...provById.keys()].sort()) out.set(pid, best.get(pid)?.p ?? null);
   return out;
+}
+
+/**
+ * Point de déploiement d'une unité terrestre près de `p` : le point du réseau de routes le plus
+ * proche (à moins de maxKm, dans la province `pid` si elle est donnée), sinon `p` lui-même.
+ */
+export function roadSpawn(w: WorldInternal, p: LngLat, maxKm: number, pid?: ProvinceId): LngLat {
+  const r = w.roads?.snap(p, maxKm);
+  if (!r) return p;
+  if (pid !== undefined && w.nav.cellProv.get(w.nav.cellAt(r.pos)) !== pid) return p;
+  return [r.pos[0], r.pos[1]];
 }

@@ -1,0 +1,15 @@
+{
+  "push": {
+    "title": "Red Line — {{game}}",
+    "war": "{{nation}}이(가) 당신에게 선전포고했습니다.",
+    "attack": "{{nation}}이(가) {{province}}을(를) 공격 중입니다.",
+    "losses": "아군이 손실을 입고 있습니다.",
+    "provinceLost": "{{province}}: {{nation}}에 점령됨.",
+    "provinceTaken": "아군이 {{province}}을(를) 점령했습니다.",
+    "flash": "정보 속보: 긴급 보고서가 기다리고 있습니다.",
+    "council": "안전보장이사회: 회의에서 투표가 필요합니다.",
+    "victory": "승리! 당신의 국가가 이겼습니다.",
+    "victoryOf": "{{nation}} 승리. 게임이 끝났습니다.",
+    "defeated": "당신의 국가는 패배했습니다."
+  }
+}

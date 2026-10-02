@@ -145,4 +145,29 @@ describe('rapports de bataille', () => {
       expect(view.map((x) => x.id)).toContain(id);
     });
   });
+
+  it('activité en direct : derniers tirs joints au résumé pendant la bataille, participants seuls', () => {
+    const s = milSandbox([
+      { owner: 'aaa', systemId: 'tst.tank', pos: [7.5, 40.02] }, // u1
+      { owner: 'bbb', systemId: 'tst.infantry', pos: [7.5, 40.0] }, // u2
+      { owner: 'bbb', systemId: 'tst.infantry', pos: [7.52, 40.0] }, // u3
+    ]);
+    expect(applyOrder(s, 'aaa', { kind: 'attack', unitIds: ['u1'], targetId: 'u2' }).ok).toBe(true);
+    advanceTo(s, 40 * MINUTE);
+    const cur = viewFor(s, 'aaa').battleReports?.find((b) => b.outcome === 'ongoing');
+    expect(cur?.live).toBeDefined();
+    const shots = cur!.live!.shots;
+    expect(shots.length).toBeGreaterThan(0);
+    expect(shots.length).toBeLessThanOrEqual(16);
+    expect(shots.every((x) => x.t <= 40 * MINUTE && x.t >= 20 * MINUTE)).toBe(true);
+    expect(shots.map((x) => x.t)).toEqual([...shots.map((x) => x.t)].sort((a, b) => a - b));
+    expect(cur!.live!.lastAt).toBeGreaterThanOrEqual(shots[shots.length - 1]!.t);
+    // Même activité pour le défenseur ; rien pour une nation étrangère au combat.
+    expect(viewFor(s, 'bbb').battleReports?.find((b) => b.id === cur!.id)?.live).toBeDefined();
+    expect(viewFor(s, 'ccc').battleReports ?? []).toHaveLength(0);
+    advanceTo(s, 12 * HOUR);
+    const done = viewFor(s, 'aaa').battleReports!.find((b) => b.id === cur!.id)!;
+    expect(done.outcome).not.toBe('ongoing');
+    expect(done.live).toBeUndefined();
+  });
 });

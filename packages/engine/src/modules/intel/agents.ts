@@ -10,6 +10,9 @@ import { publish } from './reports.js';
 import { addIncident, agentDetectFactor } from './interior.js';
 import { ist, nat, nextId, type Agent } from './state.js';
 import { codename, fmtTime, nationName, natAgree, natDe, natLe } from './text.js';
+import { noteLoc } from '../../state/loc.js';
+import { agentRisk, arrestTension, coverOf, expulsionNote } from './deep.js';
+import { loc } from '@redline/shared';
 
 export function createAgent(
   state: EngineState,
@@ -49,6 +52,7 @@ export function detectionChance(state: EngineState, a: Agent, bonus = 1): number
       (0.5 + budgetFactor(state, a.host, 'interior')) *
       (a.kind === 'source' ? 0.6 : 1) *
       agentDetectFactor(state, a.host) *
+      agentRisk(state, a) *
       bonus) /
     (1 + 0.3 * lo);
   return clamp(p, 0, 0.9);
@@ -84,6 +88,7 @@ export function catchQuietly(state: EngineState, a: Agent): void {
     source: 'humint',
     kind: 'counterintel',
     title: `Agent ${natDe(state, a.owner)} démasqué`,
+    titleLoc: loc('engine.intel.agentExposed', { nation: { nation: a.owner } }),
     lines: [
       `${a.kind === 'officer' ? 'Officier traitant' : 'Source recrutée'} au service ${natDe(state, a.owner)} identifié(e) et placé(e) sous surveillance.`,
       `Arrestation publique prévue ${fmtTime(until)}. Retournement possible d'ici là (ordre « retourner »).`,
@@ -106,6 +111,7 @@ export function burn(state: EngineState, a: Agent): void {
     source: 'humint',
     kind: 'flash',
     title: `Agent ${a.codename} compromis`,
+    titleLoc: loc('engine.intel.agentCompromised', { codename: a.codename }),
     lines: [
       `Signaux d'alerte sur ${a.codename} (${nationName(state, a.host)}) : contacts manqués, filature probable.`,
       'Exfiltration recommandée sans délai.',
@@ -131,25 +137,35 @@ export function publicArrest(state: EngineState, a: Agent): void {
   a.caughtAt ??= state.time;
   const at = capitalPoint(state, a.host);
   signal(state, 'agent_caught', { spyNation: a.owner, onNation: a.host });
-  signal(state, 'alert', { amount: cfg(state).exposureTension, reason: 'agent_caught' });
-  notify(
-    state,
-    {
-      kind: 'generic',
-      time: state.time,
-      at,
-      category: 'intel',
-      title: 'Agent démasqué',
-      text: `${natLe(state, a.host, true)} ${natAgree(state, a.host, 'annonce', 'annoncent')} l'arrestation d'un agent ${natDe(state, a.owner)}.`,
-      severity: 'warn',
-    },
-    [a.owner, a.host],
-  );
+  signal(state, 'alert', {
+    amount: cfg(state).exposureTension * arrestTension(state, a),
+    reason: 'agent_caught',
+  });
+  // Couverture diplomatique : expulsion (crise moindre) plutôt qu'arrestation.
+  if (coverOf(a) === 'diplomatic') {
+    a.ex = 1;
+    expulsionNote(state, a, at);
+  } else
+    notify(
+      state,
+      {
+        kind: 'generic',
+        time: state.time,
+        at,
+        category: 'intel',
+        title: 'Agent démasqué',
+        text: `${natLe(state, a.host, true)} ${natAgree(state, a.host, 'annonce', 'annoncent')} l'arrestation d'un agent ${natDe(state, a.owner)}.`,
+        severity: 'warn',
+        loc: noteLoc('agentCaught', { host: { nation: a.host }, owner: { nation: a.owner } }),
+      },
+      [a.owner, a.host],
+    );
   publish(state, a.host, {
     dept: 'interior',
     source: 'humint',
     kind: 'counterintel',
     title: `Arrestation d'un agent ${natDe(state, a.owner)}`,
+    titleLoc: loc('engine.intel.agentArrest', { nation: { nation: a.owner } }),
     lines: [
       `L'agent étranger placé sous surveillance a été interpellé.`,
       `Incident diplomatique ouvert avec ${natLe(state, a.owner)}.`,
@@ -164,6 +180,7 @@ export function publicArrest(state: EngineState, a: Agent): void {
     source: 'humint',
     kind: 'flash',
     title: `Agent ${a.codename} arrêté`,
+    titleLoc: loc('engine.intel.agentArrested', { codename: a.codename }),
     lines: [
       `${a.codename} a été arrêté par les services ${natDe(state, a.host)}.`,
       'Réseau local à considérer comme compromis. Perte de réputation attendue.',

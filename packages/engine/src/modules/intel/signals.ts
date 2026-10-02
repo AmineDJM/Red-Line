@@ -6,8 +6,10 @@ import { agentsIn, doubledIn, neighborNations, quality, roll } from './levels.js
 import { publish } from './reports.js';
 import { BUILDING_LABEL, announce, imagery, knowledge, provincesInCircle } from './provinces.js';
 import { ist, nat } from './state.js';
+import { bda } from './deep.js';
 import { addIncident } from './interior.js';
 import { nationName, natA, natAgree, natDe, natLe, provinceName, sectorOf } from './text.js';
+import { loc } from '@redline/shared';
 
 /**
  * Réactions du renseignement aux signaux des autres modules (et aux siens). Chaque signal met à jour
@@ -94,6 +96,16 @@ function strike(state: EngineState, d: Data): void {
   if (!alive(state, victim) || victim === by) return;
   nat(state, victim).log.strikes++;
   const kind = str(d.kind) ?? 'missile';
+  // Évaluation des dégâts chez le tireur (une fois par heure, par cible et par type de frappe).
+  const hit = lngLat(d.at);
+  if (
+    by &&
+    hit &&
+    alive(state, by) &&
+    state.nations[by]!.isPlayer &&
+    !cooling(state, by, `bda:${victim}:${kind}`, 1)
+  )
+    bda(state, by, victim, hit, kind);
   if (cooling(state, victim, `strike:${by ?? '?'}:${kind}`, 1)) return;
   const at = lngLat(d.at);
   const q = quality(state, victim, 'military');
@@ -103,6 +115,7 @@ function strike(state: EngineState, d: Data): void {
     source: 'sigint',
     kind: 'flash',
     title: `FLASH — ${STRIKE_LABEL[kind] ?? 'Frappe'} subie`,
+    titleLoc: loc(`engine.intel.strikeSuffered.${STRIKE_LABEL[kind] ? kind : 'other'}`),
     lines: [
       `${STRIKE_LABEL[kind] ?? 'Frappe'} subie${at ? `, ${sectorOf(state, at)}` : ''}. ` +
         (known ? `Origine : ${nationName(state, by)}.` : 'Origine non déterminée.'),
@@ -132,6 +145,7 @@ function nuclear(state: EngineState, d: Data): void {
       source: 'sigint',
       kind: 'flash',
       title: 'FLASH — Détonation nucléaire',
+      titleLoc: loc('engine.intel.flashNuclear'),
       lines: [
         `Détonation nucléaire détectée : ${where}. ` +
           (known ? `Attribuée ${natA(state, by)}.` : 'Origine non déterminée.'),
@@ -166,6 +180,7 @@ function sabotage(state: EngineState, d: Data): void {
     source: 'humint',
     kind: 'counterintel',
     title: 'Sabotage',
+    titleLoc: loc('engine.intel.sabotage'),
     lines: [
       `Sabotage : ${b ? (BUILDING_LABEL[b] ?? b) : 'installation'}${pid ? ` de ${provinceName(state, pid)}` : ''} endommagé(e) à ${dmg} %. ` +
         (known ? `Commandité par ${natLe(state, by)}.` : 'Auteurs non identifiés.'),
@@ -193,6 +208,7 @@ function cyber(state: EngineState, d: Data): void {
     source: 'sigint',
     kind: 'cyber',
     title: 'Cyberattaque',
+    titleLoc: loc('engine.intel.cyber'),
     lines: [
       `Cyberattaque contre nos ${CYBER_LABEL[kind] ?? 'systèmes'}, effets ≈ ${Math.round(num(d.hours, 12))} h. ` +
         (known ? `Attribuée ${natA(state, by)}.` : 'Attribution impossible.'),
@@ -222,6 +238,7 @@ function rebels(state: EngineState, d: Data): void {
     source: 'humint',
     kind: 'counterintel',
     title: 'Groupes armés financés',
+    titleLoc: loc('engine.intel.rebelsFunded'),
     lines: [
       `Financement de groupes armés détecté en ${provinceName(state, pid!)}. ` +
         (known ? `Fonds en provenance ${natDe(state, by)}.` : 'Origine des fonds inconnue.'),
@@ -262,6 +279,7 @@ function research(state: EngineState, d: Data): void {
       source: 'humint',
       kind: 'intentions',
       title: `Programme achevé — ${nationName(state, n)}`,
+      titleLoc: loc('engine.intel.programDone', { nation: { nation: n } }),
       lines: [
         `${natLe(state, n, true)} ${natAgree(state, n, 'a', 'ont')} achevé le programme « ${name} ».`,
       ],
@@ -294,6 +312,7 @@ function blackMarket(state: EngineState, d: Data): void {
       source: 'humint',
       kind: 'intentions',
       title: `Marché noir — ${nationName(state, buyer)}`,
+      titleLoc: loc('engine.intel.blackMarket', { nation: { nation: buyer } }),
       lines: [`Achat au marché noir par ${natLe(state, buyer)} : ${label}.`],
       at: null,
       radiusKm: 0,
@@ -327,6 +346,7 @@ function onImagery(state: EngineState, d: Data): void {
     dept: 'military',
     source: 'sigint',
     title: `Imagerie — ${nationName(state, owner)}`,
+    titleLoc: loc('engine.intel.imagery', { nation: { nation: owner } }),
     q: 0.85,
     kind: 'order_of_battle',
   });

@@ -3,12 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { Button, Icon, Kbd, Panel, Toggle, Window } from '@redline/ui';
 import { AudioSettingsPanel } from '../audio/AudioSettingsPanel.js';
 import { STORAGE } from '../config.js';
+import { LanguageSelect } from '../components/LanguageSelect.js';
 import {
   disableNotifications,
   enableNotifications,
   notificationsEnabled,
   notificationsSupported,
 } from '../lib/push.js';
+import { useMapPrefs } from '../map/prefs.js';
 import { navigate } from '../router.js';
 import type { WindowContentProps } from '../shell/WindowHost.js';
 import { useGame } from '../store/game.js';
@@ -19,6 +21,8 @@ export function SettingsWindow({ frame }: WindowContentProps) {
   const { t } = useTranslation();
   const legendOpen = useUi((s) => s.legendOpen);
   const setLegendOpen = useUi((s) => s.setLegendOpen);
+  const reduceMotion = useMapPrefs((s) => s.reduceMotion);
+  const setReduceMotion = useMapPrefs((s) => s.setReduceMotion);
   const setTutorialStep = useUi((s) => s.setTutorialStep);
   const closeWindow = useUi((s) => s.closeWindow);
   const toast = useUi((s) => s.toast);
@@ -29,12 +33,18 @@ export function SettingsWindow({ frame }: WindowContentProps) {
     [[t('keys.space')], t('shortcuts.pause')],
     [['1', '…', '5'], t('shortcuts.speed')],
     [['A', 'P', 'R', 'E', 'I', 'D', 'C', 'N', 'B', 'Y', 'M'], t('shortcuts.windows')],
-    [['Échap'], t('shortcuts.escape')],
+    [[t('keys.escape')], t('shortcuts.escape')],
     [['?'], t('shortcuts.help')],
   ];
   return (
     <Window {...frame} path={[t('sections.path.settings')]}>
       <div className="vstack">
+        <Panel title={t('language.label')}>
+          <div className="stack">
+            <LanguageSelect />
+            <p className="hint">{t('language.help')}</p>
+          </div>
+        </Panel>
         <Panel title={t('settings.display')}>
           <div className="stack">
             <Toggle
@@ -42,6 +52,12 @@ export function SettingsWindow({ frame }: WindowContentProps) {
               onChange={setLegendOpen}
               label={t('settings.legend')}
               description={t('settings.legendHelp')}
+            />
+            <Toggle
+              checked={reduceMotion}
+              onChange={setReduceMotion}
+              label={t('map.settings.reduceMotion')}
+              description={t('map.settings.reduceMotionHelp')}
             />
           </div>
         </Panel>

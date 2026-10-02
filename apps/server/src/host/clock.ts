@@ -1,4 +1,10 @@
-import { gameTimeAt, type ClockState, type GameTime, type RealTime } from '@redline/shared';
+import {
+  clockRate,
+  gameTimeAt,
+  type ClockState,
+  type GameTime,
+  type RealTime,
+} from '@redline/shared';
 
 /** Temps de jeu entier (ms) à l'instant réel `now`. */
 export function gameNow(clock: ClockState, now: RealTime): GameTime {
@@ -7,8 +13,9 @@ export function gameNow(clock: ClockState, now: RealTime): GameTime {
 
 /** Instant réel où l'horloge atteindra `t` (null si en pause). */
 export function realTimeFor(clock: ClockState, t: GameTime): RealTime | null {
-  if (clock.paused || clock.speed <= 0) return null;
-  return clock.anchorReal + (t - clock.anchorGame) / clock.speed;
+  const rate = clockRate(clock);
+  if (clock.paused || rate <= 0) return null;
+  return clock.anchorReal + (t - clock.anchorGame) / rate;
 }
 
 /**
@@ -26,5 +33,6 @@ export function reanchor(
     anchorReal: now,
     speed: change.speed ?? clock.speed,
     paused: change.paused ?? clock.paused,
+    ...(clock.rate !== undefined ? { rate: clock.rate } : {}),
   };
 }

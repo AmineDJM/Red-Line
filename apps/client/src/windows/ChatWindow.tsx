@@ -7,6 +7,7 @@ import type { ChatChannel } from '../net/connection.js';
 import type { WindowContentProps } from '../shell/WindowHost.js';
 import { useGame } from '../store/game.js';
 import { useWorld } from '../store/world.js';
+import { LOCALE, compareNames } from '../i18n/index.js';
 
 interface Conv {
   key: string;
@@ -127,7 +128,7 @@ export function ChatWindow({ win, frame, mobile }: WindowContentProps) {
             { value: '', label: t('chat.pickNation') },
             ...Object.values(nations)
               .filter((n) => n.id !== me)
-              .sort((a, b) => a.name.localeCompare(b.name, 'fr'))
+              .sort((a, b) => compareNames(a.name, b.name))
               .map((n) => ({ value: n.id, label: n.name })),
           ]}
         />
@@ -157,7 +158,7 @@ export function ChatWindow({ win, frame, mobile }: WindowContentProps) {
                   const mine = m.from.nationId === me && m.from.userId !== 'bot';
                   const prev = messages[i - 1];
                   const grouped = prev && prev.from.userId === m.from.userId;
-                  const time = new Date(m.sentAt).toLocaleTimeString('fr-FR', {
+                  const time = new Date(m.sentAt).toLocaleTimeString(LOCALE, {
                     hour: '2-digit',
                     minute: '2-digit',
                   });

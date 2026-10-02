@@ -13,7 +13,7 @@
   text-transform: uppercase;
 }
 .research__label b {
-  margin-left: 4px;
+  margin-inline-start: 4px;
   color: var(--rl-text);
 }
 .research__now {
@@ -42,7 +42,7 @@
   border-radius: var(--rl-radius-sm);
   background: var(--rl-cyan-dim);
   color: var(--rl-text);
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 }
 .research__cur-name {
@@ -80,7 +80,7 @@
   background: var(--rl-bg);
   color: var(--rl-text);
   font-size: var(--rl-fs-xs);
-  text-align: left;
+  text-align: start;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -171,7 +171,7 @@
   border-radius: var(--rl-radius);
   background: var(--rl-panel);
   color: var(--rl-text);
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   overflow: hidden;
   transition:
@@ -219,15 +219,15 @@
   color: var(--rl-amber);
 }
 .rnode__ext {
-  margin-left: auto;
+  margin-inline-start: auto;
   padding: 0 4px;
   border-radius: 2px;
   background: var(--rl-panel-3);
 }
 .rnode__bar {
   position: absolute;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   bottom: 0;
   height: 3px;
   background: var(--rl-line);
@@ -283,7 +283,7 @@
   flex-direction: column;
   gap: 10px;
   padding: 12px;
-  border-left: 1px solid var(--rl-line);
+  border-inline-start: 1px solid var(--rl-line);
   background: var(--rl-panel);
   scrollbar-width: thin;
 }
@@ -357,7 +357,7 @@
   background: none;
   color: inherit;
   font: inherit;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   text-decoration: underline;
   text-decoration-color: var(--rl-line-strong);
@@ -388,7 +388,7 @@
   grid-template-rows: minmax(260px, 1fr) auto;
 }
 .research--mobile .research__detail {
-  border-left: 0;
+  border-inline-start: 0;
   border-top: 1px solid var(--rl-line);
   max-height: 46vh;
 }

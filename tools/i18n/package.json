@@ -1,0 +1,17 @@
+{
+  "name": "@redline/tools-i18n",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "extract": "tsx src/extract.ts",
+    "translate": "tsx src/translate.ts",
+    "check": "tsx src/check.ts",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@redline/engine": "workspace:*",
+    "@redline/shared": "workspace:*"
+  }
+}

@@ -20,7 +20,13 @@ import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { useGameTime, weaponLabels, weaponSubtitle } from './helpers.js';
+import { useMapSel } from '../map/mapSel.js';
+import { BattlePanel } from './BattlePanel.js';
 import { ProvincePanel } from './ProvincePanel.js';
+import { isMixed, stackSummary } from '../lib/stacks.js';
+import { StackActions, StackComposition } from './StackActions.js';
+import { orderError } from '../lib/loc.js';
+import { UnitOrders } from './UnitOrders.js';
 
 const STANCES: UnitStance[] = ['hold', 'defend', 'aggressive'];
 
@@ -51,8 +57,7 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
   const general = u.generalId ? view?.generals?.find((g) => g.id === u.generalId) : null;
   const send = async (order: Parameters<NonNullable<typeof conn>['sendOrder']>[0]) => {
     const res = await conn?.sendOrder(order);
-    if (res && !res.ok)
-      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    if (res && !res.ok) toast(orderError(res), 'error');
   };
 
   const rows: {
@@ -61,10 +66,14 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
     tone?: 'amber' | 'green' | 'red' | 'cyan' | 'dim';
   }[] = [];
   if (!own) rows.push({ label: t('game.selection.owner'), value: nationName(u.owner) });
+  // Pile mixte : effectif total, vitesse du plus lent, plus longue portée (lib/stacks.ts).
+  const mixed = isMixed(u);
+  const summary = mixed ? stackSummary(u, catalog) : null;
   if (u.count !== undefined)
     rows.push({
       label: t('game.selection.count'),
-      value: `${formatInt(u.count)} ${sys?.unitLabel ?? ''}`.trim(),
+      value:
+        `${formatInt(u.count)} ${mixed ? t('stacks.elements') : (sys?.unitLabel ?? '')}`.trim(),
     });
   if (u.status)
     rows.push({
@@ -96,16 +105,18 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
     rows.push({ label: t('game.selection.ammo'), value: formatInt(u.mission.ammo) });
   if (general) rows.push({ label: t('game.selection.general'), value: general.name });
   if (sys && u.level !== 'detected') {
-    if (sys.weaponRangeKm.max > 0)
+    const range = summary?.rangeKm ?? sys.weaponRangeKm.max;
+    const speed = summary?.speedKmh ?? sys.speedKmh;
+    if (range > 0)
       rows.push({
         label: t('weapon.weaponRange'),
-        value: fmtKm(sys.weaponRangeKm.max),
+        value: fmtKm(range),
         tone: 'amber',
       });
-    if (sys.speedKmh > 0)
+    if (speed > 0)
       rows.push({
         label: t('weapon.speed'),
-        value: `${formatInt(sys.speedKmh)} km/h`,
+        value: `${formatInt(speed)} km/h`,
         tone: 'amber',
       });
   }
@@ -202,6 +213,7 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
         </div>
       ) : null}
       <KeyValue items={compact ? rows.slice(0, 4) : rows} columns={compact ? 1 : 1} />
+      {!compact ? <StackComposition u={u} /> : null}
       {own ? (
         <>
           {!compact ? (
@@ -216,24 +228,21 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
               />
             </div>
           ) : null}
-          <div className="selpanel__actions">
-            {u.status === 'moving' || u.status === 'combat' ? (
-              <Button
-                size="sm"
-                icon={<Icon name="stop" size={12} />}
-                onClick={() => void send({ kind: 'stop', unitIds: ids })}
-              >
-                {t('game.selection.stop')}
-              </Button>
-            ) : null}
-            {sys?.movement === 'air' ? (
-              <Button
-                size="sm"
-                icon={<Icon name="home" size={13} />}
-                onClick={() => void send({ kind: 'rtb', unitIds: ids })}
-              >
-                {t('army.rtb')}
-              </Button>
+          {!compact ? (
+            <UnitOrders
+              units={ids.map((id) => view?.units[id]).filter((x): x is UnitView => !!x)}
+              compact={false}
+            />
+          ) : null}
+          <div
+            className={compact ? 'selpanel__actions selpanel__actions--row' : 'selpanel__actions'}
+          >
+            {/* Mobile : actions possibles et fiche sur une seule rangée défilante. */}
+            {compact ? (
+              <UnitOrders
+                units={ids.map((id) => view?.units[id]).filter((x): x is UnitView => !!x)}
+                compact
+              />
             ) : null}
             {sys ? (
               <Button
@@ -245,7 +254,9 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
                 {t('game.selection.sheet')}
               </Button>
             ) : null}
+            {compact ? <StackActions u={u} ids={ids} compact /> : null}
           </div>
+          {!compact ? <StackActions u={u} ids={ids} /> : null}
           {!compact ? <p className="selpanel__hint">{t('game.selection.hint')}</p> : null}
         </>
       ) : sys ? (
@@ -272,15 +283,20 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
   );
 }
 
-/** Panneau de sélection (bas gauche) : unité sélectionnée ou inspectée, sinon province. */
+/** Panneau de sélection (bas gauche) : unité sélectionnée ou inspectée, bataille, sinon province. */
 export function SelectionPanel({ compact }: { compact: boolean }) {
   const selection = useUi((s) => s.selection);
   const inspected = useUi((s) => s.inspected);
   const province = useUi((s) => s.selectedProvince);
+  const battle = useMapSel((s) => s.battle);
   const view = useGame((s) => s.view);
+  const targeting = useUi((s) => s.targeting);
   const id = selection[0] ?? inspected;
   const u = id ? view?.units[id] : undefined;
+  // Mobile : en mode ciblage, la carte entière reste libre (le bandeau permet d'annuler).
+  if (compact && targeting) return null;
   if (u && view) return <UnitPanel u={u} compact={compact} />;
+  if (battle && view) return <BattlePanel compact={compact} />;
   if (province && view?.provinces[province])
     return <ProvincePanel id={province} compact={compact} />;
   return null;

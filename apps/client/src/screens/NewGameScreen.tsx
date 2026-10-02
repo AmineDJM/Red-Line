@@ -8,6 +8,7 @@ import { NationPicker } from '../components/NationPicker.js';
 import { navigate } from '../router.js';
 import { useWorld } from '../store/world.js';
 import { ErrorScreen, LoadingScreen } from './Loading.js';
+import { localizeScenarios } from '../lib/localize.js';
 
 /** Vitesses proposées avant que la partie n'existe (la partie impose ensuite GameMeta.speeds). */
 const DEFAULT_SPEEDS = [1, 2, 4, 8];
@@ -29,6 +30,7 @@ export function NewGameScreen() {
       void world.load(api);
       api
         .scenarios()
+        .then(localizeScenarios)
         .then((s) => {
           setScenarios(s);
           // Par défaut : le monde actuel (arsenaux 2025), sinon le premier scénario disponible.

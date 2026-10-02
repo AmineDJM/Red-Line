@@ -190,7 +190,7 @@
   background: var(--rl-red);
 }
 .factors b {
-  text-align: right;
+  text-align: end;
 }
 
 /* ——— Conseil de sécurité ——— */
@@ -258,7 +258,7 @@
 .reso__text {
   margin: 0;
   padding: 10px 12px;
-  border-left: 2px solid var(--rl-cyan-line);
+  border-inline-start: 2px solid var(--rl-cyan-line);
   background: var(--rl-bg);
   color: var(--rl-text);
   font-size: var(--rl-fs-sm);
@@ -430,11 +430,11 @@
   flex-direction: column;
   gap: 6px;
   min-width: 0;
-  padding-left: 14px;
-  border-left: 2px solid var(--rl-line-strong);
+  padding-inline-start: 14px;
+  border-inline-start: 2px solid var(--rl-line-strong);
 }
 .dispatch--hot .dispatch__body {
-  border-left-color: var(--rl-red);
+  border-inline-start-color: var(--rl-red);
 }
 .dispatch__meta {
   display: flex;
@@ -494,7 +494,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  margin-left: auto;
+  margin-inline-start: auto;
   padding: 2px 6px;
   border: 0;
   border-radius: 3px;
@@ -523,7 +523,7 @@
   margin: 0;
   padding: 6px;
   list-style: none;
-  border-right: 1px solid var(--rl-line);
+  border-inline-end: 1px solid var(--rl-line);
   background: var(--rl-panel);
 }
 .bitem {
@@ -537,7 +537,7 @@
   border-radius: var(--rl-radius-sm);
   background: transparent;
   color: var(--rl-text);
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 }
 .bitem:hover {
@@ -651,7 +651,7 @@
 .replay__hud {
   position: absolute;
   top: 8px;
-  left: 8px;
+  inset-inline-start: 8px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -668,13 +668,13 @@
 }
 .replay__rec::before {
   content: '●';
-  margin-right: 5px;
+  margin-inline-end: 5px;
   animation: rl-pulse 1.2s ease-in-out infinite;
 }
 .replay__legend {
   position: absolute;
   top: 8px;
-  right: 8px;
+  inset-inline-end: 8px;
   display: flex;
   gap: 10px;
   padding: 4px 8px;
@@ -686,7 +686,7 @@
   display: inline-block;
   width: 8px;
   height: 8px;
-  margin-right: 4px;
+  margin-inline-end: 4px;
   border-radius: 1px;
 }
 .replay__controls {
@@ -723,7 +723,7 @@
   flex-direction: column;
   justify-content: space-between;
   min-height: 0;
-  border-right: 1px solid var(--rl-line);
+  border-inline-end: 1px solid var(--rl-line);
   background: var(--rl-panel);
 }
 .chat__convs ul {
@@ -744,7 +744,7 @@
   background: transparent;
   color: var(--rl-text);
   font-size: var(--rl-fs-sm);
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 }
 .conv:hover {
@@ -806,7 +806,7 @@
 }
 .msg--mine {
   align-self: flex-end;
-  text-align: right;
+  text-align: end;
 }
 .msg__head {
   display: flex;
@@ -830,7 +830,7 @@
   background: var(--rl-panel-2);
   font-size: var(--rl-fs-sm);
   line-height: 1.5;
-  text-align: left;
+  text-align: start;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -978,5 +978,5 @@
   margin: 0;
   color: var(--rl-text-dim);
   font-size: var(--rl-fs-xs);
-  text-align: right;
+  text-align: end;
 }

@@ -1,4 +1,5 @@
 import type { GameTime, LngLat, NationId, ProvinceId } from './ids.js';
+import type { LocText } from './i18n.js';
 
 export type Relation = 'war' | 'peace' | 'ceasefire' | 'ally';
 
@@ -124,6 +125,11 @@ export interface NewsItem {
   body: string;
   at: LngLat | null;
   nations: NationId[];
+  /**
+   * Gabarit localisable (`news.<type>.h<n>` / `news.<type>.b<n>` et paramètres) : le client affiche
+   * la dépêche dans la langue du joueur ; `headline`/`body` restent le texte français.
+   */
+  loc?: { headline: LocText; body: LocText };
 }
 
 export interface DiplomacyView {

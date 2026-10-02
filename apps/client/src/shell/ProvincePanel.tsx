@@ -10,7 +10,6 @@ import {
   KeyValue,
   Pictogram,
   ProgressBar,
-  formatCompact,
   formatHours,
   formatMoney,
   pictogramForBuilding,
@@ -23,6 +22,9 @@ import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { useGameTime } from './helpers.js';
+import { ProvinceStrip } from './ProvinceStrip.js';
+import { ProvinceResources } from '../components/ProvinceResources.js';
+import { orderError } from '../lib/loc.js';
 
 /**
  * Fiche de province : bâtiments (niveaux, construction) si elle est à nous, connaissance sinon.
@@ -70,15 +72,13 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
           : { provinceId: id },
     });
     if (res?.ok) toast(t(`province.opStarted.${op}`, { province: def.cityName ?? def.name }), 'ok');
-    else if (res)
-      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    else if (res) toast(orderError(res), 'error');
   };
 
   const fortify = async () => {
     const res = await conn?.sendOrder({ kind: 'build', provinceId: id, building: 'fortification' });
     if (res?.ok) toast(t('province.fortifyStarted', { province: def.cityName ?? def.name }), 'ok');
-    else if (res)
-      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    else if (res) toast(orderError(res), 'error');
   };
 
   return (
@@ -146,21 +146,19 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
         </div>
       ) : null}
 
+      <ProvinceStrip id={id} />
+
+      <ProvinceResources def={def} />
+
       {own || allied ? (
         <>
           <KeyValue
             items={[
-              ...(def.population
-                ? [{ label: t('province.population'), value: formatCompact(def.population) }]
-                : []),
               {
                 label: t('province.income'),
                 value: formatMoney(ecoProv?.income ?? def.income.money),
                 tone: 'amber' as const,
               },
-              ...(ecoProv
-                ? [{ label: t('province.morale'), value: `${Math.round(ecoProv.morale)} / 100` }]
-                : []),
               ...(p.fortification
                 ? [
                     {

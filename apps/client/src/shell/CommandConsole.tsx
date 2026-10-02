@@ -6,6 +6,7 @@ import { COMMANDS, parseCommand, suggest, type CommandCtx } from '../lib/command
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
+import { orderError } from '../lib/loc.js';
 
 const HISTORY_KEY = 'rl.console.history';
 
@@ -121,7 +122,7 @@ export function CommandConsole() {
         if (!conn) return add('err', t('game.orders.errors.disconnected'));
         const res = await conn.sendOrder(a.order);
         if (res.ok) add('ok', a.summary);
-        else add('err', res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`));
+        else add('err', orderError(res));
       }
     }
   };

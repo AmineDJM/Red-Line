@@ -28,6 +28,7 @@ import {
   satKind,
   schedule,
   unitsNear,
+  noteLoc,
 } from './util.js';
 
 /**
@@ -79,6 +80,8 @@ export function blindRadars(state: EngineState, victim: NationId, hours: number)
     'Radars aveuglés',
     'Une cyberattaque perturbe nos radars.',
     'warn',
+    null,
+    noteLoc('radarsBlinded'),
   );
 }
 
@@ -265,6 +268,7 @@ export function handleSatPass(state: EngineState, d: { u: string; v: number }): 
       `${sysOf(state, u).name} : ${found} contact(s) sous la fauchée.`,
       'info',
       aim,
+      noteLoc('satPass', { system: { system: u.sys }, count: found }),
     );
   }
 }

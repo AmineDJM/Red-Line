@@ -31,6 +31,13 @@ import {
 } from '@redline/shared';
 import type { CommandSuggestion } from '@redline/ui';
 import { WINDOW_IDS, type WindowId } from '../store/ui.js';
+import { LOCALE, isFrench } from '../i18n/index.js';
+
+/** Formes du nom de pays : grammaire française, ou nom seul dans les autres langues. */
+const forms = (n: NationDef) =>
+  isFrench
+    ? frForms(n.name, n.article)
+    : { nation: n.name, nationLe: n.name, NationLe: n.name, deNation: n.name, aNation: n.name };
 
 export interface CommandCtx {
   view: PlayerView;
@@ -112,7 +119,7 @@ type ArgKind =
 /** minuscules, sans accents, espaces normalisés. */
 export function norm(s: string): string {
   return s
-    .toLocaleLowerCase('fr')
+    .toLocaleLowerCase(LOCALE)
     .normalize('NFD')
     .replace(/\p{Diacritic}/gu, '')
     .replace(/\s+/g, ' ')
@@ -374,7 +381,11 @@ export function parseCommand(input: string, ctx: CommandCtx): CommandAction {
         },
         summary: ctx.label('console.done.intel', {
           op: ctx.label(`intel.ops.${op}`),
-          target: nation ? frLe(nation.name, nation.article) : place!.name,
+          target: nation
+            ? isFrench
+              ? frLe(nation.name, nation.article)
+              : nation.name
+            : place!.name,
         }),
       };
     }
@@ -394,7 +405,7 @@ export function parseCommand(input: string, ctx: CommandCtx): CommandAction {
       return {
         type: 'order',
         order,
-        summary: ctx.label(`console.done.${cmd.id}`, frForms(n.name, n.article)),
+        summary: ctx.label(`console.done.${cmd.id}`, forms(n)),
       };
     }
     case 'mobilize': {

@@ -11,7 +11,16 @@ import { wi } from '../../state/world.js';
 import { aiOrder } from '../../ai/trace.js';
 import { canAfford } from '../../economy/economy.js';
 import { budgetDay } from './budget.js';
-import { buildingsOf, health, levelOf, provinceProductionSpeed } from './buildings.js';
+import {
+  RESOURCE_BUILDINGS,
+  buildRestriction,
+  buildingsOf,
+  depositYield,
+  depositsOf,
+  health,
+  levelOf,
+  provinceProductionSpeed,
+} from './buildings.js';
 import { cfg, requiredBuildings } from './config.js';
 import { importCheck, localCheck } from './production.js';
 import { hasGate, nodeOf } from './research.js';
@@ -173,19 +182,34 @@ function thinkRepairs(state: EngineState, n: NationId): void {
   }
 }
 
-/** Investissement : améliore le bâtiment de ressources le moins avancé (un chantier à la fois). */
+/**
+ * Investissement (un chantier à la fois) : améliore le bâtiment de ressources le moins avancé ou, sur
+ * une carte à ressources, ouvre un bâtiment d'extraction là où la province possède la ressource. À
+ * niveau égal, la plus riche d'abord (rendement selon la richesse, principale avant secondaire) ;
+ * jamais de bâtiment interdit (ressource absente, pas de côte, pas de pôle électronique) ; dans une
+ * province « argent seulement », l'industrie locale (quartier d'affaires).
+ */
 function thinkInvest(state: EngineState, n: NationId): void {
   const bd = budgetDay(state, n);
   if (bd <= 0 || state.nations[n]!.money < bd * AI(state).investDays) return;
   const es = eco(state);
   for (const id of sortedIds(es.jobs)) if (es.jobs[id]!.n === n) return;
   const max = cfg(state.world).buildings.maxLevel;
-  let best: { pid: string; b: BuildingType; lvl: number } | null = null;
+  let best: { pid: string; b: BuildingType; lvl: number; y: number } | null = null;
   for (const pid of provincesOf(state, n)) {
+    const ds = depositsOf(state.world, pid);
     for (const b of AI(state).investIn) {
       const lvl = levelOf(state, pid, b);
-      if (lvl <= 0 || lvl >= max || health(state, pid, b) < 1) continue;
-      if (!best || lvl < best.lvl) best = { pid, b, lvl };
+      if (lvl >= max) continue;
+      const r = RESOURCE_BUILDINGS[b];
+      if (lvl <= 0) {
+        // Bâtiment neuf : seulement sur une carte à ressources, là où la province s'y prête.
+        if (!ds || buildRestriction(state.world, pid, b)) continue;
+        if (r ? !ds.some((d) => d.type === r) : !(b === 'local_industry' && ds.length === 0))
+          continue;
+      } else if (health(state, pid, b) < 1) continue;
+      const y = r ? depositYield(state.world, pid, r) : 1;
+      if (!best || lvl < best.lvl || (lvl === best.lvl && y > best.y)) best = { pid, b, lvl, y };
     }
   }
   if (!best) return;

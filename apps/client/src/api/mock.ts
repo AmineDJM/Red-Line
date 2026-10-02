@@ -19,6 +19,7 @@ import type {
   ResourceBuyResult,
   ScenarioSummary,
   WeaponSystem,
+  RoutesFile,
 } from '@redline/shared';
 import { FALLBACK_TILES, FONTS } from '../config.js';
 import { bundledBalance, bundledResearch } from '../lib/staticData.js';
@@ -222,6 +223,14 @@ export class MockApi implements Api {
   }
   async provincesGeoJSON() {
     return (await loadFixtures()).geo;
+  }
+  async routes(): Promise<RoutesFile | null> {
+    // Vraies données (greffon de dev) seulement : les fixtures minimales n'ont pas de routes.
+    try {
+      return await getJson<RoutesFile>('/api/map/routes');
+    } catch {
+      return null;
+    }
   }
   async tiles(): Promise<TilesInfo | null> {
     const full = '/tiles/satellite.pmtiles';

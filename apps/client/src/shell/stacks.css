@@ -1,0 +1,74 @@
+/* Piles : composition et actions rapides (StackActions.tsx). */
+.stackcomp {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--rl-line);
+}
+.stackcomp__title {
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-2xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.stackcomp__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 168px;
+  overflow-y: auto;
+}
+.stackcomp__row {
+  display: grid;
+  grid-template-columns: 16px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  color: var(--rl-text);
+  font-size: var(--rl-fs-sm);
+}
+.stackcomp__name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.stackcomp__count {
+  color: var(--rl-cyan);
+  font-variant-numeric: tabular-nums;
+}
+.stackcomp__more {
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-xs);
+}
+.stackact {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.stackact__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.stackact__detach {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--rl-line);
+  background: var(--rl-cyan-dim);
+}
+.stackact__note {
+  margin: 0;
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-xs);
+  line-height: 1.4;
+}
+/* Mobile : le détail occupe toute la largeur de la rangée d'actions. */
+.stackact--wide {
+  flex: 1 1 100%;
+}

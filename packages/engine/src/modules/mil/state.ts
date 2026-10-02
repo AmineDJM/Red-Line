@@ -110,6 +110,66 @@ export interface BattleSideSt {
   lossValue: number;
 }
 
+/**
+ * Faits d'un camp pour le rapport après action (optionnel : batailles antérieures). Clés courtes :
+ * l'état est sérialisé dans les instantanés.
+ */
+export interface BattleSideX {
+  /** Dégâts reçus (PV) par système. */
+  hp: Record<SystemId, number>;
+  /** Éléments × rounds de tir ayant porté, par système (munitions tirées). */
+  sh: Record<SystemId, number>;
+  /** Meilleur niveau d'identification atteint par ce camp sur chaque unité adverse (1 à 3). */
+  ob: Record<UnitId, number>;
+  /** Éléments adverses détruits par les tirs de ce camp (pertes confirmées), par unité adverse. */
+  kc: Record<UnitId, number>;
+  /** Dégâts (PV) infligés par ce camp à chaque unité adverse (évaluation des dégâts). */
+  dd: Record<UnitId, number>;
+  /** Missiles tirés, missiles de ce camp abattus, missiles adverses abattus par ce camp, impacts reçus. */
+  ml: number;
+  md: number;
+  mi: number;
+  mr: number;
+  /** Coups portés par mode : indirect, air → sol, sol direct, naval, contre aéronefs. */
+  mo: number[];
+  /** Tirs adverses dégradés par son brouillage, coups portés sans être vu (furtivité). */
+  ew: number;
+  st: number;
+  /** Coups reçus : total, en position retranchée (fortification, ville), tirs portés mal ravitaillé, tirs portés. */
+  nh: number;
+  fo: number;
+  oos: number;
+  nf: number;
+  /** Coups portés contre des aéronefs adverses, et éléments aériens adverses abattus. */
+  aa: number;
+  /** Vétérance : somme des niveaux × éléments, éléments comptés. */
+  vt: [number, number];
+  /** Généraux (identifiants) qui commandaient des unités engagées. */
+  gn: string[];
+  /** Éléments capturés par l'adversaire (matériel pris sur ses bases). */
+  cp: Record<SystemId, number>;
+}
+
+export interface BattleX {
+  a: BattleSideX;
+  d: BattleSideX;
+  /** Courbe : [t, pertes A, pertes D, pertes A confirmées par D, pertes D confirmées par A]. */
+  ser: [number, number, number, number, number][];
+  /**
+   * Tranche en cours : début, puis par camp (A puis D) les coups portés par mode (indirect, air sur
+   * sol, sol direct, naval, air-air) et les éléments perdus.
+   */
+  bk: [number, number[], number[]] | null;
+  /** Phases closes : [genre, début, fin, camp (a / d / ''), pertes A, pertes D, confirmées A, confirmées D]. */
+  ph: [string, number, number, string, number, number, number, number][];
+  /** Provinces prises dans la zone : [province, preneur, date]. */
+  cap: [ProvinceId, NationId, number][];
+  /** Coups par milieu de la cible : terre, mer, air. */
+  dom: [number, number, number];
+  /** Propriétaire de la province au début. */
+  own: NationId | null;
+}
+
 export interface BattleSt {
   id: string;
   at: LngLat;
@@ -119,17 +179,37 @@ export interface BattleSt {
   end: GameTime | null;
   a: BattleSideSt;
   d: BattleSideSt;
-  /** Unités vues dans la bataille : id → [propriétaire, système]. */
-  units: Record<UnitId, [NationId, SystemId]>;
+  /** Unités vues dans la bataille : id → [propriétaire, système, éléments à l'engagement]. */
+  units: Record<UnitId, [NationId, SystemId] | [NationId, SystemId, number]>;
   cm: Record<string, number>;
-  timeline: { t: GameTime; text: string }[];
+  /** Faits marquants ; `u` : unités nommées dans le texte (masqué au lecteur qui ne les a pas identifiées). */
+  timeline: { t: GameTime; text: string; u?: UnitId[] }[];
   frames: {
     t: GameTime;
     units: { id: UnitId; owner: NationId; systemId: SystemId; at: LngLat; hp: number }[];
   }[];
-  shots: { t: GameTime; from: LngLat; to: LngLat; cls: TargetClass; hit: boolean }[];
+  shots: {
+    t: GameTime;
+    from: LngLat;
+    to: LngLat;
+    cls: TargetClass;
+    hit: boolean;
+    /** Tireur (filtrage du replay selon ce que le lecteur a vu). */
+    u?: UnitId;
+  }[];
+  /** Derniers tirs (file bornée, indépendante du plafond du replay) : activité affichée en direct. */
+  rs?: {
+    t: GameTime;
+    from: LngLat;
+    to: LngLat;
+    cls: TargetClass;
+    hit: boolean;
+    u?: UnitId;
+  }[];
   outcome: 'attacker' | 'defender' | 'draw' | 'ongoing';
   title: string;
+  /** Rapport après action (absent des batailles antérieures). */
+  x?: BattleX;
 }
 
 export interface GenSt {

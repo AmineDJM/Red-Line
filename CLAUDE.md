@@ -43,6 +43,11 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
   cercle ; entrée dans les zones circulaires calculée exactement ; croisements mobiles par recherche bornée.
 - Navigation sur grille H3 résolution 4 ; `cells.json.impassable` = terres sans propriétaire (Antarctique, zones
   tampons), infranchissables. Le terrain n'influence jamais le combat.
+- **Réseau de routes** (`data/map/routes.json`, `pnpm --filter @redline/tools-map routes`, graphe `RoadNet` de
+  `packages/shared`) : les unités terrestres ne circulent que sur les routes (villes = points de capture, centres,
+  ports, passages de frontière, carrefours) ; destination accrochée à moins de `movement.roadSnapKm`, sinon ordre
+  refusé (`off_road`) ; traversées de port à port sur la grille navale. Air et mer : trajets libres inchangés.
+  Unité hors réseau (ancienne sauvegarde) : termine son trajet, puis rejoint la route la plus proche. Désactivable : `movement.roadNetwork: false`.
 - Guerre déclarée automatiquement par un ordre d'attaque ou l'entrée dans une province étrangère.
 - Persistance : instantanés compressés + journal d'ordres ; reprise = instantané + rejeu. Bail de partie en base
   (colonnes `lease_owner`/`lease_until`) ; ne jamais fixer `INSTANCE_ID` à une constante sur Render.
@@ -55,12 +60,17 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
 - Fond vectoriel en GeoJSON statique (`data/basemap`) plutôt qu'en PMTiles vectoriel (petit volume, pas de tippecanoe).
 - Cibles stratégiques : bâtiments **génériques** par province, jamais de vrais sites nommés. De l'image de référence,
   on ne reprend que les codes visuels.
+- Armées de départ en **piles mixtes** (brigades, escadres ; `data/balance` `stacks`, désactivable) : une pile vaut
+  la somme de ses éléments (`Unit.mix`), ordres `split` / `merge` ; mesures dans `docs/charge.md`.
 - Couleurs de nations : jamais de violet (réservé au joueur), deux voisins jamais identiques.
 
 ## Conventions
 
 - Tous les chiffres d'équilibrage dans `data/` (JSON validé par zod), jamais en dur.
 - Textes de l'interface en français, externalisés (`apps/client/src/i18n/fr.json`, `apps/admin/src/i18n/fr.ts`).
+- Multilingue (15 langues, arabe en RTL) : source française, autres langues produites et contrôlées par `tools/i18n`
+  (`check`, `translate -- --import`) ; toute nouvelle clé de `fr*.json` doit être traduite (test de complétude en CI).
+  Le moteur ne porte que des clés + paramètres (`LocText`, champs optionnels). Voir `docs/i18n.md`.
 - Nom du jeu : **Red Line** (interface, titres, métadonnées).
 - Accès de diagnostic du client (`window.__rl`, `window.__rlMap`) : actifs en mock ou avec localStorage `rl.debug=1`.
 - `REDLINE_EXTRA_SPEEDS` : vitesses d'essai pour les tests, refusées en production.

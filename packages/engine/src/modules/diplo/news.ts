@@ -4,6 +4,9 @@ import {
   frCap,
   frDe,
   frLe,
+  loc,
+  type LocParam,
+  type LocText,
   type LngLat,
   type NationId,
   type NewsCategory,
@@ -64,6 +67,30 @@ export const TEMPLATES = {
     b: [
       "Les délégations ont paraphé l'accord. Les troupes disposent d'un délai pour se retirer.",
       'Le traité prévoit le retrait des forces engagées sur le territoire adverse.',
+    ],
+  },
+  peace_annexation: {
+    cat: 'peace',
+    h: [
+      '{A} / {B} : la paix entérine les conquêtes {de:A}',
+      'Traité de paix : {le:B} {s:B:cède|cèdent} {X} province(s) {a:A}',
+      'Fin de la guerre : les frontières {de:B} redessinées',
+    ],
+    b: [
+      'Les territoires occupés restent sous le contrôle {de:A} : {X} province(s) changent de main.',
+      '{Le:B} {s:B:signe|signent} la paix sans récupérer les {X} province(s) perdues.',
+    ],
+  },
+  capitulation: {
+    cat: 'peace',
+    h: [
+      '{Le:B} {s:B:capitule|capitulent} face {a:A}',
+      'Capitulation {de:B} : {le:A} {s:A:impose|imposent} la paix',
+      'Défaite {de:B} : armistice signé avec {le:A}',
+    ],
+    b: [
+      'Sa capitale tombée, le gouvernement {de:B} accepte les conditions {de:A}. {X} province(s) passent sous son contrôle.',
+      'Les forces {de:B} déposent les armes. {Le:A} {s:A:annexe|annexent} {X} province(s).',
     ],
   },
   ceasefire: {
@@ -419,6 +446,28 @@ export interface NewsVars {
   P?: string;
   X?: string;
   Y?: string;
+  /**
+   * Équivalents structurés de P, X, Y pour la dépêche localisée (`NewsItem.loc`) : province, liste
+   * de nations, libellé traduit… À défaut, la chaîne française est transmise telle quelle.
+   */
+  loc?: { P?: LocParam; X?: LocParam; Y?: LocParam };
+}
+
+/** Liste de nations (paramètre localisable). */
+export function locNations(ns: readonly NationId[]): LocParam {
+  return { list: ns.map((n) => ({ nation: n })) };
+}
+
+/** Paramètres de la dépêche localisée (gabarit `news.<type>.h<n>` du client). */
+function locParams(v: NewsVars): Record<string, LocParam> {
+  const p: Record<string, LocParam> = {};
+  if (v.A) p.A = { nation: v.A };
+  if (v.B) p.B = { nation: v.B };
+  for (const k of ['P', 'X', 'Y'] as const) {
+    const val = v.loc?.[k] ?? v[k];
+    if (val !== undefined) p[k] = val;
+  }
+  return p;
 }
 
 /** Élision devant une voyelle (« de Ukraine » → « d’Ukraine »), sans toucher au h aspiré. */
@@ -478,9 +527,15 @@ export function news(
   const d = ds(state);
   const seq = d.newsSeq + 1;
   const hh = hash(`${kind}:${seq}`);
-  const headline = fill(t.h[hh % t.h.length]!, state, vars);
-  const body = fill(t.b[(hh >>> 8) % t.b.length]!, state, vars).trim();
-  return pushNews(state, t.cat, headline, body, at, nations);
+  const hi = hh % t.h.length;
+  const bi = (hh >>> 8) % t.b.length;
+  const headline = fill(t.h[hi]!, state, vars);
+  const body = fill(t.b[bi]!, state, vars).trim();
+  const params = locParams(vars);
+  return pushNews(state, t.cat, headline, body, at, nations, {
+    headline: loc(`news.${kind}.h${hi}`, params),
+    body: loc(`news.${kind}.b${bi}`, params),
+  });
 }
 
 /** Ajoute une dépêche déjà rédigée (signal `news`, fuite). */
@@ -491,6 +546,7 @@ export function pushNews(
   body: string,
   at: LngLat | null,
   nations: NationId[],
+  locText?: { headline: LocText; body: LocText },
 ): NewsItem {
   const d = ds(state);
   const item: NewsItem = {
@@ -501,6 +557,7 @@ export function pushNews(
     body,
     at: at ? [at[0], at[1]] : null,
     nations: [...new Set(nations)].sort(),
+    ...(locText ? { loc: locText } : {}),
   };
   d.news.push(item);
   const keep = cfg(state).newsKeep;

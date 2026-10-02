@@ -26,6 +26,8 @@ import type { WindowContentProps } from '../shell/WindowHost.js';
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
+import { compareNames } from '../i18n/index.js';
+import { orderError } from '../lib/loc.js';
 
 function useSend() {
   const { t } = useTranslation();
@@ -33,8 +35,7 @@ function useSend() {
   return async (order: Order, ok: string) => {
     const res = await useGame.getState().connection?.sendOrder(order);
     if (res?.ok) toast(ok, 'ok');
-    else if (res)
-      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    else if (res) toast(orderError(res), 'error');
     return !!res?.ok;
   };
 }
@@ -176,7 +177,7 @@ function Propose({ onDone }: { onDone: () => void }) {
   const [text, setText] = useState('');
   const list = Object.values(nations)
     .filter((n) => n.id !== me)
-    .sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+    .sort((a, b) => compareNames(a.name, b.name));
   return (
     <Panel title={t('council.propose')} accent="cyan">
       <div className="stack">

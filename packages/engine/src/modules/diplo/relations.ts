@@ -42,6 +42,7 @@ import {
 import { news } from './news.js';
 import { mutualDefense, openExpelVote } from './alliances.js';
 import { autoResolution } from './council.js';
+import { noteLoc } from '../../state/loc.js';
 
 const FOREVER = Number.MAX_SAFE_INTEGER;
 
@@ -97,6 +98,27 @@ export function declareDefensive(state: EngineState, member: NationId, aggressor
   }
 }
 
+/** Bloc politique (données ai.world) dont la défense mutuelle est en cours d'activation (dépêche). */
+let blocLabel: string | null = null;
+
+/**
+ * Défense mutuelle d'un bloc politique (IA, données ai.world.blocs) : déclaration défensive, sans
+ * atteinte à la réputation, annoncée au nom du bloc.
+ */
+export function declareBlocDefense(
+  state: EngineState,
+  member: NationId,
+  aggressor: NationId,
+  bloc: string,
+): void {
+  blocLabel = bloc;
+  try {
+    declareDefensive(state, member, aggressor);
+  } finally {
+    blocLabel = null;
+  }
+}
+
 /** Crochet du cœur : toute déclaration de guerre (attaque, entrée en territoire, ordre, alliance). */
 export function onWarDeclared(state: EngineState, a: NationId, b: NationId): void {
   const d = ds(state);
@@ -130,7 +152,7 @@ export function onWarDeclared(state: EngineState, a: NationId, b: NationId): voi
     );
   } else if (isDefensive) {
     const al = d.alliances[board(state).allianceOf[a] ?? ''];
-    news(state, 'war_alliance', { A: a, B: b, X: al?.name ?? '' }, at, [a, b]);
+    news(state, 'war_alliance', { A: a, B: b, X: al?.name ?? blocLabel ?? '' }, at, [a, b]);
   } else {
     addReputation(state, a, -cfg(state).aggressionReputation);
     news(state, 'war', { A: a, B: b }, at, [a, b]);
@@ -202,6 +224,7 @@ export function endWar(
         title: 'Cessez-le-feu',
         text: `Cessez-le-feu en vigueur : ${nationName(state, a)} / ${nationName(state, b)}.`,
         severity: 'info',
+        loc: noteLoc('ceasefire', { a: { nation: a }, b: { nation: b } }),
       },
       null,
     );
@@ -210,11 +233,31 @@ export function endWar(
     startWithdrawal(state, a, b);
     addReputation(state, a, 2);
     addReputation(state, b, 2);
-    news(state, 'peace', { A: a, B: b }, at, [a, b]);
+    peaceNews(state, a, b, at);
     notify(state, { kind: 'peace_signed', time: state.time, a, b }, null);
   }
   refreshPassage(state);
   signal(state, 'peace', { a, b, kind });
+}
+
+/**
+ * Dépêche de paix : simple traité, ou traité qui entérine des conquêtes (provinces d'origine de l'un
+ * tenues par l'autre, carte publique), ou capitulation (capitale du vaincu tenue par le vainqueur).
+ */
+function peaceNews(state: EngineState, a: NationId, b: NationId, at: LngLat | null): void {
+  const w = wi(state.world);
+  const held = (x: NationId, by: NationId) =>
+    (w.provsByNation.get(x) ?? []).filter((p) => state.provinces[p]?.owner === by).length;
+  const ga = held(b, a);
+  const gb = held(a, b);
+  if (ga === gb) {
+    news(state, 'peace', { A: a, B: b }, at, [a, b]);
+    return;
+  }
+  const [win, lose, n] = ga > gb ? [a, b, ga - gb] : [b, a, gb - ga];
+  const cap = w.nationById.get(lose)?.capitalProvinceId;
+  const kind = cap && state.provinces[cap]?.owner === win ? 'capitulation' : 'peace_annexation';
+  news(state, kind, { A: win, B: lose, X: String(n) }, at, [a, b]);
 }
 
 /** Paix : droit de passage temporaire et ordre de retrait des unités en territoire adverse. */
@@ -381,6 +424,9 @@ export function orderProposePeace(
       title: kind === 'peace' ? 'Proposition de paix' : 'Proposition de cessez-le-feu',
       text: `${natLe(state, n, true)} ${natAgree(state, n, 'propose', 'proposent')} ${kind === 'peace' ? 'la paix' : 'un cessez-le-feu'}.`,
       severity: 'info',
+      loc: noteLoc(kind === 'peace' ? 'peaceProposal' : 'ceasefireProposal', {
+        nation: { nation: n },
+      }),
     },
     [target],
   );
@@ -402,7 +448,7 @@ function concludePeace(
     startWithdrawal(state, a, b);
     addReputation(state, a, 2);
     addReputation(state, b, 2);
-    news(state, 'peace', { A: a, B: b }, capitalPoint(state, a), [a, b]);
+    peaceNews(state, a, b, capitalPoint(state, a));
     notify(state, { kind: 'peace_signed', time: state.time, a, b }, null);
     refreshPassage(state);
     signal(state, 'peace', { a, b, kind });
@@ -434,6 +480,7 @@ export function orderAnswerPeace(
         title: 'Proposition refusée',
         text: `${natLe(state, n, true)} ${natAgree(state, n, 'refuse', 'refusent')} votre proposition.`,
         severity: 'info',
+        loc: noteLoc('proposalRefused', { nation: { nation: n } }),
       },
       [from],
     );

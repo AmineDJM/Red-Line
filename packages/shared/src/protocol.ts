@@ -31,6 +31,16 @@ export const INTEL_OPS = [
   'counterintel_sweep',
   'recon_economic',
   'recon_military',
+  // Profondeur du renseignement (optionnelles côté sauvegardes : simples nouveaux ordres)
+  'cryptanalysis',
+  'intercept_comms',
+  'geolocate_emitters',
+  'cultivate_source',
+  'vet_agents',
+  'designate_targets',
+  'dismantle_network',
+  'deception_plan',
+  'harden_sites',
 ] as const;
 
 const lngLat = z.tuple([z.number().min(-180).max(180), z.number().min(-90).max(90)]);
@@ -60,6 +70,10 @@ const opTarget = z.object({
   unitId: id.optional(),
   at: lngLat.optional(),
   radiusKm: z.number().positive().max(2000).optional(),
+  /** Couverture d'un agent infiltré (HUMINT). */
+  cover: z.enum(['diplomatic', 'nonofficial']).optional(),
+  /** Agent visé (culture d'une source, vérification). */
+  agentId: id.optional(),
 });
 
 /** Ordres « simples » (utilisables aussi comme étapes d'une opération combinée). */
@@ -145,7 +159,20 @@ const BASE_ORDERS = [
     mission: z.enum(['raid', 'sabotage', 'rescue']),
     building: buildingType.optional(),
   }),
-  z.object({ kind: z.literal('split'), unitId: id, count: z.number().int().positive() }),
+  z.object({
+    kind: z.literal('split'),
+    unitId: id,
+    /** Éléments détachés (pile mixte : répartis au prorata de chaque matériel). */
+    count: z.number().int().positive().optional(),
+    /** Éléments détachés par matériel (pile mixte). */
+    parts: z
+      .array(z.object({ systemId: id, count: z.number().int().positive() }))
+      .min(1)
+      .max(64)
+      .optional(),
+    /** 'half' : diviser en deux piles ; 'type' : une pile par matériel. */
+    mode: z.enum(['half', 'type']).optional(),
+  }),
   z.object({ kind: z.literal('merge'), unitIds }),
   z.object({ kind: z.literal('appointGeneral'), generalId: id, unitIds: z.array(id).max(200) }),
   z.object({
@@ -319,14 +346,46 @@ export type OrderErrorCode =
   | 'research_required'
   | 'capacity'
   | 'cooldown'
-  | 'insufficient_resources';
+  | 'insufficient_resources'
+  | 'off_road' // destination trop loin du réseau de routes (unités terrestres)
+  | 'resource_required'; // construction : la province n'a pas la ressource (ou pas de côte)
+
+/**
+ * Raisons détaillées d'un refus (ou d'une exécution partielle) d'ordre : le client les traduit, le
+ * message en français reste le repli.
+ */
+export const ORDER_REASONS = [
+  'target_invalid',
+  'target_not_visible',
+  'target_friendly',
+  'air_defense_air_only',
+  'cannot_hit_class',
+  'out_of_weapon_range',
+  'missile_out_of_range',
+  'aircraft_out_of_radius',
+  'aircraft_cooldown',
+  'partial',
+  'munition_use_strike',
+  'ceasefire',
+] as const;
+export type OrderReason = (typeof ORDER_REASONS)[number];
 
 export type ServerMessage =
   | { t: 'welcome'; game: GameMeta; me: NationId; clock: ClockState; view: PlayerView }
   | { t: 'diff'; diff: ViewDiff }
   | { t: 'clock'; clock: ClockState }
   | { t: 'notify'; items: GameNotification[] }
-  | { t: 'orderResult'; id: number; ok: boolean; error?: OrderErrorCode; message?: string }
+  | {
+      t: 'orderResult';
+      id: number;
+      ok: boolean;
+      error?: OrderErrorCode;
+      message?: string;
+      /** Raison détaillée (clé de traduction `game.orders.reasons.<reason>`), si connue. */
+      reason?: OrderReason;
+      /** Valeurs de la raison (distances, noms…). */
+      params?: Record<string, string | number>;
+    }
   | { t: 'pong'; clientTime: number; serverTime: number }
   | { t: 'chat'; message: ChatMessage }
   | { t: 'chatHistory'; messages: ChatMessage[] }

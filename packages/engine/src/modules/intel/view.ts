@@ -1,4 +1,5 @@
 import {
+  AGENT_ACCESS,
   DEPARTMENTS,
   HOUR,
   type AgentView,
@@ -11,12 +12,14 @@ import {
 } from '@redline/shared';
 import type { EngineState } from '../../state/types.js';
 import { sortedKeys } from '../../state/access.js';
-import { cfg } from './config.js';
+import { cfg, reliabilityOf } from './config.js';
+import { dossiersView, reliabilityOfAgent, sensorsView } from './deep.js';
 import { decoyView } from './contacts.js';
 import { capacity, level, researchDone } from './levels.js';
 import { filterProvinces } from './provinces.js';
 import { interiorView } from './interior.js';
 import { ist, type Agent, type StoredOp, type StoredReport } from './state.js';
+import { canonical } from '../../state/loc.js';
 
 /**
  * Vue du renseignement d'une nation. Construite champ par champ (liste blanche) : les données internes
@@ -73,6 +76,7 @@ export function reportView(state: EngineState, r: StoredReport): IntelReport {
   }
   if (r.sharedBy) out.sharedBy = r.sharedBy;
   if (ageH > c.staleAfterH) out.stale = true;
+  if (r.loc) out.loc = canonical(r.loc);
   return out;
 }
 
@@ -101,11 +105,14 @@ function opView(o: StoredOp): IntelOpView {
 function ownerStatus(a: Agent): AgentView['status'] {
   switch (a.state) {
     case 'captured':
-      return 'captured';
+      return a.ex ? 'expelled' : 'captured';
     case 'exfiltrated':
       return 'exfiltrated';
     case 'active':
       return a.burned ? 'burned' : 'active';
+    case 'double':
+      // Agent double démasqué par une vérification : le propriétaire sait qu'il est retourné.
+      return a.burned ? 'double' : 'active';
     default:
       return a.burned ? 'burned' : 'active';
   }
@@ -136,14 +143,18 @@ export function intelView(state: EngineState, n: NationId, view: PlayerView): vo
   for (const id of sortedKeys(st.agents)) {
     const a = st.agents[id]!;
     if (a.owner === n) {
-      agents.push({
+      const av: AgentView = {
         id: a.id,
         codename: a.codename,
         nationId: a.host,
         status: ownerStatus(a),
         since: a.since,
         kind: a.kind,
-      });
+        access: AGENT_ACCESS[a.ac ?? 0] ?? 'street',
+        reliability: reliabilityOf(reliabilityOfAgent(state, a)),
+      };
+      if (a.cv) av.cover = a.cv;
+      agents.push(av);
     } else if (a.host === n && a.caughtAt !== undefined && a.state !== 'exfiltrated') {
       caughtAgents.push({
         id: a.id,
@@ -160,7 +171,10 @@ export function intelView(state: EngineState, n: NationId, view: PlayerView): vo
     agents,
     caughtAgents,
     interior: interiorView(state, n),
+    sensors: sensorsView(state, n),
+    dossiers: dossiersView(state, n),
   };
+  if (ni.hd !== undefined && ni.hd > state.time) view.intel.hardenedUntil = ni.hd;
   filterProvinces(state, n, view);
   for (const id of sortedKeys(st.decoys)) {
     const v = decoyView(state, st.decoys[id]!, n);

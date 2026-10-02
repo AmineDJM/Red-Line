@@ -13,6 +13,7 @@ import {
   OrbatSchema,
   ProvinceDefSchema,
   ResearchFileSchema,
+  RoutesFileSchema,
   ScenarioFileSchema as SharedScenarioFileSchema,
   StraitSchema,
   type Balance,
@@ -144,7 +145,11 @@ async function loadMap(dir: string): Promise<MapData> {
   const disputed = existsSync(f('disputed.json'))
     ? listOf(await readJson(f('disputed.json')), ['disputed', 'areas'], DisputedAreaSchema)
     : [];
-  return { nations, provinces, cells, straits, disputed };
+  // Réseau de routes des unités terrestres (sans lui : déplacement libre sur la grille).
+  const routes = existsSync(f('routes.json'))
+    ? RoutesFileSchema.parse(await readJson(f('routes.json')))
+    : undefined;
+  return { nations, provinces, cells, straits, disputed, ...(routes ? { routes } : {}) };
 }
 
 export async function loadGameData(dataDir: string, log: FastifyBaseLogger): Promise<GameData> {

@@ -33,7 +33,16 @@ import { board } from '../kit.js';
 import { modifier, signal, unitModifier } from '../registry.js';
 import { airFeasible, flyTo, missionOf, noFlyAt, rtb, strikeAim } from './air.js';
 import { raiseAlert } from './alert.js';
-import { battleFor, countermeasure, engage, shot, timeline, touch } from './battles.js';
+import {
+  battleFor,
+  countermeasure,
+  engage,
+  recordInterception,
+  recordLaunch,
+  shot,
+  timeline,
+  touch,
+} from './battles.js';
 import { detonate } from './nuclear.js';
 import { mil, milBal, type MissileSt, type MissionSt } from './state.js';
 import { countLoss, elementsLost, statOf } from './stats.js';
@@ -42,6 +51,7 @@ import {
   buildingsOf,
   cityOf,
   fail,
+  failR,
   generic,
   interceptClass,
   isAsat,
@@ -57,6 +67,7 @@ import {
   schedule,
   strikeRangeKm,
   unitsNear,
+  noteLoc,
 } from './util.js';
 
 /**
@@ -181,6 +192,8 @@ export function orderStrike(
   state: EngineState,
   n: NationId,
   o: Extract<Order, { kind: 'strike' }>,
+  /** Munitions tirées par pile (ordre d'attaque : salve dimensionnée sur la cible). */
+  counts?: ReadonlyMap<string, number>,
 ): OrderResult {
   const units = resolveOwn(state, n, o.unitIds, true);
   if (!Array.isArray(units)) return units;
@@ -188,12 +201,17 @@ export function orderStrike(
   let tUnit: Unit | null = null;
   if (target.type === 'unit') {
     tUnit = state.units[target.unitId] ?? null;
-    if (!tUnit || tUnit.owner === n || tUnit.role === 'missile') {
-      return fail('invalid_target', 'Cible invalide.');
+    if (!tUnit || tUnit.role === 'missile') {
+      return failR('invalid_target', 'target_invalid', 'Cible invalide.');
     }
+    if (tUnit.owner === n) return failR('invalid_target', 'target_friendly', 'Cible amie.');
     const sat = isSatellite(sysOf(state, tUnit));
     if (!sat && (tUnit.off || sightLevel(state, n, tUnit.id) === 0)) {
-      return fail('invalid_target', 'Cible hors de vue.');
+      return failR(
+        'invalid_target',
+        'target_not_visible',
+        'Cible hors de vue : repérez-la d’abord (radar, reconnaissance, satellite).',
+      );
     }
   } else if (target.type === 'building') {
     const P = state.provinces[target.provinceId];
@@ -226,9 +244,8 @@ export function orderStrike(
       return fail('invalid_target', 'Satellite hors d’atteinte.');
     if (u.off && !m.ms[u.id]?.emb) return fail('not_allowed', 'Unité indisponible.');
     if (isLauncher(s)) {
-      if (distanceKm(posOf(state, u), aim) > strikeRangeKm(s)) {
-        return fail('out_of_range', 'Cible hors de portée du missile.');
-      }
+      const dist = distanceKm(posOf(state, u), aim);
+      if (dist > strikeRangeKm(s)) return missileRange(s, dist, strikeRangeKm(s));
       const nuclear = s.missile!.warhead === 'nuclear';
       if (nuclear) {
         const err = nuclearAllowed(state, n);
@@ -240,7 +257,7 @@ export function orderStrike(
       if (s.missile!.kind === 'antiship' && tUnit && sysOf(state, tUnit).movement !== 'sea') {
         return fail('invalid_target', 'Un missile antinavire ne vise que les navires.');
       }
-      const salvo = Math.min(u.count, o.count ?? u.count);
+      const salvo = Math.min(u.count, counts?.get(u.id) ?? o.count ?? u.count);
       plans.push({ u, kind: 'launcher', msys: s, count: salvo, nuclear });
       continue;
     }
@@ -253,9 +270,8 @@ export function orderStrike(
           'insufficient_resources',
           'Cellules de lancement vides (rechargement au port).',
         );
-      if (distanceKm(posOf(state, u), aim) > strikeRangeKm(msys)) {
-        return fail('out_of_range', 'Cible hors de portée du missile.');
-      }
+      const dist = distanceKm(posOf(state, u), aim);
+      if (dist > strikeRangeKm(msys)) return missileRange(msys, dist, strikeRangeKm(msys));
       const nuclear = msys.missile!.warhead === 'nuclear';
       if (nuclear) {
         const err = nuclearAllowed(state, n);
@@ -267,7 +283,12 @@ export function orderStrike(
     }
     if (s.movement === 'air') {
       if (s.damage[tClass] <= 0)
-        return fail('invalid_target', 'Cet appareil ne peut pas frapper cette cible.');
+        return failR(
+          'invalid_target',
+          'cannot_hit_class',
+          `${s.name} ne peut pas frapper ce type de cible.`,
+          { name: s.name, cls: tClass },
+        );
       if (noFlyAt(state, n, aim)) return fail('locked', 'Zone d’exclusion aérienne.');
       const err = airFeasible(state, u, aim);
       if (err) return err;
@@ -303,6 +324,15 @@ export function orderStrike(
     if (p.kind === 'launcher') consume(state, u, count);
   }
   return OK;
+}
+
+function missileRange(s: WeaponSystem, dist: number, range: number): OrderResult {
+  return failR(
+    'out_of_range',
+    'missile_out_of_range',
+    `Cible hors de portée du missile ${s.name} (${Math.round(dist)} km pour ${Math.round(range)} km de portée).`,
+    { name: s.name, dist: Math.round(dist), range: Math.round(range) },
+  );
 }
 
 /* ------------------------------------------------------------------------------------------------ */
@@ -347,10 +377,12 @@ export function launch(
   statOf(state, from.owner).missiles += count;
   if (b) {
     engage(state, b, from);
+    recordLaunch(b, from.owner, count);
     timeline(
       state,
       b,
       `Tir de ${count} ${msys.name}${nuclear ? ' (charge nucléaire)' : ''} depuis ${nameOfProvince(state, provinceAt(state, at))}`,
+      [from],
     );
     touch(state, b);
   }
@@ -599,13 +631,15 @@ export function handleIntercept(state: EngineState, d: { i: string; m: string })
   if (b) {
     engage(state, b, I);
     countermeasure(b, 'interception', killed);
+    recordInterception(b, I.owner, M.owner, killed);
     countermeasure(b, 'evasion', fired - killed);
     if (jam > 0) countermeasure(b, 'jamming', 1);
-    shot(state, b, ipos, mpos, 'missile', killed > 0);
+    shot(state, b, ipos, mpos, 'missile', killed > 0, I);
     timeline(
       state,
       b,
       `${isys.name} (${I.owner.toUpperCase()}) : ${killed}/${M.count} ${msys.name} interceptés (${fired} tirs)`,
+      [I],
     );
     touch(state, b);
   }
@@ -728,6 +762,7 @@ export function impact(state: EngineState, M: Unit): void {
         at,
         primary ? targetClassOf(state, primary) : 'infantry',
         hits > 0,
+        st.from,
       );
   }
   if (b) {
@@ -735,6 +770,7 @@ export function impact(state: EngineState, M: Unit): void {
       state,
       b,
       `Impact de ${n} ${sys.name} : ${hits > 0 ? 'cible touchée' : 'aucun dégât'}`,
+      [M],
     );
     touch(state, b);
   }
@@ -802,20 +838,40 @@ export function deliverAirStrike(state: EngineState, u: Unit, ms: MissionSt): vo
   if (!tg) return done();
   let victim: NationId | null = victimOf(state, tg);
   let hit = false;
+  const WHY = {
+    gone: 'objectif disparu (détruit ou hors d’atteinte).',
+    moved: 'objectif hors d’atteinte (il s’est déplacé).',
+    lost: 'objectif perdu de vue.',
+  };
+  const abort = (why: keyof typeof WHY): void => {
+    generic(
+      state,
+      [u.owner],
+      'strike',
+      'Frappe annulée',
+      `${sys.name} : ${WHY[why]} Retour à la base.`,
+      'warn',
+      here,
+      noteLoc('strikeAborted', { system: { system: sys.id } }, why),
+    );
+    done();
+  };
   if (tg.type === 'unit') {
     const t = state.units[tg.unitId];
-    if (!t || t.off) return done();
+    if (!t || t.off) return abort('gone');
     const reach = Math.max(weaponRange(state, u).max, sys.weaponRangeKm.max, 10) + 5;
     if (distanceKm(posOf(state, t), here) > reach) {
-      if (ms.retry < 2 && sightLevel(state, u.owner, t.id) > 0) {
+      const seen = sightLevel(state, u.owner, t.id) > 0;
+      if (ms.retry < 3 && seen) {
         ms.retry++;
         const aim = strikeAim(state, ms);
-        if (aim) {
+        const err = aim ? airFeasible(state, u, aim) : null;
+        if (aim && !err) {
           flyTo(state, u, aim);
           return;
         }
       }
-      return done();
+      return abort(seen ? 'moved' : 'lost');
     }
     const dmg = roundDamage(state, u, t, 1) * bal.airStrikeMult;
     if (dmg > 0) {
@@ -839,8 +895,9 @@ export function deliverAirStrike(state: EngineState, u: Unit, ms: MissionSt): vo
         state,
         b,
         `Frappe aérienne (${sys.name}) sur ${tg.building} à ${nameOfProvince(state, tg.provinceId)}`,
+        [u],
       );
-      shot(state, b, here, cityOf(state, tg.provinceId)!, 'building', hit);
+      shot(state, b, here, cityOf(state, tg.provinceId)!, 'building', hit, u);
       touch(state, b);
     }
   } else {
@@ -865,6 +922,7 @@ export function deliverAirStrike(state: EngineState, u: Unit, ms: MissionSt): vo
       `${sys.name} : objectif non atteint.`,
       'info',
       here,
+      noteLoc('strikeNoEffect', { system: { system: sys.id } }),
     );
   }
   done();
@@ -886,6 +944,11 @@ function asatShot(state: EngineState, u: Unit, sat: Unit): void {
     ok ? 'Satellite détruit' : 'Tir antisatellite manqué',
     `${sysOf(state, sat).name} (${sat.owner.toUpperCase()})`,
     'warn',
+    null,
+    noteLoc(ok ? 'asatHit' : 'asatMiss', {
+      system: { system: sat.sys },
+      owner: { nation: sat.owner },
+    }),
   );
 }
 

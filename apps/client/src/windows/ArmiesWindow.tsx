@@ -46,6 +46,8 @@ import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { Generals, Operations, useSend } from './armyCommand.js';
+import { UnitOrders } from '../shell/UnitOrders.js';
+import { isMixed, splitByTypeOrder, splitHalfOrder, stackParts } from '../lib/stacks.js';
 
 type Tab = 'armies' | 'generals' | 'operations';
 type SortKey = 'state' | 'elements' | 'hp' | 'name';
@@ -443,6 +445,7 @@ function ArmyDetail({
 }) {
   const { t } = useTranslation();
   const catalog = useWorld((s) => s.catalog);
+  const balance = useWorld((s) => s.balance);
   const me = useGame((s) => s.me);
   const select = useUi((s) => s.select);
   const focusOn = useUi((s) => s.focusOn);
@@ -457,7 +460,7 @@ function ArmyDetail({
     const d = pileDomain(u, catalog);
     return d === 'air' || d === 'sea';
   });
-  const merges = mergeGroups(a, catalog);
+  const merges = mergeGroups(a, catalog, balance);
   const busy = a.state === 'moving' || a.state === 'combat';
 
   const center = () => {
@@ -642,6 +645,16 @@ function ArmyDetail({
           {t('armies.actions.merge')}
         </Button>
       </div>
+      <UnitOrders
+        units={a.units}
+        compact={mobile}
+        keys={false}
+        onTarget={() => {
+          select(a.unitIds);
+          focusOn(a.at, 6);
+          closeAll();
+        }}
+      />
       <h4 className="armydetail__title">
         {t('armies.composition')} <span>{a.piles}</span>
       </h4>
@@ -656,12 +669,14 @@ function ArmyDetail({
               select([u.id]);
               closeAll();
             }}
-            onSplit={() =>
-              run(
-                { kind: 'split', unitId: u.id, count: Math.floor((u.count ?? 1) / 2) },
-                t('armies.done.split'),
-              )
-            }
+            onSplit={() => {
+              const o = splitHalfOrder(u);
+              if (o) run(o, t('armies.done.split'));
+            }}
+            onSplitType={() => {
+              const o = splitByTypeOrder(u);
+              if (o) run(o, t('armies.done.split'));
+            }}
           />
         ))}
       </ul>
@@ -675,12 +690,14 @@ function PileRow({
   onSheet,
   onSelect,
   onSplit,
+  onSplitType,
 }: {
   u: UnitView;
   meId: string | null;
   onSheet: () => void;
   onSelect: () => void;
   onSplit: () => void;
+  onSplitType: () => void;
 }) {
   const { t } = useTranslation();
   const catalog = useWorld((s) => s.catalog);
@@ -697,9 +714,15 @@ function PileRow({
         health={u.hpRatio}
       />
       <span className="pilerow__name">
-        <b>{s?.name ?? u.systemId}</b>
+        <b>
+          {s?.name ?? u.systemId}
+          {isMixed(u) ? (
+            <span className="muted"> {t('stacks.more', { count: stackParts(u).length - 1 })}</span>
+          ) : null}
+        </b>
         <span>
-          {u.id} · {formatInt(u.count ?? 1)} {s?.unitLabel ?? t('arsenal.elements')} ·{' '}
+          {u.id} · {formatInt(u.count ?? 1)}{' '}
+          {isMixed(u) ? t('stacks.elements') : (s?.unitLabel ?? t('arsenal.elements'))} ·{' '}
           {t(`game.status.${u.status ?? 'idle'}`)}
           {u.veterancy ? ` · ${'★'.repeat(u.veterancy)}` : ''}
         </span>
@@ -725,6 +748,14 @@ function PileRow({
           onClick={onSplit}
           disabled={!canSplit}
         />
+        {isMixed(u) ? (
+          <IconButton
+            size="sm"
+            label={t('stacks.byType')}
+            icon={<Icon name="filter" size={12} />}
+            onClick={onSplitType}
+          />
+        ) : null}
         <IconButton
           size="sm"
           label={t('armies.actions.selectPile')}

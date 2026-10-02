@@ -1,3 +1,4 @@
+import type { LocText } from '@redline/shared';
 import {
   DAY,
   HOUR,
@@ -263,6 +264,7 @@ export function announce(
     dept: Department;
     source: IntelSource;
     title: string;
+    titleLoc?: LocText;
     q: number;
     kind?: 'result' | 'order_of_battle';
   },
@@ -284,6 +286,7 @@ export function announce(
     source: meta.source,
     kind: meta.kind ?? 'result',
     title: meta.title,
+    ...(meta.titleLoc ? { titleLoc: meta.titleLoc } : {}),
     lines,
     at,
     radiusKm: at ? 50 : 0,

@@ -330,6 +330,9 @@ export const BALANCE: Balance = BalanceSchema.parse({
     incomeMultiplier: 1,
   },
   victory: { provinceShare: 0.7, allEnemyCapitals: false },
+  // Piles d'un seul matériel au départ : les tests comptent les unités par système. Les piles mixtes
+  // ont leurs propres tests (stacks.test.ts).
+  stacks: { start: { enabled: false } },
   startingArmy: [
     { systemId: 'tst.infantry', count: 2 },
     { systemId: 'tst.tank', count: 1 },

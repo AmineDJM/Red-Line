@@ -1,4 +1,6 @@
 import type { GameTime, LngLat, NationId, ProvinceId, SystemId, UnitId } from './ids.js';
+import type { Category } from './catalog.js';
+import type { LocText } from './i18n.js';
 import type { InteriorIntelView } from './domestic.js';
 
 /** Trois départements (noms génériques, inspirés du modèle français). */
@@ -57,6 +59,8 @@ export interface IntelReport {
   sharedBy?: NationId;
   /** Information ancienne (au-delà de balance.intel.staleAfterH) : position incertaine. */
   stale?: boolean;
+  /** Titre localisable (le client traduit ; `title` reste le français, le corps aussi). */
+  loc?: { title?: LocText };
   /**
    * Côté moteur uniquement : vrai si c'est une intoxication. JAMAIS envoyé au client
    * (le client ne voit que la cotation, qu'un bon contre-espionnage rend plus fiable).
@@ -90,7 +94,20 @@ export type IntelOpKind =
   | 'counterintel_sweep'
   // Reconnaissance ciblée (connaissance progressive des provinces étrangères)
   | 'recon_economic' // révèle les installations économiques (cible : nation ou province)
-  | 'recon_military'; // révèle les installations militaires (cible : nation ou province)
+  | 'recon_military' // révèle les installations militaires (cible : nation ou province)
+  // ——— Profondeur : SIGINT ———
+  | 'cryptanalysis' // décryptage progressif du chiffrement d'une nation
+  | 'intercept_comms' // interception des communications d'une nation (ordres, préparatifs, intentions)
+  | 'geolocate_emitters' // géolocalisation des émetteurs (radars, défense aérienne, PC)
+  // ——— Profondeur : HUMINT ———
+  | 'cultivate_source' // élever l'accès d'un agent (ministère, puis état-major)
+  | 'vet_agents' // vérifier ses agents dans un pays (détection des agents doubles)
+  // ——— Profondeur : renseignement militaire ———
+  | 'designate_targets' // analyse d'imagerie et désignation des cibles d'une province
+  // ——— Profondeur : renseignement intérieur ———
+  | 'dismantle_network' // démantèlement du réseau d'une nation sur notre sol
+  | 'deception_plan' // faux plans transmis aux services adverses
+  | 'harden_sites'; // protection renforcée contre le sabotage (quelques jours)
 
 export interface IntelOpTarget {
   nationId?: NationId;
@@ -98,7 +115,17 @@ export interface IntelOpTarget {
   unitId?: UnitId;
   at?: LngLat;
   radiusKm?: number;
+  /** Couverture d'un agent infiltré (défaut : diplomatique). */
+  cover?: AgentCover;
+  /** Agent visé (culture d'une source). */
+  agentId?: string;
 }
+
+/** Couverture d'un agent : diplomatique (expulsion) ou non officielle (arrestation, crise). */
+export type AgentCover = 'diplomatic' | 'nonofficial';
+/** Accès d'une source : rue (renseignement d'ambiance), ministère (budget, recherche), état-major (plans). */
+export const AGENT_ACCESS = ['street', 'ministry', 'staff'] as const;
+export type AgentAccess = (typeof AGENT_ACCESS)[number];
 
 export interface IntelOpView {
   id: string;
@@ -131,10 +158,77 @@ export interface AgentView {
   id: string;
   codename: string;
   nationId: NationId; // pays d'implantation
-  status: 'active' | 'burned' | 'double' | 'exfiltrated' | 'captured';
+  status: 'active' | 'burned' | 'double' | 'exfiltrated' | 'captured' | 'expelled';
   since: GameTime;
   /** Officier traitant infiltré ou source recrutée sur place. */
   kind?: 'officer' | 'source';
+  /** Couverture, accès et fiabilité perçue (cotation A..F) de l'agent. */
+  cover?: AgentCover;
+  access?: AgentAccess;
+  reliability?: SourceReliability;
+}
+
+/** Fourchette estimée [bas, haut]. */
+export type Range = [number, number];
+
+/** Ordre de bataille estimé d'une nation (renseignement militaire). */
+export interface OrbatEstimate {
+  time: GameTime;
+  total: Range;
+  cats: { category: Category; range: Range }[];
+}
+
+/** Indicateurs d'alerte d'un théâtre (clés traduites par le client). */
+export type ThreatIndicator =
+  | 'war' // en guerre
+  | 'massing' // concentration de forces près de nos frontières
+  | 'plans' // plans de guerre contre nous (renseignement)
+  | 'comms' // trafic de commandement en hausse (interceptions)
+  | 'mobilization' // production d'armement en hausse
+  | 'covert'; // opérations clandestines attribuées
+
+/** Dossier pays : tout ce que nos services savent d'une nation (estimations, jamais la vérité brute). */
+export interface NationDossier {
+  nationId: NationId;
+  updatedAt: GameTime;
+  /** Indice d'imminence d'une attaque contre nous, 0..100, et tendance depuis la veille. */
+  threat: number;
+  trend: -1 | 0 | 1;
+  indicators: ThreatIndicator[];
+  /** Alerte stratégique en cours (seuil franchi). */
+  alert?: boolean;
+  forces?: OrbatEstimate;
+  /** Intentions connues (interceptions décryptées, sources d'état-major). */
+  intentions?: {
+    time: GameTime;
+    plansAgainst: NationId[];
+    source: IntelSource;
+    reliability: SourceReliability;
+  };
+  /** Économie (sources au ministère) : trésor estimé. */
+  economy?: { time: GameTime; money: Range };
+  /** Technologie : programme de recherche en cours (sources), niveaux de service estimés. */
+  tech?: { time: GameTime; research?: string; services?: number };
+  /** Décryptage de ses communications (0..1) et chiffrement estimé (0..1). */
+  crypto: number;
+  encryption: number;
+  /** Agents actifs chez elle et meilleur accès. */
+  agents: number;
+  access?: AgentAccess;
+  /** Fiabilité d'ensemble du dossier. */
+  reliability: SourceReliability;
+}
+
+/** Capteurs et moyens d'écoute d'une nation (matériels en service). */
+export interface SigintView {
+  /** Écoute électronique (satellites et appareils SIGINT/ELINT). */
+  sigint: number;
+  /** Imagerie (satellites optiques et radar, drones et avions de reconnaissance). */
+  imagery: number;
+  /** Guerre électronique (brouilleurs). */
+  ew: number;
+  /** Bonus de capteurs appliqué aux opérations (0..1). */
+  bonus: number;
 }
 
 export interface DepartmentView {
@@ -156,6 +250,12 @@ export interface IntelView {
   caughtAgents: { id: string; nationId: NationId; caughtAt: GameTime; turned: boolean }[];
   /** Renseignement intérieur : priorité, sites protégés, menace par province, effets du budget. */
   interior?: InteriorIntelView;
+  /** Capteurs d'écoute et d'imagerie en service. */
+  sensors?: SigintView;
+  /** Dossiers pays (synthèse, carte des menaces), triés par menace décroissante. */
+  dossiers?: NationDossier[];
+  /** Sites durcis contre le sabotage jusqu'à cette date. */
+  hardenedUntil?: GameTime;
 }
 
 /** Coût et durée par opération (data/balance, section intel.ops). */

@@ -22,6 +22,7 @@ import type {
   SatellitePassView,
 } from './military.js';
 import type { IntelView } from './intel.js';
+import type { LocText } from './i18n.js';
 import type { DomesticView } from './domestic.js';
 import type { CouncilView, DiplomacyView, NewsItem, Relation, StabilityView } from './diplomacy.js';
 
@@ -85,6 +86,18 @@ export interface UnitView {
   decoy?: boolean;
   /** Unité rebelle, neutre de maintien de la paix, ou mercenaire. */
   affiliation?: 'regular' | 'rebel' | 'peacekeeper' | 'mercenary';
+  /**
+   * Pile mixte (own ou precise) : effectif vivant par matériel, trié par identifiant de système.
+   * Absent pour une pile d'un seul matériel (`systemId` × `count`). `systemId` est alors le matériel
+   * principal (le plus de points de vie), qui donne l'icône.
+   */
+  parts?: StackPartView[];
+}
+
+/** Élément d'une pile mixte. */
+export interface StackPartView {
+  systemId: SystemId;
+  count: number;
 }
 
 export interface CaptureView {
@@ -267,17 +280,28 @@ export interface ViewDiff {
   domestic?: DomesticView;
 }
 
-/** Horloge d'une partie : temps de jeu = anchorGame + (maintenant - anchorReal) × speed (0 si en pause). */
+/**
+ * Horloge d'une partie : temps de jeu = anchorGame + (maintenant - anchorReal) × speed × rate (figé si en
+ * pause). `speed` est le multiplicateur affiché (×1, ×2, ×4…) ; `rate` est le temps de jeu écoulé par
+ * unité de temps réel à ×1 (équilibrage `time.realtimeFactor`, ex. 10 : ×1 = 10 min de jeu par minute).
+ */
 export interface ClockState {
   anchorGame: GameTime;
   anchorReal: RealTime;
   speed: number;
   paused: boolean;
+  /** Facultatif (défaut 1, parties créées avant le réglage). */
+  rate?: number;
+}
+
+/** Temps de jeu écoulé par milliseconde réelle (vitesse × cadence de base). */
+export function clockRate(clock: ClockState): number {
+  return clock.speed * (clock.rate ?? 1);
 }
 
 export function gameTimeAt(clock: ClockState, now: RealTime): GameTime {
   if (clock.paused) return clock.anchorGame;
-  return clock.anchorGame + (now - clock.anchorReal) * clock.speed;
+  return clock.anchorGame + (now - clock.anchorReal) * clockRate(clock);
 }
 
 /** Notifications destinées au centre d'alertes et au bandeau titre. */
@@ -342,7 +366,13 @@ export type GameNotification =
   | { kind: 'battle_report'; time: GameTime; reportId: string; at: LngLat }
   | { kind: 'operation'; time: GameTime; operationId: string; status: string }
   | { kind: 'alert_level'; time: GameTime; level: AlertLevel }
-  | { kind: 'council'; time: GameTime; text: string }
+  | {
+      kind: 'council';
+      time: GameTime;
+      text: string;
+      /** Texte localisable (le client traduit ; `text` reste le français). */
+      loc?: LocText;
+    }
   | { kind: 'news'; time: GameTime; newsId: string; at: LngLat | null }
   /** Notification générique : tout le reste (révolte, coup d'État, agent démasqué, alliance…). */
   | {
@@ -353,4 +383,6 @@ export type GameNotification =
       title: string;
       text: string;
       severity: 'info' | 'warn' | 'critical';
+      /** Titre et texte localisables (le client traduit ; `title`/`text` restent le français). */
+      loc?: { title: LocText; text: LocText };
     };

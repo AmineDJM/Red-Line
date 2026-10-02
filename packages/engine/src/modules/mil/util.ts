@@ -2,13 +2,16 @@ import {
   MINUTE,
   distanceKm,
   frLe,
+  strikeRangeKm as sharedStrikeRangeKm,
   type BuildingType,
   type GameNotification,
   type LngLat,
   type NationId,
   type OrderErrorCode,
+  type OrderReason,
   type ProvinceId,
   type WeaponSystem,
+  type LocText,
 } from '@redline/shared';
 import type { OrderResult } from '../../api.js';
 import { coverCap } from '../../geo/grid.js';
@@ -113,7 +116,7 @@ export function interceptClass(kind: string): 'cruise' | 'ballistic' | 'hyperson
 
 /** Portée de frappe d'un lanceur (km). */
 export function strikeRangeKm(s: WeaponSystem): number {
-  return Math.max(s.weaponRangeKm.max, s.sheet.rangeKm ?? 0, s.operationalRadiusKm ?? 0);
+  return sharedStrikeRangeKm(s);
 }
 
 /* ------------------------------------------------------------------------------------------------ */
@@ -257,6 +260,7 @@ export function generic(
   text: string,
   severity: 'info' | 'warn' | 'critical',
   at: LngLat | null = null,
+  locText?: { title: LocText; text: LocText },
 ): void {
   const n: GameNotification = {
     kind: 'generic',
@@ -266,9 +270,12 @@ export function generic(
     title,
     text,
     severity,
+    ...(locText ? { loc: locText } : {}),
   };
   notify(state, n, aud);
 }
+
+export { noteLoc, placeOf } from '../../state/loc.js';
 
 export function nameOfProvince(state: EngineState, pid: ProvinceId | null): string {
   if (!pid) return 'en mer';
@@ -293,6 +300,18 @@ export function sysName(state: EngineState, u: Unit): string {
 
 export function fail(error: OrderErrorCode, message?: string): OrderResult {
   return message ? { ok: false, error, message } : { ok: false, error };
+}
+
+/** Refus avec raison détaillée (traduite par le client) et message français de repli. */
+export function failR(
+  error: OrderErrorCode,
+  reason: OrderReason,
+  message: string,
+  params?: Record<string, string | number>,
+): OrderResult {
+  return params
+    ? { ok: false, error, message, reason, params }
+    : { ok: false, error, message, reason };
 }
 
 export const OK: OrderResult = { ok: true };

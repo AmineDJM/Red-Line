@@ -160,8 +160,8 @@ code {
 .logo__mark::after {
   content: '';
   position: absolute;
-  left: -3px;
-  right: -3px;
+  inset-inline-start: -3px;
+  inset-inline-end: -3px;
   top: 7px;
   height: 2px;
   background: var(--rl-red);
@@ -233,7 +233,7 @@ code {
   flex-direction: column;
   gap: 14px;
   padding: 32px 32px 24px;
-  border-right: 1px solid var(--rl-line);
+  border-inline-end: 1px solid var(--rl-line);
 }
 .home__title {
   margin: 8px 0 0;
@@ -245,13 +245,13 @@ code {
   position: relative;
   color: transparent;
   -webkit-text-stroke: 1.5px var(--rl-text-strong);
-  margin-left: 0.25ch;
+  margin-inline-start: 0.25ch;
 }
 .home__title span::after {
   content: '';
   position: absolute;
-  left: -0.25ch;
-  right: -0.15ch;
+  inset-inline-start: -0.25ch;
+  inset-inline-end: -0.15ch;
   top: 52%;
   height: 4px;
   background: var(--rl-red);
@@ -349,7 +349,7 @@ code {
   border-radius: var(--rl-radius);
   background: transparent;
   color: var(--rl-text);
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   transition:
     background var(--rl-dur) var(--rl-ease),
@@ -434,7 +434,7 @@ code {
 .home__legal {
   display: flex;
   gap: 14px;
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 .home__legal a {
   color: var(--rl-text-dim);
@@ -455,7 +455,7 @@ code {
     grid-template-columns: 1fr;
   }
   .home__brand {
-    border-right: 0;
+    border-inline-end: 0;
     border-bottom: 1px solid var(--rl-line);
     padding: 20px 18px 16px;
     gap: 10px;
@@ -473,7 +473,7 @@ code {
     flex-wrap: wrap;
   }
   .home__legal {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
 }
 
@@ -501,12 +501,12 @@ code {
 .game__badge {
   position: absolute;
   top: 52px;
-  right: 12px;
+  inset-inline-end: 12px;
   z-index: 12;
 }
 .game--mobile .game__badge {
   top: 84px;
-  right: 8px;
+  inset-inline-end: 8px;
 }
 
 /* Barre supérieure */
@@ -514,8 +514,8 @@ code {
   position: absolute;
   z-index: 30;
   top: 0;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -695,7 +695,7 @@ code {
   color: var(--rl-red);
 }
 .topstat__unit {
-  margin-left: 2px;
+  margin-inline-start: 2px;
   color: var(--rl-text-dim);
   font-weight: 400;
 }
@@ -898,7 +898,7 @@ code {
   position: absolute;
   z-index: 25;
   top: 44px;
-  left: 0;
+  inset-inline-start: 0;
   bottom: 0;
   width: 52px;
   display: flex;
@@ -906,7 +906,7 @@ code {
   justify-content: space-between;
   padding: 8px 0;
   background: rgba(10, 14, 19, 0.94);
-  border-right: 1px solid var(--rl-line);
+  border-inline-end: 1px solid var(--rl-line);
   backdrop-filter: blur(8px);
 }
 .sidenav__list {
@@ -928,7 +928,7 @@ code {
 .sidenav__btn--open::before {
   content: '';
   position: absolute;
-  left: -7px;
+  inset-inline-start: -7px;
   top: 12px;
   bottom: 12px;
   width: 2px;
@@ -938,7 +938,7 @@ code {
 .sidenav__btn.rl-iconbtn--active::before {
   content: '';
   position: absolute;
-  left: -7px;
+  inset-inline-start: -7px;
   top: 8px;
   bottom: 8px;
   width: 2px;
@@ -947,7 +947,7 @@ code {
 }
 .sidenav__tip {
   position: absolute;
-  left: calc(100% + 10px);
+  inset-inline-start: calc(100% + 10px);
   top: 50%;
   transform: translate(-4px, -50%);
   display: inline-flex;
@@ -981,8 +981,8 @@ code {
 .mobnav {
   position: absolute;
   z-index: 70;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   bottom: 0;
   display: flex;
   align-items: center;
@@ -1021,8 +1021,8 @@ code {
 .moresheet {
   position: absolute;
   z-index: 65;
-  left: 8px;
-  right: 8px;
+  inset-inline-start: 8px;
+  inset-inline-end: 8px;
   bottom: calc(72px + env(safe-area-inset-bottom));
   padding: 12px;
   border: 1px solid var(--rl-line-strong);
@@ -1072,7 +1072,7 @@ code {
 .moresheet__badge {
   position: absolute;
   top: 6px;
-  right: 8px;
+  inset-inline-end: 8px;
   min-width: 16px;
   padding: 1px 4px;
   border-radius: 8px;
@@ -1086,15 +1086,15 @@ code {
 .game__sel {
   position: absolute;
   z-index: 20;
-  left: 64px;
+  inset-inline-start: 64px;
   bottom: 12px;
   width: 360px;
   max-height: calc(100% - 68px);
   display: flex;
 }
 .game--mobile .game__sel {
-  left: 8px;
-  right: 8px;
+  inset-inline-start: 8px;
+  inset-inline-end: 8px;
   width: auto;
   bottom: calc(72px + env(safe-area-inset-bottom));
   max-height: 52%;
@@ -1102,12 +1102,12 @@ code {
 .game__legend {
   position: absolute;
   z-index: 18;
-  right: 12px;
+  inset-inline-end: 12px;
   /* Laisse la place au bouton d'attribution de la carte (coin inférieur droit). */
   bottom: 44px;
 }
 .game--mobile .game__legend {
-  right: 8px;
+  inset-inline-end: 8px;
   bottom: calc(72px + env(safe-area-inset-bottom));
 }
 .legend-wrap {
@@ -1116,7 +1116,7 @@ code {
 .legend-wrap__close {
   position: absolute;
   top: 6px;
-  right: 6px;
+  inset-inline-end: 6px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1244,7 +1244,7 @@ code {
   text-transform: uppercase;
 }
 .selpanel__label b {
-  margin-left: 4px;
+  margin-inline-start: 4px;
   color: var(--rl-text);
 }
 .selpanel__stance {
@@ -1257,6 +1257,15 @@ code {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+}
+.selpanel__actions--row {
+  flex-wrap: nowrap;
+  align-items: stretch;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.selpanel__actions--row > * {
+  flex: 0 0 auto;
 }
 .selpanel__hint {
   margin: 0;
@@ -1315,13 +1324,13 @@ code {
   gap: 2px;
   padding: 8px 10px 6px;
   border: 1px solid var(--rl-line);
-  border-left: 2px solid var(--rl-cyan-line);
+  border-inline-start: 2px solid var(--rl-cyan-line);
   border-radius: var(--rl-radius-sm);
   background: var(--rl-bg);
 }
 .nrecon--bare {
   padding: 6px 10px 4px;
-  border-left-width: 1px;
+  border-inline-start-width: 1px;
 }
 .nrecon__head {
   display: flex;
@@ -1338,7 +1347,7 @@ code {
   text-overflow: ellipsis;
 }
 .nrecon__total {
-  margin-left: auto;
+  margin-inline-start: auto;
   flex: none;
   color: var(--rl-text-faint);
   font: var(--rl-fs-2xs) / 1 var(--rl-font-mono);
@@ -1518,7 +1527,7 @@ code {
   flex: none;
 }
 .bldg__cost {
-  margin-left: 6px;
+  margin-inline-start: 6px;
   color: var(--rl-amber);
   letter-spacing: 0;
   text-transform: none;
@@ -1593,7 +1602,7 @@ code {
   border-radius: var(--rl-radius-sm);
   background: var(--rl-bg);
   color: var(--rl-text);
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 }
 .buildmenu__item > .rl-picto {
@@ -1738,8 +1747,8 @@ code {
   gap: 6px;
 }
 .game--mobile .orderbar {
-  left: 8px;
-  right: 8px;
+  inset-inline-start: 8px;
+  inset-inline-end: 8px;
   bottom: calc(72px + env(safe-area-inset-bottom));
   transform: none;
   width: auto;
@@ -1765,7 +1774,7 @@ code {
   position: absolute;
   z-index: 45;
   top: 52px;
-  right: 8px;
+  inset-inline-end: 8px;
   bottom: 8px;
   width: 400px;
   display: flex;
@@ -1781,7 +1790,7 @@ code {
 .alertcenter--mobile {
   inset: 0;
   top: 0;
-  right: 0;
+  inset-inline-end: 0;
   bottom: 0;
   width: auto;
   z-index: 80;
@@ -1870,7 +1879,7 @@ code {
   background: transparent;
   color: var(--rl-text);
   font-size: var(--rl-fs-sm);
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   box-shadow: inset 2px 0 0 transparent;
 }
@@ -1904,7 +1913,7 @@ code {
   box-shadow: inset 2px 0 0 var(--rl-red);
 }
 .alertitem__count {
-  margin-left: 8px;
+  margin-inline-start: 8px;
   padding: 0 5px;
   border: 1px solid var(--rl-line-strong);
   border-radius: 2px;
@@ -2002,7 +2011,7 @@ code {
 }
 .banner__bar {
   position: absolute;
-  left: 0;
+  inset-inline-start: 0;
   bottom: 0;
   width: 30%;
   height: 2px;
@@ -2108,7 +2117,7 @@ code {
 }
 .tuto__wait::before {
   content: '▍';
-  margin-right: 6px;
+  margin-inline-end: 6px;
   animation: rl-blink 1s steps(1) infinite;
 }
 .tuto__actions {
@@ -2227,7 +2236,7 @@ code {
   margin: 0;
   color: var(--rl-text-dim);
   font-size: var(--rl-fs-sm);
-  text-align: right;
+  text-align: end;
 }
 
 /* Bac à sable */
@@ -2235,7 +2244,7 @@ code {
   position: absolute;
   z-index: 20;
   top: 56px;
-  right: 12px;
+  inset-inline-end: 12px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -2284,8 +2293,8 @@ code {
   gap: 12px;
   flex: 1;
   min-width: 0;
-  padding-left: 14px;
-  border-left: 1px solid var(--rl-line);
+  padding-inline-start: 14px;
+  border-inline-start: 1px solid var(--rl-line);
 }
 .picker__heading h1 {
   margin: 0;
@@ -2309,12 +2318,12 @@ code {
 .picker__map {
   position: relative;
   min-height: 0;
-  border-right: 1px solid var(--rl-line);
+  border-inline-end: 1px solid var(--rl-line);
 }
 .picker__maphint {
   position: absolute;
   z-index: 2;
-  left: 12px;
+  inset-inline-start: 12px;
   top: 12px;
   display: inline-flex;
   align-items: center;
@@ -2390,7 +2399,7 @@ code {
   background: transparent;
   color: var(--rl-text);
   font-size: var(--rl-fs-sm);
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 }
 @media (hover: hover) {
@@ -2526,7 +2535,7 @@ code {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   font-size: var(--rl-fs-2xs);
-  margin-right: 4px;
+  margin-inline-end: 4px;
 }
 .picker__highlights {
   display: grid;
@@ -2601,15 +2610,15 @@ code {
   display: none;
 }
 .picker--mobile .picker__heading {
-  border-left: 0;
-  padding-left: 0;
+  border-inline-start: 0;
+  padding-inline-start: 0;
 }
 .picker--mobile .picker__main {
   grid-template-columns: 1fr;
   grid-template-rows: 34vh 1fr;
 }
 .picker--mobile .picker__map {
-  border-right: 0;
+  border-inline-end: 0;
   border-bottom: 1px solid var(--rl-line);
 }
 .picker--mobile .picker__maphint {
@@ -2677,4 +2686,178 @@ code {
 .provpanel__country:focus-visible {
   outline: none;
   box-shadow: var(--rl-focus);
+}
+
+/* ——— Barre d'ordres de la sélection (shell/UnitOrders.tsx) ——— */
+.unitorders {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  margin: 8px 0 4px;
+}
+.unitorders--compact {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+}
+.unitorders--compact .unitorders__btn {
+  flex: 0 0 auto;
+  min-width: 62px;
+}
+.unitorders__btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 32px;
+  padding: 4px 6px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm, 3px);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--rl-text);
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0;
+  text-align: start;
+  cursor: pointer;
+  transition:
+    border-color 0.12s,
+    background 0.12s;
+}
+.unitorders__btn:hover:not([aria-disabled='true']) {
+  border-color: var(--rl-cyan-line);
+  background: rgba(76, 201, 240, 0.08);
+}
+.unitorders__btn--on {
+  border-color: var(--rl-cyan);
+  background: rgba(76, 201, 240, 0.16);
+}
+.unitorders__btn[aria-disabled='true'] {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+.unitorders__btn[data-action='attack'] svg,
+.unitorders__btn[data-action='strike'] svg {
+  color: var(--rl-red);
+}
+.unitorders__key {
+  flex: none;
+  font-family: var(--rl-font-mono);
+  font-size: 9.5px;
+  color: var(--rl-text-faint);
+}
+.unitorders__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.1;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+.unitorders__key {
+  align-self: flex-start;
+}
+.unitorders--compact .unitorders__btn {
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-height: 30px;
+  font-size: 10px;
+  text-align: center;
+}
+.unitorders--compact .unitorders__label {
+  white-space: nowrap;
+  line-height: 1.1;
+}
+
+/* Mode ciblage : bandeau de consigne et curseur en croix sur la carte. */
+.targeting {
+  position: absolute;
+  z-index: 36;
+  left: 50%;
+  top: 64px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100% - 24px);
+  padding: 7px 10px 7px 12px;
+  border: 1px solid var(--rl-cyan-line);
+  border-radius: var(--rl-radius);
+  background: var(--rl-glass);
+  box-shadow: var(--rl-shadow);
+  backdrop-filter: blur(8px);
+  color: var(--rl-text);
+  font-size: 12.5px;
+}
+.targeting > svg {
+  color: var(--rl-cyan);
+  flex: none;
+}
+.targeting__cancel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm, 3px);
+  background: transparent;
+  color: var(--rl-text-dim, inherit);
+  font: inherit;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+.rl-targeting .maplibregl-canvas {
+  cursor: crosshair !important;
+}
+.orderbar__radius dd {
+  min-width: 160px;
+}
+
+/* Ressources de la province (principale, secondaire, richesse ; ou argent seulement). */
+.provres {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 4px;
+}
+.provres__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.provres__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-panel-2);
+  color: var(--rl-text);
+  font-size: var(--rl-fs-xs);
+}
+.provres__item--r3 {
+  border-color: var(--rl-amber);
+}
+.provres__rich {
+  color: var(--rl-amber);
+  font-size: var(--rl-fs-2xs);
+  letter-spacing: 1px;
+}
+.provres__dim {
+  color: var(--rl-text-faint);
+}
+.provres__rank {
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-2xs);
+}
+.provres__none {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-xs);
 }

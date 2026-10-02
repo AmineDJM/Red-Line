@@ -22,6 +22,8 @@ import {
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
+import { extractionResource } from '../lib/resources.js';
+import { orderError } from '../lib/loc.js';
 
 export const MAX_BUILDING_LEVEL = 5;
 
@@ -107,8 +109,7 @@ function useBuildOrder() {
   ) => {
     const res = await useGame.getState().connection?.sendOrder(order);
     if (res?.ok) toast(ok, 'ok');
-    else if (res)
-      toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    else if (res) toast(orderError(res), 'error');
     return !!res?.ok;
   };
 }
@@ -292,7 +293,11 @@ export function BuildMenu({
               : blockedCoast
                 ? t('buildings.ui.coastalOnly')
                 : opt?.blocked
-                  ? t(`buildings.ui.blocked.${opt.blocked}`)
+                  ? t(`buildings.ui.blocked.${opt.blocked}`, {
+                      resource: t(
+                        `game.resources.${extractionResource(balance, type) ?? 'electronics'}`,
+                      ).toLowerCase(),
+                    })
                   : null;
             const poor = cost !== null && money < cost;
             return (

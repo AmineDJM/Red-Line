@@ -1,1 +1,28 @@
-{}
+{
+  "stacks": {
+    "composition_one": "Composition · {{count}} matériel",
+    "composition_other": "Composition · {{count}} matériels",
+    "more_one": "+ {{count}} autre matériel",
+    "more_other": "+ {{count}} autres matériels",
+    "elements": "éléments",
+    "manage": "Piles…",
+    "half": "Diviser en 2",
+    "detach": "Détacher…",
+    "detachCount": "Éléments à détacher",
+    "detachOf": "{{count}} / {{total}}",
+    "detachConfirm_one": "Détacher {{count}} élément",
+    "detachConfirm_other": "Détacher {{count}} éléments",
+    "detachHint": "Pile mixte : les éléments détachés sont pris au prorata de chaque matériel.",
+    "byType": "Séparer par type",
+    "byTypeShort": "Par type",
+    "merge_one": "Fusionner la sélection",
+    "merge_other": "Fusionner les {{count}} piles",
+    "block": {
+      "count": "Sélectionnez au moins deux piles.",
+      "owner": "Seules vos propres piles peuvent fusionner.",
+      "moving": "Les piles doivent être à l’arrêt pour fusionner.",
+      "distance": "Piles trop éloignées pour fusionner (rapprochez-les).",
+      "domain": "Matériels incompatibles : terrestres, hélicoptères, avions et drones ne se mélangent pas ; missiles, défenses antiaériennes, radars et navires ne fusionnent qu’avec leur propre type."
+    }
+  }
+}

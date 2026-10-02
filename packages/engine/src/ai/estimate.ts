@@ -6,7 +6,7 @@ import {
   type Orbat,
   type ProvinceId,
 } from '@redline/shared';
-import type { Contact, EngineState } from '../state/types.js';
+import type { Contact, EngineState, Unit } from '../state/types.js';
 import { nationUnits, sortedKeys } from '../state/access.js';
 import { wi } from '../state/world.js';
 import { board } from '../modules/registry.js';
@@ -33,6 +33,14 @@ export function elementValue(state: EngineState, sysId: string): number {
   return Math.max(1, s.cost.money / Math.max(1, s.unitSize));
 }
 
+/** Valeur d'une de ses unités, santé comprise (pile mixte : somme de ses matériels). */
+export function unitValue(state: EngineState, u: Unit): number {
+  if (!u.mix) return elementValue(state, u.sys) * u.count * (u.hp / Math.max(1, u.maxHp));
+  let v = 0;
+  for (const p of u.mix) v += elementValue(state, p.sys) * p.c;
+  return v * (u.hp / Math.max(1, u.maxHp));
+}
+
 export interface OwnForce {
   value: number;
   perProvince: number;
@@ -44,7 +52,7 @@ export function ownForce(state: EngineState, n: NationId): OwnForce {
   let count = 0;
   for (const id of nationUnits(state, n)) {
     const u = state.units[id]!;
-    value += elementValue(state, u.sys) * u.count * (u.hp / Math.max(1, u.maxHp));
+    value += unitValue(state, u);
     count++;
   }
   const provs = Math.max(1, state.nations[n]!.provinceCount);

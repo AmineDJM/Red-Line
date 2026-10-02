@@ -1,5 +1,6 @@
 import type { FeatureCollection } from 'geojson';
 import type {
+  Locale,
   PublicStats,
   BattleReport,
   CosmeticItem,
@@ -27,6 +28,7 @@ import type {
   TimelapseView,
   WalletEntry,
   WeaponSystem,
+  RoutesFile,
 } from '@redline/shared';
 
 export interface TilesInfo {
@@ -65,10 +67,14 @@ export interface Api {
   login(body: Credentials): Promise<PublicUser>;
   register(body: RegisterInput): Promise<PublicUser>;
   logout(): Promise<void>;
+  /** Langue de l'interface mémorisée dans le compte (notifications push dans cette langue). */
+  setLocale?(locale: Locale): Promise<void>;
   catalog(): Promise<WeaponSystem[]>;
   nations(): Promise<NationDef[]>;
   provinces(): Promise<ProvinceDef[]>;
   provincesGeoJSON(): Promise<FeatureCollection>;
+  /** Réseau de routes des unités terrestres (GET /api/map/routes), null si indisponible. */
+  routes?(): Promise<RoutesFile | null>;
   tiles(): Promise<TilesInfo | null>;
   basemap(): Promise<BasemapData>;
   /** Vrai si les glyphes MapLibre sont servis. */

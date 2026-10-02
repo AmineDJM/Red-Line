@@ -8,6 +8,7 @@ import type { Map as MlMap } from 'maplibre-gl';
 import { renderSdf } from './sdf.js';
 import { C, MONO } from './palette.js';
 import { PION_H, PION_W } from './pions.js';
+import { upper } from '../i18n/index.js';
 
 export const PIXEL_RATIO = 2;
 const SDF_RADIUS = 8;
@@ -406,7 +407,7 @@ const TEXT: Record<TextStyle, TextSpec> = {
     upper: false,
   },
   count: {
-    font: `600 {s}px ${MONO}`,
+    font: '700 {s}px "Barlow Condensed", "Arial Narrow", sans-serif',
     size: 12,
     spacing: 0,
     color: '#ffffff',
@@ -436,7 +437,11 @@ export function textImageId(style: TextStyle, text: string) {
 }
 
 /** Dessine du texte espacé lettre par lettre (letterSpacing du canvas pas partout disponible). */
+// Écritures liées (arabe, devanagari…) : jamais lettre par lettre (formes contextuelles, sens).
+const JOINED_SCRIPT = /[\u0590-\u08ff\u0900-\u0dff\ufb1d-\ufdff\ufe70-\ufeff]/;
+
 function spacedWidth(ctx: CanvasRenderingContext2D, text: string, spacingPx: number) {
+  if (JOINED_SCRIPT.test(text)) return ctx.measureText(text).width;
   let w = 0;
   for (const ch of text) w += ctx.measureText(ch).width + spacingPx;
   return Math.max(0, w - spacingPx);
@@ -450,6 +455,16 @@ function drawSpaced(
   spacingPx: number,
   stroke: boolean,
 ) {
+  if (JOINED_SCRIPT.test(text)) {
+    ctx.direction = /[\u0590-\u08ff\ufb1d-\ufeff]/.test(text) ? 'rtl' : 'ltr';
+    ctx.textAlign = ctx.direction === 'rtl' ? 'right' : 'left';
+    const ax = ctx.direction === 'rtl' ? x + ctx.measureText(text).width : x;
+    if (stroke) ctx.strokeText(text, ax, y);
+    else ctx.fillText(text, ax, y);
+    ctx.direction = 'ltr';
+    ctx.textAlign = 'left';
+    return;
+  }
   let cx = x;
   for (const ch of text) {
     if (stroke) ctx.strokeText(ch, cx, y);
@@ -460,7 +475,7 @@ function drawSpaced(
 
 export function renderTextImage(style: TextStyle, raw: string) {
   const spec = TEXT[style];
-  const text = spec.upper ? raw.toLocaleUpperCase('fr') : raw;
+  const text = spec.upper ? upper(raw) : raw;
   const pr = PIXEL_RATIO;
   const size = spec.size * pr;
   const c = document.createElement('canvas');

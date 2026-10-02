@@ -9,6 +9,7 @@ import type { WindowContentProps } from '../shell/WindowHost.js';
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { Ago } from '../components/Common.js';
+import { newsBody, newsHeadline } from '../lib/loc.js';
 
 const CAT_ICON: Record<NewsCategory, IconName> = {
   strike: 'missile',
@@ -100,10 +101,10 @@ export function NewsWindow({ frame }: WindowContentProps) {
                     ) : null}
                     <Ago from={n.time} now={now} />
                   </div>
-                  <h3 className="dispatch__headline">{n.headline}</h3>
+                  <h3 className="dispatch__headline">{newsHeadline(n)}</h3>
                   <p className="dispatch__text">
                     <span className="dispatch__source">{t('news.source')} — </span>
-                    {n.body}
+                    {newsBody(n)}
                   </p>
                   {n.nations.length || n.at ? (
                     <div className="dispatch__foot">

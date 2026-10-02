@@ -10,6 +10,7 @@ import {
   OrbatSchema,
   ProvinceDefSchema,
   ResearchFileSchema,
+  RoutesFileSchema,
   ScenarioFileSchema,
   StraitSchema,
   type Balance,
@@ -71,6 +72,10 @@ export function loadRealData(scenarioId = 'world-today'): RealData {
     disputed: existsSync(join(root, 'map/disputed.json'))
       ? listOf(j('map/disputed.json'), 'disputed').map((x) => DisputedAreaSchema.parse(x))
       : [],
+    // REDLINE_NO_ROUTES=1 : déplacement libre sur la grille (comparaison avant / après le réseau).
+    ...(existsSync(join(root, 'map/routes.json')) && !process.env.REDLINE_NO_ROUTES
+      ? { routes: RoutesFileSchema.parse(j('map/routes.json')) }
+      : {}),
   };
   const catalog: WeaponSystem[] = [];
   const seen = new Set<string>();
@@ -87,6 +92,11 @@ export function loadRealData(scenarioId = 'world-today'): RealData {
   const balance = BalanceSchema.parse(
     deepMerge(BalanceSchema.parse(j('balance/default.json')), scenario.balanceOverrides),
   );
+  // BENCH_STACKS=off : regroupement de départ désactivé (mesures « avant » : piles d'un seul matériel).
+  if (process.env.BENCH_STACKS === 'off') {
+    const st = (balance.stacks ?? {}) as { start?: Record<string, unknown> };
+    balance.stacks = { ...st, start: { ...st.start, enabled: false } } as typeof balance.stacks;
+  }
   const research: ResearchNode[] = [];
   for (const f of readdirSync(join(root, 'research')).sort()) {
     if (f.endsWith('.json')) research.push(...ResearchFileSchema.parse(j(`research/${f}`)).nodes);

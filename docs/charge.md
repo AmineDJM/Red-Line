@@ -105,6 +105,86 @@ Métriques ajoutées au back-office (écran Métriques) : latence de la boucle (
 coût CPU des diffusions, pire diffusion, parties en rattrapage ; le serveur journalise tout travail synchrone
 de plus de 250 ms (`travail synchrone long`).
 
+## Piles de départ regroupées (piles mixtes)
+
+Décision d'Amine : moins de piles, plus grosses, séparables à volonté. Au départ, les matériels terrestres
+(infanterie, VCI, chars, artillerie), les hélicoptères et les drones d'une nation forment des **piles
+mixtes** (brigades interarmes, escadres) posées sur les sites de leur domaine (capitale, frontières
+menacées, bases, grandes villes) ; avions de combat (escadrons d'un seul type sur une base), navires,
+défenses antiaériennes, radars, missiles et satellites gardent leurs piles d'origine
+(`startingForces.stackMax`). Réglages : `data/balance` → `stacks` (`start.enabled` désactive tout le
+regroupement, `start.groups` fixe catégories et tailles, `classes` les mélanges autorisés, `mergeKm`,
+`maxSystems`, `ai` l'emploi par l'IA).
+
+Une pile mixte (`Unit.mix`, champ optionnel : les anciennes sauvegardes se rechargent telles quelles)
+vaut la somme de ses éléments : chaque matériel tire avec ses dégâts et sa portée, les dégâts reçus sont
+répartis au prorata des points de vie (blindage de chaque matériel), détection du meilleur capteur,
+vitesse du plus lent, entretien et consommation de chaque matériel (`state/stack.ts`,
+`combat/stack-combat.ts`). Ordres journalisés : `split` (diviser en deux, détacher N éléments au prorata,
+détacher des éléments par matériel, séparer par type) et `merge` (même matériel, ou même classe de fusion,
+à l'arrêt, à moins de `mergeKm`). L'IA divise ses piles en guerre (garnisons, groupes d'offensive) et les
+refond en paix (`ai/stacks.ts`). Client : panneau de sélection (touche « Piles… » sur mobile) et
+« Mes armées ».
+
+Mesures (2 octobre 2026, `bench/real.ts` et `bench/stacks.ts`, machine partagée très chargée — charge
+moyenne 15 à 22 — : comparer surtout les temps de **CPU**). « Avant » = même code, `BENCH_STACKS=off`.
+
+| Mesure (monde 2025)                        | Avant (sans regroupement) | Après              | Écart      |
+| ------------------------------------------ | ------------------------- | ------------------ | ---------- |
+| Unités au départ                           | 4 238                     | 2 141 (369 mixtes) | **−49 %**  |
+| Paires de rencontre au départ              | 11 442                    | 5 449              | **−52 %**  |
+| `createGame` (CPU)                         | 1 245 ms                  | 942 ms             | −24 %      |
+| Tas de la partie                           | 12,8 Mio                  | 8,7 Mio            | −32 %      |
+| Instantané au départ                       | 2,06 Mio                  | 1,26 Mio           | −39 %      |
+| Jour calme J0 → J1 (CPU)                   | 1 510 ms                  | 610 ms             | −60 %      |
+| Jour de guerre intense J1 → J2 (CPU)       | 19,0 s                    | 15,4 s             | −19 %      |
+| Jour suivant J2 → J3 (CPU)                 | 10,3 s                    | 8,1 s              | −22 %      |
+| J3 → J5 (CPU, 10 à 17 guerres)             | 10,8 s                    | 10,8 s             | =          |
+| `viewFor` moyen (CPU, 20 nations)          | 43,7 ms                   | 24,2 ms            | −45 %      |
+| Instantané à J5 (après 10 guerres forcées) | 3,7 Mio                   | 5,4 Mio            | +46 % (\*) |
+
+| Scénario 1985 (`bench/stacks.ts`) | Avant    | Après              | Écart     |
+| --------------------------------- | -------- | ------------------ | --------- |
+| Unités au départ                  | 3 156    | 1 341 (341 mixtes) | **−58 %** |
+| Paires au départ                  | 4 007    | 1 666              | −58 %     |
+| `createGame`                      | 1 453 ms | 751 ms             | −48 %     |
+| Instantané au départ              | 1,07 Mio | 0,65 Mio           | −39 %     |
+
+Éléments (347 891 en 2025, 479 940 en 1985) et entretien journalier identiques avec ou sans regroupement.
+(\*) La différence vient des rapports de bataille (`mods.mil.battles` : images et tirs échantillonnés,
+bornés par bataille et en nombre de rapports) : les grosses piles livrent des combats plus longs, donc
+des rapports plus remplis ; l'état des unités et des paires reste plus petit. À surveiller par l'équipe
+des rapports de bataille (`military.battle.maxFrames`, `maxShots`, `maxReports`).
+
+IA (`bench/ai-eval.ts`, guerres forcées, niveau normal, graines 1 et 2, 5 jours ; graine 1 / graine 2,
+avant → après) : provinces prises 35 / 28 → 35 / 33, captures réussies 185 / 159 → 175 / 141, unités
+perdues en capture 22 / 51 → 14 / 20, ordres de production 324 / 305 → 373 / 373 (défense antiaérienne
+25 / 24 → 19 / 20), forces terrestres inactives 78 / 81 % → 63 / 63 %. Les choix de production comptent
+les éléments réels de chaque pile mixte par catégorie (`categoryPiles`), les plafonds en piles de départ
+équivalentes (taille agrandie `stackScale` comprise) ; en guerre, les grosses piles de la capitale sont
+divisées avant tout détachement offensif et une fusion ne descend jamais sous la garnison.
+Reste ouvert : capitale menacée sans garnison 0 / 4 % → 22 / 7 % des relevés. Les cas relevés sont des
+armées entières détruites ou engagées loin (Yémen, Arménie, Ukraine, Pakistan) ; sans regroupement, ces
+capitales tombent plus souvent (et ne sont alors plus relevées). Un essai de renvoi d'un détachement
+vers la capitale vide a aggravé les pertes (abandonné).
+
+Essai abandonné (garnison de la capitale exprimée en force : au moins 20 % de la valeur terrestre
+gardée à la capitale, en plus du nombre de piles) : l'Ukraine et le Pakistan ne sont plus relevés
+« dégarnis », mais les captures chutent (provinces prises 35 / 33 → 22 / 20, captures réussies
+175 / 141 → 113 / 124) et la part de capitale sans garnison ne baisse pas (26 / 31 %) : les relevés
+restants viennent de l'Arménie et du Yémen, dont toute l'armée est détruite en défendant la capitale
+(constaté pile par pile ; leur capitale tient, alors que sans regroupement elle tombe et n'est plus
+relevée). Le diagnostic Ukraine / Pakistan : la pile de la capitale est divisée à répétition (la
+garnison compte des piles), les moitiés partent en offensive et les reliquats finissent par poursuivre
+une cible ; une garnison en force est la bonne piste, à reprendre avec la logique d'offensive.
+
+```bash
+cd packages/engine
+node --expose-gc bench/run.mjs stacks                                   # recensement 2025 + 1985
+BENCH_STACKS=off node --expose-gc bench/run.mjs stacks                  # sans regroupement
+BENCH_DAYS=2 [BENCH_STACKS=off] [BENCH_SCENARIO=cold-war-1985] node --expose-gc bench/run.mjs real
+```
+
 ## Seuils de passage à l'offre Render supérieure
 
 Node.js exécute la simulation sur **un seul cœur** : au-delà d'un cœur, seuls le ramasse-miettes, la

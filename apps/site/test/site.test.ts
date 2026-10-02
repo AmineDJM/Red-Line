@@ -69,10 +69,21 @@ describe('build des pages publiques', () => {
   }));
   const meta = (html: string, re: RegExp) => re.exec(html)?.[1] ?? null;
 
-  it('construit le français et l’anglais complets', () => {
-    expect(r.manifest.languages.map((l) => l.code)).toEqual(['fr', 'en']);
-    expect(pages.length).toBe(36);
-    expect(r.warnings).toEqual([]);
+  it('construit le français et l’anglais complets, puis les langues traduites', () => {
+    expect(r.manifest.languages.map((l) => l.code).slice(0, 2)).toEqual(['fr', 'en']);
+    expect(r.manifest.languages.map((l) => l.code).sort()).toEqual(
+      ['ar', 'de', 'en', 'es', 'fr', 'pt', 'ru', 'tr'].sort(),
+    );
+    const complete = pages.filter((p) => /^\/(fr|en)\//.test(p.path));
+    expect(complete.length).toBe(36);
+    // Seuls les documents légaux des langues traduites peuvent manquer (repli vers une autre langue).
+    expect(r.warnings.filter((w) => !/^(\w+) : document légal/.test(w))).toEqual([]);
+    expect(r.warnings.filter((w) => /^(fr|en) :/.test(w))).toEqual([]);
+  });
+
+  it('arabe : page de droite à gauche', () => {
+    const ar = pages.find((p) => p.path === '/ar/')!;
+    expect(ar.html).toContain('<html lang="ar" dir="rtl"');
   });
 
   it('titres et descriptions uniques, canonique, hreflang réciproques, aucun script exécutable', () => {

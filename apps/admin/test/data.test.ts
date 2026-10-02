@@ -11,6 +11,7 @@ import {
   BalanceSchema,
   CatalogFileSchema,
   DOCTRINES,
+  INTEL_OPS,
   MODIFIER_KEYS,
   RESEARCH_BRANCHES,
   ResearchFileSchema,
@@ -564,13 +565,8 @@ describe('data/balance', () => {
   });
 
   it('opérations de renseignement : toutes chiffrées en dollars', () => {
-    const OPS = [
-      'infiltrate_spy', 'recruit_source', 'turn_agent', 'exfiltrate', 'steal_research', 'sabotage_factory',
-      'fund_rebels', 'listen_area', 'intercept_army', 'jam_area', 'cyber_radar', 'cyber_production',
-      'cyber_orders', 'disinformation', 'leak_plans', 'plant_fake_report', 'deploy_decoys',
-      'fake_radio_traffic', 'counterintel_sweep', 'recon_economic', 'recon_military',
-    ]; // prettier-ignore
-    expect(Object.keys(b.intel!.ops).sort()).toEqual([...OPS].sort());
+    // Toutes les opérations du protocole (profondeur SIGINT, HUMINT, militaire, intérieur comprise).
+    expect(Object.keys(b.intel!.ops).sort()).toEqual([...INTEL_OPS].sort());
     for (const [k, op] of Object.entries(b.intel!.ops)) {
       expect(op.money, k).toBeGreaterThanOrEqual(1e6);
       expect(op.baseSuccess, k).toBeGreaterThan(0);

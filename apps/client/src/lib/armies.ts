@@ -8,8 +8,11 @@
  * sert aussi de clé au nom donné par le joueur.
  */
 import {
+  StacksBalanceSchema,
   distanceKm,
   movementEnd,
+  stackClassOf,
+  type Balance,
   positionAt,
   type BattleReportSummary,
   type Category,
@@ -26,6 +29,7 @@ import {
   type WeaponSystem,
 } from '@redline/shared';
 import { nearestCity, unitLocation, type UnitLocation } from './location.js';
+import { stackParts } from './stacks.js';
 
 /** Rayon de regroupement d'une armée (km). */
 export const ARMY_RADIUS_KM = 30;
@@ -382,21 +386,37 @@ export function filterArmies(
 }
 
 /** Groupes de piles fusionnables dans une armée (même matériel, à l'arrêt, hors embarquées). */
-export function mergeGroups(a: Army, catalog: Record<string, WeaponSystem>): UnitId[][] {
-  const by = new Map<SystemId, UnitView[]>();
+export function mergeGroups(
+  a: Army,
+  catalog: Record<string, WeaponSystem>,
+  balance?: Balance | null,
+): UnitId[][] {
+  // Règles du moteur (data/balance `stacks`) : même matériel, ou matériels d'une même classe de
+  // fusion (brigades terrestres, hélicoptères…), à moins de `mergeKm` de la première pile.
+  const sb = StacksBalanceSchema.parse(balance?.stacks ?? {});
+  const keyOf = (u: UnitView): string | null => {
+    const ids = stackParts(u).map((p) => p.systemId);
+    const classes = new Set(
+      ids.map((id) => (catalog[id] ? stackClassOf(catalog[id]!, sb.classes) : null)),
+    );
+    if (classes.size === 1 && !classes.has(null)) return `c:${[...classes][0]}`;
+    return ids.length === 1 ? `s:${ids[0]}` : null;
+  };
+  const by = new Map<string, UnitView[]>();
   for (const u of a.units) {
     if (!u.systemId || u.move?.legs.length || u.status === 'moving' || u.status === 'embarked')
       continue;
     if (pileDomain(u, catalog) === 'static') continue;
-    const l = by.get(u.systemId) ?? [];
+    const k = keyOf(u);
+    if (!k) continue;
+    const l = by.get(k) ?? [];
     l.push(u);
-    by.set(u.systemId, l);
+    by.set(k, l);
   }
   const out: UnitId[][] = [];
   for (const l of by.values()) {
-    // Fusion du moteur : piles à moins de 10 km de la première.
     const first = l[0]!;
-    const near = l.filter((u) => distanceKm(u.pos, first.pos) <= 10);
+    const near = l.filter((u) => distanceKm(u.pos, first.pos) <= sb.mergeKm);
     if (near.length >= 2) out.push(near.map((u) => u.id));
   }
   return out;

@@ -37,6 +37,8 @@ async function screenPoint(page: Page, p: LngLat) {
 }
 
 test('conquérir une province ennemie', async ({ page }, info) => {
+  // Trajet réel sur le réseau de routes jusqu'à Bruxelles puis capture : plus long que les autres parcours.
+  test.setTimeout(600_000);
   const mobile = info.project.name === 'mobile';
   await page.addInitScript(() => {
     localStorage.setItem('rl.debug', '1');
@@ -108,8 +110,14 @@ test('conquérir une province ennemie', async ({ page }, info) => {
   await page.waitForTimeout(1200);
   const at = await screenPoint(page, first.pos);
   await tapAt(page, at.x, at.y, mobile);
+  // Armées de départ regroupées : plusieurs piles au même endroit ouvrent le menu de pile, où les
+  // piles du joueur sont pré-cochées ; on valide la sélection.
+  const pick = page.getByRole('button', { name: /^Sélectionner \(\d+\)$/ });
   await expect
-    .poll(() => page.evaluate(() => window.__rl.ui.getState().selection as string[]))
+    .poll(async () => {
+      if (await pick.isVisible()) await pick.click();
+      return page.evaluate(() => window.__rl.ui.getState().selection as string[]);
+    })
     .toContain(first.id);
   // Les autres fantassins rejoignent la sélection (Maj+clic sur ordinateur).
   await page.evaluate(
@@ -117,7 +125,9 @@ test('conquérir une province ennemie', async ({ page }, info) => {
     capturers.map((c) => c.id),
   );
 
-  // 5. Deuxième geste : toucher la destination, Bruxelles (en évitant les unités ennemies).
+  // 5. Deuxième geste : toucher la destination, Bruxelles (en évitant les unités ennemies). Les
+  // unités terrestres circulent sur le réseau de routes : le point touché est accroché à la ville.
+  await page.waitForFunction(() => !!window.__rl.world.getState().roads, null, { timeout: 60_000 });
   await page.evaluate((p) => window.__rlMap.map.jumpTo({ center: p, zoom: 12 }), BRUSSELS);
   await page.waitForTimeout(1200);
   // Point libre à ~3 km de la ville (rayon de capture : 5 km), loin des hexagones ennemis.
@@ -146,6 +156,8 @@ test('conquérir une province ennemie', async ({ page }, info) => {
   await tapAt(page, target.x, target.y, mobile);
   const pending = await page.evaluate(() => window.__rl.ui.getState().pendingOrder);
   expect(pending?.kind).toBe('move');
+  // Accrochage magnétique : la destination est le point de capture de la province (sa ville).
+  expect(pending?.to).toEqual(BRUSSELS);
   await page.screenshot({ path: info.outputPath('1-ordre.png') });
 
   // 6. Troisième geste : confirmer.
@@ -158,6 +170,25 @@ test('conquérir une province ennemie', async ({ page }, info) => {
       ),
     )
     .toBe(true);
+  // Trajets le long des routes : chaque segment terrestre aboutit à un point du réseau.
+  const legs = await page.evaluate(
+    (ids) => {
+      const { game, world } = window.__rl;
+      const roads = world.getState().roads;
+      let total = 0;
+      let off = 0;
+      for (const id of ids)
+        for (const l of game.getState().view.units[id]?.move?.legs ?? []) {
+          if (l.medium !== 'land') continue;
+          total++;
+          if (!roads.snap(l.to, 0.05)) off++;
+        }
+      return { total, off };
+    },
+    capturers.map((c) => c.id),
+  );
+  expect(legs.total).toBeGreaterThan(0);
+  expect(legs.off).toBe(0);
 
   // Accélération d'essai (vitesse autorisée seulement hors production).
   await page.evaluate(() => window.__rl.game.getState().connection.setSpeed(3600));

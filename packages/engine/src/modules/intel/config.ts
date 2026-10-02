@@ -120,6 +120,15 @@ export const DEFAULT_OPS: Record<IntelOpKind, OpCost> = {
   counterintel_sweep: { money: 2_000_000, durationH: 12, baseSuccess: 0.75, exposure: 0 },
   recon_economic: { money: 1_500_000, durationH: 12, baseSuccess: 0.75, exposure: 0.2 },
   recon_military: { money: 2_000_000, durationH: 12, baseSuccess: 0.7, exposure: 0.25 },
+  cryptanalysis: { money: 8_000_000, durationH: 48, baseSuccess: 0.65, exposure: 0.05 },
+  intercept_comms: { money: 4_000_000, durationH: 24, baseSuccess: 0.7, exposure: 0.1 },
+  geolocate_emitters: { money: 3_000_000, durationH: 12, baseSuccess: 0.7, exposure: 0.1 },
+  cultivate_source: { money: 6_000_000, durationH: 96, baseSuccess: 0.45, exposure: 0.35 },
+  vet_agents: { money: 1_000_000, durationH: 24, baseSuccess: 0.8, exposure: 0 },
+  designate_targets: { money: 5_000_000, durationH: 12, baseSuccess: 0.7, exposure: 0.15 },
+  dismantle_network: { money: 8_000_000, durationH: 48, baseSuccess: 0.6, exposure: 0 },
+  deception_plan: { money: 4_000_000, durationH: 48, baseSuccess: 0.55, exposure: 0.2 },
+  harden_sites: { money: 15_000_000, durationH: 6, baseSuccess: 0.95, exposure: 0 },
 };
 
 /** Reconnaissance d'un pays entier : valeurs par défaut (identiques au schéma de data/balance). */
@@ -157,6 +166,15 @@ export const OP_META: Record<IntelOpKind, { dept: Department; source: IntelSourc
   counterintel_sweep: { dept: 'interior', source: 'humint' },
   recon_economic: { dept: 'exterior', source: 'humint' },
   recon_military: { dept: 'military', source: 'sigint' },
+  cryptanalysis: { dept: 'military', source: 'sigint' },
+  intercept_comms: { dept: 'military', source: 'sigint' },
+  geolocate_emitters: { dept: 'military', source: 'sigint' },
+  cultivate_source: { dept: 'exterior', source: 'humint' },
+  vet_agents: { dept: 'exterior', source: 'humint' },
+  designate_targets: { dept: 'military', source: 'sigint' },
+  dismantle_network: { dept: 'interior', source: 'humint' },
+  deception_plan: { dept: 'interior', source: 'humint' },
+  harden_sites: { dept: 'interior', source: 'humint' },
 };
 
 const cache = new WeakMap<object, IntelConfig>();

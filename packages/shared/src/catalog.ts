@@ -231,3 +231,14 @@ export const CatalogFileSchema = z.object({
   systems: z.array(WeaponSystemSchema),
 });
 export type CatalogFile = z.infer<typeof CatalogFileSchema>;
+
+/**
+ * Portée de frappe d'une munition (missile, munition rôdeuse) : la plus grande de la portée d'arme,
+ * de la portée de la fiche et du rayon d'action. Même calcul côté moteur (validation de l'ordre de
+ * frappe) et côté client (cercle de portée affiché).
+ */
+export function strikeRangeKm(
+  s: Pick<WeaponSystem, 'weaponRangeKm' | 'sheet' | 'operationalRadiusKm'>,
+): number {
+  return Math.max(s.weaponRangeKm.max, s.sheet?.rangeKm ?? 0, s.operationalRadiusKm ?? 0);
+}

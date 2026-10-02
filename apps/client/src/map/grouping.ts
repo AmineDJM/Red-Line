@@ -24,6 +24,11 @@ export interface Group<T extends GroupItem = GroupItem> {
   members: T[];
   /** Décalage d'écartement (px CSS à l'échelle 1 du pion), [0, 0] sinon. */
   off: [number, number];
+  /**
+   * Piles écartées côte à côte (nations différentes au même endroit : front, bataille) : identifiant
+   * commun du groupe d'écartement (menu de pile « à proximité »), absent sinon.
+   */
+  cluster?: string;
 }
 
 export const TILE = 512;
@@ -61,7 +66,16 @@ export interface GroupOptions {
   /** Taille du pion à l'échelle 1 (px CSS). */
   w: number;
   h: number;
+  /**
+   * Hystérésis : pile d'appartenance précédente de chaque élément (identifiant de pile). Un élément
+   * reste dans sa pile tant qu'il est à moins de 1,3 seuil de son chef : les piles ne « sautent »
+   * pas quand une unité oscille autour du seuil (déplacements, zoom).
+   */
+  prev?: ReadonlyMap<string, string>;
 }
+
+/** Marge de l'hystérésis de regroupement (multiplicateur du seuil). */
+export const STICKY = 1.3;
 
 /** Multiplicateur du seuil de regroupement selon le zoom : monde → région → ville. */
 export function lodFactor(zoom: number): number {
@@ -84,18 +98,22 @@ export function groupItems<T extends GroupItem>(items: T[], o: GroupOptions): Gr
   const cellOf = (x: number, y: number) => [Math.floor(x / tx), Math.floor(y / ty)] as const;
   for (const it of sorted) {
     const [x, y] = worldPx(it.pos, o.zoom);
+    const sticky = o.prev?.get(it.id);
     const [cx, cy] = cellOf(x, y);
     let found: Group<T> | null = null;
     let best = Infinity;
-    for (let i = -1; i <= 1 && !found; i++) {
-      for (let j = -1; j <= 1; j++) {
+    const span = sticky ? 2 : 1;
+    for (let i = -span; i <= span && (!found || !!sticky); i++) {
+      for (let j = -span; j <= span; j++) {
         const list = grid.get(`${it.key}|${cx + i}|${cy + j}`);
         if (!list) continue;
         for (const c of list) {
           const dx = Math.abs(c.x - x);
           const dy = Math.abs(c.y - y);
-          if (dx < tx && dy < ty) {
-            const d = dx / tx + dy / ty;
+          const k = sticky && c.g.id === sticky ? STICKY : 1;
+          if (dx < tx * k && dy < ty * k) {
+            // La pile précédente l'emporte à distance comparable (stabilité).
+            const d = (dx / tx + dy / ty) / (k > 1 ? 2 : 1);
             if (d < best) {
               best = d;
               found = c.g;
@@ -174,6 +192,8 @@ function spreadOverlapping<T extends GroupItem>(groups: Group<T>[], o: GroupOpti
     }
     mx /= idx.length;
     my /= idx.length;
+    const cid = groups[idx[0]!]!.id;
+    for (const i of idx) groups[i]!.cluster = cid;
     const cols = Math.min(3, idx.length);
     const rows = Math.ceil(idx.length / cols);
     const gx = o.w + 8;
@@ -183,7 +203,9 @@ function spreadOverlapping<T extends GroupItem>(groups: Group<T>[], o: GroupOpti
       const row = Math.floor(k / cols);
       const inRow = row === rows - 1 ? idx.length - row * cols : cols;
       const tx0 = (col - (inRow - 1) / 2) * gx;
-      const ty0 = (row - (rows - 1) / 2) * gy;
+      // Plusieurs rangées : la première au niveau du point, les suivantes en dessous (le nom de la
+      // ville, au-dessus du point, reste lisible).
+      const ty0 = rows > 1 ? row * gy : 0;
       // Position cible écran (centre commun + grille) exprimée en décalage depuis la vraie position.
       const [px, py] = pts[i]!;
       groups[i]!.off = [(mx - px) / s + tx0, (my - py) / s + ty0];

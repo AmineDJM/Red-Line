@@ -99,6 +99,22 @@ export interface Unit {
    * ni combat ; la position n'a pas de sens (voir le module mil).
    */
   off?: boolean;
+  /**
+   * Pile mixte (plusieurs matériels, voir state/stack.ts) : un élément par système, trié par
+   * identifiant, au moins deux. Invariants : `count` = Σ c, `maxHp` = Σ m, `sys` = matériel principal
+   * (plus grand m, puis identifiant). Absent pour une pile d'un seul matériel (anciennes sauvegardes
+   * comprises : aucune migration nécessaire). Tableau immuable : remplacé à chaque changement.
+   */
+  mix?: StackPart[];
+}
+
+/** Élément d'une pile mixte. */
+export interface StackPart {
+  sys: SystemId;
+  /** Éléments vivants. */
+  c: number;
+  /** Part des points de vie maximaux de la pile (la santé de la pile est répartie au prorata). */
+  m: number;
 }
 
 /**

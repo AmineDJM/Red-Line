@@ -19,6 +19,7 @@ import type { EngineState } from '../../state/types.js';
 import { wi } from '../../state/world.js';
 import { nearestCity } from '../../state/cities.js';
 import { pick, roll } from './levels.js';
+import type { LocParam } from '@redline/shared';
 
 /**
  * Textes des rapports (français, style note de service). Générés au moment de la publication avec le
@@ -136,6 +137,15 @@ export function sectorOf(state: EngineState, at: LngLat): string {
   const p = nearestProvince(state, at);
   if (!p) return 'secteur non identifié';
   return p.d < 60 ? `secteur ${p.name}` : `à ${Math.round(p.d)} km de ${p.name}`;
+}
+
+/** Secteur localisable (province traduite par le client). */
+export function sectorLoc(state: EngineState, at: LngLat): LocParam {
+  const p = nearestProvince(state, at);
+  if (!p) return { key: 'engine.sector.unknown' };
+  return p.d < 60
+    ? { key: 'engine.sector.at', params: { province: { province: p.pid } } }
+    : { key: 'engine.sector.near', params: { km: Math.round(p.d), province: { province: p.pid } } };
 }
 
 export function fmtTime(t: number): string {

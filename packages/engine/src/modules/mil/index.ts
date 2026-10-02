@@ -6,6 +6,7 @@ import { ceasefire, targetClassOf } from '../../encounters/profile.js';
 import { board } from '../kit.js';
 import type { EngineModule, ModEvent } from '../types.js';
 import { combatAi } from './ai.js';
+import { orderAttack } from './attack.js';
 import {
   handleBingo,
   handleFuelout,
@@ -17,9 +18,10 @@ import {
   orderPatrol,
   orderRebase,
   orderRtb,
+  endMissions,
 } from './air.js';
 import { addTension, decayTension, raiseAlert, syncLevel } from './alert.js';
-import { handleClose, noteDestroyed, recordHit } from './battles.js';
+import { handleClose, noteDestroyed, recordCapture, recordEffects, recordHit } from './battles.js';
 import {
   dropFromGeneral,
   generalModifier,
@@ -258,11 +260,15 @@ export const milModule: EngineModule = {
     onDamage(state, att, tgt, dmg) {
       const lost = elementsLost(state, tgt, tgt.hp);
       countLoss(state, tgt, lost, att);
-      const b = recordHit(state, att, tgt, lost, targetClassOf(state, tgt));
-      if (jammingFor(state, tgt) > 0) b.cm.jamming = (b.cm.jamming ?? 0) + 1;
+      const b = recordHit(state, att, tgt, lost, targetClassOf(state, tgt), dmg);
+      const jammed = jammingFor(state, tgt) > 0;
+      if (jammed) b.cm.jamming = (b.cm.jamming ?? 0) + 1;
+      let unseen = false;
       if (tgt.role !== 'decoy' && tgt.owner !== att.owner && !att.role) {
-        if (!state.sight[tgt.owner]?.[att.id]) b.cm.stealth = (b.cm.stealth ?? 0) + 1;
+        unseen = !state.sight[tgt.owner]?.[att.id];
+        if (unseen) b.cm.stealth = (b.cm.stealth ?? 0) + 1;
       }
+      recordEffects(b, att, tgt, jammed, unseen);
       if (tgt.role === 'decoy') {
         b.cm.decoy = (b.cm.decoy ?? 0) + 1;
         // Un leurre ne résiste pas à un coup au but.
@@ -290,29 +296,26 @@ export const milModule: EngineModule = {
     },
     onOrder(state, n, order) {
       releaseOnOrder(state, n, order);
+      if (order.kind === 'move' || order.kind === 'stop') endMissions(state, n, order);
     },
     interceptOrder(state, n, order) {
       if (order.kind === 'move') return interceptMove(state, n, order);
-      if (order.kind === 'attack') {
-        for (const id of order.unitIds) {
-          const ms = mil(state).ms[id];
-          const u = state.units[id];
-          if (u && u.owner === n && ms?.fa && !ms.up && ms.ready > state.time) {
-            return { ok: false, error: 'cooldown', message: 'Appareil en remise en œuvre au sol.' };
-          }
-        }
-        const tgt = state.units[order.targetId];
-        if (tgt && ceasefire(state, n, tgt.owner)) {
-          return { ok: false, error: 'locked', message: 'Cessez-le-feu en vigueur.' };
-        }
-      }
+      if (order.kind === 'attack') return orderAttack(state, n, order);
       return null;
     },
     unitModifier(state, u, key) {
       return generalModifier(state, u, key) * siloModifier(state, u, key);
     },
     onProvinceCaptured(state, pid, from, to) {
+      // Matériel saisi : unités créées pour le preneur pendant la saisie (rapport de bataille).
+      const before = state.nextUnit;
       captureMateriel(state, pid, from, to);
+      const seized: Record<string, number> = {};
+      for (let i = before + 1; i <= state.nextUnit; i++) {
+        const u = state.units[`u${i}`];
+        if (u && u.owner === to && !u.role) seized[u.sys] = (seized[u.sys] ?? 0) + u.count;
+      }
+      recordCapture(state, pid, from, to, seized);
     },
     onWarDeclared(state) {
       raiseAlert(state, milBal(state).tension.war, 'war');

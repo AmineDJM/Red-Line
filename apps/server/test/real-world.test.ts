@@ -193,7 +193,8 @@ describe.skipIf(!hasDb || !engine)('vrai moteur : de la création à la victoire
       ws.send({
         t: 'order',
         id: 1,
-        order: { kind: 'move', unitIds: [own[0]!.id], to: [3, 47] },
+        // Destination sur le réseau de routes (Paris) : les unités terrestres n'en sortent pas.
+        order: { kind: 'move', unitIds: [own[0]!.id], to: [2.353, 48.8581] },
       });
       expect((await ws.next('orderResult', (m) => m.id === 1)).ok).toBe(true);
       // Quelques heures de jeu : diffs reçus, IA actives.

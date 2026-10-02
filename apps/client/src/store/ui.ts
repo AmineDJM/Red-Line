@@ -1,11 +1,54 @@
 import { create } from 'zustand';
-import type { LngLat, ProvinceId, UnitId } from '@redline/shared';
+import type { LngLat, ProvinceId, StrikeTarget, UnitId } from '@redline/shared';
 import type { WindowRect } from '@redline/ui';
 import { STORAGE } from '../config.js';
+import { isRtl } from '../i18n/index.js';
 
 export type PendingOrder =
   | { kind: 'move'; unitIds: UnitId[]; to: LngLat }
-  | { kind: 'attack'; unitIds: UnitId[]; targetId: UnitId };
+  | { kind: 'attack'; unitIds: UnitId[]; targetId: UnitId }
+  | { kind: 'strike'; unitIds: UnitId[]; target: StrikeTarget }
+  | { kind: 'patrol'; unitIds: UnitId[]; at: LngLat; radiusKm: number; recon?: boolean }
+  | { kind: 'blockade'; unitIds: UnitId[]; provinceId: ProvinceId; at: LngLat };
+
+/** Mode de ciblage sur la carte (après un bouton d'action) : le prochain clic désigne la cible. */
+export type TargetingAction =
+  'move' | 'attack' | 'intercept' | 'strike' | 'patrol' | 'recon' | 'blockade';
+export interface Targeting {
+  action: TargetingAction;
+  unitIds: UnitId[];
+}
+
+/** Point visé par un ordre en attente (cible, destination, centre de patrouille). */
+export function pendingPoint(
+  p: PendingOrder,
+  unitPos: (id: UnitId) => LngLat | undefined,
+  provincePoint: (id: ProvinceId) => LngLat | undefined,
+): LngLat | undefined {
+  switch (p.kind) {
+    case 'move':
+      return p.to;
+    case 'attack':
+      return unitPos(p.targetId);
+    case 'patrol':
+    case 'blockade':
+      return p.at;
+    case 'strike':
+      return p.target.type === 'point'
+        ? p.target.at
+        : p.target.type === 'unit'
+          ? unitPos(p.target.unitId)
+          : provincePoint(p.target.provinceId);
+  }
+}
+
+/** Unité visée par un ordre en attente (attaque ou frappe sur unité). */
+export function pendingTargetId(p: PendingOrder | null): UnitId | null {
+  if (!p) return null;
+  if (p.kind === 'attack') return p.targetId;
+  if (p.kind === 'strike' && p.target.type === 'unit') return p.target.unitId;
+  return null;
+}
 
 /**
  * Fenêtres de la coque de jeu (une par domaine). Une seule est ouverte à la fois : en ouvrir une
@@ -95,6 +138,7 @@ export interface UiStore {
   inspected: UnitId | null;
   selectedProvince: ProvinceId | null;
   pendingOrder: PendingOrder | null;
+  targeting: Targeting | null;
   /** @deprecated voir `windows`. */
   drawer: DrawerId;
   legendOpen: boolean;
@@ -115,6 +159,7 @@ export interface UiStore {
   inspect(id: UnitId | null): void;
   selectProvince(id: ProvinceId | null): void;
   setPending(o: PendingOrder | null): void;
+  setTargeting(t: Targeting | null): void;
   clearSelection(): void;
   /** @deprecated voir `openWindow`. */
   openDrawer(d: DrawerId): void;
@@ -168,11 +213,14 @@ const WINDOW_SIZE: Record<WindowId, { w: number; h: number }> = {
   settings: { w: 520, h: 720 },
 };
 
-/** Zone utile des fenêtres flottantes (sous la barre supérieure, à droite du rail). */
+/** Zone utile des fenêtres flottantes (sous la barre supérieure, à côté du rail). */
 export function windowBounds() {
   const w = typeof window !== 'undefined' ? window.innerWidth : 1440;
   const h = typeof window !== 'undefined' ? window.innerHeight : 900;
-  return { top: 52, left: 60, right: w - 8, bottom: h - 8 };
+  // Arabe : le rail de navigation est à droite (mise en page miroir).
+  return isRtl
+    ? { top: 52, left: 8, right: w - 60, bottom: h - 8 }
+    : { top: 52, left: 60, right: w - 8, bottom: h - 8 };
 }
 
 function defaultRect(id: WindowId) {
@@ -180,7 +228,7 @@ function defaultRect(id: WindowId) {
   const size = WINDOW_SIZE[id];
   const w = Math.min(size.w, b.right - b.left - 16);
   const h = Math.min(size.h, b.bottom - b.top - 16);
-  const x = Math.min(b.left + 12, b.right - w);
+  const x = isRtl ? Math.max(b.right - w - 12, b.left) : Math.min(b.left + 12, b.right - w);
   const y = Math.min(b.top + 10, b.bottom - h);
   return { x, y, w, h };
 }
@@ -202,6 +250,7 @@ export const useUi = create<UiStore>((set, get) => ({
   inspected: null,
   selectedProvince: null,
   pendingOrder: null,
+  targeting: null,
   drawer: null,
   legendOpen: readBool(
     STORAGE.legendOpen,
@@ -218,7 +267,13 @@ export const useUi = create<UiStore>((set, get) => ({
   sheet: null,
 
   select(ids) {
-    set({ selection: ids, inspected: null, pendingOrder: null, selectedProvince: null });
+    set({
+      selection: ids,
+      inspected: null,
+      pendingOrder: null,
+      targeting: null,
+      selectedProvince: null,
+    });
   },
   inspect(id) {
     set({ inspected: id });
@@ -227,10 +282,13 @@ export const useUi = create<UiStore>((set, get) => ({
     set({ selectedProvince: id });
   },
   setPending(o) {
-    set({ pendingOrder: o });
+    set({ pendingOrder: o, targeting: null });
+  },
+  setTargeting(t) {
+    set({ targeting: t, pendingOrder: null });
   },
   clearSelection() {
-    set({ selection: [], inspected: null, pendingOrder: null });
+    set({ selection: [], inspected: null, pendingOrder: null, targeting: null });
   },
   openDrawer(d) {
     if (d === 'alerts') return set({ alertsOpen: true, drawer: d });

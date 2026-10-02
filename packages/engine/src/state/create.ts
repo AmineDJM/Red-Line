@@ -9,6 +9,7 @@ import {
   type NationId,
   type ProvinceId,
   type Resource,
+  type WeaponSystem,
 } from '@redline/shared';
 import type { GameSetup, World } from '../api.js';
 import { seedRng } from '../rng/rng.js';
@@ -21,8 +22,9 @@ import {
   type NationState,
   type StateData,
 } from './types.js';
-import { wi } from './world.js';
-import { spawnUnit } from './units.js';
+import { roadSpawn, wi } from './world.js';
+import { spawnStack, spawnUnit } from './units.js';
+import { mixClassOf, stackBal } from './stack.js';
 import { registerProvinceZone } from '../encounters/pairs.js';
 import { cleanTop, settle } from '../sim/settle.js';
 
@@ -153,28 +155,57 @@ function placeArmy(state: EngineState, n: NationId): void {
   const sites = [capital, ...others].slice(0, 4);
   const perSite = new Map<ProvinceId, number>();
   const gc = state.world.balance.combat.groundContactKm;
+  const landPos = (site: ProvinceId): LngLat => {
+    const k = perSite.get(site) ?? 0;
+    perSite.set(site, k + 1);
+    const city = w.provById.get(site)!.cityPoint;
+    if (k > 0) {
+      const cand = destination(city, (k * 137.508) % 360, gc * 0.3 * (1 + (k % 3) / 3));
+      const cell = w.nav.cellAt(cand);
+      if (w.nav.cellProv.get(cell) === site) return roadSpawn(w, cand, gc, site);
+    }
+    return city;
+  };
+  // Groupes de départ (stacks.start.groups) : chaque unité de l'armée compte pour un module ; le
+  // groupe forme ceil(unités / maxModules) piles mixtes, posées sur les sites en commençant par la
+  // capitale.
+  const sb = stackBal(state.world);
+  const groupOf = (sys: WeaponSystem): number => {
+    if (!sb.start.enabled || !mixClassOf(state.world, sys)) return -1;
+    return sb.start.groups.findIndex((g) => g.categories.includes(sys.category));
+  };
+  const pools: WeaponSystem[][] = sb.start.groups.map(() => []);
   let i = 0;
   for (const entry of army) {
     const sys = state.world.catalog.get(entry.systemId);
     if (!sys) continue;
+    const g = groupOf(sys);
     for (let c = 0; c < entry.count; c++) {
+      if (g >= 0) {
+        pools[g]!.push(sys);
+        continue;
+      }
       const site = sites[i % sites.length]!;
       i++;
       let pos: LngLat | null;
       if (sys.movement === 'sea') {
         pos = w.seaSpawn.get(site) ?? sites.map((s) => w.seaSpawn.get(s)).find((x) => !!x) ?? null;
-      } else {
-        const k = perSite.get(site) ?? 0;
-        perSite.set(site, k + 1);
-        const city = w.provById.get(site)!.cityPoint;
-        pos = city;
-        if (k > 0) {
-          const cand = destination(city, (k * 137.508) % 360, gc * 0.3 * (1 + (k % 3) / 3));
-          const cell = w.nav.cellAt(cand);
-          if (w.nav.cellProv.get(cell) === site) pos = cand;
-        }
-      }
+      } else pos = landPos(site);
       if (pos) spawnUnit(state, n, sys.id, pos);
     }
   }
+  pools.forEach((pool, g) => {
+    if (pool.length === 0) return;
+    const B = Math.max(1, Math.ceil(pool.length / sb.start.groups[g]!.maxModules));
+    const stacks: { sys: string; count: number }[][] = Array.from({ length: B }, () => []);
+    pool.forEach((sys, k) => {
+      const parts = stacks[k % B]!;
+      const p = parts.find((x) => x.sys === sys.id);
+      if (p) p.count += sys.unitSize;
+      else parts.push({ sys: sys.id, count: sys.unitSize });
+    });
+    stacks.forEach((parts, j) => {
+      if (parts.length > 0) spawnStack(state, n, parts, landPos(sites[j % sites.length]!));
+    });
+  });
 }

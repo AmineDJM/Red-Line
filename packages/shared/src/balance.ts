@@ -1,6 +1,7 @@
 import { z } from 'zod';
-import { CATEGORIES } from './catalog.js';
+import { CATEGORIES, RESOURCES } from './catalog.js';
 import { BUILDING_TYPES } from './map.js';
+import { StacksBalanceSchema } from './stacks.js';
 import { DOMESTIC_POLICIES, DomesticPolicyEffectsSchema } from './domestic.js';
 
 // ——— Combat complet (phase 3) : chiffres d'équilibrage du module militaire du moteur ———
@@ -26,6 +27,8 @@ export const MilitaryBalanceSchema = z.object({
       tankerMeetKm: num(40),
       /** Bonus de priorité des ravitailleurs et avions radar comme cibles. */
       highValueTargetFactor: num(3),
+      /** Interception (ordre d'attaque d'un aéronef contre une cible aérienne) : rayon de veille (km). */
+      interceptRadiusKm: num(100),
     })
     .default({}),
   strike: z
@@ -46,6 +49,11 @@ export const MilitaryBalanceSchema = z.object({
       antiRadiationBonus: num(2),
       /** Exposition d'un sous-marin qui vient de tirer (minutes). */
       submarineExposureMinutes: num(30),
+      /**
+       * Ordre d'attaque d'une pile de munitions contre une unité : missiles tirés = ce facteur × le
+       * nombre nécessaire pour détruire la cible (au moins 1, au plus la pile).
+       */
+      attackSalvoFactor: num(1.5),
     })
     .default({}),
   intercept: z
@@ -141,6 +149,10 @@ export const MilitaryBalanceSchema = z.object({
       maxTimeline: num(40),
       /** Résumés envoyés dans la vue. */
       viewCount: num(20),
+      /** Bataille en cours : derniers tirs joints au résumé de la vue (affichage des combats). */
+      liveShots: num(16),
+      /** Ancienneté maximale de ces tirs (minutes de jeu). */
+      liveMinutes: num(20),
     })
     .default({}),
   generals: z
@@ -197,6 +209,50 @@ export const MilitaryBalanceSchema = z.object({
     space: 0,
     logistics: 5,
   }),
+  /**
+   * Rapport après action (rapports de bataille) : conversion des faits simulés (éléments détruits,
+   * dégâts, rounds de tir) en chiffres de rapport militaire. Personnels par élément : `casualties`.
+   */
+  report: z
+    .object({
+      /** Répartition des personnels d'un élément détruit, par milieu : tués, blessés (le reste : disparus). */
+      killedShare: z.object({ land: num(0.25), air: num(0.35), sea: num(0.3) }).default({}),
+      woundedShare: z.object({ land: num(0.55), air: num(0.3), sea: num(0.45) }).default({}),
+      /** Personnels blessés par élément endommagé (part de l'équipage). */
+      damagedWoundedShare: num(0.3),
+      /** Un élément est compté « endommagé » s'il a encaissé cette part de ses points de vie sans être détruit. */
+      damagedHpShare: num(0.25),
+      /** Disparus devenus prisonniers quand le camp perd la province des combats. */
+      prisonerShare: num(0.6),
+      /** Munitions principales (obus, missiles, bombes) tirées par élément et par round de tir, par catégorie. */
+      munitionsPerRound: z.record(z.string(), z.number().min(0)).default({
+        infantry: 4,
+        tank: 2,
+        ifv: 6,
+        artillery: 8,
+        air_defense: 2,
+        strike_missile: 1,
+        fighter: 2,
+        bomber: 6,
+        air_support: 4,
+        helicopter: 4,
+        drone: 2,
+        surface_ship: 4,
+        submarine: 1,
+        logistics: 0,
+      }),
+      /** Pas de la courbe des pertes et du découpage en phases (minutes). */
+      bucketMinutes: num(30),
+      /** Points de la courbe des pertes conservés au plus (les plus anciens sont fusionnés). */
+      maxPoints: num(32),
+      maxPhases: num(10),
+      /** Fourchette des estimations du camp adverse selon le niveau d'identification (± part). */
+      spreadIdentified: num(0.25),
+      spreadDetected: num(0.6),
+      /** Pertes adverses confirmées par ses propres tirs : fourchette (sous-estimation possible). */
+      killSpread: num(0.3),
+    })
+    .default({}),
 });
 export type MilitaryBalance = z.infer<typeof MilitaryBalanceSchema>;
 
@@ -371,6 +427,178 @@ const aiLevel = (d: AiLevelDefaults) =>
       deepStrikesPerThink: num(d.deepStrikesPerThink),
     })
     .default({});
+
+// ——— Monde vivant : guerres entre IA (rivalités, opportunisme, fin des guerres) ———
+
+interface AiWorldLevelDefaults {
+  fromDays: number;
+  maxWars: number;
+  maxActiveWars: number;
+  rivalryChancePerDay: number;
+  rivalryRatio: number;
+  opportunismChancePerDay: number;
+  opportunismRatio: number;
+  warGoalShare: number;
+  satisfiedPeaceDays: number;
+  capitulationShare: number;
+  capitulationMinDays: number;
+  rematchDays: number;
+  stalemateDays: number;
+}
+
+/** Rythme du monde pour un niveau de difficulté (guerres que les IA se font entre elles). */
+const aiWorldLevel = (d: AiWorldLevelDefaults) =>
+  z
+    .object({
+      /** Pas de guerre entre IA avant ce jour de partie. */
+      fromDays: num(d.fromDays),
+      /** Guerres entre IA qu'une même nation lance et mène à la fois, au plus (0 : jamais). */
+      maxWars: num(d.maxWars),
+      /**
+       * Guerres entre IA en cours dans le monde au plus (multiplié par l'intensité) : au-delà, aucune
+       * nouvelle agression entre IA (vraisemblance et coût de calcul). Les guerres d'alliance ne sont
+       * pas bloquées.
+       */
+      maxActiveWars: num(d.maxActiveWars),
+      /**
+       * Probabilité par jour qu'une rivalité de poids 1 dégénère en guerre (multipliée par le poids de
+       * la rivalité et par l'intensité), si le rapport de force estimé le permet.
+       */
+      rivalryChancePerDay: z.number().min(0).max(1).default(d.rivalryChancePerDay),
+      /** Rapport de force estimé (sans tricher) exigé pour attaquer un rival historique. */
+      rivalryRatio: num(d.rivalryRatio),
+      /**
+       * Probabilité par jour d'attaquer un voisin affaibli (en guerre et en train de perdre, instable,
+       * capitale perdue), multipliée par l'intensité et réduite par la retenue de son bloc.
+       */
+      opportunismChancePerDay: z.number().min(0).max(1).default(d.opportunismChancePerDay),
+      /** Rapport de force estimé exigé pour attaquer un voisin affaibli. */
+      opportunismRatio: num(d.opportunismRatio),
+      /** Guerre entre IA : part des provinces de la cible au-delà de laquelle l'agresseur s'arrête et propose la paix. */
+      warGoalShare: num(d.warGoalShare),
+      /** Guerre entre IA : l'agresseur qui tient des gains depuis ce délai (jours) propose la paix et les garde. */
+      satisfiedPeaceDays: num(d.satisfiedPeaceDays),
+      /** Capitulation : une IA qui a perdu sa capitale ou cette part de ses provinces accepte la paix. */
+      capitulationShare: num(d.capitulationShare),
+      /** Capitulation par perte de territoire : pas avant ce délai de guerre (jours ; la chute de la capitale suffit toujours). */
+      capitulationMinDays: num(d.capitulationMinDays),
+      /** Après une paix, pas de nouvelle guerre entre IA entre les deux mêmes nations avant ce délai (jours). */
+      rematchDays: num(d.rematchDays),
+      /** Guerre entre IA enlisée (aucune province n'a changé de main depuis ce délai, jours) : paix au statu quo. */
+      stalemateDays: num(d.stalemateDays),
+    })
+    .default({});
+
+/**
+ * Section `ai.world` : le monde des parties solo (guerres que les IA se font entre elles). Les rivalités
+ * et les blocs sont des données (data/balance), pas du code.
+ */
+function AiWorldSchema() {
+  return z
+    .object({
+      /** Intensité du monde : multiplie les probabilités de guerre entre IA et le plafond de guerres (0 : monde figé). */
+      intensity: z.number().min(0).max(5).default(1),
+      levels: z
+        .object({
+          easy: aiWorldLevel({
+            fromDays: 5,
+            maxWars: 1,
+            maxActiveWars: 3,
+            rivalryChancePerDay: 0.006,
+            rivalryRatio: 1.8,
+            opportunismChancePerDay: 0,
+            opportunismRatio: 3,
+            warGoalShare: 0.2,
+            satisfiedPeaceDays: 3,
+            capitulationShare: 0.3,
+            capitulationMinDays: 2,
+            rematchDays: 20,
+            stalemateDays: 4,
+          }),
+          normal: aiWorldLevel({
+            fromDays: 2,
+            maxWars: 1,
+            maxActiveWars: 6,
+            rivalryChancePerDay: 0.03,
+            rivalryRatio: 1.3,
+            opportunismChancePerDay: 0.01,
+            opportunismRatio: 2,
+            warGoalShare: 0.34,
+            satisfiedPeaceDays: 5,
+            capitulationShare: 0.5,
+            capitulationMinDays: 3,
+            rematchDays: 10,
+            stalemateDays: 6,
+          }),
+          hard: aiWorldLevel({
+            fromDays: 1,
+            maxWars: 2,
+            maxActiveWars: 10,
+            rivalryChancePerDay: 0.035,
+            rivalryRatio: 1.15,
+            opportunismChancePerDay: 0.02,
+            opportunismRatio: 1.6,
+            warGoalShare: 0.5,
+            satisfiedPeaceDays: 7,
+            capitulationShare: 0.5,
+            capitulationMinDays: 3,
+            rematchDays: 6,
+            stalemateDays: 9,
+          }),
+        })
+        .default({}),
+      /** Un rival non voisin (frappes à distance, débarquement) est visé si sa capitale est à cette distance (km). */
+      rivalReachKm: num(2500),
+      /** Voisin « affaibli » : stabilité publique sous ce seuil. */
+      weakStability: num(25),
+      /**
+       * Défense mutuelle d'un bloc : un membre IA voisin entre en guerre contre l'agresseur IA d'un autre
+       * membre si leurs forces réunies (estimées) pèsent au moins cette part de celles de l'agresseur.
+       */
+      blocDefenseRatio: num(0.6),
+      /** Défense mutuelle d'un bloc : seulement pendant les premiers jours de la guerre (jours). */
+      blocDefenseDays: num(3),
+      /**
+       * Guerres sans motif (niveau difficile, `casusBelliWaiverRatio`) : permises seulement aux nations
+       * dont la retenue de bloc ne dépasse pas ce seuil.
+       */
+      waiverMaxRestraint: z.number().min(0).max(1).default(0.3),
+      /**
+       * Rivalités et revendications historiques entre nations : poids (0 à 1) de la probabilité de
+       * guerre, motif public invoqué (dépêche). Le déclencheur est réglable (`initiator`).
+       */
+      rivalries: z
+        .array(
+          z.object({
+            a: z.string(),
+            b: z.string(),
+            weight: z.number().min(0).max(1).default(0.5),
+            motive: z.string().default(''),
+            /** Qui peut déclencher la guerre : l'un ou l'autre (both), seulement `a`, seulement `b`. */
+            initiator: z.enum(['both', 'a', 'b']).default('both'),
+          }),
+        )
+        .default([]),
+      /**
+       * Blocs politiques (alliances réelles, unions régionales) : jamais de guerre de choix entre
+       * membres (sauf rivalité déclarée) ; la retenue (0 à 1) réduit les guerres opportunistes ou sans
+       * motif de ses membres contre les autres.
+       */
+      blocs: z
+        .array(
+          z.object({
+            id: z.string(),
+            name: z.string().default(''),
+            members: z.array(z.string()),
+            restraint: z.number().min(0).max(1).default(1),
+            /** Défense mutuelle : les membres IA voisins secourent un membre attaqué par une IA. */
+            mutualDefense: z.boolean().default(false),
+          }),
+        )
+        .default([]),
+    })
+    .default({});
+}
 
 /**
  * Section `ai` de data/balance (optionnelle) : chaque valeur a une valeur par défaut ; le moteur lit
@@ -683,8 +911,11 @@ export const AiBalanceSchema = z.object({
       inviteLeaning: num(0.4),
     })
     .default({}),
+  world: AiWorldSchema(),
 });
 export type AiBalance = z.infer<typeof AiBalanceSchema>;
+export type AiWorldBalance = AiBalance['world'];
+export type AiWorldLevelBalance = AiWorldBalance['levels']['normal'];
 export type AiLevelBalance = AiBalance['levels']['normal'];
 
 /** Chiffres d'équilibrage globaux (data/balance/*.json). Tout est réglable par l'admin. */
@@ -699,6 +930,11 @@ export const BalanceSchema = z.object({
     captureMinutes: z.number().positive(),
     /** Période de réflexion des IA, en minutes de jeu. */
     aiThinkMinutes: z.number().positive(),
+    /**
+     * Cadence de base : temps de jeu écoulé par unité de temps réel à la vitesse ×1 (10 : ×1 = 10 min de
+     * jeu par minute réelle, ×2 = 20 min, ×4 = 40 min…). Absent : 1 (temps réel).
+     */
+    realtimeFactor: z.number().positive().optional(),
     /**
      * Aucun joueur humain connecté : les IA dont le territoire est à plus de ce rayon (km) de celui de
      * tout joueur humain, et qui ne sont pas en guerre avec lui, suspendent leurs décisions jusqu'au
@@ -723,6 +959,10 @@ export const BalanceSchema = z.object({
     embarkedSpeedFactor: z.number().positive(),
     /** Délai d'embarquement/débarquement, en minutes de jeu. */
     embarkMinutes: z.number().min(0),
+    /** Unités terrestres : distance maximale (km) entre le point visé et le réseau de routes. */
+    roadSnapKm: z.number().positive().optional(),
+    /** Unités terrestres sur le réseau de routes (défaut : activé) ; false = déplacement libre sur la grille H3. */
+    roadNetwork: z.boolean().optional(),
   }),
   sensors: z.object({
     /** Couverture radar de base autour de la ville de chaque province possédée, en km. */
@@ -906,6 +1146,29 @@ export const BalanceSchema = z.object({
       distribute: z.boolean().default(true),
     })
     .optional(),
+  /**
+   * Ressources des provinces (data/map, champ `resources`) et constructions : les bâtiments
+   * d'extraction exigent la ressource ; rendement selon la richesse ; provinces « argent seulement »
+   * (services, finances) avec bonus de revenu. Sans `resources` sur la carte : aucune restriction.
+   */
+  resources: z
+    .object({
+      /** Bâtiment d'extraction → ressource exigée dans la province. */
+      extraction: z.record(z.string(), z.enum(RESOURCES)).optional(),
+      /** Usine d'électronique : pôle électronique exigé, sauf ville de rang ≤ cette valeur. */
+      electronicsUrbanRank: z.number().int().min(0).max(4).optional(),
+      /** Facteur du rendement des bâtiments d'extraction par richesse (1, 2, 3). */
+      richnessYield: z.tuple([z.number().min(0), z.number().min(0), z.number().min(0)]).optional(),
+      /** Facteur supplémentaire quand la ressource n'est que secondaire. */
+      secondaryYield: z.number().min(0).optional(),
+      /** Province sans ressource (services, finances) : revenu × (1 + bonus). */
+      servicesIncomeBonus: z.number().min(0).optional(),
+      /** Industrie locale d'une province de services (quartier d'affaires) : effet × facteur. */
+      servicesIndustryFactor: z.number().min(0).optional(),
+      /** Bâtiments réservés aux provinces côtières. */
+      coastalOnly: z.array(z.string()).optional(),
+    })
+    .optional(),
   /** Moral des provinces (0..100) : en dessous de 50, les revenus de la province baissent. */
   morale: z
     .object({
@@ -1040,6 +1303,99 @@ export const BalanceSchema = z.object({
         .optional(),
       /** Âge (heures) au-delà duquel la connaissance d'une province vieillit (état des bâtiments masqué). */
       provinceStaleH: z.number().positive().default(72),
+      /**
+       * Profondeur du renseignement (SIGINT, HUMINT, renseignement militaire, sécurité intérieure).
+       * Tous les champs sont optionnels ; valeurs par défaut dans packages/engine/src/modules/intel/deep.ts.
+       */
+      deep: z
+        .object({
+          /** Poids des capteurs : satellite d'écoute, appareil SIGINT/ELINT, satellite ou drone d'imagerie, brouilleur. */
+          sigintSatWeight: z.number().min(0).optional(),
+          sigintAirWeight: z.number().min(0).optional(),
+          imagerySatWeight: z.number().min(0).optional(),
+          imageryAirWeight: z.number().min(0).optional(),
+          ewWeight: z.number().min(0).optional(),
+          /** Score de capteurs donnant la moitié du bonus maximal. */
+          sensorRef: z.number().positive().optional(),
+          /** Bonus maximal des capteurs sur la réussite des opérations SIGINT/imagerie. */
+          sensorBonusMax: z.number().min(0).max(2).optional(),
+          /** Chiffrement d'une nation : base + par niveau de service (intérieur et militaire) au-delà de 1. */
+          encryptionBase: z.number().min(0).max(1).optional(),
+          encryptionPerLevel: z.number().min(0).max(1).optional(),
+          /** Cryptanalyse réussie : progression du décryptage (× qualité / chiffrement). */
+          cryptoStep: z.number().min(0).max(1).optional(),
+          /** Perte quotidienne du décryptage (changements de clés). */
+          cryptoDecayPerDay: z.number().min(0).max(1).optional(),
+          /** Décryptage minimal pour lire les ordres de mouvement, puis les intentions. */
+          decryptOrders: z.number().min(0).max(1).optional(),
+          decryptPlans: z.number().min(0).max(1).optional(),
+          /** Unités dont les ordres de mouvement sont révélés par interception, au maximum. */
+          interceptMaxUnits: z.number().int().min(1).optional(),
+          /** Risque de faux trafic : base × qualité du contre-espionnage adverse × (1 − décryptage). */
+          disinfoBase: z.number().min(0).max(1).optional(),
+          /** Émetteurs géolocalisés au maximum, incertitude de position (km). */
+          geolocateMax: z.number().int().min(1).optional(),
+          geolocateUncKm: z.number().min(0).optional(),
+          /** Brouillage adverse : incertitude multipliée sur les contacts révélés dans la zone. */
+          jamUncFactor: z.number().min(1).optional(),
+          /** Brouillage : rayon augmenté par les brouilleurs en service (× (1 + bonus × part)). */
+          ewJamBonus: z.number().min(0).optional(),
+          /** Détection quotidienne d'un agent selon sa couverture (multiplicateur). */
+          coverDetect: z
+            .object({ diplomatic: z.number().min(0), nonofficial: z.number().min(0) })
+            .partial()
+            .optional(),
+          /** Tension ajoutée à l'arrestation selon la couverture (× exposureTension). */
+          coverTension: z
+            .object({ diplomatic: z.number().min(0), nonofficial: z.number().min(0) })
+            .partial()
+            .optional(),
+          /** Fiabilité perçue d'un agent : départ, progression quotidienne, plafond. */
+          reliabilityStart: z.number().min(0).max(1).optional(),
+          reliabilityPerDay: z.number().min(0).max(1).optional(),
+          reliabilityMax: z.number().min(0).max(1).optional(),
+          /** Officier traitant présent dans le pays : progression des sources multipliée. */
+          handlerBonus: z.number().min(1).optional(),
+          /** Culture d'une source : fiabilité minimale requise ; détection multipliée par niveau d'accès. */
+          cultivateMinReliability: z.number().min(0).max(1).optional(),
+          accessDetect: z.number().min(1).optional(),
+          /** Vérification des agents : chance de démasquer un agent double (× qualité). */
+          vetDetect: z.number().min(0).max(1).optional(),
+          /** Ordre de bataille estimé : écart relatif maximal (service faible) et minimal (excellent). */
+          orbatSpreadMax: z.number().min(0).max(2).optional(),
+          orbatSpreadMin: z.number().min(0).max(1).optional(),
+          /** Nations suivies dans les dossiers. */
+          dossierNations: z.number().int().min(1).max(20).optional(),
+          /** Indice de menace : poids (points) des indicateurs. */
+          threatWeights: z
+            .object({
+              war: z.number(),
+              massing: z.number(),
+              plans: z.number(),
+              comms: z.number(),
+              mobilization: z.number(),
+              covert: z.number(),
+            })
+            .partial()
+            .optional(),
+          /** Éléments (chars, avions, bataillons…) près de la frontière donnant le poids « concentration » complet. */
+          massingRef: z.number().positive().optional(),
+          /** Seuil d'alerte stratégique et délai minimal entre deux alertes (heures). */
+          alertThreshold: z.number().min(0).max(100).optional(),
+          alertCooldownH: z.number().positive().optional(),
+          /** Évaluation des dégâts après frappe : rayon (km). */
+          bdaRadiusKm: z.number().positive().optional(),
+          /** Désignation de cibles : rayon autour de la ville de la province, incertitude (km), cibles max. */
+          designateRadiusKm: z.number().positive().optional(),
+          designateUncKm: z.number().min(0).optional(),
+          designateMax: z.number().int().min(1).optional(),
+          /** Démantèlement d'un réseau : chance de capture de chaque agent (× qualité + 0,5). */
+          dismantleCatch: z.number().min(0).max(1).optional(),
+          /** Sites durcis : durée (jours) et réduction de la réussite des sabotages et cyberattaques industrielles. */
+          hardenDays: z.number().positive().optional(),
+          hardenReduction: z.number().min(0).max(1).optional(),
+        })
+        .optional(),
       /**
        * Renseignement intérieur (contre-espionnage, protection des sites sensibles, surveillance des
        * troubles). Valeurs par défaut dans packages/engine/src/modules/intel/interior.ts.
@@ -1239,6 +1595,8 @@ export const BalanceSchema = z.object({
     .optional(),
   /** Combat complet (phase 3) : voir MilitaryBalanceSchema (valeurs par défaut documentées). */
   military: MilitaryBalanceSchema.optional(),
+  /** Piles mixtes (regroupement de départ, fusion, emploi par l'IA) : voir StacksBalanceSchema. */
+  stacks: StacksBalanceSchema.optional(),
   /**
    * Mode illimité (compte administrateur) : la réserve d'une nation illimitée est gelée à ces plafonds
    * et remise à niveau après chaque événement ou ordre (aucune dépense n'est refusée faute de fonds).

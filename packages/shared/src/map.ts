@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { RESOURCES } from './catalog.js';
 import { FrArticleSchema } from './french.js';
+import type { RoutesFile } from './routes.js';
 
 /** Bâtiments stratégiques génériques (jamais de sites réels nommés). */
 export const BUILDING_TYPES = [
@@ -47,6 +48,18 @@ export const NationDefSchema = z.object({
 });
 export type NationDef = z.infer<typeof NationDefSchema>;
 
+/**
+ * Ressource naturelle ou économique d'une province (gisement, grenier agricole, pôle électronique).
+ * `richness` : 1 modeste, 2 importante, 3 majeure (gisement ou bassin de rang mondial).
+ * `source` : donnée géographique sourcée (tools/map/src/resources-data.ts) ou heuristique du pipeline.
+ */
+export const ProvinceResourceSchema = z.object({
+  type: z.enum(RESOURCES),
+  richness: z.number().int().min(1).max(3),
+  source: z.enum(['data', 'heuristic']).optional(),
+});
+export type ProvinceResource = z.infer<typeof ProvinceResourceSchema>;
+
 export const ProvinceDefSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -75,6 +88,12 @@ export const ProvinceDefSchema = z.object({
   cityRank: z.number().int().min(1).max(4).optional(),
   /** Population estimée de la province (habitants). */
   population: z.number().min(0).optional(),
+  /**
+   * Ressources de la province : [principale, secondaire?]. Tableau vide = argent seulement (capitale
+   * administrative, métropole de services, désert sans gisement). Absent = carte ancienne (aucune
+   * restriction de construction).
+   */
+  resources: z.array(ProvinceResourceSchema).max(2).optional(),
 });
 export type ProvinceDef = z.infer<typeof ProvinceDefSchema>;
 
@@ -114,4 +133,6 @@ export interface MapData {
   cells: CellsFile;
   straits: Strait[];
   disputed: DisputedArea[];
+  /** Réseau de routes des unités terrestres (data/map/routes.json) ; absent : déplacement libre sur la grille. */
+  routes?: RoutesFile;
 }

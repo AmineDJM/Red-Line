@@ -25,7 +25,7 @@ export const SPRITE_RATIO =
   typeof window !== 'undefined' && (window.devicePixelRatio || 1) >= 1.5 ? 2 : 1.25;
 
 /** Dimensions du pion (px CSS, à icon-size 1). */
-export const PION_W = 58;
+export const PION_W = 64;
 export const PION_H = 26;
 /** Marges du canevas autour du pion : cartes empilées, pastilles. */
 const M_LEFT = 6;
@@ -52,6 +52,7 @@ export type PionFlag =
   | 'u' // en plongée (sous-marin du joueur)
   | 'n' // contact sonar (sous-marin étranger détecté)
   | 'j' // brouilleur actif
+  | 'f' // retranchée (à l'arrêt au contact d'une ville de sa nation : bonus du défenseur)
   | 'x'; // contact imprécis (présence seule)
 
 export interface PionSpec {
@@ -80,6 +81,11 @@ export interface PionSpec {
  * Positions (px CSS à l'échelle 1, depuis le centre du pion) des éléments dessinés par des calques
  * dédiés : effectif (texte aligné à droite), numéro de pile (onglet), barre d'état (image `hp-N`).
  */
+/** Zones intérieures du pion (px depuis son bord gauche) : pictogramme, puis effectif jusqu'au bord. */
+export const PION_ZONES = { glyph: 22.5, count: 41.5 };
+/** Taille de l'effectif (px CSS à l'échelle 1) : « 1,2k » tient dans la zone d'effectif. */
+export const COUNT_PX = 13;
+
 export const PION_PARTS = {
   count: [PION_W / 2 - 4, -0.8] as [number, number],
   stack: [PION_W / 2 - 0.5, -PION_H / 2 - 6] as [number, number],
@@ -120,12 +126,15 @@ export function parsePionKey(key: string): PionSpec | null {
   };
 }
 
-/** Effectif compact : 7, 48, 320, 1,2k. */
+/** Effectif compact, 4 signes au plus : 7, 48, 320, 1,2k, 12k, 120k, 1,2M. */
 export function compactCount(n: number | undefined): string {
   if (n === undefined || !Number.isFinite(n)) return '';
-  if (n < 1000) return String(Math.max(0, Math.round(n)));
-  if (n < 10_000) return `${(n / 1000).toFixed(1).replace('.', ',')}k`;
-  return `${Math.round(n / 1000)}k`;
+  const v = Math.max(0, Math.round(n));
+  if (v < 1000) return String(v);
+  const unit = (x: number, u: string) =>
+    x < 9.95 ? `${x.toFixed(1).replace('.', ',').replace(',0', '')}${u}` : `${Math.round(x)}${u}`;
+  if (v < 999_500) return unit(v / 1000, 'k');
+  return unit(v / 1_000_000, 'M');
 }
 
 function rr(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
@@ -180,7 +189,7 @@ function drawFlag(
   ctx.stroke();
 }
 
-type BadgeKind = 'm' | 'c' | 'e' | 'a' | 'j' | 'n';
+type BadgeKind = 'm' | 'c' | 'e' | 'a' | 'j' | 'n' | 'f';
 const BADGE_COLOR: Record<BadgeKind, string> = {
   m: C.cyan,
   c: C.red,
@@ -188,6 +197,7 @@ const BADGE_COLOR: Record<BadgeKind, string> = {
   a: C.cyan,
   j: C.amber,
   n: C.cyan,
+  f: '#b9c7d6',
 };
 
 function drawBadgeGlyph(ctx: CanvasRenderingContext2D, k: BadgeKind, cx: number, cy: number) {
@@ -245,6 +255,16 @@ function drawBadgeGlyph(ctx: CanvasRenderingContext2D, k: BadgeKind, cx: number,
       ctx.arc(cx - 2, cy, 3.6, -0.8, 0.8);
       ctx.stroke();
       break;
+    case 'f': // écu (retranchement)
+      ctx.moveTo(cx, cy - 2.9);
+      ctx.lineTo(cx + 2.6, cy - 1.9);
+      ctx.lineTo(cx + 2.3, cy + 0.9);
+      ctx.quadraticCurveTo(cx + 1.4, cy + 2.4, cx, cy + 3);
+      ctx.quadraticCurveTo(cx - 1.4, cy + 2.4, cx - 2.3, cy + 0.9);
+      ctx.lineTo(cx - 2.6, cy - 1.9);
+      ctx.closePath();
+      ctx.fill();
+      break;
   }
 }
 
@@ -281,6 +301,18 @@ export function drawPion(s: PionSpec): SpriteImage {
     ctx.stroke();
   }
 
+  // Au combat : liseré lumineux rouge autour du pion (lecture immédiate de l'accrochage).
+  if (f.includes('c')) {
+    ctx.save();
+    ctx.shadowColor = alpha(C.red, 0.9);
+    ctx.shadowBlur = 5;
+    rr(ctx, x - 1.2, y - 1.2, w + 2.4, h + 2.4, 4.4);
+    ctx.strokeStyle = alpha(C.red, 0.8);
+    ctx.lineWidth = 1.6;
+    ctx.stroke();
+    ctx.restore();
+  }
+
   // Ombre portée discrète puis corps.
   ctx.save();
   ctx.shadowColor = 'rgba(0,0,0,0.6)';
@@ -304,15 +336,16 @@ export function drawPion(s: PionSpec): SpriteImage {
   ctx.fillRect(x, y, 2.6, h);
   ctx.restore();
 
-  // Drapeau, pictogramme, effectif.
-  const fh = 12.6;
-  const fw = 16.8;
+  // Drapeau, pictogramme, effectif : trois zones fixes côte à côte (jamais de chevauchement).
+  // Effectif : condensé gras, chiffres tabulaires, aligné à droite dans sa zone (4 signes au plus).
+  const fh = 11.4;
+  const fw = 15.2;
   const cy = y + (h - 3) / 2;
   drawFlag(ctx, s.nation, s.color, x + 5, cy - fh / 2, fw, fh);
-  const gs = 18;
-  drawGlyph(ctx, s.glyph, x + 24.5, cy - gs / 2, gs, unknown ? C.dim : '#f2f6fa');
+  const gs = 16;
+  drawGlyph(ctx, s.glyph, x + PION_ZONES.glyph, cy - gs / 2, gs, unknown ? C.dim : '#f2f6fa');
   if (s.count) {
-    ctx.font = `700 ${s.count.length > 3 ? 9 : s.count.length > 2 ? 10 : 11}px ${MONO}`;
+    ctx.font = `700 ${COUNT_PX}px "Barlow Condensed", "Arial Narrow", sans-serif`;
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#eef3f8';
@@ -350,9 +383,11 @@ export function drawPion(s: PionSpec): SpriteImage {
           ? 'a'
           : f.includes('m')
             ? 'm'
-            : f.includes('j')
-              ? 'j'
-              : null;
+            : f.includes('f')
+              ? 'f'
+              : f.includes('j')
+                ? 'j'
+                : null;
   if (main) badge(ctx, main, x - 0.5, y - 0.5);
 
   // Ravitaillement : triangle d'alerte (coin inférieur droit).
@@ -402,6 +437,105 @@ export function drawPion(s: PionSpec): SpriteImage {
     ctx.fillText(t('map.pion.decoy'), x + 3, y + h + 4.4);
   }
   return out(c);
+}
+
+// ——— Combats ———
+
+/**
+ * Marqueur de bataille : losange sombre à liseré rouge, épées croisées ; `side` teinte le cœur
+ * (attaquant ambre, défenseur cyan, sans camp : rouge), `hot` renforce le liseré.
+ */
+export function drawBattle(side: string, hot: boolean): SpriteImage {
+  const S = 30;
+  const { c, ctx } = canvas(S, S);
+  const m = S / 2;
+  const tone = side === 'att' ? C.amber : side === 'def' ? C.cyan : C.red;
+  ctx.save();
+  ctx.shadowColor = alpha(C.red, hot ? 0.9 : 0.5);
+  ctx.shadowBlur = hot ? 6 : 3;
+  ctx.beginPath();
+  ctx.moveTo(m, 2.5);
+  ctx.lineTo(S - 2.5, m);
+  ctx.lineTo(m, S - 2.5);
+  ctx.lineTo(2.5, m);
+  ctx.closePath();
+  ctx.fillStyle = '#160b0f';
+  ctx.fill();
+  ctx.restore();
+  ctx.strokeStyle = C.red;
+  ctx.lineWidth = hot ? 1.8 : 1.3;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(m, 5.5);
+  ctx.lineTo(S - 5.5, m);
+  ctx.lineTo(m, S - 5.5);
+  ctx.lineTo(5.5, m);
+  ctx.closePath();
+  ctx.strokeStyle = alpha(tone, 0.55);
+  ctx.lineWidth = 0.8;
+  ctx.stroke();
+  // Épées croisées.
+  ctx.strokeStyle = '#f4f7fa';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 1.7;
+  ctx.beginPath();
+  ctx.moveTo(m - 5.2, m - 5.2);
+  ctx.lineTo(m + 4.6, m + 4.6);
+  ctx.moveTo(m + 5.2, m - 5.2);
+  ctx.lineTo(m - 4.6, m + 4.6);
+  ctx.stroke();
+  ctx.lineWidth = 1.4;
+  ctx.strokeStyle = tone;
+  ctx.beginPath();
+  ctx.moveTo(m + 2.2, m + 5.4);
+  ctx.lineTo(m + 5.4, m + 2.2);
+  ctx.moveTo(m - 2.2, m + 5.4);
+  ctx.lineTo(m - 5.4, m + 2.2);
+  ctx.stroke();
+  return out(c);
+}
+
+/** Ombre portée d'un aéronef en vol : ellipse douce sous le pion « en altitude ». */
+export function drawAirShadow(): SpriteImage {
+  const W = 52;
+  const H = 14;
+  const { c, ctx } = canvas(W, H);
+  ctx.save();
+  ctx.translate(W / 2, H / 2);
+  ctx.scale(1, H / W);
+  const g = ctx.createRadialGradient(0, 0, 1, 0, 0, W / 2);
+  g.addColorStop(0, 'rgba(0,0,0,0.6)');
+  g.addColorStop(0.55, 'rgba(0,0,0,0.3)');
+  g.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.arc(0, 0, W / 2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+  return out(c);
+}
+
+const glyphUrls = new Map<string, string>();
+
+/**
+ * Pictogramme de carte en image (data URL), pour les infobulles et menus DOM : mêmes silhouettes
+ * que les pions. Mis en cache par (pictogramme, couleur, taille).
+ */
+export function glyphDataUrl(glyph: GlyphId, color = '#f2f6fa', size = 18): string {
+  const key = `${glyph}|${color}|${size}`;
+  const hit = glyphUrls.get(key);
+  if (hit) return hit;
+  if (typeof document === 'undefined') return '';
+  const r = 2;
+  const cv = document.createElement('canvas');
+  cv.width = cv.height = size * r;
+  const ctx = cv.getContext('2d');
+  if (!ctx) return '';
+  ctx.scale(r, r);
+  drawGlyph(ctx, glyph, 0, 0, size, color);
+  const url = cv.toDataURL('image/png');
+  glyphUrls.set(key, url);
+  return url;
 }
 
 // ——— Bâtiments ———
@@ -621,6 +755,15 @@ export async function resolveSprite(
   if (id.startsWith('city|')) {
     const [, cls, rel] = id.split('|');
     add(id, drawCity(Number(cls), rel as Rel));
+    return true;
+  }
+  if (id.startsWith('battle|')) {
+    const [, side, hot] = id.split('|');
+    add(id, drawBattle(side ?? '', hot === '1'));
+    return true;
+  }
+  if (id === 'air-shadow') {
+    add(id, drawAirShadow());
     return true;
   }
   if (id.startsWith('fort|')) {

@@ -329,7 +329,7 @@
         "war_declared": "Déclaration de guerre {{aDe}} {{bA}}",
         "peace_signed": "Paix signée entre {{aLe}} et {{bLe}}",
         "missile_launch": "Tir de missile détecté",
-        "building_hit": "{{building}} touché à {{province}} ({{health}} %)",
+        "building_hit": "Impact : {{building}}, {{province}} ({{health}} %)",
         "delivery_arrived": "Livraison arrivée",
         "delivery_intercepted": "Livraison interceptée",
         "intel_report": "Nouveau rapport de renseignement",
@@ -395,8 +395,40 @@
         "capacity": "Capacité maximale atteinte.",
         "cooldown": "Action en recharge.",
         "insufficient_resources": "Ressources insuffisantes.",
+        "off_road": "Hors du réseau de routes : visez une ville, un nœud ou une route.",
         "disconnected": "Hors ligne : ordre non transmis.",
-        "timeout": "Pas de réponse du serveur."
+        "timeout": "Pas de réponse du serveur.",
+        "resource_required": "Construction impossible : ressource absente dans cette province."
+      },
+      "strikeTitle": "Ordre de frappe",
+      "patrolTitle": "Ordre de patrouille",
+      "reconTitle": "Mission de reconnaissance",
+      "blockadeTitle": "Ordre de blocus",
+      "radius": "Rayon",
+      "reasons": {
+        "target_invalid": "Cible invalide.",
+        "target_not_visible": "Cible hors de vue : repérez-la d'abord (radar, reconnaissance, satellite).",
+        "target_friendly": "Cible amie : impossible de l'attaquer.",
+        "air_defense_air_only": "{{name}} : défense antiaérienne, cibles aériennes uniquement (avions, hélicoptères, drones, missiles).",
+        "cannot_hit_class": "{{name}} ne peut pas toucher ce type de cible ({{cls}}).",
+        "out_of_weapon_range": "{{name}} : cible hors de portée de tir ({{dist}} km, portée {{min}}–{{max}} km).",
+        "missile_out_of_range": "Cible hors de portée du missile {{name}} ({{dist}} km pour {{range}} km de portée).",
+        "aircraft_out_of_radius": "Hors du rayon d'action : {{dist}} km depuis la base pour {{range}} km.",
+        "aircraft_cooldown": "Appareil en remise en œuvre au sol (prêt dans {{min}} min).",
+        "partial": "Ordre transmis ; {{count}} pile(s) écartée(s) : {{detail}}",
+        "munition_use_strike": "Munitions : utilisez l'ordre de frappe.",
+        "ceasefire": "Cessez-le-feu en vigueur."
+      },
+      "classes": {
+        "infantry": "infanterie",
+        "armor": "blindé",
+        "aircraft": "avion",
+        "helicopter": "hélicoptère",
+        "drone": "drone",
+        "ship": "navire",
+        "submarine": "sous-marin",
+        "missile": "missile",
+        "building": "installation"
       }
     },
     "status": {
@@ -449,6 +481,43 @@
       "reserve": "Réserve illimitée",
       "stockTip": "{{name}} : stock illimité",
       "budgetTip": "Trésor illimité — ouvrir l’économie"
+    },
+    "actions": {
+      "title": "Ordres",
+      "move": "Déplacer",
+      "attack": "Attaquer",
+      "strike": "Frapper",
+      "intercept": "Intercepter",
+      "patrol": "Patrouiller",
+      "recon": "Reconnaître",
+      "blockade": "Blocus",
+      "rtb": "Retour",
+      "rtbAir": "Retour base",
+      "rtbSea": "Au port",
+      "resupply": "Ravitailler",
+      "stop": "Arrêter",
+      "reasons": {
+        "static": "Unité fixe : elle ne se déplace pas.",
+        "noWeapon": "Aucune arme offensive dans la sélection.",
+        "noStrike": "Frappe réservée aux missiles, à l'aviation et aux navires lance-missiles.",
+        "noIntercept": "Interception réservée aux aéronefs armés contre les cibles aériennes.",
+        "airSeaOnly": "Patrouille réservée aux aéronefs et aux navires.",
+        "noRecon": "Reconnaissance réservée aux drones et avions de reconnaissance.",
+        "seaOnly": "Blocus réservé aux navires.",
+        "idle": "Rien à arrêter : unités déjà à l'arrêt.",
+        "none": "Action indisponible."
+      },
+      "pick": {
+        "move": "cliquez la destination sur la carte.",
+        "attack": "cliquez une unité ennemie.",
+        "intercept": "cliquez un aéronef ennemi.",
+        "strike": "cliquez une unité ennemie ou un point de la carte.",
+        "patrol": "cliquez le centre de la zone à patrouiller.",
+        "recon": "cliquez la zone à survoler.",
+        "blockade": "cliquez une province côtière ennemie.",
+        "needEnemy": "Choisissez une unité ennemie visible.",
+        "needPort": "Choisissez une province étrangère côtière."
+      }
     }
   },
   "province": {
@@ -492,6 +561,21 @@
       "recon_military": "Reconnaissance militaire lancée sur {{province}}",
       "recon_economic": "Reconnaissance économique lancée sur {{province}}",
       "listen_area": "Écoute lancée autour de {{province}}"
+    },
+    "resources": "Ressources",
+    "resourceNone": "Argent seulement : services et finances (+{{pct}} % de revenu)",
+    "resourceNoneTip": "Aucun gisement ni grenier : ni puits, ni mine, ni ferme ; l'industrie locale y rapporte davantage (quartier d'affaires).",
+    "primary": "principale",
+    "secondary": "secondaire",
+    "richness": {
+      "1": "modeste",
+      "2": "importante",
+      "3": "majeure"
+    },
+    "richnessTip": {
+      "1": "Gisement ou production modeste",
+      "2": "Gisement ou bassin important",
+      "3": "Gisement de rang mondial"
     }
   },
   "nationRecon": {
@@ -802,7 +886,10 @@
       "blocked": {
         "in_progress": "Chantier déjà en cours",
         "damaged": "Réparer d'abord",
-        "max_level": "Niveau maximal atteint"
+        "max_level": "Niveau maximal atteint",
+        "no_resource": "Ressource absente : {{resource}}",
+        "coastal_only": "Province côtière uniquement",
+        "not_urban": "Pôle électronique ou grande ville requis"
       }
     },
     "fortification": "Fortifications"
@@ -1027,7 +1114,8 @@
       "burned": "grillé",
       "double": "agent double",
       "exfiltrated": "exfiltré",
-      "captured": "capturé"
+      "captured": "capturé",
+      "expelled": "Expulsé"
     },
     "ops": {
       "infiltrate_spy": "Infiltrer un espion",
@@ -1050,7 +1138,16 @@
       "fake_radio_traffic": "Faux trafic radio",
       "counterintel_sweep": "Contre-espionnage",
       "recon_economic": "Reconnaissance économique",
-      "recon_military": "Reconnaissance militaire"
+      "recon_military": "Reconnaissance militaire",
+      "cryptanalysis": "Cryptanalyse",
+      "intercept_comms": "Interception des communications",
+      "geolocate_emitters": "Géolocalisation des émetteurs",
+      "cultivate_source": "Culture d'une source",
+      "vet_agents": "Vérification des agents",
+      "designate_targets": "Désignation de cibles",
+      "dismantle_network": "Démantèlement d'un réseau",
+      "deception_plan": "Opération de déception",
+      "harden_sites": "Durcissement des sites"
     },
     "opsHelp": {
       "infiltrate_spy": "Implante un agent dans le pays cible : révèle progressivement ses provinces, bâtiments et intentions.",
@@ -1073,7 +1170,16 @@
       "fake_radio_traffic": "Simule un trafic radio pour masquer vos mouvements.",
       "counterintel_sweep": "Traque les agents étrangers sur votre territoire.",
       "recon_economic": "Révèle par phases les installations économiques (production, ressources, industrie) de tout un pays — capitale et grandes villes d'abord, puis le reste — ou d'une seule province.",
-      "recon_military": "Révèle par phases les bases, défenses aériennes, radars, silos et bunkers de tout un pays — capitale et grandes villes d'abord, puis le reste — ou d'une seule province. Visibles ensuite sur la carte."
+      "recon_military": "Révèle par phases les bases, défenses aériennes, radars, silos et bunkers de tout un pays — capitale et grandes villes d'abord, puis le reste — ou d'une seule province. Visibles ensuite sur la carte.",
+      "cryptanalysis": "Casse progressivement le chiffrement d'une nation : à 25 % les ordres de mouvement deviennent lisibles, à 50 % ses intentions. Un chiffrement fort (services avancés) ralentit la progression.",
+      "intercept_comms": "Intercepte les communications d'une nation : volume du trafic, ordres de mouvement et plans de guerre selon le décryptage. Un bon contre-espionnage adverse peut injecter du faux trafic.",
+      "geolocate_emitters": "Localise les radars, défenses aériennes et postes de commandement d'une nation par leurs émissions. Les satellites et avions d'écoute en service augmentent le nombre d'émetteurs trouvés.",
+      "cultivate_source": "Élève l'accès d'un agent fiable : ministère (budget, recherche), puis état-major (plans de guerre). Plus l'accès est élevé, plus l'agent est exposé.",
+      "vet_agents": "Vérifie vos agents dans un pays : démasque les agents doubles et repère ceux qui sont surveillés. Sans risque.",
+      "designate_targets": "Analyse d'imagerie d'une province ennemie : forces identifiées et localisées, installations cartographiées, frappes proposées unité par unité.",
+      "dismantle_network": "Démantèle le réseau d'une nation sur votre sol : arrestation des agents déjà repérés et chasse aux autres.",
+      "deception_plan": "Fait parvenir de faux plans de guerre aux services adverses. Plus crédible si l'adversaire a des agents chez vous, surtout un agent retourné.",
+      "harden_sites": "Renforce la protection de toutes vos installations pendant quelques jours : sabotages, financements rebelles et cyberattaques industrielles freinés."
     },
     "targetProvince": "Province visée",
     "targetArea": "Zone (autour de la ville)",
@@ -1084,7 +1190,67 @@
     "scopeProvince": "Une province",
     "reconPhase": "Phase {{done}}/{{waves}} · {{provinces}} prov.",
     "unknownContact": "contact non identifié",
-    "noContacts": "Aucune unité étrangère détectée : rapprochez vos radars ou lancez une reconnaissance."
+    "noAgents": "Aucun agent disponible.",
+    "noContacts": "Aucune unité étrangère détectée : rapprochez vos radars ou lancez une reconnaissance.",
+    "tabs": {
+      "military": "Militaire",
+      "dossiers": "Dossiers",
+      "reports": "Rapports"
+    },
+    "cover": "Couverture",
+    "covers": {
+      "diplomatic": "Diplomatique",
+      "nonofficial": "Non officielle"
+    },
+    "accessLevels": {
+      "street": "Terrain",
+      "ministry": "Ministère",
+      "staff": "État-major"
+    },
+    "agentActions": {
+      "cultivate": "Cultiver",
+      "vet": "Vérifier"
+    },
+    "targetAgent": "Agent",
+    "quick": "Actions",
+    "hardened": "Sites durcis",
+    "allReports": "Tous",
+    "sensors": {
+      "title": "Capteurs en service",
+      "sigint": "Écoute",
+      "imagery": "Imagerie",
+      "ew": "Guerre électronique"
+    },
+    "crypto": {
+      "title": "Décryptage",
+      "encryption": "Chiffrement",
+      "empty": "Aucune nation suivie : lancez une cryptanalyse ou une interception."
+    },
+    "threat": {
+      "title": "Carte des menaces",
+      "alert": "ALERTE",
+      "empty": "Aucune évaluation : le bulletin quotidien de 07:00 évalue les nations voisines, ennemies ou visées."
+    },
+    "indicators": {
+      "war": "Guerre en cours",
+      "massing": "Concentration de forces",
+      "plans": "Plans de guerre",
+      "comms": "Trafic de commandement",
+      "mobilization": "Mobilisation industrielle",
+      "covert": "Opérations clandestines"
+    },
+    "dossier": {
+      "forces": "Forces estimées",
+      "intentions": "Intentions",
+      "plansAgainst": "Plans de guerre contre",
+      "noPlans": "Aucun plan de guerre connu",
+      "economy": "Trésor estimé",
+      "research": "Recherche en cours",
+      "services": "Niveau des services",
+      "agents": "Agents sur place",
+      "reliability": "Fiabilité du dossier",
+      "empty": "Aucun dossier : vos services suivent les nations voisines, ennemies ou visées par vos opérations."
+    }
   },
   "sheet": {
     "path": "Fiche",
@@ -1668,7 +1834,13 @@
     "showAll": "Afficher les {{count}} provinces",
     "showLess": "Réduire",
     "resourcesHint": "Les ressources sont produites par les provinces et leurs bâtiments (puits, mines, fermes, usines d'électronique, raffineries) et consommées par vos unités. Une pénurie ralentit la production ; la nourriture pèse sur le moral.",
-    "ledgerToday": "Flux réels · aujourd'hui"
+    "ledgerToday": "Flux réels · aujourd'hui",
+    "byResource": "Production par ressource et par province",
+    "producers_one": "{{count}} province",
+    "producers_other": "{{count}} provinces",
+    "noProducer": "Aucune province productrice : achetez sur le marché.",
+    "servicesProvinces_one": "{{count}} province sans ressource (argent seulement : services, finances)",
+    "servicesProvinces_other": "{{count}} provinces sans ressource (argent seulement : services, finances)"
   },
   "armies": {
     "tabs": {
@@ -1757,7 +1929,7 @@
       "selectPile": "Sélectionner la pile"
     },
     "mergeNone": "Aucune pile du même matériel à l'arrêt à moins de 10 km.",
-    "moveHint": "{{name}} sélectionnée : touchez la carte pour fixer la destination.",
+    "moveHint": "Sélection : {{name}}. Touchez la carte pour fixer la destination.",
     "done": {
       "stop": "Ordre d'arrêt transmis",
       "patrol": "Patrouille engagée",
@@ -2162,6 +2334,140 @@
       "defeat": "Défaite",
       "draw": "Indécis",
       "ongoing": "En cours"
+    },
+    "aar": {
+      "ref": "RAPPORT APRÈS ACTION {{id}}",
+      "classification": "diffusion restreinte",
+      "where": "Lieu",
+      "openSea": "en mer",
+      "terrain": "Milieu",
+      "urban": "zone urbaine",
+      "domain": {
+        "land": "terrestre",
+        "coast": "littoral (terre et mer)",
+        "sea": "maritime",
+        "air": "aérien"
+      },
+      "medium": {
+        "land": "terrestre",
+        "air": "aérien",
+        "sea": "naval"
+      },
+      "verdict": {
+        "decisive_attacker": "Victoire décisive de l’attaquant",
+        "attacker": "Avantage à l’attaquant",
+        "stalemate": "Issue indécise",
+        "defender": "Avantage au défenseur",
+        "decisive_defender": "Victoire décisive du défenseur",
+        "ongoing": "Combats en cours"
+      },
+      "grade": "Renseignement",
+      "gradeHelp": "Source {{source}} · information {{cred}}",
+      "source": {
+        "A": "sûre",
+        "B": "généralement sûre",
+        "C": "assez sûre",
+        "D": "pas toujours sûre",
+        "E": "peu sûre",
+        "F": "de fiabilité inconnue"
+      },
+      "cred": {
+        "1": "confirmée",
+        "2": "probablement vraie",
+        "3": "possiblement vraie",
+        "4": "douteuse",
+        "5": "improbable",
+        "6": "invérifiable"
+      },
+      "exact": "chiffres exacts",
+      "estimated": "estimations du renseignement",
+      "personnel": "Personnels",
+      "casualties": "Pertes humaines",
+      "materielLost": "Matériels détruits",
+      "lossesUsd": "Valeur perdue",
+      "orbat": "Ordre de bataille",
+      "unidentified": "Contact {{medium}} non identifié",
+      "noContact": "Aucune force adverse observée.",
+      "destroyed": "Détruits",
+      "damaged": "Endommagés",
+      "captured": "Capturés",
+      "munitions": "Munitions",
+      "munitionsHelp": "Munitions principales tirées : obus, roquettes, missiles, bombes (estimation d’après les tirs simulés).",
+      "balance": "Bilan",
+      "human": "Pertes humaines",
+      "killed": "Tués",
+      "wounded": "Blessés",
+      "missing": "Disparus",
+      "prisoners": "Prisonniers",
+      "materiel": "Matériels",
+      "vehicles": "Véhicules engagés",
+      "aircraft": "Aéronefs engagés",
+      "ships": "Navires engagés",
+      "fires": "Feux",
+      "missilesLaunched": "Missiles tirés",
+      "missilesShotDown": "dont abattus",
+      "interceptions": "Missiles adverses abattus",
+      "sorties": "Sorties aériennes",
+      "lossChart": "Pertes cumulées",
+      "lossChartAria": "Pertes cumulées : attaquant {{a}}, défenseur {{d}} éléments",
+      "lossChartHelp": "Éléments perdus (chars, appareils, navires, bataillons) : exacts pour votre camp, confirmés par vos tirs pour l’adversaire. Bandes : phases des combats.",
+      "phases": "Déroulé des combats",
+      "phaseLosses": "pertes {{a}} / {{d}}",
+      "phase": {
+        "preparation": "Préparation des feux",
+        "strikes": "Frappes à distance",
+        "assault": "Assaut",
+        "defense": "Défense",
+        "counter": "Contre-attaque",
+        "air": "Combat aérien",
+        "naval": "Engagement naval",
+        "retreat": "Repli",
+        "capture": "Prise de la ville"
+      },
+      "phaseText": {
+        "preparation": "Artillerie, missiles et aviation frappent les positions adverses avant le contact.",
+        "strikes": "Échanges de frappes à distance, sans contact terrestre.",
+        "assault": "Les forces terrestres engagent le contact et prennent l’ascendant.",
+        "defense": "L’assaut se heurte à la défense, qui inflige les pertes les plus lourdes.",
+        "counter": "Le défenseur reprend l’initiative et contre-attaque.",
+        "air": "Les combats se jouent dans les airs : chasse, défense aérienne, drones.",
+        "naval": "Engagement entre forces navales.",
+        "retreat": "Un camp subit des pertes sans riposter : décrochage ou poursuite.",
+        "capture": "La ville tombe : la province change de main."
+      },
+      "factors": "Facteurs décisifs",
+      "noFactor": "Aucun facteur déterminant observé.",
+      "factorName": {
+        "numbers": "Rapport de forces",
+        "air_superiority": "Supériorité aérienne",
+        "electronic_warfare": "Guerre électronique",
+        "stealth": "Furtivité",
+        "entrenched": "Défense retranchée",
+        "air_defense": "Défense aérienne",
+        "supply": "Ravitaillement",
+        "veterancy": "Vétérance",
+        "generals": "Commandement",
+        "morale": "Moral"
+      },
+      "factor": {
+        "numbers": "Supériorité estimée de ×{{ratio}} en valeur des matériels engagés.",
+        "air_superiority": "Maîtrise du ciel : {{kills}} appareil(s) adverse(s) abattu(s), {{strikes}} frappe(s) air-sol au but.",
+        "electronic_warfare": "Brouillage : {{hits}} tirs adverses dégradés.",
+        "stealth": "{{hits}} coups portés par des unités jamais détectées.",
+        "entrenched": "{{share}} % des coups encaissés en position fortifiée ou en ville.",
+        "air_defense": "{{intercepted}} missile(s) adverse(s) abattu(s).",
+        "supply": "{{share}} % des tirs portés par des unités mal ravitaillées.",
+        "veterancy": "Unités aguerries : vétérance moyenne {{level}}.",
+        "generals": "Sous le commandement de {{names}}.",
+        "morale": "Moral en berne : stabilité de {{nation}} à {{stability}}."
+      },
+      "consequences": "Conséquences",
+      "captured1": "Prise de {{name}} ({{by}})",
+      "held": "{{name}} : position tenue par son propriétaire",
+      "noChange": "Aucun changement territorial.",
+      "noCountermeasure": "Aucune contre-mesure notable.",
+      "showAll": "Afficher les {{n}} autres matériels",
+      "showLess": "Réduire la liste"
     }
   },
   "chat": {

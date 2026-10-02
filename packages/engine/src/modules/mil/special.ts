@@ -6,11 +6,11 @@ import {
   type NationId,
   type Order,
   type ProvinceId,
+  type LocParam,
 } from '@redline/shared';
 import { cellToLatLng } from 'h3-js';
 import type { OrderResult } from '../../api.js';
-import { clearTarget, destroyUnit, inflict, retireUnit, roundDamage } from '../../combat/combat.js';
-import { refreshUnitPairs } from '../../encounters/pairs.js';
+import { clearTarget, destroyUnit, inflict, roundDamage } from '../../combat/combat.js';
 import { isLauncher } from '../../encounters/profile.js';
 import { setMovement } from '../../movement/movement.js';
 import { planUnitMove } from '../../movement/plan-unit.js';
@@ -20,7 +20,7 @@ import { spawnUnit } from '../../state/units.js';
 import { declareWar } from '../../state/war.js';
 import { wi } from '../../state/world.js';
 import { signal } from '../registry.js';
-import { armFuel, missionOf, msOf, newMission, startScan } from './air.js';
+import { missionOf, msOf, startScan } from './air.js';
 import { raiseAlert } from './alert.js';
 import { mil, milBal, nextId, type BlkSt } from './state.js';
 import { countLoss } from './stats.js';
@@ -38,6 +38,8 @@ import {
   resolveOwn,
   roll,
   unitsNear,
+  noteLoc,
+  placeOf,
 } from './util.js';
 
 /* ================================================================================================ */
@@ -138,6 +140,10 @@ export function resolveSpecialOp(state: EngineState, u: Unit): void {
       `${label(op.mission)} à ${where}.`,
       'info',
       city,
+      noteLoc('specialOk', {
+        mission: { key: `engine.mission.${op.mission}` },
+        place: placeOf(op.pid),
+      }),
     );
     if (op.mission !== 'rescue') {
       generic(
@@ -148,6 +154,10 @@ export function resolveSpecialOp(state: EngineState, u: Unit): void {
         `${label(op.mission)} ennemi à ${where}.`,
         'warn',
         city,
+        noteLoc('specialEnemy', {
+          mission: { key: `engine.mission.${op.mission}` },
+          place: placeOf(op.pid),
+        }),
       );
     }
   } else {
@@ -159,6 +169,10 @@ export function resolveSpecialOp(state: EngineState, u: Unit): void {
       `${label(op.mission)} à ${where}.`,
       'warn',
       city,
+      noteLoc('specialFailed', {
+        mission: { key: `engine.mission.${op.mission}` },
+        place: placeOf(op.pid),
+      }),
     );
     if (state.units[u.id]) damageUnit(state, null, u, u.maxHp * bal.failureLoss);
   }
@@ -303,6 +317,10 @@ export function checkBlockade(state: EngineState, b: BlkSt): void {
       `${where} (${b.by.toUpperCase()})`,
       active ? 'warn' : 'info',
       b.at,
+      noteLoc(active ? 'blockadeOn' : 'blockadeOff', {
+        place: 'provinceId' in b.target ? { province: b.target.provinceId } : where,
+        nation: { nation: b.by },
+      }),
     );
   }
   if (b.units.length === 0) delete m.blk[b.id];
@@ -379,6 +397,7 @@ export function captureMateriel(
   const blds = buildingsOf(state, pid);
   if (!blds.some((b) => b === 'air_base' || b === 'military_base' || b === 'naval_base')) return;
   const gained: string[] = [];
+  const gainedLoc: LocParam[] = [];
   const land = milBal(state).air.landingKm;
   for (const id of sortedKeys(m.ms)) {
     const ms = m.ms[id]!;
@@ -392,6 +411,10 @@ export function captureMateriel(
     if (k >= 1) {
       spawnUnit(state, to, sysId, city, k);
       gained.push(`${k} ${state.world.catalog.get(sysId)!.name}`);
+      gainedLoc.push({
+        key: 'engine.note.captured.item',
+        params: { count: k, system: { system: sysId } },
+      });
     }
   }
   const counts = new Map<string, number>();
@@ -412,6 +435,10 @@ export function captureMateriel(
     );
     spawnUnit(state, to, sysId, city, k);
     gained.push(`${k} ${state.world.catalog.get(sysId)!.name}`);
+    gainedLoc.push({
+      key: 'engine.note.captured.item',
+      params: { count: k, system: { system: sysId } },
+    });
   }
   if (gained.length > 0) {
     generic(
@@ -422,103 +449,13 @@ export function captureMateriel(
       `${nameOfProvince(state, pid)} : ${gained.join(', ')}.`,
       'info',
       city,
+      noteLoc('captured', { place: placeOf(pid), items: { list: gainedLoc } }),
     );
   }
 }
 
 /* ================================================================================================ */
-/* Piles : scission et fusion                                                                       */
+/* Piles : scission et fusion (stack-orders.ts)                                                     */
 /* ================================================================================================ */
 
-export function orderSplit(
-  state: EngineState,
-  n: NationId,
-  o: Extract<Order, { kind: 'split' }>,
-): OrderResult {
-  const res = resolveOwn(state, n, [o.unitId], true);
-  if (!Array.isArray(res)) return res;
-  const u = res[0]!;
-  if (o.count >= u.count) return fail('invalid_target', 'Effectif insuffisant pour scinder.');
-  if (mil(state).fixedOf[u.id]) return fail('not_allowed', 'Unité fixe.');
-  const sys = sysOf(state, u);
-  const ratio = u.hp / u.maxHp;
-  const m = mil(state);
-  const src = m.ms[u.id];
-  const pos = posOf(state, u);
-  const nu = spawnUnit(state, n, u.sys, pos, o.count, (x) => {
-    x.stance = u.stance;
-    x.xp = u.xp;
-    if (u.off) x.off = true;
-  });
-  nu.maxHp = o.count * sys.hp;
-  nu.hp = nu.maxHp * ratio;
-  u.count -= o.count;
-  u.maxHp = u.count * sys.hp;
-  u.hp = u.maxHp * ratio;
-  if (src) {
-    // La nouvelle pile garde base, carburant et embarquement ; elle tient sa position.
-    const copy = newMission(src.fa);
-    copy.bk = src.bk;
-    copy.base = src.base;
-    copy.up = src.up;
-    copy.fuel = src.fuel;
-    copy.ft = src.ft;
-    copy.ready = src.ready;
-    copy.give = src.give;
-    copy.emb = src.emb;
-    m.ms[nu.id] = copy;
-    if (copy.fa && copy.up) armFuel(state, nu);
-  }
-  const gid = m.unitGen[u.id];
-  const g = gid ? m.gens[gid] : undefined;
-  if (g && g.units.length < milBal(state).generals.maxUnits) {
-    g.units = [...g.units, nu.id].sort();
-    m.unitGen[nu.id] = g.id;
-  }
-  if (!nu.off) refreshUnitPairs(state, nu);
-  state.rt.dirtyCombat.add(nu.id);
-  state.rt.dirtyCombat.add(u.id);
-  return OK;
-}
-
-export function orderMerge(
-  state: EngineState,
-  n: NationId,
-  o: Extract<Order, { kind: 'merge' }>,
-): OrderResult {
-  const units = resolveOwn(state, n, o.unitIds, true);
-  if (!Array.isArray(units)) return units;
-  if (units.length < 2) return fail('invalid_target', 'Il faut au moins deux unités.');
-  const first = units[0]!;
-  const p0 = posOf(state, first);
-  for (const u of units) {
-    if (u.sys !== first.sys)
-      return fail('invalid_target', 'Fusion possible seulement entre unités du même type.');
-    if (u.move) return fail('not_allowed', 'Les unités doivent être à l’arrêt.');
-    if (!!u.off !== !!first.off) return fail('not_allowed', 'Unités embarquées et non embarquées.');
-    if (distanceKm(posOf(state, u), p0) > 10)
-      return fail('out_of_range', 'Unités trop éloignées (10 km).');
-    if (mil(state).fixedOf[u.id]) return fail('not_allowed', 'Unité fixe.');
-  }
-  const m = mil(state);
-  let hp = 0;
-  let maxHp = 0;
-  let count = 0;
-  let xp = 0;
-  for (const u of units) {
-    hp += u.hp;
-    maxHp += u.maxHp;
-    count += u.count;
-    xp += u.xp * u.count;
-  }
-  const fuelMin = Math.min(...units.map((u) => m.ms[u.id]?.fuel ?? Infinity));
-  for (const u of units.slice(1)) retireUnit(state, u);
-  first.hp = hp;
-  first.maxHp = maxHp;
-  first.count = count;
-  first.xp = xp / Math.max(1, count);
-  const fm = m.ms[first.id];
-  if (fm && Number.isFinite(fuelMin)) fm.fuel = Math.min(fm.fuel, fuelMin);
-  state.rt.dirtyCombat.add(first.id);
-  return OK;
-}
+export { orderMerge, orderSplit } from './stack-orders.js';

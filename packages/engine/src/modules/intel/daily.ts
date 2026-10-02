@@ -17,6 +17,7 @@ import {
   unitPosAt,
   warsOf,
 } from '../../state/access.js';
+import { partsOf } from '../../state/stack.js';
 import { wi } from '../../state/world.js';
 import { board } from '../kit.js';
 import { cfg, clamp } from './config.js';
@@ -47,7 +48,9 @@ import {
   provinceName,
   sectorOf,
 } from './text.js';
+import { loc } from '@redline/shared';
 import { interiorView } from './interior.js';
+import { assessDaily } from './deep.js';
 
 /**
  * Notes quotidiennes et rapports flash. Textes courts et génériques, construits à partir de l'état du
@@ -231,6 +234,7 @@ export function scan(state: EngineState): void {
         source: 'sigint',
         kind: 'flash',
         title: `FLASH — Mouvement de forces ${natDe(state, g.owner)}`,
+        titleLoc: loc('engine.intel.flashMovement', { nation: { nation: g.owner } }),
         lines,
         at: g.at,
         radiusKm: 30 + (1 - qq) * 120,
@@ -251,7 +255,7 @@ export function dailyNotes(state: EngineState): void {
   for (const n of who) {
     interiorNote(state, n);
     exteriorNote(state, n);
-    militaryNote(state, n, pool);
+    militaryNote(state, n, pool, assessDaily(state, n, pool));
   }
 }
 
@@ -306,6 +310,7 @@ function interiorNote(state: EngineState, n: NationId): void {
     source: 'humint',
     kind: 'daily',
     title: 'Note quotidienne — Sécurité intérieure',
+    titleLoc: loc('engine.intel.dailyInterior'),
     lines,
     at: null,
     radiusKm: 0,
@@ -384,6 +389,7 @@ function exteriorNote(state: EngineState, n: NationId): void {
     source: 'humint',
     kind: 'daily',
     title: 'Note quotidienne — Renseignement extérieur',
+    titleLoc: loc('engine.intel.dailyForeign'),
     lines,
     at: null,
     radiusKm: 0,
@@ -393,15 +399,20 @@ function exteriorNote(state: EngineState, n: NationId): void {
   });
 }
 
-function militaryNote(state: EngineState, n: NationId, pool: PoolEntry[]): void {
+function militaryNote(
+  state: EngineState,
+  n: NationId,
+  pool: PoolEntry[],
+  theatres: string[] = [],
+): void {
   const q = quality(state, n, 'military');
   const lines = [pick(state, OPENINGS.military)];
   for (const x of focusNations(state, n, 2)) {
     const cats = new Map<string, number>();
     for (const uid of nationUnits(state, x)) {
       const u = state.units[uid]!;
-      const cat = sysOf(state, u).category;
-      cats.set(cat, (cats.get(cat) ?? 0) + u.count);
+      for (const p of partsOf(state, u))
+        cats.set(p.sys.category, (cats.get(p.sys.category) ?? 0) + p.c);
     }
     const top = [...cats.entries()]
       .sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))
@@ -427,12 +438,15 @@ function militaryNote(state: EngineState, n: NationId, pool: PoolEntry[]): void 
     `Contacts suivis : ${known}` +
       (contacts.length > known ? ` (et ${contacts.length - known} position(s) ancienne(s)).` : '.'),
   );
+  // Bulletin par théâtre : indice de menace, tendance, indicateurs, forces estimées.
+  if (theatres.length) lines.push('Synthèse par théâtre (indice de menace sur 100) :', ...theatres);
   lines.push(opsLine(state, n, 'military'));
   publish(state, n, {
     dept: 'military',
     source: 'sigint',
     kind: 'daily',
     title: 'Note quotidienne — Renseignement militaire',
+    titleLoc: loc('engine.intel.dailyMilitary'),
     lines,
     at,
     radiusKm: at ? 60 + (1 - q) * 100 : 0,

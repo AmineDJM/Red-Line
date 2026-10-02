@@ -1,7 +1,13 @@
 import { randomInt } from 'node:crypto';
 import { eq } from 'drizzle-orm';
 import type { FastifyInstance } from 'fastify';
-import { LoginBodySchema, RegisterBodySchema } from '@redline/shared';
+import {
+  LoginBodySchema,
+  RegisterBodySchema,
+  UpdateMeBodySchema,
+  parseAcceptLanguage,
+  pickLocale,
+} from '@redline/shared';
 import type { AppContext } from '../context.js';
 import { users } from '../db/schema.js';
 import { HttpError, hashPassword, toPublicUser, verifyDummy, verifyPassword } from './auth.js';
@@ -22,6 +28,8 @@ export async function authRoutes(app: FastifyInstance, ctx: AppContext): Promise
         displayName: `Invité-${randomInt(1000, 10000)}`,
         isGuest: true,
         role: 'player',
+        // Langue des notifications push : celle du navigateur, en attendant le choix du joueur.
+        locale: pickLocale(parseAcceptLanguage(req.headers['accept-language'])),
       })
       .returning();
     await auth.login(req, reply, user!);
@@ -61,7 +69,13 @@ export async function authRoutes(app: FastifyInstance, ctx: AppContext): Promise
       } else {
         [user] = await db
           .insert(users)
-          .values({ email, passwordHash, displayName: body.displayName, isGuest: false })
+          .values({
+            email,
+            passwordHash,
+            displayName: body.displayName,
+            isGuest: false,
+            locale: pickLocale(parseAcceptLanguage(req.headers['accept-language'])),
+          })
           .returning();
       }
       return user;
@@ -84,6 +98,19 @@ export async function authRoutes(app: FastifyInstance, ctx: AppContext): Promise
   app.post('/api/auth/logout', async (req, reply) => {
     await auth.logout(req, reply);
     return { ok: true };
+  });
+
+  /** Préférences du compte (langue de l'interface, utilisée pour les notifications push). */
+  app.patch('/api/me', async (req, reply) => {
+    const state = await auth.authenticate(req, reply);
+    if (!state) throw new HttpError(401, 'unauthorized', 'Non connecté');
+    const body = parseBody(UpdateMeBodySchema, req.body);
+    const [user] = await db
+      .update(users)
+      .set({ locale: body.locale })
+      .where(eq(users.id, state.user.id))
+      .returning();
+    return { user: toPublicUser(user ?? state.user) };
   });
 
   app.get('/api/me', async (req, reply) => {
