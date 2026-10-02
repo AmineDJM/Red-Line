@@ -168,6 +168,16 @@ armées entières détruites ou engagées loin (Yémen, Arménie, Ukraine, Pakis
 capitales tombent plus souvent (et ne sont alors plus relevées). Un essai de renvoi d'un détachement
 vers la capitale vide a aggravé les pertes (abandonné).
 
+Essai abandonné (garnison de la capitale exprimée en force : au moins 20 % de la valeur terrestre
+gardée à la capitale, en plus du nombre de piles) : l'Ukraine et le Pakistan ne sont plus relevés
+« dégarnis », mais les captures chutent (provinces prises 35 / 33 → 22 / 20, captures réussies
+175 / 141 → 113 / 124) et la part de capitale sans garnison ne baisse pas (26 / 31 %) : les relevés
+restants viennent de l'Arménie et du Yémen, dont toute l'armée est détruite en défendant la capitale
+(constaté pile par pile ; leur capitale tient, alors que sans regroupement elle tombe et n'est plus
+relevée). Le diagnostic Ukraine / Pakistan : la pile de la capitale est divisée à répétition (la
+garnison compte des piles), les moitiés partent en offensive et les reliquats finissent par poursuivre
+une cible ; une garnison en force est la bonne piste, à reprendre avec la logique d'offensive.
+
 ```bash
 cd packages/engine
 node --expose-gc bench/run.mjs stacks                                   # recensement 2025 + 1985
