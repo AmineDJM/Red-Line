@@ -5,7 +5,7 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { CatalogFileSchema, type UnitView, type WeaponSystem } from '@redline/shared';
 import '../src/i18n/index.js';
-import { AirDefenseCaps, AirDefenseChips } from '../src/components/AirDefenseCaps.js';
+import { AirDefenseCaps } from '../src/components/AirDefenseCaps.js';
 import { orderReason } from '../src/lib/loc.js';
 
 const catalog: WeaponSystem[] = CatalogFileSchema.parse(
@@ -36,14 +36,6 @@ describe('défense antiaérienne : fiche et refus traduits', () => {
     expect(html).toContain('adcaps__off');
     expect(html).toContain('18/32');
     expect(html).toContain('Plein dans');
-  });
-
-  it('pastilles du Pantsir : drones et croisière, pas de balistiques', () => {
-    const html = renderToStaticMarkup(
-      createElement(AirDefenseChips, { system: sys('ru.pantsir-s1') }),
-    );
-    expect(html).toContain('Drones : 0–20');
-    expect(html).toContain('Missiles balistiques : non intercepté');
   });
 
   it('raisons de refus : catégorie et portée par catégorie', () => {

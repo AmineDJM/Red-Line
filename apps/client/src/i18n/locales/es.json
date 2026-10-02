@@ -384,6 +384,7 @@
       "eta": "Llegada",
       "warning": "Atención",
       "outOfRange": "Objetivo fuera de alcance",
+      "effect": "Eficacia",
       "confirm": "Confirmar",
       "cancel": "Cancelar",
       "sent": "Orden transmitida",
@@ -421,7 +422,7 @@
       "placesValue": "{{need}} necesarias · {{free}} libres",
       "aboard": "Unidades a bordo",
       "overCapacity": "Capacidad superada: divide la unidad.",
-      "noCapturer": "Ninguna unidad de esta selección puede capturar: se necesita infantería o blindados.",
+      "noCapturer": "Ninguna unidad de esta selección puede capturar: se necesita infantería, blindados o artillería.",
       "radius": "Radio",
       "reasons": {
         "target_invalid": "Objetivo no válido.",
@@ -575,7 +576,7 @@
     },
     "capture": {
       "progress": "Captura de {{city}}",
-      "noCapturer": "{{city}}: esta unidad no puede capturar (se requiere infantería o blindados).",
+      "noCapturer": "{{city}}: esta unidad no puede capturar (se requiere infantería, blindados o artillería).",
       "noWar": "{{city}}: sin guerra con su propietario, no hay captura.",
       "defended": "{{city}}: hay defensores, la captura comenzará cuando sean expulsados."
     },
@@ -3438,8 +3439,6 @@
     "legacy": "Perfil simplificado",
     "interceptors": "Interceptores",
     "fullIn": "Lleno en {{value}}",
-    "chipTitle": "{{cat}}: {{range}}",
-    "chipNone": "{{cat}}: no interceptado",
     "no": "No",
     "magazine": "Interceptores por elemento",
     "channels": "Canales de tiro",
@@ -3472,6 +3471,46 @@
     },
     "shotDown": "Derribados: {{cat}}",
     "fired": "Interceptores disparados"
+  },
+  "effect": {
+    "title": "Eficacia",
+    "sheetTitle": "Eficacia por tipo de objetivo",
+    "note": "Media por categoría, según los daños, intercepciones y ataques del juego.",
+    "chip": "{{name}}: {{level}} {{against}}",
+    "intercept": "intercepción {{ranges}}",
+    "noneList": "Sin efecto contra: {{list}}",
+    "order": "{{level}} contra {{target}}",
+    "levels": {
+      "0": "nula",
+      "1": "baja",
+      "2": "media",
+      "3": "buena",
+      "4": "excelente"
+    },
+    "targets": {
+      "aircraft": "Aviones",
+      "helicopter": "Helicópteros",
+      "drone": "Drones",
+      "missile": "Misiles",
+      "armor": "Blindados",
+      "infantry": "Infantería",
+      "artillery": "Artillería",
+      "ship": "Buques",
+      "submarine": "Submarinos",
+      "building": "Edificios"
+    },
+    "against": {
+      "aircraft": "contra aviones",
+      "helicopter": "contra helicópteros",
+      "drone": "contra drones",
+      "missile": "contra misiles",
+      "armor": "contra blindados",
+      "infantry": "contra infantería",
+      "artillery": "contra artillería",
+      "ship": "contra buques",
+      "submarine": "contra submarinos",
+      "building": "contra edificios"
+    }
   },
   "stacks": {
     "composition_one": "Composición · {{count}} sistema",
@@ -3872,7 +3911,7 @@
       },
       "captureBlocked": {
         "title": "Captura imposible",
-        "noCapturer": "{{system}} no puede capturar {{place}}: se necesita infantería o blindados.",
+        "noCapturer": "{{system}} no puede capturar {{place}}: se necesita infantería, blindados o artillería.",
         "noWar": "Sin guerra con el propietario de {{place}}: no hay captura."
       }
     },

@@ -378,6 +378,7 @@
       "eta": "Varış",
       "warning": "Dikkat",
       "outOfRange": "Hedef menzil dışında",
+      "effect": "Etkinlik",
       "confirm": "Onayla",
       "cancel": "İptal",
       "sent": "Emir iletildi",
@@ -415,7 +416,7 @@
       "placesValue": "{{need}} gerekli · {{free}} boş",
       "aboard": "Gemideki birlikler",
       "overCapacity": "Kapasite aşıldı: birliği bölün.",
-      "noCapturer": "Bu seçimdeki hiçbir birlik ele geçiremez: piyade veya zırhlı gerekir.",
+      "noCapturer": "Bu seçimdeki hiçbir birlik ele geçiremez: piyade, zırhlı veya topçu gerekir.",
       "radius": "Yarıçap",
       "reasons": {
         "target_invalid": "Geçersiz hedef.",
@@ -569,7 +570,7 @@
     },
     "capture": {
       "progress": "{{city}} ele geçiriliyor",
-      "noCapturer": "{{city}}: bu birlik ele geçiremez (piyade veya zırhlı gerekir).",
+      "noCapturer": "{{city}}: bu birlik ele geçiremez (piyade, zırhlı veya topçu gerekir).",
       "noWar": "{{city}}: sahibiyle savaş yok, ele geçirme yok.",
       "defended": "{{city}}: savunanlar var, onlar püskürtülünce ele geçirme başlayacak."
     },
@@ -3397,8 +3398,6 @@
     "legacy": "Basitleştirilmiş profil",
     "interceptors": "Önleyiciler",
     "fullIn": "{{value}} içinde dolu",
-    "chipTitle": "{{cat}}: {{range}}",
-    "chipNone": "{{cat}}: önlenmez",
     "no": "Hayır",
     "magazine": "Unsur başına önleyici",
     "channels": "Atış kanalları",
@@ -3431,6 +3430,46 @@
     },
     "shotDown": "Düşürülen: {{cat}}",
     "fired": "Ateşlenen önleyiciler"
+  },
+  "effect": {
+    "title": "Etkinlik",
+    "sheetTitle": "Hedef türüne göre etkinlik",
+    "note": "Kategori başına ortalama; oyundaki hasar, önleme ve saldırılara göre.",
+    "chip": "{{name}}: {{against}} {{level}}",
+    "intercept": "önleme {{ranges}}",
+    "noneList": "Etkisiz: {{list}}",
+    "order": "{{target}} hedefine karşı {{level}}",
+    "levels": {
+      "0": "yok",
+      "1": "zayıf",
+      "2": "orta",
+      "3": "iyi",
+      "4": "mükemmel"
+    },
+    "targets": {
+      "aircraft": "Uçaklar",
+      "helicopter": "Helikopterler",
+      "drone": "İHA’lar",
+      "missile": "Füzeler",
+      "armor": "Zırhlılar",
+      "infantry": "Piyade",
+      "artillery": "Topçu",
+      "ship": "Gemiler",
+      "submarine": "Denizaltılar",
+      "building": "Binalar"
+    },
+    "against": {
+      "aircraft": "uçaklara karşı",
+      "helicopter": "helikopterlere karşı",
+      "drone": "İHA’lara karşı",
+      "missile": "füzelere karşı",
+      "armor": "zırhlılara karşı",
+      "infantry": "piyadeye karşı",
+      "artillery": "topçuya karşı",
+      "ship": "gemilere karşı",
+      "submarine": "denizaltılara karşı",
+      "building": "binalara karşı"
+    }
   },
   "stacks": {
     "composition_one": "Bileşim · {{count}} sistem",
@@ -3822,7 +3861,7 @@
       },
       "captureBlocked": {
         "title": "Ele geçirme imkânsız",
-        "noCapturer": "{{system}} {{place}} bölgesini ele geçiremez: piyade veya zırhlı gerekir.",
+        "noCapturer": "{{system}} {{place}} bölgesini ele geçiremez: piyade, zırhlı veya topçu gerekir.",
         "noWar": "{{place}} sahibiyle savaş yok: ele geçirme yok."
       }
     },

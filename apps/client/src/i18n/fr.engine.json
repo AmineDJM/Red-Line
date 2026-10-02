@@ -336,7 +336,7 @@
       },
       "captureBlocked": {
         "title": "Capture impossible",
-        "noCapturer": "{{system}} ne peut pas capturer {{place}} : il faut de l'infanterie ou des blindés.",
+        "noCapturer": "{{system}} ne peut pas capturer {{place}} : il faut de l'infanterie, des blindés ou de l'artillerie.",
         "noWar": "Pas de guerre avec le propriétaire de {{place}} : pas de capture."
       }
     },

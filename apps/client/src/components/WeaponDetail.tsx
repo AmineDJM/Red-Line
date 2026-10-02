@@ -6,6 +6,8 @@ import { ownedCounts, productionStatus, researchName, systemPrice } from '../lib
 import { photoFor, usePhotos } from '../lib/photos.js';
 import { useGameTime, weaponLabels, weaponSubtitle } from '../shell/helpers.js';
 import { AirDefenseCaps } from './AirDefenseCaps.js';
+import { EffectTable } from './Effectiveness.js';
+import { useEffectContext } from '../lib/effectiveness.js';
 import { useGame } from '../store/game.js';
 import { useWorld } from '../store/world.js';
 
@@ -40,6 +42,7 @@ export function WeaponDetail({
   const me = useGame((s) => s.me);
   const photos = usePhotos();
   const now = useGameTime(5000);
+  const effCtx = useEffectContext();
   const owned = ownedCounts(view, me);
 
   const facts = (s: WeaponSystem): WeaponFact[] => {
@@ -110,14 +113,13 @@ export function WeaponDetail({
       facts={facts(cur)}
       compact={compact}
       extra={
-        airDefenseTable(cur)?.lines.length ? (
-          <>
-            {extra}
+        <>
+          {extra}
+          <EffectTable system={cur} ctx={effCtx} />
+          {airDefenseTable(cur)?.lines.length ? (
             <AirDefenseCaps system={cur} unit={unit} now={now} />
-          </>
-        ) : (
-          extra
-        )
+          ) : null}
+        </>
       }
       badges={
         <>

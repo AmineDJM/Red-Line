@@ -389,6 +389,8 @@ export const fr = {
     warnRange: 'La portée minimale dépasse la portée maximale.',
     warnPrefix: 'L’identifiant devrait commencer par la doctrine (« {doctrine}. »).',
     warnCapture: 'Seules les unités terrestres devraient pouvoir capturer.',
+    warnCaptureRule:
+      'Règle de capture : infanterie, chars, véhicules de combat et artillerie capturent ; défense antiaérienne, missiles, radars et convois jamais.',
     warnStealth: 'Une furtivité élevée est réservée à la 5e génération.',
     warnCost: 'Le coût ({cost}) diffère du prix unitaire × éléments ({expected}).',
     warnGate: 'Porte de recherche inconnue : {id}.',
