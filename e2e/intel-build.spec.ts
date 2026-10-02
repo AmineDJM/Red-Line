@@ -309,7 +309,6 @@ test('construire et améliorer un bâtiment', async ({ page }, info) => {
   await expect(panel.getByTestId('build-mine')).toHaveCount(0);
   await expect(panel.getByTestId('build-hidden-no_resource')).toContainText('Champ pétrolier');
   await expect(panel.getByTestId('build-hidden-no_resource')).toContainText('Mine');
-  await page.screenshot({ animations: 'disabled', path: info.outputPath('0-menu-alger.png') });
   await panel.getByTestId(`build-${opt.type}`).click();
   await expect
     .poll(() =>
