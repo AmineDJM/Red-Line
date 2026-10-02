@@ -1,4 +1,11 @@
-import { DAY, HOUR, type AllianceCharter, type LocParam, type LocText, type NationId } from '@redline/shared';
+import {
+  DAY,
+  HOUR,
+  type AllianceCharter,
+  type LocParam,
+  type LocText,
+  type NationId,
+} from '@redline/shared';
 import type { OrderResult } from '../../api.js';
 import type { EngineState } from '../../state/types.js';
 import { atWar, notify, sortedKeys } from '../../state/access.js';

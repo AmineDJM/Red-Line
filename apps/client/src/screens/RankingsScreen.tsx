@@ -75,11 +75,7 @@ export function RankingsScreen() {
             <Stat
               label={t('rankings.season')}
               value={s?.name ?? '—'}
-              sub={
-                s
-                  ? `${fmtDate(s.startsAt)} → ${fmtDate(s.endsAt)}`
-                  : ''
-              }
+              sub={s ? `${fmtDate(s.startsAt)} → ${fmtDate(s.endsAt)}` : ''}
             />
             <Stat
               label={t('rankings.remaining')}

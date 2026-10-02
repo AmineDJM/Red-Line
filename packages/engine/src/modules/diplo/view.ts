@@ -170,8 +170,6 @@ function recentNews(state: EngineState) {
   );
 }
 
-
-
 /** Champs publics des nations, provinces et unités (communs à la vue joueur et spectateur). */
 function decorate(state: EngineState, view: PlayerView, me: NationId | null): void {
   const d = ds(state);

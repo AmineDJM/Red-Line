@@ -43,11 +43,14 @@ if (process.argv[1]?.endsWith('check.ts')) {
   const todo = opt('todo');
   if (dump || todo) {
     const domain = (dump ?? todo)!;
-    const units = todo ? pending(domain, (opt('lang') ?? 'en') as Locale) : sourceUnits(domain).units;
+    const units = todo
+      ? pending(domain, (opt('lang') ?? 'en') as Locale)
+      : sourceUnits(domain).units;
     for (const u of units) {
       if (u.kind === 'text') console.log(`${u.id}\t${JSON.stringify(u.text)}`);
       else
-        for (const [c, v] of Object.entries(u.forms)) console.log(`${u.id}_${c}\t${JSON.stringify(v)}`);
+        for (const [c, v] of Object.entries(u.forms))
+          console.log(`${u.id}_${c}\t${JSON.stringify(v)}`);
     }
   } else {
     let bad = 0;

@@ -47,7 +47,8 @@ export function nationName(id: NationId | null | undefined): string {
  */
 /** Formes d'un nom de pays : grammaire française, ou nom seul dans les autres langues. */
 export function formsOf(name: string, article?: string | null): FrNationForms {
-  if (!isFrench) return { nation: name, nationLe: name, NationLe: name, deNation: name, aNation: name };
+  if (!isFrench)
+    return { nation: name, nationLe: name, NationLe: name, deNation: name, aNation: name };
   return frForms(name, article ?? '');
 }
 

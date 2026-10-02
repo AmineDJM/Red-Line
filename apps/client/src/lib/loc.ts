@@ -18,7 +18,8 @@ import { nationName, provinceName, systemName } from './game.js';
 function param(p: LocParam): string | number {
   if (typeof p === 'string' || typeof p === 'number') return p;
   if ('nation' in p) return nationName(p.nation);
-  if ('province' in p) return useWorld.getState().provinces[p.province]?.name ?? provinceName(p.province);
+  if ('province' in p)
+    return useWorld.getState().provinces[p.province]?.name ?? provinceName(p.province);
   if ('system' in p) return systemName(p.system);
   if ('list' in p) return fmtList(p.list.map((x) => String(param(x))));
   return t(p.key, params(p.params));

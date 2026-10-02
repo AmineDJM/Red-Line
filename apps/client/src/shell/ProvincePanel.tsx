@@ -71,15 +71,13 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
           : { provinceId: id },
     });
     if (res?.ok) toast(t(`province.opStarted.${op}`, { province: def.cityName ?? def.name }), 'ok');
-    else if (res)
-      toast(orderError(res), 'error');
+    else if (res) toast(orderError(res), 'error');
   };
 
   const fortify = async () => {
     const res = await conn?.sendOrder({ kind: 'build', provinceId: id, building: 'fortification' });
     if (res?.ok) toast(t('province.fortifyStarted', { province: def.cityName ?? def.name }), 'ok');
-    else if (res)
-      toast(orderError(res), 'error');
+    else if (res) toast(orderError(res), 'error');
   };
 
   return (

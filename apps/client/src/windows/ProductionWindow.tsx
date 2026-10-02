@@ -43,8 +43,7 @@ function useSend() {
     const conn = useGame.getState().connection;
     const res = await conn?.sendOrder(order);
     if (res?.ok) toast(okText, 'ok');
-    else if (res)
-      toast(orderError(res), 'error');
+    else if (res) toast(orderError(res), 'error');
     return !!res?.ok;
   };
 }

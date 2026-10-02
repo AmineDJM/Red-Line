@@ -351,7 +351,12 @@ function onSignal(state: EngineState, name: string, x: Record<string, unknown>):
       news(
         state,
         'nuclear',
-        { A: by, B: victim, P: placeName(state, at, x.pid), loc: { P: placeLoc(state, at, x.pid) } },
+        {
+          A: by,
+          B: victim,
+          P: placeName(state, at, x.pid),
+          loc: { P: placeLoc(state, at, x.pid) },
+        },
         at,
         [by, victim].filter(Boolean),
       );

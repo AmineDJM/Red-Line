@@ -381,7 +381,11 @@ export function parseCommand(input: string, ctx: CommandCtx): CommandAction {
         },
         summary: ctx.label('console.done.intel', {
           op: ctx.label(`intel.ops.${op}`),
-          target: nation ? (isFrench ? frLe(nation.name, nation.article) : nation.name) : place!.name,
+          target: nation
+            ? isFrench
+              ? frLe(nation.name, nation.article)
+              : nation.name
+            : place!.name,
         }),
       };
     }

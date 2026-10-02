@@ -35,8 +35,7 @@ function useSend() {
   return async (order: Order, ok: string) => {
     const res = await useGame.getState().connection?.sendOrder(order);
     if (res?.ok) toast(ok, 'ok');
-    else if (res)
-      toast(orderError(res), 'error');
+    else if (res) toast(orderError(res), 'error');
     return !!res?.ok;
   };
 }

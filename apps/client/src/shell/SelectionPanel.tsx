@@ -52,8 +52,7 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
   const general = u.generalId ? view?.generals?.find((g) => g.id === u.generalId) : null;
   const send = async (order: Parameters<NonNullable<typeof conn>['sendOrder']>[0]) => {
     const res = await conn?.sendOrder(order);
-    if (res && !res.ok)
-      toast(orderError(res), 'error');
+    if (res && !res.ok) toast(orderError(res), 'error');
   };
 
   const rows: {

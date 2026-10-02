@@ -180,8 +180,7 @@ export function checkPlural(
     }
     if (v.length > maxLength(longest)) errs.push(`forme ${c} trop longue`);
   }
-  for (const x of srcVars)
-    if (x !== 'count' && !seen.has(x)) errs.push(`variable {{${x}}} perdue`);
+  for (const x of srcVars) if (x !== 'count' && !seen.has(x)) errs.push(`variable {{${x}}} perdue`);
   const other = o.other;
   if (srcVars.has('count') && typeof other === 'string' && !vars(other).has('count'))
     errs.push('{{count}} absent de la forme « other »');

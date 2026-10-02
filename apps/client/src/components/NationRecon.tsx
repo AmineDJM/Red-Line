@@ -105,8 +105,7 @@ export function NationRecon({
   const launch = async (op: ReconOpKind) => {
     const res = await conn?.sendOrder({ kind: 'intelOp', op, target: { nationId } });
     if (res?.ok) toast(t(`nationRecon.started.${op}`, forms), 'ok');
-    else if (res)
-      toast(orderError(res), 'error');
+    else if (res) toast(orderError(res), 'error');
   };
 
   return (

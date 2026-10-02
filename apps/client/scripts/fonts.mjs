@@ -32,13 +32,15 @@ const SETS = {
   // CJK : polices du système d'abord (aucun téléchargement), Noto en dernier recours (400 seul).
   zh: {
     files: ['noto-sans-sc/400.css'],
-    stack: "'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC'",
+    stack:
+      "'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC'",
     extra: '',
     scale: 1.04,
   },
   ja: {
     files: ['noto-sans-jp/400.css'],
-    stack: "'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic UI', Meiryo, 'Noto Sans CJK JP', 'Noto Sans JP'",
+    stack:
+      "'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic UI', Meiryo, 'Noto Sans CJK JP', 'Noto Sans JP'",
     extra: '',
     scale: 1.04,
   },

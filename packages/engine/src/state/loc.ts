@@ -10,7 +10,10 @@ export function noteLoc(
   params?: Record<string, LocParam>,
   textKey = 'text',
 ): { title: LocText; text: LocText } {
-  return { title: loc(`engine.note.${id}.title`), text: loc(`engine.note.${id}.${textKey}`, params) };
+  return {
+    title: loc(`engine.note.${id}.title`),
+    text: loc(`engine.note.${id}.${textKey}`, params),
+  };
 }
 
 /** Lieu localisable d'une province (nom traduit par le client), ou « en mer ». */

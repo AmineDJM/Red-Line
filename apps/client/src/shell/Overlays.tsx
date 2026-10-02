@@ -44,10 +44,7 @@ export function OrderBar() {
     useUi.getState().setPending(null);
     const res = await c.sendOrder(order);
     if (res.ok) useUi.getState().toast(t('game.orders.sent'), 'ok');
-    else
-      useUi
-        .getState()
-        .toast(orderError(res), 'error');
+    else useUi.getState().toast(orderError(res), 'error');
   }, [t]);
 
   useEffect(() => {

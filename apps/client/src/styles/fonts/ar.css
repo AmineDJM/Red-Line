@@ -4,22 +4,29 @@
   font-style: normal;
   font-display: swap;
   font-weight: 400;
-  src: url(../../../node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-400-normal.woff2) format('woff2');
-}@font-face {
+  src: url(../../../node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-400-normal.woff2)
+    format('woff2');
+}
+@font-face {
   font-family: 'IBM Plex Sans Arabic';
   font-style: normal;
   font-display: swap;
   font-weight: 600;
-  src: url(../../../node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-600-normal.woff2) format('woff2');
-}@font-face {
+  src: url(../../../node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-600-normal.woff2)
+    format('woff2');
+}
+@font-face {
   font-family: 'IBM Plex Sans Arabic';
   font-style: normal;
   font-display: swap;
   font-weight: 700;
-  src: url(../../../node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-700-normal.woff2) format('woff2');
+  src: url(../../../node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-700-normal.woff2)
+    format('woff2');
 }
 :root:lang(ar) {
-  --rl-font-mono: 'JetBrains Mono', 'IBM Plex Sans Arabic', 'Noto Sans Arabic', 'Segoe UI', Tahoma, ui-monospace, monospace;
+  --rl-font-mono:
+    'JetBrains Mono', 'IBM Plex Sans Arabic', 'Noto Sans Arabic', 'Segoe UI', Tahoma, ui-monospace,
+    monospace;
   --rl-track: 0.04em;
   --rl-fs-2xs: 10.8px;
   --rl-fs-xs: 11.3px;

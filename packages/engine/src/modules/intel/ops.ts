@@ -460,7 +460,10 @@ function onExposed(state: EngineState, n: NationId, op: StoredOp): void {
     source: 'sigint',
     kind: CYBER[op.kind] ? 'cyber' : 'counterintel',
     title: `${OP_LABEL[op.kind]} attribuée ${natA(state, n)}`,
-    titleLoc: loc('engine.intel.opAttributed', { op: { key: `engine.intelOp.${op.kind}` }, nation: { nation: n } }),
+    titleLoc: loc('engine.intel.opAttributed', {
+      op: { key: `engine.intelOp.${op.kind}` },
+      nation: { nation: n },
+    }),
     lines: [
       `Tentative de ${OP_LABEL[op.kind].toLowerCase()} détectée et attribuée ${natA(state, n)}.`,
       'Mesures de protection renforcées.',
@@ -674,7 +677,10 @@ function applySuccess(state: EngineState, n: NationId, op: StoredOp): void {
         dept: op.dept,
         source: OP_META[op.kind].source,
         title: `${OP_LABEL[op.kind]} — ${vName}`,
-        titleLoc: loc('engine.intel.opOutcome', { op: { key: `engine.intelOp.${op.kind}` }, outcome: vName }),
+        titleLoc: loc('engine.intel.opOutcome', {
+          op: { key: `engine.intelOp.${op.kind}` },
+          outcome: vName,
+        }),
         q: 0.85,
       });
       return;

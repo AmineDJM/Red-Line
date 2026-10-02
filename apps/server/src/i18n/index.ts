@@ -42,10 +42,12 @@ export function accountLocale(l: string | null | undefined): Locale {
 
 /** Texte traduit avec interpolation `{{nom}}` ; repli anglais puis français. */
 export function serverT(locale: Locale, key: string, params: Record<string, string> = {}): string {
-  const chain: Locale[] = locale === 'fr' ? ['fr'] : locale === 'en' ? ['en', 'fr'] : [locale, 'en', 'fr'];
+  const chain: Locale[] =
+    locale === 'fr' ? ['fr'] : locale === 'en' ? ['en', 'fr'] : [locale, 'en', 'fr'];
   let text: string | undefined;
   for (const l of chain) {
-    text = l === 'fr' ? lookup(fr as Tree, key) : lookup(readTree(join(I18N_DIR, `${l}.json`)), key);
+    text =
+      l === 'fr' ? lookup(fr as Tree, key) : lookup(readTree(join(I18N_DIR, `${l}.json`)), key);
     if (text !== undefined) break;
   }
   return (text ?? key).replace(/\{\{\s*(\w+)\s*\}\}/g, (_m, k: string) => params[k] ?? '');

@@ -4,16 +4,21 @@
   font-style: normal;
   font-display: swap;
   font-weight: 400;
-  src: url(../../../node_modules/@fontsource/noto-sans-devanagari/files/noto-sans-devanagari-devanagari-400-normal.woff2) format('woff2');
-}@font-face {
+  src: url(../../../node_modules/@fontsource/noto-sans-devanagari/files/noto-sans-devanagari-devanagari-400-normal.woff2)
+    format('woff2');
+}
+@font-face {
   font-family: 'Noto Sans Devanagari';
   font-style: normal;
   font-display: swap;
   font-weight: 600;
-  src: url(../../../node_modules/@fontsource/noto-sans-devanagari/files/noto-sans-devanagari-devanagari-600-normal.woff2) format('woff2');
+  src: url(../../../node_modules/@fontsource/noto-sans-devanagari/files/noto-sans-devanagari-devanagari-600-normal.woff2)
+    format('woff2');
 }
 :root:lang(hi) {
-  --rl-font-mono: 'JetBrains Mono', 'Noto Sans Devanagari', 'Nirmala UI', 'Kohinoor Devanagari', ui-monospace, monospace;
+  --rl-font-mono:
+    'JetBrains Mono', 'Noto Sans Devanagari', 'Nirmala UI', 'Kohinoor Devanagari', ui-monospace,
+    monospace;
   --rl-track: 0.04em;
   --rl-fs-2xs: 10.6px;
   --rl-fs-xs: 11.1px;

@@ -57,12 +57,7 @@ export interface MoneyOptions {
  * Négatif : `−$3,4 M`. Au-delà de 100 dans l'unité, pas de décimale (`$125 M`).
  */
 export function formatMoney(usd: number, opts: MoneyOptions = {}): string {
-  const {
-    locale = defaults.locale,
-    units = defaults.units,
-    signed = false,
-    digits = 1,
-  } = opts;
+  const { locale = defaults.locale, units = defaults.units, signed = false, digits = 1 } = opts;
   if (!Number.isFinite(usd)) return '—';
   const abs = Math.abs(usd);
   // Seuils décalés d'un demi-arrondi : jamais « $1 000 k », toujours « $1 M ».

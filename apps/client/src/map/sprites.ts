@@ -437,7 +437,11 @@ export function textImageId(style: TextStyle, text: string) {
 }
 
 /** Dessine du texte espacé lettre par lettre (letterSpacing du canvas pas partout disponible). */
+// Écritures liées (arabe, devanagari…) : jamais lettre par lettre (formes contextuelles, sens).
+const JOINED_SCRIPT = /[\u0590-\u08ff\u0900-\u0dff\ufb1d-\ufdff\ufe70-\ufeff]/;
+
 function spacedWidth(ctx: CanvasRenderingContext2D, text: string, spacingPx: number) {
+  if (JOINED_SCRIPT.test(text)) return ctx.measureText(text).width;
   let w = 0;
   for (const ch of text) w += ctx.measureText(ch).width + spacingPx;
   return Math.max(0, w - spacingPx);
@@ -451,6 +455,16 @@ function drawSpaced(
   spacingPx: number,
   stroke: boolean,
 ) {
+  if (JOINED_SCRIPT.test(text)) {
+    ctx.direction = /[\u0590-\u08ff\ufb1d-\ufeff]/.test(text) ? 'rtl' : 'ltr';
+    ctx.textAlign = ctx.direction === 'rtl' ? 'right' : 'left';
+    const ax = ctx.direction === 'rtl' ? x + ctx.measureText(text).width : x;
+    if (stroke) ctx.strokeText(text, ax, y);
+    else ctx.fillText(text, ax, y);
+    ctx.direction = 'ltr';
+    ctx.textAlign = 'left';
+    return;
+  }
   let cx = x;
   for (const ch of text) {
     if (stroke) ctx.strokeText(ch, cx, y);

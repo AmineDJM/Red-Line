@@ -121,8 +121,7 @@ export function GamesScreen() {
                     <span className="lobbyname__title">{g.game.name}</span>
                   </b>
                   <span>
-                    {t(`games.mode.${g.game.mode}`)} ·{' '}
-                    {fmtDate(g.createdAt)}
+                    {t(`games.mode.${g.game.mode}`)} · {fmtDate(g.createdAt)}
                     <span className="rl-only-mobile"> · {statusLabel(g)}</span>
                   </span>
                 </span>
