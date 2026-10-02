@@ -23,6 +23,7 @@ import {
   destination,
   distanceKm,
   strikeRangeKm,
+  airDefenseTable,
   type LngLat,
   type NationId,
   type ProvinceView,
@@ -1493,6 +1494,26 @@ export class GameMap {
           text: t('map.ring.max', { value: fmtKm(max) }),
         });
       }
+      // Défense antiaérienne : enveloppes plus courtes par catégorie (balistiques, croisière…).
+      const adt = airDefenseTable(sys);
+      if (adt?.explicit) {
+        const byR = new Map<number, string[]>();
+        for (const l of adt.lines) {
+          const r = Math.round(l.maxKm * 10) / 10;
+          if (r < 0.5 || Math.abs(r - max) < 0.5) continue;
+          byR.set(r, [...(byR.get(r) ?? []), t(`airDefense.short.${l.threat}`)]);
+        }
+        let k = 0;
+        for (const [r, cats] of [...byR].sort((a, b) => b[0] - a[0])) {
+          lines.push(circleLine(at, r, 'ad'));
+          rings.push({
+            at: destination(at, 35 + 30 * k++, r),
+            center: at,
+            text: t('airDefense.ring', { cat: cats.join('/'), value: fmtKm(r) }),
+            tone: 'cyan',
+          });
+        }
+      }
       if (sys.weaponRangeKm.min > 0.5) {
         lines.push(circleLine(at, sys.weaponRangeKm.min, 'min'));
         rings.push({
@@ -2194,19 +2215,23 @@ export class GameMap {
       e.point.y,
       (this.lastPointer === 'mouse' ? MOUSE_RADIUS : TOUCH_RADIUS) - 4,
     );
-    const enemy = (tok?.ids ?? [])
+    const foes = (tok?.ids ?? [])
       .map((id) => view?.units[id])
-      .find((u) => !!u && u.owner !== me && !u.missile);
+      .filter((u): u is UnitView => !!u && u.owner !== me);
+    const enemy = foes.find((u) => !u.missile);
     const unitIds = tg.unitIds;
     switch (tg.action) {
       case 'attack':
-      case 'intercept':
-        if (!enemy) {
+      case 'intercept': {
+        // Une salve de missiles en vol peut être visée (interception par la défense antiaérienne).
+        const target = enemy ?? foes[0];
+        if (!target) {
           ui.toast(t('game.actions.pick.needEnemy'), 'warn');
           return;
         }
-        ui.setPending({ kind: 'attack', unitIds, targetId: enemy.id });
+        ui.setPending({ kind: 'attack', unitIds, targetId: target.id });
         return;
+      }
       case 'strike':
         ui.setPending({
           kind: 'strike',

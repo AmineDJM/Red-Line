@@ -12,6 +12,7 @@ import { schedule, sortedSet, unitPieces } from '../state/access.js';
 import { addToIndex, removeFromIndex } from '../state/runtime.js';
 import type { EngineState, PairState, Unit } from '../state/types.js';
 import { CAPTURE_RADIUS_KM, wi } from '../state/world.js';
+import { adBand } from '../modules/mil/ad-profile.js';
 import { changeSight, detectionLevel, detectionRadii } from './sight.js';
 import {
   inRange,
@@ -247,6 +248,11 @@ function evalUnitPair(state: EngineState, key: string): void {
   const radii = detectionRadii(state, rab);
   for (const r of detectionRadii(state, rba)) radii.push(r);
   radii.push(wa.max, wa.max > 0 ? wa.min : 0, wb.max, wb.max > 0 ? wb.min : 0);
+  // Défense antiaérienne : enveloppe propre à la catégorie de la cible (balistique, drone…).
+  const ea = adBand(state, A, B);
+  const eb = adBand(state, B, A);
+  if (ea) radii.push(ea.max, ea.min);
+  if (eb) radii.push(eb.max, eb.min);
   const pa = unitPieces(state, A);
   const pb = unitPieces(state, B);
   // Paire candidate de l'index spatial mais hors de portée pour toujours : rien à faire (cas le plus
@@ -280,7 +286,13 @@ function evalUnitPair(state: EngineState, key: string): void {
   pair.ev = next !== null ? schedule(state, { k: 'contact', t: next, key }) : 0;
   changeSight(state, A.owner, B.id, oldLa, la);
   changeSight(state, B.owner, A.id, oldLb, lb);
-  if (!existing || inRange(wa, oldD) !== inRange(wa, d) || inRange(wb, oldD) !== inRange(wb, d)) {
+  if (
+    !existing ||
+    inRange(wa, oldD) !== inRange(wa, d) ||
+    inRange(wb, oldD) !== inRange(wb, d) ||
+    (ea && inRange(ea, oldD) !== inRange(ea, d)) ||
+    (eb && inRange(eb, oldD) !== inRange(eb, d))
+  ) {
     state.rt.dirtyCombat.add(ia);
     state.rt.dirtyCombat.add(ib);
   }

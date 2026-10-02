@@ -27,6 +27,7 @@ import { isMixed, stackSummary } from '../lib/stacks.js';
 import { StackActions, StackComposition } from './StackActions.js';
 import { orderError } from '../lib/loc.js';
 import { UnitOrders } from './UnitOrders.js';
+import { AirDefenseChips } from '../components/AirDefenseCaps.js';
 
 const STANCES: UnitStance[] = ['hold', 'defend', 'aggressive'];
 
@@ -74,6 +75,22 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
       label: t('game.selection.count'),
       value:
         `${formatInt(u.count)} ${mixed ? t('stacks.elements') : (sys?.unitLabel ?? '')}`.trim(),
+    });
+  // Défense antiaérienne : intercepteurs restants (en tête : visible aussi sur mobile).
+  if (own && u.airDefense)
+    rows.push({
+      label: t('airDefense.interceptors'),
+      value:
+        `${formatInt(u.airDefense.ammo)}/${formatInt(u.airDefense.max)}` +
+        (u.airDefense.fullAt && u.airDefense.fullAt > now
+          ? ` · ${t('airDefense.fullIn', { value: fmtDuration(u.airDefense.fullAt - now) })}`
+          : ''),
+      tone:
+        u.airDefense.ammo < u.airDefense.max * 0.25
+          ? 'red'
+          : u.airDefense.ammo < u.airDefense.max * 0.5
+            ? 'amber'
+            : 'cyan',
     });
   if (u.status)
     rows.push({
@@ -213,6 +230,7 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
         </div>
       ) : null}
       <KeyValue items={compact ? rows.slice(0, 4) : rows} columns={compact ? 1 : 1} />
+      {sys && u.level !== 'detected' && !compact ? <AirDefenseChips system={sys} /> : null}
       {!compact ? <StackComposition u={u} /> : null}
       {own ? (
         <>

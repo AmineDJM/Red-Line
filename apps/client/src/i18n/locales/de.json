@@ -418,7 +418,10 @@
         "aircraft_cooldown": "Flugzeug wird am Boden klargemacht (bereit in {{min}} min).",
         "partial": "Befehl übermittelt; {{count}} Verband/Verbände ausgelassen: {{detail}}",
         "munition_use_strike": "Munition: Schlagbefehl verwenden.",
-        "ceasefire": "Waffenstillstand in Kraft."
+        "ceasefire": "Waffenstillstand in Kraft.",
+        "ad_cannot_engage": "{{name}} fängt {{cat}} nicht ab.",
+        "ad_out_of_range": "{{name}} — außer Reichweite: {{dist}} km, Reichweite {{min}}–{{max}} km gegen {{cat}}.",
+        "ad_no_ammo": "{{name}}: keine Abfangraketen mehr, Nachladen läuft."
       },
       "classes": {
         "infantry": "Infanterie",
@@ -430,6 +433,14 @@
         "submarine": "U-Boot",
         "missile": "Rakete",
         "building": "Anlage"
+      },
+      "threats": {
+        "aircraft": "Flugzeuge",
+        "helicopter": "Hubschrauber",
+        "drone": "Drohnen",
+        "cruise_missile": "Marschflugkörper",
+        "ballistic_missile": "ballistische Raketen",
+        "hypersonic": "Hyperschallraketen"
       }
     },
     "status": {
@@ -925,7 +936,8 @@
     "genericOrigin": "Generisch"
   },
   "units": {
-    "km": "{{value}} km"
+    "km": "{{value}} km",
+    "kmRange": "{{min}}–{{max}} km"
   },
   "map": {
     "attribution": "Bilder NASA Blue Marble · Natural Earth",
@@ -3151,6 +3163,46 @@
       "losses": "Verluste",
       "spent": "Ausgaben"
     }
+  },
+  "airDefense": {
+    "title": "Luftverteidigung",
+    "legacy": "Vereinfachtes Profil",
+    "interceptors": "Abfangraketen",
+    "fullIn": "Voll in {{value}}",
+    "chipTitle": "{{cat}}: {{range}}",
+    "chipNone": "{{cat}}: wird nicht abgefangen",
+    "no": "Nein",
+    "magazine": "Abfangraketen pro Element",
+    "channels": "Feuerkanäle",
+    "reaction": "Reaktionszeit",
+    "reload": "Vollständiges Nachladen",
+    "seconds": "{{value}} s",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "Bedrohung",
+      "range": "Reichweite",
+      "ceiling": "Gipfelhöhe",
+      "pk": "Pk",
+      "shots": "Schuss/Ziel"
+    },
+    "threats": {
+      "aircraft": "Flugzeuge",
+      "helicopter": "Hubschrauber",
+      "drone": "Drohnen",
+      "cruise_missile": "Marschflugkörper",
+      "ballistic_missile": "Ballistische Raketen",
+      "hypersonic": "Hyperschall"
+    },
+    "short": {
+      "aircraft": "FLZ",
+      "helicopter": "HUB",
+      "drone": "DRN",
+      "cruise_missile": "MFK",
+      "ballistic_missile": "BAL",
+      "hypersonic": "HYP"
+    },
+    "shotDown": "Abgeschossen: {{cat}}",
+    "fired": "Abgefeuerte Abfangraketen"
   },
   "stacks": {
     "composition_one": "Zusammensetzung · {{count}} System",

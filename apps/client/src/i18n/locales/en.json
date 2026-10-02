@@ -418,7 +418,10 @@
         "aircraft_cooldown": "Aircraft being turned around on the ground (ready in {{min}} min).",
         "partial": "Order sent; {{count}} stack(s) left out: {{detail}}",
         "munition_use_strike": "Munitions: use the strike order.",
-        "ceasefire": "Ceasefire in force."
+        "ceasefire": "Ceasefire in force.",
+        "ad_cannot_engage": "{{name}} cannot intercept {{cat}}.",
+        "ad_out_of_range": "{{name}} — out of range: {{dist}} km, range {{min}}–{{max}} km against {{cat}}.",
+        "ad_no_ammo": "{{name}}: no interceptors left, reloading."
       },
       "classes": {
         "infantry": "infantry",
@@ -430,6 +433,14 @@
         "submarine": "submarine",
         "missile": "missile",
         "building": "installation"
+      },
+      "threats": {
+        "aircraft": "aircraft",
+        "helicopter": "helicopters",
+        "drone": "drones",
+        "cruise_missile": "cruise missiles",
+        "ballistic_missile": "ballistic missiles",
+        "hypersonic": "hypersonic missiles"
       }
     },
     "status": {
@@ -925,7 +936,8 @@
     "genericOrigin": "Generic"
   },
   "units": {
-    "km": "{{value}} km"
+    "km": "{{value}} km",
+    "kmRange": "{{min}}–{{max}} km"
   },
   "map": {
     "attribution": "Imagery NASA Blue Marble · Natural Earth",
@@ -3151,6 +3163,46 @@
       "losses": "Losses",
       "spent": "Spending"
     }
+  },
+  "airDefense": {
+    "title": "Air defence",
+    "legacy": "Simplified profile",
+    "interceptors": "Interceptors",
+    "fullIn": "Full in {{value}}",
+    "chipTitle": "{{cat}}: {{range}}",
+    "chipNone": "{{cat}}: not intercepted",
+    "no": "No",
+    "magazine": "Interceptors per element",
+    "channels": "Fire channels",
+    "reaction": "Reaction",
+    "reload": "Full reload",
+    "seconds": "{{value}} s",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "Threat",
+      "range": "Range",
+      "ceiling": "Ceiling",
+      "pk": "Pk",
+      "shots": "Shots/target"
+    },
+    "threats": {
+      "aircraft": "Aircraft",
+      "helicopter": "Helicopters",
+      "drone": "Drones",
+      "cruise_missile": "Cruise missiles",
+      "ballistic_missile": "Ballistic missiles",
+      "hypersonic": "Hypersonic"
+    },
+    "short": {
+      "aircraft": "AIR",
+      "helicopter": "HELO",
+      "drone": "UAV",
+      "cruise_missile": "CRM",
+      "ballistic_missile": "BAL",
+      "hypersonic": "HYP"
+    },
+    "shotDown": "Shot down: {{cat}}",
+    "fired": "Interceptors fired"
   },
   "stacks": {
     "composition_one": "Composition · {{count}} system",

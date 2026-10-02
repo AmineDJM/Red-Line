@@ -412,7 +412,10 @@
         "aircraft_cooldown": "항공기 지상 정비 중({{min}}분 후 준비 완료).",
         "partial": "명령 전송됨; {{count}}개 부대 제외: {{detail}}",
         "munition_use_strike": "탄약: 타격 명령을 사용하십시오.",
-        "ceasefire": "휴전이 발효 중입니다."
+        "ceasefire": "휴전이 발효 중입니다.",
+        "ad_cannot_engage": "{{name}}은(는) {{cat}}을(를) 요격할 수 없습니다.",
+        "ad_out_of_range": "{{name}} — 사거리 밖: {{dist}} km, {{cat}} 대상 사거리 {{min}}–{{max}} km.",
+        "ad_no_ammo": "{{name}}: 요격미사일 소진, 재장전 중."
       },
       "classes": {
         "infantry": "보병",
@@ -424,6 +427,14 @@
         "submarine": "잠수함",
         "missile": "미사일",
         "building": "시설"
+      },
+      "threats": {
+        "aircraft": "항공기",
+        "helicopter": "헬기",
+        "drone": "드론",
+        "cruise_missile": "순항미사일",
+        "ballistic_missile": "탄도미사일",
+        "hypersonic": "극초음속 미사일"
       }
     },
     "status": {
@@ -910,7 +921,8 @@
     "genericOrigin": "범용"
   },
   "units": {
-    "km": "{{value}} km"
+    "km": "{{value}} km",
+    "kmRange": "{{min}}–{{max}} km"
   },
   "map": {
     "attribution": "영상 NASA Blue Marble · Natural Earth",
@@ -3110,6 +3122,46 @@
       "losses": "손실",
       "spent": "지출"
     }
+  },
+  "airDefense": {
+    "title": "방공",
+    "legacy": "간이 제원",
+    "interceptors": "요격미사일",
+    "fullIn": "{{value}} 후 완충",
+    "chipTitle": "{{cat}}: {{range}}",
+    "chipNone": "{{cat}}: 요격 불가",
+    "no": "아니요",
+    "magazine": "요소당 요격미사일",
+    "channels": "사격 채널",
+    "reaction": "반응 시간",
+    "reload": "완전 재장전",
+    "seconds": "{{value}}초",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "위협",
+      "range": "사거리",
+      "ceiling": "최고 고도",
+      "pk": "격추 확률",
+      "shots": "목표당 발사 수"
+    },
+    "threats": {
+      "aircraft": "항공기",
+      "helicopter": "헬기",
+      "drone": "드론",
+      "cruise_missile": "순항미사일",
+      "ballistic_missile": "탄도미사일",
+      "hypersonic": "극초음속"
+    },
+    "short": {
+      "aircraft": "항공",
+      "helicopter": "헬기",
+      "drone": "드론",
+      "cruise_missile": "순항",
+      "ballistic_missile": "탄도",
+      "hypersonic": "극초"
+    },
+    "shotDown": "격추: {{cat}}",
+    "fired": "발사한 요격미사일"
   },
   "stacks": {
     "composition_other": "구성 · {{count}}종",

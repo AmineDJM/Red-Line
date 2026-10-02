@@ -358,6 +358,9 @@ function buildSide(
           max: X[V].nh * Math.max(3, ...Object.values(R.munitionsPerRound)),
         }),
   };
+  // Défense antiaérienne : ce que ce camp a abattu, par catégorie (le lecteur connaît ses pertes).
+  if (mineX.ic && Object.keys(mineX.ic).length > 0) side.intercepts = { ...mineX.ic };
+  if (own && mineX.ifd) side.interceptorsFired = mineX.ifd;
   if (own) {
     if (mineX.gn.length > 0) side.generals = [...mineX.gn];
     if (mineX.vt[1] > 0) side.veterancy = Math.round((mineX.vt[0] / mineX.vt[1]) * 100) / 100;

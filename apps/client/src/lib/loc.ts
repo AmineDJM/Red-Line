@@ -87,6 +87,7 @@ export function orderReason(res: OrderOutcomeLike): string | null {
   if (!i18n.exists(key)) return null;
   const p: Record<string, string | number> = { ...(res.params ?? {}) };
   if (typeof p.cls === 'string') p.cls = t(`game.orders.classes.${p.cls}`);
+  if (typeof p.cat === 'string') p.cat = t(`game.orders.threats.${p.cat}`);
   if (res.reason === 'partial' && !isFrench) p.detail = '';
   return t(key, p).trim();
 }

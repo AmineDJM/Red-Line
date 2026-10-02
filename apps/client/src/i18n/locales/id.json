@@ -412,7 +412,10 @@
         "aircraft_cooldown": "Pesawat sedang disiapkan di darat (siap dalam {{min}} menit).",
         "partial": "Perintah dikirim; {{count}} satuan dikecualikan: {{detail}}",
         "munition_use_strike": "Amunisi: gunakan perintah serangan.",
-        "ceasefire": "Gencatan senjata berlaku."
+        "ceasefire": "Gencatan senjata berlaku.",
+        "ad_cannot_engage": "{{name}} tidak dapat mencegat {{cat}}.",
+        "ad_out_of_range": "{{name}} — di luar jangkauan: {{dist}} km, jangkauan {{min}}–{{max}} km terhadap {{cat}}.",
+        "ad_no_ammo": "{{name}}: pencegat habis, sedang mengisi ulang."
       },
       "classes": {
         "infantry": "infanteri",
@@ -424,6 +427,14 @@
         "submarine": "kapal selam",
         "missile": "rudal",
         "building": "instalasi"
+      },
+      "threats": {
+        "aircraft": "pesawat",
+        "helicopter": "helikopter",
+        "drone": "drone",
+        "cruise_missile": "rudal jelajah",
+        "ballistic_missile": "rudal balistik",
+        "hypersonic": "rudal hipersonik"
       }
     },
     "status": {
@@ -910,7 +921,8 @@
     "genericOrigin": "Generik"
   },
   "units": {
-    "km": "{{value}} km"
+    "km": "{{value}} km",
+    "kmRange": "{{min}}–{{max}} km"
   },
   "map": {
     "attribution": "Citra NASA Blue Marble · Natural Earth",
@@ -3110,6 +3122,46 @@
       "losses": "Kerugian",
       "spent": "Pengeluaran"
     }
+  },
+  "airDefense": {
+    "title": "Pertahanan udara",
+    "legacy": "Profil sederhana",
+    "interceptors": "Pencegat",
+    "fullIn": "Penuh dalam {{value}}",
+    "chipTitle": "{{cat}}: {{range}}",
+    "chipNone": "{{cat}}: tidak dicegat",
+    "no": "Tidak",
+    "magazine": "Pencegat per elemen",
+    "channels": "Kanal tembak",
+    "reaction": "Waktu reaksi",
+    "reload": "Isi ulang penuh",
+    "seconds": "{{value}} dtk",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "Ancaman",
+      "range": "Jangkauan",
+      "ceiling": "Ketinggian maks.",
+      "pk": "Pk",
+      "shots": "Tembakan/sasaran"
+    },
+    "threats": {
+      "aircraft": "Pesawat",
+      "helicopter": "Helikopter",
+      "drone": "Drone",
+      "cruise_missile": "Rudal jelajah",
+      "ballistic_missile": "Rudal balistik",
+      "hypersonic": "Hipersonik"
+    },
+    "short": {
+      "aircraft": "PSW",
+      "helicopter": "HELI",
+      "drone": "DRN",
+      "cruise_missile": "JLJ",
+      "ballistic_missile": "BAL",
+      "hypersonic": "HIP"
+    },
+    "shotDown": "Ditembak jatuh: {{cat}}",
+    "fired": "Pencegat ditembakkan"
   },
   "stacks": {
     "composition_other": "Komposisi · {{count}} sistem",

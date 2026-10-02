@@ -54,6 +54,7 @@ export function WeaponSheet() {
           system={sys}
           mode={spectator ? 'encyclopedia' : 'production'}
           compact={mobile}
+          unit={own ? unit : undefined}
           extra={
             own && unit ? (
               <div className="wsheet__unit">

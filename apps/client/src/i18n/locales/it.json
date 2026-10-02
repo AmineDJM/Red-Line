@@ -424,7 +424,10 @@
         "aircraft_cooldown": "Velivolo in approntamento a terra (pronto tra {{min}} min).",
         "partial": "Ordine trasmesso; {{count}} gruppo/i escluso/i: {{detail}}",
         "munition_use_strike": "Munizioni: usate l'ordine di attacco (strike).",
-        "ceasefire": "Cessate il fuoco in vigore."
+        "ceasefire": "Cessate il fuoco in vigore.",
+        "ad_cannot_engage": "{{name}} non intercetta {{cat}}.",
+        "ad_out_of_range": "{{name}} — fuori portata: {{dist}} km, portata {{min}}–{{max}} km contro {{cat}}.",
+        "ad_no_ammo": "{{name}}: intercettori esauriti, ricarica in corso."
       },
       "classes": {
         "infantry": "fanteria",
@@ -436,6 +439,14 @@
         "submarine": "sottomarino",
         "missile": "missile",
         "building": "installazione"
+      },
+      "threats": {
+        "aircraft": "aerei",
+        "helicopter": "elicotteri",
+        "drone": "droni",
+        "cruise_missile": "missili da crociera",
+        "ballistic_missile": "missili balistici",
+        "hypersonic": "missili ipersonici"
       }
     },
     "status": {
@@ -940,7 +951,8 @@
     "genericOrigin": "Generico"
   },
   "units": {
-    "km": "{{value}} km"
+    "km": "{{value}} km",
+    "kmRange": "{{min}}–{{max}} km"
   },
   "map": {
     "attribution": "Immagini NASA Blue Marble · Natural Earth",
@@ -3192,6 +3204,46 @@
       "losses": "Perdite",
       "spent": "Spese"
     }
+  },
+  "airDefense": {
+    "title": "Difesa antiaerea",
+    "legacy": "Profilo semplificato",
+    "interceptors": "Intercettori",
+    "fullIn": "Pieno tra {{value}}",
+    "chipTitle": "{{cat}}: {{range}}",
+    "chipNone": "{{cat}}: non intercettato",
+    "no": "No",
+    "magazine": "Intercettori per elemento",
+    "channels": "Canali di tiro",
+    "reaction": "Reazione",
+    "reload": "Ricarica completa",
+    "seconds": "{{value}} s",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "Minaccia",
+      "range": "Portata",
+      "ceiling": "Tangenza",
+      "pk": "Pk",
+      "shots": "Colpi/bersaglio"
+    },
+    "threats": {
+      "aircraft": "Aerei",
+      "helicopter": "Elicotteri",
+      "drone": "Droni",
+      "cruise_missile": "Missili da crociera",
+      "ballistic_missile": "Missili balistici",
+      "hypersonic": "Ipersonici"
+    },
+    "short": {
+      "aircraft": "AER",
+      "helicopter": "ELI",
+      "drone": "DRN",
+      "cruise_missile": "CRO",
+      "ballistic_missile": "BAL",
+      "hypersonic": "IPE"
+    },
+    "shotDown": "Abbattuti: {{cat}}",
+    "fired": "Intercettori lanciati"
   },
   "stacks": {
     "composition_one": "Composizione · {{count}} sistema",

@@ -84,6 +84,11 @@ export interface UnitView {
   missile?: { target: import('./military.js').StrikeTarget; impactAt: GameTime } | null;
   /** Leurre (vrai uniquement côté propriétaire ; un ennemi ne le sait pas). */
   decoy?: boolean;
+  /**
+   * Défense antiaérienne (own) : intercepteurs disponibles, magasin plein, et instant où le magasin
+   * sera de nouveau plein (rechargement progressif), null s'il l'est.
+   */
+  airDefense?: { ammo: number; max: number; fullAt: GameTime | null };
   /** Unité rebelle, neutre de maintien de la paix, ou mercenaire. */
   affiliation?: 'regular' | 'rebel' | 'peacekeeper' | 'mercenary';
   /**

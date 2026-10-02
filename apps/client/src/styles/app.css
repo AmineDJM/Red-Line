@@ -1253,6 +1253,109 @@ code {
   justify-content: space-between;
   gap: 10px;
 }
+/* Défense antiaérienne : catégories interceptées, portées, magasin (components/AirDefenseCaps.tsx). */
+.adcaps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-panel-2);
+}
+.adcaps__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.adcaps__title,
+.adcaps__label {
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-2xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.adcaps__note {
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-2xs);
+}
+.adcaps__ammo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+}
+.adcaps__reload {
+  color: var(--rl-amber);
+  font-size: var(--rl-fs-xs);
+  font-variant-numeric: tabular-nums;
+}
+.adcaps__table td {
+  font-variant-numeric: tabular-nums;
+  color: var(--rl-amber);
+  white-space: nowrap;
+}
+.adcaps__cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--rl-text);
+  white-space: nowrap;
+}
+.adcaps__off th,
+.adcaps__off td,
+.adcaps__off .adcaps__cat {
+  color: var(--rl-text-dim);
+  opacity: 0.55;
+}
+.adcaps__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 4px 12px;
+  margin: 0;
+  font-size: var(--rl-fs-xs);
+}
+.adcaps__facts div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.adcaps__facts dt {
+  color: var(--rl-text-dim);
+}
+.adcaps__facts dd {
+  margin: 0;
+  color: var(--rl-amber);
+  font-variant-numeric: tabular-nums;
+}
+.adcaps__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.adcaps__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border: 1px solid var(--rl-cyan-line);
+  border-radius: 3px;
+  background: var(--rl-cyan-dim);
+  color: var(--rl-text);
+  font-size: var(--rl-fs-2xs);
+  font-variant-numeric: tabular-nums;
+}
+.adcaps__chip--off {
+  border-color: var(--rl-line);
+  background: transparent;
+  color: var(--rl-text-dim);
+  opacity: 0.55;
+}
 .selpanel__actions {
   display: flex;
   flex-wrap: wrap;

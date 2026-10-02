@@ -186,6 +186,9 @@ describe('audit des ordres — défense antiaérienne (S-400, SAMP/T)', () => {
       { owner: 'rus', systemId: 'ru.s-400', pos: f.a, count: 4 },
       { owner: 'ukr', systemId: 'ru.su-27', pos: f.b, count: 6 },
     ]);
+    // Posture « tenir » : la batterie ne tire que sur ordre (sinon elle engagerait d'elle-même
+    // l'avion entré dans sa bulle).
+    expect(order(s, 'rus', { kind: 'stance', unitIds: ['u1'], stance: 'hold' }).ok).toBe(true);
     // L'avion ukrainien décolle et patrouille à 60 km du S-400.
     const at = destination(f.a, 270, 60);
     expect(order(s, 'ukr', { kind: 'patrol', unitIds: ['u2'], at, radiusKm: 20 }).ok).toBe(true);
@@ -210,7 +213,11 @@ describe('audit des ordres — défense antiaérienne (S-400, SAMP/T)', () => {
     run(s, 10 * MINUTE);
     expect(sightLevel(s, 'rus', 'u2')).toBeGreaterThan(0);
     const r = order(s, 'rus', { kind: 'attack', unitIds: ['u1'], targetId: 'u2' });
-    expect(r).toMatchObject({ ok: false, reason: 'out_of_weapon_range' });
+    // Refus de la défense antiaérienne : distance, enveloppe contre les avions (40N6 : 380 km).
+    expect(r).toMatchObject({ ok: false, error: 'out_of_range', reason: 'ad_out_of_range' });
+    expect(r.params).toMatchObject({ cat: 'aircraft', min: 3, max: 380 });
+    expect(Number(r.params?.dist)).toBeGreaterThan(380);
+    expect(r.message).toMatch(/hors de portée.*contre les avions/);
     expect(s.units.u1!.move).toBeNull();
   });
 

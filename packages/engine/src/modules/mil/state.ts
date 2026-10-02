@@ -144,6 +144,9 @@ export interface BattleSideX {
   aa: number;
   /** Vétérance : somme des niveaux × éléments, éléments comptés. */
   vt: [number, number];
+  /** Défense antiaérienne (optionnel) : menaces abattues par catégorie, intercepteurs tirés. */
+  ic?: Record<string, number>;
+  ifd?: number;
   /** Généraux (identifiants) qui commandaient des unités engagées. */
   gn: string[];
   /** Éléments capturés par l'adversaire (matériel pris sur ses bases). */
@@ -278,12 +281,17 @@ export interface MilState {
   reload: Record<UnitId, GameTime>;
   /** Navire → cellules de lancement restantes. */
   cells: Record<UnitId, number>;
-  /** Intercepteur → [munitions restantes, dernier tir]. */
+  /** Intercepteur → [munitions restantes à l'instant t (rechargement progressif depuis), t]. */
   mag: Record<UnitId, [number, GameTime]>;
   /** Intercepteur → [début de la fenêtre d'engagement, canaux utilisés]. */
   icw: Record<UnitId, [GameTime, number]>;
-  /** "intercepteur>missile" → prochain engagement programmé. */
+  /**
+   * "intercepteur>menace" (missile, aéronef, drone) → prochain engagement programmé ; -1 : magasin
+   * vide au moment de l'engagement (repris au rechargement).
+   */
   icq: Record<string, GameTime>;
+  /** Engagements ordonnés par le joueur ("intercepteur>menace") : priorité absolue (optionnel). */
+  adf?: Record<string, 1>;
   /** Brouilleurs éteints (un brouilleur émet par défaut). */
   jamOff: Record<UnitId, true>;
   /** Sous-marin repéré jusqu'à (après un tir). */

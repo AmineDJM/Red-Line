@@ -76,6 +76,47 @@ export const WeaponSheetSchema = z.object({
 });
 export type WeaponSheet = z.infer<typeof WeaponSheetSchema>;
 
+/**
+ * Catégories de menaces aériennes engagées par la défense antiaérienne : avions, hélicoptères, drones
+ * (y compris munitions rôdeuses), missiles de croisière (et antinavires, antiradars), missiles
+ * balistiques (courte et moyenne portée), planeurs et missiles hypersoniques.
+ */
+export const AIR_THREATS = [
+  'aircraft',
+  'helicopter',
+  'drone',
+  'cruise_missile',
+  'ballistic_missile',
+  'hypersonic',
+] as const;
+export type AirThreat = (typeof AIR_THREATS)[number];
+
+/** Enveloppe d'engagement d'un système contre une catégorie de menace. */
+export const AirDefenseEnvelopeSchema = z
+  .object({
+    /** Portée minimale et maximale d'interception (km). */
+    minKm: nonNeg,
+    maxKm: z.number().positive(),
+    /** Plafond d'interception (km d'altitude), information de fiche (l'altitude n'est pas simulée). */
+    ceilingKm: z.number().positive().optional(),
+    /** Probabilité de destruction par intercepteur, au cœur de l'enveloppe (avant évasion et brouillage). */
+    pk: z.number().min(0).max(1),
+    /** Intercepteurs tirés par cible (doctrine : 2 contre un balistique). */
+    shots: z.number().int().min(1).max(4).optional(),
+  })
+  .strict();
+export type AirDefenseEnvelope = z.infer<typeof AirDefenseEnvelopeSchema>;
+
+export const AirDefenseEnvelopesSchema = z
+  .object(
+    Object.fromEntries(AIR_THREATS.map((c) => [c, AirDefenseEnvelopeSchema.optional()])) as Record<
+      AirThreat,
+      z.ZodOptional<typeof AirDefenseEnvelopeSchema>
+    >,
+  )
+  .strict();
+export type AirDefenseEnvelopes = z.infer<typeof AirDefenseEnvelopesSchema>;
+
 export const WeaponSystemSchema = z.object({
   id: z.string().regex(/^[a-z]{2,5}\.[a-z0-9-]+$/, 'format attendu : doctrine.nom-en-minuscules'),
   name: z.string().min(1),
@@ -191,8 +232,21 @@ export const WeaponSystemSchema = z.object({
       ),
       /** Probabilité d'interception par engagement (avant modificateurs). */
       pk: z.number().min(0).max(1),
-      /** Munitions disponibles avant rechargement. */
+      /** Munitions disponibles avant rechargement (intercepteurs par élément). */
       magazine: z.number().int().min(1),
+      // ——— Défense antiaérienne détaillée (optionnelle, docs/defense-aerienne.md) ———
+      /**
+       * Enveloppes d'engagement par catégorie de menace. Présentes : elles font foi (catégorie absente
+       * = jamais engagée) et la défense engage aussi avions, hélicoptères et drones par intercepteurs
+       * (magasin, canaux, probabilité) au lieu des rounds de combat.
+       */
+      envelopes: AirDefenseEnvelopesSchema.optional(),
+      /** Intercepteurs guidés simultanément par élément et par fenêtre d'engagement (canaux de tir). */
+      channels: z.number().int().min(1).optional(),
+      /** Délai de réaction entre l'entrée d'une menace dans l'enveloppe et le premier tir (secondes). */
+      reactionS: z.number().min(0).optional(),
+      /** Durée d'un rechargement complet du magasin (heures, progressif). */
+      reloadH: z.number().positive().optional(),
     })
     .optional(),
   naval: z

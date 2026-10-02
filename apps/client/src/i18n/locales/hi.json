@@ -418,7 +418,10 @@
         "aircraft_cooldown": "विमान ज़मीन पर तैयार किया जा रहा है ({{min}} मिनट में तैयार)।",
         "partial": "आदेश भेजा गया; {{count}} टुकड़ी छोड़ी गई: {{detail}}",
         "munition_use_strike": "गोला-बारूद: प्रहार आदेश का उपयोग करें।",
-        "ceasefire": "युद्धविराम लागू है।"
+        "ceasefire": "युद्धविराम लागू है।",
+        "ad_cannot_engage": "{{name}} {{cat}} को इंटरसेप्ट नहीं करता।",
+        "ad_out_of_range": "{{name}} — सीमा से बाहर: {{dist}} किमी, {{cat}} के विरुद्ध मारक दूरी {{min}}–{{max}} किमी।",
+        "ad_no_ammo": "{{name}}: इंटरसेप्टर समाप्त, पुनः लोडिंग जारी।"
       },
       "classes": {
         "infantry": "पैदल सेना",
@@ -430,6 +433,14 @@
         "submarine": "पनडुब्बी",
         "missile": "मिसाइल",
         "building": "प्रतिष्ठान"
+      },
+      "threats": {
+        "aircraft": "विमानों",
+        "helicopter": "हेलीकॉप्टरों",
+        "drone": "ड्रोनों",
+        "cruise_missile": "क्रूज़ मिसाइलों",
+        "ballistic_missile": "बैलिस्टिक मिसाइलों",
+        "hypersonic": "हाइपरसोनिक मिसाइलों"
       }
     },
     "status": {
@@ -925,7 +936,8 @@
     "genericOrigin": "सामान्य"
   },
   "units": {
-    "km": "{{value}} km"
+    "km": "{{value}} km",
+    "kmRange": "{{min}}–{{max}} km"
   },
   "map": {
     "attribution": "चित्र NASA Blue Marble · Natural Earth",
@@ -3151,6 +3163,46 @@
       "losses": "हानियाँ",
       "spent": "व्यय"
     }
+  },
+  "airDefense": {
+    "title": "वायु रक्षा",
+    "legacy": "सरल प्रोफ़ाइल",
+    "interceptors": "इंटरसेप्टर",
+    "fullIn": "{{value}} में पूर्ण",
+    "chipTitle": "{{cat}}: {{range}}",
+    "chipNone": "{{cat}}: इंटरसेप्ट नहीं",
+    "no": "नहीं",
+    "magazine": "प्रति इकाई इंटरसेप्टर",
+    "channels": "फायर चैनल",
+    "reaction": "प्रतिक्रिया समय",
+    "reload": "पूर्ण पुनः लोडिंग",
+    "seconds": "{{value}} से.",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "ख़तरा",
+      "range": "मारक दूरी",
+      "ceiling": "अधिकतम ऊँचाई",
+      "pk": "Pk",
+      "shots": "प्रति लक्ष्य दाग"
+    },
+    "threats": {
+      "aircraft": "विमान",
+      "helicopter": "हेलीकॉप्टर",
+      "drone": "ड्रोन",
+      "cruise_missile": "क्रूज़ मिसाइलें",
+      "ballistic_missile": "बैलिस्टिक मिसाइलें",
+      "hypersonic": "हाइपरसोनिक"
+    },
+    "short": {
+      "aircraft": "विमान",
+      "helicopter": "हेली",
+      "drone": "ड्रोन",
+      "cruise_missile": "क्रूज़",
+      "ballistic_missile": "बैलि",
+      "hypersonic": "हाइप"
+    },
+    "shotDown": "मार गिराए: {{cat}}",
+    "fired": "दागे गए इंटरसेप्टर"
   },
   "stacks": {
     "composition_one": "संरचना · {{count}} प्रणाली",

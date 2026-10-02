@@ -367,6 +367,10 @@ export const ORDER_REASONS = [
   'partial',
   'munition_use_strike',
   'ceasefire',
+  // Défense antiaérienne : catégorie non engagée, hors de l'enveloppe, magasin vide.
+  'ad_cannot_engage',
+  'ad_out_of_range',
+  'ad_no_ammo',
 ] as const;
 export type OrderReason = (typeof ORDER_REASONS)[number];
 
