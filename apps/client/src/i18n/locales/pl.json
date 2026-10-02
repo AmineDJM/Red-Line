@@ -408,6 +408,7 @@
         "capacity": "Osiągnięto maksymalną pojemność.",
         "cooldown": "Działanie w trakcie odnowienia.",
         "insufficient_resources": "Niewystarczające zasoby.",
+        "off_road": "Poza siecią dróg: wskaż miasto, węzeł lub drogę.",
         "disconnected": "Offline: rozkaz nie został przekazany.",
         "timeout": "Brak odpowiedzi serwera."
       }
@@ -991,7 +992,8 @@
       "sat": "SAT · przelot za {{value}}"
     },
     "order": {
-      "eta": "{{distance}} · {{eta}}"
+      "eta": "{{distance}} · {{eta}}",
+      "etaSea": "{{distance}} · {{eta}} · przeprawa"
     },
     "minimap": {
       "label": "Minimapa",

@@ -390,6 +390,7 @@
         "capacity": "已达最大容量。",
         "cooldown": "操作冷却中。",
         "insufficient_resources": "资源不足。",
+        "off_road": "不在道路网络上：请选择城市、节点或道路。",
         "disconnected": "离线：命令未发送。",
         "timeout": "服务器无响应。"
       }
@@ -946,7 +947,8 @@
       "sat": "卫星 · {{value}}后过境"
     },
     "order": {
-      "eta": "{{distance}} · {{eta}}"
+      "eta": "{{distance}} · {{eta}}",
+      "etaSea": "{{distance}} · {{eta}} · 渡海"
     },
     "minimap": {
       "label": "小地图",

@@ -390,6 +390,7 @@
         "capacity": "最大容量に達しました。",
         "cooldown": "クールダウン中。",
         "insufficient_resources": "資源不足。",
+        "off_road": "道路網の外です：都市、ノード、または道路を指定してください。",
         "disconnected": "オフライン：命令は送信されていません。",
         "timeout": "サーバーから応答がありません。"
       }
@@ -946,7 +947,8 @@
       "sat": "衛星 · {{value}}後に通過"
     },
     "order": {
-      "eta": "{{distance}} · {{eta}}"
+      "eta": "{{distance}} · {{eta}}",
+      "etaSea": "{{distance}} · {{eta}} · 渡海"
     },
     "minimap": {
       "label": "ミニマップ",

@@ -396,6 +396,7 @@
         "capacity": "Maximum capacity reached.",
         "cooldown": "Action on cooldown.",
         "insufficient_resources": "Insufficient resources.",
+        "off_road": "Off the road network: aim at a city, a node or a road.",
         "disconnected": "Offline: order not sent.",
         "timeout": "No response from the server."
       }
@@ -961,7 +962,8 @@
       "sat": "SAT · pass in {{value}}"
     },
     "order": {
-      "eta": "{{distance}} · {{eta}}"
+      "eta": "{{distance}} · {{eta}}",
+      "etaSea": "{{distance}} · {{eta}} · crossing"
     },
     "minimap": {
       "label": "Minimap",
