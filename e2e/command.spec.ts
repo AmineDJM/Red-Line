@@ -84,10 +84,11 @@ test('centre de commandement : armée, mission Conquérir, général, province p
   await page.locator('[data-testid^="wizard-general-cand"]').first().click();
   await page.getByTestId('wizard-confirm').click();
   await expect(page.getByTestId('army-wizard')).toBeHidden();
-  const armyId = await page.evaluate(
-    () => window.__rl.game.getState().view.command.armies[0]?.id as string,
-  );
-  expect(armyId).toBeTruthy();
+  // La vue reçoit l'armée au diff suivant : on l'attend.
+  const readArmy = () =>
+    page.evaluate(() => window.__rl.game.getState().view.command?.armies[0]?.id as string);
+  await expect.poll(readArmy).toBeTruthy();
+  const armyId = await readArmy();
   // La nouvelle armée s'ouvre d'elle-même (sur mobile aussi) ; retour à la liste puis réouverture.
   await expect(page.getByTestId('army-detail')).toBeVisible();
   if (mobile) {
