@@ -6,6 +6,7 @@ import type {
   NationId,
   Order,
   OrderErrorCode,
+  OrderReason,
   PlayerView,
   ViewDiff,
 } from '@redline/shared';
@@ -24,6 +25,9 @@ export interface OrderOutcome {
   /** Code du contrat, ou 'disconnected' / 'timeout' côté client. */
   error?: OrderErrorCode | 'disconnected' | 'timeout';
   message?: string;
+  /** Raison détaillée (traduite via `game.orders.reasons.<reason>`). */
+  reason?: OrderReason;
+  params?: Record<string, string | number>;
 }
 
 export interface OrderResultEvent extends OrderOutcome {

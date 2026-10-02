@@ -26,6 +26,7 @@ import { ProvincePanel } from './ProvincePanel.js';
 import { isMixed, stackSummary } from '../lib/stacks.js';
 import { StackActions, StackComposition } from './StackActions.js';
 import { orderError } from '../lib/loc.js';
+import { UnitOrders } from './UnitOrders.js';
 
 const STANCES: UnitStance[] = ['hold', 'defend', 'aggressive'];
 
@@ -227,24 +228,21 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
               />
             </div>
           ) : null}
-          <div className="selpanel__actions">
-            {u.status === 'moving' || u.status === 'combat' ? (
-              <Button
-                size="sm"
-                icon={<Icon name="stop" size={12} />}
-                onClick={() => void send({ kind: 'stop', unitIds: ids })}
-              >
-                {t('game.selection.stop')}
-              </Button>
-            ) : null}
-            {sys?.movement === 'air' ? (
-              <Button
-                size="sm"
-                icon={<Icon name="home" size={13} />}
-                onClick={() => void send({ kind: 'rtb', unitIds: ids })}
-              >
-                {t('army.rtb')}
-              </Button>
+          {!compact ? (
+            <UnitOrders
+              units={ids.map((id) => view?.units[id]).filter((x): x is UnitView => !!x)}
+              compact={false}
+            />
+          ) : null}
+          <div
+            className={compact ? 'selpanel__actions selpanel__actions--row' : 'selpanel__actions'}
+          >
+            {/* Mobile : actions possibles et fiche sur une seule rangée défilante. */}
+            {compact ? (
+              <UnitOrders
+                units={ids.map((id) => view?.units[id]).filter((x): x is UnitView => !!x)}
+                compact
+              />
             ) : null}
             {sys ? (
               <Button
@@ -292,8 +290,11 @@ export function SelectionPanel({ compact }: { compact: boolean }) {
   const province = useUi((s) => s.selectedProvince);
   const battle = useMapSel((s) => s.battle);
   const view = useGame((s) => s.view);
+  const targeting = useUi((s) => s.targeting);
   const id = selection[0] ?? inspected;
   const u = id ? view?.units[id] : undefined;
+  // Mobile : en mode ciblage, la carte entière reste libre (le bandeau permet d'annuler).
+  if (compact && targeting) return null;
   if (u && view) return <UnitPanel u={u} compact={compact} />;
   if (battle && view) return <BattlePanel compact={compact} />;
   if (province && view?.provinces[province])

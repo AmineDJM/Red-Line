@@ -393,6 +393,36 @@
         "off_road": "도로망 밖입니다: 도시, 노드 또는 도로를 지정하세요.",
         "disconnected": "오프라인: 명령이 전달되지 않았습니다.",
         "timeout": "서버 응답 없음."
+      },
+      "strikeTitle": "타격 명령",
+      "patrolTitle": "초계 명령",
+      "reconTitle": "정찰 임무",
+      "blockadeTitle": "봉쇄 명령",
+      "radius": "반경",
+      "reasons": {
+        "target_invalid": "잘못된 목표입니다.",
+        "target_not_visible": "목표가 시야 밖에 있습니다: 먼저 탐지하십시오(레이더, 정찰, 위성).",
+        "target_friendly": "아군 목표: 공격할 수 없습니다.",
+        "air_defense_air_only": "{{name}}: 방공 부대, 공중 목표만 가능(항공기, 헬기, 드론, 미사일).",
+        "cannot_hit_class": "{{name}}은(는) 이 유형의 목표({{cls}})를 타격할 수 없습니다.",
+        "out_of_weapon_range": "{{name}}: 목표가 사거리 밖입니다({{dist}} km, 사거리 {{min}}–{{max}} km).",
+        "missile_out_of_range": "목표가 {{name}} 미사일의 사거리 밖입니다({{dist}} km, 사거리 {{range}} km).",
+        "aircraft_out_of_radius": "작전 반경 밖: 기지에서 {{dist}} km, 한계 {{range}} km.",
+        "aircraft_cooldown": "항공기 지상 정비 중({{min}}분 후 준비 완료).",
+        "partial": "명령 전송됨; {{count}}개 부대 제외: {{detail}}",
+        "munition_use_strike": "탄약: 타격 명령을 사용하십시오.",
+        "ceasefire": "휴전이 발효 중입니다."
+      },
+      "classes": {
+        "infantry": "보병",
+        "armor": "기갑",
+        "aircraft": "항공기",
+        "helicopter": "헬기",
+        "drone": "드론",
+        "ship": "함정",
+        "submarine": "잠수함",
+        "missile": "미사일",
+        "building": "시설"
       }
     },
     "status": {
@@ -445,6 +475,43 @@
       "reserve": "무제한 비축",
       "stockTip": "{{name}}: 재고 무제한",
       "budgetTip": "국고 무제한 — 경제 열기"
+    },
+    "actions": {
+      "title": "명령",
+      "move": "이동",
+      "attack": "공격",
+      "strike": "타격",
+      "intercept": "요격",
+      "patrol": "초계",
+      "recon": "정찰",
+      "blockade": "봉쇄",
+      "rtb": "귀환",
+      "rtbAir": "기지 귀환",
+      "rtbSea": "항구 귀환",
+      "resupply": "보급",
+      "stop": "정지",
+      "reasons": {
+        "static": "고정 부대: 이동할 수 없습니다.",
+        "noWeapon": "선택 항목에 공격 무기가 없습니다.",
+        "noStrike": "타격은 미사일, 항공 전력, 미사일 함정만 가능합니다.",
+        "noIntercept": "요격은 공중 목표에 대한 무장 항공기만 가능합니다.",
+        "airSeaOnly": "초계는 항공기와 함정만 가능합니다.",
+        "noRecon": "정찰은 드론과 정찰기만 가능합니다.",
+        "seaOnly": "봉쇄는 함정만 가능합니다.",
+        "idle": "정지할 대상이 없습니다: 이미 정지 상태입니다.",
+        "none": "사용할 수 없는 행동입니다."
+      },
+      "pick": {
+        "move": "지도에서 목적지를 클릭하십시오.",
+        "attack": "적 부대를 클릭하십시오.",
+        "intercept": "적 항공기를 클릭하십시오.",
+        "strike": "적 부대 또는 지도상의 지점을 클릭하십시오.",
+        "patrol": "초계 구역의 중심을 클릭하십시오.",
+        "recon": "비행할 구역을 클릭하십시오.",
+        "blockade": "적 해안 지역을 클릭하십시오.",
+        "needEnemy": "보이는 적 부대를 선택하십시오.",
+        "needPort": "외국 해안 지역을 선택하십시오."
+      }
     }
   },
   "province": {
@@ -3117,6 +3184,12 @@
       "strikeNoEffect": {
         "title": "타격 효과 없음",
         "text": "{{system}}: 목표 명중 실패."
+      },
+      "strikeAborted": {
+        "title": "타격 취소",
+        "gone": "{{system}}: 목표 소실(파괴되었거나 도달 불가). 기지로 귀환합니다.",
+        "moved": "{{system}}: 목표 도달 불가(이동함). 기지로 귀환합니다.",
+        "lost": "{{system}}: 목표를 놓쳤습니다. 기지로 귀환합니다."
       },
       "asatHit": {
         "title": "위성 파괴",

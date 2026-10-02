@@ -393,6 +393,36 @@
         "off_road": "Di luar jaringan jalan: arahkan ke kota, simpul, atau jalan.",
         "disconnected": "Luring: perintah tidak terkirim.",
         "timeout": "Tidak ada respons dari server."
+      },
+      "strikeTitle": "Perintah serangan",
+      "patrolTitle": "Perintah patroli",
+      "reconTitle": "Misi pengintaian",
+      "blockadeTitle": "Perintah blokade",
+      "radius": "Radius",
+      "reasons": {
+        "target_invalid": "Sasaran tidak valid.",
+        "target_not_visible": "Sasaran tidak terlihat: deteksi dulu (radar, pengintaian, satelit).",
+        "target_friendly": "Sasaran kawan: tidak dapat diserang.",
+        "air_defense_air_only": "{{name}}: pertahanan udara, hanya sasaran udara (pesawat, helikopter, drone, rudal).",
+        "cannot_hit_class": "{{name}} tidak dapat mengenai jenis sasaran ini ({{cls}}).",
+        "out_of_weapon_range": "{{name}}: sasaran di luar jangkauan tembak ({{dist}} km, jangkauan {{min}}–{{max}} km).",
+        "missile_out_of_range": "Sasaran di luar jangkauan rudal {{name}} ({{dist}} km untuk jangkauan {{range}} km).",
+        "aircraft_out_of_radius": "Di luar radius operasi: {{dist}} km dari pangkalan untuk {{range}} km.",
+        "aircraft_cooldown": "Pesawat sedang disiapkan di darat (siap dalam {{min}} menit).",
+        "partial": "Perintah dikirim; {{count}} satuan dikecualikan: {{detail}}",
+        "munition_use_strike": "Amunisi: gunakan perintah serangan.",
+        "ceasefire": "Gencatan senjata berlaku."
+      },
+      "classes": {
+        "infantry": "infanteri",
+        "armor": "lapis baja",
+        "aircraft": "pesawat",
+        "helicopter": "helikopter",
+        "drone": "drone",
+        "ship": "kapal",
+        "submarine": "kapal selam",
+        "missile": "rudal",
+        "building": "instalasi"
       }
     },
     "status": {
@@ -445,6 +475,43 @@
       "reserve": "Cadangan tanpa batas",
       "stockTip": "{{name}}: stok tanpa batas",
       "budgetTip": "Kas tanpa batas — buka ekonomi"
+    },
+    "actions": {
+      "title": "Perintah",
+      "move": "Gerak",
+      "attack": "Serang",
+      "strike": "Hantam",
+      "intercept": "Cegat",
+      "patrol": "Patroli",
+      "recon": "Pengintaian",
+      "blockade": "Blokade",
+      "rtb": "Kembali",
+      "rtbAir": "Kembali ke pangkalan",
+      "rtbSea": "Kembali ke pelabuhan",
+      "resupply": "Pasokan",
+      "stop": "Berhenti",
+      "reasons": {
+        "static": "Satuan tetap: tidak bergerak.",
+        "noWeapon": "Tidak ada senjata ofensif dalam pilihan.",
+        "noStrike": "Serangan hanya untuk rudal, penerbangan, dan kapal rudal.",
+        "noIntercept": "Pencegatan hanya untuk pesawat bersenjata terhadap sasaran udara.",
+        "airSeaOnly": "Patroli hanya untuk pesawat dan kapal.",
+        "noRecon": "Pengintaian hanya untuk drone dan pesawat intai.",
+        "seaOnly": "Blokade hanya untuk kapal.",
+        "idle": "Tidak ada yang dihentikan: satuan sudah diam.",
+        "none": "Aksi tidak tersedia."
+      },
+      "pick": {
+        "move": "klik tujuan di peta.",
+        "attack": "klik satuan musuh.",
+        "intercept": "klik pesawat musuh.",
+        "strike": "klik satuan musuh atau titik di peta.",
+        "patrol": "klik pusat area patroli.",
+        "recon": "klik area yang akan diterbangi.",
+        "blockade": "klik provinsi pesisir musuh.",
+        "needEnemy": "Pilih satuan musuh yang terlihat.",
+        "needPort": "Pilih provinsi pesisir asing."
+      }
     }
   },
   "province": {
@@ -3117,6 +3184,12 @@
       "strikeNoEffect": {
         "title": "Serangan tanpa efek",
         "text": "{{system}}: sasaran tidak tercapai."
+      },
+      "strikeAborted": {
+        "title": "Serangan dibatalkan",
+        "gone": "{{system}}: sasaran hilang (hancur atau tak terjangkau). Kembali ke pangkalan.",
+        "moved": "{{system}}: sasaran tak terjangkau (telah berpindah). Kembali ke pangkalan.",
+        "lost": "{{system}}: sasaran hilang dari pandangan. Kembali ke pangkalan."
       },
       "asatHit": {
         "title": "Satelit dihancurkan",

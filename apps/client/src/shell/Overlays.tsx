@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { distanceKm, HOUR, type Order } from '@redline/shared';
+import { distanceKm, HOUR, strikeRangeKm, type Order } from '@redline/shared';
 import {
   Badge,
   Button,
@@ -11,6 +11,7 @@ import {
   Legend,
   ToastStack,
   UnitMarker,
+  Slider,
   pictogramFor,
   type LegendItem,
 } from '@redline/ui';
@@ -20,10 +21,10 @@ import { roadPath, roadPathMs } from '../map/routes.js';
 import { nationForms } from '../lib/game.js';
 import { navigate } from '../router.js';
 import { gameNow, useGame } from '../store/game.js';
-import { useUi } from '../store/ui.js';
+import { pendingPoint, useUi, type PendingOrder } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { describeNotification, notificationTone } from './helpers.js';
-import { orderError } from '../lib/loc.js';
+import { orderError, orderOk } from '../lib/loc.js';
 
 /** Barre de confirmation de l'ordre en attente (troisième geste : confirmer). */
 export function OrderBar() {
@@ -40,13 +41,10 @@ export function OrderBar() {
     const p = useUi.getState().pendingOrder;
     const c = useGame.getState().connection;
     if (!p || !c) return;
-    const order: Order =
-      p.kind === 'move'
-        ? { kind: 'move', unitIds: p.unitIds, to: p.to }
-        : { kind: 'attack', unitIds: p.unitIds, targetId: p.targetId };
+    const order = orderOf(p);
     useUi.getState().setPending(null);
     const res = await c.sendOrder(order);
-    if (res.ok) useUi.getState().toast(t('game.orders.sent'), 'ok');
+    if (res.ok) useUi.getState().toast(orderOk(res), res.reason === 'partial' ? 'warn' : 'ok');
     else useUi.getState().toast(orderError(res), 'error');
   }, [t]);
 
@@ -68,10 +66,20 @@ export function OrderBar() {
   const first = units[0];
   if (!first) return null;
   const from = unitPosition(first, now);
-  const targetUnit = pending.kind === 'attack' ? view.units[pending.targetId] : undefined;
-  const target =
-    pending.kind === 'move' ? pending.to : targetUnit ? unitPosition(targetUnit, now) : null;
+  const targetId =
+    pending.kind === 'attack'
+      ? pending.targetId
+      : pending.kind === 'strike' && pending.target.type === 'unit'
+        ? pending.target.unitId
+        : null;
+  const targetUnit = targetId ? view.units[targetId] : undefined;
+  const target = pendingPoint(
+    pending,
+    (id) => (view.units[id] ? unitPosition(view.units[id]!, now) : undefined),
+    (pid) => useWorld.getState().provinces[pid]?.cityPoint,
+  );
   if (!target) return null;
+  const hostile = pending.kind === 'attack' || pending.kind === 'strike';
   const sys = first.systemId ? catalog[first.systemId] : undefined;
   // Unités terrestres : distance et durée le long des routes (traversée comprise).
   const road =
@@ -86,9 +94,20 @@ export function OrderBar() {
   const etaMs = road
     ? roadPathMs(road, slowest, movement?.embarkedSpeedFactor, movement?.embarkMinutes)
     : (dist / Math.max(slowest, 1e-9)) * HOUR;
+  // Hors de portée prévisible : arme fixe, munition (portée de frappe), aéronef (rayon d'action
+  // compté depuis sa base). Le moteur reste seul juge : simple avertissement avant confirmation.
+  const base = first.mission?.baseProvinceId
+    ? useWorld.getState().provinces[first.mission.baseProvinceId]?.cityPoint
+    : undefined;
   const outOfRange =
-    pending.kind === 'attack' && sys?.movement === 'static' && dist > sys.weaponRangeKm.max;
-  const title = t(pending.kind === 'move' ? 'game.orders.moveTitle' : 'game.orders.attackTitle');
+    (hostile && sys?.movement === 'static' && dist > sys.weaponRangeKm.max) ||
+    (hostile && !!sys?.missile && dist > strikeRangeKm(sys)) ||
+    (!!sys?.operationalRadiusKm &&
+      sys.movement === 'air' &&
+      !sys.missile &&
+      pending.kind !== 'move' &&
+      distanceKm(base ?? from, target) > sys.operationalRadiusKm);
+  const title = t(titleKey(pending));
   const tsys = targetUnit?.systemId ? catalog[targetUnit.systemId] : undefined;
 
   return (
@@ -100,18 +119,12 @@ export function OrderBar() {
       data-testid="order-bar"
     >
       <div className="orderbar__head">
-        <span
-          className={
-            pending.kind === 'attack' ? 'orderbar__kind orderbar__kind--attack' : 'orderbar__kind'
-          }
-        >
-          <Icon name={pending.kind === 'attack' ? 'target' : 'arrowRight'} size={14} />
+        <span className={hostile ? 'orderbar__kind orderbar__kind--attack' : 'orderbar__kind'}>
+          <Icon name={ICON[pending.kind]} size={14} />
           {title}
         </span>
         <span className="orderbar__cmd" aria-hidden>
-          {pending.kind === 'move'
-            ? `move ${units.length > 1 ? `${units.length}×` : first.id} ${target[1].toFixed(2)},${target[0].toFixed(2)}`
-            : `attack ${units.length > 1 ? `${units.length}×` : first.id} ${pending.kind === 'attack' ? pending.targetId : ''}`}
+          {`${pending.kind} ${units.length > 1 ? `${units.length}×` : first.id} ${targetId ?? `${target[1].toFixed(2)},${target[0].toFixed(2)}`}`}
         </span>
       </div>
       <div className="orderbar__body">
@@ -124,7 +137,7 @@ export function OrderBar() {
             size="sm"
           />
           {units.length > 1 ? <Badge tone="cyan">+{units.length - 1}</Badge> : null}
-          {pending.kind === 'attack' ? (
+          {targetUnit ? (
             <>
               <Icon name="arrowRight" size={14} className="orderbar__arrow" />
               <UnitMarker
@@ -147,6 +160,22 @@ export function OrderBar() {
               <dd>{fmtDuration(etaMs)}</dd>
             </div>
           ) : null}
+          {pending.kind === 'patrol' ? (
+            <div className="orderbar__radius">
+              <dt>{t('game.orders.radius')}</dt>
+              <dd>
+                <Slider
+                  value={pending.radiusKm}
+                  onChange={(v) => setPending({ ...pending, radiusKm: v })}
+                  min={10}
+                  max={400}
+                  step={10}
+                  label={t('game.orders.radius')}
+                  format={(v) => fmtKm(v)}
+                />
+              </dd>
+            </div>
+          ) : null}
           {outOfRange ? (
             <div className="orderbar__warn">
               <dt>{t('game.orders.warning')}</dt>
@@ -165,6 +194,35 @@ export function OrderBar() {
       </div>
     </div>
   );
+}
+
+const ICON = {
+  move: 'arrowRight',
+  attack: 'target',
+  strike: 'missile',
+  patrol: 'radio',
+  blockade: 'anchor',
+} as const;
+
+function titleKey(p: PendingOrder): string {
+  if (p.kind === 'patrol') return p.recon ? 'game.orders.reconTitle' : 'game.orders.patrolTitle';
+  return `game.orders.${p.kind}Title`;
+}
+
+/** Ordre moteur d'un ordre en attente confirmé. */
+export function orderOf(p: PendingOrder): Order {
+  switch (p.kind) {
+    case 'move':
+      return { kind: 'move', unitIds: p.unitIds, to: p.to };
+    case 'attack':
+      return { kind: 'attack', unitIds: p.unitIds, targetId: p.targetId };
+    case 'strike':
+      return { kind: 'strike', unitIds: p.unitIds, target: p.target };
+    case 'patrol':
+      return { kind: 'patrol', unitIds: p.unitIds, at: p.at, radiusKm: p.radiusKm };
+    case 'blockade':
+      return { kind: 'blockade', unitIds: p.unitIds, target: { provinceId: p.provinceId } };
+  }
 }
 
 /** Centre d'alertes : panneau latéral droit, notifications cliquables (carte ou fenêtre). */

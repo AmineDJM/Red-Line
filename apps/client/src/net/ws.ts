@@ -174,7 +174,13 @@ export class WsGameConnection extends Emitter implements GameConnection {
         break;
       case 'orderResult': {
         const p = this.pending.get(msg.id);
-        const outcome: OrderOutcome = { ok: msg.ok, error: msg.error, message: msg.message };
+        const outcome: OrderOutcome = {
+          ok: msg.ok,
+          error: msg.error,
+          message: msg.message,
+          ...(msg.reason ? { reason: msg.reason } : {}),
+          ...(msg.params ? { params: msg.params } : {}),
+        };
         if (p) {
           clearTimeout(p.timer);
           this.pending.delete(msg.id);

@@ -393,6 +393,36 @@
         "off_road": "不在道路网络上：请选择城市、节点或道路。",
         "disconnected": "离线：命令未发送。",
         "timeout": "服务器无响应。"
+      },
+      "strikeTitle": "打击命令",
+      "patrolTitle": "巡逻命令",
+      "reconTitle": "侦察任务",
+      "blockadeTitle": "封锁命令",
+      "radius": "半径",
+      "reasons": {
+        "target_invalid": "无效目标。",
+        "target_not_visible": "目标不在视野内：请先发现它（雷达、侦察、卫星）。",
+        "target_friendly": "友方目标：无法攻击。",
+        "air_defense_air_only": "{{name}}：防空部队，仅限空中目标（飞机、直升机、无人机、导弹）。",
+        "cannot_hit_class": "{{name}}无法打击此类目标（{{cls}}）。",
+        "out_of_weapon_range": "{{name}}：目标超出射程（{{dist}} 公里，射程 {{min}}–{{max}} 公里）。",
+        "missile_out_of_range": "目标超出{{name}}导弹射程（{{dist}} 公里，射程 {{range}} 公里）。",
+        "aircraft_out_of_radius": "超出作战半径：距基地 {{dist}} 公里，上限 {{range}} 公里。",
+        "aircraft_cooldown": "飞机正在地面整备（{{min}} 分钟后就绪）。",
+        "partial": "命令已发送；{{count}} 支部队被排除：{{detail}}",
+        "munition_use_strike": "弹药：请使用打击命令。",
+        "ceasefire": "停火生效中。"
+      },
+      "classes": {
+        "infantry": "步兵",
+        "armor": "装甲",
+        "aircraft": "飞机",
+        "helicopter": "直升机",
+        "drone": "无人机",
+        "ship": "舰艇",
+        "submarine": "潜艇",
+        "missile": "导弹",
+        "building": "设施"
       }
     },
     "status": {
@@ -445,6 +475,43 @@
       "reserve": "无限储备",
       "stockTip": "{{name}}：库存无限",
       "budgetTip": "国库无限 — 打开经济"
+    },
+    "actions": {
+      "title": "命令",
+      "move": "移动",
+      "attack": "攻击",
+      "strike": "打击",
+      "intercept": "拦截",
+      "patrol": "巡逻",
+      "recon": "侦察",
+      "blockade": "封锁",
+      "rtb": "返回",
+      "rtbAir": "返回基地",
+      "rtbSea": "返回港口",
+      "resupply": "补给",
+      "stop": "停止",
+      "reasons": {
+        "static": "固定单位：无法移动。",
+        "noWeapon": "所选单位中没有进攻性武器。",
+        "noStrike": "打击仅限导弹、航空兵和导弹舰艇。",
+        "noIntercept": "拦截仅限武装飞行器对空中目标。",
+        "airSeaOnly": "巡逻仅限飞行器和舰艇。",
+        "noRecon": "侦察仅限无人机和侦察机。",
+        "seaOnly": "封锁仅限舰艇。",
+        "idle": "无需停止：单位已静止。",
+        "none": "操作不可用。"
+      },
+      "pick": {
+        "move": "在地图上点击目的地。",
+        "attack": "点击一个敌方单位。",
+        "intercept": "点击一架敌方飞行器。",
+        "strike": "点击敌方单位或地图上的一点。",
+        "patrol": "点击巡逻区域的中心。",
+        "recon": "点击要飞越的区域。",
+        "blockade": "点击敌方沿海省份。",
+        "needEnemy": "请选择一个可见的敌方单位。",
+        "needPort": "请选择一个外国沿海省份。"
+      }
     }
   },
   "province": {
@@ -3117,6 +3184,12 @@
       "strikeNoEffect": {
         "title": "打击无效",
         "text": "{{system}}：未命中目标。"
+      },
+      "strikeAborted": {
+        "title": "打击取消",
+        "gone": "{{system}}：目标消失（已摧毁或无法到达）。返回基地。",
+        "moved": "{{system}}：目标无法到达（已移动）。返回基地。",
+        "lost": "{{system}}：目标丢失。返回基地。"
       },
       "asatHit": {
         "title": "卫星被摧毁",

@@ -16,6 +16,7 @@ import type {
   NationId,
   Order,
   OrderErrorCode,
+  OrderReason,
   PlayerView,
   ViewDiff,
   WeaponSystem,
@@ -133,6 +134,9 @@ export interface OrderResult {
   ok: boolean;
   error?: OrderErrorCode;
   message?: string;
+  /** Raison détaillée (traduite par le client), si connue. */
+  reason?: OrderReason;
+  params?: Record<string, string | number>;
 }
 
 export type BuildWorld = (

@@ -405,6 +405,36 @@
         "off_road": "Fuera de la red de carreteras: apunte a una ciudad, un nodo o una carretera.",
         "disconnected": "Sin conexión: orden no transmitida.",
         "timeout": "Sin respuesta del servidor."
+      },
+      "strikeTitle": "Orden de ataque (golpe)",
+      "patrolTitle": "Orden de patrulla",
+      "reconTitle": "Misión de reconocimiento",
+      "blockadeTitle": "Orden de bloqueo",
+      "radius": "Radio",
+      "reasons": {
+        "target_invalid": "Objetivo no válido.",
+        "target_not_visible": "Objetivo fuera de vista: localícelo primero (radar, reconocimiento, satélite).",
+        "target_friendly": "Objetivo aliado: no se puede atacar.",
+        "air_defense_air_only": "{{name}}: defensa antiaérea, solo objetivos aéreos (aviones, helicópteros, drones, misiles).",
+        "cannot_hit_class": "{{name}} no puede alcanzar este tipo de objetivo ({{cls}}).",
+        "out_of_weapon_range": "{{name}}: objetivo fuera de alcance de tiro ({{dist}} km, alcance {{min}}–{{max}} km).",
+        "missile_out_of_range": "Objetivo fuera del alcance del misil {{name}} ({{dist}} km para {{range}} km de alcance).",
+        "aircraft_out_of_radius": "Fuera del radio de acción: {{dist}} km desde la base para {{range}} km.",
+        "aircraft_cooldown": "Aeronave en preparación en tierra (lista en {{min}} min).",
+        "partial": "Orden enviada; {{count}} pila(s) descartada(s): {{detail}}",
+        "munition_use_strike": "Municiones: use la orden de golpe.",
+        "ceasefire": "Alto el fuego en vigor."
+      },
+      "classes": {
+        "infantry": "infantería",
+        "armor": "blindado",
+        "aircraft": "avión",
+        "helicopter": "helicóptero",
+        "drone": "dron",
+        "ship": "buque",
+        "submarine": "submarino",
+        "missile": "misil",
+        "building": "instalación"
       }
     },
     "status": {
@@ -457,6 +487,43 @@
       "reserve": "Reserva ilimitada",
       "stockTip": "{{name}}: reserva ilimitada",
       "budgetTip": "Tesoro ilimitado — abrir la economía"
+    },
+    "actions": {
+      "title": "Órdenes",
+      "move": "Mover",
+      "attack": "Atacar",
+      "strike": "Golpear",
+      "intercept": "Interceptar",
+      "patrol": "Patrullar",
+      "recon": "Reconocimiento",
+      "blockade": "Bloqueo",
+      "rtb": "Regreso",
+      "rtbAir": "Volver a la base",
+      "rtbSea": "Volver a puerto",
+      "resupply": "Reabastecer",
+      "stop": "Detener",
+      "reasons": {
+        "static": "Unidad fija: no se desplaza.",
+        "noWeapon": "Ningún arma ofensiva en la selección.",
+        "noStrike": "Golpes reservados a misiles, aviación y buques lanzamisiles.",
+        "noIntercept": "Interceptación reservada a aeronaves armadas contra objetivos aéreos.",
+        "airSeaOnly": "Patrulla reservada a aeronaves y buques.",
+        "noRecon": "Reconocimiento reservado a drones y aviones de reconocimiento.",
+        "seaOnly": "Bloqueo reservado a los buques.",
+        "idle": "Nada que detener: unidades ya paradas.",
+        "none": "Acción no disponible."
+      },
+      "pick": {
+        "move": "haga clic en el destino en el mapa.",
+        "attack": "haga clic en una unidad enemiga.",
+        "intercept": "haga clic en una aeronave enemiga.",
+        "strike": "haga clic en una unidad enemiga o un punto del mapa.",
+        "patrol": "haga clic en el centro de la zona de patrulla.",
+        "recon": "haga clic en la zona a sobrevolar.",
+        "blockade": "haga clic en una provincia costera enemiga.",
+        "needEnemy": "Elija una unidad enemiga visible.",
+        "needPort": "Elija una provincia costera extranjera."
+      }
     }
   },
   "province": {
@@ -3205,6 +3272,12 @@
       "strikeNoEffect": {
         "title": "Ataque sin efecto",
         "text": "{{system}}: objetivo no alcanzado."
+      },
+      "strikeAborted": {
+        "title": "Golpe cancelado",
+        "gone": "{{system}}: objetivo desaparecido (destruido o fuera de alcance). Regreso a la base.",
+        "moved": "{{system}}: objetivo fuera de alcance (se ha desplazado). Regreso a la base.",
+        "lost": "{{system}}: objetivo perdido de vista. Regreso a la base."
       },
       "asatHit": {
         "title": "Satélite destruido",

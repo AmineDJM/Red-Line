@@ -22,6 +22,7 @@ import type { Feature, FeatureCollection, Geometry, LineString, Point } from 'ge
 import {
   destination,
   distanceKm,
+  strikeRangeKm,
   type LngLat,
   type NationId,
   type ProvinceView,
@@ -44,7 +45,7 @@ import { CityIndex } from './unitCat.js';
 import { MAX_CALLOUTS, UNIT_TICK_HZ } from '../config.js';
 import { fmtDuration, fmtKm, t } from '../i18n/index.js';
 import { gameNow, useGame } from '../store/game.js';
-import { useUi } from '../store/ui.js';
+import { pendingPoint, pendingTargetId, useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { dashSequence, pulse } from './animations.js';
 import { computeBorders } from './borders.js';
@@ -1257,7 +1258,7 @@ export class GameMap {
       nations,
       catalog,
       selection: new Set(ui.selection),
-      target: ui.pendingOrder?.kind === 'attack' ? ui.pendingOrder.targetId : ui.inspected,
+      target: pendingTargetId(ui.pendingOrder) ?? ui.inspected,
       t: tNow,
       cities: this.cities,
       provinces: view?.provinces,
@@ -1480,7 +1481,8 @@ export class GameMap {
     const rings: RingLabel[] = [];
     if (u && sys && u.level !== 'detected') {
       const at = this.positions.get(u.id) ?? unitPosition(u, gameNow());
-      const max = sys.weaponRangeKm.max;
+      // Munitions (missiles, munitions rôdeuses) : portée de frappe, même calcul que le moteur.
+      const max = sys.missile ? strikeRangeKm(sys) : sys.weaponRangeKm.max;
       this.set('range', rangeRing(at, sys.weaponRangeKm.min, max));
       const lines: Feature<LineString>[] = [];
       if (max > 0.5) {
@@ -1540,10 +1542,11 @@ export class GameMap {
         }))
         .filter((x): x is { id: UnitId; at: LngLat } => !!x.at);
       const from = placed.map((x) => x.at);
-      const target =
-        pending.kind === 'move'
-          ? pending.to
-          : (this.positions.get(pending.targetId) ?? view.units[pending.targetId]?.pos);
+      const target = pendingPoint(
+        pending,
+        (id) => this.positions.get(id) ?? view.units[id]?.pos,
+        (pid) => useWorld.getState().provinces[pid]?.cityPoint,
+      );
       if (from.length && target) {
         // Unités terrestres : trajet réel le long des routes (traversée par les ports si besoin),
         // pour les MAX_ROAD_PREVIEWS premières (au-delà : ligne directe, l'écran serait illisible).
@@ -1555,7 +1558,12 @@ export class GameMap {
                   : null,
               )
             : undefined;
-        const pv = previewFeatures({ kind: pending.kind, from, to: target, paths });
+        const pv = previewFeatures({
+          kind: pending.kind === 'attack' || pending.kind === 'strike' ? 'attack' : 'move',
+          from,
+          to: target,
+          paths,
+        });
         this.set('preview', pv.lines);
         this.set('preview-pts', pv.points);
         this.animState.preview = true;
@@ -2160,6 +2168,65 @@ export class GameMap {
     ui.select(add ? [...new Set([...ui.selection, ...ids])] : ids);
   }
 
+  /**
+   * Clic en mode ciblage (bouton d'action) : unité ennemie (attaque, interception, frappe), point
+   * (frappe, patrouille, reconnaissance) ou province étrangère côtière (blocus). Puis confirmation.
+   */
+  private onTargetClick(e: MapMouseEvent, at: LngLat) {
+    const ui = useUi.getState();
+    const tg = ui.targeting!;
+    const { view, me } = useGame.getState();
+    const tok = this.hitToken(
+      e.point.x,
+      e.point.y,
+      (this.lastPointer === 'mouse' ? MOUSE_RADIUS : TOUCH_RADIUS) - 4,
+    );
+    const enemy = (tok?.ids ?? [])
+      .map((id) => view?.units[id])
+      .find((u) => !!u && u.owner !== me && !u.missile);
+    const unitIds = tg.unitIds;
+    switch (tg.action) {
+      case 'attack':
+      case 'intercept':
+        if (!enemy) {
+          ui.toast(t('game.actions.pick.needEnemy'), 'warn');
+          return;
+        }
+        ui.setPending({ kind: 'attack', unitIds, targetId: enemy.id });
+        return;
+      case 'strike':
+        ui.setPending({
+          kind: 'strike',
+          unitIds,
+          target: enemy ? { type: 'unit', unitId: enemy.id } : { type: 'point', at },
+        });
+        return;
+      case 'patrol':
+      case 'recon':
+        ui.setPending({
+          kind: 'patrol',
+          unitIds,
+          at,
+          radiusKm: tg.action === 'recon' ? 50 : 100,
+          recon: tg.action === 'recon',
+        });
+        return;
+      case 'blockade': {
+        const pf = this.map.queryRenderedFeatures(e.point, { layers: ['prov-fill'] })[0];
+        const pid = pf ? String(pf.properties?.id ?? pf.id ?? '') : '';
+        const owner = view?.provinces[pid]?.owner;
+        if (!pid || !owner || owner === me) {
+          ui.toast(t('game.actions.pick.needPort'), 'warn');
+          return;
+        }
+        ui.setPending({ kind: 'blockade', unitIds, provinceId: pid, at });
+        return;
+      }
+      default:
+        ui.setTargeting(null);
+    }
+  }
+
   private onClick(e: MapMouseEvent) {
     if (performance.now() < this.suppressClickUntil) return;
     // Annule aussi une infobulle en attente (survol juste avant le clic).
@@ -2180,6 +2247,11 @@ export class GameMap {
     const { view, me } = useGame.getState();
     const menu = useStackMenu.getState();
     if (menu.open) menu.close();
+    if (ui.targeting && ui.targeting.action !== 'move') {
+      this.onTargetClick(e, at);
+      return;
+    }
+    if (ui.targeting) ui.setTargeting(null);
     const multi = e.originalEvent.shiftKey || e.originalEvent.ctrlKey || e.originalEvent.metaKey;
     // Marqueur de bataille : panneau de détail des combats.
     const battle = this.hitBattle(e.point.x, e.point.y);

@@ -335,12 +335,42 @@ export type OrderErrorCode =
   | 'insufficient_resources'
   | 'off_road'; // destination trop loin du réseau de routes (unités terrestres)
 
+/**
+ * Raisons détaillées d'un refus (ou d'une exécution partielle) d'ordre : le client les traduit, le
+ * message en français reste le repli.
+ */
+export const ORDER_REASONS = [
+  'target_invalid',
+  'target_not_visible',
+  'target_friendly',
+  'air_defense_air_only',
+  'cannot_hit_class',
+  'out_of_weapon_range',
+  'missile_out_of_range',
+  'aircraft_out_of_radius',
+  'aircraft_cooldown',
+  'partial',
+  'munition_use_strike',
+  'ceasefire',
+] as const;
+export type OrderReason = (typeof ORDER_REASONS)[number];
+
 export type ServerMessage =
   | { t: 'welcome'; game: GameMeta; me: NationId; clock: ClockState; view: PlayerView }
   | { t: 'diff'; diff: ViewDiff }
   | { t: 'clock'; clock: ClockState }
   | { t: 'notify'; items: GameNotification[] }
-  | { t: 'orderResult'; id: number; ok: boolean; error?: OrderErrorCode; message?: string }
+  | {
+      t: 'orderResult';
+      id: number;
+      ok: boolean;
+      error?: OrderErrorCode;
+      message?: string;
+      /** Raison détaillée (clé de traduction `game.orders.reasons.<reason>`), si connue. */
+      reason?: OrderReason;
+      /** Valeurs de la raison (distances, noms…). */
+      params?: Record<string, string | number>;
+    }
   | { t: 'pong'; clientTime: number; serverTime: number }
   | { t: 'chat'; message: ChatMessage }
   | { t: 'chatHistory'; messages: ChatMessage[] }

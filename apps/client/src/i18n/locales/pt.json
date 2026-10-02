@@ -405,6 +405,36 @@
         "off_road": "Fora da rede de estradas: mire uma cidade, um nó ou uma estrada.",
         "disconnected": "Offline: ordem não transmitida.",
         "timeout": "Sem resposta do servidor."
+      },
+      "strikeTitle": "Ordem de ataque (ataque de precisão)",
+      "patrolTitle": "Ordem de patrulha",
+      "reconTitle": "Missão de reconhecimento",
+      "blockadeTitle": "Ordem de bloqueio",
+      "radius": "Raio",
+      "reasons": {
+        "target_invalid": "Alvo inválido.",
+        "target_not_visible": "Alvo fora de vista: localize-o primeiro (radar, reconhecimento, satélite).",
+        "target_friendly": "Alvo aliado: não pode ser atacado.",
+        "air_defense_air_only": "{{name}}: defesa antiaérea, apenas alvos aéreos (aviões, helicópteros, drones, mísseis).",
+        "cannot_hit_class": "{{name}} não pode atingir este tipo de alvo ({{cls}}).",
+        "out_of_weapon_range": "{{name}}: alvo fora do alcance de tiro ({{dist}} km, alcance {{min}}–{{max}} km).",
+        "missile_out_of_range": "Alvo fora do alcance do míssil {{name}} ({{dist}} km para {{range}} km de alcance).",
+        "aircraft_out_of_radius": "Fora do raio de ação: {{dist}} km da base para {{range}} km.",
+        "aircraft_cooldown": "Aeronave em preparação no solo (pronta em {{min}} min).",
+        "partial": "Ordem enviada; {{count}} pilha(s) excluída(s): {{detail}}",
+        "munition_use_strike": "Munições: use a ordem de ataque de precisão.",
+        "ceasefire": "Cessar-fogo em vigor."
+      },
+      "classes": {
+        "infantry": "infantaria",
+        "armor": "blindado",
+        "aircraft": "avião",
+        "helicopter": "helicóptero",
+        "drone": "drone",
+        "ship": "navio",
+        "submarine": "submarino",
+        "missile": "míssil",
+        "building": "instalação"
       }
     },
     "status": {
@@ -457,6 +487,43 @@
       "reserve": "Reserva ilimitada",
       "stockTip": "{{name}}: estoque ilimitado",
       "budgetTip": "Tesouro ilimitado — abrir a economia"
+    },
+    "actions": {
+      "title": "Ordens",
+      "move": "Mover",
+      "attack": "Atacar",
+      "strike": "Golpear",
+      "intercept": "Interceptar",
+      "patrol": "Patrulhar",
+      "recon": "Reconhecimento",
+      "blockade": "Bloqueio",
+      "rtb": "Regresso",
+      "rtbAir": "Voltar à base",
+      "rtbSea": "Voltar ao porto",
+      "resupply": "Reabastecer",
+      "stop": "Parar",
+      "reasons": {
+        "static": "Unidade fixa: não se desloca.",
+        "noWeapon": "Nenhuma arma ofensiva na seleção.",
+        "noStrike": "Ataques reservados a mísseis, aviação e navios lança-mísseis.",
+        "noIntercept": "Interceção reservada a aeronaves armadas contra alvos aéreos.",
+        "airSeaOnly": "Patrulha reservada a aeronaves e navios.",
+        "noRecon": "Reconhecimento reservado a drones e aviões de reconhecimento.",
+        "seaOnly": "Bloqueio reservado aos navios.",
+        "idle": "Nada a parar: unidades já paradas.",
+        "none": "Ação indisponível."
+      },
+      "pick": {
+        "move": "clique no destino no mapa.",
+        "attack": "clique numa unidade inimiga.",
+        "intercept": "clique numa aeronave inimiga.",
+        "strike": "clique numa unidade inimiga ou num ponto do mapa.",
+        "patrol": "clique no centro da zona de patrulha.",
+        "recon": "clique na zona a sobrevoar.",
+        "blockade": "clique numa província costeira inimiga.",
+        "needEnemy": "Escolha uma unidade inimiga visível.",
+        "needPort": "Escolha uma província costeira estrangeira."
+      }
     }
   },
   "province": {
@@ -3205,6 +3272,12 @@
       "strikeNoEffect": {
         "title": "Ataque sem efeito",
         "text": "{{system}}: objetivo não atingido."
+      },
+      "strikeAborted": {
+        "title": "Ataque cancelado",
+        "gone": "{{system}}: alvo desaparecido (destruído ou fora de alcance). Regresso à base.",
+        "moved": "{{system}}: alvo fora de alcance (deslocou-se). Regresso à base.",
+        "lost": "{{system}}: alvo perdido de vista. Regresso à base."
       },
       "asatHit": {
         "title": "Satélite destruído",

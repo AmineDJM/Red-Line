@@ -24,6 +24,7 @@ import { StackMenu } from './StackMenu.js';
 import { useShortcuts } from './shortcuts.js';
 import { TopBar } from './TopBar.js';
 import { Tutorial } from './Tutorial.js';
+import { TargetingBanner } from './UnitOrders.js';
 import { useIsMobile } from './useMedia.js';
 import { WeaponSheet } from './WeaponSheet.js';
 import { WindowHost } from './WindowHost.js';
@@ -86,6 +87,7 @@ export function GameShell({
         </div>
       ) : null}
       {!sheetOpen ? <OrderBar /> : null}
+      {!sheetOpen ? <TargetingBanner /> : null}
       {!sheetOpen ? <StackMenu /> : null}
       <WindowHost />
       <WeaponSheet />

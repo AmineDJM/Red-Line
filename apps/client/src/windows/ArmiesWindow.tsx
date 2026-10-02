@@ -46,6 +46,7 @@ import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { Generals, Operations, useSend } from './armyCommand.js';
+import { UnitOrders } from '../shell/UnitOrders.js';
 import { isMixed, splitByTypeOrder, splitHalfOrder, stackParts } from '../lib/stacks.js';
 
 type Tab = 'armies' | 'generals' | 'operations';
@@ -644,6 +645,16 @@ function ArmyDetail({
           {t('armies.actions.merge')}
         </Button>
       </div>
+      <UnitOrders
+        units={a.units}
+        compact={mobile}
+        keys={false}
+        onTarget={() => {
+          select(a.unitIds);
+          focusOn(a.at, 6);
+          closeAll();
+        }}
+      />
       <h4 className="armydetail__title">
         {t('armies.composition')} <span>{a.piles}</span>
       </h4>

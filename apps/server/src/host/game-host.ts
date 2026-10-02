@@ -16,6 +16,7 @@ import {
   type NationId,
   type Order,
   type OrderErrorCode,
+  type OrderReason,
   type PlayerView,
   type ServerMessage,
   type ShopPolicy,
@@ -1304,8 +1305,22 @@ export class GameHost {
   }
 
   handleOrder(g: HostedGame, conn: Connection, msg: Extract<ClientMessage, { t: 'order' }>): void {
-    const reply = (ok: boolean, error?: OrderErrorCode, message?: string) =>
-      conn.send({ t: 'orderResult', id: msg.id, ok, error, message });
+    const reply = (
+      ok: boolean,
+      error?: OrderErrorCode,
+      message?: string,
+      reason?: OrderReason,
+      params?: Record<string, string | number>,
+    ) =>
+      conn.send({
+        t: 'orderResult',
+        id: msg.id,
+        ok,
+        error,
+        message,
+        ...(reason ? { reason } : {}),
+        ...(params ? { params } : {}),
+      });
     if (conn.spectator) return reply(false, 'not_allowed', 'Mode spectateur : lecture seule');
     if (!this.games.has(g.id)) return reply(false, 'not_allowed', 'Partie indisponible');
     if (g.meta.status === 'ended') return reply(false, 'game_over', 'La partie est terminée');
@@ -1320,7 +1335,13 @@ export class GameHost {
     }
     const now = Date.now();
     this.playerReturned(g, conn.userId, now);
-    let result: { ok: boolean; error?: OrderErrorCode; message?: string } = { ok: false };
+    let result: {
+      ok: boolean;
+      error?: OrderErrorCode;
+      message?: string;
+      reason?: OrderReason;
+      params?: Record<string, string | number>;
+    } = { ok: false };
     const t0 = nowMs();
     const ok = this.safely(g, () => {
       this.advance(g, now);
@@ -1337,7 +1358,7 @@ export class GameHost {
       this.journal(g, { seq: g.orderSeq, slot, time: g.state.time, payload: msg.order });
       this.d.usage?.order(g.id, conn.userId);
     }
-    reply(result.ok, result.error, result.message);
+    reply(result.ok, result.error, result.message, result.reason, result.params);
     // Retour immédiat au joueur qui a donné l'ordre ; les autres nations (qui peuvent voir l'effet de
     // l'ordre) le reçoivent avec la prochaine diffusion groupée.
     this.safely(g, () => {

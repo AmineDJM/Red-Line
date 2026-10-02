@@ -393,6 +393,36 @@
         "off_road": "道路網の外です：都市、ノード、または道路を指定してください。",
         "disconnected": "オフライン：命令は送信されていません。",
         "timeout": "サーバーから応答がありません。"
+      },
+      "strikeTitle": "攻撃命令（打撃）",
+      "patrolTitle": "哨戒命令",
+      "reconTitle": "偵察任務",
+      "blockadeTitle": "封鎖命令",
+      "radius": "半径",
+      "reasons": {
+        "target_invalid": "無効な目標です。",
+        "target_not_visible": "目標が視界外です：先に探知してください（レーダー、偵察、衛星）。",
+        "target_friendly": "味方の目標：攻撃できません。",
+        "air_defense_air_only": "{{name}}：防空部隊、空中目標のみ（航空機、ヘリコプター、ドローン、ミサイル）。",
+        "cannot_hit_class": "{{name}}はこの種類の目標（{{cls}}）を攻撃できません。",
+        "out_of_weapon_range": "{{name}}：目標が射程外です（{{dist}} km、射程 {{min}}–{{max}} km）。",
+        "missile_out_of_range": "目標がミサイル{{name}}の射程外です（{{dist}} km、射程 {{range}} km）。",
+        "aircraft_out_of_radius": "行動半径外：基地から {{dist}} km（上限 {{range}} km）。",
+        "aircraft_cooldown": "機体は地上で整備中です（{{min}} 分後に準備完了）。",
+        "partial": "命令を送信しました。{{count}} 部隊を除外：{{detail}}",
+        "munition_use_strike": "弾薬：打撃命令を使用してください。",
+        "ceasefire": "停戦が発効中です。"
+      },
+      "classes": {
+        "infantry": "歩兵",
+        "armor": "装甲",
+        "aircraft": "航空機",
+        "helicopter": "ヘリコプター",
+        "drone": "ドローン",
+        "ship": "艦艇",
+        "submarine": "潜水艦",
+        "missile": "ミサイル",
+        "building": "施設"
       }
     },
     "status": {
@@ -445,6 +475,43 @@
       "reserve": "無制限の備蓄",
       "stockTip": "{{name}}：在庫無制限",
       "budgetTip": "国庫無制限 — 経済を開く"
+    },
+    "actions": {
+      "title": "命令",
+      "move": "移動",
+      "attack": "攻撃",
+      "strike": "打撃",
+      "intercept": "迎撃",
+      "patrol": "哨戒",
+      "recon": "偵察",
+      "blockade": "封鎖",
+      "rtb": "帰還",
+      "rtbAir": "基地へ帰還",
+      "rtbSea": "港へ帰還",
+      "resupply": "補給",
+      "stop": "停止",
+      "reasons": {
+        "static": "固定部隊：移動できません。",
+        "noWeapon": "選択中に攻撃兵器がありません。",
+        "noStrike": "打撃はミサイル、航空部隊、ミサイル艦のみです。",
+        "noIntercept": "迎撃は空中目標に対する武装航空機のみです。",
+        "airSeaOnly": "哨戒は航空機と艦艇のみです。",
+        "noRecon": "偵察はドローンと偵察機のみです。",
+        "seaOnly": "封鎖は艦艇のみです。",
+        "idle": "停止対象なし：部隊はすでに停止しています。",
+        "none": "実行できません。"
+      },
+      "pick": {
+        "move": "地図上で目的地をクリックしてください。",
+        "attack": "敵部隊をクリックしてください。",
+        "intercept": "敵航空機をクリックしてください。",
+        "strike": "敵部隊または地図上の地点をクリックしてください。",
+        "patrol": "哨戒区域の中心をクリックしてください。",
+        "recon": "上空を飛行する区域をクリックしてください。",
+        "blockade": "敵の沿岸州をクリックしてください。",
+        "needEnemy": "視認できる敵部隊を選んでください。",
+        "needPort": "外国の沿岸州を選んでください。"
+      }
     }
   },
   "province": {
@@ -3117,6 +3184,12 @@
       "strikeNoEffect": {
         "title": "攻撃は効果なし",
         "text": "{{system}}：目標に命中せず。"
+      },
+      "strikeAborted": {
+        "title": "打撃中止",
+        "gone": "{{system}}：目標が消失（撃破または到達不能）。基地へ帰還します。",
+        "moved": "{{system}}：目標に到達できません（移動しました）。基地へ帰還します。",
+        "lost": "{{system}}：目標を見失いました。基地へ帰還します。"
       },
       "asatHit": {
         "title": "衛星を撃破",
