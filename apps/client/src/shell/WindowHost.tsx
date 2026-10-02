@@ -18,6 +18,9 @@ const CONTENT: Record<WindowId, LazyExoticComponent<ComponentType<WindowContentP
     import('../windows/ArmiesWindow.js').then((m) => ({ default: m.ArmiesWindow })),
   ),
   army: lazy(() => import('../windows/ArmyWindow.js').then((m) => ({ default: m.ArmyWindow }))),
+  command: lazy(() =>
+    import('../windows/CommandCenter.js').then((m) => ({ default: m.CommandCenter })),
+  ),
   production: lazy(() =>
     import('../windows/ProductionWindow.js').then((m) => ({ default: m.ProductionWindow })),
   ),

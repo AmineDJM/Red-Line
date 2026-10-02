@@ -40,6 +40,8 @@ import {
 import { emitMapEvent } from './events.js';
 import { FxRenderer, FxSystem, queueBlast, queueIntercept, queueLaunch, queueShot } from './fx.js';
 import { useMapSel } from './mapSel.js';
+import { CommandLayer } from './commandLayer.js';
+import { useCommandUi } from '../store/command.js';
 import { useMapPrefs } from './prefs.js';
 import { useStackMenu } from './stackMenu.js';
 import { CityIndex } from './unitCat.js';
@@ -261,6 +263,8 @@ export class GameMap {
   private cityThresholds: [number, number] = [Infinity, Infinity];
   /** Couche « routes » (réseau des unités terrestres). */
   private roadLayer: RoadLayer | null = null;
+  /** Armées du centre de commandement (étiquettes, zones, flèches d'offensive). */
+  private commandLayer: CommandLayer | null = null;
   /** Diagnostic : nombre de résolutions demandées par image. */
   readonly resolveCount = new Map<string, number>();
   private perf = { ticks: 0, total: 0, max: 0, group: 0, groups: 0, pions: 0, skipped: 0 };
@@ -509,6 +513,8 @@ export class GameMap {
     if (this.opts.fog) this.startFog();
     this.roadLayer = new RoadLayer(this.map, 'radar-foreign');
     this.roadLayer.attach(useWorld.getState().roads);
+    this.commandLayer = new CommandLayer(this.map, 'paths-casing');
+    this.unsubs.push(() => this.commandLayer?.destroy());
     this.unsubs.push(
       useWorld.subscribe((s, prev) => {
         if (s.roads === prev.roads) return;
@@ -2317,6 +2323,14 @@ export class GameMap {
     }
     if (this.opts.placing?.()) {
       this.opts.onPlace?.(at);
+      return;
+    }
+    // Centre de commandement : désignation de la cible d'une mission (province ou point de zone).
+    if (useCommandUi.getState().picking === 'target') {
+      const pf = this.queryRendered(e.point, { layers: ['prov-fill'] })[0];
+      const pid = pf ? String(pf.properties?.id ?? pf.id ?? '') : '';
+      useCommandUi.getState().pickTarget({ provinceId: pid || null, at });
+      useUi.getState().openWindow('command');
       return;
     }
     const ui = useUi.getState();

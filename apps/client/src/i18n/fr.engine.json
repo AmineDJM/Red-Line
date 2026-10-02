@@ -271,6 +271,119 @@
         "title": "Capture impossible",
         "noCapturer": "{{system}} ne peut pas capturer {{place}} : il faut de l'infanterie ou des blindés.",
         "noWar": "Pas de guerre avec le propriétaire de {{place}} : pas de capture."
+      },
+      "cmd_generalResigned": {
+        "title": "Démission",
+        "text": "{{general}} démissionne : sa solde n’est plus payée."
+      },
+      "cmd_generalUnpaid": {
+        "title": "Solde impayée",
+        "text": "{{general}} n’a pas été payé ({{days}}/{{max}} jours avant démission)."
+      },
+      "cmd_generalKilled": {
+        "title": "Général tué",
+        "text": "{{general}} a été tué lors d’une frappe sur le QG de {{army}}."
+      },
+      "cmd_generalWounded": {
+        "title": "Général blessé",
+        "text": "{{general}} est blessé : {{army}} attend son retour."
+      },
+      "cmd_missionSuccess": {
+        "title": "Mission accomplie",
+        "text": "{{army}} : mission accomplie."
+      },
+      "cmd_missionFailed": {
+        "title": "Mission échouée",
+        "text": "{{army}} : la mission a échoué."
+      },
+      "cmd_askWar": {
+        "title": "Autorisation demandée",
+        "text": "{{army}} : {{general}} demande l’autorisation d’entrer en guerre contre {{nation}}."
+      },
+      "cmd_askStrike": {
+        "title": "Autorisation demandée",
+        "text": "{{army}} : {{general}} demande l’autorisation de frapper l’arrière de {{nation}}."
+      },
+      "cmd_askReinforce": {
+        "title": "Renforts demandés",
+        "text": "{{army}} : {{general}} demande {{count}} piles en renfort."
+      }
+    },
+    "cmd": {
+      "zone": "la zone désignée",
+      "mission": {
+        "conquer": "Conquérir",
+        "defend": "Défendre",
+        "hold_front": "Tenir la ligne de front",
+        "air_superiority": "Supériorité aérienne",
+        "air_defense": "Défense antiaérienne",
+        "deep_strike": "Frappes en profondeur",
+        "sea_control": "Contrôle maritime et blocus",
+        "landing": "Débarquement",
+        "reserve": "Réserve"
+      },
+      "reason": {
+        "losses": "pertes trop lourdes",
+        "stuck": "aucune progression",
+        "tooWeak": "forces insuffisantes",
+        "zoneLost": "zone perdue"
+      },
+      "building": {
+        "air_defense_site": "le site antiaérien",
+        "radar_station": "la station radar",
+        "air_base": "la base aérienne",
+        "military_base": "la base militaire",
+        "arms_factory": "l'usine d'armement",
+        "refinery": "la raffinerie",
+        "power_plant": "la centrale électrique",
+        "naval_base": "la base navale",
+        "electronics_plant": "l'usine d'électronique",
+        "research_center": "le centre de recherche"
+      },
+      "j": {
+        "created_one": "Armée formée : {{count}} pile.",
+        "created_other": "Armée formée : {{count}} piles.",
+        "command": "{{general}} prend le commandement.",
+        "mission": "Mission reçue : {{mission}} — {{target}}.",
+        "missionCleared": "Mission levée : les piles attendent vos ordres.",
+        "suspended": "Mission suspendue sur ordre.",
+        "resumed": "Mission reprise.",
+        "warAuthorized": "Autorisation reçue : guerre contre {{nation}}.",
+        "warRefused": "Guerre contre {{nation}} refusée : mission suspendue.",
+        "strikeAuthorized": "Frappes stratégiques autorisées.",
+        "strikeRefused": "Frappes stratégiques refusées : mission suspendue.",
+        "reinforceRefused": "Renforts refusés : {{general}} fera avec ses forces.",
+        "reinforced_one": "Renfort : {{count}} pile rejoint l’armée.",
+        "reinforced_other": "Renforts : {{count}} piles rejoignent l’armée.",
+        "detached_one": "{{count}} pile détachée de l’armée.",
+        "detached_other": "{{count}} piles détachées de l’armée.",
+        "lost_one": "Perte : {{count}} {{system}} détruit.",
+        "lost_other": "Pertes : {{count}} {{system}} détruits.",
+        "captured": "{{province}} est prise.",
+        "declaredWar": "Frontière franchie : nous sommes en guerre contre {{nation}}.",
+        "warBlocked": "Impossible d’entrer en guerre contre {{nation}} : mission suspendue.",
+        "askWar": "Demande d’autorisation : franchir la frontière de {{nation}}.",
+        "askStrike": "Demande d’autorisation : frapper l’arrière de {{nation}}.",
+        "retreat": "{{system}} trop éprouvé : repli sur {{province}}.",
+        "noReinforcements": "Aucune pile libre à proximité pour nous renforcer.",
+        "askReinforce_one": "Demande de renforts : {{count}} pile.",
+        "askReinforce_other": "Demande de renforts : {{count}} piles.",
+        "tooWeak": "Forces insuffisantes pour attaquer ({{pct}} % du nécessaire) : renforts demandés.",
+        "offensive": "Offensive lancée sur {{province}}.",
+        "landing": "Débarquement lancé sur {{province}} : rassemblement au port.",
+        "counter": "Contre-attaque sur {{province}}.",
+        "counterFront": "Contre-attaque sur le front.",
+        "blockade": "Blocus du port de {{province}}.",
+        "noIntel": "Aucune installation de {{nation}} révélée : il faut du renseignement (reconnaissance).",
+        "strike": "Frappe sur {{building}} de {{province}}.",
+        "success": "Mission accomplie.",
+        "failed": "Mission échouée : {{reason}}.",
+        "daily": "Rapport du jour : effectifs {{strength}} %, {{captures}} prise(s), {{losses}} élément(s) perdu(s).",
+        "resigned": "{{general}} démissionne : solde impayée.",
+        "dismissed": "{{general}} est limogé.",
+        "recovered": "{{general}} reprend son commandement après sa convalescence.",
+        "wounded": "{{general}} est blessé au QG : {{days}} jours de convalescence.",
+        "killed": "{{general}} est tué au QG."
       }
     }
   }

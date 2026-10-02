@@ -26,6 +26,7 @@ function useBadges(): Partial<Record<WindowId, number>> {
     diplomacy: pendingPeace + (view?.diplomacy?.invitations.length ?? 0),
     battles: ongoing,
     chat: unreadChat,
+    command: view?.command?.armies.filter((a) => !!a.request).length ?? 0,
   };
 }
 

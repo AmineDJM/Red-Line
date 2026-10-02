@@ -16,6 +16,8 @@ export interface SectionDef {
 export const SECTIONS: SectionDef[] = [
   { id: 'armies', icon: 'army', key: 'A', group: 'main', mobile: true },
   { id: 'army', icon: 'missile', key: 'G', group: 'main' },
+  // Centre de commandement : armées, missions, généraux (Q comme QG).
+  { id: 'command', icon: 'star', key: 'Q', group: 'main' },
   { id: 'production', icon: 'production', key: 'P', group: 'main', mobile: true },
   { id: 'research', icon: 'research', key: 'R', group: 'main' },
   { id: 'economy', icon: 'economy', key: 'E', group: 'main' },

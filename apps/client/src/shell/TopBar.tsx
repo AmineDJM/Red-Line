@@ -242,6 +242,7 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
   const setAlertsOpen = useUi((s) => s.setAlertsOpen);
   const setPaletteOpen = useUi((s) => s.setPaletteOpen);
   const toggleWindow = useUi((s) => s.toggleWindow);
+  const windows = useUi((s) => s.windows);
   const unread = notifications.filter((n) => !n.read).length;
   const critical = notifications.some(
     (n) => !n.read && n.item.kind === 'generic' && n.item.severity === 'critical',
@@ -252,6 +253,19 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
   const nation = me ? view?.nations[me] : null;
   const alliance = view?.diplomacy?.alliances.find((a) => a.id === view.diplomacy?.myAllianceId);
   const level = view?.alertLevel;
+  // Centre de commandement : demandes des généraux en attente (autorisation, renforts).
+  const requests = view?.command?.armies.filter((a) => !!a.request).length ?? 0;
+  const command = !view?.spectator ? (
+    <IconButton
+      label={t('sections.command')}
+      icon={<Icon name="star" size={mobile ? 18 : 17} />}
+      badge={requests}
+      badgeTone="amber"
+      active={windows.some((w) => w.id === 'command')}
+      onClick={() => toggleWindow('command')}
+      data-testid="command-button"
+    />
+  ) : null;
 
   const bell = (
     <IconButton
@@ -276,6 +290,7 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
             {view?.spectator ? <span className="topbar__spect">{t('game.spectator')}</span> : null}
           </span>
           <ClockControl compact />
+          {command}
           {bell}
         </div>
         <div className="topbar__row topbar__row--sub">
@@ -322,6 +337,7 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
         <span>{t('console.open')}</span>
         <Kbd keys={['Ctrl', 'K']} />
       </button>
+      {command}
       <IconButton
         label={t('sections.chat')}
         icon={<Icon name="chat" size={18} />}

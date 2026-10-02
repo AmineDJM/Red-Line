@@ -33,6 +33,7 @@ import frMap from './fr.map.json';
 import frFeatures from './fr.features.json';
 import frLocale from './fr.locale.json';
 import frAudio from './fr.audio.json';
+import frCommand from './fr.command.json';
 
 type Tree = { [k: string]: string | Tree };
 function merge(a: Tree, b: Tree): Tree {
@@ -43,7 +44,7 @@ function merge(a: Tree, b: Tree): Tree {
   }
   return out;
 }
-const fr = [frMap, frFeatures, frAudio, frLocale].reduce<Tree>(
+const fr = [frMap, frFeatures, frAudio, frLocale, frCommand].reduce<Tree>(
   (a, b) => merge(a, b as Tree),
   frCore as Tree,
 );

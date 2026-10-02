@@ -22,6 +22,8 @@ import { fuelLeft, nationName, relationOf } from '../lib/game.js';
 import { photoFor, usePhotos } from '../lib/photos.js';
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
+import { armyOfUnit } from '../lib/command.js';
+import { ArmyLink } from './CommandPick.js';
 import { useWorld } from '../store/world.js';
 import { useGameTime, weaponLabels, weaponSubtitle } from './helpers.js';
 import { useMapSel } from '../map/mapSel.js';
@@ -127,6 +129,9 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
   if (own && u.mission?.ammo !== undefined && u.mission.ammo !== null)
     rows.push({ label: t('game.selection.ammo'), value: formatInt(u.mission.ammo) });
   if (general) rows.push({ label: t('game.selection.general'), value: general.name });
+  // Centre de commandement : armée de la pile (ouvre la fiche de l'armée).
+  const army = own ? armyOfUnit(view?.command, u.id) : null;
+  if (army) rows.push({ label: t('command.selection.army'), value: <ArmyLink army={army} /> });
   // Transport naval : navire porteur, embarquement en cours.
   if (own && u.transportId) {
     const ship = view?.units[u.transportId];

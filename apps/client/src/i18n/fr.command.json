@@ -1,0 +1,405 @@
+{
+  "sections": {
+    "command": "Centre de commandement",
+    "short": { "command": "QG" },
+    "path": { "command": "QG" }
+  },
+  "economy": {
+    "ledger": { "command": "Généraux et états-majors" }
+  },
+  "command": {
+    "unavailable": "Centre de commandement indisponible dans cette partie.",
+    "selection": { "army": "Armée", "open": "Ouvrir l’armée au centre de commandement" },
+    "armiesLink": {
+      "title": "Centre de commandement",
+      "text": " — formez des armées, confiez-leur une mission et recrutez des généraux qui les commandent pour vous.",
+      "open": "Ouvrir"
+    },
+    "tabs": { "armies": "Armées", "generals": "Généraux" },
+    "kpi": {
+      "armies": "Armées",
+      "active": "En mission",
+      "generals": "Généraux",
+      "payroll": "Soldes / jour",
+      "requests": "Demandes"
+    },
+    "newArmy": "Nouvelle armée",
+    "full": "Maximum de {{max}} armées atteint : dissolvez-en une pour en créer une autre.",
+    "emptyTitle": "Aucune armée",
+    "emptyText": "Formez une armée à partir de vos piles, confiez-lui une mission et choisissez un général : il la commande pour vous.",
+    "onboard": {
+      "title": "Comment ça marche",
+      "compose": "Réunissez des piles terrestres, aériennes ou navales en une armée nommée.",
+      "mission": "Confiez-lui une mission : cible désignée sur la carte, agressivité, règles d’engagement, seuil de repli.",
+      "general": "Choisissez le général qui la commande : ses compétences guident ses décisions, il est payé chaque jour."
+    },
+    "pickTitle": "Choisissez une armée",
+    "pickText": "Sa mission, son général, sa composition et le journal du général s’affichent ici.",
+    "back": "Armées",
+    "noMission": "Sans mission",
+    "noGeneral": "Sans général",
+    "zoneShort": "zone de {{km}} km",
+    "piles_one": "{{count}} pile",
+    "piles_other": "{{count}} piles",
+    "status": {
+      "idle": "Sans mission",
+      "passive": "Passive",
+      "preparing": "Préparatifs",
+      "active": "En cours",
+      "awaiting": "Attend vos ordres",
+      "success": "Réussie",
+      "failed": "Échouée",
+      "suspended": "Suspendue"
+    },
+    "pills": {
+      "health": "Santé {{pct}} %",
+      "strength": "Effectifs {{pct}} % du lancement",
+      "supply": {
+        "supplied": "Logistique : ravitaillée",
+        "limited": "Logistique : ravitaillement limité",
+        "cut": "Logistique : coupée"
+      }
+    },
+    "request": {
+      "badge": "Demande",
+      "refuse": "Refuser",
+      "accepted": "Réponse transmise au général.",
+      "refused": "Demande refusée.",
+      "declare_war": {
+        "title": "Autorisation d’entrer en guerre",
+        "text": "Le général demande l’autorisation de franchir la frontière : c’est la guerre contre {{nation}}.",
+        "accept": "Autoriser la guerre"
+      },
+      "strategic_strike": {
+        "title": "Autorisation de frappes stratégiques",
+        "text": "Le général demande l’autorisation de frapper les installations de l’arrière de {{nation}}.",
+        "accept": "Autoriser les frappes"
+      },
+      "reinforce": {
+        "title": "Demande de renforts",
+        "text_one": "Effectifs en baisse : le général demande {{count}} pile libre proche.",
+        "text_other": "Effectifs en baisse : le général demande {{count}} piles libres proches.",
+        "accept": "Envoyer les renforts"
+      }
+    },
+    "detail": {
+      "mission": "Mission",
+      "since": "depuis {{day}} {{time}}",
+      "noMissionText": "Aucune mission : l’armée attend vos ordres, ses piles restent sous votre commandement direct.",
+      "objective": "Objectif",
+      "retreat": "repli à {{pct}} %",
+      "general": "Général",
+      "noGeneralText": "Sans général, l’armée reste passive : aucune mission n’est exécutée.",
+      "composition": "Composition",
+      "piles": "Piles",
+      "doneEditing": "Terminé",
+      "empty": "Aucune pile.",
+      "manual": "Manuel",
+      "manualHelp": "Pile sous votre ordre direct : le général la reprendra à la fin de l’ordre.",
+      "manualRule": "Ordre direct sur une pile : il prime jusqu’à sa fin, puis le général reprend la pile.",
+      "journal": "Journal du général",
+      "journalEmpty": "Le général n’a encore rien rapporté."
+    },
+    "objective": {
+      "conquer": "Provinces prises",
+      "landing": "Tête de pont",
+      "defend": "Villes tenues",
+      "hold_front": "Villes du front tenues",
+      "air_defense": "Villes couvertes",
+      "reserve": "Villes tenues",
+      "air_superiority": "Ciel dégagé",
+      "sea_control": "Mer dégagée",
+      "deep_strike": "Installations détruites"
+    },
+    "est": {
+      "ratio": "Rapport de force",
+      "eta": "Durée estimée",
+      "chance": "Chances",
+      "source": {
+        "seen": "forces ennemies observées",
+        "estimate": "estimation du renseignement",
+        "none": "aucune force ennemie connue"
+      }
+    },
+    "actions": {
+      "showMap": "Voir sur la carte",
+      "rename": "Renommer",
+      "reinforce": "Renforcer",
+      "giveMission": "Donner une mission",
+      "changeMission": "Changer de mission",
+      "suspend": "Suspendre",
+      "resume": "Reprendre",
+      "dissolve": "Dissoudre",
+      "dissolveTitle": "Dissoudre l’armée",
+      "dissolveText": "Dissoudre {{name}} ? Les piles restent où elles sont, sous votre commandement direct ; le général passe en réserve (toujours payé).",
+      "pickGeneral": "Choisir un général",
+      "changeGeneral": "Changer",
+      "removeN_one": "Retirer {{count}} pile",
+      "removeN_other": "Retirer {{count}} piles"
+    },
+    "reinforce": {
+      "label": "Renforts automatiques",
+      "off": "Jamais",
+      "ask": "Sur demande",
+      "auto": "D’office",
+      "offHelp": "Le général ne demande jamais de renforts.",
+      "askHelp": "Le général demande des renforts quand ses effectifs baissent ; vous validez.",
+      "autoHelp": "Le général intègre lui-même des piles libres proches quand ses effectifs baissent."
+    },
+    "domain": { "all": "Tout", "land": "Terre", "air": "Air", "sea": "Mer" },
+    "fit": { "partial": "composition incomplète", "missing": "milieu manquant" },
+    "aggr": {
+      "label": "Agressivité",
+      "cautious": "Prudente",
+      "balanced": "Équilibrée",
+      "bold": "Audacieuse",
+      "cautiousHelp": "Attaque seulement avec une nette supériorité, se replie tôt, garde de la chasse en réserve.",
+      "balancedHelp": "Rapport de force raisonnable, repli à mi-pertes.",
+      "boldHelp": "Attaque plus tôt et plus d’objectifs à la fois, se replie tard, toute la chasse en l’air."
+    },
+    "roe": {
+      "label": "Règles d’engagement",
+      "strict": {
+        "short": "Strictes",
+        "help": "Strictes : aucune guerre ni frappe stratégique sans votre autorisation ; poursuite limitée à la zone."
+      },
+      "standard": {
+        "short": "Standard",
+        "help": "Standard : le général vous demande l’autorisation avant d’ouvrir une guerre ou de frapper l’arrière ennemi."
+      },
+      "free": {
+        "short": "Libres",
+        "help": "Libres : le général décide seul, y compris la guerre contre la cible de sa mission."
+      }
+    },
+    "retreat": { "label": "Seuil de repli d’une pile", "never": "jamais" },
+    "radius": "Rayon",
+    "scope": {
+      "label": "Portée",
+      "province": "Cette province",
+      "region": "La région",
+      "nation": "Tout le pays"
+    },
+    "target": {
+      "province": "Province visée",
+      "nation": "Nation visée",
+      "zone": "Zone",
+      "none": "non désignée",
+      "pick": "Désigner sur la carte",
+      "change": "Changer",
+      "nation": "Nation",
+      "nationAny": "— nation —",
+      "own": "Cette province vous appartient déjà : désignez une province étrangère.",
+      "needed": "Désignez la cible de la mission sur la carte."
+    },
+    "pick": {
+      "target": "Touchez la carte pour désigner la cible de la mission.",
+      "units": "Sélectionnez les piles sur la carte, puis validez.",
+      "validate": "Valider ({{count}})"
+    },
+    "missions": {
+      "conquer": {
+        "name": "Conquérir",
+        "short": "Conquête",
+        "desc": "Prendre une province, une région ou tout un pays."
+      },
+      "defend": {
+        "name": "Défendre",
+        "short": "Défense",
+        "desc": "Tenir les villes d’une zone et repousser l’ennemi qui y entre."
+      },
+      "hold_front": {
+        "name": "Tenir la ligne de front",
+        "short": "Front",
+        "desc": "Répartir les forces sur la frontière et contre-attaquer les percées."
+      },
+      "air_superiority": {
+        "name": "Supériorité aérienne",
+        "short": "Ciel",
+        "desc": "Patrouilles de chasse, avion radar et suppression des défenses sur une zone."
+      },
+      "air_defense": {
+        "name": "Défense antiaérienne",
+        "short": "DCA",
+        "desc": "Couvrir les villes d’une zone : défenses sol-air réparties, chasse en alerte."
+      },
+      "deep_strike": {
+        "name": "Frappes en profondeur",
+        "short": "Frappes",
+        "desc": "Détruire les installations stratégiques révélées d’un pays."
+      },
+      "sea_control": {
+        "name": "Contrôle maritime et blocus",
+        "short": "Mer",
+        "desc": "Tenir une zone maritime, couler les navires ennemis, bloquer les ports."
+      },
+      "landing": {
+        "name": "Débarquement",
+        "short": "Débarquement",
+        "desc": "Rassembler au port, embarquer, traverser escorté et prendre une côte ou une île."
+      },
+      "reserve": {
+        "name": "Réserve",
+        "short": "Réserve",
+        "desc": "Rester en retrait et contre-attaquer les percées dans un rayon."
+      }
+    },
+    "rank": {
+      "1": "Général de brigade",
+      "2": "Général de division",
+      "3": "Général de corps d’armée",
+      "4": "Général d’armée"
+    },
+    "skills": {
+      "offense": {
+        "label": "Offensive",
+        "help": "Choix et nombre d’objectifs, taille des groupes d’assaut, dégâts en attaque."
+      },
+      "defense": {
+        "label": "Défensive",
+        "help": "Garnisons, contre-attaques, protection des piles à l’arrêt."
+      },
+      "logistics": {
+        "label": "Logistique",
+        "help": "Rassemblement et départs échelonnés, calculs d’itinéraires, autonomie et ravitaillement."
+      },
+      "air": {
+        "label": "Aviation",
+        "help": "Sorties aériennes, escortes, suppression des défenses antiaériennes."
+      },
+      "naval": {
+        "label": "Marine",
+        "help": "Débarquements, escortes navales, contrôle maritime."
+      },
+      "audacity": {
+        "label": "Audace",
+        "help": "Un général audacieux attaque avec un rapport de force plus faible ; un prudent attend la supériorité.",
+        "low": "prudent",
+        "high": "audacieux"
+      },
+      "experience": {
+        "label": "Expérience",
+        "help": "Moins de frictions (ordres retardés), bonus plus marqués ; elle augmente avec les victoires."
+      }
+    },
+    "traits": {
+      "none": "Aucun trait marquant",
+      "encircler": {
+        "label": "Maître de l’encerclement",
+        "help": "Préfère les provinces déjà entourées par ses forces ; un objectif de plus par réflexion."
+      },
+      "thrifty": {
+        "label": "Économe en vies",
+        "help": "Exige une supériorité plus nette et se replie plus tôt."
+      },
+      "reckless": {
+        "label": "Téméraire",
+        "help": "Attaque avec moins de forces, se replie tard ; plus de frictions."
+      },
+      "logistician": {
+        "label": "Logisticien hors pair",
+        "help": "Rassemble toujours avant l’assaut ; autonomie et ravitaillement améliorés."
+      },
+      "airman": {
+        "label": "As de l’aviation",
+        "help": "Une sortie et une escorte aériennes de plus par réflexion."
+      },
+      "sailor": { "label": "Loup de mer", "help": "Une escorte navale de plus." },
+      "fortifier": {
+        "label": "Bâtisseur de défenses",
+        "help": "Protection accrue des piles à l’arrêt."
+      },
+      "methodical": {
+        "label": "Méthodique",
+        "help": "Deux fois moins de frictions ; un peu plus exigeant avant d’attaquer."
+      },
+      "blitz": {
+        "label": "Guerre éclair",
+        "help": "Un objectif de plus par réflexion ; attaque un peu plus tôt."
+      },
+      "veteran": {
+        "label": "Vétéran",
+        "help": "Apprend vite (expérience ×1,5) ; solde un peu plus élevée."
+      }
+    },
+    "general": {
+      "rating": "note {{value}}",
+      "victories_one": "{{count}} victoire",
+      "victories_other": "{{count}} victoires",
+      "wounded": "Blessé",
+      "unpaid_one": "{{count}} jour impayé",
+      "unpaid_other": "{{count}} jours impayés",
+      "perDay": "/ jour",
+      "signing": "prime {{value}}",
+      "reserve": "En réserve",
+      "missionCost": "Coût estimé de la mission",
+      "assign": "Commandement",
+      "hire": "Recruter ({{value}})",
+      "dismiss": "Limoger",
+      "dismissTitle": "Limoger le général",
+      "dismissText": "Limoger {{name}} ? Une indemnité de {{value}} est versée ; son armée devient passive.",
+      "dismissConfirm": "Limoger ({{value}})"
+    },
+    "generals": {
+      "hired": "Vos généraux",
+      "yours": "Vos généraux disponibles",
+      "none": "Aucun général recruté.",
+      "payroll": "{{value}} / jour",
+      "pool": "Vivier",
+      "poolHint": "Officiers disponibles : prime d’engagement de 5 jours de solde au recrutement."
+    },
+    "wizard": {
+      "path": "nouvelle armée",
+      "steps": "Étapes",
+      "step": { "compose": "Composer", "mission": "Mission", "general": "Général" },
+      "name": "Nom de l’armée",
+      "namePlaceholder": "1re Armée, Groupe aérien Sud, Flotte de Méditerranée…",
+      "reinforceLead": "Renforts pour {{name}} : choisissez des piles libres.",
+      "filter": "Milieu",
+      "useSelection": "Ajouter la sélection ({{count}})",
+      "pickOnMap": "Choisir sur la carte",
+      "clear": "Tout retirer",
+      "noFree": "Aucune pile libre : toutes vos piles sont déjà dans une armée.",
+      "mixed_one": "{{count}} matériel",
+      "mixed_other": "{{count}} matériels",
+      "summary": "Armée",
+      "piles": "Piles",
+      "elements": "Éléments",
+      "value": "Valeur",
+      "mission": "Mission",
+      "pickMission": "Choisissez une mission.",
+      "missing": "À compléter",
+      "generalLead": "Choisissez le général qui commandera : pour cette mission, la compétence clé est « {{skill}} ».",
+      "costHire": "Prime {{bonus}} puis {{day}} / jour",
+      "costDay": "{{day}} / jour",
+      "createOnly": "Créer sans mission",
+      "addPiles_one": "Ajouter {{count}} pile",
+      "addPiles_other": "Ajouter {{count}} piles"
+    },
+    "defaultName": {
+      "landFirst": "1re Armée",
+      "land": "{{n}}e Armée",
+      "airFirst": "Groupe aérien 1",
+      "air": "Groupe aérien {{n}}",
+      "seaFirst": "1re Flotte",
+      "sea": "{{n}}e Flotte"
+    },
+    "toast": {
+      "created": "{{name}} est formée.",
+      "reinforced_one": "{{count}} pile rejoint l’armée.",
+      "reinforced_other": "{{count}} piles rejoignent l’armée.",
+      "removed_one": "{{count}} pile retirée de l’armée.",
+      "removed_other": "{{count}} piles retirées de l’armée.",
+      "renamed": "Armée renommée.",
+      "mission": "Mission transmise au général.",
+      "hired": "{{name}} rejoint votre état-major.",
+      "hiredShort": "Général recruté.",
+      "assigned": "Commandement attribué.",
+      "dismissed": "Général limogé.",
+      "dissolved": "Armée dissoute.",
+      "suspended": "Mission suspendue.",
+      "resumed": "Mission reprise.",
+      "saved": "Réglage enregistré."
+    }
+  }
+}
