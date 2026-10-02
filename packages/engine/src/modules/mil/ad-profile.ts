@@ -56,8 +56,24 @@ function build(state: EngineState, sys: WeaponSystem): AdProf | null {
   };
 }
 
-/** Profil d'un système (mis en cache par monde). */
+/**
+ * Profils des fiches synthétiques de piles mixtes (state/stack.ts), par objet : une telle fiche garde
+ * l'identifiant de son matériel principal mais pas ses valeurs (portée, dégâts). Rangée sous cet
+ * identifiant dans le cache du monde, elle rendrait le profil dépendant de l'ordre des appels (partagé
+ * entre parties, perdu au redémarrage du serveur).
+ */
+const synthCache = new WeakMap<WeaponSystem, AdProf | null>();
+
+/** Profil d'un système (mis en cache par monde ; fiche synthétique : par objet). */
 export function adSysProfile(state: EngineState, sys: WeaponSystem): AdProf | null {
+  if (state.world.catalog.get(sys.id) !== sys) {
+    let p = synthCache.get(sys);
+    if (p === undefined) {
+      p = build(state, sys);
+      synthCache.set(sys, p);
+    }
+    return p;
+  }
   let m = cache.get(state.world);
   if (!m) cache.set(state.world, (m = new Map()));
   let p = m.get(sys.id);

@@ -1,6 +1,6 @@
 import { join } from 'node:path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import type { NationId, PlayerView } from '@redline/shared';
+import type { NationId, Order, PlayerView } from '@redline/shared';
 import type { BuiltApp } from '../src/app.js';
 import { loadRealEngine } from '../src/engine.js';
 import { REPO_ROOT } from '../src/paths.js';
@@ -168,6 +168,110 @@ describe.skipIf(!hasDb || !engine)('vrai moteur : de la création à la victoire
       );
       expect(row).toMatchObject({ status: 'ended', winner: 'fra', has: true });
       await ws.close();
+    },
+  );
+
+  it(
+    'reprise en pleine guerre : instantané intermédiaire + rejeu du journal = partie vécue, mêmes trajectoires',
+    { timeout: 300_000 },
+    async () => {
+      const HOUR = 3_600_000;
+      // Europe de l'Est : la Pologne (joueur) en guerre contre la Biélorussie (IA), IA voisines actives.
+      const P = await guest(built.app);
+      const created = await api(built.app, P.cookie)('POST', '/api/games', {
+        scenarioId: 'eastern-europe',
+        nationId: 'pol',
+        speed: FAST,
+      });
+      expect(created.statusCode).toBe(201);
+      const id = created.json().game.id as string;
+      const host = built.ctx.host;
+      const g = host.games.get(id)!;
+      const ws = await WsClient.connect(port, id, P.cookie);
+      const w = await ws.next('welcome', () => true, 30_000);
+      expect(await host.adminSetPaused(id, true)).toBe(true);
+      let seq = 1;
+      const order = async (o: Order): Promise<boolean> => {
+        const oid = seq++;
+        ws.send({ t: 'order', id: oid, order: o });
+        return (await ws.next('orderResult', (m) => m.id === oid)).ok;
+      };
+      const catalog = g.world.catalog;
+      const own = Object.values(w.view.units)
+        .filter((u) => u.level === 'own')
+        .sort((a, b) => (a.id < b.id ? -1 : 1));
+      const capturers = own.filter((u) => catalog.get(u.systemId!)?.canCapture);
+      const air = own.filter((u) => {
+        const sys = catalog.get(u.systemId!);
+        return sys?.movement === 'air' && !sys.missile;
+      });
+      const blr = built.ctx.store
+        .current()
+        .map!.provinces.filter((p) => p.nationId === 'blr')
+        .sort((a, b) => (a.id < b.id ? -1 : 1));
+      expect(capturers.length).toBeGreaterThan(3);
+      expect(blr.length).toBeGreaterThan(1);
+      expect(await order({ kind: 'declareWar', nationId: 'blr' })).toBe(true);
+      let moved = 0;
+      for (const [i, u] of capturers.slice(0, 4).entries()) {
+        const to = blr[i % blr.length]!.cityPoint;
+        if (await order({ kind: 'move', unitIds: [u.id], to })) moved++;
+      }
+      expect(moved).toBeGreaterThan(0);
+      if (air[0])
+        await order({ kind: 'patrol', unitIds: [air[0].id], at: blr[0]!.cityPoint, radiusKm: 120 });
+
+      // Quelques heures de guerre, puis instantané intermédiaire (le journal repart de là).
+      const run = async (hours: number): Promise<void> => {
+        const target = g.state.time + hours * HOUR;
+        expect(await host.adminSetPaused(id, false)).toBe(true);
+        await until(() => g.state.time >= target, `${hours} h de jeu`, 120_000);
+        expect(await host.adminSetPaused(id, true)).toBe(true);
+        await host.settle(id);
+      };
+      await run(4);
+      await host.snapshotAll(true);
+      await host.settle(id);
+      const [snap] = await sqlQuery(
+        (sql) =>
+          sql`SELECT max(seq) AS seq, count(*)::int AS n FROM game_snapshots WHERE game_id = ${id}`,
+      );
+      expect(snap!.n).toBeGreaterThan(1);
+
+      // Ordres après l'instantané (rejoués à la reprise), encore quelques heures de guerre.
+      for (const [i, u] of capturers.slice(4, 8).entries()) {
+        await order({ kind: 'move', unitIds: [u.id], to: blr[(i + 1) % blr.length]!.cityPoint });
+      }
+      if (air[1])
+        await order({ kind: 'patrol', unitIds: [air[1].id], at: blr[1]!.cityPoint, radiusKm: 120 });
+      await run(5);
+      await ws.close();
+      await host.settle(id);
+      expect(Object.keys((g.state as unknown as { wars: object }).wars)).toContain('blr|pol');
+      const hash = engine!.stateHash(g.state);
+      const time = g.state.time;
+      // Témoin : copie de la partie vécue (la reprise d'un instantané en mémoire est vérifiée par le moteur).
+      const live = engine!.deserializeState(g.world, engine!.serializeState(g.state));
+
+      // « Crash » : ni instantané final, ni libération du bail ; reprise = instantané + rejeu du journal.
+      await host.stop({ snapshot: false, release: false });
+      await built.app.close();
+      built = await startApp({
+        dataDir: DATA,
+        engine,
+        env: { ...ADMIN, REDLINE_EXTRA_SPEEDS: String(FAST) },
+      });
+      port = await listen(built.app);
+      const g2 = await built.ctx.host.ensureLoaded(id);
+      expect(g2).not.toBeNull();
+      expect(g2!.state.time).toBe(time);
+      expect(engine!.stateHash(g2!.state)).toBe(hash);
+      // Même trajectoire ensuite : 12 h comparées heure par heure (partie en pause côté serveur).
+      for (let h = 1; h <= 12; h++) {
+        engine!.advanceTo(g2!.state, time + h * HOUR);
+        engine!.advanceTo(live, time + h * HOUR);
+        expect(engine!.stateHash(g2!.state), `écart à +${h} h`).toBe(engine!.stateHash(live));
+      }
     },
   );
 
