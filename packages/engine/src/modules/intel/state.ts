@@ -1,6 +1,8 @@
 import {
   DEPARTMENTS,
   type AgentCover,
+  type DetaineeKind,
+  type DetaineeStatus,
   type IntelSource,
   type OrbatEstimate,
   type ThreatIndicator,
@@ -83,6 +85,55 @@ export interface Agent {
   burned?: boolean;
   caughtAt?: GameTime;
   turnedAt?: GameTime;
+  /** Détention après l'arrestation publique (absente : anciennes sauvegardes, règles d'origine). */
+  dn?: Detention;
+}
+
+/** Détention d'un agent par son pays hôte : type, situation, échéances, ce qu'il a révélé. */
+export interface Detention {
+  k: DetaineeKind;
+  s: DetaineeStatus;
+  /** Arrestation, échéance de la décision, fin de la détention (sortie). */
+  at: GameTime;
+  by: GameTime;
+  end?: GameTime;
+  /** Peine prononcée (jours) et fin de peine. */
+  days?: number;
+  until?: GameTime;
+  /** Interrogatoire en cours jusqu'à ; déjà interrogé ; retournement refusé. */
+  iq?: GameTime;
+  iv?: 1;
+  tf?: 1;
+  /** Révélé par l'interrogatoire : agents identifiés, opérations déjouées. */
+  rv?: [number, number];
+  /** Opération en cours au moment de l'arrestation. */
+  op?: IntelOpKind;
+}
+
+/** Proposition d'échange ou de libération d'agents (voir SwapView). */
+export interface Swap {
+  id: string;
+  from: NationId;
+  to: NationId;
+  at: GameTime;
+  exp: GameTime;
+  give: string[];
+  get: string[];
+  m: number;
+  d: number;
+  ls?: 1;
+  /** Contre-proposition, en réponse à la proposition `re`. */
+  c?: 1;
+  re?: string;
+  st: 'open' | 'accepted' | 'refused' | 'expired' | 'void';
+  end?: GameTime;
+}
+
+/** Représailles en attente d'un pays d'origine (IA) contre un geôlier : gravité, chance, date. */
+export interface Grudge {
+  k: 'expel' | 'jail' | 'execute';
+  p: number;
+  t: GameTime;
 }
 
 export interface Listen {
@@ -155,6 +206,11 @@ export interface NationIntel {
   ev?: Record<NationId, Assessment>;
   /** Sites durcis contre le sabotage jusqu'à cette date. */
   hd?: GameTime;
+  /**
+   * Service affaibli contre une nation (agents perdus, exécution dissuasive) : réussite de nos
+   * opérations contre elle × (1 − f) jusqu'à `u`.
+   */
+  sh?: Record<NationId, { f: number; u: GameTime }>;
 }
 
 /**
@@ -200,6 +256,16 @@ export interface IntelState {
    * économique (`e`) et militaire (`m`), date de dernière mise à jour (`t`). Entrées non nulles seulement.
    */
   pk: Record<NationId, Record<string, ProvinceKnowledge>>;
+  /** Relations bilatérales (affaires d'espionnage, échanges), clé "a|b" (a < b), −100..100. */
+  rel?: Record<string, number>;
+  /** Propositions d'échange d'agents. */
+  sw?: Record<string, Swap>;
+  /** Représailles en attente, clé "origine>geôlier". */
+  gr?: Record<string, Grudge>;
+  /** Accords de non-ingérence, clé "a|b" → fin. */
+  na?: Record<string, GameTime>;
+  /** Dernière initiative d'échange d'une IA, clé "a>b". */
+  si?: Record<string, GameTime>;
 }
 
 export interface ProvinceKnowledge {

@@ -1381,7 +1381,9 @@
       "double": "双面间谍",
       "exfiltrated": "已撤离",
       "captured": "被捕",
-      "expelled": "已驱逐"
+      "expelled": "已驱逐",
+      "executed": "已处决",
+      "released": "已释放"
     },
     "ops": {
       "infiltrate_spy": "渗透间谍",
@@ -1461,7 +1463,8 @@
     "tabs": {
       "military": "军事",
       "dossiers": "国家档案",
-      "reports": "报告"
+      "reports": "报告",
+      "detainees": "被拘留者"
     },
     "cover": "掩护身份",
     "covers": {
@@ -1516,6 +1519,173 @@
       "agents": "当地特工",
       "reliability": "档案可靠性",
       "empty": "暂无档案：你的情报机构跟踪邻国、敌国以及你的行动目标国家。"
+    },
+    "dz": {
+      "title": "被拘留者",
+      "subtitle": "囚犯、被拘特工、谈判",
+      "ourRegime": "我方政体：{{regime}}",
+      "ours": "我方囚犯",
+      "abroad": "我方在境外被拘的特工",
+      "negotiations": "谈判",
+      "relations": "双边关系",
+      "noDetainees": "没有被拘留的外国特工。",
+      "noAbroad": "我方没有特工在境外被拘。",
+      "noSwaps": "没有进行中的谈判。",
+      "noRelations": "没有因间谍案受影响的关系。",
+      "defaultHint": "期限前未作决定：先行羁押（持续的外交压力）。",
+      "kinds": {
+        "diplomat": "外交掩护军官",
+        "illegal": "非官方掩护军官",
+        "source": "本地线人",
+        "double": "双面间谍"
+      },
+      "kindsShort": {
+        "diplomat": "外交官",
+        "illegal": "非法特工",
+        "source": "线人",
+        "double": "双面"
+      },
+      "status": {
+        "pending": "待决定",
+        "held": "先行羁押",
+        "jailed": "已判刑",
+        "expelled": "已驱逐",
+        "returned": "已遣返",
+        "executed": "已处决",
+        "released": "已释放",
+        "exchanged": "已交换",
+        "served": "刑满",
+        "turned": "已策反"
+      },
+      "fate": {
+        "held": "被拘",
+        "interrogation": "审讯中",
+        "jailed": "已判刑",
+        "expelled": "已驱逐",
+        "returned": "已遣返",
+        "executed": "已处决",
+        "released": "已释放",
+        "exchanged": "已交换",
+        "served": "刑满"
+      },
+      "regimes": {
+        "democracy": "民主政体",
+        "hybrid": "混合政体",
+        "authoritarian": "威权政体"
+      },
+      "regimesShort": {
+        "democracy": "民主",
+        "hybrid": "混合",
+        "authoritarian": "威权"
+      },
+      "actions": {
+        "arrest": "逮捕",
+        "interrogate": "审讯",
+        "expel": "驱逐",
+        "return": "遣返",
+        "jail": "监禁",
+        "execute": "处决",
+        "turn": "策反",
+        "release": "释放"
+      },
+      "help": {
+        "arrest": "公开逮捕：特工成为被拘留者，事件升级为外交事件。",
+        "interrogate": "受监督的问询：网络、计划中的行动、意图。供词可能是假的。",
+        "expel": "不受欢迎的人：后果轻微，可能遭对等驱逐。",
+        "return": "遣返回国：后果轻微，不经审判。",
+        "jail": "监禁：持续的外交压力、谈判筹码、代价低。",
+        "execute": "死刑：关系崩溃、很可能遭报复、具有威慑效果。",
+        "turn": "提议为我方工作：表面上获释，成为为我方效力的双面间谍。",
+        "release": "无条件释放：缓和姿态。"
+      },
+      "days": "{{n}} 天",
+      "decision": "决定",
+      "sentence": "刑期",
+      "unavailable": "不可用",
+      "confirmTitle": "决定 — 被拘留者 {{ref}}",
+      "confirm": "确认决定",
+      "applied": "决定已执行：{{action}}",
+      "consequences": "预计后果",
+      "fx": {
+        "relations": "与{{nationLe}}的关系",
+        "reputation": "国际声誉",
+        "stability": "国内稳定",
+        "retaliation": "报复风险",
+        "serviceHit": "敌方情报机构对我方的能力削弱",
+        "serviceDays": "{{pct}}，持续 {{days}} 天",
+        "worldRelations": "与民主国家的关系",
+        "council": "安理会谴责表决",
+        "chance": "成功率",
+        "pressure": "外交压力",
+        "perDay": "每天 {{value}}",
+        "immunity": "违反外交豁免",
+        "hours": "时长",
+        "none": "无明显后果。"
+      },
+      "risk": {
+        "none": "无",
+        "low": "低",
+        "moderate": "中",
+        "high": "高"
+      },
+      "blocked": {
+        "war_only": "我方政体在和平时期不能执行死刑。",
+        "never": "死刑已废除。",
+        "interrogating": "审讯进行中。",
+        "done": "已尝试过。",
+        "not_plausible": "对该被拘留者不可行。",
+        "final": "该被拘留者已不在我方手中。"
+      },
+      "decideIn": "{{left}}后需决定",
+      "sentenceLeft": "刑期 {{days}} 天 · {{left}}后可释放",
+      "interrogating": "审讯：剩余 {{left}}",
+      "revealed": "供词：{{agents}} 名特工，{{ops}} 项行动",
+      "caughtDuring": "被捕时正在进行：{{op}}",
+      "value": "价值",
+      "valueHint": "估计交换价值（军官 > 线人，接触层级）。",
+      "exchange": "交换",
+      "negotiate": "谈判",
+      "arrested": "特工已被逮捕",
+      "incoming": "收到",
+      "outgoing": "发出",
+      "counter": "反提议",
+      "swapStatus": {
+        "open": "待定",
+        "accepted": "已达成",
+        "refused": "已拒绝",
+        "expired": "已过期",
+        "void": "已失效"
+      },
+      "expires": "{{left}}后过期",
+      "weRelease": "我方释放",
+      "weObtain": "我方获得",
+      "money": "资金",
+      "theyPay": "对方支付 {{amount}}",
+      "wePay": "我方支付 {{amount}}",
+      "accord": "互不干涉协议",
+      "accordNone": "无",
+      "accordShort": "互不干涉",
+      "sanctions": "制裁",
+      "sanctionsLifted": "由{{nationLe}}放宽",
+      "accept": "接受",
+      "refuse": "拒绝",
+      "acceptedOk": "协议已达成",
+      "refusedOk": "提议被拒绝",
+      "swapTitle": "谈判 — {{nation}}",
+      "partner": "国家",
+      "relationsNow": "当前关系：{{value}}",
+      "atWar": "交战中",
+      "noneToRelease": "我方未拘押对方特工。",
+      "noneToObtain": "对方未拘押我方特工。",
+      "moneyNone": "无",
+      "moneyPay": "我方支付",
+      "moneyAsk": "我方索要",
+      "amount": "金额",
+      "liftSanctions": "放宽我方发起的对其制裁",
+      "balance": "付出价值 {{give}} · 获得 {{get}}",
+      "balanceHint": "关系敌对或处于战争时，AI 会要价更高；它可能拒绝或提出反提议。",
+      "send": "发送提议",
+      "sent": "提议已发送"
     }
   },
   "sheet": {
@@ -3397,7 +3567,10 @@
       "dismantle": "摧毁 {{nation}} 的情报网",
       "deception": "欺骗行动 — {{nation}}",
       "hardened": "敏感设施已加固",
-      "strategicAlert": "战略警报 — {{nation}}"
+      "strategicAlert": "战略警报 — {{nation}}",
+      "interrogation": "审讯 — 被拘留者 {{ref}}（{{nation}}）",
+      "turnRefused": "策反被拒 — 被拘留者 {{ref}}",
+      "detaineeTurned": "被拘留者 {{ref}} 已被策反"
     },
     "note": {
       "allianceInvite": {
@@ -3513,6 +3686,70 @@
         "title": "外交官被驱逐",
         "text": "{{host}} 以间谍罪驱逐 {{owner}} 的外交官。"
       },
+      "detaineeNew": {
+        "title": "外国特工被拘",
+        "text": "{{owner}} 的一名特工在我方手中：须在 {{days}} 天内作出决定。"
+      },
+      "detaineeHeld": {
+        "title": "先行羁押",
+        "text": "因未作决定，{{owner}} 的特工被先行羁押。"
+      },
+      "spyInterrogated": {
+        "title": "特工受审",
+        "text": "{{codename}} 正在接受{{host}}情报机构的审讯。"
+      },
+      "spyReturned": {
+        "title": "特工被遣返",
+        "text": "{{codename}} 已被{{host}}遣返回国。"
+      },
+      "spyJailed": {
+        "title": "特工被判刑",
+        "text": "{{codename}} 被{{host}}判处 {{days}} 天监禁。"
+      },
+      "spyExecuted": {
+        "title": "特工被处决",
+        "text": "{{codename}} 已被{{host}}处决。"
+      },
+      "spyReleased": {
+        "title": "特工获释",
+        "text": "{{host}} 已释放 {{codename}}。"
+      },
+      "spyServed": {
+        "title": "刑满",
+        "text": "{{codename}} 已刑满（{{host}}），正在回国。"
+      },
+      "swapProposal": {
+        "title": "交换提议",
+        "text": "{{nation}} 提议交换特工。"
+      },
+      "swapCounter": {
+        "title": "反提议",
+        "text": "{{nation}} 提出反提议。"
+      },
+      "swapAccepted": {
+        "title": "交换达成",
+        "text": "{{a}} 与 {{b}} 就被拘特工达成协议。"
+      },
+      "swapRefused": {
+        "title": "交换被拒",
+        "text": "{{nation}} 拒绝了您的交换提议。"
+      },
+      "reprisalExecute": {
+        "title": "报复",
+        "text": "{{nation}} 处决我方一名被拘特工以示报复。"
+      },
+      "reprisalJail": {
+        "title": "报复",
+        "text": "{{nation}} 加重对我方特工的拘押（顶格刑期）。"
+      },
+      "reprisalArrest": {
+        "title": "报复",
+        "text": "{{nation}} 逮捕我方一名特工以示报复。"
+      },
+      "reprisalExpel": {
+        "title": "报复",
+        "text": "{{nation}} 驱逐我方外交官以示报复。"
+      },
       "troopsEmbarked": {
         "title": "部队已登船",
         "text": "{{system}} 已登上 {{ship}}。"
@@ -3538,6 +3775,12 @@
         "noCapturer": "{{system}} 无法占领 {{place}}：需要步兵或装甲部队。",
         "noWar": "未与 {{place}} 的所有者交战：无法占领。"
       }
+    },
+    "spyNews": {
+      "executedH": "{{host}}：{{owner}} 的一名特工被处决",
+      "executedB": "{{host}} 宣布处决一名因间谍罪被定罪的 {{owner}} 特工。国际社会予以谴责。",
+      "swapH": "{{a}} 与 {{b}} 交换特工",
+      "swapB": "{{a}} 与 {{b}} 进行了囚犯交换：{{n}} 名特工获释。"
     }
   }
 }

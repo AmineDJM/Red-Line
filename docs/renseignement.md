@@ -88,6 +88,61 @@ section `intel` (zod : `packages/shared/src/balance.ts`) ; console : `apps/clien
   seulement (les IA ne lisent pas les rapports).
 - **Carte des menaces** : mini-carte, cercles sur les capitales proportionnels à l'indice.
 
+## Détenus et négociations (`detainees.ts`, `swaps.ts`, réglages `intel.detainees`)
+
+Un agent arrêté publiquement (démasqué puis interpellé, opération compromise, démantèlement, ordre
+`detainee` / `arrest`) devient un **détenu** du pays hôte : type (officier sous couverture
+diplomatique, officier clandestin, source locale, agent double), pays d'origine, opération en cours au
+moment de l'arrestation. Décision attendue sous `decisionDays` (3 j) ; à défaut, **détention
+provisoire** (pression diplomatique continue). Les IA décident aussitôt.
+
+| Décision (ordre `detainee`) | Relations avec l'origine | Réputation          | Stabilité | Représailles | Service adverse | Particularités                                                                               |
+| --------------------------- | ------------------------ | ------------------- | --------- | ------------ | --------------- | -------------------------------------------------------------------------------------------- |
+| Interpeller (`arrest`)      | −3                       | 0                   | 0         | 10 %         | −5 % · 15 j     | agent démasqué ou doublé → détenu                                                            |
+| Interroger                  | −2                       | 0                   | 0         | 5 %          | —               | 48 h ; aveux : réseau (2 agents démasqués), opérations éventées, intentions ; intox possible |
+| Expulser (diplomate)        | −6                       | 0                   | 0         | 50 %         | −15 % · 30 j    | persona non grata ; expulsions réciproques possibles                                         |
+| Renvoyer (sans immunité)    | −4                       | 0                   | 0         | 20 %         | −10 % · 20 j    |                                                                                              |
+| Emprisonner 30/90/365 j     | −12 − 10 × années        | −0,5                | +1        | 35 %         | −20 % · 60 j    | pression −1/j (plancher −60), monnaie d'échange, libération en fin de peine                  |
+| Exécuter                    | −40 (× 1,5 en paix)      | −6 + régime (× 1,5) | régime    | 80 %         | −35 % · 90 j    | voir régimes ; dépêche publique ; dissuasion des IA (plus d'implantation)                    |
+| Retourner                   | comme libérer si réussi  |                     |           |              |                 | chance par type × (0,5 + qualité) ; vu du propriétaire : une libération                      |
+| Libérer                     | +6                       | +1                  | −1        | —            | —               | relâché sur place                                                                            |
+| Échange conclu              | +8                       | +1 (les deux)       | +1        | —            | —               | agents rentrés                                                                               |
+
+Poids du type dans les relations : source × 0,6, agent double × 0,8. Diplomate : prison, exécution ou
+interrogatoire = violation de l'immunité (relations −10, réputation −5). Représailles : chance × régime
+de l'origine (démocratie 0,8, hybride 1, autoritaire 1,2) × (1 + hostilité/100), plafonnée à 95 %.
+
+**Régimes** (`intel.detainees.nations`, hybride par défaut) : démocratie — exécution seulement en guerre,
+réputation −12, stabilité −6, relations −10 avec chaque autre démocratie, vote de condamnation au Conseil
+(60 %) ; hybride — toujours possible, −6 / −2 / −4, Conseil 20 % ; autoritaire — −3, stabilité +1,
+−2, Conseil 10 %.
+
+**Relations bilatérales** (`st.rel`, −100..100, retour vers 0 de 0,5/j) : affaires d'espionnage,
+échanges ; utilisées par les IA (décisions, exigences en négociation, représailles).
+
+**IA geôlière** : interrogatoire d'abord (sauf diplomate), retournement tenté d'une source, exécution si
+le régime le permet et la relation est hostile (guerre ou ≤ −40 ; chance `aiExecute` × 1,5 en guerre),
+expulsion des diplomates (prison d'un an pour un régime autoritaire en guerre), renvoi en bonnes
+relations (≥ 20), sinon prison (365 j en guerre ou ≤ −50, 90 j ≤ −15, 30 j sinon). **IA d'origine** :
+mémoire des affronts (`st.gr`) résolue le lendemain — exécution d'un de nos détenus, peines maximales,
+arrestation d'un de nos agents, expulsions réciproques ; service affaibli et dissuadé (`sh`).
+
+**Négociations** (`proposeSwap`, `answerSwap`) : agents libérés de part et d'autre (1 contre 1,
+plusieurs contre plusieurs), argent dans les deux sens, accord de non-ingérence (aucune opération l'un
+contre l'autre), allègement des sanctions que l'on parraine au Conseil ; possibles en guerre.
+L'IA répond sous `aiAnswerHours` : gain = valeur récupérée − valeur cédée × 0,85 × (1 + exigence) +
+argent / 25 M$ + accord + sanctions (valeur : clandestin 4, diplomate 3, source 1,5, double 1, × (1 + 0,5
+× accès) ; exigence : 0,5 × hostilité + 0,25 en guerre). Accepte si positif, sinon contre-propose une
+fois en demandant le déficit × 1,2 en dollars, ou refuse. Elle prend aussi l'initiative (échanges
+équilibrés, rachat de ses agents, libération contre rançon au joueur), au plus tous les 5 jours par paire.
+
+**Vues** : geôlier — détenus (référence `D-n`, jamais le nom de code), options et conséquences calculées
+par le moteur ; propriétaire — sort de ses agents (`AgentView.detention`) sans jamais « retourné » ni
+« double » ; tiers — rien. Console : onglet **Détenus** (prisonniers, agents détenus à l'étranger,
+négociations, relations bilatérales), dialogue de décision avec conséquences avant confirmation,
+dialogue de négociation. Tests : `packages/engine/test/intel-detainees.test.ts`,
+`apps/client/test/detainees.test.ts`, `e2e/detainees.spec.ts`.
+
 ## IA
 
 Une décision par jour (inchangé). Ajouts : démantèlement si deux agents d'une même nation sont démasqués,
@@ -107,9 +162,9 @@ de l'ennemi ou géolocalisation de ses émetteurs (tirages hachés, sans consomm
 
 ## Console (client)
 
-Six onglets : **SIGINT** (capteurs, décryptage par nation), **HUMINT** (réseau d'agents : couverture,
+Sept onglets : **SIGINT** (capteurs, décryptage par nation), **HUMINT** (réseau d'agents : couverture,
 accès, fiabilité, statut ; cultiver, vérifier, exfiltrer en un clic), **Militaire** (carte et liste des
-menaces), **Intérieur** (priorité, sites protégés, menace), **Dossiers** (carte des menaces, liste,
+menaces), **Intérieur** (priorité, sites protégés, menace), **Détenus** (décisions, négociations), **Dossiers** (carte des menaces, liste,
 dossier), **Rapports** (filtre par onglet). Chaque onglet d'action : budget et capacité du département,
 cartes d'opérations avec coût, durée, réussite de base et risque — un clic ouvre le dialogue prérempli,
 un second lance. Mise en page en une colonne sur mobile. Logique pure testée dans

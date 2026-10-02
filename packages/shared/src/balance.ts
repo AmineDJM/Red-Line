@@ -1037,6 +1037,16 @@ export type AiWorldLevelBalance = AiWorldBalance['levels']['normal'];
 export type AiLevelBalance = AiBalance['levels']['normal'];
 
 /** Chiffres d'équilibrage globaux (data/balance/*.json). Tout est réglable par l'admin. */
+/** Valeurs par type de détenu (diplomate, clandestin, source, agent double). */
+const detaineeKindNumbers = z
+  .object({
+    diplomat: z.number().min(0),
+    illegal: z.number().min(0),
+    source: z.number().min(0),
+    double: z.number().min(0),
+  })
+  .partial();
+
 export const BalanceSchema = z.object({
   version: z.number().int(),
   time: z.object({
@@ -1570,6 +1580,113 @@ export const BalanceSchema = z.object({
           threatDecay: z.number().min(0).max(1).optional(),
           /** Poids des incidents dans la menace d'une province (points). */
           threatWeights: z.record(z.string(), z.number().min(0)).default({}),
+        })
+        .optional(),
+      /**
+       * Détenus : agents étrangers capturés, décisions du pays geôlier et leurs conséquences, régimes
+       * politiques, négociations (échanges, libérations). Tous les champs sont optionnels ; valeurs par
+       * défaut dans packages/engine/src/modules/intel/dzconfig.ts.
+       */
+      detainees: z
+        .object({
+          /** Délai de décision (jours de jeu) ; au-delà, détention provisoire. */
+          decisionDays: z.number().positive().optional(),
+          /** Interrogatoire : durée (heures), chance d'aveux exploitables et part d'intoxication par type. */
+          interrogateHours: z.number().positive().optional(),
+          interrogateYield: detaineeKindNumbers.optional(),
+          interrogateFalse: detaineeKindNumbers.optional(),
+          /** Agents du même réseau identifiés au plus par un interrogatoire. */
+          revealAgents: z.number().int().min(0).optional(),
+          /** Durées de peine proposées (jours de jeu). */
+          sentenceDays: z.array(z.number().int().positive()).min(1).max(6).optional(),
+          /** Retournement : chance de base par type (× (0,5 + qualité de la sécurité intérieure)). */
+          turnChance: detaineeKindNumbers.optional(),
+          /** Poids du type dans les relations ; valeur d'échange par type ; bonus par niveau d'accès. */
+          kindRelations: detaineeKindNumbers.optional(),
+          value: detaineeKindNumbers.optional(),
+          accessValue: z.number().min(0).optional(),
+          /**
+           * Conséquences de base de chaque décision : relations avec le pays d'origine, réputation et
+           * stabilité du pays qui décide, risque de représailles, affaiblissement du service adverse et
+           * sa durée (jours). `return` : renvoi d'un agent sans immunité ; `exchange` : échange conclu.
+           */
+          actions: z
+            .record(
+              z.enum([
+                'arrest',
+                'interrogate',
+                'expel',
+                'return',
+                'jail',
+                'execute',
+                'turn',
+                'release',
+                'exchange',
+              ]),
+              z
+                .object({
+                  relations: z.number(),
+                  reputation: z.number(),
+                  stability: z.number(),
+                  retaliation: z.number().min(0).max(1),
+                  serviceHit: z.number().min(0).max(1),
+                  serviceDays: z.number().min(0),
+                })
+                .partial(),
+            )
+            .optional(),
+          /** Relations supplémentaires par année de prison prononcée. */
+          jailPerYear: z.number().optional(),
+          /** Violation de l'immunité diplomatique : réputation et relations. */
+          immunityReputation: z.number().optional(),
+          immunityRelations: z.number().optional(),
+          /** Exécution en temps de paix : relations et réputation multipliées. */
+          peaceFactor: z.number().min(1).optional(),
+          /** Règles par régime (démocratie, hybride, autoritaire). */
+          regimes: z
+            .record(
+              z.enum(['democracy', 'hybrid', 'authoritarian']),
+              z
+                .object({
+                  execute: z.enum(['never', 'war', 'always']),
+                  reputation: z.number(),
+                  stability: z.number(),
+                  worldRelations: z.number(),
+                  council: z.number().min(0).max(1),
+                  retaliation: z.number().min(0),
+                  aiExecute: z.number().min(0).max(1),
+                })
+                .partial(),
+            )
+            .optional(),
+          /** Régimes des nations (identifiants) ; les autres sont hybrides. */
+          nations: z
+            .object({
+              democracy: z.array(z.string()).optional(),
+              authoritarian: z.array(z.string()).optional(),
+            })
+            .optional(),
+          /** Pression diplomatique quotidienne par détenu et plancher ; retour des relations vers 0. */
+          pressurePerDay: z.number().min(0).optional(),
+          pressureFloor: z.number().min(-100).max(0).optional(),
+          relationsDecayPerDay: z.number().min(0).optional(),
+          /** Négociations : validité (jours), délai de réponse d'une IA (heures). */
+          swapDays: z.number().positive().optional(),
+          aiAnswerHours: z.number().min(0).optional(),
+          /** Dollars par point de valeur d'agent ; valeur d'un jour d'accord, d'un allègement de sanctions. */
+          usdPerValue: z.number().positive().optional(),
+          accordValuePerDay: z.number().min(0).optional(),
+          sanctionsValue: z.number().min(0).optional(),
+          /** Valeur d'un détenu cédé rapportée à celle d'un agent récupéré. */
+          holdFactor: z.number().min(0).optional(),
+          /** Exigences d'une IA : relations hostiles, guerre ; contre-proposition et surenchère. */
+          hostilePremium: z.number().min(0).optional(),
+          warPremium: z.number().min(0).optional(),
+          counterMax: z.number().min(0).optional(),
+          raise: z.number().min(0).optional(),
+          /** Initiatives d'échange des IA : au plus une par paire tous les N jours, relations minimales. */
+          aiSwapEveryDays: z.number().positive().optional(),
+          aiSwapMinRelations: z.number().min(-100).max(100).optional(),
         })
         .optional(),
     })

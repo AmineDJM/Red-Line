@@ -10,6 +10,10 @@ import { nat } from './state.js';
 import { aiTrace } from '../../ai/trace.js';
 import { aiLevelCfg } from '../../ai/config.js';
 import { isRegular } from '../diplo/state.js';
+import { serviceHit } from './detainees.js';
+
+/** Service fortement affaibli contre une nation (exécution, réseau démantelé) : pas de nouvel agent. */
+const DETERRED = 0.3;
 
 /**
  * IA du renseignement : une décision par jour de jeu et par nation, à une heure propre à chaque nation
@@ -38,6 +42,13 @@ export function aiThink(state: EngineState, n: NationId): void {
   // Garnisons neutres en paix : pas de service actif.
   if (!ns.active && wars.length === 0) return;
   const tryOp = (kind: IntelOpKind, target: IntelOpTarget, agentId?: string): boolean => {
+    // Dissuasion : après des exécutions ou un réseau perdu, plus d'implantation d'agents chez elle.
+    if (
+      (kind === 'infiltrate_spy' || kind === 'recruit_source') &&
+      target.nationId &&
+      serviceHit(state, n, target.nationId) >= DETERRED
+    )
+      return false;
     if (ns.money < opCost(state, kind, target).money * RESERVE) return false;
     const r = startOp(state, n, kind, target, agentId);
     aiTrace(state, n, { kind: 'intelOp', op: kind, target }, r);

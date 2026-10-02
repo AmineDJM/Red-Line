@@ -292,7 +292,7 @@ export function cryptoDaily(state: EngineState): void {
   }
 }
 
-function ev(state: EngineState, n: NationId, x: NationId): Assessment {
+export function ev(state: EngineState, n: NationId, x: NationId): Assessment {
   const ni = nat(state, n);
   const e = ((ni.ev ??= {})[x] ??= { t: state.time, th: 0, ind: [] });
   return e;

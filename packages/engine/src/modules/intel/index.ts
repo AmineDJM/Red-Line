@@ -16,6 +16,8 @@ import { copyTo, findReport } from './reports.js';
 import { onSignal } from './signals.js';
 import { ist, nat, newNationIntel, type IntelState } from './state.js';
 import { intelView } from './view.js';
+import { decide, detaineesDaily, onDue, onInterrogationEnd, onSentenceEnd } from './detainees.js';
+import { aiAnswer, orderAnswerSwap, orderProposeSwap, swapsDaily } from './swaps.js';
 import {
   interiorDaily,
   interiorModifier,
@@ -105,6 +107,14 @@ function onEvent(state: EngineState, ev: ModEvent): void {
       return handleArrest(state, d.id!);
     case 'listen':
       return listenTick(state, d.id!);
+    case 'dz_due':
+      return onDue(state, d.id!, Number(d.t));
+    case 'dz_iq':
+      return onInterrogationEnd(state, d.id!, Number(d.t));
+    case 'dz_end':
+      return onSentenceEnd(state, d.id!, Number(d.t));
+    case 'sw_ai':
+      return aiAnswer(state, d.id!);
     case 'intercept':
       return interceptTick(state, d.id!);
     case 'expire': {
@@ -151,6 +161,8 @@ function onDailyTick(state: EngineState): void {
     ni.paid = Math.round((pay / total) * 1000) / 1000;
   }
   dailyAgents(state);
+  detaineesDaily(state);
+  swapsDaily(state);
   agentsReveal(state);
   interiorDaily(state);
   refreshSensors(state);
@@ -199,6 +211,24 @@ const orders: Partial<Record<Order['kind'], OrderHandler>> = {
   protectSite: (state, n, o) => {
     if (o.kind !== 'protectSite') return fail('Ordre invalide.');
     return orderProtectSite(state, n, o.provinceId, o.on);
+  },
+  detainee: (state, n, o) => {
+    if (o.kind !== 'detainee') return fail('Ordre invalide.');
+    return decide(state, n, o.agentId, o.action, o.days);
+  },
+  proposeSwap: (state, n, o) => {
+    if (o.kind !== 'proposeSwap') return fail('Ordre invalide.');
+    return orderProposeSwap(state, n, o.nationId, {
+      give: o.give,
+      get: o.get,
+      money: o.money ?? 0,
+      accordDays: o.accordDays ?? 0,
+      liftSanctions: !!o.liftSanctions,
+    });
+  },
+  answerSwap: (state, n, o) => {
+    if (o.kind !== 'answerSwap') return fail('Ordre invalide.');
+    return orderAnswerSwap(state, n, o.swapId, o.accept);
   },
 };
 
