@@ -406,7 +406,7 @@ const TEXT: Record<TextStyle, TextSpec> = {
     upper: false,
   },
   count: {
-    font: `600 {s}px ${MONO}`,
+    font: '700 {s}px "Barlow Condensed", "Arial Narrow", sans-serif',
     size: 12,
     spacing: 0,
     color: '#ffffff',

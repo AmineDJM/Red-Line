@@ -28,7 +28,13 @@ import {
   type UnitId,
   type UnitView,
 } from '@redline/shared';
-import { battleFeatures, battleMarkers, ShotScheduler, type BattleMarker } from './battles.js';
+import {
+  BATTLE_ICON_DY,
+  battleFeatures,
+  battleMarkers,
+  ShotScheduler,
+  type BattleMarker,
+} from './battles.js';
 import { emitMapEvent } from './events.js';
 import { FxRenderer, FxSystem, queueBlast, queueIntercept, queueLaunch, queueShot } from './fx.js';
 import { useMapSel } from './mapSel.js';
@@ -54,6 +60,7 @@ import {
   cityFeatures,
   fc,
   intelFeatures,
+  kmPerPx,
   isRadarSystem,
   missileFeatures,
   nationLabelFeatures,
@@ -350,6 +357,8 @@ export class GameMap {
     this.map.on('zoomend', () => {
       this.onZoom(true);
       this.refreshCallouts();
+      // Faisceaux de trajets recalculés à la nouvelle échelle.
+      this.refreshPaths(gameNow());
     });
     this.map.on('movestart', (e) => {
       this.tooltip.hide();
@@ -1344,21 +1353,37 @@ export class GameMap {
     const sel = new Set(useUi.getState().selection);
     const zoom = this.map.getZoom();
     // Trajets des unités étrangères visibles à partir de l'échelle régionale (lisibilité).
+    // Faisceaux : départs et arrivées à moins de ~44 px l'un de l'autre fusionnés en un trait.
     const p = pathFeatures(this.units, tNow, me, sel, {
       foreign: zoom >= 3.6,
       nations: view?.nations ?? {},
+      bundleKm: kmPerPx(this.map.getCenter().lat, zoom) * 44,
     });
     this.set('paths', p.lines);
     this.set('path-heads', p.heads);
     this.animState.paths = p.lines.features.length > 0;
     this.set('attack-links', view ? attackLinkFeatures(view.units, this.positions, me) : EMPTY);
-    // ETA près des flèches de destination de ses unités (de près, les plus proches du centre).
+    // ETA : seulement pour la sélection et le pion survolé (faisceaux compris), les plus proches du
+    // centre ; placée par l'anti-collision de la couche d'étiquettes (pions et trajets évités).
     const etas: NonNullable<OverlayContent['etas']> = [];
-    if (zoom >= 4.6) {
+    const hot = new Set<string>(sel);
+    const hov = this.hoverToken
+      ? (this.lastTokens.focus.find((x) => x.properties?.id === this.hoverToken) ??
+        this.lastTokens.tokens.find((x) => x.properties?.id === this.hoverToken))
+      : undefined;
+    if (hov)
+      for (const id of String(hov.properties?.members ?? hov.properties?.id ?? '').split(','))
+        if (id) hot.add(id);
+    if (zoom >= 3.2 && hot.size) {
       const b = this.map.getBounds();
       const c = this.map.getCenter();
       const heads = p.heads.features
-        .filter((f) => f.properties!.rel === 'own' && !f.properties!.sel)
+        .filter((f) => f.properties!.rel === 'own')
+        .filter((f) =>
+          String(f.properties!.members ?? '')
+            .split(',')
+            .some((id) => hot.has(id)),
+        )
         .map((f) => ({ f, at: f.geometry.coordinates as LngLat }))
         .filter((h) => b.contains(h.at as [number, number]))
         .sort(
@@ -1366,14 +1391,14 @@ export class GameMap {
             Math.hypot(a.at[0] - c.lng, a.at[1] - c.lat) -
             Math.hypot(b2.at[0] - c.lng, b2.at[1] - c.lat),
         )
-        .slice(0, 8);
+        .slice(0, 4);
       for (const h of heads)
         etas.push({
           at: h.at,
           text: t('map.eta', {
             value: fmtDuration(Math.max(0, Number(h.f.properties!.end) - tNow)),
           }),
-          tone: 'green',
+          tone: h.f.properties!.sel ? 'cyan' : 'green',
         });
     }
     this.overlayContent = { ...this.overlayContent, etas };
@@ -1525,12 +1550,21 @@ export class GameMap {
     if (!view) return;
     const ui = useUi.getState();
     const w = useWorld.getState();
+    // Pions affichés (piles écartées comprises) : les étiquettes ne les recouvrent pas.
     const icons: LngLat[] = [];
-    for (const u of this.infos) icons.push(u.pos);
+    const iconOff: [number, number][] = [];
+    const sc = pionScale(this.map.getZoom());
+    for (const f of [...this.lastTokens.focus, ...this.lastTokens.tokens]) {
+      const off = (f.properties?.off as number[] | undefined) ?? [0, 0];
+      icons.push(f.geometry.coordinates as LngLat);
+      iconOff.push([(off[0]! - PION_ICON_OFFSET[0]) * sc, (off[1]! - PION_ICON_OFFSET[1]) * sc]);
+    }
     const b = this.map.getBounds();
     this.overlayContent = {
       ...this.overlayContent,
       icons,
+      iconOff,
+      iconHalf: [(PION_W / 2 + 2) * sc, (PION_H / 2 + 2) * sc],
       callouts: buildCallouts({
         view,
         me,
@@ -1698,7 +1732,7 @@ export class GameMap {
     let bd = Infinity;
     for (const b of this.battles) {
       const p = this.map.project(b.at as [number, number]);
-      const d = Math.hypot(p.x - x, p.y - 30 * size - y);
+      const d = Math.hypot(p.x - x, p.y - BATTLE_ICON_DY * size - y);
       if (d <= r && d < bd) {
         bd = d;
         best = b;
@@ -1733,6 +1767,8 @@ export class GameMap {
     if (id === this.hoverToken) return;
     this.hoverToken = id;
     this.refreshHoverFrame();
+    // ETA du trajet survolé.
+    this.refreshPaths(gameNow());
   }
 
   /** Survol d'une province (ordinateur) : contour net et cartouche de la ville après un temps. */

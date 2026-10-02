@@ -25,7 +25,7 @@ export const SPRITE_RATIO =
   typeof window !== 'undefined' && (window.devicePixelRatio || 1) >= 1.5 ? 2 : 1.25;
 
 /** Dimensions du pion (px CSS, à icon-size 1). */
-export const PION_W = 58;
+export const PION_W = 64;
 export const PION_H = 26;
 /** Marges du canevas autour du pion : cartes empilées, pastilles. */
 const M_LEFT = 6;
@@ -81,6 +81,11 @@ export interface PionSpec {
  * Positions (px CSS à l'échelle 1, depuis le centre du pion) des éléments dessinés par des calques
  * dédiés : effectif (texte aligné à droite), numéro de pile (onglet), barre d'état (image `hp-N`).
  */
+/** Zones intérieures du pion (px depuis son bord gauche) : pictogramme, puis effectif jusqu'au bord. */
+export const PION_ZONES = { glyph: 22.5, count: 41.5 };
+/** Taille de l'effectif (px CSS à l'échelle 1) : « 1,2k » tient dans la zone d'effectif. */
+export const COUNT_PX = 13;
+
 export const PION_PARTS = {
   count: [PION_W / 2 - 4, -0.8] as [number, number],
   stack: [PION_W / 2 - 0.5, -PION_H / 2 - 6] as [number, number],
@@ -121,12 +126,15 @@ export function parsePionKey(key: string): PionSpec | null {
   };
 }
 
-/** Effectif compact : 7, 48, 320, 1,2k. */
+/** Effectif compact, 4 signes au plus : 7, 48, 320, 1,2k, 12k, 120k, 1,2M. */
 export function compactCount(n: number | undefined): string {
   if (n === undefined || !Number.isFinite(n)) return '';
-  if (n < 1000) return String(Math.max(0, Math.round(n)));
-  if (n < 10_000) return `${(n / 1000).toFixed(1).replace('.', ',')}k`;
-  return `${Math.round(n / 1000)}k`;
+  const v = Math.max(0, Math.round(n));
+  if (v < 1000) return String(v);
+  const unit = (x: number, u: string) =>
+    x < 9.95 ? `${x.toFixed(1).replace('.', ',').replace(',0', '')}${u}` : `${Math.round(x)}${u}`;
+  if (v < 999_500) return unit(v / 1000, 'k');
+  return unit(v / 1_000_000, 'M');
 }
 
 function rr(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
@@ -328,15 +336,16 @@ export function drawPion(s: PionSpec): SpriteImage {
   ctx.fillRect(x, y, 2.6, h);
   ctx.restore();
 
-  // Drapeau, pictogramme, effectif.
-  const fh = 12.6;
-  const fw = 16.8;
+  // Drapeau, pictogramme, effectif : trois zones fixes côte à côte (jamais de chevauchement).
+  // Effectif : condensé gras, chiffres tabulaires, aligné à droite dans sa zone (4 signes au plus).
+  const fh = 11.4;
+  const fw = 15.2;
   const cy = y + (h - 3) / 2;
   drawFlag(ctx, s.nation, s.color, x + 5, cy - fh / 2, fw, fh);
-  const gs = 18;
-  drawGlyph(ctx, s.glyph, x + 24.5, cy - gs / 2, gs, unknown ? C.dim : '#f2f6fa');
+  const gs = 16;
+  drawGlyph(ctx, s.glyph, x + PION_ZONES.glyph, cy - gs / 2, gs, unknown ? C.dim : '#f2f6fa');
   if (s.count) {
-    ctx.font = `700 ${s.count.length > 3 ? 9 : s.count.length > 2 ? 10 : 11}px ${MONO}`;
+    ctx.font = `700 ${COUNT_PX}px "Barlow Condensed", "Arial Narrow", sans-serif`;
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#eef3f8';

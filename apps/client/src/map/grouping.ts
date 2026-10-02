@@ -203,7 +203,9 @@ function spreadOverlapping<T extends GroupItem>(groups: Group<T>[], o: GroupOpti
       const row = Math.floor(k / cols);
       const inRow = row === rows - 1 ? idx.length - row * cols : cols;
       const tx0 = (col - (inRow - 1) / 2) * gx;
-      const ty0 = (row - (rows - 1) / 2) * gy;
+      // Plusieurs rangées : la première au niveau du point, les suivantes en dessous (le nom de la
+      // ville, au-dessus du point, reste lisible).
+      const ty0 = rows > 1 ? row * gy : 0;
       // Position cible écran (centre commun + grille) exprimée en décalage depuis la vraie position.
       const [px, py] = pts[i]!;
       groups[i]!.off = [(mx - px) / s + tx0, (my - py) / s + ty0];

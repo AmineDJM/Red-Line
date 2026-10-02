@@ -18,7 +18,8 @@ import type {
 import type { FeatureCollection } from 'geojson';
 import { FONTS } from '../config.js';
 import type { BasemapData, TilesInfo } from '../api/types.js';
-import { EMPTY } from './features.js';
+import { COUNT_TEXT, EMPTY } from './features.js';
+import { BATTLE_ICON_DY } from './battles.js';
 import { PION_SCALE_STOPS } from './grouping.js';
 import { C } from './palette.js';
 import { INTEL_COLORS, PION_H } from './pions.js';
@@ -834,6 +835,7 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         layout: { 'line-cap': 'round', 'line-join': 'round' },
         paint: {
           'line-color': 'rgba(0,0,0,0.55)',
+          'line-opacity': ['case', ['==', ['coalesce', ['get', 'dim'], 0], 1], 0.35, 1],
           'line-width': [
             'case',
             ['==', ['get', 'sel'], 1],
@@ -865,6 +867,9 @@ export function buildStyle(i: StyleInput): StyleSpecification {
             'case',
             ['==', ['get', 'sel'], 1],
             1,
+            // Une sélection existe : les autres trajets passent au second plan.
+            ['==', ['coalesce', ['get', 'dim'], 0], 1],
+            0.32,
             ['==', ['coalesce', ['get', 'rel'], 'own'], 'own'],
             0.8,
             0.65,
@@ -890,11 +895,33 @@ export function buildStyle(i: StyleInput): StyleSpecification {
           'icon-rotation-alignment': 'map',
           'icon-allow-overlap': true,
           'icon-ignore-placement': true,
+          // Faisceau : nombre de trajets fusionnés, sous la flèche.
+          ...(i.glyphs
+            ? {
+                'text-field': ['coalesce', ['get', 'cnt'], ''],
+                'text-font': [FONTS.title],
+                'text-size': 12,
+                'text-anchor': 'top',
+                'text-offset': [0, 0.7],
+                'text-allow-overlap': true,
+                'text-ignore-placement': true,
+                'text-optional': true,
+              }
+            : {}),
         },
         paint: {
           'icon-color': ['case', ['==', ['get', 'sel'], 1], C.cyan, relColor()],
           'icon-halo-color': 'rgba(0,0,0,0.6)',
           'icon-halo-width': 1,
+          'icon-opacity': ['case', ['==', ['coalesce', ['get', 'dim'], 0], 1], 0.45, 1],
+          ...(i.glyphs
+            ? {
+                'text-color': ['case', ['==', ['get', 'sel'], 1], C.cyan, relColor()],
+                'text-halo-color': 'rgba(3,6,10,0.92)',
+                'text-halo-width': 2,
+                'text-opacity': ['case', ['==', ['coalesce', ['get', 'dim'], 0], 1], 0.5, 1],
+              }
+            : {}),
         },
       },
       // ——— Missiles et aéronefs : traînées, trajectoire prévue, impacts ———
@@ -1349,7 +1376,8 @@ export function buildStyle(i: StyleInput): StyleSpecification {
             ['case', ['>=', ['get', 'heat'], 0.6], '1', '0'],
           ],
           'icon-size': ['interpolate', ['linear'], ['zoom'], 2, 0.75, 6, 1, 9, 1.12],
-          'icon-offset': [0, -30],
+          // Au-dessus du nom de la ville (qui reste lisible), bilan des pertes à droite de l'icône.
+          'icon-offset': [0, -BATTLE_ICON_DY],
           'icon-allow-overlap': true,
           'icon-ignore-placement': true,
           'symbol-sort-key': ['-', 0, ['get', 'heat']],
@@ -1359,7 +1387,7 @@ export function buildStyle(i: StyleInput): StyleSpecification {
                 'text-font': [FONTS.semibold],
                 'text-size': 10.5,
                 'text-anchor': 'left',
-                'text-offset': [1.35, -2.75],
+                'text-offset': [1.5, -BATTLE_ICON_DY / 10.5],
                 'text-allow-overlap': true,
                 'text-ignore-placement': true,
                 'text-optional': true,
@@ -1427,6 +1455,7 @@ function pionPartLayers(prefix: string, source: string, glyphs: boolean): LayerS
       off: string,
       anchor: 'right' | 'center',
       color: string,
+      font: string = FONTS.semibold,
     ) =>
       ({
         id,
@@ -1435,7 +1464,7 @@ function pionPartLayers(prefix: string, source: string, glyphs: boolean): LayerS
         filter: ['!=', ['get', field], ''],
         layout: {
           'text-field': ['get', field],
-          'text-font': [FONTS.semibold],
+          'text-font': [font],
           'text-size': scaled(size),
           'text-offset': offsetProp(off),
           'text-anchor': anchor,
@@ -1446,7 +1475,7 @@ function pionPartLayers(prefix: string, source: string, glyphs: boolean): LayerS
         paint: { 'text-color': color, 'text-opacity': ['get', 'op'] },
       }) as LayerSpecification;
     out.push(
-      text(`${prefix}-count`, 'cnt', 11, 'toff', 'right', '#eef3f8'),
+      text(`${prefix}-count`, 'cnt', COUNT_TEXT, 'toff', 'right', '#eef3f8', FONTS.title),
       text(`${prefix}-stack`, 'stk', 8.5, 'soff', 'center', C.bg),
     );
   } else {
@@ -1467,7 +1496,7 @@ function pionPartLayers(prefix: string, source: string, glyphs: boolean): LayerS
         paint: { 'icon-opacity': ['get', 'op'] },
       }) as LayerSpecification;
     out.push(
-      img(`${prefix}-count`, 'cnt', 11 / 12, 'tpx', 'right'),
+      img(`${prefix}-count`, 'cnt', COUNT_TEXT / 12, 'tpx', 'right'),
       img(`${prefix}-stack`, 'stk', 8.5 / 12, 'spx', 'center'),
     );
   }

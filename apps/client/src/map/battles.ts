@@ -19,6 +19,8 @@ import {
 } from '@redline/shared';
 import type { UnitInfo } from './features.js';
 
+/** Hauteur (px à l'échelle 1) de l'icône de bataille au-dessus du point de combat. */
+export const BATTLE_ICON_DY = 46;
 /** Au-delà de ce délai sans tir (temps de jeu), une bataille en cours n'est plus « chaude ». */
 export const HOT_MS = 30 * 60_000;
 /** Rayon de rattachement d'un accrochage à une bataille connue (km). */

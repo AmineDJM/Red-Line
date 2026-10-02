@@ -33,6 +33,7 @@ import {
   PION_PARTS,
   PION_W,
   compactCount,
+  COUNT_PX,
   pionKey,
   type BuildingState,
   type PionSpec,
@@ -404,7 +405,7 @@ export function tokenFeatures(
 }
 
 /** Taille (px CSS à l'échelle 1) des textes des pions : effectif et numéro de pile. */
-export const COUNT_TEXT = 11;
+export const COUNT_TEXT = COUNT_PX;
 export const STACK_TEXT = 8.5;
 
 /**
@@ -532,10 +533,38 @@ export function pathFeatures(
   t: GameTime,
   me: NationId | null,
   selection: ReadonlySet<UnitId>,
-  opts?: { foreign?: boolean; nations?: Record<NationId, NationView>; foreignKm?: number },
+  opts?: {
+    foreign?: boolean;
+    nations?: Record<NationId, NationView>;
+    foreignKm?: number;
+    /**
+     * Faisceaux : les trajets d'un même camp dont le départ et l'arrivée tombent dans la même
+     * cellule de `bundleKm` sont fusionnés en un seul trait (compteur `n` sur la flèche).
+     */
+    bundleKm?: number;
+  },
 ) {
   const lines: Feature<LineString>[] = [];
   const heads: Feature<Point>[] = [];
+  const cell = Math.max(0, opts?.bundleKm ?? 0);
+  // Cellule (degrés) : ~bundleKm en latitude ; longitude corrigée par la latitude du point.
+  const key = (p: LngLat) => {
+    if (cell <= 0) return `${p[0]},${p[1]}`;
+    const dLat = cell / 111;
+    const dLng = dLat / Math.max(0.2, Math.cos((p[1] * Math.PI) / 180));
+    return `${Math.round(p[0] / dLng)}:${Math.round(p[1] / dLat)}`;
+  };
+  interface Bundle {
+    rep: UnitView;
+    coords: LngLat[];
+    ids: UnitId[];
+    sel: boolean;
+    air: boolean;
+    rel: string;
+    end: GameTime;
+  }
+  const bundles = new Map<string, Bundle>();
+  const anySel = selection.size > 0;
   for (const u of units) {
     if (!u.move || u.missile || u.status === 'destroyed') continue;
     const own = u.owner === me;
@@ -546,24 +575,55 @@ export function pathFeatures(
       ? remainingPath(u.move, t)
       : truncatePath(remainingPath(u.move, t), opts?.foreignKm ?? FOREIGN_PATH_KM);
     if (coords.length < 2) continue;
-    const sel = selection.has(u.id) ? 1 : 0;
-    const air = u.move.legs.some((l) => l.medium === 'air') ? 1 : 0;
+    const sel = selection.has(u.id);
+    const air = u.move.legs.some((l) => l.medium === 'air');
     const rel = own ? 'own' : relationOf(u.owner, me, opts?.nations ?? {});
+    const end = u.move.legs[u.move.legs.length - 1]!.t1;
+    // Sélection et reste ne se mélangent pas (couleurs différentes) ; aéronefs à part (arcs).
+    const k = [
+      rel,
+      own ? '' : u.owner,
+      sel ? 1 : 0,
+      air ? 1 : 0,
+      key(coords[0]!),
+      key(coords[coords.length - 1]!),
+    ].join('|');
+    const b = bundles.get(k);
+    if (!b) bundles.set(k, { rep: u, coords, ids: [u.id], sel, air, rel, end });
+    else {
+      b.ids.push(u.id);
+      b.end = Math.max(b.end, end);
+      // Représentant stable : plus petit identifiant.
+      if (u.id < b.rep.id) {
+        b.rep = u;
+        b.coords = coords;
+      }
+    }
+  }
+  for (const b of bundles.values()) {
+    const n = b.ids.length;
+    const sel = b.sel ? 1 : 0;
+    // Une sélection existe : les autres trajets s'effacent (lecture de l'ordre en cours).
+    const dim = anySel && !b.sel ? 1 : 0;
     lines.push({
       type: 'Feature',
-      properties: { id: u.id, sel, air, rel },
-      geometry: { type: 'LineString', coordinates: coords },
+      properties: { id: b.rep.id, sel, dim, air: b.air ? 1 : 0, rel: b.rel, n },
+      geometry: { type: 'LineString', coordinates: b.coords },
     });
-    const end = coords[coords.length - 1]!;
-    const prev = coords[coords.length - 2]!;
+    const end = b.coords[b.coords.length - 1]!;
+    const prev = b.coords[b.coords.length - 2]!;
     heads.push({
       type: 'Feature',
       properties: {
-        id: u.id,
+        id: b.rep.id,
+        members: b.ids.join(','),
         sel,
-        rel,
+        dim,
+        rel: b.rel,
+        n,
+        cnt: n > 1 ? `×${n}` : '',
         rot: screenBearing(prev, end),
-        end: u.move.legs[u.move.legs.length - 1]!.t1,
+        end: b.end,
       },
       geometry: { type: 'Point', coordinates: end },
     });
