@@ -48,6 +48,7 @@ describe.skipIf(!hasDb || !engine)('versions de carte : parties anciennes après
   let gameId = '';
   let hash = '';
   let oldIds: string[] = [];
+  let oldOwners: string[] = [];
 
   beforeAll(async () => {
     await resetDb();
@@ -101,7 +102,11 @@ describe.skipIf(!hasDb || !engine)('versions de carte : parties anciennes après
       await ws.close();
       const g = before.ctx.host.games.get(gameId)!;
       hash = engine!.stateHash(g.state);
-      expect(Object.keys(engine!.ownersFrame!(g.state)).length).toBe(2567);
+      expect(g.world.map.provinces.length).toBe(2567);
+      // provinces du scénario (Moyen-Orient), identifiants de la carte 1 (egy-31 n'existe plus)
+      const owners = Object.keys(engine!.ownersFrame!(g.state));
+      expect(owners).toContain('egy-31');
+      oldOwners = owners;
       await before.app.close();
     },
   );
@@ -119,8 +124,23 @@ describe.skipIf(!hasDb || !engine)('versions de carte : parties anciennes après
       expect(g).not.toBeNull();
       expect(g!.mapVersion).toBe(1);
       expect(engine!.stateHash(g!.state)).toBe(hash);
-      const owners = engine!.ownersFrame!(g!.state);
-      expect(Object.keys(owners).sort()).toEqual([...oldIds].sort());
+      expect(g!.world.map.provinces.map((x) => x.id).sort()).toEqual([...oldIds].sort());
+      expect(Object.keys(engine!.ownersFrame!(g!.state))).toEqual(oldOwners);
+      // Sans l'épingle de carte, l'instantané (identifiants de la carte 1) serait relu avec la
+      // nouvelle carte : provinces inconnues de celle-ci.
+      const curWorld = await after.ctx.worlds.get({
+        ...after.ctx.host.pinOf(g!),
+        mapVersion: store.mapVersion,
+      });
+      const curIds = new Set(curWorld.map.provinces.map((x) => x.id));
+      let broken = false;
+      try {
+        const st = engine!.deserializeState(curWorld, engine!.serializeState(g!.state));
+        broken = Object.keys(engine!.ownersFrame!(st)).some((id) => !curIds.has(id));
+      } catch {
+        broken = true;
+      }
+      expect(broken).toBe(true);
       const [row] = await sqlQuery(
         (sql) => sql`SELECT map_version, pause_reason, last_error FROM games WHERE id = ${gameId}`,
       );
@@ -158,7 +178,8 @@ describe.skipIf(!hasDb || !engine)('versions de carte : parties anciennes après
       expect(res.statusCode).toBe(201);
       expect(res.json().game.mapVersion).toBe(store.mapVersion);
       const g2 = after.ctx.host.games.get(res.json().game.id)!;
-      expect(Object.keys(engine!.ownersFrame!(g2.state)).length).toBe(cur.length);
+      expect(g2.world.map.provinces.length).toBe(cur.length);
+      expect(Object.keys(engine!.ownersFrame!(g2.state))).not.toContain('egy-31');
     },
   );
 });
