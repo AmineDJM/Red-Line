@@ -1739,8 +1739,16 @@ export class GameMap {
   /** Survol d'une province (ordinateur) : contour net et cartouche de la ville après un temps. */
   private hoverProvTimer: ReturnType<typeof setTimeout> | null = null;
   private provQueryAt = 0;
-  private setHoverProvince(id: string | null) {
-    if (id === this.hoverProv) return;
+  private setHoverProvince(id: string | null, card = true) {
+    if (id === this.hoverProv) {
+      if (!card && (this.hoverCallout || this.hoverProvTimer)) {
+        if (this.hoverProvTimer) clearTimeout(this.hoverProvTimer);
+        this.hoverProvTimer = null;
+        this.hoverCallout = null;
+        this.refreshCallouts();
+      }
+      return;
+    }
     this.hoverProv = id;
     if (this.hoverProvTimer) clearTimeout(this.hoverProvTimer);
     this.hoverProvTimer = null;
@@ -1760,7 +1768,7 @@ export class GameMap {
       this.hoverCallout = null;
       this.refreshCallouts();
     }
-    if (id && this.map.getZoom() >= 3.8)
+    if (id && card && this.map.getZoom() >= 3.8)
       this.hoverProvTimer = setTimeout(() => {
         this.hoverCallout = this.provinceCallout(id);
         this.refreshCallouts();
@@ -1879,7 +1887,11 @@ export class GameMap {
       if (now - this.provQueryAt > 50) {
         this.provQueryAt = now;
         const pf = this.map.queryRenderedFeatures(e.point, { layers: ['prov-fill'] })[0];
-        this.setHoverProvince(pf ? String(pf.properties?.id ?? pf.id ?? '') || null : null);
+        // Sur une ville ou un bâtiment, l'infobulle suffit : contour seul, sans cartouche.
+        this.setHoverProvince(pf ? String(pf.properties?.id ?? pf.id ?? '') || null : null, !hit);
+      } else if (hit && this.hoverCallout) {
+        this.hoverCallout = null;
+        this.refreshCallouts();
       }
     } else this.setHoverProvince(null);
     if (battle) {

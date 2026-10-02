@@ -389,6 +389,10 @@
 .btp {
   border-left: 2px solid var(--rl-red);
 }
+/* Panneau défilant : les blocs gardent leur hauteur (sinon écrasés sur mobile). */
+.btp > * {
+  flex-shrink: 0;
+}
 .btp__icon {
   flex: none;
   display: inline-flex;
@@ -628,6 +632,7 @@
 
 /* ——— Bandeau de province : rang, population, moral, garnison ——— */
 .pvs {
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
