@@ -20,6 +20,9 @@ import { filterProvinces } from './provinces.js';
 import { interiorView } from './interior.js';
 import { ist, type Agent, type StoredOp, type StoredReport } from './state.js';
 import { canonical } from '../../state/loc.js';
+import { detaineesView, detentionStatus, detentionView, tiesView } from './detainees.js';
+import { regimeOf } from './dzconfig.js';
+import { swapsView } from './swaps.js';
 
 /**
  * Vue du renseignement d'une nation. Construite champ par champ (liste blanche) : les données internes
@@ -103,6 +106,8 @@ function opView(o: StoredOp): IntelOpView {
 
 /** Ce que le propriétaire sait de son agent : un agent démasqué ou retourné reste « actif » à ses yeux. */
 function ownerStatus(a: Agent): AgentView['status'] {
+  const ds = detentionStatus(a);
+  if (ds) return ds;
   switch (a.state) {
     case 'captured':
       return a.ex ? 'expelled' : 'captured';
@@ -154,8 +159,14 @@ export function intelView(state: EngineState, n: NationId, view: PlayerView): vo
         reliability: reliabilityOf(reliabilityOfAgent(state, a)),
       };
       if (a.cv) av.cover = a.cv;
+      const dv = detentionView(state, a);
+      if (dv) av.detention = dv;
       agents.push(av);
-    } else if (a.host === n && a.caughtAt !== undefined && a.state !== 'exfiltrated') {
+    } else if (
+      a.host === n &&
+      a.caughtAt !== undefined &&
+      (a.state === 'caught' || a.state === 'double' || (a.state === 'captured' && !a.dn))
+    ) {
       caughtAgents.push({
         id: a.id,
         nationId: a.owner,
@@ -175,6 +186,10 @@ export function intelView(state: EngineState, n: NationId, view: PlayerView): vo
     dossiers: dossiersView(state, n),
   };
   if (ni.hd !== undefined && ni.hd > state.time) view.intel.hardenedUntil = ni.hd;
+  view.intel.detainees = detaineesView(state, n);
+  view.intel.swaps = swapsView(state, n);
+  view.intel.ties = tiesView(state, n);
+  view.intel.regime = regimeOf(state, n);
   filterProvinces(state, n, view);
   for (const id of sortedKeys(st.decoys)) {
     const v = decoyView(state, st.decoys[id]!, n);
