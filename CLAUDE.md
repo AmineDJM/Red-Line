@@ -49,6 +49,15 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
   refusé (`off_road`) ; traversées de port à port sur la grille navale. Air et mer : trajets libres inchangés.
   Unité hors réseau (ancienne sauvegarde) : termine son trajet, puis rejoint la route la plus proche. Désactivable : `movement.roadNetwork: false`.
 - Guerre déclarée automatiquement par un ordre d'attaque ou l'entrée dans une province étrangère.
+- Distances des paires alignées sur les bandes de seuils (`consistentDist`, encounters/pairs.ts) : sans cela,
+  l'arrondi d'acos laissait une pile arrivée sur la ville « juste hors » du rayon de capture ou de tir (ni
+  capture ni combat). Balayage de conquête de toutes les provinces : `CONQUEST_ALL=1` (test engine
+  `conquest-sweep`).
+- **Transport naval** (`military.transport`, module mil `transport.ts`) : ordres `embark` / `disembark`,
+  capacité = éléments × `payload.transport` × places ; troupes à bord hors carte, perdues avec le navire ;
+  débarquement contesté = malus de dégâts. Les traversées automatiques de port à port restent en place.
+- **Escorte** (`military.escort`, `escort.ts`) : ordre `escort`, vol / navigation / route en formation avec la
+  pile protégée, engagement des menaces autour d'elle ; fin sur arrêt, cible détruite ou posée, carburant.
 - Persistance : instantanés compressés + journal d'ordres ; reprise = instantané + rejeu. Bail de partie en base
   (colonnes `lease_owner`/`lease_until`) ; ne jamais fixer `INSTANCE_ID` à une constante sur Render.
 - L'état interne d'une partie vit dans `GameState`, pas dans des tables SQL.

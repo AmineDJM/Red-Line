@@ -24,6 +24,7 @@ import { isRegular } from '../diplo/state.js';
 import { knowledge, revealed } from '../intel/provinces.js';
 import { operations } from '../../ai/strategy.js';
 import { mil } from './state.js';
+import { hasCargo } from './transport.js';
 import { cellsLeft, missileForShip } from './strike.js';
 import {
   buildingsOf,
@@ -477,6 +478,8 @@ function navalAi(state: EngineState, n: NationId): void {
       // Navire en mission (escorte d'un débarquement) : pas de blocus.
       const mis = m.ms[u.id]?.mis;
       if (mis && mis !== 'none') return false;
+      // Navire de transport chargé ou en train de débarquer : il reste à son opération.
+      if (hasCargo(state, u.id) || m.tru?.[u.id]) return false;
       const s = sysOf(state, u);
       return s.category === 'surface_ship' && s.damage.ship > 0;
     });

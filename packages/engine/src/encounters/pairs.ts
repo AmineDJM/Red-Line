@@ -157,7 +157,8 @@ function distKm(A: Piece[], B: Piece[], t: number): { d: number; dot: number } {
 export function consistentDist(x: { d: number; dot: number }, radii: readonly number[]): number {
   let d = x.d;
   for (const r of radii) {
-    if (!(r > 0)) continue;
+    // Seul un seuil à moins d'un millimètre peut être mal classé (chemin rapide : aucun cosinus).
+    if (!(r > 0) || Math.abs(d - r) > 1e-6) continue;
     if (x.dot >= Math.cos(r / EARTH_RADIUS_KM)) {
       if (d > r) d = r;
     } else if (d <= r) d = r * (1 + 1e-12) + 1e-12;

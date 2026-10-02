@@ -13,11 +13,16 @@ export function captureHint(state: EngineState, u: Unit): void {
   if (u.role || u.off) return;
   const s = sysOf(state, u);
   if (s.movement !== 'land') return;
-  for (const key of sortedSet(state.rt.pairsOf.get(u.id))) {
-    const h = key.indexOf('#');
-    if (h < 0) continue;
+  // Paires de villes au rayon de capture (filtre pur, puis tri des seules retenues : même ordre).
+  const near: string[] = [];
+  for (const key of state.rt.pairsOf.get(u.id) ?? []) {
+    if (key.indexOf('#') < 0) continue;
     const pair = state.pairs[key];
-    if (!pair || pair.d > CAPTURE_RADIUS_KM) continue;
+    if (pair && pair.d <= CAPTURE_RADIUS_KM) near.push(key);
+  }
+  if (near.length === 0) return;
+  for (const key of sortedSet(near)) {
+    const h = key.indexOf('#');
     const pid = key.slice(0, h);
     const P = state.provinces[pid];
     if (!P || P.owner === u.owner) continue;
