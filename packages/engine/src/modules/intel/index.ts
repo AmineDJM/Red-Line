@@ -7,6 +7,7 @@ import type { EngineModule, ModEvent, OrderHandler } from '../types.js';
 import { dailyAgents, handleArrest } from './agents.js';
 import { aiOffset, aiThink } from './ai.js';
 import { cfg } from './config.js';
+import { cryptoDaily, networksDaily, refreshSensors } from './deep.js';
 import { interceptTick, listenTick, onUnitGone } from './contacts.js';
 import { dailyNotes, scan } from './daily.js';
 import { cancelOp, resolveOp, startOp, waveOp } from './ops.js';
@@ -152,6 +153,9 @@ function onDailyTick(state: EngineState): void {
   dailyAgents(state);
   agentsReveal(state);
   interiorDaily(state);
+  refreshSensors(state);
+  cryptoDaily(state);
+  networksDaily(state);
 }
 
 // ——— Ordres ———

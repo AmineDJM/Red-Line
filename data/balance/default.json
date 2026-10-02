@@ -1442,6 +1442,60 @@
         "durationH": 12,
         "baseSuccess": 0.7,
         "exposure": 0.25
+      },
+      "cryptanalysis": {
+        "money": 8000000,
+        "durationH": 48,
+        "baseSuccess": 0.65,
+        "exposure": 0.05
+      },
+      "intercept_comms": {
+        "money": 4000000,
+        "durationH": 24,
+        "baseSuccess": 0.7,
+        "exposure": 0.1
+      },
+      "geolocate_emitters": {
+        "money": 3000000,
+        "durationH": 12,
+        "baseSuccess": 0.7,
+        "exposure": 0.1
+      },
+      "cultivate_source": {
+        "money": 6000000,
+        "durationH": 96,
+        "baseSuccess": 0.45,
+        "exposure": 0.35
+      },
+      "vet_agents": {
+        "money": 1000000,
+        "durationH": 24,
+        "baseSuccess": 0.8,
+        "exposure": 0.0
+      },
+      "designate_targets": {
+        "money": 5000000,
+        "durationH": 12,
+        "baseSuccess": 0.7,
+        "exposure": 0.15
+      },
+      "dismantle_network": {
+        "money": 8000000,
+        "durationH": 48,
+        "baseSuccess": 0.6,
+        "exposure": 0.0
+      },
+      "deception_plan": {
+        "money": 4000000,
+        "durationH": 48,
+        "baseSuccess": 0.55,
+        "exposure": 0.2
+      },
+      "harden_sites": {
+        "money": 15000000,
+        "durationH": 6,
+        "baseSuccess": 0.95,
+        "exposure": 0.0
       }
     },
     "reconNation": {
@@ -1463,6 +1517,63 @@
       "provincesPerWave": 3,
       "levels": 2,
       "qualityBonus": 0.5
+    },
+    "deep": {
+      "sigintSatWeight": 3,
+      "sigintAirWeight": 1,
+      "imagerySatWeight": 3,
+      "imageryAirWeight": 0.5,
+      "ewWeight": 1,
+      "sensorRef": 6,
+      "sensorBonusMax": 0.4,
+      "encryptionBase": 0.3,
+      "encryptionPerLevel": 0.15,
+      "cryptoStep": 0.3,
+      "cryptoDecayPerDay": 0.02,
+      "decryptOrders": 0.25,
+      "decryptPlans": 0.5,
+      "interceptMaxUnits": 5,
+      "disinfoBase": 0.35,
+      "geolocateMax": 6,
+      "geolocateUncKm": 15,
+      "jamUncFactor": 3,
+      "ewJamBonus": 0.5,
+      "coverDetect": {
+        "diplomatic": 1.2,
+        "nonofficial": 0.7
+      },
+      "coverTension": {
+        "diplomatic": 0.5,
+        "nonofficial": 1.5
+      },
+      "reliabilityStart": 0.5,
+      "reliabilityPerDay": 0.03,
+      "reliabilityMax": 0.9,
+      "handlerBonus": 1.5,
+      "cultivateMinReliability": 0.55,
+      "accessDetect": 1.4,
+      "vetDetect": 0.6,
+      "orbatSpreadMax": 0.6,
+      "orbatSpreadMin": 0.08,
+      "dossierNations": 6,
+      "threatWeights": {
+        "war": 25,
+        "massing": 35,
+        "plans": 30,
+        "comms": 10,
+        "mobilization": 10,
+        "covert": 10
+      },
+      "massingRef": 40,
+      "alertThreshold": 60,
+      "alertCooldownH": 24,
+      "bdaRadiusKm": 40,
+      "designateRadiusKm": 120,
+      "designateUncKm": 5,
+      "designateMax": 8,
+      "dismantleCatch": 0.5,
+      "hardenDays": 3,
+      "hardenReduction": 0.5
     },
     "interior": {
       "focus": {
@@ -2483,9 +2594,21 @@
     "start": {
       "enabled": true,
       "groups": [
-        { "id": "land", "categories": ["infantry", "ifv", "tank", "artillery"], "maxModules": 12 },
-        { "id": "rotary", "categories": ["helicopter"], "maxModules": 6 },
-        { "id": "drone", "categories": ["drone"], "maxModules": 4 }
+        {
+          "id": "land",
+          "categories": ["infantry", "ifv", "tank", "artillery"],
+          "maxModules": 12
+        },
+        {
+          "id": "rotary",
+          "categories": ["helicopter"],
+          "maxModules": 6
+        },
+        {
+          "id": "drone",
+          "categories": ["drone"],
+          "maxModules": 4
+        }
       ]
     },
     "ai": {

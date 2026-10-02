@@ -6,6 +6,7 @@ import { agentsIn, doubledIn, neighborNations, quality, roll } from './levels.js
 import { publish } from './reports.js';
 import { BUILDING_LABEL, announce, imagery, knowledge, provincesInCircle } from './provinces.js';
 import { ist, nat } from './state.js';
+import { bda } from './deep.js';
 import { addIncident } from './interior.js';
 import { nationName, natA, natAgree, natDe, natLe, provinceName, sectorOf } from './text.js';
 import { loc } from '@redline/shared';
@@ -95,6 +96,16 @@ function strike(state: EngineState, d: Data): void {
   if (!alive(state, victim) || victim === by) return;
   nat(state, victim).log.strikes++;
   const kind = str(d.kind) ?? 'missile';
+  // Évaluation des dégâts chez le tireur (une fois par heure, par cible et par type de frappe).
+  const hit = lngLat(d.at);
+  if (
+    by &&
+    hit &&
+    alive(state, by) &&
+    state.nations[by]!.isPlayer &&
+    !cooling(state, by, `bda:${victim}:${kind}`, 1)
+  )
+    bda(state, by, victim, hit, kind);
   if (cooling(state, victim, `strike:${by ?? '?'}:${kind}`, 1)) return;
   const at = lngLat(d.at);
   const q = quality(state, victim, 'military');

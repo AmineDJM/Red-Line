@@ -50,6 +50,7 @@ import {
 } from './text.js';
 import { loc } from '@redline/shared';
 import { interiorView } from './interior.js';
+import { assessDaily } from './deep.js';
 
 /**
  * Notes quotidiennes et rapports flash. Textes courts et génériques, construits à partir de l'état du
@@ -254,7 +255,7 @@ export function dailyNotes(state: EngineState): void {
   for (const n of who) {
     interiorNote(state, n);
     exteriorNote(state, n);
-    militaryNote(state, n, pool);
+    militaryNote(state, n, pool, assessDaily(state, n, pool));
   }
 }
 
@@ -398,7 +399,12 @@ function exteriorNote(state: EngineState, n: NationId): void {
   });
 }
 
-function militaryNote(state: EngineState, n: NationId, pool: PoolEntry[]): void {
+function militaryNote(
+  state: EngineState,
+  n: NationId,
+  pool: PoolEntry[],
+  theatres: string[] = [],
+): void {
   const q = quality(state, n, 'military');
   const lines = [pick(state, OPENINGS.military)];
   for (const x of focusNations(state, n, 2)) {
@@ -432,6 +438,8 @@ function militaryNote(state: EngineState, n: NationId, pool: PoolEntry[]): void 
     `Contacts suivis : ${known}` +
       (contacts.length > known ? ` (et ${contacts.length - known} position(s) ancienne(s)).` : '.'),
   );
+  // Bulletin par théâtre : indice de menace, tendance, indicateurs, forces estimées.
+  if (theatres.length) lines.push('Synthèse par théâtre (indice de menace sur 100) :', ...theatres);
   lines.push(opsLine(state, n, 'military'));
   publish(state, n, {
     dept: 'military',

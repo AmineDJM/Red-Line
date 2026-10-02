@@ -31,6 +31,16 @@ export const INTEL_OPS = [
   'counterintel_sweep',
   'recon_economic',
   'recon_military',
+  // Profondeur du renseignement (optionnelles côté sauvegardes : simples nouveaux ordres)
+  'cryptanalysis',
+  'intercept_comms',
+  'geolocate_emitters',
+  'cultivate_source',
+  'vet_agents',
+  'designate_targets',
+  'dismantle_network',
+  'deception_plan',
+  'harden_sites',
 ] as const;
 
 const lngLat = z.tuple([z.number().min(-180).max(180), z.number().min(-90).max(90)]);
@@ -60,6 +70,10 @@ const opTarget = z.object({
   unitId: id.optional(),
   at: lngLat.optional(),
   radiusKm: z.number().positive().max(2000).optional(),
+  /** Couverture d'un agent infiltré (HUMINT). */
+  cover: z.enum(['diplomatic', 'nonofficial']).optional(),
+  /** Agent visé (culture d'une source, vérification). */
+  agentId: id.optional(),
 });
 
 /** Ordres « simples » (utilisables aussi comme étapes d'une opération combinée). */
