@@ -133,25 +133,30 @@ describe('ressources des provinces : rendement, revenus, IA, rejeu', () => {
     );
   });
 
-  it('IA économique : investit là où la ressource est la plus riche, jamais sans ressource', () => {
-    const s = ecoGame({ world: resWorld() });
-    s.nations.aaa!.money = 1e13;
-    ecoAiThink(s, 'aaa');
-    const jobs = Object.values(eco(s).jobs).filter((j) => j.n === 'aaa');
-    expect(jobs).toHaveLength(1);
-    expect(jobs[0]).toMatchObject({ pid: 'aaa-1', kind: 'oil_field' });
-    // Plusieurs tours : jamais un bâtiment interdit.
-    for (let d = 1; d <= 40; d++) {
-      advanceTo(s, d * 10 * DAY);
+  // 400 jours de jeu simulés : plusieurs secondes en CI.
+  it(
+    'IA économique : investit là où la ressource est la plus riche, jamais sans ressource',
+    { timeout: 30_000 },
+    () => {
+      const s = ecoGame({ world: resWorld() });
       s.nations.aaa!.money = 1e13;
       ecoAiThink(s, 'aaa');
-    }
-    for (const pid of ['aaa-1', 'aaa-2', 'aaa-3'])
-      for (const b of viewFor(s, 'aaa').provinces[pid]!.buildings)
-        expect(buildRestriction(s.world, pid, b), `${pid} ${b}`).toBeNull();
-    expect(viewFor(s, 'aaa').provinces['aaa-3']!.buildings).toContain('farm');
-    expect(viewFor(s, 'aaa').provinces['aaa-2']!.buildings).toContain('local_industry');
-  });
+      const jobs = Object.values(eco(s).jobs).filter((j) => j.n === 'aaa');
+      expect(jobs).toHaveLength(1);
+      expect(jobs[0]).toMatchObject({ pid: 'aaa-1', kind: 'oil_field' });
+      // Plusieurs tours : jamais un bâtiment interdit.
+      for (let d = 1; d <= 40; d++) {
+        advanceTo(s, d * 10 * DAY);
+        s.nations.aaa!.money = 1e13;
+        ecoAiThink(s, 'aaa');
+      }
+      for (const pid of ['aaa-1', 'aaa-2', 'aaa-3'])
+        for (const b of viewFor(s, 'aaa').provinces[pid]!.buildings)
+          expect(buildRestriction(s.world, pid, b), `${pid} ${b}`).toBeNull();
+      expect(viewFor(s, 'aaa').provinces['aaa-3']!.buildings).toContain('farm');
+      expect(viewFor(s, 'aaa').provinces['aaa-2']!.buildings).toContain('local_industry');
+    },
+  );
 
   it('déterministe : même partie, mêmes ordres ⇒ même état', () => {
     const run = () => {
