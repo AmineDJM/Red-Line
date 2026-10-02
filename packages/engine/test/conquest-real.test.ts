@@ -29,6 +29,7 @@ import { sysOf, unitPosAt } from '../src/state/access.js';
 import { board } from '../src/modules/kit.js';
 import { CAPTURE_RADIUS_KM } from '../src/state/world.js';
 import { loadRealData, type RealData } from '../bench/load.js';
+import { PLACES, provinceAt } from './real-places.js';
 
 let data: RealData;
 let world: World;
@@ -41,7 +42,12 @@ beforeAll(() => {
     orbats: data.orbats,
   });
   prov = (id) => data.map.provinces.find((p) => p.id === id)!;
+  for (const k of Object.keys(PLACES) as (keyof typeof PLACES)[])
+    P[k] = provinceAt(data.map, PLACES[k]).id;
 }, 120_000);
+
+/** Provinces désignées par leur ville (identifiants propres à chaque version de la carte). */
+const P = {} as Record<keyof typeof PLACES, string>;
 
 const CAPTURE = () => data.balance.time.captureMinutes * MINUTE;
 
@@ -98,21 +104,21 @@ describe('conquête : monde 2025, armées réelles en piles mixtes', { timeout: 
       { nationId: 'fra', isAi: false },
       { nationId: 'bel', isAi: true },
     ]);
-    const target = prov('bel-1');
+    const target = prov(P.charleroi);
     const u = capturerNear(s, 'fra', target.cityPoint);
     // Pile mixte de l'armée de départ (ORBAT 2025 regroupé) : chars, véhicules et infanterie.
     expect(u.mix && u.mix.length).toBeGreaterThan(2);
     expect(applyOrder(s, 'fra', { kind: 'move', unitIds: [u.id], to: target.cityPoint })).toEqual({
       ok: true,
     });
-    const notes = until(s, 'bel-1', 'fra', 3 * DAY);
+    const notes = until(s, P.charleroi, 'fra', 3 * DAY);
     expect(s.wars['bel|fra']).toBeDefined();
     expect(
-      notes.some((x) => x.kind === 'province_capture_started' && x.provinceId === 'bel-1'),
+      notes.some((x) => x.kind === 'province_capture_started' && x.provinceId === P.charleroi),
     ).toBe(true);
-    expect(s.provinces['bel-1']!.owner).toBe('fra');
-    expect(viewFor(s, 'fra').provinces['bel-1']!.owner).toBe('fra');
-    expect(viewFor(s, 'bel').provinces['bel-1']!.owner).toBe('fra');
+    expect(s.provinces[P.charleroi]!.owner).toBe('fra');
+    expect(viewFor(s, 'fra').provinces[P.charleroi]!.owner).toBe('fra');
+    expect(viewFor(s, 'bel').provinces[P.charleroi]!.owner).toBe('fra');
   });
 
   it('capitale défendue (Bruxelles) : combat contre la garnison, puis capture', () => {
@@ -120,7 +126,7 @@ describe('conquête : monde 2025, armées réelles en piles mixtes', { timeout: 
       { nationId: 'fra', isAi: false },
       { nationId: 'bel', isAi: true },
     ]);
-    const target = prov('bel-3');
+    const target = prov(P.bruxelles);
     const defenders = Object.values(s.units).filter(
       (u) =>
         u.owner === 'bel' &&
@@ -133,9 +139,9 @@ describe('conquête : monde 2025, armées réelles en piles mixtes', { timeout: 
     expect(applyOrder(s, 'fra', { kind: 'move', unitIds: [u.id], to: target.cityPoint }).ok).toBe(
       true,
     );
-    const notes = until(s, 'bel-3', 'fra', 4 * DAY);
+    const notes = until(s, P.bruxelles, 'fra', 4 * DAY);
     expect(notes.some((x) => x.kind === 'combat_started')).toBe(true);
-    expect(s.provinces['bel-3']!.owner).toBe('fra');
+    expect(s.provinces[P.bruxelles]!.owner).toBe('fra');
   });
 
   it('province lointaine : Paris → Varsovie par la route, guerres déclarées en chemin, capture', () => {
@@ -144,16 +150,16 @@ describe('conquête : monde 2025, armées réelles en piles mixtes', { timeout: 
         { nationId: 'fra', isAi: false },
         { nationId: 'pol', isAi: false },
       ],
-      [{ owner: 'fra', systemId: 'eu.infantry-mech', pos: prov('fra-24').cityPoint, count: 3 }],
+      [{ owner: 'fra', systemId: 'eu.infantry-mech', pos: prov(P.paris).cityPoint, count: 3 }],
     );
-    const target = prov('pol-10');
+    const target = prov(P.varsovie);
     expect(applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: target.cityPoint }).ok).toBe(
       true,
     );
     const arrival = s.units.u1!.move!.legs.at(-1)!.t1;
     expect(arrival).toBeGreaterThan(DAY);
-    until(s, 'pol-10', 'fra', arrival + CAPTURE() + HOUR);
-    expect(s.provinces['pol-10']!.owner).toBe('fra');
+    until(s, P.varsovie, 'fra', arrival + CAPTURE() + HOUR);
+    expect(s.provinces[P.varsovie]!.owner).toBe('fra');
     expect(unitPosAt(s, s.units.u1!, s.time)).toEqual(target.cityPoint);
   });
 
@@ -163,29 +169,86 @@ describe('conquête : monde 2025, armées réelles en piles mixtes', { timeout: 
         { nationId: 'fra', isAi: false },
         { nationId: 'ita', isAi: false },
       ],
-      [{ owner: 'fra', systemId: 'eu.infantry-light', pos: prov('fra-9').cityPoint, count: 2 }],
+      [{ owner: 'fra', systemId: 'eu.infantry-light', pos: prov(P.toulon).cityPoint, count: 2 }],
     );
     expect(
-      applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: prov('ita-3').cityPoint }).ok,
+      applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: prov(P.cagliari).cityPoint }).ok,
     ).toBe(true);
     expect(s.units.u1!.move!.legs.some((l) => l.medium === 'sea')).toBe(true);
-    until(s, 'ita-3', 'fra', 3 * DAY);
-    expect(s.provinces['ita-3']!.owner).toBe('fra');
+    until(s, P.cagliari, 'fra', 3 * DAY);
+    expect(s.provinces[P.cagliari]!.owner).toBe('fra');
   });
 
-  it('pile sans unité capable de capturer : arrivée, pas de capture, explication au joueur', () => {
+  it('règle de capture du catalogue : troupes terrestres oui, DCA, missiles, radars non', () => {
+    const cat = world.catalog;
+    for (const id of ['eu.leclerc', 'eu.vbci', 'eu.infantry-light', 'eu.caesar', 'us.m777'])
+      expect(cat.get(id)!.canCapture, id).toBe(true);
+    for (const id of ['ru.s-400', 'eu.mistral', 'ru.iskander-m', 'us.an-tps-75', 'eu.rafale'])
+      expect(cat.get(id)!.canCapture, id).toBe(false);
+  });
+
+  it('pile de chars seule : capture', () => {
     const s = game(
       [
         { nationId: 'fra', isAi: false },
         { nationId: 'bel', isAi: false },
       ],
-      [{ owner: 'fra', systemId: 'eu.caesar', pos: prov('fra-7').cityPoint, count: 4 }],
+      [{ owner: 'fra', systemId: 'eu.leclerc', pos: prov(P.lille).cityPoint, count: 4 }],
     );
     expect(
-      applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: prov('bel-1').cityPoint }).ok,
+      applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: prov(P.charleroi).cityPoint }).ok,
     ).toBe(true);
-    const notes = until(s, 'bel-1', 'fra', 2 * DAY);
-    expect(s.provinces['bel-1']!.owner).toBe('bel');
+    until(s, P.charleroi, 'fra', 2 * DAY);
+    expect(s.provinces[P.charleroi]!.owner).toBe('fra');
+  });
+
+  it('artillerie seule (CAESAR) : capture', () => {
+    const s = game(
+      [
+        { nationId: 'fra', isAi: false },
+        { nationId: 'bel', isAi: false },
+      ],
+      [{ owner: 'fra', systemId: 'eu.caesar', pos: prov(P.lille).cityPoint, count: 4 }],
+    );
+    expect(
+      applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: prov(P.charleroi).cityPoint }).ok,
+    ).toBe(true);
+    until(s, P.charleroi, 'fra', 2 * DAY);
+    expect(s.provinces[P.charleroi]!.owner).toBe('fra');
+  });
+
+  it('batterie S-400 et artillerie ensemble sur la ville : capture (grâce à l’artillerie)', () => {
+    const s = game(
+      [
+        { nationId: 'fra', isAi: false },
+        { nationId: 'bel', isAi: false },
+      ],
+      [
+        { owner: 'fra', systemId: 'ru.s-400', pos: prov(P.lille).cityPoint, count: 2 },
+        { owner: 'fra', systemId: 'eu.caesar', pos: prov(P.lille).cityPoint, count: 2 },
+      ],
+    );
+    expect(
+      applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1', 'u2'], to: prov(P.charleroi).cityPoint })
+        .ok,
+    ).toBe(true);
+    until(s, P.charleroi, 'fra', 2 * DAY);
+    expect(s.provinces[P.charleroi]!.owner).toBe('fra');
+  });
+
+  it('pile sans unité capable de capturer (S-400) : arrivée, pas de capture, explication', () => {
+    const s = game(
+      [
+        { nationId: 'fra', isAi: false },
+        { nationId: 'bel', isAi: false },
+      ],
+      [{ owner: 'fra', systemId: 'ru.s-400', pos: prov(P.lille).cityPoint, count: 2 }],
+    );
+    expect(
+      applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: prov(P.charleroi).cityPoint }).ok,
+    ).toBe(true);
+    const notes = until(s, P.charleroi, 'fra', 2 * DAY);
+    expect(s.provinces[P.charleroi]!.owner).toBe('bel');
     const hint = notes.find((x) => x.kind === 'generic' && x.category === 'capture');
     expect(hint).toBeDefined();
     expect((hint as { loc?: { text: { key: string } } }).loc?.text.key).toBe(
@@ -199,26 +262,26 @@ describe('conquête : monde 2025, armées réelles en piles mixtes', { timeout: 
         { nationId: 'fra', isAi: false },
         { nationId: 'bel', isAi: false },
       ],
-      [{ owner: 'fra', systemId: 'eu.infantry-mech', pos: prov('fra-7').cityPoint, count: 8 }],
+      [{ owner: 'fra', systemId: 'eu.infantry-mech', pos: prov(P.lille).cityPoint, count: 8 }],
     );
     board(s).passage = { 'fra>bel': 30 * DAY };
     expect(
-      applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: prov('bel-1').cityPoint }).ok,
+      applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: prov(P.charleroi).cityPoint }).ok,
     ).toBe(true);
-    const notes = until(s, 'bel-1', 'fra', 2 * DAY);
+    const notes = until(s, P.charleroi, 'fra', 2 * DAY);
     expect(s.wars['bel|fra']).toBeUndefined();
-    expect(s.provinces['bel-1']!.owner).toBe('bel');
+    expect(s.provinces[P.charleroi]!.owner).toBe('bel');
     const hint = notes.find((x) => x.kind === 'generic' && x.category === 'capture');
     expect((hint as { loc?: { text: { key: string } } }).loc?.text.key).toBe(
       'engine.note.captureBlocked.noWar',
     );
     // Neutre (sans passage) : la guerre est déclarée en entrant, la garnison combattue, la province prise.
     expect(
-      applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: prov('lux-2').cityPoint }).ok,
+      applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: prov(P.luxembourg).cityPoint }).ok,
     ).toBe(true);
-    until(s, 'lux-2', 'fra', 2 * DAY);
+    until(s, P.luxembourg, 'fra', 2 * DAY);
     expect(s.wars['fra|lux']).toBeDefined();
-    expect(s.provinces['lux-2']!.owner).toBe('fra');
+    expect(s.provinces[P.luxembourg]!.owner).toBe('fra');
   });
 
   it('régression : à l’arrivée en ville, distances des paires cohérentes avec les seuils', () => {
@@ -230,12 +293,12 @@ describe('conquête : monde 2025, armées réelles en piles mixtes', { timeout: 
         { nationId: 'fra', isAi: false },
         { nationId: 'bel', isAi: false },
       ],
-      [{ owner: 'fra', systemId: 'eu.infantry-light', pos: prov('fra-7').cityPoint, count: 2 }],
+      [{ owner: 'fra', systemId: 'eu.infantry-light', pos: prov(P.lille).cityPoint, count: 2 }],
     );
     board(s).passage = { 'fra>bel': 30 * DAY };
-    applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: prov('bel-1').cityPoint });
-    until(s, 'bel-1', 'fra', 2 * DAY);
-    const city = prov('lux-2').cityPoint;
+    applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: prov(P.charleroi).cityPoint });
+    until(s, P.charleroi, 'fra', 2 * DAY);
+    const city = prov(P.luxembourg).cityPoint;
     expect(applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: city }).ok).toBe(true);
     const arrival = s.units.u1!.move!.legs.at(-1)!.t1;
     while (s.time < arrival + MINUTE) advanceTo(s, Math.min(arrival + MINUTE, s.time + HOUR));
@@ -261,7 +324,7 @@ describe('conquête : monde 2025, armées réelles en piles mixtes', { timeout: 
     }
     expect(checked).toBeGreaterThan(0);
     // Garnison au même point : le combat s'engage (ou la ville est déjà prise).
-    expect(u.engaged || s.provinces['lux-2']!.capture !== null || !s.units.u1).toBe(true);
+    expect(u.engaged || s.provinces[P.luxembourg]!.capture !== null || !s.units.u1).toBe(true);
   });
 
   it('arrivée simultanée avec l’ennemi : combat, puis capture quand le défenseur tombe', () => {
@@ -271,11 +334,11 @@ describe('conquête : monde 2025, armées réelles en piles mixtes', { timeout: 
         { nationId: 'bel', isAi: false },
       ],
       [
-        { owner: 'fra', systemId: 'eu.infantry-mech', pos: prov('fra-7').cityPoint, count: 4 },
-        { owner: 'bel', systemId: 'eu.infantry-light', pos: prov('bel-4').cityPoint, count: 1 },
+        { owner: 'fra', systemId: 'eu.infantry-mech', pos: prov(P.lille).cityPoint, count: 4 },
+        { owner: 'bel', systemId: 'eu.infantry-light', pos: prov(P.namur).cityPoint, count: 1 },
       ],
     );
-    const city = prov('bel-1').cityPoint;
+    const city = prov(P.charleroi).cityPoint;
     expect(applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: city }).ok).toBe(true);
     // Le défenseur part de façon à arriver en même temps que l'attaquant.
     const tA = s.units.u1!.move!.legs.at(-1)!.t1;
@@ -286,10 +349,10 @@ describe('conquête : monde 2025, armées réelles en piles mixtes', { timeout: 
       advanceTo(s, tA - tD);
       expect(applyOrder(s, 'bel', { kind: 'move', unitIds: ['u2'], to: city }).ok).toBe(true);
     }
-    const notes = until(s, 'bel-1', 'fra', 3 * DAY);
+    const notes = until(s, P.charleroi, 'fra', 3 * DAY);
     expect(notes.some((x) => x.kind === 'combat_started')).toBe(true);
     expect(s.units.u2).toBeUndefined();
-    expect(s.provinces['bel-1']!.owner).toBe('fra');
+    expect(s.provinces[P.charleroi]!.owner).toBe('fra');
   });
 
   it('IA en guerre : captures réelles en 7 jours de jeu (monde entier)', () => {

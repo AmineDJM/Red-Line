@@ -7,11 +7,11 @@
       "doctrine": "us",
       "origin": "US",
       "category": "artillery",
-      "roles": ["artillery", "counter_battery"],
+      "roles": ["artillery", "counter_battery", "capture"],
       "generation": 4,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 14000000,
         "resources": {
@@ -78,11 +78,11 @@
       "doctrine": "ru",
       "origin": "RU",
       "category": "artillery",
-      "roles": ["artillery", "counter_battery"],
+      "roles": ["artillery", "counter_battery", "capture"],
       "generation": 4,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 3000000,
         "resources": {
@@ -149,11 +149,11 @@
       "doctrine": "eu",
       "origin": "FR",
       "category": "artillery",
-      "roles": ["artillery", "counter_battery", "shoot_and_scoot"],
+      "roles": ["artillery", "counter_battery", "shoot_and_scoot", "capture"],
       "generation": 4,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 6000000,
         "resources": {
@@ -220,11 +220,11 @@
       "doctrine": "us",
       "origin": "US",
       "category": "artillery",
-      "roles": ["artillery", "counter_battery", "towed", "air_mobile"],
+      "roles": ["artillery", "counter_battery", "towed", "air_mobile", "capture"],
       "generation": 4,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 3500000,
         "resources": {
@@ -290,11 +290,11 @@
       "doctrine": "us",
       "origin": "US",
       "category": "artillery",
-      "roles": ["mlrs", "area_saturation", "precision_strike", "shoot_and_scoot"],
+      "roles": ["mlrs", "area_saturation", "precision_strike", "shoot_and_scoot", "capture"],
       "generation": 4,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 5000000,
         "resources": {
@@ -360,11 +360,11 @@
       "doctrine": "us",
       "origin": "US",
       "category": "artillery",
-      "roles": ["mlrs", "area_saturation", "precision_strike"],
+      "roles": ["mlrs", "area_saturation", "precision_strike", "capture"],
       "generation": 3,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 6000000,
         "resources": {
@@ -430,11 +430,11 @@
       "doctrine": "ru",
       "origin": "RU",
       "category": "artillery",
-      "roles": ["artillery", "counter_battery"],
+      "roles": ["artillery", "counter_battery", "capture"],
       "generation": 5,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 8000000,
         "resources": {
@@ -500,11 +500,11 @@
       "doctrine": "ru",
       "origin": "RU",
       "category": "artillery",
-      "roles": ["artillery", "counter_battery"],
+      "roles": ["artillery", "counter_battery", "capture"],
       "generation": 2,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 2500000,
         "resources": {
@@ -570,11 +570,11 @@
       "doctrine": "ru",
       "origin": "RU",
       "category": "artillery",
-      "roles": ["artillery", "counter_battery"],
+      "roles": ["artillery", "counter_battery", "capture"],
       "generation": 2,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 700000,
         "resources": {
@@ -640,11 +640,11 @@
       "doctrine": "ru",
       "origin": "RU",
       "category": "artillery",
-      "roles": ["artillery", "counter_battery"],
+      "roles": ["artillery", "counter_battery", "capture"],
       "generation": 2,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 1000000,
         "resources": {
@@ -710,11 +710,11 @@
       "doctrine": "ru",
       "origin": "RU",
       "category": "artillery",
-      "roles": ["artillery", "counter_battery", "towed"],
+      "roles": ["artillery", "counter_battery", "towed", "capture"],
       "generation": 2,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 200000,
         "resources": {
@@ -780,11 +780,11 @@
       "doctrine": "ru",
       "origin": "RU",
       "category": "artillery",
-      "roles": ["mlrs", "area_saturation"],
+      "roles": ["mlrs", "area_saturation", "capture"],
       "generation": 2,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 500000,
         "resources": {
@@ -850,11 +850,11 @@
       "doctrine": "ru",
       "origin": "RU",
       "category": "artillery",
-      "roles": ["mlrs", "area_saturation"],
+      "roles": ["mlrs", "area_saturation", "capture"],
       "generation": 3,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 1500000,
         "resources": {
@@ -920,11 +920,11 @@
       "doctrine": "ru",
       "origin": "RU",
       "category": "artillery",
-      "roles": ["mlrs", "area_saturation"],
+      "roles": ["mlrs", "area_saturation", "capture"],
       "generation": 3,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 3000000,
         "resources": {
@@ -990,11 +990,11 @@
       "doctrine": "ru",
       "origin": "RU",
       "category": "artillery",
-      "roles": ["mlrs", "area_saturation", "precision_strike"],
+      "roles": ["mlrs", "area_saturation", "precision_strike", "capture"],
       "generation": 4,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 5000000,
         "resources": {
@@ -1060,11 +1060,11 @@
       "doctrine": "ru",
       "origin": "RU",
       "category": "artillery",
-      "roles": ["mlrs", "thermobaric"],
+      "roles": ["mlrs", "thermobaric", "capture"],
       "generation": 3,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 5000000,
         "resources": {
@@ -1130,11 +1130,11 @@
       "doctrine": "cn",
       "origin": "CN",
       "category": "artillery",
-      "roles": ["artillery", "counter_battery"],
+      "roles": ["artillery", "counter_battery", "capture"],
       "generation": 4,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 3000000,
         "resources": {
@@ -1200,11 +1200,11 @@
       "doctrine": "cn",
       "origin": "CN",
       "category": "artillery",
-      "roles": ["mlrs", "area_saturation"],
+      "roles": ["mlrs", "area_saturation", "capture"],
       "generation": 4,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 3000000,
         "resources": {
@@ -1270,11 +1270,11 @@
       "doctrine": "cn",
       "origin": "CN",
       "category": "artillery",
-      "roles": ["mlrs", "area_saturation", "precision_strike"],
+      "roles": ["mlrs", "area_saturation", "precision_strike", "capture"],
       "generation": 4,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 5000000,
         "resources": {
@@ -1340,11 +1340,11 @@
       "doctrine": "eu",
       "origin": "DE",
       "category": "artillery",
-      "roles": ["artillery", "counter_battery"],
+      "roles": ["artillery", "counter_battery", "capture"],
       "generation": 4,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 14000000,
         "resources": {
@@ -1410,11 +1410,11 @@
       "doctrine": "eu",
       "origin": "SE",
       "category": "artillery",
-      "roles": ["artillery", "counter_battery", "shoot_and_scoot"],
+      "roles": ["artillery", "counter_battery", "shoot_and_scoot", "capture"],
       "generation": 4,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 8000000,
         "resources": {
@@ -1480,11 +1480,11 @@
       "doctrine": "other",
       "origin": "KR",
       "category": "artillery",
-      "roles": ["artillery", "counter_battery"],
+      "roles": ["artillery", "counter_battery", "capture"],
       "generation": 4,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 4000000,
         "resources": {
@@ -1550,11 +1550,11 @@
       "doctrine": "other",
       "origin": "KR",
       "category": "artillery",
-      "roles": ["mlrs", "area_saturation", "precision_strike"],
+      "roles": ["mlrs", "area_saturation", "precision_strike", "capture"],
       "generation": 4,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 6000000,
         "resources": {
@@ -1620,11 +1620,11 @@
       "doctrine": "other",
       "origin": "IN",
       "category": "artillery",
-      "roles": ["mlrs", "area_saturation"],
+      "roles": ["mlrs", "area_saturation", "capture"],
       "generation": 4,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 3000000,
         "resources": {
@@ -1690,11 +1690,11 @@
       "doctrine": "other",
       "origin": "IR",
       "category": "artillery",
-      "roles": ["mlrs", "area_saturation"],
+      "roles": ["mlrs", "area_saturation", "capture"],
       "generation": 3,
       "targetClass": "armor",
       "movement": "land",
-      "canCapture": false,
+      "canCapture": true,
       "cost": {
         "money": 1500000,
         "resources": {

@@ -107,7 +107,7 @@ describe('routes', () => {
       '#/rules/combat',
       '#/research/research.aero.gen5',
       '#/orbat/2025/dza',
-      '#/map/provinces/dza-26',
+      '#/map/provinces/dza-13',
       '#/shop/purchases',
       '#/games/abc',
       '#/chat/abc',

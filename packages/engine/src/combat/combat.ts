@@ -23,7 +23,7 @@ import { isExplicitAd, threatOf } from '../modules/mil/ad-profile.js';
 import { vecDistKm } from '../geo/sphere.js';
 import { setMovement } from '../movement/movement.js';
 import { planUnitMove } from '../movement/plan-unit.js';
-import { fullRangeKm, syncStackCount } from '../state/stack.js';
+import { fullRangeKm, partsOf, syncStackCount } from '../state/stack.js';
 import { canHarm, mixedBaseDamage } from './stack-combat.js';
 import type { GameEvent } from '../queue/events.js';
 
@@ -90,26 +90,73 @@ export function isHighValue(state: EngineState, o: Unit): boolean {
   return (s.air?.tankerFuelH ?? 0) > 0 || s.sensor?.kind === 'aew' || s.category === 'radar';
 }
 
+/**
+ * Choix de la cible d'un round :
+ *  1. cible d'ordre du joueur, si elle est valide ;
+ *  2. riposte prioritaire : parmi les menaces — unités qui prennent cette pile pour cible, ou au
+ *     contact (distance réelle ≤ balance.combat.groundContactKm) et capables de la blesser — avant
+ *     toute cible lointaine, bâtiment ou aéronef au sol ; une cible automatique qui n'en est pas une
+ *     est abandonnée au profit de la menace ;
+ *  3. sinon toutes les cibles à portée (l'artillerie et les frappes visent loin si rien ne menace).
+ * Score = dégâts attendus du round contre la cible, sur TOUTE la composition des deux piles (matériels
+ * à portée, part des PV et blindage de chaque matériel visé : mixedBaseDamage), × facteur des cibles
+ * de grande valeur hors riposte. Départage : clé de paire (ordre de la liste), donc déterministe.
+ */
 function chooseTarget(state: EngineState, u: Unit, list: TargetCand[]): Unit | null {
   if (list.length === 0) return null;
-  if (u.target) {
-    const t = list.find((c) => c.unit.id === u.target);
-    if (t) return t.unit;
-  }
-  const sys = sysOf(state, u);
+  const chosen = u.target ? list.find((c) => c.unit.id === u.target) : undefined;
+  if (chosen && u.tmode !== 'auto') return chosen.unit;
+  const threats = threatsOf(state, u, list);
+  if (chosen && (threats.length === 0 || threats.includes(chosen))) return chosen.unit;
+  const pool = threats.length > 0 ? threats : list;
   const hv = milBal(state).air.highValueTargetFactor;
   let best: Unit | null = null;
   let bestScore = -Infinity;
-  for (const c of list) {
-    const os = sysOf(state, c.unit);
-    let score = sys.damage[targetClassOf(state, c.unit)] * (1 - os.armor);
-    if (isHighValue(state, c.unit)) score *= hv;
+  for (const c of pool) {
+    let score = expectedDamage(state, u, c.unit);
+    if (threats.length === 0 && isHighValue(state, c.unit)) score *= hv;
     if (score > bestScore) {
       bestScore = score;
       best = c.unit;
     }
   }
   return best;
+}
+
+/** Cibles valides qui menacent la pile : elles la visent, ou sont au contact et peuvent la blesser. */
+function threatsOf(state: EngineState, u: Unit, list: TargetCand[]): TargetCand[] {
+  const gc = state.world.balance.combat.groundContactKm;
+  let at: ReturnType<typeof unitVecAt> | null = null;
+  const out: TargetCand[] = [];
+  for (const c of list) {
+    const o = c.unit;
+    if (o.target === u.id && o.engaged) {
+      out.push(c);
+      continue;
+    }
+    // Distance réelle (la distance de paire n'est exacte qu'aux franchissements de ses seuils).
+    at ??= unitVecAt(state, u, state.time);
+    if (vecDistKm(at, unitVecAt(state, o, state.time)) > gc) continue;
+    if (couldHarm(state, o, u)) out.push(c);
+  }
+  return out;
+}
+
+/** Un matériel armé de `o` peut-il blesser `tgt` (composition de la pile comprise) ? */
+function couldHarm(state: EngineState, o: Unit, tgt: Unit): boolean {
+  if (weaponRange(state, o).max <= 0) return false;
+  if (!o.mix) return canHarm(state, sysOf(state, o), tgt);
+  for (const p of partsOf(state, o))
+    if (p.c > 0 && p.sys.weaponRangeKm.max > 0 && canHarm(state, p.sys, tgt)) return true;
+  return false;
+}
+
+/** Dégâts attendus d'un round (avant aléa et modificateurs nationaux), toute composition comprise. */
+function expectedDamage(state: EngineState, u: Unit, tgt: Unit): number {
+  if (u.mix || tgt.mix) return mixedBaseDamage(state, u, tgt);
+  return (
+    u.count * sysOf(state, u).damage[targetClassOf(state, tgt)] * (1 - sysOf(state, tgt).armor)
+  );
 }
 
 export function setTarget(state: EngineState, u: Unit, tid: UnitId, mode: 'order' | 'auto'): void {

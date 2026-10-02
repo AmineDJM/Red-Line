@@ -129,6 +129,8 @@ export function EndGameScreen({ id }: { id: string }) {
       void world.load(api);
       Promise.all([api.stats(id), api.timelapse(id), api.game(id).catch(() => null)])
         .then(([s, l, g]) => {
+          // Partie créée sur une carte antérieure : ses identifiants de province (chronologie).
+          if (g?.game.mapVersion !== undefined) void world.load(api, g.game.mapVersion);
           setStats(s);
           setLapse(l);
           setMe(g?.me ?? null);

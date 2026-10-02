@@ -381,6 +381,7 @@
       "eta": "Varış",
       "warning": "Dikkat",
       "outOfRange": "Hedef menzil dışında",
+      "effect": "Etkinlik",
       "confirm": "Onayla",
       "cancel": "İptal",
       "sent": "Emir iletildi",
@@ -418,7 +419,7 @@
       "placesValue": "{{need}} gerekli · {{free}} boş",
       "aboard": "Gemideki birlikler",
       "overCapacity": "Kapasite aşıldı: birliği bölün.",
-      "noCapturer": "Bu seçimdeki hiçbir birlik ele geçiremez: piyade veya zırhlı gerekir.",
+      "noCapturer": "Bu seçimdeki hiçbir birlik ele geçiremez: piyade, zırhlı veya topçu gerekir.",
       "radius": "Yarıçap",
       "reasons": {
         "target_invalid": "Geçersiz hedef.",
@@ -572,7 +573,7 @@
     },
     "capture": {
       "progress": "{{city}} ele geçiriliyor",
-      "noCapturer": "{{city}}: bu birlik ele geçiremez (piyade veya zırhlı gerekir).",
+      "noCapturer": "{{city}}: bu birlik ele geçiremez (piyade, zırhlı veya topçu gerekir).",
       "noWar": "{{city}}: sahibiyle savaş yok, ele geçirme yok.",
       "defended": "{{city}}: savunanlar var, onlar püskürtülünce ele geçirme başlayacak."
     },
@@ -935,13 +936,12 @@
     "ui": {
       "build": "İnşa et",
       "upgrade": "Seviye {{level}}",
+      "upgradeTo": "{{level}}. seviyeye yükseltme",
       "upgrading": "Yükseltme S{{level}}",
       "repair": "Onar",
       "repairing": "Onarım",
       "health": "Bina durumu",
       "operational": "Faal",
-      "already": "Zaten inşa edildi",
-      "coastalOnly": "Yalnızca kıyı ili",
       "costTip": "Maliyet {{cost}} · süre {{time}}",
       "buildStarted": "İnşaat başladı: {{name}}",
       "upgradeStarted": "Yükseltme başladı: {{name}} (S{{level}})",
@@ -955,6 +955,11 @@
         "no_resource": "Kaynak yok: {{resource}}",
         "coastal_only": "Yalnızca kıyı eyaleti",
         "not_urban": "Elektronik merkezi veya büyük şehir gerekli"
+      },
+      "hidden": {
+        "no_resource": "Burada kullanılamaz, yatak yok: {{list}}.",
+        "coastal_only": "Burada kullanılamaz, kıyısı olmayan eyalet: {{list}}.",
+        "not_urban": "Burada kullanılamaz, ne elektronik merkezi ne büyük şehir: {{list}}."
       }
     },
     "fortification": "Tahkimatlar"
@@ -1207,7 +1212,9 @@
     },
     "settings": {
       "reduceMotion": "Animasyonları azalt",
-      "reduceMotionHelp": "Çatışma efektlerini (atışlar, patlamalar), nabızları ve haritadaki hareketli çizgileri kapatır."
+      "reduceMotionHelp": "Çatışma efektlerini (atışlar, patlamalar), nabızları ve haritadaki hareketli çizgileri kapatır.",
+      "resourceIcons": "Haritada eyalet kaynakları",
+      "resourceIconsHelp": "Şehir adının önünde ana (ve ikincil) kaynak simgesi, zenginlik noktalarla (1 ila 3), yalnızca yakın görünümde."
     }
   },
   "legal": {
@@ -1395,7 +1402,9 @@
       "double": "çift taraflı ajan",
       "exfiltrated": "tahliye edildi",
       "captured": "yakalandı",
-      "expelled": "Sınır dışı edildi"
+      "expelled": "Sınır dışı edildi",
+      "executed": "İdam edildi",
+      "released": "Serbest bırakıldı"
     },
     "ops": {
       "infiltrate_spy": "Casus sız",
@@ -1475,7 +1484,8 @@
     "tabs": {
       "military": "Askerî",
       "dossiers": "Ülke dosyaları",
-      "reports": "Raporlar"
+      "reports": "Raporlar",
+      "detainees": "Tutuklular"
     },
     "cover": "Örtü",
     "covers": {
@@ -1530,6 +1540,173 @@
       "agents": "Sahadaki ajanlar",
       "reliability": "Dosya güvenilirliği",
       "empty": "Dosya yok: servisleriniz komşu, düşman veya operasyonlarınızın hedefindeki ülkeleri izler."
+    },
+    "dz": {
+      "title": "Tutuklular",
+      "subtitle": "Esirler, tutuklu ajanlar, müzakereler",
+      "ourRegime": "Rejimimiz: {{regime}}",
+      "ours": "Esirlerimiz",
+      "abroad": "Yurt dışında tutuklu ajanlarımız",
+      "negotiations": "Müzakereler",
+      "relations": "İkili ilişkiler",
+      "noDetainees": "Tutuklu yabancı ajan yok.",
+      "noAbroad": "Ajanlarımızdan hiçbiri yurt dışında tutuklu değil.",
+      "noSwaps": "Süren müzakere yok.",
+      "noRelations": "Casusluk olayından etkilenen ilişki yok.",
+      "defaultHint": "Süre dolmadan karar verilmezse: tutukluluk (sürekli diplomatik baskı).",
+      "kinds": {
+        "diplomat": "Diplomatik kimlikli subay",
+        "illegal": "Gayriresmî kimlikli subay",
+        "source": "Yerel kaynak",
+        "double": "Çift taraflı ajan"
+      },
+      "kindsShort": {
+        "diplomat": "Diplomat",
+        "illegal": "Gizli",
+        "source": "Kaynak",
+        "double": "Çift"
+      },
+      "status": {
+        "pending": "Karar bekleniyor",
+        "held": "Tutukluluk",
+        "jailed": "Mahkûm",
+        "expelled": "Sınır dışı edildi",
+        "returned": "İade edildi",
+        "executed": "İdam edildi",
+        "released": "Serbest bırakıldı",
+        "exchanged": "Takas edildi",
+        "served": "Ceza tamamlandı",
+        "turned": "Devşirildi"
+      },
+      "fate": {
+        "held": "Tutuklu",
+        "interrogation": "Sorguda",
+        "jailed": "Mahkûm",
+        "expelled": "Sınır dışı edildi",
+        "returned": "İade edildi",
+        "executed": "İdam edildi",
+        "released": "Serbest bırakıldı",
+        "exchanged": "Takas edildi",
+        "served": "Ceza tamamlandı"
+      },
+      "regimes": {
+        "democracy": "Demokrasi",
+        "hybrid": "Hibrit rejim",
+        "authoritarian": "Otoriter rejim"
+      },
+      "regimesShort": {
+        "democracy": "demokrasi",
+        "hybrid": "hibrit",
+        "authoritarian": "otoriter"
+      },
+      "actions": {
+        "arrest": "Gözaltına al",
+        "interrogate": "Sorgula",
+        "expel": "Sınır dışı et",
+        "return": "İade et",
+        "jail": "Hapset",
+        "execute": "İdam et",
+        "turn": "Devşir",
+        "release": "Serbest bırak"
+      },
+      "help": {
+        "arrest": "Açık gözaltı: ajan tutukluya dönüşür, olay diplomatik bir krize dönüşür.",
+        "interrogate": "Denetimli sorgular: ağ, planlanan operasyonlar, niyetler. İtiraflar yanlış olabilir.",
+        "expel": "İstenmeyen kişi: hafif sonuç, karşılıklı sınır dışı etmeler olabilir.",
+        "return": "Ülkesine iade: hafif sonuç, yargılamasız.",
+        "jail": "Hapis cezası: sürekli diplomatik baskı, pazarlık kozu, düşük maliyet.",
+        "execute": "İdam cezası: ilişkiler çöker, misilleme olası, caydırıcı etki.",
+        "turn": "Bizim için çalışmayı teklif et: görünüşte serbest, hizmetimizde çift taraflı ajan.",
+        "release": "Karşılıksız serbest bırakma: yumuşama jesti."
+      },
+      "days": "{{n}} g",
+      "decision": "Karar",
+      "sentence": "Ceza süresi",
+      "unavailable": "kullanılamaz",
+      "confirmTitle": "Karar — tutuklu {{ref}}",
+      "confirm": "Kararı onayla",
+      "applied": "Karar uygulandı: {{action}}",
+      "consequences": "Öngörülen sonuçlar",
+      "fx": {
+        "relations": "{{nationLe}} ile ilişkiler",
+        "reputation": "Uluslararası itibar",
+        "stability": "İç istikrar",
+        "retaliation": "Misilleme riski",
+        "serviceHit": "Karşı servis bize karşı zayıfladı",
+        "serviceDays": "{{days}} g boyunca {{pct}}",
+        "worldRelations": "Demokrasilerle ilişkiler",
+        "council": "Konsey'de kınama oylaması",
+        "chance": "Başarı şansı",
+        "pressure": "Diplomatik baskı",
+        "perDay": "Günde {{value}}",
+        "immunity": "Diplomatik dokunulmazlık ihlali",
+        "hours": "Süre",
+        "none": "Kayda değer sonuç yok."
+      },
+      "risk": {
+        "none": "yok",
+        "low": "düşük",
+        "moderate": "orta",
+        "high": "yüksek"
+      },
+      "blocked": {
+        "war_only": "Rejimimiz için barış zamanında idam mümkün değil.",
+        "never": "İdam cezası kaldırılmıştır.",
+        "interrogating": "Sorgu sürüyor.",
+        "done": "Zaten denendi.",
+        "not_plausible": "Bu tutuklu için makul değil.",
+        "final": "Bu tutuklu artık elimizde değil."
+      },
+      "decideIn": "Karar için {{left}}",
+      "sentenceLeft": "{{days}} g ceza · {{left}} sonra serbest",
+      "interrogating": "Sorgu: {{left}} kaldı",
+      "revealed": "İtiraflar: {{agents}} ajan, {{ops}} operasyon",
+      "caughtDuring": "Yakalandığı sırada: {{op}}",
+      "value": "Değer",
+      "valueHint": "Tahmini takas değeri (subay > kaynak, erişim).",
+      "exchange": "Takas et",
+      "negotiate": "Müzakere et",
+      "arrested": "Ajan gözaltına alındı",
+      "incoming": "Gelen",
+      "outgoing": "Giden",
+      "counter": "Karşı teklif",
+      "swapStatus": {
+        "open": "Beklemede",
+        "accepted": "Sonuçlandı",
+        "refused": "Reddedildi",
+        "expired": "Süresi doldu",
+        "void": "Geçersiz"
+      },
+      "expires": "{{left}} sonra sona erer",
+      "weRelease": "Serbest bırakıyoruz",
+      "weObtain": "Alıyoruz",
+      "money": "Para",
+      "theyPay": "Onlar {{amount}} öder",
+      "wePay": "Biz {{amount}} öderiz",
+      "accord": "İçişlerine karışmama anlaşması",
+      "accordNone": "Yok",
+      "accordShort": "Karışmama",
+      "sanctions": "Yaptırımlar",
+      "sanctionsLifted": "{{nationLe}} tarafından hafifletildi",
+      "accept": "Kabul et",
+      "refuse": "Reddet",
+      "acceptedOk": "Anlaşma sağlandı",
+      "refusedOk": "Teklif reddedildi",
+      "swapTitle": "Müzakere — {{nation}}",
+      "partner": "Ülke",
+      "relationsNow": "Mevcut ilişkiler: {{value}}",
+      "atWar": "savaşta",
+      "noneToRelease": "Onların hiçbir ajanı bizde tutuklu değil.",
+      "noneToObtain": "Bizim hiçbir ajanımız onlarda tutuklu değil.",
+      "moneyNone": "Yok",
+      "moneyPay": "Biz öderiz",
+      "moneyAsk": "Biz isteriz",
+      "amount": "Tutar",
+      "liftSanctions": "Onlara karşı desteklediğimiz yaptırımları hafiflet",
+      "balance": "Verilen değer {{give}} · alınan {{get}}",
+      "balanceHint": "Bir yapay zekâ, ilişkiler düşmanca ise veya savaşta daha fazlasını ister; reddedebilir ya da karşı teklif yapabilir.",
+      "send": "Teklifi gönder",
+      "sent": "Teklif gönderildi"
     }
   },
   "sheet": {
@@ -2120,6 +2297,8 @@
     "producers_one": "{{count}} eyalet",
     "producers_other": "{{count}} eyalet",
     "noProducer": "Üretici eyalet yok: pazardan satın alın.",
+    "nationalFloor": "Asgari ulusal üretim",
+    "nationalFloorTip": "Ulusal taban: asgari yerli üretim (rafinaj, geri dönüşüm, küçük yataklar, geçimlik tarım), üreten eyalet olmasa bile güvence altında.",
     "servicesProvinces_one": "Kaynaksız {{count}} eyalet (yalnızca para: hizmetler, finans)",
     "servicesProvinces_other": "Kaynaksız {{count}} eyalet (yalnızca para: hizmetler, finans)"
   },
@@ -3223,8 +3402,6 @@
     "legacy": "Basitleştirilmiş profil",
     "interceptors": "Önleyiciler",
     "fullIn": "{{value}} içinde dolu",
-    "chipTitle": "{{cat}}: {{range}}",
-    "chipNone": "{{cat}}: önlenmez",
     "no": "Hayır",
     "magazine": "Unsur başına önleyici",
     "channels": "Atış kanalları",
@@ -3257,6 +3434,46 @@
     },
     "shotDown": "Düşürülen: {{cat}}",
     "fired": "Ateşlenen önleyiciler"
+  },
+  "effect": {
+    "title": "Etkinlik",
+    "sheetTitle": "Hedef türüne göre etkinlik",
+    "note": "Kategori başına ortalama; oyundaki hasar, önleme ve saldırılara göre.",
+    "chip": "{{name}}: {{against}} {{level}}",
+    "intercept": "önleme {{ranges}}",
+    "noneList": "Etkisiz: {{list}}",
+    "order": "{{target}} hedefine karşı {{level}}",
+    "levels": {
+      "0": "yok",
+      "1": "zayıf",
+      "2": "orta",
+      "3": "iyi",
+      "4": "mükemmel"
+    },
+    "targets": {
+      "aircraft": "Uçaklar",
+      "helicopter": "Helikopterler",
+      "drone": "İHA’lar",
+      "missile": "Füzeler",
+      "armor": "Zırhlılar",
+      "infantry": "Piyade",
+      "artillery": "Topçu",
+      "ship": "Gemiler",
+      "submarine": "Denizaltılar",
+      "building": "Binalar"
+    },
+    "against": {
+      "aircraft": "uçaklara karşı",
+      "helicopter": "helikopterlere karşı",
+      "drone": "İHA’lara karşı",
+      "missile": "füzelere karşı",
+      "armor": "zırhlılara karşı",
+      "infantry": "piyadeye karşı",
+      "artillery": "topçuya karşı",
+      "ship": "gemilere karşı",
+      "submarine": "denizaltılara karşı",
+      "building": "binalara karşı"
+    }
   },
   "stacks": {
     "composition_one": "Bileşim · {{count}} sistem",
@@ -3857,7 +4074,10 @@
       "dismantle": "{{nation}} şebekesinin çökertilmesi",
       "deception": "Aldatma operasyonu — {{nation}}",
       "hardened": "Hassas tesisler güçlendirildi",
-      "strategicAlert": "STRATEJİK ALARM — {{nation}}"
+      "strategicAlert": "STRATEJİK ALARM — {{nation}}",
+      "interrogation": "Sorgu — tutuklu {{ref}} ({{nation}})",
+      "turnRefused": "Devşirme reddedildi — tutuklu {{ref}}",
+      "detaineeTurned": "Tutuklu {{ref}} devşirildi"
     },
     "note": {
       "allianceInvite": {
@@ -3974,6 +4194,70 @@
         "title": "Diplomatlar sınır dışı edildi",
         "text": "{{host}}, casusluk nedeniyle {{owner}} diplomatlarını sınır dışı ediyor."
       },
+      "detaineeNew": {
+        "title": "Yabancı ajan tutuklandı",
+        "text": "{{owner}} ajanlarından biri elimizde: {{days}} gün içinde karar bekleniyor."
+      },
+      "detaineeHeld": {
+        "title": "Tutukluluk",
+        "text": "Karar verilmediği için {{owner}} ajanı tutuklu kalıyor."
+      },
+      "spyInterrogated": {
+        "title": "Ajan sorgulanıyor",
+        "text": "{{codename}}, {{host}} servislerince sorgulanıyor."
+      },
+      "spyReturned": {
+        "title": "Ajan iade edildi",
+        "text": "{{codename}}, {{host}} tarafından ülkesine geri gönderildi."
+      },
+      "spyJailed": {
+        "title": "Ajan mahkûm edildi",
+        "text": "{{codename}}, {{host}} tarafından {{days}} gün hapse mahkûm edildi."
+      },
+      "spyExecuted": {
+        "title": "Ajan idam edildi",
+        "text": "{{codename}}, {{host}} tarafından idam edildi."
+      },
+      "spyReleased": {
+        "title": "Ajan serbest bırakıldı",
+        "text": "{{host}}, {{codename}} adlı ajanı serbest bıraktı."
+      },
+      "spyServed": {
+        "title": "Ceza sona erdi",
+        "text": "{{codename}} cezasını tamamladı ({{host}}) ve ülkeye dönüyor."
+      },
+      "swapProposal": {
+        "title": "Takas teklifi",
+        "text": "{{nation}} ajan takası öneriyor."
+      },
+      "swapCounter": {
+        "title": "Karşı teklif",
+        "text": "{{nation}} karşı teklif yapıyor."
+      },
+      "swapAccepted": {
+        "title": "Takas sonuçlandı",
+        "text": "{{a}} ile {{b}} arasında tutuklu ajanlar konusunda anlaşma."
+      },
+      "swapRefused": {
+        "title": "Takas reddedildi",
+        "text": "{{nation}} takas teklifinizi reddediyor."
+      },
+      "reprisalExecute": {
+        "title": "Misilleme",
+        "text": "{{nation}} misilleme olarak tutuklu ajanlarımızdan birini idam ediyor."
+      },
+      "reprisalJail": {
+        "title": "Misilleme",
+        "text": "{{nation}} ajanlarımızın tutukluluğunu ağırlaştırıyor (azami cezalar)."
+      },
+      "reprisalArrest": {
+        "title": "Misilleme",
+        "text": "{{nation}} misilleme olarak ajanlarımızdan birini gözaltına alıyor."
+      },
+      "reprisalExpel": {
+        "title": "Misilleme",
+        "text": "{{nation}} misilleme olarak diplomatlarımızı sınır dışı ediyor."
+      },
       "troopsEmbarked": {
         "title": "Birlikler gemiye bindi",
         "text": "{{system}}, {{ship}} gemisinde."
@@ -3999,7 +4283,7 @@
       },
       "captureBlocked": {
         "title": "Ele geçirme imkânsız",
-        "noCapturer": "{{system}} {{place}} bölgesini ele geçiremez: piyade veya zırhlı gerekir.",
+        "noCapturer": "{{system}} {{place}} bölgesini ele geçiremez: piyade, zırhlı veya topçu gerekir.",
         "noWar": "{{place}} sahibiyle savaş yok: ele geçirme yok."
       },
       "cmd_generalResigned": {
@@ -4115,6 +4399,12 @@
         "wounded": "{{general}} karargâhta yaralandı: {{days}} gün nekahet.",
         "killed": "{{general}} karargâhta öldü."
       }
+    },
+    "spyNews": {
+      "executedH": "{{host}}: {{owner}} ajanı idam edildi",
+      "executedB": "{{host}}, casuslukla suçlanan bir {{owner}} ajanının idam edildiğini duyurdu. Uluslararası kınama.",
+      "swapH": "{{a}} ile {{b}} arasında ajan takası",
+      "swapB": "{{a}} ve {{b}} esir takası yaptı: {{n}} ajan serbest bırakıldı."
     }
   }
 }

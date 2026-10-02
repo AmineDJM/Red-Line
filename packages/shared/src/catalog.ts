@@ -41,6 +41,17 @@ export const CATEGORIES = [
 ] as const;
 export type Category = (typeof CATEGORIES)[number];
 
+/**
+ * Catégories dont les systèmes terrestres capturent une province (champ `canCapture` du catalogue,
+ * contrôlé par les tests de données et la validation du back-office).
+ */
+export const CAPTURE_CATEGORIES: readonly Category[] = ['infantry', 'tank', 'ifv', 'artillery'];
+
+/** Le système devrait-il pouvoir capturer selon la règle des catégories ? */
+export function captureByRule(s: Pick<WeaponSystem, 'category' | 'movement'>): boolean {
+  return s.movement === 'land' && CAPTURE_CATEGORIES.includes(s.category);
+}
+
 /** Milieu de déplacement : détermine la navigation (grille terre, grille mer, grand cercle direct). */
 export const MOVEMENT_KINDS = ['land', 'sea', 'air', 'static'] as const;
 export type MovementKind = (typeof MOVEMENT_KINDS)[number];
@@ -135,7 +146,11 @@ export const WeaponSystemSchema = z.object({
   /** Colonne de la matrice de dégâts qui s'applique quand CE système est la cible. */
   targetClass: z.enum(TARGET_CLASSES),
   movement: z.enum(MOVEMENT_KINDS),
-  /** Peut capturer une province (unités terrestres de manœuvre). */
+  /**
+   * Peut capturer une province : toutes les troupes terrestres (CAPTURE_CATEGORIES : infanterie de tout
+   * type, chars, véhicules de combat, artillerie et lance-roquettes) ; jamais la défense antiaérienne,
+   * les lanceurs de missiles, les munitions, les radars, les convois, ni ce qui vole ou navigue.
+   */
   canCapture: z.boolean().default(false),
   cost: z.object({ money: nonNeg, resources: ResourceCostSchema.default({}) }),
   buildTimeH: nonNeg,

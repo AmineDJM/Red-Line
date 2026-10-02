@@ -33,7 +33,8 @@ import { isMixed, stackSummary } from '../lib/stacks.js';
 import { StackActions, StackComposition } from './StackActions.js';
 import { orderError } from '../lib/loc.js';
 import { UnitOrders } from './UnitOrders.js';
-import { AirDefenseChips } from '../components/AirDefenseCaps.js';
+import { EffectRow } from '../components/Effectiveness.js';
+import { unitEffect, useEffectContext } from '../lib/effectiveness.js';
 
 const STANCES: UnitStance[] = ['hold', 'defend', 'aggressive'];
 
@@ -258,7 +259,7 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
       <KeyValue items={compact ? rows.slice(0, 4) : rows} columns={compact ? 1 : 1} />
       {own ? <CaptureStatus u={u} now={now} /> : null}
       {own && u.cargo ? <CargoPanel u={u} now={now} compact={compact} /> : null}
-      {sys && u.level !== 'detected' && !compact ? <AirDefenseChips system={sys} /> : null}
+      {sys && u.level !== 'detected' ? <UnitEffect u={u} name={name} compact={compact} /> : null}
       {!compact ? <StackComposition u={u} /> : null}
       {own ? (
         <>
@@ -327,6 +328,23 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
       ) : null}
     </section>
   );
+}
+
+/**
+ * Efficacité de la pile par catégorie de cible (pile mixte : moyenne pondérée par sa composition) ;
+ * système unique : portées d'interception d'une défense antiaérienne dans les info-bulles.
+ */
+function UnitEffect({ u, name, compact }: { u: UnitView; name: string; compact: boolean }) {
+  const { t } = useTranslation();
+  const catalog = useWorld((s) => s.catalog);
+  const ctx = useEffectContext();
+  const scores = unitEffect(u, catalog, ctx);
+  if (!scores) return null;
+  const mixed = isMixed(u);
+  const single = !mixed && u.systemId ? catalog[u.systemId] : undefined;
+  // Pile mixte : la note est celle de toute la pile (« T-72 + 29 autres matériels »).
+  const label = mixed ? `${name} ${t('stacks.more', { count: (u.parts?.length ?? 1) - 1 })}` : name;
+  return <EffectRow scores={scores} ctx={ctx} name={label} system={single} compact={compact} />;
 }
 
 /**

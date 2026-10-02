@@ -47,6 +47,44 @@
       "engageKm": 80,
       "leashKm": 150,
       "refreshMinutes": 5
+    },
+    "airDefense": {
+      "priority": {
+        "hypersonic": 6,
+        "ballistic_missile": 5,
+        "cruise_missile": 4,
+        "aircraft": 3,
+        "helicopter": 2,
+        "drone": 1.5
+      },
+      "protectFactor": 2,
+      "shots": {
+        "hypersonic": 2,
+        "ballistic_missile": 2,
+        "cruise_missile": 2,
+        "aircraft": 2,
+        "helicopter": 1,
+        "drone": 1
+      },
+      "reactionS": 15,
+      "fullPkShare": 0.6,
+      "farPkFactor": 0.5,
+      "stealthPkFactor": 1,
+      "aircraftReengageMinutes": 5,
+      "fighterPkPerDamage": 0.08,
+      "fighterPkMax": 0.6,
+      "fighterMagazine": 4,
+      "ai": {
+        "capital": 2,
+        "airBase": 1,
+        "front": 1,
+        "frontKm": 250,
+        "coverShare": 0.5,
+        "reachKm": 1200,
+        "movesPerThink": 3,
+        "everyThinks": 2,
+        "minAmmoShare": 0.3
+      }
     }
   },
   "sensors": {
@@ -1339,13 +1377,21 @@
     }
   },
   "resources": {
-    "extraction": { "oil_field": "oil", "mine": "metals", "farm": "food" },
+    "extraction": {
+      "oil_field": "oil",
+      "mine": "metals",
+      "farm": "food"
+    },
     "electronicsUrbanRank": 2,
     "richnessYield": [0.8, 1, 1.25],
     "secondaryYield": 0.7,
     "servicesIncomeBonus": 0.1,
     "servicesIndustryFactor": 1.5,
-    "coastalOnly": ["port", "naval_base", "coastal_battery"]
+    "coastalOnly": ["port", "naval_base", "coastal_battery"],
+    "nationalFloor": {
+      "economyShare": 0.05,
+      "minPerDay": { "oil": 1, "metals": 1, "electronics": 1, "food": 2 }
+    }
   },
   "alert": {
     "thresholds": [20, 45, 70, 90],
@@ -1661,6 +1707,301 @@
         "border": 15,
         "capital": 10
       }
+    },
+    "detainees": {
+      "decisionDays": 3,
+      "interrogateHours": 48,
+      "interrogateYield": {
+        "diplomat": 0.25,
+        "illegal": 0.45,
+        "source": 0.6,
+        "double": 0.85
+      },
+      "interrogateFalse": {
+        "diplomat": 0.1,
+        "illegal": 0.25,
+        "source": 0.15,
+        "double": 0.05
+      },
+      "revealAgents": 2,
+      "sentenceDays": [30, 90, 365],
+      "turnChance": {
+        "diplomat": 0.1,
+        "illegal": 0.25,
+        "source": 0.5,
+        "double": 0
+      },
+      "kindRelations": {
+        "diplomat": 1,
+        "illegal": 1,
+        "source": 0.6,
+        "double": 0.8
+      },
+      "value": {
+        "diplomat": 3,
+        "illegal": 4,
+        "source": 1.5,
+        "double": 1
+      },
+      "accessValue": 0.5,
+      "actions": {
+        "arrest": {
+          "relations": -3,
+          "reputation": 0,
+          "stability": 0,
+          "retaliation": 0.1,
+          "serviceHit": 0.05,
+          "serviceDays": 15
+        },
+        "interrogate": {
+          "relations": -2,
+          "reputation": 0,
+          "stability": 0,
+          "retaliation": 0.05,
+          "serviceHit": 0,
+          "serviceDays": 0
+        },
+        "expel": {
+          "relations": -6,
+          "reputation": 0,
+          "stability": 0,
+          "retaliation": 0.5,
+          "serviceHit": 0.15,
+          "serviceDays": 30
+        },
+        "return": {
+          "relations": -4,
+          "reputation": 0,
+          "stability": 0,
+          "retaliation": 0.2,
+          "serviceHit": 0.1,
+          "serviceDays": 20
+        },
+        "jail": {
+          "relations": -12,
+          "reputation": -0.5,
+          "stability": 1,
+          "retaliation": 0.35,
+          "serviceHit": 0.2,
+          "serviceDays": 60
+        },
+        "execute": {
+          "relations": -40,
+          "reputation": -6,
+          "stability": 0,
+          "retaliation": 0.8,
+          "serviceHit": 0.35,
+          "serviceDays": 90
+        },
+        "turn": {
+          "relations": 6,
+          "reputation": 1,
+          "stability": -1,
+          "retaliation": 0,
+          "serviceHit": 0,
+          "serviceDays": 0
+        },
+        "release": {
+          "relations": 6,
+          "reputation": 1,
+          "stability": -1,
+          "retaliation": 0,
+          "serviceHit": 0,
+          "serviceDays": 0
+        },
+        "exchange": {
+          "relations": 8,
+          "reputation": 1,
+          "stability": 1,
+          "retaliation": 0,
+          "serviceHit": 0,
+          "serviceDays": 0
+        }
+      },
+      "jailPerYear": -10,
+      "immunityReputation": -5,
+      "immunityRelations": -10,
+      "peaceFactor": 1.5,
+      "regimes": {
+        "democracy": {
+          "execute": "war",
+          "reputation": -12,
+          "stability": -6,
+          "worldRelations": -10,
+          "council": 0.6,
+          "retaliation": 0.8,
+          "aiExecute": 0
+        },
+        "hybrid": {
+          "execute": "always",
+          "reputation": -6,
+          "stability": -2,
+          "worldRelations": -4,
+          "council": 0.2,
+          "retaliation": 1,
+          "aiExecute": 0.15
+        },
+        "authoritarian": {
+          "execute": "always",
+          "reputation": -3,
+          "stability": 1,
+          "worldRelations": -2,
+          "council": 0.1,
+          "retaliation": 1.2,
+          "aiExecute": 0.35
+        }
+      },
+      "nations": {
+        "democracy": [
+          "alb",
+          "and",
+          "arg",
+          "aus",
+          "aut",
+          "bel",
+          "bgr",
+          "bra",
+          "brb",
+          "bwa",
+          "can",
+          "che",
+          "chl",
+          "col",
+          "cpv",
+          "cri",
+          "cyp",
+          "cze",
+          "deu",
+          "dnk",
+          "dom",
+          "ecu",
+          "esp",
+          "est",
+          "fin",
+          "fra",
+          "gbr",
+          "gha",
+          "grc",
+          "guy",
+          "hrv",
+          "idn",
+          "ind",
+          "irl",
+          "isl",
+          "isr",
+          "ita",
+          "jam",
+          "jpn",
+          "kor",
+          "lie",
+          "lka",
+          "ltu",
+          "lux",
+          "lva",
+          "mco",
+          "mex",
+          "mkd",
+          "mlt",
+          "mne",
+          "mng",
+          "mus",
+          "mys",
+          "nam",
+          "nld",
+          "nor",
+          "nzl",
+          "pan",
+          "per",
+          "phl",
+          "pol",
+          "prt",
+          "pry",
+          "rou",
+          "sen",
+          "smr",
+          "srb",
+          "sur",
+          "svk",
+          "svn",
+          "swe",
+          "tls",
+          "tto",
+          "twn",
+          "ury",
+          "usa",
+          "zaf"
+        ],
+        "authoritarian": [
+          "afg",
+          "ago",
+          "are",
+          "aze",
+          "bdi",
+          "bfa",
+          "bhr",
+          "blr",
+          "caf",
+          "chn",
+          "cmr",
+          "cod",
+          "cog",
+          "cub",
+          "dji",
+          "dza",
+          "egy",
+          "eri",
+          "eth",
+          "gab",
+          "gin",
+          "gnq",
+          "irn",
+          "irq",
+          "jor",
+          "kaz",
+          "khm",
+          "kwt",
+          "lao",
+          "lby",
+          "mli",
+          "mmr",
+          "ner",
+          "nic",
+          "omn",
+          "prk",
+          "qat",
+          "rus",
+          "rwa",
+          "sau",
+          "sdn",
+          "som",
+          "ssd",
+          "swz",
+          "syr",
+          "tcd",
+          "tjk",
+          "tkm",
+          "uzb",
+          "ven",
+          "vnm",
+          "yem",
+          "zwe"
+        ]
+      },
+      "pressurePerDay": 1,
+      "pressureFloor": -60,
+      "relationsDecayPerDay": 0.5,
+      "swapDays": 5,
+      "aiAnswerHours": 6,
+      "usdPerValue": 25000000,
+      "accordValuePerDay": 0.05,
+      "holdFactor": 0.85,
+      "sanctionsValue": 4,
+      "hostilePremium": 0.5,
+      "warPremium": 0.25,
+      "counterMax": 1.5,
+      "raise": 0.2,
+      "aiSwapEveryDays": 5,
+      "aiSwapMinRelations": -70
     }
   },
   "domestic": {
@@ -3044,44 +3385,9 @@
       "count": 1
     }
   ],
-  "military": {
-    "airDefense": {
-      "priority": {
-        "hypersonic": 6,
-        "ballistic_missile": 5,
-        "cruise_missile": 4,
-        "aircraft": 3,
-        "helicopter": 2,
-        "drone": 1.5
-      },
-      "protectFactor": 2,
-      "shots": {
-        "hypersonic": 2,
-        "ballistic_missile": 2,
-        "cruise_missile": 2,
-        "aircraft": 2,
-        "helicopter": 1,
-        "drone": 1
-      },
-      "reactionS": 15,
-      "fullPkShare": 0.6,
-      "farPkFactor": 0.5,
-      "stealthPkFactor": 1,
-      "aircraftReengageMinutes": 5,
-      "fighterPkPerDamage": 0.08,
-      "fighterPkMax": 0.6,
-      "fighterMagazine": 4,
-      "ai": {
-        "capital": 2,
-        "airBase": 1,
-        "front": 1,
-        "frontKm": 250,
-        "coverShare": 0.5,
-        "reachKm": 1200,
-        "movesPerThink": 3,
-        "everyThinks": 2,
-        "minAmmoShare": 0.3
-      }
-    }
+  "effectiveness": {
+    "refQuantile": 0.9,
+    "levels": { "medium": 0.25, "good": 0.5, "excellent": 0.8 },
+    "missileWeights": { "cruise_missile": 1, "ballistic_missile": 1, "hypersonic": 0.5 }
   }
 }

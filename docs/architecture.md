@@ -193,6 +193,17 @@ red-line/
 | Nations, provinces, propriétaires    | `data/map` → base → **GeoJSON servi par l'API**                                   | source GeoJSON MapLibre               | **Dynamique**, jamais cuit dans les tuiles                                      |
 | Unités, sites, portées, trajectoires | état de la partie                                                                 | sources GeoJSON mises à jour par diff |                                                                                 |
 
+**Provinces** (`tools/map`, Natural Earth) : unités admin-1 regroupées et découpées
+(`provinces.ts`), puis **fusion des provinces voisines** d'une même nation (`consolidate.ts`, réglages
+`consolidate-config.ts`) : environ deux fois moins de provinces (2 567 → ~1 300), petites nations (≤ 4
+provinces) et provinces capitales inchangées, jamais de fusion à travers une frontière nationale ou la mer,
+régions administratives respectées (régions Natural Earth, nations constitutives du Royaume-Uni, régions
+de 2015 au Maroc, grands ensembles en Algérie), nom de la région, de l'unité réunie ou du membre dominant,
+point de capture = ville principale, rendements et bâtiments additionnés (`data/map/aliases.json` : ancien
+nom → nouvelle province, pour les désignations par nom des ressources). La carte est **versionnée**
+(`data/map/version.json`) : une partie épingle sa version, les cartes précédentes restent dans
+`data/map/archive/<version>/` (voir `docs/deploiement.md`, annexes).
+
 Rendu fidèle à l'image de référence :
 
 - **Teinte des territoires** : couche `fill` avec couleur par `feature-state` (changer de propriétaire ne renvoie pas de géométrie), opacité de 0,45 à 0,6 pour le joueur, plus une couche `line` avec `line-blur` pour le halo.

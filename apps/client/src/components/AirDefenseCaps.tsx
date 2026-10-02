@@ -14,7 +14,8 @@ import { fmtDuration, fmtKm, fmtKmRange } from '../i18n/index.js';
  * Défense antiaérienne : ce qu'un système intercepte (une ligne par catégorie de menace : avions,
  * hélicoptères, drones, missiles de croisière, balistiques, hypersoniques), avec portées, plafond,
  * probabilité et doctrine de tir ; magasin d'intercepteurs restant pour une pile à soi. Les catégories
- * non interceptées restent visibles, grisées (le joueur voit aussi ce qui passe).
+ * non interceptées restent visibles, grisées (le joueur voit aussi ce qui passe). Le panneau de
+ * sélection résume ces capacités dans la rangée d’efficacité (components/Effectiveness.tsx).
  */
 
 const PICTO: Partial<Record<AirThreat, PictogramId>> = {
@@ -77,35 +78,6 @@ export function AirDefenseAmmo({ unit, now }: { unit: UnitView; now: number }) {
         </span>
       ) : null}
     </div>
-  );
-}
-
-/** Pastilles compactes (panneau de sélection) : catégories interceptées et portée maximale. */
-export function AirDefenseChips({ system }: { system: WeaponSystem }) {
-  const { t } = useTranslation();
-  const table = airDefenseTable(system);
-  if (!table || table.lines.length === 0) return null;
-  const by = new Map(table.lines.map((l) => [l.threat, l]));
-  return (
-    <ul className="adcaps__chips" aria-label={t('airDefense.title')} data-testid="ad-chips">
-      {AIR_THREATS.map((c) => {
-        const l = by.get(c);
-        return (
-          <li
-            key={c}
-            className={l ? 'adcaps__chip' : 'adcaps__chip adcaps__chip--off'}
-            title={
-              l
-                ? t('airDefense.chipTitle', { cat: t(`airDefense.threats.${c}`), range: range(l) })
-                : t('airDefense.chipNone', { cat: t(`airDefense.threats.${c}`) })
-            }
-          >
-            <ThreatIcon threat={c} size={14} />
-            <span>{l ? fmtKm(l.maxKm) : '—'}</span>
-          </li>
-        );
-      })}
-    </ul>
   );
 }
 

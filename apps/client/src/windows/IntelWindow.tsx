@@ -48,6 +48,8 @@ import { useGameTime } from '../shell/helpers.js';
 import type { WindowContentProps } from '../shell/WindowHost.js';
 import { useGame } from '../store/game.js';
 import { IntelInterior } from './IntelInterior.js';
+import { IntelDetainees } from './IntelDetainees.js';
+import { detaineeAlerts } from '../lib/detainees.js';
 import { Dossiers, SigintPanel, ThreatList, ThreatMap } from './IntelDossiers.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
@@ -65,6 +67,7 @@ const TAB_ICON: Record<IntelTab, IconName> = {
   humint: 'spy',
   military: 'target',
   interior: 'shield',
+  detainees: 'lock',
   dossiers: 'intel',
   reports: 'news',
 };
@@ -750,12 +753,14 @@ function Agents({
                     ? 'green'
                     : a.status === 'double'
                       ? 'violet'
-                      : a.status === 'burned' || a.status === 'captured'
+                      : a.status === 'burned' || a.status === 'captured' || a.status === 'executed'
                         ? 'red'
                         : 'neutral'
                 }
               >
-                {t(`intel.agentStatus.${a.status}`)}
+                {a.status === 'captured' && a.detention
+                  ? t(`intel.dz.fate.${a.detention.fate}`)
+                  : t(`intel.agentStatus.${a.status}`)}
               </Badge>
               <span className="agent__acts">
                 {a.status === 'active' && a.access !== 'staff' ? (
@@ -811,6 +816,21 @@ function Agents({
                   {t('intel.turn')}
                 </Button>
               )}
+              <Button
+                size="sm"
+                variant="ghost"
+                icon={<Icon name="lock" size={11} />}
+                onClick={() =>
+                  void send(
+                    { kind: 'detainee', agentId: c.id, action: 'arrest' },
+                    t('intel.dz.arrested'),
+                  )
+                }
+                title={t('intel.dz.help.arrest')}
+                data-testid={`arrest-${c.id}`}
+              >
+                {t('intel.dz.actions.arrest')}
+              </Button>
               <Ago from={c.caughtAt} now={now} />
             </li>
           ))}
@@ -836,8 +856,11 @@ interface LaunchState {
 export function IntelWindow({ win, frame, mobile }: WindowContentProps) {
   const { t } = useTranslation();
   const intel = useGame((s) => s.view?.intel);
+  const me = useGame((s) => s.me) ?? '';
   const now = useGameTime(5000);
-  const [tab, setTab] = useState<IntelTab>('military');
+  const [tab, setTab] = useState<IntelTab>(
+    win.params.tab === 'detainees' ? 'detainees' : 'military',
+  );
   const [filter, setFilter] = useState<'all' | OpsTab>('all');
   const [openId, setOpenId] = useState<string | null>(null);
   const [launch, setLaunch] = useState<LaunchState | null>(null);
@@ -847,7 +870,7 @@ export function IntelWindow({ win, frame, mobile }: WindowContentProps) {
       setTab('reports');
       setFilter('all');
       setOpenId(r.id);
-    }
+    } else if (win.params.tab === 'detainees') setTab('detainees');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [win.seq]);
   const reports = intel?.reports ?? [];
@@ -934,16 +957,21 @@ export function IntelWindow({ win, frame, mobile }: WindowContentProps) {
               id: x,
               label: label(x),
               icon: <Icon name={TAB_ICON[x]} size={13} />,
-              ...(x === 'dossiers'
-                ? { count: dossiers.length, dot: dossiers.some((d) => d.alert) }
-                : x === 'reports'
-                  ? { count: reports.length }
-                  : x === 'interior'
-                    ? {
-                        count: intel?.interior?.threats.filter((y) => y.grade !== 'low').length,
-                        dot: flashIn('interior'),
-                      }
-                    : { count: byTab(x).length, dot: flashIn(x) }),
+              ...(x === 'detainees'
+                ? {
+                    count: (intel?.detainees ?? []).filter((d) => !!d.options).length,
+                    dot: detaineeAlerts(intel, me) > 0,
+                  }
+                : x === 'dossiers'
+                  ? { count: dossiers.length, dot: dossiers.some((d) => d.alert) }
+                  : x === 'reports'
+                    ? { count: reports.length }
+                    : x === 'interior'
+                      ? {
+                          count: intel?.interior?.threats.filter((y) => y.grade !== 'low').length,
+                          dot: flashIn('interior'),
+                        }
+                      : { count: byTab(x).length, dot: flashIn(x) }),
             }))}
           />
         </div>
@@ -964,6 +992,8 @@ export function IntelWindow({ win, frame, mobile }: WindowContentProps) {
     >
       {!intel ? (
         <EmptyState icon="intel" title={t('intel.unavailable')} text={t('intel.unavailableHint')} />
+      ) : tab === 'detainees' ? (
+        <IntelDetainees mobile={mobile} />
       ) : tab === 'dossiers' ? (
         <Dossiers mobile={mobile} />
       ) : tab === 'reports' ? (

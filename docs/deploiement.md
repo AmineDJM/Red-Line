@@ -265,6 +265,18 @@ parties non classées.
   informations de l'éditeur (`{{legal.*}}`) se règlent au back-office (**Réglages › Légal**).
 - **Données du back-office** (règles, recherche, ORBAT, scénarios, carte) : versionnées en base
   (`data_revisions`) ; une partie garde la version de sa création, sauf modification « parties en cours ».
+- **Versions de la carte** (identifiants de province) : `data/map/version.json` donne la version de la carte
+  des nouvelles parties ; chaque partie l'épingle à sa création (`games.map_version`, migration
+  `0007_map_version`, les parties d'avant valent 1). Les cartes précédentes restent dans
+  `data/map/archive/<version>/` (copie exacte des fichiers d'origine : mêmes objets dans le dépôt, aucun
+  poids ajouté) ; le serveur recharge une partie ancienne avec sa carte (`?map=<version>` sur `/api/map/*`,
+  noms localisés par `/api/map/names/<langue>?map=<version>`), et le client charge la carte de la partie à
+  l'accueil. Les modifications de carte du back-office (provinces, zones disputées) valent pour la version
+  de carte en vigueur à leur écriture ; une nation modifiée garde la capitale de la carte visée. Changer les
+  identifiants : copier l'ancienne carte dans `archive/<version>/`, incrémenter la version et son empreinte
+  (`pnpm --filter @redline/tools-map map-version`), sinon `tools/map/test/map.test.ts` échoue. Une archive
+  peut être retirée quand plus aucune partie en cours ne l'utilise
+  (`SELECT map_version, count(*) FROM games WHERE status <> 'ended' GROUP BY 1`).
 - Simulation locale d'un déploiement de zéro : clone frais, installation et build ci-dessus, base vide,
   `migrate.js` puis `main.js` avec les variables de `render.yaml` — vérifié le 30/09/2026 (santé, jeu,
   back-office, tuiles `Range`, photos, glyphes, fond de carte, compression).

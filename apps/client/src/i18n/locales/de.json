@@ -381,6 +381,7 @@
       "eta": "Ankunft",
       "warning": "Achtung",
       "outOfRange": "Ziel außer Reichweite",
+      "effect": "Wirksamkeit",
       "confirm": "Bestätigen",
       "cancel": "Abbrechen",
       "sent": "Befehl übermittelt",
@@ -418,7 +419,7 @@
       "placesValue": "{{need}} benötigt · {{free}} frei",
       "aboard": "Verbände an Bord",
       "overCapacity": "Kapazität überschritten: Verband aufteilen.",
-      "noCapturer": "Keine Einheit dieser Auswahl kann erobern: Infanterie oder Panzer erforderlich.",
+      "noCapturer": "Keine Einheit dieser Auswahl kann erobern: Infanterie, Panzer oder Artillerie erforderlich.",
       "radius": "Radius",
       "reasons": {
         "target_invalid": "Ungültiges Ziel.",
@@ -572,7 +573,7 @@
     },
     "capture": {
       "progress": "Eroberung von {{city}}",
-      "noCapturer": "{{city}}: Dieser Verband kann nicht erobern (Infanterie oder Panzer erforderlich).",
+      "noCapturer": "{{city}}: Dieser Verband kann nicht erobern (Infanterie, Panzer oder Artillerie erforderlich).",
       "noWar": "{{city}}: Kein Krieg mit dem Besitzer, keine Eroberung.",
       "defended": "{{city}}: Verteidiger vor Ort, die Eroberung beginnt, sobald sie vertrieben sind."
     },
@@ -935,13 +936,12 @@
     "ui": {
       "build": "Bauen",
       "upgrade": "Stufe {{level}}",
+      "upgradeTo": "Ausbau auf Stufe {{level}}",
       "upgrading": "Ausbau S{{level}}",
       "repair": "Reparieren",
       "repairing": "Reparatur",
       "health": "Gebäudezustand",
       "operational": "Einsatzbereit",
-      "already": "Bereits gebaut",
-      "coastalOnly": "Nur Küstenprovinz",
       "costTip": "Kosten {{cost}} · Dauer {{time}}",
       "buildStarted": "Bau gestartet: {{name}}",
       "upgradeStarted": "Ausbau gestartet: {{name}} (S{{level}})",
@@ -955,6 +955,11 @@
         "no_resource": "Ressource fehlt: {{resource}}",
         "coastal_only": "Nur Küstenprovinz",
         "not_urban": "Elektronikzentrum oder Großstadt erforderlich"
+      },
+      "hidden": {
+        "no_resource": "Hier nicht verfügbar, kein Vorkommen: {{list}}.",
+        "coastal_only": "Hier nicht verfügbar, Provinz ohne Küste: {{list}}.",
+        "not_urban": "Hier nicht verfügbar, weder Elektronikzentrum noch Großstadt: {{list}}."
       }
     },
     "fortification": "Befestigungen"
@@ -1207,7 +1212,9 @@
     },
     "settings": {
       "reduceMotion": "Animationen reduzieren",
-      "reduceMotionHelp": "Schaltet Gefechtseffekte (Schüsse, Explosionen), Pulsieren und animierte Kartenstriche ab."
+      "reduceMotionHelp": "Schaltet Gefechtseffekte (Schüsse, Explosionen), Pulsieren und animierte Kartenstriche ab.",
+      "resourceIcons": "Provinzressourcen auf der Karte",
+      "resourceIconsHelp": "Symbol der Haupt- (und Neben-)ressource vor dem Stadtnamen, Ergiebigkeit in Punkten (1 bis 3), nur aus der Nähe."
     }
   },
   "legal": {
@@ -1395,7 +1402,9 @@
       "double": "Doppelagent",
       "exfiltrated": "exfiltriert",
       "captured": "gefangen",
-      "expelled": "Ausgewiesen"
+      "expelled": "Ausgewiesen",
+      "executed": "Hingerichtet",
+      "released": "Freigelassen"
     },
     "ops": {
       "infiltrate_spy": "Spion einschleusen",
@@ -1475,7 +1484,8 @@
     "tabs": {
       "military": "Militär",
       "dossiers": "Länderdossiers",
-      "reports": "Berichte"
+      "reports": "Berichte",
+      "detainees": "Häftlinge"
     },
     "cover": "Tarnung",
     "covers": {
@@ -1530,6 +1540,173 @@
       "agents": "Agenten vor Ort",
       "reliability": "Zuverlässigkeit des Dossiers",
       "empty": "Keine Dossiers: Ihre Dienste verfolgen benachbarte und feindliche Nationen sowie Ziele Ihrer Operationen."
+    },
+    "dz": {
+      "title": "Häftlinge",
+      "subtitle": "Gefangene, inhaftierte Agenten, Verhandlungen",
+      "ourRegime": "Unser Regime: {{regime}}",
+      "ours": "Unsere Gefangenen",
+      "abroad": "Unsere im Ausland inhaftierten Agenten",
+      "negotiations": "Verhandlungen",
+      "relations": "Bilaterale Beziehungen",
+      "noDetainees": "Kein ausländischer Agent in Haft.",
+      "noAbroad": "Keiner unserer Agenten ist im Ausland inhaftiert.",
+      "noSwaps": "Keine laufenden Verhandlungen.",
+      "noRelations": "Keine Beziehung durch eine Spionageaffäre belastet.",
+      "defaultHint": "Ohne Entscheidung vor Fristablauf: Untersuchungshaft (anhaltender diplomatischer Druck).",
+      "kinds": {
+        "diplomat": "Offizier mit diplomatischer Tarnung",
+        "illegal": "Offizier mit nichtamtlicher Tarnung",
+        "source": "Lokale Quelle",
+        "double": "Doppelagent"
+      },
+      "kindsShort": {
+        "diplomat": "Diplomat",
+        "illegal": "Illegaler",
+        "source": "Quelle",
+        "double": "Doppel"
+      },
+      "status": {
+        "pending": "Entscheidung ausstehend",
+        "held": "Untersuchungshaft",
+        "jailed": "Verurteilt",
+        "expelled": "Ausgewiesen",
+        "returned": "Abgeschoben",
+        "executed": "Hingerichtet",
+        "released": "Freigelassen",
+        "exchanged": "Ausgetauscht",
+        "served": "Strafe verbüßt",
+        "turned": "Umgedreht"
+      },
+      "fate": {
+        "held": "Inhaftiert",
+        "interrogation": "Im Verhör",
+        "jailed": "Verurteilt",
+        "expelled": "Ausgewiesen",
+        "returned": "Abgeschoben",
+        "executed": "Hingerichtet",
+        "released": "Freigelassen",
+        "exchanged": "Ausgetauscht",
+        "served": "Strafe verbüßt"
+      },
+      "regimes": {
+        "democracy": "Demokratie",
+        "hybrid": "Hybrides Regime",
+        "authoritarian": "Autoritäres Regime"
+      },
+      "regimesShort": {
+        "democracy": "Demokratie",
+        "hybrid": "hybrid",
+        "authoritarian": "autoritär"
+      },
+      "actions": {
+        "arrest": "Festnehmen",
+        "interrogate": "Verhören",
+        "expel": "Ausweisen",
+        "return": "Abschieben",
+        "jail": "Inhaftieren",
+        "execute": "Hinrichten",
+        "turn": "Umdrehen",
+        "release": "Freilassen"
+      },
+      "help": {
+        "arrest": "Öffentliche Festnahme: Der Agent wird zum Häftling, der Vorfall wird diplomatisch.",
+        "interrogate": "Kontrollierte Vernehmungen: Netzwerk, geplante Operationen, Absichten. Geständnisse können falsch sein.",
+        "expel": "Persona non grata: leichte Folgen, gegenseitige Ausweisungen möglich.",
+        "return": "Rückführung in sein Land: leichte Folgen, ohne Prozess.",
+        "jail": "Haftstrafe: anhaltender diplomatischer Druck, Faustpfand, geringe Kosten.",
+        "execute": "Todesstrafe: Beziehungen brechen ein, Vergeltung wahrscheinlich, abschreckende Wirkung.",
+        "turn": "Anbieten, für uns zu arbeiten: scheinbar freigelassen, Doppelagent in unseren Diensten.",
+        "release": "Freilassung ohne Gegenleistung: Geste der Entspannung."
+      },
+      "days": "{{n}} T",
+      "decision": "Entscheidung",
+      "sentence": "Strafdauer",
+      "unavailable": "nicht verfügbar",
+      "confirmTitle": "Entscheidung — Häftling {{ref}}",
+      "confirm": "Entscheidung bestätigen",
+      "applied": "Entscheidung umgesetzt: {{action}}",
+      "consequences": "Erwartete Folgen",
+      "fx": {
+        "relations": "Beziehungen zu {{nationLe}}",
+        "reputation": "Internationales Ansehen",
+        "stability": "Innere Stabilität",
+        "retaliation": "Vergeltungsrisiko",
+        "serviceHit": "Gegnerischer Dienst gegen uns geschwächt",
+        "serviceDays": "{{pct}} für {{days}} T",
+        "worldRelations": "Beziehungen zu den Demokratien",
+        "council": "Verurteilungsabstimmung im Sicherheitsrat",
+        "chance": "Erfolgschance",
+        "pressure": "Diplomatischer Druck",
+        "perDay": "{{value}} / Tag",
+        "immunity": "Verletzung der diplomatischen Immunität",
+        "hours": "Dauer",
+        "none": "Keine nennenswerten Folgen."
+      },
+      "risk": {
+        "none": "keins",
+        "low": "gering",
+        "moderate": "mittel",
+        "high": "hoch"
+      },
+      "blocked": {
+        "war_only": "Hinrichtung in Friedenszeiten für unser Regime unmöglich.",
+        "never": "Die Todesstrafe ist abgeschafft.",
+        "interrogating": "Verhör läuft.",
+        "done": "Bereits versucht.",
+        "not_plausible": "Für diesen Häftling nicht plausibel.",
+        "final": "Dieser Häftling ist nicht mehr in unserer Hand."
+      },
+      "decideIn": "Entscheidung in {{left}}",
+      "sentenceLeft": "Strafe {{days}} T · frei in {{left}}",
+      "interrogating": "Verhör: noch {{left}}",
+      "revealed": "Geständnisse: {{agents}} Agent(en), {{ops}} Operation(en)",
+      "caughtDuring": "Gefasst während: {{op}}",
+      "value": "Wert",
+      "valueHint": "Geschätzter Tauschwert (Offizier > Quelle, Zugang).",
+      "exchange": "Austauschen",
+      "negotiate": "Verhandeln",
+      "arrested": "Agent festgenommen",
+      "incoming": "Erhalten",
+      "outgoing": "Gesendet",
+      "counter": "Gegenangebot",
+      "swapStatus": {
+        "open": "Ausstehend",
+        "accepted": "Abgeschlossen",
+        "refused": "Abgelehnt",
+        "expired": "Abgelaufen",
+        "void": "Hinfällig"
+      },
+      "expires": "Läuft ab in {{left}}",
+      "weRelease": "Wir lassen frei",
+      "weObtain": "Wir erhalten",
+      "money": "Geld",
+      "theyPay": "Sie zahlen {{amount}}",
+      "wePay": "Wir zahlen {{amount}}",
+      "accord": "Nichteinmischungsabkommen",
+      "accordNone": "Keins",
+      "accordShort": "Nichteinmischung",
+      "sanctions": "Sanktionen",
+      "sanctionsLifted": "Gelockert von {{nationLe}}",
+      "accept": "Annehmen",
+      "refuse": "Ablehnen",
+      "acceptedOk": "Abkommen geschlossen",
+      "refusedOk": "Vorschlag abgelehnt",
+      "swapTitle": "Verhandlung — {{nation}}",
+      "partner": "Land",
+      "relationsNow": "Aktuelle Beziehungen: {{value}}",
+      "atWar": "im Krieg",
+      "noneToRelease": "Keiner ihrer Agenten ist bei uns inhaftiert.",
+      "noneToObtain": "Keiner unserer Agenten ist bei ihnen inhaftiert.",
+      "moneyNone": "Keins",
+      "moneyPay": "Wir zahlen",
+      "moneyAsk": "Wir fordern",
+      "amount": "Betrag",
+      "liftSanctions": "Die von uns getragenen Sanktionen gegen sie lockern",
+      "balance": "Abgegebener Wert {{give}} · erhaltener {{get}}",
+      "balanceHint": "Eine KI fordert mehr bei feindseligen Beziehungen oder im Krieg; sie kann ablehnen oder ein Gegenangebot machen.",
+      "send": "Vorschlag senden",
+      "sent": "Vorschlag gesendet"
     }
   },
   "sheet": {
@@ -2120,6 +2297,8 @@
     "producers_one": "{{count}} Provinz",
     "producers_other": "{{count}} Provinzen",
     "noProducer": "Keine produzierende Provinz: Kaufen Sie auf dem Markt.",
+    "nationalFloor": "Nationale Mindestproduktion",
+    "nationalFloorTip": "Nationale Untergrenze: inländische Mindestproduktion (Raffination, Recycling, kleine Vorkommen, Subsistenzlandwirtschaft), auch ohne produzierende Provinz gesichert.",
     "servicesProvinces_one": "{{count}} Provinz ohne Ressourcen (nur Geld: Dienstleistungen, Finanzen)",
     "servicesProvinces_other": "{{count}} Provinzen ohne Ressourcen (nur Geld: Dienstleistungen, Finanzen)"
   },
@@ -3223,8 +3402,6 @@
     "legacy": "Vereinfachtes Profil",
     "interceptors": "Abfangraketen",
     "fullIn": "Voll in {{value}}",
-    "chipTitle": "{{cat}}: {{range}}",
-    "chipNone": "{{cat}}: wird nicht abgefangen",
     "no": "Nein",
     "magazine": "Abfangraketen pro Element",
     "channels": "Feuerkanäle",
@@ -3257,6 +3434,46 @@
     },
     "shotDown": "Abgeschossen: {{cat}}",
     "fired": "Abgefeuerte Abfangraketen"
+  },
+  "effect": {
+    "title": "Wirksamkeit",
+    "sheetTitle": "Wirksamkeit nach Zieltyp",
+    "note": "Durchschnitt je Kategorie, nach Schaden, Abfangen und Angriffen im Spiel.",
+    "chip": "{{name}}: {{level}} {{against}}",
+    "intercept": "Abfangen {{ranges}}",
+    "noneList": "Wirkungslos gegen: {{list}}",
+    "order": "{{level}} gegen {{target}}",
+    "levels": {
+      "0": "keine",
+      "1": "gering",
+      "2": "mittel",
+      "3": "gut",
+      "4": "hervorragend"
+    },
+    "targets": {
+      "aircraft": "Flugzeuge",
+      "helicopter": "Hubschrauber",
+      "drone": "Drohnen",
+      "missile": "Raketen",
+      "armor": "Panzer",
+      "infantry": "Infanterie",
+      "artillery": "Artillerie",
+      "ship": "Schiffe",
+      "submarine": "U-Boote",
+      "building": "Gebäude"
+    },
+    "against": {
+      "aircraft": "gegen Flugzeuge",
+      "helicopter": "gegen Hubschrauber",
+      "drone": "gegen Drohnen",
+      "missile": "gegen Raketen",
+      "armor": "gegen Panzer",
+      "infantry": "gegen Infanterie",
+      "artillery": "gegen Artillerie",
+      "ship": "gegen Schiffe",
+      "submarine": "gegen U-Boote",
+      "building": "gegen Gebäude"
+    }
   },
   "stacks": {
     "composition_one": "Zusammensetzung · {{count}} System",
@@ -3857,7 +4074,10 @@
       "dismantle": "Zerschlagung des Netzes von {{nation}}",
       "deception": "Täuschungsoperation — {{nation}}",
       "hardened": "Sensible Anlagen gehärtet",
-      "strategicAlert": "STRATEGISCHER ALARM — {{nation}}"
+      "strategicAlert": "STRATEGISCHER ALARM — {{nation}}",
+      "interrogation": "Verhör — Häftling {{ref}} ({{nation}})",
+      "turnRefused": "Anwerbung abgelehnt — Häftling {{ref}}",
+      "detaineeTurned": "Häftling {{ref}} umgedreht"
     },
     "note": {
       "allianceInvite": {
@@ -3974,6 +4194,70 @@
         "title": "Diplomaten ausgewiesen",
         "text": "{{host}} weist Diplomaten von {{owner}} wegen Spionage aus."
       },
+      "detaineeNew": {
+        "title": "Ausländischer Agent inhaftiert",
+        "text": "Ein Agent aus {{owner}} ist in unserer Hand: Entscheidung binnen {{days}} Tagen erwartet."
+      },
+      "detaineeHeld": {
+        "title": "Untersuchungshaft",
+        "text": "Ohne Entscheidung kommt der Agent aus {{owner}} in Untersuchungshaft."
+      },
+      "spyInterrogated": {
+        "title": "Agent verhört",
+        "text": "{{codename}} wird von den Diensten von {{host}} verhört."
+      },
+      "spyReturned": {
+        "title": "Agent abgeschoben",
+        "text": "{{codename}} wurde von {{host}} in sein Land zurückgeschickt."
+      },
+      "spyJailed": {
+        "title": "Agent verurteilt",
+        "text": "{{codename}} von {{host}} zu {{days}} Tagen Haft verurteilt."
+      },
+      "spyExecuted": {
+        "title": "Agent hingerichtet",
+        "text": "{{codename}} wurde von {{host}} hingerichtet."
+      },
+      "spyReleased": {
+        "title": "Agent freigelassen",
+        "text": "{{host}} hat {{codename}} freigelassen."
+      },
+      "spyServed": {
+        "title": "Strafende",
+        "text": "{{codename}} hat die Strafe verbüßt ({{host}}) und kehrt heim."
+      },
+      "swapProposal": {
+        "title": "Austauschvorschlag",
+        "text": "{{nation}} schlägt einen Agentenaustausch vor."
+      },
+      "swapCounter": {
+        "title": "Gegenangebot",
+        "text": "{{nation}} macht ein Gegenangebot."
+      },
+      "swapAccepted": {
+        "title": "Austausch abgeschlossen",
+        "text": "Einigung über die inhaftierten Agenten zwischen {{a}} und {{b}}."
+      },
+      "swapRefused": {
+        "title": "Austausch abgelehnt",
+        "text": "{{nation}} lehnt Ihren Austauschvorschlag ab."
+      },
+      "reprisalExecute": {
+        "title": "Vergeltung",
+        "text": "{{nation}} richtet als Vergeltung einen unserer inhaftierten Agenten hin."
+      },
+      "reprisalJail": {
+        "title": "Vergeltung",
+        "text": "{{nation}} verschärft die Haft unserer Agenten (Höchststrafen)."
+      },
+      "reprisalArrest": {
+        "title": "Vergeltung",
+        "text": "{{nation}} nimmt als Vergeltung einen unserer Agenten fest."
+      },
+      "reprisalExpel": {
+        "title": "Vergeltung",
+        "text": "{{nation}} weist als Vergeltung unsere Diplomaten aus."
+      },
       "troopsEmbarked": {
         "title": "Truppen eingeschifft",
         "text": "{{system}} an Bord von {{ship}}."
@@ -3999,7 +4283,7 @@
       },
       "captureBlocked": {
         "title": "Eroberung unmöglich",
-        "noCapturer": "{{system}} kann {{place}} nicht erobern: Infanterie oder Panzer erforderlich.",
+        "noCapturer": "{{system}} kann {{place}} nicht erobern: Infanterie, Panzer oder Artillerie erforderlich.",
         "noWar": "Kein Krieg mit dem Besitzer von {{place}}: keine Eroberung."
       },
       "cmd_generalResigned": {
@@ -4115,6 +4399,12 @@
         "wounded": "{{general}} ist im HQ verwundet: {{days}} Tage Genesung.",
         "killed": "{{general}} ist im HQ gefallen."
       }
+    },
+    "spyNews": {
+      "executedH": "{{host}}: Agent aus {{owner}} hingerichtet",
+      "executedB": "{{host}} gibt die Hinrichtung eines wegen Spionage verurteilten Agenten aus {{owner}} bekannt. Internationale Verurteilung.",
+      "swapH": "Agentenaustausch zwischen {{a}} und {{b}}",
+      "swapB": "{{a}} und {{b}} haben einen Gefangenenaustausch vollzogen: {{n}} Agent(en) freigelassen."
     }
   }
 }

@@ -76,9 +76,19 @@ export function GameScreen({ id, spectate = false }: { id: string; spectate?: bo
     if (meta) document.title = `${meta.name} · ${t('app.name')}`;
   }, [meta, t]);
 
+  // Carte épinglée par la partie (une partie créée avant un changement de carte garde la sienne).
+  const wantMap = meta?.mapVersion;
+  useEffect(() => {
+    if (wantMap !== undefined) void getApi().then((api) => useWorld.getState().load(api, wantMap));
+  }, [wantMap]);
+  const mapOk = wantMap === undefined || world.mapVersion === null || world.mapVersion === wantMap;
+
   if (world.status === 'error' || error)
     return <ErrorScreen message={world.error ?? error ?? ''} />;
-  if (world.status !== 'ready') return <LoadingScreen text={t('app.loadingMap')} />;
+  // Rien n'est monté avant l'accueil de la partie (méta, vue) et la bonne carte : jamais d'état d'une
+  // carte appliqué aux provinces d'une autre.
+  if (world.status !== 'ready' || !meta || !mapOk)
+    return <LoadingScreen text={t('app.loadingMap')} />;
 
   return (
     <GameShell

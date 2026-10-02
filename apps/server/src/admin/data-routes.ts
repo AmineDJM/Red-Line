@@ -13,7 +13,7 @@ import type { AppContext } from '../context.js';
 import { adminAudit, type DataKind } from '../db/schema.js';
 import { HttpError, checkRole, type AuthState } from '../auth/auth.js';
 import { parseBody } from '../http/util.js';
-import { DATA_SCHEMAS, WORLD_KINDS, type RevisionRow } from '../data/store.js';
+import { DATA_SCHEMAS, MAP_KINDS, WORLD_KINDS, type RevisionRow } from '../data/store.js';
 import { deepMerge } from '../host/game-host.js';
 
 const SaveBodySchema = z.object({
@@ -100,6 +100,16 @@ export async function adminDataRoutes(app: FastifyInstance, ctx: AppContext): Pr
       return host.applyPinToRunning(() => ({ dataRev: rev }), notice);
     }
     return 0;
+  }
+
+  /** Une révision de la carte écrite pour une autre version de carte ne peut pas être restaurée. */
+  function assertSameMap(rev: { kind: DataKind; mapVersion: number }) {
+    if (MAP_KINDS.includes(rev.kind) && rev.mapVersion !== store.mapVersion)
+      throw new HttpError(
+        409,
+        'map_version',
+        `Révision écrite pour la carte version ${rev.mapVersion} (carte actuelle : ${store.mapVersion})`,
+      );
   }
 
   async function write(
@@ -191,6 +201,7 @@ export async function adminDataRoutes(app: FastifyInstance, ctx: AppContext): Pr
       if (!rev || rev.kind !== kind || rev.key !== key) {
         throw new HttpError(404, 'not_found', 'Révision introuvable pour cette donnée');
       }
+      assertSameMap(rev);
       return write(req, kind, key, rev.data, {
         message: body.message || `Retour à la révision n° ${rev.id}`,
         scope: body.scope,
@@ -355,6 +366,7 @@ export async function adminDataRoutes(app: FastifyInstance, ctx: AppContext): Pr
     if (!rev || rev.kind !== 'nation' || rev.key !== key) {
       throw new HttpError(404, 'not_found', 'Révision introuvable');
     }
+    assertSameMap(rev);
     return write(req, 'nation', key, rev.data, {
       message: body.message || `Retour à la révision n° ${rev.id}`,
       scope: body.scope,

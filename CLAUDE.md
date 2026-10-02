@@ -69,15 +69,26 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
 - Fond vectoriel en GeoJSON statique (`data/basemap`) plutôt qu'en PMTiles vectoriel (petit volume, pas de tippecanoe).
 - Cibles stratégiques : bâtiments **génériques** par province, jamais de vrais sites nommés. De l'image de référence,
   on ne reprend que les codes visuels.
+- **Provinces fusionnées** (demande d'Amine, « divise par deux ») : étape `tools/map/src/consolidate.ts`
+  (réglages `consolidate-config.ts`), 2 567 → ~1 300 provinces ; capitales et petites nations inchangées.
+  **Carte versionnée** : `data/map/version.json`, chaque partie épingle sa version (`games.map_version`), les
+  cartes précédentes restent dans `data/map/archive/<version>/` (jamais modifiées). Changer les identifiants
+  de province = archiver l'ancienne carte et incrémenter la version (test `map.test.ts`).
 - Armées de départ en **piles mixtes** (brigades, escadres ; `data/balance` `stacks`, désactivable) : une pile vaut
   la somme de ses éléments (`Unit.mix`), ordres `split` / `merge` ; mesures dans `docs/charge.md`.
 - **Centre de commandement** (module moteur `cmd`, fenêtre QG) : armées nommées de piles, missions
   (`data/balance` `command`), généraux fictifs payés qui pilotent l'IA militaire sur leurs seules piles ; un ordre
   direct sur une pile prime jusqu'à sa fin, puis le général la reprend. Voir `docs/centre-de-commandement.md`.
+- Capture : toutes les troupes terrestres (infanterie, chars, véhicules, artillerie) ; jamais DCA, missiles,
+  radars, convois, air ni mer (`CAPTURE_CATEGORIES`). Efficacité par catégorie de cible affichée à l'interface :
+  calcul unique `packages/shared/src/effectiveness.ts` (docs/arsenal.md § 3).
 - Couleurs de nations : jamais de violet (réservé au joueur), deux voisins jamais identiques.
 - Défense antiaérienne : enveloppes par catégorie de menace (avions, hélicoptères, drones, croisière, balistiques,
   hypersoniques) dans `interceptor.envelopes` du catalogue ; tout ce qui vole est engagé par intercepteurs
   (magasin, canaux, priorité, saturation, rechargement) : `docs/defense-aerienne.md`.
+- Ressources des provinces (`pnpm --filter @redline/tools-map resources`) : aucune nation sans ressource (micro-États
+  exceptés), **plancher national** de production pour chaque ressource (`resources.nationalFloor`) ; menu Construire
+  limité aux bâtiments ouverts pour la province ; insigne de ressources devant le nom des villes. `docs/ressources.md`.
 
 ## Conventions
 

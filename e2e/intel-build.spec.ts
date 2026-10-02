@@ -123,10 +123,10 @@ test('reconnaissance militaire de tout un pays depuis un clic sur la carte', asy
     }, spain);
   expect(await revealed()).toEqual([]);
 
-  // Toucher sur la carte, loin de la capitale (centre de l'Estrémadure).
+  // Toucher sur la carte, loin de la capitale (centre de la Castille-et-León).
   const target = await page.evaluate(() => {
     const p = Object.values<any>(window.__rl.world.getState().provinces).find(
-      (x) => x.id === 'esp-7',
+      (x) => x.nationId === 'esp' && x.name === 'Castille-et-León',
     );
     return p.centroid as [number, number];
   });
@@ -286,11 +286,35 @@ test('construire et améliorer un bâtiment', async ({ page }, info) => {
   }, alger);
   expect(opt).not.toBeNull();
   const money0 = await page.evaluate(() => window.__rl.game.getState().view.economy.money);
-  // Alger : capitale « argent seulement » (le pétrole algérien est au Sahara) : ni puits ni mine.
+  // Hassi Messaoud (province fusionnée d'El Oued et Ouargla, pétrole majeur, sans métaux) : le puits
+  // de pétrole est proposé, pas la mine.
+  const hassi = await page.evaluate(
+    () =>
+      Object.values<any>(window.__rl.world.getState().provinces)
+        .filter(
+          (p) =>
+            p.nationId === 'dza' &&
+            p.resources?.some((r: any) => r.type === 'oil' && r.richness === 3) &&
+            !p.resources?.some((r: any) => r.type === 'metals'),
+        )
+        .sort((a, b) => a.id.localeCompare(b.id, 'en', { numeric: true }))[0].id,
+  );
+  await selectProvince(page, hassi, 7);
+  await panel.getByTestId('build-toggle').click();
+  await expect(panel.getByTestId('build-oil_field')).toBeVisible();
+  await expect(panel.getByTestId('build-mine')).toHaveCount(0);
+  await panel.getByTestId('build-toggle').click();
+
+  // Alger : capitale « argent seulement » (le pétrole algérien est au Sahara) : ni puits ni mine
+  // dans la liste (absents, pas grisés), une ligne discrète explique pourquoi.
+  await selectProvince(page, alger, 7);
   await expect(panel.getByTestId('province-resources')).toBeVisible();
   await panel.getByTestId('build-toggle').click();
-  await expect(panel.getByTestId('build-oil_field')).toBeDisabled();
-  await expect(panel.getByTestId('build-mine')).toBeDisabled();
+  await expect(panel.getByTestId(`build-${opt.type}`)).toBeVisible();
+  await expect(panel.getByTestId('build-oil_field')).toHaveCount(0);
+  await expect(panel.getByTestId('build-mine')).toHaveCount(0);
+  await expect(panel.getByTestId('build-hidden-no_resource')).toContainText('Champ pétrolier');
+  await expect(panel.getByTestId('build-hidden-no_resource')).toContainText('Mine');
   await panel.getByTestId(`build-${opt.type}`).click();
   await expect
     .poll(() =>

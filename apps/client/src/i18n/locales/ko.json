@@ -375,6 +375,7 @@
       "eta": "도착",
       "warning": "주의",
       "outOfRange": "목표가 사거리 밖",
+      "effect": "효과",
       "confirm": "확인",
       "cancel": "취소",
       "sent": "명령 전달됨",
@@ -412,7 +413,7 @@
       "placesValue": "필요 {{need}} · 여유 {{free}}",
       "aboard": "탑승 부대",
       "overCapacity": "수용량 초과: 부대를 분할하세요.",
-      "noCapturer": "선택한 부대 중 점령할 수 있는 부대가 없습니다: 보병이나 기갑이 필요합니다.",
+      "noCapturer": "선택한 부대 중 점령할 수 있는 부대가 없습니다: 보병, 기갑 또는 포병이 필요합니다.",
       "radius": "반경",
       "reasons": {
         "target_invalid": "잘못된 목표입니다.",
@@ -566,7 +567,7 @@
     },
     "capture": {
       "progress": "{{city}} 점령 중",
-      "noCapturer": "{{city}}: 이 부대는 점령할 수 없습니다(보병이나 기갑 필요).",
+      "noCapturer": "{{city}}: 이 부대는 점령할 수 없습니다(보병, 기갑 또는 포병 필요).",
       "noWar": "{{city}}: 소유국과 전쟁 중이 아니므로 점령할 수 없습니다.",
       "defended": "{{city}}: 방어 부대가 있어 이를 몰아낸 뒤 점령이 시작됩니다."
     },
@@ -920,13 +921,12 @@
     "ui": {
       "build": "건설",
       "upgrade": "레벨 {{level}}",
+      "upgradeTo": "{{level}}레벨로 개량",
       "upgrading": "개량 N{{level}}",
       "repair": "수리",
       "repairing": "수리 중",
       "health": "건물 상태",
       "operational": "가동 중",
-      "already": "이미 건설됨",
-      "coastalOnly": "해안 주 전용",
       "costTip": "비용 {{cost}} · 기간 {{time}}",
       "buildStarted": "건설 시작: {{name}}",
       "upgradeStarted": "개량 시작: {{name}}(N{{level}})",
@@ -940,6 +940,11 @@
         "no_resource": "자원 없음: {{resource}}",
         "coastal_only": "해안 주 전용",
         "not_urban": "전자 산업 거점 또는 대도시 필요"
+      },
+      "hidden": {
+        "no_resource": "여기서는 사용할 수 없음, 매장지 없음: {{list}}.",
+        "coastal_only": "여기서는 사용할 수 없음, 해안이 없는 주: {{list}}.",
+        "not_urban": "여기서는 사용할 수 없음, 전자 산업 거점도 대도시도 아님: {{list}}."
       }
     },
     "fortification": "요새"
@@ -1190,7 +1195,9 @@
     },
     "settings": {
       "reduceMotion": "애니메이션 줄이기",
-      "reduceMotionHelp": "전투 효과(사격, 폭발), 맥동, 지도의 움직이는 점선을 끕니다."
+      "reduceMotionHelp": "전투 효과(사격, 폭발), 맥동, 지도의 움직이는 점선을 끕니다.",
+      "resourceIcons": "지도에 주 자원 표시",
+      "resourceIconsHelp": "도시 이름 앞에 주(및 보조) 자원 아이콘, 풍부도는 점(1~3)으로 표시, 확대했을 때만."
     }
   },
   "legal": {
@@ -1378,7 +1385,9 @@
       "double": "이중 간첩",
       "exfiltrated": "탈출함",
       "captured": "체포됨",
-      "expelled": "추방됨"
+      "expelled": "추방됨",
+      "executed": "처형됨",
+      "released": "석방됨"
     },
     "ops": {
       "infiltrate_spy": "간첩 침투",
@@ -1458,7 +1467,8 @@
     "tabs": {
       "military": "군사",
       "dossiers": "국가 파일",
-      "reports": "보고서"
+      "reports": "보고서",
+      "detainees": "억류자"
     },
     "cover": "위장 신분",
     "covers": {
@@ -1513,6 +1523,173 @@
       "agents": "현지 요원",
       "reliability": "파일 신뢰도",
       "empty": "파일 없음: 정보기관이 인접국, 적국, 작전 대상국을 추적합니다."
+    },
+    "dz": {
+      "title": "억류자",
+      "subtitle": "수감자, 억류 요원, 협상",
+      "ourRegime": "우리 체제: {{regime}}",
+      "ours": "우리 측 수감자",
+      "abroad": "해외에 억류된 우리 요원",
+      "negotiations": "협상",
+      "relations": "양자 관계",
+      "noDetainees": "억류 중인 외국 요원 없음.",
+      "noAbroad": "해외에 억류된 우리 요원이 없습니다.",
+      "noSwaps": "진행 중인 협상 없음.",
+      "noRelations": "간첩 사건으로 영향을 받은 관계 없음.",
+      "defaultHint": "기한 내 결정이 없으면 미결 구금(지속적인 외교 압력).",
+      "kinds": {
+        "diplomat": "외교관 위장 장교",
+        "illegal": "비공식 위장 장교",
+        "source": "현지 정보원",
+        "double": "이중간첩"
+      },
+      "kindsShort": {
+        "diplomat": "외교관",
+        "illegal": "불법 요원",
+        "source": "정보원",
+        "double": "이중"
+      },
+      "status": {
+        "pending": "결정 대기",
+        "held": "미결 구금",
+        "jailed": "유죄 판결",
+        "expelled": "추방됨",
+        "returned": "송환됨",
+        "executed": "처형됨",
+        "released": "석방됨",
+        "exchanged": "교환됨",
+        "served": "형기 만료",
+        "turned": "포섭됨"
+      },
+      "fate": {
+        "held": "억류됨",
+        "interrogation": "신문 중",
+        "jailed": "유죄 판결",
+        "expelled": "추방됨",
+        "returned": "송환됨",
+        "executed": "처형됨",
+        "released": "석방됨",
+        "exchanged": "교환됨",
+        "served": "형기 만료"
+      },
+      "regimes": {
+        "democracy": "민주주의",
+        "hybrid": "혼합 체제",
+        "authoritarian": "권위주의 체제"
+      },
+      "regimesShort": {
+        "democracy": "민주주의",
+        "hybrid": "혼합",
+        "authoritarian": "권위주의"
+      },
+      "actions": {
+        "arrest": "체포",
+        "interrogate": "신문",
+        "expel": "추방",
+        "return": "송환",
+        "jail": "투옥",
+        "execute": "처형",
+        "turn": "포섭",
+        "release": "석방"
+      },
+      "help": {
+        "arrest": "공개 체포: 요원이 억류자가 되고 사건이 외교 문제로 번집니다.",
+        "interrogate": "통제된 신문: 조직망, 계획된 작전, 의도. 자백은 거짓일 수 있습니다.",
+        "expel": "기피 인물: 가벼운 결과, 맞추방 가능.",
+        "return": "본국 송환: 가벼운 결과, 재판 없음.",
+        "jail": "징역형: 지속적인 외교 압력, 협상 카드, 낮은 비용.",
+        "execute": "사형: 관계 붕괴, 보복 가능성 높음, 억지 효과.",
+        "turn": "우리를 위해 일하도록 제안: 겉으로는 석방, 우리에게 협력하는 이중간첩.",
+        "release": "조건 없는 석방: 긴장 완화의 표시."
+      },
+      "days": "{{n}}일",
+      "decision": "결정",
+      "sentence": "형기",
+      "unavailable": "사용 불가",
+      "confirmTitle": "결정 — 억류자 {{ref}}",
+      "confirm": "결정 확정",
+      "applied": "결정 시행: {{action}}",
+      "consequences": "예상 결과",
+      "fx": {
+        "relations": "{{nationLe}}와의 관계",
+        "reputation": "국제적 평판",
+        "stability": "국내 안정",
+        "retaliation": "보복 위험",
+        "serviceHit": "적 정보기관의 대아국 역량 약화",
+        "serviceDays": "{{days}}일간 {{pct}}",
+        "worldRelations": "민주주의 국가와의 관계",
+        "council": "안보리 규탄 표결",
+        "chance": "성공 확률",
+        "pressure": "외교 압력",
+        "perDay": "하루 {{value}}",
+        "immunity": "외교 면책 특권 침해",
+        "hours": "소요 시간",
+        "none": "뚜렷한 결과 없음."
+      },
+      "risk": {
+        "none": "없음",
+        "low": "낮음",
+        "moderate": "보통",
+        "high": "높음"
+      },
+      "blocked": {
+        "war_only": "우리 체제에서는 평시에 처형할 수 없습니다.",
+        "never": "사형제가 폐지되었습니다.",
+        "interrogating": "신문이 진행 중입니다.",
+        "done": "이미 시도했습니다.",
+        "not_plausible": "이 억류자에게는 타당하지 않습니다.",
+        "final": "이 억류자는 더 이상 우리 손에 없습니다."
+      },
+      "decideIn": "{{left}} 후 결정",
+      "sentenceLeft": "형기 {{days}}일 · {{left}} 후 석방",
+      "interrogating": "신문: {{left}} 남음",
+      "revealed": "자백: 요원 {{agents}}명, 작전 {{ops}}건",
+      "caughtDuring": "체포 당시 작전: {{op}}",
+      "value": "가치",
+      "valueHint": "추정 교환 가치(장교 > 정보원, 접근 수준).",
+      "exchange": "교환",
+      "negotiate": "협상",
+      "arrested": "요원 체포",
+      "incoming": "받음",
+      "outgoing": "보냄",
+      "counter": "역제안",
+      "swapStatus": {
+        "open": "대기 중",
+        "accepted": "타결",
+        "refused": "거절됨",
+        "expired": "만료됨",
+        "void": "무효"
+      },
+      "expires": "{{left}} 후 만료",
+      "weRelease": "우리가 석방",
+      "weObtain": "우리가 확보",
+      "money": "자금",
+      "theyPay": "상대가 {{amount}} 지불",
+      "wePay": "우리가 {{amount}} 지불",
+      "accord": "불간섭 협정",
+      "accordNone": "없음",
+      "accordShort": "불간섭",
+      "sanctions": "제재",
+      "sanctionsLifted": "{{nationLe}}가 완화",
+      "accept": "수락",
+      "refuse": "거절",
+      "acceptedOk": "합의 타결",
+      "refusedOk": "제안이 거절되었습니다",
+      "swapTitle": "협상 — {{nation}}",
+      "partner": "국가",
+      "relationsNow": "현재 관계: {{value}}",
+      "atWar": "교전 중",
+      "noneToRelease": "우리가 억류한 상대 요원이 없습니다.",
+      "noneToObtain": "상대가 억류한 우리 요원이 없습니다.",
+      "moneyNone": "없음",
+      "moneyPay": "우리가 지불",
+      "moneyAsk": "우리가 요구",
+      "amount": "금액",
+      "liftSanctions": "우리가 주도한 대상국 제재 완화",
+      "balance": "양보 가치 {{give}} · 확보 가치 {{get}}",
+      "balanceHint": "관계가 적대적이거나 전쟁 중이면 AI는 더 많이 요구하며, 거절하거나 역제안할 수 있습니다.",
+      "send": "제안 보내기",
+      "sent": "제안을 보냈습니다"
     }
   },
   "sheet": {
@@ -2097,6 +2274,8 @@
     "byResource": "자원별·주별 생산",
     "producers_other": "주 {{count}}개",
     "noProducer": "생산하는 주가 없습니다: 시장에서 구매하세요.",
+    "nationalFloor": "국가 최소 생산량",
+    "nationalFloorTip": "국가 하한: 최소 국내 생산(정제, 재활용, 소규모 매장지, 자급 농업). 생산하는 주가 없어도 보장됩니다.",
     "servicesProvinces_other": "자원이 없는 주 {{count}}개 (자금만: 서비스업, 금융)"
   },
   "armies": {
@@ -3182,8 +3361,6 @@
     "legacy": "간이 제원",
     "interceptors": "요격미사일",
     "fullIn": "{{value}} 후 완충",
-    "chipTitle": "{{cat}}: {{range}}",
-    "chipNone": "{{cat}}: 요격 불가",
     "no": "아니요",
     "magazine": "요소당 요격미사일",
     "channels": "사격 채널",
@@ -3216,6 +3393,46 @@
     },
     "shotDown": "격추: {{cat}}",
     "fired": "발사한 요격미사일"
+  },
+  "effect": {
+    "title": "효과",
+    "sheetTitle": "목표 유형별 효과",
+    "note": "범주별 평균(게임 내 피해, 요격, 타격 기준).",
+    "chip": "{{name}}: {{against}} {{level}}",
+    "intercept": "요격 {{ranges}}",
+    "noneList": "효과 없음: {{list}}",
+    "order": "{{target}} 상대: {{level}}",
+    "levels": {
+      "0": "없음",
+      "1": "약함",
+      "2": "보통",
+      "3": "양호",
+      "4": "우수"
+    },
+    "targets": {
+      "aircraft": "항공기",
+      "helicopter": "헬기",
+      "drone": "드론",
+      "missile": "미사일",
+      "armor": "기갑",
+      "infantry": "보병",
+      "artillery": "포병",
+      "ship": "함선",
+      "submarine": "잠수함",
+      "building": "건물"
+    },
+    "against": {
+      "aircraft": "항공기 상대",
+      "helicopter": "헬기 상대",
+      "drone": "드론 상대",
+      "missile": "미사일 상대",
+      "armor": "기갑 상대",
+      "infantry": "보병 상대",
+      "artillery": "포병 상대",
+      "ship": "함선 상대",
+      "submarine": "잠수함 상대",
+      "building": "건물 상대"
+    }
   },
   "stacks": {
     "composition_other": "구성 · {{count}}종",
@@ -3802,7 +4019,10 @@
       "dismantle": "{{nation}} 정보망 와해",
       "deception": "기만 작전 — {{nation}}",
       "hardened": "주요 시설 방호 강화",
-      "strategicAlert": "전략 경보 — {{nation}}"
+      "strategicAlert": "전략 경보 — {{nation}}",
+      "interrogation": "신문 — 억류자 {{ref}} ({{nation}})",
+      "turnRefused": "포섭 거부 — 억류자 {{ref}}",
+      "detaineeTurned": "억류자 {{ref}} 포섭됨"
     },
     "note": {
       "allianceInvite": {
@@ -3918,6 +4138,70 @@
         "title": "외교관 추방",
         "text": "{{host}}, 간첩 혐의로 {{owner}} 외교관 추방."
       },
+      "detaineeNew": {
+        "title": "외국 요원 억류",
+        "text": "{{owner}} 요원 1명을 확보했습니다: {{days}}일 안에 결정해야 합니다."
+      },
+      "detaineeHeld": {
+        "title": "미결 구금",
+        "text": "결정이 없어 {{owner}} 요원이 미결 구금되었습니다."
+      },
+      "spyInterrogated": {
+        "title": "요원 신문 중",
+        "text": "{{codename}} 요원이 {{host}} 정보기관의 신문을 받고 있습니다."
+      },
+      "spyReturned": {
+        "title": "요원 송환",
+        "text": "{{host}}가 {{codename}} 요원을 본국으로 송환했습니다."
+      },
+      "spyJailed": {
+        "title": "요원 유죄 판결",
+        "text": "{{host}}가 {{codename}} 요원에게 징역 {{days}}일을 선고했습니다."
+      },
+      "spyExecuted": {
+        "title": "요원 처형",
+        "text": "{{host}}가 {{codename}} 요원을 처형했습니다."
+      },
+      "spyReleased": {
+        "title": "요원 석방",
+        "text": "{{host}}가 {{codename}} 요원을 석방했습니다."
+      },
+      "spyServed": {
+        "title": "형기 만료",
+        "text": "{{codename}} 요원이 형기를 마치고({{host}}) 귀국합니다."
+      },
+      "swapProposal": {
+        "title": "교환 제안",
+        "text": "{{nation}}가 요원 교환을 제안합니다."
+      },
+      "swapCounter": {
+        "title": "역제안",
+        "text": "{{nation}}가 역제안을 했습니다."
+      },
+      "swapAccepted": {
+        "title": "교환 타결",
+        "text": "{{a}}와 {{b}}가 억류 요원에 대해 합의했습니다."
+      },
+      "swapRefused": {
+        "title": "교환 거절",
+        "text": "{{nation}}가 귀하의 교환 제안을 거절했습니다."
+      },
+      "reprisalExecute": {
+        "title": "보복",
+        "text": "{{nation}}가 보복으로 억류 중인 우리 요원 1명을 처형합니다."
+      },
+      "reprisalJail": {
+        "title": "보복",
+        "text": "{{nation}}가 우리 요원의 구금을 강화합니다(최고 형기)."
+      },
+      "reprisalArrest": {
+        "title": "보복",
+        "text": "{{nation}}가 보복으로 우리 요원 1명을 체포합니다."
+      },
+      "reprisalExpel": {
+        "title": "보복",
+        "text": "{{nation}}가 보복으로 우리 외교관을 추방합니다."
+      },
       "troopsEmbarked": {
         "title": "병력 승선 완료",
         "text": "{{system}}이(가) {{ship}}에 승선했습니다."
@@ -3940,7 +4224,7 @@
       },
       "captureBlocked": {
         "title": "점령 불가",
-        "noCapturer": "{{system}}은(는) {{place}}을(를) 점령할 수 없습니다: 보병이나 기갑이 필요합니다.",
+        "noCapturer": "{{system}}은(는) {{place}}을(를) 점령할 수 없습니다: 보병, 기갑 또는 포병이 필요합니다.",
         "noWar": "{{place}} 소유국과 전쟁 중이 아니므로 점령할 수 없습니다."
       },
       "cmd_generalResigned": {
@@ -4051,6 +4335,12 @@
         "wounded": "{{general}}이(가) 사령부에서 부상: 요양 {{days}}일.",
         "killed": "{{general}}이(가) 사령부에서 전사."
       }
+    },
+    "spyNews": {
+      "executedH": "{{host}}: {{owner}} 요원 처형",
+      "executedB": "{{host}}가 간첩죄로 유죄 판결을 받은 {{owner}} 요원의 처형을 발표했습니다. 국제사회의 규탄.",
+      "swapH": "{{a}}와 {{b}} 간 요원 교환",
+      "swapB": "{{a}}와 {{b}}가 포로 교환을 실시했습니다: 요원 {{n}}명 석방."
     }
   }
 }

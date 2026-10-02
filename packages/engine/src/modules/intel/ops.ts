@@ -46,6 +46,8 @@ import {
   startListen,
 } from './contacts.js';
 import { ist, nat, nextId, type Agent, type StoredOp } from './state.js';
+import { serviceHit } from './detainees.js';
+import { accordUntil } from './swaps.js';
 import {
   applyCryptanalysis,
   applyCultivate,
@@ -210,6 +212,8 @@ export function successChance(
     p *=
       modifier(state, n, 'cyber.attack') / Math.max(0.1, modifier(state, victim, 'cyber.defense'));
   }
+  // Service affaibli contre cette nation (agents perdus, exécutions dissuasives).
+  if (victim) p *= 1 - serviceHit(state, n, victim);
   return Math.round(clamp(p, 0.05, 0.95) * 1000) / 1000;
 }
 
@@ -340,6 +344,9 @@ function resolveTarget(
   }
 }
 
+/** Opérations sur notre sol, permises malgré un accord de non-ingérence. */
+const NO_ACCORD: ReadonlySet<IntelOpKind> = new Set(['turn_agent', 'dismantle_network']);
+
 /** Ordre intelOp (et turnAgent) : validation, coût, capacité, programmation de la fin. */
 export function startOp(
   state: EngineState,
@@ -354,6 +361,8 @@ export function startOp(
   if (!meta) return fail('invalid_target', 'Opération inconnue.');
   const r = resolveTarget(state, n, kind, target, agentId);
   if ('ok' in r) return r;
+  if (r.victim && !NO_ACCORD.has(kind) && accordUntil(state, n, r.victim) > state.time)
+    return fail('not_allowed', 'Accord de non-ingérence en vigueur avec cette nation.');
   const ni = nat(state, n);
   const running = ni.ops.filter((o) => o.status === 'running' && o.dept === meta.dept).length;
   if (running >= capacityOf(state, n, meta.dept))
@@ -516,14 +525,14 @@ function onExposed(state: EngineState, n: NationId, op: StoredOp): void {
   if (op.kind === 'exfiltrate' || op.kind === 'cultivate_source') {
     const a = op.agentId ? ist(state).agents[op.agentId] : undefined;
     if (a && (a.state === 'active' || a.state === 'caught' || a.state === 'double'))
-      publicArrest(state, a);
+      publicArrest(state, a, op.kind);
     return;
   }
   if (meta.source === 'humint') {
     const a =
       (AGENT_OPS.has(op.kind) ? pickAgent(state, n, v) : undefined) ??
       createAgent(state, n, v, op.kind === 'recruit_source' ? 'source' : 'officer');
-    publicArrest(state, a);
+    publicArrest(state, a, op.kind);
     return;
   }
   // SIGINT / cyber : attribution par la victime.

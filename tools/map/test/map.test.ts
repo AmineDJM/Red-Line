@@ -16,6 +16,7 @@ import { NATION_ARTICLE } from '../src/articles.js';
 import { cellOf, navalCells, seaPath } from '../src/cells.js';
 import { SEA_LINKS, VIOLET_HUE_RANGE } from '../src/config.js';
 import { hueOf } from '../src/economy.js';
+import { fingerprintOf, type MapVersionFile } from '../src/map-version.js';
 
 const ROOT = join(import.meta.dirname, '..', '..', '..', 'data');
 const read = (p: string) => JSON.parse(readFileSync(join(ROOT, p), 'utf8')) as unknown;
@@ -106,8 +107,9 @@ describe('provinces', () => {
       expect(l.length, n.id).toBeGreaterThan(0);
       expect(l).toEqual(l.map((_, i) => i + 1));
     }
-    expect(provinces.length).toBeGreaterThanOrEqual(2000);
-    expect(provinces.length).toBeLessThanOrEqual(3500);
+    // ~1 300 provinces depuis la fusion (consolidate.ts ; 2 567 avant, data/map/archive/1).
+    expect(provinces.length).toBeGreaterThanOrEqual(1100);
+    expect(provinces.length).toBeLessThanOrEqual(1600);
   });
   it('voisinages symétriques et existants', () => {
     for (const p of provinces)
@@ -118,9 +120,11 @@ describe('provinces', () => {
       }
   });
   it('revenus raisonnables', () => {
+    // Province fusionnée : somme de ses anciennes provinces (20 à 400 chacune ; somme exacte
+    // vérifiée dans consolidate.test.ts).
     for (const p of provinces) {
       expect(p.income.money).toBeGreaterThanOrEqual(20);
-      expect(p.income.money).toBeLessThanOrEqual(400);
+      expect(p.income.money).toBeLessThanOrEqual(2000);
     }
   });
   it('géométrie : une entité par province, mêmes identifiants', () => {
@@ -181,5 +185,35 @@ describe('tailles', () => {
       .filter((f) => f.endsWith('.geojson'))
       .reduce((s, f) => s + size(`basemap/${f}`), 0);
     expect(base).toBeLessThan(3e6);
+  });
+});
+
+describe('version de la carte (parties en cours)', () => {
+  const file = read('map/version.json') as MapVersionFile;
+  it('version.json correspond à la carte générée (sinon : archiver et incrémenter)', () => {
+    const cur = fingerprintOf(join(ROOT, 'map'));
+    expect(
+      cur.fingerprint,
+      `identifiants de province ou cellules changés : copier l'ancienne carte dans ` +
+        `data/map/archive/${file.version}/ et passer à la version ${file.version + 1} ` +
+        `(pnpm --filter @redline/tools-map map-version)`,
+    ).toBe(file.fingerprint);
+    expect(cur.provinces).toBe(file.provinces);
+  });
+  it('cartes archivées complètes et intactes (parties créées avant chaque changement)', () => {
+    for (let v = 1; v < file.version; v++) {
+      const dir = join(ROOT, 'map', 'archive', String(v));
+      for (const f of [
+        'nations.json',
+        'provinces.json',
+        'cells.json',
+        'straits.json',
+        'disputed.json',
+        'routes.json',
+        'provinces.geojson',
+      ])
+        expect(statSync(join(dir, f)).size, `archive ${v} : ${f}`).toBeGreaterThan(0);
+      expect(fingerprintOf(dir).fingerprint, `archive ${v}`).toBe(file.archives[String(v)]);
+    }
   });
 });

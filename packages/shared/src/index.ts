@@ -1,6 +1,7 @@
 export * from './ids.js';
 export * from './catalog.js';
 export * from './airdefense.js';
+export * from './effectiveness.js';
 export * from './map.js';
 export * from './balance.js';
 export * from './stacks.js';

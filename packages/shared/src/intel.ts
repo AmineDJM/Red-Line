@@ -158,7 +158,16 @@ export interface AgentView {
   id: string;
   codename: string;
   nationId: NationId; // pays d'implantation
-  status: 'active' | 'burned' | 'double' | 'exfiltrated' | 'captured' | 'expelled';
+  status:
+    | 'active'
+    | 'burned'
+    | 'double'
+    | 'exfiltrated'
+    | 'captured'
+    | 'expelled'
+    // Détenus (optionnels) : exécuté par le pays hôte, rentré au pays (échange, fin de peine).
+    | 'executed'
+    | 'released';
   since: GameTime;
   /** Officier traitant infiltré ou source recrutée sur place. */
   kind?: 'officer' | 'source';
@@ -166,6 +175,175 @@ export interface AgentView {
   cover?: AgentCover;
   access?: AgentAccess;
   reliability?: SourceReliability;
+  /** Agent arrêté publiquement : ce que le propriétaire sait de son sort (pays geôlier = nationId). */
+  detention?: AgentDetentionView;
+}
+
+// ——— Détenus : agents capturés, décisions, négociations ———
+
+/**
+ * Type d'un détenu : officier sous couverture diplomatique, officier clandestin (couverture non
+ * officielle), source locale (traître), agent double (agent retourné puis interpellé).
+ */
+export const DETAINEE_KINDS = ['diplomat', 'illegal', 'source', 'double'] as const;
+export type DetaineeKind = (typeof DETAINEE_KINDS)[number];
+
+/**
+ * Situation d'un détenu : décision attendue (`pending`), détention provisoire (`held`), condamné
+ * (`jailed`, jusqu'à `until`), puis sorties : expulsé (persona non grata), renvoyé, exécuté, libéré,
+ * échangé, peine purgée, retourné (agent double à notre service, libéré en apparence).
+ */
+export const DETAINEE_STATUSES = [
+  'pending',
+  'held',
+  'jailed',
+  'expelled',
+  'returned',
+  'executed',
+  'released',
+  'exchanged',
+  'served',
+  'turned',
+] as const;
+export type DetaineeStatus = (typeof DETAINEE_STATUSES)[number];
+
+/** Décisions sur un détenu (ordre `detainee`) ; `arrest` interpelle un agent démasqué ou doublé. */
+export const DETAINEE_ACTIONS = [
+  'arrest',
+  'interrogate',
+  'expel',
+  'jail',
+  'execute',
+  'turn',
+  'release',
+] as const;
+export type DetaineeAction = (typeof DETAINEE_ACTIONS)[number];
+
+/** Régime politique d'une nation (data/balance, intel.detainees.regimes). */
+export type Regime = 'democracy' | 'hybrid' | 'authoritarian';
+
+/**
+ * Conséquences chiffrées d'une décision, calculées par le moteur avant confirmation (et appliquées à
+ * l'identique) : relations bilatérales avec le pays d'origine, réputation internationale, stabilité
+ * intérieure, risque de représailles (0..1), affaiblissement du service adverse contre nous (0..1).
+ */
+export interface DecisionEffects {
+  relations: number;
+  reputation: number;
+  stability: number;
+  retaliation: number;
+  serviceHit: number;
+  /** Jours d'effet de l'affaiblissement du service adverse. */
+  serviceDays?: number;
+  /** Relations avec les autres démocraties (réprobation internationale). */
+  worldRelations?: number;
+  /** Chance qu'une condamnation soit proposée au Conseil de sécurité (0..1). */
+  council?: number;
+  /** Chance de réussite (retournement, interrogatoire). */
+  chance?: number;
+  /** Pression diplomatique quotidienne (relations par jour) tant qu'il reste détenu. */
+  pressurePerDay?: number;
+  /** Violation de l'immunité diplomatique. */
+  immunity?: boolean;
+  /** Durée (heures) : interrogatoire. */
+  hours?: number;
+}
+
+/** Raisons d'une décision impossible (clés traduites par le client). */
+export type DecisionBlock =
+  | 'war_only' // exécution : seulement en temps de guerre pour ce régime
+  | 'never' // exécution : interdite par ce régime
+  | 'interrogating' // interrogatoire en cours
+  | 'done' // déjà fait (interrogatoire, retournement tenté)
+  | 'not_plausible' // retournement impossible (agent double, diplomate…)
+  | 'final'; // détenu déjà sorti (exécuté, libéré…)
+
+export interface DetaineeOption {
+  action: DetaineeAction;
+  /** Durée de la peine (emprisonnement : une option par durée proposée). */
+  days?: number;
+  allowed: boolean;
+  reason?: DecisionBlock;
+  effects: DecisionEffects;
+}
+
+/** Détenu de notre contre-espionnage (vue du pays geôlier). */
+export interface DetaineeView {
+  id: string;
+  /** Référence de dossier (le nom de code reste inconnu du geôlier). */
+  ref: string;
+  /** Pays d'origine. */
+  nationId: NationId;
+  kind: DetaineeKind;
+  status: DetaineeStatus;
+  arrestedAt: GameTime;
+  /** Échéance de la décision (au-delà : détention provisoire). */
+  decideBy?: GameTime;
+  /** Peine : durée et fin. */
+  days?: number;
+  until?: GameTime;
+  /** Interrogatoire en cours jusqu'à cette date ; déjà interrogé. */
+  interrogating?: GameTime;
+  interrogated?: boolean;
+  /** Ce qu'il savait (révélé par l'interrogatoire) : accès, agents, opérations. */
+  access?: AgentAccess;
+  revealed?: { agents: number; ops: number };
+  /** Opération en cours au moment de l'arrestation (prise sur le fait). */
+  op?: IntelOpKind;
+  /** Valeur d'échange estimée (officier > source). */
+  value: number;
+  /** Fin de la détention (sortie). */
+  endedAt?: GameTime;
+  /** Décisions possibles et leurs conséquences (détenus encore entre nos mains). */
+  options?: DetaineeOption[];
+}
+
+/** Sort d'un de nos agents détenu à l'étranger (vue du propriétaire). */
+export interface AgentDetentionView {
+  fate:
+    | 'held'
+    | 'interrogation'
+    | 'jailed'
+    | 'expelled'
+    | 'returned'
+    | 'executed'
+    | 'released'
+    | 'exchanged'
+    | 'served';
+  since: GameTime;
+  /** Condamnation : durée et fin de peine. */
+  days?: number;
+  until?: GameTime;
+}
+
+/** Élément d'un échange : agent (nom de code si c'est le nôtre, référence sinon). */
+export interface SwapItemView {
+  id: string;
+  /** Propriétaire de l'agent (son pays d'origine). */
+  nationId: NationId;
+  label: string;
+  kind: DetaineeKind;
+}
+
+/**
+ * Proposition d'échange ou de libération : `give` = détenus libérés par `from`, `get` = détenus
+ * libérés par `to` ; `money` > 0 : `from` paie `to` (< 0 : `to` paie `from`) ; accord de non-ingérence
+ * (jours) ; allègement des sanctions parrainées par `from` contre `to`.
+ */
+export interface SwapView {
+  id: string;
+  from: NationId;
+  to: NationId;
+  at: GameTime;
+  expiresAt: GameTime;
+  give: SwapItemView[];
+  get: SwapItemView[];
+  money: number;
+  accordDays: number;
+  liftSanctions?: boolean;
+  /** Contre-proposition (réponse à une offre). */
+  counter?: boolean;
+  status: 'open' | 'accepted' | 'refused' | 'expired' | 'void';
 }
 
 /** Fourchette estimée [bas, haut]. */
@@ -256,6 +434,16 @@ export interface IntelView {
   dossiers?: NationDossier[];
   /** Sites durcis contre le sabotage jusqu'à cette date. */
   hardenedUntil?: GameTime;
+  /** Détenus de notre contre-espionnage (en cours et récents). */
+  detainees?: DetaineeView[];
+  /** Propositions d'échange en cours ou récentes (envoyées et reçues). */
+  swaps?: SwapView[];
+  /**
+   * Relations bilatérales (−100..100) avec les nations concernées par des détenus ou des échanges,
+   * régime politique de chacune et le nôtre.
+   */
+  ties?: { nationId: NationId; score: number; regime: Regime; accordUntil?: GameTime }[];
+  regime?: Regime;
 }
 
 /** Coût et durée par opération (data/balance, section intel.ops). */

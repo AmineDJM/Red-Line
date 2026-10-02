@@ -238,8 +238,13 @@ export type LedgerKey =
 
 export interface ResourceFlowView {
   stock: number;
-  /** Production par jour (provinces, bâtiments, modificateurs). */
+  /** Production par jour (provinces, bâtiments, plancher national, modificateurs). */
   production: number;
+  /**
+   * Part de la production assurée par le plancher national (production domestique minimale,
+   * data/balance `resources.nationalFloor`) ; absente quand les provinces produisent davantage.
+   */
+  floor?: number;
   /** Consommation par jour (unités). */
   consumption: number;
   net: number;

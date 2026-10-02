@@ -70,6 +70,13 @@ export interface GameData {
   dataDir: string;
   map: MapData | null;
   mapError: string | null;
+  /**
+   * Version de la carte courante (data/map/version.json, 1 par défaut). Elle change quand les
+   * identifiants de province changent (fusion, redécoupage) ; chaque partie épingle la sienne.
+   */
+  mapVersion: number;
+  /** Versions antérieures disponibles dans data/map/archive/<version>/ (chargées à la demande). */
+  archivedMapVersions: number[];
   nationsById: Map<string, NationDef>;
   balance: Balance | null;
   balanceHash: string | null;
@@ -152,11 +159,54 @@ async function loadMap(dir: string): Promise<MapData> {
   return { nations, provinces, cells, straits, disputed, ...(routes ? { routes } : {}) };
 }
 
+const MapVersionFileSchema = z.object({ version: z.number().int().positive() }).passthrough();
+
+/** Version de la carte d'un dossier (version.json), 1 en son absence (carte d'avant le versionnage). */
+export async function readMapVersion(mapDir: string): Promise<number> {
+  const f = join(mapDir, 'version.json');
+  if (!existsSync(f)) return 1;
+  return MapVersionFileSchema.parse(await readJson(f)).version;
+}
+
+/** Versions archivées (data/map/archive/<n>/ complet), antérieures à la version courante. */
+export async function archivedMapVersions(mapDir: string, current: number): Promise<number[]> {
+  const dir = join(mapDir, 'archive');
+  if (!existsSync(dir)) return [];
+  return (await readdir(dir, { withFileTypes: true }))
+    .filter((d) => d.isDirectory() && /^\d+$/.test(d.name))
+    .map((d) => Number(d.name))
+    .filter((v) => v < current && existsSync(join(dir, String(v), 'provinces.json')))
+    .sort((a, b) => a - b);
+}
+
+/** Carte archivée : mêmes fichiers que data/map, dans data/map/archive/<version>/. */
+export interface ArchivedMap {
+  version: number;
+  map: MapData;
+  provincesGeojson: StaticAsset | null;
+  /** Dossier des noms localisés de cette carte (names/<langue>.json). */
+  namesDir: string;
+}
+
+export async function loadArchivedMap(dataDir: string, version: number): Promise<ArchivedMap> {
+  const dir = join(dataDir, 'map', 'archive', String(version));
+  const map = await loadMap(dir);
+  const geo = join(dir, 'provinces.geojson');
+  return {
+    version,
+    map,
+    provincesGeojson: existsSync(geo) ? asset(await readFile(geo)) : null,
+    namesDir: join(dir, 'names'),
+  };
+}
+
 export async function loadGameData(dataDir: string, log: FastifyBaseLogger): Promise<GameData> {
   const data: GameData = {
     dataDir,
     map: null,
     mapError: null,
+    mapVersion: 1,
+    archivedMapVersions: [],
     nationsById: new Map(),
     balance: null,
     balanceHash: null,
@@ -186,6 +236,14 @@ export async function loadGameData(dataDir: string, log: FastifyBaseLogger): Pro
   } catch (e) {
     data.mapError = `Carte indisponible : ${errMsg(e)}`;
     log.warn(data.mapError);
+  }
+
+  // Version de la carte et cartes archivées (parties créées avant un changement d'identifiants).
+  try {
+    data.mapVersion = await readMapVersion(join(dataDir, 'map'));
+    data.archivedMapVersions = await archivedMapVersions(join(dataDir, 'map'), data.mapVersion);
+  } catch (e) {
+    warn(`version de carte illisible : ${errMsg(e)}`);
   }
 
   const geo = join(dataDir, 'map', 'provinces.geojson');

@@ -301,7 +301,10 @@ export function describeNotification(
         critical: n.severity === 'critical',
         major: n.severity !== 'info',
         at: n.at,
-        icon: n.severity === 'info' ? 'info' : 'warning',
+        icon: n.category === 'detainee' ? 'lock' : n.severity === 'info' ? 'info' : 'warning',
+        ...(n.category === 'detainee'
+          ? { open: { id: 'intel' as const, params: { tab: 'detainees' } } }
+          : {}),
       };
     }
   }

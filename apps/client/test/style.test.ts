@@ -1,8 +1,15 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { validateStyleMin } from '@maplibre/maplibre-gl-style-spec';
 import { HOUR, type NationView, type UnitView, type WeaponSystem } from '@redline/shared';
-import { EMPTY, unitFeatures } from '../src/map/features.js';
-import { buildStyle, type StyleInput } from '../src/map/style.js';
+import { EMPTY, resourceImageId, unitFeatures } from '../src/map/features.js';
+import {
+  CITY_LABEL_LAYERS,
+  LAYER_GROUPS,
+  RESOURCE_ICON_ZOOM,
+  buildStyle,
+  cityTextField,
+  type StyleInput,
+} from '../src/map/style.js';
 
 beforeAll(() => {
   // buildStyle construit des URL absolues à partir de l'origine de la page.
@@ -39,6 +46,53 @@ describe('style MapLibre', () => {
       });
     }
   }
+
+  it('insigne des ressources devant le nom des villes : style valide, de près seulement', () => {
+    for (const resources of [true, false]) {
+      const style = buildStyle(input({ cities: EMPTY, resources }));
+      expect(validateStyleMin(style as never).map((e) => e.message)).toEqual([]);
+      const field = (id: string) =>
+        JSON.stringify(
+          (style.layers.find((l) => l.id === id) as { layout: Record<string, unknown> }).layout[
+            'text-field'
+          ],
+        );
+      for (const [id] of CITY_LABEL_LAYERS)
+        expect(field(id).includes('"image"'), `${id} ${resources}`).toBe(resources);
+    }
+    // Paliers : nom seul au zoom monde, insigne à partir de RESOURCE_ICON_ZOOM (ou du zoom de la
+    // classe), population ensuite ; paliers strictement croissants.
+    for (const [, cls] of CITY_LABEL_LAYERS) {
+      const e = cityTextField(cls, true) as unknown[];
+      expect(e[0]).toBe('step');
+      expect(e[2]).toEqual(['get', 'name']);
+      const zooms = e.filter((_, i) => i >= 3 && (i - 3) % 2 === 0) as number[];
+      expect(zooms.length).toBe(2);
+      expect(zooms[1]!).toBeGreaterThan(zooms[0]!);
+      // Insigne jamais avant RESOURCE_ICON_ZOOM : premier palier avec image ≥ ce zoom.
+      const firstImg = zooms.find((_, k) => JSON.stringify(e[4 + 2 * k]).includes('"image"'));
+      expect(firstImg).toBeGreaterThanOrEqual(RESOURCE_ICON_ZOOM);
+      expect(JSON.stringify(cityTextField(cls, false))).not.toContain('"image"');
+    }
+    // Groupe pilotable par l'interface, sans calque propre (texte des villes).
+    expect(LAYER_GROUPS.resources).toEqual([]);
+  });
+
+  it('image de l’insigne : principale, richesse, secondaire ; rien sans ressource', () => {
+    expect(
+      resourceImageId({
+        resources: [
+          { type: 'oil', richness: 3, source: 'data' },
+          { type: 'metals', richness: 1, source: 'heuristic' },
+        ],
+      }),
+    ).toBe('res|oil|3|metals');
+    expect(resourceImageId({ resources: [{ type: 'food', richness: 2, source: 'data' }] })).toBe(
+      'res|food|2|',
+    );
+    expect(resourceImageId({ resources: [] })).toBe('');
+    expect(resourceImageId({})).toBe('');
+  });
 
   it('fonctionne sans imagerie satellite', () => {
     const style = buildStyle(input({ tiles: null }));

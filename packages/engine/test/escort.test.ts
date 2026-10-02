@@ -23,6 +23,7 @@ import { wi } from '../src/state/world.js';
 import { destroyUnit } from '../src/combat/combat.js';
 import { mil, milBal } from '../src/modules/mil/state.js';
 import { loadRealData, type RealData } from '../bench/load.js';
+import { PLACES, provinceAt } from './real-places.js';
 
 let data: RealData;
 let world: World;
@@ -48,8 +49,19 @@ function game(
 
 const at = (s: EngineState, id: string): LngLat => unitPosAt(s, s.units[id]!, s.time);
 const gap = (s: EngineState, a: string, b: string) => distanceKm(at(s, a), at(s, b));
-const KURSK = 'rus-35';
-const KYIV = 'ukr-19';
+// Provinces désignées par leur ville (identifiants propres à chaque version de la carte).
+let KURSK = '';
+let KYIV = '';
+let TOULON = '';
+let CAGLIARI = '';
+let MONTPELLIER = '';
+beforeAll(() => {
+  KURSK = provinceAt(data.map, PLACES.koursk).id;
+  KYIV = provinceAt(data.map, PLACES.kiev).id;
+  TOULON = provinceAt(data.map, PLACES.toulon).id;
+  CAGLIARI = provinceAt(data.map, PLACES.cagliari).id;
+  MONTPELLIER = provinceAt(data.map, PLACES.montpellier).id;
+});
 
 describe('escorter', () => {
   it('chasseurs et bombardiers : décollage avec la cible, vol en formation', () => {
@@ -95,8 +107,8 @@ describe('escorter', () => {
   });
 
   it('frégate et transport : la frégate suit le navire ; fin quand la cible est détruite', () => {
-    const toulon = wi(world).seaSpawn.get('fra-9')!;
-    const cagliari = wi(world).seaSpawn.get('ita-3')!;
+    const toulon = wi(world).seaSpawn.get(TOULON)!;
+    const cagliari = wi(world).seaSpawn.get(CAGLIARI)!;
     const s = game([
       { owner: 'fra', systemId: 'eu.mistral-class', pos: toulon, count: 1 },
       { owner: 'fra', systemId: 'eu.fremm', pos: toulon, count: 1 },
@@ -138,8 +150,8 @@ describe('escorter', () => {
       { owner: 'rus', systemId: 'ru.su-35', pos: prov(KURSK).cityPoint, count: 1 },
       { owner: 'rus', systemId: 'eu.infantry-light', pos: prov(KURSK).cityPoint, count: 1 },
       { owner: 'ukr', systemId: 'eu.infantry-light', pos: prov(KYIV).cityPoint, count: 1 },
-      { owner: 'fra', systemId: 'eu.fremm', pos: wi(world).seaSpawn.get('fra-9')!, count: 1 },
-      { owner: 'fra', systemId: 'eu.infantry-light', pos: prov('fra-9').cityPoint, count: 1 },
+      { owner: 'fra', systemId: 'eu.fremm', pos: wi(world).seaSpawn.get(TOULON)!, count: 1 },
+      { owner: 'fra', systemId: 'eu.infantry-light', pos: prov(TOULON).cityPoint, count: 1 },
       { owner: 'rus', systemId: 'us.kc-135-stratotanker', pos: prov(KURSK).cityPoint, count: 1 },
     ]);
     const r = (n: string, unitIds: string[], targetId: string) =>
@@ -157,19 +169,23 @@ describe('escorter', () => {
         {
           owner: 'fra',
           systemId: 'eu.mistral-class',
-          pos: wi(world).seaSpawn.get('fra-9')!,
+          pos: wi(world).seaSpawn.get(TOULON)!,
           count: 1,
         },
-        { owner: 'fra', systemId: 'eu.fremm', pos: wi(world).seaSpawn.get('fra-9')!, count: 1 },
+        { owner: 'fra', systemId: 'eu.fremm', pos: wi(world).seaSpawn.get(TOULON)!, count: 1 },
       ]);
-      applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: wi(world).seaSpawn.get('ita-3')! });
+      applyOrder(s, 'fra', {
+        kind: 'move',
+        unitIds: ['u1'],
+        to: wi(world).seaSpawn.get(CAGLIARI)!,
+      });
       applyOrder(s, 'fra', { kind: 'escort', unitIds: ['u2'], targetId: 'u1' });
       advanceTo(s, 3 * HOUR);
       if (snap) s = deserializeState(world, serializeState(s)) as EngineState;
       applyOrder(s, 'fra', {
         kind: 'move',
         unitIds: ['u1'],
-        to: wi(world).seaSpawn.get('fra-10')!,
+        to: wi(world).seaSpawn.get(MONTPELLIER)!,
       });
       advanceTo(s, 12 * HOUR);
       return stateHash(s);

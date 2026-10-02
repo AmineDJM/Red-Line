@@ -12,11 +12,18 @@
  *    - entre 58° et 66° → métaux (bouclier, taïga minière), nourriture en second si peuplée ;
  *    - ailleurs → nourriture (agriculture), métaux en second dans les reliefs miniers (MOUNTAINS)
  *      ou les très vastes provinces.
+ * 2 bis. Aucune nation sans ressource : une nation dont aucune province n'a de ressource après 1 et 2
+ *    reçoit de la nourriture modeste (agriculture, pêche, élevage ; richesse 1, heuristique) dans sa
+ *    plus grande province, hors capitale si elle en a une autre. Seuls les micro-États (superficie
+ *    totale < MICRO_STATE_KM2 : Vatican, Monaco, Saint-Marin, Tuvalu) restent « argent seulement » ;
+ *    comme toutes les nations, ils reçoivent en jeu le plancher national de production
+ *    (data/balance `resources.nationalFloor`, moteur eco/budget.ts).
  * 3. Rendements (`income`) : pour chaque nation et chaque ressource, le total national de la carte
  *    est conservé et réparti entre les seules provinces qui possèdent la ressource, selon la richesse
  *    (plancher par richesse) ; les autres provinces n'en produisent plus. Idempotent.
  */
 import type { ProvinceDef } from '@redline/shared';
+import { MAP_ALIASES } from './aliases.js';
 import { RESOURCE_ZONES, type Res, type ResourceZone } from './resources-data.js';
 
 export type { Res } from './resources-data.js';
@@ -77,14 +84,24 @@ function haversineKm(a: [number, number], b: [number, number]): number {
   return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
 }
 
-/** Provinces désignées par « nation:Nom » : nom de province d'abord, sinon nom de ville. */
-export function resolveRef<P extends Prov>(ref: string, provs: readonly P[]): P[] {
+/**
+ * Provinces désignées par « nation:Nom » : nom de province d'abord, sinon ancien nom d'une province
+ * fusionnée (data/map/aliases.json), sinon nom de ville.
+ */
+export function resolveRef<P extends Prov>(
+  ref: string,
+  provs: readonly P[],
+  aliases: Record<string, string> = MAP_ALIASES,
+): P[] {
   const i = ref.indexOf(':');
   const nation = ref.slice(0, i);
   const name = ref.slice(i + 1);
   const own = provs.filter((p) => p.nationId === nation);
   const byName = own.filter((p) => p.name === name);
-  return byName.length > 0 ? byName : own.filter((p) => p.cityName === name);
+  if (byName.length > 0) return byName;
+  const id = aliases[ref];
+  if (id) return own.filter((p) => p.id === id);
+  return own.filter((p) => p.cityName === name);
 }
 
 /** Provinces d'une zone sourcée (un cercle n'atteint jamais une capitale). */
@@ -141,11 +158,33 @@ export function heuristicDeposits(p: Prov): Deposit[] {
   return [h('food')];
 }
 
+/** Superficie totale (km²) sous laquelle un micro-État peut rester « argent seulement ». */
+export const MICRO_STATE_KM2 = 100;
+
+/**
+ * Province qui reçoit la ressource de repli d'une nation sans aucune ressource : la plus grande,
+ * hors capitale s'il y en a une autre (identifiant en départage) ; null pour un micro-État.
+ */
+export function fallbackProvince<P extends Prov>(list: readonly P[]): P | null {
+  const area = list.reduce((s, p) => s + Math.max(0, p.areaKm2), 0);
+  if (list.length === 0 || area < MICRO_STATE_KM2) return null;
+  const pool = list.some((p) => !p.isCapital) ? list.filter((p) => !p.isCapital) : list;
+  return [...pool].sort((a, b) => b.areaKm2 - a.areaKm2 || (a.id < b.id ? -1 : 1))[0]!;
+}
+
 /** Ressources de toutes les provinces. */
 export function assignResources(provs: readonly Prov[]): Map<string, Deposit[]> {
   const sourced = sourcedDeposits(provs);
   const out = new Map<string, Deposit[]>();
   for (const p of provs) out.set(p.id, sourced.get(p.id) ?? heuristicDeposits(p));
+  // Aucune nation sans ressource (micro-États exceptés).
+  const byNation = new Map<string, Prov[]>();
+  for (const p of provs) byNation.set(p.nationId, [...(byNation.get(p.nationId) ?? []), p]);
+  for (const [, list] of [...byNation].sort((a, b) => (a[0] < b[0] ? -1 : 1))) {
+    if (list.some((p) => (out.get(p.id) ?? []).length > 0)) continue;
+    const p = fallbackProvince(list);
+    if (p) out.set(p.id, [{ type: 'food', richness: 1, source: 'heuristic' }]);
+  }
   return out;
 }
 

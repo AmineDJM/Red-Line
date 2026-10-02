@@ -1,4 +1,4 @@
-import { HOUR, airDefenseTable, type AirThreat, type WeaponSystem } from '@redline/shared';
+import { HOUR, interceptProfile, type AirThreat, type WeaponSystem } from '@redline/shared';
 import type { World } from '../../api.js';
 import { isLanded, weaponRange, type Range } from '../../encounters/profile.js';
 import { sysOf } from '../../state/access.js';
@@ -42,70 +42,38 @@ export interface AdProf {
 const cache = new WeakMap<World, Map<string, AdProf | null>>();
 
 function build(state: EngineState, sys: WeaponSystem): AdProf | null {
-  const bal = milBal(state);
-  const ic = sys.interceptor;
-  const env: Partial<Record<AirThreat, AdEnv>> = {};
-  let maxKm = 0;
-  const put = (c: AirThreat, e: AdEnv): void => {
-    env[c] = e;
-    if (e.max > maxKm) maxKm = e.max;
+  // Calcul partagé avec l'interface (notes d'efficacité) : packages/shared/src/airdefense.ts.
+  const p = interceptProfile(sys, milBal(state));
+  if (!p) return null;
+  return {
+    explicit: p.explicit,
+    env: p.env,
+    magazine: p.magazine,
+    channels: p.channels,
+    reactionMs: p.reactionS * 1000,
+    reloadMs: p.reloadH * HOUR,
+    maxKm: p.maxKm,
   };
-  if (ic) {
-    const t = airDefenseTable(sys)!;
-    const legacyShots = Math.max(1, Math.round(bal.intercept.shotsPerMissile));
-    for (const l of t.lines) {
-      put(l.threat, {
-        min: l.minKm,
-        max: l.maxKm,
-        pk: l.pk,
-        shots: t.explicit
-          ? (l.shots ?? Math.max(1, Math.round(bal.airDefense.shots[l.threat])))
-          : legacyShots,
-      });
-    }
-    return {
-      explicit: t.explicit,
-      env,
-      magazine: ic.magazine,
-      channels: ic.channels ?? null,
-      reactionMs: t.explicit ? (ic.reactionS ?? bal.airDefense.reactionS) * 1000 : 0,
-      reloadMs: (ic.reloadH ?? bal.intercept.reloadHours) * HOUR,
-      maxKm,
-    };
-  }
-  if (sys.damage.missile > 0) {
-    const b = bal.intercept;
-    const r = sys.weaponRangeKm;
-    // Chasseur : missiles air-air contre missiles de croisière et drones (veille, interception).
-    const fighter = sys.movement === 'air';
-    const a = bal.airDefense;
-    const e = {
-      min: r.min,
-      max: r.max,
-      pk: fighter
-        ? Math.min(a.fighterPkMax, sys.damage.missile * a.fighterPkPerDamage)
-        : Math.min(b.fallbackPkMax, sys.damage.missile * b.fallbackPkPerDamage),
-      shots: Math.max(1, Math.round(b.shotsPerMissile)),
-    };
-    put('cruise_missile', e);
-    put('drone', e);
-    // Un aéronef n'intercepte pas un missile balistique.
-    if (sys.damage.missile >= 12 && sys.movement !== 'air') put('ballistic_missile', e);
-    return {
-      explicit: false,
-      env,
-      magazine: fighter ? a.fighterMagazine : b.fallbackMagazine,
-      channels: null,
-      reactionMs: 0,
-      reloadMs: b.reloadHours * HOUR,
-      maxKm,
-    };
-  }
-  return null;
 }
 
-/** Profil d'un système (mis en cache par monde). */
+/**
+ * Profils des fiches synthétiques de piles mixtes (state/stack.ts), par objet : une telle fiche garde
+ * l'identifiant de son matériel principal mais pas ses valeurs (portée, dégâts). Rangée sous cet
+ * identifiant dans le cache du monde, elle rendrait le profil dépendant de l'ordre des appels (partagé
+ * entre parties, perdu au redémarrage du serveur).
+ */
+const synthCache = new WeakMap<WeaponSystem, AdProf | null>();
+
+/** Profil d'un système (mis en cache par monde ; fiche synthétique : par objet). */
 export function adSysProfile(state: EngineState, sys: WeaponSystem): AdProf | null {
+  if (state.world.catalog.get(sys.id) !== sys) {
+    let p = synthCache.get(sys);
+    if (p === undefined) {
+      p = build(state, sys);
+      synthCache.set(sys, p);
+    }
+    return p;
+  }
   let m = cache.get(state.world);
   if (!m) cache.set(state.world, (m = new Map()));
   let p = m.get(sys.id);

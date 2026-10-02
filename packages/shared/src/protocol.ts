@@ -4,7 +4,7 @@ import type { GameId, NationId, UserId } from './ids.js';
 import type { ClockState, GameNotification, PlayerView, ViewDiff } from './view.js';
 import { RESOURCES } from './catalog.js';
 import { BUILDING_TYPES } from './map.js';
-import { DEPARTMENTS } from './intel.js';
+import { DEPARTMENTS, DETAINEE_ACTIONS } from './intel.js';
 import { RESOLUTION_TYPES } from './diplomacy.js';
 import { DOMESTIC_POLICIES, INTERIOR_FOCUS } from './domestic.js';
 import { COMMAND_ORDERS } from './command.js';
@@ -215,6 +215,31 @@ const BASE_ORDERS = [
   z.object({ kind: z.literal('interiorFocus'), focus: z.enum(INTERIOR_FOCUS) }),
   /** Renseignement intérieur : protection d'un site sensible (province). */
   z.object({ kind: z.literal('protectSite'), provinceId: id, on: z.boolean() }),
+  /**
+   * Détenus : décision sur un agent étranger capturé (interpeller, interroger, expulser ou renvoyer,
+   * emprisonner `days` jours, exécuter, retourner, libérer).
+   */
+  z.object({
+    kind: z.literal('detainee'),
+    agentId: id,
+    action: z.enum(DETAINEE_ACTIONS),
+    days: z.number().int().min(1).max(3650).optional(),
+  }),
+  /**
+   * Échange ou libération d'agents : `give` (détenus que nous libérons), `get` (nos agents détenus
+   * chez `nationId`), argent (> 0 : nous payons ; < 0 : nous demandons), accord de non-ingérence
+   * (jours), allègement des sanctions que nous parrainons contre eux.
+   */
+  z.object({
+    kind: z.literal('proposeSwap'),
+    nationId: id,
+    give: z.array(id).max(20),
+    get: z.array(id).max(20),
+    money: z.number().min(-1e12).max(1e12).optional(),
+    accordDays: z.number().int().min(0).max(365).optional(),
+    liftSanctions: z.boolean().optional(),
+  }),
+  z.object({ kind: z.literal('answerSwap'), swapId: id, accept: z.boolean() }),
   // ——— Phase 4 : diplomatie ———
   z.object({ kind: z.literal('declareWar'), nationId: id }),
   z.object({ kind: z.literal('proposePeace'), nationId: id, type: z.enum(['peace', 'ceasefire']) }),
@@ -334,6 +359,11 @@ export interface GameMeta {
   endReason?: 'victory' | 'abandoned' | 'admin';
   /** Partie multijoueur non classée : un joueur en mode illimité y joue (aucun point de classement). */
   unranked?: boolean;
+  /**
+   * Version de la carte épinglée par la partie (identifiants de province). Une partie créée avant un
+   * changement de carte garde la sienne : le client charge alors `/api/map/*?map=<version>`.
+   */
+  mapVersion?: number;
 }
 
 export interface ShopPolicy {
