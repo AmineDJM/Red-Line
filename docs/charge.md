@@ -185,6 +185,27 @@ BENCH_STACKS=off node --expose-gc bench/run.mjs stacks                  # sans r
 BENCH_DAYS=2 [BENCH_STACKS=off] [BENCH_SCENARIO=cold-war-1985] node --expose-gc bench/run.mjs real
 ```
 
+## Provinces fusionnées (2 567 → 1 297)
+
+Fusion des provinces voisines (`tools/map/src/consolidate.ts`, 2 octobre 2026), même banc
+(`BENCH_DAYS=5 node --expose-gc bench/run.mjs real`, partie monde, ORBAT 2025, mêmes ordres), carte d'avant
+(`REDLINE_DATA_DIR` vers `data/map/archive/1`) puis carte fusionnée, machine chargée (charge 14 à 18) : temps de
+CPU, moins sensible à la charge que le temps réel.
+
+| Mesure (CPU)                                        | 2 567 provinces | 1 297 provinces |
+| --------------------------------------------------- | --------------: | --------------: |
+| buildWorld                                          |          929 ms |          935 ms |
+| createGame                                          |          791 ms |          809 ms |
+| jour calme (J0 → J1)                                |          613 ms |          485 ms |
+| jour de guerre intense (J1 → J2)                    |       13 681 ms |       10 528 ms |
+| 5 jours consécutifs (J3 → J8)                       |       20 412 ms |        9 362 ms |
+| viewFor (moyenne sur 20 nations)                    |         24,1 ms |         15,7 ms |
+| instantané (serializeState, octets)                 |         4,1 Mio |         3,4 Mio |
+| carte servie (provinces + géométrie + routes, gzip) |         1,39 Mo |         1,04 Mo |
+
+Les parties créées avant la fusion gardent leur carte (`data/map/archive/1`, épinglée par `games.map_version`) :
+tant qu'elles tournent, le serveur garde en mémoire les deux mondes (un par version de carte).
+
 ## Seuils de passage à l'offre Render supérieure
 
 Node.js exécute la simulation sur **un seul cœur** : au-delà d'un cœur, seuls le ramasse-miettes, la

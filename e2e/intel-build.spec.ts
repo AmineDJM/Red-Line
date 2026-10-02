@@ -123,10 +123,10 @@ test('reconnaissance militaire de tout un pays depuis un clic sur la carte', asy
     }, spain);
   expect(await revealed()).toEqual([]);
 
-  // Toucher sur la carte, loin de la capitale (centre de l'Estrémadure).
+  // Toucher sur la carte, loin de la capitale (centre de la Castille-et-León).
   const target = await page.evaluate(() => {
     const p = Object.values<any>(window.__rl.world.getState().provinces).find(
-      (x) => x.id === 'esp-7',
+      (x) => x.nationId === 'esp' && x.name === 'Castille-et-León',
     );
     return p.centroid as [number, number];
   });
