@@ -333,7 +333,8 @@ export type OrderErrorCode =
   | 'capacity'
   | 'cooldown'
   | 'insufficient_resources'
-  | 'off_road'; // destination trop loin du réseau de routes (unités terrestres)
+  | 'off_road' // destination trop loin du réseau de routes (unités terrestres)
+  | 'resource_required'; // construction : la province n'a pas la ressource (ou pas de côte)
 
 export type ServerMessage =
   | { t: 'welcome'; game: GameMeta; me: NationId; clock: ClockState; view: PlayerView }

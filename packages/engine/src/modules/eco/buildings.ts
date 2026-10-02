@@ -6,6 +6,7 @@ import {
   type NationId,
   type Order,
   type ProvinceId,
+  type ProvinceResource,
   type Resource,
 } from '@redline/shared';
 import type { OrderResult, World } from '../../api.js';
@@ -27,6 +28,69 @@ export const RESOURCE_BUILDINGS: Partial<Record<BuildingType, Resource>> = {
   mine: 'metals',
   farm: 'food',
   electronics_plant: 'electronics',
+};
+
+// ——— Ressources des provinces : constructions permises, rendement selon la richesse ———
+
+/** Ressources de la province, principale d'abord (undefined : carte sans ressources). */
+export function depositsOf(world: World, pid: ProvinceId): readonly ProvinceResource[] | undefined {
+  return wi(world).provById.get(pid)?.resources;
+}
+
+/** Province « argent seulement » (services, finances) : ressources connues et vides. */
+export function isServiceProvince(world: World, pid: ProvinceId): boolean {
+  const ds = depositsOf(world, pid);
+  return !!ds && ds.length === 0;
+}
+
+/**
+ * Facteur de rendement d'un bâtiment produisant `r` : richesse (data/balance
+ * resources.richnessYield) × secondaryYield si la ressource n'est que secondaire ; 1 sans données.
+ */
+export function depositYield(world: World, pid: ProvinceId, r: Resource): number {
+  const ds = depositsOf(world, pid);
+  const k = ds ? ds.findIndex((d) => d.type === r) : -1;
+  if (!ds || k < 0) return 1;
+  const c = cfg(world).resources;
+  return (c.richnessYield[ds[k]!.richness - 1] ?? 1) * (k === 0 ? 1 : c.secondaryYield);
+}
+
+export type BuildRestriction = 'no_resource' | 'coastal_only' | 'not_urban';
+
+/**
+ * Pourquoi un bâtiment NEUF est interdit dans une province (null : permis). Règles :
+ *  - port, base navale, batterie côtière : province côtière ;
+ *  - puits de pétrole, mine, ferme (resources.extraction) : la province a la ressource ;
+ *  - usine d'électronique : pôle électronique, ou ville de rang ≤ resources.electronicsUrbanRank ;
+ *  - tous les autres bâtiments (industrie, militaires, défense) : partout.
+ * Carte sans `resources` : seule la règle côtière s'applique.
+ */
+export function buildRestriction(
+  world: World,
+  pid: ProvinceId,
+  b: string,
+): BuildRestriction | null {
+  const def = wi(world).provById.get(pid);
+  if (!def) return null;
+  const c = cfg(world).resources;
+  if (c.coastalOnly.includes(b) && !def.coastal) return 'coastal_only';
+  const ds = def.resources;
+  if (!ds) return null;
+  const r = c.extraction[b];
+  if (r && !ds.some((d) => d.type === r)) return 'no_resource';
+  if (
+    b === 'electronics_plant' &&
+    !ds.some((d) => d.type === 'electronics') &&
+    (def.cityRank ?? (def.isCapital ? 1 : 4)) > c.electronicsUrbanRank
+  )
+    return 'not_urban';
+  return null;
+}
+
+const RESTRICTION_MESSAGES: Record<BuildRestriction, string> = {
+  no_resource: 'Ressource absente : ce bâtiment exige la ressource dans la province.',
+  coastal_only: 'Province côtière uniquement.',
+  not_urban: 'Usine d’électronique : pôle électronique ou grande ville requis.',
 };
 
 /** Bâtiments fixes exposés au module militaire (board.sites). */
@@ -341,7 +405,11 @@ export function provinceResources(state: EngineState, pid: ProvinceId): Record<R
     const p = power(state, pid, b);
     if (p <= 0) continue;
     out[r] +=
-      (def.income[r] ?? 0) * mult * effect(state.world, b, 'yieldPerLevel', 0) * p +
+      (def.income[r] ?? 0) *
+        mult *
+        effect(state.world, b, 'yieldPerLevel', 0) *
+        p *
+        depositYield(state.world, pid, r) +
       effect(state.world, b, 'flatPerLevel', 0) * p;
   }
   out.oil += effect(state.world, 'refinery', 'oilPerDay', 0) * power(state, pid, 'refinery');
@@ -353,11 +421,15 @@ export function provinceIncomeFactor(state: EngineState, pid: ProvinceId): numbe
   if (!eco(state).live) return 1;
   const m = cfg(state.world).morale;
   const morale = Math.min(1, m.incomeFloor + moraleOf(state, pid) / 100);
+  // Province « argent seulement » : services et finances (bonus), quartier d'affaires (industrie locale).
+  const svc = isServiceProvince(state.world, pid);
+  const rc = cfg(state.world).resources;
   const ind =
     1 +
     effect(state.world, 'local_industry', 'incomePerLevel', 0) *
+      (svc ? rc.servicesIndustryFactor : 1) *
       power(state, pid, 'local_industry');
-  return morale * ind;
+  return morale * ind * (svc ? 1 + rc.servicesIncomeBonus : 1);
 }
 
 /** Vitesse des chantiers d'une province (industrie locale). */
@@ -414,6 +486,9 @@ export function buildOrder(
   let lvl: number;
   if (BUILDING_SET.has(kind)) {
     const cur = levelOf(state, pid, kind);
+    // Bâtiment neuf seulement : ceux qui existent déjà (sauvegardes, départ) restent améliorables.
+    const why = cur === 0 ? buildRestriction(state.world, pid, kind) : null;
+    if (why) return fail('resource_required', RESTRICTION_MESSAGES[why]);
     if (cur >= c.maxLevel) return fail('capacity', 'Niveau maximal atteint.');
     if (cur > 0 && health(state, pid, kind) < 1)
       return fail('not_allowed', 'Réparer avant d’améliorer.');
