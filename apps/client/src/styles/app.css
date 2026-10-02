@@ -2678,3 +2678,110 @@ code {
   outline: none;
   box-shadow: var(--rl-focus);
 }
+
+/* ——— Barre d'ordres de la sélection (shell/UnitOrders.tsx) ——— */
+.unitorders {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  margin: 8px 0 4px;
+}
+.unitorders--compact {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.unitorders__btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 4px 7px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm, 3px);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--rl-text);
+  font: inherit;
+  font-size: 11.5px;
+  text-align: start;
+  cursor: pointer;
+  transition:
+    border-color 0.12s,
+    background 0.12s;
+}
+.unitorders__btn:hover:not([aria-disabled='true']) {
+  border-color: var(--rl-cyan-line);
+  background: rgba(76, 201, 240, 0.08);
+}
+.unitorders__btn--on {
+  border-color: var(--rl-cyan);
+  background: rgba(76, 201, 240, 0.16);
+}
+.unitorders__btn[aria-disabled='true'] {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+.unitorders__btn[data-action='attack'] svg,
+.unitorders__btn[data-action='strike'] svg {
+  color: var(--rl-red);
+}
+.unitorders__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.unitorders--compact .unitorders__btn {
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-height: 44px;
+  font-size: 10px;
+  text-align: center;
+}
+.unitorders--compact .unitorders__label {
+  white-space: normal;
+  line-height: 1.1;
+}
+
+/* Mode ciblage : bandeau de consigne et curseur en croix sur la carte. */
+.targeting {
+  position: absolute;
+  z-index: 36;
+  left: 50%;
+  top: 64px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100% - 24px);
+  padding: 7px 10px 7px 12px;
+  border: 1px solid var(--rl-cyan-line);
+  border-radius: var(--rl-radius);
+  background: var(--rl-glass);
+  box-shadow: var(--rl-shadow);
+  backdrop-filter: blur(8px);
+  color: var(--rl-text);
+  font-size: 12.5px;
+}
+.targeting > svg {
+  color: var(--rl-cyan);
+  flex: none;
+}
+.targeting__cancel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm, 3px);
+  background: transparent;
+  color: var(--rl-text-dim, inherit);
+  font: inherit;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+.rl-targeting .maplibregl-canvas {
+  cursor: crosshair !important;
+}
+.orderbar__radius dd {
+  min-width: 160px;
+}

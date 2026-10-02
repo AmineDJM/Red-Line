@@ -411,6 +411,36 @@
         "off_road": "Poza siecią dróg: wskaż miasto, węzeł lub drogę.",
         "disconnected": "Offline: rozkaz nie został przekazany.",
         "timeout": "Brak odpowiedzi serwera."
+      },
+      "strikeTitle": "Rozkaz uderzenia",
+      "patrolTitle": "Rozkaz patrolu",
+      "reconTitle": "Misja rozpoznawcza",
+      "blockadeTitle": "Rozkaz blokady",
+      "radius": "Promień",
+      "reasons": {
+        "target_invalid": "Nieprawidłowy cel.",
+        "target_not_visible": "Cel poza zasięgiem wzroku: najpierw go wykryj (radar, rozpoznanie, satelita).",
+        "target_friendly": "Cel sojuszniczy: nie można go zaatakować.",
+        "air_defense_air_only": "{{name}}: obrona przeciwlotnicza, tylko cele powietrzne (samoloty, śmigłowce, drony, pociski).",
+        "cannot_hit_class": "{{name}} nie może razić tego typu celu ({{cls}}).",
+        "out_of_weapon_range": "{{name}}: cel poza zasięgiem ognia ({{dist}} km, zasięg {{min}}–{{max}} km).",
+        "missile_out_of_range": "Cel poza zasięgiem pocisku {{name}} ({{dist}} km przy zasięgu {{range}} km).",
+        "aircraft_out_of_radius": "Poza promieniem działania: {{dist}} km od bazy przy {{range}} km.",
+        "aircraft_cooldown": "Statek powietrzny w obsłudze naziemnej (gotowy za {{min}} min).",
+        "partial": "Rozkaz wysłany; pominięto {{count}} oddział(y): {{detail}}",
+        "munition_use_strike": "Amunicja: użyj rozkazu uderzenia.",
+        "ceasefire": "Obowiązuje zawieszenie broni."
+      },
+      "classes": {
+        "infantry": "piechota",
+        "armor": "pancerne",
+        "aircraft": "samolot",
+        "helicopter": "śmigłowiec",
+        "drone": "dron",
+        "ship": "okręt",
+        "submarine": "okręt podwodny",
+        "missile": "pocisk",
+        "building": "instalacja"
       }
     },
     "status": {
@@ -463,6 +493,43 @@
       "reserve": "Nieograniczona rezerwa",
       "stockTip": "{{name}}: nieograniczony zapas",
       "budgetTip": "Nieograniczony skarb — otwórz gospodarkę"
+    },
+    "actions": {
+      "title": "Rozkazy",
+      "move": "Ruch",
+      "attack": "Atak",
+      "strike": "Uderzenie",
+      "intercept": "Przechwyć",
+      "patrol": "Patrol",
+      "recon": "Rozpoznanie",
+      "blockade": "Blokada",
+      "rtb": "Powrót",
+      "rtbAir": "Powrót do bazy",
+      "rtbSea": "Powrót do portu",
+      "resupply": "Zaopatrzenie",
+      "stop": "Stop",
+      "reasons": {
+        "static": "Jednostka stała: nie przemieszcza się.",
+        "noWeapon": "Brak broni ofensywnej w wyborze.",
+        "noStrike": "Uderzenia tylko dla pocisków, lotnictwa i okrętów rakietowych.",
+        "noIntercept": "Przechwytywanie tylko dla uzbrojonych statków powietrznych przeciw celom powietrznym.",
+        "airSeaOnly": "Patrol tylko dla statków powietrznych i okrętów.",
+        "noRecon": "Rozpoznanie tylko dla dronów i samolotów rozpoznawczych.",
+        "seaOnly": "Blokada tylko dla okrętów.",
+        "idle": "Nie ma czego zatrzymać: jednostki już stoją.",
+        "none": "Akcja niedostępna."
+      },
+      "pick": {
+        "move": "kliknij cel podróży na mapie.",
+        "attack": "kliknij jednostkę wroga.",
+        "intercept": "kliknij wrogi statek powietrzny.",
+        "strike": "kliknij jednostkę wroga lub punkt na mapie.",
+        "patrol": "kliknij środek strefy patrolu.",
+        "recon": "kliknij obszar do przelotu.",
+        "blockade": "kliknij wrogą prowincję nadmorską.",
+        "needEnemy": "Wybierz widoczną jednostkę wroga.",
+        "needPort": "Wybierz obcą prowincję nadmorską."
+      }
     }
   },
   "province": {
@@ -3249,6 +3316,12 @@
       "strikeNoEffect": {
         "title": "Uderzenie bez skutku",
         "text": "{{system}}: cel nieosiągnięty."
+      },
+      "strikeAborted": {
+        "title": "Uderzenie odwołane",
+        "gone": "{{system}}: cel zniknął (zniszczony lub poza zasięgiem). Powrót do bazy.",
+        "moved": "{{system}}: cel poza zasięgiem (przemieścił się). Powrót do bazy.",
+        "lost": "{{system}}: utracono kontakt z celem. Powrót do bazy."
       },
       "asatHit": {
         "title": "Satelita zniszczony",

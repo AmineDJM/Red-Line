@@ -399,6 +399,36 @@
         "off_road": "Außerhalb des Straßennetzes: Zielen Sie auf eine Stadt, einen Knoten oder eine Straße.",
         "disconnected": "Offline: Befehl nicht übermittelt.",
         "timeout": "Keine Antwort vom Server."
+      },
+      "strikeTitle": "Angriffsbefehl (Schlag)",
+      "patrolTitle": "Patrouillenbefehl",
+      "reconTitle": "Aufklärungsmission",
+      "blockadeTitle": "Blockadebefehl",
+      "radius": "Radius",
+      "reasons": {
+        "target_invalid": "Ungültiges Ziel.",
+        "target_not_visible": "Ziel nicht in Sicht: zuerst aufklären (Radar, Aufklärung, Satellit).",
+        "target_friendly": "Eigenes Ziel: kann nicht angegriffen werden.",
+        "air_defense_air_only": "{{name}}: Luftabwehr, nur Luftziele (Flugzeuge, Hubschrauber, Drohnen, Raketen).",
+        "cannot_hit_class": "{{name}} kann diese Zielart nicht treffen ({{cls}}).",
+        "out_of_weapon_range": "{{name}}: Ziel außerhalb der Schussweite ({{dist}} km, Reichweite {{min}}–{{max}} km).",
+        "missile_out_of_range": "Ziel außerhalb der Reichweite der Rakete {{name}} ({{dist}} km bei {{range}} km Reichweite).",
+        "aircraft_out_of_radius": "Außerhalb des Einsatzradius: {{dist}} km von der Basis bei {{range}} km.",
+        "aircraft_cooldown": "Flugzeug wird am Boden klargemacht (bereit in {{min}} min).",
+        "partial": "Befehl übermittelt; {{count}} Verband/Verbände ausgelassen: {{detail}}",
+        "munition_use_strike": "Munition: Schlagbefehl verwenden.",
+        "ceasefire": "Waffenstillstand in Kraft."
+      },
+      "classes": {
+        "infantry": "Infanterie",
+        "armor": "Panzer",
+        "aircraft": "Flugzeug",
+        "helicopter": "Hubschrauber",
+        "drone": "Drohne",
+        "ship": "Schiff",
+        "submarine": "U-Boot",
+        "missile": "Rakete",
+        "building": "Anlage"
       }
     },
     "status": {
@@ -451,6 +481,43 @@
       "reserve": "Unbegrenzte Reserve",
       "stockTip": "{{name}}: unbegrenzter Bestand",
       "budgetTip": "Unbegrenzte Kasse — Wirtschaft öffnen"
+    },
+    "actions": {
+      "title": "Befehle",
+      "move": "Bewegen",
+      "attack": "Angreifen",
+      "strike": "Schlag",
+      "intercept": "Abfangen",
+      "patrol": "Patrouille",
+      "recon": "Aufklärung",
+      "blockade": "Blockade",
+      "rtb": "Rückkehr",
+      "rtbAir": "Zur Basis",
+      "rtbSea": "Zum Hafen",
+      "resupply": "Versorgen",
+      "stop": "Stopp",
+      "reasons": {
+        "static": "Ortsfeste Einheit: sie bewegt sich nicht.",
+        "noWeapon": "Keine Angriffswaffe in der Auswahl.",
+        "noStrike": "Schläge nur mit Raketen, Luftwaffe und Raketenschiffen.",
+        "noIntercept": "Abfangen nur mit bewaffneten Luftfahrzeugen gegen Luftziele.",
+        "airSeaOnly": "Patrouillen nur für Luftfahrzeuge und Schiffe.",
+        "noRecon": "Aufklärung nur für Drohnen und Aufklärungsflugzeuge.",
+        "seaOnly": "Blockade nur für Schiffe.",
+        "idle": "Nichts anzuhalten: Einheiten stehen bereits.",
+        "none": "Aktion nicht verfügbar."
+      },
+      "pick": {
+        "move": "Ziel auf der Karte anklicken.",
+        "attack": "eine feindliche Einheit anklicken.",
+        "intercept": "ein feindliches Luftfahrzeug anklicken.",
+        "strike": "eine feindliche Einheit oder einen Kartenpunkt anklicken.",
+        "patrol": "Mittelpunkt des Patrouillengebiets anklicken.",
+        "recon": "das zu überfliegende Gebiet anklicken.",
+        "blockade": "eine feindliche Küstenprovinz anklicken.",
+        "needEnemy": "Wählen Sie eine sichtbare feindliche Einheit.",
+        "needPort": "Wählen Sie eine fremde Küstenprovinz."
+      }
     }
   },
   "province": {
@@ -3161,6 +3228,12 @@
       "strikeNoEffect": {
         "title": "Schlag ohne Wirkung",
         "text": "{{system}}: Ziel nicht erreicht."
+      },
+      "strikeAborted": {
+        "title": "Schlag abgebrochen",
+        "gone": "{{system}}: Ziel verschwunden (zerstört oder unerreichbar). Rückkehr zur Basis.",
+        "moved": "{{system}}: Ziel unerreichbar (es hat sich bewegt). Rückkehr zur Basis.",
+        "lost": "{{system}}: Ziel aus den Augen verloren. Rückkehr zur Basis."
       },
       "asatHit": {
         "title": "Satellit zerstört",

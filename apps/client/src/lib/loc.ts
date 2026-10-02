@@ -63,7 +63,35 @@ export function battleTitle(r: Pick<BattleReportSummary, 'title' | 'provinceId'>
  * Message d'un ordre refusé : en français, le message précis du moteur ; dans les autres langues,
  * le libellé traduit du code d'erreur (le message du moteur est en français).
  */
-export function orderError(res: { error?: string | null; message?: string | null }): string {
+export function orderError(res: OrderOutcomeLike): string {
+  const why = orderReason(res);
+  if (why) return why;
   const generic = t(`game.orders.errors.${res.error ?? 'not_allowed'}`);
   return isFrench ? res.message || generic : generic;
+}
+
+interface OrderOutcomeLike {
+  error?: string | null;
+  message?: string | null;
+  reason?: string | null;
+  params?: Record<string, string | number> | null;
+}
+
+/**
+ * Raison détaillée d'un refus (ou d'une exécution partielle), traduite dans la langue du joueur :
+ * nom du matériel et classe de cible remis en forme. Null si le moteur n'en donne pas.
+ */
+export function orderReason(res: OrderOutcomeLike): string | null {
+  if (!res.reason) return null;
+  const key = `game.orders.reasons.${res.reason}`;
+  if (!i18n.exists(key)) return null;
+  const p: Record<string, string | number> = { ...(res.params ?? {}) };
+  if (typeof p.cls === 'string') p.cls = t(`game.orders.classes.${p.cls}`);
+  if (res.reason === 'partial' && !isFrench) p.detail = '';
+  return t(key, p).trim();
+}
+
+/** Texte d'un ordre accepté : « Ordre transmis », ou l'avertissement d'exécution partielle. */
+export function orderOk(res: OrderOutcomeLike): string {
+  return orderReason(res) ?? t('game.orders.sent');
 }

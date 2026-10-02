@@ -399,6 +399,36 @@
         "off_road": "Off the road network: aim at a city, a node or a road.",
         "disconnected": "Offline: order not sent.",
         "timeout": "No response from the server."
+      },
+      "strikeTitle": "Strike order",
+      "patrolTitle": "Patrol order",
+      "reconTitle": "Reconnaissance mission",
+      "blockadeTitle": "Blockade order",
+      "radius": "Radius",
+      "reasons": {
+        "target_invalid": "Invalid target.",
+        "target_not_visible": "Target not in sight: spot it first (radar, reconnaissance, satellite).",
+        "target_friendly": "Friendly target: it cannot be attacked.",
+        "air_defense_air_only": "{{name}}: air defence, air targets only (aircraft, helicopters, drones, missiles).",
+        "cannot_hit_class": "{{name}} cannot hit this type of target ({{cls}}).",
+        "out_of_weapon_range": "{{name}}: target out of firing range ({{dist}} km, range {{min}}–{{max}} km).",
+        "missile_out_of_range": "Target out of range of the {{name}} missile ({{dist}} km for a {{range}} km range).",
+        "aircraft_out_of_radius": "Out of combat radius: {{dist}} km from base for {{range}} km.",
+        "aircraft_cooldown": "Aircraft being turned around on the ground (ready in {{min}} min).",
+        "partial": "Order sent; {{count}} stack(s) left out: {{detail}}",
+        "munition_use_strike": "Munitions: use the strike order.",
+        "ceasefire": "Ceasefire in force."
+      },
+      "classes": {
+        "infantry": "infantry",
+        "armor": "armour",
+        "aircraft": "aircraft",
+        "helicopter": "helicopter",
+        "drone": "drone",
+        "ship": "ship",
+        "submarine": "submarine",
+        "missile": "missile",
+        "building": "installation"
       }
     },
     "status": {
@@ -451,6 +481,43 @@
       "reserve": "Unlimited reserve",
       "stockTip": "{{name}}: unlimited stock",
       "budgetTip": "Unlimited treasury — open the economy"
+    },
+    "actions": {
+      "title": "Orders",
+      "move": "Move",
+      "attack": "Attack",
+      "strike": "Strike",
+      "intercept": "Intercept",
+      "patrol": "Patrol",
+      "recon": "Recon",
+      "blockade": "Blockade",
+      "rtb": "Return",
+      "rtbAir": "Return to base",
+      "rtbSea": "Return to port",
+      "resupply": "Resupply",
+      "stop": "Stop",
+      "reasons": {
+        "static": "Fixed unit: it cannot move.",
+        "noWeapon": "No offensive weapon in the selection.",
+        "noStrike": "Strikes are for missiles, aircraft and missile ships.",
+        "noIntercept": "Interception is for armed aircraft against air targets.",
+        "airSeaOnly": "Patrols are for aircraft and ships.",
+        "noRecon": "Reconnaissance is for drones and reconnaissance aircraft.",
+        "seaOnly": "Blockades are for ships.",
+        "idle": "Nothing to stop: units already idle.",
+        "none": "Action unavailable."
+      },
+      "pick": {
+        "move": "click the destination on the map.",
+        "attack": "click an enemy unit.",
+        "intercept": "click an enemy aircraft.",
+        "strike": "click an enemy unit or a point on the map.",
+        "patrol": "click the centre of the patrol area.",
+        "recon": "click the area to fly over.",
+        "blockade": "click an enemy coastal province.",
+        "needEnemy": "Choose a visible enemy unit.",
+        "needPort": "Choose a foreign coastal province."
+      }
     }
   },
   "province": {
@@ -3161,6 +3228,12 @@
       "strikeNoEffect": {
         "title": "Strike without effect",
         "text": "{{system}}: objective not achieved."
+      },
+      "strikeAborted": {
+        "title": "Strike cancelled",
+        "gone": "{{system}}: target gone (destroyed or out of reach). Returning to base.",
+        "moved": "{{system}}: target out of reach (it has moved). Returning to base.",
+        "lost": "{{system}}: target lost from sight. Returning to base."
       },
       "asatHit": {
         "title": "Satellite destroyed",

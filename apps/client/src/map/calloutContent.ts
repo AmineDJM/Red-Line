@@ -11,7 +11,7 @@ import {
   type WeaponSystem,
 } from '@redline/shared';
 import { fmtDuration, fmtKm, t } from '../i18n/index.js';
-import type { PendingOrder } from '../store/ui.js';
+import { pendingTargetId, type PendingOrder } from '../store/ui.js';
 import type { CalloutContent } from './overlay.js';
 
 export interface CalloutArgs {
@@ -63,7 +63,7 @@ export function buildCallouts(a: CalloutArgs): CalloutContent[] {
     });
   });
 
-  const targetId = a.pending?.kind === 'attack' ? a.pending.targetId : a.inspected;
+  const targetId = pendingTargetId(a.pending) ?? a.inspected;
   if (targetId) {
     const u = a.view.units[targetId];
     const at = pos(targetId);

@@ -26,6 +26,7 @@ import { ProvincePanel } from './ProvincePanel.js';
 import { isMixed, stackSummary } from '../lib/stacks.js';
 import { StackActions, StackComposition } from './StackActions.js';
 import { orderError } from '../lib/loc.js';
+import { UnitOrders } from './UnitOrders.js';
 
 const STANCES: UnitStance[] = ['hold', 'defend', 'aggressive'];
 
@@ -227,25 +228,11 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
               />
             </div>
           ) : null}
+          <UnitOrders
+            units={ids.map((id) => view?.units[id]).filter((x): x is UnitView => !!x)}
+            compact={compact}
+          />
           <div className="selpanel__actions">
-            {u.status === 'moving' || u.status === 'combat' ? (
-              <Button
-                size="sm"
-                icon={<Icon name="stop" size={12} />}
-                onClick={() => void send({ kind: 'stop', unitIds: ids })}
-              >
-                {t('game.selection.stop')}
-              </Button>
-            ) : null}
-            {sys?.movement === 'air' ? (
-              <Button
-                size="sm"
-                icon={<Icon name="home" size={13} />}
-                onClick={() => void send({ kind: 'rtb', unitIds: ids })}
-              >
-                {t('army.rtb')}
-              </Button>
-            ) : null}
             {sys ? (
               <Button
                 size="sm"

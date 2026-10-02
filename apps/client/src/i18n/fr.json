@@ -398,6 +398,36 @@
         "off_road": "Hors du réseau de routes : visez une ville, un nœud ou une route.",
         "disconnected": "Hors ligne : ordre non transmis.",
         "timeout": "Pas de réponse du serveur."
+      },
+      "strikeTitle": "Ordre de frappe",
+      "patrolTitle": "Ordre de patrouille",
+      "reconTitle": "Mission de reconnaissance",
+      "blockadeTitle": "Ordre de blocus",
+      "radius": "Rayon",
+      "reasons": {
+        "target_invalid": "Cible invalide.",
+        "target_not_visible": "Cible hors de vue : repérez-la d'abord (radar, reconnaissance, satellite).",
+        "target_friendly": "Cible amie : impossible de l'attaquer.",
+        "air_defense_air_only": "{{name}} : défense antiaérienne, cibles aériennes uniquement (avions, hélicoptères, drones, missiles).",
+        "cannot_hit_class": "{{name}} ne peut pas toucher ce type de cible ({{cls}}).",
+        "out_of_weapon_range": "{{name}} : cible hors de portée de tir ({{dist}} km, portée {{min}}–{{max}} km).",
+        "missile_out_of_range": "Cible hors de portée du missile {{name}} ({{dist}} km pour {{range}} km de portée).",
+        "aircraft_out_of_radius": "Hors du rayon d'action : {{dist}} km depuis la base pour {{range}} km.",
+        "aircraft_cooldown": "Appareil en remise en œuvre au sol (prêt dans {{min}} min).",
+        "partial": "Ordre transmis ; {{count}} pile(s) écartée(s) : {{detail}}",
+        "munition_use_strike": "Munitions : utilisez l'ordre de frappe.",
+        "ceasefire": "Cessez-le-feu en vigueur."
+      },
+      "classes": {
+        "infantry": "infanterie",
+        "armor": "blindé",
+        "aircraft": "avion",
+        "helicopter": "hélicoptère",
+        "drone": "drone",
+        "ship": "navire",
+        "submarine": "sous-marin",
+        "missile": "missile",
+        "building": "installation"
       }
     },
     "status": {
@@ -450,6 +480,43 @@
       "reserve": "Réserve illimitée",
       "stockTip": "{{name}} : stock illimité",
       "budgetTip": "Trésor illimité — ouvrir l’économie"
+    },
+    "actions": {
+      "title": "Ordres",
+      "move": "Déplacer",
+      "attack": "Attaquer",
+      "strike": "Frapper",
+      "intercept": "Intercepter",
+      "patrol": "Patrouiller",
+      "recon": "Reconnaissance",
+      "blockade": "Blocus",
+      "rtb": "Retour",
+      "rtbAir": "Retour base",
+      "rtbSea": "Retour au port",
+      "resupply": "Ravitailler",
+      "stop": "Arrêter",
+      "reasons": {
+        "static": "Unité fixe : elle ne se déplace pas.",
+        "noWeapon": "Aucune arme offensive dans la sélection.",
+        "noStrike": "Frappe réservée aux missiles, à l'aviation et aux navires lance-missiles.",
+        "noIntercept": "Interception réservée aux aéronefs armés contre les cibles aériennes.",
+        "airSeaOnly": "Patrouille réservée aux aéronefs et aux navires.",
+        "noRecon": "Reconnaissance réservée aux drones et avions de reconnaissance.",
+        "seaOnly": "Blocus réservé aux navires.",
+        "idle": "Rien à arrêter : unités déjà à l'arrêt.",
+        "none": "Action indisponible."
+      },
+      "pick": {
+        "move": "cliquez la destination sur la carte.",
+        "attack": "cliquez une unité ennemie.",
+        "intercept": "cliquez un aéronef ennemi.",
+        "strike": "cliquez une unité ennemie ou un point de la carte.",
+        "patrol": "cliquez le centre de la zone à patrouiller.",
+        "recon": "cliquez la zone à survoler.",
+        "blockade": "cliquez une province côtière ennemie.",
+        "needEnemy": "Choisissez une unité ennemie visible.",
+        "needPort": "Choisissez une province étrangère côtière."
+      }
     }
   },
   "province": {

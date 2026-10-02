@@ -838,21 +838,27 @@ export function deliverAirStrike(state: EngineState, u: Unit, ms: MissionSt): vo
   if (!tg) return done();
   let victim: NationId | null = victimOf(state, tg);
   let hit = false;
-  const abort = (why: string): void => {
+  const WHY = {
+    gone: 'objectif disparu (détruit ou hors d’atteinte).',
+    moved: 'objectif hors d’atteinte (il s’est déplacé).',
+    lost: 'objectif perdu de vue.',
+  };
+  const abort = (why: keyof typeof WHY): void => {
     generic(
       state,
       [u.owner],
       'strike',
       'Frappe annulée',
-      `${sys.name} : ${why} Retour à la base.`,
+      `${sys.name} : ${WHY[why]} Retour à la base.`,
       'warn',
       here,
+      noteLoc('strikeAborted', { system: { system: sys.id } }, why),
     );
     done();
   };
   if (tg.type === 'unit') {
     const t = state.units[tg.unitId];
-    if (!t || t.off) return abort('objectif disparu (détruit ou hors d’atteinte).');
+    if (!t || t.off) return abort('gone');
     const reach = Math.max(weaponRange(state, u).max, sys.weaponRangeKm.max, 10) + 5;
     if (distanceKm(posOf(state, t), here) > reach) {
       const seen = sightLevel(state, u.owner, t.id) > 0;
@@ -865,9 +871,7 @@ export function deliverAirStrike(state: EngineState, u: Unit, ms: MissionSt): vo
           return;
         }
       }
-      return abort(
-        seen ? 'objectif hors d’atteinte (il s’est déplacé).' : 'objectif perdu de vue.',
-      );
+      return abort(seen ? 'moved' : 'lost');
     }
     const dmg = roundDamage(state, u, t, 1) * bal.airStrikeMult;
     if (dmg > 0) {

@@ -405,6 +405,36 @@
         "off_road": "Fuori dalla rete stradale: punta a una città, un nodo o una strada.",
         "disconnected": "Offline: ordine non trasmesso.",
         "timeout": "Nessuna risposta dal server."
+      },
+      "strikeTitle": "Ordine di attacco (strike)",
+      "patrolTitle": "Ordine di pattuglia",
+      "reconTitle": "Missione di ricognizione",
+      "blockadeTitle": "Ordine di blocco",
+      "radius": "Raggio",
+      "reasons": {
+        "target_invalid": "Bersaglio non valido.",
+        "target_not_visible": "Bersaglio fuori vista: individuatelo prima (radar, ricognizione, satellite).",
+        "target_friendly": "Bersaglio amico: impossibile attaccarlo.",
+        "air_defense_air_only": "{{name}}: difesa aerea, solo bersagli aerei (aerei, elicotteri, droni, missili).",
+        "cannot_hit_class": "{{name}} non può colpire questo tipo di bersaglio ({{cls}}).",
+        "out_of_weapon_range": "{{name}}: bersaglio fuori portata di tiro ({{dist}} km, portata {{min}}–{{max}} km).",
+        "missile_out_of_range": "Bersaglio fuori portata del missile {{name}} ({{dist}} km per {{range}} km di portata).",
+        "aircraft_out_of_radius": "Fuori dal raggio d'azione: {{dist}} km dalla base per {{range}} km.",
+        "aircraft_cooldown": "Velivolo in approntamento a terra (pronto tra {{min}} min).",
+        "partial": "Ordine trasmesso; {{count}} gruppo/i escluso/i: {{detail}}",
+        "munition_use_strike": "Munizioni: usate l'ordine di attacco (strike).",
+        "ceasefire": "Cessate il fuoco in vigore."
+      },
+      "classes": {
+        "infantry": "fanteria",
+        "armor": "corazzato",
+        "aircraft": "aereo",
+        "helicopter": "elicottero",
+        "drone": "drone",
+        "ship": "nave",
+        "submarine": "sottomarino",
+        "missile": "missile",
+        "building": "installazione"
       }
     },
     "status": {
@@ -457,6 +487,43 @@
       "reserve": "Riserva illimitata",
       "stockTip": "{{name}}: scorta illimitata",
       "budgetTip": "Tesoro illimitato — apri l'economia"
+    },
+    "actions": {
+      "title": "Ordini",
+      "move": "Muovi",
+      "attack": "Attacca",
+      "strike": "Colpisci",
+      "intercept": "Intercetta",
+      "patrol": "Pattuglia",
+      "recon": "Ricognizione",
+      "blockade": "Blocco",
+      "rtb": "Rientro",
+      "rtbAir": "Rientro alla base",
+      "rtbSea": "Rientro in porto",
+      "resupply": "Rifornisci",
+      "stop": "Ferma",
+      "reasons": {
+        "static": "Unità fissa: non si sposta.",
+        "noWeapon": "Nessuna arma offensiva nella selezione.",
+        "noStrike": "Attacchi riservati a missili, aviazione e navi lanciamissili.",
+        "noIntercept": "Intercettazione riservata ai velivoli armati contro bersagli aerei.",
+        "airSeaOnly": "Pattuglia riservata a velivoli e navi.",
+        "noRecon": "Ricognizione riservata a droni e aerei da ricognizione.",
+        "seaOnly": "Blocco riservato alle navi.",
+        "idle": "Niente da fermare: unità già ferme.",
+        "none": "Azione non disponibile."
+      },
+      "pick": {
+        "move": "fate clic sulla destinazione sulla mappa.",
+        "attack": "fate clic su un'unità nemica.",
+        "intercept": "fate clic su un velivolo nemico.",
+        "strike": "fate clic su un'unità nemica o un punto della mappa.",
+        "patrol": "fate clic sul centro della zona di pattuglia.",
+        "recon": "fate clic sulla zona da sorvolare.",
+        "blockade": "fate clic su una provincia costiera nemica.",
+        "needEnemy": "Scegliete un'unità nemica visibile.",
+        "needPort": "Scegliete una provincia costiera straniera."
+      }
     }
   },
   "province": {
@@ -3205,6 +3272,12 @@
       "strikeNoEffect": {
         "title": "Attacco senza effetto",
         "text": "{{system}}: obiettivo non raggiunto."
+      },
+      "strikeAborted": {
+        "title": "Attacco annullato",
+        "gone": "{{system}}: bersaglio scomparso (distrutto o irraggiungibile). Rientro alla base.",
+        "moved": "{{system}}: bersaglio irraggiungibile (si è spostato). Rientro alla base.",
+        "lost": "{{system}}: bersaglio perso di vista. Rientro alla base."
       },
       "asatHit": {
         "title": "Satellite distrutto",

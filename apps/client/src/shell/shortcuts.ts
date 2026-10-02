@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useGame } from '../store/game.js';
 import { topWindow, useUi } from '../store/ui.js';
 import { SECTIONS } from './sections.js';
+import { unitActionKey } from './UnitOrders.js';
 
 function typing(target: EventTarget | null): boolean {
   const el = target as HTMLElement | null;
@@ -17,7 +18,8 @@ function typing(target: EventTarget | null): boolean {
 /**
  * Raccourcis clavier (ordinateur) :
  *  Ctrl+K ou « : » console · Espace pause · 1-5 vitesses · lettres : fenêtres (A, G, P, R, E, I, D, C,
- *  N, B, M, O, « , ») · L légende · « ? » aide · Échap : annule l'ordre, ferme la fiche,
+ *  N, B, M, O, « , ») ; avec une sélection d'unités, les lettres des actions (M, A, F, I, P, V, B,
+ *  R, S) commandent d'abord · L légende · « ? » aide · Échap : annule l'ordre, ferme la fiche,
  *  désélectionne, ferme la fenêtre.
  */
 export function useShortcuts(onHelp: () => void) {
@@ -46,7 +48,8 @@ export function useShortcuts(onHelp: () => void) {
         connection.setSpeed(s);
         if (clock?.paused) connection.setPaused(false);
       } else if (e.key === 'Escape') {
-        if (ui.pendingOrder) ui.setPending(null);
+        if (ui.targeting) ui.setTargeting(null);
+        else if (ui.pendingOrder) ui.setPending(null);
         else if (ui.sheet) ui.closeSheet();
         else if (ui.alertsOpen) ui.setAlertsOpen(false);
         else if (ui.selection.length || ui.inspected) ui.clearSelection();
@@ -59,6 +62,9 @@ export function useShortcuts(onHelp: () => void) {
         onHelp();
       } else if (e.key.toLowerCase() === 'l') {
         ui.setLegendOpen(!ui.legendOpen);
+      } else if (ui.selection.length && /^[a-z]$/i.test(e.key) && unitActionKey(e.key)) {
+        // Sélection d'unités : les lettres commandent (Déplacer, Attaquer, Frapper…) avant les fenêtres.
+        e.preventDefault();
       } else {
         const s = SECTIONS.find((x) => x.key.toLowerCase() === e.key.toLowerCase());
         if (s) {

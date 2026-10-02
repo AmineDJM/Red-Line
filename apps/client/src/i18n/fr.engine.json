@@ -127,6 +127,12 @@
         "title": "Frappe sans effet",
         "text": "{{system}} : objectif non atteint."
       },
+      "strikeAborted": {
+        "title": "Frappe annulée",
+        "gone": "{{system}} : objectif disparu (détruit ou hors d'atteinte). Retour à la base.",
+        "moved": "{{system}} : objectif hors d'atteinte (il s'est déplacé). Retour à la base.",
+        "lost": "{{system}} : objectif perdu de vue. Retour à la base."
+      },
       "asatHit": {
         "title": "Satellite détruit",
         "text": "{{system}} ({{owner}})"

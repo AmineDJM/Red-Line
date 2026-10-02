@@ -399,6 +399,36 @@
         "off_road": "Yol ağının dışında: bir şehri, bir düğümü veya bir yolu hedefleyin.",
         "disconnected": "Çevrimdışı: emir iletilmedi.",
         "timeout": "Sunucudan yanıt yok."
+      },
+      "strikeTitle": "Vuruş emri",
+      "patrolTitle": "Devriye emri",
+      "reconTitle": "Keşif görevi",
+      "blockadeTitle": "Abluka emri",
+      "radius": "Yarıçap",
+      "reasons": {
+        "target_invalid": "Geçersiz hedef.",
+        "target_not_visible": "Hedef görüş dışında: önce tespit edin (radar, keşif, uydu).",
+        "target_friendly": "Dost hedef: saldırılamaz.",
+        "air_defense_air_only": "{{name}}: hava savunma, yalnızca hava hedefleri (uçak, helikopter, İHA, füze).",
+        "cannot_hit_class": "{{name}} bu tür hedefi vuramaz ({{cls}}).",
+        "out_of_weapon_range": "{{name}}: hedef atış menzili dışında ({{dist}} km, menzil {{min}}–{{max}} km).",
+        "missile_out_of_range": "Hedef {{name}} füzesinin menzili dışında ({{dist}} km, menzil {{range}} km).",
+        "aircraft_out_of_radius": "Harekât yarıçapı dışında: üsten {{dist}} km, sınır {{range}} km.",
+        "aircraft_cooldown": "Uçak yerde hazırlanıyor ({{min}} dk sonra hazır).",
+        "partial": "Emir iletildi; {{count}} birlik dışarıda bırakıldı: {{detail}}",
+        "munition_use_strike": "Mühimmat: vuruş emrini kullanın.",
+        "ceasefire": "Ateşkes yürürlükte."
+      },
+      "classes": {
+        "infantry": "piyade",
+        "armor": "zırhlı",
+        "aircraft": "uçak",
+        "helicopter": "helikopter",
+        "drone": "İHA",
+        "ship": "gemi",
+        "submarine": "denizaltı",
+        "missile": "füze",
+        "building": "tesis"
       }
     },
     "status": {
@@ -451,6 +481,43 @@
       "reserve": "Sınırsız rezerv",
       "stockTip": "{{name}}: sınırsız stok",
       "budgetTip": "Sınırsız hazine — ekonomiyi aç"
+    },
+    "actions": {
+      "title": "Emirler",
+      "move": "Hareket",
+      "attack": "Saldır",
+      "strike": "Vur",
+      "intercept": "Önle",
+      "patrol": "Devriye",
+      "recon": "Keşif",
+      "blockade": "Abluka",
+      "rtb": "Dönüş",
+      "rtbAir": "Üsse dön",
+      "rtbSea": "Limana dön",
+      "resupply": "İkmal",
+      "stop": "Dur",
+      "reasons": {
+        "static": "Sabit birlik: hareket etmez.",
+        "noWeapon": "Seçimde taarruz silahı yok.",
+        "noStrike": "Vuruşlar füzeler, hava kuvvetleri ve füze gemileri içindir.",
+        "noIntercept": "Önleme, hava hedeflerine karşı silahlı hava araçları içindir.",
+        "airSeaOnly": "Devriye hava araçları ve gemiler içindir.",
+        "noRecon": "Keşif İHA'lar ve keşif uçakları içindir.",
+        "seaOnly": "Abluka gemiler içindir.",
+        "idle": "Durdurulacak bir şey yok: birlikler zaten duruyor.",
+        "none": "Eylem kullanılamıyor."
+      },
+      "pick": {
+        "move": "haritada varış noktasına tıklayın.",
+        "attack": "bir düşman birliğine tıklayın.",
+        "intercept": "bir düşman hava aracına tıklayın.",
+        "strike": "bir düşman birliğine veya haritada bir noktaya tıklayın.",
+        "patrol": "devriye bölgesinin merkezine tıklayın.",
+        "recon": "üzerinden uçulacak bölgeye tıklayın.",
+        "blockade": "kıyıdaki bir düşman iline tıklayın.",
+        "needEnemy": "Görünür bir düşman birliği seçin.",
+        "needPort": "Kıyıdaki yabancı bir il seçin."
+      }
     }
   },
   "province": {
@@ -3161,6 +3228,12 @@
       "strikeNoEffect": {
         "title": "Etkisiz saldırı",
         "text": "{{system}}: hedefe ulaşılamadı."
+      },
+      "strikeAborted": {
+        "title": "Vuruş iptal edildi",
+        "gone": "{{system}}: hedef yok oldu (imha edildi veya erişilemez). Üsse dönülüyor.",
+        "moved": "{{system}}: hedef erişilemez (yer değiştirdi). Üsse dönülüyor.",
+        "lost": "{{system}}: hedef gözden kayboldu. Üsse dönülüyor."
       },
       "asatHit": {
         "title": "Uydu imha edildi",
