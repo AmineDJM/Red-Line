@@ -6,11 +6,14 @@
  *   effectif, barre d'état, pastilles d'état, cartes empilées pour une pile ;
  * - bâtiment (`bld|…`) : petite tuile avec pictogramme et état (endommagé, hors service, réparation) ;
  * - ville (`city|…`) : marqueur proportionné, capitale distinguée ;
- * - fortification (`fort|n`).
+ * - fortification (`fort|n`) ;
+ * - ressources d'une province (`res|principale|richesse|secondaire`), en ligne devant le nom de ville.
  *
  * Un pion est UNE image : l'ordre d'empilement entre pions voisins reste correct (symbol-sort-key),
  * ce qui ne serait pas le cas avec un calque par composant.
  */
+import { ICONS } from '@redline/ui';
+import type { Resource } from '@redline/shared';
 import { t } from '../i18n/index.js';
 import { FLAG_H, FLAG_W, flags } from './flagCache.js';
 import { drawGlyph, type GlyphId } from './glyphs.js';
@@ -720,6 +723,78 @@ export function drawFort(level: number): SpriteImage {
   return out(c);
 }
 
+// ——— Ressources des provinces ———
+
+/** Dimensions (px CSS) de l'insigne de ressources : tuile principale, secondaire plus petite. */
+export const RES_TILE = 15;
+export const RES_TILE_2 = 11;
+
+/** Pictogramme d'interface (viewBox 24, au trait) tracé au canevas : mêmes icônes que la barre du haut. */
+function drawIcon(
+  ctx: CanvasRenderingContext2D,
+  name: Resource,
+  x: number,
+  y: number,
+  size: number,
+  color: string,
+) {
+  const paths = ICONS[name] as readonly string[] | undefined;
+  if (!paths) return;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(size / 24, size / 24);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2.1;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  for (const d of paths) ctx.stroke(new Path2D(d));
+  ctx.restore();
+}
+
+/**
+ * Insigne des ressources d'une province (devant le nom de la ville) : tuile sombre au liseré fin
+ * (ambre pour un gisement majeur) avec le pictogramme de la ressource principale, richesse en
+ * 1 à 3 points ambre (colonne, de bas en haut), ressource secondaire en tuile plus petite et atténuée.
+ */
+export function drawResource(
+  main: Resource,
+  richness: number,
+  secondary: Resource | null,
+): SpriteImage {
+  const T = RES_TILE;
+  const T2 = RES_TILE_2;
+  const pipX = 1 + T + 2;
+  const w = pipX + 3 + (secondary ? 3 + T2 : 0) + 1;
+  const h = T + 2;
+  const { c, ctx } = canvas(w, h);
+  const tile = (x: number, y: number, size: number, edge: string) => {
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,0.6)';
+    ctx.shadowBlur = 2;
+    rr(ctx, x, y, size, size, 2.5);
+    ctx.fillStyle = 'rgba(10,14,19,0.94)';
+    ctx.fill();
+    ctx.restore();
+    ctx.strokeStyle = edge;
+    ctx.lineWidth = 1;
+    rr(ctx, x + 0.5, y + 0.5, size - 1, size - 1, 2.2);
+    ctx.stroke();
+  };
+  const rich = Math.max(1, Math.min(3, Math.round(richness)));
+  tile(1, 1, T, rich === 3 ? C.amber : 'rgba(214,221,230,0.45)');
+  drawIcon(ctx, main, 3, 3, T - 4, C.text);
+  for (let i = 0; i < 3; i++) {
+    ctx.fillStyle = i < rich ? C.amber : '#2a3644';
+    ctx.fillRect(pipX, 1 + T - 3.4 - i * 4.6, 2.6, 2.6);
+  }
+  if (secondary) {
+    const x = pipX + 3 + 3;
+    tile(x, 1 + (T - T2) / 2, T2, 'rgba(214,221,230,0.28)');
+    drawIcon(ctx, secondary, x + 1.75, 1 + (T - T2) / 2 + 1.75, T2 - 3.5, '#9aa8b6');
+  }
+  return out(c);
+}
+
 // ——— Résolution des identifiants ———
 
 /**
@@ -768,6 +843,19 @@ export async function resolveSprite(
   }
   if (id.startsWith('fort|')) {
     add(id, drawFort(Number(id.split('|')[1])));
+    return true;
+  }
+  if (id.startsWith('res|')) {
+    const [, main, rich, sec] = id.split('|');
+    if (!main || !(main in ICONS)) return false;
+    add(
+      id,
+      drawResource(
+        main as Resource,
+        Number(rich ?? 1),
+        sec && sec in ICONS ? (sec as Resource) : null,
+      ),
+    );
     return true;
   }
   return false;

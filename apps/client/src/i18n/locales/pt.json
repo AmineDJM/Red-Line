@@ -886,13 +886,12 @@
     "ui": {
       "build": "Construir",
       "upgrade": "Nível {{level}}",
+      "upgradeTo": "Melhoria para o nível {{level}}",
       "upgrading": "Melhoria N{{level}}",
       "repair": "Reparar",
       "repairing": "Reparo",
       "health": "Estado do edifício",
       "operational": "Operacional",
-      "already": "Já construído",
-      "coastalOnly": "Apenas província costeira",
       "costTip": "Custo {{cost}} · duração {{time}}",
       "buildStarted": "Construção iniciada: {{name}}",
       "upgradeStarted": "Melhoria iniciada: {{name}} (N{{level}})",
@@ -906,6 +905,11 @@
         "no_resource": "Recurso ausente: {{resource}}",
         "coastal_only": "Apenas província costeira",
         "not_urban": "Requer polo eletrônico ou grande cidade"
+      },
+      "hidden": {
+        "no_resource": "Indisponível aqui, sem jazida: {{list}}.",
+        "coastal_only": "Indisponível aqui, província sem litoral: {{list}}.",
+        "not_urban": "Indisponível aqui, nem polo eletrônico nem grande cidade: {{list}}."
       }
     },
     "fortification": "Fortificações"
@@ -1159,7 +1163,9 @@
     },
     "settings": {
       "reduceMotion": "Reduzir animações",
-      "reduceMotionHelp": "Desativa os efeitos de combate (disparos, explosões), as pulsações e os tracejados animados do mapa."
+      "reduceMotionHelp": "Desativa os efeitos de combate (disparos, explosões), as pulsações e os tracejados animados do mapa.",
+      "resourceIcons": "Recursos das províncias no mapa",
+      "resourceIconsHelp": "Ícone do recurso principal (e secundário) antes do nome da cidade, riqueza em pontos (1 a 3), só de perto."
     }
   },
   "legal": {
@@ -2077,6 +2083,8 @@
     "producers_many": "{{count}} províncias",
     "producers_other": "{{count}} províncias",
     "noProducer": "Nenhuma província produtora: compre no mercado.",
+    "nationalFloor": "Produção nacional mínima",
+    "nationalFloorTip": "Piso nacional: produção doméstica mínima (refino, reciclagem, pequenas jazidas, agricultura de subsistência), garantida mesmo sem província produtora.",
     "servicesProvinces_one": "{{count}} província sem recursos (apenas dinheiro: serviços, finanças)",
     "servicesProvinces_many": "{{count}} províncias sem recursos (apenas dinheiro: serviços, finanças)",
     "servicesProvinces_other": "{{count}} províncias sem recursos (apenas dinheiro: serviços, finanças)"

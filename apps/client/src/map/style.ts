@@ -39,6 +39,8 @@ export interface StyleInput {
   cities?: FeatureCollection | null;
   /** Noms des provinces (centroïdes), affichés de près quand ils diffèrent de la ville. */
   provinceLabels?: FeatureCollection | null;
+  /** Insigne des ressources des provinces devant le nom des villes (défaut : oui). */
+  resources?: boolean;
 }
 
 /** Groupes de calques pilotables par l'interface (`GameMap.setLayerGroup`). */
@@ -52,7 +54,8 @@ export type MapLayerGroup =
   | 'fog'
   | 'intel'
   | 'radar'
-  | 'satellites';
+  | 'satellites'
+  | 'resources';
 
 /** Groupes masqués au démarrage. */
 export const HIDDEN_BY_DEFAULT: MapLayerGroup[] = ['intel'];
@@ -123,7 +126,13 @@ export const LAYER_GROUPS: Record<MapLayerGroup, string[]> = {
   intel: ['intel-fill', 'intel-line', 'intel-badges', 'radar-foreign'],
   radar: ['radar-own'],
   satellites: ['sat-fill', 'sat-line'],
+  // Insigne des ressources : porté par l'étiquette des villes (GameMap.setLayerGroup réécrit leur
+  // `text-field`), aucun calque propre.
+  resources: [],
 };
+
+/** Calques d'étiquettes de villes dont le texte porte l'insigne de ressources. */
+export const CITY_LABEL_LAYERS = [0, 1, 2, 3].map((cls) => [`cities-${cls}`, cls] as const);
 
 const geo = (
   data: FeatureCollection | null = EMPTY,
@@ -1565,21 +1574,80 @@ function headingPaint(): SymbolLayerSpecification['paint'] {
   };
 }
 
+/** Classes de ville : [classe, zoom mini, taille du texte, police, halo, zoom de la ligne « population »]. */
+const CITY_SPECS: [number, number, number, string, number, number][] = [
+  [0, 2.2, 12.5, FONTS.semibold, 1.5, 4.6],
+  [1, 3.6, 11, FONTS.semibold, 1.3, 5.6],
+  [2, 5, 10.5, FONTS.regular, 1.2, 7],
+  [3, 6.3, 10, FONTS.regular, 1.2, 8.2],
+];
+
+/** Zoom à partir duquel l'insigne de ressources précède le nom des villes (pas au zoom monde). */
+export const RESOURCE_ICON_ZOOM = 4.8;
+
+/**
+ * Nom d'une ville (villes des provinces, glyphes disponibles) : nom seul, puis population en seconde
+ * ligne de près, et, si `resources`, insigne de ressources de la province en ligne devant le nom à
+ * partir de RESOURCE_ICON_ZOOM (image `res|…` de la propriété `res`, centrée sur la ligne). L'insigne
+ * fait partie de l'étiquette : il hérite de son placement (au-dessus du pion posé sur la ville) et de
+ * ses collisions, sans jamais chevaucher le nom ni le pion.
+ */
+export function cityTextField(cls: number, resources: boolean): ExpressionSpecification {
+  const spec = CITY_SPECS.find((x) => x[0] === cls) ?? CITY_SPECS[CITY_SPECS.length - 1]!;
+  const popZoom = spec[5];
+  const resZoom = Math.max(spec[1], RESOURCE_ICON_ZOOM);
+  const name: ExpressionSpecification = ['get', 'name'];
+  const noPop: ExpressionSpecification = ['==', ['coalesce', ['get', 'pop'], ''], ''];
+  const noRes: ExpressionSpecification = ['==', ['coalesce', ['get', 'res'], ''], ''];
+  const popPart = [
+    '\n',
+    {},
+    ['get', 'pop'],
+    { 'font-scale': 0.78, 'text-color': 'rgba(170,184,199,0.92)' },
+  ];
+  const resPart = [['image', ['get', 'res']], { 'vertical-align': 'center' }, ' ', {}];
+  const text = (res: boolean, pop: boolean): ExpressionSpecification => {
+    const fmt = (r: boolean, p: boolean): ExpressionSpecification =>
+      ['format', ...(r ? resPart : []), name, {}, ...(p ? popPart : [])] as ExpressionSpecification;
+    if (!res && !pop) return name;
+    if (res && pop)
+      return [
+        'case',
+        noRes,
+        ['case', noPop, name, fmt(false, true)],
+        ['case', noPop, fmt(true, false), fmt(true, true)],
+      ];
+    if (res) return ['case', noRes, name, fmt(true, false)];
+    return ['case', noPop, name, fmt(false, true)];
+  };
+  // Paliers croissants : (zoom, ressources ?, population ?).
+  const stops = [
+    ...(resources ? [{ z: resZoom, k: 'res' as const }] : []),
+    { z: popZoom, k: 'pop' as const },
+  ].sort((a, b) => a.z - b.z);
+  const out: unknown[] = ['step', ['zoom'], name];
+  let r = false;
+  let p = false;
+  for (const st of stops) {
+    if (st.k === 'res') r = true;
+    else p = true;
+    // Paliers égaux : un seul palier (les deux à la fois).
+    if (out[out.length - 2] === st.z) out[out.length - 1] = text(r, p);
+    else out.push(st.z, text(r, p));
+  }
+  return out as ExpressionSpecification;
+}
+
 /**
  * Villes des provinces, façon Conflict of Nations : capitales dès le zoom monde, grandes villes au
- * zoom région, puis villes moyennes et petites de près. Marqueur (image) et nom à droite.
+ * zoom région, puis villes moyennes et petites de près. Marqueur (image) et nom au-dessus ; de près,
+ * insigne des ressources de la province devant le nom (`cityTextField`).
  * Sans villes de provinces, repli sur les villes du fond vectoriel.
  */
 function cityLayers(i: StyleInput): LayerSpecification[] {
   const src = i.cities ? 'cities' : 'basemap-cities';
   const out: LayerSpecification[] = [];
-  const specs: [number, number, number, string, number, number][] = [
-    // classe, zoom mini, taille du texte, police, halo, zoom de la ligne « population »
-    [0, 2.2, 12.5, FONTS.semibold, 1.5, 4.6],
-    [1, 3.6, 11, FONTS.semibold, 1.3, 5.6],
-    [2, 5, 10.5, FONTS.regular, 1.2, 7],
-    [3, 6.3, 10, FONTS.regular, 1.2, 8.2],
-  ];
+  const specs = CITY_SPECS;
   const clsExpr: ExpressionSpecification = i.cities
     ? ['get', 'cls']
     : [
@@ -1592,7 +1660,7 @@ function cityLayers(i: StyleInput): LayerSpecification[] {
         2,
         3,
       ];
-  for (const [cls, minzoom, size, font, halo, popZoom] of specs) {
+  for (const [cls, minzoom, size, font, halo] of specs) {
     const l = label(i.glyphs, ['get', 'name'], {
       style: `city-${cls}` as TextStyle,
       font,
@@ -1604,26 +1672,10 @@ function cityLayers(i: StyleInput): LayerSpecification[] {
       upper: false,
     });
     const icon = i.cities ? ['get', 'img'] : `city|${cls}|none`;
-    // Population en seconde ligne (plus petite, atténuée) à partir d'un zoom propre à la classe.
-    const name: ExpressionSpecification = ['get', 'name'];
-    const withPop: ExpressionSpecification = [
-      'case',
-      ['==', ['coalesce', ['get', 'pop'], ''], ''],
-      name,
-      [
-        'format',
-        name,
-        {},
-        '\n',
-        {},
-        ['get', 'pop'],
-        { 'font-scale': 0.78, 'text-color': 'rgba(170,184,199,0.92)' },
-      ],
-    ];
     const layout: Record<string, unknown> = i.glyphs
       ? {
           ...l.layout!,
-          ...(i.cities ? { 'text-field': ['step', ['zoom'], name, popZoom, withPop] } : {}),
+          ...(i.cities ? { 'text-field': cityTextField(cls, i.resources ?? true) } : {}),
           'icon-image': icon,
           'icon-allow-overlap': true,
           'text-optional': true,

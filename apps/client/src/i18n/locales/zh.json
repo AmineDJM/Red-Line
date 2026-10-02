@@ -856,13 +856,12 @@
     "ui": {
       "build": "建造",
       "upgrade": "等级 {{level}}",
+      "upgradeTo": "升级至 {{level}} 级",
       "upgrading": "升级 N{{level}}",
       "repair": "修复",
       "repairing": "修复中",
       "health": "建筑状态",
       "operational": "运作中",
-      "already": "已建成",
-      "coastalOnly": "仅限沿海省份",
       "costTip": "成本 {{cost}} · 耗时 {{time}}",
       "buildStarted": "已开始建造：{{name}}",
       "upgradeStarted": "已开始升级：{{name}}（N{{level}}）",
@@ -876,6 +875,11 @@
         "no_resource": "缺少资源：{{resource}}",
         "coastal_only": "仅限沿海省份",
         "not_urban": "需要电子产业中心或大城市"
+      },
+      "hidden": {
+        "no_resource": "此处不可用，无矿藏：{{list}}。",
+        "coastal_only": "此处不可用，内陆省份：{{list}}。",
+        "not_urban": "此处不可用，既非电子产业中心也非大城市：{{list}}。"
       }
     },
     "fortification": "防御工事"
@@ -1125,7 +1129,9 @@
     },
     "settings": {
       "reduceMotion": "减少动画",
-      "reduceMotionHelp": "关闭战斗特效（射击、爆炸）、脉冲和地图上的动画虚线。"
+      "reduceMotionHelp": "关闭战斗特效（射击、爆炸）、脉冲和地图上的动画虚线。",
+      "resourceIcons": "地图上的省份资源",
+      "resourceIconsHelp": "在城市名称前显示主要（及次要）资源图标，以圆点表示丰度（1 至 3），仅在近距离显示。"
     }
   },
   "legal": {
@@ -2031,6 +2037,8 @@
     "byResource": "按资源和省份统计的产量",
     "producers_other": "{{count}} 个省份",
     "noProducer": "没有产出省份：请在市场上购买。",
+    "nationalFloor": "全国最低产量",
+    "nationalFloorTip": "全国下限：最低国内产量（炼油、回收、小型矿藏、自给农业），即使没有产出省份也有保障。",
     "servicesProvinces_other": "{{count}} 个省份没有资源（仅产出资金：服务业、金融）"
   },
   "armies": {

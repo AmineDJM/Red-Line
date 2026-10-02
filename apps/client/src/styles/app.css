@@ -1651,6 +1651,20 @@ code {
 .buildmenu__cost--poor {
   color: var(--rl-red);
 }
+.buildmenu__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+/* Bâtiments impossibles ici : pas de liste grisée, une seule ligne discrète. */
+.buildmenu__hidden {
+  margin: 0;
+  padding: 0 2px;
+  color: var(--rl-text-faint);
+  font-size: var(--rl-fs-2xs);
+  line-height: 1.4;
+}
 
 /* Barre de confirmation d'ordre */
 .orderbar {

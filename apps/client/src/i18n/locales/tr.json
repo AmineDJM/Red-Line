@@ -871,13 +871,12 @@
     "ui": {
       "build": "İnşa et",
       "upgrade": "Seviye {{level}}",
+      "upgradeTo": "{{level}}. seviyeye yükseltme",
       "upgrading": "Yükseltme S{{level}}",
       "repair": "Onar",
       "repairing": "Onarım",
       "health": "Bina durumu",
       "operational": "Faal",
-      "already": "Zaten inşa edildi",
-      "coastalOnly": "Yalnızca kıyı ili",
       "costTip": "Maliyet {{cost}} · süre {{time}}",
       "buildStarted": "İnşaat başladı: {{name}}",
       "upgradeStarted": "Yükseltme başladı: {{name}} (S{{level}})",
@@ -891,6 +890,11 @@
         "no_resource": "Kaynak yok: {{resource}}",
         "coastal_only": "Yalnızca kıyı eyaleti",
         "not_urban": "Elektronik merkezi veya büyük şehir gerekli"
+      },
+      "hidden": {
+        "no_resource": "Burada kullanılamaz, yatak yok: {{list}}.",
+        "coastal_only": "Burada kullanılamaz, kıyısı olmayan eyalet: {{list}}.",
+        "not_urban": "Burada kullanılamaz, ne elektronik merkezi ne büyük şehir: {{list}}."
       }
     },
     "fortification": "Tahkimatlar"
@@ -1142,7 +1146,9 @@
     },
     "settings": {
       "reduceMotion": "Animasyonları azalt",
-      "reduceMotionHelp": "Çatışma efektlerini (atışlar, patlamalar), nabızları ve haritadaki hareketli çizgileri kapatır."
+      "reduceMotionHelp": "Çatışma efektlerini (atışlar, patlamalar), nabızları ve haritadaki hareketli çizgileri kapatır.",
+      "resourceIcons": "Haritada eyalet kaynakları",
+      "resourceIconsHelp": "Şehir adının önünde ana (ve ikincil) kaynak simgesi, zenginlik noktalarla (1 ila 3), yalnızca yakın görünümde."
     }
   },
   "legal": {
@@ -2054,6 +2060,8 @@
     "producers_one": "{{count}} eyalet",
     "producers_other": "{{count}} eyalet",
     "noProducer": "Üretici eyalet yok: pazardan satın alın.",
+    "nationalFloor": "Asgari ulusal üretim",
+    "nationalFloorTip": "Ulusal taban: asgari yerli üretim (rafinaj, geri dönüşüm, küçük yataklar, geçimlik tarım), üreten eyalet olmasa bile güvence altında.",
     "servicesProvinces_one": "Kaynaksız {{count}} eyalet (yalnızca para: hizmetler, finans)",
     "servicesProvinces_other": "Kaynaksız {{count}} eyalet (yalnızca para: hizmetler, finans)"
   },

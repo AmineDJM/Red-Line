@@ -870,13 +870,12 @@
     "ui": {
       "build": "Construire",
       "upgrade": "Niveau {{level}}",
+      "upgradeTo": "Amélioration au niveau {{level}}",
       "upgrading": "Amélioration N{{level}}",
       "repair": "Réparer",
       "repairing": "Réparation",
       "health": "État du bâtiment",
       "operational": "Opérationnel",
-      "already": "Déjà construit",
-      "coastalOnly": "Province côtière uniquement",
       "costTip": "Coût {{cost}} · durée {{time}}",
       "buildStarted": "Construction lancée : {{name}}",
       "upgradeStarted": "Amélioration lancée : {{name}} (N{{level}})",
@@ -890,6 +889,11 @@
         "no_resource": "Ressource absente : {{resource}}",
         "coastal_only": "Province côtière uniquement",
         "not_urban": "Pôle électronique ou grande ville requis"
+      },
+      "hidden": {
+        "no_resource": "Indisponible ici, faute de gisement : {{list}}.",
+        "coastal_only": "Indisponible ici, province sans façade maritime : {{list}}.",
+        "not_urban": "Indisponible ici, ni pôle électronique ni grande ville : {{list}}."
       }
     },
     "fortification": "Fortifications"
@@ -1839,6 +1843,8 @@
     "producers_one": "{{count}} province",
     "producers_other": "{{count}} provinces",
     "noProducer": "Aucune province productrice : achetez sur le marché.",
+    "nationalFloor": "Production nationale minimale",
+    "nationalFloorTip": "Plancher national : production domestique minimale (raffinage, recyclage, petits gisements, cultures vivrières), assurée même sans province productrice.",
     "servicesProvinces_one": "{{count}} province sans ressource (argent seulement : services, finances)",
     "servicesProvinces_other": "{{count}} provinces sans ressource (argent seulement : services, finances)"
   },

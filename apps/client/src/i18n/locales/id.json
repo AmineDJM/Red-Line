@@ -856,13 +856,12 @@
     "ui": {
       "build": "Bangun",
       "upgrade": "Tingkat {{level}}",
+      "upgradeTo": "Tingkatkan ke level {{level}}",
       "upgrading": "Peningkatan T{{level}}",
       "repair": "Perbaiki",
       "repairing": "Perbaikan",
       "health": "Kondisi bangunan",
       "operational": "Operasional",
-      "already": "Sudah dibangun",
-      "coastalOnly": "Hanya provinsi pesisir",
       "costTip": "Biaya {{cost}} · durasi {{time}}",
       "buildStarted": "Konstruksi dimulai: {{name}}",
       "upgradeStarted": "Peningkatan dimulai: {{name}} (T{{level}})",
@@ -876,6 +875,11 @@
         "no_resource": "Sumber daya tidak ada: {{resource}}",
         "coastal_only": "Hanya provinsi pesisir",
         "not_urban": "Butuh pusat elektronik atau kota besar"
+      },
+      "hidden": {
+        "no_resource": "Tidak tersedia di sini, tidak ada cadangan: {{list}}.",
+        "coastal_only": "Tidak tersedia di sini, provinsi tanpa pantai: {{list}}.",
+        "not_urban": "Tidak tersedia di sini, bukan pusat elektronik maupun kota besar: {{list}}."
       }
     },
     "fortification": "Benteng"
@@ -1125,7 +1129,9 @@
     },
     "settings": {
       "reduceMotion": "Kurangi animasi",
-      "reduceMotionHelp": "Mematikan efek pertempuran (tembakan, ledakan), denyut, dan garis putus animasi peta."
+      "reduceMotionHelp": "Mematikan efek pertempuran (tembakan, ledakan), denyut, dan garis putus animasi peta.",
+      "resourceIcons": "Sumber daya provinsi di peta",
+      "resourceIconsHelp": "Ikon sumber daya utama (dan sekunder) di depan nama kota, kekayaan dalam titik (1 sampai 3), hanya dari dekat."
     }
   },
   "legal": {
@@ -2031,6 +2037,8 @@
     "byResource": "Produksi per sumber daya dan provinsi",
     "producers_other": "{{count}} provinsi",
     "noProducer": "Tidak ada provinsi penghasil: beli di pasar.",
+    "nationalFloor": "Produksi nasional minimum",
+    "nationalFloorTip": "Batas bawah nasional: produksi dalam negeri minimum (pengilangan, daur ulang, cadangan kecil, pertanian subsisten), terjamin meski tanpa provinsi penghasil.",
     "servicesProvinces_other": "{{count}} provinsi tanpa sumber daya (hanya uang: jasa, keuangan)"
   },
   "armies": {

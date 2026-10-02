@@ -886,13 +886,12 @@
     "ui": {
       "build": "Construir",
       "upgrade": "Nivel {{level}}",
+      "upgradeTo": "Mejora al nivel {{level}}",
       "upgrading": "Mejora N{{level}}",
       "repair": "Reparar",
       "repairing": "Reparación",
       "health": "Estado del edificio",
       "operational": "Operativo",
-      "already": "Ya construido",
-      "coastalOnly": "Solo provincia costera",
       "costTip": "Coste {{cost}} · duración {{time}}",
       "buildStarted": "Construcción iniciada: {{name}}",
       "upgradeStarted": "Mejora iniciada: {{name}} (N{{level}})",
@@ -906,6 +905,11 @@
         "no_resource": "Recurso ausente: {{resource}}",
         "coastal_only": "Solo provincia costera",
         "not_urban": "Se requiere un polo electrónico o una gran ciudad"
+      },
+      "hidden": {
+        "no_resource": "No disponible aquí, sin yacimiento: {{list}}.",
+        "coastal_only": "No disponible aquí, provincia sin costa: {{list}}.",
+        "not_urban": "No disponible aquí, ni polo electrónico ni gran ciudad: {{list}}."
       }
     },
     "fortification": "Fortificaciones"
@@ -1159,7 +1163,9 @@
     },
     "settings": {
       "reduceMotion": "Reducir animaciones",
-      "reduceMotionHelp": "Desactiva los efectos de combate (disparos, explosiones), los pulsos y las líneas animadas del mapa."
+      "reduceMotionHelp": "Desactiva los efectos de combate (disparos, explosiones), los pulsos y las líneas animadas del mapa.",
+      "resourceIcons": "Recursos de las provincias en el mapa",
+      "resourceIconsHelp": "Icono del recurso principal (y secundario) delante del nombre de la ciudad, riqueza en puntos (1 a 3), solo de cerca."
     }
   },
   "legal": {
@@ -2077,6 +2083,8 @@
     "producers_many": "{{count}} provincias",
     "producers_other": "{{count}} provincias",
     "noProducer": "Ninguna provincia productora: compre en el mercado.",
+    "nationalFloor": "Producción nacional mínima",
+    "nationalFloorTip": "Mínimo nacional: producción interna mínima (refino, reciclaje, pequeños yacimientos, cultivos de subsistencia), garantizada incluso sin provincia productora.",
     "servicesProvinces_one": "{{count}} provincia sin recursos (solo dinero: servicios, finanzas)",
     "servicesProvinces_many": "{{count}} provincias sin recursos (solo dinero: servicios, finanzas)",
     "servicesProvinces_other": "{{count}} provincias sin recursos (solo dinero: servicios, finanzas)"
