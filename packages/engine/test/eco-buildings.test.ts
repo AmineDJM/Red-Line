@@ -64,7 +64,7 @@ describe('bâtiments : santé, niveaux, effets', () => {
     const s = ecoGame();
     const pv = () => viewFor(s, 'aaa').provinces['aaa-3']!;
     const opt = pv().buildOptions!.find((o) => o.type === 'mine')!;
-    expect(opt).toMatchObject({ level: 1, cost: 6e8, hours: 240 });
+    expect(opt).toMatchObject({ level: 1, cost: 6e7, hours: 240 });
     expect(pv().buildOptions!.some((o) => o.type === 'fortification')).toBe(true);
     const m0 = s.nations.aaa!.money;
     expect(applyOrder(s, 'aaa', { kind: 'build', provinceId: 'aaa-3', building: 'mine' }).ok).toBe(
@@ -74,7 +74,7 @@ describe('bâtiments : santé, niveaux, effets', () => {
     expect(pv().buildOptions!.find((o) => o.type === 'mine')!.blocked).toBe('in_progress');
     advanceTo(s, 240 * HOUR);
     const next = pv().buildingState!.find((b) => b.type === 'mine')!.next!;
-    expect(next).toMatchObject({ level: 2, cost: 6e8 * 1.6, hours: 240 * 1.25 });
+    expect(next).toMatchObject({ level: 2, cost: 6e7 * 1.6, hours: 240 * 1.25 });
     const m1 = s.nations.aaa!.money;
     applyOrder(s, 'aaa', { kind: 'build', provinceId: 'aaa-3', building: 'mine' });
     expect(m1 - s.nations.aaa!.money).toBeCloseTo(next.cost, 0);
@@ -88,7 +88,7 @@ describe('bâtiments : santé, niveaux, effets', () => {
     expect(applyOrder(s, 'aaa', { kind: 'build', provinceId: 'aaa-3', building: 'mine' }).ok).toBe(
       true,
     );
-    expect(s.nations.aaa!.money).toBeCloseTo(m0 - 6e8, 0);
+    expect(s.nations.aaa!.money).toBeCloseTo(m0 - 6e7, 0);
     expect(bstate(s, 'aaa', 'aaa-3', 'mine')).toMatchObject({ level: 0, buildUntil: 240 * HOUR });
     advanceTo(s, 240 * HOUR);
     expect(bstate(s, 'aaa', 'aaa-3', 'mine')).toMatchObject({ level: 1, health: 1 });
@@ -97,7 +97,7 @@ describe('bâtiments : santé, niveaux, effets', () => {
     expect(applyOrder(s, 'aaa', { kind: 'build', provinceId: 'aaa-3', building: 'mine' }).ok).toBe(
       true,
     );
-    expect(s.nations.aaa!.money).toBeCloseTo(m1 - 6e8 * 1.6, 0);
+    expect(s.nations.aaa!.money).toBeCloseTo(m1 - 6e7 * 1.6, 0);
     const up = bstate(s, 'aaa', 'aaa-3', 'mine')!.upgradeUntil!;
     expect(up - s.time).toBeCloseTo(240 * 1.25 * HOUR, -2);
     advanceTo(s, up);

@@ -38,6 +38,7 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
   const selection = useUi((s) => s.selection);
   const clear = useUi((s) => s.clearSelection);
   const openWindow = useUi((s) => s.openWindow);
+  const openSheet = useUi((s) => s.openSheet);
   const toast = useUi((s) => s.toast);
   const view = useGame((s) => s.view);
   const me = useGame((s) => s.me);
@@ -248,7 +249,7 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
                 size="sm"
                 variant="ghost"
                 icon={<Icon name="encyclopedia" size={13} />}
-                onClick={() => openWindow('encyclopedia', { systemId: sys.id })}
+                onClick={() => openSheet(sys.id, u.id)}
               >
                 {t('game.selection.sheet')}
               </Button>
@@ -264,7 +265,7 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
             size="sm"
             variant="ghost"
             icon={<Icon name="encyclopedia" size={13} />}
-            onClick={() => openWindow('encyclopedia', { systemId: sys.id })}
+            onClick={() => openSheet(sys.id, u.id)}
           >
             {t('game.selection.sheet')}
           </Button>

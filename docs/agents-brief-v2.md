@@ -140,25 +140,32 @@ Les modules ne s'importent **jamais** entre eux (ils sont développés en parall
    autorisations nucléaires (mil), mobilisation (eco). Lu par tous.
 2. **Signaux** `signal(state, nom, données)` (`modules/registry.ts`) reçus par `hooks.onSignal` de chaque module :
 
-| Signal                  | Émetteur    | Données                                                            | Réagissent               |
-| ----------------------- | ----------- | ------------------------------------------------------------------ | ------------------------ |
-| `building_hit`          | mil         | `{ pid, building, damage (0..1), by }`                             | eco (santé bâtiment)     |
-| `strike`                | mil         | `{ by, victim, at, kind: 'missile'\|'air'\|'artillery', nuclear }` | diplo (actualité), intel |
-| `nuclear_detonation`    | mil         | `{ by, victim, at, pid }`                                          | diplo, eco               |
-| `battle_end`            | mil         | `{ reportId, at, winner, nations }`                                | diplo (actualité)        |
-| `blockade`              | mil         | `{ by, pid?, straitId?, on }`                                      | eco (commerce), diplo    |
-| `sabotage`              | intel       | `{ by, victim, pid, building, damage }`                            | eco                      |
-| `cyber`                 | intel       | `{ by, victim, kind: 'radar'\|'production'\|'orders', hours }`     | mil, eco                 |
-| `disinformation`        | intel       | `{ by, victim, amount }`                                           | diplo (stabilité)        |
-| `leak`                  | intel       | `{ by, victim, headline, body }`                                   | diplo (actualité)        |
-| `agent_caught`          | intel       | `{ spyNation, onNation }`                                          | diplo (incident)         |
-| `rebels_funded`         | intel/diplo | `{ by, pid, amount }`                                              | diplo                    |
-| `black_market_detected` | intel       | `{ buyer, systemId }`                                              | diplo                    |
-| `research_stolen`       | intel       | `{ by, victim, nodeId }`                                           | eco (accorde le nœud)    |
-| `delivery_intercepted`  | mil         | `{ deliveryId, by }`                                               | eco                      |
-| `alert`                 | tous        | `{ amount, reason }` (hausse de tension)                           | mil (niveau d'alerte)    |
-| `news`                  | tous        | `{ category, headline, body, at, nations }`                        | diplo (fil d'actualité)  |
-| `stability`             | tous        | `{ nation, delta, reason }`                                        | diplo                    |
+| Signal                  | Émetteur    | Données                                                            | Réagissent                |
+| ----------------------- | ----------- | ------------------------------------------------------------------ | ------------------------- |
+| `building_hit`          | mil         | `{ pid, building, damage (0..1), by }`                             | eco (santé bâtiment)      |
+| `strike`                | mil         | `{ by, victim, at, kind: 'missile'\|'air'\|'artillery', nuclear }` | diplo (actualité), intel  |
+| `nuclear_detonation`    | mil         | `{ by, victim, at, pid }`                                          | diplo, eco                |
+| `battle_end`            | mil         | `{ reportId, at, winner, nations }`                                | diplo (actualité)         |
+| `blockade`              | mil         | `{ by, pid?, straitId?, on }`                                      | eco (commerce), diplo     |
+| `sabotage`              | intel       | `{ by, victim, pid, building, damage }`                            | eco                       |
+| `cyber`                 | intel       | `{ by, victim, kind: 'radar'\|'production'\|'orders', hours }`     | mil, eco                  |
+| `disinformation`        | intel       | `{ by, victim, amount }`                                           | diplo (stabilité)         |
+| `leak`                  | intel       | `{ by, victim, headline, body }`                                   | diplo (actualité)         |
+| `agent_caught`          | intel       | `{ spyNation, onNation }`                                          | diplo (incident)          |
+| `rebels_funded`         | intel/diplo | `{ by, pid, amount }`                                              | diplo                     |
+| `black_market_detected` | intel       | `{ buyer, systemId }`                                              | diplo                     |
+| `research_stolen`       | intel       | `{ by, victim, nodeId }`                                           | eco (accorde le nœud)     |
+| `delivery_intercepted`  | mil         | `{ deliveryId, by }`                                               | eco                       |
+| `alert`                 | tous        | `{ amount, reason }` (hausse de tension)                           | mil (niveau d'alerte)     |
+| `news`                  | tous        | `{ category, headline, body, at, nations }`                        | diplo (fil d'actualité)   |
+| `stability`             | tous        | `{ nation, delta, reason }`                                        | diplo                     |
+| `domestic_policy`       | diplo       | `{ nation, policy, on }` (politique intérieure changée)            | —                         |
+| `domestic_event`        | diplo       | `{ nation, kind: 'strike'\|'protest'\|'riot'\|'sabotage', pid }`   | intel (menace intérieure) |
+
+`sabotage` peut aussi venir de diplo (réseau rebelle intérieur) : `{ victim, pid, building, damage, domestic: true }`,
+sans `by`. Clés de modificateurs ajoutées : `production.speed.infantry` (eco, infanterie), `unrest.risk` (diplo
+politiques × intel sécurité intérieure), `site.protection` (intel, site protégé). Tableau partagé : `moraleShift`
+(diplo), `moraleAvg` (eco), `protectedSites` (intel).
 
 Tout signal inconnu est ignoré. Tu peux en ajouter : documente-le dans ton rapport. 3. **Crochets** du cœur (`modules/types.ts`) : `modifier`, `unitModifier`, `canProduce`, `canImport`,
 `placeStartingForces`, `onDailyTick`, `onUnitDestroyed`, `onDamage`, `onProvinceCaptured`, `onWarDeclared`,

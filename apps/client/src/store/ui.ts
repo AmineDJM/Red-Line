@@ -7,8 +7,13 @@ export type PendingOrder =
   | { kind: 'move'; unitIds: UnitId[]; to: LngLat }
   | { kind: 'attack'; unitIds: UnitId[]; targetId: UnitId };
 
-/** Fenêtres de la coque de jeu (une par domaine). */
+/**
+ * Fenêtres de la coque de jeu (une par domaine). Une seule est ouverte à la fois : en ouvrir une
+ * autre la remplace. `armies` : « Mes armées » (groupes sur la carte) ; `army` : « Arsenal de
+ * guerre » (inventaire du matériel possédé).
+ */
 export const WINDOW_IDS = [
+  'armies',
   'army',
   'production',
   'research',
@@ -18,12 +23,25 @@ export const WINDOW_IDS = [
   'council',
   'news',
   'battles',
-  'encyclopedia',
   'chat',
   'shop',
   'settings',
 ] as const;
 export type WindowId = (typeof WINDOW_IDS)[number];
+/**
+ * Fenêtre demandée : `encyclopedia` (ancienne section, supprimée) ouvre le catalogue de
+ * l'Arsenal de guerre.
+ */
+export type WindowRequest = WindowId | 'encyclopedia';
+
+/** Résout un alias de fenêtre (ancienne encyclopédie → catalogue de l'Arsenal de guerre). */
+export function resolveWindow(
+  id: WindowRequest,
+  params: WindowParams = {},
+): { id: WindowId; params: WindowParams } {
+  if (id === 'encyclopedia') return { id: 'army', params: { tab: 'catalog', ...params } };
+  return { id, params };
+}
 
 /** Paramètres d'ouverture (fiche à afficher, onglet, élément ciblé). */
 export interface WindowParams {
@@ -57,6 +75,13 @@ export interface Toast {
   action?: { label: string; onClick: () => void };
 }
 
+/** Fiche d'arme seule (fenêtre modale légère, au-dessus de la fenêtre en cours). */
+export interface WeaponSheetRequest {
+  systemId: string;
+  /** Unité d'origine (fiche ouverte depuis une armée). */
+  unitId?: UnitId;
+}
+
 export interface FocusRequest {
   at: LngLat;
   zoom?: number;
@@ -83,6 +108,8 @@ export interface UiStore {
   alertsOpen: boolean;
   /** Menu « Plus » de la barre de navigation mobile. */
   moreOpen: boolean;
+  /** Fiche d'arme ouverte seule (null si aucune). */
+  sheet: WeaponSheetRequest | null;
 
   select(ids: UnitId[]): void;
   inspect(id: UnitId | null): void;
@@ -99,9 +126,10 @@ export interface UiStore {
   dismissToast(id: number): void;
   setTutorialStep(step: number | null): void;
 
-  openWindow(id: WindowId, params?: WindowParams): void;
+  /** Ouvre une fenêtre ; celle déjà ouverte (autre domaine) est fermée. */
+  openWindow(id: WindowRequest, params?: WindowParams): void;
   closeWindow(id: WindowId): void;
-  toggleWindow(id: WindowId): void;
+  toggleWindow(id: WindowRequest): void;
   focusWindow(id: WindowId): void;
   setWindowRect(id: WindowId, rect: WindowRect): void;
   toggleMaximize(id: WindowId): void;
@@ -109,6 +137,9 @@ export interface UiStore {
   setPaletteOpen(v: boolean, seed?: string): void;
   setAlertsOpen(v: boolean): void;
   setMoreOpen(v: boolean): void;
+  /** Fiche d'arme seule, sans ouvrir le catalogue complet. */
+  openSheet(systemId: string, unitId?: UnitId): void;
+  closeSheet(): void;
 }
 
 function readBool(key: string, fallback: boolean): boolean {
@@ -122,7 +153,8 @@ function readBool(key: string, fallback: boolean): boolean {
 
 /** Tailles par défaut des fenêtres (ordinateur). */
 const WINDOW_SIZE: Record<WindowId, { w: number; h: number }> = {
-  army: { w: 1060, h: 680 },
+  armies: { w: 1320, h: 740 },
+  army: { w: 1280, h: 760 },
   production: { w: 1280, h: 760 },
   research: { w: 1120, h: 700 },
   economy: { w: 980, h: 680 },
@@ -131,10 +163,9 @@ const WINDOW_SIZE: Record<WindowId, { w: number; h: number }> = {
   council: { w: 920, h: 680 },
   news: { w: 620, h: 700 },
   battles: { w: 1120, h: 720 },
-  encyclopedia: { w: 1280, h: 760 },
   chat: { w: 780, h: 620 },
   shop: { w: 900, h: 640 },
-  settings: { w: 520, h: 560 },
+  settings: { w: 520, h: 720 },
 };
 
 /** Zone utile des fenêtres flottantes (sous la barre supérieure, à droite du rail). */
@@ -144,22 +175,24 @@ export function windowBounds() {
   return { top: 52, left: 60, right: w - 8, bottom: h - 8 };
 }
 
-function defaultRect(id: WindowId, index: number) {
+function defaultRect(id: WindowId) {
   const b = windowBounds();
   const size = WINDOW_SIZE[id];
   const w = Math.min(size.w, b.right - b.left - 16);
   const h = Math.min(size.h, b.bottom - b.top - 16);
-  const cascade = (index % 5) * 28;
-  const x = Math.min(b.left + 12 + cascade, b.right - w);
-  const y = Math.min(b.top + 10 + cascade, b.bottom - h);
+  const x = Math.min(b.left + 12, b.right - w);
+  const y = Math.min(b.top + 10, b.bottom - h);
   return { x, y, w, h };
 }
+
+/** Position, taille et agrandissement retenus par fenêtre (rouverte là où on l'avait laissée). */
+const placement = new Map<WindowId, { rect: WindowRect; maximized: boolean }>();
 
 let seq = 0;
 let zTop = 20;
 
 const DRAWER_TO_WINDOW: Partial<Record<Exclude<DrawerId, null>, WindowId>> = {
-  army: 'army',
+  army: 'armies',
   production: 'production',
   layers: 'settings',
 };
@@ -182,6 +215,7 @@ export const useUi = create<UiStore>((set, get) => ({
   paletteSeed: '',
   alertsOpen: false,
   moreOpen: false,
+  sheet: null,
 
   select(ids) {
     set({ selection: ids, inspected: null, pendingOrder: null, selectedProvince: null });
@@ -233,44 +267,48 @@ export const useUi = create<UiStore>((set, get) => ({
     set({ tutorialStep: step });
   },
 
-  openWindow(id, params = {}) {
+  openWindow(req, rawParams = {}) {
+    const { id, params } = resolveWindow(req, rawParams);
     const ws = get().windows;
     const cur = ws.find((w) => w.id === id);
     zTop += 1;
     if (cur) {
+      // Même domaine : nouveaux paramètres ; les autres fenêtres (anciennes versions) sont fermées.
       set({
-        windows: ws.map((w) =>
-          w.id === id ? { ...w, z: zTop, params: { ...w.params, ...params }, seq: ++seq } : w,
-        ),
+        windows: [{ ...cur, z: zTop, params: { ...cur.params, ...params }, seq: ++seq }],
         moreOpen: false,
+        sheet: null,
       });
       return;
     }
+    // Une seule fenêtre principale : la nouvelle remplace la précédente.
+    const kept = placement.get(id);
     set({
       windows: [
-        ...ws,
         {
           id,
-          rect: defaultRect(id, ws.length),
+          rect: kept?.rect ?? defaultRect(id),
           z: zTop,
-          maximized: false,
+          maximized: kept?.maximized ?? false,
           params,
           seq: ++seq,
         },
       ],
       moreOpen: false,
+      sheet: null,
     });
   },
   closeWindow(id) {
     set({ windows: get().windows.filter((w) => w.id !== id) });
   },
-  toggleWindow(id) {
+  toggleWindow(req) {
+    const { id, params } = resolveWindow(req);
     const ws = get().windows;
     const cur = ws.find((w) => w.id === id);
     const top = ws.reduce((m, w) => Math.max(m, w.z), 0);
-    // Fenêtre ouverte mais cachée derrière une autre : on la ramène au premier plan.
-    if (cur && cur.z === top) get().closeWindow(id);
-    else get().openWindow(id);
+    if (cur && cur.z === top && (req === id || cur.params.tab === params.tab))
+      get().closeWindow(id);
+    else get().openWindow(id, params);
   },
   focusWindow(id) {
     const ws = get().windows;
@@ -281,11 +319,15 @@ export const useUi = create<UiStore>((set, get) => ({
     set({ windows: ws.map((w) => (w.id === id ? { ...w, z: zTop } : w)) });
   },
   setWindowRect(id, rect) {
-    set({ windows: get().windows.map((w) => (w.id === id ? { ...w, rect } : w)) });
+    const w = get().windows.find((x) => x.id === id);
+    placement.set(id, { rect, maximized: w?.maximized ?? false });
+    set({ windows: get().windows.map((x) => (x.id === id ? { ...x, rect } : x)) });
   },
   toggleMaximize(id) {
+    const w = get().windows.find((x) => x.id === id);
+    if (w) placement.set(id, { rect: w.rect, maximized: !w.maximized });
     set({
-      windows: get().windows.map((w) => (w.id === id ? { ...w, maximized: !w.maximized } : w)),
+      windows: get().windows.map((x) => (x.id === id ? { ...x, maximized: !x.maximized } : x)),
     });
   },
   closeAllWindows() {
@@ -299,6 +341,12 @@ export const useUi = create<UiStore>((set, get) => ({
   },
   setMoreOpen(v) {
     set({ moreOpen: v });
+  },
+  openSheet(systemId, unitId) {
+    set({ sheet: { systemId, ...(unitId ? { unitId } : {}) }, moreOpen: false });
+  },
+  closeSheet() {
+    set({ sheet: null });
   },
 }));
 

@@ -11,4 +11,7 @@ export * from './economy.js';
 export * from './military.js';
 export * from './intel.js';
 export * from './diplomacy.js';
+export * from './domestic.js';
 export * from './french.js';
+export * from './costs.js';
+export * from './legal.js';

@@ -15,6 +15,7 @@ import {
   resetDb,
   sqlQuery,
   startApp,
+  until,
 } from './helpers.js';
 
 const hasDb = await dbAvailable();
@@ -150,8 +151,11 @@ describe.skipIf(!hasDb || !engine)('mode illimité (compte administrateur)', () 
       expect(joined.json().game.status).toBe('running');
       expect(joined.json().game.unranked).toBe(true);
       expect(unlimitedOf(id)).toEqual(['fra']);
-      const [row] = await sqlQuery((sql) => sql`SELECT unranked FROM games WHERE id = ${id}`);
-      expect(row!.unranked).toBe(true);
+      // L'écriture en base du drapeau passe par la file d'écritures de la partie (asynchrone).
+      await until(async () => {
+        const [row] = await sqlQuery((sql) => sql`SELECT unranked FROM games WHERE id = ${id}`);
+        return row?.unranked === true;
+      }, 'drapeau « non classée » enregistré en base');
 
       const ws = await WsClient.connect(port, id, B.cookie);
       const w = await ws.next('welcome', () => true, 60_000);

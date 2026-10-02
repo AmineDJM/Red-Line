@@ -14,6 +14,7 @@ import {
 } from '@redline/ui';
 import { getApi } from '../api/index.js';
 import { BattleReplay } from '../components/BattleReplay.js';
+import { AarHeader, BattleAarView } from '../components/BattleAar.js';
 import { Ago, NationTag } from '../components/Common.js';
 import { fmtClock, fmtDuration } from '../i18n/index.js';
 import { photoFor, usePhotos } from '../lib/photos.js';
@@ -147,6 +148,7 @@ function Detail({ summary }: { summary: BattleReportSummary }) {
           {t('news.locate')}
         </Button>
       </header>
+      {report?.aar ? <AarHeader aar={report.aar} id={report.id} /> : null}
       {report ? (
         <BattleReplay report={report} />
       ) : error ? (
@@ -154,13 +156,20 @@ function Detail({ summary }: { summary: BattleReportSummary }) {
       ) : (
         <Spinner label={t('app.loading')} />
       )}
-      <div className="battle__sides">
-        <SideTable side={summary.attacker} label={t('battles.attacker')} tone="red" />
-        <SideTable side={summary.defender} label={t('battles.defender')} tone="cyan" />
-      </div>
+      {report?.aar ? (
+        <BattleAarView aar={report.aar} />
+      ) : (
+        <div className="battle__sides">
+          <SideTable side={summary.attacker} label={t('battles.attacker')} tone="red" />
+          <SideTable side={summary.defender} label={t('battles.defender')} tone="cyan" />
+        </div>
+      )}
       {report ? (
         <div className="cols2">
           <Panel title={t('battles.countermeasures')}>
+            {!report.countermeasures.length ? (
+              <p className="hint small">{t('battles.aar.noCountermeasure')}</p>
+            ) : null}
             <ul className="plainlist">
               {report.countermeasures.map((c, i) => (
                 <li key={i} className="cm">
@@ -185,7 +194,10 @@ function Detail({ summary }: { summary: BattleReportSummary }) {
   );
 }
 
-/** Rapports de bataille : pertes, contre-mesures, chronologie, replay animé. */
+/**
+ * Rapports de bataille : rapport après action (situation, forces, bilan, courbe des pertes, phases,
+ * facteurs, conséquences), contre-mesures, chronologie, replay animé.
+ */
 export function BattlesWindow({ win, frame, mobile }: WindowContentProps) {
   const { t } = useTranslation();
   const reports = useGame((s) => s.view?.battleReports ?? []);

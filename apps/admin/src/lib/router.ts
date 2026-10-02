@@ -2,7 +2,8 @@
 import { useEffect, useState } from 'react';
 
 export type MapTab = 'nations' | 'provinces' | 'disputed';
-export type ShopTab = 'packs' | 'promotions' | 'purchases';
+export type ShopTab = 'packs' | 'resources' | 'promotions' | 'purchases';
+export type EconomyTab = 'dashboard' | 'settings' | 'entries';
 
 export type Route =
   | { name: 'catalog' }
@@ -22,12 +23,18 @@ export type Route =
   | { name: 'shop'; tab: ShopTab }
   | { name: 'audit' }
   | { name: 'metrics' }
-  | { name: 'data' };
+  | { name: 'data' }
+  | { name: 'economy'; tab: EconomyTab }
+  | { name: 'announcements' }
+  | { name: 'settings' }
+  | { name: 'archive' }
+  | { name: 'legal' };
 
 export type RouteName = Route['name'];
 
 const MAP_TABS: MapTab[] = ['nations', 'provinces', 'disputed'];
-const SHOP_TABS: ShopTab[] = ['packs', 'promotions', 'purchases'];
+const SHOP_TABS: ShopTab[] = ['packs', 'resources', 'promotions', 'purchases'];
+const ECONOMY_TABS: EconomyTab[] = ['dashboard', 'settings', 'entries'];
 
 export function parseHash(hash: string): Route {
   const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
@@ -64,10 +71,21 @@ export function parseHash(hash: string): Route {
       return b ? { name: 'users', id: b } : { name: 'users' };
     case 'shop':
       return { name: 'shop', tab: SHOP_TABS.includes(b as ShopTab) ? (b as ShopTab) : 'packs' };
+    case 'legal':
+      return { name: 'legal' };
     case 'security':
     case 'audit':
     case 'metrics':
     case 'data':
+      return { name: a };
+    case 'economy':
+      return {
+        name: 'economy',
+        tab: ECONOMY_TABS.includes(b as EconomyTab) ? (b as EconomyTab) : 'dashboard',
+      };
+    case 'announcements':
+    case 'settings':
+    case 'archive':
       return { name: a };
     default:
       return { name: 'catalog' };
@@ -104,6 +122,8 @@ export function href(r: Route): string {
       return r.id ? `#/users/${e(r.id)}` : '#/users';
     case 'shop':
       return `#/shop/${r.tab}`;
+    case 'economy':
+      return `#/economy/${r.tab}`;
     default:
       return `#/${r.name}`;
   }

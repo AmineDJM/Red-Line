@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type { BuiltApp } from '../src/app.js';
-import { SERVER_ROOT } from '../src/paths.js';
+import { REPO_ROOT } from '../src/paths.js';
 import {
   BALANCE,
   WsClient,
@@ -26,12 +26,12 @@ import { fakeState } from './fake-engine.js';
 const hasDb = await dbAvailable();
 const ADMIN = { ADMIN_EMAIL: 'admin@redline.test', ADMIN_PASSWORD: 'motdepasse-admin' };
 
-/** Documents légaux de test : CGV passées en version 2. */
+/** Documents légaux de test (copie des documents faisant foi) : CGV passées en version 3. */
 function legalDir(): string {
   const dir = mkdtempSync(join(tmpdir(), 'redline-legal-'));
-  cpSync(join(SERVER_ROOT, 'legal'), dir, { recursive: true });
+  cpSync(join(REPO_ROOT, 'apps/site/content/fr/legal'), dir, { recursive: true });
   const p = join(dir, 'cgv.md');
-  writeFileSync(p, readFileSync(p, 'utf8').replace(/^version: 1$/m, 'version: 2'));
+  writeFileSync(p, readFileSync(p, 'utf8').replace(/^version: 2$/m, 'version: 3'));
   return dir;
 }
 
@@ -331,10 +331,26 @@ describe.skipIf(!hasDb)('administration (phases 5-6), légal, sécurité', () =>
     const doc = (await built.app.inject({ method: 'GET', url: '/api/legal/cgu' })).json().doc;
     expect(doc).toMatchObject({
       id: 'cgu',
-      version: 1,
+      version: 2,
       title: "Conditions générales d'utilisation",
+      lang: 'fr',
     });
     expect(doc.markdown).toContain('Red Line');
+    // Jetons remplacés : éditeur (réglages par défaut) et contact déduit de l'hôte de la requête.
+    expect(doc.markdown).toContain('921 737 607');
+    expect(doc.markdown).toContain('contact@localhost');
+    expect(doc.markdown).not.toContain('{{');
+    // Traduction anglaise à jour : servie avec ?lang=en ; langue inconnue : version française.
+    const en = (await built.app.inject({ method: 'GET', url: '/api/legal/cgu?lang=en' })).json()
+      .doc;
+    expect(en).toMatchObject({ id: 'cgu', version: 2, title: 'Terms of use', lang: 'en' });
+    const xx = (await built.app.inject({ method: 'GET', url: '/api/legal/cgu?lang=xx' })).json()
+      .doc;
+    expect(xx.lang).toBe('fr');
+    // Mentions légales et cookies : consultables, jamais soumis à acceptation.
+    expect(
+      (await built.app.inject({ method: 'GET', url: '/api/legal/mentions' })).json().doc.title,
+    ).toBe('Mentions légales');
     expect((await built.app.inject({ method: 'GET', url: '/api/legal/autre' })).statusCode).toBe(
       404,
     );
@@ -342,24 +358,24 @@ describe.skipIf(!hasDb)('administration (phases 5-6), légal, sécurité', () =>
     const u = await guest(built.app);
     const req = api(built.app, u.cookie);
     expect((await req('GET', '/api/me')).json().legal.needsAcceptance).toEqual([
-      { id: 'cgu', version: 1 },
-      { id: 'privacy', version: 1 },
+      { id: 'cgu', version: 2 },
+      { id: 'privacy', version: 2 },
     ]);
     expect(
-      (await req('POST', '/api/legal/accept', { docs: [{ id: 'cgv', version: 1 }] })).json().error,
+      (await req('POST', '/api/legal/accept', { docs: [{ id: 'cgv', version: 2 }] })).json().error,
     ).toBe('outdated_version');
-    await req('POST', '/api/legal/accept', { docs: [{ id: 'cgu', version: 1 }] });
+    await req('POST', '/api/legal/accept', { docs: [{ id: 'cgu', version: 2 }] });
     expect((await req('GET', '/api/me')).json().legal.needsAcceptance).toEqual([
-      { id: 'privacy', version: 1 },
+      { id: 'privacy', version: 2 },
     ]);
-    // CGV acceptées en version 1 : la version 2 doit être réacceptée.
+    // CGV acceptées en version 2 : la version 3 doit être réacceptée.
     await sqlQuery(
       (sql) =>
-        sql`INSERT INTO legal_acceptances (user_id, doc_id, version) VALUES (${u.userId}, 'cgv', 1)`,
+        sql`INSERT INTO legal_acceptances (user_id, doc_id, version) VALUES (${u.userId}, 'cgv', 2)`,
     );
     expect((await req('GET', '/api/me')).json().legal.needsAcceptance).toEqual([
-      { id: 'cgv', version: 2 },
-      { id: 'privacy', version: 1 },
+      { id: 'cgv', version: 3 },
+      { id: 'privacy', version: 2 },
     ]);
   });
 

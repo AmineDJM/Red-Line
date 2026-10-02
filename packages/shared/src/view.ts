@@ -22,6 +22,7 @@ import type {
   SatellitePassView,
 } from './military.js';
 import type { IntelView } from './intel.js';
+import type { DomesticView } from './domestic.js';
 import type { CouncilView, DiplomacyView, NewsItem, Relation, StabilityView } from './diplomacy.js';
 
 /** Un segment de trajet en grand cercle, parcouru à vitesse constante entre t0 et t1. */
@@ -222,6 +223,8 @@ export interface PlayerView {
   council?: CouncilView;
   stability?: StabilityView;
   news?: NewsItem[];
+  /** Gestion intérieure : politiques, indicateurs, troubles (onglet Intérieur). */
+  domestic?: DomesticView;
   /** Mode spectateur : vue publique sans brouillard ni secrets. */
   spectator?: boolean;
 }
@@ -247,6 +250,7 @@ export const VIEW_SECTIONS = [
   'council',
   'stability',
   'news',
+  'domestic',
 ] as const;
 
 /** Différence entre deux vues successives. Les champs absents n'ont pas changé. */
@@ -272,6 +276,7 @@ export interface ViewDiff {
   council?: CouncilView;
   stability?: StabilityView;
   news?: NewsItem[];
+  domestic?: DomesticView;
 }
 
 /** Horloge d'une partie : temps de jeu = anchorGame + (maintenant - anchorReal) × speed (0 si en pause). */

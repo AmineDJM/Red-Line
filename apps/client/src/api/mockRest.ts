@@ -8,6 +8,8 @@ import {
   destination,
   distanceKm,
   type Balance,
+  type BattleAar,
+  type BattleAarSide,
   type BattleReport,
   type BattleReportSummary,
   type CosmeticItem,
@@ -22,6 +24,7 @@ import {
   type ProvinceDef,
   type RankingEntry,
   type SeasonView,
+  type ResourceOffer,
   type ShopPack,
   type TimelapseView,
   type WalletEntry,
@@ -398,9 +401,202 @@ export function demoStats(
 
 // ——— Rapport de bataille détaillé ———
 
+const CREW: Partial<Record<WeaponSystem['category'], number>> = {
+  infantry: 600,
+  tank: 4,
+  ifv: 8,
+  artillery: 6,
+  air_defense: 6,
+  fighter: 1,
+  bomber: 4,
+  helicopter: 3,
+  surface_ship: 250,
+  logistics: 5,
+};
+
+/** Rapport après action de démonstration (même forme que celui du moteur). */
+export function demoAar(
+  s: BattleReportSummary,
+  catalog: Map<string, WeaponSystem>,
+  me: NationId | null,
+): BattleAar {
+  const rnd = prng(hash(`${s.id}:aar`));
+  const t0 = s.startedAt;
+  const t1 = s.endedAt ?? s.startedAt + 3 * HOUR;
+  const mine: 'attacker' | 'defender' = s.defender.nations.includes(me ?? '')
+    ? 'defender'
+    : 'attacker';
+  const ex = (v: number) => ({ best: v, min: v, max: v });
+  const rg = (v: number, k: number) => ({
+    best: v,
+    min: Math.round(v * (1 - k)),
+    max: Math.round(v * (1 + k)),
+  });
+  const mk = (key: 'attacker' | 'defender'): BattleAarSide => {
+    const b = key === 'attacker' ? s.attacker : s.defender;
+    const own = key === mine;
+    const k = own ? 0 : 0.25;
+    const est = (v: number) => (own ? ex(v) : rg(v, k));
+    const forces = b.engaged.map((e) => {
+      const sys = catalog.get(e.systemId);
+      const lost = b.losses.find((l) => l.systemId === e.systemId)?.count ?? 0;
+      const crew = sys ? (CREW[sys.category] ?? 2) : 2;
+      const medium: 'land' | 'air' | 'sea' =
+        sys?.movement === 'air' ? 'air' : sys?.movement === 'sea' ? 'sea' : 'land';
+      return {
+        systemId: e.systemId,
+        medium,
+        engaged: est(e.count),
+        destroyed: est(lost),
+        damaged: est(Math.round(lost * (0.5 + rnd()))),
+        captured: ex(0),
+        personnel: est(e.count * crew),
+        munitions: own ? ex(Math.round(e.count * (20 + rnd() * 60))) : ex(0),
+      };
+    });
+    if (!own)
+      forces.push({
+        systemId: null as unknown as string,
+        medium: 'land',
+        engaged: { best: 4, min: 2, max: 6 },
+        destroyed: ex(1),
+        damaged: { best: 1, min: 1, max: 2 },
+        captured: ex(0),
+        personnel: { best: 80, min: 6, max: 3600 },
+        munitions: ex(0),
+      });
+    const sum = (f: (x: (typeof forces)[number]) => { best: number; min: number; max: number }) =>
+      forces.reduce(
+        (a, x) => ({ best: a.best + f(x).best, min: a.min + f(x).min, max: a.max + f(x).max }),
+        { best: 0, min: 0, max: 0 },
+      );
+    const pers = sum((x) => x.destroyed);
+    const killed = Math.round(pers.best * 1.8 + rnd() * 6);
+    return {
+      side: key,
+      nations: [...b.nations],
+      own,
+      ...(own ? {} : { grade: { source: 'B' as const, credibility: 3 as const } }),
+      forces: forces.map((f) => ({ ...f, systemId: f.systemId ?? null })),
+      totals: {
+        personnel: sum((x) => x.personnel),
+        vehicles: sum((x) => (x.medium === 'land' ? x.engaged : ex(0))),
+        aircraft: sum((x) => (x.medium === 'air' ? x.engaged : ex(0))),
+        ships: sum((x) => (x.medium === 'sea' ? x.engaged : ex(0))),
+      },
+      casualties: {
+        killed: est(killed),
+        wounded: est(killed * 2 + 3),
+        missing: est(Math.round(killed / 3)),
+        prisoners: est(key === 'defender' && s.outcome === 'attacker' ? Math.round(killed / 2) : 0),
+      },
+      materiel: { destroyed: pers, damaged: sum((x) => x.damaged), captured: ex(0) },
+      lossesUsd: est(Math.round(pers.best * 4.2e6)),
+      missiles: { launched: est(own ? 12 : 8), shotDown: est(own ? 3 : 5) },
+      interceptions: est(own ? 5 : 3),
+      sorties: sum((x) => (x.medium === 'air' ? x.engaged : ex(0))),
+      munitions: own ? sum((x) => x.munitions) : { best: 900, min: 300, max: 2400 },
+      ...(own ? { generals: ['Gal. Morel'], veterancy: 1.2 } : {}),
+    };
+  };
+  const sides: [BattleAarSide, BattleAarSide] = [mk('attacker'), mk('defender')];
+  const la = sides[0].materiel.destroyed.best;
+  const ld = sides[1].materiel.destroyed.best;
+  const N = 10;
+  const losses = Array.from({ length: N + 1 }, (_, i) => {
+    const f = i / N;
+    const ease = (x: number) => Math.round(x * Math.min(1, f * f * 1.6));
+    return { t: t0 + (t1 - t0) * f, attacker: ease(la), defender: ease(ld) };
+  });
+  const at = (f: number) => t0 + (t1 - t0) * f;
+  return {
+    place: {
+      provinceId: s.provinceId,
+      province: s.title.replace(/^(Bataille|Combats autour) d[e’'] ?/, '') || null,
+      city: null,
+      owner: s.defender.nations[0] ?? null,
+      domain: s.provinceId ? 'land' : 'air',
+      urban: !!s.provinceId,
+    },
+    mySide: mine,
+    sides,
+    phases: [
+      {
+        kind: 'preparation',
+        t0: at(0),
+        t1: at(0.25),
+        side: 'attacker',
+        attackerLosses: 0,
+        defenderLosses: Math.round(ld * 0.2),
+      },
+      {
+        kind: 'assault',
+        t0: at(0.25),
+        t1: at(0.6),
+        side: 'attacker',
+        attackerLosses: Math.round(la * 0.6),
+        defenderLosses: Math.round(ld * 0.5),
+      },
+      {
+        kind: 'counter',
+        t0: at(0.6),
+        t1: at(0.8),
+        side: 'defender',
+        attackerLosses: Math.round(la * 0.4),
+        defenderLosses: Math.round(ld * 0.2),
+      },
+      {
+        kind: 'retreat',
+        t0: at(0.8),
+        t1: at(1),
+        side: 'defender',
+        attackerLosses: 0,
+        defenderLosses: Math.round(ld * 0.1),
+      },
+    ],
+    losses,
+    factors: [
+      { kind: 'numbers', side: 'attacker', positive: true, weight: 0.6, params: { ratio: 2.1 } },
+      {
+        kind: 'air_superiority',
+        side: 'attacker',
+        positive: true,
+        weight: 0.5,
+        params: { kills: 3, strikes: 14 },
+      },
+      { kind: 'entrenched', side: 'defender', positive: true, weight: 0.45, params: { share: 62 } },
+      { kind: 'electronic_warfare', side: mine, positive: true, weight: 0.3, params: { hits: 9 } },
+      { kind: 'supply', side: mine, positive: false, weight: 0.2, params: { share: 35 } },
+    ],
+    result: {
+      verdict:
+        s.outcome === 'ongoing'
+          ? 'ongoing'
+          : s.outcome === 'attacker'
+            ? 'decisive_attacker'
+            : s.outcome === 'defender'
+              ? 'defender'
+              : 'stalemate',
+      captured:
+        s.outcome === 'attacker' && s.provinceId
+          ? [
+              {
+                provinceId: s.provinceId,
+                name: s.title.replace(/^Bataille d[e’'] ?/, ''),
+                by: s.attacker.nations[0]!,
+                at: t1,
+              },
+            ]
+          : [],
+      held: s.outcome === 'defender' ? s.provinceId : null,
+    },
+  };
+}
+
 export function demoBattleReport(
   s: BattleReportSummary,
   catalog: Map<string, WeaponSystem>,
+  me: NationId | null = null,
 ): BattleReport {
   const rnd = prng(hash(s.id));
   const t0 = s.startedAt;
@@ -500,10 +696,35 @@ export function demoBattleReport(
       },
     ],
     replay: { t0, t1, frames, shots },
+    aar: demoAar(s, catalog, me),
   };
 }
 
 // ——— Boutique, classements, légal ———
+
+/** Offres de ressources en jeu (copie de apps/server/shop/config.json). */
+export const DEMO_RESOURCE_OFFERS: ResourceOffer[] = [
+  { id: 'res-credit', name: 'Ligne de crédit', money: 500e6, resources: {}, price: 50 },
+  { id: 'res-loan', name: "Emprunt d'État", money: 2e9, resources: {}, price: 180 },
+  { id: 'res-fund', name: 'Fonds souverain', money: 10e9, resources: {}, price: 800 },
+  { id: 'res-oil', name: 'Cargaison de pétrole', money: 0, resources: { oil: 200 }, price: 40 },
+  { id: 'res-metals', name: 'Minerais et métaux', money: 0, resources: { metals: 200 }, price: 40 },
+  {
+    id: 'res-electronics',
+    name: 'Composants électroniques',
+    money: 0,
+    resources: { electronics: 100 },
+    price: 50,
+  },
+  { id: 'res-food', name: 'Réserves alimentaires', money: 0, resources: { food: 300 }, price: 30 },
+  {
+    id: 'res-logistics',
+    name: 'Lot logistique',
+    money: 0,
+    resources: { oil: 150, metals: 150, electronics: 75, food: 200 },
+    price: 120,
+  },
+];
 
 export const DEMO_PACKS: ShopPack[] = [
   {
@@ -696,6 +917,18 @@ Données traitées : identifiant de compte, adresse e-mail (comptes inscrits), h
 
 Le contenu numérique fourni immédiatement après l’achat entraîne, avec votre accord exprès, la renonciation au droit de rétractation de quatorze jours.`,
   ],
+  mentions: [
+    'Mentions légales',
+    `# Mentions légales
+
+**Version de démonstration.** Éditeur, hébergeur et crédits : voir la page publique.`,
+  ],
+  cookies: [
+    'Cookies et stockage local',
+    `# Cookies
+
+**Version de démonstration.** Un seul cookie strictement nécessaire (session), aucun traceur publicitaire.`,
+  ],
 };
 
 export function demoLegal(id: LegalDoc['id']): LegalDoc {
@@ -708,28 +941,28 @@ export function demoLegal(id: LegalDoc['id']): LegalDoc {
  * de section `buildings`. Le client multiplie par le niveau visé.
  */
 const DEMO_BUILD: Record<string, [usd: number, hours: number]> = {
-  refinery: [180e6, 36],
-  power_plant: [140e6, 30],
-  port: [120e6, 30],
-  air_base: [260e6, 42],
-  military_base: [150e6, 30],
-  arms_factory: [320e6, 48],
-  research_center: [220e6, 40],
-  oil_field: [90e6, 24],
-  mine: [60e6, 20],
-  farm: [25e6, 12],
-  electronics_plant: [240e6, 40],
-  local_industry: [45e6, 16],
-  recruiting_office: [20e6, 10],
-  naval_base: [380e6, 48],
-  bunker: [30e6, 12],
-  air_defense_site: [160e6, 28],
-  coastal_battery: [110e6, 24],
-  radar_station: [85e6, 20],
-  missile_silo: [900e6, 72],
-  hospital: [55e6, 18],
-  secret_lab: [480e6, 60],
-  forward_base: [40e6, 8],
+  refinery: [18e6, 36],
+  power_plant: [14e6, 30],
+  port: [12e6, 30],
+  air_base: [26e6, 42],
+  military_base: [15e6, 30],
+  arms_factory: [32e6, 48],
+  research_center: [22e6, 40],
+  oil_field: [9e6, 24],
+  mine: [6e6, 20],
+  farm: [2.5e6, 12],
+  electronics_plant: [24e6, 40],
+  local_industry: [4.5e6, 16],
+  recruiting_office: [2e6, 10],
+  naval_base: [38e6, 48],
+  bunker: [3e6, 12],
+  air_defense_site: [16e6, 28],
+  coastal_battery: [11e6, 24],
+  radar_station: [8.5e6, 20],
+  missile_silo: [90e6, 72],
+  hospital: [5.5e6, 18],
+  secret_lab: [48e6, 60],
+  forward_base: [4e6, 8],
 };
 
 export function withDemoBuildings(balance: Balance | null): Balance | null {

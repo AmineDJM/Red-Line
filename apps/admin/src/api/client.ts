@@ -11,6 +11,7 @@ import type {
   ChangeScope,
   DisputedArea,
   ImportBodySchema,
+  LegalSettings,
   Metrics,
   NationDef,
   Orbat,
@@ -25,6 +26,7 @@ import type {
 import type {
   AdminChatMessage,
   AdminPack,
+  AdminResourceOffer,
   AdminUser,
   Anomaly,
   AuditEntry,
@@ -35,6 +37,7 @@ import type {
   PackBody,
   PhotoEntry,
   PromoBody,
+  ResourceOfferBody,
   Promotion,
   Purchase,
   PurchaseStatus,
@@ -47,8 +50,19 @@ import type {
   WorldEventBody,
   WriteResult,
 } from './types';
+import { opsApi } from './ops';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
+/** GET/PUT /admin/api/settings/legal (apps/server/src/admin/settings-routes.ts). */
+export interface LegalSettingsView {
+  settings: LegalSettings;
+  stored: Partial<LegalSettings>;
+  defaults: LegalSettings;
+  effective: { contactEmail: string };
+  publicUrl: string | null;
+  envContactEmail: string | null;
+}
 
 /** Corps exacts attendus par le serveur (types de sortie des schémas zod partagés). */
 export type SaveSystemBody = ReturnType<(typeof SaveSystemBodySchema)['parse']>;
@@ -303,6 +317,12 @@ export function createApi(t: Transport, onUnauthorized?: () => void) {
     createPack: (b: PackBody) => req<{ pack: AdminPack }>('POST', '/admin/api/shop/packs', b),
     updatePack: (id: string, b: PackBody) =>
       req<{ pack: AdminPack }>('PUT', `/admin/api/shop/packs/${enc(id)}`, b),
+    listResourceOffers: () =>
+      req<{ offers: AdminResourceOffer[] }>('GET', '/admin/api/shop/resources'),
+    createResourceOffer: (b: ResourceOfferBody) =>
+      req<{ offer: AdminResourceOffer }>('POST', '/admin/api/shop/resources', b),
+    updateResourceOffer: (id: string, b: ResourceOfferBody) =>
+      req<{ offer: AdminResourceOffer }>('PUT', `/admin/api/shop/resources/${enc(id)}`, b),
     listPromotions: () => req<{ promotions: Promotion[] }>('GET', '/admin/api/shop/promotions'),
     createPromotion: (b: PromoBody) =>
       req<{ promotion: Promotion }>('POST', '/admin/api/shop/promotions', b),
@@ -313,9 +333,17 @@ export function createApi(t: Transport, onUnauthorized?: () => void) {
     refund: (id: string) =>
       req<{ ok: boolean; balance: number }>('POST', `/admin/api/purchases/${enc(id)}/refund`),
 
+    // ——— Réglages › Légal
+    legalSettings: () => req<LegalSettingsView>('GET', '/admin/api/settings/legal'),
+    saveLegalSettings: (b: LegalSettings) =>
+      req<LegalSettingsView>('PUT', '/admin/api/settings/legal', b),
+
     // ——— Journal
     audit: (limit = 300) =>
       req<{ entries: AuditEntry[] }>('GET', `/admin/api/audit${query({ limit })}`),
+
+    // ——— Économie du service, annonces, paramètres, gestion des comptes et des parties
+    ...opsApi(req),
   };
 }
 
