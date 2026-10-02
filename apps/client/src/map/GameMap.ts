@@ -1721,6 +1721,19 @@ export class GameMap {
 
   // ——— Interactions ———
 
+  /**
+   * queryRenderedFeatures protégé : pendant le remplacement des données d'une source GeoJSON (pions en
+   * mouvement), l'index de rendu d'une tuile peut encore viser une donnée remplacée et MapLibre lève
+   * « feature index out of bounds ». Le geste vaut alors « rien touché » ; le suivant voit l'index à jour.
+   */
+  private queryRendered(...args: Parameters<MlMap['queryRenderedFeatures']>): MapGeoJSONFeature[] {
+    try {
+      return this.map.queryRenderedFeatures(...args);
+    } catch {
+      return [];
+    }
+  }
+
   private hitAt(
     x: number,
     y: number,
@@ -1729,7 +1742,7 @@ export class GameMap {
   ): MapGeoJSONFeature[] {
     const existing = layers.filter((l) => this.map.getLayer(l));
     if (!existing.length) return [];
-    const feats = this.map.queryRenderedFeatures(
+    const feats = this.queryRendered(
       [
         [x - radius, y - radius],
         [x + radius, y + radius],
@@ -2016,7 +2029,7 @@ export class GameMap {
       const now = performance.now();
       if (now - this.provQueryAt > 50) {
         this.provQueryAt = now;
-        const pf = this.map.queryRenderedFeatures(e.point, { layers: ['prov-fill'] })[0];
+        const pf = this.queryRendered(e.point, { layers: ['prov-fill'] })[0];
         // Sur une ville ou un bâtiment, l'infobulle suffit : contour seul, sans cartouche.
         this.setHoverProvince(pf ? String(pf.properties?.id ?? pf.id ?? '') || null : null, !hit);
       } else if (hit && this.hoverCallout) {
@@ -2212,7 +2225,7 @@ export class GameMap {
         });
         return;
       case 'blockade': {
-        const pf = this.map.queryRenderedFeatures(e.point, { layers: ['prov-fill'] })[0];
+        const pf = this.queryRendered(e.point, { layers: ['prov-fill'] })[0];
         const pid = pf ? String(pf.properties?.id ?? pf.id ?? '') : '';
         const owner = view?.provinces[pid]?.owner;
         if (!pid || !owner || owner === me) {
@@ -2233,7 +2246,7 @@ export class GameMap {
     this.clearHover();
     const at: LngLat = [e.lngLat.lng, e.lngLat.lat];
     if (this.opts.mode === 'picker') {
-      const f = this.map.queryRenderedFeatures(e.point, { layers: ['prov-fill'] })[0];
+      const f = this.queryRendered(e.point, { layers: ['prov-fill'] })[0];
       const id = f ? String(f.properties?.id ?? f.id ?? '') : '';
       const nation = useWorld.getState().provinces[id]?.nationId;
       if (nation) this.opts.onPickNation?.(nation);
@@ -2326,7 +2339,7 @@ export class GameMap {
       return;
     }
     // Aucune sélection : sélection de la province (production), fin d'inspection.
-    const pf = this.map.queryRenderedFeatures(e.point, { layers: ['prov-fill'] })[0];
+    const pf = this.queryRendered(e.point, { layers: ['prov-fill'] })[0];
     if (useMapSel.getState().battle) useMapSel.getState().selectBattle(null);
     ui.inspect(null);
     ui.selectProvince(pf ? String(pf.properties?.id ?? pf.id ?? '') || null : null);
