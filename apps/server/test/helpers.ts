@@ -325,7 +325,7 @@ export async function login(
 
 /** Requête JSON authentifiée. */
 export function api(app: FastifyInstance, cookie: string | null) {
-  return (method: 'GET' | 'POST' | 'PUT' | 'DELETE', url: string, payload?: unknown) =>
+  return (method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE', url: string, payload?: unknown) =>
     app.inject({
       method,
       url,

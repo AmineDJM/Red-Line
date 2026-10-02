@@ -1,0 +1,218 @@
+{
+  "engine": {
+    "place": {
+      "sea": "en mer"
+    },
+    "sector": {
+      "at": "secteur {{province}}",
+      "near": "à {{km}} km de {{province}}",
+      "unknown": "secteur non identifié"
+    },
+    "strikeKind": {
+      "missile": "de missiles",
+      "air": "aériennes",
+      "artillery": "d'artillerie"
+    },
+    "resolution": {
+      "arms_embargo": "embargo sur les armes",
+      "economic_sanctions": "sanctions économiques",
+      "ceasefire": "cessez-le-feu",
+      "no_fly_zone": "zone d'exclusion aérienne",
+      "peacekeeping": "force de maintien de la paix",
+      "condemnation": "condamnation"
+    },
+    "vote": {
+      "yes": "{{nation}} pour",
+      "no": "{{nation}} contre",
+      "abstain": "{{nation}} abstention"
+    },
+    "charter": {
+      "mutualDefense": "défense mutuelle",
+      "intelSharing": "partage du renseignement",
+      "passage": "droit de passage",
+      "simple": "coopération simple"
+    },
+    "mission": {
+      "raid": "Raid",
+      "sabotage": "Sabotage",
+      "rescue": "Sauvetage"
+    },
+    "intelOp": {
+      "infiltrate_spy": "Infiltration d'un agent",
+      "recruit_source": "Recrutement d'une source",
+      "turn_agent": "Retournement d'un agent",
+      "exfiltrate": "Exfiltration",
+      "steal_research": "Vol de recherche",
+      "sabotage_factory": "Sabotage industriel",
+      "fund_rebels": "Financement de rebelles",
+      "listen_area": "Écoute de zone",
+      "intercept_army": "Interception de communications",
+      "jam_area": "Brouillage de zone",
+      "cyber_radar": "Cyberattaque (radars)",
+      "cyber_production": "Cyberattaque (industrie)",
+      "cyber_orders": "Cyberattaque (commandement)",
+      "disinformation": "Campagne de désinformation",
+      "leak_plans": "Fuite organisée",
+      "plant_fake_report": "Intoxication (faux rapport)",
+      "deploy_decoys": "Déploiement de leurres",
+      "fake_radio_traffic": "Faux trafic radio",
+      "counterintel_sweep": "Opération de contre-espionnage",
+      "recon_economic": "Reconnaissance économique",
+      "recon_military": "Reconnaissance militaire"
+    },
+    "council": {
+      "open_one": "Séance du Conseil de sécurité ouverte : {{count}} résolution au vote.",
+      "open_other": "Séance du Conseil de sécurité ouverte : {{count}} résolutions au vote.",
+      "closed": "Séance close : {{passed}} résolution(s) adoptée(s) sur {{count}}."
+    },
+    "news": {
+      "nuclear": {
+        "headline": "Détonation nucléaire : {{place}}",
+        "body": "Une arme nucléaire tirée par {{nation}} a explosé : {{place}}."
+      }
+    },
+    "intel": {
+      "failed": "échec",
+      "compromised": "compromise",
+      "agentExposed": "Agent de {{nation}} démasqué",
+      "agentCompromised": "Agent {{codename}} compromis",
+      "agentArrest": "Arrestation d'un agent de {{nation}}",
+      "agentArrested": "Agent {{codename}} arrêté",
+      "listening": "Écoute — {{sector}}",
+      "interception": "Interception — {{nation}}",
+      "decoysIdentified": "Leurres identifiés",
+      "flashMovement": "FLASH — Mouvement de forces de {{nation}}",
+      "flashMassive": "FLASH — Mouvement massif de forces de {{nation}}",
+      "dailyInterior": "Note quotidienne — Sécurité intérieure",
+      "dailyForeign": "Note quotidienne — Renseignement extérieur",
+      "dailyMilitary": "Note quotidienne — Renseignement militaire",
+      "opCompromised": "{{op}} — compromise",
+      "opOutcome": "{{op}} — {{outcome}}",
+      "opAttributed": "{{op}} attribuée à {{nation}}",
+      "opSuccess": "{{op}} — réussite",
+      "sweepReport": "Opération de contre-espionnage — bilan",
+      "radioSuspect": "Trafic radio suspect",
+      "intoxFoiled": "Tentative d'intoxication déjouée",
+      "intentions": "Intentions de {{nation}}",
+      "strikeSuffered": {
+        "missile": "FLASH — Frappe de missiles subie",
+        "air": "FLASH — Frappe aérienne subie",
+        "artillery": "FLASH — Tirs d'artillerie subis",
+        "other": "FLASH — Frappe subie"
+      },
+      "flashNuclear": "FLASH — Détonation nucléaire",
+      "sabotage": "Sabotage",
+      "cyber": "Cyberattaque",
+      "rebelsFunded": "Groupes armés financés",
+      "programDone": "Programme achevé — {{nation}}",
+      "blackMarket": "Marché noir — {{nation}}",
+      "imagery": "Imagerie — {{nation}}"
+    },
+    "note": {
+      "allianceInvite": {
+        "title": "Invitation d'alliance",
+        "text": "L'alliance {{alliance}} vous invite à la rejoindre."
+      },
+      "inviteDeclined": {
+        "title": "Invitation déclinée",
+        "text": "{{nation}} décline l'invitation."
+      },
+      "allianceVote": {
+        "title": "Vote d'alliance",
+        "replace_leader": "{{alliance}} : remplacement du chef par {{nation}}.",
+        "expel": "{{alliance}} : exclusion de {{nation}}.",
+        "skip_mutual_defense": "{{alliance}} : dispense de défense mutuelle face à {{nation}}."
+      },
+      "strikeNoEffect": {
+        "title": "Frappe sans effet",
+        "text": "{{system}} : objectif non atteint."
+      },
+      "asatHit": {
+        "title": "Satellite détruit",
+        "text": "{{system}} ({{owner}})"
+      },
+      "asatMiss": {
+        "title": "Tir antisatellite manqué",
+        "text": "{{system}} ({{owner}})"
+      },
+      "radarsBlinded": {
+        "title": "Radars aveuglés",
+        "text": "Une cyberattaque perturbe nos radars."
+      },
+      "satPass": {
+        "title": "Passage satellite",
+        "text_one": "{{system}} : {{count}} contact sous la fauchée.",
+        "text_other": "{{system}} : {{count}} contacts sous la fauchée."
+      },
+      "nuclearRevoked": {
+        "title": "Autorisation nucléaire levée",
+        "text": "Les forces nucléaires reviennent au contrôle normal."
+      },
+      "nuclearAuthorized": {
+        "title": "Emploi du nucléaire autorisé",
+        "text": "Les frappes nucléaires sont possibles tant que le niveau d'alerte le permet."
+      },
+      "nuclearDetonation": {
+        "title": "Détonation nucléaire",
+        "text": "Frappe nucléaire : {{place}}."
+      },
+      "fuelLost": {
+        "title": "Appareil perdu",
+        "text": "{{system}} : carburant épuisé avant le retour à la base."
+      },
+      "specialOk": {
+        "title": "Opération spéciale réussie",
+        "text": "{{mission}} : {{place}}."
+      },
+      "specialEnemy": {
+        "title": "Action de forces spéciales",
+        "text": "{{mission}} ennemi : {{place}}."
+      },
+      "specialFailed": {
+        "title": "Opération spéciale échouée",
+        "text": "{{mission}} : {{place}}."
+      },
+      "blockadeOn": {
+        "title": "Blocus effectif",
+        "text": "{{place}} ({{nation}})"
+      },
+      "blockadeOff": {
+        "title": "Blocus levé",
+        "text": "{{place}} ({{nation}})"
+      },
+      "captured": {
+        "title": "Matériel capturé",
+        "text": "{{place}} : {{items}}.",
+        "item": "{{count}} {{system}}"
+      },
+      "generalReleased": {
+        "title": "Reprise en main",
+        "text": "{{general}} rend le commandement direct de son groupe."
+      },
+      "coup": {
+        "title": "Coup d'État",
+        "text": "{{nation}} : l'armée a pris le pouvoir."
+      },
+      "ceasefire": {
+        "title": "Cessez-le-feu",
+        "text": "Cessez-le-feu en vigueur : {{a}} / {{b}}."
+      },
+      "peaceProposal": {
+        "title": "Proposition de paix",
+        "text": "{{nation}} propose la paix."
+      },
+      "ceasefireProposal": {
+        "title": "Proposition de cessez-le-feu",
+        "text": "{{nation}} propose un cessez-le-feu."
+      },
+      "proposalRefused": {
+        "title": "Proposition refusée",
+        "text": "{{nation}} refuse votre proposition."
+      },
+      "agentCaught": {
+        "title": "Agent démasqué",
+        "text": "{{host}} annonce l'arrestation d'un agent de {{owner}}."
+      }
+    }
+  }
+}

@@ -922,6 +922,8 @@ export const fr = {
     selfLock: 'Vous ne pouvez pas vous retirer vos propres droits.',
     unlimited: 'illimité',
     unlimitedTitle: 'Mode illimité',
+    locale: 'Langue',
+    localeUnknown: 'non renseignée',
     unlimitedHelp:
       'Argent et ressources jamais limitants dans ses parties (la recherche reste nécessaire pour produire), monnaie premium illimitée, aucun quota de parties. Ses parties multijoueurs deviennent non classées, avec un avis public.',
     unlimitedOn: 'Activer le mode illimité',

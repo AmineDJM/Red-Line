@@ -4,6 +4,8 @@ import {
   type NationId,
   type ProvinceId,
   type ResolutionType,
+  loc,
+  type LocParam,
 } from '@redline/shared';
 import type { OrderResult } from '../../api.js';
 import type { EngineState } from '../../state/types.js';
@@ -24,7 +26,7 @@ import {
   type Resolution,
   type Session,
 } from './state.js';
-import { news } from './news.js';
+import { locNations, news } from './news.js';
 import { OK, endWar, fail } from './relations.js';
 import { disbandUnits, spawnPeacekeepers } from './unrest.js';
 
@@ -114,7 +116,11 @@ export function openSession(state: EngineState): void {
   news(
     state,
     'council_open',
-    { X: String(s.resolutions.length), Y: s.members.map((m) => nationName(state, m)).join(', ') },
+    {
+      X: String(s.resolutions.length),
+      Y: s.members.map((m) => nationName(state, m)).join(', '),
+      loc: { Y: locNations(s.members) },
+    },
     null,
     s.members,
   );
@@ -124,6 +130,7 @@ export function openSession(state: EngineState): void {
       kind: 'council',
       time: state.time,
       text: `Séance du Conseil de sécurité ouverte : ${s.resolutions.length} résolution(s) au vote.`,
+      loc: loc('engine.council.open', { count: s.resolutions.length }),
     },
     null,
   );
@@ -165,6 +172,13 @@ export function closeSession(state: EngineState): void {
   for (const r of s.resolutions) {
     r.status = tally(state, s, r);
     const label = RESOLUTION_LABELS[r.type];
+    const X: LocParam = { key: `engine.resolution.${r.type}` };
+    const voteList: LocParam = {
+      list: sortedKeys(r.votes).map((m) => ({
+        key: `engine.vote.${r.votes[m]}`,
+        params: { nation: { nation: m } },
+      })),
+    };
     const tgt = r.target.nationId;
     const votes = sortedKeys(r.votes)
       .map(
@@ -178,7 +192,12 @@ export function closeSession(state: EngineState): void {
         news(
           state,
           'resolution_passed',
-          { A: tgt, X: label, Y: r.durationDays > 0 ? String(r.durationDays) : votes || '—' },
+          {
+            A: tgt,
+            X: label,
+            Y: r.durationDays > 0 ? String(r.durationDays) : votes || '—',
+            loc: { X, Y: r.durationDays > 0 ? r.durationDays : votes ? voteList : '—' },
+          },
           null,
           [tgt],
         );
@@ -186,7 +205,14 @@ export function closeSession(state: EngineState): void {
         news(
           state,
           'resolution_zone_passed',
-          { X: label, Y: zoneLabel(state, r.target.provinceIds ?? []) },
+          {
+            X: label,
+            Y: zoneLabel(state, r.target.provinceIds ?? []),
+            loc: {
+              X,
+              Y: { list: (r.target.provinceIds ?? []).slice(0, 4).map((p) => ({ province: p })) },
+            },
+          },
           null,
           [],
         );
@@ -194,9 +220,15 @@ export function closeSession(state: EngineState): void {
       const vetoer = sortedKeys(r.votes).find(
         (m) => r.votes[m] === 'no' && allianceLeaders(state).includes(m),
       );
-      news(state, 'resolution_vetoed', { A: vetoer, X: label }, null, tgt ? [tgt] : []);
+      news(state, 'resolution_vetoed', { A: vetoer, X: label, loc: { X } }, null, tgt ? [tgt] : []);
     } else {
-      news(state, 'resolution_rejected', { A: r.proposer, X: label }, null, tgt ? [tgt] : []);
+      news(
+        state,
+        'resolution_rejected',
+        { A: r.proposer, X: label, loc: { X } },
+        null,
+        tgt ? [tgt] : [],
+      );
     }
   }
   notify(
@@ -205,6 +237,10 @@ export function closeSession(state: EngineState): void {
       kind: 'council',
       time: state.time,
       text: `Séance close : ${s.resolutions.filter((r) => r.status === 'passed').length} résolution(s) adoptée(s) sur ${s.resolutions.length}.`,
+      loc: loc('engine.council.closed', {
+        passed: s.resolutions.filter((r) => r.status === 'passed').length,
+        count: s.resolutions.length,
+      }),
     },
     null,
   );

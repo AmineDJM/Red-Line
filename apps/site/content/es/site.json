@@ -1,0 +1,464 @@
+{
+  "slugs": {
+    "howto": "como-jugar",
+    "features": "caracteristicas",
+    "nations": "naciones",
+    "arsenal": "arsenal",
+    "faq": "preguntas-frecuentes",
+    "legal": {
+      "mentions": "aviso-legal",
+      "privacy": "privacidad",
+      "cookies": "cookies",
+      "cgu": "condiciones-de-uso",
+      "cgv": "condiciones-de-venta",
+      "withdrawal": "derecho-de-desistimiento"
+    },
+    "families": {
+      "air": "aeronaves",
+      "rotary": "helicopteros-y-drones",
+      "land": "fuerzas-terrestres",
+      "airdef": "defensa-antiaerea",
+      "naval": "armada",
+      "strategic": "misiles-y-estrategicos"
+    }
+  },
+  "ui": {
+    "skip": "Saltar al contenido",
+    "nav": {
+      "home": "Inicio",
+      "howto": "Cómo jugar",
+      "features": "Características",
+      "nations": "Naciones",
+      "arsenal": "Arsenal",
+      "faq": "Preguntas frecuentes",
+      "menu": "Menú",
+      "language": "Idioma",
+      "main": "Navegación principal"
+    },
+    "play": "Jugar gratis",
+    "playShort": "Jugar",
+    "multiplayer": "Multijugador",
+    "login": "Iniciar sesión",
+    "breadcrumb": "Ruta de navegación",
+    "updated": "Última actualización: {date}",
+    "version": "Versión {version}",
+    "toc": "Contenido",
+    "back": "Volver al inicio",
+    "referenceLang": "Esta es una traducción facilitada por comodidad; solo la versión francesa de este documento tiene valor jurídico.",
+    "footer": {
+      "tagline": "Juego de estrategia geopolítica en tiempo real sobre el mapa real del mundo. Gratis, en tu navegador.",
+      "game": "El juego",
+      "legal": "Información legal",
+      "languages": "Idiomas",
+      "publisher": "Editado por {name}",
+      "credits": "Fotografías del material: Wikimedia Commons, licencias libres (autores citados en cada ficha). Ficción: no se representa ningún objetivo real."
+    },
+    "legalNames": {
+      "mentions": "Aviso legal",
+      "privacy": "Privacidad",
+      "cookies": "Cookies",
+      "cgu": "Condiciones de uso",
+      "cgv": "Condiciones de venta",
+      "withdrawal": "Desistimiento"
+    }
+  },
+  "home": {
+    "title": "Red Line — juego de estrategia geopolítica en tiempo real, gratis",
+    "description": "Dirige una de las {nations} naciones sobre el mapa real del mundo: arsenales y presupuestos de defensa reales, inteligencia, diplomacia, en solitario o multijugador hasta {players} jugadores. Gratis, en tu navegador.",
+    "kicker": "Juego de estrategia militar · navegador · tiempo real",
+    "h1": "La guerra mundial, en tiempo real sobre el mapa real del mundo.",
+    "lead": "Dirige una de las {nations} naciones de 2025 con su ejército real y su presupuesto de defensa auténtico. Produce, espía, negocia en el Consejo de Seguridad y vence militarmente, en solitario contra la IA o contra hasta {players} jugadores.",
+    "ctaNote": "Gratis · sin descargas · ordenador, tableta y móvil",
+    "figures": {
+      "nations": "naciones jugables",
+      "provinces": "provincias",
+      "systems": "sistemas de armas reales",
+      "players": "jugadores por partida",
+      "scenarios": "escenarios"
+    },
+    "blocksTitle": "Lo que te espera",
+    "blocks": [
+      {
+        "title": "Tiempo real sobre el mapa real",
+        "text": "Imágenes de satélite, {provinces} provincias y rutas de círculo máximo: un raid aéreo dura lo que dura el vuelo real y una flota rodea los continentes. La partida continúa aunque estés desconectado.",
+        "link": "features"
+      },
+      {
+        "title": "Arsenales y presupuestos reales",
+        "text": "Cada nación parte de su orden de batalla estimado de 2025 y de su presupuesto de defensa en dólares estadounidenses. {systems} sistemas de armas reales, del F-35 al carro Leclerc, con su precio unitario.",
+        "link": "arsenal"
+      },
+      {
+        "title": "Inteligencia y niebla de guerra",
+        "text": "Solo ves lo que detectan tus sensores. Espías, fuentes, satélites y radares levantan el velo; el sabotaje y el robo de tecnología debilitan a tus adversarios.",
+        "link": "features"
+      },
+      {
+        "title": "Diplomacia y Consejo de Seguridad",
+        "text": "Alianzas, acuerdos, licencias de producción y votaciones del Consejo de Seguridad con derecho de veto. La guerra se declara con el primer ataque, o con la primera frontera cruzada.",
+        "link": "features"
+      },
+      {
+        "title": "En solitario o hasta {players} jugadores",
+        "text": "Juega solo contra más de doscientas naciones controladas por IA o únete a una partida persistente donde las naciones sin jugador quedan en manos de la IA. Clasificaciones por temporada.",
+        "link": "howto"
+      }
+    ],
+    "shot": {
+      "alt": "Captura de Red Line: mapa satelital del mundo, fronteras nacionales y unidades en movimiento",
+      "caption": "Captura real del juego: mapa satelital, fronteras y unidades en movimiento."
+    },
+    "stepsTitle": "Tres minutos para empezar",
+    "steps": [
+      {
+        "title": "Elige una nación",
+        "text": "Las {nations} naciones son jugables, desde las superpotencias hasta las pequeñas islas. Cada una tiene sus fuerzas, sus aliados y su presupuesto."
+      },
+      {
+        "title": "Da tus órdenes",
+        "text": "Mueve tus unidades, lanza producción e investigación, regula tus servicios de inteligencia. Mientras tanto, el mundo sigue en marcha."
+      },
+      {
+        "title": "Vence",
+        "text": "La victoria es solo militar: controla el 60 % de las provincias del mundo o todas las capitales enemigas."
+      }
+    ],
+    "faqTitle": "Preguntas frecuentes",
+    "moreFaq": "Todas las preguntas"
+  },
+  "howto": {
+    "title": "Cómo jugar a Red Line — guía para principiantes",
+    "description": "Guía de Red Line, el juego de estrategia geopolítica en tiempo real: elige una nación, mueve tus ejércitos, produce, investiga, espía, negocia y gana.",
+    "h1": "Cómo jugar",
+    "lead": "Red Line se juega en tiempo real: tus órdenes se ejecutan mientras el mundo sigue en marcha. Esto es lo que necesitas para tus primeras horas de mando.",
+    "sections": [
+      {
+        "title": "1. Empezar una partida",
+        "paragraphs": [
+          "Pulsa **Jugar gratis**: una partida en solitario empieza al instante con una cuenta de invitado, sin registro. Crea una cuenta para recuperar tus partidas en cualquier dispositivo y unirte al modo multijugador.",
+          "Elige un escenario y luego una nación. Todas son jugables; las grandes potencias tienen más medios y las pequeñas naciones ofrecen un reto mayor."
+        ]
+      },
+      {
+        "title": "2. Leer el mapa",
+        "paragraphs": [
+          "El mapa es el mapa real del mundo, con imágenes de satélite, dividido en {provinces} provincias. Tu territorio aparece en púrpura. Los marcadores muestran las unidades detectadas: precisos cerca de tus sensores, aproximados más lejos.",
+          "El tiempo de juego transcurre de forma continua, a la velocidad elegida al crear la partida. Un reloj indica el día y la hora del juego."
+        ],
+        "list": [
+          "Selecciona una unidad y luego un destino: la ruta sigue el círculo máximo y evita las tierras infranqueables.",
+          "Una orden de ataque o la entrada en una provincia extranjera declara la guerra automáticamente.",
+          "El combate se resuelve por rondas regulares; cuentan el alcance, la detección, el blindaje y el sigilo, no el terreno."
+        ]
+      },
+      {
+        "title": "3. Producir e investigar",
+        "paragraphs": [
+          "Tu presupuesto de defensa paga la producción, el mantenimiento y la investigación. Cada sistema tiene un precio unitario real, un plazo de fabricación y requisitos tecnológicos: no hay caza de quinta generación sin la I+D correspondiente.",
+          "Las licencias de producción permiten fabricar material extranjero; el mercado negro puede ayudar, con el riesgo de ser descubierto."
+        ]
+      },
+      {
+        "title": "4. Inteligencia",
+        "paragraphs": [
+          "Tres servicios —seguridad interior, inteligencia exterior e inteligencia militar— reciben un presupuesto y llevan a cabo operaciones: infiltrar un espía, reclutar una fuente, doblar a un agente, robar tecnología, sabotear una fábrica. Un informe diario resume lo que has averiguado."
+        ]
+      },
+      {
+        "title": "5. Diplomacia y Consejo de Seguridad",
+        "paragraphs": [
+          "Propón alianzas y acuerdos, compra licencias, gestiona tu estabilidad interior. Cada 30 días de juego se reúne el Consejo de Seguridad: miembros permanentes con derecho de veto y puestos rotatorios votan resoluciones."
+        ]
+      },
+      {
+        "title": "6. Ganar",
+        "paragraphs": [
+          "La victoria es solo militar: controla el 60 % de las provincias del mundo o todas las capitales enemigas. Una partida en solitario sin conexión durante 48 horas se cierra por abandono (24 horas sin ningún jugador en multijugador)."
+        ]
+      }
+    ],
+    "scenariosTitle": "Escenarios",
+    "scenarios": {
+      "world-today": {
+        "name": "El mundo hoy (2025)",
+        "text": "El mapa político actual, los presupuestos de defensa de 2025 y los arsenales estimados. Todas las naciones son jugables."
+      },
+      "cold-war-1985": {
+        "name": "Guerra Fría (1985)",
+        "text": "Arsenales y tecnología de 1985 sobre el mapa actual: sin sigilo operativo ni drones armados."
+      },
+      "eastern-europe": {
+        "name": "Europa del Este",
+        "text": "Del Báltico al mar Negro: la artillería, los drones y la defensa antiaérea deciden la guerra terrestre."
+      },
+      "middle-east": {
+        "name": "Oriente Medio",
+        "text": "Del Nilo al golfo Pérsico: misiles balísticos, drones y defensa antimisil en primera línea."
+      },
+      "pacific": {
+        "name": "Pacífico",
+        "text": "Estrecho de Taiwán, mar de la China Meridional y Pacífico occidental: guerra aérea y naval de largo alcance."
+      }
+    },
+    "tipsTitle": "Consejos del comandante",
+    "tips": [
+      "Protege tu capital: tomar todas las capitales enemigas es una de las dos condiciones de victoria.",
+      "La defensa antiaérea y los radares compensan: un caza derribado vale decenas de millones de dólares.",
+      "No declares la guerra a todos a la vez: una alianza bien elegida vale una división blindada.",
+      "Conéctate con regularidad: la partida sigue sin ti y las órdenes largas se ejecutan en tu ausencia."
+    ]
+  },
+  "features": {
+    "title": "Características de Red Line — estrategia militar en tiempo real",
+    "description": "Mapa real del mundo, {nations} naciones, {systems} sistemas militares reales, presupuestos de defensa en dólares estadounidenses, inteligencia, diplomacia, Consejo de Seguridad, multijugador hasta {players} jugadores.",
+    "h1": "Características",
+    "lead": "Red Line es un juego de guerra en línea construido sobre medios realistas y un mando claro: una consola táctica depurada superpuesta al mapa real del mundo.",
+    "items": [
+      {
+        "title": "El mapa real del mundo",
+        "text": "Imágenes de satélite de la NASA (Blue Marble), fronteras actuales y {provinces} provincias con sus ciudades. Los desplazamientos siguen círculos máximos, las flotas rodean los continentes y los estrechos importan.",
+        "points": [
+          "{nations} naciones jugables",
+          "Navegación sobre una cuadrícula hexagonal global",
+          "Zoom desde el globo hasta las ciudades"
+        ]
+      },
+      {
+        "title": "Arsenales reales, dólares reales",
+        "text": "Cada nación parte de su orden de batalla estimado y de su presupuesto de defensa real. Los {systems} sistemas del catálogo tienen sus características y su precio unitario reales; una fotografía real ilustra cada ficha.",
+        "points": [
+          "Cazas, bombarderos, helicópteros, drones",
+          "Carros de combate, artillería, defensa antiaérea, radares",
+          "Buques, submarinos, misiles, satélites, disuasión nuclear"
+        ]
+      },
+      {
+        "title": "Producción sujeta a la I+D",
+        "text": "Un árbol tecnológico regula la producción: generaciones de aviones, sigilo, drones armados, defensa antimisil. Las licencias de producción y el mercado negro abren otros caminos.",
+        "points": [
+          "Plazos de fabricación realistas",
+          "Mantenimiento diario de las fuerzas",
+          "Movilización general, a costa de la economía"
+        ]
+      },
+      {
+        "title": "Inteligencia y niebla de guerra",
+        "text": "Solo ves lo que detectan tus radares, satélites y agentes. El servidor nunca envía a tu navegador lo que tu nación ignora: leer el tráfico de red no da ventaja alguna.",
+        "points": [
+          "Tres servicios de inteligencia",
+          "Espionaje, sabotaje, robo de tecnología",
+          "Informe diario a las 07:00"
+        ]
+      },
+      {
+        "title": "Diplomacia y Consejo de Seguridad",
+        "text": "Alianzas, acuerdos y votaciones: el Consejo de Seguridad se reúne cada 30 días de juego, con miembros permanentes, derecho de veto y puestos rotatorios. La estabilidad interior puede desembocar en una revuelta o un golpe de Estado.",
+        "points": [
+          "Declaración de guerra automática",
+          "Resoluciones y vetos",
+          "Estabilidad interior"
+        ]
+      },
+      {
+        "title": "En solitario y multijugador",
+        "text": "Solo contra más de doscientas naciones de IA, o en una partida persistente de hasta {players} jugadores: el juego continúa en tu ausencia y una IA se hace cargo de tu nación si dejas de jugar. Clasificaciones por temporada, espectadores, timelapse de fronteras.",
+        "points": [
+          "Hasta {players} jugadores",
+          "Notificaciones de alertas críticas",
+          "Clasificaciones por temporada"
+        ]
+      },
+      {
+        "title": "Interfaz de terminal, en todas las pantallas",
+        "text": "Una interfaz de mando moderna, densa y legible, pensada por igual para ordenador y móvil. Nada que descargar: el juego funciona en tu navegador.",
+        "points": ["Ordenador, tableta, móvil", "Atajos de teclado", "Instalable como aplicación"]
+      },
+      {
+        "title": "Justo por diseño",
+        "text": "Gratis. La moneda premium acelera o personaliza, sin compras aleatorias (sin cajas de botín); las partidas competitivas limitan o desactivan las compras en el juego.",
+        "points": [
+          "Sin cajas de botín",
+          "Cosméticos sin efecto militar",
+          "Partidas competitivas protegidas"
+        ]
+      }
+    ]
+  },
+  "nations": {
+    "title": "Las {nations} naciones jugables de Red Line — presupuestos de defensa 2025",
+    "description": "Todas las {nations} naciones jugables de Red Line con su presupuesto de defensa de 2025 en dólares estadounidenses, su personal militar en activo y su número de provincias.",
+    "h1": "Naciones",
+    "lead": "Todas las naciones del mundo son jugables. Cada una parte con su presupuesto de defensa y su personal estimados de 2025: elige entre poder y desafío.",
+    "tableCaption": "Naciones por presupuesto de defensa de 2025 (dólares estadounidenses)",
+    "cols": {
+      "rank": "Puesto",
+      "nation": "Nación",
+      "budget": "Presupuesto de defensa",
+      "personnel": "Personal en activo",
+      "provinces": "Provincias"
+    },
+    "note": "Presupuestos y personal: estimaciones públicas redondeadas, usadas como punto de partida del juego."
+  },
+  "arsenal": {
+    "title": "Arsenal de Red Line — {systems} sistemas militares reales",
+    "description": "Los {systems} sistemas militares reales de Red Line por familia: cazas, carros de combate, artillería, defensa antiaérea, buques de guerra, submarinos, misiles, con su precio unitario en dólares estadounidenses.",
+    "h1": "Arsenal",
+    "lead": "El catálogo de Red Line reúne {systems} sistemas reales, cada uno con su fotografía, sus características y su precio unitario en dólares estadounidenses. Producirlos depende de tu investigación.",
+    "familiesTitle": "Familias de material",
+    "count": "{n} sistemas",
+    "families": {
+      "air": {
+        "name": "Aeronaves",
+        "title": "Aviones de combate en Red Line — cazas, bombarderos, apoyo",
+        "description": "Cazas, bombarderos estratégicos, apoyo aéreo cercano, alerta temprana aerotransportada y aviones cisterna en Red Line, con sus características y su precio unitario real.",
+        "lead": "De los cazas de tercera generación a los aviones furtivos, de los bombarderos estratégicos a los cisternas: el control del cielo suele decidir la batalla."
+      },
+      "rotary": {
+        "name": "Helicópteros y drones",
+        "title": "Helicópteros militares y drones en Red Line",
+        "description": "Helicópteros de ataque y de transporte, drones de reconocimiento y armados en Red Line, con su precio unitario real.",
+        "lead": "Helicópteros de ataque y de transporte y drones armados: potencia de fuego en el mismo frente."
+      },
+      "land": {
+        "name": "Fuerzas terrestres",
+        "title": "Carros de combate, blindados y artillería en Red Line",
+        "description": "Carros de combate principales, vehículos de combate de infantería, infantería, artillería y logística en Red Line, con sus características y precios reales.",
+        "lead": "Carros, blindados, infantería y artillería: solo las fuerzas terrestres conquistan provincias."
+      },
+      "airdef": {
+        "name": "Defensa antiaérea",
+        "title": "Defensa antiaérea y radares en Red Line",
+        "description": "Sistemas tierra-aire, defensa antimisil y radares en Red Line: Patriot, S-400, Cúpula de Hierro y muchos más, con su precio real.",
+        "lead": "Misiles tierra-aire, defensa antimisil y radares: el escudo sobre tus ciudades y tus fuerzas."
+      },
+      "naval": {
+        "name": "Armada",
+        "title": "Buques de guerra y submarinos en Red Line",
+        "description": "Portaaviones, destructores, fragatas, submarinos de ataque y balísticos en Red Line, con sus características y su precio unitario real.",
+        "lead": "Portaaviones, destructores, fragatas y submarinos: el dominio de los mares y los estrechos."
+      },
+      "strategic": {
+        "name": "Misiles y estratégicos",
+        "title": "Misiles de crucero y balísticos, nuclear y espacio en Red Line",
+        "description": "Misiles de crucero y balísticos, disuasión nuclear y satélites en Red Line, con sus características y su precio unitario real.",
+        "lead": "Misiles de ataque, disuasión nuclear y satélites: golpear lejos, ver desde arriba."
+      }
+    },
+    "categories": {
+      "fighter": "Aviones de caza",
+      "bomber": "Bombarderos",
+      "air_support": "Apoyo, alerta temprana y cisternas",
+      "helicopter": "Helicópteros",
+      "drone": "Drones",
+      "tank": "Carros de combate principales",
+      "ifv": "Vehículos de combate de infantería",
+      "infantry": "Infantería",
+      "artillery": "Artillería",
+      "logistics": "Logística",
+      "air_defense": "Defensa tierra-aire",
+      "radar": "Radares",
+      "surface_ship": "Buques de superficie",
+      "submarine": "Submarinos",
+      "strike_missile": "Misiles de ataque",
+      "nuclear": "Armas nucleares",
+      "space": "Espacio"
+    },
+    "labels": {
+      "origin": "Origen",
+      "since": "En servicio desde {year}",
+      "price": "Precio unitario",
+      "speed": "Velocidad",
+      "range": "Alcance",
+      "generation": "Generación {n}",
+      "fielded": "Operadores: {n} naciones",
+      "variants": "Versiones: {list}",
+      "photo": "Foto: {credit} ({license})",
+      "generic": "Genérico",
+      "kmh": "{n} km/h",
+      "km": "{n} km"
+    },
+    "note": "Precios unitarios: estimaciones públicas en dólares estadounidenses actuales. Fotografías: Wikimedia Commons, licencias libres, recortadas y retocadas."
+  },
+  "faq": {
+    "title": "Preguntas frecuentes de Red Line",
+    "description": "Respuestas a las preguntas frecuentes sobre Red Line: precio, multijugador, móvil, realismo de los ejércitos, duración de la partida, compras, datos personales.",
+    "h1": "Preguntas frecuentes",
+    "lead": "Todo lo que necesitas saber antes de asumir el mando.",
+    "items": [
+      {
+        "q": "¿Red Line es gratis?",
+        "a": "Sí. El juego es gratuito y funciona en tu navegador, sin descargar nada. Una moneda premium opcional acelera ciertas acciones o compra cosméticos; ninguna compra es aleatoria."
+      },
+      {
+        "q": "¿Necesito una cuenta?",
+        "a": "No: «Jugar gratis» abre una cuenta de invitado guardada en tu dispositivo. Una cuenta registrada (correo y contraseña) te permite recuperar tus partidas en cualquier lugar, jugar en multijugador y aparecer en las clasificaciones."
+      },
+      {
+        "q": "¿Se puede jugar en el móvil?",
+        "a": "Sí. La interfaz está pensada para ordenador, tableta y teléfono. También puedes instalar el juego como aplicación desde tu navegador."
+      },
+      {
+        "q": "¿Cuántos jugadores hay por partida?",
+        "a": "Hasta {players} jugadores humanos en multijugador; las demás naciones las controla la IA. En solitario te enfrentas a más de doscientas naciones de IA."
+      },
+      {
+        "q": "¿Cuánto dura una partida?",
+        "a": "Una partida se juega en tiempo real durante varios días o semanas, a la velocidad elegida al crearla. Continúa mientras estás desconectado: basta con unas cuantas visitas al día."
+      },
+      {
+        "q": "¿Los ejércitos y los presupuestos son reales?",
+        "a": "Se basan en estimaciones públicas: presupuestos de defensa de 2025 en dólares estadounidenses, órdenes de batalla estimados y {systems} sistemas reales con su precio unitario. El juego sigue siendo ficción: no se representa ningún objetivo real y los objetivos estratégicos son genéricos."
+      },
+      {
+        "q": "¿Cómo se gana?",
+        "a": "Solo militarmente: controlando el 60 % de las provincias del mundo o todas las capitales enemigas."
+      },
+      {
+        "q": "¿Red Line es una alternativa a Conflict of Nations?",
+        "a": "Red Line se inspira en él: la misma escala mundial y el juego en tiempo real, además de arsenales y presupuestos reales, inteligencia detallada, un Consejo de Seguridad y una interfaz de mando depurada sin compras aleatorias."
+      },
+      {
+        "q": "¿Las compras dan ventaja?",
+        "a": "Los cosméticos no tienen efecto militar. Las aceleraciones dependen de cada partida: abiertas, limitadas o desactivadas en las partidas competitivas."
+      },
+      {
+        "q": "¿En qué idiomas está disponible el juego?",
+        "a": "En quince idiomas, entre ellos español, inglés, francés, árabe, turco, alemán, portugués, ruso, italiano, chino, japonés, coreano, hindi, indonesio y polaco. Los textos de las páginas públicas se completan poco a poco."
+      },
+      {
+        "q": "¿Qué datos personales se recopilan?",
+        "a": "Solo los que necesita el juego: cuenta, partidas y registros técnicos de seguridad. Sin rastreadores publicitarios. Los detalles están en la [política de privacidad](page:legal:privacy)."
+      },
+      {
+        "q": "¿Qué edad hay que tener?",
+        "a": "Al menos 15 años, o contar con el consentimiento de un progenitor o tutor. El juego representa el conflicto armado de forma estratégica, sin violencia explícita."
+      }
+    ]
+  },
+  "notFound": {
+    "title": "Página no encontrada — Red Line",
+    "h1": "Página no encontrada",
+    "text": "Esta dirección no corresponde a ninguna página. Puede que las coordenadas sean erróneas."
+  },
+  "catalogNames": {
+    "Infanterie légère": "Infantería ligera",
+    "Infanterie mécanisée": "Infantería mecanizada",
+    "Infanterie de marine": "Infantería de marina",
+    "Forces spéciales": "Fuerzas especiales",
+    "Troupes aéroportées": "Tropas aerotransportadas",
+    "Troupes aéroportées VDV": "Tropas aerotransportadas VDV",
+    "Brouilleur de guerre électronique": "Inhibidor de guerra electrónica",
+    "Dôme de fer": "Cúpula de Hierro",
+    "Fronde de David": "Honda de David",
+    "Avion cargo affrété": "Avión de carga fletado",
+    "Convoi logistique": "Convoy logístico",
+    "Cargo": "Buque de carga",
+    "Radar à grande antenne Type 7010": "Radar de gran antena Tipo 7010",
+    "Satellite de reconnaissance optique": "Satélite de reconocimiento óptico",
+    "Satellite de reconnaissance radar": "Satélite de reconocimiento radar",
+    "Satellite d'écoute électronique": "Satélite de inteligencia de señales",
+    "Satellite d'alerte avancée": "Satélite de alerta temprana",
+    "Arme antisatellite": "Arma antisatélite",
+    "Guépard (classe)": "Clase Gepard"
+  }
+}

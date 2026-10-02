@@ -1,5 +1,6 @@
 import type { FeatureCollection } from 'geojson';
 import type {
+  Locale,
   PublicStats,
   BattleReport,
   CosmeticItem,
@@ -66,6 +67,8 @@ export interface Api {
   login(body: Credentials): Promise<PublicUser>;
   register(body: RegisterInput): Promise<PublicUser>;
   logout(): Promise<void>;
+  /** Langue de l'interface mémorisée dans le compte (notifications push dans cette langue). */
+  setLocale?(locale: Locale): Promise<void>;
   catalog(): Promise<WeaponSystem[]>;
   nations(): Promise<NationDef[]>;
   provinces(): Promise<ProvinceDef[]>;

@@ -15,6 +15,16 @@ import type {
 import { RoadNet } from '@redline/shared';
 import type { Api, BasemapData, TilesInfo } from '../api/types.js';
 import { bundledBalance } from '../lib/staticData.js';
+import {
+  localizeBasemap,
+  localizeCatalog,
+  localizeNationInfo,
+  localizeNations,
+  localizeProvinces,
+  localizeProvincesGeo,
+  localizeResearch,
+} from '../lib/localize.js';
+import { NON_LATIN_SCRIPT } from '../i18n/index.js';
 
 /** Données statiques de la carte et du catalogue (chargées une fois). */
 export interface WorldState {
@@ -83,12 +93,12 @@ export const useWorld = create<WorldState>((set, get) => ({
       api.researchNodes().catch(() => []),
       (api.balance ? api.balance() : bundledBalance()).catch(() => null),
     ]);
-    set({ research: byId(nodes), balance, extras: 'ready' });
+    set({ research: byId(localizeResearch(nodes)), balance, extras: 'ready' });
   },
   async loadNationInfo(api) {
     if (Object.keys(get().nationInfo).length) return;
     const list = await api.nationsInfo().catch(() => []);
-    set({ nationInfo: byId(list) });
+    set({ nationInfo: byId(await localizeNationInfo(list)) });
   },
   async load(api) {
     void get().loadExtras(api);
@@ -116,13 +126,14 @@ export const useWorld = create<WorldState>((set, get) => ({
       );
       set({
         status: 'ready',
-        nations: byId(nations),
-        provinces: byId(provinces),
-        provincesGeo,
-        catalog: byId(catalog),
+        nations: byId(localizeNations(nations)),
+        provinces: byId(localizeProvinces(provinces)),
+        provincesGeo: localizeProvincesGeo(provincesGeo),
+        catalog: byId(localizeCatalog(catalog)),
         tiles,
-        basemap,
-        glyphs,
+        basemap: localizeBasemap(basemap),
+        // Écritures non latines : étiquettes dessinées par le navigateur (glyphes de carte latins).
+        glyphs: glyphs && !NON_LATIN_SCRIPT,
       });
     } catch (e) {
       set({ status: 'error', error: e instanceof Error ? e.message : String(e) });

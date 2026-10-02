@@ -23,6 +23,7 @@ import { gameNow, useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { describeNotification, notificationTone } from './helpers.js';
+import { orderError } from '../lib/loc.js';
 
 /** Barre de confirmation de l'ordre en attente (troisième geste : confirmer). */
 export function OrderBar() {
@@ -46,10 +47,7 @@ export function OrderBar() {
     useUi.getState().setPending(null);
     const res = await c.sendOrder(order);
     if (res.ok) useUi.getState().toast(t('game.orders.sent'), 'ok');
-    else
-      useUi
-        .getState()
-        .toast(res.message || t(`game.orders.errors.${res.error ?? 'not_allowed'}`), 'error');
+    else useUi.getState().toast(orderError(res), 'error');
   }, [t]);
 
   useEffect(() => {
@@ -157,10 +155,10 @@ export function OrderBar() {
           ) : null}
         </dl>
         <div className="orderbar__actions">
-          <Button variant="ghost" onClick={() => setPending(null)} kbd="Échap">
+          <Button variant="ghost" onClick={() => setPending(null)} kbd={t('keys.escape')}>
             {t('game.orders.cancel')}
           </Button>
-          <Button variant="primary" onClick={() => void confirm()} autoFocus kbd="Entrée">
+          <Button variant="primary" onClick={() => void confirm()} autoFocus kbd={t('keys.enter')}>
             {t('game.orders.confirm')}
           </Button>
         </div>
@@ -491,8 +489,8 @@ export function ShortcutsHelp({ onClose }: { onClose: () => void }) {
     [[t('keys.space')], t('shortcuts.pause')],
     [['1', '…', '5'], t('shortcuts.speed')],
     [['A', 'G', 'P', 'R', 'E', 'I'], t('shortcuts.windows')],
-    [['Échap'], t('shortcuts.escape')],
-    [['Entrée'], t('shortcuts.confirm')],
+    [[t('keys.escape')], t('shortcuts.escape')],
+    [[t('keys.enter')], t('shortcuts.confirm')],
     [['L'], t('shortcuts.legend')],
     [['N'], t('shortcuts.news')],
     [['?'], t('shortcuts.help')],

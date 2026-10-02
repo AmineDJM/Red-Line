@@ -66,6 +66,9 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
 
 - Tous les chiffres d'équilibrage dans `data/` (JSON validé par zod), jamais en dur.
 - Textes de l'interface en français, externalisés (`apps/client/src/i18n/fr.json`, `apps/admin/src/i18n/fr.ts`).
+- Multilingue (15 langues, arabe en RTL) : source française, autres langues produites et contrôlées par `tools/i18n`
+  (`check`, `translate -- --import`) ; toute nouvelle clé de `fr*.json` doit être traduite (test de complétude en CI).
+  Le moteur ne porte que des clés + paramètres (`LocText`, champs optionnels). Voir `docs/i18n.md`.
 - Nom du jeu : **Red Line** (interface, titres, métadonnées).
 - Accès de diagnostic du client (`window.__rl`, `window.__rlMap`) : actifs en mock ou avec localStorage `rl.debug=1`.
 - `REDLINE_EXTRA_SPEEDS` : vitesses d'essai pour les tests, refusées en production.

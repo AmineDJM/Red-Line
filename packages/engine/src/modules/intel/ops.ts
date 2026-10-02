@@ -58,6 +58,7 @@ import {
   provinceName,
   sectorOf,
 } from './text.js';
+import { loc } from '@redline/shared';
 
 export const OP_LABEL: Record<IntelOpKind, string> = {
   infiltrate_spy: "Infiltration d'un agent",
@@ -352,6 +353,7 @@ function exposeNationRecon(state: EngineState, n: NationId, op: StoredOp): void 
   op.status = 'compromised';
   nationReconReport(state, n, op, 'compromised', {
     title: `${OP_LABEL[op.kind]} — compromise`,
+    titleLoc: loc('engine.intel.opCompromised', { op: { key: `engine.intelOp.${op.kind}` } }),
     source: OP_META[op.kind].source,
   });
   onExposed(state, n, op);
@@ -366,6 +368,10 @@ function finishNationRecon(state: EngineState, n: NationId, op: StoredOp): void 
   op.status = ok ? 'success' : 'failed';
   nationReconReport(state, n, op, op.status, {
     title: `${OP_LABEL[op.kind]} — ${ok ? nationName(state, op.victim!) : 'échec'}`,
+    titleLoc: loc('engine.intel.opOutcome', {
+      op: { key: `engine.intelOp.${op.kind}` },
+      outcome: ok ? { nation: op.victim! } : { key: 'engine.intel.failed' },
+    }),
     source: OP_META[op.kind].source,
   });
   trimOps(state, n);
@@ -394,6 +400,10 @@ export function resolveOp(state: EngineState, n: NationId, id: string): void {
       source: OP_META[op.kind].source,
       kind: 'result',
       title: `${OP_LABEL[op.kind]} — ${exposed ? 'compromise' : 'échec'}`,
+      titleLoc: loc('engine.intel.opOutcome', {
+        op: { key: `engine.intelOp.${op.kind}` },
+        outcome: { key: exposed ? 'engine.intel.compromised' : 'engine.intel.failed' },
+      }),
       lines: [
         exposed
           ? "L'opération a été découverte par les services adverses. Conséquences diplomatiques à prévoir."
@@ -450,6 +460,10 @@ function onExposed(state: EngineState, n: NationId, op: StoredOp): void {
     source: 'sigint',
     kind: CYBER[op.kind] ? 'cyber' : 'counterintel',
     title: `${OP_LABEL[op.kind]} attribuée ${natA(state, n)}`,
+    titleLoc: loc('engine.intel.opAttributed', {
+      op: { key: `engine.intelOp.${op.kind}` },
+      nation: { nation: n },
+    }),
     lines: [
       `Tentative de ${OP_LABEL[op.kind].toLowerCase()} détectée et attribuée ${natA(state, n)}.`,
       'Mesures de protection renforcées.',
@@ -485,6 +499,7 @@ function applySuccess(state: EngineState, n: NationId, op: StoredOp): void {
       source: OP_META[op.kind].source,
       kind: 'result',
       title: `${OP_LABEL[op.kind]} — réussite`,
+      titleLoc: loc('engine.intel.opSuccess', { op: { key: `engine.intelOp.${op.kind}` } }),
       lines,
       at: op.target.at ?? null,
       radiusKm: op.target.radiusKm ?? 0,
@@ -662,6 +677,10 @@ function applySuccess(state: EngineState, n: NationId, op: StoredOp): void {
         dept: op.dept,
         source: OP_META[op.kind].source,
         title: `${OP_LABEL[op.kind]} — ${vName}`,
+        titleLoc: loc('engine.intel.opOutcome', {
+          op: { key: `engine.intelOp.${op.kind}` },
+          outcome: vName,
+        }),
         q: 0.85,
       });
       return;
@@ -697,6 +716,7 @@ function sweep(state: EngineState, n: NationId): void {
     source: 'humint',
     kind: 'result',
     title: `${OP_LABEL.counterintel_sweep} — bilan`,
+    titleLoc: loc('engine.intel.sweepReport'),
     lines: [
       caught
         ? `${caught} agent(s) étranger(s) démasqué(s).`
@@ -731,6 +751,7 @@ export function plantFake(
       source: channel === 'radio' ? 'sigint' : 'humint',
       kind: 'counterintel',
       title: channel === 'radio' ? 'Trafic radio suspect' : "Tentative d'intoxication déjouée",
+      titleLoc: loc(channel === 'radio' ? 'engine.intel.radioSuspect' : 'engine.intel.intoxFoiled'),
       lines: [
         channel === 'radio'
           ? 'Trafic radio artificiel repéré (volumes anormaux, indicatifs incohérents). Probable intoxication.'
@@ -758,6 +779,7 @@ export function plantFake(
       source: 'sigint',
       kind: 'flash',
       title: `FLASH — Mouvement massif de forces ${natDe(state, by)}`,
+      titleLoc: loc('engine.intel.flashMassive', { nation: { nation: by } }),
       lines: [
         `≈ ${units} unités en mouvement ${sectorOf(state, at)}, dont ${CATEGORY_LABEL[cat]}.`,
         channel === 'radio'
@@ -783,6 +805,7 @@ export function plantFake(
       source: 'humint',
       kind: 'intentions',
       title: `Intentions ${natDe(state, actor)}`,
+      titleLoc: loc('engine.intel.intentions', { nation: { nation: actor } }),
       lines: [
         `${natLe(state, actor, true)} ${natAgree(state, actor, 'préparerait', 'prépareraient')} une offensive contre ${natLe(state, victim)} sous 72 heures.`,
         'Mobilisation discrète des réserves signalée par une source proche de l’état-major.',

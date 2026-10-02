@@ -37,7 +37,7 @@ import {
   stabilityOf,
   type PseudoKind,
 } from './state.js';
-import { news, throttled } from './news.js';
+import { locNations, news, throttled } from './news.js';
 import { OK, fail } from './relations.js';
 
 // ——— Pseudo-nations (rebelles par pays, casques bleus) ———
@@ -165,7 +165,13 @@ export function spawnPeacekeepers(state: EngineState, pids: ProvinceId[], until:
       .slice(0, 3)
       .map((p) => w.provById.get(p)?.name ?? p)
       .join(', ');
-    news(state, 'peacekeepers', { P: names }, at, []);
+    news(
+      state,
+      'peacekeepers',
+      { P: names, loc: { P: { list: pids.slice(0, 3).map((p) => ({ province: p })) } } },
+      at,
+      [],
+    );
   }
   return out;
 }
@@ -240,7 +246,13 @@ export function onHandover(state: EngineState, pid: ProvinceId, to: NationId, re
   const from = ds(state).pseudo[reb]?.of ?? undefined;
   transferProvince(state, pid, to);
   const def = wi(state.world).provById.get(pid)!;
-  news(state, 'rallied', { A: to, B: from, P: def.name }, def.cityPoint, from ? [to, from] : [to]);
+  news(
+    state,
+    'rallied',
+    { A: to, B: from, P: def.name, loc: { P: { province: def.id } } },
+    def.cityPoint,
+    from ? [to, from] : [to],
+  );
 }
 
 // ——— Ordres : procuration ———
@@ -305,7 +317,13 @@ export function orderHireMercenaries(
   const id = spawnIrregular(state, n, 'mercenary', at, state.time + c.mercenaryDays * DAY, count);
   if (!id) return fail('not_allowed', 'Aucune société militaire disponible.');
   if (!throttled(state, `merc|${n}`, 7 * DAY)) {
-    news(state, 'mercenaries', { A: n, P: wi(state.world).provById.get(pid)!.name }, at, [n]);
+    news(
+      state,
+      'mercenaries',
+      { A: n, P: wi(state.world).provById.get(pid)!.name, loc: { P: { province: pid } } },
+      at,
+      [n],
+    );
   }
   return OK;
 }
@@ -358,6 +376,7 @@ function revolt(
     P: def.name,
     X: areaName ?? '',
     Y: natList(state, claimants ?? []),
+    loc: { P: { province: pid }, Y: locNations(claimants ?? []) },
   };
   if (armed) {
     const tension = areaName

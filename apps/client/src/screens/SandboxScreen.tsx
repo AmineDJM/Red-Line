@@ -30,6 +30,7 @@ import { bindConnection, useGame } from '../store/game.js';
 import { useUi, windowBounds } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { ErrorScreen, LoadingScreen } from './Loading.js';
+import { compareNames } from '../i18n/index.js';
 
 /** Vitesses de l'outil de développement (observation accélérée du combat), pas de l'équilibrage. */
 const SANDBOX_SPEEDS = [1, 16, 60, 360, 1440];
@@ -124,7 +125,7 @@ export function SandboxScreen() {
   }, []);
 
   const nations = useMemo(
-    () => Object.values(world.nations).sort((a, b) => a.name.localeCompare(b.name, 'fr')),
+    () => Object.values(world.nations).sort((a, b) => compareNames(a.name, b.name)),
     [world.nations],
   );
   const systems = useMemo(

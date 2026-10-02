@@ -22,6 +22,7 @@ import type {
   SatellitePassView,
 } from './military.js';
 import type { IntelView } from './intel.js';
+import type { LocText } from './i18n.js';
 import type { DomesticView } from './domestic.js';
 import type { CouncilView, DiplomacyView, NewsItem, Relation, StabilityView } from './diplomacy.js';
 
@@ -342,7 +343,13 @@ export type GameNotification =
   | { kind: 'battle_report'; time: GameTime; reportId: string; at: LngLat }
   | { kind: 'operation'; time: GameTime; operationId: string; status: string }
   | { kind: 'alert_level'; time: GameTime; level: AlertLevel }
-  | { kind: 'council'; time: GameTime; text: string }
+  | {
+      kind: 'council';
+      time: GameTime;
+      text: string;
+      /** Texte localisable (le client traduit ; `text` reste le français). */
+      loc?: LocText;
+    }
   | { kind: 'news'; time: GameTime; newsId: string; at: LngLat | null }
   /** Notification générique : tout le reste (révolte, coup d'État, agent démasqué, alliance…). */
   | {
@@ -353,4 +360,6 @@ export type GameNotification =
       title: string;
       text: string;
       severity: 'info' | 'warn' | 'critical';
+      /** Titre et texte localisables (le client traduit ; `title`/`text` restent le français). */
+      loc?: { title: LocText; text: LocText };
     };

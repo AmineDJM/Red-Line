@@ -1,0 +1,3139 @@
+{
+  "app": {
+    "name": "Red Line",
+    "tagline": "रीयल-टाइम भू-राजनीतिक रणनीति",
+    "loading": "लोड हो रहा है…",
+    "loadingPath": "लोड",
+    "errorPath": "त्रुटि",
+    "loadingMap": "युद्ध क्षेत्र तैयार किया जा रहा है…",
+    "error": "एक त्रुटि हुई।",
+    "retry": "फिर से प्रयास करें",
+    "back": "वापस",
+    "close": "बंद करें",
+    "clear": "मिटाएँ",
+    "cancel": "रद्द करें",
+    "confirm": "पुष्टि करें",
+    "next": "अगला",
+    "previous": "पिछला",
+    "skip": "छोड़ें",
+    "done": "पूर्ण",
+    "search": "खोजें",
+    "maximize": "बड़ा करें",
+    "soon": "जल्द",
+    "yes": "हाँ",
+    "no": "नहीं",
+    "all": "सभी",
+    "none": "कोई नहीं",
+    "mockBadge": "ऑफ़लाइन डेमो",
+    "notFound": "पेज नहीं मिला।"
+  },
+  "keys": {
+    "space": "Space",
+    "enter": "Enter",
+    "escape": "Esc"
+  },
+  "time": {
+    "dayUnit": "दि",
+    "ago": "{{value}} पहले",
+    "in": "{{value}} में"
+  },
+  "sections": {
+    "armies": "मेरी सेनाएँ",
+    "army": "युद्ध शस्त्रागार",
+    "production": "उत्पादन",
+    "research": "अनुसंधान",
+    "economy": "अर्थव्यवस्था",
+    "intel": "खुफ़िया",
+    "diplomacy": "कूटनीति",
+    "council": "सुरक्षा परिषद",
+    "news": "समाचार",
+    "battles": "युद्ध रिपोर्ट",
+    "chat": "संदेश",
+    "shop": "दुकान",
+    "settings": "सेटिंग्स",
+    "short": {
+      "armies": "सेनाएँ",
+      "army": "शस्त्रागार",
+      "production": "उत्पादन",
+      "research": "R&D",
+      "economy": "अर्थव्यवस्था",
+      "intel": "खुफ़िया",
+      "diplomacy": "कूटनीति",
+      "council": "परिषद",
+      "news": "समाचार",
+      "battles": "युद्ध",
+      "chat": "संदेश",
+      "shop": "दुकान",
+      "settings": "सेटिंग्स"
+    },
+    "path": {
+      "armies": "मेरी सेनाएँ",
+      "army": "युद्ध शस्त्रागार",
+      "production": "उत्पादन",
+      "research": "R&D",
+      "economy": "अर्थव्यवस्था",
+      "intel": "खुफ़िया",
+      "diplomacy": "कूटनीति",
+      "council": "UN\\परिषद",
+      "news": "प्रेषण",
+      "battles": "युद्ध",
+      "chat": "संदेश",
+      "shop": "दुकान",
+      "settings": "सेटिंग्स"
+    }
+  },
+  "home": {
+    "title": "Red Line",
+    "path": "होम",
+    "menu": "मुख्य मेनू",
+    "subtitle": "असली विश्व मानचित्र पर रीयल-टाइम भू-राजनीतिक रणनीति। असली शस्त्रागार, असली बजट, केवल सैन्य विजय।",
+    "playGuest": "अतिथि के रूप में खेलें",
+    "login": "लॉग इन करें",
+    "register": "साइन अप करें",
+    "logout": "लॉग आउट करें",
+    "continue": "नया गेम",
+    "multi": "मल्टीप्लेयर",
+    "resume": "गेम फिर शुरू करें",
+    "rankings": "रैंकिंग",
+    "shop": "दुकान",
+    "sandbox": "सैंडबॉक्स",
+    "guest": "अतिथि",
+    "notConnected": "लॉग इन नहीं",
+    "welcome": "लॉग इन: {{name}}",
+    "guestNote": "अतिथि खाता इस डिवाइस पर सुरक्षित रहता है।",
+    "footer": "केवल सैन्य विजय। किसी असली स्थल को निशाना नहीं बनाया जाता: हर प्रांत में सामान्य इमारतें।",
+    "hints": {
+      "guest": "तुरंत एकल गेम, बिना पंजीकरण",
+      "solo": "विश्व मानचित्र पर AI के विरुद्ध एकल",
+      "multi": "64 खिलाड़ियों तक, बाकी देश AI के पास",
+      "resume": "आपके चल रहे और समाप्त गेम",
+      "rankings": "सीज़न और विश्व रैंकिंग",
+      "shop": "प्रीमियम मुद्रा, कॉस्मेटिक, त्वरण",
+      "sandbox": "मुक्त स्थापना और लोकल इंजन"
+    },
+    "boot": {
+      "link": "उपग्रह लिंक स्थापित",
+      "map": "मानचित्र: 2 567 प्रांत · 201 देश",
+      "catalog": "सूची: 406 हथियार प्रणालियाँ",
+      "engine": "सिमुलेशन इंजन सिंक्रनाइज़",
+      "ready": "कमांड पोस्ट तैयार।"
+    },
+    "flash": {
+      "game_deleted": "यह गेम हटा दिया गया है: आप होम पर लौट आए हैं।"
+    },
+    "info": {
+      "title": "खेल एक नज़र में",
+      "about": "खेल के बारे में जानें",
+      "figures": {
+        "nations": "खेलने योग्य राष्ट्र",
+        "provinces": "प्रांत",
+        "systems": "वास्तविक हथियार प्रणालियाँ",
+        "players": "प्रति खेल खिलाड़ी"
+      },
+      "live": {
+        "games_one": "{{n}} खेल जारी",
+        "games_other": "{{n}} खेल जारी",
+        "players_one": "{{n}} खिलाड़ी ऑनलाइन",
+        "players_other": "{{n}} खिलाड़ी ऑनलाइन"
+      },
+      "blocks": {
+        "map": {
+          "title": "रीयल टाइम, असली नक्शा",
+          "text": "उपग्रह चित्र, 2,567 प्रांत, महावृत्त मार्ग। आपके ऑफ़लाइन रहने पर भी दुनिया चलती रहती है।"
+        },
+        "arsenal": {
+          "title": "असली शस्त्रागार और बजट",
+          "text": "2025 की युद्ध-व्यवस्था, डॉलर में रक्षा बजट, आपकी R&D के अनुसार बनने वाली 406 वास्तविक हथियार प्रणालियाँ।"
+        },
+        "intel": {
+          "title": "खुफ़िया और कूटनीति",
+          "text": "जासूस, उपग्रह और युद्ध का कोहरा; गठबंधन, लाइसेंस और सुरक्षा परिषद में मतदान।"
+        },
+        "multi": {
+          "title": "अकेले या 64 खिलाड़ियों तक",
+          "text": "दो सौ से अधिक AI के विरुद्ध अकेले, या स्थायी मल्टीप्लेयर खेल में। सीज़न के अनुसार रैंकिंग।"
+        }
+      },
+      "links": {
+        "howto": "कैसे खेलें",
+        "features": "विशेषताएँ",
+        "nations": "राष्ट्र",
+        "arsenal": "शस्त्रागार",
+        "faq": "अक्सर पूछे जाने वाले प्रश्न"
+      }
+    }
+  },
+  "auth": {
+    "email": "ईमेल पता",
+    "password": "पासवर्ड",
+    "displayName": "प्रदर्शित नाम",
+    "submitLogin": "लॉग इन करें",
+    "submitRegister": "खाता बनाएँ",
+    "switchToRegister": "खाता बनाएँ",
+    "switchToLogin": "पहले से पंजीकृत?",
+    "errors": {
+      "invalid": "गलत क्रेडेंशियल।",
+      "exists": "यह पता पहले से उपयोग में है।",
+      "weak": "पासवर्ड बहुत छोटा है (कम से कम 8 अक्षर)।",
+      "network": "सर्वर तक पहुँच नहीं।",
+      "generic": "कार्रवाई विफल रही।"
+    }
+  },
+  "newGame": {
+    "title": "नया गेम",
+    "path": "नया-गेम",
+    "subtitle": "अपना देश चुनें",
+    "nation": "देश",
+    "searchPlaceholder": "देश खोजें…",
+    "pickOnMap": "मानचित्र पर किसी देश पर क्लिक करें या सूची से चुनें।",
+    "pickHint": "मानचित्र पर किसी देश को छुएँ, या सूची से चुनें।",
+    "selected": "चयनित देश",
+    "none": "कोई देश नहीं",
+    "provinces_one": "{{count}} प्रांत",
+    "provinces_other": "{{count}} प्रांत",
+    "count_one": "{{count}} देश",
+    "count_other": "{{count}} देश",
+    "taken_one": "{{count}} लिया गया",
+    "taken_other": "{{count}} लिए गए",
+    "human": "खिलाड़ी",
+    "scenario": "परिदृश्य",
+    "speed": "गति",
+    "difficulty": "कठिनाई",
+    "levels": {
+      "easy": "आसान",
+      "normal": "सामान्य",
+      "hard": "कठिन"
+    },
+    "budget": "रक्षा बजट",
+    "personnel": "सैन्य बल",
+    "doctrine": "सिद्धांत",
+    "highlights": "मुख्य प्रणालियाँ",
+    "loadingInfo": "विवरण लोड हो रहा है…",
+    "random": "यादृच्छिक देश",
+    "start": "गेम शुरू करें",
+    "creating": "गेम बनाया जा रहा है…",
+    "entity": "इकाई",
+    "error": "गेम नहीं बनाया जा सका।",
+    "mapLabel": "विश्व मानचित्र: चुनने के लिए किसी देश पर क्लिक करें",
+    "tooMany": "आपके पहले से 10 एकल गेम चल रहे हैं: किसी एक को फिर शुरू करें या हटाएँ।",
+    "manageGames": "मेरे गेम प्रबंधित करें"
+  },
+  "game": {
+    "connecting": "गेम से जुड़ रहे हैं…",
+    "reconnecting": "कनेक्शन टूटा, फिर से जुड़ रहे हैं…",
+    "failed": "सर्वर ने कनेक्शन अस्वीकार किया।",
+    "spectator": "दर्शक",
+    "exit": "होम पर जाएँ",
+    "clock": {
+      "day": "D+{{day}}",
+      "paused": "विराम",
+      "pause": "विराम",
+      "play": "फिर शुरू",
+      "speed": "गति ×{{speed}}",
+      "speedShort": "×{{speed}}",
+      "nextSpeed": "गति बदलें (वर्तमान ×{{speed}})"
+    },
+    "topbar": {
+      "treasury": "खज़ाना",
+      "perDay": "/दिन",
+      "budgetTip": "खज़ाना और प्रतिदिन शुद्ध आय — अर्थव्यवस्था खोलें",
+      "resources": "संसाधन",
+      "resourceTip": "{{name}}: भंडार {{stock}}, प्रतिदिन {{net}}"
+    },
+    "alertLevel": {
+      "title": "अलर्ट",
+      "short": "AL",
+      "tooltip": "वैश्विक अलर्ट स्तर {{level}} — {{label}}",
+      "labels": {
+        "1": "परमाणु संकट",
+        "2": "व्यापक युद्ध",
+        "3": "सशस्त्र तनाव",
+        "4": "सतर्कता",
+        "5": "शांत"
+      }
+    },
+    "resources": {
+      "money": "धन",
+      "oil": "तेल",
+      "metals": "धातुएँ",
+      "electronics": "इलेक्ट्रॉनिक्स",
+      "food": "खाद्य",
+      "perDay": "{{value}} / दिन"
+    },
+    "toolbar": {
+      "army": "मेरी सेनाएँ",
+      "production": "उत्पादन",
+      "alerts": "अलर्ट",
+      "layers": "परतें",
+      "legend": "संकेत",
+      "menu": "नेविगेशन",
+      "map": "मानचित्र",
+      "more": "अधिक",
+      "allSections": "सभी क्षेत्र",
+      "recenter": "फिर से केंद्रित करें"
+    },
+    "layers": {
+      "title": "परतें",
+      "military": "सैन्य",
+      "intel": "खुफ़िया",
+      "economy": "अर्थव्यवस्था",
+      "diplomacy": "कूटनीति",
+      "soon": "जल्द",
+      "fog": "युद्ध का कोहरा",
+      "labels": "लेबल"
+    },
+    "legend": {
+      "title": "संकेत",
+      "ownForces": "आपकी सेनाएँ",
+      "allyForces": "मित्र सेनाएँ",
+      "enemyForces": "शत्रु सेनाएँ (युद्धरत)",
+      "detected": "अज्ञात संपर्क",
+      "building": "सामरिक इमारत",
+      "ownTerritory": "आपका क्षेत्र",
+      "range": "हथियार की मारक दूरी (न्यून. – अधि.)",
+      "route": "मार्ग / आदेश",
+      "launch": "प्रक्षेपण स्थल",
+      "border": "सीमा",
+      "disputed": "विवादित क्षेत्र",
+      "fog": "अनाच्छादित क्षेत्र",
+      "capture": "कब्ज़ा जारी",
+      "neutralForces": "तटस्थ सेनाएँ"
+    },
+    "alerts": {
+      "title": "अलर्ट केंद्र",
+      "empty": "अभी कोई अलर्ट नहीं।",
+      "markRead": "सभी को पढ़ा हुआ चिह्नित करें",
+      "center": "मानचित्र केंद्रित करें",
+      "filter": "फ़िल्टर",
+      "filters": {
+        "all": "सभी",
+        "critical": "गंभीर"
+      },
+      "kinds": {
+        "combat_started": "युद्ध शुरू",
+        "unit_destroyed": "शत्रु इकाई नष्ट: {{unit}}",
+        "unit_destroyed_own": "इकाई खोई: {{unit}}",
+        "unit_detected": "संपर्क मिला",
+        "unit_detected_known": "संपर्क: {{unit}} · {{nation}}",
+        "province_capture_started": "{{province}}: {{nationLe}} द्वारा कब्ज़े का प्रयास",
+        "province_capture_started_own": "{{province}} पर कब्ज़ा जारी",
+        "province_capture_started_threat": "{{province}} पर {{nationLe}} का हमला",
+        "province_captured": "{{province}} पर {{nationLe}} का कब्ज़ा",
+        "province_captured_own": "{{province}} जीता गया",
+        "province_lost": "{{province}} खोया गया",
+        "production_complete": "उत्पादन पूर्ण: {{unit}}",
+        "arrived": "इकाई गंतव्य पर पहुँची",
+        "nation_defeated": "देश पराजित: {{nation}}",
+        "victory": "{{deNation}} की विजय",
+        "research_complete": "अनुसंधान पूर्ण: {{node}}",
+        "war_declared": "{{aDe}} ने {{bA}} पर युद्ध घोषित किया",
+        "peace_signed": "{{aLe}} और {{bLe}} के बीच शांति संधि",
+        "missile_launch": "मिसाइल प्रक्षेपण का पता चला",
+        "building_hit": "{{province}} में {{building}} पर प्रहार ({{health}} %)",
+        "delivery_arrived": "डिलीवरी पहुँची",
+        "delivery_intercepted": "डिलीवरी रोकी गई",
+        "intel_report": "नई खुफ़िया रिपोर्ट",
+        "battle_report": "नई युद्ध रिपोर्ट",
+        "battle_report_named": "रिपोर्ट: {{title}}",
+        "operation": "संयुक्त अभियान: {{status}}",
+        "alert_level": "वैश्विक अलर्ट स्तर: {{level}}",
+        "news": "नया प्रेषण"
+      },
+      "titled": "{{title}}: {{text}}"
+    },
+    "army": {
+      "count": "×{{count}}"
+    },
+    "selection": {
+      "title": "चयन",
+      "count": "बल",
+      "hp": "हालत",
+      "status": "स्थिति",
+      "stance": "मुद्रा",
+      "supply": "आपूर्ति",
+      "mission": "मिशन",
+      "general": "जनरल",
+      "xp": "अनुभव",
+      "stop": "रोकें",
+      "sheet": "विवरण",
+      "deselect": "चयन हटाएँ",
+      "hint": "हिलाने के लिए मानचित्र छुएँ, हमले के लिए शत्रु इकाई छुएँ। कंसोल: Ctrl+K।",
+      "lastSeen": "{{value}} पहले देखा गया",
+      "lastSeenLabel": "अंतिम अवलोकन",
+      "uncertainty": "अनिश्चितता: ±{{value}}",
+      "uncertaintyLabel": "अनिश्चितता",
+      "unknownType": "अज्ञात प्रकार",
+      "owner": "देश",
+      "multi_one": "{{count}} चयनित",
+      "multi_other": "{{count}} चयनित",
+      "ready": "उपलब्ध होने में",
+      "ammo": "गोला-बारूद"
+    },
+    "orders": {
+      "moveTitle": "गति आदेश",
+      "attackTitle": "हमला आदेश",
+      "distance": "दूरी",
+      "eta": "आगमन",
+      "warning": "ध्यान दें",
+      "outOfRange": "लक्ष्य मारक दूरी से बाहर",
+      "confirm": "पुष्टि करें",
+      "cancel": "रद्द करें",
+      "sent": "आदेश भेजा गया",
+      "destination": "गंतव्य",
+      "target": "लक्ष्य",
+      "errors": {
+        "not_owner": "यह इकाई आपकी नहीं है।",
+        "unknown_unit": "अज्ञात इकाई।",
+        "unreachable": "गंतव्य तक पहुँचना संभव नहीं।",
+        "out_of_range": "लक्ष्य मारक दूरी से बाहर।",
+        "insufficient_funds": "अपर्याप्त धन।",
+        "invalid_target": "अमान्य लक्ष्य।",
+        "not_allowed": "आदेश संभव नहीं।",
+        "game_over": "गेम समाप्त हो गया है।",
+        "unknown": "आदेश पहचाना नहीं गया।",
+        "locked": "कार्रवाई अवरुद्ध (अलर्ट, प्रस्ताव या प्रतिबंध)।",
+        "research_required": "अनुसंधान आवश्यक।",
+        "capacity": "अधिकतम क्षमता पूरी।",
+        "cooldown": "कार्रवाई कूलडाउन में।",
+        "insufficient_resources": "अपर्याप्त संसाधन।",
+        "disconnected": "ऑफ़लाइन: आदेश नहीं भेजा गया।",
+        "timeout": "सर्वर से कोई उत्तर नहीं।"
+      }
+    },
+    "status": {
+      "idle": "प्रतीक्षा में",
+      "moving": "गतिशील",
+      "combat": "युद्ध में",
+      "embarked": "सवार",
+      "destroyed": "नष्ट"
+    },
+    "stance": {
+      "hold": "डटे रहें",
+      "defend": "रक्षात्मक",
+      "aggressive": "आक्रामक"
+    },
+    "level": {
+      "own": "मित्र इकाई",
+      "precise": "सटीक",
+      "identified": "पहचाना गया",
+      "detected": "पता चला"
+    },
+    "callout": {
+      "capital": "राजधानी",
+      "moving": "मार्ग में · {{value}}",
+      "combat": "युद्ध में",
+      "capture": "कब्ज़ा {{value}} %"
+    },
+    "end": {
+      "victory": "विजय",
+      "defeat": "पराजय",
+      "victoryText": "आपका देश अपना सैन्य प्रभुत्व स्थापित करता है।",
+      "defeatText": "{{deNation}} की विजय। आपका देश पराजित हुआ।",
+      "defeatTextAlone": "आपका देश युद्ध से बाहर है। युद्ध आपके बिना जारी है।",
+      "newGame": "नया गेम",
+      "home": "होम",
+      "stats": "गेम सारांश",
+      "observe": "देखना जारी रखें",
+      "abandoned": "परित्याग",
+      "kickerEnded": "गेम समाप्त",
+      "abandonedText": "48 घंटे (एकल) या 24 घंटे (मल्टीप्लेयर) से कोई कनेक्शन नहीं: गेम बंद कर दिया गया।"
+    },
+    "time": {
+      "minutes": "{{value}} मिनट",
+      "hours": "{{h}} घं {{m}}",
+      "days": "{{d}} दि {{h}} घं"
+    },
+    "unlimited": {
+      "badge": "असीमित",
+      "value": "∞",
+      "tip": "असीमित मोड: धन और संसाधन कभी सीमित नहीं। उत्पादन के लिए R&D अब भी आवश्यक है।",
+      "reserve": "असीमित भंडार",
+      "stockTip": "{{name}}: असीमित भंडार",
+      "budgetTip": "असीमित खज़ाना — अर्थव्यवस्था खोलें"
+    }
+  },
+  "province": {
+    "title": "प्रांत",
+    "population": "जनसंख्या",
+    "income": "आय / दिन",
+    "fortification": "किलेबंदी",
+    "level": "स्तर {{level}}",
+    "unrest": "स्थानीय तनाव",
+    "buildings": "इमारतें",
+    "noBuildings": "कोई इमारत नहीं।",
+    "produceHere": "यहाँ उत्पादन करें",
+    "fortify": "किलेबंदी करें",
+    "capture": "कब्ज़ा",
+    "captureOwn": "आपकी सेनाएँ कब्ज़ा कर रही हैं",
+    "captureBy": "{{nationLe}} कब्ज़ा कर रहा है",
+    "knowledge": "जानकारी",
+    "intelLevel": {
+      "0": "अज्ञात",
+      "1": "झलक",
+      "2": "अच्छी",
+      "3": "पूर्ण"
+    },
+    "updated": "अद्यतन",
+    "ago": "{{value}} पहले",
+    "economicIntel": "आर्थिक खुफ़िया",
+    "militaryIntel": "सैन्य खुफ़िया",
+    "knownBuildings": "ज्ञात इमारतें",
+    "moreUnknown": "अन्य इमारतें अप्रकट…",
+    "unknownHint": "इस प्रांत के बारे में कोई खुफ़िया जानकारी नहीं। इसकी इमारतें और रक्षा जानने के लिए टोही मिशन शुरू करें।",
+    "recon": "सैन्य टोही",
+    "listen": "SIGINT निगरानी",
+    "morale": "मनोबल",
+    "fortifyLevel": "किलेबंदी (N{{level}})",
+    "fortifyStarted": "{{province}} में किलेबंदी शुरू",
+    "reconEco": "आर्थिक टोही",
+    "reconRunning": "मिशन जारी…",
+    "reconMilitaryTip": "सैन्य खुफ़िया (SIGINT): प्रांत के अड्डे, रक्षा और सैन्य स्थल क्रमशः प्रकट करती है।",
+    "reconEconomicTip": "विदेशी खुफ़िया (HUMINT): प्रांत की आर्थिक सुविधाएँ क्रमशः प्रकट करती है।",
+    "opStarted": {
+      "recon_military": "{{province}} पर सैन्य टोही शुरू",
+      "recon_economic": "{{province}} पर आर्थिक टोही शुरू",
+      "listen_area": "{{province}} के आसपास निगरानी शुरू"
+    }
+  },
+  "nationRecon": {
+    "title": "{{nationLe}} पर खुफ़िया",
+    "aria": "{{nationLe}} पर खुफ़िया",
+    "provinces_one": "{{count}} प्रांत",
+    "provinces_other": "{{count}} प्रांत",
+    "ops": {
+      "recon_military": "सैन्य टोही",
+      "recon_economic": "आर्थिक टोही"
+    },
+    "phase": "चरण {{done}}/{{waves}}",
+    "covered_one": "{{count}} प्रांत कवर",
+    "covered_other": "{{count}} प्रांत कवर",
+    "priority": "प्राथमिकता: राजधानी और बड़े शहर",
+    "remaining_one": "{{count}} प्रांत प्रकट होना शेष",
+    "remaining_other": "{{count}} प्रांत प्रकट होने शेष",
+    "complete": "सभी प्रांत प्रकट",
+    "revealedAria": "प्रकट प्रांत: {{total}} में से {{known}}",
+    "launch": "शुरू करें",
+    "running": "जारी",
+    "capacity": "विभाग की क्षमता पूरी",
+    "started": {
+      "recon_military": "{{nationLe}} पर सैन्य टोही शुरू",
+      "recon_economic": "{{nationLe}} पर आर्थिक टोही शुरू"
+    },
+    "tips": {
+      "recon_military": "{{deNation}} के अड्डे, रक्षा, रडार, साइलो और बंकर चरणों में प्रकट करती है: पहले राजधानी और बड़े शहर, फिर शेष देश।",
+      "recon_economic": "{{deNation}} का उत्पादन, संसाधन और उद्योग चरणों में प्रकट करती है: पहले राजधानी और बड़े शहर, फिर शेष देश।"
+    }
+  },
+  "console": {
+    "title": "कमांड कंसोल",
+    "open": "कंसोल",
+    "path": "कंसोल",
+    "placeholder": "move sel alger · produce 4 rafale · research aero.gen5 · help",
+    "examples": "उदाहरण:",
+    "selection_one": "{{count}} इकाई",
+    "selection_other": "{{count}} इकाइयाँ",
+    "hints": {
+      "complete": "पूरा करें",
+      "run": "चलाएँ",
+      "close": "बंद करें",
+      "navigate": "चुनें"
+    },
+    "kinds": {
+      "cmd": "cmd",
+      "unit": "इकाई",
+      "target": "लक्ष्य",
+      "system": "प्रणाली",
+      "place": "स्थान",
+      "nation": "देश",
+      "node": "R&D",
+      "op": "अभि.",
+      "window": "विंडो",
+      "value": "मान"
+    },
+    "args": {
+      "units": "इकाइयाँ",
+      "place": "स्थान",
+      "target": "लक्ष्य",
+      "count": "n",
+      "system": "प्रणाली",
+      "node": "नोड",
+      "speed": "गति",
+      "op": "अभियान",
+      "nation": "देश",
+      "window": "विंडो",
+      "onoff": "on|off"
+    },
+    "help": {
+      "move": "इकाइयों को किसी स्थान पर ले जाएँ",
+      "attack": "शत्रु इकाई पर हमला करें",
+      "stop": "इकाइयों को रोकें",
+      "produce": "किसी प्रांत में प्रणाली बनाएँ",
+      "research": "अनुसंधान शुरू करें",
+      "goto": "मानचित्र को किसी स्थान पर केंद्रित करें",
+      "speed": "गति बदलें (एकल)",
+      "pause": "विराम (एकल)",
+      "resume": "फिर शुरू करें (एकल)",
+      "intel": "खुफ़िया अभियान शुरू करें",
+      "peace": "शांति का प्रस्ताव दें",
+      "ceasefire": "युद्धविराम का प्रस्ताव दें",
+      "war": "युद्ध घोषित करें",
+      "open": "विंडो खोलें",
+      "select": "इकाइयाँ चुनें",
+      "mobilize": "सामान्य लामबंदी",
+      "help": "सहायता दिखाएँ",
+      "clear": "लॉग मिटाएँ"
+    },
+    "errors": {
+      "empty": "खाली आदेश।",
+      "unknown": "अज्ञात आदेश: {{cmd}}। «help» टाइप करें।",
+      "units": "कोई मेल खाती इकाई नहीं (पहचानकर्ता, «sel» या प्रणाली का नाम)।",
+      "place": "स्थान नहीं मिला: {{place}}",
+      "target": "लक्ष्य नहीं मिला: {{target}}",
+      "system": "प्रणाली नहीं मिली: {{system}}",
+      "province": "आपका कोई प्रांत मेल नहीं खाता: {{place}}",
+      "node": "अनुसंधान नहीं मिला: {{node}}",
+      "op": "अज्ञात अभियान: {{op}}",
+      "nation": "देश नहीं मिला: {{nation}}",
+      "speed": "अमान्य गति।",
+      "window": "अज्ञात विंडो।"
+    },
+    "done": {
+      "goto": "मानचित्र {{place}} पर केंद्रित।",
+      "select_one": "{{count}} इकाई चुनी गई।",
+      "select_other": "{{count}} इकाइयाँ चुनी गईं।",
+      "stop_one": "{{count}} इकाई रोकी गई।",
+      "stop_other": "{{count}} इकाइयाँ रोकी गईं।",
+      "move_one": "{{count}} इकाई {{place}} की ओर रवाना।",
+      "move_other": "{{count}} इकाइयाँ {{place}} की ओर रवाना।",
+      "attack_one": "{{count}} इकाई {{target}} से भिड़ी।",
+      "attack_other": "{{count}} इकाइयाँ {{target}} से भिड़ीं।",
+      "produce": "उत्पादन शुरू: {{count}} × {{system}}, {{place}} में।",
+      "research": "अनुसंधान शुरू: {{node}}।",
+      "intel": "{{target}} के विरुद्ध अभियान «{{op}}» शुरू।",
+      "peace": "{{aNation}} को शांति प्रस्ताव भेजा गया।",
+      "ceasefire": "{{aNation}} को युद्धविराम प्रस्ताव भेजा गया।",
+      "war": "{{aNation}} पर युद्ध घोषित।",
+      "speed": "गति ×{{speed}}।",
+      "pause": "गेम रुका।",
+      "resume": "गेम फिर शुरू।",
+      "mobilizeOn": "सामान्य लामबंदी घोषित।",
+      "mobilizeOff": "सामान्य लामबंदी समाप्त।"
+    }
+  },
+  "shortcuts": {
+    "title": "कीबोर्ड शॉर्टकट",
+    "console": "कमांड कंसोल",
+    "pause": "विराम / फिर शुरू",
+    "speed": "गतियाँ",
+    "windows": "मेरी सेनाएँ, युद्ध शस्त्रागार, उत्पादन, अनुसंधान, अर्थव्यवस्था, खुफ़िया…",
+    "escape": "आदेश रद्द, चयन हटाएँ, बंद करें",
+    "confirm": "आदेश की पुष्टि",
+    "legend": "संकेत",
+    "news": "समाचार",
+    "help": "यह सहायता"
+  },
+  "tutorial": {
+    "title": "ट्यूटोरियल",
+    "path": "ट्यूटोरियल",
+    "skip": "ट्यूटोरियल छोड़ें",
+    "skipStep": "चरण छोड़ें",
+    "waiting": "आपकी कार्रवाई की प्रतीक्षा…",
+    "steps": {
+      "welcome": {
+        "title": "कमांड पोस्ट में आपका स्वागत है",
+        "text": "आप असली विश्व मानचित्र पर अपने देश की सशस्त्र सेनाओं का नेतृत्व करते हैं। असली शस्त्रागार, डॉलर में असली बजट, केवल सैन्य विजय।"
+      },
+      "select": {
+        "title": "एक इकाई चुनें",
+        "text": "मानचित्र पर अपना कोई मोहरा (हरी किनारी) छुएँ: उसका विवरण, स्थिति और मारक दूरी दिखेगी।"
+      },
+      "order": {
+        "title": "आदेश दें",
+        "text": "हिलाने के लिए मानचित्र पर कोई बिंदु छुएँ, या हमले के लिए शत्रु इकाई छुएँ।"
+      },
+      "confirm": {
+        "title": "पुष्टि करें",
+        "text": "मार्ग, दूरी और आगमन समय जाँचें, फिर पुष्टि करें। तीन कदम: चुनें, आदेश दें, पुष्टि करें।"
+      },
+      "production": {
+        "title": "सेनाएँ बनाएँ",
+        "text": "उत्पादन खोलें: आपके सिद्धांत और आपूर्तिकर्ताओं का शस्त्रागार, फ़ोटो, कीमत और R&D शर्तों के साथ।"
+      },
+      "research": {
+        "title": "अनुसंधान में निवेश करें",
+        "text": "किसी प्रणाली को रखना उसे बनाना जानने के लिए पर्याप्त नहीं: R&D उच्च पीढ़ियों का उत्पादन खोलता है।"
+      },
+      "console": {
+        "title": "सब कुछ कीबोर्ड से",
+        "text": "कमांड कंसोल से सब कुछ कीबोर्ड से किया जा सकता है (move, produce, research, goto…)। इसे खोलें:"
+      },
+      "time": {
+        "title": "समय पर नियंत्रण",
+        "text": "एकल में: स्क्रीन के ऊपर विराम और गति, या Space और 1 से 5।"
+      },
+      "alerts": {
+        "title": "सूचित रहें",
+        "text": "अलर्ट केंद्र में युद्ध, खुफ़िया रिपोर्ट, परिषद के मत और डिलीवरी एकत्र होते हैं। एक क्लिक मानचित्र केंद्रित करता है या रिपोर्ट खोलता है।"
+      },
+      "end": {
+        "title": "अब आपकी बारी",
+        "text": "विश्व के 60 % प्रांतों या सभी शत्रु राजधानियों पर नियंत्रण करें। ट्यूटोरियल सेटिंग्स में उपलब्ध रहता है।"
+      },
+      "province": {
+        "title": "आपके प्रांत",
+        "text": "किसी प्रांत को छुएँ: इमारतें और स्तर (1 से 5), सटीक लागत पर निर्माण, किलेबंदी। पड़ोसी देश में, उसकी सुविधाएँ जानने के लिए टोही शुरू करें।"
+      }
+    }
+  },
+  "sandbox": {
+    "title": "सैंडबॉक्स",
+    "path": "सैंडबॉक्स",
+    "subtitle": "लोकल इंजन · मुक्त स्थापना",
+    "nation": "देश",
+    "system": "प्रणाली",
+    "placeHint": "चुनी गई इकाई रखने के लिए मानचित्र छुएँ।",
+    "placed_one": "{{count}} इकाई रखी गई",
+    "placed_other": "{{count}} इकाइयाँ रखी गईं",
+    "clear": "सब मिटाएँ",
+    "launch": "सिमुलेशन शुरू करें",
+    "reset": "रीसेट करें",
+    "observer": "दृष्टि",
+    "engineMissing": "इंजन अनुपलब्ध: फ़ंक्शन गायब ({{list}})।",
+    "engineLoading": "इंजन लोड हो रहा है…",
+    "dataMissing": "सिमुलेशन डेटा गायब ({{list}})।",
+    "running": "सिमुलेशन जारी",
+    "count": "संख्या"
+  },
+  "categories": {
+    "fighter": "लड़ाकू विमान",
+    "bomber": "बमवर्षक",
+    "air_support": "हवाई सहायता",
+    "helicopter": "हेलीकॉप्टर",
+    "drone": "ड्रोन",
+    "tank": "युद्धक टैंक",
+    "ifv": "पैदल सेना लड़ाकू वाहन",
+    "artillery": "तोपखाना",
+    "air_defense": "वायु रक्षा",
+    "strike_missile": "प्रहार मिसाइल",
+    "nuclear": "परमाणु हथियार",
+    "surface_ship": "सतही पोत",
+    "submarine": "पनडुब्बी",
+    "infantry": "पैदल सेना",
+    "space": "अंतरिक्ष प्रणाली",
+    "logistics": "रसद",
+    "radar": "रडार"
+  },
+  "doctrines": {
+    "us": "संयुक्त राज्य",
+    "ru": "रूस",
+    "cn": "चीन",
+    "eu": "यूरोप",
+    "other": "अन्य"
+  },
+  "buildings": {
+    "refinery": "रिफ़ाइनरी",
+    "power_plant": "बिजलीघर",
+    "port": "बंदरगाह",
+    "air_base": "वायुसेना अड्डा",
+    "military_base": "सैन्य अड्डा",
+    "arms_factory": "शस्त्र कारखाना",
+    "research_center": "अनुसंधान केंद्र",
+    "oil_field": "तेल क्षेत्र",
+    "mine": "खान",
+    "farm": "कृषि फ़ार्म",
+    "electronics_plant": "इलेक्ट्रॉनिक्स संयंत्र",
+    "local_industry": "स्थानीय उद्योग",
+    "recruiting_office": "भर्ती कार्यालय",
+    "naval_base": "नौसैनिक अड्डा",
+    "bunker": "बंकर",
+    "air_defense_site": "वायु रक्षा स्थल",
+    "coastal_battery": "तटीय तोपखाना",
+    "radar_station": "रडार स्टेशन",
+    "missile_silo": "मिसाइल साइलो",
+    "hospital": "सैन्य अस्पताल",
+    "secret_lab": "गुप्त प्रयोगशाला",
+    "forward_base": "अग्रिम अड्डा",
+    "groups": {
+      "resources": "संसाधन",
+      "industry": "उद्योग",
+      "military": "सैन्य",
+      "defense": "रक्षा"
+    },
+    "effects": {
+      "refinery": "परिष्कृत तेल बनाता है",
+      "power_plant": "उत्पादन और अनुसंधान तेज़ करता है",
+      "port": "नौसैनिक उत्पादन और समुद्री व्यापार",
+      "air_base": "विमानों का उत्पादन और अड्डा",
+      "military_base": "थल उत्पादन, डिपो, गैरिसन",
+      "arms_factory": "भारी हथियार: बख़्तरबंद, तोपखाना, मिसाइलें",
+      "research_center": "अनुसंधान अंक",
+      "oil_field": "तेल निष्कर्षण",
+      "mine": "धातु निष्कर्षण",
+      "farm": "खाद्य उत्पादन",
+      "electronics_plant": "इलेक्ट्रॉनिक पुर्ज़े",
+      "local_industry": "आय और निर्माण गति",
+      "recruiting_office": "पैदल सेना, तेज़ लामबंदी",
+      "naval_base": "नौसैनिक उत्पादन और मरम्मत",
+      "bunker": "रक्षकों को मज़बूत सुरक्षा",
+      "air_defense_site": "विमानों और मिसाइलों से भिड़ता है",
+      "coastal_battery": "जहाज़-रोधी रक्षा",
+      "radar_station": "विस्तृत हवाई पहचान",
+      "missile_silo": "बैलिस्टिक मिसाइल प्रक्षेपण",
+      "hospital": "इकाइयों की तेज़ बहाली",
+      "secret_lab": "तेज़ उन्नत अनुसंधान",
+      "forward_base": "मोर्चे का रसद डिपो",
+      "fortification": "फ़ील्ड किलेबंदी: प्रांत के रक्षकों का कवच (स्तर 1 से 3)।"
+    },
+    "ui": {
+      "build": "बनाएँ",
+      "upgrade": "स्तर {{level}}",
+      "upgrading": "उन्नयन N{{level}}",
+      "repair": "मरम्मत करें",
+      "repairing": "मरम्मत",
+      "health": "इमारत की स्थिति",
+      "operational": "परिचालित",
+      "already": "पहले से निर्मित",
+      "coastalOnly": "केवल तटीय प्रांत",
+      "costTip": "लागत {{cost}} · अवधि {{time}}",
+      "buildStarted": "निर्माण शुरू: {{name}}",
+      "upgradeStarted": "उन्नयन शुरू: {{name}} (N{{level}})",
+      "repairStarted": "मरम्मत शुरू: {{name}}",
+      "constructing": "निर्माणाधीन",
+      "maxLevel": "अधिकतम स्तर",
+      "blocked": {
+        "in_progress": "काम पहले से जारी",
+        "damaged": "पहले मरम्मत करें",
+        "max_level": "अधिकतम स्तर प्राप्त"
+      }
+    },
+    "fortification": "किलेबंदी"
+  },
+  "weapon": {
+    "engine": "इंजन",
+    "length": "लंबाई",
+    "wingspan": "पंख फैलाव",
+    "mtow": "अधिकतम भार",
+    "warhead": "वारहेड",
+    "speed": "गति",
+    "range": "परास",
+    "weaponRange": "हथियार की मारक दूरी",
+    "subtitle": "{{category}} · {{country}}",
+    "subtitleDoctrine": "{{category}} · {{doctrine}} सिद्धांत",
+    "doctrineAdj": {
+      "us": "अमेरिकी",
+      "ru": "रूसी",
+      "cn": "चीनी",
+      "eu": "यूरोपीय",
+      "other": "सामान्य"
+    },
+    "photo": "फ़ोटो",
+    "noPhoto": "फ़ोटो अनुपलब्ध",
+    "gen": "पीढ़ी",
+    "sheet": "तकनीकी विवरण",
+    "units": {
+      "m": "m",
+      "kg": "kg",
+      "km": "km"
+    },
+    "genericOrigin": "सामान्य"
+  },
+  "units": {
+    "km": "{{value}} km"
+  },
+  "map": {
+    "attribution": "चित्र NASA Blue Marble · Natural Earth",
+    "noImagery": "उपग्रह चित्र अनुपलब्ध: वेक्टर पृष्ठभूमि",
+    "tip": {
+      "nation": "देश",
+      "count": "बल",
+      "state": "स्थिति",
+      "hp": "अखंडता",
+      "supply": "आपूर्ति",
+      "mission": "मिशन",
+      "speed": "गति",
+      "range": "मारक दूरी",
+      "seen": "देखा",
+      "seenAgo": "{{value}} पहले",
+      "seenNow": "अभी",
+      "uncertainty": "स्थान",
+      "uncertaintyValue": "± {{value}}",
+      "stack": "ढेर",
+      "stackValue": "{{count}} इकाइयाँ",
+      "stackMore": "+ {{count}} और",
+      "unknown": "अज्ञात संपर्क",
+      "unknownType": "अज्ञात प्रकार",
+      "missile": "उड़ान में मिसाइल",
+      "impact": "प्रहार",
+      "impactIn": "{{value}} में",
+      "city": "शहर",
+      "capital": "राजधानी",
+      "population": "जनसंख्या",
+      "owner": "नियंत्रण",
+      "buildings": "इमारतें",
+      "intel": "खुफ़िया",
+      "capture": "कब्ज़ा",
+      "fortification": "किलेबंदी",
+      "fortLevel": "स्तर {{value}}",
+      "blockaded": "नाकाबंदी जारी",
+      "noFlyZone": "नो-फ़्लाई ज़ोन",
+      "disputed": "विवादित क्षेत्र",
+      "unrest": "तनाव",
+      "prompt": "inspect"
+    },
+    "rel": {
+      "own": "आपकी सेनाएँ",
+      "ally": "मित्र",
+      "neutral": "तटस्थ",
+      "enemy": "शत्रु"
+    },
+    "status": {
+      "idle": "तैनात",
+      "moving": "गतिशील",
+      "combat": "युद्ध में",
+      "embarked": "सवार",
+      "destroyed": "नष्ट"
+    },
+    "supply": {
+      "supplied": "सुनिश्चित",
+      "limited": "सीमित",
+      "cut": "कटा"
+    },
+    "mission": {
+      "none": "कोई नहीं",
+      "patrol": "गश्त",
+      "strike": "प्रहार",
+      "escort": "अनुरक्षण",
+      "refuel": "हवा में ईंधन भरना",
+      "awacs": "हवाई निगरानी",
+      "recon": "टोही",
+      "blockade": "नाकाबंदी",
+      "rtb": "अड्डे पर वापसी"
+    },
+    "flag": {
+      "decoy": "छलावा (केवल आपको दिखता है)",
+      "submerged": "जलमग्न",
+      "sonar": "सोनार संपर्क",
+      "jamming": "सक्रिय जैमिंग"
+    },
+    "intel": {
+      "0": "अज्ञात",
+      "1": "झलक",
+      "2": "अच्छी जानकारी",
+      "3": "पूर्ण जानकारी",
+      "old": "पुरानी जानकारी"
+    },
+    "bld": {
+      "refinery": "रिफ़ाइनरी",
+      "power_plant": "बिजलीघर",
+      "port": "बंदरगाह",
+      "air_base": "वायुसेना अड्डा",
+      "military_base": "सैन्य अड्डा",
+      "arms_factory": "शस्त्र कारखाना",
+      "research_center": "अनुसंधान केंद्र",
+      "oil_field": "तेल क्षेत्र",
+      "mine": "खान",
+      "farm": "कृषि फ़ार्म",
+      "electronics_plant": "इलेक्ट्रॉनिक्स संयंत्र",
+      "local_industry": "स्थानीय उद्योग",
+      "recruiting_office": "भर्ती कार्यालय",
+      "naval_base": "नौसैनिक अड्डा",
+      "bunker": "बंकर",
+      "air_defense_site": "वायु रक्षा स्थल",
+      "coastal_battery": "तटीय तोपखाना",
+      "radar_station": "रडार स्टेशन",
+      "missile_silo": "मिसाइल साइलो",
+      "hospital": "सैन्य अस्पताल",
+      "secret_lab": "गुप्त प्रयोगशाला",
+      "forward_base": "अग्रिम अड्डा",
+      "level": "स्तर {{value}}",
+      "damaged": "क्षतिग्रस्त",
+      "down": "निष्क्रिय",
+      "repair": "मरम्मत में",
+      "upgrade": "निर्माणाधीन"
+    },
+    "ring": {
+      "max": "मारक दूरी {{value}}",
+      "min": "न्यून. {{value}}",
+      "radius": "त्रिज्या {{value}}",
+      "radar": "रडार {{value}}",
+      "sonar": "सोनार {{value}}",
+      "sensor": "पहचान {{value}}",
+      "sat": "उपग्रह · {{value}} में गुज़रेगा"
+    },
+    "order": {
+      "eta": "{{distance}} · {{eta}}"
+    },
+    "minimap": {
+      "label": "मिनी-मानचित्र",
+      "km": "{{value}} km"
+    },
+    "pion": {
+      "decoy": "छलावा"
+    }
+  },
+  "legal": {
+    "title": "कानूनी जानकारी",
+    "docs": {
+      "cgu": "उपयोग की शर्तें",
+      "cgv": "बिक्री की शर्तें",
+      "privacy": "गोपनीयता",
+      "withdrawal": "वापसी",
+      "mentions": "कानूनी सूचना",
+      "cookies": "कुकीज़"
+    },
+    "path": "क़ानूनी",
+    "version": "संस्करण {{version}} · {{date}} को अद्यतन",
+    "error": "दस्तावेज़ अनुपलब्ध।",
+    "gateTitle": "उपयोग की शर्तें",
+    "gateText": "खेलने से पहले, कृपया हमारी उपयोग की शर्तें और गोपनीयता नीति (या उनका नया संस्करण) पढ़ें और स्वीकार करें।",
+    "read": "दस्तावेज़ पढ़ें",
+    "checkbox": "मैंने ऊपर दिए दस्तावेज़ पढ़ लिए हैं और स्वीकार करता/करती हूँ।",
+    "accept": "स्वीकार करें और जारी रखें"
+  },
+  "interior": {
+    "unavailable": "आंतरिक सुरक्षा उपलब्ध नहीं",
+    "kpi": {
+      "threat": "आंतरिक ख़तरा",
+      "quality": "सेवा की गुणवत्ता",
+      "level": "स्तर {{level}} · बजट सहित",
+      "foiled": "विफल किए गए अभियान",
+      "alerts": "जारी की गई चेतावनियाँ: {{count}}",
+      "caught": "बेनक़ाब एजेंट",
+      "doubles": "जिनमें से {{count}} पलटाए गए"
+    },
+    "grades": {
+      "low": "कम",
+      "moderate": "मध्यम",
+      "high": "उच्च",
+      "critical": "गंभीर"
+    },
+    "focusTitle": "विभाग की प्राथमिकता",
+    "focusSet": "प्राथमिकता: {{name}}",
+    "focus": {
+      "balanced": {
+        "name": "संतुलित",
+        "desc": "प्रयास प्रति-जासूसी, स्थलों की सुरक्षा और अशांति की निगरानी में बँटा है।"
+      },
+      "counterintel": {
+        "name": "प्रति-जासूसी",
+        "desc": "विदेशी एजेंटों और तैयार हो रहे अभियानों की तलाश: पहचान काफ़ी बढ़ती है।"
+      },
+      "protection": {
+        "name": "सुरक्षा",
+        "desc": "संवेदनशील स्थल सुरक्षित: दो और स्थल संरक्षित, शत्रु की तोड़फोड़ और टोही में बाधा।"
+      },
+      "surveillance": {
+        "name": "निगरानी",
+        "desc": "विद्रोही नेटवर्क और अशांति निगरानी में: अशांति का जोखिम बहुत घटता है।"
+      }
+    },
+    "budget": "विभाग का बजट",
+    "budgetSet": "आंतरिक सुरक्षा बजट बदला गया",
+    "metricsTitle": "मापने योग्य प्रभाव",
+    "metricsMeta": "स्तर × बजट × प्राथमिकता",
+    "metrics": {
+      "agentDetect": "एजेंट को बेनक़ाब करना (प्रतिदिन)",
+      "agentDetectHint": "प्रत्येक सक्रिय विदेशी एजेंट के लिए दैनिक आधार संभावना",
+      "opDetect": "तैयार हो रहे अभियान का पता लगाना",
+      "opDetectHint": "आँकी गई चेतावनी; शत्रु की सफलता आधी",
+      "protection": "संवेदनशील स्थल की सुरक्षा",
+      "protectionHint": "तोड़फोड़ और टोही की सफलता घटाती है",
+      "unrestReduction": "अशांति में कमी",
+      "unrestReductionHint": "विद्रोह, प्रदर्शन, आंतरिक तोड़फोड़"
+    },
+    "threatsTitle": "प्रांत के अनुसार ख़तरा",
+    "protectedCount": "संरक्षित स्थल: {{n}} / {{max}}",
+    "noThreat": "कोई ख़तरा नहीं पहचाना गया",
+    "protectedShort": "संरक्षित",
+    "cols": {
+      "threat": "ख़तरा",
+      "factors": "कारक"
+    },
+    "protect": "सुरक्षित करें",
+    "unprotect": "हटाएँ",
+    "protectedOk": "{{name}}: स्थल को संरक्षण में रखा गया",
+    "unprotected": "{{name}}: संरक्षण हटाया गया",
+    "reportsTitle": "आंतरिक रिपोर्टें",
+    "noReports": "कोई आंतरिक रिपोर्ट नहीं"
+  },
+  "intel": {
+    "flash": "FLASH",
+    "title": "खुफ़िया",
+    "sources": "स्रोत",
+    "humint": "HUMINT",
+    "sigint": "SIGINT",
+    "interiorTab": "आंतरिक",
+    "departments": "विभाग",
+    "totalBudget": "कुल बजट",
+    "unavailable": "खुफ़िया सेवा अनुपलब्ध।",
+    "unavailableHint": "इस गेम में खुफ़िया मॉड्यूल सक्रिय नहीं है।",
+    "depts": {
+      "interior": "आंतरिक सुरक्षा",
+      "exterior": "विदेशी खुफ़िया",
+      "military": "सैन्य खुफ़िया"
+    },
+    "deptsShort": {
+      "interior": "आंतरिक",
+      "exterior": "विदेशी",
+      "military": "सैन्य"
+    },
+    "level": "N{{level}}",
+    "budget": "बजट",
+    "budgetUp": "बजट बढ़ाएँ",
+    "budgetDown": "बजट घटाएँ",
+    "budgetSet": "विभाग का बजट समायोजित",
+    "capacity": "अभियान",
+    "noReports": "इस स्रोत की कोई रिपोर्ट नहीं।",
+    "operations": "अभियान",
+    "launch": "अभियान शुरू करें",
+    "launchShort": "शुरू करें",
+    "operation": "अभियान",
+    "target": "लक्ष्य",
+    "cost": "लागत",
+    "duration": "अवधि",
+    "success": "सफलता",
+    "exposure": "जोखिम",
+    "estimate": "अनुमानित सफलता संभावना",
+    "progress": "प्रगति",
+    "zone": "{{km}} km क्षेत्र",
+    "opLaunched": "अभियान शुरू: {{op}}",
+    "opCancelled": "अभियान रद्द",
+    "reconSent": "क्षेत्र की निगरानी शुरू",
+    "shared": "रिपोर्ट {{nationLe}} के साथ साझा की गई",
+    "sharedBy": "{{nationLe}} द्वारा साझा",
+    "subject": "विषय:",
+    "minimap": "रिपोर्ट का क्षेत्र",
+    "lowCotation": "कम रेटिंग: असत्यापित जानकारी, संभावित छल। कार्रवाई से पहले पुष्टि करें।",
+    "cotationTip": "स्रोत की विश्वसनीयता: {{r}} · जानकारी की विश्वसनीयता: {{c}}",
+    "agents": "एजेंट",
+    "caught": "पकड़े गए शत्रु एजेंट",
+    "caughtAgent": "अज्ञात",
+    "turned": "पलटा हुआ",
+    "turn": "पलटें",
+    "turnedOk": "एजेंट को दोहरा एजेंट बनाया गया",
+    "reliability": {
+      "A": "A — विश्वसनीय",
+      "B": "B — सामान्यतः विश्वसनीय",
+      "C": "C — काफ़ी विश्वसनीय",
+      "D": "D — कम विश्वसनीय",
+      "E": "E — अविश्वसनीय",
+      "F": "F — मूल्यांकन असंभव"
+    },
+    "credibility": {
+      "1": "1 — पुष्ट",
+      "2": "2 — संभावित",
+      "3": "3 — संभव",
+      "4": "4 — संदिग्ध",
+      "5": "5 — असंभावित",
+      "6": "6 — मूल्यांकन असंभव"
+    },
+    "kinds": {
+      "daily": "दैनिक नोट",
+      "flash": "फ़्लैश",
+      "order_of_battle": "युद्ध-क्रम",
+      "intentions": "इरादे",
+      "counterintel": "प्रति-जासूसी",
+      "leak": "लीक",
+      "cyber": "साइबर",
+      "result": "अभियान परिणाम"
+    },
+    "actions": {
+      "plan_strike": "प्रहार की योजना",
+      "send_recon": "टोही भेजें",
+      "share": "साझा करें",
+      "open_unit": "इकाई देखें",
+      "open_province": "प्रांत देखें"
+    },
+    "opStatus": {
+      "running": "जारी",
+      "success": "सफल",
+      "failed": "विफल",
+      "compromised": "उजागर"
+    },
+    "agentStatus": {
+      "active": "सक्रिय",
+      "burned": "उजागर",
+      "double": "दोहरा एजेंट",
+      "exfiltrated": "निकाला गया",
+      "captured": "पकड़ा गया"
+    },
+    "ops": {
+      "infiltrate_spy": "जासूस घुसाएँ",
+      "recruit_source": "स्रोत भर्ती करें",
+      "turn_agent": "एजेंट को पलटें",
+      "exfiltrate": "एजेंट को निकालें",
+      "steal_research": "अनुसंधान चुराएँ",
+      "sabotage_factory": "कारखाने में तोड़फोड़",
+      "fund_rebels": "विद्रोहियों को धन दें",
+      "listen_area": "क्षेत्र की निगरानी",
+      "intercept_army": "संचार अवरोधन",
+      "jam_area": "क्षेत्र में जैमिंग",
+      "cyber_radar": "साइबर हमला: रडार",
+      "cyber_production": "साइबर हमला: उत्पादन",
+      "cyber_orders": "साइबर हमला: आदेश",
+      "disinformation": "दुष्प्रचार",
+      "leak_plans": "योजनाएँ लीक करें",
+      "plant_fake_report": "छल: झूठी रिपोर्ट",
+      "deploy_decoys": "छलावे तैनात करें",
+      "fake_radio_traffic": "नकली रेडियो यातायात",
+      "counterintel_sweep": "प्रति-जासूसी",
+      "recon_economic": "आर्थिक टोही",
+      "recon_military": "सैन्य टोही"
+    },
+    "opsHelp": {
+      "infiltrate_spy": "लक्ष्य देश में एजेंट स्थापित करता है: उसके प्रांत, इमारतें और इरादे क्रमशः प्रकट करता है।",
+      "recruit_source": "स्थानीय स्रोत भर्ती करता है: नियमित इरादा रिपोर्ट, परिवर्तनशील रेटिंग।",
+      "turn_agent": "उजागर शत्रु एजेंट को पलटकर उसकी सेवा को धोखा देता है।",
+      "exfiltrate": "ख़तरे में पड़े एजेंट को पकड़े जाने से पहले वापस लाता है।",
+      "steal_research": "अनुसंधान कार्य चुराता है: किसी नोड को तेज़ करता या खोलता है।",
+      "sabotage_factory": "लक्ष्य की किसी औद्योगिक इमारत को नुकसान पहुँचाता है।",
+      "fund_rebels": "किसी प्रांत में विद्रोह को धन देता है: स्थिरता में गिरावट।",
+      "listen_area": "किसी क्षेत्र में रेडियो अवरोधन: वहाँ मौजूद इकाइयाँ प्रकट करता है।",
+      "intercept_army": "किसी सेना के संचार पर नज़र: आदेश और गतिविधियाँ।",
+      "jam_area": "किसी क्षेत्र के संचार और रडार जाम करता है।",
+      "cyber_radar": "लक्ष्य के रडार को अस्थायी रूप से अंधा करता है।",
+      "cyber_production": "लक्ष्य का औद्योगिक उत्पादन धीमा करता है।",
+      "cyber_orders": "लक्ष्य के आदेशों के निष्पादन में देरी करता है।",
+      "disinformation": "दुष्प्रचार अभियान: लक्ष्य की स्थिरता में गिरावट।",
+      "leak_plans": "चुराई गई योजनाएँ विश्व समाचार में प्रकाशित करता है।",
+      "plant_fake_report": "शत्रु सेवा तक झूठी रिपोर्ट पहुँचाता है।",
+      "deploy_decoys": "शत्रु टोही को धोखा देने वाले छलावे तैनात करता है।",
+      "fake_radio_traffic": "आपकी गतिविधियाँ छिपाने के लिए रेडियो यातायात का अनुकरण करता है।",
+      "counterintel_sweep": "आपके क्षेत्र में विदेशी एजेंटों का पता लगाता है।",
+      "recon_economic": "पूरे देश (पहले राजधानी और बड़े शहर, फिर बाकी) या एक प्रांत की आर्थिक सुविधाएँ (उत्पादन, संसाधन, उद्योग) चरणों में प्रकट करता है।",
+      "recon_military": "पूरे देश (पहले राजधानी और बड़े शहर, फिर बाकी) या एक प्रांत के अड्डे, वायु रक्षा, रडार, साइलो और बंकर चरणों में प्रकट करता है। इसके बाद वे मानचित्र पर दिखते हैं।"
+    },
+    "targetProvince": "लक्षित प्रांत",
+    "targetArea": "क्षेत्र (शहर के आसपास)",
+    "targetUnit": "लक्षित इकाई",
+    "wholeNation": "पूरा देश",
+    "scope": "दायरा",
+    "scopeNation": "पूरा देश",
+    "scopeProvince": "एक प्रांत",
+    "reconPhase": "चरण {{done}}/{{waves}} · {{provinces}} प्रांत",
+    "unknownContact": "अज्ञात संपर्क",
+    "noContacts": "कोई विदेशी इकाई नहीं मिली: अपने रडार पास लाएँ या टोही शुरू करें।"
+  },
+  "sheet": {
+    "path": "विवरण-पत्र",
+    "catalog": "कैटलॉग में देखें",
+    "pile": "स्टैक {{id}}"
+  },
+  "arsenal": {
+    "title": "शस्त्रागार",
+    "doctrines": "सिद्धांत और आपूर्तिकर्ता",
+    "all": "सभी",
+    "search": "प्रणाली खोजें…",
+    "category": "श्रेणी",
+    "categories": "साज़ोसामान की श्रेणियाँ",
+    "allCategories": "पूरा शस्त्रागार",
+    "searchAll_one": "पूरे शस्त्रागार में खोज: {{count}} परिणाम",
+    "searchAll_other": "पूरे शस्त्रागार में खोज: {{count}} परिणाम",
+    "emptyCategory": "इस सिद्धांत और इन फ़िल्टरों के लिए «{{category}}» श्रेणी में कोई प्रणाली नहीं।",
+    "groups": {
+      "air": "वायु",
+      "land": "थल",
+      "defense": "रक्षा और पहचान",
+      "strike": "प्रहार और रणनीतिक",
+      "sea": "समुद्र",
+      "support": "सहायता"
+    },
+    "cats": {
+      "fighter": "लड़ाकू विमान",
+      "bomber": "बमवर्षक",
+      "air_support": "वायु सहायता",
+      "helicopter": "हेलीकॉप्टर",
+      "drone": "ड्रोन",
+      "tank": "टैंक",
+      "ifv": "बख़्तरबंद वाहन (पैदल सेना लड़ाकू वाहन)",
+      "artillery": "तोपखाना",
+      "infantry": "पैदल सेना",
+      "air_defense": "वायु रक्षा",
+      "radar": "रडार",
+      "strike_missile": "प्रहारक मिसाइलें",
+      "nuclear": "परमाणु",
+      "space": "अंतरिक्ष",
+      "surface_ship": "सतही बेड़ा",
+      "submarine": "पनडुब्बियाँ",
+      "logistics": "रसद"
+    },
+    "allGen": "सभी",
+    "producible": "उत्पादन योग्य",
+    "importable": "आयात योग्य",
+    "import": "आयात",
+    "ownedFilter": "स्वामित्व",
+    "rdRequired": "R&D आवश्यक",
+    "licence": "लाइसेंस",
+    "count_one": "{{count}} प्रणाली",
+    "count_other": "{{count}} प्रणालियाँ",
+    "layout": "प्रदर्शन",
+    "grid": "ग्रिड",
+    "list": "सूची",
+    "empty": "फ़िल्टर से कोई प्रणाली मेल नहीं खाती।",
+    "emptyHint": "खोज बढ़ाएँ या सिद्धांत बदलें।",
+    "pick": "एक प्रणाली चुनें",
+    "pickHint": "विस्तृत विवरण, फ़ोटो और उत्पादन शर्तें यहाँ दिखती हैं।",
+    "back": "शस्त्रागार पर वापस",
+    "price": "कीमत",
+    "unitPrice": "इकाई कीमत",
+    "elements": "तत्व",
+    "upkeep": "रखरखाव",
+    "perDay": "/ दिन",
+    "buildTime": "उत्पादन समय",
+    "owned": "स्वामित्व",
+    "ownedShort": "स्वामित्व: {{count}}",
+    "producibleLabel": "उत्पादन योग्य",
+    "yesLicence": "हाँ (लाइसेंस के तहत)",
+    "noResearch": "नहीं (R&D आवश्यक: {{nodes}})",
+    "importLabel": "आयात",
+    "importPossible": "संभव",
+    "embargo": "असंभव (प्रतिबंध)",
+    "notExportable": "निर्यात योग्य नहीं",
+    "licenceLabel": "उत्पादन लाइसेंस",
+    "licenceOwned": "प्राप्त",
+    "licenceAvailable": "उपलब्ध",
+    "licenceNone": "प्रस्तावित नहीं",
+    "stealth": "स्टेल्थ",
+    "cols": {
+      "name": "प्रणाली",
+      "category": "श्रेणी",
+      "owned": "स्वामित्व",
+      "status": "स्थिति"
+    }
+  },
+  "production": {
+    "tabs": {
+      "arsenal": "शस्त्रागार",
+      "queue": "उत्पादन कतार",
+      "licences": "लाइसेंस"
+    },
+    "treasury": "खज़ाना",
+    "sites_one": "{{count}} प्रांत",
+    "sites_other": "{{count}} प्रांत",
+    "site": "उत्पादन स्थल",
+    "quantity": "मात्रा",
+    "total": "कुल लागत",
+    "insufficient": "अपर्याप्त धन",
+    "produce": "उत्पादन करें",
+    "import": "आयात करें",
+    "buyLicence": "लाइसेंस · {{price}}",
+    "blackMarket": "काला बाज़ार",
+    "blackMarketOrdered": "काले बाज़ार में ऑर्डर दिया गया",
+    "goResearch": "R&D: {{node}}",
+    "needBuilding": "इस स्थल पर {{building}} नहीं है: उत्पादन धीमा या असंभव।",
+    "ordered": "उत्पादन शुरू: {{count}} × {{unit}}",
+    "imported": "आयात का ऑर्डर: {{count}} × {{unit}}",
+    "licenceBought": "लाइसेंस ख़रीदा: {{unit}}",
+    "queue": "उत्पादन कतार",
+    "queueEmpty": "कोई उत्पादन जारी नहीं।",
+    "queueHint": "शस्त्रागार से एक प्रणाली और उत्पादन स्थल चुनें।",
+    "cols": {
+      "unit": "प्रणाली",
+      "progress": "प्रगति",
+      "eta": "शेष"
+    },
+    "accelerate": "तेज़ करें (प्रीमियम मुद्रा)",
+    "accelerateShort": "−6 घं",
+    "cancel": "उत्पादन रद्द करें",
+    "cancelled": "उत्पादन रद्द",
+    "noLicences": "कोई उत्पादन लाइसेंस नहीं।",
+    "licenceHint": "लाइसेंस से बिना R&D के विदेशी प्रणाली बनाई जा सकती है, उत्पादन छूट के साथ।",
+    "acquired": "{{value}} दिन पहले प्राप्त",
+    "importTotal": "आयात",
+    "source": {
+      "import": "आयात",
+      "black_market": "काला बाज़ार"
+    }
+  },
+  "shop": {
+    "consent": {
+      "title": "खरीद की पुष्टि करें",
+      "summary": "{{label}}:",
+      "cgv": "मैंने पढ़ा है और मैं स्वीकार करता/करती हूँ",
+      "waiver": "मैं प्रीमियम मुद्रा की तत्काल आपूर्ति का अनुरोध करता/करती हूँ और डिलीवरी के साथ ही अपने वापसी के अधिकार को स्पष्ट रूप से त्यागता/त्यागती हूँ (फ़्रांसीसी उपभोक्ता संहिता का अनुच्छेद L221-28, 13°)।",
+      "pay": "भुगतान के दायित्व के साथ ऑर्डर करें · {{price}}",
+      "error": "भुगतान नहीं खुल सका। कृपया पुनः प्रयास करें।"
+    },
+    "accelerated": "त्वरण लागू · शेष {{balance}}",
+    "notEnough": "प्रीमियम मुद्रा का शेष अपर्याप्त।",
+    "unavailable": "दुकान अनुपलब्ध।",
+    "title": "दुकान",
+    "path": "दुकान",
+    "unavailableHint": "भुगतान सर्वर उत्तर नहीं दे रहा।",
+    "balance": "शेष",
+    "currency": "कमांड क्रेडिट",
+    "policy": "इस गेम में ख़रीदारी",
+    "policies": {
+      "open": "अनुमत",
+      "limited": "सीमित",
+      "disabled": "निष्क्रिय"
+    },
+    "cap": "सीमा: प्रति खिलाड़ी {{cap}} क्रेडिट",
+    "policyHint": "गेम के निर्माता द्वारा निर्धारित",
+    "fair": "कोई लूट बॉक्स नहीं: हर ख़रीद ठीक-ठीक बताती है कि उसमें क्या है। प्रतिस्पर्धी गेम ख़रीदारी बंद कर सकते हैं।",
+    "packs": "कमांड क्रेडिट",
+    "best": "सर्वोत्तम ऑफ़र",
+    "bonus": "+{{value}} मुफ़्त",
+    "credited": "क्रेडिट आपके शेष में जोड़े गए",
+    "cosmetics": "कॉस्मेटिक",
+    "owned": "स्वामित्व",
+    "cosmeticBought": "कॉस्मेटिक अनलॉक",
+    "kinds": {
+      "unit_skin": "मोहरे",
+      "flag": "झंडा",
+      "map_theme": "मानचित्र",
+      "terminal_theme": "टर्मिनल"
+    },
+    "accelerations": "त्वरण",
+    "accelerationsHelp": "यदि गेम की नीति अनुमति दे, तो संबंधित कतार («−6 घं» बटन) से उत्पादन, अनुसंधान, निर्माण या मरम्मत की अवधि घटाएँ।",
+    "history": "इतिहास",
+    "reasons": {
+      "purchase": "ख़रीद",
+      "accelerate": "त्वरण",
+      "cosmetic": "कॉस्मेटिक",
+      "refund": "धनवापसी",
+      "admin": "प्रशासक क्रेडिट",
+      "resources": "खेल में संसाधन"
+    },
+    "subtitle": "कमांड क्रेडिट, कॉस्मेटिक और त्वरण। कोई लूट बॉक्स नहीं।",
+    "unlimited": "असीमित शेष",
+    "unlimitedHint": "असीमित मोड का खाता: कुछ भी नहीं काटा जाता।",
+    "acceleratedUnlimited": "त्वरण लागू (असीमित शेष)",
+    "resources": {
+      "title": "संसाधन",
+      "help": "कमांड क्रेडिट को खेल के डॉलर या संसाधनों से बदलें; ये इस खेल में आपके राष्ट्र को तुरंत मिल जाते हैं।",
+      "dollars": "डॉलर",
+      "price": "मूल्य",
+      "buy": "खरीदें",
+      "short": "शेष राशि अपर्याप्त",
+      "free": "निःशुल्क (असीमित खाता)",
+      "after": "बाद में शेष: {{value}}",
+      "balanceAfter": "खरीद के बाद शेष",
+      "delivered": "पहुँचा दिया गया",
+      "confirmTitle": "खरीद की पुष्टि करें",
+      "confirm": "{{price}} क्रेडिट चुकाएँ",
+      "confirmHelp": "चालू खेल में तुरंत डिलीवरी। खरीद अंतिम है, क्रेडिट में वापसी नहीं।",
+      "done": "{{name}} पहुँचा दिया गया · शेष {{balance}}",
+      "doneUnlimited": "{{name}} पहुँचा दिया गया (असीमित खाता)",
+      "capUsed": "इस खेल में {{spent}} / {{cap}} क्रेडिट ख़र्च हुए",
+      "disabled": "इस खेल में खरीद बंद है (प्रतिस्पर्धी सर्वर)।",
+      "unavailable": "ऑफ़र उपलब्ध नहीं।",
+      "errors": {
+        "cap_reached": "खेल की ख़र्च सीमा पूरी हो गई।",
+        "shop_disabled": "इस खेल में खरीद बंद है।",
+        "insufficient_premium": "क्रेडिट शेष अपर्याप्त।",
+        "generic": "खरीद संभव नहीं।"
+      }
+    }
+  },
+  "researchNodes": {
+    "aero_gen2": "दूसरी पीढ़ी के लड़ाकू विमान",
+    "aero_gen3": "तीसरी पीढ़ी के लड़ाकू विमान",
+    "aero_gen4": "चौथी पीढ़ी के लड़ाकू विमान",
+    "aero_gen4plus": "4+ पीढ़ी के लड़ाकू विमान",
+    "aero_gen5": "पाँचवीं पीढ़ी के लड़ाकू विमान",
+    "aero_bomber1": "सबसोनिक बमवर्षक",
+    "aero_bomber2": "सुपरसोनिक बमवर्षक",
+    "aero_stealth-bomber": "स्टेल्थ बमवर्षक",
+    "aero_helo1": "परिवहन हेलीकॉप्टर",
+    "aero_helo2": "आक्रमण हेलीकॉप्टर",
+    "aero_helo3": "आधुनिक आक्रमण हेलीकॉप्टर",
+    "aero_drones1": "सामरिक ड्रोन",
+    "aero_drones2": "सशस्त्र MALE और HALE ड्रोन",
+    "aero_drones3": "स्टेल्थ लड़ाकू ड्रोन",
+    "aero_aew": "हवाई पूर्व चेतावनी",
+    "aero_tanker": "हवा में ईंधन भरना",
+    "aero_transport": "सामरिक परिवहन",
+    "land_gen1": "पहली पीढ़ी के बख़्तरबंद",
+    "land_gen2": "दूसरी पीढ़ी के बख़्तरबंद",
+    "land_gen3": "तीसरी पीढ़ी के बख़्तरबंद",
+    "land_gen4": "चौथी पीढ़ी के बख़्तरबंद",
+    "land_gen5": "पाँचवीं पीढ़ी के बख़्तरबंद",
+    "land_mlrs": "भारी रॉकेट लॉन्चर",
+    "land_ew": "थल इलेक्ट्रॉनिक युद्ध",
+    "naval_gen1": "पहली पीढ़ी के पोत",
+    "naval_gen2": "दूसरी पीढ़ी के पोत",
+    "naval_gen3": "तीसरी पीढ़ी के पोत",
+    "naval_gen4": "चौथी पीढ़ी के पोत",
+    "naval_gen5": "पाँचवीं पीढ़ी के पोत",
+    "naval_carrier": "विमानवाहक पोत",
+    "naval_sub1": "पारंपरिक पनडुब्बियाँ",
+    "naval_sub2": "आधुनिक पनडुब्बियाँ (AIP)",
+    "naval_sub3": "परमाणु आक्रमण पनडुब्बियाँ",
+    "naval_ssbn": "बैलिस्टिक मिसाइल पनडुब्बियाँ",
+    "missiles_sam1": "कम दूरी की वायु रक्षा",
+    "missiles_sam2": "मध्यम दूरी की वायु रक्षा",
+    "missiles_sam3": "लंबी दूरी की वायु रक्षा",
+    "missiles_sam4": "बहुस्तरीय वायु रक्षा",
+    "missiles_sam5": "नई पीढ़ी की वायु रक्षा",
+    "missiles_abm": "बैलिस्टिक मिसाइल रक्षा",
+    "missiles_cruise1": "क्रूज़ मिसाइलें",
+    "missiles_cruise2": "स्टेल्थ क्रूज़ मिसाइलें",
+    "missiles_antiship": "जहाज़-रोधी मिसाइलें",
+    "missiles_ballistic1": "सामरिक बैलिस्टिक मिसाइलें",
+    "missiles_ballistic2": "मध्यम दूरी की बैलिस्टिक मिसाइलें",
+    "missiles_ballistic3": "मध्यवर्ती दूरी की बैलिस्टिक मिसाइलें",
+    "missiles_hypersonic": "हाइपरसोनिक हथियार",
+    "nuclear_weapons": "परमाणु हथियार",
+    "nuclear_icbm": "अंतरमहाद्वीपीय मिसाइलें",
+    "nuclear_slbm": "पनडुब्बी से प्रक्षेपित बैलिस्टिक मिसाइलें",
+    "sensors_radar1": "निगरानी रडार",
+    "sensors_radar2": "सक्रिय ऐरे रडार",
+    "sensors_radar3": "क्षितिज-पार और स्टेल्थ-रोधी रडार",
+    "sensors_space1": "अवलोकन उपग्रह",
+    "sensors_space2": "खुफ़िया उपग्रह समूह",
+    "sensors_asat": "उपग्रह-रोधी हथियार",
+    "cyber_l1": "साइबर रक्षा",
+    "cyber_l2": "आक्रामक साइबर हमला",
+    "cyber_l3": "उन्नत साइबर युद्ध",
+    "intel_interior1": "आंतरिक सुरक्षा N1",
+    "intel_interior2": "आंतरिक सुरक्षा N2",
+    "intel_interior3": "आंतरिक सुरक्षा N3",
+    "intel_exterior1": "विदेशी खुफ़िया N1",
+    "intel_exterior2": "विदेशी खुफ़िया N2",
+    "intel_exterior3": "विदेशी खुफ़िया N3",
+    "intel_military1": "सैन्य खुफ़िया N1",
+    "intel_military2": "सैन्य खुफ़िया N2",
+    "intel_military3": "सैन्य खुफ़िया N3",
+    "industry_l1": "रक्षा उद्योग N1",
+    "industry_l2": "रक्षा उद्योग N2",
+    "industry_l3": "रक्षा उद्योग N3",
+    "desc": {
+      "aero": "लड़ाकू विमानन, सहायता और ड्रोन।",
+      "land": "बख़्तरबंद, तोपखाना और यंत्रीकृत पैदल सेना।",
+      "naval": "सतही बेड़ा और पनडुब्बियाँ।",
+      "missiles": "वायु रक्षा, प्रहार, मिसाइल-रोधी।",
+      "nuclear": "परमाणु प्रतिरोध और सामरिक वाहक।",
+      "sensors": "रडार, उपग्रह, इलेक्ट्रॉनिक युद्ध।",
+      "cyber": "साइबर रक्षा और साइबर हमला।",
+      "intel": "खुफ़िया सेवाओं के स्तर।",
+      "industry": "उत्पादन, रसद और लागत।"
+    }
+  },
+  "research": {
+    "branchesLabel": "अनुसंधान शाखाएँ",
+    "branches": {
+      "aero": "वैमानिकी",
+      "land": "थल",
+      "naval": "नौसेना",
+      "missiles": "मिसाइलें",
+      "sensors": "सेंसर",
+      "cyber": "साइबर",
+      "intel": "खुफ़िया",
+      "industry": "उद्योग"
+    },
+    "current": "जारी अनुसंधान",
+    "progress": "प्रगति",
+    "idle": "कोई अनुसंधान जारी नहीं।",
+    "queue": "कतार",
+    "queueEmpty": "कतार खाली है।",
+    "remove": "कतार से हटाएँ",
+    "removed": "अनुसंधान हटाया गया",
+    "effects": "संचित प्रभाव",
+    "requires": "पूर्वापेक्षाएँ",
+    "unlocks": "उत्पादन खोलता है",
+    "cost": "लागत",
+    "duration": "अवधि",
+    "start": "अनुसंधान शुरू करें",
+    "enqueue": "कतार में जोड़ें",
+    "cancel": "रद्द करें",
+    "started": "अनुसंधान शुरू: {{node}}",
+    "queued": "कतार में जोड़ा गया: {{node}}",
+    "pick": "वृक्ष से एक नोड चुनें।",
+    "noTree": "प्रौद्योगिकी वृक्ष अनुपलब्ध।",
+    "noTreeHint": "अनुसंधान डेटा (data/research) अभी लोड नहीं हुआ है।",
+    "status": {
+      "done": "प्राप्त",
+      "current": "जारी",
+      "queued": "कतार में",
+      "available": "उपलब्ध",
+      "locked": "लॉक"
+    },
+    "enqueueChain": "पूर्वापेक्षाओं सहित योजना ({{count}} · {{cost}})",
+    "chainQueued": "{{count}} अनुसंधान नियोजित, यहाँ तक: {{node}}"
+  },
+  "modifiers": {
+    "production_speed": "उत्पादन गति",
+    "production_cost": "उत्पादन लागत",
+    "research_speed": "अनुसंधान गति",
+    "income_money": "आय",
+    "income_oil": "तेल",
+    "income_metals": "धातुएँ",
+    "income_electronics": "इलेक्ट्रॉनिक्स",
+    "income_food": "खाद्य",
+    "upkeep": "रखरखाव",
+    "supply_range": "रसद दायरा",
+    "combat_damage": "क्षति",
+    "combat_armor": "कवच",
+    "air_range": "हवाई कार्य-त्रिज्या",
+    "air_fuel": "हवाई सहनशीलता",
+    "sensors_radarRange": "रडार दायरा",
+    "sensors_stealthDetect": "स्टेल्थ पहचान",
+    "sensors_satellitePasses": "उपग्रह के गुज़रने",
+    "ew_jamming": "जैमिंग",
+    "ew_jamResistance": "जैमिंग प्रतिरोध",
+    "missiles_accuracy": "मिसाइल सटीकता",
+    "missiles_interception": "अवरोधन",
+    "naval_sonar": "सोनार",
+    "cyber_attack": "साइबर हमला",
+    "cyber_defense": "साइबर रक्षा",
+    "intel_interior_level": "आंतरिक सुरक्षा (स्तर)",
+    "intel_exterior_level": "विदेशी खुफ़िया (स्तर)",
+    "intel_military_level": "सैन्य खुफ़िया (स्तर)",
+    "intel_capacity": "खुफ़िया क्षमता",
+    "stability_recovery": "स्थिरता की बहाली"
+  },
+  "domestic": {
+    "unavailable": "आंतरिक प्रबंधन उपलब्ध नहीं",
+    "unavailableHint": "खेल सर्वर अभी ये आँकड़े प्रकाशित नहीं कर रहा।",
+    "kpi": {
+      "stability": "स्थिरता",
+      "stabilityHint": "सार्वजनिक व्यवस्था और भरोसा",
+      "trend": "रुझान {{value}} / दिन",
+      "morale": "मनोबल",
+      "moraleHint": "प्रांतों का औसत",
+      "moraleShift": "लक्ष्य {{value}} (नीतियाँ)",
+      "warSupport": "युद्ध को समर्थन",
+      "warSupportTarget": "लक्ष्य {{value}} · थकान ×{{factor}}",
+      "unrest": "अशांति का जोखिम",
+      "unrestFactor": "नीतियाँ और आंतरिक सुरक्षा: {{value}}"
+    },
+    "strike": "हड़ताल जारी: उत्पादन {{wait}} और धीमा रहेगा।",
+    "policiesTitle": "आंतरिक नीतियाँ",
+    "activeCount": "{{count}} लागू",
+    "active": "लागू",
+    "inForce": "लागू",
+    "suspended": "निलंबित",
+    "locked": "{{wait}} में बदली जा सकती है",
+    "enabled": "नीति «{{name}}» लागू की गई",
+    "disabled": "नीति «{{name}}» हटाई गई",
+    "excludes": "इनके साथ असंगत: {{list}}",
+    "policies": {
+      "propaganda": {
+        "name": "प्रचार",
+        "desc": "सरकारी मीडिया सक्रिय: मनोबल और युद्ध को समर्थन बढ़ता है, अर्थव्यवस्था पर बोझ।"
+      },
+      "conscription": {
+        "name": "अनिवार्य भर्ती",
+        "desc": "अनिवार्य सैन्य सेवा: पैदल सेना तेज़ी से प्रशिक्षित होती है, श्रमबल अर्थव्यवस्था से निकल जाता है।"
+      },
+      "war_economy": {
+        "name": "युद्ध-प्रयास",
+        "desc": "उद्योग अधिग्रहीत: उत्पादन तेज़, स्थिरता और मनोबल में गिरावट, हड़तालें अधिक।"
+      },
+      "austerity": {
+        "name": "कटौती नीति",
+        "desc": "नागरिक ख़र्च में कटौती: बजट और रखरखाव हल्का, मनोबल गिरता है, हड़तालें और अशांति।"
+      },
+      "stimulus": {
+        "name": "प्रोत्साहन",
+        "desc": "जनता के लिए सहायता योजना: मनोबल और स्थिरता बढ़ती है, आय घटती है।"
+      },
+      "martial_law": {
+        "name": "मार्शल लॉ",
+        "desc": "सड़कों पर सेना: स्थिरता बहाल और अशांति दबी, मनोबल और समर्थन में भारी गिरावट।"
+      }
+    },
+    "fx": {
+      "income": "आय",
+      "production": "उत्पादन",
+      "infantry": "पैदल सेना",
+      "research": "अनुसंधान",
+      "upkeep": "रखरखाव",
+      "stability": "स्थिरता",
+      "perDay": "/दिन",
+      "morale": "मनोबल",
+      "moraleTarget": "लक्षित मनोबल",
+      "warSupport": "समर्थन",
+      "unrest": "अशांति",
+      "strikes": "हड़तालें"
+    },
+    "totalsTitle": "संचयी प्रभाव",
+    "eventsTitle": "आंतरिक घटनाएँ",
+    "noEvents": "हाल की कोई घटना नहीं",
+    "ago": "{{value}} पहले",
+    "riskTitle": "प्रांत के अनुसार अशांति का जोखिम",
+    "riskMeta": "उथल-पुथल, कब्ज़ा, स्थिरता",
+    "noRisk": "कोई प्रांत जोखिम में नहीं",
+    "occupied": "क़ब्ज़े में",
+    "protected": "संरक्षित",
+    "cols": {
+      "risk": "जोखिम",
+      "unrest": "उथल-पुथल"
+    },
+    "help": "मनोबल गिरने पर हड़तालें, स्थिरता घटने पर प्रदर्शन और दंगे, अशांत प्रांतों में विद्रोही नेटवर्कों की तोड़फोड़। आंतरिक सुरक्षा (खुफ़िया › आंतरिक) इन जोखिमों को घटाती है।"
+  },
+  "economy": {
+    "tabs": {
+      "dashboard": "डैशबोर्ड",
+      "resources": "संसाधन",
+      "buildings": "इमारतें",
+      "market": "बाज़ार",
+      "deliveries": "डिलीवरी",
+      "black": "काला बाज़ार",
+      "logistics": "रसद",
+      "interior": "आंतरिक"
+    },
+    "treasury": "खज़ाना",
+    "annualBudget": "वार्षिक बजट",
+    "budgetSource": "रक्षा, प्रतिदिन जारी",
+    "income": "आय",
+    "expenses": "व्यय",
+    "balance": "संतुलन",
+    "perDay": "प्रतिदिन",
+    "runway": "भंडार: {{days}} दि",
+    "incomeDetail": "आय / दिन",
+    "expenseDetail": "रखरखाव और सेवाएँ / दिन",
+    "upkeepAdjusted": "स्थानीय लागत के अनुसार समायोजित रखरखाव: सूची मूल्य का ×{{factor}} ({{catalog}} / दिन), लागत सूचकांक {{index}}।",
+    "upkeepAdjustedHelp": "पुराने उपकरण का रखरखाव सस्ता होता है और स्थानीय हिस्सा (वेतन, ईंधन, श्रम) देश के मूल्य स्तर के अनुसार चलता है; शुरुआत में असली सेना का रखरखाव कभी भी रक्षा बजट के यथार्थवादी हिस्से से अधिक नहीं होता।",
+    "incomeKeys": {
+      "trade": "व्यापार (प्रतिबंध, नाकाबंदी)",
+      "national": "राष्ट्रीय बजट",
+      "provincial": "प्रांतों का हिस्सा",
+      "mobilization": "लामबंदी",
+      "modifiers": "अनुसंधान और बोनस"
+    },
+    "construction": "निर्माण कार्य",
+    "noConstruction": "कोई निर्माण कार्य जारी नहीं।",
+    "work": {
+      "build": "निर्माण N{{level}}",
+      "upgrade": "उन्नयन N{{level}}",
+      "repair": "मरम्मत"
+    },
+    "cols": {
+      "building": "इमारत",
+      "province": "प्रांत",
+      "work": "कार्य",
+      "eta": "शेष",
+      "resource": "संसाधन",
+      "stock": "भंडार",
+      "production": "उत्पादन / दि",
+      "consumption": "खपत / दि",
+      "net": "शुद्ध / दि",
+      "autonomy": "स्वायत्तता",
+      "seller": "विक्रेता",
+      "item": "वस्तु",
+      "price": "कीमत",
+      "expires": "समाप्ति",
+      "from": "स्रोत",
+      "range": "त्रिज्या",
+      "population": "जनसंख्या",
+      "morale": "मनोबल",
+      "income": "आय / दि"
+    },
+    "shortage": "कमी",
+    "days_one": "{{count}} दिन",
+    "days_other": "{{count}} दिन",
+    "searchProvince": "प्रांत खोजें…",
+    "filter": "फ़िल्टर",
+    "damaged": "क्षतिग्रस्त",
+    "works": "कार्य",
+    "buildingsCount_one": "{{count}} इमारत",
+    "buildingsCount_other": "{{count}} इमारतें",
+    "noProvince": "कोई प्रांत मेल नहीं खाता।",
+    "items": {
+      "units": "उपकरण",
+      "resource": "संसाधन",
+      "licence": "लाइसेंस"
+    },
+    "licenceOf": "लाइसेंस: {{name}}",
+    "embargoed": "प्रतिबंध के तहत",
+    "noOffers": "बाज़ार में कोई ऑफ़र नहीं।",
+    "reserved": "आरक्षित",
+    "withdraw": "वापस लें",
+    "offerCancelled": "ऑफ़र वापस लिया गया",
+    "buy": "ख़रीदें",
+    "bought": "सौदा पूरा: डिलीवरी रास्ते में",
+    "sell": "बिक्री के लिए रखें",
+    "quantity": "मात्रा",
+    "priceM": "कीमत (M$)",
+    "post": "ऑफ़र प्रकाशित करें",
+    "offerPosted": "ऑफ़र बाज़ार में प्रकाशित",
+    "noDeliveries": "कोई डिलीवरी जारी नहीं।",
+    "unknownSeller": "अज्ञात विक्रेता",
+    "covert": "गुप्त",
+    "official": "आधिकारिक",
+    "track": "ट्रैक करें",
+    "blackTitle": "काला बाज़ार",
+    "blackText": "कीमतें {{factor}} गुना, गुप्त डिलीवरी, पकड़े जाने का जोखिम {{risk}} (पता चलने पर कूटनीतिक घटना)।",
+    "mobilization": "सामान्य लामबंदी",
+    "mobilized": "लामबंदी लागू",
+    "notMobilized": "शांतिकाल",
+    "mobilizeHelp": "प्रति प्रांत +{{inf}} पैदल बटालियन, आय −{{penalty}}, स्थिरता {{stab}} / दिन।",
+    "since": "{{value}} घंटे से",
+    "depots": "डिपो और अग्रिम अड्डे",
+    "noDepots": "कोई डिपो नहीं।",
+    "show": "देखें",
+    "blockades": "नाकाबंदी",
+    "forecast": "7 दि: {{d7}} · 30 दि: {{d30}}",
+    "deficitHint": "घाटा: आपकी सेनाओं का रखरखाव आपकी आय से अधिक है। दिवालियापन से बचने के लिए प्रांत जीतें, खुफ़िया बजट घटाएँ या लामबंदी समाप्त करें।",
+    "intelBudget": "खुफ़िया",
+    "ledgerTitle": "वास्तविक प्रवाह · पिछले 24 घंटे",
+    "ledgerEmpty": "अभी तक कोई प्रवाह दर्ज नहीं: बही खेल के पहले दिन भरती है।",
+    "tradeBalance": "व्यापार संतुलन {{value}}",
+    "ledger": {
+      "budgetNational": "राष्ट्रीय बजट",
+      "budgetProvincial": "प्रांतों का हिस्सा",
+      "trade": "व्यापार",
+      "mobilization": "लामबंदी",
+      "modifiers": "बोनस",
+      "upkeep": "सेनाओं का रखरखाव",
+      "production": "उत्पादन",
+      "imports": "आयात",
+      "research": "अनुसंधान",
+      "buildings": "निर्माण कार्य",
+      "licences": "लाइसेंस",
+      "blackMarket": "काला बाज़ार",
+      "marketPurchases": "बाज़ार से ख़रीद",
+      "marketSales": "बाज़ार में बिक्री",
+      "transfersIn": "प्राप्त हस्तांतरण",
+      "transfersOut": "दिए गए हस्तांतरण",
+      "other": "अन्य (खुफ़िया, गठबंधन…)"
+    },
+    "constructionHint": "इमारतें टैब या प्रांत पैनल से किसी इमारत का उन्नयन करें या नई बनाएँ।",
+    "provincesTitle": "प्रांत",
+    "populationMorale": "{{pop}} निवासी · मनोबल {{morale}}",
+    "showAll": "सभी {{count}} प्रांत दिखाएँ",
+    "showLess": "छोटा करें",
+    "resourcesHint": "संसाधन प्रांतों और उनकी इमारतों (कुएँ, खानें, फ़ार्म, इलेक्ट्रॉनिक्स संयंत्र, रिफ़ाइनरी) द्वारा बनाए जाते हैं और आपकी इकाइयाँ उनका उपभोग करती हैं। कमी उत्पादन धीमा करती है; खाद्य मनोबल को प्रभावित करता है।",
+    "ledgerToday": "वास्तविक प्रवाह · आज"
+  },
+  "armies": {
+    "tabs": {
+      "armies": "सेनाएँ",
+      "generals": "जनरल",
+      "operations": "अभियान"
+    },
+    "name": {
+      "land": "सेना {{n}}",
+      "air": "वायु स्क्वाड्रन {{n}}",
+      "sea": "बेड़ा {{n}}"
+    },
+    "kpi": {
+      "armies": "सेनाएँ",
+      "armiesSub": "{{combat}} युद्ध में · {{moving}} मार्ग में",
+      "land": "थल",
+      "air": "वायु",
+      "sea": "समुद्र",
+      "static": "स्थिर स्थल",
+      "piles_one": "{{count}} स्टैक",
+      "piles_other": "{{count}} स्टैक",
+      "value": "मूल्य",
+      "valueSub": "कैटलॉग मूल्य पर"
+    },
+    "domain": "क्षेत्र",
+    "domains": {
+      "all": "सभी",
+      "land": "थल",
+      "air": "वायु",
+      "sea": "समुद्र"
+    },
+    "state": {
+      "combat": "युद्ध में",
+      "moving": "गतिमान",
+      "resupply": "आपूर्ति ले रही",
+      "embarked": "जहाज़ पर सवार",
+      "idle": "विश्राम में"
+    },
+    "stateFilter": "स्थिति",
+    "allStates": "सभी स्थितियाँ",
+    "sort": "इस आधार पर क्रमबद्ध करें",
+    "sortBy": {
+      "state": "क्रम: पहले युद्ध",
+      "elements": "क्रम: बल",
+      "hp": "क्रम: सेहत",
+      "name": "क्रम: नाम"
+    },
+    "search": "सेना, साज़ोसामान, शहर…",
+    "empty": "नक्शे पर कोई सेना नहीं।",
+    "noMatch": "फ़िल्टर से कोई सेना मेल नहीं खाती।",
+    "pick": "एक सेना चुनें",
+    "pickHint": "संरचना, स्थिति, स्थान और आदेश यहाँ सीधी कार्रवाइयों के साथ दिखते हैं।",
+    "back": "सेनाओं पर वापस",
+    "cols": {
+      "army": "सेना",
+      "strength": "बल",
+      "hp": "सेहत",
+      "state": "स्थिति",
+      "location": "स्थान",
+      "orders": "जारी आदेश",
+      "general": "जनरल"
+    },
+    "elements_one": "{{count}} इकाई",
+    "elements_other": "{{count}} इकाइयाँ",
+    "piles_one": "{{count}} स्टैक",
+    "piles_other": "{{count}} स्टैक",
+    "supply": "आपूर्ति",
+    "veterancy": "अनुभव",
+    "composition": "संरचना",
+    "order": {
+      "move": "{{place}} की ओर · {{eta}} में पहुँचेगी",
+      "attack": "आक्रमण: {{target}}",
+      "delegated": "जनरल को सौंपा गया: {{directive}}",
+      "none": "आदेशों की प्रतीक्षा"
+    },
+    "rename": "सेना का नाम बदलें",
+    "save": "पुष्टि करें",
+    "actions": {
+      "center": "केंद्र में लाएँ",
+      "select": "चुनें",
+      "move": "स्थानांतरित करें",
+      "stop": "रोकें",
+      "patrol": "क्षेत्र में गश्त",
+      "merge": "स्टैक मिलाएँ",
+      "split": "स्टैक को दो भागों में बाँटें",
+      "selectPile": "स्टैक चुनें"
+    },
+    "mergeNone": "10 किमी के भीतर उसी साज़ोसामान का कोई ठहरा हुआ स्टैक नहीं।",
+    "moveHint": "{{name}} चुनी गई: गंतव्य तय करने के लिए नक्शे को छुएँ।",
+    "done": {
+      "stop": "रोकने का आदेश भेजा गया",
+      "patrol": "गश्त शुरू हुई",
+      "rtb": "अड्डे पर लौटने का आदेश दिया गया",
+      "merge": "स्टैक मिला दिए गए",
+      "split": "स्टैक बाँट दिया गया"
+    }
+  },
+  "inventory": {
+    "tabs": {
+      "inventory": "सूची",
+      "catalog": "कैटलॉग"
+    },
+    "kpi": {
+      "elements": "सेवा में",
+      "systems_one": "{{count}} अलग प्रणाली",
+      "systems_other": "{{count}} अलग प्रणालियाँ",
+      "value": "बेड़े का मूल्य",
+      "upkeep": "रखरखाव {{value}} / दिन",
+      "available": "उपलब्धता",
+      "availableSub": "{{available}} उपलब्ध · {{engaged}} युद्ध में",
+      "production": "उत्पादन में",
+      "productionSub_one": "{{count}} ऑर्डर जारी",
+      "productionSub_other": "{{count}} ऑर्डर जारी",
+      "losses": "हानि",
+      "lossesSub": "युद्ध रिपोर्टों के अनुसार"
+    },
+    "search": "साज़ोसामान खोजें…",
+    "toProduction": "उत्पादन",
+    "empty": "सेवा में कोई साज़ोसामान नहीं।",
+    "noMatch": "इस श्रेणी में कोई साज़ोसामान नहीं।",
+    "mobileLine": "{{n}} सेवा में · {{available}} उपलब्ध · {{value}}",
+    "cols": {
+      "system": "साज़ोसामान",
+      "inService": "सेवा में",
+      "available": "उपलब्ध",
+      "engaged": "युद्ध · तैनात",
+      "hp": "स्थिति",
+      "production": "उत्पादन में",
+      "losses": "हानि",
+      "value": "मूल्य"
+    },
+    "hint": "उपलब्ध: ठहरे हुए, युद्ध से बाहर और तैयार। तैनात: गतिमान, मिशन पर, जहाज़ पर या पुनः तैयार होते। विवरण-पत्र खोलने के लिए पंक्ति को छुएँ।"
+  },
+  "army": {
+    "supply": {
+      "supplied": "आपूर्ति प्राप्त",
+      "limited": "सीमित आपूर्ति",
+      "cut": "कटी हुई"
+    },
+    "loc": {
+      "near": "{{city}} · {{km}} km",
+      "sea": "समुद्र में",
+      "air": "उड़ान में",
+      "embarked": "सवार",
+      "center": "मानचित्र को इकाई पर केंद्रित करें",
+      "title": "निकटतम शहर: {{city}} ({{km}} km) · मानचित्र केंद्रित करने के लिए क्लिक करें"
+    },
+    "supplyState": {
+      "supplied": "आपूर्ति प्राप्त",
+      "limited": "सीमित",
+      "cut": "कटी हुई"
+    },
+    "mission": {
+      "none": "कोई नहीं",
+      "patrol": "गश्त",
+      "strike": "प्रहार",
+      "escort": "अनुरक्षण",
+      "refuel": "ईंधन भरना",
+      "awacs": "हवाई निगरानी",
+      "recon": "टोही",
+      "blockade": "नाकाबंदी",
+      "rtb": "अड्डे पर वापसी"
+    },
+    "fuel": "{{value}} घंटे का ईंधन",
+    "veterancy": "अनुभवी",
+    "jamming": "जैमिंग",
+    "rtb": "अड्डे पर वापसी",
+    "unitsCount_one": "{{count}} इकाई",
+    "unitsCount_other": "{{count}} इकाइयाँ",
+    "delegated": "AI को सौंपा गया",
+    "noGenerals": "कोई जनरल उपलब्ध नहीं।",
+    "directive": "निर्देश",
+    "directives": {
+      "none": "मैनुअल",
+      "defend": "रक्षा करें",
+      "advance": "आगे बढ़ें",
+      "harass": "परेशान करें"
+    },
+    "traits": {
+      "offensive": "आक्रामक",
+      "defender": "रक्षक",
+      "logistician": "रसद विशेषज्ञ",
+      "aviator": "वायुसैनिक",
+      "admiral": "एडमिरल"
+    },
+    "delegationOn": "कमान {{name}} को सौंपी गई",
+    "delegationOff": "कमान वापस ली गई",
+    "selectGroup": "समूह चुनें",
+    "assignSelection_one": "चयन सौंपें ({{count}})",
+    "assignSelection_other": "चयन सौंपें ({{count}})",
+    "assigned": "इकाइयाँ {{name}} को सौंपी गईं",
+    "ops": {
+      "help": "H-घड़ी के आसपास समन्वित चरणों की योजना बनाएँ (प्रारंभिक प्रहार, जैमिंग, धावा, लाभ उठाना)।",
+      "new": "नया अभियान",
+      "none": "कोई अभियान नियोजित नहीं।",
+      "defaultName": "ऑपरेशन तूफ़ान",
+      "name": "अभियान का नाम",
+      "hHour": "H-घड़ी",
+      "hHourHint": "{{value}} में (गेम समय)",
+      "offset": "मिनटों में अंतर",
+      "kind": "आदेश का प्रकार",
+      "label": "चरण का नाम",
+      "useSelection_one": "चयन ({{count}})",
+      "useSelection_other": "चयन ({{count}})",
+      "unitsCount_one": "{{count}} इकाई",
+      "unitsCount_other": "{{count}} इकाइयाँ",
+      "noUnits": "कोई इकाई नहीं",
+      "pickTarget": "लक्ष्य चुनें…",
+      "place": "स्थान (शहर, प्रांत, «lat,lng»)",
+      "removeStep": "चरण हटाएँ",
+      "addStep": "चरण जोड़ें",
+      "plan": "योजना बनाएँ",
+      "planned": "अभियान नियोजित: {{name}}",
+      "cancelled": "अभियान रद्द",
+      "invalid": "हर चरण में इकाइयाँ और वैध लक्ष्य (पहचाना गया स्थान या शत्रु इकाई) होना चाहिए।",
+      "examples": {
+        "prep": "प्रारंभिक प्रहार",
+        "assault": "धावा"
+      },
+      "kinds": {
+        "move": "गति",
+        "attack": "हमला",
+        "strike": "प्रहार",
+        "patrol": "गश्त",
+        "jam": "जैमिंग",
+        "stop": "रुकें",
+        "rtb": "अड्डे पर वापसी"
+      },
+      "status": {
+        "planned": "नियोजित",
+        "running": "जारी",
+        "done": "पूर्ण",
+        "cancelled": "रद्द",
+        "failed": "विफल"
+      },
+      "stepStatus": {
+        "pending": "प्रतीक्षा में",
+        "done": "निष्पादित",
+        "failed": "विफल"
+      }
+    }
+  },
+  "diplomacy": {
+    "unavailable": "इस गेम में कूटनीति अनुपलब्ध है।",
+    "country": {
+      "pick": "देश चुनें…",
+      "none": "कोई देश नहीं चुना गया",
+      "noneHint": "नक्शे पर किसी विदेशी प्रांत को छुएँ, फिर «देश» चुनें, या नीचे से कोई देश चुनें।",
+      "open": "देश: {{nation}}",
+      "openTip": "संबंध, समझौते, कूटनीतिक कार्रवाइयाँ, संदेश, खुफ़िया",
+      "player": "मानव खिलाड़ी",
+      "ai": "AI द्वारा संचालित",
+      "embargoed": "प्रतिबंध (एम्बार्गो) के अधीन",
+      "sanctioned": "प्रतिबंधित",
+      "mobilized": "लामबंद",
+      "relation": "संबंध और समझौते",
+      "pending": "प्रस्ताव",
+      "pendingMine": "{{kind}} भेजा गया",
+      "pendingTheirs": "{{kind}} प्राप्त हुआ",
+      "passage": "मार्ग का अधिकार",
+      "mutualDefense": "पारस्परिक रक्षा",
+      "intelSharing": "खुफ़िया साझेदारी",
+      "no": "नहीं",
+      "profile": "प्रोफ़ाइल",
+      "provinces": "प्रांत",
+      "budget": "रक्षा बजट",
+      "personnel": "सक्रिय कर्मी",
+      "doctrine": "सिद्धांत",
+      "actions": "कार्रवाइयाँ",
+      "invite": "गठबंधन में आमंत्रित करें",
+      "invited": "{{aNation}} को आमंत्रण भेजा गया",
+      "sanctions": "प्रतिबंध प्रस्तावित करें (परिषद)",
+      "sanctionsClosed": "सुरक्षा परिषद में प्रस्ताव अभी खुले नहीं हैं।",
+      "sanctionsText": "{{nationLe}} के विरुद्ध आर्थिक प्रतिबंध।",
+      "sanctionsProposed": "प्रतिबंध प्रस्ताव परिषद में प्रस्तुत किया गया",
+      "message": "संदेश भेजें",
+      "intel": "खुफ़िया"
+    },
+    "tabs": {
+      "nation": "देश",
+      "relations": "संबंध",
+      "alliances": "गठबंधन",
+      "neutrals": "तटस्थ",
+      "disputed": "विवादित क्षेत्र",
+      "stability": "स्थिरता"
+    },
+    "relation": {
+      "war": "युद्ध",
+      "peace": "शांति",
+      "ceasefire": "युद्धविराम",
+      "ally": "मित्र"
+    },
+    "reputation": "प्रतिष्ठा",
+    "reputationHint": "मतदान और तटस्थों को प्रभावित करती है",
+    "atWar": "युद्धरत",
+    "allies": "मित्र देश",
+    "pending": "प्राप्त प्रस्ताव",
+    "filter": "फ़िल्टर",
+    "filters": {
+      "known": "पड़ोसी और संबंध"
+    },
+    "cols": {
+      "nation": "देश",
+      "relation": "संबंध",
+      "since": "से",
+      "alliance": "गठबंधन",
+      "stability": "स्थिरता",
+      "leaning": "झुकाव"
+    },
+    "proposal": {
+      "peace": "शांति का प्रस्ताव देता है",
+      "ceasefire": "युद्धविराम का प्रस्ताव देता है"
+    },
+    "accept": "स्वीकार करें",
+    "refuse": "अस्वीकार करें",
+    "accepted": "प्रस्ताव स्वीकार",
+    "refused": "प्रस्ताव अस्वीकार",
+    "sent": "प्रस्ताव भेजा गया",
+    "ceasefire": "युद्धविराम",
+    "peace": "शांति",
+    "declareWar": "युद्ध घोषित करें",
+    "warTitle": "युद्ध की घोषणा",
+    "warText": "{{aNation}} पर युद्ध घोषित करें? पारस्परिक रक्षा से बंधे आपके मित्र खिंच सकते हैं, वैश्विक तनाव बढ़ेगा और आपकी प्रतिष्ठा घटेगी।",
+    "members_one": "{{count}} सदस्य",
+    "members_other": "{{count}} सदस्य",
+    "yourAlliance": "आपका गठबंधन",
+    "leader": "नेता:",
+    "charter": {
+      "mutualDefense": "पारस्परिक रक्षा",
+      "intelSharing": "खुफ़िया साझेदारी",
+      "passage": "पारगमन का अधिकार"
+    },
+    "charterHelp": {
+      "mutualDefense": "किसी सदस्य पर हमला सभी सदस्यों को शामिल करता है।",
+      "intelSharing": "खुफ़िया रिपोर्टें अपने आप साझा होती हैं।",
+      "passage": "सदस्यों की सेनाएँ आपके प्रांतों से मुक्त रूप से गुज़रती हैं।"
+    },
+    "treasury": "साझा खज़ाना",
+    "deposited": "गठबंधन के खज़ाने में {{amount}} जमा",
+    "votes": {
+      "replace_leader": "नेता को {{nationLe}} से बदलें",
+      "skip_mutual_defense": "{{nationLe}} को पारस्परिक रक्षा से छूट",
+      "expel": "{{nationLe}} को निष्कासित करें"
+    },
+    "yes": "पक्ष में",
+    "no": "विरुद्ध",
+    "voted": "मत दर्ज",
+    "hasVoted": "मत दिया",
+    "invited": "भेजे गए निमंत्रण:",
+    "allianceChat": "गठबंधन कक्ष",
+    "leave": "गठबंधन छोड़ें",
+    "left": "आपने गठबंधन छोड़ दिया",
+    "create": "गठबंधन बनाएँ",
+    "allianceName": "नाम",
+    "allianceFlag": "संक्षिप्त नाम (4 अक्षर)",
+    "createBtn": "गठबंधन बनाएँ",
+    "created": "गठबंधन बना: {{name}}",
+    "invitation": "«{{name}}» में शामिल होने का निमंत्रण",
+    "joined": "आप {{name}} में शामिल हो गए",
+    "noNeutrals": "लुभाने योग्य कोई तटस्थ देश नहीं।",
+    "neutralsHelp": "किसी तटस्थ देश को आपके गठबंधन के क़रीब लाने के लिए आर्थिक सहायता।",
+    "aid": "सहायता राशि",
+    "court": "सहायता · {{amount}}",
+    "courted": "{{aNation}} को सहायता भेजी गई",
+    "noDisputed": "कोई विवादित क्षेत्र नहीं।",
+    "provinces_one": "{{count}} प्रांत",
+    "provinces_other": "{{count}} प्रांत",
+    "holder": "धारक",
+    "claimants": "दावेदार",
+    "tension": "तनाव",
+    "fundRebels": "विद्रोहियों को धन दें",
+    "rebelsFunded": "विद्रोहियों को धन देना शुरू",
+    "noStability": "स्थिरता प्रकाशित नहीं।",
+    "stability": "स्थिरता",
+    "trend": "रुझान",
+    "coupRisk": "तख़्तापलट का जोखिम",
+    "coupHint": "15 % स्थिरता से नीचे: ख़तरा",
+    "factors": "कारक",
+    "noRelations": "इस फ़िल्टर में कोई देश नहीं।",
+    "noRelationsHint": "आप सभी देशों के साथ शांति में हैं। युद्ध घोषित करने या गठबंधन का प्रस्ताव देने के लिए «सभी» चुनें।",
+    "neutralsNeedAlliance": "किसी तटस्थ को लुभाने के लिए गठबंधन का सदस्य होना ज़रूरी है: गठबंधन टैब में एक बनाएँ या किसी में शामिल हों।",
+    "noLeaning": "कोई झुकाव नहीं",
+    "moreNeutrals": "… और {{count}} अन्य: खोज को सीमित करें।"
+  },
+  "council": {
+    "unavailable": "सुरक्षा परिषद अनुपलब्ध।",
+    "permanent": "स्थायी सीटें",
+    "rotating": "घूर्णी सीटें",
+    "majority": {
+      "simple": "साधारण बहुमत",
+      "two_thirds": "दो-तिहाई बहुमत"
+    },
+    "veto": "वीटो अधिकार",
+    "phase": {
+      "proposals": "प्रस्ताव जमा करना",
+      "voting": "मतदान जारी",
+      "closed": "सत्र समाप्त"
+    },
+    "recess": "सत्र से बाहर",
+    "agenda_one": "कार्यसूची में {{count}} प्रस्ताव",
+    "agenda_other": "कार्यसूची में {{count}} प्रस्ताव",
+    "closesIn": "समापन में",
+    "nextSession": "अगला सत्र",
+    "propose": "प्रस्ताव रखें",
+    "noResolutions": "कार्यसूची में कोई प्रस्ताव नहीं।",
+    "inForce": "लागू प्रस्ताव",
+    "until": "तक",
+    "zone": "{{km}} km क्षेत्र",
+    "proposer": "प्रस्तावक",
+    "duration": "प्रभावी अवधि: {{days}} दि",
+    "waiting_one": "{{count}} प्रतीक्षा में",
+    "waiting_other": "{{count}} प्रतीक्षा में",
+    "vetoThreat": "वीटो: {{nations}}",
+    "yourVote": "आपका मत",
+    "voted": "मत दर्ज",
+    "type": "प्रकार",
+    "target": "लक्षित देश",
+    "pickTarget": "चुनें…",
+    "text": "प्रस्ताव का पाठ",
+    "textHint": "10 से 500 अक्षर, प्रस्ताव की शैली में।",
+    "textPlaceholder": "सुरक्षा परिषद, … को लेकर चिंतित…",
+    "submit": "जमा करें",
+    "proposed": "प्रस्ताव जमा",
+    "types": {
+      "arms_embargo": "हथियार प्रतिबंध",
+      "economic_sanctions": "आर्थिक प्रतिबंध",
+      "ceasefire": "युद्धविराम",
+      "no_fly_zone": "नो-फ़्लाई ज़ोन",
+      "peacekeeping": "शांति स्थापना",
+      "condemnation": "निंदा"
+    },
+    "status": {
+      "proposed": "जमा",
+      "voting": "मतदान में",
+      "passed": "पारित",
+      "rejected": "अस्वीकृत",
+      "vetoed": "वीटो",
+      "expired": "समाप्त"
+    },
+    "votes": {
+      "yes": "पक्ष में",
+      "no": "विरुद्ध",
+      "abstain": "मतदान से विरत",
+      "none": "मत नहीं दिया"
+    },
+    "noPermanent": "कोई नहीं (अभी कोई गठबंधन नहीं)",
+    "votingIn": "मतदान खुलेगा"
+  },
+  "news": {
+    "filter": "श्रेणियाँ",
+    "empty": "कोई प्रेषण नहीं।",
+    "urgent": "तत्काल",
+    "source": "RED LINE प्रेस",
+    "locate": "स्थान दिखाएँ",
+    "cats": {
+      "strike": "प्रहार",
+      "war": "युद्ध",
+      "peace": "शांति",
+      "council": "UN",
+      "leak": "लीक",
+      "revolt": "विद्रोह",
+      "coup": "तख़्तापलट",
+      "alliance": "गठबंधन",
+      "economy": "अर्थव्यवस्था",
+      "nuclear": "परमाणु",
+      "capture": "विजय",
+      "refugees": "शरणार्थी",
+      "event": "घटना"
+    },
+    "war": {
+      "h0": "{{A}} / {{B}}: शत्रुता शुरू",
+      "h1": "खुला युद्ध: {{A}} बनाम {{B}}",
+      "h2": "{{A}} ने लाल रेखा पार की: {{B}} के साथ युद्ध की स्थिति",
+      "h3": "पूर्ण कूटनीतिक विच्छेद: {{A}} / {{B}}",
+      "b0": "राजधानियाँ युद्ध की स्थिति की पुष्टि करती हैं। नामित आक्रांता: {{A}}।",
+      "b1": "सैनिकों की पहली गतिविधियाँ दर्ज। {{B}} ने {{A}} के आक्रमण की निंदा की।",
+      "b2": "{{A}} द्वारा शत्रुता शुरू करने के बाद शांति की अपीलें बढ़ रही हैं।"
+    },
+    "war_alliance": {
+      "h0": "{{X}}: {{A}} पारस्परिक रक्षा के नाम पर {{B}} के विरुद्ध युद्ध में",
+      "h1": "पारस्परिक रक्षा सक्रिय: {{A}} {{B}} के विरुद्ध संघर्ष में शामिल",
+      "h2": "गठबंधन की एकजुटता: {{A}} ने {{B}} पर युद्ध घोषित किया",
+      "b0": "एक सदस्य पर आक्रमण के बाद {{A}} ने {{X}} गठबंधन के चार्टर का पालन किया।",
+      "b1": "{{X}} गठबंधन की पारस्परिक रक्षा धारा से संघर्ष फैलता है।"
+    },
+    "peace": {
+      "h0": "{{A}} / {{B}}: शांति संधि पर हस्ताक्षर",
+      "h1": "{{A}} और {{B}} के बीच शत्रुता समाप्त",
+      "h2": "शांति स्थापित: {{A}} / {{B}}",
+      "b0": "प्रतिनिधिमंडलों ने समझौते पर आद्याक्षर किए। सैनिकों को वापसी के लिए समय मिलेगा।",
+      "b1": "संधि विपक्षी क्षेत्र में तैनात सेनाओं की वापसी का प्रावधान करती है।"
+    },
+    "peace_annexation": {
+      "h0": "{{A}} / {{B}}: शांति ने {{A}} की विजयों पर मुहर लगाई",
+      "h1": "शांति संधि: {{B}} ने {{A}} को {{X}} प्रांत सौंपे",
+      "h2": "युद्ध का अंत: {{B}} की सीमाएँ फिर से खींची गईं",
+      "b0": "कब्ज़े वाले क्षेत्र {{A}} के नियंत्रण में रहेंगे: {{X}} प्रांतों के स्वामी बदले।",
+      "b1": "{{B}} ने खोए हुए {{X}} प्रांत वापस पाए बिना शांति पर हस्ताक्षर किए।"
+    },
+    "capitulation": {
+      "h0": "{{B}} ने {{A}} के सामने आत्मसमर्पण किया",
+      "h1": "{{B}} का आत्मसमर्पण: {{A}} ने शांति थोपी",
+      "h2": "{{B}} की हार: {{A}} के साथ युद्धविराम पर हस्ताक्षर",
+      "b0": "राजधानी गिरने के बाद {{B}} की सरकार ने {{A}} की शर्तें मानीं। {{X}} प्रांत उसके नियंत्रण में गए।",
+      "b1": "{{B}} की सेनाओं ने हथियार डाले। {{A}} ने {{X}} प्रांतों का विलय किया।"
+    },
+    "ceasefire": {
+      "h0": "{{A}} / {{B}}: युद्धविराम लागू",
+      "h1": "हथियार ख़ामोश: {{A}} और {{B}} के बीच संघर्ष-विराम",
+      "h2": "युद्धविराम संपन्न: {{A}} / {{B}}",
+      "b0": "संघर्ष-विराम मोर्चों को स्थिर करता है। उल्लंघन करने वाले पर प्रतिबंध लग सकते हैं।",
+      "b1": "अंतरराष्ट्रीय पर्यवेक्षकों ने पहले कदम का स्वागत किया। अपेक्षित अवधि: {{X}} दिन।"
+    },
+    "ceasefire_violated": {
+      "h0": "{{A}} ने {{B}} के साथ युद्धविराम तोड़ा",
+      "h1": "संघर्ष-विराम भंग: {{A}} ने {{B}} के विरुद्ध शत्रुता फिर शुरू की",
+      "h2": "युद्धविराम का उल्लंघन: {{A}} पर आरोप",
+      "b0": "अंतरराष्ट्रीय समुदाय ने संघर्ष-विराम तोड़ने की निंदा की। प्रतिबंधों पर मतदान शुरू।",
+      "b1": "{{A}} द्वारा किया गया उल्लंघन स्वतः सुरक्षा परिषद को भेजा गया।"
+    },
+    "alliance_created": {
+      "h0": "नया गठबंधन: {{A}} के नेतृत्व में {{X}}",
+      "h1": "{{A}} ने {{X}} गठबंधन बनाया",
+      "h2": "सामरिक पुनर्गठन: {{X}} का जन्म",
+      "b0": "चार्टर: {{Y}}।",
+      "b1": "नए गुट का नेतृत्व {{A}} करता है। चार्टर: {{Y}}।"
+    },
+    "alliance_joined": {
+      "h0": "{{A}} {{X}} गठबंधन में शामिल",
+      "h1": "{{X}} का विस्तार: {{A}} शामिल",
+      "h2": "सदस्यता: {{A}} / {{X}}",
+      "b0": "गठबंधन में अब {{Y}} सदस्य हैं।",
+      "b1": "{{A}} ने {{X}} के चार्टर पर हस्ताक्षर किए।"
+    },
+    "alliance_left": {
+      "h0": "{{A}} ने {{X}} गठबंधन छोड़ा",
+      "h1": "धमाकेदार विदाई: {{A}} / {{X}}",
+      "h2": "{{X}} ने एक सदस्य खोया: {{A}}",
+      "b0": "{{A}} की वापसी से {{X}} कमज़ोर हुआ।",
+      "b1": "{{A}} के साझेदारों ने उसकी विदाई को स्वीकार किया।"
+    },
+    "alliance_expelled": {
+      "h0": "{{X}} ने {{A}} को निष्कासित किया",
+      "h1": "निष्कासन: {{A}} अब {{X}} का सदस्य नहीं",
+      "b0": "{{X}} के सदस्यों ने {{A}} के निष्कासन पर मतदान किया।"
+    },
+    "leader_replaced": {
+      "h0": "{{X}}: {{A}} ने गठबंधन की कमान संभाली",
+      "h1": "{{X}} के नेतृत्व में बदलाव",
+      "b0": "{{X}} के सदस्यों ने {{A}} को गठबंधन का नया नेता चुना।"
+    },
+    "mutual_skipped": {
+      "h0": "{{X}} ने {{A}} के विरुद्ध पारस्परिक रक्षा छोड़ी",
+      "h1": "पारस्परिक रक्षा निलंबित: {{X}} / {{A}}",
+      "b0": "{{X}} के सदस्यों ने छूट पर मतदान किया: {{A}} के विरुद्ध स्वतः युद्ध नहीं।"
+    },
+    "council_open": {
+      "h0": "सुरक्षा परिषद: सत्र का उद्घाटन",
+      "h1": "सुरक्षा परिषद की बैठक",
+      "h2": "सुरक्षा परिषद सत्र: मतदान के लिए {{X}} पाठ",
+      "b0": "{{X}} मसौदा प्रस्ताव मतदान के लिए प्रस्तुत। सदस्य: {{Y}}।",
+      "b1": "प्रतिनिधिमंडलों के पास {{X}} पाठों पर निर्णय के लिए मतदान अवधि है।"
+    },
+    "emergency_council": {
+      "h0": "सुरक्षा परिषद की आपात बैठक",
+      "h1": "सुरक्षा परिषद आपात रूप से बुलाई गई",
+      "b0": "{{X}}",
+      "b1": "अध्यक्षता सदस्यों को तुरंत बुलाती है। {{X}}"
+    },
+    "resolution_passed": {
+      "h0": "सुरक्षा परिषद: {{A}} के विरुद्ध {{X}} पारित",
+      "h1": "प्रस्ताव पारित: {{X}} ({{A}})",
+      "h2": "{{A}} को लक्षित प्रस्ताव: {{X}}",
+      "b0": "पाठ {{Y}} दिन के लिए लागू होता है।",
+      "b1": "मतदान: {{Y}}।"
+    },
+    "resolution_zone_passed": {
+      "h0": "सुरक्षा परिषद: {{X}} पारित",
+      "h1": "प्रस्ताव पारित: {{X}}",
+      "b0": "संबंधित क्षेत्र: {{Y}}।",
+      "b1": "व्यवस्था में शामिल: {{Y}}।"
+    },
+    "resolution_rejected": {
+      "h0": "सुरक्षा परिषद: {{X}} अस्वीकृत",
+      "h1": "{{X}} के लिए बहुमत नहीं",
+      "b0": "{{A}} द्वारा प्रस्तुत मसौदे को आवश्यक बहुमत नहीं मिला।"
+    },
+    "resolution_vetoed": {
+      "h0": "सुरक्षा परिषद में वीटो: {{X}} अवरुद्ध",
+      "h1": "{{A}} ने वीटो किया: {{X}}",
+      "b0": "{{A}} के वीटो ने पाठ को पारित होने से रोका।"
+    },
+    "strike": {
+      "h0": "{{P}} के पास {{A}} के {{X}} हमलों की ख़बर",
+      "h1": "{{B}}: {{P}} के पास {{X}} हमले",
+      "h2": "{{A}} / {{B}}: नए {{X}} हमले",
+      "b0": "{{P}} के पास धमाके सुने गए। {{B}} ने {{A}} पर आरोप लगाया।",
+      "b1": "{{P}} के पास {{X}} हमलों के बाद क्षति का आकलन जारी।"
+    },
+    "nuclear": {
+      "h0": "{{P}} के पास परमाणु विस्फोट",
+      "h1": "परमाणु वर्जना टूटी: {{A}} ने {{B}} पर प्रहार किया",
+      "h2": "परमाणु हमला: दुनिया स्तब्ध",
+      "b0": "{{A}} ने {{P}} के पास परमाणु हथियार का प्रयोग किया। वैश्विक अलर्ट अधिकतम।",
+      "b1": "राजधानियाँ एकमत से {{A}} द्वारा परमाणु हथियार के प्रयोग की निंदा करती हैं।"
+    },
+    "battle": {
+      "h0": "{{P}} के पास भीषण लड़ाई",
+      "h1": "{{P}} के पास युद्ध: {{A}} विजयी",
+      "h2": "मोर्चा: {{P}}",
+      "b0": "युद्धरत पक्ष: {{X}}।",
+      "b1": "लड़ाई {{X}} के बीच हुई। बढ़त: {{A}}।"
+    },
+    "capital": {
+      "h0": "{{B}} की राजधानी {{A}} के हाथ लगी",
+      "h1": "{{P}}: {{B}} की राजधानी पर {{A}} का कब्ज़ा",
+      "h2": "बड़ा झटका: {{A}} ने {{P}} पर कब्ज़ा किया",
+      "b0": "कहा जा रहा है कि {{B}} की सरकार {{P}} छोड़ चुकी है।",
+      "b1": "{{P}} का पतन संघर्ष में निर्णायक मोड़ है।"
+    },
+    "capture": {
+      "h0": "{{A}} ने {{P}} पर नियंत्रण किया",
+      "h1": "{{P}} {{A}} के नियंत्रण में",
+      "b0": "{{B}} ने {{P}} प्रांत खोया।"
+    },
+    "agent_caught": {
+      "h0": "जासूसी मामला: {{B}} ने {{A}} पर आरोप लगाया",
+      "h1": "{{B}} ने {{A}} का एक एजेंट गिरफ़्तार किया",
+      "h2": "जासूसी: {{A}} और {{B}} के बीच कूटनीतिक घटना",
+      "b0": "{{B}} ने अपनी धरती पर {{A}} द्वारा चलाए गए खुफ़िया अभियान की निंदा की।"
+    },
+    "blockade": {
+      "h0": "नाकाबंदी: {{A}} ने {{P}} को घेरा",
+      "h1": "समुद्री यातायात बाधित: {{P}} की नाकाबंदी",
+      "b0": "{{P}} के आसपास व्यापार बहुत धीमा हो गया है।"
+    },
+    "blockade_lifted": {
+      "h0": "{{P}} की नाकाबंदी हटी",
+      "b0": "{{P}} के आसपास यातायात धीरे-धीरे बहाल।"
+    },
+    "revolt": {
+      "h0": "{{P}} में अशांति: {{B}} की सत्ता के विरुद्ध प्रदर्शन",
+      "h1": "{{B}}: {{P}} में दंगे",
+      "h2": "{{P}} में उथल-पुथल",
+      "b0": "हज़ारों प्रदर्शनकारी {{B}} के अधिकारियों को चुनौती दे रहे हैं।",
+      "b1": "{{B}} के सुरक्षा बल {{P}} में तैनात।"
+    },
+    "revolt_disputed": {
+      "h0": "{{X}}: {{P}} में {{B}} के विरुद्ध विद्रोह",
+      "h1": "विवादित क्षेत्र: {{P}} में जनविद्रोह",
+      "h2": "{{X}}: {{P}} में तनाव बढ़ा",
+      "b0": "{{Y}} द्वारा दावा किए गए इस क्षेत्र में जनता {{B}} की सत्ता को चुनौती देती है।",
+      "b1": "{{X}} क्षेत्र में फिर हिंसा। धारक: {{B}}।"
+    },
+    "uprising": {
+      "h0": "{{P}} में सशस्त्र विद्रोह",
+      "h1": "{{B}}: {{P}} में सशस्त्र समूहों ने हथियार उठाए",
+      "h2": "{{P}} में बग़ावत",
+      "b0": "विद्रोही लड़ाके {{B}} की सेना को चुनौती दे रहे हैं।",
+      "b1": "कहा जा रहा है कि विद्रोही {{P}} के आसपास कई मार्गों पर नियंत्रण रखते हैं।"
+    },
+    "rallied": {
+      "h0": "{{P}}: विद्रोही {{A}} के साथ मिले",
+      "h1": "विवादित क्षेत्र: {{P}} {{A}} के नियंत्रण में",
+      "b0": "{{B}} के अधिकारियों के पतन के बाद विद्रोहियों ने {{A}} के साथ मिलने की घोषणा की।"
+    },
+    "coup": {
+      "h0": "तख़्तापलट: {{A}}",
+      "h1": "{{A}}: सेना ने सत्ता संभाली",
+      "h2": "{{A}}: सरकार गिराई गई",
+      "b0": "एक सैन्य परिषद ने संस्थाओं के निलंबन की घोषणा की। {{A}} की विदेश नीति ने दिशा बदली।",
+      "b1": "हफ़्तों की अस्थिरता के बाद सेना ने सत्ता पर कब्ज़ा किया।"
+    },
+    "refugees": {
+      "h0": "{{A}} से भागते शरणार्थियों की बाढ़",
+      "h1": "मानवीय संकट: नागरिक {{A}} से भाग रहे हैं",
+      "h2": "पलायन: {{A}}",
+      "b0": "मेज़बान देशों पर दबाव: {{X}}।",
+      "b1": "पड़ोसी देशों में लड़ाई से भागे परिवार पहुँच रहे हैं: {{X}}।"
+    },
+    "embargo_import_blocked": {
+      "h0": "प्रतिबंध: {{A}} के लिए हथियार ख़रीद पर रोक",
+      "b0": "आपूर्तिकर्ता परिषद के प्रस्ताव का पालन करते हैं।"
+    },
+    "black_market": {
+      "h0": "हथियार तस्करी: {{A}} पर आरोप",
+      "h1": "काला बाज़ार: {{A}} तक जाने वाला नेटवर्क ध्वस्त",
+      "b0": "{{A}} के लिए अवैध खेपों का पता चला।"
+    },
+    "peacekeepers": {
+      "h0": "शांति सैनिकों की तैनाती: {{P}}",
+      "h1": "{{P}} में शांति सेना तैनात",
+      "b0": "शांति सैनिक मोर्चा संभाल रहे हैं। उन पर हमला निंदा को आमंत्रित करेगा।"
+    },
+    "peacekeepers_attacked": {
+      "h0": "शांति सैनिकों पर हमला: {{A}} पर आरोप",
+      "h1": "{{A}} ने शांति सैनिकों पर गोलीबारी की",
+      "b0": "सुरक्षा परिषद को सूचित किया गया। प्रतिबंधों पर मतदान होगा।"
+    },
+    "oil_crisis": {
+      "h0": "तेल झटका: कीमतें आसमान पर",
+      "h1": "वैश्विक तेल संकट",
+      "b0": "{{X}}",
+      "b1": "हाइड्रोकार्बन पर निर्भर अर्थव्यवस्थाओं को झटका। {{X}}"
+    },
+    "market_crash": {
+      "h0": "वैश्विक शेयर बाज़ार धराशायी",
+      "h1": "बाज़ार ढह गए",
+      "b0": "{{X}}",
+      "b1": "सार्वजनिक बजट दबाव में। {{X}}"
+    },
+    "pandemic": {
+      "h0": "महामारी: स्वास्थ्य अलर्ट जारी",
+      "h1": "वैश्विक महामारी: उद्योग धीमे",
+      "b0": "{{X}}",
+      "b1": "उत्पादन शृंखलाएँ धीमी चल रही हैं। {{X}}"
+    },
+    "arms_fair": {
+      "h0": "अंतरराष्ट्रीय हथियार प्रदर्शनी",
+      "h1": "बड़ी रक्षा प्रदर्शनी: कीमतें घटीं",
+      "b0": "{{X}}",
+      "b1": "निर्माता एक के बाद एक छूट दे रहे हैं। {{X}}"
+    },
+    "ultimatum": {
+      "h0": "{{A}} का {{B}} को अल्टीमेटम",
+      "h1": "{{A}} ने {{B}} को अल्टीमेटम दिया",
+      "h2": "चरम तनाव: {{A}} ने {{B}} को धमकाया",
+      "b0": "{{A}} ने {{X}} घंटों में रियायतें माँगी हैं, अन्यथा सैन्य हस्तक्षेप होगा। सीमा पर सैनिक जमा हैं।",
+      "b1": "{{B}} के पास {{A}} के सैनिकों के जमावड़े की ख़बर। समय सीमा: {{X}} घंटे।"
+    },
+    "deescalation": {
+      "h0": "{{A}} ने {{B}} को दिया अल्टीमेटम वापस लिया",
+      "h1": "तनाव में कमी: {{A}} / {{B}}",
+      "b0": "शक्ति संतुलन बदला: सीमा पर जमा सैनिक बैरकों में लौट रहे हैं।",
+      "b1": "राजधानियों ने {{A}} के पीछे हटने का स्वागत किया: धमकी अमल में नहीं आई।"
+    },
+    "mercenaries": {
+      "h0": "{{P}} में निजी सैन्य कंपनियाँ देखी गईं",
+      "b0": "कहा जा रहा है कि {{A}} ने अनुबंधित लड़ाके भर्ती किए हैं।"
+    }
+  },
+  "battles": {
+    "empty": "कोई युद्ध रिपोर्ट नहीं।",
+    "back": "सभी रिपोर्टें",
+    "losses": "हानियाँ",
+    "lasted": "अवधि {{value}}",
+    "noDetail": "रिपोर्ट का विवरण अनुपलब्ध।",
+    "attacker": "आक्रांता",
+    "defender": "रक्षक",
+    "you": "आप",
+    "system": "प्रणाली",
+    "engaged": "तैनात",
+    "lost": "खोए",
+    "total": "कुल",
+    "countermeasures": "प्रति-उपाय",
+    "timeline": "घटनाक्रम",
+    "replay": "युद्ध का रीप्ले",
+    "scrub": "रीप्ले में स्थिति",
+    "speed": "रीप्ले की गति",
+    "outcome": {
+      "victory": "विजय",
+      "defeat": "पराजय",
+      "draw": "अनिर्णीत",
+      "ongoing": "जारी"
+    },
+    "aar": {
+      "ref": "कार्रवाई-पश्चात रिपोर्ट {{id}}",
+      "classification": "सीमित वितरण",
+      "where": "स्थान",
+      "openSea": "समुद्र में",
+      "terrain": "क्षेत्र",
+      "urban": "शहरी क्षेत्र",
+      "domain": {
+        "land": "थल",
+        "coast": "तटीय (थल और समुद्र)",
+        "sea": "समुद्री",
+        "air": "वायु"
+      },
+      "medium": {
+        "land": "थल",
+        "air": "वायु",
+        "sea": "नौसैनिक"
+      },
+      "verdict": {
+        "decisive_attacker": "आक्रमणकारी की निर्णायक जीत",
+        "attacker": "आक्रमणकारी को बढ़त",
+        "stalemate": "अनिर्णीत परिणाम",
+        "defender": "रक्षक को बढ़त",
+        "decisive_defender": "रक्षक की निर्णायक जीत",
+        "ongoing": "लड़ाई जारी"
+      },
+      "grade": "खुफ़िया",
+      "gradeHelp": "स्रोत {{source}} · सूचना {{cred}}",
+      "source": {
+        "A": "विश्वसनीय",
+        "B": "आमतौर पर विश्वसनीय",
+        "C": "काफ़ी हद तक विश्वसनीय",
+        "D": "हमेशा विश्वसनीय नहीं",
+        "E": "कम विश्वसनीय",
+        "F": "विश्वसनीयता अज्ञात"
+      },
+      "cred": {
+        "1": "पुष्ट",
+        "2": "संभवतः सच",
+        "3": "शायद सच",
+        "4": "संदिग्ध",
+        "5": "असंभावित",
+        "6": "सत्यापन योग्य नहीं"
+      },
+      "exact": "सटीक आँकड़े",
+      "estimated": "खुफ़िया अनुमान",
+      "personnel": "कर्मी",
+      "casualties": "मानवीय हानि",
+      "materielLost": "नष्ट साज़ोसामान",
+      "lossesUsd": "खोया मूल्य",
+      "orbat": "युद्ध-व्यवस्था",
+      "unidentified": "अज्ञात {{medium}} संपर्क",
+      "noContact": "कोई शत्रु बल नहीं देखा गया।",
+      "destroyed": "नष्ट",
+      "damaged": "क्षतिग्रस्त",
+      "captured": "कब्ज़े में लिए गए",
+      "munitions": "गोला-बारूद",
+      "munitionsHelp": "मुख्य दागा गया गोला-बारूद: गोले, रॉकेट, मिसाइलें, बम (सिम्युलेटेड फ़ायरिंग पर आधारित अनुमान)।",
+      "balance": "सार",
+      "human": "मानवीय हानि",
+      "killed": "मृत",
+      "wounded": "घायल",
+      "missing": "लापता",
+      "prisoners": "युद्धबंदी",
+      "materiel": "साज़ोसामान",
+      "vehicles": "लगे वाहन",
+      "aircraft": "लगे विमान",
+      "ships": "लगे जहाज़",
+      "fires": "फ़ायर",
+      "missilesLaunched": "दागी गई मिसाइलें",
+      "missilesShotDown": "जिनमें से गिराई गईं",
+      "interceptions": "गिराई गई शत्रु मिसाइलें",
+      "sorties": "हवाई उड़ानें",
+      "lossChart": "संचयी हानि",
+      "lossChartAria": "संचयी हानि: आक्रमणकारी {{a}}, रक्षक {{d}} इकाइयाँ",
+      "lossChartHelp": "खोई इकाइयाँ (टैंक, विमान, जहाज़, बटालियन): आपके पक्ष के लिए सटीक, शत्रु के लिए आपकी फ़ायरिंग से पुष्ट। पट्टियाँ: लड़ाई के चरण।",
+      "phases": "लड़ाई का क्रम",
+      "phaseLosses": "हानि {{a}} / {{d}}",
+      "phase": {
+        "preparation": "फ़ायर की तैयारी",
+        "strikes": "दूर से प्रहार",
+        "assault": "धावा",
+        "defense": "रक्षा",
+        "counter": "जवाबी हमला",
+        "air": "हवाई युद्ध",
+        "naval": "नौसैनिक मुठभेड़",
+        "retreat": "पीछे हटना",
+        "capture": "शहर पर कब्ज़ा"
+      },
+      "phaseText": {
+        "preparation": "संपर्क से पहले तोपखाना, मिसाइलें और वायुसेना शत्रु ठिकानों पर प्रहार करते हैं।",
+        "strikes": "बिना ज़मीनी संपर्क के दूर से प्रहारों का आदान-प्रदान।",
+        "assault": "थल सेनाएँ संपर्क में आती हैं और बढ़त लेती हैं।",
+        "defense": "धावा रक्षा से टकराता है, जो सबसे भारी हानि पहुँचाती है।",
+        "counter": "रक्षक पहल वापस लेकर जवाबी हमला करता है।",
+        "air": "लड़ाई हवा में होती है: लड़ाकू विमान, वायु रक्षा, ड्रोन।",
+        "naval": "नौसैनिक बलों के बीच मुठभेड़।",
+        "retreat": "एक पक्ष बिना जवाब दिए हानि उठाता है: पीछे हटना या पीछा।",
+        "capture": "शहर गिर गया: प्रांत का स्वामी बदला।"
+      },
+      "factors": "निर्णायक कारक",
+      "noFactor": "कोई निर्णायक कारक नहीं देखा गया।",
+      "factorName": {
+        "numbers": "शक्ति संतुलन",
+        "air_superiority": "हवाई श्रेष्ठता",
+        "electronic_warfare": "इलेक्ट्रॉनिक युद्ध",
+        "stealth": "स्टेल्थ",
+        "entrenched": "मोर्चाबंद रक्षा",
+        "air_defense": "वायु रक्षा",
+        "supply": "आपूर्ति",
+        "veterancy": "अनुभव",
+        "generals": "कमान",
+        "morale": "मनोबल"
+      },
+      "factor": {
+        "numbers": "लगे साज़ोसामान के मूल्य में अनुमानित ×{{ratio}} श्रेष्ठता।",
+        "air_superiority": "हवा पर नियंत्रण: {{kills}} शत्रु विमान गिराए, {{strikes}} हवा-से-ज़मीन प्रहार निशाने पर।",
+        "electronic_warfare": "जैमिंग: {{hits}} शत्रु शॉट कमज़ोर किए गए।",
+        "stealth": "कभी न पहचानी गई इकाइयों के {{hits}} प्रहार।",
+        "entrenched": "{{share}}% प्रहार मोर्चाबंद ठिकानों या शहर में झेले गए।",
+        "air_defense": "{{intercepted}} शत्रु मिसाइलें गिराई गईं।",
+        "supply": "{{share}}% फ़ायरिंग कम आपूर्ति वाली इकाइयों ने की।",
+        "veterancy": "अनुभवी इकाइयाँ: औसत अनुभव {{level}}।",
+        "generals": "{{names}} की कमान में।",
+        "morale": "गिरा मनोबल: {{nation}} की स्थिरता {{stability}}।"
+      },
+      "consequences": "परिणाम",
+      "captured1": "{{name}} पर कब्ज़ा ({{by}})",
+      "held": "{{name}}: ठिकाना उसके स्वामी ने बचाए रखा",
+      "noChange": "कोई क्षेत्रीय बदलाव नहीं।",
+      "noCountermeasure": "कोई उल्लेखनीय जवाबी उपाय नहीं।",
+      "showAll": "बाक़ी {{n}} साज़ोसामान दिखाएँ",
+      "showLess": "सूची छोटी करें"
+    },
+    "titleAt": "{{place}} का युद्ध",
+    "titleSea": "समुद्री युद्ध"
+  },
+  "chat": {
+    "game": "गेम कक्ष",
+    "alliance": "गठबंधन · {{name}}",
+    "channels": "चैनल",
+    "newPrivate": "निजी संदेश",
+    "pickNation": "देश चुनें…",
+    "empty": "कोई संदेश नहीं।",
+    "hidden": "संदेश मॉडरेशन द्वारा छिपाया गया।",
+    "placeholder": "लिखें: {{channel}}",
+    "message": "संदेश",
+    "send": "भेजें"
+  },
+  "settings": {
+    "display": "प्रदर्शन",
+    "legend": "मानचित्र संकेत",
+    "legendHelp": "नीचे दाईं ओर पैनल (L कुंजी)।",
+    "notifications": "सूचनाएँ",
+    "browserNotifications": "ब्राउज़र सूचनाएँ",
+    "notifHelp": "टैब पृष्ठभूमि में होने पर गंभीर अलर्ट; सर्वर उपलब्ध कराए तो Web Push।",
+    "notif": {
+      "push": "Web Push सूचनाएँ सक्रिय",
+      "local": "स्थानीय सूचनाएँ सक्रिय",
+      "denied": "ब्राउज़र ने अनुमति अस्वीकार की",
+      "unsupported": "यह ब्राउज़र सूचनाएँ समर्थित नहीं करता"
+    },
+    "help": "सहायता",
+    "restartTutorial": "ट्यूटोरियल फिर शुरू करें",
+    "game": "गेम"
+  },
+  "lobby": {
+    "title": "मल्टीप्लेयर",
+    "path": "लॉबी",
+    "subtitle": "प्रति गेम 64 मानव खिलाड़ियों तक; बाकी सभी देश AI के पास हैं।",
+    "create": "गेम बनाएँ",
+    "createPath": "नया",
+    "createSubtitle": "गेम की सेटिंग्स, फिर अपना देश चुनें।",
+    "join": "गेम में शामिल हों",
+    "filter": "फ़िल्टर",
+    "openOnly": "खाली स्थान",
+    "aiNote": "न चुने गए देश: AI · निष्क्रिय खिलाड़ी की जगह AI",
+    "error": "लॉबी अनुपलब्ध।",
+    "empty": "कोई खुला गेम नहीं।",
+    "by": "{{name}} द्वारा",
+    "capitals": "राजधानियाँ",
+    "spectate": "देखें",
+    "cols": {
+      "game": "गेम",
+      "players": "खिलाड़ी",
+      "speed": "गति",
+      "victory": "विजय",
+      "shop": "ख़रीदारी"
+    },
+    "defaultName": "नया विश्व युद्ध",
+    "worldToday": "आज की दुनिया",
+    "sections": {
+      "game": "गेम",
+      "victory": "विजय की शर्तें",
+      "rules": "नियम"
+    },
+    "name": "गेम का नाम",
+    "maxPlayers": "मानव खिलाड़ी",
+    "maxPlayersHint": "अधिकतम 64; बाकी देश AI हैं।",
+    "private": "निजी गेम",
+    "privateHint": "केवल लिंक से उपलब्ध।",
+    "provinceShare": "नियंत्रित करने हेतु विश्व प्रांतों का हिस्सा",
+    "capitalsToggle": "या सभी शत्रु राजधानियों पर कब्ज़ा",
+    "shopPolicy": "गेम में ख़रीदारी",
+    "shopHint": "प्रतिस्पर्धी गेम के लिए इन्हें बंद करें।",
+    "cap": "प्रति खिलाड़ी क्रेडिट सीमा",
+    "inactive": "निष्क्रिय खिलाड़ी की जगह AI, इतने समय बाद",
+    "next": "अपना देश चुनें",
+    "pickNation": "अपना देश चुनें",
+    "createConfirm": "गेम बनाएँ",
+    "createError": "गेम नहीं बनाया जा सका।",
+    "humans": "खिलाड़ी",
+    "aiRest": "AI के पास रहेंगे",
+    "joining": "जुड़ रहे हैं…",
+    "joinConfirm": "शामिल हों",
+    "joinError": "शामिल नहीं हो सके (देश पहले से लिया गया?)।",
+    "nationTaken": "यह देश अभी-अभी लिया गया: कोई और चुनें।",
+    "room": {
+      "title": "प्रतीक्षा कक्ष",
+      "path": "प्रतीक्षा-कक्ष",
+      "players": "पंजीकृत खिलाड़ी",
+      "waiting": "शुरुआत की प्रतीक्षा",
+      "aiRest": "{{count}} खाली स्थान · बाकी देश AI के पास",
+      "host": "मेज़बान",
+      "you": "आप",
+      "invite": "आमंत्रित करें",
+      "inviteHint": "यह लिंक साझा करें: आपके मित्र अपना देश चुनकर यहाँ शुरुआत की प्रतीक्षा करेंगे।",
+      "copy": "लिंक कॉपी करें",
+      "copied": "लिंक कॉपी हुआ",
+      "rules": "गेम के नियम",
+      "speed": "गति ×{{speed}}",
+      "victory": "विजय: {{share}} प्रांत",
+      "hostHint": "सब तैयार हों तो गेम शुरू करें; खाली स्थान गेम के दौरान खुले रहते हैं।",
+      "guestHint": "मेज़बान गेम शुरू करेगा; आपको स्वतः वहाँ ले जाया जाएगा।",
+      "start": "गेम शुरू करें",
+      "startError": "अभी शुरू करना संभव नहीं।",
+      "leave": "कक्ष छोड़ें",
+      "ended": "यह गेम समाप्त हो चुका है।",
+      "notFound": "कक्ष नहीं मिला।",
+      "shop": "गेम में ख़रीदारी: {{policy}}"
+    },
+    "unlimited": "{{nations}} के लिए असीमित मोड सक्रिय — गैर-रैंक गेम",
+    "unranked": "गैर-रैंक गेम"
+  },
+  "games": {
+    "title": "मेरे गेम",
+    "path": "गेम",
+    "subtitle": "चल रहा गेम फिर शुरू करें या समाप्त गेम का सारांश देखें।",
+    "error": "आपके गेम लोड नहीं हो सके।",
+    "empty": "अभी कोई गेम नहीं।",
+    "cols": {
+      "game": "गेम",
+      "nation": "देश",
+      "players": "खिलाड़ी",
+      "status": "स्थिति"
+    },
+    "mode": {
+      "solo": "एकल",
+      "multi": "मल्टीप्लेयर"
+    },
+    "status": {
+      "lobby": "प्रतीक्षा में",
+      "running": "जारी",
+      "paused": "रुका हुआ",
+      "ended": "समाप्त",
+      "abandoned": "समाप्त · परित्याग"
+    },
+    "resume": "फिर शुरू करें",
+    "stats": "सारांश",
+    "delete": {
+      "action": "गेम हटाएँ",
+      "title": "गेम हटाएँ",
+      "text": "इस गेम को स्थायी रूप से हटाएँ? «{{name}}» और उसकी सारी प्रगति मिट जाएगी; यह कार्रवाई वापस नहीं ली जा सकती।",
+      "confirm": "स्थायी रूप से हटाएँ",
+      "busy": "गेम किसी दूसरे सर्वर पर चल रहा है: थोड़ी देर में फिर प्रयास करें।",
+      "error": "अभी हटाना संभव नहीं।"
+    }
+  },
+  "rankings": {
+    "title": "रैंकिंग",
+    "path": "रैंकिंग",
+    "subtitle": "मल्टीप्लेयर गेम में अर्जित सीज़न अंक।",
+    "season": "सीज़न",
+    "error": "रैंकिंग अनुपलब्ध।",
+    "remaining": "सीज़न का अंत",
+    "days_one": "{{count}} दिन",
+    "days_other": "{{count}} दिन",
+    "players": "रैंक प्राप्त",
+    "rewards": "सीज़न पुरस्कार",
+    "top": "शीर्ष {{rank}}",
+    "cols": {
+      "player": "खिलाड़ी",
+      "points": "अंक",
+      "wins": "जीत",
+      "games": "गेम",
+      "rate": "दर"
+    }
+  },
+  "endgame": {
+    "title": "गेम सारांश",
+    "path": "गेम-का-अंत",
+    "error": "आँकड़े अनुपलब्ध।",
+    "winner": "विजेता: {{nation}}",
+    "ended": "गेम समाप्त",
+    "noWinner": "कोई विजेता नहीं",
+    "noStats": "विस्तृत सारांश दर्ज नहीं हुआ: गेम ऑफ़लाइन बंद हुआ। सीमाओं का घटनाक्रम उपलब्ध रहता है।",
+    "days_one": "{{count}} दिन",
+    "days_other": "{{count}} दिन",
+    "day": "D+{{day}}",
+    "provincesHeld_one": "{{count}} प्रांत",
+    "provincesHeld_other": "{{count}} प्रांत",
+    "timelapse": "सीमाओं का विकास",
+    "provinces": "प्रांत",
+    "conquered": "विजय",
+    "kills": "विनाश",
+    "losses": "हानियाँ",
+    "spent": "व्यय",
+    "bestUnits": "सर्वश्रेष्ठ इकाइयाँ",
+    "killsCount_one": "{{count}} विनाश",
+    "killsCount_other": "{{count}} विनाश",
+    "table": "देशवार आँकड़े",
+    "cols": {
+      "nation": "देश",
+      "player": "खिलाड़ी",
+      "provinces": "प्रांत",
+      "conquered": "विजय",
+      "kills": "विनाश",
+      "losses": "हानियाँ",
+      "spent": "व्यय"
+    }
+  },
+  "audio": {
+    "title": "ध्वनि",
+    "mute": "ध्वनि बंद करें",
+    "muteHelp": "ध्वनि बंद रहने पर कुछ भी डाउनलोड नहीं होता। सेटिंग इस डिवाइस पर सहेजी जाती हैं।",
+    "levels": {
+      "master": "मुख्य वॉल्यूम",
+      "music": "संगीत और परिवेश",
+      "sfx": "प्रभाव",
+      "ui": "इंटरफ़ेस"
+    },
+    "reduced": "कम ध्वनियाँ",
+    "reducedHelp": "युद्ध का परिवेश नहीं, मृदु संकेत, धीमे बदलाव (सिस्टम के एनिमेशन घटाने पर अपने-आप चालू)।",
+    "credits": "ध्वनियाँ और संगीत Red Line के लिए ElevenLabs से बनाए गए।"
+  },
+  "format": {
+    "k": "K",
+    "M": "M",
+    "B": "B"
+  },
+  "language": {
+    "label": "भाषा",
+    "choose": "इंटरफ़ेस की भाषा चुनें",
+    "help": "इंटरफ़ेस, प्रेषण और स्थानों के नाम। पेज फिर से लोड होगा।",
+    "current": "वर्तमान भाषा: {{name}}",
+    "machine": "स्वचालित अनुवाद, सैन्य शब्दों की समीक्षा के साथ।",
+    "fallback": "कुछ पाठ फ़्रेंच में ही रहते हैं।"
+  },
+  "engine": {
+    "place": {
+      "sea": "समुद्र में"
+    },
+    "sector": {
+      "at": "{{province}} सेक्टर",
+      "near": "{{province}} से {{km}} km",
+      "unknown": "अज्ञात सेक्टर"
+    },
+    "strikeKind": {
+      "missile": "मिसाइल",
+      "air": "हवाई",
+      "artillery": "तोपखाना"
+    },
+    "resolution": {
+      "arms_embargo": "हथियार प्रतिबंध",
+      "economic_sanctions": "आर्थिक प्रतिबंध",
+      "ceasefire": "युद्धविराम",
+      "no_fly_zone": "नो-फ़्लाई ज़ोन",
+      "peacekeeping": "शांति सेना",
+      "condemnation": "निंदा"
+    },
+    "vote": {
+      "yes": "{{nation}} पक्ष में",
+      "no": "{{nation}} विरुद्ध",
+      "abstain": "{{nation}} विरत"
+    },
+    "charter": {
+      "mutualDefense": "पारस्परिक रक्षा",
+      "intelSharing": "खुफ़िया साझेदारी",
+      "passage": "पारगमन का अधिकार",
+      "simple": "साधारण सहयोग"
+    },
+    "mission": {
+      "raid": "छापा",
+      "sabotage": "तोड़फोड़",
+      "rescue": "बचाव"
+    },
+    "intelOp": {
+      "infiltrate_spy": "एजेंट की घुसपैठ",
+      "recruit_source": "स्रोत की भर्ती",
+      "turn_agent": "एजेंट को पलटना",
+      "exfiltrate": "निकासी",
+      "steal_research": "अनुसंधान की चोरी",
+      "sabotage_factory": "औद्योगिक तोड़फोड़",
+      "fund_rebels": "विद्रोहियों को धन",
+      "listen_area": "क्षेत्र की निगरानी",
+      "intercept_army": "संचार अवरोधन",
+      "jam_area": "क्षेत्र में जैमिंग",
+      "cyber_radar": "साइबर हमला (रडार)",
+      "cyber_production": "साइबर हमला (उद्योग)",
+      "cyber_orders": "साइबर हमला (कमान)",
+      "disinformation": "दुष्प्रचार अभियान",
+      "leak_plans": "संगठित लीक",
+      "plant_fake_report": "छल (झूठी रिपोर्ट)",
+      "deploy_decoys": "छलावों की तैनाती",
+      "fake_radio_traffic": "नकली रेडियो यातायात",
+      "counterintel_sweep": "प्रति-जासूसी अभियान",
+      "recon_economic": "आर्थिक टोही",
+      "recon_military": "सैन्य टोही"
+    },
+    "council": {
+      "open_one": "सुरक्षा परिषद का सत्र खुला: मतदान के लिए {{count}} प्रस्ताव।",
+      "open_other": "सुरक्षा परिषद का सत्र खुला: मतदान के लिए {{count}} प्रस्ताव।",
+      "closed": "सत्र समाप्त: {{count}} में से {{passed}} प्रस्ताव पारित।"
+    },
+    "news": {
+      "nuclear": {
+        "headline": "परमाणु विस्फोट: {{place}}",
+        "body": "{{nation}} द्वारा दागा गया परमाणु हथियार फटा: {{place}}।"
+      }
+    },
+    "intel": {
+      "failed": "विफल",
+      "compromised": "उजागर",
+      "agentExposed": "{{nation}} का एजेंट बेनक़ाब",
+      "agentCompromised": "एजेंट {{codename}} उजागर",
+      "agentArrest": "{{nation}} के एजेंट की गिरफ़्तारी",
+      "agentArrested": "एजेंट {{codename}} गिरफ़्तार",
+      "listening": "निगरानी — {{sector}}",
+      "interception": "अवरोधन — {{nation}}",
+      "decoysIdentified": "छलावे पहचाने गए",
+      "flashMovement": "FLASH — {{nation}} की सेनाओं की हलचल",
+      "flashMassive": "FLASH — {{nation}} की सेनाओं की व्यापक हलचल",
+      "dailyInterior": "दैनिक नोट — आंतरिक सुरक्षा",
+      "dailyForeign": "दैनिक नोट — विदेशी खुफ़िया",
+      "dailyMilitary": "दैनिक नोट — सैन्य खुफ़िया",
+      "opCompromised": "{{op}} — उजागर",
+      "opOutcome": "{{op}} — {{outcome}}",
+      "opAttributed": "{{op}} का दोष {{nation}} पर",
+      "opSuccess": "{{op}} — सफल",
+      "sweepReport": "प्रति-जासूसी अभियान — सारांश",
+      "radioSuspect": "संदिग्ध रेडियो यातायात",
+      "intoxFoiled": "छल का प्रयास विफल किया गया",
+      "intentions": "{{nation}} के इरादे",
+      "strikeSuffered": {
+        "missile": "FLASH — मिसाइल हमला झेला",
+        "air": "FLASH — हवाई हमला झेला",
+        "artillery": "FLASH — तोपखाने की गोलाबारी झेली",
+        "other": "FLASH — हमला झेला"
+      },
+      "flashNuclear": "FLASH — परमाणु विस्फोट",
+      "sabotage": "तोड़फोड़",
+      "cyber": "साइबर हमला",
+      "rebelsFunded": "सशस्त्र समूहों को धन",
+      "programDone": "कार्यक्रम पूर्ण — {{nation}}",
+      "blackMarket": "काला बाज़ार — {{nation}}",
+      "imagery": "चित्र — {{nation}}"
+    },
+    "note": {
+      "allianceInvite": {
+        "title": "गठबंधन का निमंत्रण",
+        "text": "{{alliance}} गठबंधन आपको शामिल होने के लिए आमंत्रित करता है।"
+      },
+      "inviteDeclined": {
+        "title": "निमंत्रण अस्वीकृत",
+        "text": "{{nation}} ने निमंत्रण अस्वीकार किया।"
+      },
+      "allianceVote": {
+        "title": "गठबंधन मतदान",
+        "replace_leader": "{{alliance}}: नेता को {{nation}} से बदलना।",
+        "expel": "{{alliance}}: {{nation}} का निष्कासन।",
+        "skip_mutual_defense": "{{alliance}}: {{nation}} के विरुद्ध पारस्परिक रक्षा से छूट।"
+      },
+      "strikeNoEffect": {
+        "title": "प्रहार निष्प्रभावी",
+        "text": "{{system}}: लक्ष्य नहीं भेदा गया।"
+      },
+      "asatHit": {
+        "title": "उपग्रह नष्ट",
+        "text": "{{system}} ({{owner}})"
+      },
+      "asatMiss": {
+        "title": "उपग्रह-रोधी प्रहार विफल",
+        "text": "{{system}} ({{owner}})"
+      },
+      "radarsBlinded": {
+        "title": "रडार अंधे",
+        "text": "एक साइबर हमला हमारे रडार बाधित कर रहा है।"
+      },
+      "satPass": {
+        "title": "उपग्रह का गुज़रना",
+        "text_one": "{{system}}: पट्टी के नीचे {{count}} संपर्क।",
+        "text_other": "{{system}}: पट्टी के नीचे {{count}} संपर्क।"
+      },
+      "nuclearRevoked": {
+        "title": "परमाणु अनुमति वापस",
+        "text": "परमाणु बल सामान्य नियंत्रण में लौटते हैं।"
+      },
+      "nuclearAuthorized": {
+        "title": "परमाणु प्रयोग अधिकृत",
+        "text": "जब तक अलर्ट स्तर अनुमति दे, परमाणु प्रहार संभव हैं।"
+      },
+      "nuclearDetonation": {
+        "title": "परमाणु विस्फोट",
+        "text": "परमाणु प्रहार: {{place}}।"
+      },
+      "fuelLost": {
+        "title": "विमान खोया",
+        "text": "{{system}}: अड्डे पर लौटने से पहले ईंधन ख़त्म।"
+      },
+      "specialOk": {
+        "title": "विशेष अभियान सफल",
+        "text": "{{mission}}: {{place}}।"
+      },
+      "specialEnemy": {
+        "title": "विशेष बलों की कार्रवाई",
+        "text": "शत्रु {{mission}}: {{place}}।"
+      },
+      "specialFailed": {
+        "title": "विशेष अभियान विफल",
+        "text": "{{mission}}: {{place}}।"
+      },
+      "blockadeOn": {
+        "title": "नाकाबंदी प्रभावी",
+        "text": "{{place}} ({{nation}})"
+      },
+      "blockadeOff": {
+        "title": "नाकाबंदी हटी",
+        "text": "{{place}} ({{nation}})"
+      },
+      "captured": {
+        "title": "उपकरण ज़ब्त",
+        "text": "{{place}}: {{items}}।",
+        "item": "{{count}} {{system}}"
+      },
+      "generalReleased": {
+        "title": "नियंत्रण वापस",
+        "text": "{{general}} अपने समूह की सीधी कमान लौटाता है।"
+      },
+      "coup": {
+        "title": "तख़्तापलट",
+        "text": "{{nation}}: सेना ने सत्ता पर कब्ज़ा किया।"
+      },
+      "ceasefire": {
+        "title": "युद्धविराम",
+        "text": "युद्धविराम लागू: {{a}} / {{b}}।"
+      },
+      "peaceProposal": {
+        "title": "शांति प्रस्ताव",
+        "text": "{{nation}} शांति का प्रस्ताव देता है।"
+      },
+      "ceasefireProposal": {
+        "title": "युद्धविराम प्रस्ताव",
+        "text": "{{nation}} युद्धविराम का प्रस्ताव देता है।"
+      },
+      "proposalRefused": {
+        "title": "प्रस्ताव अस्वीकृत",
+        "text": "{{nation}} ने आपका प्रस्ताव अस्वीकार किया।"
+      },
+      "agentCaught": {
+        "title": "एजेंट बेनक़ाब",
+        "text": "{{host}} ने {{owner}} के एक एजेंट की गिरफ़्तारी की घोषणा की।"
+      }
+    }
+  }
+}

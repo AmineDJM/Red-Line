@@ -5,6 +5,7 @@ import { Button, Checkbox, Dialog, EmptyState, Spinner, Tabs } from '@redline/ui
 import { getApi } from '../api/index.js';
 import { Page } from '../components/Page.js';
 import { navigate, useRoute } from '../router.js';
+import { fmtDate } from '../i18n/index.js';
 import '../styles/legal.css';
 
 const DOCS: LegalDocRef['id'][] = ['mentions', 'cgu', 'cgv', 'privacy', 'cookies', 'withdrawal'];
@@ -188,7 +189,7 @@ export function LegalScreen({ doc }: { doc: LegalDocRef['id'] }) {
         data
           ? t('legal.version', {
               version: data.version,
-              date: new Date(data.updatedAt).toLocaleDateString(lang),
+              date: fmtDate(data.updatedAt),
             })
           : undefined
       }

@@ -11,11 +11,17 @@ import './styles/w-army.css';
 import './styles/w-world.css';
 import './styles/w-battles.css';
 import './styles/pages.css';
-import './i18n/index.js';
+import './styles/i18n.css';
+import { initI18n } from './i18n/index.js';
 import { App } from './App.js';
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+// Langue chargée avant le premier rendu (textes, noms de lieux, polices, sens d'écriture).
+void initI18n()
+  .catch(() => undefined)
+  .then(() =>
+    createRoot(document.getElementById('root')!).render(
+      <StrictMode>
+        <App />
+      </StrictMode>,
+    ),
+  );

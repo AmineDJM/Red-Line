@@ -1,0 +1,3100 @@
+{
+  "app": {
+    "name": "Red Line",
+    "tagline": "リアルタイム地政学戦略",
+    "loading": "読み込み中…",
+    "loadingPath": "読み込み中",
+    "errorPath": "エラー",
+    "loadingMap": "作戦地域を準備中…",
+    "error": "エラーが発生しました。",
+    "retry": "再試行",
+    "back": "戻る",
+    "close": "閉じる",
+    "clear": "消去",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "next": "次へ",
+    "previous": "前へ",
+    "skip": "スキップ",
+    "done": "完了",
+    "search": "検索",
+    "maximize": "最大化",
+    "soon": "近日公開",
+    "yes": "はい",
+    "no": "いいえ",
+    "all": "すべて",
+    "none": "なし",
+    "mockBadge": "オフラインデモ",
+    "notFound": "ページが見つかりません。"
+  },
+  "keys": {
+    "space": "Space",
+    "enter": "Enter",
+    "escape": "Esc"
+  },
+  "time": {
+    "dayUnit": "日",
+    "ago": "{{value}}前",
+    "in": "{{value}}後"
+  },
+  "sections": {
+    "armies": "マイ軍",
+    "army": "戦争兵器庫",
+    "production": "生産",
+    "research": "研究",
+    "economy": "経済",
+    "intel": "情報",
+    "diplomacy": "外交",
+    "council": "安全保障理事会",
+    "news": "ニュース",
+    "battles": "戦闘報告",
+    "chat": "メッセージ",
+    "shop": "ショップ",
+    "settings": "設定",
+    "short": {
+      "armies": "軍",
+      "army": "兵器庫",
+      "production": "生産",
+      "research": "研究開発",
+      "economy": "経済",
+      "intel": "情報",
+      "diplomacy": "外交",
+      "council": "安保理",
+      "news": "ニュース",
+      "battles": "戦闘",
+      "chat": "メッセージ",
+      "shop": "ショップ",
+      "settings": "設定"
+    },
+    "path": {
+      "armies": "マイ軍",
+      "army": "戦争兵器庫",
+      "production": "生産",
+      "research": "研究開発",
+      "economy": "経済",
+      "intel": "情報",
+      "diplomacy": "外交",
+      "council": "国連\\安保理",
+      "news": "電報",
+      "battles": "戦闘",
+      "chat": "メッセージ",
+      "shop": "ショップ",
+      "settings": "設定"
+    }
+  },
+  "home": {
+    "title": "Red Line",
+    "path": "ホーム",
+    "menu": "メインメニュー",
+    "subtitle": "実際の世界地図で展開するリアルタイム地政学戦略。実在の兵器、実在の予算、勝利は軍事的勝利のみ。",
+    "playGuest": "ゲストでプレイ",
+    "login": "ログイン",
+    "register": "登録",
+    "logout": "ログアウト",
+    "continue": "新しいゲーム",
+    "multi": "マルチプレイ",
+    "resume": "ゲームを再開",
+    "rankings": "ランキング",
+    "shop": "ショップ",
+    "sandbox": "サンドボックス",
+    "guest": "ゲスト",
+    "notConnected": "未ログイン",
+    "welcome": "ログイン中：{{name}}",
+    "guestNote": "ゲストアカウントはこの端末に保存されます。",
+    "footer": "勝利は軍事的勝利のみ。実在の施設は標的にしません：各州に汎用の建物を配置。",
+    "hints": {
+      "guest": "登録不要ですぐにソロプレイ",
+      "solo": "世界地図でAIとソロ対戦",
+      "multi": "最大64人、他の国はAIが担当",
+      "resume": "進行中・終了したゲーム",
+      "rankings": "シーズンと世界ランキング",
+      "shop": "プレミアム通貨、外観、加速",
+      "sandbox": "自由配置とローカルエンジン"
+    },
+    "boot": {
+      "link": "衛星リンク確立",
+      "map": "地図：2 567 州 · 201 か国",
+      "catalog": "カタログ：406 種の兵器システム",
+      "engine": "シミュレーションエンジン同期完了",
+      "ready": "指揮所、準備完了。"
+    },
+    "flash": {
+      "game_deleted": "このゲームは削除されました：ホームに戻りました。"
+    },
+    "info": {
+      "title": "ゲームの概要",
+      "about": "ゲームを知る",
+      "figures": {
+        "nations": "プレイ可能な国",
+        "provinces": "州",
+        "systems": "実在の兵器システム",
+        "players": "人／ゲーム"
+      },
+      "live": {
+        "games_other": "進行中のゲーム {{n}} 件",
+        "players_other": "オンライン {{n}} 人"
+      },
+      "blocks": {
+        "map": {
+          "title": "リアルタイム、本物の世界地図",
+          "text": "衛星画像、2,567 の州、大圏航路。オフラインの間も世界は動き続けます。"
+        },
+        "arsenal": {
+          "title": "実在の兵器庫と予算",
+          "text": "2025 年の戦闘序列、ドル建ての国防予算、研究開発に応じて生産される 406 の実在兵器システム。"
+        },
+        "intel": {
+          "title": "情報と外交",
+          "text": "スパイ、衛星、戦場の霧。同盟、ライセンス、安全保障理事会の投票。"
+        },
+        "multi": {
+          "title": "ソロまたは最大 64 人",
+          "text": "200 を超える AI を相手に 1 人で、または永続的なマルチプレイで。シーズンごとのランキング。"
+        }
+      },
+      "links": {
+        "howto": "遊び方",
+        "features": "機能",
+        "nations": "国",
+        "arsenal": "兵器庫",
+        "faq": "よくある質問"
+      }
+    }
+  },
+  "auth": {
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "displayName": "表示名",
+    "submitLogin": "ログイン",
+    "submitRegister": "アカウント作成",
+    "switchToRegister": "アカウントを作成",
+    "switchToLogin": "登録済みですか？",
+    "errors": {
+      "invalid": "認証情報が正しくありません。",
+      "exists": "このアドレスは既に使用されています。",
+      "weak": "パスワードが短すぎます（8文字以上）。",
+      "network": "サーバーに接続できません。",
+      "generic": "操作に失敗しました。"
+    }
+  },
+  "newGame": {
+    "title": "新しいゲーム",
+    "path": "新しいゲーム",
+    "subtitle": "国を選択",
+    "nation": "国",
+    "searchPlaceholder": "国を検索…",
+    "pickOnMap": "地図上の国をクリックするか、リストから選択してください。",
+    "pickHint": "地図上の国をタップするか、リストから選択してください。",
+    "selected": "選択した国",
+    "none": "国なし",
+    "provinces_other": "{{count}} 州",
+    "count_other": "{{count}} か国",
+    "taken_other": "{{count}} 選択済み",
+    "human": "プレイヤー",
+    "scenario": "シナリオ",
+    "speed": "速度",
+    "difficulty": "難易度",
+    "levels": {
+      "easy": "易しい",
+      "normal": "普通",
+      "hard": "難しい"
+    },
+    "budget": "国防予算",
+    "personnel": "兵員",
+    "doctrine": "ドクトリン",
+    "highlights": "主要システム",
+    "loadingInfo": "資料を読み込み中…",
+    "random": "ランダムな国",
+    "start": "ゲーム開始",
+    "creating": "ゲームを作成中…",
+    "entity": "地域",
+    "error": "ゲームを作成できません。",
+    "mapLabel": "世界地図：国をクリックして選択",
+    "tooMany": "進行中のソロゲームが既に10件あります：いずれかを再開するか削除してください。",
+    "manageGames": "ゲームを管理"
+  },
+  "game": {
+    "connecting": "ゲームに接続中…",
+    "reconnecting": "接続が切れました。再接続中…",
+    "failed": "サーバーが接続を拒否しました。",
+    "spectator": "観戦者",
+    "exit": "ホームに戻る",
+    "clock": {
+      "day": "D+{{day}}",
+      "paused": "一時停止",
+      "pause": "一時停止",
+      "play": "再開",
+      "speed": "速度 ×{{speed}}",
+      "speedShort": "×{{speed}}",
+      "nextSpeed": "速度を変更（現在 ×{{speed}}）"
+    },
+    "topbar": {
+      "treasury": "国庫",
+      "perDay": "/日",
+      "budgetTip": "国庫と1日あたりの純収入 — 経済を開く",
+      "resources": "資源",
+      "resourceTip": "{{name}}：在庫 {{stock}}、1日 {{net}}"
+    },
+    "alertLevel": {
+      "title": "警戒",
+      "short": "AL",
+      "tooltip": "世界警戒レベル {{level}} — {{label}}",
+      "labels": {
+        "1": "核危機",
+        "2": "全面戦争",
+        "3": "武力緊張",
+        "4": "警戒",
+        "5": "平穏"
+      }
+    },
+    "resources": {
+      "money": "資金",
+      "oil": "石油",
+      "metals": "金属",
+      "electronics": "電子部品",
+      "food": "食料",
+      "perDay": "{{value}} / 日"
+    },
+    "toolbar": {
+      "army": "マイ軍",
+      "production": "生産",
+      "alerts": "警報",
+      "layers": "レイヤー",
+      "legend": "凡例",
+      "menu": "ナビゲーション",
+      "map": "地図",
+      "more": "その他",
+      "allSections": "全分野",
+      "recenter": "再センタリング"
+    },
+    "layers": {
+      "title": "レイヤー",
+      "military": "軍事",
+      "intel": "情報",
+      "economy": "経済",
+      "diplomacy": "外交",
+      "soon": "近日公開",
+      "fog": "戦場の霧",
+      "labels": "ラベル"
+    },
+    "legend": {
+      "title": "凡例",
+      "ownForces": "自軍",
+      "allyForces": "同盟軍",
+      "enemyForces": "敵軍（交戦中）",
+      "detected": "未確認の接触",
+      "building": "戦略施設",
+      "ownTerritory": "自国領土",
+      "range": "兵器射程（最小 – 最大）",
+      "route": "軌道 / 命令",
+      "launch": "発射地点",
+      "border": "国境",
+      "disputed": "係争地域",
+      "fog": "未探知区域",
+      "capture": "占領中",
+      "neutralForces": "中立軍"
+    },
+    "alerts": {
+      "title": "警報センター",
+      "empty": "現在警報はありません。",
+      "markRead": "すべて既読にする",
+      "center": "地図を中央に",
+      "filter": "フィルター",
+      "filters": {
+        "all": "すべて",
+        "critical": "重大"
+      },
+      "kinds": {
+        "combat_started": "交戦開始",
+        "unit_destroyed": "敵ユニット撃破：{{unit}}",
+        "unit_destroyed_own": "ユニット喪失：{{unit}}",
+        "unit_detected": "接触を探知",
+        "unit_detected_known": "接触：{{unit}} · {{nation}}",
+        "province_capture_started": "{{province}}：{{nationLe}} が占領を試行中",
+        "province_capture_started_own": "{{province}} を占領中",
+        "province_capture_started_threat": "{{province}} が {{nationLe}} の攻撃を受けている",
+        "province_captured": "{{province}} が {{nationLe}} に占領された",
+        "province_captured_own": "{{province}} を制圧",
+        "province_lost": "{{province}} を喪失",
+        "production_complete": "生産完了：{{unit}}",
+        "arrived": "ユニットが目的地に到着",
+        "nation_defeated": "国家敗北：{{nation}}",
+        "victory": "{{deNation}} の勝利",
+        "research_complete": "研究完了：{{node}}",
+        "war_declared": "{{aDe}} が {{bA}} に宣戦布告",
+        "peace_signed": "{{aLe}} と {{bLe}} が講和条約に調印",
+        "missile_launch": "ミサイル発射を探知",
+        "building_hit": "{{province}} の {{building}} が被弾（{{health}} %）",
+        "delivery_arrived": "輸送品が到着",
+        "delivery_intercepted": "輸送品が迎撃された",
+        "intel_report": "新しい情報報告",
+        "battle_report": "新しい戦闘報告",
+        "battle_report_named": "報告：{{title}}",
+        "operation": "統合作戦：{{status}}",
+        "alert_level": "世界警戒レベル：{{level}}",
+        "news": "新しい電報"
+      },
+      "titled": "{{title}}：{{text}}"
+    },
+    "army": {
+      "count": "×{{count}}"
+    },
+    "selection": {
+      "title": "選択",
+      "count": "兵力",
+      "hp": "状態",
+      "status": "ステータス",
+      "stance": "態勢",
+      "supply": "補給",
+      "mission": "任務",
+      "general": "将軍",
+      "xp": "経験",
+      "stop": "停止",
+      "sheet": "資料",
+      "deselect": "選択解除",
+      "hint": "地図をタップして移動、敵ユニットをタップして攻撃。コンソール：Ctrl+K。",
+      "lastSeen": "{{value}}前に確認",
+      "lastSeenLabel": "最終観測",
+      "uncertainty": "誤差：±{{value}}",
+      "uncertaintyLabel": "誤差",
+      "unknownType": "種類不明",
+      "owner": "国",
+      "multi_other": "{{count}} 選択中",
+      "ready": "使用可能まで",
+      "ammo": "弾薬"
+    },
+    "orders": {
+      "moveTitle": "移動命令",
+      "attackTitle": "攻撃命令",
+      "distance": "距離",
+      "eta": "到着",
+      "warning": "注意",
+      "outOfRange": "目標が射程外",
+      "confirm": "確認",
+      "cancel": "キャンセル",
+      "sent": "命令を送信",
+      "destination": "目的地",
+      "target": "目標",
+      "errors": {
+        "not_owner": "このユニットはあなたのものではありません。",
+        "unknown_unit": "不明なユニット。",
+        "unreachable": "目的地に到達できません。",
+        "out_of_range": "目標が射程外です。",
+        "insufficient_funds": "資金不足。",
+        "invalid_target": "無効な目標。",
+        "not_allowed": "命令を実行できません。",
+        "game_over": "ゲームは終了しました。",
+        "unknown": "認識できない命令。",
+        "locked": "操作がブロックされています（警戒、決議、禁輸）。",
+        "research_required": "研究が必要です。",
+        "capacity": "最大容量に達しました。",
+        "cooldown": "クールダウン中。",
+        "insufficient_resources": "資源不足。",
+        "disconnected": "オフライン：命令は送信されていません。",
+        "timeout": "サーバーから応答がありません。"
+      }
+    },
+    "status": {
+      "idle": "待機中",
+      "moving": "移動中",
+      "combat": "交戦中",
+      "embarked": "搭載中",
+      "destroyed": "撃破"
+    },
+    "stance": {
+      "hold": "保持",
+      "defend": "防御",
+      "aggressive": "攻撃"
+    },
+    "level": {
+      "own": "友軍ユニット",
+      "precise": "精密",
+      "identified": "識別済み",
+      "detected": "探知済み"
+    },
+    "callout": {
+      "capital": "首都",
+      "moving": "移動中 · {{value}}",
+      "combat": "交戦中",
+      "capture": "占領 {{value}} %"
+    },
+    "end": {
+      "victory": "勝利",
+      "defeat": "敗北",
+      "victoryText": "あなたの国が軍事的覇権を確立しました。",
+      "defeatText": "{{deNation}} の勝利。あなたの国は敗北しました。",
+      "defeatTextAlone": "あなたの国は戦闘不能です。戦争はあなた抜きで続きます。",
+      "newGame": "新しいゲーム",
+      "home": "ホーム",
+      "stats": "ゲームの総括",
+      "observe": "観戦を続ける",
+      "abandoned": "放棄",
+      "kickerEnded": "ゲーム終了",
+      "abandonedText": "48時間（ソロ）または24時間（マルチ）接続がなかったため、ゲームは終了しました。"
+    },
+    "time": {
+      "minutes": "{{value}} 分",
+      "hours": "{{h}} 時間 {{m}}",
+      "days": "{{d}} 日 {{h}} 時間"
+    },
+    "unlimited": {
+      "badge": "無制限",
+      "value": "∞",
+      "tip": "無制限モード：資金と資源が制限されることはありません。生産には引き続き研究開発が必要です。",
+      "reserve": "無制限の備蓄",
+      "stockTip": "{{name}}：在庫無制限",
+      "budgetTip": "国庫無制限 — 経済を開く"
+    }
+  },
+  "province": {
+    "title": "州",
+    "population": "人口",
+    "income": "収入 / 日",
+    "fortification": "要塞化",
+    "level": "レベル {{level}}",
+    "unrest": "地域の緊張",
+    "buildings": "建物",
+    "noBuildings": "建物なし。",
+    "produceHere": "ここで生産",
+    "fortify": "要塞化",
+    "capture": "占領",
+    "captureOwn": "自軍が占領中",
+    "captureBy": "{{nationLe}} が占領中",
+    "knowledge": "把握度",
+    "intelLevel": {
+      "0": "不明",
+      "1": "概要",
+      "2": "良好",
+      "3": "完全"
+    },
+    "updated": "更新",
+    "ago": "{{value}}前",
+    "economicIntel": "経済情報",
+    "militaryIntel": "軍事情報",
+    "knownBuildings": "既知の建物",
+    "moreUnknown": "その他の建物は未判明…",
+    "unknownHint": "この州に関する情報はありません。偵察任務を開始して建物と防御を明らかにしてください。",
+    "recon": "軍事偵察",
+    "listen": "SIGINT 傍受",
+    "morale": "士気",
+    "fortifyLevel": "要塞化（N{{level}}）",
+    "fortifyStarted": "{{province}} の要塞化を開始",
+    "reconEco": "経済偵察",
+    "reconRunning": "任務進行中…",
+    "reconMilitaryTip": "軍事情報（SIGINT）：州内の基地、防御、軍事施設を段階的に明らかにします。",
+    "reconEconomicTip": "対外情報（HUMINT）：州内の経済施設を段階的に明らかにします。",
+    "opStarted": {
+      "recon_military": "{{province}} への軍事偵察を開始",
+      "recon_economic": "{{province}} への経済偵察を開始",
+      "listen_area": "{{province}} 周辺の傍受を開始"
+    }
+  },
+  "nationRecon": {
+    "title": "{{nationLe}} に関する情報",
+    "aria": "{{nationLe}} に関する情報",
+    "provinces_other": "{{count}} 州",
+    "ops": {
+      "recon_military": "軍事偵察",
+      "recon_economic": "経済偵察"
+    },
+    "phase": "フェーズ {{done}}/{{waves}}",
+    "covered_other": "{{count}} 州をカバー",
+    "priority": "優先：首都と大都市",
+    "remaining_other": "残り {{count}} 州",
+    "complete": "全州を解明",
+    "revealedAria": "解明済みの州：{{known}} / {{total}}",
+    "launch": "開始",
+    "running": "進行中",
+    "capacity": "部門の容量上限に到達",
+    "started": {
+      "recon_military": "{{nationLe}} への軍事偵察を開始",
+      "recon_economic": "{{nationLe}} への経済偵察を開始"
+    },
+    "tips": {
+      "recon_military": "{{deNation}} の基地、防御、レーダー、サイロ、掩蔽壕を段階的に明らかにします：まず首都と大都市、次に国内の残りの地域。",
+      "recon_economic": "{{deNation}} の生産、資源、産業を段階的に明らかにします：まず首都と大都市、次に国内の残りの地域。"
+    }
+  },
+  "console": {
+    "title": "指揮コンソール",
+    "open": "コンソール",
+    "path": "コンソール",
+    "placeholder": "move sel alger · produce 4 rafale · research aero.gen5 · help",
+    "examples": "例：",
+    "selection_other": "{{count}} ユニット",
+    "hints": {
+      "complete": "補完",
+      "run": "実行",
+      "close": "閉じる",
+      "navigate": "選択"
+    },
+    "kinds": {
+      "cmd": "cmd",
+      "unit": "ユニット",
+      "target": "目標",
+      "system": "システム",
+      "place": "場所",
+      "nation": "国",
+      "node": "研究開発",
+      "op": "作戦",
+      "window": "ウィンドウ",
+      "value": "値"
+    },
+    "args": {
+      "units": "ユニット",
+      "place": "場所",
+      "target": "目標",
+      "count": "n",
+      "system": "システム",
+      "node": "ノード",
+      "speed": "速度",
+      "op": "作戦",
+      "nation": "国",
+      "window": "ウィンドウ",
+      "onoff": "on|off"
+    },
+    "help": {
+      "move": "ユニットを場所へ移動",
+      "attack": "敵ユニットを攻撃",
+      "stop": "ユニットを停止",
+      "produce": "州でシステムを生産",
+      "research": "研究を開始",
+      "goto": "地図を場所に合わせる",
+      "speed": "速度を変更（ソロ）",
+      "pause": "一時停止（ソロ）",
+      "resume": "再開（ソロ）",
+      "intel": "情報作戦を開始",
+      "peace": "講和を提案",
+      "ceasefire": "停戦を提案",
+      "war": "宣戦布告",
+      "open": "ウィンドウを開く",
+      "select": "ユニットを選択",
+      "mobilize": "総動員",
+      "help": "ヘルプを表示",
+      "clear": "ログを消去"
+    },
+    "errors": {
+      "empty": "コマンドが空です。",
+      "unknown": "不明なコマンド：{{cmd}}。「help」と入力してください。",
+      "units": "該当するユニットがありません（識別子、「sel」、またはシステム名）。",
+      "place": "場所が見つかりません：{{place}}",
+      "target": "目標が見つかりません：{{target}}",
+      "system": "システムが見つかりません：{{system}}",
+      "province": "該当する自国の州がありません：{{place}}",
+      "node": "研究が見つかりません：{{node}}",
+      "op": "不明な作戦：{{op}}",
+      "nation": "国が見つかりません：{{nation}}",
+      "speed": "無効な速度。",
+      "window": "不明なウィンドウ。"
+    },
+    "done": {
+      "goto": "地図を {{place}} に合わせました。",
+      "select_other": "{{count}} ユニットを選択しました。",
+      "stop_other": "{{count}} ユニットを停止しました。",
+      "move_other": "{{count}} ユニットが {{place}} へ移動中。",
+      "attack_other": "{{count}} ユニットが {{target}} と交戦。",
+      "produce": "生産開始：{{count}} × {{system}}（{{place}}）。",
+      "research": "研究開始：{{node}}。",
+      "intel": "{{target}} に対する作戦「{{op}}」を開始。",
+      "peace": "{{aNation}} に講和を提案しました。",
+      "ceasefire": "{{aNation}} に停戦を提案しました。",
+      "war": "{{aNation}} に宣戦布告しました。",
+      "speed": "速度 ×{{speed}}。",
+      "pause": "ゲームを一時停止しました。",
+      "resume": "ゲームを再開しました。",
+      "mobilizeOn": "総動員令を発令しました。",
+      "mobilizeOff": "総動員を解除しました。"
+    }
+  },
+  "shortcuts": {
+    "title": "キーボードショートカット",
+    "console": "指揮コンソール",
+    "pause": "一時停止 / 再開",
+    "speed": "速度",
+    "windows": "マイ軍、戦争兵器庫、生産、研究、経済、情報…",
+    "escape": "命令の取消、選択解除、閉じる",
+    "confirm": "命令を確定",
+    "legend": "凡例",
+    "news": "ニュース",
+    "help": "このヘルプ"
+  },
+  "tutorial": {
+    "title": "チュートリアル",
+    "path": "チュートリアル",
+    "skip": "チュートリアルを終了",
+    "skipStep": "このステップをスキップ",
+    "waiting": "あなたの操作を待っています…",
+    "steps": {
+      "welcome": {
+        "title": "指揮所へようこそ",
+        "text": "あなたは実際の世界地図上で自国の軍を指揮します。実在の兵器、ドル建ての実在の予算、勝利は軍事的勝利のみ。"
+      },
+      "select": {
+        "title": "ユニットを選択",
+        "text": "地図上の自軍の駒（緑の縁取り）をタップすると、資料、状態、射程が表示されます。"
+      },
+      "order": {
+        "title": "命令を出す",
+        "text": "地図上の地点をタップして移動、敵ユニットをタップして攻撃します。"
+      },
+      "confirm": {
+        "title": "確定",
+        "text": "経路、距離、到着時刻を確認して確定します。選択、命令、確定の3ステップです。"
+      },
+      "production": {
+        "title": "戦力を生産",
+        "text": "生産を開きます：自国ドクトリンと供給国の兵器を、写真、価格、研究開発条件とともに表示します。"
+      },
+      "research": {
+        "title": "研究に投資",
+        "text": "システムを保有していても生産できるとは限りません：研究開発で上位世代の生産が解放されます。"
+      },
+      "console": {
+        "title": "すべてキーボードで",
+        "text": "指揮コンソールではすべてをキーボードで操作できます（move、produce、research、goto…）。開くには"
+      },
+      "time": {
+        "title": "時間を制する",
+        "text": "ソロでは：画面上部の一時停止と速度、またはスペースと 1〜5 キー。"
+      },
+      "alerts": {
+        "title": "情報を把握",
+        "text": "警報センターには戦闘、情報報告、安保理の投票、輸送がまとめられます。クリックで地図を合わせるか報告を開きます。"
+      },
+      "end": {
+        "title": "あなたの番です",
+        "text": "世界の州の 60 % またはすべての敵首都を支配してください。チュートリアルは設定からいつでも開けます。"
+      },
+      "province": {
+        "title": "あなたの州",
+        "text": "州をタップ：建物とレベル（1〜5）、正確な費用での建設、要塞化。隣国では偵察を行い施設を明らかにします。"
+      }
+    }
+  },
+  "sandbox": {
+    "title": "サンドボックス",
+    "path": "サンドボックス",
+    "subtitle": "ローカルエンジン · 自由配置",
+    "nation": "国",
+    "system": "システム",
+    "placeHint": "地図をタップして選択したユニットを配置します。",
+    "placed_other": "{{count}} ユニット配置済み",
+    "clear": "すべて消去",
+    "launch": "シミュレーション開始",
+    "reset": "リセット",
+    "observer": "視点",
+    "engineMissing": "エンジン利用不可：関数が不足しています（{{list}}）。",
+    "engineLoading": "エンジンを読み込み中…",
+    "dataMissing": "シミュレーションデータが不足しています（{{list}}）。",
+    "running": "シミュレーション実行中",
+    "count": "数量"
+  },
+  "categories": {
+    "fighter": "戦闘機",
+    "bomber": "爆撃機",
+    "air_support": "航空支援",
+    "helicopter": "ヘリコプター",
+    "drone": "ドローン",
+    "tank": "主力戦車",
+    "ifv": "歩兵戦闘車",
+    "artillery": "砲兵",
+    "air_defense": "防空",
+    "strike_missile": "攻撃ミサイル",
+    "nuclear": "核兵器",
+    "surface_ship": "水上艦",
+    "submarine": "潜水艦",
+    "infantry": "歩兵",
+    "space": "宇宙システム",
+    "logistics": "兵站",
+    "radar": "レーダー"
+  },
+  "doctrines": {
+    "us": "アメリカ",
+    "ru": "ロシア",
+    "cn": "中国",
+    "eu": "ヨーロッパ",
+    "other": "その他"
+  },
+  "buildings": {
+    "refinery": "製油所",
+    "power_plant": "発電所",
+    "port": "港湾",
+    "air_base": "空軍基地",
+    "military_base": "軍事基地",
+    "arms_factory": "兵器工場",
+    "research_center": "研究センター",
+    "oil_field": "油田",
+    "mine": "鉱山",
+    "farm": "農場",
+    "electronics_plant": "電子機器工場",
+    "local_industry": "地場産業",
+    "recruiting_office": "徴兵事務所",
+    "naval_base": "海軍基地",
+    "bunker": "掩蔽壕",
+    "air_defense_site": "防空陣地",
+    "coastal_battery": "沿岸砲台",
+    "radar_station": "レーダー基地",
+    "missile_silo": "ミサイルサイロ",
+    "hospital": "軍病院",
+    "secret_lab": "秘密研究所",
+    "forward_base": "前進基地",
+    "groups": {
+      "resources": "資源",
+      "industry": "産業",
+      "military": "軍事",
+      "defense": "防衛"
+    },
+    "effects": {
+      "refinery": "精製石油を生産",
+      "power_plant": "生産と研究を加速",
+      "port": "艦艇生産と海上貿易",
+      "air_base": "航空機の生産と駐留",
+      "military_base": "陸上兵器生産、補給所、駐屯",
+      "arms_factory": "重兵器：装甲車両、火砲、ミサイル",
+      "research_center": "研究ポイント",
+      "oil_field": "石油採掘",
+      "mine": "金属採掘",
+      "farm": "食料生産",
+      "electronics_plant": "電子部品",
+      "local_industry": "収入と建設速度",
+      "recruiting_office": "歩兵、動員の迅速化",
+      "naval_base": "艦艇の生産と修理",
+      "bunker": "防御側を強力に保護",
+      "air_defense_site": "航空機とミサイルを迎撃",
+      "coastal_battery": "対艦防御",
+      "radar_station": "広域航空探知",
+      "missile_silo": "弾道ミサイル発射",
+      "hospital": "ユニットの回復を加速",
+      "secret_lab": "高度研究を加速",
+      "forward_base": "前線の兵站補給所",
+      "fortification": "野戦築城：州の防御側の装甲を強化（レベル1〜3）。"
+    },
+    "ui": {
+      "build": "建設",
+      "upgrade": "レベル {{level}}",
+      "upgrading": "改良 N{{level}}",
+      "repair": "修理",
+      "repairing": "修理中",
+      "health": "建物の状態",
+      "operational": "稼働中",
+      "already": "建設済み",
+      "coastalOnly": "沿岸の州のみ",
+      "costTip": "費用 {{cost}} · 期間 {{time}}",
+      "buildStarted": "建設開始：{{name}}",
+      "upgradeStarted": "改良開始：{{name}}（N{{level}}）",
+      "repairStarted": "修理開始：{{name}}",
+      "constructing": "建設中",
+      "maxLevel": "最大レベル",
+      "blocked": {
+        "in_progress": "既に工事中",
+        "damaged": "先に修理が必要",
+        "max_level": "最大レベルに到達"
+      }
+    },
+    "fortification": "要塞"
+  },
+  "weapon": {
+    "engine": "エンジン",
+    "length": "全長",
+    "wingspan": "翼幅",
+    "mtow": "最大重量",
+    "warhead": "弾頭",
+    "speed": "速度",
+    "range": "航続距離",
+    "weaponRange": "兵器射程",
+    "subtitle": "{{category}} · {{country}}",
+    "subtitleDoctrine": "{{category}} · {{doctrine}}ドクトリン",
+    "doctrineAdj": {
+      "us": "アメリカ式",
+      "ru": "ロシア式",
+      "cn": "中国式",
+      "eu": "ヨーロッパ式",
+      "other": "汎用"
+    },
+    "photo": "写真",
+    "noPhoto": "写真なし",
+    "gen": "世代",
+    "sheet": "技術資料",
+    "units": {
+      "m": "m",
+      "kg": "kg",
+      "km": "km"
+    },
+    "genericOrigin": "汎用"
+  },
+  "units": {
+    "km": "{{value}} km"
+  },
+  "map": {
+    "attribution": "画像 NASA Blue Marble · Natural Earth",
+    "noImagery": "衛星画像を利用できません：ベクター地図",
+    "tip": {
+      "nation": "国",
+      "count": "兵力",
+      "state": "状態",
+      "hp": "損耗",
+      "supply": "補給",
+      "mission": "任務",
+      "speed": "速度",
+      "range": "射程",
+      "seen": "確認",
+      "seenAgo": "{{value}}前",
+      "seenNow": "たった今",
+      "uncertainty": "位置",
+      "uncertaintyValue": "± {{value}}",
+      "stack": "スタック",
+      "stackValue": "{{count}} ユニット",
+      "stackMore": "+ 他 {{count}}",
+      "unknown": "未確認の接触",
+      "unknownType": "種類不明",
+      "missile": "飛翔中のミサイル",
+      "impact": "着弾",
+      "impactIn": "{{value}}後",
+      "city": "都市",
+      "capital": "首都",
+      "population": "人口",
+      "owner": "支配",
+      "buildings": "建物",
+      "intel": "情報",
+      "capture": "占領",
+      "fortification": "要塞",
+      "fortLevel": "レベル {{value}}",
+      "blockaded": "封鎖中",
+      "noFlyZone": "飛行禁止区域",
+      "disputed": "係争地域",
+      "unrest": "緊張",
+      "prompt": "inspect"
+    },
+    "rel": {
+      "own": "自軍",
+      "ally": "同盟",
+      "neutral": "中立",
+      "enemy": "敵対"
+    },
+    "status": {
+      "idle": "配置中",
+      "moving": "移動中",
+      "combat": "交戦中",
+      "embarked": "搭載中",
+      "destroyed": "撃破"
+    },
+    "supply": {
+      "supplied": "確保",
+      "limited": "制限",
+      "cut": "途絶"
+    },
+    "mission": {
+      "none": "なし",
+      "patrol": "哨戒",
+      "strike": "攻撃",
+      "escort": "護衛",
+      "refuel": "空中給油",
+      "awacs": "空中警戒",
+      "recon": "偵察",
+      "blockade": "封鎖",
+      "rtb": "基地へ帰投"
+    },
+    "flag": {
+      "decoy": "デコイ（あなたにのみ表示）",
+      "submerged": "潜航中",
+      "sonar": "ソナー接触",
+      "jamming": "妨害中"
+    },
+    "intel": {
+      "0": "不明",
+      "1": "概要",
+      "2": "把握良好",
+      "3": "完全把握",
+      "old": "古い情報"
+    },
+    "bld": {
+      "refinery": "製油所",
+      "power_plant": "発電所",
+      "port": "港湾",
+      "air_base": "空軍基地",
+      "military_base": "軍事基地",
+      "arms_factory": "兵器工場",
+      "research_center": "研究センター",
+      "oil_field": "油田",
+      "mine": "鉱山",
+      "farm": "農場",
+      "electronics_plant": "電子機器工場",
+      "local_industry": "地場産業",
+      "recruiting_office": "徴兵事務所",
+      "naval_base": "海軍基地",
+      "bunker": "掩蔽壕",
+      "air_defense_site": "防空陣地",
+      "coastal_battery": "沿岸砲台",
+      "radar_station": "レーダー基地",
+      "missile_silo": "ミサイルサイロ",
+      "hospital": "軍病院",
+      "secret_lab": "秘密研究所",
+      "forward_base": "前進基地",
+      "level": "Lv. {{value}}",
+      "damaged": "損傷",
+      "down": "機能停止",
+      "repair": "修理中",
+      "upgrade": "建設中"
+    },
+    "ring": {
+      "max": "射程 {{value}}",
+      "min": "最小 {{value}}",
+      "radius": "半径 {{value}}",
+      "radar": "レーダー {{value}}",
+      "sonar": "ソナー {{value}}",
+      "sensor": "探知 {{value}}",
+      "sat": "衛星 · {{value}}後に通過"
+    },
+    "order": {
+      "eta": "{{distance}} · {{eta}}"
+    },
+    "minimap": {
+      "label": "ミニマップ",
+      "km": "{{value}} km"
+    },
+    "pion": {
+      "decoy": "デコイ"
+    }
+  },
+  "legal": {
+    "title": "法的情報",
+    "docs": {
+      "cgu": "利用規約",
+      "cgv": "販売条件",
+      "privacy": "プライバシー",
+      "withdrawal": "撤回",
+      "mentions": "法的表示",
+      "cookies": "Cookie"
+    },
+    "path": "法的情報",
+    "version": "バージョン {{version}} · {{date}} 更新",
+    "error": "文書を利用できません。",
+    "gateTitle": "利用規約",
+    "gateText": "プレイ前に、利用規約とプライバシーポリシー（またはその新版）をお読みいただき、同意してください。",
+    "read": "文書を読む",
+    "checkbox": "上記の文書を読み、同意します。",
+    "accept": "同意して続ける"
+  },
+  "interior": {
+    "unavailable": "国内治安は利用できません",
+    "kpi": {
+      "threat": "国内の脅威",
+      "quality": "サービス品質",
+      "level": "レベル {{level}} · 予算込み",
+      "foiled": "阻止した作戦",
+      "alerts": "発令した警報 {{count}} 件",
+      "caught": "摘発した工作員",
+      "doubles": "うち寝返らせた者 {{count}} 人"
+    },
+    "grades": {
+      "low": "低",
+      "moderate": "中",
+      "high": "高",
+      "critical": "危機的"
+    },
+    "focusTitle": "部門の優先事項",
+    "focusSet": "優先：{{name}}",
+    "focus": {
+      "balanced": {
+        "name": "バランス型",
+        "desc": "防諜、施設防護、騒乱の監視に労力を配分します。"
+      },
+      "counterintel": {
+        "name": "防諜",
+        "desc": "外国の工作員と準備中の作戦を追跡：探知力が大幅に向上します。"
+      },
+      "protection": {
+        "name": "防護",
+        "desc": "重要施設を警備：防護対象が 2 か所増え、敵の破壊工作と偵察を妨げます。"
+      },
+      "surveillance": {
+        "name": "監視",
+        "desc": "反乱ネットワークと動揺を監視下に置く：騒乱のリスクが大幅に低下します。"
+      }
+    },
+    "budget": "部門予算",
+    "budgetSet": "国内治安予算を変更しました",
+    "metricsTitle": "測定可能な効果",
+    "metricsMeta": "レベル × 予算 × 優先事項",
+    "metrics": {
+      "agentDetect": "工作員の摘発（1 日あたり）",
+      "agentDetectHint": "活動中の外国工作員 1 人あたりの基本日次確率",
+      "opDetect": "準備中の作戦の探知",
+      "opDetectHint": "警報を評価；敵の成功率は半減",
+      "protection": "重要施設の防護",
+      "protectionHint": "破壊工作と偵察の成功率を低下",
+      "unrestReduction": "騒乱の抑制",
+      "unrestReductionHint": "反乱、デモ、国内の破壊工作"
+    },
+    "threatsTitle": "州ごとの脅威",
+    "protectedCount": "防護施設：{{n}} / {{max}}",
+    "noThreat": "脅威は確認されていません",
+    "protectedShort": "防護中",
+    "cols": {
+      "threat": "脅威",
+      "factors": "要因"
+    },
+    "protect": "防護",
+    "unprotect": "解除",
+    "protectedOk": "{{name}}：施設を防護下に置きました",
+    "unprotected": "{{name}}：防護を解除しました",
+    "reportsTitle": "国内報告",
+    "noReports": "国内報告はありません"
+  },
+  "intel": {
+    "flash": "FLASH",
+    "title": "情報",
+    "sources": "情報源",
+    "humint": "HUMINT",
+    "sigint": "SIGINT",
+    "interiorTab": "国内",
+    "departments": "部門",
+    "totalBudget": "総予算",
+    "unavailable": "情報機関を利用できません。",
+    "unavailableHint": "このゲームでは情報モジュールが有効になっていません。",
+    "depts": {
+      "interior": "国内保安",
+      "exterior": "対外情報",
+      "military": "軍事情報"
+    },
+    "deptsShort": {
+      "interior": "国内",
+      "exterior": "対外",
+      "military": "軍事"
+    },
+    "level": "N{{level}}",
+    "budget": "予算",
+    "budgetUp": "予算を増やす",
+    "budgetDown": "予算を減らす",
+    "budgetSet": "部門予算を調整しました",
+    "capacity": "作戦",
+    "noReports": "この情報源の報告はありません。",
+    "operations": "作戦",
+    "launch": "作戦を開始",
+    "launchShort": "開始",
+    "operation": "作戦",
+    "target": "目標",
+    "cost": "費用",
+    "duration": "期間",
+    "success": "成功率",
+    "exposure": "リスク",
+    "estimate": "推定成功確率",
+    "progress": "進捗",
+    "zone": "{{km}} km 圏",
+    "opLaunched": "作戦開始：{{op}}",
+    "opCancelled": "作戦を中止しました",
+    "reconSent": "地域の傍受を開始",
+    "shared": "{{nationLe}} と報告を共有しました",
+    "sharedBy": "{{nationLe}} から共有",
+    "subject": "件名：",
+    "minimap": "報告地域",
+    "lowCotation": "評価低：裏付けのない情報で、欺瞞の可能性があります。行動前に確認してください。",
+    "cotationTip": "情報源の信頼性：{{r}} · 情報の確度：{{c}}",
+    "agents": "工作員",
+    "caught": "摘発した敵工作員",
+    "caughtAgent": "不明",
+    "turned": "寝返り済み",
+    "turn": "寝返らせる",
+    "turnedOk": "工作員を二重スパイに転向させました",
+    "reliability": {
+      "A": "A — 信頼できる",
+      "B": "B — 概ね信頼できる",
+      "C": "C — やや信頼できる",
+      "D": "D — あまり信頼できない",
+      "E": "E — 信頼できない",
+      "F": "F — 評価不能"
+    },
+    "credibility": {
+      "1": "1 — 確認済み",
+      "2": "2 — 可能性が高い",
+      "3": "3 — 可能性あり",
+      "4": "4 — 疑わしい",
+      "5": "5 — 可能性が低い",
+      "6": "6 — 評価不能"
+    },
+    "kinds": {
+      "daily": "日次報告",
+      "flash": "速報",
+      "order_of_battle": "戦闘序列",
+      "intentions": "意図",
+      "counterintel": "防諜",
+      "leak": "漏洩",
+      "cyber": "サイバー",
+      "result": "作戦結果"
+    },
+    "actions": {
+      "plan_strike": "攻撃を計画",
+      "send_recon": "偵察を派遣",
+      "share": "共有",
+      "open_unit": "ユニットを見る",
+      "open_province": "州を見る"
+    },
+    "opStatus": {
+      "running": "進行中",
+      "success": "成功",
+      "failed": "失敗",
+      "compromised": "露見"
+    },
+    "agentStatus": {
+      "active": "活動中",
+      "burned": "身元露見",
+      "double": "二重スパイ",
+      "exfiltrated": "脱出済み",
+      "captured": "拘束"
+    },
+    "ops": {
+      "infiltrate_spy": "スパイを潜入させる",
+      "recruit_source": "情報源を獲得",
+      "turn_agent": "工作員を寝返らせる",
+      "exfiltrate": "工作員を脱出させる",
+      "steal_research": "研究を盗む",
+      "sabotage_factory": "工場を破壊工作",
+      "fund_rebels": "反乱勢力に資金提供",
+      "listen_area": "地域を傍受",
+      "intercept_army": "通信を傍受",
+      "jam_area": "地域を妨害",
+      "cyber_radar": "サイバー攻撃：レーダー",
+      "cyber_production": "サイバー攻撃：生産",
+      "cyber_orders": "サイバー攻撃：命令",
+      "disinformation": "偽情報",
+      "leak_plans": "計画をリーク",
+      "plant_fake_report": "欺瞞：偽の報告",
+      "deploy_decoys": "デコイを展開",
+      "fake_radio_traffic": "偽の無線通信",
+      "counterintel_sweep": "防諜",
+      "recon_economic": "経済偵察",
+      "recon_military": "軍事偵察"
+    },
+    "opsHelp": {
+      "infiltrate_spy": "標的国に工作員を潜入させ、州、建物、意図を段階的に明らかにします。",
+      "recruit_source": "現地の情報源を獲得：定期的な意図報告、評価は変動。",
+      "turn_agent": "摘発した敵工作員を寝返らせ、その機関を欺きます。",
+      "exfiltrate": "拘束される前に危険にさらされた工作員を帰還させます。",
+      "steal_research": "研究成果を盗み、ノードを加速または解放します。",
+      "sabotage_factory": "標的の産業施設に損害を与えます。",
+      "fund_rebels": "州の反乱に資金を提供：安定度が低下します。",
+      "listen_area": "地域の無線を傍受し、存在するユニットを明らかにします。",
+      "intercept_army": "軍の通信を追跡：命令と移動。",
+      "jam_area": "地域の通信とレーダーを妨害します。",
+      "cyber_radar": "標的のレーダーを一時的に無力化します。",
+      "cyber_production": "標的の工業生産を遅らせます。",
+      "cyber_orders": "標的の命令実行を遅延させます。",
+      "disinformation": "偽情報キャンペーン：標的の安定度が低下します。",
+      "leak_plans": "盗んだ計画を世界のニュースに公開します。",
+      "plant_fake_report": "敵の機関に偽の報告を届けます。",
+      "deploy_decoys": "敵の偵察を欺くデコイを展開します。",
+      "fake_radio_traffic": "無線通信を偽装して自軍の移動を隠します。",
+      "counterintel_sweep": "自国領内の外国工作員を追跡します。",
+      "recon_economic": "国全体（まず首都と大都市、次に残り）または単一の州の経済施設（生産、資源、産業）を段階的に明らかにします。",
+      "recon_military": "国全体（まず首都と大都市、次に残り）または単一の州の基地、防空、レーダー、サイロ、掩蔽壕を段階的に明らかにします。以後は地図上に表示されます。"
+    },
+    "targetProvince": "対象の州",
+    "targetArea": "地域（都市周辺）",
+    "targetUnit": "対象ユニット",
+    "wholeNation": "国全体",
+    "scope": "範囲",
+    "scopeNation": "国全体",
+    "scopeProvince": "単一の州",
+    "reconPhase": "フェーズ {{done}}/{{waves}} · {{provinces}} 州",
+    "unknownContact": "未確認の接触",
+    "noContacts": "外国ユニットは探知されていません：レーダーを近づけるか偵察を行ってください。"
+  },
+  "sheet": {
+    "path": "諸元",
+    "catalog": "カタログで見る",
+    "pile": "スタック {{id}}"
+  },
+  "arsenal": {
+    "title": "兵器庫",
+    "doctrines": "ドクトリンと供給国",
+    "all": "すべて",
+    "search": "システムを検索…",
+    "category": "カテゴリー",
+    "categories": "装備カテゴリ",
+    "allCategories": "兵器庫すべて",
+    "searchAll_other": "兵器庫全体を検索：{{count}} 件",
+    "emptyCategory": "この教義とフィルターでは、カテゴリ「{{category}}」にシステムがありません。",
+    "groups": {
+      "air": "空",
+      "land": "陸",
+      "defense": "防衛と探知",
+      "strike": "攻撃と戦略",
+      "sea": "海",
+      "support": "支援"
+    },
+    "cats": {
+      "fighter": "戦闘機",
+      "bomber": "爆撃機",
+      "air_support": "航空支援",
+      "helicopter": "ヘリコプター",
+      "drone": "ドローン",
+      "tank": "戦車",
+      "ifv": "装甲車（歩兵戦闘車）",
+      "artillery": "砲兵",
+      "infantry": "歩兵",
+      "air_defense": "防空",
+      "radar": "レーダー",
+      "strike_missile": "攻撃ミサイル",
+      "nuclear": "核",
+      "space": "宇宙",
+      "surface_ship": "水上艦隊",
+      "submarine": "潜水艦",
+      "logistics": "兵站"
+    },
+    "allGen": "すべて",
+    "producible": "生産可能",
+    "importable": "輸入可能",
+    "import": "輸入",
+    "ownedFilter": "保有",
+    "rdRequired": "研究開発が必要",
+    "licence": "ライセンス",
+    "count_other": "{{count}} システム",
+    "layout": "表示",
+    "grid": "グリッド",
+    "list": "リスト",
+    "empty": "条件に一致するシステムはありません。",
+    "emptyHint": "検索範囲を広げるかドクトリンを変更してください。",
+    "pick": "システムを選択",
+    "pickHint": "詳細資料、写真、生産条件がここに表示されます。",
+    "back": "兵器庫に戻る",
+    "price": "価格",
+    "unitPrice": "単価",
+    "elements": "要素",
+    "upkeep": "維持費",
+    "perDay": "/ 日",
+    "buildTime": "生産期間",
+    "owned": "保有",
+    "ownedShort": "保有：{{count}}",
+    "producibleLabel": "生産可能",
+    "yesLicence": "はい（ライセンス生産）",
+    "noResearch": "いいえ（研究開発が必要：{{nodes}}）",
+    "importLabel": "輸入",
+    "importPossible": "可能",
+    "embargo": "不可（禁輸）",
+    "notExportable": "輸出不可",
+    "licenceLabel": "生産ライセンス",
+    "licenceOwned": "保有中",
+    "licenceAvailable": "取得可能",
+    "licenceNone": "提供なし",
+    "stealth": "ステルス",
+    "cols": {
+      "name": "システム",
+      "category": "カテゴリー",
+      "owned": "保有",
+      "status": "ステータス"
+    }
+  },
+  "production": {
+    "tabs": {
+      "arsenal": "兵器庫",
+      "queue": "生産キュー",
+      "licences": "ライセンス"
+    },
+    "treasury": "国庫",
+    "sites_other": "{{count}} 州",
+    "site": "生産拠点",
+    "quantity": "数量",
+    "total": "総費用",
+    "insufficient": "資金不足",
+    "produce": "生産",
+    "import": "輸入",
+    "buyLicence": "ライセンス · {{price}}",
+    "blackMarket": "闇市場",
+    "blackMarketOrdered": "闇市場で発注しました",
+    "goResearch": "研究開発：{{node}}",
+    "needBuilding": "この拠点には{{building}}がありません：生産が遅いか不可能です。",
+    "ordered": "生産開始：{{count}} × {{unit}}",
+    "imported": "輸入を発注：{{count}} × {{unit}}",
+    "licenceBought": "ライセンス購入：{{unit}}",
+    "queue": "生産キュー",
+    "queueEmpty": "進行中の生産はありません。",
+    "queueHint": "兵器庫からシステムと生産拠点を選択してください。",
+    "cols": {
+      "unit": "システム",
+      "progress": "進捗",
+      "eta": "残り"
+    },
+    "accelerate": "加速（プレミアム通貨）",
+    "accelerateShort": "−6 時間",
+    "cancel": "生産を中止",
+    "cancelled": "生産を中止しました",
+    "noLicences": "生産ライセンスはありません。",
+    "licenceHint": "ライセンスがあれば研究開発なしで外国のシステムを生産でき、生産割引も受けられます。",
+    "acquired": "{{value}} 日前に取得",
+    "importTotal": "輸入",
+    "source": {
+      "import": "輸入",
+      "black_market": "闇市場"
+    }
+  },
+  "shop": {
+    "consent": {
+      "title": "購入の確認",
+      "summary": "{{label}}：",
+      "cgv": "以下を読み、同意します：",
+      "waiver": "プレミアム通貨の即時提供を求め、引き渡しの時点で撤回権を明示的に放棄します（フランス消費法典 L221-28 条 13°）。",
+      "pay": "支払い義務のある注文 · {{price}}",
+      "error": "決済を開けませんでした。もう一度お試しください。"
+    },
+    "accelerated": "加速を適用 · 残高 {{balance}}",
+    "notEnough": "プレミアム通貨の残高が不足しています。",
+    "unavailable": "ショップを利用できません。",
+    "title": "ショップ",
+    "path": "ショップ",
+    "unavailableHint": "決済サーバーが応答しません。",
+    "balance": "残高",
+    "currency": "指揮クレジット",
+    "policy": "このゲームでの購入",
+    "policies": {
+      "open": "許可",
+      "limited": "制限",
+      "disabled": "無効"
+    },
+    "cap": "上限：プレイヤーあたり {{cap}} クレジット",
+    "policyHint": "ゲーム作成者が設定",
+    "fair": "ルートボックスなし：すべての購入は内容を正確に表示します。競技ゲームでは購入を無効にできます。",
+    "packs": "指揮クレジット",
+    "best": "お得",
+    "bonus": "+{{value}} 進呈",
+    "credited": "クレジットを残高に追加しました",
+    "cosmetics": "外観",
+    "owned": "保有",
+    "cosmeticBought": "外観を解放しました",
+    "kinds": {
+      "unit_skin": "駒",
+      "flag": "旗",
+      "map_theme": "地図",
+      "terminal_theme": "ターミナル"
+    },
+    "accelerations": "加速",
+    "accelerationsHelp": "ゲームのルールで許可されている場合、対応するキュー（「−6 時間」ボタン）から生産、研究、建設、修理の時間を短縮できます。",
+    "history": "履歴",
+    "reasons": {
+      "purchase": "購入",
+      "accelerate": "加速",
+      "cosmetic": "外観",
+      "refund": "返金",
+      "admin": "管理者付与",
+      "resources": "ゲーム内リソース"
+    },
+    "subtitle": "指揮クレジット、外観、加速。ルートボックスなし。",
+    "unlimited": "残高無制限",
+    "unlimitedHint": "無制限モードのアカウント：何も引き落とされません。",
+    "acceleratedUnlimited": "加速を適用（残高無制限）",
+    "resources": {
+      "title": "リソース",
+      "help": "司令クレジットをゲーム内ドルまたはリソースと交換すると、このゲームのあなたの国に即時に届きます。",
+      "dollars": "ドル",
+      "price": "価格",
+      "buy": "購入",
+      "short": "残高不足",
+      "free": "無料（無制限アカウント）",
+      "after": "購入後の残高：{{value}}",
+      "balanceAfter": "購入後の残高",
+      "delivered": "配達済み",
+      "confirmTitle": "購入の確認",
+      "confirm": "{{price}} クレジットを支払う",
+      "confirmHelp": "進行中のゲームに即時配達。購入は確定で、クレジットでの返金はできません。",
+      "done": "{{name}} を配達しました · 残高 {{balance}}",
+      "doneUnlimited": "{{name}} を配達しました（無制限アカウント）",
+      "capUsed": "このゲームで {{spent}} / {{cap}} クレジットを使用",
+      "disabled": "このゲームでは購入が無効です（対戦サーバー）。",
+      "unavailable": "オファーは利用できません。",
+      "errors": {
+        "cap_reached": "このゲームの支出上限に達しました。",
+        "shop_disabled": "このゲームでは購入が無効です。",
+        "insufficient_premium": "クレジット残高が不足しています。",
+        "generic": "購入できません。"
+      }
+    }
+  },
+  "researchNodes": {
+    "aero_gen2": "第2世代戦闘機",
+    "aero_gen3": "第3世代戦闘機",
+    "aero_gen4": "第4世代戦闘機",
+    "aero_gen4plus": "第4+世代戦闘機",
+    "aero_gen5": "第5世代戦闘機",
+    "aero_bomber1": "亜音速爆撃機",
+    "aero_bomber2": "超音速爆撃機",
+    "aero_stealth-bomber": "ステルス爆撃機",
+    "aero_helo1": "輸送ヘリコプター",
+    "aero_helo2": "攻撃ヘリコプター",
+    "aero_helo3": "最新攻撃ヘリコプター",
+    "aero_drones1": "戦術ドローン",
+    "aero_drones2": "武装MALE・HALEドローン",
+    "aero_drones3": "ステルス戦闘ドローン",
+    "aero_aew": "早期警戒",
+    "aero_tanker": "空中給油",
+    "aero_transport": "戦略輸送",
+    "land_gen1": "第1世代装甲車両",
+    "land_gen2": "第2世代装甲車両",
+    "land_gen3": "第3世代装甲車両",
+    "land_gen4": "第4世代装甲車両",
+    "land_gen5": "第5世代装甲車両",
+    "land_mlrs": "重ロケット砲",
+    "land_ew": "陸上電子戦",
+    "naval_gen1": "第1世代艦艇",
+    "naval_gen2": "第2世代艦艇",
+    "naval_gen3": "第3世代艦艇",
+    "naval_gen4": "第4世代艦艇",
+    "naval_gen5": "第5世代艦艇",
+    "naval_carrier": "航空母艦",
+    "naval_sub1": "通常動力潜水艦",
+    "naval_sub2": "最新潜水艦（AIP）",
+    "naval_sub3": "攻撃型原子力潜水艦",
+    "naval_ssbn": "弾道ミサイル潜水艦",
+    "missiles_sam1": "短距離防空",
+    "missiles_sam2": "中距離防空",
+    "missiles_sam3": "長距離防空",
+    "missiles_sam4": "多層防空",
+    "missiles_sam5": "次世代防空",
+    "missiles_abm": "弾道ミサイル防衛",
+    "missiles_cruise1": "巡航ミサイル",
+    "missiles_cruise2": "ステルス巡航ミサイル",
+    "missiles_antiship": "対艦ミサイル",
+    "missiles_ballistic1": "戦術弾道ミサイル",
+    "missiles_ballistic2": "準中距離弾道ミサイル",
+    "missiles_ballistic3": "中距離弾道ミサイル",
+    "missiles_hypersonic": "極超音速兵器",
+    "nuclear_weapons": "核兵器",
+    "nuclear_icbm": "大陸間弾道ミサイル",
+    "nuclear_slbm": "潜水艦発射弾道ミサイル",
+    "sensors_radar1": "警戒レーダー",
+    "sensors_radar2": "アクティブ・フェーズドアレイ・レーダー",
+    "sensors_radar3": "超水平線・対ステルスレーダー",
+    "sensors_space1": "偵察衛星",
+    "sensors_space2": "情報収集衛星群",
+    "sensors_asat": "対衛星兵器",
+    "cyber_l1": "サイバー防衛",
+    "cyber_l2": "攻撃的サイバー攻撃",
+    "cyber_l3": "高度サイバー戦",
+    "intel_interior1": "国内保安 N1",
+    "intel_interior2": "国内保安 N2",
+    "intel_interior3": "国内保安 N3",
+    "intel_exterior1": "対外情報 N1",
+    "intel_exterior2": "対外情報 N2",
+    "intel_exterior3": "対外情報 N3",
+    "intel_military1": "軍事情報 N1",
+    "intel_military2": "軍事情報 N2",
+    "intel_military3": "軍事情報 N3",
+    "industry_l1": "防衛産業 N1",
+    "industry_l2": "防衛産業 N2",
+    "industry_l3": "防衛産業 N3",
+    "desc": {
+      "aero": "戦闘航空、支援、ドローン。",
+      "land": "装甲、砲兵、機械化歩兵。",
+      "naval": "水上艦隊と潜水艦。",
+      "missiles": "防空、攻撃、ミサイル防衛。",
+      "nuclear": "核抑止と戦略運搬手段。",
+      "sensors": "レーダー、衛星、電子戦。",
+      "cyber": "サイバー防衛とサイバー攻撃。",
+      "intel": "情報機関のレベル。",
+      "industry": "生産、兵站、コスト。"
+    }
+  },
+  "research": {
+    "branchesLabel": "研究分野",
+    "branches": {
+      "aero": "航空",
+      "land": "陸上",
+      "naval": "海軍",
+      "missiles": "ミサイル",
+      "sensors": "センサー",
+      "cyber": "サイバー",
+      "intel": "情報",
+      "industry": "産業"
+    },
+    "current": "研究中",
+    "progress": "進捗",
+    "idle": "研究中の項目はありません。",
+    "queue": "キュー",
+    "queueEmpty": "キューは空です。",
+    "remove": "キューから外す",
+    "removed": "研究を外しました",
+    "effects": "累積効果",
+    "requires": "前提条件",
+    "unlocks": "生産を解放",
+    "cost": "費用",
+    "duration": "期間",
+    "start": "研究を開始",
+    "enqueue": "キューに追加",
+    "cancel": "キャンセル",
+    "started": "研究開始：{{node}}",
+    "queued": "キューに追加：{{node}}",
+    "pick": "技術ツリーからノードを選択してください。",
+    "noTree": "技術ツリーを利用できません。",
+    "noTreeHint": "研究データ（data/research）はまだ読み込まれていません。",
+    "status": {
+      "done": "取得済み",
+      "current": "研究中",
+      "queued": "待機中",
+      "available": "研究可能",
+      "locked": "ロック中"
+    },
+    "enqueueChain": "前提条件ごと計画（{{count}} · {{cost}}）",
+    "chainQueued": "{{count}} 件の研究を計画：{{node}} まで"
+  },
+  "modifiers": {
+    "production_speed": "生産速度",
+    "production_cost": "生産コスト",
+    "research_speed": "研究速度",
+    "income_money": "収入",
+    "income_oil": "石油",
+    "income_metals": "金属",
+    "income_electronics": "電子部品",
+    "income_food": "食料",
+    "upkeep": "維持費",
+    "supply_range": "兵站範囲",
+    "combat_damage": "ダメージ",
+    "combat_armor": "装甲",
+    "air_range": "航空作戦半径",
+    "air_fuel": "航続時間",
+    "sensors_radarRange": "レーダー範囲",
+    "sensors_stealthDetect": "ステルス探知",
+    "sensors_satellitePasses": "衛星通過",
+    "ew_jamming": "妨害",
+    "ew_jamResistance": "耐妨害性",
+    "missiles_accuracy": "ミサイル精度",
+    "missiles_interception": "迎撃",
+    "naval_sonar": "ソナー",
+    "cyber_attack": "サイバー攻撃",
+    "cyber_defense": "サイバー防衛",
+    "intel_interior_level": "国内保安（レベル）",
+    "intel_exterior_level": "対外情報（レベル）",
+    "intel_military_level": "軍事情報（レベル）",
+    "intel_capacity": "情報能力",
+    "stability_recovery": "安定度の回復"
+  },
+  "domestic": {
+    "unavailable": "内政管理は利用できません",
+    "unavailableHint": "ゲームサーバーはまだこのデータを公開していません。",
+    "kpi": {
+      "stability": "安定度",
+      "stabilityHint": "治安と信頼",
+      "trend": "推移 {{value}} / 日",
+      "morale": "士気",
+      "moraleHint": "州の平均",
+      "moraleShift": "目標 {{value}}（政策）",
+      "warSupport": "戦争支持",
+      "warSupportTarget": "目標 {{value}} · 厭戦 ×{{factor}}",
+      "unrest": "騒乱リスク",
+      "unrestFactor": "政策と国内治安：{{value}}"
+    },
+    "strike": "ストライキ中：生産がさらに {{wait}} 低下します。",
+    "policiesTitle": "国内政策",
+    "activeCount": "{{count}} 件施行中",
+    "active": "施行中",
+    "inForce": "施行中",
+    "suspended": "停止中",
+    "locked": "{{wait}}後に変更可能",
+    "enabled": "政策「{{name}}」を発令しました",
+    "disabled": "政策「{{name}}」を解除しました",
+    "excludes": "併用不可：{{list}}",
+    "policies": {
+      "propaganda": {
+        "name": "プロパガンダ",
+        "desc": "国営メディアを動員：士気と戦争支持が上昇、経済に負担。"
+      },
+      "conscription": {
+        "name": "徴兵",
+        "desc": "兵役義務：歩兵の訓練が速くなるが、労働力が経済から失われる。"
+      },
+      "war_economy": {
+        "name": "戦時体制",
+        "desc": "産業を徴用：生産が加速、安定度と士気が低下、ストライキが増加。"
+      },
+      "austerity": {
+        "name": "緊縮",
+        "desc": "民生支出を削減：予算と維持費が軽減、士気は低下、ストライキと騒乱。"
+      },
+      "stimulus": {
+        "name": "景気刺激",
+        "desc": "国民支援策：士気と安定度が上昇、収入は減少。"
+      },
+      "martial_law": {
+        "name": "戒厳令",
+        "desc": "軍が街頭に：安定度は回復し騒乱は鎮圧、士気と支持は急落。"
+      }
+    },
+    "fx": {
+      "income": "収入",
+      "production": "生産",
+      "infantry": "歩兵",
+      "research": "研究",
+      "upkeep": "維持費",
+      "stability": "安定度",
+      "perDay": "/日",
+      "morale": "士気",
+      "moraleTarget": "目標士気",
+      "warSupport": "支持",
+      "unrest": "騒乱",
+      "strikes": "ストライキ"
+    },
+    "totalsTitle": "累積効果",
+    "eventsTitle": "国内の出来事",
+    "noEvents": "最近の出来事はありません",
+    "ago": "{{value}}前",
+    "riskTitle": "州ごとの騒乱リスク",
+    "riskMeta": "動揺、占領、安定度",
+    "noRisk": "リスクのある州はありません",
+    "occupied": "占領中",
+    "protected": "防護中",
+    "cols": {
+      "risk": "リスク",
+      "unrest": "動揺"
+    },
+    "help": "士気が下がるとストライキ、安定度が下がるとデモと暴動、動揺した州では反乱ネットワークによる破壊工作が起きます。国内治安（情報 › 国内）がこれらのリスクを低減します。"
+  },
+  "economy": {
+    "tabs": {
+      "dashboard": "ダッシュボード",
+      "resources": "資源",
+      "buildings": "建物",
+      "market": "市場",
+      "deliveries": "輸送",
+      "black": "闇市場",
+      "logistics": "兵站",
+      "interior": "国内"
+    },
+    "treasury": "国庫",
+    "annualBudget": "年間予算",
+    "budgetSource": "国防費、毎日支給",
+    "income": "収入",
+    "expenses": "支出",
+    "balance": "収支",
+    "perDay": "1日あたり",
+    "runway": "備蓄：{{days}} 日",
+    "incomeDetail": "収入 / 日",
+    "expenseDetail": "維持費とサービス / 日",
+    "upkeepAdjusted": "現地コストで調整した維持費：カタログ価格の ×{{factor}}（{{catalog}} / 日）、コスト指数 {{index}}。",
+    "upkeepAdjustedHelp": "旧式装備は維持費が安く、現地分（給与、燃料、人件費）はその国の物価水準に連動します。開始時、実在の軍の維持費が国防予算の現実的な割合を超えることはありません。",
+    "incomeKeys": {
+      "trade": "貿易（制裁、封鎖）",
+      "national": "国家予算",
+      "provincial": "州の取り分",
+      "mobilization": "動員",
+      "modifiers": "研究とボーナス"
+    },
+    "construction": "工事",
+    "noConstruction": "進行中の工事はありません。",
+    "work": {
+      "build": "建設 N{{level}}",
+      "upgrade": "改良 N{{level}}",
+      "repair": "修理"
+    },
+    "cols": {
+      "building": "建物",
+      "province": "州",
+      "work": "工事",
+      "eta": "残り",
+      "resource": "資源",
+      "stock": "在庫",
+      "production": "生産 / 日",
+      "consumption": "消費 / 日",
+      "net": "純増減 / 日",
+      "autonomy": "持続日数",
+      "seller": "売り手",
+      "item": "品目",
+      "price": "価格",
+      "expires": "期限",
+      "from": "出所",
+      "range": "半径",
+      "population": "人口",
+      "morale": "士気",
+      "income": "収入 / 日"
+    },
+    "shortage": "不足",
+    "days_other": "{{count}} 日",
+    "searchProvince": "州を検索…",
+    "filter": "フィルター",
+    "damaged": "損傷",
+    "works": "工事",
+    "buildingsCount_other": "{{count}} 棟",
+    "noProvince": "該当する州はありません。",
+    "items": {
+      "units": "装備",
+      "resource": "資源",
+      "licence": "ライセンス"
+    },
+    "licenceOf": "ライセンス：{{name}}",
+    "embargoed": "禁輸中",
+    "noOffers": "市場に出品はありません。",
+    "reserved": "予約済み",
+    "withdraw": "取り下げ",
+    "offerCancelled": "出品を取り下げました",
+    "buy": "購入",
+    "bought": "購入成立：輸送中",
+    "sell": "出品する",
+    "quantity": "数量",
+    "priceM": "価格（M$）",
+    "post": "出品を公開",
+    "offerPosted": "市場に出品しました",
+    "noDeliveries": "進行中の輸送はありません。",
+    "unknownSeller": "匿名の売り手",
+    "covert": "秘密",
+    "official": "公式",
+    "track": "追跡",
+    "blackTitle": "闇市場",
+    "blackText": "価格は {{factor}} 倍、秘密輸送、発覚リスク {{risk}}（発覚すれば外交問題）。",
+    "mobilization": "総動員",
+    "mobilized": "動員発令中",
+    "notMobilized": "平時",
+    "mobilizeHelp": "州ごとに歩兵大隊 +{{inf}}、収入 −{{penalty}}、安定度 {{stab}} / 日。",
+    "since": "{{value}} 時間前から",
+    "depots": "補給所と前進基地",
+    "noDepots": "補給所はありません。",
+    "show": "表示",
+    "blockades": "封鎖",
+    "forecast": "7日：{{d7}} · 30日：{{d30}}",
+    "deficitHint": "赤字：軍の維持費が収入を上回っています。州を征服するか、情報予算を削減するか、動員を解除して破綻を回避してください。",
+    "intelBudget": "情報",
+    "ledgerTitle": "実際の収支 · 過去24時間",
+    "ledgerEmpty": "記録はまだありません：台帳はゲーム初日から記録されます。",
+    "tradeBalance": "貿易収支 {{value}}",
+    "ledger": {
+      "budgetNational": "国家予算",
+      "budgetProvincial": "州の取り分",
+      "trade": "貿易",
+      "mobilization": "動員",
+      "modifiers": "ボーナス",
+      "upkeep": "軍の維持費",
+      "production": "生産",
+      "imports": "輸入",
+      "research": "研究",
+      "buildings": "工事",
+      "licences": "ライセンス",
+      "blackMarket": "闇市場",
+      "marketPurchases": "市場での購入",
+      "marketSales": "市場での売却",
+      "transfersIn": "受領した譲渡",
+      "transfersOut": "供与した譲渡",
+      "other": "その他（情報、同盟…）"
+    },
+    "constructionHint": "建物タブまたは州パネルから建物を改良・新設してください。",
+    "provincesTitle": "州",
+    "populationMorale": "人口 {{pop}} · 士気 {{morale}}",
+    "showAll": "{{count}} 州をすべて表示",
+    "showLess": "折りたたむ",
+    "resourcesHint": "資源は州とその建物（油井、鉱山、農場、電子機器工場、製油所）で生産され、ユニットが消費します。不足すると生産が遅れ、食料は士気に影響します。",
+    "ledgerToday": "実際の収支 · 本日"
+  },
+  "armies": {
+    "tabs": {
+      "armies": "軍",
+      "generals": "将官",
+      "operations": "作戦"
+    },
+    "name": {
+      "land": "第 {{n}} 軍",
+      "air": "第 {{n}} 航空団",
+      "sea": "第 {{n}} 艦隊"
+    },
+    "kpi": {
+      "armies": "軍",
+      "armiesSub": "戦闘中 {{combat}} · 移動中 {{moving}}",
+      "land": "陸",
+      "air": "空",
+      "sea": "海",
+      "static": "固定施設",
+      "piles_other": "{{count}} スタック",
+      "value": "価値",
+      "valueSub": "カタログ価格"
+    },
+    "domain": "領域",
+    "domains": {
+      "all": "すべて",
+      "land": "陸",
+      "air": "空",
+      "sea": "海"
+    },
+    "state": {
+      "combat": "戦闘中",
+      "moving": "移動中",
+      "resupply": "補給中",
+      "embarked": "乗船中",
+      "idle": "待機中"
+    },
+    "stateFilter": "状態",
+    "allStates": "すべての状態",
+    "sort": "並べ替え",
+    "sortBy": {
+      "state": "並べ替え：戦闘中を先頭",
+      "elements": "並べ替え：兵力",
+      "hp": "並べ替え：健全度",
+      "name": "並べ替え：名前"
+    },
+    "search": "軍、装備、都市…",
+    "empty": "地図上に軍はありません。",
+    "noMatch": "フィルターに一致する軍はありません。",
+    "pick": "軍を選択",
+    "pickHint": "編成、状態、位置、命令がここに表示され、直接操作もできます。",
+    "back": "軍の一覧に戻る",
+    "cols": {
+      "army": "軍",
+      "strength": "兵力",
+      "hp": "健全度",
+      "state": "状態",
+      "location": "位置",
+      "orders": "実行中の命令",
+      "general": "将官"
+    },
+    "elements_other": "{{count}} 要素",
+    "piles_other": "{{count}} スタック",
+    "supply": "補給",
+    "veterancy": "練度",
+    "composition": "編成",
+    "order": {
+      "move": "{{place}} へ · {{eta}}後に到着",
+      "attack": "攻撃：{{target}}",
+      "delegated": "将官に委任：{{directive}}",
+      "none": "命令待ち"
+    },
+    "rename": "軍の名前を変更",
+    "save": "確定",
+    "actions": {
+      "center": "中央に表示",
+      "select": "選択",
+      "move": "移動",
+      "stop": "停止",
+      "patrol": "地域を哨戒",
+      "merge": "スタックを統合",
+      "split": "スタックを二分",
+      "selectPile": "スタックを選択"
+    },
+    "mergeNone": "10 km 以内に同じ装備の停止中のスタックはありません。",
+    "moveHint": "{{name}} を選択：地図をタップして目的地を指定します。",
+    "done": {
+      "stop": "停止命令を送信しました",
+      "patrol": "哨戒を開始しました",
+      "rtb": "基地への帰投を命じました",
+      "merge": "スタックを統合しました",
+      "split": "スタックを分割しました"
+    }
+  },
+  "inventory": {
+    "tabs": {
+      "inventory": "保有装備",
+      "catalog": "カタログ"
+    },
+    "kpi": {
+      "elements": "配備中",
+      "systems_other": "異なる装備 {{count}} 種",
+      "value": "保有装備の価値",
+      "upkeep": "維持費 {{value}} / 日",
+      "available": "可用性",
+      "availableSub": "{{available}} 使用可能 · {{engaged}} 戦闘中",
+      "production": "生産中",
+      "productionSub_other": "進行中の発注 {{count}} 件",
+      "losses": "損失",
+      "lossesSub": "戦闘報告より"
+    },
+    "search": "装備を検索…",
+    "toProduction": "生産",
+    "empty": "配備中の装備はありません。",
+    "noMatch": "このカテゴリに装備はありません。",
+    "mobileLine": "{{n}} 配備中 · {{available}} 可 · {{value}}",
+    "cols": {
+      "system": "装備",
+      "inService": "配備中",
+      "available": "使用可能",
+      "engaged": "戦闘 · 展開中",
+      "hp": "状態",
+      "production": "生産中",
+      "losses": "損失",
+      "value": "価値"
+    },
+    "hint": "使用可能：停止中で、戦闘外かつ即応可能。展開中：移動中、任務中、乗船中、または再編中。行をタップすると諸元を開きます。"
+  },
+  "army": {
+    "supply": {
+      "supplied": "補給良好",
+      "limited": "補給制限",
+      "cut": "補給途絶"
+    },
+    "loc": {
+      "near": "{{city}} · {{km}} km",
+      "sea": "洋上",
+      "air": "飛行中",
+      "embarked": "搭載中",
+      "center": "地図をユニットに合わせる",
+      "title": "最寄りの都市：{{city}}（{{km}} km）· クリックで地図を合わせる"
+    },
+    "supplyState": {
+      "supplied": "補給良好",
+      "limited": "制限",
+      "cut": "途絶"
+    },
+    "mission": {
+      "none": "なし",
+      "patrol": "哨戒",
+      "strike": "攻撃",
+      "escort": "護衛",
+      "refuel": "給油",
+      "awacs": "空中警戒",
+      "recon": "偵察",
+      "blockade": "封鎖",
+      "rtb": "帰投"
+    },
+    "fuel": "燃料 {{value}} 時間",
+    "veterancy": "ベテラン",
+    "jamming": "妨害",
+    "rtb": "帰投",
+    "unitsCount_other": "{{count}} ユニット",
+    "delegated": "AIに委任",
+    "noGenerals": "利用可能な将軍はいません。",
+    "directive": "方針",
+    "directives": {
+      "none": "手動",
+      "defend": "防御",
+      "advance": "前進",
+      "harass": "妨害攻撃"
+    },
+    "traits": {
+      "offensive": "攻勢型",
+      "defender": "防御型",
+      "logistician": "兵站家",
+      "aviator": "飛行士",
+      "admiral": "提督"
+    },
+    "delegationOn": "指揮を {{name}} に委任",
+    "delegationOff": "指揮を回復",
+    "selectGroup": "グループを選択",
+    "assignSelection_other": "選択を割り当て（{{count}}）",
+    "assigned": "ユニットを {{name}} に割り当てました",
+    "ops": {
+      "help": "Hアワーを基準に同期した段階を計画します（準備攻撃、妨害、突撃、戦果拡張）。",
+      "new": "新しい作戦",
+      "none": "計画中の作戦はありません。",
+      "defaultName": "嵐作戦",
+      "name": "作戦名",
+      "hHour": "Hアワー",
+      "hHourHint": "{{value}}後（ゲーム内時間）",
+      "offset": "オフセット（分）",
+      "kind": "命令の種類",
+      "label": "段階の名前",
+      "useSelection_other": "選択（{{count}}）",
+      "unitsCount_other": "{{count}} ユニット",
+      "noUnits": "ユニットなし",
+      "pickTarget": "目標を選択…",
+      "place": "場所（都市、州、「lat,lng」）",
+      "removeStep": "段階を削除",
+      "addStep": "段階を追加",
+      "plan": "計画",
+      "planned": "作戦を計画：{{name}}",
+      "cancelled": "作戦を中止しました",
+      "invalid": "各段階にはユニットと有効な目標（認識された場所または敵ユニット）が必要です。",
+      "examples": {
+        "prep": "準備攻撃",
+        "assault": "突撃"
+      },
+      "kinds": {
+        "move": "移動",
+        "attack": "攻撃",
+        "strike": "打撃",
+        "patrol": "哨戒",
+        "jam": "妨害",
+        "stop": "停止",
+        "rtb": "帰投"
+      },
+      "status": {
+        "planned": "計画済み",
+        "running": "進行中",
+        "done": "完了",
+        "cancelled": "中止",
+        "failed": "失敗"
+      },
+      "stepStatus": {
+        "pending": "待機中",
+        "done": "実行済み",
+        "failed": "失敗"
+      }
+    }
+  },
+  "diplomacy": {
+    "unavailable": "このゲームでは外交を利用できません。",
+    "country": {
+      "pick": "国を選択…",
+      "none": "国が選択されていません",
+      "noneHint": "地図上の外国の州をタップして「国」を選ぶか、下から国を選択してください。",
+      "open": "国：{{nation}}",
+      "openTip": "関係、協定、外交行動、メッセージ、情報",
+      "player": "人間のプレイヤー",
+      "ai": "AI が指揮",
+      "embargoed": "禁輸中",
+      "sanctioned": "制裁対象",
+      "mobilized": "動員中",
+      "relation": "関係と協定",
+      "pending": "提案",
+      "pendingMine": "{{kind}}を送信済み",
+      "pendingTheirs": "{{kind}}を受信済み",
+      "passage": "通過権",
+      "mutualDefense": "相互防衛",
+      "intelSharing": "情報共有",
+      "no": "なし",
+      "profile": "プロフィール",
+      "provinces": "州",
+      "budget": "国防予算",
+      "personnel": "現役人員",
+      "doctrine": "教義",
+      "actions": "アクション",
+      "invite": "同盟に招待",
+      "invited": "{{aNation}} に招待を送りました",
+      "sanctions": "制裁を提案（理事会）",
+      "sanctionsClosed": "安全保障理事会への提案は受け付けていません。",
+      "sanctionsText": "{{nationLe}} に対する経済制裁。",
+      "sanctionsProposed": "制裁決議を理事会に提出しました",
+      "message": "メッセージを送る",
+      "intel": "情報"
+    },
+    "tabs": {
+      "nation": "国",
+      "relations": "関係",
+      "alliances": "同盟",
+      "neutrals": "中立国",
+      "disputed": "係争地域",
+      "stability": "安定度"
+    },
+    "relation": {
+      "war": "戦争",
+      "peace": "平和",
+      "ceasefire": "停戦",
+      "ally": "同盟国"
+    },
+    "reputation": "評判",
+    "reputationHint": "投票と中立国に影響",
+    "atWar": "交戦中",
+    "allies": "同盟国",
+    "pending": "受け取った提案",
+    "filter": "フィルター",
+    "filters": {
+      "known": "隣国と関係国"
+    },
+    "cols": {
+      "nation": "国",
+      "relation": "関係",
+      "since": "開始",
+      "alliance": "同盟",
+      "stability": "安定度",
+      "leaning": "傾向"
+    },
+    "proposal": {
+      "peace": "講和を提案",
+      "ceasefire": "停戦を提案"
+    },
+    "accept": "受諾",
+    "refuse": "拒否",
+    "accepted": "提案を受諾しました",
+    "refused": "提案を拒否しました",
+    "sent": "提案を送信しました",
+    "ceasefire": "停戦",
+    "peace": "講和",
+    "declareWar": "宣戦布告",
+    "warTitle": "宣戦布告",
+    "warText": "{{aNation}} に宣戦布告しますか？相互防衛で結ばれた同盟国が巻き込まれる可能性があり、世界の緊張が高まり、あなたの評判は下がります。",
+    "members_other": "{{count}} か国",
+    "yourAlliance": "あなたの同盟",
+    "leader": "盟主：",
+    "charter": {
+      "mutualDefense": "相互防衛",
+      "intelSharing": "情報共有",
+      "passage": "通行権"
+    },
+    "charterHelp": {
+      "mutualDefense": "加盟国への攻撃は全加盟国への攻撃とみなされます。",
+      "intelSharing": "情報報告は自動的に共有されます。",
+      "passage": "加盟国の部隊はあなたの州を自由に通過できます。"
+    },
+    "treasury": "共同金庫",
+    "deposited": "同盟の金庫に {{amount}} を拠出",
+    "votes": {
+      "replace_leader": "盟主を {{nationLe}} に交代",
+      "skip_mutual_defense": "{{nationLe}} の相互防衛義務を免除",
+      "expel": "{{nationLe}} を除名"
+    },
+    "yes": "賛成",
+    "no": "反対",
+    "voted": "投票を記録しました",
+    "hasVoted": "投票済み",
+    "invited": "送信した招待：",
+    "allianceChat": "同盟チャンネル",
+    "leave": "同盟を脱退",
+    "left": "同盟を脱退しました",
+    "create": "同盟を結成",
+    "allianceName": "名称",
+    "allianceFlag": "略称（4文字）",
+    "createBtn": "同盟を結成",
+    "created": "同盟を結成：{{name}}",
+    "invitation": "「{{name}}」への加盟招待",
+    "joined": "{{name}} に加盟しました",
+    "noNeutrals": "取り込める中立国はありません。",
+    "neutralsHelp": "経済援助で中立国をあなたの同盟に引き寄せます。",
+    "aid": "援助額",
+    "court": "援助 · {{amount}}",
+    "courted": "{{aNation}} に援助を送りました",
+    "noDisputed": "係争地域はありません。",
+    "provinces_other": "{{count}} 州",
+    "holder": "支配国",
+    "claimants": "領有権主張",
+    "tension": "緊張",
+    "fundRebels": "反乱勢力に資金提供",
+    "rebelsFunded": "反乱勢力への資金提供を開始",
+    "noStability": "安定度は非公開です。",
+    "stability": "安定度",
+    "trend": "傾向",
+    "coupRisk": "クーデターのリスク",
+    "coupHint": "安定度 15 % 未満：危険",
+    "factors": "要因",
+    "noRelations": "このフィルターに該当する国はありません。",
+    "noRelationsHint": "すべての国と平和な関係にあります。「すべて」を選ぶと宣戦布告や同盟の提案ができます。",
+    "neutralsNeedAlliance": "中立国を取り込むには同盟への加盟が必要です：同盟タブで結成するか加盟してください。",
+    "noLeaning": "傾向なし",
+    "moreNeutrals": "… ほか {{count}} か国：検索を絞り込んでください。"
+  },
+  "council": {
+    "unavailable": "安全保障理事会を利用できません。",
+    "permanent": "常任理事国",
+    "rotating": "非常任理事国",
+    "majority": {
+      "simple": "単純過半数",
+      "two_thirds": "3分の2の多数"
+    },
+    "veto": "拒否権",
+    "phase": {
+      "proposals": "提案の受付",
+      "voting": "投票中",
+      "closed": "会合終了"
+    },
+    "recess": "閉会中",
+    "agenda_other": "議題の決議 {{count}} 件",
+    "closesIn": "締切まで",
+    "nextSession": "次の会合",
+    "propose": "決議を提案",
+    "noResolutions": "議題に決議はありません。",
+    "inForce": "発効中の決議",
+    "until": "まで",
+    "zone": "{{km}} km 圏",
+    "proposer": "提案国",
+    "duration": "効力期間：{{days}} 日",
+    "waiting_other": "{{count}} 件保留",
+    "vetoThreat": "拒否権：{{nations}}",
+    "yourVote": "あなたの投票",
+    "voted": "投票を記録しました",
+    "type": "種類",
+    "target": "対象国",
+    "pickTarget": "選択…",
+    "text": "決議文",
+    "textHint": "10〜500文字、決議の文体で。",
+    "textPlaceholder": "安全保障理事会は、…を懸念し",
+    "submit": "提出",
+    "proposed": "決議を提出しました",
+    "types": {
+      "arms_embargo": "武器禁輸",
+      "economic_sanctions": "経済制裁",
+      "ceasefire": "停戦",
+      "no_fly_zone": "飛行禁止区域",
+      "peacekeeping": "平和維持",
+      "condemnation": "非難"
+    },
+    "status": {
+      "proposed": "提出済み",
+      "voting": "投票中",
+      "passed": "採択",
+      "rejected": "否決",
+      "vetoed": "拒否権行使",
+      "expired": "失効"
+    },
+    "votes": {
+      "yes": "賛成",
+      "no": "反対",
+      "abstain": "棄権",
+      "none": "未投票"
+    },
+    "noPermanent": "なし（同盟はまだありません）",
+    "votingIn": "投票開始まで"
+  },
+  "news": {
+    "filter": "カテゴリー",
+    "empty": "電報はありません。",
+    "urgent": "緊急",
+    "source": "RED LINE 通信",
+    "locate": "位置を表示",
+    "cats": {
+      "strike": "攻撃",
+      "war": "戦争",
+      "peace": "平和",
+      "council": "国連",
+      "leak": "リーク",
+      "revolt": "反乱",
+      "coup": "クーデター",
+      "alliance": "同盟",
+      "economy": "経済",
+      "nuclear": "核",
+      "capture": "征服",
+      "refugees": "難民",
+      "event": "出来事"
+    },
+    "war": {
+      "h0": "{{A}} / {{B}}：戦闘開始",
+      "h1": "全面戦争：{{A}} 対 {{B}}",
+      "h2": "{{A}} がレッドラインを越える：{{B}} と戦争状態に",
+      "h3": "外交関係が完全に断絶：{{A}} / {{B}}",
+      "b0": "各国政府が戦争状態を確認。侵略国と認定：{{A}}。",
+      "b1": "最初の部隊移動を確認。{{B}} は {{A}} の侵略を非難。",
+      "b2": "{{A}} による戦闘開始を受け、自制を求める声が相次ぐ。"
+    },
+    "war_alliance": {
+      "h0": "{{X}}：{{A}} が相互防衛を理由に {{B}} と開戦",
+      "h1": "相互防衛発動：{{A}} が {{B}} との紛争に参戦",
+      "h2": "同盟の連帯：{{A}} が {{B}} に宣戦布告",
+      "b0": "加盟国への侵略を受け、{{A}} が {{X}} 同盟の憲章を履行。",
+      "b1": "{{X}} 同盟の相互防衛条項により紛争が拡大。"
+    },
+    "peace": {
+      "h0": "{{A}} / {{B}}：講和条約に調印",
+      "h1": "{{A}} と {{B}} の戦闘が終結",
+      "h2": "講和成立：{{A}} / {{B}}",
+      "b0": "代表団が協定に仮署名。部隊には撤退の猶予が与えられる。",
+      "b1": "条約は相手国領内に展開した部隊の撤退を定めている。"
+    },
+    "peace_annexation": {
+      "h0": "{{A}} / {{B}}：和平が{{A}}の征服を追認",
+      "h1": "平和条約：{{B}}が{{A}}に {{X}} 州を割譲",
+      "h2": "戦争終結：{{B}}の国境が引き直される",
+      "b0": "占領地は引き続き{{A}}の支配下に：{{X}} 州の帰属が変わる。",
+      "b1": "{{B}}は失った {{X}} 州を取り戻せないまま和平に署名。"
+    },
+    "capitulation": {
+      "h0": "{{B}}が{{A}}に降伏",
+      "h1": "{{B}}降伏：{{A}}が和平を強要",
+      "h2": "{{B}}敗北：{{A}}と休戦協定に署名",
+      "b0": "首都陥落を受け、{{B}}政府は{{A}}の条件を受諾。{{X}} 州がその支配下に入る。",
+      "b1": "{{B}}軍が武器を置く。{{A}}が {{X}} 州を併合。"
+    },
+    "ceasefire": {
+      "h0": "{{A}} / {{B}}：停戦発効",
+      "h1": "砲声止む：{{A}} と {{B}} が休戦",
+      "h2": "停戦成立：{{A}} / {{B}}",
+      "b0": "休戦により前線は凍結。違反すれば制裁の対象となる。",
+      "b1": "国際監視団は第一歩と評価。予定期間：{{X}} 日。"
+    },
+    "ceasefire_violated": {
+      "h0": "{{A}} が {{B}} との停戦に違反",
+      "h1": "休戦崩壊：{{A}} が {{B}} への攻撃を再開",
+      "h2": "停戦違反：{{A}} に非難",
+      "b0": "国際社会が休戦破りを非難。制裁の採決が始まった。",
+      "b1": "{{A}} の違反は自動的に安全保障理事会に付託された。"
+    },
+    "alliance_created": {
+      "h0": "新同盟：{{A}} 主導の {{X}}",
+      "h1": "{{A}} が {{X}} 同盟を結成",
+      "h2": "戦略的再編：{{X}} が誕生",
+      "b0": "憲章：{{Y}}。",
+      "b1": "新たな陣営は {{A}} が率いる。憲章：{{Y}}。"
+    },
+    "alliance_joined": {
+      "h0": "{{A}} が {{X}} 同盟に加盟",
+      "h1": "{{X}} が拡大：{{A}} が加盟",
+      "h2": "加盟：{{A}} / {{X}}",
+      "b0": "同盟の加盟国は {{Y}} か国となった。",
+      "b1": "{{A}} が {{X}} の憲章に署名。"
+    },
+    "alliance_left": {
+      "h0": "{{A}} が {{X}} 同盟を脱退",
+      "h1": "衝撃の脱退：{{A}} / {{X}}",
+      "h2": "{{X}} が加盟国を失う：{{A}}",
+      "b0": "{{A}} の脱退で {{X}} が弱体化。",
+      "b1": "{{A}} のパートナー国はその脱退を了承。"
+    },
+    "alliance_expelled": {
+      "h0": "{{X}} が {{A}} を除名",
+      "h1": "除名：{{A}} は {{X}} の加盟国ではなくなった",
+      "b0": "{{X}} の加盟国が {{A}} の除名を可決。"
+    },
+    "leader_replaced": {
+      "h0": "{{X}}：{{A}} が同盟の盟主に",
+      "h1": "{{X}} の指導部が交代",
+      "b0": "{{X}} の加盟国が {{A}} を同盟の新たな盟主に選出。"
+    },
+    "mutual_skipped": {
+      "h0": "{{X}} が {{A}} に対する相互防衛を放棄",
+      "h1": "相互防衛停止：{{X}} / {{A}}",
+      "b0": "{{X}} の加盟国が免除を可決：{{A}} に対する自動参戦はない。"
+    },
+    "council_open": {
+      "h0": "安全保障理事会：会合開始",
+      "h1": "安全保障理事会が招集",
+      "h2": "安全保障理事会の会合：{{X}} 件の文書を採決",
+      "b0": "{{X}} 件の決議案が採決に付された。理事国：{{Y}}。",
+      "b1": "各代表団は投票期間内に {{X}} 件の文書について態度を示す。"
+    },
+    "emergency_council": {
+      "h0": "安全保障理事会の緊急会合",
+      "h1": "安全保障理事会が緊急招集",
+      "b0": "{{X}}",
+      "b1": "議長国が理事国を直ちに招集。{{X}}"
+    },
+    "resolution_passed": {
+      "h0": "安全保障理事会：{{A}} に対する {{X}} を採択",
+      "h1": "決議採択：{{X}}（{{A}}）",
+      "h2": "{{A}} を対象とする決議：{{X}}",
+      "b0": "文書は {{Y}} 日間発効する。",
+      "b1": "投票：{{Y}}。"
+    },
+    "resolution_zone_passed": {
+      "h0": "安全保障理事会：{{X}} を採択",
+      "h1": "決議採択：{{X}}",
+      "b0": "対象地域：{{Y}}。",
+      "b1": "措置の範囲：{{Y}}。"
+    },
+    "resolution_rejected": {
+      "h0": "安全保障理事会：{{X}} を否決",
+      "h1": "{{X}} は過半数に届かず",
+      "b0": "{{A}} が提出した案は必要な多数を得られなかった。"
+    },
+    "resolution_vetoed": {
+      "h0": "安全保障理事会で拒否権：{{X}} は阻止",
+      "h1": "{{A}} が拒否権を行使：{{X}}",
+      "b0": "{{A}} の拒否権により文書は採択されなかった。"
+    },
+    "strike": {
+      "h0": "{{P}} 付近で {{A}} による{{X}}攻撃が報告",
+      "h1": "{{B}}：{{P}} 付近で{{X}}攻撃",
+      "h2": "{{A}} / {{B}}：新たな{{X}}攻撃",
+      "b0": "{{P}} 付近で爆発音。{{B}} は {{A}} を非難。",
+      "b1": "{{P}} 付近での{{X}}攻撃を受け、被害を集計中。"
+    },
+    "nuclear": {
+      "h0": "{{P}} 付近で核爆発",
+      "h1": "核のタブーが破られる：{{A}} が {{B}} を攻撃",
+      "h2": "核攻撃：世界に衝撃",
+      "b0": "{{A}} が {{P}} 付近で核兵器を使用。世界の警戒は最高レベルに。",
+      "b1": "各国首都は {{A}} による原子兵器の使用を一斉に非難。"
+    },
+    "battle": {
+      "h0": "{{P}} 付近で激戦",
+      "h1": "{{P}} 付近の戦闘：{{A}} が勝利",
+      "h2": "前線：{{P}}",
+      "b0": "交戦国：{{X}}。",
+      "b1": "{{X}} が交戦。優勢：{{A}}。"
+    },
+    "capital": {
+      "h0": "{{B}} の首都が {{A}} の手に落ちる",
+      "h1": "{{P}}：{{B}} の首都を {{A}} が占領",
+      "h2": "衝撃：{{A}} が {{P}} を奪取",
+      "b0": "{{B}} 政府は {{P}} を離れたとみられる。",
+      "b1": "{{P}} の陥落は紛争の転換点となる。"
+    },
+    "capture": {
+      "h0": "{{A}} が {{P}} を掌握",
+      "h1": "{{P}} が {{A}} の支配下に",
+      "b0": "{{B}} が {{P}} 州を失う。"
+    },
+    "agent_caught": {
+      "h0": "スパイ事件：{{B}} が {{A}} を非難",
+      "h1": "{{A}} の工作員を {{B}} が逮捕",
+      "h2": "諜報活動：{{A}} と {{B}} の間で外交問題",
+      "b0": "{{B}} は自国内で {{A}} が行った諜報作戦を非難。"
+    },
+    "blockade": {
+      "h0": "封鎖：{{A}} が {{P}} を封鎖",
+      "h1": "海上交通に混乱：{{P}} の封鎖",
+      "b0": "{{P}} 周辺の貿易が大幅に減速。"
+    },
+    "blockade_lifted": {
+      "h0": "{{P}} の封鎖解除",
+      "b0": "{{P}} 周辺の交通が徐々に回復。"
+    },
+    "revolt": {
+      "h0": "{{P}} で騒乱：{{B}} 政権に抗議するデモ",
+      "h1": "{{B}}：{{P}} で暴動",
+      "h2": "{{P}} で動揺",
+      "b0": "数千人のデモ隊が {{B}} 当局に抵抗。",
+      "b1": "{{B}} の治安部隊が {{P}} に展開。"
+    },
+    "revolt_disputed": {
+      "h0": "{{X}}：{{P}} で {{B}} に対する反乱",
+      "h1": "係争地域：{{P}} で民衆蜂起",
+      "h2": "{{X}}：{{P}} で緊張が高まる",
+      "b0": "{{Y}} が領有を主張するこの地域で、住民が {{B}} の権威に異議を唱えている。",
+      "b1": "{{X}} 地方で再び暴力。支配国：{{B}}。"
+    },
+    "uprising": {
+      "h0": "{{P}} で武装蜂起",
+      "h1": "{{B}}：{{P}} で武装集団が武器を取る",
+      "h2": "{{P}} で反乱",
+      "b0": "反乱軍の戦闘員が {{B}} 軍に挑む。",
+      "b1": "反乱勢力は {{P}} 周辺の複数の幹線を掌握したとみられる。"
+    },
+    "rallied": {
+      "h0": "{{P}}：反乱勢力が {{A}} に合流",
+      "h1": "係争地域：{{P}} が {{A}} の支配下に",
+      "b0": "{{B}} 当局の崩壊後、反乱勢力は {{A}} への合流を宣言した。"
+    },
+    "coup": {
+      "h0": "クーデター：{{A}}",
+      "h1": "{{A}}：軍が権力を掌握",
+      "h2": "{{A}}：政府が転覆",
+      "b0": "軍事政権が諸制度の停止を発表。{{A}} の外交政策は方針転換。",
+      "b1": "数週間の不安定な情勢の末、軍が権力を掌握。"
+    },
+    "refugees": {
+      "h0": "{{A}} から逃れる難民が殺到",
+      "h1": "人道危機：市民が {{A}} から避難",
+      "h2": "大量脱出：{{A}}",
+      "b0": "受け入れ国に重圧：{{X}}。",
+      "b1": "近隣国に戦闘を逃れた家族が押し寄せる：{{X}}。"
+    },
+    "embargo_import_blocked": {
+      "h0": "禁輸：{{A}} への武器販売を禁止",
+      "b0": "供給国は安保理決議に従う。"
+    },
+    "black_market": {
+      "h0": "武器密輸：{{A}} に疑惑",
+      "h1": "闇市場：{{A}} 向けの密輸ルートを摘発",
+      "b0": "{{A}} 向けの不正な輸送が発見された。"
+    },
+    "peacekeepers": {
+      "h0": "平和維持部隊の展開：{{P}}",
+      "h1": "平和維持部隊が {{P}} に展開",
+      "b0": "平和維持部隊が配置についた。攻撃すれば非難は免れない。"
+    },
+    "peacekeepers_attacked": {
+      "h0": "平和維持部隊が攻撃される：{{A}} に非難",
+      "h1": "{{A}} が平和維持部隊に発砲",
+      "b0": "安全保障理事会に付託。制裁が採決に付される。"
+    },
+    "oil_crisis": {
+      "h0": "オイルショック：原油価格が急騰",
+      "h1": "世界的な石油危機",
+      "b0": "{{X}}",
+      "b1": "炭化水素に依存する経済が打撃を受ける。{{X}}"
+    },
+    "market_crash": {
+      "h0": "世界的な株価暴落",
+      "h1": "市場が崩壊",
+      "b0": "{{X}}",
+      "b1": "財政が逼迫。{{X}}"
+    },
+    "pandemic": {
+      "h0": "パンデミック：衛生警報が発令",
+      "h1": "世界的な感染拡大：産業が減速",
+      "b0": "{{X}}",
+      "b1": "生産ラインが減速。{{X}}"
+    },
+    "arms_fair": {
+      "h0": "国際兵器見本市",
+      "h1": "大規模防衛展示会：価格が下落",
+      "b0": "{{X}}",
+      "b1": "各メーカーが値引きを連発。{{X}}"
+    },
+    "ultimatum": {
+      "h0": "{{A}} が {{B}} に最後通牒",
+      "h1": "{{A}} が {{B}} に最後通牒を突きつける",
+      "h2": "極度の緊張：{{A}} が {{B}} を威嚇",
+      "b0": "{{A}} は {{X}} 時間以内の譲歩を要求、応じなければ軍事介入すると警告。国境に部隊が集結している。",
+      "b1": "{{B}} 付近で {{A}} の部隊集結が報告された。期限：{{X}} 時間。"
+    },
+    "deescalation": {
+      "h0": "{{A}} が {{B}} への最後通牒を撤回",
+      "h1": "緊張緩和：{{A}} / {{B}}",
+      "b0": "力関係が変化：国境に集結した部隊は兵舎に戻る。",
+      "b1": "各国は {{A}} の後退を歓迎：威嚇は実行されなかった。"
+    },
+    "mercenaries": {
+      "h0": "{{P}} で民間軍事会社が確認される",
+      "b0": "{{A}} が契約戦闘員を雇ったとみられる。"
+    }
+  },
+  "battles": {
+    "empty": "戦闘報告はありません。",
+    "back": "すべての報告",
+    "losses": "損失",
+    "lasted": "期間 {{value}}",
+    "noDetail": "報告の詳細を利用できません。",
+    "attacker": "攻撃側",
+    "defender": "防御側",
+    "you": "あなた",
+    "system": "システム",
+    "engaged": "投入",
+    "lost": "喪失",
+    "total": "合計",
+    "countermeasures": "対抗手段",
+    "timeline": "時系列",
+    "replay": "戦闘リプレイ",
+    "scrub": "リプレイ位置",
+    "speed": "リプレイ速度",
+    "outcome": {
+      "victory": "勝利",
+      "defeat": "敗北",
+      "draw": "引き分け",
+      "ongoing": "進行中"
+    },
+    "aar": {
+      "ref": "戦闘詳報 {{id}}",
+      "classification": "取扱注意",
+      "where": "場所",
+      "openSea": "海上",
+      "terrain": "領域",
+      "urban": "市街地",
+      "domain": {
+        "land": "陸上",
+        "coast": "沿岸（陸と海）",
+        "sea": "海上",
+        "air": "航空"
+      },
+      "medium": {
+        "land": "陸上",
+        "air": "航空",
+        "sea": "海上"
+      },
+      "verdict": {
+        "decisive_attacker": "攻撃側の決定的勝利",
+        "attacker": "攻撃側優勢",
+        "stalemate": "勝敗未決",
+        "defender": "防御側優勢",
+        "decisive_defender": "防御側の決定的勝利",
+        "ongoing": "戦闘継続中"
+      },
+      "grade": "情報",
+      "gradeHelp": "情報源 {{source}} · 情報 {{cred}}",
+      "source": {
+        "A": "信頼できる",
+        "B": "通常は信頼できる",
+        "C": "ある程度信頼できる",
+        "D": "常に信頼できるとは限らない",
+        "E": "信頼性が低い",
+        "F": "信頼性不明"
+      },
+      "cred": {
+        "1": "確認済み",
+        "2": "おそらく事実",
+        "3": "事実の可能性あり",
+        "4": "疑わしい",
+        "5": "ありそうにない",
+        "6": "検証不能"
+      },
+      "exact": "正確な数値",
+      "estimated": "情報機関の推定",
+      "personnel": "人員",
+      "casualties": "人的損害",
+      "materielLost": "破壊された装備",
+      "lossesUsd": "損失額",
+      "orbat": "戦闘序列",
+      "unidentified": "未確認の{{medium}}目標",
+      "noContact": "敵部隊は確認されていません。",
+      "destroyed": "撃破",
+      "damaged": "損傷",
+      "captured": "鹵獲",
+      "munitions": "弾薬",
+      "munitionsHelp": "主な消費弾薬：砲弾、ロケット弾、ミサイル、爆弾（模擬射撃に基づく推定）。",
+      "balance": "総括",
+      "human": "人的損害",
+      "killed": "戦死",
+      "wounded": "負傷",
+      "missing": "行方不明",
+      "prisoners": "捕虜",
+      "materiel": "装備",
+      "vehicles": "投入車両",
+      "aircraft": "投入航空機",
+      "ships": "投入艦艇",
+      "fires": "火力",
+      "missilesLaunched": "発射ミサイル",
+      "missilesShotDown": "うち撃墜",
+      "interceptions": "撃墜した敵ミサイル",
+      "sorties": "航空出撃",
+      "lossChart": "累積損失",
+      "lossChartAria": "累積損失：攻撃側 {{a}}、防御側 {{d}} 要素",
+      "lossChartHelp": "失った要素（戦車、航空機、艦艇、大隊）：自軍は正確な値、敵は自軍の射撃で確認された値。帯：戦闘の段階。",
+      "phases": "戦闘の経過",
+      "phaseLosses": "損失 {{a}} / {{d}}",
+      "phase": {
+        "preparation": "攻撃準備射撃",
+        "strikes": "スタンドオフ攻撃",
+        "assault": "突撃",
+        "defense": "防御",
+        "counter": "反撃",
+        "air": "航空戦",
+        "naval": "海戦",
+        "retreat": "後退",
+        "capture": "都市の制圧"
+      },
+      "phaseText": {
+        "preparation": "接触前に砲兵、ミサイル、航空機が敵陣地を攻撃。",
+        "strikes": "地上接触のないスタンドオフ攻撃の応酬。",
+        "assault": "地上部隊が接敵し、優位に立つ。",
+        "defense": "突撃は防御に阻まれ、防御側が最大の損害を与える。",
+        "counter": "防御側が主導権を奪い返し、反撃。",
+        "air": "戦闘は空中で展開：戦闘機、防空、ドローン。",
+        "naval": "海上部隊同士の交戦。",
+        "retreat": "一方が反撃せずに損害を受ける：離脱または追撃。",
+        "capture": "都市陥落：州の帰属が変わる。"
+      },
+      "factors": "決定的要因",
+      "noFactor": "決定的な要因は確認されていません。",
+      "factorName": {
+        "numbers": "戦力比",
+        "air_superiority": "航空優勢",
+        "electronic_warfare": "電子戦",
+        "stealth": "ステルス",
+        "entrenched": "陣地防御",
+        "air_defense": "防空",
+        "supply": "補給",
+        "veterancy": "練度",
+        "generals": "指揮",
+        "morale": "士気"
+      },
+      "factor": {
+        "numbers": "投入装備の価値で推定 ×{{ratio}} の優勢。",
+        "air_superiority": "制空：敵機 {{kills}} 機撃墜、空対地攻撃 {{strikes}} 回命中。",
+        "electronic_warfare": "妨害：敵の射撃 {{hits}} 回を劣化。",
+        "stealth": "一度も探知されなかった部隊による命中 {{hits}} 回。",
+        "entrenched": "被弾の {{share}}% は陣地内または市街地。",
+        "air_defense": "敵ミサイル {{intercepted}} 発を撃墜。",
+        "supply": "射撃の {{share}}% は補給不足の部隊によるもの。",
+        "veterancy": "歴戦の部隊：平均練度 {{level}}。",
+        "generals": "指揮官：{{names}}。",
+        "morale": "士気低下：{{nation}}の安定度 {{stability}}。"
+      },
+      "consequences": "結果",
+      "captured1": "{{name}}を制圧（{{by}}）",
+      "held": "{{name}}：所有者が陣地を保持",
+      "noChange": "領土の変化なし。",
+      "noCountermeasure": "目立った対抗措置なし。",
+      "showAll": "残り {{n}} 件の装備を表示",
+      "showLess": "一覧を折りたたむ"
+    },
+    "titleAt": "{{place}}の戦い",
+    "titleSea": "海戦"
+  },
+  "chat": {
+    "game": "ゲームチャンネル",
+    "alliance": "同盟 · {{name}}",
+    "channels": "チャンネル",
+    "newPrivate": "個人メッセージ",
+    "pickNation": "国を選択…",
+    "empty": "メッセージはありません。",
+    "hidden": "モデレーションにより非表示のメッセージ。",
+    "placeholder": "宛先：{{channel}}",
+    "message": "メッセージ",
+    "send": "送信"
+  },
+  "settings": {
+    "display": "表示",
+    "legend": "地図の凡例",
+    "legendHelp": "右下のパネル（Lキー）。",
+    "notifications": "通知",
+    "browserNotifications": "ブラウザ通知",
+    "notifHelp": "タブがバックグラウンドのときに重大な警報を表示。サーバーが対応していれば Web Push。",
+    "notif": {
+      "push": "Web Push 通知が有効",
+      "local": "ローカル通知が有効",
+      "denied": "ブラウザが許可を拒否しました",
+      "unsupported": "このブラウザは通知に対応していません"
+    },
+    "help": "ヘルプ",
+    "restartTutorial": "チュートリアルを再開",
+    "game": "ゲーム"
+  },
+  "lobby": {
+    "title": "マルチプレイ",
+    "path": "ロビー",
+    "subtitle": "1ゲームあたり最大64人の人間プレイヤー。その他の国はすべてAIが担当します。",
+    "create": "ゲームを作成",
+    "createPath": "新規",
+    "createSubtitle": "ゲーム設定の後、国を選択します。",
+    "join": "ゲームに参加",
+    "filter": "フィルター",
+    "openOnly": "空きあり",
+    "aiNote": "未選択の国：AI · 非アクティブなプレイヤーはAIに交代",
+    "error": "ロビーを利用できません。",
+    "empty": "募集中のゲームはありません。",
+    "by": "作成：{{name}}",
+    "capitals": "首都",
+    "spectate": "観戦",
+    "cols": {
+      "game": "ゲーム",
+      "players": "プレイヤー",
+      "speed": "速度",
+      "victory": "勝利",
+      "shop": "購入"
+    },
+    "defaultName": "新たな世界大戦",
+    "worldToday": "現在の世界",
+    "sections": {
+      "game": "ゲーム",
+      "victory": "勝利条件",
+      "rules": "ルール"
+    },
+    "name": "ゲーム名",
+    "maxPlayers": "人間プレイヤー",
+    "maxPlayersHint": "最大64人。その他の国はAIです。",
+    "private": "非公開ゲーム",
+    "privateHint": "リンクからのみ参加可能。",
+    "provinceShare": "支配すべき世界の州の割合",
+    "capitalsToggle": "またはすべての敵首都を奪取",
+    "shopPolicy": "ゲーム内購入",
+    "shopHint": "競技ゲームでは無効にしてください。",
+    "cap": "プレイヤーあたりのクレジット上限",
+    "inactive": "非アクティブなプレイヤーをAIに交代するまで",
+    "next": "国を選ぶ",
+    "pickNation": "国を選択してください",
+    "createConfirm": "ゲームを作成",
+    "createError": "ゲームを作成できません。",
+    "humans": "プレイヤー",
+    "aiRest": "AIのまま",
+    "joining": "接続中…",
+    "joinConfirm": "参加",
+    "joinError": "参加できません（国が既に選ばれた？）。",
+    "nationTaken": "この国は今選ばれました：別の国を選んでください。",
+    "room": {
+      "title": "待合室",
+      "path": "待合室",
+      "players": "登録済みプレイヤー",
+      "waiting": "開始待ち",
+      "aiRest": "空き {{count}} · その他の国はAIが担当",
+      "host": "ホスト",
+      "you": "あなた",
+      "invite": "招待",
+      "inviteHint": "このリンクを共有してください：友人が国を選び、ここで開始を待ちます。",
+      "copy": "リンクをコピー",
+      "copied": "リンクをコピーしました",
+      "rules": "ゲームのルール",
+      "speed": "速度 ×{{speed}}",
+      "victory": "勝利：州の {{share}}",
+      "hostHint": "全員の準備ができたらゲームを開始してください。空き枠はゲーム中も開放されます。",
+      "guestHint": "ホストがゲームを開始します。自動的に移動します。",
+      "start": "ゲームを開始",
+      "startError": "現在は開始できません。",
+      "leave": "部屋を出る",
+      "ended": "このゲームは終了しました。",
+      "notFound": "部屋が見つかりません。",
+      "shop": "ゲーム内購入：{{policy}}"
+    },
+    "unlimited": "{{nations}} で無制限モードが有効 — ランク外ゲーム",
+    "unranked": "ランク外ゲーム"
+  },
+  "games": {
+    "title": "マイゲーム",
+    "path": "ゲーム",
+    "subtitle": "進行中のゲームを再開するか、終了したゲームの総括を確認します。",
+    "error": "ゲームを読み込めません。",
+    "empty": "まだゲームはありません。",
+    "cols": {
+      "game": "ゲーム",
+      "nation": "国",
+      "players": "プレイヤー",
+      "status": "状態"
+    },
+    "mode": {
+      "solo": "ソロ",
+      "multi": "マルチプレイ"
+    },
+    "status": {
+      "lobby": "待機中",
+      "running": "進行中",
+      "paused": "一時停止中",
+      "ended": "終了",
+      "abandoned": "終了 · 放棄"
+    },
+    "resume": "再開",
+    "stats": "総括",
+    "delete": {
+      "action": "ゲームを削除",
+      "title": "ゲームを削除",
+      "text": "このゲームを完全に削除しますか？「{{name}}」とすべての進行状況が消去されます。この操作は取り消せません。",
+      "confirm": "完全に削除",
+      "busy": "このゲームは別のサーバーで進行中です：しばらくしてから再試行してください。",
+      "error": "現在は削除できません。"
+    }
+  },
+  "rankings": {
+    "title": "ランキング",
+    "path": "ランキング",
+    "subtitle": "マルチプレイで獲得したシーズンポイント。",
+    "season": "シーズン",
+    "error": "ランキングを利用できません。",
+    "remaining": "シーズン終了",
+    "days_other": "{{count}} 日",
+    "players": "ランクイン",
+    "rewards": "シーズン報酬",
+    "top": "トップ {{rank}}",
+    "cols": {
+      "player": "プレイヤー",
+      "points": "ポイント",
+      "wins": "勝利数",
+      "games": "試合数",
+      "rate": "勝率"
+    }
+  },
+  "endgame": {
+    "title": "ゲームの総括",
+    "path": "ゲーム終了",
+    "error": "統計を利用できません。",
+    "winner": "勝者：{{nation}}",
+    "ended": "ゲーム終了",
+    "noWinner": "勝者なし",
+    "noStats": "詳細な総括は記録されていません：ゲームはオフラインで終了しました。国境の推移は引き続き閲覧できます。",
+    "days_other": "{{count}} 日",
+    "day": "D+{{day}}",
+    "provincesHeld_other": "{{count}} 州",
+    "timelapse": "国境の推移",
+    "provinces": "州",
+    "conquered": "征服",
+    "kills": "撃破",
+    "losses": "損失",
+    "spent": "支出",
+    "bestUnits": "ベストユニット",
+    "killsCount_other": "撃破 {{count}}",
+    "table": "国別統計",
+    "cols": {
+      "nation": "国",
+      "player": "プレイヤー",
+      "provinces": "州",
+      "conquered": "征服",
+      "kills": "撃破",
+      "losses": "損失",
+      "spent": "支出"
+    }
+  },
+  "audio": {
+    "title": "サウンド",
+    "mute": "ミュート",
+    "muteHelp": "ミュート中は何もダウンロードされません。設定はこの端末に保存されます。",
+    "levels": {
+      "master": "マスター音量",
+      "music": "音楽と環境音",
+      "sfx": "効果音",
+      "ui": "インターフェース"
+    },
+    "reduced": "サウンド軽減",
+    "reducedHelp": "戦闘の環境音なし、合図は穏やかに、切り替えはゆっくり（システムがアニメーション削減を求めると自動で有効）。",
+    "credits": "サウンドと音楽は ElevenLabs で Red Line 向けに生成されました。"
+  },
+  "format": {
+    "k": "K",
+    "M": "M",
+    "B": "B"
+  },
+  "language": {
+    "label": "言語",
+    "choose": "インターフェースの言語を選択",
+    "help": "インターフェース、電報、地名。ページが再読み込みされます。",
+    "current": "現在の言語：{{name}}",
+    "machine": "自動生成された翻訳で、軍事用語は校閲済みです。",
+    "fallback": "一部のテキストはフランス語のままです。"
+  },
+  "engine": {
+    "place": {
+      "sea": "洋上"
+    },
+    "sector": {
+      "at": "{{province}} 区域",
+      "near": "{{province}} から {{km}} km",
+      "unknown": "未特定の区域"
+    },
+    "strikeKind": {
+      "missile": "ミサイル",
+      "air": "航空",
+      "artillery": "砲兵"
+    },
+    "resolution": {
+      "arms_embargo": "武器禁輸",
+      "economic_sanctions": "経済制裁",
+      "ceasefire": "停戦",
+      "no_fly_zone": "飛行禁止区域",
+      "peacekeeping": "平和維持部隊",
+      "condemnation": "非難"
+    },
+    "vote": {
+      "yes": "{{nation}} 賛成",
+      "no": "{{nation}} 反対",
+      "abstain": "{{nation}} 棄権"
+    },
+    "charter": {
+      "mutualDefense": "相互防衛",
+      "intelSharing": "情報共有",
+      "passage": "通行権",
+      "simple": "単純協力"
+    },
+    "mission": {
+      "raid": "襲撃",
+      "sabotage": "破壊工作",
+      "rescue": "救出"
+    },
+    "intelOp": {
+      "infiltrate_spy": "工作員の潜入",
+      "recruit_source": "情報源の獲得",
+      "turn_agent": "工作員の寝返り",
+      "exfiltrate": "脱出",
+      "steal_research": "研究の窃取",
+      "sabotage_factory": "産業破壊工作",
+      "fund_rebels": "反乱勢力への資金提供",
+      "listen_area": "地域傍受",
+      "intercept_army": "通信傍受",
+      "jam_area": "地域妨害",
+      "cyber_radar": "サイバー攻撃（レーダー）",
+      "cyber_production": "サイバー攻撃（産業）",
+      "cyber_orders": "サイバー攻撃（指揮）",
+      "disinformation": "偽情報キャンペーン",
+      "leak_plans": "組織的リーク",
+      "plant_fake_report": "欺瞞（偽の報告）",
+      "deploy_decoys": "デコイ展開",
+      "fake_radio_traffic": "偽の無線通信",
+      "counterintel_sweep": "防諜作戦",
+      "recon_economic": "経済偵察",
+      "recon_military": "軍事偵察"
+    },
+    "council": {
+      "open_other": "安全保障理事会の会合開始：決議 {{count}} 件を採決。",
+      "closed": "会合終了：{{count}} 件中 {{passed}} 件の決議を採択。"
+    },
+    "news": {
+      "nuclear": {
+        "headline": "核爆発：{{place}}",
+        "body": "{{nation}} が発射した核兵器が爆発：{{place}}。"
+      }
+    },
+    "intel": {
+      "failed": "失敗",
+      "compromised": "露見",
+      "agentExposed": "{{nation}} の工作員が摘発",
+      "agentCompromised": "工作員 {{codename}} の身元が露見",
+      "agentArrest": "{{nation}} の工作員を逮捕",
+      "agentArrested": "工作員 {{codename}} が逮捕",
+      "listening": "傍受 — {{sector}}",
+      "interception": "傍受 — {{nation}}",
+      "decoysIdentified": "デコイを識別",
+      "flashMovement": "FLASH — {{nation}} 軍の移動",
+      "flashMassive": "FLASH — {{nation}} 軍の大規模移動",
+      "dailyInterior": "日次報告 — 国内保安",
+      "dailyForeign": "日次報告 — 対外情報",
+      "dailyMilitary": "日次報告 — 軍事情報",
+      "opCompromised": "{{op}} — 露見",
+      "opOutcome": "{{op}} — {{outcome}}",
+      "opAttributed": "{{op}} は {{nation}} によるものと判明",
+      "opSuccess": "{{op}} — 成功",
+      "sweepReport": "防諜作戦 — 総括",
+      "radioSuspect": "不審な無線通信",
+      "intoxFoiled": "欺瞞工作を阻止",
+      "intentions": "{{nation}} の意図",
+      "strikeSuffered": {
+        "missile": "FLASH — ミサイル攻撃を受けた",
+        "air": "FLASH — 空爆を受けた",
+        "artillery": "FLASH — 砲撃を受けた",
+        "other": "FLASH — 攻撃を受けた"
+      },
+      "flashNuclear": "FLASH — 核爆発",
+      "sabotage": "破壊工作",
+      "cyber": "サイバー攻撃",
+      "rebelsFunded": "武装集団に資金提供",
+      "programDone": "計画完了 — {{nation}}",
+      "blackMarket": "闇市場 — {{nation}}",
+      "imagery": "画像情報 — {{nation}}"
+    },
+    "note": {
+      "allianceInvite": {
+        "title": "同盟への招待",
+        "text": "{{alliance}} 同盟があなたを招待しています。"
+      },
+      "inviteDeclined": {
+        "title": "招待が辞退されました",
+        "text": "{{nation}} が招待を辞退。"
+      },
+      "allianceVote": {
+        "title": "同盟の投票",
+        "replace_leader": "{{alliance}}：盟主を {{nation}} に交代。",
+        "expel": "{{alliance}}：{{nation}} を除名。",
+        "skip_mutual_defense": "{{alliance}}：{{nation}} に対する相互防衛を免除。"
+      },
+      "strikeNoEffect": {
+        "title": "攻撃は効果なし",
+        "text": "{{system}}：目標に命中せず。"
+      },
+      "asatHit": {
+        "title": "衛星を撃破",
+        "text": "{{system}}（{{owner}}）"
+      },
+      "asatMiss": {
+        "title": "対衛星攻撃は失敗",
+        "text": "{{system}}（{{owner}}）"
+      },
+      "radarsBlinded": {
+        "title": "レーダー無力化",
+        "text": "サイバー攻撃で自軍のレーダーが妨害されています。"
+      },
+      "satPass": {
+        "title": "衛星通過",
+        "text_other": "{{system}}：観測帯に {{count}} 件の接触。"
+      },
+      "nuclearRevoked": {
+        "title": "核使用許可を解除",
+        "text": "核戦力は通常の統制下に戻ります。"
+      },
+      "nuclearAuthorized": {
+        "title": "核使用を許可",
+        "text": "警戒レベルが許す限り核攻撃が可能です。"
+      },
+      "nuclearDetonation": {
+        "title": "核爆発",
+        "text": "核攻撃：{{place}}。"
+      },
+      "fuelLost": {
+        "title": "機体喪失",
+        "text": "{{system}}：帰投前に燃料切れ。"
+      },
+      "specialOk": {
+        "title": "特殊作戦成功",
+        "text": "{{mission}}：{{place}}。"
+      },
+      "specialEnemy": {
+        "title": "特殊部隊の行動",
+        "text": "敵の{{mission}}：{{place}}。"
+      },
+      "specialFailed": {
+        "title": "特殊作戦失敗",
+        "text": "{{mission}}：{{place}}。"
+      },
+      "blockadeOn": {
+        "title": "封鎖が有効",
+        "text": "{{place}}（{{nation}}）"
+      },
+      "blockadeOff": {
+        "title": "封鎖解除",
+        "text": "{{place}}（{{nation}}）"
+      },
+      "captured": {
+        "title": "装備を鹵獲",
+        "text": "{{place}}：{{items}}。",
+        "item": "{{count}} {{system}}"
+      },
+      "generalReleased": {
+        "title": "直接指揮に復帰",
+        "text": "{{general}} は部隊の直接指揮を返上。"
+      },
+      "coup": {
+        "title": "クーデター",
+        "text": "{{nation}}：軍が権力を掌握。"
+      },
+      "ceasefire": {
+        "title": "停戦",
+        "text": "停戦発効：{{a}} / {{b}}。"
+      },
+      "peaceProposal": {
+        "title": "講和の提案",
+        "text": "{{nation}} が講和を提案。"
+      },
+      "ceasefireProposal": {
+        "title": "停戦の提案",
+        "text": "{{nation}} が停戦を提案。"
+      },
+      "proposalRefused": {
+        "title": "提案が拒否されました",
+        "text": "{{nation}} があなたの提案を拒否。"
+      },
+      "agentCaught": {
+        "title": "工作員が摘発",
+        "text": "{{host}} が {{owner}} の工作員の逮捕を発表。"
+      }
+    }
+  }
+}

@@ -49,6 +49,7 @@ import {
   provinceAt,
   resolveOwn,
   schedule,
+  noteLoc,
 } from './util.js';
 
 /**
@@ -455,6 +456,7 @@ export function handleFuelout(state: EngineState, d: { u: string; v: number }): 
     `${sysOf(state, u).name} : carburant épuisé avant le retour à la base.`,
     'warn',
     at,
+    noteLoc('fuelLost', { system: { system: u.sys } }),
   );
   countLoss(state, u, u.count, null);
   destroyUnit(state, u, null);
