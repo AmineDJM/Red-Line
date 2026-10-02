@@ -151,3 +151,53 @@
   list-style: none;
   font-size: var(--rl-fs-sm);
 }
+
+/* Production par ressource et par province (onglet Ressources). */
+.ecores {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ecores__title {
+  margin: 4px 0 0;
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.ecores__group {
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm);
+  padding: 4px 8px;
+}
+.ecores__head {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  color: var(--rl-text);
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.ecores__head > :last-child {
+  margin-left: auto;
+}
+.ecores__list {
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.ecores__list li {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  padding: 1px 0;
+  font-size: var(--rl-fs-xs);
+}
+.ecores__list li > :last-child {
+  margin-left: auto;
+}

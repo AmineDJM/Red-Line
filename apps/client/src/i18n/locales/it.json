@@ -404,7 +404,8 @@
         "insufficient_resources": "Risorse insufficienti.",
         "off_road": "Fuori dalla rete stradale: punta a una città, un nodo o una strada.",
         "disconnected": "Offline: ordine non trasmesso.",
-        "timeout": "Nessuna risposta dal server."
+        "timeout": "Nessuna risposta dal server.",
+        "resource_required": "Costruzione impossibile: questa provincia non ha la risorsa."
       }
     },
     "status": {
@@ -500,6 +501,21 @@
       "recon_military": "Ricognizione militare avviata su {{province}}",
       "recon_economic": "Ricognizione economica avviata su {{province}}",
       "listen_area": "Ascolto avviato intorno a {{province}}"
+    },
+    "resources": "Risorse",
+    "resourceNone": "Solo denaro: servizi e finanza (+{{pct}}% di reddito)",
+    "resourceNoneTip": "Nessun giacimento né terreno agricolo: niente pozzi, miniere o fattorie; l’industria locale rende di più (distretto degli affari).",
+    "primary": "principale",
+    "secondary": "secondaria",
+    "richness": {
+      "1": "modesta",
+      "2": "importante",
+      "3": "maggiore"
+    },
+    "richnessTip": {
+      "1": "Giacimento o produzione modesti",
+      "2": "Giacimento o bacino importante",
+      "3": "Giacimento di livello mondiale"
     }
   },
   "nationRecon": {
@@ -819,7 +835,10 @@
       "blocked": {
         "in_progress": "Cantiere già in corso",
         "damaged": "Riparare prima",
-        "max_level": "Livello massimo raggiunto"
+        "max_level": "Livello massimo raggiunto",
+        "no_resource": "Risorsa assente: {{resource}}",
+        "coastal_only": "Solo provincia costiera",
+        "not_urban": "Richiesto un polo elettronico o una grande città"
       }
     },
     "fortification": "Fortificazioni"
@@ -1906,7 +1925,15 @@
     "showAll": "Mostra tutte le {{count}} province",
     "showLess": "Riduci",
     "resourcesHint": "Le risorse sono prodotte dalle province e dai loro edifici (pozzi, miniere, fattorie, fabbriche di elettronica, raffinerie) e consumate dalle sue unità. Una carenza rallenta la produzione; il cibo pesa sul morale.",
-    "ledgerToday": "Flussi reali · oggi"
+    "ledgerToday": "Flussi reali · oggi",
+    "byResource": "Produzione per risorsa e per provincia",
+    "producers_one": "{{count}} provincia",
+    "producers_many": "{{count}} province",
+    "producers_other": "{{count}} province",
+    "noProducer": "Nessuna provincia produttrice: acquista sul mercato.",
+    "servicesProvinces_one": "{{count}} provincia senza risorse (solo denaro: servizi, finanza)",
+    "servicesProvinces_many": "{{count}} province senza risorse (solo denaro: servizi, finanza)",
+    "servicesProvinces_other": "{{count}} province senza risorse (solo denaro: servizi, finanza)"
   },
   "armies": {
     "tabs": {

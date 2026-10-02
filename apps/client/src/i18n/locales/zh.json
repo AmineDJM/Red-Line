@@ -392,7 +392,8 @@
         "insufficient_resources": "资源不足。",
         "off_road": "不在道路网络上：请选择城市、节点或道路。",
         "disconnected": "离线：命令未发送。",
-        "timeout": "服务器无响应。"
+        "timeout": "服务器无响应。",
+        "resource_required": "无法建造：该省份缺少所需资源。"
       }
     },
     "status": {
@@ -488,6 +489,21 @@
       "recon_military": "已对 {{province}} 发起军事侦察",
       "recon_economic": "已对 {{province}} 发起经济侦察",
       "listen_area": "已在 {{province}} 周边开始监听"
+    },
+    "resources": "资源",
+    "resourceNone": "仅产出资金：服务业与金融（收入 +{{pct}}%）",
+    "resourceNoneTip": "没有矿藏或耕地：不能建油井、矿场或农场；本地工业在此收益更高（商务区）。",
+    "primary": "主要",
+    "secondary": "次要",
+    "richness": {
+      "1": "一般",
+      "2": "重要",
+      "3": "顶级"
+    },
+    "richnessTip": {
+      "1": "矿藏或产量一般",
+      "2": "重要矿藏或盆地",
+      "3": "世界级矿藏"
     }
   },
   "nationRecon": {
@@ -789,7 +805,10 @@
       "blocked": {
         "in_progress": "工程已在进行",
         "damaged": "请先修复",
-        "max_level": "已达最高等级"
+        "max_level": "已达最高等级",
+        "no_resource": "缺少资源：{{resource}}",
+        "coastal_only": "仅限沿海省份",
+        "not_urban": "需要电子产业中心或大城市"
       }
     },
     "fortification": "防御工事"
@@ -1862,7 +1881,11 @@
     "showAll": "显示全部 {{count}} 个省份",
     "showLess": "收起",
     "resourcesHint": "资源由各省及其建筑（油井、矿山、农场、电子工厂、炼油厂）生产，并由您的单位消耗。短缺会减缓生产；粮食影响士气。",
-    "ledgerToday": "实际流水 · 今天"
+    "ledgerToday": "实际流水 · 今天",
+    "byResource": "按资源和省份统计的产量",
+    "producers_other": "{{count}} 个省份",
+    "noProducer": "没有产出省份：请在市场上购买。",
+    "servicesProvinces_other": "{{count}} 个省份没有资源（仅产出资金：服务业、金融）"
   },
   "armies": {
     "tabs": {

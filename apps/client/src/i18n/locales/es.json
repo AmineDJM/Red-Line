@@ -404,7 +404,8 @@
         "insufficient_resources": "Recursos insuficientes.",
         "off_road": "Fuera de la red de carreteras: apunte a una ciudad, un nodo o una carretera.",
         "disconnected": "Sin conexión: orden no transmitida.",
-        "timeout": "Sin respuesta del servidor."
+        "timeout": "Sin respuesta del servidor.",
+        "resource_required": "Construcción imposible: esta provincia no tiene el recurso."
       }
     },
     "status": {
@@ -500,6 +501,21 @@
       "recon_military": "Reconocimiento militar lanzado sobre {{province}}",
       "recon_economic": "Reconocimiento económico lanzado sobre {{province}}",
       "listen_area": "Escucha iniciada en torno a {{province}}"
+    },
+    "resources": "Recursos",
+    "resourceNone": "Solo dinero: servicios y finanzas (+{{pct}} % de ingresos)",
+    "resourceNoneTip": "Sin yacimientos ni tierras de cultivo: ni pozo, ni mina, ni granja; la industria local rinde más (distrito de negocios).",
+    "primary": "principal",
+    "secondary": "secundario",
+    "richness": {
+      "1": "modesto",
+      "2": "importante",
+      "3": "mayor"
+    },
+    "richnessTip": {
+      "1": "Yacimiento o producción modestos",
+      "2": "Yacimiento o cuenca importante",
+      "3": "Yacimiento de primer nivel mundial"
     }
   },
   "nationRecon": {
@@ -819,7 +835,10 @@
       "blocked": {
         "in_progress": "Obra ya en curso",
         "damaged": "Reparar primero",
-        "max_level": "Nivel máximo alcanzado"
+        "max_level": "Nivel máximo alcanzado",
+        "no_resource": "Recurso ausente: {{resource}}",
+        "coastal_only": "Solo provincia costera",
+        "not_urban": "Se requiere un polo electrónico o una gran ciudad"
       }
     },
     "fortification": "Fortificaciones"
@@ -1906,7 +1925,15 @@
     "showAll": "Mostrar las {{count}} provincias",
     "showLess": "Reducir",
     "resourcesHint": "Los recursos los producen las provincias y sus edificios (pozos, minas, granjas, fábricas de electrónica, refinerías) y los consumen sus unidades. La escasez ralentiza la producción; los alimentos influyen en la moral.",
-    "ledgerToday": "Flujos reales · hoy"
+    "ledgerToday": "Flujos reales · hoy",
+    "byResource": "Producción por recurso y por provincia",
+    "producers_one": "{{count}} provincia",
+    "producers_many": "{{count}} provincias",
+    "producers_other": "{{count}} provincias",
+    "noProducer": "Ninguna provincia productora: compre en el mercado.",
+    "servicesProvinces_one": "{{count}} provincia sin recursos (solo dinero: servicios, finanzas)",
+    "servicesProvinces_many": "{{count}} provincias sin recursos (solo dinero: servicios, finanzas)",
+    "servicesProvinces_other": "{{count}} provincias sin recursos (solo dinero: servicios, finanzas)"
   },
   "armies": {
     "tabs": {

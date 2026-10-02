@@ -398,7 +398,8 @@
         "insufficient_resources": "Insufficient resources.",
         "off_road": "Off the road network: aim at a city, a node or a road.",
         "disconnected": "Offline: order not sent.",
-        "timeout": "No response from the server."
+        "timeout": "No response from the server.",
+        "resource_required": "Cannot build: this province lacks the required resource."
       }
     },
     "status": {
@@ -494,6 +495,21 @@
       "recon_military": "Military reconnaissance launched on {{province}}",
       "recon_economic": "Economic reconnaissance launched on {{province}}",
       "listen_area": "Listening started around {{province}}"
+    },
+    "resources": "Resources",
+    "resourceNone": "Money only: services and finance (+{{pct}}% income)",
+    "resourceNoneTip": "No deposits or farmland: no oil well, mine or farm; local industry earns more here (business district).",
+    "primary": "primary",
+    "secondary": "secondary",
+    "richness": {
+      "1": "modest",
+      "2": "significant",
+      "3": "major"
+    },
+    "richnessTip": {
+      "1": "Modest deposit or output",
+      "2": "Significant deposit or basin",
+      "3": "World-class deposit"
     }
   },
   "nationRecon": {
@@ -804,7 +820,10 @@
       "blocked": {
         "in_progress": "Work already in progress",
         "damaged": "Repair first",
-        "max_level": "Maximum level reached"
+        "max_level": "Maximum level reached",
+        "no_resource": "Missing resource: {{resource}}",
+        "coastal_only": "Coastal province only",
+        "not_urban": "Electronics hub or large city required"
       }
     },
     "fortification": "Fortifications"
@@ -1884,7 +1903,13 @@
     "showAll": "Show all {{count}} provinces",
     "showLess": "Collapse",
     "resourcesHint": "Resources are produced by provinces and their buildings (wells, mines, farms, electronics plants, refineries) and consumed by your units. A shortage slows production; food weighs on morale.",
-    "ledgerToday": "Actual flows · today"
+    "ledgerToday": "Actual flows · today",
+    "byResource": "Output by resource and province",
+    "producers_one": "{{count}} province",
+    "producers_other": "{{count}} provinces",
+    "noProducer": "No producing province: buy on the market.",
+    "servicesProvinces_one": "{{count}} province without resources (money only: services, finance)",
+    "servicesProvinces_other": "{{count}} provinces without resources (money only: services, finance)"
   },
   "armies": {
     "tabs": {

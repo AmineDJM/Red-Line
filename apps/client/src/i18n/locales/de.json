@@ -398,7 +398,8 @@
         "insufficient_resources": "Unzureichende Ressourcen.",
         "off_road": "Außerhalb des Straßennetzes: Zielen Sie auf eine Stadt, einen Knoten oder eine Straße.",
         "disconnected": "Offline: Befehl nicht übermittelt.",
-        "timeout": "Keine Antwort vom Server."
+        "timeout": "Keine Antwort vom Server.",
+        "resource_required": "Bau unmöglich: Dieser Provinz fehlt die Ressource."
       }
     },
     "status": {
@@ -494,6 +495,21 @@
       "recon_military": "Militärische Aufklärung über {{province}} gestartet",
       "recon_economic": "Wirtschaftliche Aufklärung über {{province}} gestartet",
       "listen_area": "Abhören um {{province}} gestartet"
+    },
+    "resources": "Ressourcen",
+    "resourceNone": "Nur Geld: Dienstleistungen und Finanzen (+{{pct}} % Einkommen)",
+    "resourceNoneTip": "Keine Vorkommen oder Ackerland: weder Bohrturm noch Mine noch Farm; lokale Industrie bringt hier mehr (Geschäftsviertel).",
+    "primary": "Haupt",
+    "secondary": "Neben",
+    "richness": {
+      "1": "gering",
+      "2": "bedeutend",
+      "3": "groß"
+    },
+    "richnessTip": {
+      "1": "Geringes Vorkommen oder geringe Produktion",
+      "2": "Bedeutendes Vorkommen oder Becken",
+      "3": "Vorkommen von Weltrang"
     }
   },
   "nationRecon": {
@@ -804,7 +820,10 @@
       "blocked": {
         "in_progress": "Baustelle bereits aktiv",
         "damaged": "Zuerst reparieren",
-        "max_level": "Höchste Stufe erreicht"
+        "max_level": "Höchste Stufe erreicht",
+        "no_resource": "Ressource fehlt: {{resource}}",
+        "coastal_only": "Nur Küstenprovinz",
+        "not_urban": "Elektronikzentrum oder Großstadt erforderlich"
       }
     },
     "fortification": "Befestigungen"
@@ -1884,7 +1903,13 @@
     "showAll": "Alle {{count}} Provinzen anzeigen",
     "showLess": "Einklappen",
     "resourcesHint": "Ressourcen werden von den Provinzen und ihren Gebäuden (Bohrlöcher, Bergwerke, Höfe, Elektronikwerke, Raffinerien) erzeugt und von Ihren Einheiten verbraucht. Mangel verlangsamt die Produktion; Nahrung beeinflusst die Moral.",
-    "ledgerToday": "Tatsächliche Flüsse · heute"
+    "ledgerToday": "Tatsächliche Flüsse · heute",
+    "byResource": "Produktion nach Ressource und Provinz",
+    "producers_one": "{{count}} Provinz",
+    "producers_other": "{{count}} Provinzen",
+    "noProducer": "Keine produzierende Provinz: Kaufen Sie auf dem Markt.",
+    "servicesProvinces_one": "{{count}} Provinz ohne Ressourcen (nur Geld: Dienstleistungen, Finanzen)",
+    "servicesProvinces_other": "{{count}} Provinzen ohne Ressourcen (nur Geld: Dienstleistungen, Finanzen)"
   },
   "armies": {
     "tabs": {

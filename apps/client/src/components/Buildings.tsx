@@ -22,6 +22,7 @@ import {
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
+import { extractionResource } from '../lib/resources.js';
 import { orderError } from '../lib/loc.js';
 
 export const MAX_BUILDING_LEVEL = 5;
@@ -292,7 +293,11 @@ export function BuildMenu({
               : blockedCoast
                 ? t('buildings.ui.coastalOnly')
                 : opt?.blocked
-                  ? t(`buildings.ui.blocked.${opt.blocked}`)
+                  ? t(`buildings.ui.blocked.${opt.blocked}`, {
+                      resource: t(
+                        `game.resources.${extractionResource(balance, type) ?? 'electronics'}`,
+                      ).toLowerCase(),
+                    })
                   : null;
             const poor = cost !== null && money < cost;
             return (

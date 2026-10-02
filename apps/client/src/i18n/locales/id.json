@@ -392,7 +392,8 @@
         "insufficient_resources": "Sumber daya tidak cukup.",
         "off_road": "Di luar jaringan jalan: arahkan ke kota, simpul, atau jalan.",
         "disconnected": "Luring: perintah tidak terkirim.",
-        "timeout": "Tidak ada respons dari server."
+        "timeout": "Tidak ada respons dari server.",
+        "resource_required": "Tidak dapat membangun: provinsi ini tidak memiliki sumber daya yang diperlukan."
       }
     },
     "status": {
@@ -488,6 +489,21 @@
       "recon_military": "Pengintaian militer dimulai atas {{province}}",
       "recon_economic": "Pengintaian ekonomi dimulai atas {{province}}",
       "listen_area": "Penyadapan dimulai di sekitar {{province}}"
+    },
+    "resources": "Sumber daya",
+    "resourceNone": "Hanya uang: jasa dan keuangan (+{{pct}}% pendapatan)",
+    "resourceNoneTip": "Tanpa cadangan maupun lahan pertanian: tidak ada sumur, tambang, atau peternakan; industri lokal lebih menguntungkan di sini (kawasan bisnis).",
+    "primary": "utama",
+    "secondary": "sekunder",
+    "richness": {
+      "1": "kecil",
+      "2": "penting",
+      "3": "besar"
+    },
+    "richnessTip": {
+      "1": "Cadangan atau produksi kecil",
+      "2": "Cadangan atau cekungan penting",
+      "3": "Cadangan kelas dunia"
     }
   },
   "nationRecon": {
@@ -789,7 +805,10 @@
       "blocked": {
         "in_progress": "Pekerjaan sedang berlangsung",
         "damaged": "Perbaiki dahulu",
-        "max_level": "Tingkat maksimum tercapai"
+        "max_level": "Tingkat maksimum tercapai",
+        "no_resource": "Sumber daya tidak ada: {{resource}}",
+        "coastal_only": "Hanya provinsi pesisir",
+        "not_urban": "Butuh pusat elektronik atau kota besar"
       }
     },
     "fortification": "Benteng"
@@ -1862,7 +1881,11 @@
     "showAll": "Tampilkan {{count}} provinsi",
     "showLess": "Ciutkan",
     "resourcesHint": "Sumber daya diproduksi oleh provinsi dan bangunannya (sumur, tambang, pertanian, pabrik elektronik, kilang) dan dikonsumsi oleh unit Anda. Kekurangan memperlambat produksi; pangan memengaruhi moral.",
-    "ledgerToday": "Arus nyata · hari ini"
+    "ledgerToday": "Arus nyata · hari ini",
+    "byResource": "Produksi per sumber daya dan provinsi",
+    "producers_other": "{{count}} provinsi",
+    "noProducer": "Tidak ada provinsi penghasil: beli di pasar.",
+    "servicesProvinces_other": "{{count}} provinsi tanpa sumber daya (hanya uang: jasa, keuangan)"
   },
   "armies": {
     "tabs": {

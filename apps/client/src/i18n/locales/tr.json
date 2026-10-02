@@ -398,7 +398,8 @@
         "insufficient_resources": "Yetersiz kaynak.",
         "off_road": "Yol ağının dışında: bir şehri, bir düğümü veya bir yolu hedefleyin.",
         "disconnected": "Çevrimdışı: emir iletilmedi.",
-        "timeout": "Sunucudan yanıt yok."
+        "timeout": "Sunucudan yanıt yok.",
+        "resource_required": "İnşa edilemez: bu eyalette gerekli kaynak yok."
       }
     },
     "status": {
@@ -494,6 +495,21 @@
       "recon_military": "{{province}} üzerinde askerî keşif başlatıldı",
       "recon_economic": "{{province}} üzerinde ekonomik keşif başlatıldı",
       "listen_area": "{{province}} çevresinde dinleme başlatıldı"
+    },
+    "resources": "Kaynaklar",
+    "resourceNone": "Yalnızca para: hizmetler ve finans (+%{{pct}} gelir)",
+    "resourceNoneTip": "Maden yatağı veya tarım arazisi yok: kuyu, maden veya çiftlik kurulamaz; yerel sanayi burada daha çok kazandırır (iş merkezi).",
+    "primary": "birincil",
+    "secondary": "ikincil",
+    "richness": {
+      "1": "mütevazı",
+      "2": "önemli",
+      "3": "büyük"
+    },
+    "richnessTip": {
+      "1": "Mütevazı yatak veya üretim",
+      "2": "Önemli yatak veya havza",
+      "3": "Dünya çapında yatak"
     }
   },
   "nationRecon": {
@@ -804,7 +820,10 @@
       "blocked": {
         "in_progress": "Şantiye zaten sürüyor",
         "damaged": "Önce onarın",
-        "max_level": "Azami seviyeye ulaşıldı"
+        "max_level": "Azami seviyeye ulaşıldı",
+        "no_resource": "Kaynak yok: {{resource}}",
+        "coastal_only": "Yalnızca kıyı eyaleti",
+        "not_urban": "Elektronik merkezi veya büyük şehir gerekli"
       }
     },
     "fortification": "Tahkimatlar"
@@ -1884,7 +1903,13 @@
     "showAll": "{{count}} ilin tümünü göster",
     "showLess": "Daralt",
     "resourcesHint": "Kaynaklar iller ve binaları (kuyular, madenler, çiftlikler, elektronik fabrikaları, rafineriler) tarafından üretilir ve birlikleriniz tarafından tüketilir. Kıtlık üretimi yavaşlatır; gıda morali etkiler.",
-    "ledgerToday": "Gerçek akışlar · bugün"
+    "ledgerToday": "Gerçek akışlar · bugün",
+    "byResource": "Kaynağa ve eyalete göre üretim",
+    "producers_one": "{{count}} eyalet",
+    "producers_other": "{{count}} eyalet",
+    "noProducer": "Üretici eyalet yok: pazardan satın alın.",
+    "servicesProvinces_one": "Kaynaksız {{count}} eyalet (yalnızca para: hizmetler, finans)",
+    "servicesProvinces_other": "Kaynaksız {{count}} eyalet (yalnızca para: hizmetler, finans)"
   },
   "armies": {
     "tabs": {
