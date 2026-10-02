@@ -72,9 +72,53 @@
         "introduced": 1984
       },
       "interceptor": {
-        "against": ["aircraft", "cruise", "ballistic"],
-        "pk": 0.75,
-        "magazine": 16
+        "against": ["aircraft", "cruise", "ballistic", "hypersonic", "drone"],
+        "pk": 0.8,
+        "magazine": 16,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 3,
+            "maxKm": 160,
+            "ceilingKm": 24,
+            "pk": 0.6,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 3,
+            "maxKm": 40,
+            "pk": 0.6,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 3,
+            "maxKm": 100,
+            "pk": 0.6,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 3,
+            "maxKm": 60,
+            "pk": 0.7,
+            "shots": 2
+          },
+          "ballistic_missile": {
+            "minKm": 3,
+            "maxKm": 40,
+            "ceilingKm": 20,
+            "pk": 0.8,
+            "shots": 2
+          },
+          "hypersonic": {
+            "minKm": 3,
+            "maxKm": 30,
+            "ceilingKm": 20,
+            "pk": 0.35,
+            "shots": 2
+          }
+        },
+        "channels": 9,
+        "reactionS": 9,
+        "reloadH": 6
       },
       "sensor": {
         "kind": "radar",
@@ -107,7 +151,7 @@
       "operationalRadiusKm": null,
       "weaponRangeKm": {
         "min": 3,
-        "max": 250
+        "max": 380
       },
       "damage": {
         "infantry": 0,
@@ -144,7 +188,7 @@
         "mtowKg": 1800,
         "warheadKg": 145,
         "speedLabel": "Mach 6 (missile)",
-        "rangeKm": 250
+        "rangeKm": 380
       },
       "enabled": true,
       "unitLabel": "division",
@@ -153,9 +197,46 @@
         "introduced": 2007
       },
       "interceptor": {
-        "against": ["aircraft", "cruise", "ballistic"],
-        "pk": 0.75,
-        "magazine": 32
+        "against": ["aircraft", "cruise", "ballistic", "drone"],
+        "pk": 0.6,
+        "magazine": 32,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 3,
+            "maxKm": 380,
+            "ceilingKm": 30,
+            "pk": 0.6,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 3,
+            "maxKm": 40,
+            "pk": 0.6,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 3,
+            "maxKm": 120,
+            "pk": 0.6,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 3,
+            "maxKm": 40,
+            "pk": 0.55,
+            "shots": 2
+          },
+          "ballistic_missile": {
+            "minKm": 5,
+            "maxKm": 60,
+            "ceilingKm": 30,
+            "pk": 0.5,
+            "shots": 2
+          }
+        },
+        "channels": 20,
+        "reactionS": 10,
+        "reloadH": 6
       },
       "sensor": {
         "kind": "radar",
@@ -187,7 +268,7 @@
       "speedKmh": 80,
       "operationalRadiusKm": null,
       "weaponRangeKm": {
-        "min": 1,
+        "min": 0,
         "max": 20
       },
       "damage": {
@@ -236,7 +317,37 @@
       "interceptor": {
         "against": ["aircraft", "cruise", "drone", "rocket"],
         "pk": 0.65,
-        "magazine": 12
+        "magazine": 12,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 1,
+            "maxKm": 20,
+            "ceilingKm": 15,
+            "pk": 0.45,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 1,
+            "maxKm": 20,
+            "pk": 0.65,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 0,
+            "maxKm": 20,
+            "pk": 0.65,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 1,
+            "maxKm": 15,
+            "pk": 0.55,
+            "shots": 2
+          }
+        },
+        "channels": 4,
+        "reactionS": 5,
+        "reloadH": 2
       },
       "sensor": {
         "kind": "radar",
@@ -315,9 +426,40 @@
         "introduced": 1988
       },
       "interceptor": {
-        "against": ["aircraft", "drone"],
-        "pk": 0.6,
-        "magazine": 12
+        "against": ["aircraft", "cruise", "drone"],
+        "pk": 0.7,
+        "magazine": 12,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 0.5,
+            "maxKm": 6,
+            "ceilingKm": 3,
+            "pk": 0.45,
+            "shots": 1
+          },
+          "helicopter": {
+            "minKm": 0.5,
+            "maxKm": 8,
+            "ceilingKm": 3,
+            "pk": 0.7,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 0.5,
+            "maxKm": 6,
+            "pk": 0.6,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 0.5,
+            "maxKm": 5,
+            "pk": 0.35,
+            "shots": 1
+          }
+        },
+        "channels": 3,
+        "reactionS": 5,
+        "reloadH": 1
       },
       "sensor": {
         "kind": "optical",
@@ -478,7 +620,37 @@
       "interceptor": {
         "against": ["aircraft", "cruise", "drone"],
         "pk": 0.75,
-        "magazine": 18
+        "magazine": 18,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 1,
+            "maxKm": 40,
+            "ceilingKm": 15,
+            "pk": 0.6,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 1,
+            "maxKm": 30,
+            "pk": 0.7,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 1,
+            "maxKm": 30,
+            "pk": 0.75,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 1,
+            "maxKm": 30,
+            "pk": 0.75,
+            "shots": 1
+          }
+        },
+        "channels": 12,
+        "reactionS": 5,
+        "reloadH": 3
       }
     },
     {
@@ -506,7 +678,7 @@
       "operationalRadiusKm": null,
       "weaponRangeKm": {
         "min": 0.5,
-        "max": 8
+        "max": 6
       },
       "damage": {
         "infantry": 2,
@@ -557,8 +729,33 @@
       },
       "interceptor": {
         "against": ["aircraft", "drone"],
-        "pk": 0.5,
-        "magazine": 8
+        "pk": 0.6,
+        "magazine": 8,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 0.5,
+            "maxKm": 5,
+            "ceilingKm": 3.8,
+            "pk": 0.35,
+            "shots": 1
+          },
+          "helicopter": {
+            "minKm": 0.5,
+            "maxKm": 6,
+            "ceilingKm": 3.8,
+            "pk": 0.6,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 0.5,
+            "maxKm": 5,
+            "pk": 0.6,
+            "shots": 1
+          }
+        },
+        "channels": 2,
+        "reactionS": 5,
+        "reloadH": 1
       }
     },
     {
@@ -638,7 +835,19 @@
       "interceptor": {
         "against": ["ballistic"],
         "pk": 0.85,
-        "magazine": 48
+        "magazine": 48,
+        "envelopes": {
+          "ballistic_missile": {
+            "minKm": 30,
+            "maxKm": 200,
+            "ceilingKm": 150,
+            "pk": 0.85,
+            "shots": 2
+          }
+        },
+        "channels": 16,
+        "reactionS": 10,
+        "reloadH": 6
       }
     },
     {
@@ -666,7 +875,7 @@
       "operationalRadiusKm": null,
       "weaponRangeKm": {
         "min": 0.2,
-        "max": 8
+        "max": 6
       },
       "damage": {
         "infantry": 0,
@@ -717,8 +926,33 @@
       },
       "interceptor": {
         "against": ["aircraft", "drone"],
-        "pk": 0.5,
-        "magazine": 12
+        "pk": 0.6,
+        "magazine": 12,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 0.2,
+            "maxKm": 5,
+            "ceilingKm": 3.8,
+            "pk": 0.35,
+            "shots": 1
+          },
+          "helicopter": {
+            "minKm": 0.2,
+            "maxKm": 6,
+            "ceilingKm": 3.8,
+            "pk": 0.6,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 0.2,
+            "maxKm": 5,
+            "pk": 0.55,
+            "shots": 1
+          }
+        },
+        "channels": 3,
+        "reactionS": 5,
+        "reloadH": 1
       }
     },
     {
@@ -796,9 +1030,39 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["aircraft", "cruise"],
+        "against": ["aircraft", "cruise", "drone"],
         "pk": 0.5,
-        "magazine": 18
+        "magazine": 18,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 2,
+            "maxKm": 45,
+            "ceilingKm": 18,
+            "pk": 0.5,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 2,
+            "maxKm": 30,
+            "pk": 0.5,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 2,
+            "maxKm": 35,
+            "pk": 0.45,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 2,
+            "maxKm": 30,
+            "pk": 0.45,
+            "shots": 2
+          }
+        },
+        "channels": 6,
+        "reactionS": 15,
+        "reloadH": 4
       }
     },
     {
@@ -954,7 +1218,37 @@
       "interceptor": {
         "against": ["aircraft", "cruise", "drone", "rocket"],
         "pk": 0.7,
-        "magazine": 16
+        "magazine": 16,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 1,
+            "maxKm": 16,
+            "ceilingKm": 10,
+            "pk": 0.55,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 1,
+            "maxKm": 16,
+            "pk": 0.7,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 1,
+            "maxKm": 15,
+            "pk": 0.7,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 1,
+            "maxKm": 12,
+            "pk": 0.65,
+            "shots": 2
+          }
+        },
+        "channels": 4,
+        "reactionS": 5,
+        "reloadH": 2
       }
     },
     {
@@ -981,7 +1275,7 @@
       "speedKmh": 65,
       "operationalRadiusKm": null,
       "weaponRangeKm": {
-        "min": 2,
+        "min": 3,
         "max": 70
       },
       "damage": {
@@ -1032,9 +1326,46 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["aircraft", "cruise"],
-        "pk": 0.75,
-        "magazine": 12
+        "against": ["aircraft", "cruise", "ballistic", "drone"],
+        "pk": 0.65,
+        "magazine": 12,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 3,
+            "maxKm": 70,
+            "ceilingKm": 35,
+            "pk": 0.6,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 3,
+            "maxKm": 40,
+            "pk": 0.65,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 3,
+            "maxKm": 40,
+            "pk": 0.6,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 3,
+            "maxKm": 35,
+            "pk": 0.6,
+            "shots": 2
+          },
+          "ballistic_missile": {
+            "minKm": 3,
+            "maxKm": 20,
+            "ceilingKm": 16,
+            "pk": 0.3,
+            "shots": 2
+          }
+        },
+        "channels": 6,
+        "reactionS": 10,
+        "reloadH": 3
       }
     },
     {
@@ -1112,9 +1443,46 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["aircraft", "cruise", "ballistic"],
-        "pk": 0.7,
-        "magazine": 24
+        "against": ["aircraft", "cruise", "ballistic", "drone"],
+        "pk": 0.55,
+        "magazine": 24,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 3,
+            "maxKm": 200,
+            "ceilingKm": 27,
+            "pk": 0.55,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 3,
+            "maxKm": 30,
+            "pk": 0.55,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 3,
+            "maxKm": 100,
+            "pk": 0.5,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 5,
+            "maxKm": 40,
+            "pk": 0.5,
+            "shots": 2
+          },
+          "ballistic_missile": {
+            "minKm": 5,
+            "maxKm": 40,
+            "ceilingKm": 25,
+            "pk": 0.4,
+            "shots": 2
+          }
+        },
+        "channels": 12,
+        "reactionS": 15,
+        "reloadH": 8
       }
     },
     {
@@ -1192,9 +1560,53 @@
         "stealthDetect": 0.5
       },
       "interceptor": {
-        "against": ["aircraft", "cruise", "ballistic", "hypersonic"],
-        "pk": 0.75,
-        "magazine": 16
+        "against": ["aircraft", "cruise", "ballistic", "hypersonic", "drone"],
+        "pk": 0.65,
+        "magazine": 16,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 5,
+            "maxKm": 400,
+            "ceilingKm": 40,
+            "pk": 0.65,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 5,
+            "maxKm": 40,
+            "pk": 0.5,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 5,
+            "maxKm": 150,
+            "pk": 0.5,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 5,
+            "maxKm": 60,
+            "pk": 0.55,
+            "shots": 2
+          },
+          "ballistic_missile": {
+            "minKm": 10,
+            "maxKm": 200,
+            "ceilingKm": 180,
+            "pk": 0.6,
+            "shots": 2
+          },
+          "hypersonic": {
+            "minKm": 10,
+            "maxKm": 150,
+            "ceilingKm": 100,
+            "pk": 0.35,
+            "shots": 2
+          }
+        },
+        "channels": 10,
+        "reactionS": 4,
+        "reloadH": 8
       }
     },
     {
@@ -1221,7 +1633,7 @@
       "speedKmh": 30,
       "operationalRadiusKm": null,
       "weaponRangeKm": {
-        "min": 0.2,
+        "min": 0.5,
         "max": 5
       },
       "damage": {
@@ -1273,8 +1685,33 @@
       },
       "interceptor": {
         "against": ["aircraft", "drone"],
-        "pk": 0.45,
-        "magazine": 12
+        "pk": 0.55,
+        "magazine": 12,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 0.5,
+            "maxKm": 5,
+            "ceilingKm": 3.5,
+            "pk": 0.3,
+            "shots": 1
+          },
+          "helicopter": {
+            "minKm": 0.5,
+            "maxKm": 5,
+            "ceilingKm": 3.5,
+            "pk": 0.55,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 0.5,
+            "maxKm": 5,
+            "pk": 0.5,
+            "shots": 1
+          }
+        },
+        "channels": 3,
+        "reactionS": 5,
+        "reloadH": 1
       }
     },
     {
@@ -1301,14 +1738,14 @@
       "speedKmh": 30,
       "operationalRadiusKm": null,
       "weaponRangeKm": {
-        "min": 5,
+        "min": 7,
         "max": 45
       },
       "damage": {
         "infantry": 0,
         "armor": 0,
         "aircraft": 12,
-        "helicopter": 6,
+        "helicopter": 0,
         "drone": 2,
         "ship": 0,
         "submarine": 0,
@@ -1352,9 +1789,27 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["aircraft"],
-        "pk": 0.35,
-        "magazine": 6
+        "against": ["aircraft", "drone"],
+        "pk": 0.3,
+        "magazine": 6,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 7,
+            "maxKm": 45,
+            "ceilingKm": 30,
+            "pk": 0.3,
+            "shots": 3
+          },
+          "drone": {
+            "minKm": 7,
+            "maxKm": 40,
+            "pk": 0.25,
+            "shots": 2
+          }
+        },
+        "channels": 3,
+        "reactionS": 60,
+        "reloadH": 4
       }
     },
     {
@@ -1432,9 +1887,33 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["aircraft"],
-        "pk": 0.4,
-        "magazine": 8
+        "against": ["aircraft", "drone"],
+        "pk": 0.35,
+        "magazine": 8,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 3,
+            "maxKm": 25,
+            "ceilingKm": 18,
+            "pk": 0.35,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 3,
+            "maxKm": 20,
+            "pk": 0.35,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 3,
+            "maxKm": 20,
+            "pk": 0.35,
+            "shots": 1
+          }
+        },
+        "channels": 2,
+        "reactionS": 25,
+        "reloadH": 3
       }
     },
     {
@@ -1512,9 +1991,33 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["aircraft"],
+        "against": ["aircraft", "drone"],
         "pk": 0.45,
-        "magazine": 12
+        "magazine": 12,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 4,
+            "maxKm": 24,
+            "ceilingKm": 14,
+            "pk": 0.4,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 4,
+            "maxKm": 20,
+            "pk": 0.45,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 4,
+            "maxKm": 20,
+            "pk": 0.4,
+            "shots": 1
+          }
+        },
+        "channels": 3,
+        "reactionS": 25,
+        "reloadH": 3
       }
     },
     {
@@ -1541,7 +2044,7 @@
       "speedKmh": 80,
       "operationalRadiusKm": null,
       "weaponRangeKm": {
-        "min": 1,
+        "min": 1.5,
         "max": 10
       },
       "damage": {
@@ -1592,9 +2095,33 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["aircraft"],
-        "pk": 0.45,
-        "magazine": 6
+        "against": ["aircraft", "drone"],
+        "pk": 0.5,
+        "magazine": 6,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 1.5,
+            "maxKm": 10,
+            "ceilingKm": 5,
+            "pk": 0.35,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 1.5,
+            "maxKm": 10,
+            "pk": 0.5,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 1.5,
+            "maxKm": 10,
+            "pk": 0.45,
+            "shots": 1
+          }
+        },
+        "channels": 2,
+        "reactionS": 20,
+        "reloadH": 1
       }
     },
     {
@@ -1672,9 +2199,34 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["drone", "aircraft"],
-        "pk": 0.3,
-        "magazine": 4
+        "against": ["aircraft", "drone"],
+        "pk": 0.4,
+        "magazine": 8,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 0,
+            "maxKm": 2.5,
+            "ceilingKm": 1.5,
+            "pk": 0.15,
+            "shots": 1
+          },
+          "helicopter": {
+            "minKm": 0,
+            "maxKm": 2.5,
+            "ceilingKm": 1.5,
+            "pk": 0.35,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 0,
+            "maxKm": 2.5,
+            "pk": 0.4,
+            "shots": 1
+          }
+        },
+        "channels": 2,
+        "reactionS": 5,
+        "reloadH": 0.5
       }
     },
     {
@@ -1701,7 +2253,7 @@
       "speedKmh": 60,
       "operationalRadiusKm": null,
       "weaponRangeKm": {
-        "min": 0.5,
+        "min": 0.8,
         "max": 5
       },
       "damage": {
@@ -1753,8 +2305,33 @@
       },
       "interceptor": {
         "against": ["aircraft", "drone"],
-        "pk": 0.45,
-        "magazine": 8
+        "pk": 0.5,
+        "magazine": 8,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 0.8,
+            "maxKm": 5,
+            "ceilingKm": 3.5,
+            "pk": 0.3,
+            "shots": 1
+          },
+          "helicopter": {
+            "minKm": 0.8,
+            "maxKm": 5,
+            "ceilingKm": 3.5,
+            "pk": 0.5,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 0.8,
+            "maxKm": 5,
+            "pk": 0.45,
+            "shots": 1
+          }
+        },
+        "channels": 2,
+        "reactionS": 8,
+        "reloadH": 1
       }
     },
     {
@@ -1832,9 +2409,46 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["aircraft", "cruise", "ballistic"],
-        "pk": 0.7,
-        "magazine": 32
+        "against": ["aircraft", "cruise", "ballistic", "drone"],
+        "pk": 0.6,
+        "magazine": 32,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 3,
+            "maxKm": 260,
+            "ceilingKm": 27,
+            "pk": 0.55,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 3,
+            "maxKm": 30,
+            "pk": 0.55,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 3,
+            "maxKm": 100,
+            "pk": 0.55,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 3,
+            "maxKm": 50,
+            "pk": 0.6,
+            "shots": 2
+          },
+          "ballistic_missile": {
+            "minKm": 5,
+            "maxKm": 35,
+            "ceilingKm": 18,
+            "pk": 0.45,
+            "shots": 2
+          }
+        },
+        "channels": 12,
+        "reactionS": 12,
+        "reloadH": 6
       }
     },
     {
@@ -1912,9 +2526,39 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["aircraft", "cruise"],
-        "pk": 0.7,
-        "magazine": 24
+        "against": ["aircraft", "cruise", "drone"],
+        "pk": 0.6,
+        "magazine": 24,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 2,
+            "maxKm": 70,
+            "ceilingKm": 25,
+            "pk": 0.55,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 2,
+            "maxKm": 35,
+            "pk": 0.6,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 2,
+            "maxKm": 40,
+            "pk": 0.55,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 2,
+            "maxKm": 35,
+            "pk": 0.6,
+            "shots": 2
+          }
+        },
+        "channels": 6,
+        "reactionS": 10,
+        "reloadH": 3
       }
     },
     {
@@ -1994,7 +2638,37 @@
       "interceptor": {
         "against": ["aircraft", "cruise", "drone"],
         "pk": 0.65,
-        "magazine": 8
+        "magazine": 8,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 1,
+            "maxKm": 15,
+            "ceilingKm": 10,
+            "pk": 0.5,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 1,
+            "maxKm": 15,
+            "pk": 0.65,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 1,
+            "maxKm": 12,
+            "pk": 0.65,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 1,
+            "maxKm": 12,
+            "pk": 0.6,
+            "shots": 2
+          }
+        },
+        "channels": 4,
+        "reactionS": 6,
+        "reloadH": 2
       }
     },
     {
@@ -2072,9 +2746,39 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["aircraft", "cruise"],
-        "pk": 0.5,
-        "magazine": 4
+        "against": ["aircraft", "cruise", "drone"],
+        "pk": 0.55,
+        "magazine": 4,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 0.5,
+            "maxKm": 12,
+            "ceilingKm": 6,
+            "pk": 0.4,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 0.5,
+            "maxKm": 12,
+            "pk": 0.55,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 0.5,
+            "maxKm": 10,
+            "pk": 0.45,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 1,
+            "maxKm": 8,
+            "pk": 0.4,
+            "shots": 2
+          }
+        },
+        "channels": 2,
+        "reactionS": 6,
+        "reloadH": 1
       }
     },
     {
@@ -2228,9 +2932,46 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["aircraft", "cruise", "ballistic"],
+        "against": ["aircraft", "cruise", "ballistic", "drone"],
         "pk": 0.75,
-        "magazine": 32
+        "magazine": 32,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 3,
+            "maxKm": 120,
+            "ceilingKm": 20,
+            "pk": 0.65,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 3,
+            "maxKm": 40,
+            "pk": 0.65,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 3,
+            "maxKm": 80,
+            "pk": 0.65,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 3,
+            "maxKm": 50,
+            "pk": 0.75,
+            "shots": 2
+          },
+          "ballistic_missile": {
+            "minKm": 3,
+            "maxKm": 25,
+            "ceilingKm": 15,
+            "pk": 0.6,
+            "shots": 2
+          }
+        },
+        "channels": 16,
+        "reactionS": 8,
+        "reloadH": 6
       }
     },
     {
@@ -2310,7 +3051,37 @@
       "interceptor": {
         "against": ["aircraft", "cruise", "drone"],
         "pk": 0.85,
-        "magazine": 24
+        "magazine": 24,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 1,
+            "maxKm": 40,
+            "ceilingKm": 20,
+            "pk": 0.65,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 1,
+            "maxKm": 30,
+            "pk": 0.75,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 1,
+            "maxKm": 30,
+            "pk": 0.85,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 1,
+            "maxKm": 30,
+            "pk": 0.85,
+            "shots": 1
+          }
+        },
+        "channels": 12,
+        "reactionS": 5,
+        "reloadH": 3
       }
     },
     {
@@ -2388,9 +3159,40 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["drone", "cruise", "rocket"],
+        "against": ["aircraft", "cruise", "drone", "rocket"],
         "pk": 0.7,
-        "magazine": 10
+        "magazine": 24,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 0,
+            "maxKm": 4,
+            "ceilingKm": 3,
+            "pk": 0.25,
+            "shots": 1
+          },
+          "helicopter": {
+            "minKm": 0,
+            "maxKm": 4,
+            "ceilingKm": 3,
+            "pk": 0.5,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 0,
+            "maxKm": 4,
+            "pk": 0.7,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 0,
+            "maxKm": 3.5,
+            "pk": 0.5,
+            "shots": 1
+          }
+        },
+        "channels": 4,
+        "reactionS": 4,
+        "reloadH": 0.5
       }
     },
     {
@@ -2468,9 +3270,40 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["drone", "aircraft"],
-        "pk": 0.5,
-        "magazine": 6
+        "against": ["aircraft", "cruise", "drone"],
+        "pk": 0.55,
+        "magazine": 16,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 0,
+            "maxKm": 4,
+            "ceilingKm": 3,
+            "pk": 0.2,
+            "shots": 1
+          },
+          "helicopter": {
+            "minKm": 0,
+            "maxKm": 4,
+            "ceilingKm": 3,
+            "pk": 0.45,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 0,
+            "maxKm": 4,
+            "pk": 0.55,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 0,
+            "maxKm": 3,
+            "pk": 0.3,
+            "shots": 1
+          }
+        },
+        "channels": 2,
+        "reactionS": 5,
+        "reloadH": 0.5
       }
     },
     {
@@ -2548,9 +3381,39 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["aircraft", "cruise"],
-        "pk": 0.55,
-        "magazine": 8
+        "against": ["aircraft", "cruise", "drone"],
+        "pk": 0.6,
+        "magazine": 8,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 0.5,
+            "maxKm": 11,
+            "ceilingKm": 6,
+            "pk": 0.45,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 0.5,
+            "maxKm": 11,
+            "pk": 0.6,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 0.5,
+            "maxKm": 10,
+            "pk": 0.55,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 1,
+            "maxKm": 8,
+            "pk": 0.5,
+            "shots": 2
+          }
+        },
+        "channels": 2,
+        "reactionS": 6,
+        "reloadH": 1
       }
     },
     {
@@ -2583,8 +3446,8 @@
       "damage": {
         "infantry": 0,
         "armor": 0,
-        "aircraft": 6,
-        "helicopter": 12,
+        "aircraft": 0,
+        "helicopter": 0,
         "drone": 14,
         "ship": 0,
         "submarine": 0,
@@ -2628,9 +3491,27 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["rocket", "cruise", "drone"],
+        "against": ["cruise", "drone", "rocket"],
         "pk": 0.9,
-        "magazine": 60
+        "magazine": 60,
+        "envelopes": {
+          "drone": {
+            "minKm": 4,
+            "maxKm": 70,
+            "ceilingKm": 10,
+            "pk": 0.9,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 4,
+            "maxKm": 40,
+            "pk": 0.8,
+            "shots": 1
+          }
+        },
+        "channels": 20,
+        "reactionS": 15,
+        "reloadH": 4
       }
     },
     {
@@ -2664,7 +3545,7 @@
         "infantry": 0,
         "armor": 0,
         "aircraft": 18,
-        "helicopter": 10,
+        "helicopter": 0,
         "drone": 6,
         "ship": 0,
         "submarine": 0,
@@ -2708,9 +3589,40 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["aircraft", "cruise", "ballistic"],
-        "pk": 0.8,
-        "magazine": 24
+        "against": ["aircraft", "cruise", "ballistic", "drone"],
+        "pk": 0.75,
+        "magazine": 24,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 5,
+            "maxKm": 250,
+            "ceilingKm": 15,
+            "pk": 0.6,
+            "shots": 2
+          },
+          "drone": {
+            "minKm": 5,
+            "maxKm": 100,
+            "pk": 0.6,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 5,
+            "maxKm": 150,
+            "pk": 0.75,
+            "shots": 2
+          },
+          "ballistic_missile": {
+            "minKm": 5,
+            "maxKm": 100,
+            "ceilingKm": 15,
+            "pk": 0.6,
+            "shots": 2
+          }
+        },
+        "channels": 8,
+        "reactionS": 10,
+        "reloadH": 6
       }
     },
     {
@@ -2790,7 +3702,18 @@
       "interceptor": {
         "against": ["ballistic"],
         "pk": 0.85,
-        "magazine": 24
+        "magazine": 24,
+        "envelopes": {
+          "ballistic_missile": {
+            "minKm": 100,
+            "maxKm": 800,
+            "pk": 0.85,
+            "shots": 2
+          }
+        },
+        "channels": 8,
+        "reactionS": 15,
+        "reloadH": 8
       }
     },
     {
@@ -2868,9 +3791,46 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["aircraft", "cruise", "ballistic"],
-        "pk": 0.6,
-        "magazine": 16
+        "against": ["aircraft", "cruise", "ballistic", "drone"],
+        "pk": 0.45,
+        "magazine": 16,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 5,
+            "maxKm": 300,
+            "ceilingKm": 27,
+            "pk": 0.45,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 5,
+            "maxKm": 30,
+            "pk": 0.45,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 5,
+            "maxKm": 100,
+            "pk": 0.45,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 5,
+            "maxKm": 40,
+            "pk": 0.45,
+            "shots": 2
+          },
+          "ballistic_missile": {
+            "minKm": 10,
+            "maxKm": 60,
+            "ceilingKm": 25,
+            "pk": 0.35,
+            "shots": 2
+          }
+        },
+        "channels": 6,
+        "reactionS": 15,
+        "reloadH": 6
       }
     },
     {
@@ -2948,9 +3908,39 @@
         "stealthDetect": 0.0
       },
       "interceptor": {
-        "against": ["aircraft", "cruise"],
-        "pk": 0.65,
-        "magazine": 12
+        "against": ["aircraft", "cruise", "drone"],
+        "pk": 0.55,
+        "magazine": 12,
+        "envelopes": {
+          "aircraft": {
+            "minKm": 3,
+            "maxKm": 30,
+            "ceilingKm": 18,
+            "pk": 0.5,
+            "shots": 2
+          },
+          "helicopter": {
+            "minKm": 3,
+            "maxKm": 25,
+            "pk": 0.55,
+            "shots": 1
+          },
+          "drone": {
+            "minKm": 3,
+            "maxKm": 25,
+            "pk": 0.5,
+            "shots": 1
+          },
+          "cruise_missile": {
+            "minKm": 3,
+            "maxKm": 20,
+            "pk": 0.5,
+            "shots": 2
+          }
+        },
+        "channels": 4,
+        "reactionS": 15,
+        "reloadH": 3
       }
     }
   ]

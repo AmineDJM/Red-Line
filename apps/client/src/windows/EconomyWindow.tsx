@@ -487,6 +487,7 @@ function ResourceProducers() {
   const defs = useWorld((s) => s.provinces);
   const [open, setOpen] = useState<Resource | null>(null);
   const rows = view?.economy.detail?.provinces ?? [];
+  const flows = view?.economy.detail?.resources;
   if (!rows.length) return null;
   const services = rows.filter((p) => defs[p.id]?.resources?.length === 0).length;
   return (
@@ -496,7 +497,8 @@ function ResourceProducers() {
         const list = rows
           .filter((p) => (p.resources[r] ?? 0) > 0)
           .sort((a, b) => (b.resources[r] ?? 0) - (a.resources[r] ?? 0) || (a.id < b.id ? -1 : 1));
-        const total = list.reduce((s, p) => s + (p.resources[r] ?? 0), 0);
+        const floor = flows?.[r]?.floor ?? 0;
+        const total = list.reduce((s, p) => s + (p.resources[r] ?? 0), 0) + floor;
         const shown = open === r ? list : list.slice(0, 4);
         return (
           <div key={r} className="ecores__group" data-resource={r}>
@@ -511,8 +513,20 @@ function ResourceProducers() {
               <span className="muted small">{t('economy.producers', { count: list.length })}</span>
               <span className="rl-tone-green">+{formatNumber(total, 0)}</span>
             </button>
+            {floor > 0 ? (
+              <p
+                className="ecores__floor small"
+                title={t('economy.nationalFloorTip')}
+                data-testid={`eco-floor-${r}`}
+              >
+                <span>{t('economy.nationalFloor')}</span>
+                <span className="rl-tone-green">+{formatNumber(floor, 1)}</span>
+              </p>
+            ) : null}
             {list.length === 0 ? (
-              <p className="muted small">{t('economy.noProducer')}</p>
+              floor > 0 ? null : (
+                <p className="muted small">{t('economy.noProducer')}</p>
+              )
             ) : (
               <ul className="ecores__list">
                 {shown.map((p) => {

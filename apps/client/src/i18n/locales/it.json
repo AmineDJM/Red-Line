@@ -373,7 +373,9 @@
       "multi_many": "{{count}} selezionate",
       "multi_other": "{{count}} selezionate",
       "ready": "Disponibile tra",
-      "ammo": "Munizioni"
+      "ammo": "Munizioni",
+      "aboard": "A bordo di",
+      "loading": "Imbarco"
     },
     "orders": {
       "moveTitle": "Ordine di movimento",
@@ -382,6 +384,7 @@
       "eta": "Arrivo",
       "warning": "Attenzione",
       "outOfRange": "Bersaglio fuori portata",
+      "effect": "Efficacia",
       "confirm": "Conferma",
       "cancel": "Annulla",
       "sent": "Ordine trasmesso",
@@ -411,6 +414,15 @@
       "patrolTitle": "Ordine di pattuglia",
       "reconTitle": "Missione di ricognizione",
       "blockadeTitle": "Ordine di blocco",
+      "escortTitle": "Scortare",
+      "embarkTitle": "Imbarcare",
+      "disembarkTitle": "Sbarco anfibio",
+      "disembarkHereTitle": "Sbarcare qui",
+      "places": "Posti",
+      "placesValue": "{{need}} necessari · {{free}} liberi",
+      "aboard": "Unità a bordo",
+      "overCapacity": "Capacità superata: dividi l’unità.",
+      "noCapturer": "Nessuna unità di questa selezione può conquistare: servono fanteria, corazzati o artiglieria.",
       "radius": "Raggio",
       "reasons": {
         "target_invalid": "Bersaglio non valido.",
@@ -424,7 +436,23 @@
         "aircraft_cooldown": "Velivolo in approntamento a terra (pronto tra {{min}} min).",
         "partial": "Ordine trasmesso; {{count}} gruppo/i escluso/i: {{detail}}",
         "munition_use_strike": "Munizioni: usate l'ordine di attacco (strike).",
-        "ceasefire": "Cessate il fuoco in vigore."
+        "ceasefire": "Cessate il fuoco in vigore.",
+        "ad_cannot_engage": "{{name}} non intercetta {{cat}}.",
+        "ad_out_of_range": "{{name}} — fuori portata: {{dist}} km, portata {{min}}–{{max}} km contro {{cat}}.",
+        "ad_no_ammo": "{{name}}: intercettori esauriti, ricarica in corso.",
+        "escort_self": "Un’unità non può scortare se stessa.",
+        "escort_target_invalid": "Obiettivo di scorta non valido: scegli una delle tue unità mobili.",
+        "escort_incapable": "{{name}} non può scortare (nessuna arma).",
+        "escort_domain": "{{name}} non può seguire questa unità (navi con navi, truppe con truppe).",
+        "transport_not_ship": "{{name}} non può trasportare truppe.",
+        "transport_not_land": "{{name}}: si imbarcano solo truppe di terra.",
+        "transport_capacity": "Capacità superata: {{need}} posti necessari, {{free}} liberi su {{cap}}. Dividi l’unità.",
+        "transport_too_far": "{{name}}: troppo lontano dalla nave ({{dist}} km, al massimo {{max}} km).",
+        "transport_moving": "La nave deve essere ferma.",
+        "transport_no_shore": "Nessuna costa praticabile vicina: avvicina la nave a un porto o a una strada costiera.",
+        "transport_empty": "Nessuna di queste truppe è a bordo.",
+        "transport_embarked": "{{name}}: truppe a bordo, usa «Sbarcare» sulla nave.",
+        "transport_busy": "{{name}}: già in trasporto."
       },
       "classes": {
         "infantry": "fanteria",
@@ -436,6 +464,14 @@
         "submarine": "sottomarino",
         "missile": "missile",
         "building": "installazione"
+      },
+      "threats": {
+        "aircraft": "aerei",
+        "helicopter": "elicotteri",
+        "drone": "droni",
+        "cruise_missile": "missili da crociera",
+        "ballistic_missile": "missili balistici",
+        "hypersonic": "missili ipersonici"
       }
     },
     "status": {
@@ -498,6 +534,9 @@
       "patrol": "Pattuglia",
       "recon": "Ricognizione",
       "blockade": "Blocco",
+      "escort": "Scortare",
+      "embark": "Imbarcare",
+      "disembark": "Sbarcare",
       "rtb": "Rientro",
       "rtbAir": "Rientro alla base",
       "rtbSea": "Rientro in porto",
@@ -511,6 +550,10 @@
         "airSeaOnly": "Pattuglia riservata a velivoli e navi.",
         "noRecon": "Ricognizione riservata a droni e aerei da ricognizione.",
         "seaOnly": "Blocco riservato alle navi.",
+        "noEscort": "Scorta riservata alle unità armate e mobili.",
+        "noLand": "Imbarco riservato alle truppe di terra.",
+        "noTransport": "Nessuna nave da trasporto amica ferma nelle vicinanze.",
+        "noCargo": "Nessuna truppa a bordo di questa nave.",
         "idle": "Niente da fermare: unità già ferme.",
         "none": "Azione non disponibile."
       },
@@ -522,9 +565,28 @@
         "patrol": "fate clic sul centro della zona di pattuglia.",
         "recon": "fate clic sulla zona da sorvolare.",
         "blockade": "fate clic su una provincia costiera nemica.",
+        "escort": "clicca su una delle tue unità da scortare.",
+        "embark": "clicca sulla nave da trasporto.",
+        "disembark": "clicca sulla costa dove sbarcare, o sulla nave per sbarcare sul posto.",
         "needEnemy": "Scegliete un'unità nemica visibile.",
-        "needPort": "Scegliete una provincia costiera straniera."
+        "needPort": "Scegliete una provincia costiera straniera.",
+        "needFriendly": "Scegli una delle tue unità.",
+        "needTransport": "Scegli una delle tue navi da trasporto."
       }
+    },
+    "capture": {
+      "progress": "Conquista di {{city}}",
+      "noCapturer": "{{city}}: questa unità non può conquistare (servono fanteria, corazzati o artiglieria).",
+      "noWar": "{{city}}: nessuna guerra con il proprietario, nessuna conquista.",
+      "defended": "{{city}}: difensori presenti, la conquista inizierà quando saranno respinti."
+    },
+    "cargo": {
+      "title": "Carico",
+      "places": "{{used}} / {{capacity}} posti",
+      "empty": "Nessuna truppa a bordo.",
+      "loading": "imbarco",
+      "landing": "Sbarco tra {{eta}}",
+      "sailing": "Traversata verso la zona di sbarco"
     }
   },
   "province": {
@@ -886,13 +948,12 @@
     "ui": {
       "build": "Costruisci",
       "upgrade": "Livello {{level}}",
+      "upgradeTo": "Potenziamento al livello {{level}}",
       "upgrading": "Potenziamento L{{level}}",
       "repair": "Ripara",
       "repairing": "Riparazione",
       "health": "Stato dell'edificio",
       "operational": "Operativo",
-      "already": "Già costruito",
-      "coastalOnly": "Solo provincia costiera",
       "costTip": "Costo {{cost}} · durata {{time}}",
       "buildStarted": "Costruzione avviata: {{name}}",
       "upgradeStarted": "Potenziamento avviato: {{name}} (L{{level}})",
@@ -906,6 +967,11 @@
         "no_resource": "Risorsa assente: {{resource}}",
         "coastal_only": "Solo provincia costiera",
         "not_urban": "Richiesto un polo elettronico o una grande città"
+      },
+      "hidden": {
+        "no_resource": "Non disponibile qui, nessun giacimento: {{list}}.",
+        "coastal_only": "Non disponibile qui, provincia senza sbocco sul mare: {{list}}.",
+        "not_urban": "Non disponibile qui, né polo elettronico né grande città: {{list}}."
       }
     },
     "fortification": "Fortificazioni"
@@ -940,7 +1006,8 @@
     "genericOrigin": "Generico"
   },
   "units": {
-    "km": "{{value}} km"
+    "km": "{{value}} km",
+    "kmRange": "{{min}}–{{max}} km"
   },
   "map": {
     "attribution": "Immagini NASA Blue Marble · Natural Earth",
@@ -1159,7 +1226,9 @@
     },
     "settings": {
       "reduceMotion": "Riduci le animazioni",
-      "reduceMotionHelp": "Disattiva gli effetti di combattimento (colpi, esplosioni), le pulsazioni e i tratteggi animati della mappa."
+      "reduceMotionHelp": "Disattiva gli effetti di combattimento (colpi, esplosioni), le pulsazioni e i tratteggi animati della mappa.",
+      "resourceIcons": "Risorse delle province sulla mappa",
+      "resourceIconsHelp": "Icona della risorsa principale (e secondaria) prima del nome della città, ricchezza in punti (da 1 a 3), solo da vicino."
     }
   },
   "legal": {
@@ -1347,7 +1416,9 @@
       "double": "doppiogiochista",
       "exfiltrated": "esfiltrato",
       "captured": "catturato",
-      "expelled": "Espulso"
+      "expelled": "Espulso",
+      "executed": "Giustiziato",
+      "released": "Rilasciato"
     },
     "ops": {
       "infiltrate_spy": "Infiltrare una spia",
@@ -1427,7 +1498,8 @@
     "tabs": {
       "military": "Militare",
       "dossiers": "Dossier",
-      "reports": "Rapporti"
+      "reports": "Rapporti",
+      "detainees": "Detenuti"
     },
     "cover": "Copertura",
     "covers": {
@@ -1482,6 +1554,173 @@
       "agents": "Agenti sul posto",
       "reliability": "Affidabilità del dossier",
       "empty": "Nessun dossier: i tuoi servizi seguono le nazioni vicine, nemiche o prese di mira dalle tue operazioni."
+    },
+    "dz": {
+      "title": "Detenuti",
+      "subtitle": "Prigionieri, agenti detenuti, negoziati",
+      "ourRegime": "Il nostro regime: {{regime}}",
+      "ours": "I nostri prigionieri",
+      "abroad": "I nostri agenti detenuti all'estero",
+      "negotiations": "Negoziati",
+      "relations": "Relazioni bilaterali",
+      "noDetainees": "Nessun agente straniero detenuto.",
+      "noAbroad": "Nessuno dei nostri agenti è detenuto all'estero.",
+      "noSwaps": "Nessun negoziato in corso.",
+      "noRelations": "Nessuna relazione colpita da un caso di spionaggio.",
+      "defaultHint": "Senza decisione entro la scadenza: custodia cautelare (pressione diplomatica continua).",
+      "kinds": {
+        "diplomat": "Ufficiale con copertura diplomatica",
+        "illegal": "Ufficiale con copertura non ufficiale",
+        "source": "Fonte locale",
+        "double": "Agente doppio"
+      },
+      "kindsShort": {
+        "diplomat": "Diplomatico",
+        "illegal": "Illegale",
+        "source": "Fonte",
+        "double": "Doppio"
+      },
+      "status": {
+        "pending": "Decisione in attesa",
+        "held": "Custodia cautelare",
+        "jailed": "Condannato",
+        "expelled": "Espulso",
+        "returned": "Rimpatriato",
+        "executed": "Giustiziato",
+        "released": "Rilasciato",
+        "exchanged": "Scambiato",
+        "served": "Pena scontata",
+        "turned": "Agganciato"
+      },
+      "fate": {
+        "held": "Detenuto",
+        "interrogation": "Sotto interrogatorio",
+        "jailed": "Condannato",
+        "expelled": "Espulso",
+        "returned": "Rimpatriato",
+        "executed": "Giustiziato",
+        "released": "Rilasciato",
+        "exchanged": "Scambiato",
+        "served": "Pena scontata"
+      },
+      "regimes": {
+        "democracy": "Democrazia",
+        "hybrid": "Regime ibrido",
+        "authoritarian": "Regime autoritario"
+      },
+      "regimesShort": {
+        "democracy": "democrazia",
+        "hybrid": "ibrido",
+        "authoritarian": "autoritario"
+      },
+      "actions": {
+        "arrest": "Arrestare",
+        "interrogate": "Interrogare",
+        "expel": "Espellere",
+        "return": "Rimpatriare",
+        "jail": "Imprigionare",
+        "execute": "Giustiziare",
+        "turn": "Agganciare",
+        "release": "Rilasciare"
+      },
+      "help": {
+        "arrest": "Arresto pubblico: l'agente diventa un detenuto e l'incidente diventa diplomatico.",
+        "interrogate": "Interrogatori controllati: rete, operazioni previste, intenzioni. Le confessioni possono essere false.",
+        "expel": "Persona non grata: conseguenza lieve, espulsioni reciproche possibili.",
+        "return": "Rimandato nel suo paese: conseguenza lieve, senza processo.",
+        "jail": "Pena detentiva: pressione diplomatica continua, merce di scambio, costo basso.",
+        "execute": "Pena capitale: relazioni a picco, rappresaglie probabili, effetto dissuasivo.",
+        "turn": "Proporgli di lavorare per noi: rilasciato in apparenza, agente doppio al nostro servizio.",
+        "release": "Rilascio senza contropartita: gesto di distensione."
+      },
+      "days": "{{n}} g",
+      "decision": "Decisione",
+      "sentence": "Durata della pena",
+      "unavailable": "non disponibile",
+      "confirmTitle": "Decisione — detenuto {{ref}}",
+      "confirm": "Conferma la decisione",
+      "applied": "Decisione applicata: {{action}}",
+      "consequences": "Conseguenze previste",
+      "fx": {
+        "relations": "Relazioni con {{nationLe}}",
+        "reputation": "Reputazione internazionale",
+        "stability": "Stabilità interna",
+        "retaliation": "Rischio di rappresaglie",
+        "serviceHit": "Servizio avversario indebolito contro di noi",
+        "serviceDays": "{{pct}} per {{days}} g",
+        "worldRelations": "Relazioni con le democrazie",
+        "council": "Voto di condanna al Consiglio",
+        "chance": "Probabilità di successo",
+        "pressure": "Pressione diplomatica",
+        "perDay": "{{value}} / giorno",
+        "immunity": "Violazione dell'immunità diplomatica",
+        "hours": "Durata",
+        "none": "Nessuna conseguenza rilevante."
+      },
+      "risk": {
+        "none": "nullo",
+        "low": "basso",
+        "moderate": "moderato",
+        "high": "alto"
+      },
+      "blocked": {
+        "war_only": "Esecuzione impossibile in tempo di pace per il nostro regime.",
+        "never": "La pena capitale è abolita.",
+        "interrogating": "Interrogatorio in corso.",
+        "done": "Già tentato.",
+        "not_plausible": "Non plausibile per questo detenuto.",
+        "final": "Questo detenuto non è più nelle nostre mani."
+      },
+      "decideIn": "Decisione tra {{left}}",
+      "sentenceLeft": "Pena di {{days}} g · rilasciabile tra {{left}}",
+      "interrogating": "Interrogatorio: ancora {{left}}",
+      "revealed": "Confessioni: {{agents}} agente/i, {{ops}} operazione/i",
+      "caughtDuring": "Catturato durante: {{op}}",
+      "value": "Valore",
+      "valueHint": "Valore di scambio stimato (ufficiale > fonte, accesso).",
+      "exchange": "Scambiare",
+      "negotiate": "Negoziare",
+      "arrested": "Agente arrestato",
+      "incoming": "Ricevuta",
+      "outgoing": "Inviata",
+      "counter": "Controproposta",
+      "swapStatus": {
+        "open": "In attesa",
+        "accepted": "Concluso",
+        "refused": "Rifiutato",
+        "expired": "Scaduto",
+        "void": "Decaduto"
+      },
+      "expires": "Scade tra {{left}}",
+      "weRelease": "Rilasciamo",
+      "weObtain": "Otteniamo",
+      "money": "Denaro",
+      "theyPay": "Loro pagano {{amount}}",
+      "wePay": "Noi paghiamo {{amount}}",
+      "accord": "Accordo di non ingerenza",
+      "accordNone": "Nessuno",
+      "accordShort": "Non ingerenza",
+      "sanctions": "Sanzioni",
+      "sanctionsLifted": "Alleggerite da {{nationLe}}",
+      "accept": "Accetta",
+      "refuse": "Rifiuta",
+      "acceptedOk": "Accordo concluso",
+      "refusedOk": "Proposta rifiutata",
+      "swapTitle": "Negoziato — {{nation}}",
+      "partner": "Paese",
+      "relationsNow": "Relazioni attuali: {{value}}",
+      "atWar": "in guerra",
+      "noneToRelease": "Nessuno dei loro agenti è detenuto da noi.",
+      "noneToObtain": "Nessuno dei nostri agenti è detenuto da loro.",
+      "moneyNone": "Nessuno",
+      "moneyPay": "Paghiamo",
+      "moneyAsk": "Chiediamo",
+      "amount": "Importo",
+      "liftSanctions": "Alleggerire le sanzioni che sosteniamo contro di loro",
+      "balance": "Valore ceduto {{give}} · ottenuto {{get}}",
+      "balanceHint": "Un'IA chiede di più se le relazioni sono ostili o in guerra; può rifiutare o controproporre.",
+      "send": "Invia la proposta",
+      "sent": "Proposta inviata"
     }
   },
   "sheet": {
@@ -2077,6 +2316,8 @@
     "producers_many": "{{count}} province",
     "producers_other": "{{count}} province",
     "noProducer": "Nessuna provincia produttrice: acquista sul mercato.",
+    "nationalFloor": "Produzione nazionale minima",
+    "nationalFloorTip": "Soglia nazionale: produzione interna minima (raffinazione, riciclo, piccoli giacimenti, agricoltura di sussistenza), garantita anche senza province produttrici.",
     "servicesProvinces_one": "{{count}} provincia senza risorse (solo denaro: servizi, finanza)",
     "servicesProvinces_many": "{{count}} province senza risorse (solo denaro: servizi, finanza)",
     "servicesProvinces_other": "{{count}} province senza risorse (solo denaro: servizi, finanza)"
@@ -3193,6 +3434,84 @@
       "spent": "Spese"
     }
   },
+  "airDefense": {
+    "title": "Difesa antiaerea",
+    "legacy": "Profilo semplificato",
+    "interceptors": "Intercettori",
+    "fullIn": "Pieno tra {{value}}",
+    "no": "No",
+    "magazine": "Intercettori per elemento",
+    "channels": "Canali di tiro",
+    "reaction": "Reazione",
+    "reload": "Ricarica completa",
+    "seconds": "{{value}} s",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "Minaccia",
+      "range": "Portata",
+      "ceiling": "Tangenza",
+      "pk": "Pk",
+      "shots": "Colpi/bersaglio"
+    },
+    "threats": {
+      "aircraft": "Aerei",
+      "helicopter": "Elicotteri",
+      "drone": "Droni",
+      "cruise_missile": "Missili da crociera",
+      "ballistic_missile": "Missili balistici",
+      "hypersonic": "Ipersonici"
+    },
+    "short": {
+      "aircraft": "AER",
+      "helicopter": "ELI",
+      "drone": "DRN",
+      "cruise_missile": "CRO",
+      "ballistic_missile": "BAL",
+      "hypersonic": "IPE"
+    },
+    "shotDown": "Abbattuti: {{cat}}",
+    "fired": "Intercettori lanciati"
+  },
+  "effect": {
+    "title": "Efficacia",
+    "sheetTitle": "Efficacia per tipo di bersaglio",
+    "note": "Media per categoria, in base a danni, intercettazioni e attacchi del gioco.",
+    "chip": "{{name}}: {{level}} {{against}}",
+    "intercept": "intercettazione {{ranges}}",
+    "noneList": "Nessun effetto contro: {{list}}",
+    "order": "{{level}} contro {{target}}",
+    "levels": {
+      "0": "nulla",
+      "1": "bassa",
+      "2": "media",
+      "3": "buona",
+      "4": "eccellente"
+    },
+    "targets": {
+      "aircraft": "Aerei",
+      "helicopter": "Elicotteri",
+      "drone": "Droni",
+      "missile": "Missili",
+      "armor": "Corazzati",
+      "infantry": "Fanteria",
+      "artillery": "Artiglieria",
+      "ship": "Navi",
+      "submarine": "Sottomarini",
+      "building": "Edifici"
+    },
+    "against": {
+      "aircraft": "contro aerei",
+      "helicopter": "contro elicotteri",
+      "drone": "contro droni",
+      "missile": "contro missili",
+      "armor": "contro corazzati",
+      "infantry": "contro fanteria",
+      "artillery": "contro artiglieria",
+      "ship": "contro navi",
+      "submarine": "contro sottomarini",
+      "building": "contro edifici"
+    }
+  },
   "stacks": {
     "composition_one": "Composizione · {{count}} sistema",
     "composition_many": "Composizione · {{count}} sistemi",
@@ -3379,7 +3698,10 @@
       "dismantle": "Smantellamento della rete di {{nation}}",
       "deception": "Operazione di inganno — {{nation}}",
       "hardened": "Siti sensibili protetti",
-      "strategicAlert": "ALLERTA STRATEGICA — {{nation}}"
+      "strategicAlert": "ALLERTA STRATEGICA — {{nation}}",
+      "interrogation": "Interrogatorio — detenuto {{ref}} ({{nation}})",
+      "turnRefused": "Aggancio rifiutato — detenuto {{ref}}",
+      "detaineeTurned": "Detenuto {{ref}} agganciato"
     },
     "note": {
       "allianceInvite": {
@@ -3496,7 +3818,108 @@
       "agentExpelled": {
         "title": "Diplomatici espulsi",
         "text": "{{host}} espelle diplomatici di {{owner}} per spionaggio."
+      },
+      "detaineeNew": {
+        "title": "Agente straniero detenuto",
+        "text": "Un agente di {{owner}} è nelle nostre mani: decisione attesa entro {{days}} giorni."
+      },
+      "detaineeHeld": {
+        "title": "Custodia cautelare",
+        "text": "Senza decisione, l'agente di {{owner}} è posto in custodia cautelare."
+      },
+      "spyInterrogated": {
+        "title": "Agente interrogato",
+        "text": "{{codename}} è interrogato dai servizi di {{host}}."
+      },
+      "spyReturned": {
+        "title": "Agente rimpatriato",
+        "text": "{{codename}} è stato rimandato nel suo paese da {{host}}."
+      },
+      "spyJailed": {
+        "title": "Agente condannato",
+        "text": "{{codename}} condannato a {{days}} giorni di carcere da {{host}}."
+      },
+      "spyExecuted": {
+        "title": "Agente giustiziato",
+        "text": "{{codename}} è stato giustiziato da {{host}}."
+      },
+      "spyReleased": {
+        "title": "Agente rilasciato",
+        "text": "{{host}} ha rilasciato {{codename}}."
+      },
+      "spyServed": {
+        "title": "Fine pena",
+        "text": "{{codename}} ha scontato la pena ({{host}}) e rientra in patria."
+      },
+      "swapProposal": {
+        "title": "Proposta di scambio",
+        "text": "{{nation}} propone uno scambio di agenti."
+      },
+      "swapCounter": {
+        "title": "Controproposta",
+        "text": "{{nation}} fa una controproposta."
+      },
+      "swapAccepted": {
+        "title": "Scambio concluso",
+        "text": "Accordo sugli agenti detenuti tra {{a}} e {{b}}."
+      },
+      "swapRefused": {
+        "title": "Scambio rifiutato",
+        "text": "{{nation}} rifiuta la vostra proposta di scambio."
+      },
+      "reprisalExecute": {
+        "title": "Rappresaglie",
+        "text": "{{nation}} giustizia per rappresaglia uno dei nostri agenti detenuti."
+      },
+      "reprisalJail": {
+        "title": "Rappresaglie",
+        "text": "{{nation}} inasprisce la detenzione dei nostri agenti (pene massime)."
+      },
+      "reprisalArrest": {
+        "title": "Rappresaglie",
+        "text": "{{nation}} arresta per rappresaglia uno dei nostri agenti."
+      },
+      "reprisalExpel": {
+        "title": "Rappresaglie",
+        "text": "{{nation}} espelle per rappresaglia i nostri diplomatici."
+      },
+      "troopsEmbarked": {
+        "title": "Truppe imbarcate",
+        "text": "{{system}} a bordo di {{ship}}."
+      },
+      "troopsLanded": {
+        "title": "Truppe sbarcate",
+        "text_one": "{{count}} unità sbarcata: {{place}}.",
+        "text_many": "{{count}} unità sbarcate: {{place}}.",
+        "text_other": "{{count}} unità sbarcate: {{place}}."
+      },
+      "troopsLandedContested": {
+        "title": "Sbarco sotto il fuoco",
+        "text_one": "{{count}} unità sbarcata sotto il fuoco: {{place}}.",
+        "text_many": "{{count}} unità sbarcate sotto il fuoco: {{place}}.",
+        "text_other": "{{count}} unità sbarcate sotto il fuoco: {{place}}."
+      },
+      "transportSunk": {
+        "title": "Trasporto affondato",
+        "text_one": "{{system}} perso con {{count}} unità a bordo.",
+        "text_many": "{{system}} perso con {{count}} unità a bordo.",
+        "text_other": "{{system}} perso con {{count}} unità a bordo."
+      },
+      "escortEnded": {
+        "title": "Scorta terminata",
+        "text": "{{system}}: l’unità scortata non c’è più."
+      },
+      "captureBlocked": {
+        "title": "Conquista impossibile",
+        "noCapturer": "{{system}} non può conquistare {{place}}: servono fanteria, corazzati o artiglieria.",
+        "noWar": "Nessuna guerra con il proprietario di {{place}}: nessuna conquista."
       }
+    },
+    "spyNews": {
+      "executedH": "{{host}}: giustiziato un agente di {{owner}}",
+      "executedB": "{{host}} annuncia l'esecuzione di un agente di {{owner}} condannato per spionaggio. Condanna internazionale.",
+      "swapH": "Scambio di agenti tra {{a}} e {{b}}",
+      "swapB": "{{a}} e {{b}} hanno effettuato uno scambio di prigionieri: {{n}} agente/i rilasciato/i."
     }
   }
 }

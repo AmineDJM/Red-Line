@@ -51,6 +51,7 @@ export function economyDetail(state: EngineState, n: NationId): EconomyDetailVie
       shortage: !!en.short[r],
       daysLeft: flow < 0 ? round(Math.max(0, ns.res[r]) / -flow, 1) : null,
     };
+    if (b.floor[r] > 0) resources[r].floor = round(b.floor[r]);
   }
 
   const provinces: ProvinceEconomyView[] = [];

@@ -5,7 +5,9 @@ import { describe, expect, it } from 'vitest';
 import { ProvinceDefSchema, RESOURCES, type ProvinceDef } from '@redline/shared';
 import { RESOURCE_ZONES } from '../src/resources-data.js';
 import {
+  MICRO_STATE_KM2,
   assignResources,
+  fallbackProvince,
   heuristicDeposits,
   reshapeIncome,
   resolveRef,
@@ -93,15 +95,65 @@ describe('ressources des provinces', () => {
       expect(find(n, c).resources, c).toEqual([]);
   });
 
-  it('pas de gisement inventé dans une capitale (sauf désignation explicite sourcée)', () => {
+  it('pas de gisement inventé dans une capitale (sauf désignation sourcée ou repli national)', () => {
     const explicit = new Set(
       RESOURCE_ZONES.flatMap((z) =>
         (z.provinces ?? []).flatMap((r) => resolveRef(r, provinces)),
       ).map((p) => p.id),
     );
+    // Repli national : la capitale n'est retenue que pour une nation d'une seule province.
+    const single = (p: ProvinceDef) => provinces.filter((x) => x.nationId === p.nationId).length;
     for (const p of provinces.filter((x) => x.isCapital))
-      if (!explicit.has(p.id)) expect(p.resources, p.id).toEqual([]);
+      if (!explicit.has(p.id) && single(p) > 1) expect(p.resources, p.id).toEqual([]);
     expect(kinds(find('are', 'Abou Dabi'))).toContain('oil3');
+  });
+
+  it('aucune nation sans ressource : seuls les micro-États restent « argent seulement »', () => {
+    const byNation = new Map<string, ProvinceDef[]>();
+    for (const p of provinces) byNation.set(p.nationId, [...(byNation.get(p.nationId) ?? []), p]);
+    const empty: string[] = [];
+    for (const [n, list] of byNation) {
+      if (list.some((p) => p.resources!.length > 0)) continue;
+      empty.push(n);
+      const area = list.reduce((s, p) => s + p.areaKm2, 0);
+      expect(area, n).toBeLessThan(MICRO_STATE_KM2);
+    }
+    expect(empty.sort()).toEqual(['mco', 'smr', 'tuv', 'vat']);
+    // Repli : nourriture modeste dans la plus grande province hors capitale.
+    expect(kinds(find('sol', 'Somaliland Est'))).toEqual(['food1']);
+    expect(find('sol', 'Somaliland Ouest').resources).toEqual([]);
+    expect(kinds(find('and', 'Andorre-la-Vieille'))).toEqual(['food1']);
+    expect(find('and', 'Andorre-la-Vieille').income.food).toBeGreaterThan(0);
+  });
+
+  it('pays réputés sans ressource : petites productions réelles sourcées', () => {
+    expect(kinds(find('jpn', 'Niigata'))).toEqual(['food2', 'oil1']); // Minami-Nagaoka
+    expect(kinds(find('jpn', 'Kumamoto'))).toEqual(['electronics2', 'metals1']); // Hishikari
+    expect(kinds(find('sau', 'Qasim'))).toEqual(['food1']);
+    expect(kinds(find('deu', 'Schleswig-Holstein'))).toContain('oil1'); // Mittelplate
+    expect(kinds(find('nru', 'Anibare'))).toEqual(['metals1']); // phosphates
+    expect(kinds(find('mlt', 'La Valette'))).toEqual(['electronics1']);
+  });
+
+  it('repli national : plus grande province hors capitale, aucun pour un micro-État', () => {
+    const p = (id: string, areaKm2: number, isCapital = false) => ({
+      id,
+      name: id,
+      nationId: 'x',
+      centroid: [0, 0] as [number, number],
+      cityPoint: [0, 0] as [number, number],
+      isCapital,
+      areaKm2,
+      income: { money: 1 },
+    });
+    expect(fallbackProvince([p('x-1', 5000, true), p('x-2', 800), p('x-3', 1200)])!.id).toBe('x-3');
+    expect(fallbackProvince([p('x-1', 450, true)])!.id).toBe('x-1');
+    expect(fallbackProvince([p('x-1', 60, true)])).toBeNull();
+    expect(fallbackProvince([])).toBeNull();
+    // Idempotence : la répartition ne dépend que des données d'entrée.
+    const a = assignResources(provinces);
+    const b = assignResources(provinces);
+    expect([...a]).toEqual([...b]);
   });
 
   it('heuristiques séparées : capitale, métropole, désert, grand Nord, campagne', () => {

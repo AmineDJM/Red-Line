@@ -261,7 +261,17 @@ describe('renseignement approfondi : HUMINT', () => {
     runOp(s, 'aaa', 'infiltrate_spy', { nationId: 'bbb', cover: 'diplomatic' });
     const a = agentOf(s, 'aaa', 'bbb');
     publicArrest(s, a);
+    // Pays hôte joueur : détenu, décision attendue ; l'expulsion (persona non grata) est sa décision.
+    expect(viewFor(s, 'aaa').intel!.agents[0]!.status).toBe('captured');
+    expect(applyOrder(s, 'bbb', { kind: 'detainee', agentId: a.id, action: 'expel' }).ok).toBe(
+      true,
+    );
     expect(viewFor(s, 'aaa').intel!.agents[0]!.status).toBe('expelled');
+    // Pays hôte IA en paix : il expulse d'office l'officier sous couverture diplomatique.
+    runOp(s, 'aaa', 'infiltrate_spy', { nationId: 'ccc', cover: 'diplomatic' });
+    const b = agentOf(s, 'aaa', 'ccc');
+    publicArrest(s, b);
+    expect(viewFor(s, 'aaa').intel!.agents.find((x) => x.id === b.id)!.status).toBe('expelled');
   });
 });
 

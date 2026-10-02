@@ -7,6 +7,7 @@
  * Chiffres de démonstration uniquement : le jeu réel lit tout depuis data/ via le serveur.
  */
 import {
+  captureByRule,
   type Category,
   type Doctrine,
   type ResearchBranch,
@@ -152,7 +153,7 @@ function synthesize(e: CatalogIdEntry): WeaponSystem {
     generation: gen,
     targetClass: TARGET[e.category],
     movement: MOVE[e.category],
-    canCapture: e.category === 'infantry' || e.category === 'ifv',
+    canCapture: captureByRule({ category: e.category, movement: MOVE[e.category] }),
     cost: { money: price * unitSize, resources: {} },
     buildTimeH: Math.round(12 + gen * 10 + price / 25e6),
     upkeepPerDay: Math.round((price * 0.08) / 365),

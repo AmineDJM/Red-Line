@@ -324,6 +324,12 @@ export function fmtKm(km: number): string {
   return plainSpaces(t('units.km', { value: nfs()[1].format(v) }));
 }
 
+/** Plage de distances : « 3–380 km » (une décimale sous 10 km). */
+export function fmtKmRange(min: number, max: number): string {
+  const f = (v: number) => nfs()[v >= 10 ? 0 : 1].format(v >= 10 ? Math.round(v) : v);
+  return plainSpaces(t('units.kmRange', { min: f(min), max: f(max) }));
+}
+
 /** Durée de jeu : « 45 min », « 3 h 20 », « 2 j 4 h ». */
 export function fmtDuration(ms: number): string {
   const m = Math.max(0, Math.round(ms / MINUTE));

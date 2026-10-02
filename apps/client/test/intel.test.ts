@@ -14,8 +14,16 @@ import {
 describe('fenêtre de renseignement : onglets et opérations', () => {
   const ops = Object.values(TAB_OPS).flat();
 
-  it('six onglets, chaque opération dans exactement un onglet d’action', () => {
-    expect(INTEL_TABS).toEqual(['sigint', 'humint', 'military', 'interior', 'dossiers', 'reports']);
+  it('sept onglets, chaque opération dans exactement un onglet d’action', () => {
+    expect(INTEL_TABS).toEqual([
+      'sigint',
+      'humint',
+      'military',
+      'interior',
+      'detainees',
+      'dossiers',
+      'reports',
+    ]);
     for (const op of INTEL_OPS)
       expect(
         ops.filter((o) => o === op),

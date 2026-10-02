@@ -54,6 +54,35 @@ export interface MissionSt {
   tk: UnitId | null;
   /** Version de la veille (patrouille) : invalide les événements de veille programmés. */
   sv: number;
+  /** Escorte : pile amie suivie et protégée (mission 'escort'). Absent des anciennes sauvegardes. */
+  esc?: UnitId | null;
+  /** Escorte : version du trajet de la pile protégée au dernier recalage de la formation. */
+  etv?: number;
+  /** Escorte d'un aéronef : il a décollé (posé ensuite ⇒ fin de l'escorte). */
+  etu?: boolean;
+}
+
+/** Embarquement en cours d'une pile terrestre sur un navire de transport. */
+export interface LoadSt {
+  /** Navire porteur. */
+  s: UnitId;
+  /** Fin prévue. */
+  at: GameTime;
+  /** Versions des trajets (pile, navire) à l'ordre : tout mouvement annule l'embarquement. */
+  umv: number;
+  smv: number;
+}
+
+/** Débarquement d'un navire de transport (traversée puis mise à terre). */
+export interface LandSt {
+  /** Point de mise à terre (sur le réseau de routes ou la côte). */
+  to: LngLat;
+  /** Piles à débarquer (toute la cargaison par défaut). */
+  ids: UnitId[];
+  /** Fin de la mise à terre (null pendant la traversée). */
+  at: GameTime | null;
+  /** Version du trajet du navire (traversée, puis arrêt pendant la mise à terre). */
+  mv: number;
 }
 
 /** Salve de missiles en vol (unité de rôle 'missile'). */
@@ -144,6 +173,9 @@ export interface BattleSideX {
   aa: number;
   /** Vétérance : somme des niveaux × éléments, éléments comptés. */
   vt: [number, number];
+  /** Défense antiaérienne (optionnel) : menaces abattues par catégorie, intercepteurs tirés. */
+  ic?: Record<string, number>;
+  ifd?: number;
   /** Généraux (identifiants) qui commandaient des unités engagées. */
   gn: string[];
   /** Éléments capturés par l'adversaire (matériel pris sur ses bases). */
@@ -278,12 +310,17 @@ export interface MilState {
   reload: Record<UnitId, GameTime>;
   /** Navire → cellules de lancement restantes. */
   cells: Record<UnitId, number>;
-  /** Intercepteur → [munitions restantes, dernier tir]. */
+  /** Intercepteur → [munitions restantes à l'instant t (rechargement progressif depuis), t]. */
   mag: Record<UnitId, [number, GameTime]>;
   /** Intercepteur → [début de la fenêtre d'engagement, canaux utilisés]. */
   icw: Record<UnitId, [GameTime, number]>;
-  /** "intercepteur>missile" → prochain engagement programmé. */
+  /**
+   * "intercepteur>menace" (missile, aéronef, drone) → prochain engagement programmé ; -1 : magasin
+   * vide au moment de l'engagement (repris au rechargement).
+   */
   icq: Record<string, GameTime>;
+  /** Engagements ordonnés par le joueur ("intercepteur>menace") : priorité absolue (optionnel). */
+  adf?: Record<string, 1>;
   /** Brouilleurs éteints (un brouilleur émet par défaut). */
   jamOff: Record<UnitId, true>;
   /** Sous-marin repéré jusqu'à (après un tir). */
@@ -308,6 +345,15 @@ export interface MilState {
   cf: Record<string, number>;
   /** Zones d'exclusion vues (empreinte). */
   nf: string;
+  // ——— Transport naval (optionnels : absents des anciennes sauvegardes) ———
+  /** Pile terrestre embarquée → navire porteur. */
+  tr?: Record<UnitId, UnitId>;
+  /** Pile terrestre en cours d'embarquement. */
+  trl?: Record<UnitId, LoadSt>;
+  /** Navire → débarquement en cours. */
+  tru?: Record<UnitId, LandSt>;
+  /** Pile débarquée sous le feu → fin du malus de débarquement. */
+  lnd?: Record<UnitId, GameTime>;
 }
 
 export function emptyMil(): MilState {

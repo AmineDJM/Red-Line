@@ -16,6 +16,7 @@ import {
   RESEARCH_BRANCHES,
   ResearchFileSchema,
   ScenarioFileSchema,
+  captureByRule,
   type Balance,
   type ResearchNode,
   type WeaponSystem,
@@ -202,9 +203,14 @@ describe('data/catalog', () => {
     }
   });
 
-  it('seules les unités terrestres de manœuvre capturent ; toute l’infanterie capture', () => {
+  it('toutes les troupes terrestres capturent (infanterie, chars, véhicules, artillerie), jamais DCA ni missiles', () => {
     for (const s of systems) {
-      if (s.canCapture) expect(['infantry', 'tank', 'ifv'], s.id).toContain(s.category);
+      expect(s.canCapture, s.id).toBe(captureByRule(s));
+      if (s.canCapture)
+        expect(['infantry', 'tank', 'ifv', 'artillery'], s.id).toContain(s.category);
+      if (['air_defense', 'strike_missile', 'nuclear', 'radar', 'logistics'].includes(s.category))
+        expect(s.canCapture, s.id).toBe(false);
+      if (s.movement !== 'land') expect(s.canCapture, s.id).toBe(false);
       if (s.category === 'infantry') {
         expect(s.canCapture, s.id).toBe(true);
         expect(s.unitLabel, s.id).toBe('bataillon');
@@ -644,6 +650,46 @@ describe('data/scenarios', () => {
       } else {
         expect(s.year, s.id).toBe(2025);
         expect(s.orbatSet, s.id).toBe('2025');
+      }
+    }
+  });
+});
+
+/** Clés répétées dans un même objet JSON (JSON.parse garde la dernière en silence). */
+function duplicateKeys(text: string): string[] {
+  const stack: Set<string>[] = [];
+  const out: string[] = [];
+  let i = 0;
+  while (i < text.length) {
+    const c = text[i]!;
+    if (c === '"') {
+      let j = i + 1;
+      while (text[j] !== '"') j += text[j] === '\\' ? 2 : 1;
+      const str = text.slice(i + 1, j);
+      i = j + 1;
+      let k = i;
+      while (/\s/.test(text[k] ?? '')) k++;
+      const top = stack[stack.length - 1];
+      if (text[k] === ':' && top) {
+        if (top.has(str)) out.push(str);
+        top.add(str);
+      }
+      continue;
+    }
+    if (c === '{') stack.push(new Set());
+    else if (c === '}') stack.pop();
+    i++;
+  }
+  return out;
+}
+
+describe('fichiers JSON de data/', () => {
+  it('aucune clé dupliquée (une section écrasée en silence, ex. military)', () => {
+    expect(duplicateKeys('{"a":{"b":1},"c":[{"b":2}],"a":3}')).toEqual(['a']);
+    for (const dir of ['balance', 'catalog', 'research', 'scenarios']) {
+      for (const f of jsonFiles(dir)) {
+        const text = readFileSync(join(DATA, dir, f), 'utf8');
+        expect(duplicateKeys(text), `${dir}/${f}`).toEqual([]);
       }
     }
   });

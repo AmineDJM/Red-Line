@@ -4,7 +4,7 @@ import type { GameId, NationId, UserId } from './ids.js';
 import type { ClockState, GameNotification, PlayerView, ViewDiff } from './view.js';
 import { RESOURCES } from './catalog.js';
 import { BUILDING_TYPES } from './map.js';
-import { DEPARTMENTS } from './intel.js';
+import { DEPARTMENTS, DETAINEE_ACTIONS } from './intel.js';
 import { RESOLUTION_TYPES } from './diplomacy.js';
 import { DOMESTIC_POLICIES, INTERIOR_FOCUS } from './domestic.js';
 
@@ -174,6 +174,24 @@ const BASE_ORDERS = [
     mode: z.enum(['half', 'type']).optional(),
   }),
   z.object({ kind: z.literal('merge'), unitIds }),
+  /**
+   * Escorte : les piles suivent une pile amie (`targetId`) et engagent ce qui la menace (chasseurs
+   * escortant des bombardiers, frégates escortant un transport, défense antiaérienne mobile). Fin : ordre
+   * d'arrêt ou de déplacement, cible détruite, carburant (aéronefs).
+   */
+  z.object({ kind: z.literal('escort'), unitIds, targetId: id }),
+  /** Transport naval : des piles terrestres embarquent sur un navire de transport ami tout proche. */
+  z.object({ kind: z.literal('embark'), unitIds, transportId: id }),
+  /**
+   * Débarquement des troupes d'un navire de transport : sur place (côte ou port proche), ou après la
+   * traversée vers `to` (point côtier, débarquement amphibie). `unitIds` : une partie de la cargaison.
+   */
+  z.object({
+    kind: z.literal('disembark'),
+    transportId: id,
+    unitIds: z.array(z.string().max(32)).min(1).max(200).optional(),
+    to: lngLat.optional(),
+  }),
   z.object({ kind: z.literal('appointGeneral'), generalId: id, unitIds: z.array(id).max(200) }),
   z.object({
     kind: z.literal('delegate'),
@@ -196,6 +214,31 @@ const BASE_ORDERS = [
   z.object({ kind: z.literal('interiorFocus'), focus: z.enum(INTERIOR_FOCUS) }),
   /** Renseignement intérieur : protection d'un site sensible (province). */
   z.object({ kind: z.literal('protectSite'), provinceId: id, on: z.boolean() }),
+  /**
+   * Détenus : décision sur un agent étranger capturé (interpeller, interroger, expulser ou renvoyer,
+   * emprisonner `days` jours, exécuter, retourner, libérer).
+   */
+  z.object({
+    kind: z.literal('detainee'),
+    agentId: id,
+    action: z.enum(DETAINEE_ACTIONS),
+    days: z.number().int().min(1).max(3650).optional(),
+  }),
+  /**
+   * Échange ou libération d'agents : `give` (détenus que nous libérons), `get` (nos agents détenus
+   * chez `nationId`), argent (> 0 : nous payons ; < 0 : nous demandons), accord de non-ingérence
+   * (jours), allègement des sanctions que nous parrainons contre eux.
+   */
+  z.object({
+    kind: z.literal('proposeSwap'),
+    nationId: id,
+    give: z.array(id).max(20),
+    get: z.array(id).max(20),
+    money: z.number().min(-1e12).max(1e12).optional(),
+    accordDays: z.number().int().min(0).max(365).optional(),
+    liftSanctions: z.boolean().optional(),
+  }),
+  z.object({ kind: z.literal('answerSwap'), swapId: id, accept: z.boolean() }),
   // ——— Phase 4 : diplomatie ———
   z.object({ kind: z.literal('declareWar'), nationId: id }),
   z.object({ kind: z.literal('proposePeace'), nationId: id, type: z.enum(['peace', 'ceasefire']) }),
@@ -367,6 +410,25 @@ export const ORDER_REASONS = [
   'partial',
   'munition_use_strike',
   'ceasefire',
+  // Escorte
+  'escort_self',
+  'escort_target_invalid',
+  'escort_incapable',
+  'escort_domain',
+  // Transport naval
+  'transport_not_ship',
+  'transport_not_land',
+  'transport_capacity',
+  'transport_too_far',
+  'transport_moving',
+  'transport_no_shore',
+  'transport_empty',
+  'transport_embarked',
+  'transport_busy',
+  // Défense antiaérienne : catégorie non engagée, hors de l'enveloppe, magasin vide.
+  'ad_cannot_engage',
+  'ad_out_of_range',
+  'ad_no_ammo',
 ] as const;
 export type OrderReason = (typeof ORDER_REASONS)[number];
 

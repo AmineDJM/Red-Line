@@ -391,7 +391,9 @@
       "multi_many": "{{count}} محددة",
       "multi_other": "{{count}} محددة",
       "ready": "متاح خلال",
-      "ammo": "الذخيرة"
+      "ammo": "الذخيرة",
+      "aboard": "على متن",
+      "loading": "الصعود إلى السفينة"
     },
     "orders": {
       "moveTitle": "أمر تحرك",
@@ -400,6 +402,7 @@
       "eta": "الوصول",
       "warning": "تنبيه",
       "outOfRange": "الهدف خارج المدى",
+      "effect": "الفعالية",
       "confirm": "تأكيد",
       "cancel": "إلغاء",
       "sent": "أُرسل الأمر",
@@ -429,6 +432,15 @@
       "patrolTitle": "أمر دورية",
       "reconTitle": "مهمة استطلاع",
       "blockadeTitle": "أمر حصار",
+      "escortTitle": "مرافقة",
+      "embarkTitle": "إركاب",
+      "disembarkTitle": "إنزال برمائي",
+      "disembarkHereTitle": "إنزال هنا",
+      "places": "المقاعد",
+      "placesValue": "المطلوب {{need}} · المتاح {{free}}",
+      "aboard": "الوحدات على متنها",
+      "overCapacity": "تجاوز السعة: قسّم الوحدة.",
+      "noCapturer": "لا توجد وحدة في هذا التحديد قادرة على الاستيلاء: يلزم مشاة أو مدرعات أو مدفعية.",
       "radius": "نصف القطر",
       "reasons": {
         "target_invalid": "هدف غير صالح.",
@@ -442,7 +454,23 @@
         "aircraft_cooldown": "الطائرة قيد التجهيز على الأرض (جاهزة خلال {{min}} دقيقة).",
         "partial": "أُرسل الأمر؛ استُبعدت {{count}} وحدة: {{detail}}",
         "munition_use_strike": "الذخائر: استخدم أمر الضربة.",
-        "ceasefire": "وقف إطلاق النار سارٍ."
+        "ceasefire": "وقف إطلاق النار سارٍ.",
+        "ad_cannot_engage": "{{name}} لا يعترض {{cat}}.",
+        "ad_out_of_range": "{{name}} — خارج المدى: {{dist}} كم، المدى {{min}}–{{max}} كم ضد {{cat}}.",
+        "ad_no_ammo": "{{name}}: نفدت الصواريخ الاعتراضية، إعادة التذخير جارية.",
+        "escort_self": "لا يمكن لوحدة أن ترافق نفسها.",
+        "escort_target_invalid": "هدف مرافقة غير صالح: اختر إحدى وحداتك المتحركة.",
+        "escort_incapable": "{{name}} لا يمكنه المرافقة (بلا سلاح).",
+        "escort_domain": "{{name}} لا يمكنه مرافقة هذه الوحدة (السفن مع السفن، والقوات مع القوات).",
+        "transport_not_ship": "{{name}} لا يمكنه نقل القوات.",
+        "transport_not_land": "{{name}}: القوات البرية وحدها تصعد إلى السفن.",
+        "transport_capacity": "تجاوز السعة: يلزم {{need}} مقعدًا، والمتاح {{free}} من {{cap}}. قسّم الوحدة.",
+        "transport_too_far": "{{name}}: بعيد جدًا عن السفينة ({{dist}} كم، والحد الأقصى {{max}} كم).",
+        "transport_moving": "يجب أن تكون السفينة متوقفة.",
+        "transport_no_shore": "لا يوجد ساحل صالح بالقرب: قرّب السفينة من ميناء أو طريق ساحلي.",
+        "transport_empty": "لا توجد أي من هذه القوات على متن السفينة.",
+        "transport_embarked": "{{name}}: القوات على متن السفينة، استخدم «إنزال» على السفينة.",
+        "transport_busy": "{{name}}: قيد النقل بالفعل."
       },
       "classes": {
         "infantry": "مشاة",
@@ -454,6 +482,14 @@
         "submarine": "غواصة",
         "missile": "صاروخ",
         "building": "منشأة"
+      },
+      "threats": {
+        "aircraft": "الطائرات",
+        "helicopter": "المروحيات",
+        "drone": "الطائرات المسيّرة",
+        "cruise_missile": "صواريخ كروز",
+        "ballistic_missile": "الصواريخ الباليستية",
+        "hypersonic": "الصواريخ فرط الصوتية"
       }
     },
     "status": {
@@ -516,6 +552,9 @@
       "patrol": "دورية",
       "recon": "استطلاع",
       "blockade": "حصار",
+      "escort": "مرافقة",
+      "embark": "إركاب",
+      "disembark": "إنزال",
       "rtb": "عودة",
       "rtbAir": "العودة إلى القاعدة",
       "rtbSea": "العودة إلى الميناء",
@@ -529,6 +568,10 @@
         "airSeaOnly": "الدورية مخصصة للطائرات والسفن.",
         "noRecon": "الاستطلاع مخصص للمسيّرات وطائرات الاستطلاع.",
         "seaOnly": "الحصار مخصص للسفن.",
+        "noEscort": "المرافقة مقصورة على الوحدات المسلحة والمتحركة.",
+        "noLand": "الإركاب مقصور على القوات البرية.",
+        "noTransport": "لا توجد سفينة نقل صديقة متوقفة بالقرب.",
+        "noCargo": "لا توجد قوات على متن هذه السفينة.",
         "idle": "لا شيء لإيقافه: الوحدات متوقفة بالفعل.",
         "none": "الإجراء غير متاح."
       },
@@ -540,9 +583,28 @@
         "patrol": "انقر على مركز منطقة الدورية.",
         "recon": "انقر على المنطقة المراد التحليق فوقها.",
         "blockade": "انقر على مقاطعة ساحلية معادية.",
+        "escort": "انقر على إحدى وحداتك لمرافقتها.",
+        "embark": "انقر على سفينة النقل.",
+        "disembark": "انقر على الساحل المراد الإنزال فيه، أو على السفينة للإنزال في المكان.",
         "needEnemy": "اختر وحدة معادية مرئية.",
-        "needPort": "اختر مقاطعة ساحلية أجنبية."
+        "needPort": "اختر مقاطعة ساحلية أجنبية.",
+        "needFriendly": "اختر إحدى وحداتك.",
+        "needTransport": "اختر إحدى سفن النقل التابعة لك."
       }
+    },
+    "capture": {
+      "progress": "الاستيلاء على {{city}}",
+      "noCapturer": "{{city}}: هذه الوحدة لا تستطيع الاستيلاء (يلزم مشاة أو مدرعات أو مدفعية).",
+      "noWar": "{{city}}: لا حرب مع مالكها، فلا استيلاء.",
+      "defended": "{{city}}: يوجد مدافعون، وسيبدأ الاستيلاء بعد طردهم."
+    },
+    "cargo": {
+      "title": "الحمولة",
+      "places": "{{used}} / {{capacity}} مقعدًا",
+      "empty": "لا توجد قوات على متن السفينة.",
+      "loading": "جارٍ الإركاب",
+      "landing": "الإنزال خلال {{eta}}",
+      "sailing": "العبور نحو منطقة الإنزال"
     }
   },
   "province": {
@@ -931,13 +993,12 @@
     "ui": {
       "build": "بناء",
       "upgrade": "المستوى {{level}}",
+      "upgradeTo": "التطوير إلى المستوى {{level}}",
       "upgrading": "تطوير م{{level}}",
       "repair": "إصلاح",
       "repairing": "قيد الإصلاح",
       "health": "حالة المبنى",
       "operational": "جاهز للعمل",
-      "already": "مبني بالفعل",
-      "coastalOnly": "مقاطعة ساحلية فقط",
       "costTip": "التكلفة {{cost}} · المدة {{time}}",
       "buildStarted": "بدأ البناء: {{name}}",
       "upgradeStarted": "بدأ التطوير: {{name}} (م{{level}})",
@@ -951,6 +1012,11 @@
         "no_resource": "المورد غير متوفر: {{resource}}",
         "coastal_only": "للمقاطعات الساحلية فقط",
         "not_urban": "يتطلب قطبًا إلكترونيًا أو مدينة كبرى"
+      },
+      "hidden": {
+        "no_resource": "غير متاح هنا، لا يوجد مكمن: {{list}}.",
+        "coastal_only": "غير متاح هنا، مقاطعة بلا ساحل: {{list}}.",
+        "not_urban": "غير متاح هنا، لا قطب إلكترونيات ولا مدينة كبرى: {{list}}."
       }
     },
     "fortification": "التحصينات"
@@ -985,7 +1051,8 @@
     "genericOrigin": "عام"
   },
   "units": {
-    "km": "{{value}} كم"
+    "km": "{{value}} كم",
+    "kmRange": "{{min}}–{{max}} كم"
   },
   "map": {
     "attribution": "صور NASA Blue Marble · Natural Earth",
@@ -1210,7 +1277,9 @@
     },
     "settings": {
       "reduceMotion": "تقليل الحركات",
-      "reduceMotionHelp": "يوقف مؤثرات القتال (الرمايات، الانفجارات) والنبضات والخطوط المتحركة على الخريطة."
+      "reduceMotionHelp": "يوقف مؤثرات القتال (الرمايات، الانفجارات) والنبضات والخطوط المتحركة على الخريطة.",
+      "resourceIcons": "موارد المقاطعات على الخريطة",
+      "resourceIconsHelp": "أيقونة المورد الرئيسي (والثانوي) قبل اسم المدينة، والوفرة بالنقاط (1 إلى 3)، عند التقريب فقط."
     }
   },
   "legal": {
@@ -1398,7 +1467,9 @@
       "double": "عميل مزدوج",
       "exfiltrated": "تم إجلاؤه",
       "captured": "أُسر",
-      "expelled": "مطرود"
+      "expelled": "مطرود",
+      "executed": "أُعدم",
+      "released": "أُفرج عنه"
     },
     "ops": {
       "infiltrate_spy": "زرع جاسوس",
@@ -1478,7 +1549,8 @@
     "tabs": {
       "military": "العسكري",
       "dossiers": "ملفات الدول",
-      "reports": "التقارير"
+      "reports": "التقارير",
+      "detainees": "المحتجزون"
     },
     "cover": "الغطاء",
     "covers": {
@@ -1533,6 +1605,173 @@
       "agents": "العملاء في الميدان",
       "reliability": "موثوقية الملف",
       "empty": "لا ملفات: أجهزتك تتابع الدول المجاورة والمعادية والمستهدفة بعملياتك."
+    },
+    "dz": {
+      "title": "المحتجزون",
+      "subtitle": "سجناء وعملاء محتجزون ومفاوضات",
+      "ourRegime": "نظامنا: {{regime}}",
+      "ours": "سجناؤنا",
+      "abroad": "عملاؤنا المحتجزون في الخارج",
+      "negotiations": "المفاوضات",
+      "relations": "العلاقات الثنائية",
+      "noDetainees": "لا يوجد عميل أجنبي محتجز.",
+      "noAbroad": "لا أحد من عملائنا محتجز في الخارج.",
+      "noSwaps": "لا توجد مفاوضات جارية.",
+      "noRelations": "لا توجد علاقة متأثرة بقضية تجسس.",
+      "defaultHint": "دون قرار قبل انقضاء المهلة: حبس احتياطي (ضغط دبلوماسي مستمر).",
+      "kinds": {
+        "diplomat": "ضابط بغطاء دبلوماسي",
+        "illegal": "ضابط بغطاء غير رسمي",
+        "source": "مصدر محلي",
+        "double": "عميل مزدوج"
+      },
+      "kindsShort": {
+        "diplomat": "دبلوماسي",
+        "illegal": "سري",
+        "source": "مصدر",
+        "double": "مزدوج"
+      },
+      "status": {
+        "pending": "بانتظار القرار",
+        "held": "حبس احتياطي",
+        "jailed": "محكوم عليه",
+        "expelled": "مطرود",
+        "returned": "مُرحَّل",
+        "executed": "أُعدم",
+        "released": "أُفرج عنه",
+        "exchanged": "تم تبادله",
+        "served": "انقضت العقوبة",
+        "turned": "تم تجنيده"
+      },
+      "fate": {
+        "held": "محتجز",
+        "interrogation": "قيد الاستجواب",
+        "jailed": "محكوم عليه",
+        "expelled": "مطرود",
+        "returned": "مُرحَّل",
+        "executed": "أُعدم",
+        "released": "أُفرج عنه",
+        "exchanged": "تم تبادله",
+        "served": "انقضت العقوبة"
+      },
+      "regimes": {
+        "democracy": "ديمقراطية",
+        "hybrid": "نظام هجين",
+        "authoritarian": "نظام سلطوي"
+      },
+      "regimesShort": {
+        "democracy": "ديمقراطية",
+        "hybrid": "هجين",
+        "authoritarian": "سلطوي"
+      },
+      "actions": {
+        "arrest": "اعتقال",
+        "interrogate": "استجواب",
+        "expel": "طرد",
+        "return": "ترحيل",
+        "jail": "سجن",
+        "execute": "إعدام",
+        "turn": "تجنيد",
+        "release": "إفراج"
+      },
+      "help": {
+        "arrest": "اعتقال علني: يصبح العميل محتجزًا وتتحول الحادثة إلى أزمة دبلوماسية.",
+        "interrogate": "استجوابات خاضعة للرقابة: الشبكة والعمليات المخططة والنوايا. قد تكون الاعترافات كاذبة.",
+        "expel": "شخص غير مرغوب فيه: عواقب خفيفة، وطرد متبادل محتمل.",
+        "return": "إعادة إلى بلده: عواقب خفيفة، دون محاكمة.",
+        "jail": "عقوبة السجن: ضغط دبلوماسي مستمر، ورقة مساومة، كلفة منخفضة.",
+        "execute": "عقوبة الإعدام: انهيار العلاقات، انتقام مرجح، أثر رادع.",
+        "turn": "عرض العمل لصالحنا: يُطلق سراحه ظاهريًا، عميل مزدوج في خدمتنا.",
+        "release": "إفراج دون مقابل: بادرة تهدئة."
+      },
+      "days": "{{n}} يوم",
+      "decision": "القرار",
+      "sentence": "مدة العقوبة",
+      "unavailable": "غير متاح",
+      "confirmTitle": "قرار — المحتجز {{ref}}",
+      "confirm": "تأكيد القرار",
+      "applied": "تم تنفيذ القرار: {{action}}",
+      "consequences": "العواقب المتوقعة",
+      "fx": {
+        "relations": "العلاقات مع {{nationLe}}",
+        "reputation": "السمعة الدولية",
+        "stability": "الاستقرار الداخلي",
+        "retaliation": "خطر الانتقام",
+        "serviceHit": "إضعاف جهاز الخصم ضدنا",
+        "serviceDays": "{{pct}} لمدة {{days}} يوم",
+        "worldRelations": "العلاقات مع الديمقراطيات",
+        "council": "تصويت على الإدانة في المجلس",
+        "chance": "فرصة النجاح",
+        "pressure": "ضغط دبلوماسي",
+        "perDay": "{{value}} / يوم",
+        "immunity": "انتهاك الحصانة الدبلوماسية",
+        "hours": "المدة",
+        "none": "لا عواقب تُذكر."
+      },
+      "risk": {
+        "none": "منعدم",
+        "low": "منخفض",
+        "moderate": "متوسط",
+        "high": "مرتفع"
+      },
+      "blocked": {
+        "war_only": "الإعدام مستحيل في زمن السلم في ظل نظامنا.",
+        "never": "عقوبة الإعدام ملغاة.",
+        "interrogating": "الاستجواب جارٍ.",
+        "done": "سبقت المحاولة.",
+        "not_plausible": "غير معقول بالنسبة لهذا المحتجز.",
+        "final": "لم يعد هذا المحتجز بين أيدينا."
+      },
+      "decideIn": "القرار خلال {{left}}",
+      "sentenceLeft": "عقوبة {{days}} يوم · الإفراج خلال {{left}}",
+      "interrogating": "الاستجواب: يتبقى {{left}}",
+      "revealed": "اعترافات: {{agents}} عميل، {{ops}} عملية",
+      "caughtDuring": "قُبض عليه أثناء: {{op}}",
+      "value": "القيمة",
+      "valueHint": "قيمة التبادل المقدرة (ضابط > مصدر، مستوى الوصول).",
+      "exchange": "تبادل",
+      "negotiate": "تفاوض",
+      "arrested": "تم اعتقال العميل",
+      "incoming": "واردة",
+      "outgoing": "صادرة",
+      "counter": "عرض مضاد",
+      "swapStatus": {
+        "open": "قيد الانتظار",
+        "accepted": "أُبرم",
+        "refused": "مرفوض",
+        "expired": "منتهٍ",
+        "void": "ملغى"
+      },
+      "expires": "ينتهي خلال {{left}}",
+      "weRelease": "نُفرج عن",
+      "weObtain": "نحصل على",
+      "money": "المال",
+      "theyPay": "يدفعون {{amount}}",
+      "wePay": "ندفع {{amount}}",
+      "accord": "اتفاق عدم تدخل",
+      "accordNone": "لا شيء",
+      "accordShort": "عدم تدخل",
+      "sanctions": "العقوبات",
+      "sanctionsLifted": "خففتها {{nationLe}}",
+      "accept": "قبول",
+      "refuse": "رفض",
+      "acceptedOk": "تم إبرام الاتفاق",
+      "refusedOk": "تم رفض الاقتراح",
+      "swapTitle": "تفاوض — {{nation}}",
+      "partner": "الدولة",
+      "relationsNow": "العلاقات الحالية: {{value}}",
+      "atWar": "في حالة حرب",
+      "noneToRelease": "لا أحد من عملائهم محتجز لدينا.",
+      "noneToObtain": "لا أحد من عملائنا محتجز لديهم.",
+      "moneyNone": "لا شيء",
+      "moneyPay": "ندفع",
+      "moneyAsk": "نطلب",
+      "amount": "المبلغ",
+      "liftSanctions": "تخفيف العقوبات التي نرعاها ضدهم",
+      "balance": "القيمة المتنازل عنها {{give}} · المحصّلة {{get}}",
+      "balanceHint": "يطلب الذكاء الاصطناعي المزيد عند العداء أو الحرب؛ وقد يرفض أو يقدّم عرضًا مضادًا.",
+      "send": "إرسال الاقتراح",
+      "sent": "تم إرسال الاقتراح"
     }
   },
   "sheet": {
@@ -2146,6 +2385,8 @@
     "producers_many": "{{count}} مقاطعة",
     "producers_other": "{{count}} مقاطعة",
     "noProducer": "لا توجد مقاطعة منتجة: اشترِ من السوق.",
+    "nationalFloor": "الحد الأدنى للإنتاج الوطني",
+    "nationalFloorTip": "الحد الأدنى الوطني: إنتاج محلي أدنى (تكرير، إعادة تدوير، مكامن صغيرة، زراعة معيشية)، مضمون حتى من دون مقاطعة منتجة.",
     "servicesProvinces_zero": "لا مقاطعات بلا موارد",
     "servicesProvinces_one": "مقاطعة واحدة بلا موارد (المال فقط: خدمات، مال)",
     "servicesProvinces_two": "مقاطعتان بلا موارد (المال فقط: خدمات، مال)",
@@ -3316,6 +3557,84 @@
       "spent": "النفقات"
     }
   },
+  "airDefense": {
+    "title": "الدفاع الجوي",
+    "legacy": "ملف مبسّط",
+    "interceptors": "الصواريخ الاعتراضية",
+    "fullIn": "ممتلئ خلال {{value}}",
+    "no": "لا",
+    "magazine": "صواريخ اعتراضية لكل عنصر",
+    "channels": "قنوات الرمي",
+    "reaction": "زمن الاستجابة",
+    "reload": "إعادة تذخير كاملة",
+    "seconds": "{{value}} ث",
+    "ring": "{{cat}} {{value}}",
+    "cols": {
+      "threat": "التهديد",
+      "range": "المدى",
+      "ceiling": "السقف",
+      "pk": "احتمال الإصابة",
+      "shots": "رميات/هدف"
+    },
+    "threats": {
+      "aircraft": "طائرات",
+      "helicopter": "مروحيات",
+      "drone": "مسيّرات",
+      "cruise_missile": "صواريخ كروز",
+      "ballistic_missile": "صواريخ باليستية",
+      "hypersonic": "فرط صوتية"
+    },
+    "short": {
+      "aircraft": "طائرة",
+      "helicopter": "مروحية",
+      "drone": "مسيّرة",
+      "cruise_missile": "كروز",
+      "ballistic_missile": "باليستي",
+      "hypersonic": "فرط"
+    },
+    "shotDown": "أُسقط: {{cat}}",
+    "fired": "الصواريخ الاعتراضية المطلقة"
+  },
+  "effect": {
+    "title": "الفعالية",
+    "sheetTitle": "الفعالية حسب نوع الهدف",
+    "note": "متوسط لكل فئة، استنادًا إلى الأضرار والاعتراضات والضربات في اللعبة.",
+    "chip": "{{name}}: {{level}} {{against}}",
+    "intercept": "الاعتراض {{ranges}}",
+    "noneList": "بلا تأثير ضد: {{list}}",
+    "order": "{{level}} ضد {{target}}",
+    "levels": {
+      "0": "معدومة",
+      "1": "ضعيفة",
+      "2": "متوسطة",
+      "3": "جيدة",
+      "4": "ممتازة"
+    },
+    "targets": {
+      "aircraft": "الطائرات",
+      "helicopter": "المروحيات",
+      "drone": "المسيّرات",
+      "missile": "الصواريخ",
+      "armor": "المدرعات",
+      "infantry": "المشاة",
+      "artillery": "المدفعية",
+      "ship": "السفن",
+      "submarine": "الغواصات",
+      "building": "المباني"
+    },
+    "against": {
+      "aircraft": "ضد الطائرات",
+      "helicopter": "ضد المروحيات",
+      "drone": "ضد المسيّرات",
+      "missile": "ضد الصواريخ",
+      "armor": "ضد المدرعات",
+      "infantry": "ضد المشاة",
+      "artillery": "ضد المدفعية",
+      "ship": "ضد السفن",
+      "submarine": "ضد الغواصات",
+      "building": "ضد المباني"
+    }
+  },
   "stacks": {
     "composition_zero": "التشكيل · عدد الأنواع: {{count}}",
     "composition_one": "التشكيل · عدد الأنواع: {{count}}",
@@ -3517,7 +3836,10 @@
       "dismantle": "تفكيك شبكة {{nation}}",
       "deception": "عملية خداع — {{nation}}",
       "hardened": "تحصين المنشآت الحساسة",
-      "strategicAlert": "إنذار استراتيجي — {{nation}}"
+      "strategicAlert": "إنذار استراتيجي — {{nation}}",
+      "interrogation": "استجواب — المحتجز {{ref}} ({{nation}})",
+      "turnRefused": "رُفض التجنيد — المحتجز {{ref}}",
+      "detaineeTurned": "تم تجنيد المحتجز {{ref}}"
     },
     "note": {
       "allianceInvite": {
@@ -3637,7 +3959,117 @@
       "agentExpelled": {
         "title": "طرد دبلوماسيين",
         "text": "{{host}} تطرد دبلوماسيين من {{owner}} بتهمة التجسس."
+      },
+      "detaineeNew": {
+        "title": "احتجاز عميل أجنبي",
+        "text": "عميل تابع لـ {{owner}} بين أيدينا: القرار متوقع خلال {{days}} أيام."
+      },
+      "detaineeHeld": {
+        "title": "حبس احتياطي",
+        "text": "في غياب قرار، يوضع عميل {{owner}} رهن الحبس الاحتياطي."
+      },
+      "spyInterrogated": {
+        "title": "استجواب عميل",
+        "text": "تستجوب أجهزة {{host}} العميل {{codename}}."
+      },
+      "spyReturned": {
+        "title": "ترحيل عميل",
+        "text": "رحّلت {{host}} العميل {{codename}} إلى بلده."
+      },
+      "spyJailed": {
+        "title": "الحكم على عميل",
+        "text": "حكمت {{host}} على {{codename}} بالسجن {{days}} يومًا."
+      },
+      "spyExecuted": {
+        "title": "إعدام عميل",
+        "text": "أعدمت {{host}} العميل {{codename}}."
+      },
+      "spyReleased": {
+        "title": "الإفراج عن عميل",
+        "text": "أفرجت {{host}} عن {{codename}}."
+      },
+      "spyServed": {
+        "title": "انتهاء العقوبة",
+        "text": "أنهى {{codename}} عقوبته ({{host}}) ويعود إلى الوطن."
+      },
+      "swapProposal": {
+        "title": "اقتراح تبادل",
+        "text": "تقترح {{nation}} تبادل العملاء."
+      },
+      "swapCounter": {
+        "title": "عرض مضاد",
+        "text": "تقدّم {{nation}} عرضًا مضادًا."
+      },
+      "swapAccepted": {
+        "title": "تم التبادل",
+        "text": "اتفاق بشأن العملاء المحتجزين بين {{a}} و{{b}}."
+      },
+      "swapRefused": {
+        "title": "رُفض التبادل",
+        "text": "ترفض {{nation}} اقتراح التبادل الذي قدمتموه."
+      },
+      "reprisalExecute": {
+        "title": "انتقام",
+        "text": "تُعدم {{nation}} أحد عملائنا المحتجزين انتقامًا."
+      },
+      "reprisalJail": {
+        "title": "انتقام",
+        "text": "تشدد {{nation}} احتجاز عملائنا (أقصى العقوبات)."
+      },
+      "reprisalArrest": {
+        "title": "انتقام",
+        "text": "تعتقل {{nation}} أحد عملائنا انتقامًا."
+      },
+      "reprisalExpel": {
+        "title": "انتقام",
+        "text": "تطرد {{nation}} دبلوماسيينا انتقامًا."
+      },
+      "troopsEmbarked": {
+        "title": "صعدت القوات إلى السفينة",
+        "text": "{{system}} على متن {{ship}}."
+      },
+      "troopsLanded": {
+        "title": "أُنزلت القوات",
+        "text_zero": "لم تُنزل أي وحدة: {{place}}.",
+        "text_one": "أُنزلت وحدة واحدة: {{place}}.",
+        "text_two": "أُنزلت وحدتان: {{place}}.",
+        "text_few": "أُنزلت {{count}} وحدات: {{place}}.",
+        "text_many": "أُنزلت {{count}} وحدة: {{place}}.",
+        "text_other": "أُنزلت {{count}} وحدة: {{place}}."
+      },
+      "troopsLandedContested": {
+        "title": "إنزال تحت النيران",
+        "text_zero": "لم تُنزل أي وحدة تحت النيران: {{place}}.",
+        "text_one": "أُنزلت وحدة واحدة تحت النيران: {{place}}.",
+        "text_two": "أُنزلت وحدتان تحت النيران: {{place}}.",
+        "text_few": "أُنزلت {{count}} وحدات تحت النيران: {{place}}.",
+        "text_many": "أُنزلت {{count}} وحدة تحت النيران: {{place}}.",
+        "text_other": "أُنزلت {{count}} وحدة تحت النيران: {{place}}."
+      },
+      "transportSunk": {
+        "title": "غرق سفينة النقل",
+        "text_zero": "فُقدت {{system}} دون وحدات على متنها.",
+        "text_one": "فُقدت {{system}} مع وحدة واحدة على متنها.",
+        "text_two": "فُقدت {{system}} مع وحدتين على متنها.",
+        "text_few": "فُقدت {{system}} مع {{count}} وحدات على متنها.",
+        "text_many": "فُقدت {{system}} مع {{count}} وحدة على متنها.",
+        "text_other": "فُقدت {{system}} مع {{count}} وحدة على متنها."
+      },
+      "escortEnded": {
+        "title": "انتهت المرافقة",
+        "text": "{{system}}: الوحدة المرافَقة لم تعد موجودة."
+      },
+      "captureBlocked": {
+        "title": "الاستيلاء مستحيل",
+        "noCapturer": "{{system}} لا يستطيع الاستيلاء على {{place}}: يلزم مشاة أو مدرعات أو مدفعية.",
+        "noWar": "لا حرب مع مالك {{place}}: فلا استيلاء."
       }
+    },
+    "spyNews": {
+      "executedH": "{{host}}: إعدام عميل تابع لـ {{owner}}",
+      "executedB": "تعلن {{host}} إعدام عميل تابع لـ {{owner}} أُدين بالتجسس. إدانة دولية.",
+      "swapH": "تبادل عملاء بين {{a}} و{{b}}",
+      "swapB": "أجرت {{a}} و{{b}} تبادلًا للأسرى: الإفراج عن {{n}} عميل."
     }
   }
 }

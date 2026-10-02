@@ -12,6 +12,7 @@ import { schedule, sortedSet, unitPieces } from '../state/access.js';
 import { addToIndex, removeFromIndex } from '../state/runtime.js';
 import type { EngineState, PairState, Unit } from '../state/types.js';
 import { CAPTURE_RADIUS_KM, wi } from '../state/world.js';
+import { adBand } from '../modules/mil/ad-profile.js';
 import { changeSight, detectionLevel, detectionRadii } from './sight.js';
 import {
   inRange,
@@ -146,6 +147,26 @@ function distKm(A: Piece[], B: Piece[], t: number): { d: number; dot: number } {
   return { d: Math.acos(Math.max(-1, Math.min(1, dot))) * EARTH_RADIUS_KM, dot };
 }
 
+/**
+ * Distance cohérente avec les bandes des seuils. Les franchissements sont calculés sur le produit
+ * scalaire (dot ≥ cos(r/R) ⇔ dedans) ; la distance en km passe par acos, dont l'arrondi peut placer
+ * d de l'autre côté du seuil à l'instant exact du franchissement (d = 5,000000001 km alors que la
+ * bande dit « à 5 km »). Sans correction, une unité qui finit son trajet sur un seuil (ville au
+ * rayon de capture, ennemi à portée de tir) restait classée dehors pour toujours : aucun autre
+ * franchissement n'était à venir, donc ni capture ni combat. On aligne d sur la bande (écart < 1 µm).
+ */
+export function consistentDist(x: { d: number; dot: number }, radii: readonly number[]): number {
+  let d = x.d;
+  for (const r of radii) {
+    // Seul un seuil à moins d'un millimètre peut être mal classé (chemin rapide : aucun cosinus).
+    if (!(r > 0) || Math.abs(d - r) > 1e-6) continue;
+    if (x.dot >= Math.cos(r / EARTH_RADIUS_KM)) {
+      if (d > r) d = r;
+    } else if (d <= r) d = r * (1 + 1e-12) + 1e-12;
+  }
+  return d;
+}
+
 /* ------------------------------------------------------------------------------------------------ */
 /* Index spatial                                                                                     */
 /* ------------------------------------------------------------------------------------------------ */
@@ -247,6 +268,11 @@ function evalUnitPair(state: EngineState, key: string): void {
   const radii = detectionRadii(state, rab);
   for (const r of detectionRadii(state, rba)) radii.push(r);
   radii.push(wa.max, wa.max > 0 ? wa.min : 0, wb.max, wb.max > 0 ? wb.min : 0);
+  // Défense antiaérienne : enveloppe propre à la catégorie de la cible (balistique, drone…).
+  const ea = adBand(state, A, B);
+  const eb = adBand(state, B, A);
+  if (ea) radii.push(ea.max, ea.min);
+  if (eb) radii.push(eb.max, eb.min);
   const pa = unitPieces(state, A);
   const pb = unitPieces(state, B);
   // Paire candidate de l'index spatial mais hors de portée pour toujours : rien à faire (cas le plus
@@ -257,7 +283,7 @@ function evalUnitPair(state: EngineState, key: string): void {
     return;
   }
   const cosThr = toCos(radii);
-  const { d } = distKm(pa, pb, t);
+  const d = consistentDist(distKm(pa, pb, t), radii);
   const next = nextBandChange(pa, pb, cosThr, t);
   const inRel = d <= maxRadius(cosThr);
   if (!inRel && next === null) {
@@ -280,7 +306,13 @@ function evalUnitPair(state: EngineState, key: string): void {
   pair.ev = next !== null ? schedule(state, { k: 'contact', t: next, key }) : 0;
   changeSight(state, A.owner, B.id, oldLa, la);
   changeSight(state, B.owner, A.id, oldLb, lb);
-  if (!existing || inRange(wa, oldD) !== inRange(wa, d) || inRange(wb, oldD) !== inRange(wb, d)) {
+  if (
+    !existing ||
+    inRange(wa, oldD) !== inRange(wa, d) ||
+    inRange(wb, oldD) !== inRange(wb, d) ||
+    (ea && inRange(ea, oldD) !== inRange(ea, d)) ||
+    (eb && inRange(eb, oldD) !== inRange(eb, d))
+  ) {
     state.rt.dirtyCombat.add(ia);
     state.rt.dirtyCombat.add(ib);
   }
@@ -326,7 +358,7 @@ function evalProvPair(state: EngineState, key: string): void {
     return;
   }
   const cosThr = toCos(radii);
-  const { d } = distKm(pp, pu, t);
+  const d = consistentDist(distKm(pp, pu, t), radii);
   const next = nextBandChange(pp, pu, cosThr, t);
   const inRel = d <= maxRadius(cosThr);
   if (!inRel && next === null) {

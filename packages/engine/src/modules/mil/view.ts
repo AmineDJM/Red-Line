@@ -4,12 +4,14 @@ import { sightLevel, sysOf, veterancyLevel } from '../../state/access.js';
 import type { EngineState, Unit } from '../../state/types.js';
 import { board } from '../kit.js';
 import { fuelAt } from './air.js';
+import { airDefenseView } from './airdefense.js';
 import { summariesFor } from './battles.js';
 import { generalsFor } from './generals.js';
 import { operationsFor } from './ops.js';
 import { satellitesFor } from './sensors.js';
 import { blockadedProvinces, blockadesView } from './special.js';
 import { mil } from './state.js';
+import { cargoView } from './transport.js';
 import { cellsLeft } from './strike.js';
 import { launchCells, posOf } from './util.js';
 
@@ -47,8 +49,9 @@ function missionView(state: EngineState, u: Unit): MissionView | undefined {
   if (m.ph) v.phase = m.ph;
   if (reload !== undefined && reload > state.time) v.readyAt = reload;
   if (cells !== null) v.ammo = cells;
+  // Magasin d'intercepteurs : vue `airDefense` pour les fiches `interceptor` (rechargement compris).
   const mag = mil(state).mag[u.id];
-  if (mag) v.ammo = mag[0];
+  if (mag && !s.interceptor) v.ammo = Math.floor(mag[0] + 1e-9);
   return v;
 }
 
@@ -83,8 +86,22 @@ function decorateOwn(state: EngineState, u: Unit, v: UnitView): void {
   const st = m.msl[u.id];
   if (st) v.missile = { target: st.target, impactAt: st.impactAt };
   if (u.role === 'decoy') v.decoy = true;
+  airDefenseView(state, u, v);
   const ms = m.ms[u.id];
-  if (ms?.emb) {
+  if (ms?.esc && ms.mis === 'escort')
+    v.mission = { ...(v.mission ?? { kind: 'escort' }), escortId: ms.esc };
+  const cargo = cargoView(state, u);
+  if (cargo) v.cargo = cargo;
+  const load = m.trl?.[u.id];
+  if (load) v.loading = { transportId: load.s, doneAt: load.at };
+  const ship = m.tr?.[u.id] ? state.units[m.tr[u.id]!] : undefined;
+  if (ship) {
+    v.status = 'embarked';
+    v.transportId = ship.id;
+    v.pos = ship.pos;
+    if (ship.move) v.move = ship.move;
+    else delete v.move;
+  } else if (ms?.emb) {
     const c = state.units[ms.emb];
     v.status = 'embarked';
     if (c) {

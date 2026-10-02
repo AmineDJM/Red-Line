@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useRef, useState, type PointerEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import type {
-  BattleAar,
-  BattleAarSide,
-  BattleFactor,
-  BattleForceLine,
-  BattlePhase,
-  Estimate,
+import {
+  AIR_THREATS,
+  type BattleAar,
+  type BattleAarSide,
+  type BattleFactor,
+  type BattleForceLine,
+  type BattlePhase,
+  type Estimate,
 } from '@redline/shared';
 import { Badge, Button, Panel, WeaponPhoto, formatInt, formatMoney } from '@redline/ui';
 import { NationTag } from './Common.js';
@@ -276,6 +277,8 @@ export function AarForces({ side }: { side: BattleAarSide }) {
 
 // ——— Bilan humain, matériel, feux ———
 
+const exactE = (v: number): Estimate => ({ best: v, min: v, max: v });
+
 export function AarLosses({ aar }: { aar: BattleAar }) {
   const { t } = useTranslation();
   const [a, d] = aar.sides;
@@ -330,6 +333,17 @@ export function AarLosses({ aar }: { aar: BattleAar }) {
             {row(t('battles.aar.missilesLaunched'), (s) => s.missiles.launched)}
             {row(t('battles.aar.missilesShotDown'), (s) => s.missiles.shotDown)}
             {row(t('battles.aar.interceptions'), (s) => s.interceptions, 'rl-tone-green')}
+            {/* Défense antiaérienne : menaces abattues par catégorie, intercepteurs tirés. */}
+            {AIR_THREATS.filter((c) => a.intercepts?.[c] || d.intercepts?.[c]).map((c) =>
+              row(
+                t('airDefense.shotDown', { cat: t(`airDefense.threats.${c}`) }),
+                (s) => exactE(s.intercepts?.[c] ?? 0),
+                'rl-tone-green',
+              ),
+            )}
+            {a.interceptorsFired || d.interceptorsFired
+              ? row(t('airDefense.fired'), (s) => exactE(s.interceptorsFired ?? 0))
+              : null}
             {row(t('battles.aar.sorties'), (s) => s.sorties)}
           </tbody>
         </table>

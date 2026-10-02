@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { distanceKm, HOUR, strikeRangeKm, type Order } from '@redline/shared';
+import { distanceKm, effectLevel, HOUR, strikeRangeKm, type Order } from '@redline/shared';
 import {
   Badge,
   Button,
@@ -25,6 +25,9 @@ import { pendingPoint, useUi, type PendingOrder } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { describeNotification, notificationTone } from './helpers.js';
 import { orderError, orderOk } from '../lib/loc.js';
+import { canCaptureUnit, placesOfUnit } from '../lib/unitActions.js';
+import { selectionEffectAgainst, useEffectContext } from '../lib/effectiveness.js';
+import { EffectIcon, EffectMeter } from '../components/Effectiveness.js';
 
 /** Barre de confirmation de l'ordre en attente (troisième geste : confirmer). */
 export function OrderBar() {
@@ -36,6 +39,7 @@ export function OrderBar() {
   const catalog = useWorld((s) => s.catalog);
   const roads = useWorld((s) => s.roads);
   const movement = useWorld((s) => s.balance?.movement);
+  const effCtx = useEffectContext();
 
   const confirm = useCallback(async () => {
     const p = useUi.getState().pendingOrder;
@@ -109,6 +113,32 @@ export function OrderBar() {
       distanceKm(base ?? from, target) > sys.operationalRadiusKm);
   const title = t(titleKey(pending));
   const tsys = targetUnit?.systemId ? catalog[targetUnit.systemId] : undefined;
+  // Rappel : efficacité de la sélection contre la cible visée (même calcul que le panneau).
+  const eff =
+    hostile && targetUnit ? selectionEffectAgainst(units, targetUnit, catalog, effCtx) : null;
+  const effLvl = eff ? effectLevel(eff.score, effCtx) : 0;
+  // Déplacement vers une ville étrangère sans aucune unité capable de capturer : avertissement.
+  const me = useGame.getState().me;
+  const foreignCity =
+    pending.kind === 'move' &&
+    Object.values(useWorld.getState().provinces).some(
+      (p) => distanceKm(p.cityPoint, target) <= 5 && view.provinces[p.id]?.owner !== me,
+    );
+  const noCapturer =
+    foreignCity &&
+    units.every((u) => u.systemId && catalog[u.systemId]?.movement === 'land') &&
+    !units.some((u) => canCaptureUnit(u, catalog));
+  // Embarquement : places requises et libres à bord.
+  const tb = useWorld.getState().balance?.military?.transport;
+  const ship =
+    pending.kind === 'embark' || pending.kind === 'disembark'
+      ? view.units[pending.transportId]
+      : undefined;
+  const need =
+    pending.kind === 'embark'
+      ? units.reduce((a, u) => a + placesOfUnit(u, catalog, tb?.places, tb?.defaultPlaces), 0)
+      : 0;
+  const free = ship?.cargo ? ship.cargo.capacity - ship.cargo.used : 0;
 
   return (
     <div
@@ -154,7 +184,7 @@ export function OrderBar() {
             <dt>{t('game.orders.distance')}</dt>
             <dd>{fmtKm(dist)}</dd>
           </div>
-          {slowest > 0 && pending.kind === 'move' ? (
+          {slowest > 0 && (pending.kind === 'move' || pending.kind === 'disembark') ? (
             <div>
               <dt>{t('game.orders.eta')}</dt>
               <dd>{fmtDuration(etaMs)}</dd>
@@ -176,10 +206,53 @@ export function OrderBar() {
               </dd>
             </div>
           ) : null}
+          {pending.kind === 'embark' && ship?.cargo ? (
+            <div>
+              <dt>{t('game.orders.places')}</dt>
+              <dd>
+                {t('game.orders.placesValue', { need: Math.ceil(need), free: Math.floor(free) })}
+              </dd>
+            </div>
+          ) : null}
+          {pending.kind === 'disembark' && ship?.cargo ? (
+            <div>
+              <dt>{t('game.orders.aboard')}</dt>
+              <dd>{ship.cargo.unitIds.length}</dd>
+            </div>
+          ) : null}
+          {eff ? (
+            <div
+              className={`orderbar__effect effchip--l${effLvl}`}
+              data-testid="order-effect"
+              title={t('effect.order', {
+                level: t(`effect.levels.${effLvl}`),
+                target: tsys?.name ?? t(`effect.targets.${eff.target}`),
+              })}
+            >
+              <dt>{t('game.orders.effect')}</dt>
+              <dd>
+                <EffectIcon target={eff.target} size={13} />
+                <EffectMeter level={effLvl} />
+                <span>{t(`effect.levels.${effLvl}`)}</span>
+              </dd>
+            </div>
+          ) : null}
           {outOfRange ? (
             <div className="orderbar__warn">
               <dt>{t('game.orders.warning')}</dt>
               <dd>{t('game.orders.outOfRange')}</dd>
+            </div>
+          ) : null}
+          {pending.kind === 'embark' && ship?.cargo && need > free ? (
+            <div className="orderbar__warn">
+              <dt>{t('game.orders.warning')}</dt>
+              <dd>{t('game.orders.overCapacity')}</dd>
+            </div>
+          ) : null}
+          {noCapturer ? (
+            <div className="orderbar__warn" data-testid="order-no-capturer">
+              <dt>{t('game.orders.warning')}</dt>
+              <dd>{t('game.orders.noCapturer')}</dd>
             </div>
           ) : null}
         </dl>
@@ -202,10 +275,14 @@ const ICON = {
   strike: 'missile',
   patrol: 'radio',
   blockade: 'anchor',
+  escort: 'users',
+  embark: 'box',
+  disembark: 'arrowDown',
 } as const;
 
 function titleKey(p: PendingOrder): string {
   if (p.kind === 'patrol') return p.recon ? 'game.orders.reconTitle' : 'game.orders.patrolTitle';
+  if (p.kind === 'disembark' && !p.to) return 'game.orders.disembarkHereTitle';
   return `game.orders.${p.kind}Title`;
 }
 
@@ -222,6 +299,14 @@ export function orderOf(p: PendingOrder): Order {
       return { kind: 'patrol', unitIds: p.unitIds, at: p.at, radiusKm: p.radiusKm };
     case 'blockade':
       return { kind: 'blockade', unitIds: p.unitIds, target: { provinceId: p.provinceId } };
+    case 'escort':
+      return { kind: 'escort', unitIds: p.unitIds, targetId: p.targetId };
+    case 'embark':
+      return { kind: 'embark', unitIds: p.unitIds, transportId: p.transportId };
+    case 'disembark':
+      return p.to
+        ? { kind: 'disembark', transportId: p.transportId, to: p.to }
+        : { kind: 'disembark', transportId: p.transportId };
   }
 }
 

@@ -132,6 +132,36 @@ Chaque famille a au moins une parade claire (vérifié par le test) :
 
 Les 27 chasseurs validés gardent leur matrice (formules du document `docs/catalog-fighters.md`).
 
+### Capture des provinces
+
+Toutes les **troupes terrestres** capturent (`canCapture`, règle `CAPTURE_CATEGORIES` de
+`packages/shared/src/catalog.ts`) : infanterie de tout type (légère, mécanisée, marine, aéroportée, forces
+spéciales), chars, véhicules de combat et transports blindés, **artillerie et lance-roquettes**. Ne capturent
+jamais : la défense antiaérienne et la guerre électronique (SAM, canons, MANPADS, brouilleurs), les lanceurs et
+munitions (missiles de frappe, nucléaire, armes antisatellites), les radars, les convois logistiques, et tout ce
+qui vole ou navigue. Une pile capture si au moins un de ses éléments le peut ; une batterie S-400 accompagnée
+d'artillerie prend la ville, seule elle ne la prend pas (message « Capture impossible »). Contrôlé par
+`apps/admin/test/data.test.ts` et la validation du back-office.
+
+### Efficacité par catégorie de cible (interface)
+
+Le panneau de sélection, la fiche d'arme et la barre de confirmation d'une attaque affichent une note par
+catégorie de cible (avions, hélicoptères, drones, missiles, blindés, infanterie, artillerie, navires,
+sous-marins, bâtiments) sur 5 crans : nul, faible, moyen, bon, excellent. Calcul unique dans
+`packages/shared/src/effectiveness.ts`, dérivé des valeurs du moteur :
+
+- tir en rounds : part d'un élément « type » détruite par round = dégâts[classe] × (1 − blindage type) ÷ PV
+  type (médianes du catalogue) ; frappe aérienne = `military.strike.airStrikeMult` rounds ; bâtiment = dégâts
+  « building » ÷ `military.strike.buildingHp` ;
+- interception (profil partagé `interceptProfile`, celui du moteur) : 1 − (1 − pk × (1 − évasion ou
+  furtivité type))^tirs ; la défense à enveloppes n'engage les aéronefs que par intercepteurs, et les missiles
+  en vol ne sont jamais engagés en rounds ; note « missiles » = moyenne pondérée croisière, balistiques,
+  hypersoniques (`effectiveness.missileWeights`) ;
+- note = efficacité ÷ quantile `effectiveness.refQuantile` (0,9) des systèmes du catalogue contre la
+  catégorie (nucléaire exclu), plafonnée à 1 ; l'artillerie est notée sur l'échelle des blindés (même colonne
+  « armor », cible moins protégée) ; seuils `effectiveness.levels` ; pile mixte = moyenne pondérée par le
+  nombre d'éléments.
+
 ## 4. Tableau de tous les systèmes
 
 Colonnes : prix unitaire, génération (4+ = porte `aero.gen4plus`), entrée en service, portes de recherche.

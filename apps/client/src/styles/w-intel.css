@@ -324,3 +324,270 @@
   gap: 4px;
   margin-inline-start: auto;
 }
+
+/* ——— Détenus : prisonniers, agents détenus à l'étranger, négociations ——— */
+.dz {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+.dz__head {
+  flex-wrap: wrap;
+}
+.dz-sec {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.dz-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dz-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 7px 9px;
+  border: 1px solid var(--rl-line);
+  border-inline-start: 2px solid var(--rl-line-strong);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-bg);
+}
+.dz-row--pending {
+  border-inline-start-color: var(--rl-amber);
+}
+.dz-row--jailed,
+.dz-row--executed {
+  border-inline-start-color: var(--rl-red);
+}
+.dz-row--held {
+  border-inline-start-color: var(--rl-cyan);
+}
+.dz-row--turned {
+  border-inline-start-color: var(--rl-violet);
+}
+.dz-row__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.dz-row__ref {
+  color: var(--rl-text-strong);
+  font: 800 var(--rl-fs-xs) / 1.2 var(--rl-font-mono);
+  letter-spacing: 0.08em;
+}
+.dz-row__kind {
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.dz-row__head .rl-badge {
+  margin-inline-start: auto;
+}
+.dz-row__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  color: var(--rl-text-dim);
+  font: 600 var(--rl-fs-2xs) / 1.3 var(--rl-font-mono);
+}
+.dz-row__meta b {
+  color: var(--rl-text);
+}
+.dz-due {
+  color: var(--rl-amber);
+}
+.dz-row__acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.dz-act {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 26px;
+  padding: 3px 8px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-panel);
+  color: var(--rl-text);
+  font: 600 var(--rl-fs-2xs) / 1.2 var(--rl-font-mono);
+  cursor: pointer;
+  transition: border-color var(--rl-dur) var(--rl-ease);
+}
+.dz-act:hover,
+.dz-act:focus-visible {
+  border-color: var(--rl-cyan-line);
+}
+.dz-act__name {
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.dz-act--execute:hover {
+  border-color: var(--rl-red);
+}
+.dz-act--off {
+  opacity: 0.5;
+}
+.dz-act--swap {
+  color: var(--rl-cyan);
+}
+.game--mobile .dz-act {
+  min-height: var(--rl-touch, 36px);
+}
+/* Conséquences prévues (avant confirmation). */
+.dz-fx {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 6px 8px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-bg);
+}
+.dz-fx__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: var(--rl-fs-xs);
+}
+.dz-fx__row dt {
+  color: var(--rl-text-dim);
+}
+.dz-fx__row dd {
+  margin: 0;
+  font: 700 var(--rl-fs-xs) / 1.4 var(--rl-font-mono);
+  text-align: end;
+}
+.dz-fx__row--red dd {
+  color: var(--rl-red);
+}
+.dz-fx__row--amber dd {
+  color: var(--rl-amber);
+}
+.dz-fx__row--green dd {
+  color: var(--rl-green);
+}
+.dz-fx__row--cyan dd {
+  color: var(--rl-cyan);
+}
+.dz-who {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.dz-blocked {
+  margin: 0;
+  color: var(--rl-amber);
+  font-size: var(--rl-fs-xs);
+}
+/* Négociations. */
+.dz-swap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 7px 9px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-bg);
+}
+.dz-swap--open {
+  border-color: var(--rl-cyan-line);
+}
+.dz-swap__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--rl-fs-2xs);
+}
+.dz-swap__terms {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+}
+.dz-swap__terms > div {
+  display: grid;
+  grid-template-columns: 12ch minmax(0, 1fr);
+  gap: 8px;
+  font-size: var(--rl-fs-2xs);
+}
+.dz-swap__terms dt {
+  color: var(--rl-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.dz-swap__terms dd {
+  margin: 0;
+  font-family: var(--rl-font-mono);
+}
+.dz-swap__acts {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.dz-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 10px;
+}
+.dz-cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.game--mobile .dz-cols {
+  grid-template-columns: minmax(0, 1fr);
+}
+.dz-pick {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 6px 8px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm);
+  min-width: 0;
+}
+.dz-pick legend {
+  padding: 0 4px;
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.dz-tie,
+.dz-balance {
+  margin: 0;
+  font: 600 var(--rl-fs-xs) / 1.4 var(--rl-font-mono);
+  color: var(--rl-text);
+}
+.dz-ties {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dz-ties li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--rl-fs-2xs);
+}
+.dz-ties__score {
+  margin-inline-start: auto;
+  font: 700 var(--rl-fs-xs) / 1.2 var(--rl-font-mono);
+}

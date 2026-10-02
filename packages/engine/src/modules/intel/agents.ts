@@ -1,4 +1,4 @@
-import { HOUR, type NationId } from '@redline/shared';
+import { HOUR, type IntelOpKind, type NationId } from '@redline/shared';
 import type { EngineState } from '../../state/types.js';
 import { notify, sortedKeys } from '../../state/access.js';
 import { wi } from '../../state/world.js';
@@ -11,7 +11,8 @@ import { addIncident, agentDetectFactor } from './interior.js';
 import { ist, nat, nextId, type Agent } from './state.js';
 import { codename, fmtTime, nationName, natAgree, natDe, natLe } from './text.js';
 import { noteLoc } from '../../state/loc.js';
-import { agentRisk, arrestTension, coverOf, expulsionNote } from './deep.js';
+import { agentRisk, arrestTension } from './deep.js';
+import { createDetention, detaineeKind } from './detainees.js';
 import { loc } from '@redline/shared';
 
 export function createAgent(
@@ -130,8 +131,13 @@ export function handleArrest(state: EngineState, id: string): void {
   publicArrest(state, a);
 }
 
-/** Arrestation publique : incident diplomatique (signal agent_caught), notification générique. */
-export function publicArrest(state: EngineState, a: Agent): void {
+/**
+ * Arrestation publique : incident diplomatique (signal agent_caught), notification générique, puis
+ * l'agent devient un détenu du pays hôte (décision attendue : voir detainees.ts). `op` : opération
+ * au cours de laquelle il a été pris.
+ */
+export function publicArrest(state: EngineState, a: Agent, op?: IntelOpKind): void {
+  const kind = detaineeKind(a);
   a.state = 'captured';
   a.burned = true;
   a.caughtAt ??= state.time;
@@ -141,25 +147,20 @@ export function publicArrest(state: EngineState, a: Agent): void {
     amount: cfg(state).exposureTension * arrestTension(state, a),
     reason: 'agent_caught',
   });
-  // Couverture diplomatique : expulsion (crise moindre) plutôt qu'arrestation.
-  if (coverOf(a) === 'diplomatic') {
-    a.ex = 1;
-    expulsionNote(state, a, at);
-  } else
-    notify(
-      state,
-      {
-        kind: 'generic',
-        time: state.time,
-        at,
-        category: 'intel',
-        title: 'Agent démasqué',
-        text: `${natLe(state, a.host, true)} ${natAgree(state, a.host, 'annonce', 'annoncent')} l'arrestation d'un agent ${natDe(state, a.owner)}.`,
-        severity: 'warn',
-        loc: noteLoc('agentCaught', { host: { nation: a.host }, owner: { nation: a.owner } }),
-      },
-      [a.owner, a.host],
-    );
+  notify(
+    state,
+    {
+      kind: 'generic',
+      time: state.time,
+      at,
+      category: 'intel',
+      title: 'Agent démasqué',
+      text: `${natLe(state, a.host, true)} ${natAgree(state, a.host, 'annonce', 'annoncent')} l'arrestation d'un agent ${natDe(state, a.owner)}.`,
+      severity: 'warn',
+      loc: noteLoc('agentCaught', { host: { nation: a.host }, owner: { nation: a.owner } }),
+    },
+    [a.owner, a.host],
+  );
   publish(state, a.host, {
     dept: 'interior',
     source: 'humint',
@@ -191,6 +192,7 @@ export function publicArrest(state: EngineState, a: Agent): void {
     q: 0.9,
     share: false,
   });
+  createDetention(state, a, op, kind);
 }
 
 /** Agents ennemis démasqués et pas encore arrêtés publiquement, retournables par `host`. */

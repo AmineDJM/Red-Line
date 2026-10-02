@@ -74,6 +74,76 @@ export const MilitaryBalanceSchema = z.object({
       asatPk: num(0.7),
     })
     .default({}),
+  /**
+   * Défense antiaérienne détaillée (systèmes dont la fiche porte `interceptor.envelopes`, voir
+   * docs/defense-aerienne.md) : priorités, doctrine de tir par défaut, dégradation de la probabilité
+   * en limite d'enveloppe, réengagement des aéronefs, placement par l'IA.
+   */
+  airDefense: z
+    .object({
+      /** Priorité de tir par catégorie (plus grand = engagé d'abord). */
+      priority: z
+        .object({
+          hypersonic: num(6),
+          ballistic_missile: num(5),
+          cruise_missile: num(4),
+          aircraft: num(3),
+          helicopter: num(2),
+          drone: num(1.5),
+        })
+        .default({}),
+      /** Menace qui vise un point de la bulle de la batterie (ce qu'elle protège) : priorité × ce facteur. */
+      protectFactor: num(2),
+      /** Intercepteurs par cible quand la fiche ne le précise pas (doctrine). */
+      shots: z
+        .object({
+          hypersonic: num(2),
+          ballistic_missile: num(2),
+          cruise_missile: num(2),
+          aircraft: num(2),
+          helicopter: num(1),
+          drone: num(1),
+        })
+        .default({}),
+      /** Délai de réaction par défaut (secondes). */
+      reactionS: num(15),
+      /** Part de la portée maximale où la probabilité est pleine ; au-delà elle décroît. */
+      fullPkShare: num(0.6),
+      /** Facteur de probabilité à la portée maximale (décroissance linéaire depuis fullPkShare). */
+      farPkFactor: num(0.5),
+      /** Furtivité d'un aéronef : pk × (1 − furtivité × (1 − détection furtive du radar) × ce facteur). */
+      stealthPkFactor: num(1),
+      /** Réengagement d'un avion, hélicoptère ou drone après un tir (minutes). */
+      aircraftReengageMinutes: num(5),
+      /**
+       * Chasseurs (sans fiche `interceptor`) contre missiles de croisière et drones : pk = dégâts
+       * « missile » × ce facteur (plafonné), missiles air-air disponibles par appareil.
+       */
+      fighterPkPerDamage: num(0.08),
+      fighterPkMax: num(0.6),
+      fighterMagazine: num(4),
+      /** IA : placement de la défense antiaérienne (capitale, bases aériennes, front). */
+      ai: z
+        .object({
+          /** Batteries voulues à la capitale, sur chaque base aérienne, dans chaque ville du front. */
+          capital: num(2),
+          airBase: num(1),
+          front: num(1),
+          /** Ville du front : ville à elle à moins de cette distance d'un ennemi vu (km). */
+          frontKm: num(250),
+          /** Une batterie couvre un point si elle est à moins de cette part de sa portée principale. */
+          coverShare: num(0.5),
+          /** Distance maximale d'un redéploiement (km). */
+          reachKm: num(1200),
+          /** Redéploiements au plus par réflexion ; une réflexion sur `everyThinks`. */
+          movesPerThink: num(3),
+          everyThinks: num(2),
+          /** Batterie à moins de cette part de son magasin : relevée du front (stocks). */
+          minAmmoShare: num(0.3),
+        })
+        .default({}),
+    })
+    .default({}),
   nuclear: z
     .object({
       /** Rayon de destruction minimal (km). */
@@ -181,6 +251,54 @@ export const MilitaryBalanceSchema = z.object({
     })
     .default({}),
   blockade: z.object({ radiusKm: num(80) }).default({}),
+  /**
+   * Transport naval de troupes (ordres embark / disembark). Capacité d'un navire = Σ éléments ×
+   * `payload.transport` du catalogue × `placesPerTransport` ; une pile terrestre occupe Σ éléments ×
+   * places de sa catégorie (`places`, sinon `defaultPlaces`).
+   */
+  transport: z
+    .object({
+      placesPerTransport: num(50),
+      /** Places par élément, selon la catégorie (bataillon d'infanterie, char, véhicule…). */
+      places: z.record(z.string(), z.number().min(0)).default({
+        infantry: 40,
+        tank: 4,
+        ifv: 2,
+        artillery: 3,
+        air_defense: 3,
+        radar: 2,
+        logistics: 2,
+      }),
+      defaultPlaces: num(3),
+      /** Distance maximale entre la pile et le navire pour embarquer (km). */
+      embarkKm: num(60),
+      /** Navire à moins de cette distance d'un port ami : embarquement / débarquement au port (km). */
+      portKm: num(60),
+      /** Durée d'un embarquement ou d'un débarquement au port (minutes). */
+      portMinutes: num(60),
+      /** Depuis une côte (hors port) : durée multipliée par ce facteur. */
+      coastFactor: num(3),
+      /** Distance maximale entre le navire et le point de mise à terre (km). */
+      landingKm: num(60),
+      /** Débarquement contesté (ennemi au contact) : dégâts infligés réduits de cette part… */
+      landingPenalty: num(0.5),
+      /** … pendant ce délai après la mise à terre (heures). */
+      landingPenaltyHours: num(3),
+    })
+    .default({}),
+  /** Escorte (ordre escort) : suivi de la pile protégée et engagement des menaces. */
+  escort: z
+    .object({
+      /** Distance de suivi : au-delà, l'escorte se rapproche de la pile protégée (km). */
+      followKm: num(15),
+      /** Rayon de protection : menaces engagées autour de la pile protégée (km). */
+      engageKm: num(80),
+      /** Laisse : une poursuite qui entraîne au-delà de cette distance est abandonnée (km). */
+      leashKm: num(150),
+      /** Période de suivi (minutes de jeu). */
+      refreshMinutes: num(5),
+    })
+    .default({}),
   capture: z
     .object({
       /** Types de matériel récupérés en prenant une base ennemie. */
@@ -255,6 +373,36 @@ export const MilitaryBalanceSchema = z.object({
     .default({}),
 });
 export type MilitaryBalance = z.infer<typeof MilitaryBalanceSchema>;
+
+/**
+ * Section `effectiveness` de data/balance (optionnelle) : notes d'efficacité par catégorie de cible
+ * affichées par l'interface (packages/shared/src/effectiveness.ts). Seule la présentation en dépend :
+ * les notes dérivent des valeurs que le moteur utilise (dégâts, interception, frappes).
+ */
+export const EffectivenessBalanceSchema = z.object({
+  /**
+   * Note 1 (« excellent » franc) = ce quantile des systèmes du catalogue qui agissent sur la catégorie
+   * (hors armes nucléaires) : un système est noté par rapport aux meilleurs de sa catégorie.
+   */
+  refQuantile: z.number().min(0.5).max(1).default(0.9),
+  /** Seuils de note (0..1) : au-dessus de 0 faible, puis moyen, bon et excellent. */
+  levels: z
+    .object({
+      medium: z.number().min(0).max(1).default(0.25),
+      good: z.number().min(0).max(1).default(0.5),
+      excellent: z.number().min(0).max(1).default(0.8),
+    })
+    .default({}),
+  /** Poids de chaque menace dans la note « missiles » (moyenne pondérée des interceptions). */
+  missileWeights: z
+    .object({
+      cruise_missile: num(1),
+      ballistic_missile: num(1),
+      hypersonic: num(0.5),
+    })
+    .default({}),
+});
+export type EffectivenessBalance = z.infer<typeof EffectivenessBalanceSchema>;
 
 // ——— Intelligence artificielle : heuristiques de décision des nations tenues par l'IA ———
 
@@ -919,6 +1067,16 @@ export type AiWorldLevelBalance = AiWorldBalance['levels']['normal'];
 export type AiLevelBalance = AiBalance['levels']['normal'];
 
 /** Chiffres d'équilibrage globaux (data/balance/*.json). Tout est réglable par l'admin. */
+/** Valeurs par type de détenu (diplomate, clandestin, source, agent double). */
+const detaineeKindNumbers = z
+  .object({
+    diplomat: z.number().min(0),
+    illegal: z.number().min(0),
+    source: z.number().min(0),
+    double: z.number().min(0),
+  })
+  .partial();
+
 export const BalanceSchema = z.object({
   version: z.number().int(),
   time: z.object({
@@ -1167,6 +1325,20 @@ export const BalanceSchema = z.object({
       servicesIndustryFactor: z.number().min(0).optional(),
       /** Bâtiments réservés aux provinces côtières. */
       coastalOnly: z.array(z.string()).optional(),
+      /**
+       * Plancher national de production (unités par jour) : toute nation produit au moins, pour
+       * chaque ressource, max(minPerDay, economyShare × poids économique × production mondiale),
+       * poids économique = part de la nation dans le revenu des provinces de la carte
+       * (`income.money` des provinces possédées), production mondiale = somme des rendements de la
+       * carte. Production domestique minimale (raffinage, recyclage, petits gisements, cultures
+       * vivrières) des pays sans gisement. economyShare 0 et minPerDay vide : désactivé.
+       */
+      nationalFloor: z
+        .object({
+          economyShare: z.number().min(0).max(1).optional(),
+          minPerDay: z.record(z.enum(RESOURCES), z.number().min(0)).optional(),
+        })
+        .optional(),
     })
     .optional(),
   /** Moral des provinces (0..100) : en dessous de 50, les revenus de la province baissent. */
@@ -1440,6 +1612,113 @@ export const BalanceSchema = z.object({
           threatWeights: z.record(z.string(), z.number().min(0)).default({}),
         })
         .optional(),
+      /**
+       * Détenus : agents étrangers capturés, décisions du pays geôlier et leurs conséquences, régimes
+       * politiques, négociations (échanges, libérations). Tous les champs sont optionnels ; valeurs par
+       * défaut dans packages/engine/src/modules/intel/dzconfig.ts.
+       */
+      detainees: z
+        .object({
+          /** Délai de décision (jours de jeu) ; au-delà, détention provisoire. */
+          decisionDays: z.number().positive().optional(),
+          /** Interrogatoire : durée (heures), chance d'aveux exploitables et part d'intoxication par type. */
+          interrogateHours: z.number().positive().optional(),
+          interrogateYield: detaineeKindNumbers.optional(),
+          interrogateFalse: detaineeKindNumbers.optional(),
+          /** Agents du même réseau identifiés au plus par un interrogatoire. */
+          revealAgents: z.number().int().min(0).optional(),
+          /** Durées de peine proposées (jours de jeu). */
+          sentenceDays: z.array(z.number().int().positive()).min(1).max(6).optional(),
+          /** Retournement : chance de base par type (× (0,5 + qualité de la sécurité intérieure)). */
+          turnChance: detaineeKindNumbers.optional(),
+          /** Poids du type dans les relations ; valeur d'échange par type ; bonus par niveau d'accès. */
+          kindRelations: detaineeKindNumbers.optional(),
+          value: detaineeKindNumbers.optional(),
+          accessValue: z.number().min(0).optional(),
+          /**
+           * Conséquences de base de chaque décision : relations avec le pays d'origine, réputation et
+           * stabilité du pays qui décide, risque de représailles, affaiblissement du service adverse et
+           * sa durée (jours). `return` : renvoi d'un agent sans immunité ; `exchange` : échange conclu.
+           */
+          actions: z
+            .record(
+              z.enum([
+                'arrest',
+                'interrogate',
+                'expel',
+                'return',
+                'jail',
+                'execute',
+                'turn',
+                'release',
+                'exchange',
+              ]),
+              z
+                .object({
+                  relations: z.number(),
+                  reputation: z.number(),
+                  stability: z.number(),
+                  retaliation: z.number().min(0).max(1),
+                  serviceHit: z.number().min(0).max(1),
+                  serviceDays: z.number().min(0),
+                })
+                .partial(),
+            )
+            .optional(),
+          /** Relations supplémentaires par année de prison prononcée. */
+          jailPerYear: z.number().optional(),
+          /** Violation de l'immunité diplomatique : réputation et relations. */
+          immunityReputation: z.number().optional(),
+          immunityRelations: z.number().optional(),
+          /** Exécution en temps de paix : relations et réputation multipliées. */
+          peaceFactor: z.number().min(1).optional(),
+          /** Règles par régime (démocratie, hybride, autoritaire). */
+          regimes: z
+            .record(
+              z.enum(['democracy', 'hybrid', 'authoritarian']),
+              z
+                .object({
+                  execute: z.enum(['never', 'war', 'always']),
+                  reputation: z.number(),
+                  stability: z.number(),
+                  worldRelations: z.number(),
+                  council: z.number().min(0).max(1),
+                  retaliation: z.number().min(0),
+                  aiExecute: z.number().min(0).max(1),
+                })
+                .partial(),
+            )
+            .optional(),
+          /** Régimes des nations (identifiants) ; les autres sont hybrides. */
+          nations: z
+            .object({
+              democracy: z.array(z.string()).optional(),
+              authoritarian: z.array(z.string()).optional(),
+            })
+            .optional(),
+          /** Pression diplomatique quotidienne par détenu et plancher ; retour des relations vers 0. */
+          pressurePerDay: z.number().min(0).optional(),
+          pressureFloor: z.number().min(-100).max(0).optional(),
+          relationsDecayPerDay: z.number().min(0).optional(),
+          /** Négociations : validité (jours), délai de réponse d'une IA (heures). */
+          swapDays: z.number().positive().optional(),
+          aiAnswerHours: z.number().min(0).optional(),
+          /** Dollars par point de valeur d'agent ; valeur d'un jour d'accord, d'un allègement de sanctions. */
+          usdPerValue: z.number().positive().optional(),
+          accordValuePerDay: z.number().min(0).optional(),
+          sanctionsValue: z.number().min(0).optional(),
+          /** Valeur d'un détenu cédé rapportée à celle d'un agent récupéré. */
+          holdFactor: z.number().min(0).optional(),
+          /** Exigences d'une IA : relations hostiles, guerre ; contre-proposition et surenchère. */
+          hostilePremium: z.number().min(0).optional(),
+          warPremium: z.number().min(0).optional(),
+          counterMax: z.number().min(0).optional(),
+          raise: z.number().min(0).optional(),
+          /** Initiatives d'échange des IA : au plus une par paire tous les N jours, relations minimales. */
+          aiSwapEveryDays: z.number().positive().optional(),
+          aiSwapMinRelations: z.number().min(-100).max(100).optional(),
+        })
+        .optional(),
     })
     .optional(),
   /**
@@ -1595,6 +1874,8 @@ export const BalanceSchema = z.object({
     .optional(),
   /** Combat complet (phase 3) : voir MilitaryBalanceSchema (valeurs par défaut documentées). */
   military: MilitaryBalanceSchema.optional(),
+  /** Notes d'efficacité par catégorie de cible (interface) : voir EffectivenessBalanceSchema. */
+  effectiveness: EffectivenessBalanceSchema.optional(),
   /** Piles mixtes (regroupement de départ, fusion, emploi par l'IA) : voir StacksBalanceSchema. */
   stacks: StacksBalanceSchema.optional(),
   /**

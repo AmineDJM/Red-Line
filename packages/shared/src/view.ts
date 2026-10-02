@@ -84,6 +84,11 @@ export interface UnitView {
   missile?: { target: import('./military.js').StrikeTarget; impactAt: GameTime } | null;
   /** Leurre (vrai uniquement côté propriétaire ; un ennemi ne le sait pas). */
   decoy?: boolean;
+  /**
+   * Défense antiaérienne (own) : intercepteurs disponibles, magasin plein, et instant où le magasin
+   * sera de nouveau plein (rechargement progressif), null s'il l'est.
+   */
+  airDefense?: { ammo: number; max: number; fullAt: GameTime | null };
   /** Unité rebelle, neutre de maintien de la paix, ou mercenaire. */
   affiliation?: 'regular' | 'rebel' | 'peacekeeper' | 'mercenary';
   /**
@@ -92,6 +97,25 @@ export interface UnitView {
    * principal (le plus de points de vie), qui donne l'icône.
    */
   parts?: StackPartView[];
+  /** Pile terrestre embarquée sur un navire de transport (own) : le navire porteur. */
+  transportId?: UnitId | null;
+  /** Navire de transport (own) : capacité, troupes à bord, embarquements et débarquement en cours. */
+  cargo?: CargoView;
+  /** Pile terrestre en cours d'embarquement (own) : navire et fin prévue. */
+  loading?: { transportId: UnitId; doneAt: GameTime } | null;
+}
+
+/** Cargaison d'un navire de transport (vue de son propriétaire). */
+export interface CargoView {
+  /** Capacité totale et occupée (places, voir balance.military.transport). */
+  capacity: number;
+  used: number;
+  /** Piles embarquées (unités hors carte, statut « embarked »). */
+  unitIds: UnitId[];
+  /** Piles en cours d'embarquement. */
+  loadingIds?: UnitId[];
+  /** Débarquement : point de mise à terre, fin prévue (null pendant la traversée). */
+  landing?: { at: LngLat; doneAt: GameTime | null } | null;
 }
 
 /** Élément d'une pile mixte. */
