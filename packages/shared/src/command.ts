@@ -272,6 +272,30 @@ export const CommandBalanceSchema = z.object({
       traits: z.record(z.string(), TraitSchema).default(DEFAULT_TRAITS),
     })
     .default({}),
+  /** Réglages tactiques des généraux (distances, mémoires, délais). */
+  tactics: z
+    .object({
+      /** Aviation ennemie vue à moins de cette distance de l'objectif ou de la zone : chasse en l'air (km). */
+      airThreatKm: pos(600),
+      /** Défenses antiaériennes frappées autour des objectifs (suppression, km). */
+      seadKm: pos(300),
+      /** Forces terrestres frappées autour des objectifs (appui aérien, km). */
+      supportKm: pos(40),
+      /** Contacts ennemis perdus de vue encore comptés (heures). */
+      contactMemoryHours: pos(12),
+      /** Province ennemie non vue : part supposée des forces publiques de la nation (débarquement). */
+      blindShare: pos(0.25),
+      /** Distance maximale d'où le général fait venir les piles de son armée (km). */
+      reachKm: pos(5000),
+      /** Remise en ligne d'une pile repliée : santé au-dessus du seuil de repli + cette marge. */
+      restMargin: pos(0.25),
+      /** Délais : constat « forces insuffisantes », « aucun renseignement » (heures). */
+      weakNoticeHours: pos(12),
+      noIntelNoticeHours: pos(24),
+      /** Zone à tenir entièrement perdue : échec après ce délai (heures). */
+      zoneLostHours: pos(6),
+    })
+    .default({}),
   reinforce: z
     .object({
       /** Demande de renforts quand les effectifs passent sous cette part du lancement de la mission. */

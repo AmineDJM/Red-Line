@@ -57,6 +57,17 @@ function gauss(r: RngState): number {
   return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
 }
 
+function gcd(a: number, b: number): number {
+  return b ? gcd(b, a % b) : a;
+}
+
+/** Pas de parcours premier avec `n` (permutation complète de la liste). */
+function coprime(n: number, from: number): number {
+  let k = from;
+  while (gcd(k, n) !== 1) k++;
+  return k;
+}
+
 const SPECIALTIES: GeneralSkill[] = ['offense', 'defense', 'logistics', 'air', 'naval'];
 
 /** Conditions d'un trait (cohérence avec les compétences). */
@@ -91,8 +102,12 @@ export function candidate(state: EngineState, n: NationId, idx: number): Candida
   const r = seedRng(hashStr(`${n}:${idx}`, (state.setup.seed ^ 0x6e6e) >>> 0));
   const culture = cultureOf(n);
   const names = CULTURES[culture] ?? CULTURES.en!;
-  const first = names.first[Math.floor(nextFloat(r) * names.first.length)]!;
-  const last = names.last[Math.floor(nextFloat(r) * names.last.length)]!;
+  // Noms distincts d'un candidat à l'autre : pas premier avec la longueur de chaque liste.
+  const base = seedRng(hashStr(n, (state.setup.seed ^ 0x6e6f) >>> 0));
+  const o1 = Math.floor(nextFloat(base) * names.first.length);
+  const o2 = Math.floor(nextFloat(base) * names.last.length);
+  const first = names.first[(o1 + idx * coprime(names.first.length, 7)) % names.first.length]!;
+  const last = names.last[(o2 + idx * coprime(names.last.length, 5)) % names.last.length]!;
   const rating = clamp(G.skillMean + G.skillSpread * gauss(r), 18, 94);
   const main = SPECIALTIES[Math.floor(nextFloat(r) * SPECIALTIES.length)]!;
   const second = SPECIALTIES[Math.floor(nextFloat(r) * SPECIALTIES.length)]!;

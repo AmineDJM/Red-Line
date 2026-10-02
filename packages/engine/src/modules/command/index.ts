@@ -89,11 +89,14 @@ function daily(state: EngineState): void {
     }
     const [cap0, los0] = a.rep ?? [0, 0];
     const pct = a.start > 0 ? Math.round((100 * a.now) / a.start) : 100;
-    journal(state, a, 'daily', {
-      strength: pct,
-      captures: a.captures - cap0,
-      losses: a.losses - los0,
-    });
+    // Rapport quotidien : seulement pour une armée qui agit et s'il y a du nouveau (pas de bruit).
+    const acting = a.status === 'active' || a.status === 'preparing';
+    if (acting && (a.captures !== cap0 || a.losses !== los0))
+      journal(state, a, 'daily', {
+        strength: pct,
+        captures: a.captures - cap0,
+        losses: a.losses - los0,
+      });
     a.rep = [a.captures, a.losses];
     if (g && a.units.some((u) => state.units[u]?.engaged))
       gainXp(state, g, B.generals.xpCombatDay, B.missions[a.mission.type]?.brain ?? null);

@@ -3,6 +3,8 @@
  * Chemins sans index de tableau ni clé d'enregistrement (ex. « buildings.levels.costUsd »).
  * Unités : '$' dollars US, 'frac' fraction affichée en %, 'min' 'h' 'j' 'km' 'kmh', 'x' multiplicateur, 'pts' points.
  */
+import { COMMAND_HELP, COMMAND_SECTION } from './rules-command.js';
+
 export type Unit = '$' | 'frac' | 'min' | 'h' | 'j' | 'km' | 'kmh' | 'x' | 'pts' | 'n';
 export type HelpEntry = [label: string, help?: string, unit?: Unit];
 
@@ -90,6 +92,7 @@ export const RULE_SECTIONS: Record<string, [label: string, help: string]> = {
     'Intelligence artificielle',
     'Heuristiques de décision des IA par niveau de difficulté (guerre, tactique, économie, diplomatie) : elles jouent avec les mêmes ordres et le même brouillard que les joueurs.',
   ],
+  command: COMMAND_SECTION,
   startingArmy: [
     'Armée de départ',
     'Repli si la nation jouable n’a pas d’ORBAT : unités posées autour de la capitale.',
@@ -1450,4 +1453,5 @@ export const RULE_HELP: Record<string, HelpEntry> = {
   garrisonArmy: ['Garnison', 'Système et nombre d’unités.'],
   'garrisonArmy.systemId': ['Système', 'Identifiant du catalogue.'],
   'garrisonArmy.count': ['Nombre', undefined, 'n'],
+  ...COMMAND_HELP,
 };

@@ -258,7 +258,11 @@ function retreat(t: Think): void {
   const threshold = Math.max(0, Math.min(0.9, m.retreatAt + T.retreatAt));
   for (const id of sortedKeys(a.rest)) {
     const u = state.units[id];
-    if (!u || u.owner !== n || u.hp / Math.max(1, u.maxHp) >= Math.min(0.95, threshold + 0.25))
+    if (
+      !u ||
+      u.owner !== n ||
+      u.hp / Math.max(1, u.maxHp) >= Math.min(0.95, threshold + cmdBal(state).tactics.restMargin)
+    )
       delete a.rest[id];
   }
   if (threshold <= 0) return;
@@ -341,7 +345,7 @@ function reinforcements(t: Think, shortfall = 0): void {
   if (a.reinforce === 'auto') {
     addUnits(state, a, pick);
     a.start += got;
-    journal(state, a, 'reinforced', { piles: pick.length }, 'good');
+    journal(state, a, 'reinforced', { count: pick.length }, 'good');
     return;
   }
   a.request = { id: nextCmdId(state, 'r'), kind: 'reinforce', unitIds: pick, at: state.time };
@@ -352,7 +356,7 @@ function reinforcements(t: Think, shortfall = 0): void {
     { army: a.name, general: fullName(g), count: pick.length },
     'info',
   );
-  journal(state, a, 'askReinforce', { piles: pick.length }, 'info');
+  journal(state, a, 'askReinforce', { count: pick.length }, 'info');
 }
 
 /**
@@ -366,7 +370,10 @@ function tooWeak(t: Think, ctx: Ctx, need: number): void {
   for (const m of ctx.land)
     if (ctx.idle.has(m.u.id) && (m.ground || m.s.canCapture)) have += m.value;
   if (have >= need) return;
-  if (a.weakAt === undefined || state.time - a.weakAt >= 12 * HOUR) {
+  if (
+    a.weakAt === undefined ||
+    state.time - a.weakAt >= cmdBal(state).tactics.weakNoticeHours * HOUR
+  ) {
     a.weakAt = state.time;
     journal(state, a, 'tooWeak', { pct: Math.round((100 * have) / need) }, 'warn');
   }
@@ -388,7 +395,8 @@ function airSupport(t: Think, objectives: LngLat[], forceCover: boolean): void {
   const main = objectives[0]!;
   const seen = visibleEnemies(state, n);
   const fighters = air.filter((u) => isFighter(sysOf(state, u)));
-  const hostileAir = seen.airAt.some((p) => distanceKm(p, main) <= 600);
+  const K = cmdBal(state).tactics;
+  const hostileAir = seen.airAt.some((p) => distanceKm(p, main) <= K.airThreatKm);
   const want =
     hostileAir || forceCover || A.objectives > 0
       ? Math.ceil(fighters.length * A.airShare)
@@ -397,9 +405,9 @@ function airSupport(t: Think, objectives: LngLat[], forceCover: boolean): void {
   if (!seen.threats.length) return;
   let sorties = 1 + Math.floor(g.skills.air / 34) + T.sorties;
   const near = (p: LngLat, km: number) => objectives.some((o) => distanceKm(o, p) <= km);
-  const sams = L.sead ? seen.threats.filter((x) => isSam(x.sys) && near(x.pos, 300)) : [];
+  const sams = L.sead ? seen.threats.filter((x) => isSam(x.sys) && near(x.pos, K.seadKm)) : [];
   const ground = seen.threats.filter(
-    (x) => x.sys?.movement === 'land' && !isSam(x.sys) && near(x.pos, 40),
+    (x) => x.sys?.movement === 'land' && !isSam(x.sys) && near(x.pos, K.supportKm),
   );
   if (!sams.length && !ground.length) return;
   for (const u of air) {
@@ -688,7 +696,10 @@ function brainLanding(t: Think): void {
 /** Part supposée des forces publiques de l'ennemi dans une province côtière qu'on ne voit pas. */
 function landingPrior(state: EngineState, n: NationId, owner: NationId): number {
   const provs = Math.max(1, state.nations[owner]?.provinceCount ?? 1);
-  return (estimateForce(state, n, owner, ownForce(state, n), 1) / provs) * 0.25;
+  return (
+    (estimateForce(state, n, owner, ownForce(state, n), 1) / provs) *
+    cmdBal(state).tactics.blindShare
+  );
 }
 
 /** Villes à tenir encore à soi, la plus importante d'abord (capitale, menace, revenu). */
@@ -733,7 +744,7 @@ function brainZone(t: Think, kind: 'defend' | 'air_defense' | 'reserve'): void {
     }
   }
   // Les piles de l'armée viennent de loin s'il le faut (elles lui appartiennent toutes).
-  const reach = Math.max(r * 2 + 600, 5000);
+  const reach = Math.max(r * 2 + 600, cmdBal(state).tactics.reachKm);
   if (kind === 'reserve') {
     // Position d'attente : la ville amie la plus proche du point choisi.
     let hub: ProvinceId | null = null;
@@ -761,7 +772,7 @@ function brainZone(t: Think, kind: 'defend' | 'air_defense' | 'reserve'): void {
   if (kind !== 'reserve') placeAirDefense(t, holds);
   // Aviation : patrouille dès qu'une menace aérienne approche (ou d'office en mode audacieux).
   const seen = visibleEnemies(state, n);
-  const T2 = 600;
+  const T2 = cmdBal(state).tactics.airThreatKm;
   const threat = seen.airAt.some((p) => distanceKm(p, at) <= r + T2);
   if (threat || m.aggr === 'bold') {
     airPatrol(t, at, r, kind === 'air_defense' ? 1 : A.airShare);
@@ -897,7 +908,7 @@ function brainDeep(t: Think): void {
   }
   const cands = strategicTargets(state, n, o);
   if (!cands.length) {
-    if (!m.doneAt || state.time - m.doneAt >= 24 * HOUR) {
+    if (!m.doneAt || state.time - m.doneAt >= cmdBal(state).tactics.noIntelNoticeHours * HOUR) {
       m.doneAt = state.time;
       journal(state, a, 'noIntel', { nation: { nation: o } }, 'warn');
     }
@@ -1163,7 +1174,7 @@ function evaluate(state: EngineState, a: ArmySt, def: MissionDef, g: GenSt | nul
       const holds = m.holds ?? [];
       const done = holds.filter((p) => state.provinces[p]?.owner === n).length;
       a.obj = holds.length ? { done, total: holds.length } : null;
-      if (holds.length && done === 0 && state.time - m.since > 6 * HOUR) {
+      if (holds.length && done === 0 && state.time - m.since > B.tactics.zoneLostHours * HOUR) {
         failMission(state, a, 'zoneLost');
         return true;
       }
@@ -1231,7 +1242,7 @@ function knownNear(state: EngineState, n: NationId, at: LngLat, r: number, air?:
   const known = state.know[n];
   if (!known) return 0;
   const mine = ownForce(state, n);
-  const memory = 12 * HOUR;
+  const memory = cmdBal(state).tactics.contactMemoryHours * HOUR;
   let v = 0;
   for (const id of sortedKeys(known)) {
     const k = known[id]!;

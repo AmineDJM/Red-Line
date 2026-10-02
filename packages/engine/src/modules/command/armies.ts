@@ -138,7 +138,7 @@ export function orderCreate(
     units.map((u) => u.id),
   );
   a.now = armyValue(state, a);
-  journal(state, a, 'created', { piles: a.units.length });
+  journal(state, a, 'created', { count: a.units.length });
   if (hire?.ok) doHire(state, n, hire.idx, a);
   else if (gen) assign(state, gen, a);
   if (mis?.ok) applyMission(state, a, mis.ms);
@@ -167,7 +167,7 @@ export function orderEdit(
     if (ids.length) {
       // Renforts : ils comptent dans les effectifs de référence de la mission.
       if (a.mission) a.start += ids.reduce((s, id) => s + unitValue(state, state.units[id]!), 0);
-      journal(state, a, 'reinforced', { piles: ids.length }, 'good');
+      journal(state, a, 'reinforced', { count: ids.length }, 'good');
     }
   }
   if (remove.length) {
@@ -177,7 +177,7 @@ export function orderEdit(
         a.start - remove.reduce((s, id) => s + unitValue(state, state.units[id]!), 0),
       );
     removeUnits(state, a, remove);
-    journal(state, a, 'detached', { piles: remove.length });
+    journal(state, a, 'detached', { count: remove.length });
   }
   a.now = armyValue(state, a);
   return { ok: true };
@@ -426,7 +426,7 @@ export function orderAnswer(
       if (ids.length) {
         addUnits(state, a, ids);
         if (a.mission) a.start += ids.reduce((s, id) => s + unitValue(state, state.units[id]!), 0);
-        journal(state, a, 'reinforced', { piles: ids.length }, 'good');
+        journal(state, a, 'reinforced', { count: ids.length }, 'good');
       }
       break;
     }
