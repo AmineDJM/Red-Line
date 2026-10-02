@@ -2,9 +2,11 @@ import { expect, test, type Page } from '@playwright/test';
 
 /**
  * Actions de commandement (barre d'ordres de la sélection), sur ordinateur et sur mobile, partie
- * réelle (France, ORBAT 2025) :
+ * réelle (Allemagne, ORBAT 2025 ; avec la carte fusionnée, les SCALP français démarrent à Bordeaux,
+ * hors de portée de toute unité étrangère visible) :
  *  1. sélection d'un chasseur → « Patrouiller » → point sur la carte → confirmation → décollage ;
- *  2. pile de missiles de croisière → « Attaquer » une unité belge à portée → tir, impact, dégâts ;
+ *  2. pile de missiles de croisière (Taurus) → « Attaquer » une unité étrangère à portée → tir, impact,
+ *     dégâts ;
  *  3. chasseur posé → « Attaquer » la même cible → décollage, frappe aérienne, dégâts.
  */
 
@@ -40,7 +42,7 @@ async function unitPos(page: Page, id: string): Promise<LngLat> {
   return page.evaluate((uid) => window.__rl.game.getState().view.units[uid].pos, id);
 }
 
-async function startFrance(page: Page) {
+async function startGermany(page: Page) {
   await page.addInitScript(() => {
     localStorage.setItem('rl.debug', '1');
     localStorage.setItem('rl.tutorial.done', '1');
@@ -52,9 +54,9 @@ async function startFrance(page: Page) {
   await page.goto('/');
   await page.getByRole('button', { name: 'Jouer en invité' }).click();
   await page.waitForURL('**/new');
-  await page.getByPlaceholder('Rechercher une nation…').fill('France');
+  await page.getByPlaceholder('Rechercher une nation…').fill('Allemagne');
   await page
-    .locator('.nation-row', { hasText: /^France/ })
+    .locator('.nation-row', { hasText: /^Allemagne/ })
     .first()
     .click();
   await page.getByRole('button', { name: 'Lancer la partie' }).click();
@@ -81,9 +83,9 @@ test('actions : patrouille, frappe de missiles, attaque aérienne', async ({ pag
   const mobile = info.project.name === 'mobile';
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
-  await startFrance(page);
+  await startGermany(page);
 
-  // Matériel français : missiles de croisière (SCALP), chasseur le plus proche, et une cible
+  // Matériel du joueur : missiles de croisière (Taurus), chasseur le plus proche, et une cible
   // étrangère visible (forces terrestres) à portée des deux.
   const picks = await page.evaluate(() => {
     const { game, world } = window.__rl;
@@ -114,7 +116,7 @@ test('actions : patrouille, frappe de missiles, attaque aérienne', async ({ pag
     const target = units
       .filter(
         (u) =>
-          u.owner !== 'fra' &&
+          u.owner !== game.getState().me &&
           u.level !== 'detected' &&
           !u.missile &&
           u.status !== 'embarked' &&
@@ -208,7 +210,7 @@ test('actions : patrouille, frappe de missiles, attaque aérienne', async ({ pag
       const c = Object.values<any>(view.units)
         .filter(
           (u) =>
-            u.owner !== 'fra' &&
+            u.owner !== game.getState().me &&
             u.level !== 'detected' &&
             !u.missile &&
             u.status !== 'embarked' &&

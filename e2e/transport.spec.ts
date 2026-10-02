@@ -66,11 +66,21 @@ test('transport naval : embarquer, traverser, débarquer ; escorter', async ({ p
     const view = game.getState().view;
     const catalog = world.getState().catalog;
     const own = Object.values<any>(view.units).filter((u) => u.level === 'own');
-    const ship = own.find((u) => (catalog[u.systemId]?.payload?.transport ?? 0) > 0 && u.cargo);
     const d2 = (a: number[], b: number[]) => (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2;
-    const stack = own
-      .filter((u) => catalog[u.systemId]?.movement === 'land' && (u.parts?.length ?? 0) > 1)
-      .sort((a, b) => d2(a.pos, ship.pos) - d2(b.pos, ship.pos))[0];
+    const stacks = own.filter(
+      (u) => catalog[u.systemId]?.movement === 'land' && (u.parts?.length ?? 0) > 1,
+    );
+    // Couple navire de transport / pile terrestre le plus proche (un Mistral peut être outre-mer).
+    let ship: any = null;
+    let stack: any = null;
+    for (const sh of own.filter(
+      (u) => (catalog[u.systemId]?.payload?.transport ?? 0) > 0 && u.cargo,
+    ))
+      for (const st of stacks)
+        if (!ship || d2(st.pos, sh.pos) < d2(stack.pos, ship.pos)) {
+          ship = sh;
+          stack = st;
+        }
     const roads = world.getState().roads;
     const port = roads.nearestNode(ship.pos, 80, (i: number) => !!roads.nodes[i].port);
     const jet = own.find((u) => u.systemId === 'eu.mirage-2000');
