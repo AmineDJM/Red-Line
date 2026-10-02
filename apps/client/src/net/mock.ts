@@ -651,7 +651,7 @@ export class MockGameConnection extends Emitter implements GameConnection {
     }
     const meta = this.applyPhase2(order, t);
     if (meta) return meta;
-    if (!('unitIds' in order)) return { ok: false, error: 'unknown' };
+    if (!('unitIds' in order) || !order.unitIds) return { ok: false, error: 'unknown' };
     const units = order.unitIds.map((id: string) => this.view.units[id]);
     if (units.some((u) => !u)) return { ok: false, error: 'unknown_unit' };
     if (units.some((u) => u!.owner !== me)) return { ok: false, error: 'not_owner' };

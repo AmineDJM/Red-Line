@@ -9,11 +9,26 @@ export type PendingOrder =
   | { kind: 'attack'; unitIds: UnitId[]; targetId: UnitId }
   | { kind: 'strike'; unitIds: UnitId[]; target: StrikeTarget }
   | { kind: 'patrol'; unitIds: UnitId[]; at: LngLat; radiusKm: number; recon?: boolean }
-  | { kind: 'blockade'; unitIds: UnitId[]; provinceId: ProvinceId; at: LngLat };
+  | { kind: 'blockade'; unitIds: UnitId[]; provinceId: ProvinceId; at: LngLat }
+  /** Escorte : les piles suivent et protègent une pile amie. */
+  | { kind: 'escort'; unitIds: UnitId[]; targetId: UnitId }
+  /** Embarquement de piles terrestres sur un navire de transport ami. */
+  | { kind: 'embark'; unitIds: UnitId[]; transportId: UnitId }
+  /** Débarquement des troupes d'un navire (`unitIds` : le navire) : sur place, ou après traversée vers `to`. */
+  | { kind: 'disembark'; unitIds: UnitId[]; transportId: UnitId; to?: LngLat };
 
 /** Mode de ciblage sur la carte (après un bouton d'action) : le prochain clic désigne la cible. */
 export type TargetingAction =
-  'move' | 'attack' | 'intercept' | 'strike' | 'patrol' | 'recon' | 'blockade';
+  | 'move'
+  | 'attack'
+  | 'intercept'
+  | 'strike'
+  | 'patrol'
+  | 'recon'
+  | 'blockade'
+  | 'escort'
+  | 'embark'
+  | 'disembark';
 export interface Targeting {
   action: TargetingAction;
   unitIds: UnitId[];
@@ -33,6 +48,12 @@ export function pendingPoint(
     case 'patrol':
     case 'blockade':
       return p.at;
+    case 'escort':
+      return unitPos(p.targetId);
+    case 'embark':
+      return unitPos(p.transportId);
+    case 'disembark':
+      return p.to ?? unitPos(p.transportId);
     case 'strike':
       return p.target.type === 'point'
         ? p.target.at

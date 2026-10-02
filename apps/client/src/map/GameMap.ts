@@ -47,6 +47,7 @@ import { fmtDuration, fmtKm, t } from '../i18n/index.js';
 import { gameNow, useGame } from '../store/game.js';
 import { pendingPoint, pendingTargetId, useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
+import { isTransportSys } from '../lib/unitActions.js';
 import { dashSequence, pulse } from './animations.js';
 import { computeBorders } from './borders.js';
 import { buildCallouts } from './calloutContent.js';
@@ -2224,6 +2225,43 @@ export class GameMap {
           recon: tg.action === 'recon',
         });
         return;
+      case 'escort': {
+        // Pile amie à escorter (une des siennes, hors de la sélection).
+        const friend = (tok?.ids ?? [])
+          .map((id) => view?.units[id])
+          .find((u) => !!u && u.owner === me && u.level === 'own' && !unitIds.includes(u.id));
+        if (!friend) {
+          ui.toast(t('game.actions.pick.needFriendly'), 'warn');
+          return;
+        }
+        ui.setPending({ kind: 'escort', unitIds, targetId: friend.id });
+        return;
+      }
+      case 'embark': {
+        const catalog = useWorld.getState().catalog;
+        const ship = (tok?.ids ?? [])
+          .map((id) => view?.units[id])
+          .find((u) => {
+            const s = u?.level === 'own' && u.systemId ? catalog[u.systemId] : undefined;
+            return !!s && isTransportSys(s);
+          });
+        if (!ship) {
+          ui.toast(t('game.actions.pick.needTransport'), 'warn');
+          return;
+        }
+        ui.setPending({ kind: 'embark', unitIds, transportId: ship.id });
+        return;
+      }
+      case 'disembark': {
+        const ship = unitIds[0]!;
+        // Clic sur le navire : débarquement sur place ; ailleurs : traversée puis débarquement.
+        if (tok?.ids.includes(ship)) {
+          ui.setPending({ kind: 'disembark', unitIds: [ship], transportId: ship });
+          return;
+        }
+        ui.setPending({ kind: 'disembark', unitIds: [ship], transportId: ship, to: at });
+        return;
+      }
       case 'blockade': {
         const pf = this.queryRendered(e.point, { layers: ['prov-fill'] })[0];
         const pid = pf ? String(pf.properties?.id ?? pf.id ?? '') : '';

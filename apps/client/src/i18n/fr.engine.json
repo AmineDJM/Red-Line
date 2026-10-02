@@ -243,6 +243,34 @@
       "agentExpelled": {
         "title": "Diplomates expulsés",
         "text": "{{host}} expulse des diplomates de {{owner}} pour espionnage."
+      },
+      "troopsEmbarked": {
+        "title": "Troupes embarquées",
+        "text": "{{system}} à bord de {{ship}}."
+      },
+      "troopsLanded": {
+        "title": "Troupes débarquées",
+        "text_one": "{{count}} pile mise à terre : {{place}}.",
+        "text_other": "{{count}} piles mises à terre : {{place}}."
+      },
+      "troopsLandedContested": {
+        "title": "Débarquement sous le feu",
+        "text_one": "{{count}} pile mise à terre sous le feu : {{place}}.",
+        "text_other": "{{count}} piles mises à terre sous le feu : {{place}}."
+      },
+      "transportSunk": {
+        "title": "Transport coulé",
+        "text_one": "{{system}} perdu avec {{count}} pile à bord.",
+        "text_other": "{{system}} perdu avec {{count}} piles à bord."
+      },
+      "escortEnded": {
+        "title": "Escorte terminée",
+        "text": "{{system}} : la pile escortée n'est plus là."
+      },
+      "captureBlocked": {
+        "title": "Capture impossible",
+        "noCapturer": "{{system}} ne peut pas capturer {{place}} : il faut de l'infanterie ou des blindés.",
+        "noWar": "Pas de guerre avec le propriétaire de {{place}} : pas de capture."
       }
     }
   }

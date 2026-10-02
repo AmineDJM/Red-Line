@@ -366,7 +366,9 @@
       "multi_one": "{{count}} sélectionnée",
       "multi_other": "{{count}} sélectionnées",
       "ready": "Disponible dans",
-      "ammo": "Munitions"
+      "ammo": "Munitions",
+      "aboard": "À bord de",
+      "loading": "Embarquement"
     },
     "orders": {
       "moveTitle": "Ordre de déplacement",
@@ -404,6 +406,15 @@
       "patrolTitle": "Ordre de patrouille",
       "reconTitle": "Mission de reconnaissance",
       "blockadeTitle": "Ordre de blocus",
+      "escortTitle": "Escorter",
+      "embarkTitle": "Embarquer",
+      "disembarkTitle": "Débarquement amphibie",
+      "disembarkHereTitle": "Débarquer sur place",
+      "places": "Places",
+      "placesValue": "{{need}} requises · {{free}} libres",
+      "aboard": "Piles à bord",
+      "overCapacity": "Capacité dépassée : scindez la pile.",
+      "noCapturer": "Aucune unité de cette sélection ne peut capturer : il faut de l'infanterie ou des blindés.",
       "radius": "Rayon",
       "reasons": {
         "target_invalid": "Cible invalide.",
@@ -417,7 +428,20 @@
         "aircraft_cooldown": "Appareil en remise en œuvre au sol (prêt dans {{min}} min).",
         "partial": "Ordre transmis ; {{count}} pile(s) écartée(s) : {{detail}}",
         "munition_use_strike": "Munitions : utilisez l'ordre de frappe.",
-        "ceasefire": "Cessez-le-feu en vigueur."
+        "ceasefire": "Cessez-le-feu en vigueur.",
+        "escort_self": "Une pile ne peut pas s'escorter elle-même.",
+        "escort_target_invalid": "Cible d'escorte invalide : choisissez une de vos piles mobiles.",
+        "escort_incapable": "{{name}} ne peut pas escorter (aucune arme).",
+        "escort_domain": "{{name}} ne peut pas suivre cette pile (navires avec navires, troupes avec troupes).",
+        "transport_not_ship": "{{name}} ne peut pas transporter de troupes.",
+        "transport_not_land": "{{name}} : seules les troupes au sol embarquent.",
+        "transport_capacity": "Capacité dépassée : {{need}} places requises, {{free}} libres sur {{cap}}. Scindez la pile.",
+        "transport_too_far": "{{name}} : trop loin du navire ({{dist}} km, {{max}} km au plus).",
+        "transport_moving": "Le navire doit être à l'arrêt.",
+        "transport_no_shore": "Aucune côte praticable à proximité : approchez le navire d'un port ou d'une route côtière.",
+        "transport_empty": "Aucune de ces troupes n'est à bord.",
+        "transport_embarked": "{{name}} : troupes à bord, utilisez « Débarquer » sur le navire.",
+        "transport_busy": "{{name}} : déjà en transport."
       },
       "classes": {
         "infantry": "infanterie",
@@ -491,6 +515,9 @@
       "patrol": "Patrouiller",
       "recon": "Reconnaître",
       "blockade": "Blocus",
+      "escort": "Escorter",
+      "embark": "Embarquer",
+      "disembark": "Débarquer",
       "rtb": "Retour",
       "rtbAir": "Retour base",
       "rtbSea": "Au port",
@@ -504,6 +531,10 @@
         "airSeaOnly": "Patrouille réservée aux aéronefs et aux navires.",
         "noRecon": "Reconnaissance réservée aux drones et avions de reconnaissance.",
         "seaOnly": "Blocus réservé aux navires.",
+        "noEscort": "Escorte réservée aux unités armées et mobiles.",
+        "noLand": "Embarquement réservé aux troupes au sol.",
+        "noTransport": "Aucun navire de transport ami à l'arrêt à proximité.",
+        "noCargo": "Aucune troupe à bord de ce navire.",
         "idle": "Rien à arrêter : unités déjà à l'arrêt.",
         "none": "Action indisponible."
       },
@@ -515,9 +546,28 @@
         "patrol": "cliquez le centre de la zone à patrouiller.",
         "recon": "cliquez la zone à survoler.",
         "blockade": "cliquez une province côtière ennemie.",
+        "escort": "cliquez une de vos piles à escorter.",
+        "embark": "cliquez le navire de transport.",
+        "disembark": "cliquez la côte où débarquer, ou le navire pour débarquer sur place.",
         "needEnemy": "Choisissez une unité ennemie visible.",
-        "needPort": "Choisissez une province étrangère côtière."
+        "needPort": "Choisissez une province étrangère côtière.",
+        "needFriendly": "Choisissez une de vos piles.",
+        "needTransport": "Choisissez un de vos navires de transport."
       }
+    },
+    "capture": {
+      "progress": "Capture de {{city}}",
+      "noCapturer": "{{city}} : cette pile ne peut pas capturer (infanterie ou blindés requis).",
+      "noWar": "{{city}} : pas de guerre avec son propriétaire, pas de capture.",
+      "defended": "{{city}} : défenseurs présents, la capture commencera quand ils seront chassés."
+    },
+    "cargo": {
+      "title": "Cargaison",
+      "places": "{{used}} / {{capacity}} places",
+      "empty": "Aucune troupe à bord.",
+      "loading": "embarquement",
+      "landing": "Débarquement dans {{eta}}",
+      "sailing": "Traversée vers la zone de débarquement"
     }
   },
   "province": {
