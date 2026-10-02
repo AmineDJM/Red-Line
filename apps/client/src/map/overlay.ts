@@ -167,7 +167,7 @@ export class OverlayRenderer {
     const segments = this.drawRoutes(content.routes);
     const iconRects = this.iconRects(content);
     this.drawEtas(content.etas ?? [], segments, iconRects);
-    this.drawRings(content.rings ?? []);
+    this.drawRings(content.rings ?? [], iconRects);
     this.drawBadges(content.badges);
     this.drawCallouts(content.callouts, segments, iconRects);
   }
@@ -404,7 +404,8 @@ export class OverlayRenderer {
     }
   }
 
-  private drawRings(rings: RingLabel[]) {
+  private drawRings(rings: RingLabel[], icons: Rect[]) {
+    const font = `600 9.5px ${MONO}`;
     for (const r of rings) {
       const p = this.project(r.at);
       if (p.x < -60 || p.y < -20 || p.x > this.w + 60 || p.y > this.h + 20) continue;
@@ -412,7 +413,16 @@ export class OverlayRenderer {
         const c = this.project(r.center);
         if (Math.hypot(p.x - c.x, p.y - c.y) < 48) continue;
       }
-      this.pill(r.text, p.x, p.y, TONES[r.tone ?? 'amber'], `600 9.5px ${MONO}`);
+      // Étiquette sur un pion : décalée au-dessus ou en dessous, omise si aucune place.
+      this.ctx.font = font;
+      const w = this.ctx.measureText(r.text).width + 10;
+      const free = (y: number) =>
+        !icons.some(
+          (o) => p.x - w / 2 < o.x + o.w && p.x + w / 2 > o.x && y - 8 < o.y + o.h && y + 8 > o.y,
+        );
+      const y = [p.y, p.y - 20, p.y + 20, p.y - 40].find(free);
+      if (y === undefined) continue;
+      this.pill(r.text, p.x, y, TONES[r.tone ?? 'amber'], font);
     }
   }
 

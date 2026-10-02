@@ -1637,7 +1637,7 @@ function cityLayers(i: StyleInput): LayerSpecification[] {
             ['zoom'],
             ...PION_SCALE_STOPS.flatMap(([z, v]) => [
               z,
-              Math.max(cls === 0 ? 1.55 : 1.45, ((PION_H / 2 + 8) * v) / size),
+              Math.max(cls === 0 ? 1.55 : 1.45, ((PION_H / 2 + 14) * v) / size),
             ]),
           ],
           'text-justify': 'auto',
