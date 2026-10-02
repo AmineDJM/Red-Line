@@ -82,7 +82,8 @@ export function UnitOrders({
       aria-label={t('game.actions.title')}
       data-testid="unit-orders"
     >
-      {actions.map((a) => {
+      {/* Mobile : une seule rangée défilante des actions possibles (la carte reste visible). */}
+      {(compact ? actions.filter((a) => a.enabled) : actions).map((a) => {
         const label = t(`game.actions.${a.label ?? a.id}`);
         const on = targeting?.action === a.id;
         return (

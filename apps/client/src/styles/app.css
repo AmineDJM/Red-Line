@@ -1258,6 +1258,15 @@ code {
   flex-wrap: wrap;
   gap: 6px;
 }
+.selpanel__actions--row {
+  flex-wrap: nowrap;
+  align-items: stretch;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.selpanel__actions--row > * {
+  flex: 0 0 auto;
+}
 .selpanel__hint {
   margin: 0;
   padding-top: 8px;
@@ -2687,7 +2696,13 @@ code {
   margin: 8px 0 4px;
 }
 .unitorders--compact {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  display: flex;
+  gap: 4px;
+  margin: 0;
+}
+.unitorders--compact .unitorders__btn {
+  flex: 0 0 auto;
+  min-width: 62px;
 }
 .unitorders__btn {
   display: flex;
@@ -2746,12 +2761,12 @@ code {
   flex-direction: column;
   justify-content: center;
   gap: 2px;
-  min-height: 44px;
+  min-height: 30px;
   font-size: 10px;
   text-align: center;
 }
 .unitorders--compact .unitorders__label {
-  white-space: normal;
+  white-space: nowrap;
   line-height: 1.1;
 }
 

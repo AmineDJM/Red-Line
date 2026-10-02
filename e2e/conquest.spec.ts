@@ -37,6 +37,8 @@ async function screenPoint(page: Page, p: LngLat) {
 }
 
 test('conquérir une province ennemie', async ({ page }, info) => {
+  // Machine partagée et chargée : marge au-delà des 240 s par défaut (capture : jusqu'à 180 s).
+  test.setTimeout(360_000);
   const mobile = info.project.name === 'mobile';
   await page.addInitScript(() => {
     localStorage.setItem('rl.debug', '1');
@@ -108,6 +110,11 @@ test('conquérir une province ennemie', async ({ page }, info) => {
   await page.waitForTimeout(1200);
   const at = await screenPoint(page, first.pos);
   await tapAt(page, at.x, at.y, mobile);
+  // Plusieurs unités au même endroit (piles de départ regroupées) : menu de pile, unités du joueur
+  // pré-cochées, puis « Sélectionner ».
+  await page.waitForTimeout(600);
+  const stack = page.getByTestId('stack-menu');
+  if (await stack.isVisible().catch(() => false)) await page.getByTestId('stack-select').click();
   await expect
     .poll(() => page.evaluate(() => window.__rl.ui.getState().selection as string[]))
     .toContain(first.id);

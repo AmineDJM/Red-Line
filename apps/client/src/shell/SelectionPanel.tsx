@@ -228,11 +228,22 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
               />
             </div>
           ) : null}
-          <UnitOrders
-            units={ids.map((id) => view?.units[id]).filter((x): x is UnitView => !!x)}
-            compact={compact}
-          />
-          <div className="selpanel__actions">
+          {!compact ? (
+            <UnitOrders
+              units={ids.map((id) => view?.units[id]).filter((x): x is UnitView => !!x)}
+              compact={false}
+            />
+          ) : null}
+          <div
+            className={compact ? 'selpanel__actions selpanel__actions--row' : 'selpanel__actions'}
+          >
+            {/* Mobile : actions possibles et fiche sur une seule rangée défilante. */}
+            {compact ? (
+              <UnitOrders
+                units={ids.map((id) => view?.units[id]).filter((x): x is UnitView => !!x)}
+                compact
+              />
+            ) : null}
             {sys ? (
               <Button
                 size="sm"
