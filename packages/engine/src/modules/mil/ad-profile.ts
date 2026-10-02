@@ -166,7 +166,8 @@ export function envOf(state: EngineState, I: Unit, prof: AdProf, c: AirThreat): 
  * seulement pour les systèmes à enveloppes détaillées (les autres utilisent la portée d'arme).
  */
 export function adBand(state: EngineState, I: Unit, t: Unit): Range | null {
-  if (!sysOf(state, I).interceptor?.envelopes) return null;
+  // Chemin rapide (évaluation de chaque paire) : un intercepteur n'est jamais une pile mixte.
+  if (I.mix || !state.world.catalog.get(I.sys)?.interceptor?.envelopes) return null;
   const prof = adProfile(state, I);
   if (!prof) return null;
   const c = threatOf(state, t);

@@ -191,14 +191,18 @@ Banc de `packages/engine/test/mil-bench-real.ts` (vraie carte, vrai catalogue, 2
 batterie Patriot par nation, 400 ordres dont salves de Tomahawk et de Shahed), version de base et nouvelle version
 lancées **en parallèle** (même charge machine), temps CPU, moyenne de 3 manches :
 
-| Étape | Base | Défense détaillée | Écart |
-| --- | ---: | ---: | ---: |
-| Jour calme | 244 ms | 247 ms | +1 % |
-| Jour de guerre | 10 317 ms | 10 326 ms | +0,1 % |
-| Demi-journée suivante | 4 296 ms | 4 451 ms | +3,6 % |
+| Étape                 |      Base | Défense détaillée |  Écart |
+| --------------------- | --------: | ----------------: | -----: |
+| Jour calme            |    244 ms |            247 ms |   +1 % |
+| Jour de guerre        | 10 317 ms |         10 326 ms | +0,1 % |
+| Demi-journée suivante |  4 296 ms |          4 451 ms | +3,6 % |
 
 Profil (jour de guerre et demi-journée suivante) : programmation des engagements 2,7 % du temps, cycles
 d'interception 1,5 % (dont l'essentiel en dégâts et rapports, qui remplacent les rounds de combat des défenses
 contre les aéronefs), IA de placement 1,3 % (3,7 % avant de l'espacer à une réflexion sur deux et de calculer le
-front par ville plutôt que par contact), seuils d'enveloppe des paires 0,3 %. Le test `mil-perf.test.ts` (monde
-synthétique, fiches anciennes) reste sous ses bornes quand il est lancé seul.
+front par ville plutôt que par contact), seuils d'enveloppe des paires 0,3 %.
+
+Monde synthétique de `mil-perf.test.ts` (≈ 4 800 unités, fiches de test anciennes), même méthode : jour calme
+320 → 325 ms (+1,5 %), jour de guerre 8 670 → 8 712 ms (+0,5 %), jour suivant 7 225 → 7 389 ms (+2,3 %). Les
+mesures en temps mur de la machine partagée (charge 15 à 28) ne sont pas exploitables : base et nouvelle version
+y dépassent toutes deux la borne de 500 ms du jour calme ; lancé seul à charge modérée, le test passe.
