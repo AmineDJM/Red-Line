@@ -917,13 +917,12 @@
     "ui": {
       "build": "건설",
       "upgrade": "레벨 {{level}}",
+      "upgradeTo": "{{level}}레벨로 개량",
       "upgrading": "개량 N{{level}}",
       "repair": "수리",
       "repairing": "수리 중",
       "health": "건물 상태",
       "operational": "가동 중",
-      "already": "이미 건설됨",
-      "coastalOnly": "해안 주 전용",
       "costTip": "비용 {{cost}} · 기간 {{time}}",
       "buildStarted": "건설 시작: {{name}}",
       "upgradeStarted": "개량 시작: {{name}}(N{{level}})",
@@ -937,6 +936,11 @@
         "no_resource": "자원 없음: {{resource}}",
         "coastal_only": "해안 주 전용",
         "not_urban": "전자 산업 거점 또는 대도시 필요"
+      },
+      "hidden": {
+        "no_resource": "여기서는 사용할 수 없음, 매장지 없음: {{list}}.",
+        "coastal_only": "여기서는 사용할 수 없음, 해안이 없는 주: {{list}}.",
+        "not_urban": "여기서는 사용할 수 없음, 전자 산업 거점도 대도시도 아님: {{list}}."
       }
     },
     "fortification": "요새"
@@ -1187,7 +1191,9 @@
     },
     "settings": {
       "reduceMotion": "애니메이션 줄이기",
-      "reduceMotionHelp": "전투 효과(사격, 폭발), 맥동, 지도의 움직이는 점선을 끕니다."
+      "reduceMotionHelp": "전투 효과(사격, 폭발), 맥동, 지도의 움직이는 점선을 끕니다.",
+      "resourceIcons": "지도에 주 자원 표시",
+      "resourceIconsHelp": "도시 이름 앞에 주(및 보조) 자원 아이콘, 풍부도는 점(1~3)으로 표시, 확대했을 때만."
     }
   },
   "legal": {
@@ -2093,6 +2099,8 @@
     "byResource": "자원별·주별 생산",
     "producers_other": "주 {{count}}개",
     "noProducer": "생산하는 주가 없습니다: 시장에서 구매하세요.",
+    "nationalFloor": "국가 최소 생산량",
+    "nationalFloorTip": "국가 하한: 최소 국내 생산(정제, 재활용, 소규모 매장지, 자급 농업). 생산하는 주가 없어도 보장됩니다.",
     "servicesProvinces_other": "자원이 없는 주 {{count}}개 (자금만: 서비스업, 금융)"
   },
   "armies": {

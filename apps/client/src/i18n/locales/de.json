@@ -932,13 +932,12 @@
     "ui": {
       "build": "Bauen",
       "upgrade": "Stufe {{level}}",
+      "upgradeTo": "Ausbau auf Stufe {{level}}",
       "upgrading": "Ausbau S{{level}}",
       "repair": "Reparieren",
       "repairing": "Reparatur",
       "health": "Gebäudezustand",
       "operational": "Einsatzbereit",
-      "already": "Bereits gebaut",
-      "coastalOnly": "Nur Küstenprovinz",
       "costTip": "Kosten {{cost}} · Dauer {{time}}",
       "buildStarted": "Bau gestartet: {{name}}",
       "upgradeStarted": "Ausbau gestartet: {{name}} (S{{level}})",
@@ -952,6 +951,11 @@
         "no_resource": "Ressource fehlt: {{resource}}",
         "coastal_only": "Nur Küstenprovinz",
         "not_urban": "Elektronikzentrum oder Großstadt erforderlich"
+      },
+      "hidden": {
+        "no_resource": "Hier nicht verfügbar, kein Vorkommen: {{list}}.",
+        "coastal_only": "Hier nicht verfügbar, Provinz ohne Küste: {{list}}.",
+        "not_urban": "Hier nicht verfügbar, weder Elektronikzentrum noch Großstadt: {{list}}."
       }
     },
     "fortification": "Befestigungen"
@@ -1204,7 +1208,9 @@
     },
     "settings": {
       "reduceMotion": "Animationen reduzieren",
-      "reduceMotionHelp": "Schaltet Gefechtseffekte (Schüsse, Explosionen), Pulsieren und animierte Kartenstriche ab."
+      "reduceMotionHelp": "Schaltet Gefechtseffekte (Schüsse, Explosionen), Pulsieren und animierte Kartenstriche ab.",
+      "resourceIcons": "Provinzressourcen auf der Karte",
+      "resourceIconsHelp": "Symbol der Haupt- (und Neben-)ressource vor dem Stadtnamen, Ergiebigkeit in Punkten (1 bis 3), nur aus der Nähe."
     }
   },
   "legal": {
@@ -2116,6 +2122,8 @@
     "producers_one": "{{count}} Provinz",
     "producers_other": "{{count}} Provinzen",
     "noProducer": "Keine produzierende Provinz: Kaufen Sie auf dem Markt.",
+    "nationalFloor": "Nationale Mindestproduktion",
+    "nationalFloorTip": "Nationale Untergrenze: inländische Mindestproduktion (Raffination, Recycling, kleine Vorkommen, Subsistenzlandwirtschaft), auch ohne produzierende Provinz gesichert.",
     "servicesProvinces_one": "{{count}} Provinz ohne Ressourcen (nur Geld: Dienstleistungen, Finanzen)",
     "servicesProvinces_other": "{{count}} Provinzen ohne Ressourcen (nur Geld: Dienstleistungen, Finanzen)"
   },

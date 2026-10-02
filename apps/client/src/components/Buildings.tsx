@@ -22,7 +22,7 @@ import {
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
-import { extractionResource } from '../lib/resources.js';
+import { SITE_RESTRICTIONS, buildMenuGroups, extractionResource } from '../lib/resources.js';
 import { orderError } from '../lib/loc.js';
 
 export const MAX_BUILDING_LEVEL = 5;
@@ -61,7 +61,7 @@ export const BUILDING_GROUPS: { id: string; types: BuildKind[] }[] = [
   },
 ];
 
-const COASTAL_ONLY = new Set<BuildKind>(['port', 'naval_base', 'coastal_battery']);
+const COASTAL_ONLY = new Set<string>(['port', 'naval_base', 'coastal_battery']);
 
 /**
  * Devis d'un chantier à partir de data/balance (repli quand le moteur ne publie pas `next` /
@@ -238,16 +238,24 @@ export function BuildingRow({
   );
 }
 
-/** Menu de construction d'un nouveau bâtiment (ou fortification) dans une province. */
+/**
+ * Menu de construction d'une province : seuls les bâtiments ouverts pour elle (constructibles ici,
+ * ou déjà présents et améliorables). Les bâtiments impossibles (gisement absent, province
+ * intérieure, ni pôle électronique ni grande ville) n'y figurent pas : une ligne discrète dit
+ * pourquoi ; une famille vide disparaît. Le moteur et le serveur refusent toujours ces chantiers.
+ */
 export function BuildMenu({
   provinceId,
   existing,
+  present,
   coastal,
   options,
   onDone,
 }: {
   provinceId: ProvinceId;
   existing: BuildingType[];
+  /** État des bâtiments présents (niveau suivant, coût et durée publiés par le moteur). */
+  present?: BuildingView[];
   coastal: boolean;
   /** Options publiées par le moteur (coût et durée exacts). */
   options?: BuildOptionView[];
@@ -257,84 +265,121 @@ export function BuildMenu({
   const money = useGame((s) => s.view?.economy.money ?? 0);
   const balance = useWorld((s) => s.balance);
   const send = useBuildOrder();
-  const [group, setGroup] = useState(BUILDING_GROUPS[0]!.id);
-  const g = BUILDING_GROUPS.find((x) => x.id === group)!;
+  const groups = buildMenuGroups(
+    BUILDING_GROUPS.map((x) => ({
+      id: x.id,
+      types: x.types.filter((type) => type === 'fortification' || BUILDING_TYPES.includes(type)),
+    })),
+    { existing, options, coastal, coastalOnly: COASTAL_ONLY },
+  );
+  const [picked, setGroup] = useState(BUILDING_GROUPS[0]!.id);
+  const g = groups.find((x) => x.id === picked) ?? groups[0];
   const byType = new Map(options?.map((o) => [o.type, o]));
+  const byPresent = new Map(present?.map((b) => [b.type, b]));
+  if (!g) return null;
   return (
     <div className="buildmenu">
       <div className="buildmenu__groups" role="tablist" aria-label={t('buildings.ui.build')}>
-        {BUILDING_GROUPS.map((x) => (
+        {groups.map((x) => (
           <button
             key={x.id}
             type="button"
             role="tab"
-            aria-selected={x.id === group}
-            className={
-              x.id === group ? 'buildmenu__group buildmenu__group--on' : 'buildmenu__group'
-            }
+            aria-selected={x.id === g.id}
+            className={x.id === g.id ? 'buildmenu__group buildmenu__group--on' : 'buildmenu__group'}
             onClick={() => setGroup(x.id)}
+            data-testid={`build-group-${x.id}`}
           >
             {t(`buildings.groups.${x.id}`)}
           </button>
         ))}
       </div>
       <ul className="buildmenu__list">
-        {g.types
-          .filter((type) => type === 'fortification' || BUILDING_TYPES.includes(type))
-          .map((type) => {
-            const opt = byType.get(type);
-            const has = type !== 'fortification' && existing.includes(type);
-            const blockedCoast = COASTAL_ONLY.has(type) && !coastal;
-            const est = buildCost(balance, type, opt?.level ?? 1);
-            const cost = opt ? opt.cost : est.money;
-            const hours = opt ? opt.hours : est.hours;
-            const reason = has
-              ? t('buildings.ui.already')
-              : blockedCoast
-                ? t('buildings.ui.coastalOnly')
-                : opt?.blocked
-                  ? t(`buildings.ui.blocked.${opt.blocked}`, {
-                      resource: t(
-                        `game.resources.${extractionResource(balance, type) ?? 'electronics'}`,
-                      ).toLowerCase(),
-                    })
-                  : null;
-            const poor = cost !== null && money < cost;
-            return (
-              <li key={type}>
-                <button
-                  type="button"
-                  className="buildmenu__item"
-                  disabled={!!reason || poor}
-                  onClick={() =>
-                    void send(
-                      { kind: 'build', provinceId, building: type },
-                      t('buildings.ui.buildStarted', { name: t(`buildings.${type}`) }),
-                    ).then((ok) => ok && onDone?.())
-                  }
-                  title={t(`buildings.effects.${type}`, { defaultValue: '' })}
-                  data-testid={`build-${type}`}
-                >
-                  <Pictogram id={picto(type)} size={18} />
-                  <span className="buildmenu__name">
+        {g.types.map((type) => {
+          const has = type !== 'fortification' && existing.includes(type);
+          const cur = has ? byPresent.get(type) : undefined;
+          const level = cur?.level ?? 1;
+          // Bâtiment présent : amélioration au niveau suivant (devis du moteur, sinon data/balance).
+          const opt = has ? undefined : byType.get(type);
+          const est = buildCost(balance, type, has ? level + 1 : (opt?.level ?? 1));
+          const next = has
+            ? cur?.next !== undefined
+              ? cur.next
+              : level >= MAX_BUILDING_LEVEL
+                ? null
+                : { level: level + 1, cost: est.money, hours: est.hours }
+            : undefined;
+          const cost = has ? (next?.cost ?? null) : opt ? opt.cost : est.money;
+          const hours = has ? (next?.hours ?? null) : opt ? opt.hours : est.hours;
+          const busy = !!cur && ((cur.upgradeUntil ?? 0) > 0 || (cur.buildUntil ?? 0) > 0);
+          const reason = has
+            ? next === null
+              ? t('buildings.ui.blocked.max_level')
+              : busy
+                ? t('buildings.ui.blocked.in_progress')
+                : cur && cur.health < 1
+                  ? t('buildings.ui.blocked.damaged')
+                  : null
+            : opt?.blocked
+              ? t(`buildings.ui.blocked.${opt.blocked}`, {
+                  resource: t(
+                    `game.resources.${extractionResource(balance, type) ?? 'electronics'}`,
+                  ).toLowerCase(),
+                })
+              : null;
+          const poor = cost !== null && money < cost;
+          const name = t(`buildings.${type}`);
+          return (
+            <li key={type}>
+              <button
+                type="button"
+                className="buildmenu__item"
+                disabled={!!reason || poor}
+                onClick={() =>
+                  void send(
+                    { kind: 'build', provinceId, building: type },
+                    has && next
+                      ? t('buildings.ui.upgradeStarted', { name, level: next.level })
+                      : t('buildings.ui.buildStarted', { name }),
+                  ).then((ok) => ok && onDone?.())
+                }
+                title={t(`buildings.effects.${type}`, { defaultValue: '' })}
+                data-testid={`build-${type}`}
+                data-present={has ? level : undefined}
+              >
+                <Pictogram id={picto(type)} size={18} />
+                <span className="buildmenu__name">
+                  <span className="buildmenu__title">
                     {type === 'fortification' && opt
                       ? `${t('buildings.fortification')} · N${opt.level}`
-                      : t(`buildings.${type}`)}
-                    <span className="buildmenu__desc">
-                      {reason ?? t(`buildings.effects.${type}`, { defaultValue: '' })}
-                    </span>
+                      : name}
+                    {has ? <LevelPips level={level} /> : null}
                   </span>
-                  <span
-                    className={poor ? 'buildmenu__cost buildmenu__cost--poor' : 'buildmenu__cost'}
-                  >
-                    {cost !== null ? formatMoney(cost) : '—'}
-                    <span>{hours !== null ? formatHours(hours, t('time.dayUnit')) : ''}</span>
+                  <span className="buildmenu__desc">
+                    {reason ??
+                      (has && next
+                        ? t('buildings.ui.upgradeTo', { level: next.level })
+                        : t(`buildings.effects.${type}`, { defaultValue: '' }))}
                   </span>
-                </button>
-              </li>
-            );
-          })}
+                </span>
+                <span
+                  className={poor ? 'buildmenu__cost buildmenu__cost--poor' : 'buildmenu__cost'}
+                >
+                  {cost !== null ? formatMoney(cost) : '—'}
+                  <span>{hours !== null ? formatHours(hours, t('time.dayUnit')) : ''}</span>
+                </span>
+              </button>
+            </li>
+          );
+        })}
       </ul>
+      {SITE_RESTRICTIONS.filter((r) => g.hidden[r]?.length).map((r) => (
+        <p key={r} className="buildmenu__hidden" data-testid={`build-hidden-${r}`}>
+          {t(`buildings.ui.hidden.${r}`, {
+            list: g.hidden[r]!.map((type) => t(`buildings.${type}`)).join(', '),
+          })}
+        </p>
+      ))}
     </div>
   );
 }

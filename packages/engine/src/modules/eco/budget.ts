@@ -8,7 +8,7 @@ import {
   type Resource,
   type WeaponSystem,
 } from '@redline/shared';
-import type { OrderResult } from '../../api.js';
+import type { OrderResult, World } from '../../api.js';
 import { provincesOf, sortedSet, sysOf } from '../../state/access.js';
 import { partsOf } from '../../state/stack.js';
 import type { EngineState } from '../../state/types.js';
@@ -61,6 +61,49 @@ export function provinceIncome(state: EngineState, pid: ProvinceId): number {
   return (provValues(state).get(pid) ?? 0) * provinceIncomeFactor(state, pid);
 }
 
+const totalsCache = new WeakMap<World, { money: number; res: Record<Resource, number> }>();
+
+/** Revenu en argent et rendements de toute la carte (somme des `income` des provinces). */
+function mapTotals(world: World): { money: number; res: Record<Resource, number> } {
+  let t = totalsCache.get(world);
+  if (t) return t;
+  const w = wi(world);
+  t = { money: 0, res: {} as Record<Resource, number> };
+  for (const r of RESOURCES) t.res[r] = 0;
+  for (const pid of w.provIds) {
+    const inc = w.provById.get(pid)!.income;
+    t.money += inc.money;
+    for (const r of RESOURCES) t.res[r] += inc[r] ?? 0;
+  }
+  totalsCache.set(world, t);
+  return t;
+}
+
+/**
+ * Plancher national de production par jour (data/balance `resources.nationalFloor`) : toute nation
+ * qui possède au moins une province produit, pour chaque ressource, au moins
+ * max(minPerDay, economyShare × poids économique × production mondiale de la carte), poids
+ * économique = part de ses provinces dans le revenu (`income.money`) de la carte. Production
+ * domestique minimale des pays sans gisement (Japon : un peu de pétrole et de métaux ; Arabie
+ * saoudite : un peu de nourriture et d'électronique) ; un micro-État reçoit le minimum absolu.
+ */
+export function nationalFloor(state: EngineState, n: NationId): Record<Resource, number> {
+  const out = {} as Record<Resource, number>;
+  for (const r of RESOURCES) out[r] = 0;
+  const provs = provincesOf(state, n);
+  if (provs.length === 0) return out;
+  const c = cfg(state.world).resources.nationalFloor;
+  const w = wi(state.world);
+  const t = mapTotals(state.world);
+  let money = 0;
+  for (const p of provs) money += w.provById.get(p)!.income.money;
+  const weight = t.money > 0 ? money / t.money : 0;
+  const mult = state.world.balance.economy.incomeMultiplier;
+  for (const r of RESOURCES)
+    out[r] = Math.max(c.minPerDay[r] ?? 0, c.economyShare * weight * t.res[r]) * mult;
+  return out;
+}
+
 /** Part des ports de la nation qui ne sont pas sous blocus (1 sans port). */
 function openPortShare(state: EngineState, n: NationId): number {
   const es = eco(state);
@@ -93,6 +136,8 @@ export interface Breakdown {
   modifiers: number;
   total: number;
   production: Record<Resource, number>;
+  /** Part de la production due au plancher national (modificateurs compris ; 0 au-dessus). */
+  floor: Record<Resource, number>;
   consumption: Record<Resource, number>;
   upkeep: Record<string, number>;
   upkeepTotal: number;
@@ -117,6 +162,7 @@ export function breakdown(state: EngineState, n: NationId): Breakdown {
   const mod = modifier(state, n, 'income.money');
 
   const production = {} as Record<Resource, number>;
+  const floor = {} as Record<Resource, number>;
   const consumption = {} as Record<Resource, number>;
   for (const r of RESOURCES) {
     production[r] = 0;
@@ -126,7 +172,13 @@ export function breakdown(state: EngineState, n: NationId): Breakdown {
     const y = provinceResources(state, p);
     for (const r of RESOURCES) production[r] += y[r];
   }
-  for (const r of RESOURCES) production[r] *= modifier(state, n, `income.${r}`);
+  // Plancher national : production domestique minimale (avant modificateurs, sanctions comprises).
+  const minimum = nationalFloor(state, n);
+  for (const r of RESOURCES) {
+    const f = modifier(state, n, `income.${r}`);
+    floor[r] = Math.max(0, minimum[r] - production[r]) * f;
+    production[r] = Math.max(production[r], minimum[r]) * f;
+  }
 
   const upkeep: Record<string, number> = {};
   let upkeepTotal = 0;
@@ -157,6 +209,7 @@ export function breakdown(state: EngineState, n: NationId): Breakdown {
     modifiers: afterMob * (mod - 1),
     total: afterMob * mod,
     production,
+    floor,
     consumption,
     upkeep,
     upkeepTotal,

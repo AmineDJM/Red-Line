@@ -1285,6 +1285,20 @@ export const BalanceSchema = z.object({
       servicesIndustryFactor: z.number().min(0).optional(),
       /** Bâtiments réservés aux provinces côtières. */
       coastalOnly: z.array(z.string()).optional(),
+      /**
+       * Plancher national de production (unités par jour) : toute nation produit au moins, pour
+       * chaque ressource, max(minPerDay, economyShare × poids économique × production mondiale),
+       * poids économique = part de la nation dans le revenu des provinces de la carte
+       * (`income.money` des provinces possédées), production mondiale = somme des rendements de la
+       * carte. Production domestique minimale (raffinage, recyclage, petits gisements, cultures
+       * vivrières) des pays sans gisement. economyShare 0 et minPerDay vide : désactivé.
+       */
+      nationalFloor: z
+        .object({
+          economyShare: z.number().min(0).max(1).optional(),
+          minPerDay: z.record(z.enum(RESOURCES), z.number().min(0)).optional(),
+        })
+        .optional(),
     })
     .optional(),
   /** Moral des provinces (0..100) : en dessous de 50, les revenus de la province baissent. */

@@ -198,6 +198,7 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
             <BuildMenu
               provinceId={id}
               existing={p.buildings}
+              present={state}
               coastal={def.coastal}
               options={p.buildOptions}
               onDone={() => setBuilding(false)}

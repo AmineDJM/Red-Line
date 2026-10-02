@@ -75,6 +75,9 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
 - Défense antiaérienne : enveloppes par catégorie de menace (avions, hélicoptères, drones, croisière, balistiques,
   hypersoniques) dans `interceptor.envelopes` du catalogue ; tout ce qui vole est engagé par intercepteurs
   (magasin, canaux, priorité, saturation, rechargement) : `docs/defense-aerienne.md`.
+- Ressources des provinces (`pnpm --filter @redline/tools-map resources`) : aucune nation sans ressource (micro-États
+  exceptés), **plancher national** de production pour chaque ressource (`resources.nationalFloor`) ; menu Construire
+  limité aux bâtiments ouverts pour la province ; insigne de ressources devant le nom des villes. `docs/ressources.md`.
 
 ## Conventions
 

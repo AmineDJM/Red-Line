@@ -917,13 +917,12 @@
     "ui": {
       "build": "建設",
       "upgrade": "レベル {{level}}",
+      "upgradeTo": "レベル{{level}}に改良",
       "upgrading": "改良 N{{level}}",
       "repair": "修理",
       "repairing": "修理中",
       "health": "建物の状態",
       "operational": "稼働中",
-      "already": "建設済み",
-      "coastalOnly": "沿岸の州のみ",
       "costTip": "費用 {{cost}} · 期間 {{time}}",
       "buildStarted": "建設開始：{{name}}",
       "upgradeStarted": "改良開始：{{name}}（N{{level}}）",
@@ -937,6 +936,11 @@
         "no_resource": "資源がありません：{{resource}}",
         "coastal_only": "沿岸の州のみ",
         "not_urban": "電子産業の拠点または大都市が必要"
+      },
+      "hidden": {
+        "no_resource": "ここでは利用不可、鉱床なし：{{list}}。",
+        "coastal_only": "ここでは利用不可、内陸の州：{{list}}。",
+        "not_urban": "ここでは利用不可、電子産業の拠点でも大都市でもありません：{{list}}。"
       }
     },
     "fortification": "要塞"
@@ -1187,7 +1191,9 @@
     },
     "settings": {
       "reduceMotion": "アニメーションを減らす",
-      "reduceMotionHelp": "戦闘エフェクト（射撃・爆発）、パルス、地図の動く破線をオフにします。"
+      "reduceMotionHelp": "戦闘エフェクト（射撃・爆発）、パルス、地図の動く破線をオフにします。",
+      "resourceIcons": "地図上の州の資源",
+      "resourceIconsHelp": "都市名の前に主要（および副次）資源のアイコン、豊かさを点（1〜3）で表示。近距離のみ。"
     }
   },
   "legal": {
@@ -2093,6 +2099,8 @@
     "byResource": "資源別・州別の生産",
     "producers_other": "{{count}} 州",
     "noProducer": "生産している州はありません：市場で購入してください。",
+    "nationalFloor": "国内最低生産量",
+    "nationalFloorTip": "国内下限：最低限の国内生産（精製、リサイクル、小規模鉱床、自給農業）。生産する州がなくても保証されます。",
     "servicesProvinces_other": "資源のない州 {{count}}（資金のみ：サービス業、金融）"
   },
   "armies": {

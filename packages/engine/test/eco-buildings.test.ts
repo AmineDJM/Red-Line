@@ -1,11 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { DAY, HOUR } from '@redline/shared';
+import { BalanceSchema, DAY, HOUR } from '@redline/shared';
 import { advanceTo, applyOrder, applySystem, viewFor } from '../src/index.js';
 import { roundDamage } from '../src/combat/combat.js';
 import { board } from '../src/modules/kit.js';
 import { MODULES, modifier, signal } from '../src/modules/registry.js';
 import type { EngineModule } from '../src/modules/types.js';
-import { ECO_BALANCE_DISTRIBUTED, ecoGame, ecoWorld, ecoWorldWith } from './eco-fixtures.js';
+import {
+  ECO_BALANCE,
+  ECO_BALANCE_DISTRIBUTED,
+  ecoGame,
+  ecoWorld,
+  ecoWorldWith,
+} from './eco-fixtures.js';
 import { cityOf, unitsOf } from './fixtures.js';
 
 const bstate = (s: ReturnType<typeof ecoGame>, n: string, pid: string, b: string) =>
@@ -275,8 +281,13 @@ describe('tableau de bord économique', () => {
   });
 
   it('pénurie : stock épuisé ⇒ production ralentie, moral en baisse ; grand livre des 24 h', () => {
-    const s = ecoGame();
     // La carte de test ne produit pas de nourriture ; 25 bataillons en consomment 0,5 par jour.
+    // Plancher national coupé (il assurerait 2 unités par jour) : on observe la pénurie elle-même.
+    const noFloor = BalanceSchema.parse({
+      ...ECO_BALANCE,
+      resources: { nationalFloor: { economyShare: 0, minPerDay: {} } },
+    });
+    const s = ecoGame({ world: ecoWorldWith(noFloor) });
     s.nations.aaa!.res.food = 0.2;
     advanceTo(s, DAY);
     const d = viewFor(s, 'aaa').economy.detail!;

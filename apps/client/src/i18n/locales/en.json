@@ -932,13 +932,12 @@
     "ui": {
       "build": "Build",
       "upgrade": "Level {{level}}",
+      "upgradeTo": "Upgrade to level {{level}}",
       "upgrading": "Upgrading L{{level}}",
       "repair": "Repair",
       "repairing": "Repairing",
       "health": "Building condition",
       "operational": "Operational",
-      "already": "Already built",
-      "coastalOnly": "Coastal province only",
       "costTip": "Cost {{cost}} · duration {{time}}",
       "buildStarted": "Construction started: {{name}}",
       "upgradeStarted": "Upgrade started: {{name}} (L{{level}})",
@@ -952,6 +951,11 @@
         "no_resource": "Missing resource: {{resource}}",
         "coastal_only": "Coastal province only",
         "not_urban": "Electronics hub or large city required"
+      },
+      "hidden": {
+        "no_resource": "Not available here, no deposit: {{list}}.",
+        "coastal_only": "Not available here, landlocked province: {{list}}.",
+        "not_urban": "Not available here, neither an electronics hub nor a major city: {{list}}."
       }
     },
     "fortification": "Fortifications"
@@ -1204,7 +1208,9 @@
     },
     "settings": {
       "reduceMotion": "Reduce animations",
-      "reduceMotionHelp": "Turns off combat effects (shots, explosions), pulses and animated map dashes."
+      "reduceMotionHelp": "Turns off combat effects (shots, explosions), pulses and animated map dashes.",
+      "resourceIcons": "Province resources on the map",
+      "resourceIconsHelp": "Icon of the primary (and secondary) resource before the city name, richness as dots (1 to 3), close-up only."
     }
   },
   "legal": {
@@ -2116,6 +2122,8 @@
     "producers_one": "{{count}} province",
     "producers_other": "{{count}} provinces",
     "noProducer": "No producing province: buy on the market.",
+    "nationalFloor": "Minimum national output",
+    "nationalFloorTip": "National floor: minimum domestic output (refining, recycling, small deposits, subsistence farming), guaranteed even without a producing province.",
     "servicesProvinces_one": "{{count}} province without resources (money only: services, finance)",
     "servicesProvinces_other": "{{count}} provinces without resources (money only: services, finance)"
   },

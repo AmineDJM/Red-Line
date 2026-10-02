@@ -962,13 +962,12 @@
     "ui": {
       "build": "Buduj",
       "upgrade": "Poziom {{level}}",
+      "upgradeTo": "Rozbudowa do poziomu {{level}}",
       "upgrading": "Rozbudowa P{{level}}",
       "repair": "Napraw",
       "repairing": "Naprawa",
       "health": "Stan budynku",
       "operational": "Sprawny",
-      "already": "Już zbudowany",
-      "coastalOnly": "Tylko prowincja nadmorska",
       "costTip": "Koszt {{cost}} · czas {{time}}",
       "buildStarted": "Rozpoczęto budowę: {{name}}",
       "upgradeStarted": "Rozpoczęto rozbudowę: {{name}} (P{{level}})",
@@ -982,6 +981,11 @@
         "no_resource": "Brak zasobu: {{resource}}",
         "coastal_only": "Tylko prowincja nadmorska",
         "not_urban": "Wymagany ośrodek elektroniki lub duże miasto"
+      },
+      "hidden": {
+        "no_resource": "Niedostępne tutaj, brak złoża: {{list}}.",
+        "coastal_only": "Niedostępne tutaj, prowincja bez dostępu do morza: {{list}}.",
+        "not_urban": "Niedostępne tutaj, ani ośrodek elektroniki, ani duże miasto: {{list}}."
       }
     },
     "fortification": "Fortyfikacje"
@@ -1238,7 +1242,9 @@
     },
     "settings": {
       "reduceMotion": "Ogranicz animacje",
-      "reduceMotionHelp": "Wyłącza efekty walki (strzały, wybuchy), pulsowanie i animowane kreski na mapie."
+      "reduceMotionHelp": "Wyłącza efekty walki (strzały, wybuchy), pulsowanie i animowane kreski na mapie.",
+      "resourceIcons": "Zasoby prowincji na mapie",
+      "resourceIconsHelp": "Ikona zasobu głównego (i dodatkowego) przed nazwą miasta, zasobność w kropkach (od 1 do 3), tylko z bliska."
     }
   },
   "legal": {
@@ -2162,6 +2168,8 @@
     "producers_many": "{{count}} prowincji",
     "producers_other": "{{count}} prowincji",
     "noProducer": "Brak prowincji produkujących: kupuj na rynku.",
+    "nationalFloor": "Minimalna produkcja krajowa",
+    "nationalFloorTip": "Krajowe minimum: minimalna produkcja krajowa (rafinacja, recykling, małe złoża, rolnictwo na własne potrzeby), zapewniona nawet bez prowincji produkujących.",
     "servicesProvinces_one": "{{count}} prowincja bez zasobów (tylko pieniądze: usługi, finanse)",
     "servicesProvinces_few": "{{count}} prowincje bez zasobów (tylko pieniądze: usługi, finanse)",
     "servicesProvinces_many": "{{count}} prowincji bez zasobów (tylko pieniądze: usługi, finanse)",

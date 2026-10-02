@@ -947,13 +947,12 @@
     "ui": {
       "build": "Costruisci",
       "upgrade": "Livello {{level}}",
+      "upgradeTo": "Potenziamento al livello {{level}}",
       "upgrading": "Potenziamento L{{level}}",
       "repair": "Ripara",
       "repairing": "Riparazione",
       "health": "Stato dell'edificio",
       "operational": "Operativo",
-      "already": "Già costruito",
-      "coastalOnly": "Solo provincia costiera",
       "costTip": "Costo {{cost}} · durata {{time}}",
       "buildStarted": "Costruzione avviata: {{name}}",
       "upgradeStarted": "Potenziamento avviato: {{name}} (L{{level}})",
@@ -967,6 +966,11 @@
         "no_resource": "Risorsa assente: {{resource}}",
         "coastal_only": "Solo provincia costiera",
         "not_urban": "Richiesto un polo elettronico o una grande città"
+      },
+      "hidden": {
+        "no_resource": "Non disponibile qui, nessun giacimento: {{list}}.",
+        "coastal_only": "Non disponibile qui, provincia senza sbocco sul mare: {{list}}.",
+        "not_urban": "Non disponibile qui, né polo elettronico né grande città: {{list}}."
       }
     },
     "fortification": "Fortificazioni"
@@ -1221,7 +1225,9 @@
     },
     "settings": {
       "reduceMotion": "Riduci le animazioni",
-      "reduceMotionHelp": "Disattiva gli effetti di combattimento (colpi, esplosioni), le pulsazioni e i tratteggi animati della mappa."
+      "reduceMotionHelp": "Disattiva gli effetti di combattimento (colpi, esplosioni), le pulsazioni e i tratteggi animati della mappa.",
+      "resourceIcons": "Risorse delle province sulla mappa",
+      "resourceIconsHelp": "Icona della risorsa principale (e secondaria) prima del nome della città, ricchezza in punti (da 1 a 3), solo da vicino."
     }
   },
   "legal": {
@@ -2139,6 +2145,8 @@
     "producers_many": "{{count}} province",
     "producers_other": "{{count}} province",
     "noProducer": "Nessuna provincia produttrice: acquista sul mercato.",
+    "nationalFloor": "Produzione nazionale minima",
+    "nationalFloorTip": "Soglia nazionale: produzione interna minima (raffinazione, riciclo, piccoli giacimenti, agricoltura di sussistenza), garantita anche senza province produttrici.",
     "servicesProvinces_one": "{{count}} provincia senza risorse (solo denaro: servizi, finanza)",
     "servicesProvinces_many": "{{count}} province senza risorse (solo denaro: servizi, finanza)",
     "servicesProvinces_other": "{{count}} province senza risorse (solo denaro: servizi, finanza)"

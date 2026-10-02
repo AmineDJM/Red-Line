@@ -109,8 +109,10 @@ import { pionScale } from './grouping.js';
 import { SourceSync } from './sourceSync.js';
 import { SPRITES_MARK, handleMissingImage, registerSprites } from './sprites.js';
 import {
+  CITY_LABEL_LAYERS,
   LAYER_GROUPS,
   buildStyle,
+  cityTextField,
   revealOpacity,
   revealRingOpacity,
   type MapLayerGroup,
@@ -259,6 +261,8 @@ export class GameMap {
   private box: { x0: number; y0: number; el: HTMLDivElement } | null = null;
   private domListeners: [EventTarget, string, EventListener, AddEventListenerOptions?][] = [];
   private cityThresholds: [number, number] = [Infinity, Infinity];
+  /** Étiquettes de villes en texte MapLibre (villes des provinces et glyphes) : insigne de ressources possible. */
+  private cityText = false;
   /** Couche « routes » (réseau des unités terrestres). */
   private roadLayer: RoadLayer | null = null;
   /** Diagnostic : nombre de résolutions demandées par image. */
@@ -287,6 +291,7 @@ export class GameMap {
       );
     this.cityThresholds = cityClassThresholds(Object.values(w.provinces));
     const hasProvinces = Object.keys(w.provinces).length > 0;
+    this.cityText = hasProvinces && w.glyphs;
     this.map = new MlMap({
       container,
       style: buildStyle({
@@ -306,6 +311,7 @@ export class GameMap {
             })
           : null,
         provinceLabels: hasProvinces ? provinceLabelFeatures(Object.values(w.provinces)) : null,
+        resources: useMapLayers.getState().visible.resources,
       }),
       center: [15, 30],
       zoom: 2.2,
@@ -405,6 +411,13 @@ export class GameMap {
     }
     if (group === 'intel') this.refreshIntelLayer();
     if (group === 'units') this.syncPulses();
+    // Ressources des provinces : insigne en ligne devant le nom des villes (une expression, aucun
+    // calcul par image ; les images `res|…` sont dessinées une fois à la demande).
+    if (group === 'resources' && this.cityText) {
+      for (const [id, cls] of CITY_LABEL_LAYERS)
+        if (this.map.getLayer(id))
+          this.map.setLayoutProperty(id, 'text-field', cityTextField(cls, visible));
+    }
   }
 
   /**
