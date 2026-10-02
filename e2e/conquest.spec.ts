@@ -37,6 +37,8 @@ async function screenPoint(page: Page, p: LngLat) {
 }
 
 test('conquérir une province ennemie', async ({ page }, info) => {
+  // Trajet réel sur le réseau de routes jusqu'à Bruxelles puis capture : plus long que les autres parcours.
+  test.setTimeout(600_000);
   const mobile = info.project.name === 'mobile';
   await page.addInitScript(() => {
     localStorage.setItem('rl.debug', '1');
@@ -108,8 +110,14 @@ test('conquérir une province ennemie', async ({ page }, info) => {
   await page.waitForTimeout(1200);
   const at = await screenPoint(page, first.pos);
   await tapAt(page, at.x, at.y, mobile);
+  // Armées de départ regroupées : plusieurs piles au même endroit ouvrent le menu de pile, où les
+  // piles du joueur sont pré-cochées ; on valide la sélection.
+  const pick = page.getByRole('button', { name: /^Sélectionner \(\d+\)$/ });
   await expect
-    .poll(() => page.evaluate(() => window.__rl.ui.getState().selection as string[]))
+    .poll(async () => {
+      if (await pick.isVisible()) await pick.click();
+      return page.evaluate(() => window.__rl.ui.getState().selection as string[]);
+    })
     .toContain(first.id);
   // Les autres fantassins rejoignent la sélection (Maj+clic sur ordinateur).
   await page.evaluate(
