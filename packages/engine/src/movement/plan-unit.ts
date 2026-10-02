@@ -5,7 +5,7 @@ import {
   type NationId,
   type OrderErrorCode,
 } from '@redline/shared';
-import { planAir, planSurface, type SurfaceSegments } from '../nav/plan.js';
+import { planAir, planMemoKey, planSurface, type SurfaceSegments } from '../nav/plan.js';
 import { roadSegments } from '../nav/roads.js';
 import { currentLeg, sysOf, unitPosAt } from '../state/access.js';
 import type { EngineState, Unit } from '../state/types.js';
@@ -70,7 +70,7 @@ export function planUnitMove(state: EngineState, u: Unit, to: LngLat): UnitPlan 
   if (sys.movement === 'land' && w.roads) {
     // Unités terrestres : réseau de routes (destination accrochée, traversées de port à port).
     const atSea = landUnitAtSea(state, u, from);
-    const key = `R${atSea ? 1 : 0}|${sys.id}|${from[0]},${from[1]}|${to[0]},${to[1]}`;
+    const key = `R${atSea ? 1 : 0}|${planMemoKey(sys, from, to)}`;
     let r = memo.get(key);
     if (!r) {
       r = roadSegments(w.nav, w.roads, state.world.balance, sys, from, to, atSea);
