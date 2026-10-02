@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { distanceKm, HOUR, strikeRangeKm, type Order } from '@redline/shared';
+import { distanceKm, effectLevel, HOUR, strikeRangeKm, type Order } from '@redline/shared';
 import {
   Badge,
   Button,
@@ -26,6 +26,8 @@ import { useWorld } from '../store/world.js';
 import { describeNotification, notificationTone } from './helpers.js';
 import { orderError, orderOk } from '../lib/loc.js';
 import { canCaptureUnit, placesOfUnit } from '../lib/unitActions.js';
+import { selectionEffectAgainst, useEffectContext } from '../lib/effectiveness.js';
+import { EffectIcon, EffectMeter } from '../components/Effectiveness.js';
 
 /** Barre de confirmation de l'ordre en attente (troisième geste : confirmer). */
 export function OrderBar() {
@@ -37,6 +39,7 @@ export function OrderBar() {
   const catalog = useWorld((s) => s.catalog);
   const roads = useWorld((s) => s.roads);
   const movement = useWorld((s) => s.balance?.movement);
+  const effCtx = useEffectContext();
 
   const confirm = useCallback(async () => {
     const p = useUi.getState().pendingOrder;
@@ -110,6 +113,10 @@ export function OrderBar() {
       distanceKm(base ?? from, target) > sys.operationalRadiusKm);
   const title = t(titleKey(pending));
   const tsys = targetUnit?.systemId ? catalog[targetUnit.systemId] : undefined;
+  // Rappel : efficacité de la sélection contre la cible visée (même calcul que le panneau).
+  const eff =
+    hostile && targetUnit ? selectionEffectAgainst(units, targetUnit, catalog, effCtx) : null;
+  const effLvl = eff ? effectLevel(eff.score, effCtx) : 0;
   // Déplacement vers une ville étrangère sans aucune unité capable de capturer : avertissement.
   const me = useGame.getState().me;
   const foreignCity =
@@ -211,6 +218,23 @@ export function OrderBar() {
             <div>
               <dt>{t('game.orders.aboard')}</dt>
               <dd>{ship.cargo.unitIds.length}</dd>
+            </div>
+          ) : null}
+          {eff ? (
+            <div
+              className={`orderbar__effect effchip--l${effLvl}`}
+              data-testid="order-effect"
+              title={t('effect.order', {
+                level: t(`effect.levels.${effLvl}`),
+                target: tsys?.name ?? t(`effect.targets.${eff.target}`),
+              })}
+            >
+              <dt>{t('game.orders.effect')}</dt>
+              <dd>
+                <EffectIcon target={eff.target} size={13} />
+                <EffectMeter level={effLvl} />
+                <span>{t(`effect.levels.${effLvl}`)}</span>
+              </dd>
             </div>
           ) : null}
           {outOfRange ? (

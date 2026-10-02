@@ -76,6 +76,9 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
   de province = archiver l'ancienne carte et incrémenter la version (test `map.test.ts`).
 - Armées de départ en **piles mixtes** (brigades, escadres ; `data/balance` `stacks`, désactivable) : une pile vaut
   la somme de ses éléments (`Unit.mix`), ordres `split` / `merge` ; mesures dans `docs/charge.md`.
+- Capture : toutes les troupes terrestres (infanterie, chars, véhicules, artillerie) ; jamais DCA, missiles,
+  radars, convois, air ni mer (`CAPTURE_CATEGORIES`). Efficacité par catégorie de cible affichée à l'interface :
+  calcul unique `packages/shared/src/effectiveness.ts` (docs/arsenal.md § 3).
 - Couleurs de nations : jamais de violet (réservé au joueur), deux voisins jamais identiques.
 - Défense antiaérienne : enveloppes par catégorie de menace (avions, hélicoptères, drones, croisière, balistiques,
   hypersoniques) dans `interceptor.envelopes` du catalogue ; tout ce qui vole est engagé par intercepteurs

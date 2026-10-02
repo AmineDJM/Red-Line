@@ -372,6 +372,7 @@
       "eta": "抵达",
       "warning": "注意",
       "outOfRange": "目标超出射程",
+      "effect": "效能",
       "confirm": "确认",
       "cancel": "取消",
       "sent": "命令已下达",
@@ -409,7 +410,7 @@
       "placesValue": "需要 {{need}} · 空余 {{free}}",
       "aboard": "船上部队",
       "overCapacity": "超出运力：请拆分部队。",
-      "noCapturer": "所选单位均无法占领：需要步兵或装甲部队。",
+      "noCapturer": "所选单位均无法占领：需要步兵、装甲部队或炮兵。",
       "radius": "半径",
       "reasons": {
         "target_invalid": "无效目标。",
@@ -563,7 +564,7 @@
     },
     "capture": {
       "progress": "正在占领 {{city}}",
-      "noCapturer": "{{city}}：该部队无法占领（需要步兵或装甲部队）。",
+      "noCapturer": "{{city}}：该部队无法占领（需要步兵、装甲部队或炮兵）。",
       "noWar": "{{city}}：未与其所有者交战，无法占领。",
       "defended": "{{city}}：有守军，驱逐守军后才开始占领。"
     },
@@ -3356,8 +3357,6 @@
     "legacy": "简化参数",
     "interceptors": "拦截弹",
     "fullIn": "{{value}}后满载",
-    "chipTitle": "{{cat}}：{{range}}",
-    "chipNone": "{{cat}}：不拦截",
     "no": "否",
     "magazine": "每单元拦截弹",
     "channels": "火力通道",
@@ -3390,6 +3389,46 @@
     },
     "shotDown": "击落：{{cat}}",
     "fired": "已发射拦截弹"
+  },
+  "effect": {
+    "title": "效能",
+    "sheetTitle": "按目标类型的效能",
+    "note": "按类别取平均，依据游戏中的伤害、拦截与打击。",
+    "chip": "{{name}}：{{against}} {{level}}",
+    "intercept": "拦截 {{ranges}}",
+    "noneList": "无效目标：{{list}}",
+    "order": "对 {{target}}：{{level}}",
+    "levels": {
+      "0": "无",
+      "1": "弱",
+      "2": "中等",
+      "3": "良好",
+      "4": "优秀"
+    },
+    "targets": {
+      "aircraft": "飞机",
+      "helicopter": "直升机",
+      "drone": "无人机",
+      "missile": "导弹",
+      "armor": "装甲",
+      "infantry": "步兵",
+      "artillery": "火炮",
+      "ship": "舰船",
+      "submarine": "潜艇",
+      "building": "建筑"
+    },
+    "against": {
+      "aircraft": "对飞机",
+      "helicopter": "对直升机",
+      "drone": "对无人机",
+      "missile": "对导弹",
+      "armor": "对装甲",
+      "infantry": "对步兵",
+      "artillery": "对火炮",
+      "ship": "对舰船",
+      "submarine": "对潜艇",
+      "building": "对建筑"
+    }
   },
   "stacks": {
     "composition_other": "编成 · {{count}} 种",
@@ -3772,7 +3811,7 @@
       },
       "captureBlocked": {
         "title": "无法占领",
-        "noCapturer": "{{system}} 无法占领 {{place}}：需要步兵或装甲部队。",
+        "noCapturer": "{{system}} 无法占领 {{place}}：需要步兵、装甲部队或炮兵。",
         "noWar": "未与 {{place}} 的所有者交战：无法占领。"
       }
     },

@@ -179,13 +179,70 @@ describe('conquête : monde 2025, armées réelles en piles mixtes', { timeout: 
     expect(s.provinces[P.cagliari]!.owner).toBe('fra');
   });
 
-  it('pile sans unité capable de capturer : arrivée, pas de capture, explication au joueur', () => {
+  it('règle de capture du catalogue : troupes terrestres oui, DCA, missiles, radars non', () => {
+    const cat = world.catalog;
+    for (const id of ['eu.leclerc', 'eu.vbci', 'eu.infantry-light', 'eu.caesar', 'us.m777'])
+      expect(cat.get(id)!.canCapture, id).toBe(true);
+    for (const id of ['ru.s-400', 'eu.mistral', 'ru.iskander-m', 'us.an-tps-75', 'eu.rafale'])
+      expect(cat.get(id)!.canCapture, id).toBe(false);
+  });
+
+  it('pile de chars seule : capture', () => {
+    const s = game(
+      [
+        { nationId: 'fra', isAi: false },
+        { nationId: 'bel', isAi: false },
+      ],
+      [{ owner: 'fra', systemId: 'eu.leclerc', pos: prov(P.lille).cityPoint, count: 4 }],
+    );
+    expect(
+      applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: prov(P.charleroi).cityPoint }).ok,
+    ).toBe(true);
+    until(s, P.charleroi, 'fra', 2 * DAY);
+    expect(s.provinces[P.charleroi]!.owner).toBe('fra');
+  });
+
+  it('artillerie seule (CAESAR) : capture', () => {
     const s = game(
       [
         { nationId: 'fra', isAi: false },
         { nationId: 'bel', isAi: false },
       ],
       [{ owner: 'fra', systemId: 'eu.caesar', pos: prov(P.lille).cityPoint, count: 4 }],
+    );
+    expect(
+      applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: prov(P.charleroi).cityPoint }).ok,
+    ).toBe(true);
+    until(s, P.charleroi, 'fra', 2 * DAY);
+    expect(s.provinces[P.charleroi]!.owner).toBe('fra');
+  });
+
+  it('batterie S-400 et artillerie ensemble sur la ville : capture (grâce à l’artillerie)', () => {
+    const s = game(
+      [
+        { nationId: 'fra', isAi: false },
+        { nationId: 'bel', isAi: false },
+      ],
+      [
+        { owner: 'fra', systemId: 'ru.s-400', pos: prov(P.lille).cityPoint, count: 2 },
+        { owner: 'fra', systemId: 'eu.caesar', pos: prov(P.lille).cityPoint, count: 2 },
+      ],
+    );
+    expect(
+      applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1', 'u2'], to: prov(P.charleroi).cityPoint })
+        .ok,
+    ).toBe(true);
+    until(s, P.charleroi, 'fra', 2 * DAY);
+    expect(s.provinces[P.charleroi]!.owner).toBe('fra');
+  });
+
+  it('pile sans unité capable de capturer (S-400) : arrivée, pas de capture, explication', () => {
+    const s = game(
+      [
+        { nationId: 'fra', isAi: false },
+        { nationId: 'bel', isAi: false },
+      ],
+      [{ owner: 'fra', systemId: 'ru.s-400', pos: prov(P.lille).cityPoint, count: 2 }],
     );
     expect(
       applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: prov(P.charleroi).cityPoint }).ok,

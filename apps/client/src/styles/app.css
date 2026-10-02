@@ -1382,31 +1382,177 @@ code {
   color: var(--rl-amber);
   font-variant-numeric: tabular-nums;
 }
-.adcaps__chips {
+/*
+ * Efficacité par catégorie de cible (components/Effectiveness.tsx) : pastilles icône + jauge en
+ * 4 barres. Couleur du niveau : faible atténué, moyen ambre, bon cyan, excellent vert.
+ */
+.effchip--l0 {
+  --eff: var(--rl-text-faint);
+}
+.effchip--l1 {
+  --eff: var(--rl-text-dim);
+}
+.effchip--l2 {
+  --eff: var(--rl-amber);
+}
+.effchip--l3 {
+  --eff: var(--rl-cyan);
+}
+.effchip--l4 {
+  --eff: var(--rl-green);
+}
+.effmeter {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 1px;
+  height: 10px;
+}
+.effmeter__bar {
+  width: 2px;
+  border-radius: 1px;
+  background: var(--rl-line-strong);
+}
+.effmeter__bar:nth-child(1) {
+  height: 4px;
+}
+.effmeter__bar:nth-child(2) {
+  height: 6px;
+}
+.effmeter__bar:nth-child(3) {
+  height: 8px;
+}
+.effmeter__bar:nth-child(4) {
+  height: 10px;
+}
+.effmeter__bar--on {
+  background: var(--eff, var(--rl-cyan));
+}
+.effrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.effrow__label {
+  flex: none;
+  color: var(--rl-text-dim);
+  font-size: var(--rl-fs-2xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.effrow__list {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 3px;
+  min-width: 0;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.adcaps__chip {
+.effchip {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 2px 6px;
-  border: 1px solid var(--rl-cyan-line);
-  border-radius: 3px;
-  background: var(--rl-cyan-dim);
-  color: var(--rl-text);
-  font-size: var(--rl-fs-2xs);
-  font-variant-numeric: tabular-nums;
+  gap: 3px;
+  height: 20px;
+  padding: 0 5px 0 4px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm);
+  background: rgba(255, 255, 255, 0.015);
+  color: var(--eff);
+  cursor: help;
 }
-.adcaps__chip--off {
-  border-color: var(--rl-line);
-  background: transparent;
+.effchip.effchip--l4 {
+  border-color: rgba(61, 220, 132, 0.35);
+  background: var(--rl-green-dim);
+}
+.effchip.effchip--l3 {
+  border-color: var(--rl-cyan-line);
+  background: var(--rl-cyan-dim);
+}
+.effchip.effchip--l2 {
+  border-color: rgba(255, 176, 32, 0.3);
+}
+.effchip.effchip--l1 {
+  border-color: var(--rl-line-strong);
+}
+.effrow--compact .effchip {
+  height: 18px;
+  padding: 0 4px 0 3px;
+}
+.effcard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm);
+  background: var(--rl-panel-2);
+}
+.effcard + .adcaps {
+  margin-top: 8px;
+}
+.effcard__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 8px;
+}
+.effcard__title {
   color: var(--rl-text-dim);
-  opacity: 0.55;
+  font-size: var(--rl-fs-2xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.effcard__note {
+  color: var(--rl-text-faint);
+  font-size: var(--rl-fs-2xs);
+}
+.effcard__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 2px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.effcard__row {
+  display: grid;
+  grid-template-columns: 1fr auto 72px;
+  align-items: center;
+  gap: 8px;
+  min-height: 22px;
+  border-bottom: 1px solid var(--rl-line);
+  font-size: var(--rl-fs-xs);
+}
+.effcard__cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  color: var(--rl-text);
+  white-space: nowrap;
+}
+.effcard__cat .rl-picto,
+.effcard__cat .rl-icon {
+  color: var(--eff);
+}
+.effcard__level {
+  color: var(--eff);
+  font-weight: 700;
+  text-align: end;
+}
+.effcard__row--off .effcard__cat,
+.effcard__row--off .effcard__level {
+  color: var(--rl-text-faint);
+}
+.orderbar__effect dd {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--eff);
 }
 .selpanel__actions {
   display: flex;

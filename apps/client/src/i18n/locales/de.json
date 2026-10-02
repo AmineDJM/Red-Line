@@ -378,6 +378,7 @@
       "eta": "Ankunft",
       "warning": "Achtung",
       "outOfRange": "Ziel außer Reichweite",
+      "effect": "Wirksamkeit",
       "confirm": "Bestätigen",
       "cancel": "Abbrechen",
       "sent": "Befehl übermittelt",
@@ -415,7 +416,7 @@
       "placesValue": "{{need}} benötigt · {{free}} frei",
       "aboard": "Verbände an Bord",
       "overCapacity": "Kapazität überschritten: Verband aufteilen.",
-      "noCapturer": "Keine Einheit dieser Auswahl kann erobern: Infanterie oder Panzer erforderlich.",
+      "noCapturer": "Keine Einheit dieser Auswahl kann erobern: Infanterie, Panzer oder Artillerie erforderlich.",
       "radius": "Radius",
       "reasons": {
         "target_invalid": "Ungültiges Ziel.",
@@ -569,7 +570,7 @@
     },
     "capture": {
       "progress": "Eroberung von {{city}}",
-      "noCapturer": "{{city}}: Dieser Verband kann nicht erobern (Infanterie oder Panzer erforderlich).",
+      "noCapturer": "{{city}}: Dieser Verband kann nicht erobern (Infanterie, Panzer oder Artillerie erforderlich).",
       "noWar": "{{city}}: Kein Krieg mit dem Besitzer, keine Eroberung.",
       "defended": "{{city}}: Verteidiger vor Ort, die Eroberung beginnt, sobald sie vertrieben sind."
     },
@@ -3397,8 +3398,6 @@
     "legacy": "Vereinfachtes Profil",
     "interceptors": "Abfangraketen",
     "fullIn": "Voll in {{value}}",
-    "chipTitle": "{{cat}}: {{range}}",
-    "chipNone": "{{cat}}: wird nicht abgefangen",
     "no": "Nein",
     "magazine": "Abfangraketen pro Element",
     "channels": "Feuerkanäle",
@@ -3431,6 +3430,46 @@
     },
     "shotDown": "Abgeschossen: {{cat}}",
     "fired": "Abgefeuerte Abfangraketen"
+  },
+  "effect": {
+    "title": "Wirksamkeit",
+    "sheetTitle": "Wirksamkeit nach Zieltyp",
+    "note": "Durchschnitt je Kategorie, nach Schaden, Abfangen und Angriffen im Spiel.",
+    "chip": "{{name}}: {{level}} {{against}}",
+    "intercept": "Abfangen {{ranges}}",
+    "noneList": "Wirkungslos gegen: {{list}}",
+    "order": "{{level}} gegen {{target}}",
+    "levels": {
+      "0": "keine",
+      "1": "gering",
+      "2": "mittel",
+      "3": "gut",
+      "4": "hervorragend"
+    },
+    "targets": {
+      "aircraft": "Flugzeuge",
+      "helicopter": "Hubschrauber",
+      "drone": "Drohnen",
+      "missile": "Raketen",
+      "armor": "Panzer",
+      "infantry": "Infanterie",
+      "artillery": "Artillerie",
+      "ship": "Schiffe",
+      "submarine": "U-Boote",
+      "building": "Gebäude"
+    },
+    "against": {
+      "aircraft": "gegen Flugzeuge",
+      "helicopter": "gegen Hubschrauber",
+      "drone": "gegen Drohnen",
+      "missile": "gegen Raketen",
+      "armor": "gegen Panzer",
+      "infantry": "gegen Infanterie",
+      "artillery": "gegen Artillerie",
+      "ship": "gegen Schiffe",
+      "submarine": "gegen U-Boote",
+      "building": "gegen Gebäude"
+    }
   },
   "stacks": {
     "composition_one": "Zusammensetzung · {{count}} System",
@@ -3822,7 +3861,7 @@
       },
       "captureBlocked": {
         "title": "Eroberung unmöglich",
-        "noCapturer": "{{system}} kann {{place}} nicht erobern: Infanterie oder Panzer erforderlich.",
+        "noCapturer": "{{system}} kann {{place}} nicht erobern: Infanterie, Panzer oder Artillerie erforderlich.",
         "noWar": "Kein Krieg mit dem Besitzer von {{place}}: keine Eroberung."
       }
     },

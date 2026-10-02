@@ -1,4 +1,5 @@
 import { AIR_THREATS, type AirThreat, type WeaponSystem } from './catalog.js';
+import type { MilitaryBalance } from './balance.js';
 
 /**
  * Défense antiaérienne : enveloppes d'engagement d'un système par catégorie de menace, lues de sa
@@ -88,4 +89,99 @@ export function airDefenseMaxKm(t: AirDefenseTable): number {
   let m = 0;
   for (const l of t.lines) if (l.maxKm > m) m = l.maxKm;
   return m;
+}
+
+/** Enveloppe d'interception résolue (doctrine de tir comprise). */
+export interface InterceptEnv {
+  min: number;
+  max: number;
+  pk: number;
+  shots: number;
+}
+
+/**
+ * Profil d'interception d'un système, tel que le moteur l'emploie (engine/modules/mil/ad-profile.ts) :
+ *  - fiche `interceptor.envelopes` (« explicite ») : enveloppes par catégorie ; la défense engage tout
+ *    ce qui vole (aéronefs compris) par intercepteurs ;
+ *  - fiche `interceptor` sans enveloppes (ancienne) : catégories déduites de `against`, portée d'arme
+ *    et probabilité uniques ; seuls les missiles et munitions rôdeuses sont interceptés ;
+ *  - sans fiche mais dégâts « missile » > 0 (chasseurs, navires) : interception de repli des missiles
+ *    de croisière et des drones (et des balistiques pour une unité au sol ou en mer qui frappe fort).
+ * Même calcul pour le moteur et pour l'interface (notes d'efficacité) : une seule source de vérité.
+ */
+export interface InterceptProfile {
+  explicit: boolean;
+  env: Partial<Record<AirThreat, InterceptEnv>>;
+  /** Intercepteurs par élément. */
+  magazine: number;
+  /** Canaux de tir par élément et par fenêtre (null : équilibrage). */
+  channels: number | null;
+  /** Délai de réaction (secondes ; 0 pour les fiches anciennes et le repli). */
+  reactionS: number;
+  /** Durée d'un rechargement complet (heures, progressif). */
+  reloadH: number;
+  /** Portée d'interception la plus grande (km). */
+  maxKm: number;
+}
+
+export function interceptProfile(sys: WeaponSystem, bal: MilitaryBalance): InterceptProfile | null {
+  const ic = sys.interceptor;
+  const env: Partial<Record<AirThreat, InterceptEnv>> = {};
+  let maxKm = 0;
+  const put = (c: AirThreat, e: InterceptEnv): void => {
+    env[c] = e;
+    if (e.max > maxKm) maxKm = e.max;
+  };
+  if (ic) {
+    const t = airDefenseTable(sys)!;
+    const legacyShots = Math.max(1, Math.round(bal.intercept.shotsPerMissile));
+    for (const l of t.lines) {
+      put(l.threat, {
+        min: l.minKm,
+        max: l.maxKm,
+        pk: l.pk,
+        shots: t.explicit
+          ? (l.shots ?? Math.max(1, Math.round(bal.airDefense.shots[l.threat])))
+          : legacyShots,
+      });
+    }
+    return {
+      explicit: t.explicit,
+      env,
+      magazine: ic.magazine,
+      channels: ic.channels ?? null,
+      reactionS: t.explicit ? (ic.reactionS ?? bal.airDefense.reactionS) : 0,
+      reloadH: ic.reloadH ?? bal.intercept.reloadHours,
+      maxKm,
+    };
+  }
+  if (sys.damage.missile > 0) {
+    const b = bal.intercept;
+    const r = sys.weaponRangeKm;
+    // Chasseur : missiles air-air contre missiles de croisière et drones (veille, interception).
+    const fighter = sys.movement === 'air';
+    const a = bal.airDefense;
+    const e = {
+      min: r.min,
+      max: r.max,
+      pk: fighter
+        ? Math.min(a.fighterPkMax, sys.damage.missile * a.fighterPkPerDamage)
+        : Math.min(b.fallbackPkMax, sys.damage.missile * b.fallbackPkPerDamage),
+      shots: Math.max(1, Math.round(b.shotsPerMissile)),
+    };
+    put('cruise_missile', e);
+    put('drone', e);
+    // Un aéronef n'intercepte pas un missile balistique.
+    if (sys.damage.missile >= 12 && sys.movement !== 'air') put('ballistic_missile', e);
+    return {
+      explicit: false,
+      env,
+      magazine: fighter ? a.fighterMagazine : b.fallbackMagazine,
+      channels: null,
+      reactionS: 0,
+      reloadH: b.reloadHours,
+      maxKm,
+    };
+  }
+  return null;
 }

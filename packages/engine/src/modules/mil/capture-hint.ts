@@ -5,7 +5,7 @@ import { cityOf, generic, noteLoc, placeOf } from './util.js';
 
 /**
  * Explication d'une capture impossible, à l'arrivée d'une pile terrestre sur le point de capture d'une
- * province étrangère : pile sans unité capable de capturer (artillerie, défense antiaérienne, radars…),
+ * province étrangère : pile sans unité capable de capturer (défense antiaérienne, radars, lanceurs…),
  * ou nation avec laquelle on n'est pas en guerre (droit de passage d'un allié). Le joueur sait pourquoi
  * la province ne change pas de mains.
  */
@@ -34,7 +34,7 @@ export function captureHint(state: EngineState, u: Unit): void {
       'capture',
       'Capture impossible',
       why === 'noCapturer'
-        ? `${s.name} ne peut pas capturer de province : il faut de l'infanterie ou des blindés.`
+        ? `${s.name} ne peut pas capturer de province : il faut de l'infanterie, des blindés ou de l'artillerie.`
         : `Pas de guerre avec le propriétaire de cette province : pas de capture.`,
       'warn',
       cityOf(state, pid),

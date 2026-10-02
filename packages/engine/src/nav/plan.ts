@@ -56,6 +56,18 @@ export type SurfaceSegments = { error: PlanError } | { segs: Segment[] };
 const MEMO_MAX = 512;
 
 /**
+ * Clé du mémo des trajets de surface. Le calcul ne lit du système que `movement` et `speedKmh` : la
+ * vitesse fait partie de la clé, car une pile mixte (fiche synthétique, state/stack.ts) garde
+ * l'identifiant de son matériel principal mais avance à la vitesse du plus lent de ses éléments. Sans
+ * elle, une pile et une unité du même matériel principal partant du même point partageaient une
+ * entrée : le trajet rendu dépendait de l'historique du mémo (jamais sérialisé), et une partie reprise
+ * d'un instantané divergeait de la partie vécue.
+ */
+export function planMemoKey(sys: WeaponSystem, from: LngLat, to: LngLat): string {
+  return `${sys.id}|${sys.speedKmh}|${from[0]},${from[1]}|${to[0]},${to[1]}`;
+}
+
+/**
  * Chemin de surface : A* sur la grille H3 (terre avec embarquement automatique, ou mer + détroits),
  * puis lissage en peu de segments de grand cercle en vérifiant le milieu des cellules traversées.
  * Le résultat ne dépend que de (système, départ, arrivée) : il peut être mis en cache ; les heures
@@ -70,7 +82,7 @@ export function planSurface(
   t0: number,
   memo?: Map<string, SurfaceSegments>,
 ): PlanResult {
-  const key = `${sys.id}|${from[0]},${from[1]}|${to[0]},${to[1]}`;
+  const key = planMemoKey(sys, from, to);
   let r = memo?.get(key);
   if (!r) {
     r = surfaceSegments(g, balance, sys, from, to);

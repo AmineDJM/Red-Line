@@ -1,5 +1,5 @@
 /** Validation d'une fiche avec WeaponSystemSchema et messages lisibles en français. */
-import { WeaponSystemSchema, type WeaponSystem } from '@redline/shared';
+import { WeaponSystemSchema, captureByRule, type WeaponSystem } from '@redline/shared';
 import { T, fmt } from '../i18n';
 import { usd } from './format';
 
@@ -91,6 +91,13 @@ export function coherenceWarnings(s: Partial<WeaponSystem>): string[] {
     w.push(fmt(e.warnPrefix, { doctrine: s.doctrine }));
   }
   if (s.canCapture && s.movement !== 'land') w.push(e.warnCapture);
+  else if (
+    s.category &&
+    s.movement &&
+    s.canCapture !== undefined &&
+    s.canCapture !== captureByRule({ category: s.category, movement: s.movement })
+  )
+    w.push(e.warnCaptureRule);
   if (typeof s.stealth === 'number' && s.stealth > 0.3 && s.generation !== 5) w.push(e.warnStealth);
   if (typeof s.unitPriceUsd === 'number' && typeof s.cost?.money === 'number') {
     const expected = s.unitPriceUsd * (typeof s.unitSize === 'number' ? s.unitSize : 1);
