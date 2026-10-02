@@ -1630,6 +1630,14 @@ export class GameMap {
         ui.toast(t('game.orders.errors.off_road'), 'error');
         return;
       }
+      // Point du réseau, mais sans chemin (autre masse continentale sans port) : refus immédiat.
+      const lead = ui.selection.find((id) => this.landSelected([id]));
+      const leadAt = lead ? (this.positions.get(lead) ?? view?.units[lead]?.pos) : undefined;
+      if (snap && leadAt && !this.roadPathFor(leadAt, snap.pos)) {
+        this.roadLayer?.marker(snap.pos, false);
+        ui.toast(t('game.orders.errors.unreachable'), 'error');
+        return;
+      }
       this.roadLayer?.marker(null, true);
       ui.setPending({ kind: 'move', unitIds: ui.selection, to: snap ? snap.pos : at });
       return;

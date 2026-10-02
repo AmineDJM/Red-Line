@@ -132,6 +132,23 @@ describe('réseau de routes : trajets terrestres', () => {
     expect(s.units.u1!.move).toBeNull();
   });
 
+  it('réglage balance.movement.roadNetwork = false : déplacement libre (ancien comportement)', () => {
+    const w2 = buildWorld(
+      data.map,
+      data.catalog,
+      { ...data.balance, movement: { ...data.balance.movement, roadNetwork: false } },
+      { research: data.research },
+    );
+    expect(wi(w2).roads).toBeNull();
+    const paris = byCity('Paris').cityPoint;
+    const lyon = byCity('Lyon').cityPoint;
+    const s = game([{ owner: 'fra', systemId: INF, pos: paris }], w2);
+    expect(applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: lyon })).toEqual({ ok: true });
+    const km = legKm(s, 'u1');
+    expect(km).toBeLessThan(distanceKm(paris, lyon) * 1.35);
+    expect(s.units.u1!.move!.legs.length).toBeLessThanOrEqual(2);
+  });
+
   it('traversée : Londres → Paris par un port, la mer, puis un port', () => {
     const london = byCity('Londres').cityPoint;
     const paris = byCity('Paris').cityPoint;

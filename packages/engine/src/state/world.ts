@@ -81,7 +81,7 @@ export function buildWorld(
   for (const s of catalog) catalogMap.set(s.id, s);
   const internal: WorldInternal = {
     nav,
-    roads: map.routes ? new RoadNet(map.routes) : null,
+    roads: map.routes && balance.movement.roadNetwork !== false ? new RoadNet(map.routes) : null,
     provById,
     nationById,
     provIds,

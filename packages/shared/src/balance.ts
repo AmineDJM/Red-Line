@@ -724,6 +724,8 @@ export const BalanceSchema = z.object({
     embarkMinutes: z.number().min(0),
     /** Unités terrestres : distance maximale (km) entre le point visé et le réseau de routes. */
     roadSnapKm: z.number().positive().optional(),
+    /** Unités terrestres sur le réseau de routes (défaut : activé) ; false = déplacement libre sur la grille H3. */
+    roadNetwork: z.boolean().optional(),
   }),
   sensors: z.object({
     /** Couverture radar de base autour de la ville de chaque province possédée, en km. */
