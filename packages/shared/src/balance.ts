@@ -374,6 +374,36 @@ export const MilitaryBalanceSchema = z.object({
 });
 export type MilitaryBalance = z.infer<typeof MilitaryBalanceSchema>;
 
+/**
+ * Section `effectiveness` de data/balance (optionnelle) : notes d'efficacité par catégorie de cible
+ * affichées par l'interface (packages/shared/src/effectiveness.ts). Seule la présentation en dépend :
+ * les notes dérivent des valeurs que le moteur utilise (dégâts, interception, frappes).
+ */
+export const EffectivenessBalanceSchema = z.object({
+  /**
+   * Note 1 (« excellent » franc) = ce quantile des systèmes du catalogue qui agissent sur la catégorie
+   * (hors armes nucléaires) : un système est noté par rapport aux meilleurs de sa catégorie.
+   */
+  refQuantile: z.number().min(0.5).max(1).default(0.9),
+  /** Seuils de note (0..1) : au-dessus de 0 faible, puis moyen, bon et excellent. */
+  levels: z
+    .object({
+      medium: z.number().min(0).max(1).default(0.25),
+      good: z.number().min(0).max(1).default(0.5),
+      excellent: z.number().min(0).max(1).default(0.8),
+    })
+    .default({}),
+  /** Poids de chaque menace dans la note « missiles » (moyenne pondérée des interceptions). */
+  missileWeights: z
+    .object({
+      cruise_missile: num(1),
+      ballistic_missile: num(1),
+      hypersonic: num(0.5),
+    })
+    .default({}),
+});
+export type EffectivenessBalance = z.infer<typeof EffectivenessBalanceSchema>;
+
 // ——— Intelligence artificielle : heuristiques de décision des nations tenues par l'IA ———
 
 interface AiLevelDefaults {
@@ -1713,6 +1743,8 @@ export const BalanceSchema = z.object({
     .optional(),
   /** Combat complet (phase 3) : voir MilitaryBalanceSchema (valeurs par défaut documentées). */
   military: MilitaryBalanceSchema.optional(),
+  /** Notes d'efficacité par catégorie de cible (interface) : voir EffectivenessBalanceSchema. */
+  effectiveness: EffectivenessBalanceSchema.optional(),
   /** Piles mixtes (regroupement de départ, fusion, emploi par l'IA) : voir StacksBalanceSchema. */
   stacks: StacksBalanceSchema.optional(),
   /**

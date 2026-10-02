@@ -372,6 +372,7 @@
       "eta": "도착",
       "warning": "주의",
       "outOfRange": "목표가 사거리 밖",
+      "effect": "효과",
       "confirm": "확인",
       "cancel": "취소",
       "sent": "명령 전달됨",
@@ -409,7 +410,7 @@
       "placesValue": "필요 {{need}} · 여유 {{free}}",
       "aboard": "탑승 부대",
       "overCapacity": "수용량 초과: 부대를 분할하세요.",
-      "noCapturer": "선택한 부대 중 점령할 수 있는 부대가 없습니다: 보병이나 기갑이 필요합니다.",
+      "noCapturer": "선택한 부대 중 점령할 수 있는 부대가 없습니다: 보병, 기갑 또는 포병이 필요합니다.",
       "radius": "반경",
       "reasons": {
         "target_invalid": "잘못된 목표입니다.",
@@ -563,7 +564,7 @@
     },
     "capture": {
       "progress": "{{city}} 점령 중",
-      "noCapturer": "{{city}}: 이 부대는 점령할 수 없습니다(보병이나 기갑 필요).",
+      "noCapturer": "{{city}}: 이 부대는 점령할 수 없습니다(보병, 기갑 또는 포병 필요).",
       "noWar": "{{city}}: 소유국과 전쟁 중이 아니므로 점령할 수 없습니다.",
       "defended": "{{city}}: 방어 부대가 있어 이를 몰아낸 뒤 점령이 시작됩니다."
     },
@@ -3178,8 +3179,6 @@
     "legacy": "간이 제원",
     "interceptors": "요격미사일",
     "fullIn": "{{value}} 후 완충",
-    "chipTitle": "{{cat}}: {{range}}",
-    "chipNone": "{{cat}}: 요격 불가",
     "no": "아니요",
     "magazine": "요소당 요격미사일",
     "channels": "사격 채널",
@@ -3212,6 +3211,46 @@
     },
     "shotDown": "격추: {{cat}}",
     "fired": "발사한 요격미사일"
+  },
+  "effect": {
+    "title": "효과",
+    "sheetTitle": "목표 유형별 효과",
+    "note": "범주별 평균(게임 내 피해, 요격, 타격 기준).",
+    "chip": "{{name}}: {{against}} {{level}}",
+    "intercept": "요격 {{ranges}}",
+    "noneList": "효과 없음: {{list}}",
+    "order": "{{target}} 상대: {{level}}",
+    "levels": {
+      "0": "없음",
+      "1": "약함",
+      "2": "보통",
+      "3": "양호",
+      "4": "우수"
+    },
+    "targets": {
+      "aircraft": "항공기",
+      "helicopter": "헬기",
+      "drone": "드론",
+      "missile": "미사일",
+      "armor": "기갑",
+      "infantry": "보병",
+      "artillery": "포병",
+      "ship": "함선",
+      "submarine": "잠수함",
+      "building": "건물"
+    },
+    "against": {
+      "aircraft": "항공기 상대",
+      "helicopter": "헬기 상대",
+      "drone": "드론 상대",
+      "missile": "미사일 상대",
+      "armor": "기갑 상대",
+      "infantry": "보병 상대",
+      "artillery": "포병 상대",
+      "ship": "함선 상대",
+      "submarine": "잠수함 상대",
+      "building": "건물 상대"
+    }
   },
   "stacks": {
     "composition_other": "구성 · {{count}}종",
@@ -3527,7 +3566,7 @@
       },
       "captureBlocked": {
         "title": "점령 불가",
-        "noCapturer": "{{system}}은(는) {{place}}을(를) 점령할 수 없습니다: 보병이나 기갑이 필요합니다.",
+        "noCapturer": "{{system}}은(는) {{place}}을(를) 점령할 수 없습니다: 보병, 기갑 또는 포병이 필요합니다.",
         "noWar": "{{place}} 소유국과 전쟁 중이 아니므로 점령할 수 없습니다."
       }
     }

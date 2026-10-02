@@ -384,6 +384,7 @@
       "eta": "Arrivo",
       "warning": "Attenzione",
       "outOfRange": "Bersaglio fuori portata",
+      "effect": "Efficacia",
       "confirm": "Conferma",
       "cancel": "Annulla",
       "sent": "Ordine trasmesso",
@@ -421,7 +422,7 @@
       "placesValue": "{{need}} necessari · {{free}} liberi",
       "aboard": "Unità a bordo",
       "overCapacity": "Capacità superata: dividi l’unità.",
-      "noCapturer": "Nessuna unità di questa selezione può conquistare: servono fanteria o corazzati.",
+      "noCapturer": "Nessuna unità di questa selezione può conquistare: servono fanteria, corazzati o artiglieria.",
       "radius": "Raggio",
       "reasons": {
         "target_invalid": "Bersaglio non valido.",
@@ -575,7 +576,7 @@
     },
     "capture": {
       "progress": "Conquista di {{city}}",
-      "noCapturer": "{{city}}: questa unità non può conquistare (servono fanteria o corazzati).",
+      "noCapturer": "{{city}}: questa unità non può conquistare (servono fanteria, corazzati o artiglieria).",
       "noWar": "{{city}}: nessuna guerra con il proprietario, nessuna conquista.",
       "defended": "{{city}}: difensori presenti, la conquista inizierà quando saranno respinti."
     },
@@ -3260,8 +3261,6 @@
     "legacy": "Profilo semplificato",
     "interceptors": "Intercettori",
     "fullIn": "Pieno tra {{value}}",
-    "chipTitle": "{{cat}}: {{range}}",
-    "chipNone": "{{cat}}: non intercettato",
     "no": "No",
     "magazine": "Intercettori per elemento",
     "channels": "Canali di tiro",
@@ -3294,6 +3293,46 @@
     },
     "shotDown": "Abbattuti: {{cat}}",
     "fired": "Intercettori lanciati"
+  },
+  "effect": {
+    "title": "Efficacia",
+    "sheetTitle": "Efficacia per tipo di bersaglio",
+    "note": "Media per categoria, in base a danni, intercettazioni e attacchi del gioco.",
+    "chip": "{{name}}: {{level}} {{against}}",
+    "intercept": "intercettazione {{ranges}}",
+    "noneList": "Nessun effetto contro: {{list}}",
+    "order": "{{level}} contro {{target}}",
+    "levels": {
+      "0": "nulla",
+      "1": "bassa",
+      "2": "media",
+      "3": "buona",
+      "4": "eccellente"
+    },
+    "targets": {
+      "aircraft": "Aerei",
+      "helicopter": "Elicotteri",
+      "drone": "Droni",
+      "missile": "Missili",
+      "armor": "Corazzati",
+      "infantry": "Fanteria",
+      "artillery": "Artiglieria",
+      "ship": "Navi",
+      "submarine": "Sottomarini",
+      "building": "Edifici"
+    },
+    "against": {
+      "aircraft": "contro aerei",
+      "helicopter": "contro elicotteri",
+      "drone": "contro droni",
+      "missile": "contro missili",
+      "armor": "contro corazzati",
+      "infantry": "contro fanteria",
+      "artillery": "contro artiglieria",
+      "ship": "contro navi",
+      "submarine": "contro sottomarini",
+      "building": "contro edifici"
+    }
   },
   "stacks": {
     "composition_one": "Composizione · {{count}} sistema",
@@ -3627,7 +3666,7 @@
       },
       "captureBlocked": {
         "title": "Conquista impossibile",
-        "noCapturer": "{{system}} non può conquistare {{place}}: servono fanteria o corazzati.",
+        "noCapturer": "{{system}} non può conquistare {{place}}: servono fanteria, corazzati o artiglieria.",
         "noWar": "Nessuna guerra con il proprietario di {{place}}: nessuna conquista."
       }
     }

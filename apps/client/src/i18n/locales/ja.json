@@ -372,6 +372,7 @@
       "eta": "到着",
       "warning": "注意",
       "outOfRange": "目標が射程外",
+      "effect": "有効性",
       "confirm": "確認",
       "cancel": "キャンセル",
       "sent": "命令を送信",
@@ -409,7 +410,7 @@
       "placesValue": "必要 {{need}} · 空き {{free}}",
       "aboard": "乗艦中の部隊",
       "overCapacity": "収容量超過：部隊を分割してください。",
-      "noCapturer": "選択中の部隊はいずれも占領できません：歩兵または機甲が必要です。",
+      "noCapturer": "選択中の部隊はいずれも占領できません：歩兵・機甲・砲兵のいずれかが必要です。",
       "radius": "半径",
       "reasons": {
         "target_invalid": "無効な目標です。",
@@ -563,7 +564,7 @@
     },
     "capture": {
       "progress": "{{city}} を占領中",
-      "noCapturer": "{{city}}：この部隊は占領できません（歩兵または機甲が必要）。",
+      "noCapturer": "{{city}}：この部隊は占領できません（歩兵・機甲・砲兵のいずれかが必要）。",
       "noWar": "{{city}}：所有国と戦争状態にないため占領できません。",
       "defended": "{{city}}：守備隊がいます。排除後に占領が始まります。"
     },
@@ -3178,8 +3179,6 @@
     "legacy": "簡易プロファイル",
     "interceptors": "迎撃ミサイル",
     "fullIn": "満載まで {{value}}",
-    "chipTitle": "{{cat}}：{{range}}",
-    "chipNone": "{{cat}}：迎撃不可",
     "no": "いいえ",
     "magazine": "1単位あたりの迎撃ミサイル",
     "channels": "射撃チャンネル",
@@ -3212,6 +3211,46 @@
     },
     "shotDown": "撃墜：{{cat}}",
     "fired": "発射した迎撃ミサイル"
+  },
+  "effect": {
+    "title": "有効性",
+    "sheetTitle": "目標種別ごとの有効性",
+    "note": "カテゴリ別の平均（ゲーム内の損害・迎撃・打撃に基づく）。",
+    "chip": "{{name}}：{{against}} {{level}}",
+    "intercept": "迎撃 {{ranges}}",
+    "noneList": "効果なし：{{list}}",
+    "order": "{{target}} に対して：{{level}}",
+    "levels": {
+      "0": "なし",
+      "1": "低",
+      "2": "中",
+      "3": "良好",
+      "4": "優秀"
+    },
+    "targets": {
+      "aircraft": "航空機",
+      "helicopter": "ヘリコプター",
+      "drone": "ドローン",
+      "missile": "ミサイル",
+      "armor": "機甲",
+      "infantry": "歩兵",
+      "artillery": "砲兵",
+      "ship": "艦船",
+      "submarine": "潜水艦",
+      "building": "建造物"
+    },
+    "against": {
+      "aircraft": "対航空機",
+      "helicopter": "対ヘリコプター",
+      "drone": "対ドローン",
+      "missile": "対ミサイル",
+      "armor": "対機甲",
+      "infantry": "対歩兵",
+      "artillery": "対砲兵",
+      "ship": "対艦船",
+      "submarine": "対潜水艦",
+      "building": "対建造物"
+    }
   },
   "stacks": {
     "composition_other": "編成 · {{count}} 種類",
@@ -3527,7 +3566,7 @@
       },
       "captureBlocked": {
         "title": "占領不可",
-        "noCapturer": "{{system}} は {{place}} を占領できません：歩兵または機甲が必要です。",
+        "noCapturer": "{{system}} は {{place}} を占領できません：歩兵・機甲・砲兵のいずれかが必要です。",
         "noWar": "{{place}} の所有国と戦争状態にないため占領できません。"
       }
     }

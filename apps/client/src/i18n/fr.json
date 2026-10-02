@@ -377,6 +377,7 @@
       "eta": "Arrivée",
       "warning": "Attention",
       "outOfRange": "Cible hors de portée",
+      "effect": "Efficacité",
       "confirm": "Confirmer",
       "cancel": "Annuler",
       "sent": "Ordre transmis",
@@ -414,7 +415,7 @@
       "placesValue": "{{need}} requises · {{free}} libres",
       "aboard": "Piles à bord",
       "overCapacity": "Capacité dépassée : scindez la pile.",
-      "noCapturer": "Aucune unité de cette sélection ne peut capturer : il faut de l'infanterie ou des blindés.",
+      "noCapturer": "Aucune unité de cette sélection ne peut capturer : il faut de l'infanterie, des blindés ou de l'artillerie.",
       "radius": "Rayon",
       "reasons": {
         "target_invalid": "Cible invalide.",
@@ -568,7 +569,7 @@
     },
     "capture": {
       "progress": "Capture de {{city}}",
-      "noCapturer": "{{city}} : cette pile ne peut pas capturer (infanterie ou blindés requis).",
+      "noCapturer": "{{city}} : cette pile ne peut pas capturer (infanterie, blindés ou artillerie requis).",
       "noWar": "{{city}} : pas de guerre avec son propriétaire, pas de capture.",
       "defended": "{{city}} : défenseurs présents, la capture commencera quand ils seront chassés."
     },
@@ -2731,8 +2732,6 @@
     "legacy": "Profil simplifié",
     "interceptors": "Intercepteurs",
     "fullIn": "Plein dans {{value}}",
-    "chipTitle": "{{cat}} : {{range}}",
-    "chipNone": "{{cat}} : non intercepté",
     "no": "Non",
     "magazine": "Intercepteurs par élément",
     "channels": "Canaux de tir",
@@ -2765,5 +2764,45 @@
     },
     "shotDown": "Abattus : {{cat}}",
     "fired": "Intercepteurs tirés"
+  },
+  "effect": {
+    "title": "Efficacité",
+    "sheetTitle": "Efficacité par type de cible",
+    "note": "Moyenne par catégorie, d’après les dégâts, interceptions et frappes du jeu.",
+    "chip": "{{name}} : {{level}} {{against}}",
+    "intercept": "interception {{ranges}}",
+    "noneList": "Nul contre : {{list}}",
+    "order": "{{level}} contre {{target}}",
+    "levels": {
+      "0": "nul",
+      "1": "faible",
+      "2": "moyen",
+      "3": "bon",
+      "4": "excellent"
+    },
+    "targets": {
+      "aircraft": "Avions",
+      "helicopter": "Hélicoptères",
+      "drone": "Drones",
+      "missile": "Missiles",
+      "armor": "Blindés",
+      "infantry": "Infanterie",
+      "artillery": "Artillerie",
+      "ship": "Navires",
+      "submarine": "Sous-marins",
+      "building": "Bâtiments"
+    },
+    "against": {
+      "aircraft": "contre les avions",
+      "helicopter": "contre les hélicoptères",
+      "drone": "contre les drones",
+      "missile": "contre les missiles",
+      "armor": "contre les blindés",
+      "infantry": "contre l’infanterie",
+      "artillery": "contre l’artillerie",
+      "ship": "contre les navires",
+      "submarine": "contre les sous-marins",
+      "building": "contre les bâtiments"
+    }
   }
 }

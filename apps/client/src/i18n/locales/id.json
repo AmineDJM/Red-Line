@@ -372,6 +372,7 @@
       "eta": "Tiba",
       "warning": "Perhatian",
       "outOfRange": "Sasaran di luar jangkauan",
+      "effect": "Efektivitas",
       "confirm": "Konfirmasi",
       "cancel": "Batal",
       "sent": "Perintah terkirim",
@@ -409,7 +410,7 @@
       "placesValue": "{{need}} diperlukan · {{free}} kosong",
       "aboard": "Pasukan di atas kapal",
       "overCapacity": "Kapasitas terlampaui: pecah pasukan.",
-      "noCapturer": "Tidak ada unit dalam pilihan ini yang dapat merebut: perlu infanteri atau lapis baja.",
+      "noCapturer": "Tidak ada unit dalam pilihan ini yang dapat merebut: perlu infanteri, lapis baja, atau artileri.",
       "radius": "Radius",
       "reasons": {
         "target_invalid": "Sasaran tidak valid.",
@@ -563,7 +564,7 @@
     },
     "capture": {
       "progress": "Merebut {{city}}",
-      "noCapturer": "{{city}}: pasukan ini tidak dapat merebut (perlu infanteri atau lapis baja).",
+      "noCapturer": "{{city}}: pasukan ini tidak dapat merebut (perlu infanteri, lapis baja, atau artileri).",
       "noWar": "{{city}}: tidak berperang dengan pemiliknya, tidak ada perebutan.",
       "defended": "{{city}}: ada pasukan bertahan, perebutan dimulai setelah mereka diusir."
     },
@@ -3178,8 +3179,6 @@
     "legacy": "Profil sederhana",
     "interceptors": "Pencegat",
     "fullIn": "Penuh dalam {{value}}",
-    "chipTitle": "{{cat}}: {{range}}",
-    "chipNone": "{{cat}}: tidak dicegat",
     "no": "Tidak",
     "magazine": "Pencegat per elemen",
     "channels": "Kanal tembak",
@@ -3212,6 +3211,46 @@
     },
     "shotDown": "Ditembak jatuh: {{cat}}",
     "fired": "Pencegat ditembakkan"
+  },
+  "effect": {
+    "title": "Efektivitas",
+    "sheetTitle": "Efektivitas menurut jenis sasaran",
+    "note": "Rata-rata per kategori, berdasarkan kerusakan, intersepsi, dan serangan dalam game.",
+    "chip": "{{name}}: {{level}} {{against}}",
+    "intercept": "intersepsi {{ranges}}",
+    "noneList": "Tidak efektif melawan: {{list}}",
+    "order": "{{level}} melawan {{target}}",
+    "levels": {
+      "0": "nihil",
+      "1": "lemah",
+      "2": "sedang",
+      "3": "baik",
+      "4": "sangat baik"
+    },
+    "targets": {
+      "aircraft": "Pesawat",
+      "helicopter": "Helikopter",
+      "drone": "Drone",
+      "missile": "Rudal",
+      "armor": "Lapis baja",
+      "infantry": "Infanteri",
+      "artillery": "Artileri",
+      "ship": "Kapal",
+      "submarine": "Kapal selam",
+      "building": "Bangunan"
+    },
+    "against": {
+      "aircraft": "melawan pesawat",
+      "helicopter": "melawan helikopter",
+      "drone": "melawan drone",
+      "missile": "melawan rudal",
+      "armor": "melawan lapis baja",
+      "infantry": "melawan infanteri",
+      "artillery": "melawan artileri",
+      "ship": "melawan kapal",
+      "submarine": "melawan kapal selam",
+      "building": "melawan bangunan"
+    }
   },
   "stacks": {
     "composition_other": "Komposisi · {{count}} sistem",
@@ -3527,7 +3566,7 @@
       },
       "captureBlocked": {
         "title": "Perebutan mustahil",
-        "noCapturer": "{{system}} tidak dapat merebut {{place}}: perlu infanteri atau lapis baja.",
+        "noCapturer": "{{system}} tidak dapat merebut {{place}}: perlu infanteri, lapis baja, atau artileri.",
         "noWar": "Tidak berperang dengan pemilik {{place}}: tidak ada perebutan."
       }
     }

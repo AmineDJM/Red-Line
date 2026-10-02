@@ -390,6 +390,7 @@
       "eta": "Przybycie",
       "warning": "Uwaga",
       "outOfRange": "Cel poza zasięgiem",
+      "effect": "Skuteczność",
       "confirm": "Potwierdź",
       "cancel": "Anuluj",
       "sent": "Rozkaz przekazany",
@@ -427,7 +428,7 @@
       "placesValue": "potrzeba {{need}} · wolne {{free}}",
       "aboard": "Oddziały na pokładzie",
       "overCapacity": "Przekroczona pojemność: podziel oddział.",
-      "noCapturer": "Żadna jednostka z tego zaznaczenia nie może zdobywać: potrzebna piechota lub pojazdy pancerne.",
+      "noCapturer": "Żadna jednostka z tego zaznaczenia nie może zdobywać: potrzebna piechota, pojazdy pancerne lub artyleria.",
       "radius": "Promień",
       "reasons": {
         "target_invalid": "Nieprawidłowy cel.",
@@ -581,7 +582,7 @@
     },
     "capture": {
       "progress": "Zdobywanie: {{city}}",
-      "noCapturer": "{{city}}: ten oddział nie może zdobywać (potrzebna piechota lub pojazdy pancerne).",
+      "noCapturer": "{{city}}: ten oddział nie może zdobywać (potrzebna piechota, pojazdy pancerne lub artyleria).",
       "noWar": "{{city}}: brak wojny z właścicielem, brak zdobycia.",
       "defended": "{{city}}: obecni obrońcy, zdobywanie zacznie się po ich wyparciu."
     },
@@ -3301,8 +3302,6 @@
     "legacy": "Profil uproszczony",
     "interceptors": "Pociski przechwytujące",
     "fullIn": "Pełny za {{value}}",
-    "chipTitle": "{{cat}}: {{range}}",
-    "chipNone": "{{cat}}: nieprzechwytywane",
     "no": "Nie",
     "magazine": "Pociski na element",
     "channels": "Kanały ognia",
@@ -3335,6 +3334,46 @@
     },
     "shotDown": "Zestrzelone: {{cat}}",
     "fired": "Wystrzelone pociski przechwytujące"
+  },
+  "effect": {
+    "title": "Skuteczność",
+    "sheetTitle": "Skuteczność według typu celu",
+    "note": "Średnia dla kategorii, na podstawie obrażeń, przechwyceń i uderzeń w grze.",
+    "chip": "{{name}}: {{level}} {{against}}",
+    "intercept": "przechwytywanie {{ranges}}",
+    "noneList": "Bez skutku przeciw: {{list}}",
+    "order": "{{level}} przeciw {{target}}",
+    "levels": {
+      "0": "brak",
+      "1": "słaba",
+      "2": "średnia",
+      "3": "dobra",
+      "4": "doskonała"
+    },
+    "targets": {
+      "aircraft": "Samoloty",
+      "helicopter": "Śmigłowce",
+      "drone": "Drony",
+      "missile": "Pociski",
+      "armor": "Pancerne",
+      "infantry": "Piechota",
+      "artillery": "Artyleria",
+      "ship": "Okręty",
+      "submarine": "Okręty podwodne",
+      "building": "Budynki"
+    },
+    "against": {
+      "aircraft": "przeciw samolotom",
+      "helicopter": "przeciw śmigłowcom",
+      "drone": "przeciw dronom",
+      "missile": "przeciw pociskom",
+      "armor": "przeciw pojazdom pancernym",
+      "infantry": "przeciw piechocie",
+      "artillery": "przeciw artylerii",
+      "ship": "przeciw okrętom",
+      "submarine": "przeciw okrętom podwodnym",
+      "building": "przeciw budynkom"
+    }
   },
   "stacks": {
     "composition_one": "Skład · liczba typów: {{count}}",
@@ -3677,7 +3716,7 @@
       },
       "captureBlocked": {
         "title": "Zdobycie niemożliwe",
-        "noCapturer": "{{system}} nie może zdobyć {{place}}: potrzebna piechota lub pojazdy pancerne.",
+        "noCapturer": "{{system}} nie może zdobyć {{place}}: potrzebna piechota, pojazdy pancerne lub artyleria.",
         "noWar": "Brak wojny z właścicielem {{place}}: brak zdobycia."
       }
     }
