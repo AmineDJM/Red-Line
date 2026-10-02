@@ -40,7 +40,7 @@ import {
   type OwnForce,
 } from './estimate.js';
 import { board } from '../modules/kit.js';
-import { manageStacks, stackEquivalents } from './stacks.js';
+import { categoryPiles, manageStacks, stackEquivalents } from './stacks.js';
 import {
   capitalThreat,
   captureFailures,
@@ -1224,9 +1224,12 @@ function wantedCategories(ctx: Ctx): Category[] {
   // antiaériennes d'affilée) ; en valeur, les systèmes bon marché resteraient toujours « en manque ».
   const have: Record<string, number> = {};
   let haveTotal = 0;
+  // Pile mixte : ses éléments réels, catégorie par catégorie (ai/stacks.ts).
   for (const m of ctx.land) {
-    have[m.s.category] = (have[m.s.category] ?? 0) + 1;
-    haveTotal++;
+    for (const [c, k] of categoryPiles(ctx.state, m.u)) {
+      have[c] = (have[c] ?? 0) + k;
+      haveTotal += k;
+    }
   }
   for (const it of ctx.state.nations[ctx.n]!.production) {
     const s = ctx.state.world.catalog.get(it.systemId);

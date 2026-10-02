@@ -8,6 +8,7 @@ import { citiesNear } from '../state/cities.js';
 import { wi } from '../state/world.js';
 import { aiCfg, aiLevelCfg } from './config.js';
 import { cfg } from '../modules/eco/config.js';
+import { eco } from '../modules/eco/state.js';
 import { unitValue } from './estimate.js';
 import { aiOrder } from './trace.js';
 
@@ -60,12 +61,16 @@ export function manageStacks(state: EngineState, n: NationId, atWarNow: boolean)
   // En guerre, la capitale garde des piles distinctes (garnison + au moins une pile de manœuvre) :
   // ses grosses piles à l'arrêt y sont divisées d'abord, sinon la garnison partirait avec la pile.
   const capPid = w.nationById.get(n)?.capitalProvinceId;
-  if (atWarNow && capPid && state.provinces[capPid]?.owner === n) {
-    const at = w.provById.get(capPid)!.cityPoint;
-    const gc = state.world.balance.combat.groundContactKm;
-    const atCap = land.filter(
-      (u) => !u.move && !u.target && distanceKm(unitPosAt(state, u, state.time), at) <= gc,
-    );
+  const capAt =
+    capPid && state.provinces[capPid]?.owner === n ? w.provById.get(capPid)!.cityPoint : null;
+  const capGc = state.world.balance.combat.groundContactKm;
+  const atCapital = (u: Unit): boolean =>
+    !!capAt && !u.move && distanceKm(unitPosAt(state, u, state.time), capAt) <= capGc;
+  const atCap = land.filter((u) => !u.target && atCapital(u));
+  // Piles minimales à la capitale : garnison du niveau, plus une pile de manœuvre en guerre.
+  const capMin = L.capitalGarrison + (atWarNow ? 1 : 0);
+  let capCount = atCap.length;
+  if (atWarNow && capAt) {
     let have = atCap.length;
     const big = atCap
       .filter((u) => u.count >= sb.minSplitElements)
@@ -75,6 +80,7 @@ export function manageStacks(state: EngineState, n: NationId, atWarNow: boolean)
       ops--;
       if (aiOrder(state, n, { kind: 'split', unitId: u.id, mode: 'half' }).ok) {
         have++;
+        capCount++;
         count++;
       }
     }
@@ -132,6 +138,9 @@ export function manageStacks(state: EngineState, n: NationId, atWarNow: boolean)
   for (const a of cands) {
     if (ops <= 0 || count <= want * sb.mergeAbove) break;
     if (used.has(a.id) || !state.units[a.id]) continue;
+    // Une fusion ne vide jamais la garnison de la capitale.
+    const capA = atCapital(a);
+    if (capA && capCount <= capMin) continue;
     const pa = unitPosAt(state, a, state.time);
     const b = cands.find(
       (x) =>
@@ -146,8 +155,16 @@ export function manageStacks(state: EngineState, n: NationId, atWarNow: boolean)
     used.add(a.id);
     used.add(b.id);
     ops--;
-    if (aiOrder(state, n, { kind: 'merge', unitIds: [a.id, b.id] }).ok) count--;
+    if (aiOrder(state, n, { kind: 'merge', unitIds: [a.id, b.id] }).ok) {
+      count--;
+      if (capA) capCount--;
+    }
   }
+}
+
+/** Taille d'une pile de départ de la catégorie (agrandie comme au départ, `stackScale`). */
+function pileSize(max: Record<string, number>, scale: number, cat: string | undefined): number {
+  return Math.max(1, Math.round((cat ? (max[cat] ?? 24) : 24) * scale));
 }
 
 /**
@@ -158,6 +175,7 @@ export function manageStacks(state: EngineState, n: NationId, atWarNow: boolean)
  */
 export function stackEquivalents(state: EngineState, n: NationId): number {
   const max = cfg(state.world).startingForces.stackMax;
+  const scale = eco(state).stackScale;
   let k = 0;
   for (const id of state.rt.byNation.get(n) ?? []) {
     const u = state.units[id];
@@ -169,9 +187,27 @@ export function stackEquivalents(state: EngineState, n: NationId): number {
     let m = 0;
     for (const p of u.mix) {
       const cat = state.world.catalog.get(p.sys)?.category;
-      m += p.c / Math.max(1, (cat && max[cat]) || 24);
+      m += p.c / pileSize(max, scale, cat);
     }
     k += Math.max(1, Math.ceil(m - 1e-9));
   }
   return k;
+}
+
+/**
+ * Piles d'une unité par catégorie, pour les choix de production : une pile simple compte pour une
+ * dans sa catégorie ; une pile mixte compte ses éléments réels, matériel par matériel, rapportés à la
+ * taille de pile de départ de leur catégorie (`startingForces.stackMax`).
+ */
+export function categoryPiles(state: EngineState, u: Unit): [string, number][] {
+  if (!u.mix) return [[sysOf(state, u).category, 1]];
+  const max = cfg(state.world).startingForces.stackMax;
+  const scale = eco(state).stackScale;
+  const by = new Map<string, number>();
+  for (const p of u.mix) {
+    const cat = state.world.catalog.get(p.sys)?.category;
+    if (!cat) continue;
+    by.set(cat, (by.get(cat) ?? 0) + p.c / pileSize(max, scale, cat));
+  }
+  return [...by].sort((a, b) => (a[0] < b[0] ? -1 : 1));
 }

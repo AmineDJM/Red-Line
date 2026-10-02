@@ -156,13 +156,17 @@ bornés par bataille et en nombre de rapports) : les grosses piles livrent des c
 des rapports plus remplis ; l'état des unités et des paires reste plus petit. À surveiller par l'équipe
 des rapports de bataille (`military.battle.maxFrames`, `maxShots`, `maxReports`).
 
-IA (`bench/ai-eval.ts`, guerres forcées, niveau normal, graines 1 et 2, 5 jours ; moyenne des deux
-graines, avant → après) : provinces prises 31,5 → 30, captures réussies 172 → 156, unités perdues en
-capture 37 → 33, capitales perdues 1 → 0,5, forces terrestres inactives 80 % → 65 %, CPU 23 s → 26 s
-(machine chargée). L'IA donne ~450 ordres `split` (détachements, garnison de la capitale divisée en
-premier) et refond ses piles en paix. Points à reprendre : capitale menacée sans garnison plus souvent
-(`capBarePct` 2 % → 15 %) et production de défense antiaérienne et d'infanterie en baisse (les piles
-mixtes comptent comme leur matériel principal dans les choix de production).
+IA (`bench/ai-eval.ts`, guerres forcées, niveau normal, graines 1 et 2, 5 jours ; graine 1 / graine 2,
+avant → après) : provinces prises 35 / 28 → 35 / 33, captures réussies 185 / 159 → 175 / 141, unités
+perdues en capture 22 / 51 → 14 / 20, ordres de production 324 / 305 → 373 / 373 (défense antiaérienne
+25 / 24 → 19 / 20), forces terrestres inactives 78 / 81 % → 63 / 63 %. Les choix de production comptent
+les éléments réels de chaque pile mixte par catégorie (`categoryPiles`), les plafonds en piles de départ
+équivalentes (taille agrandie `stackScale` comprise) ; en guerre, les grosses piles de la capitale sont
+divisées avant tout détachement offensif et une fusion ne descend jamais sous la garnison.
+Reste ouvert : capitale menacée sans garnison 0 / 4 % → 22 / 7 % des relevés. Les cas relevés sont des
+armées entières détruites ou engagées loin (Yémen, Arménie, Ukraine, Pakistan) ; sans regroupement, ces
+capitales tombent plus souvent (et ne sont alors plus relevées). Un essai de renvoi d'un détachement
+vers la capitale vide a aggravé les pertes (abandonné).
 
 ```bash
 cd packages/engine
