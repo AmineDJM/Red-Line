@@ -100,6 +100,8 @@ interface Track {
   prodSites: [number, number];
   /** Propositions de paix des IA au joueur humain. */
   peaceToHuman: number;
+  /** Déclarations de guerre décidées par l'IA (agresseur>cible), hors défense mutuelle. */
+  aggressions: string[];
 }
 
 function provAt(state: EngineState, p: LngLat): string | null {
@@ -137,6 +139,7 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
     air: {},
     prodSites: [0, 0],
     peaceToHuman: 0,
+    aggressions: [],
   };
   setAiTracer((st, n, o, r) => {
     const k = o.kind === 'intelOp' ? `intel:${String(o.op)}` : o.kind;
@@ -159,6 +162,8 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
     }
     if (o.kind === 'proposePeace' && (o as { nationId: string }).nationId === HUMAN)
       tr.peaceToHuman++;
+    if (o.kind === 'declareWar')
+      tr.aggressions.push(`${n}>${(o as { nationId: string }).nationId}`);
     if (o.kind === 'strike' || o.kind === 'patrol') {
       const ids = (o as { unitIds: string[] }).unitIds;
       const u0 = st.units[ids[0]!];
@@ -276,10 +281,43 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
   // Dépêches d'ultimatum et de désescalade (relevées au fil de l'eau : le fil est borné).
   const seenNews = new Set<string>();
   const ultim = { all: 0, human: 0, deesc: 0, deescHuman: 0 };
+  // Monde actif : guerres entre IA (paires régulières), début et fin relevés à chaque pas.
+  const regular = (n: NationId) => !!W.nationById.get(n);
+  const aiPair = (k: string) => {
+    const [a, b] = k.split('|') as [NationId, NationId];
+    return regular(a) && regular(b) && !!isAi(a) && !!isAi(b);
+  };
+  const warLog = new Map<string, { from: number; to: number | null; by: NationId }[]>();
+  const openWars = new Set<string>();
+  const peakAiWars = { n: 0, nations: 0 };
+  const sampleWars = () => {
+    const now = new Set(Object.keys(s.wars).filter(aiPair));
+    for (const k of now) {
+      if (openWars.has(k)) continue;
+      openWars.add(k);
+      const list = warLog.get(k) ?? [];
+      list.push({ from: s.wars[k]!, to: null, by: ds(s).aggressor[k] ?? k.split('|')[0]! });
+      warLog.set(k, list);
+    }
+    for (const k of [...openWars]) {
+      if (now.has(k)) continue;
+      openWars.delete(k);
+      const list = warLog.get(k)!;
+      list[list.length - 1]!.to = s.time;
+    }
+    peakAiWars.n = Math.max(peakAiWars.n, now.size);
+    const inv = new Set<string>();
+    for (const k of now) for (const x of k.split('|')) inv.add(x);
+    peakAiWars.nations = Math.max(peakAiWars.nations, inv.size);
+  };
+  const owner0 = Object.fromEntries(
+    Object.keys(s.provinces).map((p) => [p, s.provinces[p]!.owner]),
+  );
   while (s.time < end) {
     const out = advanceTo(s, Math.min(end, s.time + STEP));
     notes.push(...out);
     samples++;
+    sampleWars();
     const mem =
       (s.mods as { ai?: { mem: Record<string, { plan?: { t: string } }> } }).ai?.mem ?? {};
     for (const x of Object.keys(mem).sort()) {
@@ -530,6 +568,60 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
   const amphDead = tr.amph.filter((c) => (deadAt.get(c.uid) ?? -1) >= c.t).length;
   const d = ds(s);
   const alliances = Object.values(d.alliances);
+  // Monde actif : bilan des guerres entre IA.
+  const t0w = MODE === 'free' ? 0 : DAY + 1;
+  const aiWarList = [...warLog.entries()]
+    .flatMap(([k, l]) => l.map((x) => ({ k, ...x })))
+    .filter((x) => x.from >= t0w);
+  const ended = aiWarList.filter((x) => x.to !== null);
+  const durations = ended.map((x) => (x.to! - x.from) / DAY);
+  const aiCaptured = captured.filter(
+    (c) => isAi(c.by) && isAi(c.from) && c.time >= t0w && regular(c.by) && regular(c.from),
+  );
+  const changed = Object.keys(s.provinces).filter((p) => s.provinces[p]!.owner !== owner0[p]);
+  const aiPeace = (
+    byKind('peace_signed') as Extract<GameNotification, { kind: 'peace_signed' }>[]
+  ).filter((p) => isAi(p.a) && isAi(p.b) && p.time >= t0w);
+  const conquests = new Set(aiCaptured.map((c) => `${c.by}>${c.from}`));
+  const aggr = tr.aggressions.filter((x) => {
+    const [a, b] = x.split('>') as [NationId, NationId];
+    return isAi(a) && isAi(b);
+  });
+  const worldStats = {
+    aiAiWars: aiWarList.length,
+    aiAggressions: aggr.length,
+    aiAllianceWars: Math.max(0, aiWarList.length - aggr.length),
+    aiWarsEnded: ended.length,
+    aiWarDaysAvg: durations.length
+      ? Math.round((durations.reduce((a, b) => a + b, 0) / durations.length) * 10) / 10
+      : 0,
+    aiWarDaysMedian: median(durations),
+    aiWarsOngoing: aiWarList.length - ended.length,
+    peakAiWars: peakAiWars.n,
+    peakNationsAtWar: peakAiWars.nations,
+    aiPeace: aiPeace.length,
+    aiProvincesTaken: aiCaptured.length,
+    conquerors: conquests.size,
+    provincesChangedHands: changed.length,
+    defeatedAi: (
+      byKind('nation_defeated') as Extract<GameNotification, { kind: 'nation_defeated' }>[]
+    ).filter((x) => isAi(x.nationId)).length,
+  };
+  const warLines = aiWarList.map((x) => {
+    const [a, b] = x.k.split('|') as [NationId, NationId];
+    const tgt = x.by === a ? b : a;
+    const taken = aiCaptured.filter(
+      (c) =>
+        [c.by, c.from].includes(a) &&
+        [c.by, c.from].includes(b) &&
+        c.time >= x.from &&
+        (x.to === null || c.time <= x.to),
+    );
+    const gain = taken.filter((c) => c.by === x.by).length;
+    const loss = taken.length - gain;
+    const kind = aggr.includes(`${x.by}>${tgt}`) ? 'agression' : 'alliance';
+    return `J${(x.from / DAY).toFixed(1)}–${x.to === null ? 'en cours' : `J${(x.to / DAY).toFixed(1)}`} ${x.by}→${tgt} (${kind}) +${gain}/-${loss}`;
+  });
   const cpu = process.cpuUsage(c0);
   const groups = tr.groupSizes;
   const r = {
@@ -623,6 +715,8 @@ function runGame(level: Level, seed: number, duel?: [Level, Level]): Record<stri
     produced: tr.produced,
     intel: tr.intel,
     ...(duelScore ? { duel: duelScore } : {}),
+    world: worldStats,
+    warLines,
   };
   if (VERBOSE) {
     console.log(`\n=== ${r.level} graine ${seed} ===`);
@@ -706,11 +800,22 @@ for (const h of HUMANS) {
   }
 }
 for (const r of results) {
-  const { orders, refusals, research, produced, intel, eco, humanWars, air, ...flat } = r as Record<
-    string,
-    unknown
-  >;
+  const {
+    orders,
+    refusals,
+    research,
+    produced,
+    intel,
+    eco,
+    humanWars,
+    air,
+    world: wld,
+    warLines,
+    ...flat
+  } = r as Record<string, unknown>;
   console.log('\n' + JSON.stringify(flat));
+  console.log('  monde', JSON.stringify(wld));
+  for (const l of (warLines as string[]).slice(0, 60)) console.log('   ', l);
   console.log('  joueur', JSON.stringify(humanWars), 'air', JSON.stringify(air));
   console.log('  éco', JSON.stringify(eco));
   console.log('  ordres', JSON.stringify(orders));

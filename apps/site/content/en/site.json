@@ -1,0 +1,460 @@
+{
+  "slugs": {
+    "howto": "how-to-play",
+    "features": "features",
+    "nations": "nations",
+    "arsenal": "arsenal",
+    "faq": "faq",
+    "legal": {
+      "mentions": "legal-notice",
+      "privacy": "privacy",
+      "cookies": "cookies",
+      "cgu": "terms-of-use",
+      "cgv": "terms-of-sale",
+      "withdrawal": "right-of-withdrawal"
+    },
+    "families": {
+      "air": "aircraft",
+      "rotary": "helicopters-and-drones",
+      "land": "land-forces",
+      "airdef": "air-defense",
+      "naval": "navy",
+      "strategic": "missiles-and-strategic"
+    }
+  },
+  "ui": {
+    "skip": "Skip to content",
+    "nav": {
+      "home": "Home",
+      "howto": "How to play",
+      "features": "Features",
+      "nations": "Nations",
+      "arsenal": "Arsenal",
+      "faq": "FAQ",
+      "menu": "Menu",
+      "language": "Language",
+      "main": "Main navigation"
+    },
+    "play": "Play for free",
+    "playShort": "Play",
+    "multiplayer": "Multiplayer",
+    "login": "Log in",
+    "breadcrumb": "Breadcrumb",
+    "updated": "Last updated: {date}",
+    "version": "Version {version}",
+    "toc": "Contents",
+    "back": "Back to home",
+    "referenceLang": "This is a translation provided for convenience; only the French version of this document is legally binding.",
+    "footer": {
+      "tagline": "Real-time geopolitical strategy game on the real world map. Free, in your browser.",
+      "game": "The game",
+      "legal": "Legal",
+      "languages": "Languages",
+      "publisher": "Published by {name}",
+      "credits": "Equipment photographs: Wikimedia Commons, free licences (authors credited on each entry). Fiction: no real-world target is depicted."
+    },
+    "legalNames": {
+      "mentions": "Legal notice",
+      "privacy": "Privacy",
+      "cookies": "Cookies",
+      "cgu": "Terms of use",
+      "cgv": "Terms of sale",
+      "withdrawal": "Withdrawal"
+    }
+  },
+  "home": {
+    "title": "Red Line — free real-time geopolitical strategy game",
+    "description": "Command one of {nations} nations on the real world map: real arsenals and defense budgets, intelligence, diplomacy, single-player or multiplayer with up to {players}. Free, in your browser.",
+    "kicker": "Military strategy game · browser · real time",
+    "h1": "World war, played in real time on the real world map.",
+    "lead": "Lead one of the {nations} nations of 2025 with its real army and actual defense budget. Produce, spy, negotiate at the Security Council — and prevail militarily, alone against the AI or against up to {players} players.",
+    "ctaNote": "Free · no download · desktop, tablet and mobile",
+    "figures": {
+      "nations": "playable nations",
+      "provinces": "provinces",
+      "systems": "real weapon systems",
+      "players": "players per game",
+      "scenarios": "scenarios"
+    },
+    "blocksTitle": "What awaits you",
+    "blocks": [
+      {
+        "title": "Real time on the real map",
+        "text": "Satellite imagery, {provinces} provinces and great-circle routes: an air raid takes as long as the real flight, a fleet sails around continents. The game goes on even while you are offline.",
+        "link": "features"
+      },
+      {
+        "title": "Real arsenals and budgets",
+        "text": "Every nation starts with its estimated 2025 order of battle and its defense budget in US dollars. {systems} real weapon systems, from the F-35 to the Leclerc tank, with their unit price.",
+        "link": "arsenal"
+      },
+      {
+        "title": "Intelligence and fog of war",
+        "text": "You only see what your sensors detect. Spies, sources, satellites and radars lift the veil; sabotage and technology theft weaken your opponents.",
+        "link": "features"
+      },
+      {
+        "title": "Diplomacy and the Security Council",
+        "text": "Alliances, agreements, production licences and Security Council votes with veto power. War is declared by the first attack — or the first border crossed.",
+        "link": "features"
+      },
+      {
+        "title": "Single-player or up to {players} players",
+        "text": "Play alone against more than two hundred AI nations or join a persistent game where unclaimed nations stay under AI control. Seasonal rankings.",
+        "link": "howto"
+      }
+    ],
+    "shot": {
+      "alt": "Red Line screenshot: satellite world map, national borders and units on the move",
+      "caption": "Actual in-game screenshot — satellite map, borders and moving units."
+    },
+    "stepsTitle": "Three minutes to get started",
+    "steps": [
+      {
+        "title": "Pick a nation",
+        "text": "All {nations} nations are playable, from superpowers to small islands. Each has its own forces, allies and budget."
+      },
+      {
+        "title": "Give your orders",
+        "text": "Move your units, start production and research, tune your intelligence services. The world keeps moving meanwhile."
+      },
+      {
+        "title": "Prevail",
+        "text": "Victory is military only: control 60% of the world's provinces or every enemy capital."
+      }
+    ],
+    "faqTitle": "Frequently asked questions",
+    "moreFaq": "All questions"
+  },
+  "howto": {
+    "title": "How to play Red Line — beginner's guide",
+    "description": "Guide to Red Line, the real-time geopolitical strategy game: pick a nation, move your armies, produce, research, spy, negotiate and win.",
+    "h1": "How to play",
+    "lead": "Red Line is played in real time: your orders are carried out while the world keeps moving. Here is what you need for your first hours in command.",
+    "sections": [
+      {
+        "title": "1. Start a game",
+        "paragraphs": [
+          "Click **Play for free**: a single-player game starts right away with a guest account, no sign-up needed. Create an account to find your games on any device and to join multiplayer.",
+          "Choose a scenario, then a nation. Every nation is playable; great powers have more means, small nations offer a tougher challenge."
+        ]
+      },
+      {
+        "title": "2. Read the map",
+        "paragraphs": [
+          "The map is the real world map, in satellite imagery, divided into {provinces} provinces. Your territory is shown in purple. Markers show detected units: precise near your sensors, approximate further away.",
+          "Game time flows continuously, at the speed chosen when the game was created. A clock shows the in-game day and time."
+        ],
+        "list": [
+          "Select a unit, then a destination: the route follows the great circle and avoids impassable land.",
+          "An attack order or entering a foreign province automatically declares war.",
+          "Combat is resolved in regular rounds; range, detection, armour and stealth matter — terrain does not."
+        ]
+      },
+      {
+        "title": "3. Produce and research",
+        "paragraphs": [
+          "Your defense budget pays for production, upkeep and research. Every system has a real unit price, a build time and technology prerequisites: no fifth-generation fighter without the matching R&D.",
+          "Production licences let you build foreign equipment; the black market can help, at the risk of being exposed."
+        ]
+      },
+      {
+        "title": "4. Intelligence",
+        "paragraphs": [
+          "Three services — internal security, foreign intelligence, military intelligence — receive a budget and run operations: plant a spy, recruit a source, turn an agent, steal technology, sabotage a factory. A daily report sums up what you have learned."
+        ]
+      },
+      {
+        "title": "5. Diplomacy and the Security Council",
+        "paragraphs": [
+          "Propose alliances and agreements, buy licences, manage your internal stability. Every 30 in-game days the Security Council meets: permanent members with veto power and rotating seats vote on resolutions."
+        ]
+      },
+      {
+        "title": "6. Win",
+        "paragraphs": [
+          "Victory is military only: control 60% of the world's provinces or every enemy capital. A single-player game with no login for 48 hours is closed as abandoned (24 hours without any player in multiplayer)."
+        ]
+      }
+    ],
+    "scenariosTitle": "Scenarios",
+    "scenarios": {
+      "world-today": {
+        "name": "The world today (2025)",
+        "text": "Today's political map, 2025 defense budgets and estimated arsenals. Every nation is playable."
+      },
+      "cold-war-1985": {
+        "name": "Cold War (1985)",
+        "text": "1985 arsenals and technology on today's map: no operational stealth and no armed drones."
+      },
+      "eastern-europe": {
+        "name": "Eastern Europe",
+        "text": "From the Baltic to the Black Sea: artillery, drones and air defense decide the land war."
+      },
+      "middle-east": {
+        "name": "Middle East",
+        "text": "From the Nile to the Persian Gulf: ballistic missiles, drones and missile defense on the front line."
+      },
+      "pacific": {
+        "name": "Pacific",
+        "text": "Taiwan Strait, South China Sea and Western Pacific: long-range air and naval warfare."
+      }
+    },
+    "tipsTitle": "Commander's tips",
+    "tips": [
+      "Protect your capital: taking every enemy capital is one of the two victory conditions.",
+      "Air defense and radars pay off: a downed fighter is worth tens of millions of dollars.",
+      "Don't declare war on everyone at once: a well-chosen alliance is worth an armoured division.",
+      "Check in regularly: the game goes on without you, and long orders run while you are away."
+    ]
+  },
+  "features": {
+    "title": "Red Line features — real-time military strategy",
+    "description": "Real world map, {nations} nations, {systems} real military systems, defense budgets in US dollars, intelligence, diplomacy, Security Council, multiplayer with up to {players} players.",
+    "h1": "Features",
+    "lead": "Red Line is an online war game built around realistic means and clear command: a clean tactical console laid over the real world map.",
+    "items": [
+      {
+        "title": "The real world map",
+        "text": "NASA satellite imagery (Blue Marble), current borders and {provinces} provinces with their cities. Movement follows great circles, fleets sail around continents, straits matter.",
+        "points": [
+          "{nations} playable nations",
+          "Navigation on a global hexagonal grid",
+          "Zoom from the globe down to cities"
+        ]
+      },
+      {
+        "title": "Real arsenals, real dollars",
+        "text": "Every nation starts with its estimated order of battle and its real defense budget. The {systems} systems of the catalogue have their real characteristics and unit price; a real photograph illustrates each entry.",
+        "points": [
+          "Fighters, bombers, helicopters, drones",
+          "Tanks, artillery, air defense, radars",
+          "Ships, submarines, missiles, satellites, nuclear deterrence"
+        ]
+      },
+      {
+        "title": "Production gated by R&D",
+        "text": "A technology tree governs production: aircraft generations, stealth, armed drones, missile defense. Production licences and the black market open other paths.",
+        "points": [
+          "Realistic build times",
+          "Daily upkeep of forces",
+          "General mobilisation, at the economy's expense"
+        ]
+      },
+      {
+        "title": "Intelligence and fog of war",
+        "text": "You only see what your radars, satellites and agents detect. The server never sends your browser what your nation does not know: reading network traffic gives no edge.",
+        "points": [
+          "Three intelligence services",
+          "Espionage, sabotage, technology theft",
+          "Daily report at 07:00"
+        ]
+      },
+      {
+        "title": "Diplomacy and the Security Council",
+        "text": "Alliances, agreements and votes: the Security Council meets every 30 in-game days, with permanent members, veto power and rotating seats. Internal stability can lead to revolt or a coup.",
+        "points": ["Automatic declaration of war", "Resolutions and vetoes", "Internal stability"]
+      },
+      {
+        "title": "Single-player and multiplayer",
+        "text": "Alone against more than two hundred AI nations, or in a persistent game with up to {players} players: the game goes on while you are away and an AI holds your nation if you go inactive. Seasonal rankings, spectators, border timelapse.",
+        "points": [
+          "Up to {players} players",
+          "Notifications for critical alerts",
+          "Seasonal rankings"
+        ]
+      },
+      {
+        "title": "Terminal interface, on every screen",
+        "text": "A modern, dense and readable command interface, designed for desktop and mobile alike. Nothing to download: the game runs in your browser.",
+        "points": ["Desktop, tablet, mobile", "Keyboard shortcuts", "Installable as an app"]
+      },
+      {
+        "title": "Fair by design",
+        "text": "Free to play. Premium currency speeds things up or personalises, with no random purchases (no loot boxes); competitive games limit or disable in-game purchases.",
+        "points": [
+          "No loot boxes",
+          "Cosmetics with no military effect",
+          "Protected competitive games"
+        ]
+      }
+    ]
+  },
+  "nations": {
+    "title": "The {nations} playable nations of Red Line — 2025 defense budgets",
+    "description": "All {nations} playable nations in Red Line with their 2025 defense budget in US dollars, active military personnel and number of provinces.",
+    "h1": "Nations",
+    "lead": "Every nation in the world is playable. Each starts with its estimated 2025 defense budget and personnel: choose between power and challenge.",
+    "tableCaption": "Nations ranked by 2025 defense budget (US dollars)",
+    "cols": {
+      "rank": "Rank",
+      "nation": "Nation",
+      "budget": "Defense budget",
+      "personnel": "Active personnel",
+      "provinces": "Provinces"
+    },
+    "note": "Budgets and personnel: rounded public estimates, used as the game's starting point."
+  },
+  "arsenal": {
+    "title": "Red Line arsenal — {systems} real military systems",
+    "description": "The {systems} real military systems of Red Line by family: fighter jets, tanks, artillery, air defense, warships, submarines, missiles, with their unit price in US dollars.",
+    "h1": "Arsenal",
+    "lead": "Red Line's catalogue brings together {systems} real systems, each with its photograph, characteristics and unit price in US dollars. Producing them depends on your research.",
+    "familiesTitle": "Equipment families",
+    "count": "{n} systems",
+    "families": {
+      "air": {
+        "name": "Aircraft",
+        "title": "Combat aircraft in Red Line — fighters, bombers, support",
+        "description": "Fighter jets, strategic bombers, close air support, airborne early warning and tanker aircraft in Red Line, with their characteristics and real unit price.",
+        "lead": "From third-generation fighters to stealth aircraft, from strategic bombers to tankers: control of the sky often decides the battle."
+      },
+      "rotary": {
+        "name": "Helicopters and drones",
+        "title": "Military helicopters and drones in Red Line",
+        "description": "Attack and transport helicopters, reconnaissance and armed drones in Red Line, with their real unit price.",
+        "lead": "Attack and utility helicopters and armed drones: firepower right at the front."
+      },
+      "land": {
+        "name": "Land forces",
+        "title": "Tanks, armoured vehicles and artillery in Red Line",
+        "description": "Main battle tanks, infantry fighting vehicles, infantry, artillery and logistics in Red Line, with their real characteristics and prices.",
+        "lead": "Tanks, armoured vehicles, infantry and artillery: only land forces capture provinces."
+      },
+      "airdef": {
+        "name": "Air defense",
+        "title": "Air defense and radars in Red Line",
+        "description": "Surface-to-air systems, missile defense and radars in Red Line: Patriot, S-400, Iron Dome and many more, with their real price.",
+        "lead": "Surface-to-air missiles, missile defense and radars: the shield over your cities and forces."
+      },
+      "naval": {
+        "name": "Navy",
+        "title": "Warships and submarines in Red Line",
+        "description": "Aircraft carriers, destroyers, frigates, attack and ballistic missile submarines in Red Line, with their characteristics and real unit price.",
+        "lead": "Carriers, destroyers, frigates and submarines: command of the seas and straits."
+      },
+      "strategic": {
+        "name": "Missiles and strategic",
+        "title": "Cruise and ballistic missiles, nuclear and space in Red Line",
+        "description": "Cruise and ballistic missiles, nuclear deterrence and satellites in Red Line, with their characteristics and real unit price.",
+        "lead": "Strike missiles, nuclear deterrence and satellites: strike far, see from above."
+      }
+    },
+    "categories": {
+      "fighter": "Fighter aircraft",
+      "bomber": "Bombers",
+      "air_support": "Support, early warning and tankers",
+      "helicopter": "Helicopters",
+      "drone": "Drones",
+      "tank": "Main battle tanks",
+      "ifv": "Infantry fighting vehicles",
+      "infantry": "Infantry",
+      "artillery": "Artillery",
+      "logistics": "Logistics",
+      "air_defense": "Surface-to-air defense",
+      "radar": "Radars",
+      "surface_ship": "Surface ships",
+      "submarine": "Submarines",
+      "strike_missile": "Strike missiles",
+      "nuclear": "Nuclear weapons",
+      "space": "Space"
+    },
+    "labels": {
+      "origin": "Origin",
+      "since": "In service since {year}",
+      "price": "Unit price",
+      "speed": "Speed",
+      "range": "Range",
+      "generation": "Generation {n}",
+      "fielded": "Operators: {n} nations",
+      "variants": "Versions: {list}",
+      "photo": "Photo: {credit} ({license})",
+      "generic": "Generic",
+      "kmh": "{n} km/h",
+      "km": "{n} km"
+    },
+    "note": "Unit prices: public estimates in current US dollars. Photographs: Wikimedia Commons, free licences, cropped and colour-graded."
+  },
+  "faq": {
+    "title": "Red Line FAQ — frequently asked questions",
+    "description": "Answers to frequently asked questions about Red Line: price, multiplayer, mobile, realism of the armies, game length, purchases, personal data.",
+    "h1": "Frequently asked questions",
+    "lead": "Everything you need to know before taking command.",
+    "items": [
+      {
+        "q": "Is Red Line free?",
+        "a": "Yes. The game is free and runs in your browser, with nothing to download. An optional premium currency speeds up some actions or buys cosmetics; no purchase is random."
+      },
+      {
+        "q": "Do I need an account?",
+        "a": "No: “Play for free” opens a guest account kept on your device. A registered account (email and password) lets you find your games anywhere, play multiplayer and appear in the rankings."
+      },
+      {
+        "q": "Can I play on mobile?",
+        "a": "Yes. The interface is designed for desktop, tablet and phone. The game can also be installed as an app from your browser."
+      },
+      {
+        "q": "How many players per game?",
+        "a": "Up to {players} human players in multiplayer; the other nations are controlled by the AI. In single-player you face more than two hundred AI nations."
+      },
+      {
+        "q": "How long does a game last?",
+        "a": "A game is played in real time over several days or weeks, at the speed chosen when it was created. It goes on while you are offline: a few check-ins a day are enough."
+      },
+      {
+        "q": "Are the armies and budgets real?",
+        "a": "They are based on public estimates: 2025 defense budgets in US dollars, estimated orders of battle and {systems} real systems with their unit price. The game remains fiction: no real-world target is depicted, strategic objectives are generic."
+      },
+      {
+        "q": "How do I win?",
+        "a": "Militarily only: by controlling 60% of the world's provinces or every enemy capital."
+      },
+      {
+        "q": "Is Red Line an alternative to Conflict of Nations?",
+        "a": "Red Line is inspired by it: the same global scale and real-time play, plus real arsenals and budgets, detailed intelligence, a Security Council and a clean command interface with no random purchases."
+      },
+      {
+        "q": "Do purchases give an advantage?",
+        "a": "Cosmetics have no military effect. Speed-ups are governed by each game: open, capped or disabled for competitive games."
+      },
+      {
+        "q": "Which languages is the game available in?",
+        "a": "French and English, with more languages coming progressively."
+      },
+      {
+        "q": "What personal data is collected?",
+        "a": "Only what the game needs: account, games, technical security logs. No advertising trackers. Details are in the [privacy policy](page:legal:privacy)."
+      },
+      {
+        "q": "How old do I need to be?",
+        "a": "At least 15, or with the consent of a parent or guardian. The game depicts armed conflict strategically, without graphic violence."
+      }
+    ]
+  },
+  "notFound": {
+    "title": "Page not found — Red Line",
+    "h1": "Page not found",
+    "text": "This address does not match any page. The coordinates may be wrong."
+  },
+  "catalogNames": {
+    "Infanterie légère": "Light infantry",
+    "Infanterie mécanisée": "Mechanised infantry",
+    "Infanterie de marine": "Marines",
+    "Forces spéciales": "Special forces",
+    "Troupes aéroportées": "Airborne troops",
+    "Troupes aéroportées VDV": "VDV airborne troops",
+    "Brouilleur de guerre électronique": "Electronic warfare jammer",
+    "Dôme de fer": "Iron Dome",
+    "Fronde de David": "David's Sling",
+    "Avion cargo affrété": "Chartered cargo aircraft",
+    "Convoi logistique": "Logistics convoy",
+    "Cargo": "Cargo ship",
+    "Radar à grande antenne Type 7010": "Type 7010 large-array radar",
+    "Satellite de reconnaissance optique": "Optical reconnaissance satellite",
+    "Satellite de reconnaissance radar": "Radar reconnaissance satellite",
+    "Satellite d'écoute électronique": "Signals intelligence satellite",
+    "Satellite d'alerte avancée": "Early warning satellite",
+    "Arme antisatellite": "Anti-satellite weapon",
+    "Guépard (classe)": "Gepard class"
+  }
+}

@@ -4,6 +4,8 @@ import type { CosmeticItem, ShopPack, ShopPolicy, WalletEntry } from '@redline/s
 import { Badge, Button, EmptyState, Icon, Panel, Spinner, Stat, formatInt } from '@redline/ui';
 import { getApi } from '../api/index.js';
 import { useUi } from '../store/ui.js';
+import { ShopResources } from './ShopResources.js';
+import { PurchaseConsent } from './PurchaseConsent.js';
 
 const PREVIEW: Record<string, string[]> = {
   amber: ['#1c1300', '#ffb020', '#ffd27a'],
@@ -22,7 +24,14 @@ function euros(cents: number, currency: string): string {
 }
 
 /** Boutique : portefeuille, paquets de monnaie premium, cosmétiques, historique (sans loot box). */
-export function ShopContent({ policy }: { policy?: ShopPolicy | null }) {
+export function ShopContent({
+  policy,
+  gameId,
+}: {
+  policy?: ShopPolicy | null;
+  /** Partie en cours : section « Ressources » (achat de dollars et de ressources). */
+  gameId?: string | null;
+}) {
   const { t } = useTranslation();
   const toast = useUi((s) => s.toast);
   const [packs, setPacks] = useState<ShopPack[] | null>(null);
@@ -33,6 +42,8 @@ export function ShopContent({ policy }: { policy?: ShopPolicy | null }) {
   } | null>(null);
   const [cosm, setCosm] = useState<{ items: CosmeticItem[]; owned: string[] } | null>(null);
   const [error, setError] = useState(false);
+  // Pack en cours de paiement : case CGV + renonciation à la rétractation avant Stripe (CGV art. 4 et 6).
+  const [paying, setPaying] = useState<{ id: string; label: string; price: string } | null>(null);
   const reload = () =>
     void getApi().then((api) =>
       Promise.all([api.shopPacks(), api.wallet(), api.cosmetics()])
@@ -65,6 +76,17 @@ export function ShopContent({ policy }: { policy?: ShopPolicy | null }) {
   };
   return (
     <div className="vstack shop">
+      {paying ? (
+        <PurchaseConsent
+          label={paying.label}
+          price={paying.price}
+          onClose={() => setPaying(null)}
+          onConfirm={async () => {
+            await buy(paying.id);
+            setPaying(null);
+          }}
+        />
+      ) : null}
       <div className="kpis">
         <Stat
           label={t('shop.balance')}
@@ -90,6 +112,15 @@ export function ShopContent({ policy }: { policy?: ShopPolicy | null }) {
       <p className="shop__fair">
         <Icon name="shield" size={14} /> {t('shop.fair')}
       </p>
+      {gameId ? (
+        <ShopResources
+          gameId={gameId}
+          policy={policy}
+          balance={wallet.balance}
+          unlimited={wallet.unlimited}
+          onDone={reload}
+        />
+      ) : null}
       <Panel title={t('shop.packs')}>
         <div className="packs">
           {packs.map((p, i) => (
@@ -115,7 +146,18 @@ export function ShopContent({ policy }: { policy?: ShopPolicy | null }) {
               <Button
                 variant={i === 2 ? 'primary' : 'default'}
                 block
-                onClick={() => void buy(p.id)}
+                onClick={() =>
+                  setPaying({
+                    id: p.id,
+                    label: p.name,
+                    price: euros(
+                      p.promo
+                        ? Math.round(p.priceCents * (1 - p.promo.percentOff / 100))
+                        : p.priceCents,
+                      p.currency,
+                    ),
+                  })
+                }
               >
                 {euros(
                   p.promo

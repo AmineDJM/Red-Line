@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Icon, Kbd, Panel, Toggle, Window } from '@redline/ui';
+import { AudioSettingsPanel } from '../audio/AudioSettingsPanel.js';
 import { STORAGE } from '../config.js';
 import {
   disableNotifications,
@@ -53,6 +54,7 @@ export function SettingsWindow({ frame }: WindowContentProps) {
             />
           </div>
         </Panel>
+        <AudioSettingsPanel />
         <Panel title={t('settings.notifications')}>
           <div className="stack">
             <Toggle

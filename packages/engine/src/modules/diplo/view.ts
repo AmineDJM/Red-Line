@@ -25,6 +25,7 @@ import {
 } from './state.js';
 import { relationOf } from './relations.js';
 import { stabilityView } from './stability.js';
+import { domesticView } from './domestic.js';
 
 const RECENT_NEWS = 50;
 
@@ -231,6 +232,8 @@ export function playerView(state: EngineState, me: NationId, view: PlayerView): 
   view.council = councilView(state);
   view.stability = stabilityView(state, me);
   view.news = recentNews(state);
+  const dom = domesticView(state, me);
+  if (dom) view.domestic = dom;
 }
 
 export function spectatorView(state: EngineState, view: PlayerView): void {

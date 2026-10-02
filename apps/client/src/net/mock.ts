@@ -45,6 +45,7 @@ import {
 import { demoBattleReport } from '../api/mockRest.js';
 import { Emitter, type ChatChannel, type GameConnection, type OrderOutcome } from './connection.js';
 import { demoReply, enrichView } from './mockWorld.js';
+import { demoDomesticOrder } from './mockDomestic.js';
 import { useWorld } from '../store/world.js';
 
 export interface MockData {
@@ -715,6 +716,12 @@ export class MockGameConnection extends Emitter implements GameConnection {
     const v = this.view;
     const me = this.opts.me;
     const ok = { ok: true } as const;
+    const dom = demoDomesticOrder(v, order, t);
+    if (dom) {
+      if ('error' in dom) return { ok: false, error: dom.error as OrderOutcome['error'] };
+      this.push(dom);
+      return ok;
+    }
     switch (order.kind) {
       case 'research': {
         const r = v.research;
@@ -1182,10 +1189,19 @@ export class MockGameConnection extends Emitter implements GameConnection {
     }
   }
 
+  /** Achat de ressources en boutique (démonstration) : dotation créditée à la nation. */
+  grant(money: number, resources: Partial<Record<Resource, number>>): void {
+    const e = this.view.economy;
+    const res = { ...e.resources };
+    for (const [r, q] of Object.entries(resources) as [Resource, number][])
+      res[r] = (res[r] ?? 0) + q;
+    this.push({ economy: { ...e, money: e.money + money, resources: res } });
+  }
+
   /** Rapport de bataille détaillé (REST /battle-reports/:id en mode démonstration). */
   battleReport(id: string): BattleReport | null {
     const s = this.view.battleReports?.find((r) => r.id === id);
-    return s ? demoBattleReport(s, this.catalog) : null;
+    return s ? demoBattleReport(s, this.catalog, this.opts.me) : null;
   }
 
   sendChat(channel: ChatChannel, text: string, to?: string) {

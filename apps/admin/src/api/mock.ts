@@ -6,9 +6,12 @@
 import {
   BalanceSchema,
   DisputedAreaSchema,
+  LEGAL_DEFAULTS,
+  LegalSettingsSchema,
   NationDefSchema,
   OrbatSchema,
   ProvinceDefSchema,
+  RESOURCES,
   ROLES,
   ResearchNodeSchema,
   ScenarioFileSchema,
@@ -19,6 +22,7 @@ import {
   type AdminSystem,
   type CatalogChange,
   type ChangeScope,
+  type LegalSettings,
   type Metrics,
   type NationDef,
   type ProvinceDef,
@@ -36,6 +40,7 @@ import type {
   MetricsExtra,
   PackBody,
   PromoBody,
+  ResourceOfferBody,
   UserPatch,
 } from './types';
 import {
@@ -53,6 +58,7 @@ import {
   seedShop,
   seedUsers,
 } from './mock/seed';
+import { registerOpsMock } from './mock/ops';
 
 const now = () => new Date().toISOString();
 const clone = <T>(v: T): T => (v === undefined ? v : (JSON.parse(JSON.stringify(v)) as T));
@@ -777,11 +783,25 @@ export function createMockTransport(opts: { role?: Role; latencyMs?: number } = 
   on('GET', '/admin/api/users', (_p, _b, q) => {
     need('superadmin');
     const t = (q.get('q') ?? '').toLowerCase();
+    const f = q.get('filter');
+    const keep = (u: (typeof users)[number]) =>
+      !f ||
+      (f === 'banned' && !!u.bannedAt) ||
+      (f === 'guest' && u.isGuest) ||
+      (f === 'staff' && u.role !== 'player') ||
+      (f === 'unlimited' && !!u.unlimited) ||
+      (f === 'deleted' && !!u.deletedAt) ||
+      (f === 'paying' && shop.purchases.some((p) => p.userId === u.id && p.status === 'paid'));
     return {
       users: clone(
         users
           .filter(
-            (u) => !t || u.displayName.toLowerCase().includes(t) || (u.email ?? '').includes(t),
+            (u) =>
+              keep(u) &&
+              (!t ||
+                u.id === t ||
+                u.displayName.toLowerCase().includes(t) ||
+                (u.email ?? '').includes(t)),
           )
           .sort((a, b) => b.lastSeenAt.localeCompare(a.lastSeenAt))
           .slice(0, Number(q.get('limit') ?? 100)),
@@ -928,6 +948,52 @@ export function createMockTransport(opts: { role?: Role; latencyMs?: number } = 
       active: p.active ?? true,
     };
   };
+  const checkOffer = (b: Body): ResourceOfferBody => {
+    const p = b as unknown as ResourceOfferBody;
+    if (!/^[a-z0-9._-]+$/.test(String(p.id ?? '')))
+      throw new ApiError(400, 'id : Invalid', 'invalid_body');
+    const resources: ResourceOfferBody['resources'] = {};
+    for (const r of RESOURCES) {
+      const v = Number(p.resources?.[r] ?? 0);
+      if (v > 0) resources[r] = v;
+    }
+    const money = Math.max(0, Number(p.money ?? 0));
+    if (!p.name || !(p.price > 0) || (money <= 0 && Object.keys(resources).length === 0))
+      throw new ApiError(400, 'Offre vide : dollars ou ressources requis', 'invalid_body');
+    return {
+      id: p.id,
+      name: p.name,
+      money,
+      resources,
+      price: Math.round(p.price),
+      active: p.active ?? true,
+      sort: Math.round(p.sort ?? 0),
+    };
+  };
+  on('GET', '/admin/api/shop/resources', () => {
+    need('superadmin');
+    return { offers: clone([...shop.offers].sort((a, b) => a.sort - b.sort)) };
+  });
+  on('POST', '/admin/api/shop/resources', (_p, b) => {
+    need('superadmin');
+    const o = checkOffer(b);
+    if (shop.offers.some((x) => x.id === o.id))
+      throw new ApiError(409, 'Cette offre existe déjà', 'already_exists');
+    const row = { ...o, updatedAt: now() };
+    shop.offers.push(row);
+    log('shop.resources.create', `offer:${o.id}`, null, o);
+    return { offer: clone(row) };
+  });
+  on('PUT', '/admin/api/shop/resources/:id', ([id], b) => {
+    need('superadmin');
+    const i = shop.offers.findIndex((x) => x.id === id);
+    if (i < 0) throw new ApiError(404, 'Offre introuvable', 'not_found');
+    const before = shop.offers[i];
+    const row = { ...checkOffer({ ...b, id }), updatedAt: now() };
+    shop.offers[i] = row;
+    log('shop.resources.update', `offer:${id}`, before, row);
+    return { offer: clone(row) };
+  });
   on('GET', '/admin/api/shop/promotions', () => {
     need('superadmin');
     return { promotions: clone([...shop.promotions].sort((a, b) => b.id - a.id)) };
@@ -977,11 +1043,57 @@ export function createMockTransport(opts: { role?: Role; latencyMs?: number } = 
     return { ok: true, balance: u?.premiumBalance ?? 0 };
   });
 
+  // ——— Réglages › Légal
+  let legalSettings: LegalSettings = { ...LEGAL_DEFAULTS };
+  const legalView = () => ({
+    settings: clone(legalSettings),
+    stored: clone(legalSettings),
+    defaults: clone(LEGAL_DEFAULTS),
+    effective: { contactEmail: legalSettings.contactEmail || 'contact@redline.example' },
+    publicUrl: null,
+    envContactEmail: null,
+  });
+  on('GET', '/admin/api/settings/legal', () => {
+    need('moderator');
+    return legalView();
+  });
+  on('PUT', '/admin/api/settings/legal', (_p, b) => {
+    need('superadmin');
+    const r = LegalSettingsSchema.safeParse(b);
+    if (!r.success) throw new ApiError(400, zodMessage(r.error.issues), 'invalid_body');
+    log('settings.legal', 'settings:legal', legalSettings, r.data);
+    legalSettings = r.data;
+    return legalView();
+  });
+
   // ——— Journal
   on('GET', '/admin/api/audit', (_p, _b, q) => {
     need('superadmin');
-    return { entries: clone(audit.slice(0, Number(q.get('limit') ?? 200))) };
+    const action = q.get('action');
+    const target = q.get('target');
+    const from = q.get('from');
+    const to = q.get('to');
+    const before = Number(q.get('before') ?? 0);
+    const adminId = q.get('adminId');
+    return {
+      entries: clone(
+        audit
+          .filter(
+            (e) =>
+              (!action || e.action.startsWith(action)) &&
+              (!target || (e.target ?? '').startsWith(target)) &&
+              (!adminId || e.adminId === adminId) &&
+              (!from || e.createdAt >= from) &&
+              (!to || e.createdAt <= to) &&
+              (!before || e.id < before),
+          )
+          .slice(0, Number(q.get('limit') ?? 200)),
+      ),
+    };
   });
+
+  // ——— Économie du service, annonces, paramètres, gestion des comptes et des parties
+  registerOpsMock({ on, need, log, users, games, purchases: shop.purchases });
 
   async function handle(method: HttpMethod, path: string, body: Body): Promise<unknown> {
     const [p, qs] = path.split('?') as [string, string | undefined];

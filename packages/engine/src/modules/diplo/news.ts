@@ -66,6 +66,30 @@ export const TEMPLATES = {
       'Le traité prévoit le retrait des forces engagées sur le territoire adverse.',
     ],
   },
+  peace_annexation: {
+    cat: 'peace',
+    h: [
+      '{A} / {B} : la paix entérine les conquêtes {de:A}',
+      'Traité de paix : {le:B} {s:B:cède|cèdent} {X} province(s) {a:A}',
+      'Fin de la guerre : les frontières {de:B} redessinées',
+    ],
+    b: [
+      'Les territoires occupés restent sous le contrôle {de:A} : {X} province(s) changent de main.',
+      '{Le:B} {s:B:signe|signent} la paix sans récupérer les {X} province(s) perdues.',
+    ],
+  },
+  capitulation: {
+    cat: 'peace',
+    h: [
+      '{Le:B} {s:B:capitule|capitulent} face {a:A}',
+      'Capitulation {de:B} : {le:A} {s:A:impose|imposent} la paix',
+      'Défaite {de:B} : armistice signé avec {le:A}',
+    ],
+    b: [
+      'Sa capitale tombée, le gouvernement {de:B} accepte les conditions {de:A}. {X} province(s) passent sous son contrôle.',
+      'Les forces {de:B} déposent les armes. {Le:A} {s:A:annexe|annexent} {X} province(s).',
+    ],
+  },
   ceasefire: {
     cat: 'peace',
     h: [

@@ -603,7 +603,7 @@ describe('data/balance', () => {
       expect(bl.buildCostUsd[t], t).toBe(levels![0]!.costUsd);
       expect(bl.buildHours[t], t).toBe(levels![0]!.buildHours);
       expect(bl.effects[t], t).toEqual(levels![0]!.effects);
-      expect(levels![0]!.costUsd, t).toBeGreaterThanOrEqual(10e6);
+      expect(levels![0]!.costUsd, t).toBeGreaterThanOrEqual(1e6);
       for (let i = 1; i < 5; i++) {
         expect(levels![i]!.costUsd, t).toBeGreaterThan(levels![i - 1]!.costUsd);
         expect(levels![i]!.buildHours, t).toBeGreaterThanOrEqual(levels![i - 1]!.buildHours);
