@@ -329,7 +329,7 @@
         "war_declared": "Kriegserklärung von {{aDe}} an {{bA}}",
         "peace_signed": "Frieden zwischen {{aLe}} und {{bLe}} unterzeichnet",
         "missile_launch": "Raketenstart erfasst",
-        "building_hit": "{{building}} in {{province}} getroffen ({{health}} %)",
+        "building_hit": "Treffer: {{building}}, {{province}} ({{health}} %)",
         "delivery_arrived": "Lieferung eingetroffen",
         "delivery_intercepted": "Lieferung abgefangen",
         "intel_report": "Neuer Geheimdienstbericht",
@@ -879,7 +879,12 @@
       "noFlyZone": "Flugverbotszone",
       "disputed": "Umstrittenes Gebiet",
       "unrest": "Spannung",
-      "prompt": "inspect"
+      "prompt": "inspect",
+      "stackTitle": "Stapel · {{count}} Einheiten",
+      "stackCombat": "{{count}} im Gefecht",
+      "stackMoving": "{{count}} in Bewegung",
+      "mixed": "{{count}} Nationen am selben Ort",
+      "stackHint": "Klick: Einheiten des Stapels wählen"
     },
     "rel": {
       "own": "Ihre Streitkräfte",
@@ -970,7 +975,88 @@
       "km": "{{value}} km"
     },
     "pion": {
-      "decoy": "ATTRAPPE"
+      "decoy": "ATTRAPPE",
+      "entrenched": "Eingegraben"
+    },
+    "eta": "Ankunft {{value}}",
+    "city": {
+      "rank0": "Hauptstadt",
+      "rank1": "Großstadt",
+      "rank2": "Mittelstadt",
+      "rank3": "Kleinstadt"
+    },
+    "prov": {
+      "morale": "Moral {{value}}",
+      "buildings_one": "1 Gebäude",
+      "buildings_other": "{{count}} Gebäude",
+      "garrison": "Garnison",
+      "garrisonNone": "Keine Einheiten in der Nähe",
+      "control": "Kontrolle",
+      "controlOwn": "Gehalten",
+      "controlContested": "Umkämpft",
+      "rankPop": "{{rank}} · {{pop}}"
+    },
+    "battle": {
+      "skirmish": "Gefecht",
+      "engagedUnits": "Einheiten im Gefecht",
+      "hint": "Klick: Gefechtsdetails",
+      "since": "Seit",
+      "lastShot": "Letzter Schuss",
+      "yourLosses": "Ihre Verluste",
+      "foeLosses": "Feindverluste",
+      "live": "Gefecht läuft",
+      "ended": "Kämpfe beendet",
+      "attacker": "Angreifer",
+      "defender": "Verteidiger",
+      "you": "Sie",
+      "engaged": "{{count}} im Einsatz",
+      "balance": "Verlustbilanz",
+      "fire": "Schüsse (10 min)",
+      "fireValue": "{{hits}}/{{count}} Treffer",
+      "fireNone": "Keine Schüsse in den letzten Minuten",
+      "timeline": "Chronologie",
+      "locate": "Zentrieren",
+      "report": "Vollständiger Bericht",
+      "units": "Beteiligte Einheiten",
+      "close": "Details schließen",
+      "noReport": "Gefecht ohne Bericht: Einheiten im Gefecht unten.",
+      "loading": "Chronologie…"
+    },
+    "stack": {
+      "title": "Stapel",
+      "prompt": "stack",
+      "units_one": "1 Einheit",
+      "units_other": "{{count}} Einheiten",
+      "all": "Alle",
+      "cat": {
+        "land": "Land",
+        "air": "Luft",
+        "sea": "See",
+        "ad": "FlaRak",
+        "missile": "Raketen",
+        "other": "Sonstige"
+      },
+      "selectAll": "Alle auswählen",
+      "select": "Auswählen",
+      "selectN": "Auswählen ({{count}})",
+      "add": "Hinzufügen",
+      "attack": "Angreifen",
+      "inspect": "Prüfen",
+      "zoom": "Zoomen",
+      "near": "In der Nähe",
+      "picked": "{{units}} gewählt · ×{{count}}",
+      "pickedNone": "Keine Einheit gewählt",
+      "eta": "Ankunft {{value}}",
+      "only": "Nur",
+      "hint": "Doppelklick: nur diese Einheit · Eingabe: bestätigen",
+      "hintTouch": "Antippen zum Markieren, dann bestätigen",
+      "close": "Schließen",
+      "notOwn": "Fremde Einheiten",
+      "more": "+ {{count}} weitere"
+    },
+    "settings": {
+      "reduceMotion": "Animationen reduzieren",
+      "reduceMotionHelp": "Schaltet Gefechtseffekte (Schüsse, Explosionen), Pulsieren und animierte Kartenstriche ab."
     }
   },
   "legal": {
@@ -1887,7 +1973,7 @@
       "selectPile": "Stapel auswählen"
     },
     "mergeNone": "Kein Stapel desselben Materials im Umkreis von 10 km in Ruhe.",
-    "moveHint": "{{name}} ausgewählt: Karte antippen, um das Ziel festzulegen.",
+    "moveHint": "Auswahl: {{name}}. Tippen Sie auf die Karte, um das Ziel festzulegen.",
     "done": {
       "stop": "Haltbefehl übermittelt",
       "patrol": "Patrouille aufgenommen",

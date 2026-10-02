@@ -10,6 +10,7 @@ import {
   notificationsEnabled,
   notificationsSupported,
 } from '../lib/push.js';
+import { useMapPrefs } from '../map/prefs.js';
 import { navigate } from '../router.js';
 import type { WindowContentProps } from '../shell/WindowHost.js';
 import { useGame } from '../store/game.js';
@@ -20,6 +21,8 @@ export function SettingsWindow({ frame }: WindowContentProps) {
   const { t } = useTranslation();
   const legendOpen = useUi((s) => s.legendOpen);
   const setLegendOpen = useUi((s) => s.setLegendOpen);
+  const reduceMotion = useMapPrefs((s) => s.reduceMotion);
+  const setReduceMotion = useMapPrefs((s) => s.setReduceMotion);
   const setTutorialStep = useUi((s) => s.setTutorialStep);
   const closeWindow = useUi((s) => s.closeWindow);
   const toast = useUi((s) => s.toast);
@@ -49,6 +52,12 @@ export function SettingsWindow({ frame }: WindowContentProps) {
               onChange={setLegendOpen}
               label={t('settings.legend')}
               description={t('settings.legendHelp')}
+            />
+            <Toggle
+              checked={reduceMotion}
+              onChange={setReduceMotion}
+              label={t('map.settings.reduceMotion')}
+              description={t('map.settings.reduceMotionHelp')}
             />
           </div>
         </Panel>

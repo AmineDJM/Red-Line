@@ -10,7 +10,6 @@ import {
   KeyValue,
   Pictogram,
   ProgressBar,
-  formatCompact,
   formatHours,
   formatMoney,
   pictogramForBuilding,
@@ -23,6 +22,7 @@ import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { useGameTime } from './helpers.js';
+import { ProvinceStrip } from './ProvinceStrip.js';
 import { orderError } from '../lib/loc.js';
 
 /**
@@ -145,21 +145,17 @@ export function ProvincePanel({ id, compact }: { id: string; compact: boolean })
         </div>
       ) : null}
 
+      <ProvinceStrip id={id} />
+
       {own || allied ? (
         <>
           <KeyValue
             items={[
-              ...(def.population
-                ? [{ label: t('province.population'), value: formatCompact(def.population) }]
-                : []),
               {
                 label: t('province.income'),
                 value: formatMoney(ecoProv?.income ?? def.income.money),
                 tone: 'amber' as const,
               },
-              ...(ecoProv
-                ? [{ label: t('province.morale'), value: `${Math.round(ecoProv.morale)} / 100` }]
-                : []),
               ...(p.fortification
                 ? [
                     {

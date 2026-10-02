@@ -334,7 +334,7 @@
         "war_declared": "Declaración de guerra de {{aDe}} a {{bA}}",
         "peace_signed": "Paz firmada entre {{aLe}} y {{bLe}}",
         "missile_launch": "Lanzamiento de misil detectado",
-        "building_hit": "{{building}} alcanzado en {{province}} ({{health}} %)",
+        "building_hit": "Impacto: {{building}}, {{province}} ({{health}} %)",
         "delivery_arrived": "Entrega recibida",
         "delivery_intercepted": "Entrega interceptada",
         "intel_report": "Nuevo informe de inteligencia",
@@ -894,7 +894,12 @@
       "noFlyZone": "Zona de exclusión aérea",
       "disputed": "Territorio disputado",
       "unrest": "Tensión",
-      "prompt": "inspect"
+      "prompt": "inspect",
+      "stackTitle": "Pila · {{count}} unidades",
+      "stackCombat": "{{count}} en combate",
+      "stackMoving": "{{count}} en movimiento",
+      "mixed": "{{count}} naciones en el mismo lugar",
+      "stackHint": "Clic: elegir las unidades de la pila"
     },
     "rel": {
       "own": "Sus fuerzas",
@@ -985,7 +990,90 @@
       "km": "{{value}} km"
     },
     "pion": {
-      "decoy": "SEÑUELO"
+      "decoy": "SEÑUELO",
+      "entrenched": "Atrincherada"
+    },
+    "eta": "Llegada {{value}}",
+    "city": {
+      "rank0": "Capital",
+      "rank1": "Gran ciudad",
+      "rank2": "Ciudad mediana",
+      "rank3": "Ciudad pequeña"
+    },
+    "prov": {
+      "morale": "moral {{value}}",
+      "buildings_one": "1 edificio",
+      "buildings_many": "{{count}} edificios",
+      "buildings_other": "{{count}} edificios",
+      "garrison": "Guarnición",
+      "garrisonNone": "Ninguna unidad cerca",
+      "control": "Control",
+      "controlOwn": "Controlada",
+      "controlContested": "Disputada",
+      "rankPop": "{{rank}} · {{pop}}"
+    },
+    "battle": {
+      "skirmish": "Escaramuza",
+      "engagedUnits": "Unidades en combate",
+      "hint": "Clic: detalle de los combates",
+      "since": "Desde",
+      "lastShot": "Último disparo",
+      "yourLosses": "Tus pérdidas",
+      "foeLosses": "Pérdidas enemigas",
+      "live": "Combate en curso",
+      "ended": "Combates terminados",
+      "attacker": "Atacante",
+      "defender": "Defensor",
+      "you": "tú",
+      "engaged": "{{count}} en combate",
+      "balance": "Balance de pérdidas",
+      "fire": "Disparos (10 min)",
+      "fireValue": "{{hits}}/{{count}} en el blanco",
+      "fireNone": "Sin disparos en los últimos minutos",
+      "timeline": "Cronología",
+      "locate": "Centrar",
+      "report": "Informe completo",
+      "units": "Unidades comprometidas",
+      "close": "Cerrar el detalle",
+      "noReport": "Escaramuza sin informe: unidades en combate abajo.",
+      "loading": "Cronología…"
+    },
+    "stack": {
+      "title": "Pila",
+      "prompt": "stack",
+      "units_one": "1 unidad",
+      "units_many": "{{count}} unidades",
+      "units_other": "{{count}} unidades",
+      "all": "Todo",
+      "cat": {
+        "land": "Tierra",
+        "air": "Aire",
+        "sea": "Mar",
+        "ad": "AA",
+        "missile": "Misiles",
+        "other": "Otros"
+      },
+      "selectAll": "Seleccionar todo",
+      "select": "Seleccionar",
+      "selectN": "Seleccionar ({{count}})",
+      "add": "Añadir",
+      "attack": "Atacar",
+      "inspect": "Inspeccionar",
+      "zoom": "Acercar",
+      "near": "Cerca",
+      "picked": "{{units}} elegida(s) · ×{{count}}",
+      "pickedNone": "Ninguna unidad elegida",
+      "eta": "llegada {{value}}",
+      "only": "Solo",
+      "hint": "Doble clic: solo esta unidad · Intro: validar",
+      "hintTouch": "Toca para marcar y luego valida",
+      "close": "Cerrar",
+      "notOwn": "Unidades extranjeras",
+      "more": "+ {{count}} más"
+    },
+    "settings": {
+      "reduceMotion": "Reducir animaciones",
+      "reduceMotionHelp": "Desactiva los efectos de combate (disparos, explosiones), los pulsos y las líneas animadas del mapa."
     }
   },
   "legal": {
@@ -1910,7 +1998,7 @@
       "selectPile": "Seleccionar la pila"
     },
     "mergeNone": "Ninguna pila del mismo material detenida a menos de 10 km.",
-    "moveHint": "{{name}} seleccionada: toca el mapa para fijar el destino.",
+    "moveHint": "Selección: {{name}}. Toca el mapa para fijar el destino.",
     "done": {
       "stop": "Orden de detención transmitida",
       "patrol": "Patrulla iniciada",

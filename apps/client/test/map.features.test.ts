@@ -93,6 +93,19 @@ describe('relations et pions', () => {
   it('effectif compact', () => {
     expect(compactCount(7)).toBe('7');
     expect(compactCount(1250)).toBe('1,3k');
+    // 1 à 4 chiffres : jamais plus de 4 signes (zone d'effectif du pion).
+    expect(['1', '22', '333', '4444'].map((x) => compactCount(Number(x)))).toEqual([
+      '1',
+      '22',
+      '333',
+      '4,4k',
+    ]);
+    expect(compactCount(1000)).toBe('1k');
+    expect(compactCount(9960)).toBe('10k');
+    expect(compactCount(123_456)).toBe('123k');
+    expect(compactCount(2_500_000)).toBe('2,5M');
+    for (const n of [5, 99, 999, 1049, 9999, 54_321, 999_999, 12_000_000])
+      expect(compactCount(n).length).toBeLessThanOrEqual(4);
     expect(compactCount(undefined)).toBe('');
   });
 

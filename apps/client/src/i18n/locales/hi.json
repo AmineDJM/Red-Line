@@ -329,7 +329,7 @@
         "war_declared": "{{aDe}} ने {{bA}} पर युद्ध घोषित किया",
         "peace_signed": "{{aLe}} और {{bLe}} के बीच शांति संधि",
         "missile_launch": "मिसाइल प्रक्षेपण का पता चला",
-        "building_hit": "{{province}} में {{building}} पर प्रहार ({{health}} %)",
+        "building_hit": "प्रहार: {{building}}, {{province}} ({{health}} %)",
         "delivery_arrived": "डिलीवरी पहुँची",
         "delivery_intercepted": "डिलीवरी रोकी गई",
         "intel_report": "नई खुफ़िया रिपोर्ट",
@@ -879,7 +879,12 @@
       "noFlyZone": "नो-फ़्लाई ज़ोन",
       "disputed": "विवादित क्षेत्र",
       "unrest": "तनाव",
-      "prompt": "inspect"
+      "prompt": "inspect",
+      "stackTitle": "स्टैक · {{count}} इकाइयाँ",
+      "stackCombat": "{{count}} युद्ध में",
+      "stackMoving": "{{count}} गतिशील",
+      "mixed": "एक ही स्थान पर {{count}} राष्ट्र",
+      "stackHint": "क्लिक: स्टैक की इकाइयाँ चुनें"
     },
     "rel": {
       "own": "आपकी सेनाएँ",
@@ -970,7 +975,88 @@
       "km": "{{value}} km"
     },
     "pion": {
-      "decoy": "छलावा"
+      "decoy": "छलावा",
+      "entrenched": "मोर्चाबंद"
+    },
+    "eta": "आगमन {{value}}",
+    "city": {
+      "rank0": "राजधानी",
+      "rank1": "बड़ा शहर",
+      "rank2": "मध्यम शहर",
+      "rank3": "छोटा शहर"
+    },
+    "prov": {
+      "morale": "मनोबल {{value}}",
+      "buildings_one": "{{count}} इमारत",
+      "buildings_other": "{{count}} इमारतें",
+      "garrison": "छावनी सेना",
+      "garrisonNone": "पास में कोई इकाई नहीं",
+      "control": "नियंत्रण",
+      "controlOwn": "नियंत्रण में",
+      "controlContested": "विवादित",
+      "rankPop": "{{rank}} · {{pop}}"
+    },
+    "battle": {
+      "skirmish": "झड़प",
+      "engagedUnits": "युद्धरत इकाइयाँ",
+      "hint": "क्लिक: युद्ध का विवरण",
+      "since": "से",
+      "lastShot": "अंतिम गोलीबारी",
+      "yourLosses": "आपकी हानि",
+      "foeLosses": "शत्रु की हानि",
+      "live": "युद्ध जारी",
+      "ended": "युद्ध समाप्त",
+      "attacker": "आक्रमणकारी",
+      "defender": "रक्षक",
+      "you": "आप",
+      "engaged": "{{count}} संलग्न",
+      "balance": "हानि अनुपात",
+      "fire": "गोलीबारी (10 मि)",
+      "fireValue": "{{hits}}/{{count}} निशाने पर",
+      "fireNone": "पिछले कुछ मिनटों में कोई गोलीबारी नहीं",
+      "timeline": "घटनाक्रम",
+      "locate": "केंद्रित करें",
+      "report": "पूरी रिपोर्ट",
+      "units": "संलग्न इकाइयाँ",
+      "close": "विवरण बंद करें",
+      "noReport": "बिना रिपोर्ट की झड़प: युद्धरत इकाइयाँ नीचे।",
+      "loading": "घटनाक्रम…"
+    },
+    "stack": {
+      "title": "स्टैक",
+      "prompt": "stack",
+      "units_one": "{{count}} इकाई",
+      "units_other": "{{count}} इकाइयाँ",
+      "all": "सभी",
+      "cat": {
+        "land": "थल",
+        "air": "वायु",
+        "sea": "समुद्र",
+        "ad": "वायु रक्षा",
+        "missile": "मिसाइलें",
+        "other": "अन्य"
+      },
+      "selectAll": "सभी चुनें",
+      "select": "चुनें",
+      "selectN": "चुनें ({{count}})",
+      "add": "जोड़ें",
+      "attack": "हमला",
+      "inspect": "जाँचें",
+      "zoom": "ज़ूम",
+      "near": "आसपास",
+      "picked": "{{units}} चुनी गईं · ×{{count}}",
+      "pickedNone": "कोई इकाई नहीं चुनी",
+      "eta": "आगमन {{value}}",
+      "only": "केवल",
+      "hint": "डबल-क्लिक: केवल यह इकाई · Enter: पुष्टि",
+      "hintTouch": "चुनने के लिए टैप करें, फिर पुष्टि करें",
+      "close": "बंद करें",
+      "notOwn": "विदेशी इकाइयाँ",
+      "more": "+ {{count}} और"
+    },
+    "settings": {
+      "reduceMotion": "एनिमेशन कम करें",
+      "reduceMotionHelp": "युद्ध प्रभाव (गोलीबारी, विस्फोट), स्पंदन और मानचित्र की एनिमेटेड रेखाएँ बंद करता है।"
     }
   },
   "legal": {
@@ -1887,7 +1973,7 @@
       "selectPile": "स्टैक चुनें"
     },
     "mergeNone": "10 किमी के भीतर उसी साज़ोसामान का कोई ठहरा हुआ स्टैक नहीं।",
-    "moveHint": "{{name}} चुनी गई: गंतव्य तय करने के लिए नक्शे को छुएँ।",
+    "moveHint": "चयन: {{name}}। गंतव्य तय करने के लिए मानचित्र पर टैप करें।",
     "done": {
       "stop": "रोकने का आदेश भेजा गया",
       "patrol": "गश्त शुरू हुई",

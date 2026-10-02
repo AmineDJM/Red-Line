@@ -329,7 +329,7 @@
         "war_declared": "Savaş ilanı: {{aDe}} → {{bA}}",
         "peace_signed": "{{aLe}} ile {{bLe}} arasında barış imzalandı",
         "missile_launch": "Füze fırlatması tespit edildi",
-        "building_hit": "{{province}} bölgesinde {{building}} vuruldu ({{health}} %)",
+        "building_hit": "İsabet: {{building}}, {{province}} (%{{health}})",
         "delivery_arrived": "Teslimat ulaştı",
         "delivery_intercepted": "Teslimat önlendi",
         "intel_report": "Yeni istihbarat raporu",
@@ -879,7 +879,12 @@
       "noFlyZone": "Uçuşa yasak bölge",
       "disputed": "Tartışmalı bölge",
       "unrest": "Gerginlik",
-      "prompt": "inspect"
+      "prompt": "inspect",
+      "stackTitle": "Yığın · {{count}} birlik",
+      "stackCombat": "{{count}} çatışmada",
+      "stackMoving": "{{count}} hareket hâlinde",
+      "mixed": "Aynı yerde {{count}} ulus",
+      "stackHint": "Tıkla: yığındaki birlikleri seç"
     },
     "rel": {
       "own": "Kuvvetleriniz",
@@ -970,7 +975,88 @@
       "km": "{{value}} km"
     },
     "pion": {
-      "decoy": "ALDATICI"
+      "decoy": "ALDATICI",
+      "entrenched": "Mevzilenmiş"
+    },
+    "eta": "Varış {{value}}",
+    "city": {
+      "rank0": "Başkent",
+      "rank1": "Büyük şehir",
+      "rank2": "Orta ölçekli şehir",
+      "rank3": "Küçük şehir"
+    },
+    "prov": {
+      "morale": "moral {{value}}",
+      "buildings_one": "1 bina",
+      "buildings_other": "{{count}} bina",
+      "garrison": "Garnizon",
+      "garrisonNone": "Yakında birlik yok",
+      "control": "Kontrol",
+      "controlOwn": "Elde tutuluyor",
+      "controlContested": "Çekişmeli",
+      "rankPop": "{{rank}} · {{pop}}"
+    },
+    "battle": {
+      "skirmish": "Çatışma",
+      "engagedUnits": "Çatışmadaki birlikler",
+      "hint": "Tıkla: çatışma ayrıntıları",
+      "since": "Süre",
+      "lastShot": "Son atış",
+      "yourLosses": "Kayıplarınız",
+      "foeLosses": "Düşman kayıpları",
+      "live": "Çatışma sürüyor",
+      "ended": "Çatışma sona erdi",
+      "attacker": "Saldıran",
+      "defender": "Savunan",
+      "you": "siz",
+      "engaged": "{{count}} angaje",
+      "balance": "Kayıp oranı",
+      "fire": "Atışlar (10 dk)",
+      "fireValue": "{{hits}}/{{count}} isabet",
+      "fireNone": "Son dakikalarda atış yok",
+      "timeline": "Zaman çizelgesi",
+      "locate": "Ortala",
+      "report": "Tam rapor",
+      "units": "Angaje birlikler",
+      "close": "Ayrıntıları kapat",
+      "noReport": "Raporsuz çatışma: çatışmadaki birlikler aşağıda.",
+      "loading": "Zaman çizelgesi…"
+    },
+    "stack": {
+      "title": "Yığın",
+      "prompt": "stack",
+      "units_one": "1 birlik",
+      "units_other": "{{count}} birlik",
+      "all": "Tümü",
+      "cat": {
+        "land": "Kara",
+        "air": "Hava",
+        "sea": "Deniz",
+        "ad": "HSS",
+        "missile": "Füzeler",
+        "other": "Diğer"
+      },
+      "selectAll": "Tümünü seç",
+      "select": "Seç",
+      "selectN": "Seç ({{count}})",
+      "add": "Ekle",
+      "attack": "Saldır",
+      "inspect": "İncele",
+      "zoom": "Yakınlaştır",
+      "near": "Yakında",
+      "picked": "{{units}} seçildi · ×{{count}}",
+      "pickedNone": "Birlik seçilmedi",
+      "eta": "varış {{value}}",
+      "only": "Yalnızca",
+      "hint": "Çift tık: yalnız bu birlik · Enter: onayla",
+      "hintTouch": "İşaretlemek için dokun, sonra onayla",
+      "close": "Kapat",
+      "notOwn": "Yabancı birlikler",
+      "more": "+ {{count}} daha"
+    },
+    "settings": {
+      "reduceMotion": "Animasyonları azalt",
+      "reduceMotionHelp": "Çatışma efektlerini (atışlar, patlamalar), nabızları ve haritadaki hareketli çizgileri kapatır."
     }
   },
   "legal": {
@@ -1887,7 +1973,7 @@
       "selectPile": "Yığını seç"
     },
     "mergeNone": "10 km içinde duran aynı teçhizattan yığın yok.",
-    "moveHint": "{{name}} seçildi: hedefi belirlemek için haritaya dokunun.",
+    "moveHint": "Seçim: {{name}}. Hedefi belirlemek için haritaya dokunun.",
     "done": {
       "stop": "Durdurma emri iletildi",
       "patrol": "Devriye başladı",

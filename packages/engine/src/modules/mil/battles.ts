@@ -7,6 +7,7 @@ import {
   type NationId,
   type ProvinceId,
   type TargetClass,
+  type UnitId,
 } from '@redline/shared';
 import { notify, sightLevel, sortedKeys, sysOf, veterancyLevel } from '../../state/access.js';
 import type { EngineState, Unit } from '../../state/types.js';
@@ -214,7 +215,7 @@ export function shot(
   hit: boolean,
   by?: Unit | string,
 ): void {
-  if (b.shots.length >= milBal(state).battle.maxShots) return;
+  const bal = milBal(state).battle;
   const s: BattleSt['shots'][number] = {
     t: state.time,
     from: [from[0], from[1]],
@@ -223,6 +224,13 @@ export function shot(
     hit,
   };
   if (by) s.u = typeof by === 'string' ? by : by.id;
+  const live = Math.round(bal.liveShots);
+  if (live > 0) {
+    const rs = (b.rs ??= []);
+    rs.push({ ...s, from: [from[0], from[1]], to: [to[0], to[1]] });
+    if (rs.length > live) rs.splice(0, rs.length - live);
+  }
+  if (b.shots.length >= bal.maxShots) return;
   b.shots.push(s);
 }
 
@@ -570,6 +578,8 @@ export function handleClose(state: EngineState, d: { b: string }): void {
     return;
   }
   b.end = b.last;
+  // L'activité en direct ne sert plus (le replay garde les tirs).
+  delete b.rs;
   if (b.x) finalizeAar(state, b, b.x);
   const la = b.a.lossValue;
   const ld = b.d.lossValue;
@@ -641,6 +651,38 @@ export function battleReportForImpl(
   return reportFor(state, b, nation);
 }
 
+/**
+ * Activité récente d'une bataille en cours (vue des participants) : derniers tirs, bornés en nombre
+ * et en ancienneté. Absente pour une bataille close.
+ */
+function liveOf(state: EngineState, b: BattleSt, nation: NationId): BattleReportSummary['live'] {
+  if (b.end !== null) return undefined;
+  const since = state.time - milBal(state).battle.liveMinutes * MINUTE;
+  // Tireur jamais vu par le camp du lecteur : tir montré depuis son point d'impact (comme le replay).
+  const V = sideOf(b, nation);
+  const seen = (id: UnitId | undefined): boolean => {
+    if (!id || !b.x || !V) return true;
+    const u = b.units[id];
+    if (!u || b[V].nations.includes(u[0])) return true;
+    return (b.x[V].ob[id] ?? 0) > 0;
+  };
+  return {
+    lastAt: b.last,
+    shots: (b.rs ?? [])
+      .filter((x) => x.t >= since)
+      .map((x) => {
+        const vis = seen(x.u);
+        return {
+          t: x.t,
+          from: vis ? [x.from[0], x.from[1]] : [x.to[0], x.to[1]],
+          to: [x.to[0], x.to[1]],
+          cls: x.cls,
+          hit: x.hit,
+        };
+      }),
+  };
+}
+
 /** Résumés récents pour la vue d'une nation. */
 export function summariesFor(state: EngineState, nation: NationId): BattleReportSummary[] {
   const m = mil(state);
@@ -650,5 +692,10 @@ export function summariesFor(state: EngineState, nation: NationId): BattleReport
     if (participates(b, nation)) out.push(b);
   }
   out.sort((x, y) => y.start - x.start || (x.id < y.id ? 1 : -1));
-  return out.slice(0, milBal(state).battle.viewCount).map((b) => summaryFor(state, b, nation));
+  return out.slice(0, milBal(state).battle.viewCount).map((b) => {
+    const s = summaryFor(state, b, nation);
+    const live = liveOf(state, b, nation);
+    if (live) s.live = live;
+    return s;
+  });
 }

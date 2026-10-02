@@ -197,6 +197,15 @@ export interface BattleSt {
     /** Tireur (filtrage du replay selon ce que le lecteur a vu). */
     u?: UnitId;
   }[];
+  /** Derniers tirs (file bornée, indépendante du plafond du replay) : activité affichée en direct. */
+  rs?: {
+    t: GameTime;
+    from: LngLat;
+    to: LngLat;
+    cls: TargetClass;
+    hit: boolean;
+    u?: UnitId;
+  }[];
   outcome: 'attacker' | 'defender' | 'draw' | 'ongoing';
   title: string;
   /** Rapport après action (absent des batailles antérieures). */

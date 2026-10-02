@@ -329,7 +329,7 @@
         "war_declared": "Déclaration de guerre {{aDe}} {{bA}}",
         "peace_signed": "Paix signée entre {{aLe}} et {{bLe}}",
         "missile_launch": "Tir de missile détecté",
-        "building_hit": "{{building}} touché à {{province}} ({{health}} %)",
+        "building_hit": "Impact : {{building}}, {{province}} ({{health}} %)",
         "delivery_arrived": "Livraison arrivée",
         "delivery_intercepted": "Livraison interceptée",
         "intel_report": "Nouveau rapport de renseignement",
@@ -1758,7 +1758,7 @@
       "selectPile": "Sélectionner la pile"
     },
     "mergeNone": "Aucune pile du même matériel à l'arrêt à moins de 10 km.",
-    "moveHint": "{{name}} sélectionnée : touchez la carte pour fixer la destination.",
+    "moveHint": "Sélection : {{name}}. Touchez la carte pour fixer la destination.",
     "done": {
       "stop": "Ordre d'arrêt transmis",
       "patrol": "Patrouille engagée",

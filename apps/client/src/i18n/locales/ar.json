@@ -349,7 +349,7 @@
         "war_declared": "إعلان حرب: {{aDe}} على {{bA}}",
         "peace_signed": "توقيع السلام بين {{aLe}} و{{bLe}}",
         "missile_launch": "رُصد إطلاق صاروخ",
-        "building_hit": "إصابة {{building}} في {{province}} ({{health}} %)",
+        "building_hit": "ضربة: {{building}}، {{province}} ({{health}} %)",
         "delivery_arrived": "وصلت الشحنة",
         "delivery_intercepted": "اعتُرضت الشحنة",
         "intel_report": "تقرير استخباري جديد",
@@ -939,7 +939,12 @@
       "noFlyZone": "منطقة حظر طيران",
       "disputed": "منطقة متنازع عليها",
       "unrest": "التوتر",
-      "prompt": "inspect"
+      "prompt": "inspect",
+      "stackTitle": "كومة · {{count}} وحدات",
+      "stackCombat": "{{count}} في القتال",
+      "stackMoving": "{{count}} في حركة",
+      "mixed": "{{count}} دول في المكان نفسه",
+      "stackHint": "نقرة: اختر وحدات الكومة"
     },
     "rel": {
       "own": "قواتك",
@@ -1030,7 +1035,96 @@
       "km": "{{value}} كم"
     },
     "pion": {
-      "decoy": "شَرَك"
+      "decoy": "شَرَك",
+      "entrenched": "متحصّنة"
+    },
+    "eta": "الوصول {{value}}",
+    "city": {
+      "rank0": "عاصمة",
+      "rank1": "مدينة كبرى",
+      "rank2": "مدينة متوسطة",
+      "rank3": "مدينة صغيرة"
+    },
+    "prov": {
+      "morale": "المعنويات {{value}}",
+      "buildings_zero": "لا مبانٍ",
+      "buildings_one": "مبنى واحد",
+      "buildings_two": "مبنيان",
+      "buildings_few": "{{count}} مبانٍ",
+      "buildings_many": "{{count}} مبنى",
+      "buildings_other": "{{count}} مبنى",
+      "garrison": "الحامية",
+      "garrisonNone": "لا وحدات بالقرب",
+      "control": "السيطرة",
+      "controlOwn": "تحت السيطرة",
+      "controlContested": "متنازع عليها",
+      "rankPop": "{{rank}} · {{pop}}"
+    },
+    "battle": {
+      "skirmish": "اشتباك",
+      "engagedUnits": "وحدات في القتال",
+      "hint": "نقرة: تفاصيل القتال",
+      "since": "منذ",
+      "lastShot": "آخر رمية",
+      "yourLosses": "خسائرك",
+      "foeLosses": "خسائر العدو",
+      "live": "قتال جارٍ",
+      "ended": "انتهى القتال",
+      "attacker": "المهاجم",
+      "defender": "المدافع",
+      "you": "أنت",
+      "engaged": "{{count}} مشاركة",
+      "balance": "نسبة الخسائر",
+      "fire": "رمايات (10 د)",
+      "fireValue": "{{hits}}/{{count}} أصابت",
+      "fireNone": "لا رمايات في الدقائق الأخيرة",
+      "timeline": "التسلسل الزمني",
+      "locate": "توسيط",
+      "report": "التقرير الكامل",
+      "units": "الوحدات المشاركة",
+      "close": "إغلاق التفاصيل",
+      "noReport": "اشتباك بلا تقرير: الوحدات المقاتلة أدناه.",
+      "loading": "التسلسل الزمني…"
+    },
+    "stack": {
+      "title": "كومة",
+      "prompt": "stack",
+      "units_zero": "لا وحدات",
+      "units_one": "وحدة واحدة",
+      "units_two": "وحدتان",
+      "units_few": "{{count}} وحدات",
+      "units_many": "{{count}} وحدة",
+      "units_other": "{{count}} وحدة",
+      "all": "الكل",
+      "cat": {
+        "land": "برّ",
+        "air": "جو",
+        "sea": "بحر",
+        "ad": "دفاع جوي",
+        "missile": "صواريخ",
+        "other": "أخرى"
+      },
+      "selectAll": "تحديد الكل",
+      "select": "تحديد",
+      "selectN": "تحديد ({{count}})",
+      "add": "إضافة",
+      "attack": "هجوم",
+      "inspect": "فحص",
+      "zoom": "تكبير",
+      "near": "بالقرب",
+      "picked": "تم اختيار {{units}} · ×{{count}}",
+      "pickedNone": "لم تُختر أي وحدة",
+      "eta": "الوصول {{value}}",
+      "only": "فقط",
+      "hint": "نقر مزدوج: هذه الوحدة فقط · إدخال: تأكيد",
+      "hintTouch": "المس للتحديد ثم أكّد",
+      "close": "إغلاق",
+      "notOwn": "وحدات أجنبية",
+      "more": "+ {{count}} أخرى"
+    },
+    "settings": {
+      "reduceMotion": "تقليل الحركات",
+      "reduceMotionHelp": "يوقف مؤثرات القتال (الرمايات، الانفجارات) والنبضات والخطوط المتحركة على الخريطة."
     }
   },
   "legal": {
@@ -1979,7 +2073,7 @@
       "selectPile": "تحديد الكومة"
     },
     "mergeNone": "لا توجد كومة من العتاد نفسه متوقفة ضمن 10 كم.",
-    "moveHint": "تم تحديد {{name}}: المس الخريطة لتعيين الوجهة.",
+    "moveHint": "المحدد: {{name}}. المس الخريطة لتحديد الوجهة.",
     "done": {
       "stop": "أُرسل أمر الإيقاف",
       "patrol": "بدأت الدورية",

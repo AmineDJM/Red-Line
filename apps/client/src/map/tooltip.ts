@@ -15,8 +15,12 @@ import type {
 } from '@redline/shared';
 import { fmtDuration, fmtInt, fmtKm, t } from '../i18n/index.js';
 import { fuelLeft } from '../lib/game.js';
+import type { BattleMarker } from './battles.js';
 import { INTEL_STALE_MS } from './features.js';
+import { glyphFor, type GlyphId } from './glyphs.js';
 import { REL_COLOR, relationOf, type Rel } from './palette.js';
+import { glyphDataUrl } from './pions.js';
+import { CAT_TONE, UNIT_CATS, unitCat, type UnitCat } from './unitCat.js';
 
 export type TipTarget =
   | { kind: 'units'; ids: UnitId[] }
@@ -32,6 +36,14 @@ export interface TipRow {
   bar?: number;
 }
 
+/** Composition d'une pile par famille (pastille : pictogramme, unités, effectif). */
+export interface TipComp {
+  cat: UnitCat;
+  glyph: GlyphId;
+  units: number;
+  count: number;
+}
+
 export interface TipModel {
   /** Argument de l'invite (`inspect <arg>`). */
   arg: string;
@@ -41,6 +53,9 @@ export interface TipModel {
   rel?: Rel;
   rows: TipRow[];
   list?: string[];
+  comp?: TipComp[];
+  /** Indication d'action (« cliquer pour choisir »). */
+  hint?: string;
 }
 
 export interface TipCtx {
@@ -153,14 +168,34 @@ export function tipModel(target: TipTarget, ctx: TipCtx): TipModel | null {
         list: unitFlags(u, sys, rel),
       };
     }
-    // Pile : synthèse et liste des premières unités.
+    // Pile : composition par famille, effectif, état moyen, états, premières unités.
     let total = 0;
     let known = 0;
-    for (const x of units)
+    let hpSum = 0;
+    let hpN = 0;
+    let moving = 0;
+    let fighting = 0;
+    const comp = new Map<UnitCat, TipComp & { best: Map<GlyphId, number> }>();
+    for (const x of units) {
       if (x.count !== undefined) {
         total += x.count;
         known++;
       }
+      if (x.hpRatio !== undefined) {
+        hpSum += x.hpRatio;
+        hpN++;
+      }
+      if (x.status === 'moving') moving++;
+      if (x.status === 'combat') fighting++;
+      const s = x.systemId && x.level !== 'detected' ? ctx.catalog[x.systemId] : undefined;
+      const cat = unitCat(s);
+      const g: GlyphId = s ? glyphFor(s) : 'unknown';
+      const c = comp.get(cat) ?? { cat, glyph: g, units: 0, count: 0, best: new Map() };
+      c.units++;
+      c.count += x.count ?? 0;
+      c.best.set(g, (c.best.get(g) ?? 0) + (x.count ?? 1));
+      comp.set(cat, c);
+    }
     const byType = new Map<string, number>();
     for (const x of units) {
       const n = x.systemId ? (ctx.catalog[x.systemId]?.name ?? '?') : t('map.tip.unknownType');
@@ -175,16 +210,40 @@ export function tipModel(target: TipTarget, ctx: TipCtx): TipModel | null {
       { k: t('map.tip.stack'), v: t('map.tip.stackValue', { count: units.length }) },
     ];
     if (known) rows.push({ k: t('map.tip.count'), v: `×${fmtInt(total)}` });
-    const combat = units.some((x) => x.status === 'combat');
-    if (combat) rows.push({ k: t('map.tip.state'), v: t('map.status.combat'), tone: RED });
+    if (hpN) {
+      const hp = hpSum / hpN;
+      rows.push({ k: t('map.tip.hp'), v: `${Math.round(hp * 100)} %`, bar: hp, tone: hpTone(hp) });
+    }
+    if (fighting)
+      rows.push({
+        k: t('map.tip.state'),
+        v: t('map.tip.stackCombat', { count: fighting }),
+        tone: RED,
+      });
+    else if (moving)
+      rows.push({
+        k: t('map.tip.state'),
+        v: t('map.tip.stackMoving', { count: moving }),
+        tone: CYAN,
+      });
+    const owners = new Set(units.map((x) => x.owner));
     return {
       arg: `${u.id}+${units.length - 1}`,
-      title: sys?.name ?? t('map.tip.unknown'),
-      sub: t(`map.rel.${rel}`),
+      title: t('map.tip.stackTitle', { count: units.length }),
+      sub:
+        owners.size > 1
+          ? t('map.tip.mixed', { count: owners.size })
+          : `${t(`map.rel.${rel}`)} · ${sys?.name ?? t('map.tip.unknown')}`,
       nation,
       rel,
       rows,
       list,
+      comp: UNIT_CATS.filter((c) => comp.has(c)).map((c) => {
+        const x = comp.get(c)!;
+        const glyph = [...x.best.entries()].sort((a, b) => b[1] - a[1])[0]![0];
+        return { cat: c, glyph, units: x.units, count: x.count };
+      }),
+      hint: t('map.tip.stackHint'),
     };
   }
   const def = ctx.defs[target.provinceId];
@@ -282,6 +341,60 @@ export function tipModel(target: TipTarget, ctx: TipCtx): TipModel | null {
   };
 }
 
+/** Infobulle d'un marqueur de bataille : camps, pertes, activité. */
+export function battleTipModel(b: BattleMarker, ctx: TipCtx): TipModel | null {
+  const r = b.reportId ? ctx.view.battleReports?.find((x) => x.id === b.reportId) : undefined;
+  if (!r) {
+    const units = b.unitIds.map((id) => ctx.view.units[id]).filter((u): u is UnitView => !!u);
+    const owners = [...new Set(units.map((u) => ctx.view.nations[u.owner]?.name ?? u.owner))];
+    return {
+      arg: b.id,
+      title: t('map.battle.skirmish'),
+      sub: owners.join(' · '),
+      rows: [
+        { k: t('map.battle.engagedUnits'), v: String(units.length) },
+        { k: t('map.tip.state'), v: t('map.status.combat'), tone: RED },
+      ],
+      hint: t('map.battle.hint'),
+    };
+  }
+  const sum = (l: { count: number }[]) => l.reduce((n, x) => n + x.count, 0);
+  const mineAtt = !!ctx.me && r.attacker.nations.includes(ctx.me);
+  const mine = mineAtt ? r.attacker : r.defender;
+  const foe = mineAtt ? r.defender : r.attacker;
+  const last = r.live?.lastAt ?? r.startedAt;
+  const def = r.provinceId ? ctx.defs[r.provinceId] : undefined;
+  const rows: TipRow[] = [
+    { k: t('map.battle.since'), v: fmtDuration(Math.max(0, ctx.t - r.startedAt)) },
+    {
+      k: t('map.battle.lastShot'),
+      v:
+        ctx.t - last < 60_000
+          ? t('map.tip.seenNow')
+          : t('map.tip.seenAgo', { value: fmtDuration(ctx.t - last) }),
+      tone: ctx.t - last < 10 * 60_000 ? RED : undefined,
+    },
+    {
+      k: t('map.battle.yourLosses'),
+      v: `−${fmtInt(sum(mine.losses))} / ${fmtInt(sum(mine.engaged))}`,
+      tone: AMBER,
+    },
+    {
+      k: t('map.battle.foeLosses'),
+      v: `−${fmtInt(sum(foe.losses))} / ${fmtInt(sum(foe.engaged))}`,
+      tone: GREEN,
+    },
+  ];
+  const names = (n: string[]) => n.map((x) => ctx.view.nations[x]?.name ?? x).join(', ');
+  return {
+    arg: r.id,
+    title: r.title,
+    sub: `${names(r.attacker.nations)} ⟶ ${names(r.defender.nations)}${def ? ` · ${def.name}` : ''}`,
+    rows,
+    hint: t('map.battle.hint'),
+  };
+}
+
 const esc = (s: string) =>
   s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
 
@@ -312,13 +425,24 @@ export class MapTooltip {
     const list = m.list?.length
       ? `<ul class="rlm-tip__list">${m.list.map((l) => `<li>${esc(l)}</li>`).join('')}</ul>`
       : '';
+    const comp = m.comp?.length
+      ? `<div class="rlm-tip__comp">${m.comp
+          .map(
+            (c) =>
+              `<span style="--c:${CAT_TONE[c.cat]}"><img src="${glyphDataUrl(c.glyph, '#eef3f8', 16)}" alt="" /><b>${c.units}</b>${c.count ? `<i>×${esc(fmtInt(c.count))}</i>` : ''}</span>`,
+          )
+          .join('')}</div>`
+      : '';
+    const hint = m.hint ? `<div class="rlm-tip__hint">${esc(m.hint)}</div>` : '';
     this.el.style.setProperty('--rlm-edge', edge);
     this.el.innerHTML =
       `<div class="rlm-tip__prompt"><span>map:\\&gt;</span> ${esc(t('map.tip.prompt'))} ${esc(m.arg)}</div>` +
       `<div class="rlm-tip__head">${flag ? `<img src="${flag}" alt="" />` : ''}<div><div class="rlm-tip__title">${esc(m.title)}</div>` +
       `<div class="rlm-tip__sub">${m.nation ? `${esc(m.nation.name)} · ` : ''}${esc(m.sub ?? '')}</div></div></div>` +
+      comp +
       rows +
-      list;
+      list +
+      hint;
     this.el.classList.add('rlm-tip--on');
     this.visible = true;
     this.place(x, y);

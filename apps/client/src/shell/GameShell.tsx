@@ -17,7 +17,10 @@ import {
   ShortcutsHelp,
   Toasts,
 } from './Overlays.js';
+import { useMapSel } from '../map/mapSel.js';
+import { useStackMenu } from '../map/stackMenu.js';
 import { SelectionPanel } from './SelectionPanel.js';
+import { StackMenu } from './StackMenu.js';
 import { useShortcuts } from './shortcuts.js';
 import { TopBar } from './TopBar.js';
 import { Tutorial } from './Tutorial.js';
@@ -55,9 +58,11 @@ export function GameShell({
   const toggleHelp = useCallback(() => setHelp((h) => !h), []);
   useShortcuts(toggleHelp);
   const pending = useUi((s) => s.pendingOrder !== null);
-  const hasSelection = useUi(
-    (s) => s.selection.length > 0 || s.inspected !== null || s.selectedProvince !== null,
-  );
+  const battle = useMapSel((s) => s.battle !== null);
+  const stackOpen = useStackMenu((s) => s.open !== null);
+  const hasSelection =
+    useUi((s) => s.selection.length > 0 || s.inspected !== null || s.selectedProvince !== null) ||
+    battle;
   const sheetOpen = useUi((s) => mobile && (s.windows.length > 0 || s.moreOpen));
   const insets = mobile
     ? { top: 78, right: 0, bottom: 64, left: 0 }
@@ -70,7 +75,7 @@ export function GameShell({
       {mobile ? <MobileNav /> : <SideNav />}
       {!mobile ? <AlertTicker /> : null}
       <ConnectionBanner />
-      {!sheetOpen && !(mobile && pending) ? (
+      {!sheetOpen && !(mobile && (pending || stackOpen)) ? (
         <div className="game__sel">
           <SelectionPanel compact={mobile} />
         </div>
@@ -81,6 +86,7 @@ export function GameShell({
         </div>
       ) : null}
       {!sheetOpen ? <OrderBar /> : null}
+      {!sheetOpen ? <StackMenu /> : null}
       <WindowHost />
       <WeaponSheet />
       <AlertCenter mobile={mobile} />

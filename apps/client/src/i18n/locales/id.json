@@ -324,7 +324,7 @@
         "war_declared": "{{aDe}} menyatakan perang terhadap {{bA}}",
         "peace_signed": "Perdamaian ditandatangani antara {{aLe}} dan {{bLe}}",
         "missile_launch": "Peluncuran rudal terdeteksi",
-        "building_hit": "{{building}} terkena di {{province}} ({{health}} %)",
+        "building_hit": "Serangan: {{building}}, {{province}} ({{health}} %)",
         "delivery_arrived": "Pengiriman tiba",
         "delivery_intercepted": "Pengiriman dicegat",
         "intel_report": "Laporan intelijen baru",
@@ -864,7 +864,12 @@
       "noFlyZone": "Zona larangan terbang",
       "disputed": "Wilayah sengketa",
       "unrest": "Ketegangan",
-      "prompt": "inspect"
+      "prompt": "inspect",
+      "stackTitle": "Tumpukan · {{count}} unit",
+      "stackCombat": "{{count}} bertempur",
+      "stackMoving": "{{count}} bergerak",
+      "mixed": "{{count}} negara di titik yang sama",
+      "stackHint": "Klik: pilih unit dalam tumpukan"
     },
     "rel": {
       "own": "Pasukan Anda",
@@ -955,7 +960,86 @@
       "km": "{{value}} km"
     },
     "pion": {
-      "decoy": "UMPAN"
+      "decoy": "UMPAN",
+      "entrenched": "Berkubu"
+    },
+    "eta": "Tiba {{value}}",
+    "city": {
+      "rank0": "Ibu kota",
+      "rank1": "Kota besar",
+      "rank2": "Kota menengah",
+      "rank3": "Kota kecil"
+    },
+    "prov": {
+      "morale": "moral {{value}}",
+      "buildings_other": "{{count}} bangunan",
+      "garrison": "Garnisun",
+      "garrisonNone": "Tidak ada unit di dekat sini",
+      "control": "Kendali",
+      "controlOwn": "Dikuasai",
+      "controlContested": "Diperebutkan",
+      "rankPop": "{{rank}} · {{pop}}"
+    },
+    "battle": {
+      "skirmish": "Pertempuran kecil",
+      "engagedUnits": "Unit yang bertempur",
+      "hint": "Klik: rincian pertempuran",
+      "since": "Sejak",
+      "lastShot": "Tembakan terakhir",
+      "yourLosses": "Kerugian Anda",
+      "foeLosses": "Kerugian musuh",
+      "live": "Pertempuran berlangsung",
+      "ended": "Pertempuran usai",
+      "attacker": "Penyerang",
+      "defender": "Bertahan",
+      "you": "Anda",
+      "engaged": "{{count}} terlibat",
+      "balance": "Rasio kerugian",
+      "fire": "Tembakan (10 mnt)",
+      "fireValue": "{{hits}}/{{count}} kena sasaran",
+      "fireNone": "Tidak ada tembakan beberapa menit terakhir",
+      "timeline": "Kronologi",
+      "locate": "Pusatkan",
+      "report": "Laporan lengkap",
+      "units": "Unit yang terlibat",
+      "close": "Tutup rincian",
+      "noReport": "Pertempuran tanpa laporan: unit bertempur di bawah.",
+      "loading": "Kronologi…"
+    },
+    "stack": {
+      "title": "Tumpukan",
+      "prompt": "stack",
+      "units_other": "{{count}} unit",
+      "all": "Semua",
+      "cat": {
+        "land": "Darat",
+        "air": "Udara",
+        "sea": "Laut",
+        "ad": "Hanud",
+        "missile": "Rudal",
+        "other": "Lainnya"
+      },
+      "selectAll": "Pilih semua",
+      "select": "Pilih",
+      "selectN": "Pilih ({{count}})",
+      "add": "Tambah",
+      "attack": "Serang",
+      "inspect": "Periksa",
+      "zoom": "Perbesar",
+      "near": "Di dekat",
+      "picked": "{{units}} dipilih · ×{{count}}",
+      "pickedNone": "Tidak ada unit dipilih",
+      "eta": "tiba {{value}}",
+      "only": "Hanya",
+      "hint": "Klik ganda: unit ini saja · Enter: konfirmasi",
+      "hintTouch": "Ketuk untuk mencentang, lalu konfirmasi",
+      "close": "Tutup",
+      "notOwn": "Unit asing",
+      "more": "+ {{count}} lainnya"
+    },
+    "settings": {
+      "reduceMotion": "Kurangi animasi",
+      "reduceMotionHelp": "Mematikan efek pertempuran (tembakan, ledakan), denyut, dan garis putus animasi peta."
     }
   },
   "legal": {
@@ -1864,7 +1948,7 @@
       "selectPile": "Pilih tumpukan"
     },
     "mergeNone": "Tidak ada tumpukan peralatan yang sama yang berhenti dalam radius 10 km.",
-    "moveHint": "{{name}} dipilih: ketuk peta untuk menetapkan tujuan.",
+    "moveHint": "Pilihan: {{name}}. Ketuk peta untuk menentukan tujuan.",
     "done": {
       "stop": "Perintah berhenti diteruskan",
       "patrol": "Patroli dimulai",

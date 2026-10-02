@@ -51,13 +51,25 @@ export interface LaunchBadge {
   n: number;
 }
 
+/** Heure d'arrivée écrite près de la flèche de destination d'un trajet. */
+export interface EtaLabel {
+  at: LngLat;
+  text: string;
+  tone?: CalloutTone;
+}
+
 export interface OverlayContent {
   callouts: CalloutContent[];
   routes: RouteLabel[];
   badges: LaunchBadge[];
   rings?: RingLabel[];
+  etas?: EtaLabel[];
   /** Positions d'icônes (unités) que les étiquettes ne doivent pas recouvrir. */
   icons?: LngLat[];
+  /** Décalage écran (px) du centre de chaque pion par rapport à sa position (piles écartées). */
+  iconOff?: [number, number][];
+  /** Demi-dimensions (px) d'un pion à l'échelle courante. */
+  iconHalf?: [number, number];
 }
 
 const TITLE_FONT = `700 11px ${MONO}`;
@@ -136,7 +148,8 @@ export class OverlayRenderer {
       !content.routes.length &&
       !content.badges.length &&
       !content.callouts.length &&
-      !content.rings?.length;
+      !content.rings?.length &&
+      !content.etas?.length;
     if (empty) {
       // Chromium n'applique pas toujours un clearRect seul (aucun dessin ensuite) : sans cette remise
       // à zéro explicite, les dernières étiquettes resteraient figées à l'écran après un saut de caméra.
@@ -152,9 +165,28 @@ export class OverlayRenderer {
     ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     this.hasInk = true;
     const segments = this.drawRoutes(content.routes);
-    this.drawRings(content.rings ?? []);
+    const iconRects = this.iconRects(content);
+    this.drawEtas(content.etas ?? [], segments, iconRects);
+    this.drawRings(content.rings ?? [], iconRects);
     this.drawBadges(content.badges);
-    this.drawCallouts(content.callouts, segments, content.icons ?? []);
+    this.drawCallouts(content.callouts, segments, iconRects);
+  }
+
+  /** Rectangles écran des pions visibles (piles écartées comprises), bornés en nombre. */
+  private iconRects(content: OverlayContent): Rect[] {
+    const out: Rect[] = [];
+    const icons = content.icons ?? [];
+    const [hw, hh] = content.iconHalf ?? [24, 12];
+    for (let i = 0; i < icons.length; i++) {
+      const p = this.project(icons[i]!);
+      const o = content.iconOff?.[i];
+      const x = p.x + (o?.[0] ?? 0);
+      const y = p.y + (o?.[1] ?? 0);
+      if (x < -60 || y < -30 || x > this.w + 60 || y > this.h + 30) continue;
+      out.push({ x: x - hw, y: y - hh, w: hw * 2, h: hh * 2 });
+      if (out.length > 400) break;
+    }
+    return out;
   }
 
   private project(p: LngLat) {
@@ -162,7 +194,7 @@ export class OverlayRenderer {
     return { x: pt.x, y: pt.y };
   }
 
-  private drawCallouts(list: CalloutContent[], segments: [Point, Point][], icons: LngLat[]) {
+  private drawCallouts(list: CalloutContent[], segments: [Point, Point][], iconRects: Rect[]) {
     if (!list.length) {
       this.previous.clear();
       return;
@@ -181,13 +213,6 @@ export class OverlayRenderer {
       w: Math.max(0, this.w - this.insets.left - this.insets.right - 8),
       h: Math.max(0, this.h - this.insets.top - this.insets.bottom - 8),
     };
-    const iconRects: Rect[] = [];
-    for (const ic of icons) {
-      const p = this.project(ic);
-      if (p.x < -30 || p.y < -20 || p.x > this.w + 30 || p.y > this.h + 20) continue;
-      iconRects.push({ x: p.x - 24, y: p.y - 12, w: 48, h: 24 });
-      if (iconRects.length > 400) break;
-    }
     const placed = placeCallouts(inputs, {
       bounds,
       obstacles: [...this.obstacles, ...iconRects],
@@ -324,7 +349,63 @@ export class OverlayRenderer {
     return segments;
   }
 
-  private drawRings(rings: RingLabel[]) {
+  /**
+   * Pastilles « ETA » près des flèches de destination : première place libre parmi quelques
+   * positions autour de la flèche (pions, étiquettes de trajet et autres ETA évités) ; omise sinon.
+   */
+  private drawEtas(etas: EtaLabel[], segments: [Point, Point][], icons: Rect[]) {
+    const ctx = this.ctx;
+    const font = `600 9.5px ${MONO}`;
+    ctx.font = font;
+    const taken: Rect[] = segments.map(([a, b]) => ({
+      x: Math.min(a.x, b.x),
+      y: Math.min(a.y, b.y),
+      w: Math.abs(b.x - a.x),
+      h: Math.abs(b.y - a.y),
+    }));
+    const hit = (r: Rect, l: Rect[]) =>
+      l.some((o) => r.x < o.x + o.w && r.x + r.w > o.x && r.y < o.y + o.h && r.y + r.h > o.y);
+    for (const e of etas) {
+      const p = this.project(e.at);
+      if (p.x < -40 || p.y < -20 || p.x > this.w + 40 || p.y > this.h + 20) continue;
+      const tone = TONES[e.tone ?? 'green'];
+      const w = ctx.measureText(e.text).width + 10;
+      const h = 14;
+      const cands: [number, number][] = [
+        [p.x + 10, p.y - 16],
+        [p.x + 10, p.y + 4],
+        [p.x - 10 - w, p.y - 16],
+        [p.x - 10 - w, p.y + 4],
+        [p.x - w / 2, p.y + 14],
+        [p.x - w / 2, p.y - 30],
+        [p.x + 30, p.y - 7],
+        [p.x - 30 - w, p.y - 7],
+      ];
+      const spot = cands
+        .map(([x, y]) => ({ x, y, w, h }))
+        .find((r) => !hit(r, icons) && !hit(r, taken));
+      if (!spot) continue;
+      const { x, y } = spot;
+      ctx.fillStyle = 'rgba(10,14,19,0.88)';
+      ctx.beginPath();
+      ctx.roundRect(x, y, w, h, 2);
+      ctx.fill();
+      ctx.fillStyle = tone;
+      ctx.fillRect(x, y + 2, 2, 10);
+      ctx.fillStyle = C.text;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(e.text, x + 6, y + 7.5);
+      taken.push(spot);
+      segments.push([
+        { x, y },
+        { x: x + w, y: y + h },
+      ]);
+    }
+  }
+
+  private drawRings(rings: RingLabel[], icons: Rect[]) {
+    const font = `600 9.5px ${MONO}`;
     for (const r of rings) {
       const p = this.project(r.at);
       if (p.x < -60 || p.y < -20 || p.x > this.w + 60 || p.y > this.h + 20) continue;
@@ -332,7 +413,16 @@ export class OverlayRenderer {
         const c = this.project(r.center);
         if (Math.hypot(p.x - c.x, p.y - c.y) < 48) continue;
       }
-      this.pill(r.text, p.x, p.y, TONES[r.tone ?? 'amber'], `600 9.5px ${MONO}`);
+      // Étiquette sur un pion : décalée au-dessus ou en dessous, omise si aucune place.
+      this.ctx.font = font;
+      const w = this.ctx.measureText(r.text).width + 10;
+      const free = (y: number) =>
+        !icons.some(
+          (o) => p.x - w / 2 < o.x + o.w && p.x + w / 2 > o.x && y - 8 < o.y + o.h && y + 8 > o.y,
+        );
+      const y = [p.y, p.y - 20, p.y + 20, p.y - 40].find(free);
+      if (y === undefined) continue;
+      this.pill(r.text, p.x, y, TONES[r.tone ?? 'amber'], font);
     }
   }
 

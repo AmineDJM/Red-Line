@@ -339,7 +339,7 @@
         "war_declared": "Wypowiedzenie wojny: {{aDe}} → {{bA}}",
         "peace_signed": "Pokój podpisany: {{aLe}} i {{bLe}}",
         "missile_launch": "Wykryto start pocisku",
-        "building_hit": "{{building}} trafiony: {{province}} ({{health}} %)",
+        "building_hit": "Trafienie: {{building}}, {{province}} ({{health}} %)",
         "delivery_arrived": "Dostawa dotarła",
         "delivery_intercepted": "Dostawa przechwycona",
         "intel_report": "Nowy raport wywiadu",
@@ -909,7 +909,12 @@
       "noFlyZone": "Strefa zakazu lotów",
       "disputed": "Terytorium sporne",
       "unrest": "Napięcie",
-      "prompt": "inspect"
+      "prompt": "inspect",
+      "stackTitle": "Stos · {{count}} jedn.",
+      "stackCombat": "{{count}} w walce",
+      "stackMoving": "{{count}} w ruchu",
+      "mixed": "{{count}} państw w tym samym miejscu",
+      "stackHint": "Klik: wybierz jednostki ze stosu"
     },
     "rel": {
       "own": "Twoje siły",
@@ -1000,7 +1005,92 @@
       "km": "{{value}} km"
     },
     "pion": {
-      "decoy": "WABIK"
+      "decoy": "WABIK",
+      "entrenched": "Okopana"
+    },
+    "eta": "Przybycie {{value}}",
+    "city": {
+      "rank0": "Stolica",
+      "rank1": "Duże miasto",
+      "rank2": "Średnie miasto",
+      "rank3": "Małe miasto"
+    },
+    "prov": {
+      "morale": "morale {{value}}",
+      "buildings_one": "1 budynek",
+      "buildings_few": "{{count}} budynki",
+      "buildings_many": "{{count}} budynków",
+      "buildings_other": "{{count}} budynku",
+      "garrison": "Garnizon",
+      "garrisonNone": "Brak jednostek w pobliżu",
+      "control": "Kontrola",
+      "controlOwn": "Utrzymana",
+      "controlContested": "Sporna",
+      "rankPop": "{{rank}} · {{pop}}"
+    },
+    "battle": {
+      "skirmish": "Potyczka",
+      "engagedUnits": "Jednostki w walce",
+      "hint": "Klik: szczegóły walk",
+      "since": "Od",
+      "lastShot": "Ostatni strzał",
+      "yourLosses": "Twoje straty",
+      "foeLosses": "Straty wroga",
+      "live": "Trwa walka",
+      "ended": "Walki zakończone",
+      "attacker": "Atakujący",
+      "defender": "Obrońca",
+      "you": "ty",
+      "engaged": "{{count}} w walce",
+      "balance": "Bilans strat",
+      "fire": "Strzały (10 min)",
+      "fireValue": "{{hits}}/{{count}} celnych",
+      "fireNone": "Brak strzałów w ostatnich minutach",
+      "timeline": "Chronologia",
+      "locate": "Wyśrodkuj",
+      "report": "Pełny raport",
+      "units": "Zaangażowane jednostki",
+      "close": "Zamknij szczegóły",
+      "noReport": "Potyczka bez raportu: jednostki w walce poniżej.",
+      "loading": "Chronologia…"
+    },
+    "stack": {
+      "title": "Stos",
+      "prompt": "stack",
+      "units_one": "1 jednostka",
+      "units_few": "{{count}} jednostki",
+      "units_many": "{{count}} jednostek",
+      "units_other": "{{count}} jednostki",
+      "all": "Wszystko",
+      "cat": {
+        "land": "Ląd",
+        "air": "Powietrze",
+        "sea": "Morze",
+        "ad": "OPL",
+        "missile": "Pociski",
+        "other": "Inne"
+      },
+      "selectAll": "Zaznacz wszystko",
+      "select": "Wybierz",
+      "selectN": "Wybierz ({{count}})",
+      "add": "Dodaj",
+      "attack": "Atakuj",
+      "inspect": "Zbadaj",
+      "zoom": "Przybliż",
+      "near": "W pobliżu",
+      "picked": "Wybrano: {{units}} · ×{{count}}",
+      "pickedNone": "Nie wybrano jednostek",
+      "eta": "przybycie {{value}}",
+      "only": "Tylko",
+      "hint": "Dwuklik: tylko ta jednostka · Enter: zatwierdź",
+      "hintTouch": "Dotknij, by zaznaczyć, potem zatwierdź",
+      "close": "Zamknij",
+      "notOwn": "Obce jednostki",
+      "more": "+ {{count}} więcej"
+    },
+    "settings": {
+      "reduceMotion": "Ogranicz animacje",
+      "reduceMotionHelp": "Wyłącza efekty walki (strzały, wybuchy), pulsowanie i animowane kreski na mapie."
     }
   },
   "legal": {
@@ -1933,7 +2023,7 @@
       "selectPile": "Zaznacz stos"
     },
     "mergeNone": "Brak stosu tego samego sprzętu stojącego w promieniu 10 km.",
-    "moveHint": "Zaznaczono {{name}}: dotknij mapy, aby wyznaczyć cel.",
+    "moveHint": "Wybrano: {{name}}. Dotknij mapy, aby ustalić cel.",
     "done": {
       "stop": "Przekazano rozkaz zatrzymania",
       "patrol": "Patrol rozpoczęty",

@@ -11,7 +11,8 @@
   position: absolute;
   inset: 0;
 }
-.map-overlay {
+.map-overlay,
+.map-fx {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -144,6 +145,44 @@
 .rlm-tip__list li::before {
   content: '› ';
   color: #ffb020;
+}
+
+/* Composition d'une pile (par famille : pictogramme, unités, effectif). */
+.rlm-tip__comp {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 2px 0 5px;
+}
+.rlm-tip__comp span {
+  --c: #4cc9f0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+  padding: 0 6px 0 4px;
+  border: 1px solid #1e2a36;
+  border-left: 2px solid var(--c);
+  border-radius: 2px;
+  background: #0b1117;
+}
+.rlm-tip__comp img {
+  width: 14px;
+  height: 14px;
+}
+.rlm-tip__comp b {
+  color: #eef3f8;
+}
+.rlm-tip__comp i {
+  font-style: normal;
+  color: #7d8b99;
+}
+.rlm-tip__hint {
+  margin-top: 5px;
+  padding-top: 4px;
+  border-top: 1px dashed #1e2a36;
+  color: #56626f;
+  font-size: 10px;
 }
 
 /* Sélection par rectangle (Maj + glisser sur ordinateur). */

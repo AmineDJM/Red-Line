@@ -329,7 +329,7 @@
         "war_declared": "{{aDe}} declares war on {{bA}}",
         "peace_signed": "Peace signed between {{aLe}} and {{bLe}}",
         "missile_launch": "Missile launch detected",
-        "building_hit": "{{building}} hit in {{province}} ({{health}} %)",
+        "building_hit": "Strike: {{building}}, {{province}} ({{health}} %)",
         "delivery_arrived": "Delivery arrived",
         "delivery_intercepted": "Delivery intercepted",
         "intel_report": "New intelligence report",
@@ -879,7 +879,12 @@
       "noFlyZone": "No-fly zone",
       "disputed": "Disputed territory",
       "unrest": "Tension",
-      "prompt": "inspect"
+      "prompt": "inspect",
+      "stackTitle": "Stack · {{count}} units",
+      "stackCombat": "{{count}} in combat",
+      "stackMoving": "{{count}} moving",
+      "mixed": "{{count}} nations at the same spot",
+      "stackHint": "Click: choose units in the stack"
     },
     "rel": {
       "own": "Your forces",
@@ -970,7 +975,88 @@
       "km": "{{value}} km"
     },
     "pion": {
-      "decoy": "DECOY"
+      "decoy": "DECOY",
+      "entrenched": "Entrenched"
+    },
+    "eta": "ETA {{value}}",
+    "city": {
+      "rank0": "Capital",
+      "rank1": "Major city",
+      "rank2": "Mid-size city",
+      "rank3": "Small town"
+    },
+    "prov": {
+      "morale": "morale {{value}}",
+      "buildings_one": "1 building",
+      "buildings_other": "{{count}} buildings",
+      "garrison": "Garrison",
+      "garrisonNone": "No units nearby",
+      "control": "Control",
+      "controlOwn": "Held",
+      "controlContested": "Contested",
+      "rankPop": "{{rank}} · {{pop}}"
+    },
+    "battle": {
+      "skirmish": "Skirmish",
+      "engagedUnits": "Units in combat",
+      "hint": "Click: combat details",
+      "since": "Since",
+      "lastShot": "Last shot",
+      "yourLosses": "Your losses",
+      "foeLosses": "Enemy losses",
+      "live": "Battle in progress",
+      "ended": "Fighting over",
+      "attacker": "Attacker",
+      "defender": "Defender",
+      "you": "you",
+      "engaged": "{{count}} engaged",
+      "balance": "Loss ratio",
+      "fire": "Shots (10 min)",
+      "fireValue": "{{hits}}/{{count}} on target",
+      "fireNone": "No shots in the last few minutes",
+      "timeline": "Timeline",
+      "locate": "Center",
+      "report": "Full report",
+      "units": "Units engaged",
+      "close": "Close details",
+      "noReport": "Skirmish without a report: units in combat shown below.",
+      "loading": "Timeline…"
+    },
+    "stack": {
+      "title": "Stack",
+      "prompt": "stack",
+      "units_one": "1 unit",
+      "units_other": "{{count}} units",
+      "all": "All",
+      "cat": {
+        "land": "Land",
+        "air": "Air",
+        "sea": "Sea",
+        "ad": "AD",
+        "missile": "Missiles",
+        "other": "Other"
+      },
+      "selectAll": "Select all",
+      "select": "Select",
+      "selectN": "Select ({{count}})",
+      "add": "Add",
+      "attack": "Attack",
+      "inspect": "Inspect",
+      "zoom": "Zoom",
+      "near": "Nearby",
+      "picked": "{{units}} chosen · ×{{count}}",
+      "pickedNone": "No unit chosen",
+      "eta": "arrival {{value}}",
+      "only": "Only",
+      "hint": "Double-click: this unit only · Enter: confirm",
+      "hintTouch": "Tap to check, then confirm",
+      "close": "Close",
+      "notOwn": "Foreign units",
+      "more": "+ {{count}} more"
+    },
+    "settings": {
+      "reduceMotion": "Reduce animations",
+      "reduceMotionHelp": "Turns off combat effects (shots, explosions), pulses and animated map dashes."
     }
   },
   "legal": {
@@ -1887,7 +1973,7 @@
       "selectPile": "Select the stack"
     },
     "mergeNone": "No stack of the same equipment at rest within 10 km.",
-    "moveHint": "{{name}} selected: tap the map to set the destination.",
+    "moveHint": "Selected: {{name}}. Tap the map to set the destination.",
     "done": {
       "stop": "Stop order sent",
       "patrol": "Patrol under way",

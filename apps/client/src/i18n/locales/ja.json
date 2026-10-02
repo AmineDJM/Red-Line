@@ -324,7 +324,7 @@
         "war_declared": "{{aDe}} が {{bA}} に宣戦布告",
         "peace_signed": "{{aLe}} と {{bLe}} が講和条約に調印",
         "missile_launch": "ミサイル発射を探知",
-        "building_hit": "{{province}} の {{building}} が被弾（{{health}} %）",
+        "building_hit": "着弾：{{building}}、{{province}}（{{health}} %）",
         "delivery_arrived": "輸送品が到着",
         "delivery_intercepted": "輸送品が迎撃された",
         "intel_report": "新しい情報報告",
@@ -864,7 +864,12 @@
       "noFlyZone": "飛行禁止区域",
       "disputed": "係争地域",
       "unrest": "緊張",
-      "prompt": "inspect"
+      "prompt": "inspect",
+      "stackTitle": "スタック · {{count}} ユニット",
+      "stackCombat": "{{count}} 交戦中",
+      "stackMoving": "{{count}} 移動中",
+      "mixed": "同じ地点に {{count}} か国",
+      "stackHint": "クリック：スタック内のユニットを選択"
     },
     "rel": {
       "own": "自軍",
@@ -955,7 +960,86 @@
       "km": "{{value}} km"
     },
     "pion": {
-      "decoy": "デコイ"
+      "decoy": "デコイ",
+      "entrenched": "塹壕構築済み"
+    },
+    "eta": "到着 {{value}}",
+    "city": {
+      "rank0": "首都",
+      "rank1": "大都市",
+      "rank2": "中規模都市",
+      "rank3": "小都市"
+    },
+    "prov": {
+      "morale": "士気 {{value}}",
+      "buildings_other": "建物 {{count}}",
+      "garrison": "駐屯部隊",
+      "garrisonNone": "付近にユニットなし",
+      "control": "支配",
+      "controlOwn": "保持",
+      "controlContested": "係争中",
+      "rankPop": "{{rank}} · {{pop}}"
+    },
+    "battle": {
+      "skirmish": "小競り合い",
+      "engagedUnits": "交戦中のユニット",
+      "hint": "クリック：戦闘の詳細",
+      "since": "経過",
+      "lastShot": "最終射撃",
+      "yourLosses": "自軍の損失",
+      "foeLosses": "敵の損失",
+      "live": "戦闘中",
+      "ended": "戦闘終了",
+      "attacker": "攻撃側",
+      "defender": "防御側",
+      "you": "あなた",
+      "engaged": "{{count}} 投入",
+      "balance": "損失比",
+      "fire": "射撃（10 分）",
+      "fireValue": "{{hits}}/{{count}} 命中",
+      "fireNone": "ここ数分間は射撃なし",
+      "timeline": "時系列",
+      "locate": "中央へ",
+      "report": "詳細レポート",
+      "units": "投入ユニット",
+      "close": "詳細を閉じる",
+      "noReport": "報告なしの小競り合い：交戦ユニットは下記。",
+      "loading": "時系列…"
+    },
+    "stack": {
+      "title": "スタック",
+      "prompt": "stack",
+      "units_other": "{{count}} ユニット",
+      "all": "すべて",
+      "cat": {
+        "land": "陸",
+        "air": "航空",
+        "sea": "海",
+        "ad": "防空",
+        "missile": "ミサイル",
+        "other": "その他"
+      },
+      "selectAll": "すべて選択",
+      "select": "選択",
+      "selectN": "選択（{{count}}）",
+      "add": "追加",
+      "attack": "攻撃",
+      "inspect": "詳細",
+      "zoom": "ズーム",
+      "near": "付近",
+      "picked": "{{units}} 選択 · ×{{count}}",
+      "pickedNone": "ユニット未選択",
+      "eta": "到着 {{value}}",
+      "only": "これだけ",
+      "hint": "ダブルクリック：このユニットのみ · Enter：確定",
+      "hintTouch": "タップでチェックして確定",
+      "close": "閉じる",
+      "notOwn": "他国のユニット",
+      "more": "+ ほか {{count}}"
+    },
+    "settings": {
+      "reduceMotion": "アニメーションを減らす",
+      "reduceMotionHelp": "戦闘エフェクト（射撃・爆発）、パルス、地図の動く破線をオフにします。"
     }
   },
   "legal": {
@@ -1864,7 +1948,7 @@
       "selectPile": "スタックを選択"
     },
     "mergeNone": "10 km 以内に同じ装備の停止中のスタックはありません。",
-    "moveHint": "{{name}} を選択：地図をタップして目的地を指定します。",
+    "moveHint": "選択中：{{name}}。地図をタップして目的地を設定。",
     "done": {
       "stop": "停止命令を送信しました",
       "patrol": "哨戒を開始しました",

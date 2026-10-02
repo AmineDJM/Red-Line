@@ -339,7 +339,7 @@
         "war_declared": "Объявление войны: {{aDe}} → {{bA}}",
         "peace_signed": "Подписан мир: {{aLe}} и {{bLe}}",
         "missile_launch": "Обнаружен пуск ракеты",
-        "building_hit": "{{building}} поражено: {{province}} ({{health}} %)",
+        "building_hit": "Удар: {{building}}, {{province}} ({{health}} %)",
         "delivery_arrived": "Поставка прибыла",
         "delivery_intercepted": "Поставка перехвачена",
         "intel_report": "Новое разведдонесение",
@@ -909,7 +909,12 @@
       "noFlyZone": "Бесполётная зона",
       "disputed": "Спорная территория",
       "unrest": "Напряжённость",
-      "prompt": "inspect"
+      "prompt": "inspect",
+      "stackTitle": "Стек · {{count}} ед.",
+      "stackCombat": "{{count}} в бою",
+      "stackMoving": "{{count}} в движении",
+      "mixed": "{{count}} страны в одной точке",
+      "stackHint": "Щелчок: выбрать юниты стека"
     },
     "rel": {
       "own": "Ваши силы",
@@ -1000,7 +1005,92 @@
       "km": "{{value}} км"
     },
     "pion": {
-      "decoy": "ЛОЖНАЯ ЦЕЛЬ"
+      "decoy": "ЛОЖНАЯ ЦЕЛЬ",
+      "entrenched": "Окопалась"
+    },
+    "eta": "Прибытие {{value}}",
+    "city": {
+      "rank0": "Столица",
+      "rank1": "Крупный город",
+      "rank2": "Средний город",
+      "rank3": "Малый город"
+    },
+    "prov": {
+      "morale": "боевой дух {{value}}",
+      "buildings_one": "{{count}} здание",
+      "buildings_few": "{{count}} здания",
+      "buildings_many": "{{count}} зданий",
+      "buildings_other": "{{count}} здания",
+      "garrison": "Гарнизон",
+      "garrisonNone": "Поблизости нет юнитов",
+      "control": "Контроль",
+      "controlOwn": "Удерживается",
+      "controlContested": "Оспаривается",
+      "rankPop": "{{rank}} · {{pop}}"
+    },
+    "battle": {
+      "skirmish": "Стычка",
+      "engagedUnits": "Юниты в бою",
+      "hint": "Щелчок: подробности боя",
+      "since": "Длится",
+      "lastShot": "Последний выстрел",
+      "yourLosses": "Ваши потери",
+      "foeLosses": "Потери противника",
+      "live": "Идёт бой",
+      "ended": "Бой окончен",
+      "attacker": "Атакующий",
+      "defender": "Обороняющийся",
+      "you": "вы",
+      "engaged": "{{count}} в бою",
+      "balance": "Соотношение потерь",
+      "fire": "Выстрелы (10 мин)",
+      "fireValue": "{{hits}}/{{count}} в цель",
+      "fireNone": "Без выстрелов последние минуты",
+      "timeline": "Хронология",
+      "locate": "Центрировать",
+      "report": "Полный отчёт",
+      "units": "Задействованные юниты",
+      "close": "Закрыть подробности",
+      "noReport": "Стычка без отчёта: юниты в бою ниже.",
+      "loading": "Хронология…"
+    },
+    "stack": {
+      "title": "Стек",
+      "prompt": "stack",
+      "units_one": "{{count}} юнит",
+      "units_few": "{{count}} юнита",
+      "units_many": "{{count}} юнитов",
+      "units_other": "{{count}} юнита",
+      "all": "Все",
+      "cat": {
+        "land": "Суша",
+        "air": "Воздух",
+        "sea": "Море",
+        "ad": "ПВО",
+        "missile": "Ракеты",
+        "other": "Прочее"
+      },
+      "selectAll": "Выбрать все",
+      "select": "Выбрать",
+      "selectN": "Выбрать ({{count}})",
+      "add": "Добавить",
+      "attack": "Атаковать",
+      "inspect": "Осмотреть",
+      "zoom": "Приблизить",
+      "near": "Рядом",
+      "picked": "Выбрано: {{units}} · ×{{count}}",
+      "pickedNone": "Юниты не выбраны",
+      "eta": "прибытие {{value}}",
+      "only": "Только",
+      "hint": "Двойной щелчок: только этот юнит · Enter: подтвердить",
+      "hintTouch": "Коснитесь, чтобы отметить, затем подтвердите",
+      "close": "Закрыть",
+      "notOwn": "Чужие юниты",
+      "more": "+ ещё {{count}}"
+    },
+    "settings": {
+      "reduceMotion": "Меньше анимации",
+      "reduceMotionHelp": "Отключает эффекты боя (выстрелы, взрывы), пульсацию и анимированные штрихи карты."
     }
   },
   "legal": {
@@ -1933,7 +2023,7 @@
       "selectPile": "Выбрать стек"
     },
     "mergeNone": "Нет стеков той же техники, стоящих на месте в радиусе 10 км.",
-    "moveHint": "{{name}} выбрана: коснитесь карты, чтобы задать пункт назначения.",
+    "moveHint": "Выбрано: {{name}}. Коснитесь карты, чтобы задать пункт назначения.",
     "done": {
       "stop": "Приказ остановиться передан",
       "patrol": "Патрулирование начато",

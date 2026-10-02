@@ -78,6 +78,15 @@ export interface BattleSide {
   losses: { systemId: SystemId; count: number }[];
 }
 
+/** Tir enregistré dans une bataille (replay, activité récente). */
+export interface BattleShotView {
+  t: GameTime;
+  from: LngLat;
+  to: LngLat;
+  cls: TargetClass;
+  hit: boolean;
+}
+
 export interface BattleReportSummary {
   id: string;
   at: LngLat;
@@ -92,6 +101,16 @@ export interface BattleReportSummary {
   attacker: BattleSide;
   defender: BattleSide;
   outcome: 'attacker' | 'defender' | 'draw' | 'ongoing';
+  /**
+   * Bataille en cours (optionnel) : activité récente pour l'affichage sur la carte (traceurs,
+   * explosions). Mêmes informations que le replay du rapport, réservées aux nations engagées.
+   */
+  live?: {
+    /** Dernier fait d'armes (temps de jeu). */
+    lastAt: GameTime;
+    /** Derniers tirs (bornés en nombre et en ancienneté), du plus ancien au plus récent. */
+    shots: BattleShotView[];
+  };
   // ——— optionnels (rapport après action) ———
   /** Milieu dominant des combats (carte : symbole de la bataille). */
   domain?: BattleDomain;
@@ -264,7 +283,7 @@ export interface BattleSummaryDetails {
       t: GameTime;
       units: { id: UnitId; owner: NationId; systemId: SystemId; at: LngLat; hp: number }[];
     }[];
-    shots: { t: GameTime; from: LngLat; to: LngLat; cls: TargetClass; hit: boolean }[];
+    shots: BattleShotView[];
   };
 }
 

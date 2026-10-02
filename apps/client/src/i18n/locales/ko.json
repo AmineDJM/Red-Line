@@ -324,7 +324,7 @@
         "war_declared": "{{aDe}}, {{bA}}에 선전포고",
         "peace_signed": "{{aLe}}와 {{bLe}} 평화 조약 체결",
         "missile_launch": "미사일 발사 탐지",
-        "building_hit": "{{province}}의 {{building}} 피격({{health}} %)",
+        "building_hit": "피격: {{building}}, {{province}} ({{health}} %)",
         "delivery_arrived": "인도품 도착",
         "delivery_intercepted": "인도품 요격됨",
         "intel_report": "새 정보 보고서",
@@ -864,7 +864,12 @@
       "noFlyZone": "비행 금지 구역",
       "disputed": "분쟁 지역",
       "unrest": "긴장",
-      "prompt": "inspect"
+      "prompt": "inspect",
+      "stackTitle": "스택 · {{count}}개 부대",
+      "stackCombat": "{{count}} 교전 중",
+      "stackMoving": "{{count}} 이동 중",
+      "mixed": "같은 위치에 {{count}}개국",
+      "stackHint": "클릭: 스택의 부대 선택"
     },
     "rel": {
       "own": "아군",
@@ -955,7 +960,86 @@
       "km": "{{value}} km"
     },
     "pion": {
-      "decoy": "기만체"
+      "decoy": "기만체",
+      "entrenched": "참호 구축"
+    },
+    "eta": "도착 {{value}}",
+    "city": {
+      "rank0": "수도",
+      "rank1": "대도시",
+      "rank2": "중형 도시",
+      "rank3": "소도시"
+    },
+    "prov": {
+      "morale": "사기 {{value}}",
+      "buildings_other": "건물 {{count}}개",
+      "garrison": "주둔군",
+      "garrisonNone": "근처에 부대 없음",
+      "control": "통제",
+      "controlOwn": "장악",
+      "controlContested": "분쟁 중",
+      "rankPop": "{{rank}} · {{pop}}"
+    },
+    "battle": {
+      "skirmish": "교전",
+      "engagedUnits": "교전 중인 부대",
+      "hint": "클릭: 전투 상세",
+      "since": "경과",
+      "lastShot": "마지막 사격",
+      "yourLosses": "아군 손실",
+      "foeLosses": "적 손실",
+      "live": "전투 진행 중",
+      "ended": "전투 종료",
+      "attacker": "공격측",
+      "defender": "방어측",
+      "you": "당신",
+      "engaged": "{{count}} 투입",
+      "balance": "손실 비율",
+      "fire": "사격 (10분)",
+      "fireValue": "{{hits}}/{{count}} 명중",
+      "fireNone": "최근 몇 분간 사격 없음",
+      "timeline": "연대기",
+      "locate": "가운데로",
+      "report": "전체 보고서",
+      "units": "투입 부대",
+      "close": "상세 닫기",
+      "noReport": "보고서 없는 교전: 교전 부대는 아래에.",
+      "loading": "연대기…"
+    },
+    "stack": {
+      "title": "스택",
+      "prompt": "stack",
+      "units_other": "{{count}}개 부대",
+      "all": "전체",
+      "cat": {
+        "land": "지상",
+        "air": "공중",
+        "sea": "해상",
+        "ad": "방공",
+        "missile": "미사일",
+        "other": "기타"
+      },
+      "selectAll": "모두 선택",
+      "select": "선택",
+      "selectN": "선택 ({{count}})",
+      "add": "추가",
+      "attack": "공격",
+      "inspect": "살펴보기",
+      "zoom": "확대",
+      "near": "근처",
+      "picked": "{{units}} 선택 · ×{{count}}",
+      "pickedNone": "선택된 부대 없음",
+      "eta": "도착 {{value}}",
+      "only": "이것만",
+      "hint": "더블클릭: 이 부대만 · Enter: 확인",
+      "hintTouch": "탭하여 체크한 뒤 확인",
+      "close": "닫기",
+      "notOwn": "외국 부대",
+      "more": "+ {{count}}개 더"
+    },
+    "settings": {
+      "reduceMotion": "애니메이션 줄이기",
+      "reduceMotionHelp": "전투 효과(사격, 폭발), 맥동, 지도의 움직이는 점선을 끕니다."
     }
   },
   "legal": {
@@ -1864,7 +1948,7 @@
       "selectPile": "스택 선택"
     },
     "mergeNone": "10km 이내에 정지 중인 같은 장비의 스택이 없습니다.",
-    "moveHint": "{{name}} 선택됨: 지도를 눌러 목적지를 지정하세요.",
+    "moveHint": "선택: {{name}}. 지도를 탭해 목적지를 정하세요.",
     "done": {
       "stop": "정지 명령을 전달했습니다",
       "patrol": "순찰을 시작했습니다",

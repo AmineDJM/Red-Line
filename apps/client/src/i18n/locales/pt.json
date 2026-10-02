@@ -334,7 +334,7 @@
         "war_declared": "Declaração de guerra de {{aDe}} a {{bA}}",
         "peace_signed": "Paz assinada entre {{aLe}} e {{bLe}}",
         "missile_launch": "Lançamento de míssil detectado",
-        "building_hit": "{{building}} atingido em {{province}} ({{health}} %)",
+        "building_hit": "Impacto: {{building}}, {{province}} ({{health}} %)",
         "delivery_arrived": "Entrega recebida",
         "delivery_intercepted": "Entrega interceptada",
         "intel_report": "Novo relatório de inteligência",
@@ -894,7 +894,12 @@
       "noFlyZone": "Zona de exclusão aérea",
       "disputed": "Território disputado",
       "unrest": "Tensão",
-      "prompt": "inspect"
+      "prompt": "inspect",
+      "stackTitle": "Pilha · {{count}} unidades",
+      "stackCombat": "{{count}} em combate",
+      "stackMoving": "{{count}} em movimento",
+      "mixed": "{{count}} nações no mesmo local",
+      "stackHint": "Clique: escolher as unidades da pilha"
     },
     "rel": {
       "own": "Suas forças",
@@ -985,7 +990,90 @@
       "km": "{{value}} km"
     },
     "pion": {
-      "decoy": "CHAMARIZ"
+      "decoy": "CHAMARIZ",
+      "entrenched": "Entrincheirada"
+    },
+    "eta": "Chegada {{value}}",
+    "city": {
+      "rank0": "Capital",
+      "rank1": "Cidade grande",
+      "rank2": "Cidade média",
+      "rank3": "Cidade pequena"
+    },
+    "prov": {
+      "morale": "moral {{value}}",
+      "buildings_one": "1 edifício",
+      "buildings_many": "{{count}} edifícios",
+      "buildings_other": "{{count}} edifícios",
+      "garrison": "Guarnição",
+      "garrisonNone": "Nenhuma unidade por perto",
+      "control": "Controle",
+      "controlOwn": "Controlada",
+      "controlContested": "Disputada",
+      "rankPop": "{{rank}} · {{pop}}"
+    },
+    "battle": {
+      "skirmish": "Escaramuça",
+      "engagedUnits": "Unidades em combate",
+      "hint": "Clique: detalhes dos combates",
+      "since": "Desde",
+      "lastShot": "Último disparo",
+      "yourLosses": "Suas perdas",
+      "foeLosses": "Perdas inimigas",
+      "live": "Combate em curso",
+      "ended": "Combates encerrados",
+      "attacker": "Atacante",
+      "defender": "Defensor",
+      "you": "você",
+      "engaged": "{{count}} engajados",
+      "balance": "Balanço de perdas",
+      "fire": "Disparos (10 min)",
+      "fireValue": "{{hits}}/{{count}} no alvo",
+      "fireNone": "Nenhum disparo nos últimos minutos",
+      "timeline": "Cronologia",
+      "locate": "Centralizar",
+      "report": "Relatório completo",
+      "units": "Unidades engajadas",
+      "close": "Fechar detalhes",
+      "noReport": "Escaramuça sem relatório: unidades em combate abaixo.",
+      "loading": "Cronologia…"
+    },
+    "stack": {
+      "title": "Pilha",
+      "prompt": "stack",
+      "units_one": "1 unidade",
+      "units_many": "{{count}} unidades",
+      "units_other": "{{count}} unidades",
+      "all": "Tudo",
+      "cat": {
+        "land": "Terra",
+        "air": "Ar",
+        "sea": "Mar",
+        "ad": "AA",
+        "missile": "Mísseis",
+        "other": "Outros"
+      },
+      "selectAll": "Selecionar tudo",
+      "select": "Selecionar",
+      "selectN": "Selecionar ({{count}})",
+      "add": "Adicionar",
+      "attack": "Atacar",
+      "inspect": "Inspecionar",
+      "zoom": "Aproximar",
+      "near": "Por perto",
+      "picked": "{{units}} escolhida(s) · ×{{count}}",
+      "pickedNone": "Nenhuma unidade escolhida",
+      "eta": "chegada {{value}}",
+      "only": "Somente",
+      "hint": "Duplo clique: só esta unidade · Enter: confirmar",
+      "hintTouch": "Toque para marcar e depois confirme",
+      "close": "Fechar",
+      "notOwn": "Unidades estrangeiras",
+      "more": "+ {{count}} outras"
+    },
+    "settings": {
+      "reduceMotion": "Reduzir animações",
+      "reduceMotionHelp": "Desativa os efeitos de combate (disparos, explosões), as pulsações e os tracejados animados do mapa."
     }
   },
   "legal": {
@@ -1910,7 +1998,7 @@
       "selectPile": "Selecionar a pilha"
     },
     "mergeNone": "Nenhuma pilha do mesmo material parada a menos de 10 km.",
-    "moveHint": "{{name}} selecionada: toque no mapa para definir o destino.",
+    "moveHint": "Seleção: {{name}}. Toque no mapa para definir o destino.",
     "done": {
       "stop": "Ordem de parada transmitida",
       "patrol": "Patrulha iniciada",

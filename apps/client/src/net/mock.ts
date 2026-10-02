@@ -35,6 +35,9 @@ import type { FeatureCollection } from 'geojson';
 import {
   VIEW_SECTIONS,
   type BattleReport,
+  type BattleReportSummary,
+  type BattleShotView,
+  type TargetClass,
   type ChatMessage,
   type IntelOpView,
   type OperationView,
@@ -558,12 +561,53 @@ export class MockGameConnection extends Emitter implements GameConnection {
         notes.push({ kind: 'production_complete', time: t, at, unitId: id, systemId: p.systemId });
       }
     }
+    const battleReports = this.liveBattles(t);
     if (upsert.length || finished.length) {
-      this.push({ units: { upsert, remove: [] }, ...(finished.length ? { economy } : {}) });
+      this.push({
+        units: { upsert, remove: [] },
+        ...(finished.length ? { economy } : {}),
+        ...(battleReports ? { battleReports } : {}),
+      });
     } else {
-      this.push({});
+      this.push(battleReports ? { battleReports } : {});
     }
     if (notes.length) this.emit('notify', notes);
+  }
+
+  /**
+   * Batailles en cours de la démonstration : quelques tirs crédibles autour du lieu des combats
+   * (traceurs au contact, artillerie, interceptions), comme `BattleReportSummary.live` du moteur.
+   */
+  private liveBattles(t: GameTime): BattleReportSummary[] | null {
+    const reports = this.view.battleReports;
+    if (!reports?.some((b) => b.outcome === 'ongoing')) return null;
+    const rnd = this.rnd;
+    let changed = false;
+    const next = reports.map((b) => {
+      if (b.outcome !== 'ongoing') return b;
+      const n = rnd() < 0.7 ? 1 + Math.floor(rnd() * 3) : 0;
+      if (!n && b.live) return b;
+      const shots: BattleShotView[] = [...(b.live?.shots ?? [])];
+      for (let k = 0; k < n; k++) {
+        const r = rnd();
+        const cls: TargetClass =
+          r < 0.45 ? 'armor' : r < 0.7 ? 'infantry' : r < 0.85 ? 'helicopter' : 'missile';
+        const a = rnd() * 360;
+        const far = cls === 'armor' && rnd() < 0.35;
+        const from = destination(b.at, a, far ? 28 + rnd() * 20 : 4 + rnd() * 8);
+        const to = destination(b.at, a + 160 + rnd() * 40, 2 + rnd() * 6);
+        shots.push({ t, from, to, cls, hit: rnd() < 0.6 });
+      }
+      changed = true;
+      return {
+        ...b,
+        live: {
+          lastAt: n ? t : (b.live?.lastAt ?? t),
+          shots: shots.filter((s) => t - s.t < 20 * MINUTE).slice(-16),
+        },
+      };
+    });
+    return changed ? next : null;
   }
 
   private randomEvent() {

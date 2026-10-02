@@ -324,7 +324,7 @@
         "war_declared": "{{aDe}} 向 {{bA}} 宣战",
         "peace_signed": "{{aLe}} 与 {{bLe}} 签署和约",
         "missile_launch": "侦测到导弹发射",
-        "building_hit": "{{province}} 的 {{building}} 被击中（{{health}} %）",
+        "building_hit": "命中：{{building}}，{{province}}（{{health}} %）",
         "delivery_arrived": "货物已送达",
         "delivery_intercepted": "货物被拦截",
         "intel_report": "新的情报报告",
@@ -864,7 +864,12 @@
       "noFlyZone": "禁飞区",
       "disputed": "争议领土",
       "unrest": "紧张度",
-      "prompt": "inspect"
+      "prompt": "inspect",
+      "stackTitle": "堆叠 · {{count}} 个单位",
+      "stackCombat": "{{count}} 交战中",
+      "stackMoving": "{{count}} 移动中",
+      "mixed": "同一地点有 {{count}} 个国家",
+      "stackHint": "点击：选择堆叠中的单位"
     },
     "rel": {
       "own": "我方部队",
@@ -955,7 +960,86 @@
       "km": "{{value}} km"
     },
     "pion": {
-      "decoy": "诱饵"
+      "decoy": "诱饵",
+      "entrenched": "已构筑工事"
+    },
+    "eta": "预计到达 {{value}}",
+    "city": {
+      "rank0": "首都",
+      "rank1": "大城市",
+      "rank2": "中等城市",
+      "rank3": "小城市"
+    },
+    "prov": {
+      "morale": "士气 {{value}}",
+      "buildings_other": "{{count}} 座建筑",
+      "garrison": "驻军",
+      "garrisonNone": "附近没有单位",
+      "control": "控制",
+      "controlOwn": "已控制",
+      "controlContested": "争夺中",
+      "rankPop": "{{rank}} · {{pop}}"
+    },
+    "battle": {
+      "skirmish": "遭遇战",
+      "engagedUnits": "交战单位",
+      "hint": "点击：战斗详情",
+      "since": "持续",
+      "lastShot": "最后射击",
+      "yourLosses": "我方损失",
+      "foeLosses": "敌方损失",
+      "live": "战斗进行中",
+      "ended": "战斗结束",
+      "attacker": "进攻方",
+      "defender": "防守方",
+      "you": "你",
+      "engaged": "{{count}} 参战",
+      "balance": "损失对比",
+      "fire": "射击（10 分钟）",
+      "fireValue": "{{hits}}/{{count}} 命中",
+      "fireNone": "最近几分钟无射击",
+      "timeline": "时间线",
+      "locate": "居中",
+      "report": "完整报告",
+      "units": "参战单位",
+      "close": "关闭详情",
+      "noReport": "无报告的遭遇战：交战单位见下方。",
+      "loading": "时间线…"
+    },
+    "stack": {
+      "title": "堆叠",
+      "prompt": "stack",
+      "units_other": "{{count}} 个单位",
+      "all": "全部",
+      "cat": {
+        "land": "陆地",
+        "air": "空中",
+        "sea": "海上",
+        "ad": "防空",
+        "missile": "导弹",
+        "other": "其他"
+      },
+      "selectAll": "全选",
+      "select": "选择",
+      "selectN": "选择（{{count}}）",
+      "add": "添加",
+      "attack": "攻击",
+      "inspect": "查看",
+      "zoom": "缩放",
+      "near": "附近",
+      "picked": "已选 {{units}} · ×{{count}}",
+      "pickedNone": "未选择单位",
+      "eta": "到达 {{value}}",
+      "only": "仅此",
+      "hint": "双击：仅此单位 · 回车：确认",
+      "hintTouch": "点按勾选，然后确认",
+      "close": "关闭",
+      "notOwn": "外国单位",
+      "more": "+ 另外 {{count}} 个"
+    },
+    "settings": {
+      "reduceMotion": "减少动画",
+      "reduceMotionHelp": "关闭战斗特效（射击、爆炸）、脉冲和地图上的动画虚线。"
     }
   },
   "legal": {
@@ -1864,7 +1948,7 @@
       "selectPile": "选择编组"
     },
     "mergeNone": "10 公里内没有同类装备的静止编组。",
-    "moveHint": "已选择 {{name}}：点击地图设定目的地。",
+    "moveHint": "已选：{{name}}。点按地图设定目的地。",
     "done": {
       "stop": "已下达停止命令",
       "patrol": "已开始巡逻",
