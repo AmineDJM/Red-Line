@@ -87,10 +87,9 @@
 }
 .stk__filters {
   display: flex;
+  flex-wrap: wrap;
   gap: 4px;
   padding: 8px 10px 0;
-  overflow-x: auto;
-  scrollbar-width: none;
 }
 .stk__chip {
   --tone: var(--rl-cyan);

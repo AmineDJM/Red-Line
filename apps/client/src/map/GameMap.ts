@@ -1505,15 +1505,14 @@ export class GameMap {
         });
       }
     }
-    // Passages de satellites imminents : heure de passage au centre de la fauchée.
+    // Passages de satellites imminents : heure de passage au bord nord de la fauchée (le centre
+    // tombe souvent sur une ville et ses garnisons, que l'étiquette masquerait).
     const tNow = gameNow();
     for (const sat of view?.satellites ?? []) {
       const dt = sat.nextPassAt - tNow;
       if (dt < 0 || dt > 6 * 3600_000 || !sat.footprint.length) continue;
-      const c: LngLat = [
-        sat.footprint.reduce((a, q) => a + q[0], 0) / sat.footprint.length,
-        sat.footprint.reduce((a, q) => a + q[1], 0) / sat.footprint.length,
-      ];
+      let c: LngLat = sat.footprint[0]!;
+      for (const q of sat.footprint) if (q[1] > c[1]) c = q;
       rings.push({ at: c, text: t('map.ring.sat', { value: fmtDuration(dt) }), tone: 'cyan' });
     }
     this.overlayContent = { ...this.overlayContent, routes, badges, rings };
