@@ -23,6 +23,20 @@
       "b0": "Les délégations ont paraphé l'accord. Les troupes disposent d'un délai pour se retirer.",
       "b1": "Le traité prévoit le retrait des forces engagées sur le territoire adverse."
     },
+    "peace_annexation": {
+      "h0": "{{A}} / {{B}} : la paix entérine les conquêtes de {{A}}",
+      "h1": "Traité de paix : {{B}} cède {{X}} province(s) à {{A}}",
+      "h2": "Fin de la guerre : les frontières de {{B}} redessinées",
+      "b0": "Les territoires occupés restent sous le contrôle de {{A}} : {{X}} province(s) changent de main.",
+      "b1": "{{B}} signe la paix sans récupérer les {{X}} province(s) perdues."
+    },
+    "capitulation": {
+      "h0": "{{B}} capitule face à {{A}}",
+      "h1": "Capitulation de {{B}} : {{A}} impose la paix",
+      "h2": "Défaite de {{B}} : armistice signé avec {{A}}",
+      "b0": "Sa capitale tombée, le gouvernement de {{B}} accepte les conditions de {{A}}. {{X}} province(s) passent sous son contrôle.",
+      "b1": "Les forces de {{B}} déposent les armes. {{A}} annexe {{X}} province(s)."
+    },
     "ceasefire": {
       "h0": "{{A}} / {{B}} : cessez-le-feu en vigueur",
       "h1": "Les armes se taisent : trêve entre {{A}} et {{B}}",
