@@ -37,6 +37,8 @@ import { isMoving, unitPosition } from '../map/interpolation.js';
 import { unitLocation, type UnitLocation } from '../lib/location.js';
 import { t as tr } from '../i18n/index.js';
 import { useGameTime } from '../shell/helpers.js';
+import { StackActions, StackComposition } from '../shell/StackActions.js';
+import { isMixed, stackParts } from '../lib/stacks.js';
 import type { WindowContentProps } from '../shell/WindowHost.js';
 import { gameNow, useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
@@ -114,6 +116,10 @@ function Units({ mobile }: { mobile: boolean }) {
   const locTitle = (l: UnitLocation): string =>
     l.city ? t('army.loc.title', { city: l.city, km: l.km ?? 0 }) : t('army.loc.center');
   const elements = rows.reduce((s, u) => s + (u.count ?? 1), 0);
+  // Pile à diviser ou à fusionner : la première unité sélectionnée qui est à soi.
+  const picked = selection
+    .map((id) => view?.units[id])
+    .find((u) => u?.level === 'own' && u.owner === me);
   return (
     <div className="vstack">
       <div className="row row--between">
@@ -150,6 +156,22 @@ function Units({ mobile }: { mobile: boolean }) {
         empty={<EmptyState compact icon="army" title={t('army.empty')} />}
         columns={[
           {
+            // Sélection multiple (fusion de piles) : partagée avec la carte.
+            key: 'sel',
+            header: '',
+            render: (u) => (
+              <span onClick={(e) => e.stopPropagation()}>
+                <Checkbox
+                  checked={selection.includes(u.id)}
+                  onChange={(v) =>
+                    select(v ? [...selection, u.id] : selection.filter((id) => id !== u.id))
+                  }
+                  label={<span className="stack-sr">{t('stacks.pick')}</span>}
+                />
+              </span>
+            ),
+          },
+          {
             key: 'name',
             header: t('army.cols.unit'),
             sort: (a, b) =>
@@ -168,7 +190,15 @@ function Units({ mobile }: { mobile: boolean }) {
                     health={u.hpRatio}
                   />
                   <span className="urow__name">
-                    <b>{s?.name ?? u.systemId}</b>
+                    <b>
+                      {s?.name ?? u.systemId}
+                      {isMixed(u) ? (
+                        <span className="muted">
+                          {' '}
+                          {t('stacks.more', { count: stackParts(u).length - 1 })}
+                        </span>
+                      ) : null}
+                    </b>
                     <span>
                       {u.id}
                       {u.veterancy ? ` · ${'★'.repeat(u.veterancy)}` : ''}
@@ -278,6 +308,14 @@ function Units({ mobile }: { mobile: boolean }) {
           },
         ]}
       />
+      {picked ? (
+        <Panel title={t('stacks.panel')}>
+          <div className="vstack">
+            <StackComposition u={picked} />
+            <StackActions u={picked} ids={selection} />
+          </div>
+        </Panel>
+      ) : null}
       <p className="hint">
         {t('army.summary', { units: rows.length, elements: formatInt(elements) })}
       </p>

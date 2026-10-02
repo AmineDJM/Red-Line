@@ -5,6 +5,7 @@
 //   cd packages/engine && npx tsx bench/real.ts         (idem)
 //   BENCH_DAYS=10 … : nombre de jours consécutifs mesurés à la fin (défaut 10)
 //   BENCH_JSON=1 …  : ajoute une ligne JSON des mesures (comparaisons automatisées)
+//   BENCH_SCENARIO=cold-war-1985 …  : autre scénario (défaut world-today) ; BENCH_STACKS=off : sans regroupement de départ
 //   node --cpu-prof --import tsx bench/real.ts         (profil du fil principal)
 //
 // Les empreintes (stateHash) affichées permettent de vérifier qu'une optimisation ne change pas le
@@ -82,7 +83,9 @@ function heap(): number {
 
 // ——— Chargement des données (comme le serveur) ———
 let t = start();
-const { map, catalog, balance, research, orbats, scenario } = loadRealData();
+const { map, catalog, balance, research, orbats, scenario } = loadRealData(
+  process.env.BENCH_SCENARIO,
+);
 const elements = (orbats['2025'] ?? []).reduce(
   (a, o) => a + o.inventory.reduce((b, i) => b + i.count, 0),
   0,

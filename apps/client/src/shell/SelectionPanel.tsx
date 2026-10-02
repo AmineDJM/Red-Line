@@ -21,6 +21,8 @@ import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { useGameTime, weaponLabels, weaponSubtitle } from './helpers.js';
 import { ProvincePanel } from './ProvincePanel.js';
+import { isMixed, stackSummary } from '../lib/stacks.js';
+import { StackActions, StackComposition } from './StackActions.js';
 
 const STANCES: UnitStance[] = ['hold', 'defend', 'aggressive'];
 
@@ -60,10 +62,14 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
     tone?: 'amber' | 'green' | 'red' | 'cyan' | 'dim';
   }[] = [];
   if (!own) rows.push({ label: t('game.selection.owner'), value: nationName(u.owner) });
+  // Pile mixte : effectif total, vitesse du plus lent, plus longue portée (lib/stacks.ts).
+  const mixed = isMixed(u);
+  const summary = mixed ? stackSummary(u, catalog) : null;
   if (u.count !== undefined)
     rows.push({
       label: t('game.selection.count'),
-      value: `${formatInt(u.count)} ${sys?.unitLabel ?? ''}`.trim(),
+      value:
+        `${formatInt(u.count)} ${mixed ? t('stacks.elements') : (sys?.unitLabel ?? '')}`.trim(),
     });
   if (u.status)
     rows.push({
@@ -95,16 +101,18 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
     rows.push({ label: t('game.selection.ammo'), value: formatInt(u.mission.ammo) });
   if (general) rows.push({ label: t('game.selection.general'), value: general.name });
   if (sys && u.level !== 'detected') {
-    if (sys.weaponRangeKm.max > 0)
+    const range = summary?.rangeKm ?? sys.weaponRangeKm.max;
+    const speed = summary?.speedKmh ?? sys.speedKmh;
+    if (range > 0)
       rows.push({
         label: t('weapon.weaponRange'),
-        value: fmtKm(sys.weaponRangeKm.max),
+        value: fmtKm(range),
         tone: 'amber',
       });
-    if (sys.speedKmh > 0)
+    if (speed > 0)
       rows.push({
         label: t('weapon.speed'),
-        value: `${formatInt(sys.speedKmh)} km/h`,
+        value: `${formatInt(speed)} km/h`,
         tone: 'amber',
       });
   }
@@ -201,6 +209,7 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
         </div>
       ) : null}
       <KeyValue items={compact ? rows.slice(0, 4) : rows} columns={compact ? 1 : 1} />
+      {!compact ? <StackComposition u={u} /> : null}
       {own ? (
         <>
           {!compact ? (
@@ -244,7 +253,9 @@ function UnitPanel({ u, compact }: { u: UnitView; compact: boolean }) {
                 {t('game.selection.sheet')}
               </Button>
             ) : null}
+            {compact ? <StackActions u={u} ids={ids} compact /> : null}
           </div>
+          {!compact ? <StackActions u={u} ids={ids} /> : null}
           {!compact ? <p className="selpanel__hint">{t('game.selection.hint')}</p> : null}
         </>
       ) : sys ? (
