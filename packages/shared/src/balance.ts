@@ -27,6 +27,8 @@ export const MilitaryBalanceSchema = z.object({
       tankerMeetKm: num(40),
       /** Bonus de priorité des ravitailleurs et avions radar comme cibles. */
       highValueTargetFactor: num(3),
+      /** Interception (ordre d'attaque d'un aéronef contre une cible aérienne) : rayon de veille (km). */
+      interceptRadiusKm: num(100),
     })
     .default({}),
   strike: z
@@ -47,6 +49,11 @@ export const MilitaryBalanceSchema = z.object({
       antiRadiationBonus: num(2),
       /** Exposition d'un sous-marin qui vient de tirer (minutes). */
       submarineExposureMinutes: num(30),
+      /**
+       * Ordre d'attaque d'une pile de munitions contre une unité : missiles tirés = ce facteur × le
+       * nombre nécessaire pour détruire la cible (au moins 1, au plus la pile).
+       */
+      attackSalvoFactor: num(1.5),
     })
     .default({}),
   intercept: z

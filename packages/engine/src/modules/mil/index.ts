@@ -6,6 +6,7 @@ import { ceasefire, targetClassOf } from '../../encounters/profile.js';
 import { board } from '../kit.js';
 import type { EngineModule, ModEvent } from '../types.js';
 import { combatAi } from './ai.js';
+import { orderAttack } from './attack.js';
 import {
   handleBingo,
   handleFuelout,
@@ -17,6 +18,7 @@ import {
   orderPatrol,
   orderRebase,
   orderRtb,
+  endMissions,
 } from './air.js';
 import { addTension, decayTension, raiseAlert, syncLevel } from './alert.js';
 import { handleClose, noteDestroyed, recordCapture, recordEffects, recordHit } from './battles.js';
@@ -294,22 +296,11 @@ export const milModule: EngineModule = {
     },
     onOrder(state, n, order) {
       releaseOnOrder(state, n, order);
+      if (order.kind === 'move' || order.kind === 'stop') endMissions(state, n, order);
     },
     interceptOrder(state, n, order) {
       if (order.kind === 'move') return interceptMove(state, n, order);
-      if (order.kind === 'attack') {
-        for (const id of order.unitIds) {
-          const ms = mil(state).ms[id];
-          const u = state.units[id];
-          if (u && u.owner === n && ms?.fa && !ms.up && ms.ready > state.time) {
-            return { ok: false, error: 'cooldown', message: 'Appareil en remise en œuvre au sol.' };
-          }
-        }
-        const tgt = state.units[order.targetId];
-        if (tgt && ceasefire(state, n, tgt.owner)) {
-          return { ok: false, error: 'locked', message: 'Cessez-le-feu en vigueur.' };
-        }
-      }
+      if (order.kind === 'attack') return orderAttack(state, n, order);
       return null;
     },
     unitModifier(state, u, key) {

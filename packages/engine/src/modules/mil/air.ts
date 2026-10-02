@@ -36,6 +36,7 @@ import {
   carrierCapacity,
   cityOf,
   fail,
+  failR,
   generic,
   hasBuilding,
   isAew,
@@ -678,14 +679,27 @@ export function airFeasible(
   if (!m || !m.fa)
     return airCanReach(state, u, to) ? null : fail('out_of_range', "Hors du rayon d'action.");
   if (!m.up && m.ready > state.time) {
-    return fail('cooldown', 'Appareil en remise en œuvre au sol.');
+    const min = Math.ceil((m.ready - state.time) / MINUTE);
+    return failR(
+      'cooldown',
+      'aircraft_cooldown',
+      `Appareil en remise en œuvre au sol (prêt dans ${min} min).`,
+      { min },
+    );
   }
   ensureBase(state, u, m);
   const B = back ?? airBasePos(state, u);
   if (!B) return fail('not_allowed', 'Aucune base d’attache.');
   const home = airBasePos(state, u) ?? B;
-  if (distanceKm(home, to) > airRadiusKm(state, u)) {
-    return fail('out_of_range', "Hors du rayon d'action (compté depuis la base).");
+  const dist = distanceKm(home, to);
+  const radius = airRadiusKm(state, u);
+  if (dist > radius) {
+    return failR(
+      'out_of_range',
+      'aircraft_out_of_radius',
+      `Hors du rayon d'action : ${Math.round(dist)} km depuis la base pour ${Math.round(radius)} km.`,
+      { dist: Math.round(dist), range: Math.round(radius) },
+    );
   }
   const s = speedOf(state, u);
   const here = m.emb ? posOf(state, state.units[m.emb] ?? u) : posOf(state, u);
@@ -842,7 +856,44 @@ function rebaseReach(state: EngineState, u: Unit, to: LngLat): boolean {
   return distanceKm(here, to) / speedOf(state, u) + milBal(state).air.reserveH <= fuel;
 }
 
-/** Ordre `rtb`. */
+/**
+ * Après un ordre `move` ou `stop` traité par le cœur : la mission en cours (patrouille d'un navire,
+ * frappe ou veille d'un aéronef) prend fin, sinon la veille ramènerait l'unité à son point de
+ * patrouille. Un aéronef en vol arrêté tient sa position (orbite) jusqu'au retour automatique.
+ */
+export function endMissions(
+  state: EngineState,
+  n: NationId,
+  o: Extract<Order, { kind: 'move' | 'stop' }>,
+): void {
+  const all = mil(state).ms;
+  for (const id of [...new Set(o.unitIds)].sort()) {
+    const u = state.units[id];
+    const m = all[id];
+    if (!u || u.owner !== n || !m) continue;
+    if (!m.fa) {
+      if (m.mis !== 'none') {
+        m.mis = 'none';
+        m.ph = null;
+        m.at = null;
+        m.tg = null;
+        m.sv++;
+      }
+      continue;
+    }
+    if (o.kind !== 'stop' || !m.up) continue;
+    m.mis = 'none';
+    m.ph = 'station';
+    m.at = posOf(state, u);
+    m.r = 0;
+    m.tg = null;
+    m.tk = null;
+    m.sv++;
+    armFuel(state, u);
+  }
+}
+
+/** Ordre `rtb` : aéronefs (base), navires (port), troupes au sol (ville amie la plus proche). */
 export function orderRtb(
   state: EngineState,
   n: NationId,
@@ -852,8 +903,10 @@ export function orderRtb(
   if (!Array.isArray(units)) return units;
   for (const u of units) {
     const s = sysOf(state, u);
-    if (s.movement !== 'air' && s.movement !== 'sea')
-      return fail('not_allowed', 'Aéronefs et navires seulement.');
+    if (s.movement === 'static' || s.speedKmh <= 0 || mil(state).fixedOf[u.id])
+      return fail('not_allowed', 'Unité fixe : pas de retour possible.');
+    if (isSatellite(s)) return fail('not_allowed', 'Un satellite ne rentre pas à la base.');
+    if (s.missile) return fail('not_allowed', 'Munitions : utilisez l’ordre de frappe.');
   }
   for (const u of units) {
     if (u.off) continue;
