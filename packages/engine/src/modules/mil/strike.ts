@@ -33,7 +33,16 @@ import { board } from '../kit.js';
 import { modifier, signal, unitModifier } from '../registry.js';
 import { airFeasible, flyTo, missionOf, noFlyAt, rtb, strikeAim } from './air.js';
 import { raiseAlert } from './alert.js';
-import { battleFor, countermeasure, engage, shot, timeline, touch } from './battles.js';
+import {
+  battleFor,
+  countermeasure,
+  engage,
+  recordInterception,
+  recordLaunch,
+  shot,
+  timeline,
+  touch,
+} from './battles.js';
 import { detonate } from './nuclear.js';
 import { mil, milBal, type MissileSt, type MissionSt } from './state.js';
 import { countLoss, elementsLost, statOf } from './stats.js';
@@ -348,10 +357,12 @@ export function launch(
   statOf(state, from.owner).missiles += count;
   if (b) {
     engage(state, b, from);
+    recordLaunch(b, from.owner, count);
     timeline(
       state,
       b,
       `Tir de ${count} ${msys.name}${nuclear ? ' (charge nucléaire)' : ''} depuis ${nameOfProvince(state, provinceAt(state, at))}`,
+      [from],
     );
     touch(state, b);
   }
@@ -600,13 +611,15 @@ export function handleIntercept(state: EngineState, d: { i: string; m: string })
   if (b) {
     engage(state, b, I);
     countermeasure(b, 'interception', killed);
+    recordInterception(b, I.owner, M.owner, killed);
     countermeasure(b, 'evasion', fired - killed);
     if (jam > 0) countermeasure(b, 'jamming', 1);
-    shot(state, b, ipos, mpos, 'missile', killed > 0);
+    shot(state, b, ipos, mpos, 'missile', killed > 0, I);
     timeline(
       state,
       b,
       `${isys.name} (${I.owner.toUpperCase()}) : ${killed}/${M.count} ${msys.name} interceptés (${fired} tirs)`,
+      [I],
     );
     touch(state, b);
   }
@@ -729,6 +742,7 @@ export function impact(state: EngineState, M: Unit): void {
         at,
         primary ? targetClassOf(state, primary) : 'infantry',
         hits > 0,
+        st.from,
       );
   }
   if (b) {
@@ -736,6 +750,7 @@ export function impact(state: EngineState, M: Unit): void {
       state,
       b,
       `Impact de ${n} ${sys.name} : ${hits > 0 ? 'cible touchée' : 'aucun dégât'}`,
+      [M],
     );
     touch(state, b);
   }
@@ -840,8 +855,9 @@ export function deliverAirStrike(state: EngineState, u: Unit, ms: MissionSt): vo
         state,
         b,
         `Frappe aérienne (${sys.name}) sur ${tg.building} à ${nameOfProvince(state, tg.provinceId)}`,
+        [u],
       );
-      shot(state, b, here, cityOf(state, tg.provinceId)!, 'building', hit);
+      shot(state, b, here, cityOf(state, tg.provinceId)!, 'building', hit, u);
       touch(state, b);
     }
   } else {

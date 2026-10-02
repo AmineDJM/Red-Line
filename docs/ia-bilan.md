@@ -481,3 +481,150 @@ heure d'écart) ; `fuzz` : délai porté à 60 s (4,3 s seul, plus de 5 s sur ma
 - **Estimation pessimiste par construction** (moyenne × (1 + incertitude)) : elle surestime toujours un peu (×1,4
   en médiane) ; c'est voulu, mais l'IA ignore les pertes que l'ennemi subit contre des tiers.
 - **Mobilisation** non utilisée pendant les préparatifs (coût économique ; laissée de côté).
+
+## Passe 3 — un monde vivant en partie solo
+
+Demande d'Amine : _le reste des IA dans le monde doivent être actives en partie solo, se battre entre elles,
+se conquérir, etc._ Avant cette passe, en « normal », les IA ne se déclaraient presque jamais la guerre entre
+elles (0 à 1 guerre en trois semaines : le Maroc contre le Sahara occidental) ; en « difficile », c'était
+l'inverse : des guerres de choix absurdes (Allemagne → Luxembourg, Suisse → Liechtenstein, Italie →
+Vatican, États-Unis → Canada, Allemagne → Italie, Brésil → Uruguay), 14 à 17 guerres simultanées, des
+guerres qui ne finissaient presque jamais (0 à 4 paix) et 7 à 9 nations rayées de la carte.
+
+### Ce qui a été fait
+
+Tout est en **données** (`data/balance/default.json`, section `ai.world`, schéma `AiBalanceSchema.world`,
+libellés du back-office dans `apps/admin/src/i18n/rules.ts`) ; le code est dans `src/ai/world.ts` (index des
+données, lectures publiques) et `src/ai/strategy.ts` (`seekWorldWar`, `blocDefense`, fin des guerres).
+
+1. **Rivalités historiques** (45 paires, `ai.world.rivalries`) : Russie–Ukraine, Inde–Pakistan, Israël–Gaza,
+   Israël–Iran, Israël–Liban, Israël–Syrie, Azerbaïdjan–Arménie, Éthiopie–Érythrée, Éthiopie–Somalie,
+   Égypte–Éthiopie (barrage), Chine–Taïwan, Chine–Inde, Chine–Philippines, Chine–Viêt Nam, Corées,
+   RD Congo–Rwanda, Soudan–Soudan du Sud, Soudan–Tchad, Somalie–Somaliland, Venezuela–Guyana,
+   Colombie–Venezuela, Arabie–Yémen, Iran–Arabie, Iran–Irak, Pakistan–Iran, Afghanistan–Pakistan,
+   Tadjikistan–Kirghizistan, Thaïlande–Cambodge, Serbie–Kosovo, Chypre–Chypre du Nord, Grèce–Turquie,
+   Turquie–Syrie, Russie–Géorgie, Russie–Estonie / Lettonie, Algérie–Maroc, Maroc–Sahara occidental,
+   Sahel (Mali–Algérie, Niger–Bénin, Burkina–Côte d'Ivoire), Érythrée–Djibouti, Burundi–Rwanda,
+   Équateur–Pérou, Bolivie–Chili, Guatemala–Belize. Chacune a un **poids** (probabilité relative), un
+   **motif** public repris dans la dépêche de déclaration (« Motif invoqué : le Cachemire. ») et un
+   **déclencheur** (`initiator` : la Corée du Sud n'envahit pas le Nord, Taïwan n'attaque pas la Chine).
+   Probabilité par jour = `rivalryChancePerDay` × poids × intensité (× 2 si le rival est affaibli), si le
+   rapport de force estimé (sans tricher) atteint `rivalryRatio` ; un rival non voisin est visé si sa
+   capitale est à moins de `rivalReachKm` (guerre de frappes, débarquement).
+2. **Opportunisme** : un voisin affaibli (capitale perdue, stabilité publique sous `weakStability`, ou en
+   train de perdre une autre guerre) attire un vautour libre de toute autre guerre
+   (`opportunismChancePerDay` × intensité × (1 − retenue de son bloc), rapport `opportunismRatio`).
+3. **Blocs politiques** (22 blocs, `ai.world.blocs`) : OTAN, Europe neutre, OTSC, Alliance des États du
+   Sahel, CCG, ASEAN, Mercosur, Communauté andine, SICA, CARICOM, partenaires du Pacifique, SACU, SADC,
+   CEDEAO, CAE, CEEAC, Maghreb, OCS, SAARC, ACEUM, Balkans occidentaux, trio associé. **Jamais de guerre de
+   choix entre membres** (sauf rivalité déclarée : Grèce–Turquie, Inde–Pakistan…) ; **retenue** (0 à 1 :
+   une démocratie de l'OTAN ne fait pas de guerre opportuniste ni, en « difficile », de guerre sans motif —
+   seuil `waiverMaxRestraint`) ; **défense mutuelle** (OTAN, OTSC, AES) : un membre IA voisin de l'agresseur
+   ou de la victime entre en guerre contre l'agresseur IA d'un autre membre pendant les `blocDefenseDays`
+   premiers jours, si leurs forces réunies pèsent `blocDefenseRatio` de l'agresseur (dépêche « défense
+   mutuelle » au nom du bloc, sans atteinte à la réputation). Ces défenseurs comptent dans la
+   **dissuasion** : la Russie ne s'attaque pas à l'Estonie. Les blocs ne s'activent pas contre un joueur
+   humain (son équilibre de jeu est inchangé).
+4. **Les guerres se terminent** : but de guerre (`warGoalShare`), agresseur satisfait
+   (`satisfiedPeaceDays`), **capitulation** (capitale perdue, ou `capitulationShare` des provinces perdue
+   après `capitulationMinDays`), **enlisement** (aucune province n'a changé de main depuis `stalemateDays` :
+   paix au statu quo). Une guerre entre IA dure au moins `capitulationMinDays` sauf chute d'une capitale.
+   Pas de nouvelle guerre entre les deux mêmes IA avant `rematchDays`. À la paix, les provinces conquises
+   restent au vainqueur : nouvelles dépêches « la paix entérine les conquêtes de… » (`peace_annexation`) et
+   « … capitule » (`capitulation`), en plus des dépêches de guerre, de prise de province et de capitale. Le
+   joueur voit les frontières bouger sur la carte et lit l'actualité.
+5. **Plafonds** : guerres entre IA par nation (`maxWars`) et **dans le monde** (`maxActiveWars` ×
+   intensité ; les guerres d'alliance ne sont pas bloquées) ; aucune guerre entre IA avant `fromDays`.
+6. **Intensité du monde** (`ai.world.intensity`, 1 par défaut ; 0 : monde figé ; 2 : très agité) et rythme
+   par niveau (`ai.world.levels.easy|normal|hard`) :
+
+|                                    |     Facile |     Normal |  Difficile |
+| ---------------------------------- | ---------: | ---------: | ---------: |
+| Guerres entre IA à partir de       |         J5 |         J2 |         J1 |
+| Probabilité / jour d'une rivalité  |      0,006 |       0,03 |      0,035 |
+| Rapport de force contre un rival   |        1,8 |        1,3 |       1,15 |
+| Opportunisme / jour (rapport)      |      0 (—) |   0,01 (2) | 0,02 (1,6) |
+| Guerres par nation / dans le monde |      1 / 3 |      1 / 6 |     2 / 10 |
+| But de guerre, capitulation        | 20 %, 30 % | 34 %, 50 % | 50 %, 50 % |
+| Enlisement → paix                  |        4 j |        6 j |        9 j |
+
+**Veille des IA lointaines.** Inchangée et conforme à la décision d'Amine : le serveur ne pose la commande
+système `dormancy` qu'après 5 min **sans aucun joueur humain connecté** (`manageIdle`) et la lève dès qu'un
+joueur se connecte (`attach`) : joueur connecté = monde entier actif (test `ai-dormancy`).
+
+### Mesures (banc `ai-eval`, mode `free`, 21 jours, France humaine passive, graines 1 et 2)
+
+```bash
+AIEVAL_MODE=free AIEVAL_DAYS=21 AIEVAL_LEVELS=normal,hard node --expose-gc packages/engine/bench/run.mjs ai-eval
+```
+
+Le banc relève désormais (ligne `monde`) les guerres entre IA (agressions et guerres d'alliance), leur
+durée, les paix, les provinces prises et changées de main, les nations anéanties, le pic de guerres
+simultanées, et liste chaque guerre (dates, agresseur → cible, gains / pertes).
+
+| Mesure (graine 1 / graine 2)                 | Normal avant | Normal après | Difficile avant | Difficile après |
+| -------------------------------------------- | -----------: | -----------: | --------------: | --------------: |
+| Guerres entre IA déclarées                   |        1 / 0 |        7 / 8 |         14 / 21 |          8 / 12 |
+| … dont guerres d'alliance (défense mutuelle) |        0 / 0 |        1 / 0 |          1 / 12 |           0 / 4 |
+| Guerres terminées                            |        0 / 0 |        5 / 6 |           0 / 4 |           2 / 9 |
+| Durée médiane d'une guerre terminée (j)      |            — |    3,2 / 3,2 |         — / 3,2 |       3,1 / 3,2 |
+| Paix signées entre IA                        |        0 / 0 |        5 / 5 |           0 / 4 |          2 / 12 |
+| Provinces prises entre IA                    |        1 / 0 |      43 / 27 |         80 / 61 |         38 / 81 |
+| Provinces ayant changé de main à J21         |        1 / 0 |      38 / 25 |         70 / 61 |         36 / 66 |
+| Nations IA anéanties                         |        1 / 0 |        1 / 4 |           9 / 7 |           5 / 4 |
+| Pic de guerres simultanées entre IA          |        1 / 0 |        4 / 4 |         14 / 17 |           7 / 6 |
+| Pic de nations en guerre                     |        2 / 0 |        6 / 8 |         24 / 26 |         14 / 10 |
+| Guerres sans frontière commune               |        0 / 0 |        1 / 1 |          1 / 11 |           0 / 2 |
+| CPU de la partie de 21 jours (s)             |    7,9 / 6,2 |  15,3 / 23,7 |     24,4 / 22,5 |     17,9 / 27,7 |
+
+Exemples « normal » (graine 2) : Chine → Taïwan J2,3 (pas de débarquement, paix d'enlisement J8,5),
+Russie → Ukraine J2,4 (+8 provinces, −2, paix J6,5), Venezuela → Guyana J5,0 (Essequibo, +6, capitulation
+J7,3), Thaïlande → Cambodge J6,4 (+4), Russie → Géorgie J7,9 (+3), RD Congo → Rwanda J9,3 (+3), Israël →
+Gaza, Maroc → Sahara occidental. Graine 1 : Arabie → Yémen (+8), Turquie → Syrie (+7) suivie d'un vautour
+(Jordanie → Syrie), Soudan → Tchad (+12), Chypre → Chypre du Nord, Érythrée → Djibouti. Les nations
+anéanties sont de petites entités (Sahara occidental, Gaza, Chypre du Nord, Kosovo…). « Difficile » : plus
+de guerres de choix entre démocraties alliées ni contre les micro-États ; il reste des guerres sans motif
+de nations sans bloc retenu (Soudan → Centrafrique, Égypte → Libye, Chili → Bolivie) et des activations de
+l'OTSC. Contre le joueur humain, la logique de menace de la passe 2 est inchangée.
+
+### Coût de calcul (banc réel, `pnpm --filter @redline/engine bench`, 2 alternances, temps CPU)
+
+| Mesure                     |         Avant |         Après |   Écart |
+| -------------------------- | ------------: | ------------: | ------: |
+| Jour calme                 |  549 / 603 ms |  601 / 593 ms |    +4 % |
+| **Jour de guerre intense** | 14,1 / 13,9 s | 14,2 / 13,8 s | **0 %** |
+| Jour suivant               |   5,4 / 5,1 s |   5,8 / 5,2 s |    +5 % |
+| Dix jours suivants         | 12,7 / 12,0 s | 16,6 / 15,0 s |   +28 % |
+| Instantané                 |      3,63 Mio |      3,67 Mio |    +1 % |
+
+Le jour de guerre intense (dix guerres imposées) ne coûte pas plus : l'enregistrement du rapport après
+action (quelques compteurs par coup au but) est invisible. Les dix jours suivants coûtent ~28 % de plus
+**parce que le monde se bat** (nouvelles guerres de rivalité pendant la mesure) : c'est le prix voulu. Le
+plafond mondial (`maxActiveWars`, 6 en « normal ») et l'intensité (`ai.world.intensity`) bornent ce coût ;
+à 0,5 d'intensité, le plafond tombe à 3 guerres simultanées. Pour une partie de 21 jours, le calcul total
+passe de 6 à 8 s à 15 à 24 s en « normal » (~1 s de calcul par jour de jeu, soit ~0,2 ms par seconde
+réelle à ×16, 0,02 % d’un cœur).
+
+### Tests ajoutés
+
+- `test/ai-world.test.ts` : une rivalité des données dégénère en guerre entre IA (dépêche avec le motif,
+  agresseur désigné) ; un bloc retient le partenaire de la victime ; sans rivalité le monde « normal » reste
+  en paix, intensité nulle = monde figé ; plafond de guerres simultanées (pas de guerre mondiale) ; la
+  victime capitule, le vainqueur garde ses conquêtes, partie déterministe.
+- `test/battle-aar.test.ts` : rapport après action complet, rien de caché divulgué, déterminisme et rejeu
+  (voir `docs/rapports-de-bataille.md`).
+- Back-office : libellés de toutes les clés `ai.world.*` (test `admin.test.ts`).
+
+### Ce qui reste faible
+
+- Les guerres entre IA sont **courtes** (médiane ~3 jours) : la capitulation suit souvent la chute de la
+  capitale d'un petit pays ; les grandes guerres (Russie–Ukraine) finissent en paix de statu quo ou par
+  enlisement après 4 à 6 jours. Réglable (`capitulationMinDays`, `stalemateDays`).
+- La Chine ne débarque pas à Taïwan contre une IA qui défend ses côtes (prudence de la passe 2) ; la guerre
+  finit par enlisement.
+- Pas de guerre civile simulée comme telle (Soudan, Sahel, Birmanie) : l'instabilité et les soulèvements du
+  module diplo font de ces pays des cibles d'opportunisme, pas des belligérants internes.
+- « Difficile » garde des guerres sans motif hors des blocs retenus (Égypte → Libye, Soudan → Centrafrique) :
+  c'est le caractère du niveau, réglable par `waiverMaxRestraint` ou de nouveaux blocs.
+- Les mesures de coût ont été prises sur une machine partagée très chargée (temps réel ≈ 3 × CPU) : les
+  écarts de quelques % ne sont pas significatifs.

@@ -9,6 +9,7 @@ import './styles/w-research.css';
 import './styles/w-economy.css';
 import './styles/w-army.css';
 import './styles/w-world.css';
+import './styles/w-battles.css';
 import './styles/pages.css';
 import './styles/i18n.css';
 import { initI18n } from './i18n/index.js';
