@@ -361,7 +361,9 @@
       "owner": "国家",
       "multi_other": "已选 {{count}} 个",
       "ready": "可用于",
-      "ammo": "弹药"
+      "ammo": "弹药",
+      "aboard": "搭乘",
+      "loading": "登船中"
     },
     "orders": {
       "moveTitle": "移动命令",
@@ -399,6 +401,15 @@
       "patrolTitle": "巡逻命令",
       "reconTitle": "侦察任务",
       "blockadeTitle": "封锁命令",
+      "escortTitle": "护航",
+      "embarkTitle": "登船",
+      "disembarkTitle": "两栖登陆",
+      "disembarkHereTitle": "就地下船",
+      "places": "舱位",
+      "placesValue": "需要 {{need}} · 空余 {{free}}",
+      "aboard": "船上部队",
+      "overCapacity": "超出运力：请拆分部队。",
+      "noCapturer": "所选单位均无法占领：需要步兵或装甲部队。",
       "radius": "半径",
       "reasons": {
         "target_invalid": "无效目标。",
@@ -412,7 +423,20 @@
         "aircraft_cooldown": "飞机正在地面整备（{{min}} 分钟后就绪）。",
         "partial": "命令已发送；{{count}} 支部队被排除：{{detail}}",
         "munition_use_strike": "弹药：请使用打击命令。",
-        "ceasefire": "停火生效中。"
+        "ceasefire": "停火生效中。",
+        "escort_self": "部队不能为自己护航。",
+        "escort_target_invalid": "护航目标无效：请选择你的一支机动部队。",
+        "escort_incapable": "{{name}} 无法护航（没有武器）。",
+        "escort_domain": "{{name}} 无法跟随该部队（舰船跟舰船，部队跟部队）。",
+        "transport_not_ship": "{{name}} 无法运输部队。",
+        "transport_not_land": "{{name}}：只有地面部队可以登船。",
+        "transport_capacity": "超出运力：需要 {{need}} 个舱位，{{cap}} 个中空余 {{free}} 个。请拆分部队。",
+        "transport_too_far": "{{name}}：距离舰船太远（{{dist}} 公里，最多 {{max}} 公里）。",
+        "transport_moving": "舰船必须停止。",
+        "transport_no_shore": "附近没有可用的海岸：请将舰船驶近港口或沿海道路。",
+        "transport_empty": "这些部队都不在船上。",
+        "transport_embarked": "{{name}}：部队在船上，请对舰船使用“下船”。",
+        "transport_busy": "{{name}}：已在运输中。"
       },
       "classes": {
         "infantry": "步兵",
@@ -486,6 +510,9 @@
       "patrol": "巡逻",
       "recon": "侦察",
       "blockade": "封锁",
+      "escort": "护航",
+      "embark": "登船",
+      "disembark": "下船",
       "rtb": "返回",
       "rtbAir": "返回基地",
       "rtbSea": "返回港口",
@@ -499,6 +526,10 @@
         "airSeaOnly": "巡逻仅限飞行器和舰艇。",
         "noRecon": "侦察仅限无人机和侦察机。",
         "seaOnly": "封锁仅限舰艇。",
+        "noEscort": "只有武装的机动单位才能护航。",
+        "noLand": "只有地面部队可以登船。",
+        "noTransport": "附近没有停泊的友方运输舰。",
+        "noCargo": "这艘舰船上没有部队。",
         "idle": "无需停止：单位已静止。",
         "none": "操作不可用。"
       },
@@ -510,9 +541,28 @@
         "patrol": "点击巡逻区域的中心。",
         "recon": "点击要飞越的区域。",
         "blockade": "点击敌方沿海省份。",
+        "escort": "点击你要护航的一支部队。",
+        "embark": "点击运输舰。",
+        "disembark": "点击要登陆的海岸，或点击舰船就地下船。",
         "needEnemy": "请选择一个可见的敌方单位。",
-        "needPort": "请选择一个外国沿海省份。"
+        "needPort": "请选择一个外国沿海省份。",
+        "needFriendly": "请选择你的一支部队。",
+        "needTransport": "请选择你的一艘运输舰。"
       }
+    },
+    "capture": {
+      "progress": "正在占领 {{city}}",
+      "noCapturer": "{{city}}：该部队无法占领（需要步兵或装甲部队）。",
+      "noWar": "{{city}}：未与其所有者交战，无法占领。",
+      "defended": "{{city}}：有守军，驱逐守军后才开始占领。"
+    },
+    "cargo": {
+      "title": "载荷",
+      "places": "{{used}} / {{capacity}} 舱位",
+      "empty": "船上没有部队。",
+      "loading": "登船中",
+      "landing": "{{eta}} 后登陆",
+      "sailing": "正驶向登陆区"
     }
   },
   "province": {
@@ -3402,6 +3452,31 @@
       "agentExpelled": {
         "title": "外交官被驱逐",
         "text": "{{host}} 以间谍罪驱逐 {{owner}} 的外交官。"
+      },
+      "troopsEmbarked": {
+        "title": "部队已登船",
+        "text": "{{system}} 已登上 {{ship}}。"
+      },
+      "troopsLanded": {
+        "title": "部队已登陆",
+        "text_other": "已有 {{count}} 支部队登陆：{{place}}。"
+      },
+      "troopsLandedContested": {
+        "title": "在火力下登陆",
+        "text_other": "已有 {{count}} 支部队在火力下登陆：{{place}}。"
+      },
+      "transportSunk": {
+        "title": "运输舰被击沉",
+        "text_other": "{{system}} 连同船上 {{count}} 支部队一起损失。"
+      },
+      "escortEnded": {
+        "title": "护航结束",
+        "text": "{{system}}：被护航的部队已不在。"
+      },
+      "captureBlocked": {
+        "title": "无法占领",
+        "noCapturer": "{{system}} 无法占领 {{place}}：需要步兵或装甲部队。",
+        "noWar": "未与 {{place}} 的所有者交战：无法占领。"
       }
     }
   }

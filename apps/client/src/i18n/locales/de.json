@@ -367,7 +367,9 @@
       "multi_one": "{{count}} ausgewählt",
       "multi_other": "{{count}} ausgewählt",
       "ready": "Verfügbar in",
-      "ammo": "Munition"
+      "ammo": "Munition",
+      "aboard": "An Bord von",
+      "loading": "Einschiffung"
     },
     "orders": {
       "moveTitle": "Marschbefehl",
@@ -405,6 +407,15 @@
       "patrolTitle": "Patrouillenbefehl",
       "reconTitle": "Aufklärungsmission",
       "blockadeTitle": "Blockadebefehl",
+      "escortTitle": "Eskortieren",
+      "embarkTitle": "Einschiffen",
+      "disembarkTitle": "Amphibische Landung",
+      "disembarkHereTitle": "Hier ausschiffen",
+      "places": "Plätze",
+      "placesValue": "{{need}} benötigt · {{free}} frei",
+      "aboard": "Verbände an Bord",
+      "overCapacity": "Kapazität überschritten: Verband aufteilen.",
+      "noCapturer": "Keine Einheit dieser Auswahl kann erobern: Infanterie oder Panzer erforderlich.",
       "radius": "Radius",
       "reasons": {
         "target_invalid": "Ungültiges Ziel.",
@@ -418,7 +429,20 @@
         "aircraft_cooldown": "Flugzeug wird am Boden klargemacht (bereit in {{min}} min).",
         "partial": "Befehl übermittelt; {{count}} Verband/Verbände ausgelassen: {{detail}}",
         "munition_use_strike": "Munition: Schlagbefehl verwenden.",
-        "ceasefire": "Waffenstillstand in Kraft."
+        "ceasefire": "Waffenstillstand in Kraft.",
+        "escort_self": "Ein Verband kann sich nicht selbst eskortieren.",
+        "escort_target_invalid": "Ungültiges Eskortziel: Wähle einen deiner beweglichen Verbände.",
+        "escort_incapable": "{{name}} kann nicht eskortieren (keine Waffen).",
+        "escort_domain": "{{name}} kann diesem Verband nicht folgen (Schiffe mit Schiffen, Truppen mit Truppen).",
+        "transport_not_ship": "{{name}} kann keine Truppen transportieren.",
+        "transport_not_land": "{{name}}: Nur Bodentruppen können eingeschifft werden.",
+        "transport_capacity": "Kapazität überschritten: {{need}} Plätze benötigt, {{free}} von {{cap}} frei. Verband aufteilen.",
+        "transport_too_far": "{{name}}: zu weit vom Schiff entfernt ({{dist}} km, höchstens {{max}} km).",
+        "transport_moving": "Das Schiff muss anhalten.",
+        "transport_no_shore": "Keine nutzbare Küste in der Nähe: Bring das Schiff an einen Hafen oder eine Küstenstraße.",
+        "transport_empty": "Keine dieser Truppen ist an Bord.",
+        "transport_embarked": "{{name}}: Truppen an Bord, nutze „Ausschiffen“ am Schiff.",
+        "transport_busy": "{{name}}: wird bereits transportiert."
       },
       "classes": {
         "infantry": "Infanterie",
@@ -492,6 +516,9 @@
       "patrol": "Patrouille",
       "recon": "Aufklärung",
       "blockade": "Blockade",
+      "escort": "Eskortieren",
+      "embark": "Einschiffen",
+      "disembark": "Ausschiffen",
       "rtb": "Rückkehr",
       "rtbAir": "Zur Basis",
       "rtbSea": "Zum Hafen",
@@ -505,6 +532,10 @@
         "airSeaOnly": "Patrouillen nur für Luftfahrzeuge und Schiffe.",
         "noRecon": "Aufklärung nur für Drohnen und Aufklärungsflugzeuge.",
         "seaOnly": "Blockade nur für Schiffe.",
+        "noEscort": "Eskorte nur für bewaffnete, bewegliche Einheiten.",
+        "noLand": "Nur Bodentruppen können eingeschifft werden.",
+        "noTransport": "Kein haltendes eigenes Transportschiff in der Nähe.",
+        "noCargo": "Keine Truppen an Bord dieses Schiffs.",
         "idle": "Nichts anzuhalten: Einheiten stehen bereits.",
         "none": "Aktion nicht verfügbar."
       },
@@ -516,9 +547,28 @@
         "patrol": "Mittelpunkt des Patrouillengebiets anklicken.",
         "recon": "das zu überfliegende Gebiet anklicken.",
         "blockade": "eine feindliche Küstenprovinz anklicken.",
+        "escort": "klicke auf einen deiner Verbände, den du eskortieren willst.",
+        "embark": "klicke auf das Transportschiff.",
+        "disembark": "klicke auf die Küste für die Landung oder auf das Schiff, um vor Ort auszuschiffen.",
         "needEnemy": "Wählen Sie eine sichtbare feindliche Einheit.",
-        "needPort": "Wählen Sie eine fremde Küstenprovinz."
+        "needPort": "Wählen Sie eine fremde Küstenprovinz.",
+        "needFriendly": "Wähle einen deiner Verbände.",
+        "needTransport": "Wähle eines deiner Transportschiffe."
       }
+    },
+    "capture": {
+      "progress": "Eroberung von {{city}}",
+      "noCapturer": "{{city}}: Dieser Verband kann nicht erobern (Infanterie oder Panzer erforderlich).",
+      "noWar": "{{city}}: Kein Krieg mit dem Besitzer, keine Eroberung.",
+      "defended": "{{city}}: Verteidiger vor Ort, die Eroberung beginnt, sobald sie vertrieben sind."
+    },
+    "cargo": {
+      "title": "Ladung",
+      "places": "{{used}} / {{capacity}} Plätze",
+      "empty": "Keine Truppen an Bord.",
+      "loading": "Einschiffung",
+      "landing": "Landung in {{eta}}",
+      "sailing": "Überfahrt zur Landezone"
     }
   },
   "province": {
@@ -3449,6 +3499,34 @@
       "agentExpelled": {
         "title": "Diplomaten ausgewiesen",
         "text": "{{host}} weist Diplomaten von {{owner}} wegen Spionage aus."
+      },
+      "troopsEmbarked": {
+        "title": "Truppen eingeschifft",
+        "text": "{{system}} an Bord von {{ship}}."
+      },
+      "troopsLanded": {
+        "title": "Truppen angelandet",
+        "text_one": "{{count}} Verband angelandet: {{place}}.",
+        "text_other": "{{count}} Verbände angelandet: {{place}}."
+      },
+      "troopsLandedContested": {
+        "title": "Landung unter Beschuss",
+        "text_one": "{{count}} Verband unter Beschuss angelandet: {{place}}.",
+        "text_other": "{{count}} Verbände unter Beschuss angelandet: {{place}}."
+      },
+      "transportSunk": {
+        "title": "Transporter versenkt",
+        "text_one": "{{system}} mit {{count}} Verband an Bord verloren.",
+        "text_other": "{{system}} mit {{count}} Verbänden an Bord verloren."
+      },
+      "escortEnded": {
+        "title": "Eskorte beendet",
+        "text": "{{system}}: Der eskortierte Verband ist nicht mehr da."
+      },
+      "captureBlocked": {
+        "title": "Eroberung unmöglich",
+        "noCapturer": "{{system}} kann {{place}} nicht erobern: Infanterie oder Panzer erforderlich.",
+        "noWar": "Kein Krieg mit dem Besitzer von {{place}}: keine Eroberung."
       }
     }
   }

@@ -367,7 +367,9 @@
       "multi_one": "{{count}} selected",
       "multi_other": "{{count}} selected",
       "ready": "Available in",
-      "ammo": "Ammunition"
+      "ammo": "Ammunition",
+      "aboard": "Aboard",
+      "loading": "Embarking"
     },
     "orders": {
       "moveTitle": "Move order",
@@ -405,6 +407,15 @@
       "patrolTitle": "Patrol order",
       "reconTitle": "Reconnaissance mission",
       "blockadeTitle": "Blockade order",
+      "escortTitle": "Escort",
+      "embarkTitle": "Embark",
+      "disembarkTitle": "Amphibious landing",
+      "disembarkHereTitle": "Disembark here",
+      "places": "Spaces",
+      "placesValue": "{{need}} needed · {{free}} free",
+      "aboard": "Stacks aboard",
+      "overCapacity": "Capacity exceeded: split the stack.",
+      "noCapturer": "No unit in this selection can capture: infantry or armour is required.",
       "radius": "Radius",
       "reasons": {
         "target_invalid": "Invalid target.",
@@ -418,7 +429,20 @@
         "aircraft_cooldown": "Aircraft being turned around on the ground (ready in {{min}} min).",
         "partial": "Order sent; {{count}} stack(s) left out: {{detail}}",
         "munition_use_strike": "Munitions: use the strike order.",
-        "ceasefire": "Ceasefire in force."
+        "ceasefire": "Ceasefire in force.",
+        "escort_self": "A stack cannot escort itself.",
+        "escort_target_invalid": "Invalid escort target: choose one of your mobile stacks.",
+        "escort_incapable": "{{name}} cannot escort (no weapons).",
+        "escort_domain": "{{name}} cannot follow this stack (ships with ships, troops with troops).",
+        "transport_not_ship": "{{name}} cannot carry troops.",
+        "transport_not_land": "{{name}}: only ground troops can embark.",
+        "transport_capacity": "Capacity exceeded: {{need}} spaces needed, {{free}} free out of {{cap}}. Split the stack.",
+        "transport_too_far": "{{name}}: too far from the ship ({{dist}} km, {{max}} km at most).",
+        "transport_moving": "The ship must be stopped.",
+        "transport_no_shore": "No usable shore nearby: bring the ship close to a port or a coastal road.",
+        "transport_empty": "None of these troops are aboard.",
+        "transport_embarked": "{{name}}: troops aboard, use “Disembark” on the ship.",
+        "transport_busy": "{{name}}: already being transported."
       },
       "classes": {
         "infantry": "infantry",
@@ -492,6 +516,9 @@
       "patrol": "Patrol",
       "recon": "Recon",
       "blockade": "Blockade",
+      "escort": "Escort",
+      "embark": "Embark",
+      "disembark": "Disembark",
       "rtb": "Return",
       "rtbAir": "Return to base",
       "rtbSea": "Return to port",
@@ -505,6 +532,10 @@
         "airSeaOnly": "Patrols are for aircraft and ships.",
         "noRecon": "Reconnaissance is for drones and reconnaissance aircraft.",
         "seaOnly": "Blockades are for ships.",
+        "noEscort": "Escort is limited to armed, mobile units.",
+        "noLand": "Only ground troops can embark.",
+        "noTransport": "No friendly transport ship stopped nearby.",
+        "noCargo": "No troops aboard this ship.",
         "idle": "Nothing to stop: units already idle.",
         "none": "Action unavailable."
       },
@@ -516,9 +547,28 @@
         "patrol": "click the centre of the patrol area.",
         "recon": "click the area to fly over.",
         "blockade": "click an enemy coastal province.",
+        "escort": "click one of your stacks to escort.",
+        "embark": "click the transport ship.",
+        "disembark": "click the shore where to land, or the ship to disembark on the spot.",
         "needEnemy": "Choose a visible enemy unit.",
-        "needPort": "Choose a foreign coastal province."
+        "needPort": "Choose a foreign coastal province.",
+        "needFriendly": "Choose one of your stacks.",
+        "needTransport": "Choose one of your transport ships."
       }
+    },
+    "capture": {
+      "progress": "Capturing {{city}}",
+      "noCapturer": "{{city}}: this stack cannot capture (infantry or armour required).",
+      "noWar": "{{city}}: not at war with its owner, no capture.",
+      "defended": "{{city}}: defenders present, the capture will start once they are driven out."
+    },
+    "cargo": {
+      "title": "Cargo",
+      "places": "{{used}} / {{capacity}} spaces",
+      "empty": "No troops aboard.",
+      "loading": "embarking",
+      "landing": "Landing in {{eta}}",
+      "sailing": "Crossing to the landing zone"
     }
   },
   "province": {
@@ -3449,6 +3499,34 @@
       "agentExpelled": {
         "title": "Diplomats expelled",
         "text": "{{host}} expels diplomats of {{owner}} for espionage."
+      },
+      "troopsEmbarked": {
+        "title": "Troops embarked",
+        "text": "{{system}} aboard {{ship}}."
+      },
+      "troopsLanded": {
+        "title": "Troops landed",
+        "text_one": "{{count}} stack landed: {{place}}.",
+        "text_other": "{{count}} stacks landed: {{place}}."
+      },
+      "troopsLandedContested": {
+        "title": "Landing under fire",
+        "text_one": "{{count}} stack landed under fire: {{place}}.",
+        "text_other": "{{count}} stacks landed under fire: {{place}}."
+      },
+      "transportSunk": {
+        "title": "Transport sunk",
+        "text_one": "{{system}} lost with {{count}} stack aboard.",
+        "text_other": "{{system}} lost with {{count}} stacks aboard."
+      },
+      "escortEnded": {
+        "title": "Escort ended",
+        "text": "{{system}}: the escorted stack is gone."
+      },
+      "captureBlocked": {
+        "title": "Capture impossible",
+        "noCapturer": "{{system}} cannot capture {{place}}: infantry or armour is required.",
+        "noWar": "Not at war with the owner of {{place}}: no capture."
       }
     }
   }

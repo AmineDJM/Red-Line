@@ -49,6 +49,7 @@ import {
   forgetNation,
   isHot,
   operations,
+  transportOps,
   reactiveThink,
   strategicThink,
   thinkContext,
@@ -58,6 +59,20 @@ import {
 } from './strategy.js';
 import { ds, pairKey } from '../modules/diplo/state.js';
 import { aiOrder } from './trace.js';
+import { partsOf } from '../state/stack.js';
+import {
+  capacityOf,
+  cargoOf,
+  hasCargo,
+  landingSpot,
+  loadingOf,
+  placesOf,
+  seaSpotNear,
+  trBal,
+  usedPlaces,
+} from '../modules/mil/transport.js';
+import { canEscort } from '../modules/mil/escort.js';
+import { mil } from '../modules/mil/state.js';
 import { aiCfg, aiLevelCfg } from './config.js';
 import { aiReserve } from './money.js';
 import { aiUnitPrice } from '../modules/eco/ai.js';
@@ -287,6 +302,7 @@ function think(state: EngineState, n: NationId): void {
   holdKeyPoints(ctx);
   defend(ctx);
   runOps(ctx);
+  runTransports(ctx);
   if (ctx.L.counterattack) counterattack(ctx);
   const off = ctx.L.offensive;
   if (off !== 'none') {
@@ -371,6 +387,18 @@ function context(state: EngineState, n: NationId): Ctx {
     byId,
   };
   for (const pid of sortedKeys(ops)) ctx.aimed.add(pid);
+  // Transports de troupes en cours : navire et troupes réservés, objectif visé.
+  const trs = transportOps(state, n, false);
+  if (trs) {
+    for (const sid of sortedKeys(trs)) {
+      const t = trs[sid]!;
+      for (const id of [sid, ...t.units]) {
+        ctx.idle.delete(id);
+        ctx.opUnits.set(id, t.pid);
+      }
+      ctx.aimed.add(t.pid);
+    }
+  }
   picture(ctx);
   // Villes déjà visées : destinations de ses unités terrestres en route hors de chez elle.
   for (const m of land) {
@@ -789,7 +817,10 @@ function startOp(ctx: Ctx, pid: ProvinceId, group: Mine[], need: number, bySea: 
     need,
     until: state.time + Math.min(T.rallyMaxHours * HOUR, slowest + HOUR),
   };
-  if (bySea) op.sea = escort(ctx, pid);
+  if (bySea) {
+    summonTransport(ctx, pid, at, op.until + T.rallyMaxHours * HOUR);
+    op.sea = escort(ctx, pid);
+  }
   ctx.ops[pid] = op;
   ctx.aimed.add(pid);
   const until = op.until + T.commitHours * HOUR;
@@ -835,6 +866,233 @@ function escort(ctx: Ctx, pid: ProvinceId): string[] {
 
 const ESCORT_REACH_KM = 2500;
 const ESCORT_RADIUS_KM = 60;
+
+/* ------------------------------------------------------------------------------------------------ */
+/* Débarquement par navire de transport                                                              */
+/* ------------------------------------------------------------------------------------------------ */
+
+/**
+ * Débarquement : un navire de transport libre (porte-hélicoptères d'assaut, navire amphibie) est
+ * envoyé au rendez-vous, en mer devant le point de rassemblement.
+ */
+function summonTransport(ctx: Ctx, pid: ProvinceId, at: LngLat, until: number): void {
+  const { state, n } = ctx;
+  const spot = seaSpotNear(state, at);
+  if (!spot) return;
+  const ship = ctx.sea
+    .filter(
+      (m) =>
+        ctx.idle.has(m.u.id) &&
+        !ctx.opUnits.has(m.u.id) &&
+        capacityOf(state, m.u) > 0 &&
+        !hasCargo(state, m.u.id) &&
+        distanceKm(m.pos, spot) <= ESCORT_REACH_KM,
+    )
+    .map((m) => ({ m, d: distanceKm(m.pos, spot) }))
+    .sort((a, b) => a.d - b.d || (a.m.u.id < b.m.u.id ? -1 : 1))[0]?.m;
+  if (!ship) return;
+  const here = distanceKm(ship.pos, spot) < 1;
+  if (
+    !here &&
+    (!safeLegs(state, n, ship.u, spot) ||
+      !order(state, n, { kind: 'move', unitIds: [ship.u.id], to: spot }))
+  )
+    return;
+  transportOps(state, n, true)![ship.u.id] = {
+    pid,
+    units: [],
+    ph: 'come',
+    at: [spot[0], spot[1]],
+    until,
+  };
+  ctx.idle.delete(ship.u.id);
+  ctx.opUnits.set(ship.u.id, pid);
+}
+
+/**
+ * Au départ d'un débarquement : les piles du groupe qui tiennent dans le navire arrivé au rendez-vous
+ * embarquent (au moins une capable de capturer). Renvoie les piles embarquées.
+ */
+function loadTransport(ctx: Ctx, pid: ProvinceId, there: Mine[]): Set<string> {
+  const { state, n } = ctx;
+  const out = new Set<string>();
+  const trs = transportOps(state, n, false);
+  if (!trs) return out;
+  const sid = sortedKeys(trs).find((k) => trs[k]!.pid === pid && trs[k]!.ph === 'come');
+  if (!sid) return out;
+  const ship = state.units[sid];
+  if (!ship || ship.move) return out;
+  const at = unitPosAt(state, ship, state.time);
+  const reach = trBal(state).embarkKm;
+  let free = capacityOf(state, ship) - usedPlaces(state, sid);
+  const cands = there
+    .filter((m) => m.s.movement === 'land' && distanceKm(m.pos, at) <= reach)
+    .sort((a, b) => Number(b.s.canCapture) - Number(a.s.canCapture) || (a.u.id < b.u.id ? -1 : 1));
+  const ids: string[] = [];
+  let capturer = false;
+  for (const m of cands) {
+    const p = placesOf(state, m.u);
+    if (p > free) continue;
+    ids.push(m.u.id);
+    capturer ||= m.s.canCapture;
+    free -= p;
+  }
+  // Aucune pile capable de capturer ne tient à bord : un détachement est scindé à la mesure du navire.
+  if (!capturer) {
+    const big = cands.find((m) => m.s.canCapture);
+    const take = big ? detachmentFor(state, big.u, free) : null;
+    if (!big || !take) return out;
+    if (!order(state, n, { kind: 'split', unitId: big.u.id, parts: take })) return out;
+    const nu = state.units[`u${state.nextUnit}`];
+    if (!nu || nu.owner !== n || placesOf(state, nu) > free) return out;
+    ids.push(nu.id);
+  }
+  if (!order(state, n, { kind: 'embark', unitIds: ids, transportId: sid })) return out;
+  const t = trs[sid]!;
+  t.ph = 'load';
+  t.units = [...ids].sort();
+  for (const id of ids) {
+    out.add(id);
+    ctx.idle.delete(id);
+    ctx.opUnits.set(id, pid);
+  }
+  return out;
+}
+
+/**
+ * Détachement d'une pile qui tient dans `free` places : éléments capables de capturer d'abord (les
+ * moins encombrants), puis le reste ; null si rien ne tient ou si la pile entière tiendrait.
+ */
+function detachmentFor(
+  state: EngineState,
+  u: Unit,
+  free: number,
+): { systemId: string; count: number }[] | null {
+  const b = trBal(state);
+  const parts = partsOf(state, u)
+    .map((p) => ({ p, per: b.places[p.sys.category] ?? b.defaultPlaces }))
+    .sort(
+      (x, y) =>
+        Number(y.p.sys.canCapture) - Number(x.p.sys.canCapture) ||
+        x.per - y.per ||
+        (x.p.sys.id < y.p.sys.id ? -1 : 1),
+    );
+  const take: { systemId: string; count: number }[] = [];
+  let left = free;
+  let total = 0;
+  for (const { p, per } of parts) {
+    const k = per > 0 ? Math.min(p.c, Math.floor(left / per)) : p.c;
+    if (k <= 0) continue;
+    take.push({ systemId: p.sys.id, count: k });
+    left -= k * per;
+    total += k;
+  }
+  if (
+    total <= 0 ||
+    total >= u.count ||
+    !take.some((t) => state.world.catalog.get(t.systemId)!.canCapture)
+  )
+    return null;
+  return take;
+}
+
+/** Débarquement possible vers `to` (côte praticable, mer navigable jusqu'à elle). */
+function canLandAt(state: EngineState, ship: Unit, to: LngLat): boolean {
+  const spot = landingSpot(state, to);
+  const sea = spot ? seaSpotNear(state, spot) : null;
+  if (!spot || !sea || distanceKm(sea, spot) > trBal(state).landingKm) return false;
+  return !('error' in planUnitMove(state, ship, sea));
+}
+
+/** Suivi des transports : départ une fois chargé (avec escorte), puis marche sur la ville. */
+function runTransports(ctx: Ctx): void {
+  const { state, n, L } = ctx;
+  const trs = transportOps(state, n, false);
+  if (!trs) return;
+  for (const sid of sortedKeys(trs)) {
+    const t = trs[sid]!;
+    const ship = state.units[sid];
+    if (!ship || ship.owner !== n) {
+      delete trs[sid];
+      continue;
+    }
+    const P = state.provinces[t.pid];
+    const enemy = !!P && P.owner !== n && atWar(state, n, P.owner);
+    const city = cityPoint(state, t.pid);
+    const cargo = cargoOf(state, sid);
+    const here = !ship.move ? unitPosAt(state, ship, state.time) : null;
+    const landHere = (): boolean =>
+      !!here &&
+      !!landingSpot(state, here) &&
+      order(state, n, { kind: 'disembark', transportId: sid });
+    if (t.ph === 'come') {
+      if (!ctx.ops[t.pid] || state.time > t.until) delete trs[sid];
+      continue;
+    }
+    if (t.ph === 'load') {
+      if (loadingOf(state, sid).length > 0) continue;
+      if (cargo.length === 0) {
+        delete trs[sid];
+        continue;
+      }
+      if (enemy && canLandAt(state, ship, city)) {
+        if (order(state, n, { kind: 'disembark', transportId: sid, to: city })) {
+          t.ph = 'sail';
+          escortTransport(ctx, ship, L.escortShips);
+          continue;
+        }
+      }
+      // Objectif perdu ou inaccessible : on débarque sur place.
+      if (landHere()) t.ph = 'sail';
+      else delete trs[sid];
+      continue;
+    }
+    // Traversée : le débarquement a pu être interrompu (navire arrêté) ; sinon troupes à terre.
+    if (cargo.length > 0) {
+      if (here && !mil(state).tru?.[sid] && !landHere()) delete trs[sid];
+      continue;
+    }
+    const go = t.units.filter((id) => {
+      const u = state.units[id];
+      return !!u && !u.off && !u.move && distanceKm(u.pos, city) > CAPTURE_RADIUS_KM;
+    });
+    if (enemy && go.length > 0) {
+      const ok = go.filter((id) => !!safeLegs(state, n, state.units[id]!, city));
+      if (ok.length > 0 && order(state, n, { kind: 'move', unitIds: ok, to: city })) {
+        const until = state.time + ctx.T.commitHours * HOUR;
+        for (const id of ok) ctx.commit[id] = [t.pid, until];
+      }
+    }
+    delete trs[sid];
+  }
+}
+
+/** Navires de surface armés libres envoyés escorter un transport chargé. */
+function escortTransport(ctx: Ctx, ship: Unit, want: number): void {
+  const { state, n } = ctx;
+  if (want <= 0) return;
+  const at = unitPosAt(state, ship, state.time);
+  const ids = ctx.sea
+    .filter(
+      (m) =>
+        m.u.id !== ship.id &&
+        (ctx.idle.has(m.u.id) || ctx.opUnits.get(m.u.id) === ctx.opUnits.get(ship.id)) &&
+        m.armed &&
+        m.s.category === 'surface_ship' &&
+        capacityOf(state, m.u) <= 0 &&
+        canEscort(state, m.u) &&
+        distanceKm(m.pos, at) <= ESCORT_REACH_KM,
+    )
+    .map((m) => ({ m, d: distanceKm(m.pos, at) }))
+    .sort((a, b) => a.d - b.d || (a.m.u.id < b.m.u.id ? -1 : 1))
+    .slice(0, want)
+    .filter(({ m }) => !('error' in planUnitMove(state, m.u, at)))
+    .map(({ m }) => m.u.id);
+  if (ids.length === 0) return;
+  if (order(state, n, { kind: 'escort', unitIds: ids, targetId: ship.id })) {
+    for (const id of ids) ctx.idle.delete(id);
+  }
+}
 
 /** La traversée peut-elle partir ? Escorte sur zone, ou mer libre de navires ennemis connus. */
 function seaReady(ctx: Ctx, pid: ProvinceId, op: Operation): boolean {
@@ -892,7 +1150,7 @@ function runOps(ctx: Ctx): void {
       continue;
     }
     const all = op.units.map((id) => ctx.byId.get(id)!);
-    const there = all.filter((m) => !m.u.move && distanceKm(m.pos, op.at) <= T.rallyRadiusKm);
+    let there = all.filter((m) => !m.u.move && distanceKm(m.pos, op.at) <= T.rallyRadiusKm);
     const late = state.time >= op.until;
     if (there.length < all.length && !late) continue;
     const force = there.reduce((a, m) => a + m.value, 0);
@@ -905,6 +1163,21 @@ function runOps(ctx: Ctx): void {
     if (op.sea && !seaReady(ctx, pid, op)) {
       if (state.time >= op.until + T.rallyMaxHours * HOUR) release(ctx, pid);
       continue;
+    }
+    // Débarquement : les troupes qui tiennent dans le navire de transport arrivé au rendez-vous
+    // embarquent (traversée et mise à terre suivies par runTransports) ; les autres traversent seules.
+    if (op.sea) {
+      const loaded = loadTransport(ctx, pid, there);
+      if (loaded.size > 0) {
+        there = there.filter((m) => !loaded.has(m.u.id));
+        op.units = op.units.filter((id) => !loaded.has(id));
+        if (there.length === 0) {
+          for (const id of op.units) ctx.opUnits.delete(id);
+          delete ctx.ops[pid];
+          ctx.aimed.add(pid);
+          continue;
+        }
+      }
     }
     if (ctx.paths <= 0) continue;
     const city = cityPoint(state, pid);

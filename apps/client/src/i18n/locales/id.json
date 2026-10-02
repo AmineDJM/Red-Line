@@ -361,7 +361,9 @@
       "owner": "Negara",
       "multi_other": "{{count}} dipilih",
       "ready": "Tersedia dalam",
-      "ammo": "Amunisi"
+      "ammo": "Amunisi",
+      "aboard": "Di atas kapal",
+      "loading": "Naik kapal"
     },
     "orders": {
       "moveTitle": "Perintah bergerak",
@@ -399,6 +401,15 @@
       "patrolTitle": "Perintah patroli",
       "reconTitle": "Misi pengintaian",
       "blockadeTitle": "Perintah blokade",
+      "escortTitle": "Kawal",
+      "embarkTitle": "Naikkan",
+      "disembarkTitle": "Pendaratan amfibi",
+      "disembarkHereTitle": "Turunkan di sini",
+      "places": "Tempat",
+      "placesValue": "{{need}} diperlukan · {{free}} kosong",
+      "aboard": "Pasukan di atas kapal",
+      "overCapacity": "Kapasitas terlampaui: pecah pasukan.",
+      "noCapturer": "Tidak ada unit dalam pilihan ini yang dapat merebut: perlu infanteri atau lapis baja.",
       "radius": "Radius",
       "reasons": {
         "target_invalid": "Sasaran tidak valid.",
@@ -412,7 +423,20 @@
         "aircraft_cooldown": "Pesawat sedang disiapkan di darat (siap dalam {{min}} menit).",
         "partial": "Perintah dikirim; {{count}} satuan dikecualikan: {{detail}}",
         "munition_use_strike": "Amunisi: gunakan perintah serangan.",
-        "ceasefire": "Gencatan senjata berlaku."
+        "ceasefire": "Gencatan senjata berlaku.",
+        "escort_self": "Pasukan tidak dapat mengawal dirinya sendiri.",
+        "escort_target_invalid": "Sasaran kawalan tidak valid: pilih salah satu pasukan bergerak Anda.",
+        "escort_incapable": "{{name}} tidak dapat mengawal (tanpa senjata).",
+        "escort_domain": "{{name}} tidak dapat mengikuti pasukan ini (kapal dengan kapal, pasukan darat dengan pasukan darat).",
+        "transport_not_ship": "{{name}} tidak dapat mengangkut pasukan.",
+        "transport_not_land": "{{name}}: hanya pasukan darat yang dapat naik kapal.",
+        "transport_capacity": "Kapasitas terlampaui: perlu {{need}} tempat, {{free}} kosong dari {{cap}}. Pecah pasukan.",
+        "transport_too_far": "{{name}}: terlalu jauh dari kapal ({{dist}} km, paling jauh {{max}} km).",
+        "transport_moving": "Kapal harus berhenti.",
+        "transport_no_shore": "Tidak ada pantai yang dapat digunakan di dekatnya: dekatkan kapal ke pelabuhan atau jalan pesisir.",
+        "transport_empty": "Tidak satu pun pasukan ini berada di atas kapal.",
+        "transport_embarked": "{{name}}: pasukan di atas kapal, gunakan \"Turunkan\" pada kapal.",
+        "transport_busy": "{{name}}: sudah dalam pengangkutan."
       },
       "classes": {
         "infantry": "infanteri",
@@ -486,6 +510,9 @@
       "patrol": "Patroli",
       "recon": "Pengintaian",
       "blockade": "Blokade",
+      "escort": "Kawal",
+      "embark": "Naikkan",
+      "disembark": "Turunkan",
       "rtb": "Kembali",
       "rtbAir": "Kembali ke pangkalan",
       "rtbSea": "Kembali ke pelabuhan",
@@ -499,6 +526,10 @@
         "airSeaOnly": "Patroli hanya untuk pesawat dan kapal.",
         "noRecon": "Pengintaian hanya untuk drone dan pesawat intai.",
         "seaOnly": "Blokade hanya untuk kapal.",
+        "noEscort": "Pengawalan hanya untuk unit bersenjata dan bergerak.",
+        "noLand": "Hanya pasukan darat yang dapat naik kapal.",
+        "noTransport": "Tidak ada kapal angkut kawan yang berhenti di dekatnya.",
+        "noCargo": "Tidak ada pasukan di atas kapal ini.",
         "idle": "Tidak ada yang dihentikan: satuan sudah diam.",
         "none": "Aksi tidak tersedia."
       },
@@ -510,9 +541,28 @@
         "patrol": "klik pusat area patroli.",
         "recon": "klik area yang akan diterbangi.",
         "blockade": "klik provinsi pesisir musuh.",
+        "escort": "klik salah satu pasukan Anda untuk dikawal.",
+        "embark": "klik kapal angkut.",
+        "disembark": "klik pantai tempat mendarat, atau kapal untuk menurunkan di tempat.",
         "needEnemy": "Pilih satuan musuh yang terlihat.",
-        "needPort": "Pilih provinsi pesisir asing."
+        "needPort": "Pilih provinsi pesisir asing.",
+        "needFriendly": "Pilih salah satu pasukan Anda.",
+        "needTransport": "Pilih salah satu kapal angkut Anda."
       }
+    },
+    "capture": {
+      "progress": "Merebut {{city}}",
+      "noCapturer": "{{city}}: pasukan ini tidak dapat merebut (perlu infanteri atau lapis baja).",
+      "noWar": "{{city}}: tidak berperang dengan pemiliknya, tidak ada perebutan.",
+      "defended": "{{city}}: ada pasukan bertahan, perebutan dimulai setelah mereka diusir."
+    },
+    "cargo": {
+      "title": "Muatan",
+      "places": "{{used}} / {{capacity}} tempat",
+      "empty": "Tidak ada pasukan di atas kapal.",
+      "loading": "naik kapal",
+      "landing": "Mendarat dalam {{eta}}",
+      "sailing": "Menyeberang ke zona pendaratan"
     }
   },
   "province": {
@@ -3402,6 +3452,31 @@
       "agentExpelled": {
         "title": "Diplomat diusir",
         "text": "{{host}} mengusir diplomat {{owner}} karena spionase."
+      },
+      "troopsEmbarked": {
+        "title": "Pasukan naik kapal",
+        "text": "{{system}} di atas {{ship}}."
+      },
+      "troopsLanded": {
+        "title": "Pasukan mendarat",
+        "text_other": "{{count}} pasukan didaratkan: {{place}}."
+      },
+      "troopsLandedContested": {
+        "title": "Pendaratan di bawah tembakan",
+        "text_other": "{{count}} pasukan didaratkan di bawah tembakan: {{place}}."
+      },
+      "transportSunk": {
+        "title": "Kapal angkut tenggelam",
+        "text_other": "{{system}} hilang bersama {{count}} pasukan di atasnya."
+      },
+      "escortEnded": {
+        "title": "Pengawalan berakhir",
+        "text": "{{system}}: pasukan yang dikawal sudah tidak ada."
+      },
+      "captureBlocked": {
+        "title": "Perebutan mustahil",
+        "noCapturer": "{{system}} tidak dapat merebut {{place}}: perlu infanteri atau lapis baja.",
+        "noWar": "Tidak berperang dengan pemilik {{place}}: tidak ada perebutan."
       }
     }
   }

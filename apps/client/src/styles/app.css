@@ -1247,6 +1247,58 @@ code {
   margin-inline-start: 4px;
   color: var(--rl-text);
 }
+/* Capture vue depuis la pile : progression, ou raison d'une capture impossible. */
+.selpanel__capture {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 8px 10px;
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  border-radius: var(--rl-radius-sm);
+  background: rgba(139, 92, 246, 0.1);
+  font-size: var(--rl-fs-xs);
+}
+.selpanel__capture--blocked {
+  flex-direction: row;
+  align-items: center;
+  border-color: rgba(255, 176, 32, 0.4);
+  background: rgba(255, 176, 32, 0.08);
+  color: var(--rl-text-dim);
+}
+/* Cargaison d'un navire de transport. */
+.selpanel__cargo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid var(--rl-line);
+  border-radius: var(--rl-radius-sm);
+  font-size: var(--rl-fs-xs);
+}
+.selpanel__cargohead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.selpanel__cargolist {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.selpanel__cargolist li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.selpanel__cargo--loading {
+  color: var(--rl-text-dim);
+}
 .selpanel__stance {
   display: flex;
   align-items: center;

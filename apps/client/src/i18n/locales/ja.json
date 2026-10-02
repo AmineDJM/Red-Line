@@ -361,7 +361,9 @@
       "owner": "国",
       "multi_other": "{{count}} 選択中",
       "ready": "使用可能まで",
-      "ammo": "弾薬"
+      "ammo": "弾薬",
+      "aboard": "乗艦先",
+      "loading": "乗艦中"
     },
     "orders": {
       "moveTitle": "移動命令",
@@ -399,6 +401,15 @@
       "patrolTitle": "哨戒命令",
       "reconTitle": "偵察任務",
       "blockadeTitle": "封鎖命令",
+      "escortTitle": "護衛",
+      "embarkTitle": "乗艦",
+      "disembarkTitle": "上陸作戦",
+      "disembarkHereTitle": "この場で揚陸",
+      "places": "収容枠",
+      "placesValue": "必要 {{need}} · 空き {{free}}",
+      "aboard": "乗艦中の部隊",
+      "overCapacity": "収容量超過：部隊を分割してください。",
+      "noCapturer": "選択中の部隊はいずれも占領できません：歩兵または機甲が必要です。",
       "radius": "半径",
       "reasons": {
         "target_invalid": "無効な目標です。",
@@ -412,7 +423,20 @@
         "aircraft_cooldown": "機体は地上で整備中です（{{min}} 分後に準備完了）。",
         "partial": "命令を送信しました。{{count}} 部隊を除外：{{detail}}",
         "munition_use_strike": "弾薬：打撃命令を使用してください。",
-        "ceasefire": "停戦が発効中です。"
+        "ceasefire": "停戦が発効中です。",
+        "escort_self": "部隊は自分自身を護衛できません。",
+        "escort_target_invalid": "無効な護衛対象です：自軍の移動可能な部隊を選んでください。",
+        "escort_incapable": "{{name}} は護衛できません（武装なし）。",
+        "escort_domain": "{{name}} はこの部隊に随伴できません（艦は艦と、部隊は部隊と）。",
+        "transport_not_ship": "{{name}} は部隊を輸送できません。",
+        "transport_not_land": "{{name}}：乗艦できるのは地上部隊のみです。",
+        "transport_capacity": "収容量超過：必要 {{need}} 枠、{{cap}} 枠中空き {{free}} 枠。部隊を分割してください。",
+        "transport_too_far": "{{name}}：艦から遠すぎます（{{dist}} km、最大 {{max}} km）。",
+        "transport_moving": "艦は停止している必要があります。",
+        "transport_no_shore": "近くに使える海岸がありません：艦を港か沿岸道路に近づけてください。",
+        "transport_empty": "これらの部隊はいずれも乗艦していません。",
+        "transport_embarked": "{{name}}：部隊は乗艦中です。艦の「揚陸」を使ってください。",
+        "transport_busy": "{{name}}：すでに輸送中です。"
       },
       "classes": {
         "infantry": "歩兵",
@@ -486,6 +510,9 @@
       "patrol": "哨戒",
       "recon": "偵察",
       "blockade": "封鎖",
+      "escort": "護衛",
+      "embark": "乗艦",
+      "disembark": "揚陸",
       "rtb": "帰還",
       "rtbAir": "基地へ帰還",
       "rtbSea": "港へ帰還",
@@ -499,6 +526,10 @@
         "airSeaOnly": "哨戒は航空機と艦艇のみです。",
         "noRecon": "偵察はドローンと偵察機のみです。",
         "seaOnly": "封鎖は艦艇のみです。",
+        "noEscort": "護衛は武装した移動可能な部隊のみです。",
+        "noLand": "乗艦できるのは地上部隊のみです。",
+        "noTransport": "近くに停止中の味方輸送艦がありません。",
+        "noCargo": "この艦には部隊が乗っていません。",
         "idle": "停止対象なし：部隊はすでに停止しています。",
         "none": "実行できません。"
       },
@@ -510,9 +541,28 @@
         "patrol": "哨戒区域の中心をクリックしてください。",
         "recon": "上空を飛行する区域をクリックしてください。",
         "blockade": "敵の沿岸州をクリックしてください。",
+        "escort": "護衛する自軍部隊をクリックしてください。",
+        "embark": "輸送艦をクリックしてください。",
+        "disembark": "上陸する海岸をクリックするか、艦をクリックしてその場で揚陸します。",
         "needEnemy": "視認できる敵部隊を選んでください。",
-        "needPort": "外国の沿岸州を選んでください。"
+        "needPort": "外国の沿岸州を選んでください。",
+        "needFriendly": "自軍の部隊を選んでください。",
+        "needTransport": "自軍の輸送艦を選んでください。"
       }
+    },
+    "capture": {
+      "progress": "{{city}} を占領中",
+      "noCapturer": "{{city}}：この部隊は占領できません（歩兵または機甲が必要）。",
+      "noWar": "{{city}}：所有国と戦争状態にないため占領できません。",
+      "defended": "{{city}}：守備隊がいます。排除後に占領が始まります。"
+    },
+    "cargo": {
+      "title": "積載",
+      "places": "{{used}} / {{capacity}} 枠",
+      "empty": "乗艦している部隊はありません。",
+      "loading": "乗艦中",
+      "landing": "{{eta}} 後に揚陸",
+      "sailing": "上陸地点へ航行中"
     }
   },
   "province": {
@@ -3402,6 +3452,31 @@
       "agentExpelled": {
         "title": "外交官追放",
         "text": "{{host}} がスパイ行為を理由に {{owner}} の外交官を追放。"
+      },
+      "troopsEmbarked": {
+        "title": "部隊が乗艦",
+        "text": "{{system}} が {{ship}} に乗艦。"
+      },
+      "troopsLanded": {
+        "title": "部隊が揚陸",
+        "text_other": "{{count}} 個部隊が揚陸：{{place}}。"
+      },
+      "troopsLandedContested": {
+        "title": "砲火下の上陸",
+        "text_other": "{{count}} 個部隊が砲火下で揚陸：{{place}}。"
+      },
+      "transportSunk": {
+        "title": "輸送艦撃沈",
+        "text_other": "{{system}} が乗艦中の {{count}} 個部隊とともに失われました。"
+      },
+      "escortEnded": {
+        "title": "護衛終了",
+        "text": "{{system}}：護衛対象の部隊がいなくなりました。"
+      },
+      "captureBlocked": {
+        "title": "占領不可",
+        "noCapturer": "{{system}} は {{place}} を占領できません：歩兵または機甲が必要です。",
+        "noWar": "{{place}} の所有国と戦争状態にないため占領できません。"
       }
     }
   }

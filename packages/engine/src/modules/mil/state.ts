@@ -54,6 +54,35 @@ export interface MissionSt {
   tk: UnitId | null;
   /** Version de la veille (patrouille) : invalide les événements de veille programmés. */
   sv: number;
+  /** Escorte : pile amie suivie et protégée (mission 'escort'). Absent des anciennes sauvegardes. */
+  esc?: UnitId | null;
+  /** Escorte : version du trajet de la pile protégée au dernier recalage de la formation. */
+  etv?: number;
+  /** Escorte d'un aéronef : il a décollé (posé ensuite ⇒ fin de l'escorte). */
+  etu?: boolean;
+}
+
+/** Embarquement en cours d'une pile terrestre sur un navire de transport. */
+export interface LoadSt {
+  /** Navire porteur. */
+  s: UnitId;
+  /** Fin prévue. */
+  at: GameTime;
+  /** Versions des trajets (pile, navire) à l'ordre : tout mouvement annule l'embarquement. */
+  umv: number;
+  smv: number;
+}
+
+/** Débarquement d'un navire de transport (traversée puis mise à terre). */
+export interface LandSt {
+  /** Point de mise à terre (sur le réseau de routes ou la côte). */
+  to: LngLat;
+  /** Piles à débarquer (toute la cargaison par défaut). */
+  ids: UnitId[];
+  /** Fin de la mise à terre (null pendant la traversée). */
+  at: GameTime | null;
+  /** Version du trajet du navire (traversée, puis arrêt pendant la mise à terre). */
+  mv: number;
 }
 
 /** Salve de missiles en vol (unité de rôle 'missile'). */
@@ -308,6 +337,15 @@ export interface MilState {
   cf: Record<string, number>;
   /** Zones d'exclusion vues (empreinte). */
   nf: string;
+  // ——— Transport naval (optionnels : absents des anciennes sauvegardes) ———
+  /** Pile terrestre embarquée → navire porteur. */
+  tr?: Record<UnitId, UnitId>;
+  /** Pile terrestre en cours d'embarquement. */
+  trl?: Record<UnitId, LoadSt>;
+  /** Navire → débarquement en cours. */
+  tru?: Record<UnitId, LandSt>;
+  /** Pile débarquée sous le feu → fin du malus de débarquement. */
+  lnd?: Record<UnitId, GameTime>;
 }
 
 export function emptyMil(): MilState {

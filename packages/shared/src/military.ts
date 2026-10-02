@@ -45,6 +45,8 @@ export interface MissionView {
   readyAt?: GameTime | null;
   /** Munitions restantes : cellules de lancement ou magasin d'intercepteurs. */
   ammo?: number | null;
+  /** Escorte : pile amie suivie et protégée. */
+  escortId?: UnitId | null;
 }
 
 // ——— Opérations combinées (heure H) ———

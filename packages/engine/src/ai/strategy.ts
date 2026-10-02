@@ -110,6 +110,24 @@ interface Memory {
   ops?: Record<ProvinceId, Operation>;
   /** Guerres contre d'autres IA : ennemi → [état du front, depuis] (enlisement). */
   front?: Record<NationId, [number, number]>;
+  /** Transports de troupes en cours (débarquements par navire de transport), par navire. */
+  tr?: Record<string, TransportOp>;
+}
+
+/**
+ * Débarquement par navire de transport : le navire rejoint le port de rassemblement ('come'), les
+ * troupes embarquent ('load'), il traverse et les met à terre ('sail'), puis elles marchent sur la ville.
+ */
+export interface TransportOp {
+  /** Province visée. */
+  pid: ProvinceId;
+  /** Piles embarquées. */
+  units: string[];
+  ph: 'come' | 'load' | 'sail';
+  /** Point de mer du rendez-vous. */
+  at: LngLat;
+  /** Abandon au-delà (navire jamais arrivé). */
+  until: number;
 }
 
 /** Menace contre un joueur humain. */
@@ -222,6 +240,18 @@ export function clearOperations(state: EngineState, n: NationId): void {
   const s = (state.mods as Record<string, unknown>).ai as AiState | undefined;
   const m = s?.mem[n];
   if (m?.ops) delete m.ops;
+}
+
+/** Transports de troupes en cours d'une nation (mémoire de l'IA, sérialisée). */
+export function transportOps(
+  state: EngineState,
+  n: NationId,
+  create: boolean,
+): Record<string, TransportOp> | undefined {
+  const m = memory(state, n);
+  if (create) m.tr ??= {};
+  else if (m.tr && Object.keys(m.tr).length === 0) delete m.tr;
+  return m.tr;
 }
 
 /** Opérations offensives en cours d'une nation (mémoire de l'IA, sérialisée). */

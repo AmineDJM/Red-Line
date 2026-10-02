@@ -373,7 +373,9 @@
       "multi_many": "{{count}} seleccionadas",
       "multi_other": "{{count}} seleccionadas",
       "ready": "Disponible en",
-      "ammo": "Munición"
+      "ammo": "Munición",
+      "aboard": "A bordo de",
+      "loading": "Embarque"
     },
     "orders": {
       "moveTitle": "Orden de movimiento",
@@ -411,6 +413,15 @@
       "patrolTitle": "Orden de patrulla",
       "reconTitle": "Misión de reconocimiento",
       "blockadeTitle": "Orden de bloqueo",
+      "escortTitle": "Escoltar",
+      "embarkTitle": "Embarcar",
+      "disembarkTitle": "Desembarco anfibio",
+      "disembarkHereTitle": "Desembarcar aquí",
+      "places": "Plazas",
+      "placesValue": "{{need}} necesarias · {{free}} libres",
+      "aboard": "Unidades a bordo",
+      "overCapacity": "Capacidad superada: divide la unidad.",
+      "noCapturer": "Ninguna unidad de esta selección puede capturar: se necesita infantería o blindados.",
       "radius": "Radio",
       "reasons": {
         "target_invalid": "Objetivo no válido.",
@@ -424,7 +435,20 @@
         "aircraft_cooldown": "Aeronave en preparación en tierra (lista en {{min}} min).",
         "partial": "Orden enviada; {{count}} pila(s) descartada(s): {{detail}}",
         "munition_use_strike": "Municiones: use la orden de golpe.",
-        "ceasefire": "Alto el fuego en vigor."
+        "ceasefire": "Alto el fuego en vigor.",
+        "escort_self": "Una unidad no puede escoltarse a sí misma.",
+        "escort_target_invalid": "Objetivo de escolta no válido: elige una de tus unidades móviles.",
+        "escort_incapable": "{{name}} no puede escoltar (sin armas).",
+        "escort_domain": "{{name}} no puede seguir a esta unidad (buques con buques, tropas con tropas).",
+        "transport_not_ship": "{{name}} no puede transportar tropas.",
+        "transport_not_land": "{{name}}: solo embarcan tropas terrestres.",
+        "transport_capacity": "Capacidad superada: {{need}} plazas necesarias, {{free}} libres de {{cap}}. Divide la unidad.",
+        "transport_too_far": "{{name}}: demasiado lejos del buque ({{dist}} km, {{max}} km como máximo).",
+        "transport_moving": "El buque debe estar detenido.",
+        "transport_no_shore": "No hay costa practicable cerca: acerca el buque a un puerto o a una carretera costera.",
+        "transport_empty": "Ninguna de estas tropas está a bordo.",
+        "transport_embarked": "{{name}}: tropas a bordo, usa «Desembarcar» en el buque.",
+        "transport_busy": "{{name}}: ya en transporte."
       },
       "classes": {
         "infantry": "infantería",
@@ -498,6 +522,9 @@
       "patrol": "Patrullar",
       "recon": "Reconocimiento",
       "blockade": "Bloqueo",
+      "escort": "Escoltar",
+      "embark": "Embarcar",
+      "disembark": "Desembarcar",
       "rtb": "Regreso",
       "rtbAir": "Volver a la base",
       "rtbSea": "Volver a puerto",
@@ -511,6 +538,10 @@
         "airSeaOnly": "Patrulla reservada a aeronaves y buques.",
         "noRecon": "Reconocimiento reservado a drones y aviones de reconocimiento.",
         "seaOnly": "Bloqueo reservado a los buques.",
+        "noEscort": "La escolta está reservada a unidades armadas y móviles.",
+        "noLand": "El embarque está reservado a tropas terrestres.",
+        "noTransport": "Ningún buque de transporte aliado detenido cerca.",
+        "noCargo": "No hay tropas a bordo de este buque.",
         "idle": "Nada que detener: unidades ya paradas.",
         "none": "Acción no disponible."
       },
@@ -522,9 +553,28 @@
         "patrol": "haga clic en el centro de la zona de patrulla.",
         "recon": "haga clic en la zona a sobrevolar.",
         "blockade": "haga clic en una provincia costera enemiga.",
+        "escort": "haz clic en una de tus unidades para escoltarla.",
+        "embark": "haz clic en el buque de transporte.",
+        "disembark": "haz clic en la costa donde desembarcar, o en el buque para desembarcar aquí.",
         "needEnemy": "Elija una unidad enemiga visible.",
-        "needPort": "Elija una provincia costera extranjera."
+        "needPort": "Elija una provincia costera extranjera.",
+        "needFriendly": "Elige una de tus unidades.",
+        "needTransport": "Elige uno de tus buques de transporte."
       }
+    },
+    "capture": {
+      "progress": "Captura de {{city}}",
+      "noCapturer": "{{city}}: esta unidad no puede capturar (se requiere infantería o blindados).",
+      "noWar": "{{city}}: sin guerra con su propietario, no hay captura.",
+      "defended": "{{city}}: hay defensores, la captura comenzará cuando sean expulsados."
+    },
+    "cargo": {
+      "title": "Carga",
+      "places": "{{used}} / {{capacity}} plazas",
+      "empty": "No hay tropas a bordo.",
+      "loading": "embarcando",
+      "landing": "Desembarco en {{eta}}",
+      "sailing": "Travesía hacia la zona de desembarco"
     }
   },
   "province": {
@@ -3496,6 +3546,37 @@
       "agentExpelled": {
         "title": "Diplomáticos expulsados",
         "text": "{{host}} expulsa a diplomáticos de {{owner}} por espionaje."
+      },
+      "troopsEmbarked": {
+        "title": "Tropas embarcadas",
+        "text": "{{system}} a bordo de {{ship}}."
+      },
+      "troopsLanded": {
+        "title": "Tropas desembarcadas",
+        "text_one": "{{count}} unidad desembarcada: {{place}}.",
+        "text_many": "{{count}} unidades desembarcadas: {{place}}.",
+        "text_other": "{{count}} unidades desembarcadas: {{place}}."
+      },
+      "troopsLandedContested": {
+        "title": "Desembarco bajo fuego",
+        "text_one": "{{count}} unidad desembarcada bajo fuego: {{place}}.",
+        "text_many": "{{count}} unidades desembarcadas bajo fuego: {{place}}.",
+        "text_other": "{{count}} unidades desembarcadas bajo fuego: {{place}}."
+      },
+      "transportSunk": {
+        "title": "Transporte hundido",
+        "text_one": "{{system}} perdido con {{count}} unidad a bordo.",
+        "text_many": "{{system}} perdido con {{count}} unidades a bordo.",
+        "text_other": "{{system}} perdido con {{count}} unidades a bordo."
+      },
+      "escortEnded": {
+        "title": "Escolta terminada",
+        "text": "{{system}}: la unidad escoltada ya no está."
+      },
+      "captureBlocked": {
+        "title": "Captura imposible",
+        "noCapturer": "{{system}} no puede capturar {{place}}: se necesita infantería o blindados.",
+        "noWar": "Sin guerra con el propietario de {{place}}: no hay captura."
       }
     }
   }

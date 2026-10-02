@@ -379,7 +379,9 @@
       "multi_many": "{{count}} zaznaczonych",
       "multi_other": "{{count}} zaznaczonych",
       "ready": "Dostępne za",
-      "ammo": "Amunicja"
+      "ammo": "Amunicja",
+      "aboard": "Na pokładzie",
+      "loading": "Załadunek"
     },
     "orders": {
       "moveTitle": "Rozkaz przemieszczenia",
@@ -417,6 +419,15 @@
       "patrolTitle": "Rozkaz patrolu",
       "reconTitle": "Misja rozpoznawcza",
       "blockadeTitle": "Rozkaz blokady",
+      "escortTitle": "Eskortuj",
+      "embarkTitle": "Zaokrętuj",
+      "disembarkTitle": "Desant morski",
+      "disembarkHereTitle": "Wysadź tutaj",
+      "places": "Miejsca",
+      "placesValue": "potrzeba {{need}} · wolne {{free}}",
+      "aboard": "Oddziały na pokładzie",
+      "overCapacity": "Przekroczona pojemność: podziel oddział.",
+      "noCapturer": "Żadna jednostka z tego zaznaczenia nie może zdobywać: potrzebna piechota lub pojazdy pancerne.",
       "radius": "Promień",
       "reasons": {
         "target_invalid": "Nieprawidłowy cel.",
@@ -430,7 +441,20 @@
         "aircraft_cooldown": "Statek powietrzny w obsłudze naziemnej (gotowy za {{min}} min).",
         "partial": "Rozkaz wysłany; pominięto {{count}} oddział(y): {{detail}}",
         "munition_use_strike": "Amunicja: użyj rozkazu uderzenia.",
-        "ceasefire": "Obowiązuje zawieszenie broni."
+        "ceasefire": "Obowiązuje zawieszenie broni.",
+        "escort_self": "Oddział nie może eskortować samego siebie.",
+        "escort_target_invalid": "Nieprawidłowy cel eskorty: wybierz jeden ze swoich ruchomych oddziałów.",
+        "escort_incapable": "{{name}} nie może eskortować (brak uzbrojenia).",
+        "escort_domain": "{{name}} nie może podążać za tym oddziałem (okręty z okrętami, wojska z wojskami).",
+        "transport_not_ship": "{{name}} nie może przewozić wojsk.",
+        "transport_not_land": "{{name}}: zaokrętować można tylko wojska lądowe.",
+        "transport_capacity": "Przekroczona pojemność: potrzeba {{need}} miejsc, wolne {{free}} z {{cap}}. Podziel oddział.",
+        "transport_too_far": "{{name}}: za daleko od okrętu ({{dist}} km, najwyżej {{max}} km).",
+        "transport_moving": "Okręt musi stać.",
+        "transport_no_shore": "W pobliżu nie ma dogodnego brzegu: podprowadź okręt do portu lub drogi przybrzeżnej.",
+        "transport_empty": "Żadne z tych wojsk nie jest na pokładzie.",
+        "transport_embarked": "{{name}}: wojska na pokładzie, użyj „Wysadź” na okręcie.",
+        "transport_busy": "{{name}}: już w transporcie."
       },
       "classes": {
         "infantry": "piechota",
@@ -504,6 +528,9 @@
       "patrol": "Patrol",
       "recon": "Rozpoznanie",
       "blockade": "Blokada",
+      "escort": "Eskortuj",
+      "embark": "Zaokrętuj",
+      "disembark": "Wysadź",
       "rtb": "Powrót",
       "rtbAir": "Powrót do bazy",
       "rtbSea": "Powrót do portu",
@@ -517,6 +544,10 @@
         "airSeaOnly": "Patrol tylko dla statków powietrznych i okrętów.",
         "noRecon": "Rozpoznanie tylko dla dronów i samolotów rozpoznawczych.",
         "seaOnly": "Blokada tylko dla okrętów.",
+        "noEscort": "Eskorta tylko dla uzbrojonych, ruchomych jednostek.",
+        "noLand": "Zaokrętować można tylko wojska lądowe.",
+        "noTransport": "W pobliżu nie stoi żaden własny okręt transportowy.",
+        "noCargo": "Na pokładzie tego okrętu nie ma wojsk.",
         "idle": "Nie ma czego zatrzymać: jednostki już stoją.",
         "none": "Akcja niedostępna."
       },
@@ -528,9 +559,28 @@
         "patrol": "kliknij środek strefy patrolu.",
         "recon": "kliknij obszar do przelotu.",
         "blockade": "kliknij wrogą prowincję nadmorską.",
+        "escort": "kliknij jeden ze swoich oddziałów do eskortowania.",
+        "embark": "kliknij okręt transportowy.",
+        "disembark": "kliknij brzeg, na którym wysadzić desant, lub okręt, aby wysadzić na miejscu.",
         "needEnemy": "Wybierz widoczną jednostkę wroga.",
-        "needPort": "Wybierz obcą prowincję nadmorską."
+        "needPort": "Wybierz obcą prowincję nadmorską.",
+        "needFriendly": "Wybierz jeden ze swoich oddziałów.",
+        "needTransport": "Wybierz jeden ze swoich okrętów transportowych."
       }
+    },
+    "capture": {
+      "progress": "Zdobywanie: {{city}}",
+      "noCapturer": "{{city}}: ten oddział nie może zdobywać (potrzebna piechota lub pojazdy pancerne).",
+      "noWar": "{{city}}: brak wojny z właścicielem, brak zdobycia.",
+      "defended": "{{city}}: obecni obrońcy, zdobywanie zacznie się po ich wyparciu."
+    },
+    "cargo": {
+      "title": "Ładunek",
+      "places": "{{used}} / {{capacity}} miejsc",
+      "empty": "Brak wojsk na pokładzie.",
+      "loading": "załadunek",
+      "landing": "Desant za {{eta}}",
+      "sailing": "Przeprawa do strefy desantu"
     }
   },
   "province": {
@@ -3543,6 +3593,40 @@
       "agentExpelled": {
         "title": "Dyplomaci wydaleni",
         "text": "{{host}} wydala dyplomatów {{owner}} za szpiegostwo."
+      },
+      "troopsEmbarked": {
+        "title": "Wojska zaokrętowane",
+        "text": "{{system}} na pokładzie {{ship}}."
+      },
+      "troopsLanded": {
+        "title": "Wojska wysadzone",
+        "text_one": "Wysadzono {{count}} oddział: {{place}}.",
+        "text_few": "Wysadzono {{count}} oddziały: {{place}}.",
+        "text_many": "Wysadzono {{count}} oddziałów: {{place}}.",
+        "text_other": "Wysadzono {{count}} oddziału: {{place}}."
+      },
+      "troopsLandedContested": {
+        "title": "Desant pod ostrzałem",
+        "text_one": "Pod ostrzałem wysadzono {{count}} oddział: {{place}}.",
+        "text_few": "Pod ostrzałem wysadzono {{count}} oddziały: {{place}}.",
+        "text_many": "Pod ostrzałem wysadzono {{count}} oddziałów: {{place}}.",
+        "text_other": "Pod ostrzałem wysadzono {{count}} oddziału: {{place}}."
+      },
+      "transportSunk": {
+        "title": "Transportowiec zatopiony",
+        "text_one": "{{system}} stracony z {{count}} oddziałem na pokładzie.",
+        "text_few": "{{system}} stracony z {{count}} oddziałami na pokładzie.",
+        "text_many": "{{system}} stracony z {{count}} oddziałami na pokładzie.",
+        "text_other": "{{system}} stracony z {{count}} oddziału na pokładzie."
+      },
+      "escortEnded": {
+        "title": "Eskorta zakończona",
+        "text": "{{system}}: eskortowanego oddziału już nie ma."
+      },
+      "captureBlocked": {
+        "title": "Zdobycie niemożliwe",
+        "noCapturer": "{{system}} nie może zdobyć {{place}}: potrzebna piechota lub pojazdy pancerne.",
+        "noWar": "Brak wojny z właścicielem {{place}}: brak zdobycia."
       }
     }
   }

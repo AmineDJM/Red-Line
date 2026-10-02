@@ -373,7 +373,9 @@
       "multi_many": "{{count}} selezionate",
       "multi_other": "{{count}} selezionate",
       "ready": "Disponibile tra",
-      "ammo": "Munizioni"
+      "ammo": "Munizioni",
+      "aboard": "A bordo di",
+      "loading": "Imbarco"
     },
     "orders": {
       "moveTitle": "Ordine di movimento",
@@ -411,6 +413,15 @@
       "patrolTitle": "Ordine di pattuglia",
       "reconTitle": "Missione di ricognizione",
       "blockadeTitle": "Ordine di blocco",
+      "escortTitle": "Scortare",
+      "embarkTitle": "Imbarcare",
+      "disembarkTitle": "Sbarco anfibio",
+      "disembarkHereTitle": "Sbarcare qui",
+      "places": "Posti",
+      "placesValue": "{{need}} necessari · {{free}} liberi",
+      "aboard": "Unità a bordo",
+      "overCapacity": "Capacità superata: dividi l’unità.",
+      "noCapturer": "Nessuna unità di questa selezione può conquistare: servono fanteria o corazzati.",
       "radius": "Raggio",
       "reasons": {
         "target_invalid": "Bersaglio non valido.",
@@ -424,7 +435,20 @@
         "aircraft_cooldown": "Velivolo in approntamento a terra (pronto tra {{min}} min).",
         "partial": "Ordine trasmesso; {{count}} gruppo/i escluso/i: {{detail}}",
         "munition_use_strike": "Munizioni: usate l'ordine di attacco (strike).",
-        "ceasefire": "Cessate il fuoco in vigore."
+        "ceasefire": "Cessate il fuoco in vigore.",
+        "escort_self": "Un’unità non può scortare se stessa.",
+        "escort_target_invalid": "Obiettivo di scorta non valido: scegli una delle tue unità mobili.",
+        "escort_incapable": "{{name}} non può scortare (nessuna arma).",
+        "escort_domain": "{{name}} non può seguire questa unità (navi con navi, truppe con truppe).",
+        "transport_not_ship": "{{name}} non può trasportare truppe.",
+        "transport_not_land": "{{name}}: si imbarcano solo truppe di terra.",
+        "transport_capacity": "Capacità superata: {{need}} posti necessari, {{free}} liberi su {{cap}}. Dividi l’unità.",
+        "transport_too_far": "{{name}}: troppo lontano dalla nave ({{dist}} km, al massimo {{max}} km).",
+        "transport_moving": "La nave deve essere ferma.",
+        "transport_no_shore": "Nessuna costa praticabile vicina: avvicina la nave a un porto o a una strada costiera.",
+        "transport_empty": "Nessuna di queste truppe è a bordo.",
+        "transport_embarked": "{{name}}: truppe a bordo, usa «Sbarcare» sulla nave.",
+        "transport_busy": "{{name}}: già in trasporto."
       },
       "classes": {
         "infantry": "fanteria",
@@ -498,6 +522,9 @@
       "patrol": "Pattuglia",
       "recon": "Ricognizione",
       "blockade": "Blocco",
+      "escort": "Scortare",
+      "embark": "Imbarcare",
+      "disembark": "Sbarcare",
       "rtb": "Rientro",
       "rtbAir": "Rientro alla base",
       "rtbSea": "Rientro in porto",
@@ -511,6 +538,10 @@
         "airSeaOnly": "Pattuglia riservata a velivoli e navi.",
         "noRecon": "Ricognizione riservata a droni e aerei da ricognizione.",
         "seaOnly": "Blocco riservato alle navi.",
+        "noEscort": "Scorta riservata alle unità armate e mobili.",
+        "noLand": "Imbarco riservato alle truppe di terra.",
+        "noTransport": "Nessuna nave da trasporto amica ferma nelle vicinanze.",
+        "noCargo": "Nessuna truppa a bordo di questa nave.",
         "idle": "Niente da fermare: unità già ferme.",
         "none": "Azione non disponibile."
       },
@@ -522,9 +553,28 @@
         "patrol": "fate clic sul centro della zona di pattuglia.",
         "recon": "fate clic sulla zona da sorvolare.",
         "blockade": "fate clic su una provincia costiera nemica.",
+        "escort": "clicca su una delle tue unità da scortare.",
+        "embark": "clicca sulla nave da trasporto.",
+        "disembark": "clicca sulla costa dove sbarcare, o sulla nave per sbarcare sul posto.",
         "needEnemy": "Scegliete un'unità nemica visibile.",
-        "needPort": "Scegliete una provincia costiera straniera."
+        "needPort": "Scegliete una provincia costiera straniera.",
+        "needFriendly": "Scegli una delle tue unità.",
+        "needTransport": "Scegli una delle tue navi da trasporto."
       }
+    },
+    "capture": {
+      "progress": "Conquista di {{city}}",
+      "noCapturer": "{{city}}: questa unità non può conquistare (servono fanteria o corazzati).",
+      "noWar": "{{city}}: nessuna guerra con il proprietario, nessuna conquista.",
+      "defended": "{{city}}: difensori presenti, la conquista inizierà quando saranno respinti."
+    },
+    "cargo": {
+      "title": "Carico",
+      "places": "{{used}} / {{capacity}} posti",
+      "empty": "Nessuna truppa a bordo.",
+      "loading": "imbarco",
+      "landing": "Sbarco tra {{eta}}",
+      "sailing": "Traversata verso la zona di sbarco"
     }
   },
   "province": {
@@ -3496,6 +3546,37 @@
       "agentExpelled": {
         "title": "Diplomatici espulsi",
         "text": "{{host}} espelle diplomatici di {{owner}} per spionaggio."
+      },
+      "troopsEmbarked": {
+        "title": "Truppe imbarcate",
+        "text": "{{system}} a bordo di {{ship}}."
+      },
+      "troopsLanded": {
+        "title": "Truppe sbarcate",
+        "text_one": "{{count}} unità sbarcata: {{place}}.",
+        "text_many": "{{count}} unità sbarcate: {{place}}.",
+        "text_other": "{{count}} unità sbarcate: {{place}}."
+      },
+      "troopsLandedContested": {
+        "title": "Sbarco sotto il fuoco",
+        "text_one": "{{count}} unità sbarcata sotto il fuoco: {{place}}.",
+        "text_many": "{{count}} unità sbarcate sotto il fuoco: {{place}}.",
+        "text_other": "{{count}} unità sbarcate sotto il fuoco: {{place}}."
+      },
+      "transportSunk": {
+        "title": "Trasporto affondato",
+        "text_one": "{{system}} perso con {{count}} unità a bordo.",
+        "text_many": "{{system}} perso con {{count}} unità a bordo.",
+        "text_other": "{{system}} perso con {{count}} unità a bordo."
+      },
+      "escortEnded": {
+        "title": "Scorta terminata",
+        "text": "{{system}}: l’unità scortata non c’è più."
+      },
+      "captureBlocked": {
+        "title": "Conquista impossibile",
+        "noCapturer": "{{system}} non può conquistare {{place}}: servono fanteria o corazzati.",
+        "noWar": "Nessuna guerra con il proprietario di {{place}}: nessuna conquista."
       }
     }
   }

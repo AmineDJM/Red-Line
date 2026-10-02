@@ -10,6 +10,7 @@ import { operationsFor } from './ops.js';
 import { satellitesFor } from './sensors.js';
 import { blockadedProvinces, blockadesView } from './special.js';
 import { mil } from './state.js';
+import { cargoView } from './transport.js';
 import { cellsLeft } from './strike.js';
 import { launchCells, posOf } from './util.js';
 
@@ -84,7 +85,20 @@ function decorateOwn(state: EngineState, u: Unit, v: UnitView): void {
   if (st) v.missile = { target: st.target, impactAt: st.impactAt };
   if (u.role === 'decoy') v.decoy = true;
   const ms = m.ms[u.id];
-  if (ms?.emb) {
+  if (ms?.esc && ms.mis === 'escort')
+    v.mission = { ...(v.mission ?? { kind: 'escort' }), escortId: ms.esc };
+  const cargo = cargoView(state, u);
+  if (cargo) v.cargo = cargo;
+  const load = m.trl?.[u.id];
+  if (load) v.loading = { transportId: load.s, doneAt: load.at };
+  const ship = m.tr?.[u.id] ? state.units[m.tr[u.id]!] : undefined;
+  if (ship) {
+    v.status = 'embarked';
+    v.transportId = ship.id;
+    v.pos = ship.pos;
+    if (ship.move) v.move = ship.move;
+    else delete v.move;
+  } else if (ms?.emb) {
     const c = state.units[ms.emb];
     v.status = 'embarked';
     if (c) {
