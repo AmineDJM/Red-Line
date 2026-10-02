@@ -64,7 +64,8 @@
       "battles": "Gefechte",
       "chat": "Chat",
       "shop": "Shop",
-      "settings": "Optionen"
+      "settings": "Optionen",
+      "command": "HQ"
     },
     "path": {
       "armies": "Meine Armeen",
@@ -79,8 +80,10 @@
       "battles": "Gefechte",
       "chat": "Chat",
       "shop": "Shop",
-      "settings": "Einstellungen"
-    }
+      "settings": "Einstellungen",
+      "command": "HQ"
+    },
+    "command": "Kommandozentrale"
   },
   "home": {
     "title": "Red Line",
@@ -2103,7 +2106,8 @@
       "marketSales": "Marktverkäufe",
       "transfersIn": "Erhaltene Abtretungen",
       "transfersOut": "Gewährte Abtretungen",
-      "other": "Sonstiges (Nachrichtendienst, Allianz…)"
+      "other": "Sonstiges (Nachrichtendienst, Allianz…)",
+      "command": "Generäle und Stäbe"
     },
     "constructionHint": "Bauen Sie ein Gebäude aus oder errichten Sie ein neues über den Reiter Gebäude oder das Provinzfenster.",
     "provincesTitle": "Provinzen",
@@ -3307,6 +3311,424 @@
     "machine": "Automatisch erzeugte Übersetzungen, militärische Begriffe geprüft.",
     "fallback": "Einige Texte bleiben auf Französisch."
   },
+  "command": {
+    "unavailable": "Die Kommandozentrale ist in dieser Partie nicht verfügbar.",
+    "selection": {
+      "army": "Armee",
+      "open": "Armee in der Kommandozentrale öffnen"
+    },
+    "armiesLink": {
+      "title": "Kommandozentrale",
+      "text": " — Stellen Sie Armeen auf, erteilen Sie ihnen einen Auftrag und stellen Sie Generäle ein, die sie für Sie führen.",
+      "open": "Öffnen"
+    },
+    "tabs": {
+      "armies": "Armeen",
+      "generals": "Generäle"
+    },
+    "kpi": {
+      "armies": "Armeen",
+      "active": "Im Einsatz",
+      "generals": "Generäle",
+      "payroll": "Sold / Tag",
+      "requests": "Anfragen"
+    },
+    "newArmy": "Neue Armee",
+    "full": "Höchstzahl von {{max}} Armeen erreicht: Lösen Sie eine auf, um eine neue aufzustellen.",
+    "emptyTitle": "Keine Armee",
+    "emptyText": "Stellen Sie aus Ihren Stapeln eine Armee auf, erteilen Sie ihr einen Auftrag und wählen Sie einen General: Er führt sie für Sie.",
+    "onboard": {
+      "title": "So funktioniert es",
+      "compose": "Fassen Sie Land-, Luft- oder Seestapel zu einer benannten Armee zusammen.",
+      "mission": "Erteilen Sie ihr eine Mission: Ziel auf der Karte, Aggressivität, Einsatzregeln, Rückzugsschwelle.",
+      "general": "Wählen Sie den General, der sie führt: Seine Fähigkeiten lenken seine Entscheidungen, er wird täglich bezahlt."
+    },
+    "pickTitle": "Wählen Sie eine Armee",
+    "pickText": "Auftrag, General, Zusammensetzung und Lagebuch des Generals erscheinen hier.",
+    "back": "Armeen",
+    "noMission": "Ohne Auftrag",
+    "noGeneral": "Ohne General",
+    "zoneShort": "Zone von {{km}} km",
+    "piles_one": "{{count}} Stapel",
+    "piles_other": "{{count}} Stapel",
+    "status": {
+      "idle": "Ohne Auftrag",
+      "passive": "Passiv",
+      "preparing": "Vorbereitung",
+      "active": "Läuft",
+      "awaiting": "Wartet auf Befehl",
+      "success": "Erfolgreich",
+      "failed": "Gescheitert",
+      "suspended": "Ausgesetzt"
+    },
+    "pills": {
+      "health": "Zustand {{pct}} %",
+      "strength": "Stärke {{pct}} % des Ausgangsbestands",
+      "supply": {
+        "supplied": "Logistik: versorgt",
+        "limited": "Logistik: eingeschränkte Versorgung",
+        "cut": "Logistik: abgeschnitten"
+      }
+    },
+    "request": {
+      "badge": "Anfrage",
+      "refuse": "Ablehnen",
+      "accepted": "Antwort an den General übermittelt.",
+      "refused": "Anfrage abgelehnt.",
+      "declare_war": {
+        "title": "Genehmigung zum Kriegseintritt",
+        "text": "Der General bittet um die Genehmigung, die Grenze zu überschreiten: Das bedeutet Krieg gegen {{nation}}.",
+        "accept": "Krieg genehmigen"
+      },
+      "strategic_strike": {
+        "title": "Genehmigung strategischer Schläge",
+        "text": "Der General bittet um die Genehmigung, die Einrichtungen im Hinterland von {{nation}} anzugreifen.",
+        "accept": "Schläge genehmigen"
+      },
+      "reinforce": {
+        "title": "Verstärkungsanfrage",
+        "text_one": "Stärke sinkt: Der General fordert {{count}} freien Stapel in der Nähe an.",
+        "text_other": "Stärke sinkt: Der General fordert {{count}} freie Stapel in der Nähe an.",
+        "accept": "Verstärkung entsenden"
+      }
+    },
+    "detail": {
+      "mission": "Auftrag",
+      "since": "seit {{day}} {{time}}",
+      "noMissionText": "Kein Auftrag: Die Armee wartet auf Ihre Befehle, ihre Stapel bleiben unter Ihrer direkten Führung.",
+      "objective": "Ziel",
+      "retreat": "Rückzug bei {{pct}} %",
+      "general": "General",
+      "noGeneralText": "Ohne General bleibt die Armee passiv: Es wird kein Auftrag ausgeführt.",
+      "composition": "Zusammensetzung",
+      "piles": "Stapel",
+      "doneEditing": "Fertig",
+      "empty": "Kein Stapel.",
+      "manual": "Manuell",
+      "manualHelp": "Stapel unter Ihrem direkten Befehl: Der General übernimmt ihn nach Ende des Befehls wieder.",
+      "manualRule": "Direkter Befehl an einen Stapel: Er hat Vorrang bis zu seinem Ende, dann übernimmt der General den Stapel wieder.",
+      "journal": "Lagebuch des Generals",
+      "journalEmpty": "Der General hat noch nichts gemeldet."
+    },
+    "objective": {
+      "conquer": "Eroberte Provinzen",
+      "landing": "Brückenkopf",
+      "defend": "Gehaltene Städte",
+      "hold_front": "Gehaltene Frontstädte",
+      "air_defense": "Geschützte Städte",
+      "reserve": "Gehaltene Städte",
+      "air_superiority": "Luftraum frei",
+      "sea_control": "See frei",
+      "deep_strike": "Zerstörte Einrichtungen"
+    },
+    "est": {
+      "ratio": "Kräfteverhältnis",
+      "eta": "Geschätzte Dauer",
+      "chance": "Chancen",
+      "source": {
+        "seen": "beobachtete feindliche Kräfte",
+        "estimate": "Schätzung des Nachrichtendienstes",
+        "none": "keine bekannten feindlichen Kräfte"
+      }
+    },
+    "actions": {
+      "showMap": "Auf der Karte zeigen",
+      "rename": "Umbenennen",
+      "reinforce": "Verstärken",
+      "giveMission": "Auftrag erteilen",
+      "changeMission": "Auftrag ändern",
+      "suspend": "Aussetzen",
+      "resume": "Fortsetzen",
+      "dissolve": "Auflösen",
+      "dissolveTitle": "Armee auflösen",
+      "dissolveText": "{{name}} auflösen? Die Stapel bleiben, wo sie sind, unter Ihrer direkten Führung; der General geht in die Reserve (weiterhin bezahlt).",
+      "pickGeneral": "General wählen",
+      "changeGeneral": "Ändern",
+      "removeN_one": "{{count}} Stapel abziehen",
+      "removeN_other": "{{count}} Stapel abziehen"
+    },
+    "reinforce": {
+      "label": "Automatische Verstärkung",
+      "off": "Nie",
+      "ask": "Auf Anfrage",
+      "auto": "Automatisch",
+      "offHelp": "Der General fordert nie Verstärkung an.",
+      "askHelp": "Der General fordert Verstärkung an, wenn seine Stärke sinkt; Sie bestätigen.",
+      "autoHelp": "Der General gliedert selbst freie Stapel in der Nähe ein, wenn seine Stärke sinkt."
+    },
+    "domain": {
+      "all": "Alle",
+      "land": "Land",
+      "air": "Luft",
+      "sea": "See"
+    },
+    "fit": {
+      "partial": "unvollständige Zusammensetzung",
+      "missing": "Teilstreitkraft fehlt"
+    },
+    "aggr": {
+      "label": "Aggressivität",
+      "cautious": "Vorsichtig",
+      "balanced": "Ausgewogen",
+      "bold": "Kühn",
+      "cautiousHelp": "Greift nur bei klarer Überlegenheit an, zieht sich früh zurück, hält Jäger in Reserve.",
+      "balancedHelp": "Vernünftiges Kräfteverhältnis, Rückzug bei halben Verlusten.",
+      "boldHelp": "Greift früher und mehrere Ziele zugleich an, zieht sich spät zurück, alle Jäger in der Luft."
+    },
+    "roe": {
+      "label": "Einsatzregeln",
+      "strict": {
+        "short": "Streng",
+        "help": "Streng: kein Krieg und kein strategischer Schlag ohne Ihre Genehmigung; Verfolgung auf die Zone beschränkt."
+      },
+      "standard": {
+        "short": "Standard",
+        "help": "Standard: Der General bittet Sie um Genehmigung, bevor er einen Krieg beginnt oder das feindliche Hinterland angreift."
+      },
+      "free": {
+        "short": "Frei",
+        "help": "Frei: Der General entscheidet allein, auch über Krieg gegen das Ziel seines Auftrags."
+      }
+    },
+    "retreat": {
+      "label": "Rückzugsschwelle eines Stapels",
+      "never": "nie"
+    },
+    "radius": "Radius",
+    "scope": {
+      "label": "Umfang",
+      "province": "Diese Provinz",
+      "region": "Die Region",
+      "nation": "Das ganze Land"
+    },
+    "target": {
+      "province": "Zielprovinz",
+      "nation": "Nation",
+      "zone": "Zone",
+      "none": "nicht bestimmt",
+      "pick": "Auf der Karte bestimmen",
+      "change": "Ändern",
+      "nationAny": "— Nation —",
+      "own": "Diese Provinz gehört Ihnen bereits: Bestimmen Sie eine fremde Provinz.",
+      "needed": "Bestimmen Sie das Ziel des Auftrags auf der Karte."
+    },
+    "pick": {
+      "target": "Tippen Sie auf die Karte, um das Ziel des Auftrags zu bestimmen.",
+      "units": "Wählen Sie die Stapel auf der Karte aus und bestätigen Sie dann.",
+      "validate": "Bestätigen ({{count}})"
+    },
+    "missions": {
+      "conquer": {
+        "name": "Erobern",
+        "short": "Eroberung",
+        "desc": "Eine Provinz, eine Region oder ein ganzes Land einnehmen."
+      },
+      "defend": {
+        "name": "Verteidigen",
+        "short": "Verteidigung",
+        "desc": "Die Städte einer Zone halten und eindringende Feinde zurückschlagen."
+      },
+      "hold_front": {
+        "name": "Frontlinie halten",
+        "short": "Front",
+        "desc": "Die Kräfte entlang der Grenze verteilen und Durchbrüche im Gegenangriff bereinigen."
+      },
+      "air_superiority": {
+        "name": "Luftüberlegenheit",
+        "short": "Luft",
+        "desc": "Jagdpatrouillen, Radarflugzeug und Unterdrückung der Luftabwehr über einer Zone."
+      },
+      "air_defense": {
+        "name": "Flugabwehr",
+        "short": "Flak",
+        "desc": "Die Städte einer Zone decken: verteilte Boden-Luft-Abwehr, Jäger in Alarmbereitschaft."
+      },
+      "deep_strike": {
+        "name": "Schläge in die Tiefe",
+        "short": "Schläge",
+        "desc": "Die aufgeklärten strategischen Einrichtungen eines Landes zerstören."
+      },
+      "sea_control": {
+        "name": "Seekontrolle und Blockade",
+        "short": "See",
+        "desc": "Ein Seegebiet halten, feindliche Schiffe versenken, Häfen blockieren."
+      },
+      "landing": {
+        "name": "Landung",
+        "short": "Landung",
+        "desc": "Im Hafen sammeln, einschiffen, unter Geleitschutz übersetzen und eine Küste oder Insel nehmen."
+      },
+      "reserve": {
+        "name": "Reserve",
+        "short": "Reserve",
+        "desc": "Im Hintergrund bleiben und Durchbrüche in einem Umkreis im Gegenangriff bereinigen."
+      }
+    },
+    "rank": {
+      "1": "Brigadegeneral",
+      "2": "Generalmajor",
+      "3": "Generalleutnant",
+      "4": "General"
+    },
+    "skills": {
+      "offense": {
+        "label": "Angriff",
+        "help": "Wahl und Zahl der Ziele, Größe der Angriffsgruppen, Schaden im Angriff."
+      },
+      "defense": {
+        "label": "Verteidigung",
+        "help": "Besatzungen, Gegenangriffe, Schutz ruhender Stapel."
+      },
+      "logistics": {
+        "label": "Logistik",
+        "help": "Sammeln und gestaffelte Abmärsche, Routenplanung, Ausdauer und Versorgung."
+      },
+      "air": {
+        "label": "Luftwaffe",
+        "help": "Lufteinsätze, Begleitschutz, Unterdrückung der feindlichen Luftabwehr."
+      },
+      "naval": {
+        "label": "Marine",
+        "help": "Landungen, Geleitschutz zur See, Seekontrolle."
+      },
+      "audacity": {
+        "label": "Kühnheit",
+        "help": "Ein kühner General greift bei schwächerem Kräfteverhältnis an; ein vorsichtiger wartet auf Überlegenheit.",
+        "low": "vorsichtig",
+        "high": "kühn"
+      },
+      "experience": {
+        "label": "Erfahrung",
+        "help": "Weniger Reibung (verzögerte Befehle), stärkere Boni; sie wächst mit den Siegen."
+      }
+    },
+    "traits": {
+      "none": "Kein besonderes Merkmal",
+      "encircler": {
+        "label": "Meister der Einkesselung",
+        "help": "Bevorzugt bereits von seinen Kräften umschlossene Provinzen; ein Ziel mehr pro Lagebeurteilung."
+      },
+      "thrifty": {
+        "label": "Schont Menschenleben",
+        "help": "Verlangt deutlichere Überlegenheit und zieht sich früher zurück."
+      },
+      "reckless": {
+        "label": "Draufgänger",
+        "help": "Greift mit weniger Kräften an, zieht sich spät zurück; mehr Reibung."
+      },
+      "logistician": {
+        "label": "Herausragender Logistiker",
+        "help": "Sammelt immer vor dem Angriff; bessere Ausdauer und Versorgung."
+      },
+      "airman": {
+        "label": "Fliegerass",
+        "help": "Ein Lufteinsatz und ein Begleitschutz mehr pro Lagebeurteilung."
+      },
+      "sailor": {
+        "label": "Alter Seebär",
+        "help": "Ein Geleitschiff mehr."
+      },
+      "fortifier": {
+        "label": "Festungsbauer",
+        "help": "Besserer Schutz ruhender Stapel."
+      },
+      "methodical": {
+        "label": "Methodisch",
+        "help": "Halb so viel Reibung; vor dem Angriff etwas anspruchsvoller."
+      },
+      "blitz": {
+        "label": "Blitzkrieg",
+        "help": "Ein Ziel mehr pro Lagebeurteilung; greift etwas früher an."
+      },
+      "veteran": {
+        "label": "Veteran",
+        "help": "Lernt schnell (Erfahrung ×1,5); etwas höherer Sold."
+      }
+    },
+    "general": {
+      "rating": "Wertung {{value}}",
+      "victories_one": "{{count}} Sieg",
+      "victories_other": "{{count}} Siege",
+      "wounded": "Verwundet",
+      "unpaid_one": "{{count}} unbezahlter Tag",
+      "unpaid_other": "{{count}} unbezahlte Tage",
+      "perDay": "/ Tag",
+      "signing": "Prämie {{value}}",
+      "reserve": "In Reserve",
+      "missionCost": "Geschätzte Kosten des Auftrags",
+      "assign": "Kommando",
+      "hire": "Einstellen ({{value}})",
+      "dismiss": "Entlassen",
+      "dismissTitle": "General entlassen",
+      "dismissText": "{{name}} entlassen? Eine Abfindung von {{value}} wird gezahlt; seine Armee wird passiv.",
+      "dismissConfirm": "Entlassen ({{value}})"
+    },
+    "generals": {
+      "hired": "Ihre Generäle",
+      "yours": "Ihre verfügbaren Generäle",
+      "none": "Kein General eingestellt.",
+      "payroll": "{{value}} / Tag",
+      "pool": "Kandidaten",
+      "poolHint": "Verfügbare Offiziere: Einstellungsprämie von 5 Tagessolden."
+    },
+    "wizard": {
+      "path": "neue Armee",
+      "steps": "Schritte",
+      "step": {
+        "compose": "Zusammenstellen",
+        "mission": "Auftrag",
+        "general": "General"
+      },
+      "name": "Name der Armee",
+      "namePlaceholder": "1. Armee, Luftgruppe Süd, Mittelmeerflotte…",
+      "reinforceLead": "Verstärkung für {{name}}: Wählen Sie freie Stapel.",
+      "filter": "Teilstreitkraft",
+      "useSelection": "Auswahl hinzufügen ({{count}})",
+      "pickOnMap": "Auf der Karte wählen",
+      "clear": "Alle entfernen",
+      "noFree": "Kein freier Stapel: Alle Ihre Stapel gehören bereits zu einer Armee.",
+      "mixed_one": "{{count}} System",
+      "mixed_other": "{{count}} Systeme",
+      "summary": "Armee",
+      "piles": "Stapel",
+      "elements": "Elemente",
+      "value": "Wert",
+      "mission": "Auftrag",
+      "pickMission": "Wählen Sie einen Auftrag.",
+      "missing": "Zu ergänzen",
+      "generalLead": "Wählen Sie den General, der führen wird: Für diesen Auftrag ist die Schlüsselfähigkeit „{{skill}}“.",
+      "costHire": "Prämie {{bonus}}, dann {{day}} / Tag",
+      "costDay": "{{day}} / Tag",
+      "createOnly": "Ohne Auftrag aufstellen",
+      "addPiles_one": "{{count}} Stapel hinzufügen",
+      "addPiles_other": "{{count}} Stapel hinzufügen"
+    },
+    "defaultName": {
+      "landFirst": "1. Armee",
+      "land": "{{n}}. Armee",
+      "airFirst": "Luftgruppe 1",
+      "air": "Luftgruppe {{n}}",
+      "seaFirst": "1. Flotte",
+      "sea": "{{n}}. Flotte"
+    },
+    "toast": {
+      "created": "{{name}} ist aufgestellt.",
+      "reinforced_one": "{{count}} Stapel stößt zur Armee.",
+      "reinforced_other": "{{count}} Stapel stoßen zur Armee.",
+      "removed_one": "{{count}} Stapel aus der Armee abgezogen.",
+      "removed_other": "{{count}} Stapel aus der Armee abgezogen.",
+      "renamed": "Armee umbenannt.",
+      "mission": "Auftrag an den General übermittelt.",
+      "hired": "{{name}} tritt Ihrem Stab bei.",
+      "hiredShort": "General eingestellt.",
+      "assigned": "Kommando übertragen.",
+      "dismissed": "General entlassen.",
+      "dissolved": "Armee aufgelöst.",
+      "suspended": "Auftrag ausgesetzt.",
+      "resumed": "Auftrag fortgesetzt.",
+      "saved": "Einstellung gespeichert."
+    }
+  },
   "engine": {
     "place": {
       "sea": "auf See"
@@ -3579,6 +4001,119 @@
         "title": "Eroberung unmöglich",
         "noCapturer": "{{system}} kann {{place}} nicht erobern: Infanterie oder Panzer erforderlich.",
         "noWar": "Kein Krieg mit dem Besitzer von {{place}}: keine Eroberung."
+      },
+      "cmd_generalResigned": {
+        "title": "Rücktritt",
+        "text": "{{general}} tritt zurück: Sein Sold wird nicht mehr gezahlt."
+      },
+      "cmd_generalUnpaid": {
+        "title": "Sold unbezahlt",
+        "text": "{{general}} wurde nicht bezahlt ({{days}}/{{max}} Tage bis zum Rücktritt)."
+      },
+      "cmd_generalKilled": {
+        "title": "General gefallen",
+        "text": "{{general}} ist bei einem Schlag auf das HQ von {{army}} gefallen."
+      },
+      "cmd_generalWounded": {
+        "title": "General verwundet",
+        "text": "{{general}} ist verwundet: {{army}} wartet auf seine Rückkehr."
+      },
+      "cmd_missionSuccess": {
+        "title": "Auftrag erfüllt",
+        "text": "{{army}}: Auftrag erfüllt."
+      },
+      "cmd_missionFailed": {
+        "title": "Auftrag gescheitert",
+        "text": "{{army}}: Der Auftrag ist gescheitert."
+      },
+      "cmd_askWar": {
+        "title": "Genehmigung angefragt",
+        "text": "{{army}}: {{general}} bittet um die Genehmigung zum Krieg gegen {{nation}}."
+      },
+      "cmd_askStrike": {
+        "title": "Genehmigung angefragt",
+        "text": "{{army}}: {{general}} bittet um die Genehmigung, das Hinterland von {{nation}} anzugreifen."
+      },
+      "cmd_askReinforce": {
+        "title": "Verstärkung angefordert",
+        "text": "{{army}}: {{general}} fordert {{count}} Stapel als Verstärkung an."
+      }
+    },
+    "cmd": {
+      "zone": "die bestimmte Zone",
+      "mission": {
+        "conquer": "Erobern",
+        "defend": "Verteidigen",
+        "hold_front": "Frontlinie halten",
+        "air_superiority": "Luftüberlegenheit",
+        "air_defense": "Flugabwehr",
+        "deep_strike": "Schläge in die Tiefe",
+        "sea_control": "Seekontrolle und Blockade",
+        "landing": "Landung",
+        "reserve": "Reserve"
+      },
+      "reason": {
+        "losses": "zu schwere Verluste",
+        "stuck": "kein Fortschritt",
+        "tooWeak": "unzureichende Kräfte",
+        "zoneLost": "Zone verloren"
+      },
+      "building": {
+        "air_defense_site": "die Flugabwehrstellung",
+        "radar_station": "die Radarstation",
+        "air_base": "den Luftwaffenstützpunkt",
+        "military_base": "den Militärstützpunkt",
+        "arms_factory": "die Rüstungsfabrik",
+        "refinery": "die Raffinerie",
+        "power_plant": "das Kraftwerk",
+        "naval_base": "den Marinestützpunkt",
+        "electronics_plant": "das Elektronikwerk",
+        "research_center": "das Forschungszentrum"
+      },
+      "j": {
+        "created_one": "Armee aufgestellt: {{count}} Stapel.",
+        "created_other": "Armee aufgestellt: {{count}} Stapel.",
+        "command": "{{general}} übernimmt das Kommando.",
+        "mission": "Auftrag erhalten: {{mission}} — {{target}}.",
+        "missionCleared": "Auftrag aufgehoben: Die Stapel warten auf Ihre Befehle.",
+        "suspended": "Auftrag auf Befehl ausgesetzt.",
+        "resumed": "Auftrag fortgesetzt.",
+        "warAuthorized": "Genehmigung erhalten: Krieg gegen {{nation}}.",
+        "warRefused": "Krieg gegen {{nation}} abgelehnt: Auftrag ausgesetzt.",
+        "strikeAuthorized": "Strategische Schläge genehmigt.",
+        "strikeRefused": "Strategische Schläge abgelehnt: Auftrag ausgesetzt.",
+        "reinforceRefused": "Verstärkung abgelehnt: {{general}} kommt mit seinen Kräften aus.",
+        "reinforced_one": "Verstärkung: {{count}} Stapel stößt zur Armee.",
+        "reinforced_other": "Verstärkung: {{count}} Stapel stoßen zur Armee.",
+        "detached_one": "{{count}} Stapel von der Armee abgezogen.",
+        "detached_other": "{{count}} Stapel von der Armee abgezogen.",
+        "lost_one": "Verlust: {{count}} {{system}} zerstört.",
+        "lost_other": "Verluste: {{count}} {{system}} zerstört.",
+        "captured": "{{province}} ist eingenommen.",
+        "declaredWar": "Grenze überschritten: Wir befinden uns im Krieg mit {{nation}}.",
+        "warBlocked": "Krieg gegen {{nation}} nicht möglich: Auftrag ausgesetzt.",
+        "askWar": "Bitte um Genehmigung: die Grenze von {{nation}} überschreiten.",
+        "askStrike": "Bitte um Genehmigung: das Hinterland von {{nation}} angreifen.",
+        "retreat": "{{system}} zu stark abgenutzt: Rückzug nach {{province}}.",
+        "noReinforcements": "Kein freier Stapel in der Nähe zur Verstärkung.",
+        "askReinforce_one": "Verstärkungsanfrage: {{count}} Stapel.",
+        "askReinforce_other": "Verstärkungsanfrage: {{count}} Stapel.",
+        "tooWeak": "Kräfte reichen für einen Angriff nicht aus ({{pct}} % des Nötigen): Verstärkung angefordert.",
+        "offensive": "Offensive auf {{province}} eröffnet.",
+        "landing": "Landung auf {{province}} eingeleitet: Sammeln im Hafen.",
+        "counter": "Gegenangriff auf {{province}}.",
+        "counterFront": "Gegenangriff an der Front.",
+        "blockade": "Blockade des Hafens von {{province}}.",
+        "noIntel": "Keine Einrichtung von {{nation}} aufgeklärt: Nachrichtendienst erforderlich (Aufklärung).",
+        "strike": "Schlag gegen {{building}} von {{province}}.",
+        "success": "Auftrag erfüllt.",
+        "failed": "Auftrag gescheitert: {{reason}}.",
+        "daily": "Tagesbericht: Stärke {{strength}} %, {{captures}} Einnahme(n), {{losses}} Element(e) verloren.",
+        "resigned": "{{general}} tritt zurück: Sold unbezahlt.",
+        "dismissed": "{{general}} ist entlassen.",
+        "recovered": "{{general}} übernimmt nach seiner Genesung wieder das Kommando.",
+        "wounded": "{{general}} ist im HQ verwundet: {{days}} Tage Genesung.",
+        "killed": "{{general}} ist im HQ gefallen."
       }
     }
   }

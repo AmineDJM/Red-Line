@@ -64,7 +64,8 @@
       "battles": "戦闘",
       "chat": "メッセージ",
       "shop": "ショップ",
-      "settings": "設定"
+      "settings": "設定",
+      "command": "司令部"
     },
     "path": {
       "armies": "マイ軍",
@@ -79,8 +80,10 @@
       "battles": "戦闘",
       "chat": "メッセージ",
       "shop": "ショップ",
-      "settings": "設定"
-    }
+      "settings": "設定",
+      "command": "司令部"
+    },
+    "command": "司令センター"
   },
   "home": {
     "title": "Red Line",
@@ -2081,7 +2084,8 @@
       "marketSales": "市場での売却",
       "transfersIn": "受領した譲渡",
       "transfersOut": "供与した譲渡",
-      "other": "その他（情報、同盟…）"
+      "other": "その他（情報、同盟…）",
+      "command": "将軍と幕僚"
     },
     "constructionHint": "建物タブまたは州パネルから建物を改良・新設してください。",
     "provincesTitle": "州",
@@ -3262,6 +3266,415 @@
     "machine": "自動生成された翻訳で、軍事用語は校閲済みです。",
     "fallback": "一部のテキストはフランス語のままです。"
   },
+  "command": {
+    "unavailable": "このゲームでは司令センターを利用できません。",
+    "selection": {
+      "army": "軍",
+      "open": "司令センターでこの軍を開く"
+    },
+    "armiesLink": {
+      "title": "司令センター",
+      "text": " — 軍を編成して任務を与え、代わりに指揮する将軍を雇いましょう。",
+      "open": "開く"
+    },
+    "tabs": {
+      "armies": "軍",
+      "generals": "将軍"
+    },
+    "kpi": {
+      "armies": "軍",
+      "active": "任務中",
+      "generals": "将軍",
+      "payroll": "給与 / 日",
+      "requests": "要請"
+    },
+    "newArmy": "新しい軍",
+    "full": "軍の上限（{{max}}）に達しました：新たに編成するには一つ解散してください。",
+    "emptyTitle": "軍がありません",
+    "emptyText": "スタックから軍を編成し、任務を与えて将軍を選びましょう。将軍があなたに代わって指揮します。",
+    "onboard": {
+      "title": "使い方",
+      "compose": "陸・空・海のスタックをまとめ、名前を付けた軍を編成します。",
+      "mission": "任務を与えます：地図上で目標を指定し、攻撃性、交戦規則、後退しきい値を設定します。",
+      "general": "指揮する将軍を選びます：能力が判断を左右し、給与は毎日支払われます。"
+    },
+    "pickTitle": "軍を選択",
+    "pickText": "任務、将軍、編成、将軍の日誌がここに表示されます。",
+    "back": "軍",
+    "noMission": "任務なし",
+    "noGeneral": "将軍なし",
+    "zoneShort": "{{km}} km 圏",
+    "piles_other": "{{count}} スタック",
+    "status": {
+      "idle": "任務なし",
+      "passive": "待機",
+      "preparing": "準備中",
+      "active": "遂行中",
+      "awaiting": "命令待ち",
+      "success": "成功",
+      "failed": "失敗",
+      "suspended": "中断"
+    },
+    "pills": {
+      "health": "状態 {{pct}}%",
+      "strength": "戦力 出発時の {{pct}}%",
+      "supply": {
+        "supplied": "兵站：補給あり",
+        "limited": "兵站：補給制限",
+        "cut": "兵站：補給途絶"
+      }
+    },
+    "request": {
+      "badge": "要請",
+      "refuse": "拒否",
+      "accepted": "将軍に回答を送りました。",
+      "refused": "要請を拒否しました。",
+      "declare_war": {
+        "title": "開戦の許可",
+        "text": "将軍が国境越えの許可を求めています：{{nation}}との戦争を意味します。",
+        "accept": "開戦を許可"
+      },
+      "strategic_strike": {
+        "title": "戦略攻撃の許可",
+        "text": "将軍が{{nation}}の後方施設への攻撃許可を求めています。",
+        "accept": "攻撃を許可"
+      },
+      "reinforce": {
+        "title": "増援要請",
+        "text_other": "戦力低下：将軍が近くの空きスタック {{count}} 個を求めています。",
+        "accept": "増援を送る"
+      }
+    },
+    "detail": {
+      "mission": "任務",
+      "since": "{{day}} {{time}} から",
+      "noMissionText": "任務なし：軍はあなたの命令を待っており、スタックはあなたの直接指揮下にあります。",
+      "objective": "目標",
+      "retreat": "{{pct}}% で後退",
+      "general": "将軍",
+      "noGeneralText": "将軍がいないと軍は待機したままで、任務は遂行されません。",
+      "composition": "編成",
+      "piles": "スタック",
+      "doneEditing": "完了",
+      "empty": "スタックがありません。",
+      "manual": "手動",
+      "manualHelp": "あなたの直接命令下のスタック：命令終了後に将軍が再び指揮します。",
+      "manualRule": "スタックへの直接命令：完了まで優先され、その後は将軍がスタックの指揮を取り戻します。",
+      "journal": "将軍の日誌",
+      "journalEmpty": "将軍からの報告はまだありません。"
+    },
+    "objective": {
+      "conquer": "占領した州",
+      "landing": "橋頭堡",
+      "defend": "保持している都市",
+      "hold_front": "保持している前線の都市",
+      "air_defense": "防護下の都市",
+      "reserve": "保持している都市",
+      "air_superiority": "制空確保",
+      "sea_control": "制海確保",
+      "deep_strike": "破壊した施設"
+    },
+    "est": {
+      "ratio": "戦力比",
+      "eta": "推定所要時間",
+      "chance": "成功率",
+      "source": {
+        "seen": "確認済みの敵戦力",
+        "estimate": "情報部の推定",
+        "none": "既知の敵戦力なし"
+      }
+    },
+    "actions": {
+      "showMap": "地図で表示",
+      "rename": "名前を変更",
+      "reinforce": "増援",
+      "giveMission": "任務を与える",
+      "changeMission": "任務を変更",
+      "suspend": "中断",
+      "resume": "再開",
+      "dissolve": "解散",
+      "dissolveTitle": "軍を解散",
+      "dissolveText": "{{name}}を解散しますか？スタックはその場に残りあなたの直接指揮下に入り、将軍は予備役になります（給与は継続）。",
+      "pickGeneral": "将軍を選ぶ",
+      "changeGeneral": "変更",
+      "removeN_other": "{{count}} スタックを外す"
+    },
+    "reinforce": {
+      "label": "自動増援",
+      "off": "しない",
+      "ask": "要請時",
+      "auto": "自動",
+      "offHelp": "将軍は増援を要請しません。",
+      "askHelp": "戦力が低下すると将軍が増援を要請し、あなたが承認します。",
+      "autoHelp": "戦力が低下すると将軍が近くの空きスタックを自ら編入します。"
+    },
+    "domain": {
+      "all": "すべて",
+      "land": "陸",
+      "air": "空",
+      "sea": "海"
+    },
+    "fit": {
+      "partial": "編成が不完全",
+      "missing": "必要な兵種が不足"
+    },
+    "aggr": {
+      "label": "攻撃性",
+      "cautious": "慎重",
+      "balanced": "均衡",
+      "bold": "大胆",
+      "cautiousHelp": "明確な優勢時のみ攻撃し、早めに後退し、戦闘機を予備に残します。",
+      "balancedHelp": "妥当な戦力比で攻撃し、損耗が半分で後退します。",
+      "boldHelp": "早めに複数の目標を同時に攻撃し、後退は遅く、戦闘機を全機出撃させます。"
+    },
+    "roe": {
+      "label": "交戦規則",
+      "strict": {
+        "short": "厳格",
+        "help": "厳格：あなたの許可なしに開戦も戦略攻撃も行わず、追撃は圏内に限定します。"
+      },
+      "standard": {
+        "short": "標準",
+        "help": "標準：開戦や敵後方への攻撃の前に将軍があなたの許可を求めます。"
+      },
+      "free": {
+        "short": "自由",
+        "help": "自由：任務目標への開戦を含め、将軍が単独で判断します。"
+      }
+    },
+    "retreat": {
+      "label": "スタックの後退しきい値",
+      "never": "しない"
+    },
+    "radius": "半径",
+    "scope": {
+      "label": "範囲",
+      "province": "この州",
+      "region": "地域",
+      "nation": "国全体"
+    },
+    "target": {
+      "province": "目標の州",
+      "nation": "国",
+      "zone": "圏",
+      "none": "未指定",
+      "pick": "地図で指定",
+      "change": "変更",
+      "nationAny": "— 国 —",
+      "own": "この州はすでにあなたのものです：外国の州を指定してください。",
+      "needed": "地図で任務の目標を指定してください。"
+    },
+    "pick": {
+      "target": "地図をタップして任務の目標を指定します。",
+      "units": "地図でスタックを選択し、確定してください。",
+      "validate": "確定（{{count}}）"
+    },
+    "missions": {
+      "conquer": {
+        "name": "征服",
+        "short": "征服",
+        "desc": "州、地域、または国全体を奪取します。"
+      },
+      "defend": {
+        "name": "防衛",
+        "short": "防衛",
+        "desc": "圏内の都市を保持し、侵入した敵を撃退します。"
+      },
+      "hold_front": {
+        "name": "前線の維持",
+        "short": "前線",
+        "desc": "国境沿いに戦力を配置し、突破に反撃します。"
+      },
+      "air_superiority": {
+        "name": "航空優勢",
+        "short": "空",
+        "desc": "圏上空での戦闘機哨戒、早期警戒機、防空制圧。"
+      },
+      "air_defense": {
+        "name": "防空",
+        "short": "防空",
+        "desc": "圏内の都市を防護：地対空防御を分散配置し、戦闘機を待機させます。"
+      },
+      "deep_strike": {
+        "name": "縦深攻撃",
+        "short": "攻撃",
+        "desc": "ある国の判明した戦略施設を破壊します。"
+      },
+      "sea_control": {
+        "name": "制海と封鎖",
+        "short": "海",
+        "desc": "海域を確保し、敵艦を撃沈し、港を封鎖します。"
+      },
+      "landing": {
+        "name": "上陸作戦",
+        "short": "上陸",
+        "desc": "港に集結して乗船し、護衛下で渡海して海岸や島を奪取します。"
+      },
+      "reserve": {
+        "name": "予備",
+        "short": "予備",
+        "desc": "後方にとどまり、半径内の突破に反撃します。"
+      }
+    },
+    "rank": {
+      "1": "准将",
+      "2": "少将",
+      "3": "中将",
+      "4": "大将"
+    },
+    "skills": {
+      "offense": {
+        "label": "攻撃",
+        "help": "目標の選択と数、突撃部隊の規模、攻撃時の損害。"
+      },
+      "defense": {
+        "label": "防御",
+        "help": "守備隊、反撃、静止したスタックの防護。"
+      },
+      "logistics": {
+        "label": "兵站",
+        "help": "集結と段階的な出発、経路計画、航続と補給。"
+      },
+      "air": {
+        "label": "航空",
+        "help": "航空出撃、護衛、敵防空の制圧。"
+      },
+      "naval": {
+        "label": "海軍",
+        "help": "上陸、海上護衛、制海。"
+      },
+      "audacity": {
+        "label": "大胆さ",
+        "help": "大胆な将軍は低い戦力比でも攻撃し、慎重な将軍は優勢を待ちます。",
+        "low": "慎重",
+        "high": "大胆"
+      },
+      "experience": {
+        "label": "経験",
+        "help": "摩擦（命令の遅れ）が減り、ボーナスが強まります。勝利とともに成長します。"
+      }
+    },
+    "traits": {
+      "none": "目立った特性なし",
+      "encircler": {
+        "label": "包囲の名手",
+        "help": "自軍がすでに包囲している州を好みます。意思決定サイクルごとに目標が一つ増えます。"
+      },
+      "thrifty": {
+        "label": "兵を惜しむ",
+        "help": "より明確な優勢を求め、早めに後退します。"
+      },
+      "reckless": {
+        "label": "向こう見ず",
+        "help": "少ない戦力で攻撃し、後退は遅め。摩擦が増えます。"
+      },
+      "logistician": {
+        "label": "卓越した兵站家",
+        "help": "突撃前に必ず集結します。航続と補給が向上します。"
+      },
+      "airman": {
+        "label": "航空のエース",
+        "help": "意思決定サイクルごとに航空出撃と護衛が一つずつ増えます。"
+      },
+      "sailor": {
+        "label": "歴戦の船乗り",
+        "help": "海上護衛が一つ増えます。"
+      },
+      "fortifier": {
+        "label": "防御の築き手",
+        "help": "静止したスタックの防護が強化されます。"
+      },
+      "methodical": {
+        "label": "几帳面",
+        "help": "摩擦が半減。攻撃前の条件がやや厳しくなります。"
+      },
+      "blitz": {
+        "label": "電撃戦",
+        "help": "意思決定サイクルごとに目標が一つ増え、やや早めに攻撃します。"
+      },
+      "veteran": {
+        "label": "古参",
+        "help": "習熟が速い（経験 ×1.5）。給与がやや高め。"
+      }
+    },
+    "general": {
+      "rating": "評価 {{value}}",
+      "victories_other": "{{count}} 勝",
+      "wounded": "負傷",
+      "unpaid_other": "未払い {{count}} 日",
+      "perDay": "/ 日",
+      "signing": "契約金 {{value}}",
+      "reserve": "予備役",
+      "missionCost": "任務の推定費用",
+      "assign": "指揮させる",
+      "hire": "雇用（{{value}}）",
+      "dismiss": "解任",
+      "dismissTitle": "将軍を解任",
+      "dismissText": "{{name}}を解任しますか？退職金 {{value}} が支払われ、その軍は待機状態になります。",
+      "dismissConfirm": "解任（{{value}}）"
+    },
+    "generals": {
+      "hired": "あなたの将軍",
+      "yours": "指揮可能な将軍",
+      "none": "雇用中の将軍はいません。",
+      "payroll": "{{value}} / 日",
+      "pool": "候補者",
+      "poolHint": "採用可能な士官：雇用時に給与 5 日分の契約金。"
+    },
+    "wizard": {
+      "path": "新しい軍",
+      "steps": "ステップ",
+      "step": {
+        "compose": "編成",
+        "mission": "任務",
+        "general": "将軍"
+      },
+      "name": "軍の名前",
+      "namePlaceholder": "第1軍、南部航空群、地中海艦隊…",
+      "reinforceLead": "{{name}}への増援：空きスタックを選んでください。",
+      "filter": "兵種",
+      "useSelection": "選択を追加（{{count}}）",
+      "pickOnMap": "地図で選ぶ",
+      "clear": "すべて外す",
+      "noFree": "空きスタックがありません：すべてのスタックがすでに軍に所属しています。",
+      "mixed_other": "{{count}} 種のシステム",
+      "summary": "軍",
+      "piles": "スタック",
+      "elements": "要素",
+      "value": "価値",
+      "mission": "任務",
+      "pickMission": "任務を選んでください。",
+      "missing": "未完了",
+      "generalLead": "指揮する将軍を選んでください：この任務の重要能力は「{{skill}}」です。",
+      "costHire": "契約金 {{bonus}}、以後 {{day}} / 日",
+      "costDay": "{{day}} / 日",
+      "createOnly": "任務なしで作成",
+      "addPiles_other": "{{count}} スタックを追加"
+    },
+    "defaultName": {
+      "landFirst": "第1軍",
+      "land": "第{{n}}軍",
+      "airFirst": "第1航空群",
+      "air": "第{{n}}航空群",
+      "seaFirst": "第1艦隊",
+      "sea": "第{{n}}艦隊"
+    },
+    "toast": {
+      "created": "{{name}}を編成しました。",
+      "reinforced_other": "{{count}} スタックが軍に加わりました。",
+      "removed_other": "{{count}} スタックを軍から外しました。",
+      "renamed": "軍の名前を変更しました。",
+      "mission": "任務を将軍に伝えました。",
+      "hired": "{{name}}が幕僚に加わりました。",
+      "hiredShort": "将軍を雇用しました。",
+      "assigned": "指揮を割り当てました。",
+      "dismissed": "将軍を解任しました。",
+      "dissolved": "軍を解散しました。",
+      "suspended": "任務を中断しました。",
+      "resumed": "任務を再開しました。",
+      "saved": "設定を保存しました。"
+    }
+  },
   "engine": {
     "place": {
       "sea": "洋上"
@@ -3529,6 +3942,114 @@
         "title": "占領不可",
         "noCapturer": "{{system}} は {{place}} を占領できません：歩兵または機甲が必要です。",
         "noWar": "{{place}} の所有国と戦争状態にないため占領できません。"
+      },
+      "cmd_generalResigned": {
+        "title": "辞任",
+        "text": "{{general}}が辞任しました：給与が支払われていません。"
+      },
+      "cmd_generalUnpaid": {
+        "title": "給与未払い",
+        "text": "{{general}}に給与が支払われていません（辞任まで {{days}}/{{max}} 日）。"
+      },
+      "cmd_generalKilled": {
+        "title": "将軍戦死",
+        "text": "{{general}}が{{army}}司令部への攻撃で戦死しました。"
+      },
+      "cmd_generalWounded": {
+        "title": "将軍負傷",
+        "text": "{{general}}が負傷しました：{{army}}は復帰を待っています。"
+      },
+      "cmd_missionSuccess": {
+        "title": "任務達成",
+        "text": "{{army}}：任務達成。"
+      },
+      "cmd_missionFailed": {
+        "title": "任務失敗",
+        "text": "{{army}}：任務に失敗しました。"
+      },
+      "cmd_askWar": {
+        "title": "許可の要請",
+        "text": "{{army}}：{{general}}が{{nation}}との開戦許可を求めています。"
+      },
+      "cmd_askStrike": {
+        "title": "許可の要請",
+        "text": "{{army}}：{{general}}が{{nation}}後方への攻撃許可を求めています。"
+      },
+      "cmd_askReinforce": {
+        "title": "増援要請",
+        "text": "{{army}}：{{general}}が {{count}} スタックの増援を求めています。"
+      }
+    },
+    "cmd": {
+      "zone": "指定された圏",
+      "mission": {
+        "conquer": "征服",
+        "defend": "防衛",
+        "hold_front": "前線の維持",
+        "air_superiority": "航空優勢",
+        "air_defense": "防空",
+        "deep_strike": "縦深攻撃",
+        "sea_control": "制海と封鎖",
+        "landing": "上陸作戦",
+        "reserve": "予備"
+      },
+      "reason": {
+        "losses": "損害が大きすぎる",
+        "stuck": "進展なし",
+        "tooWeak": "戦力不足",
+        "zoneLost": "圏の喪失"
+      },
+      "building": {
+        "air_defense_site": "防空陣地",
+        "radar_station": "レーダー基地",
+        "air_base": "航空基地",
+        "military_base": "軍事基地",
+        "arms_factory": "兵器工場",
+        "refinery": "製油所",
+        "power_plant": "発電所",
+        "naval_base": "海軍基地",
+        "electronics_plant": "電子機器工場",
+        "research_center": "研究センター"
+      },
+      "j": {
+        "created_other": "軍を編成：{{count}} スタック。",
+        "command": "{{general}}が指揮を執ります。",
+        "mission": "任務受領：{{mission}} — {{target}}。",
+        "missionCleared": "任務解除：スタックはあなたの命令を待っています。",
+        "suspended": "命令により任務を中断。",
+        "resumed": "任務を再開。",
+        "warAuthorized": "許可受領：{{nation}}との開戦。",
+        "warRefused": "{{nation}}との開戦は拒否されました：任務中断。",
+        "strikeAuthorized": "戦略攻撃が許可されました。",
+        "strikeRefused": "戦略攻撃は拒否されました：任務中断。",
+        "reinforceRefused": "増援拒否：{{general}}は手持ちの戦力で対処します。",
+        "reinforced_other": "増援：{{count}} スタックが軍に加わりました。",
+        "detached_other": "{{count}} スタックが軍から離脱しました。",
+        "lost_other": "損害：{{system}} {{count}} 基が破壊されました。",
+        "captured": "{{province}}を占領。",
+        "declaredWar": "国境を越えました：{{nation}}と交戦状態です。",
+        "warBlocked": "{{nation}}と開戦できません：任務中断。",
+        "askWar": "許可要請：{{nation}}の国境を越える。",
+        "askStrike": "許可要請：{{nation}}の後方を攻撃する。",
+        "retreat": "{{system}}の消耗が激しい：{{province}}へ後退。",
+        "noReinforcements": "近くに増援に使える空きスタックがありません。",
+        "askReinforce_other": "増援要請：{{count}} スタック。",
+        "tooWeak": "攻撃には戦力不足（必要量の {{pct}}%）：増援を要請しました。",
+        "offensive": "{{province}}への攻勢を開始。",
+        "landing": "{{province}}への上陸を開始：港に集結中。",
+        "counter": "{{province}}へ反撃。",
+        "counterFront": "前線で反撃。",
+        "blockade": "{{province}}の港を封鎖。",
+        "noIntel": "{{nation}}の施設は判明していません：情報（偵察）が必要です。",
+        "strike": "{{province}}の{{building}}を攻撃。",
+        "success": "任務達成。",
+        "failed": "任務失敗：{{reason}}。",
+        "daily": "日報：戦力 {{strength}}%、占領 {{captures}}、喪失 {{losses}}。",
+        "resigned": "{{general}}が辞任：給与未払い。",
+        "dismissed": "{{general}}を解任。",
+        "recovered": "{{general}}が療養を終えて指揮に復帰。",
+        "wounded": "{{general}}が司令部で負傷：療養 {{days}} 日。",
+        "killed": "{{general}}が司令部で戦死。"
       }
     }
   }

@@ -64,7 +64,8 @@
       "battles": "Muharebeler",
       "chat": "Mesajlar",
       "shop": "Mağaza",
-      "settings": "Ayarlar"
+      "settings": "Ayarlar",
+      "command": "KK"
     },
     "path": {
       "armies": "Ordularım",
@@ -79,8 +80,10 @@
       "battles": "Muharebeler",
       "chat": "Mesajlar",
       "shop": "Mağaza",
-      "settings": "Ayarlar"
-    }
+      "settings": "Ayarlar",
+      "command": "KK"
+    },
+    "command": "Komuta merkezi"
   },
   "home": {
     "title": "Red Line",
@@ -2103,7 +2106,8 @@
       "marketSales": "Pazar satışları",
       "transfersIn": "Alınan devirler",
       "transfersOut": "Yapılan devirler",
-      "other": "Diğer (istihbarat, ittifak…)"
+      "other": "Diğer (istihbarat, ittifak…)",
+      "command": "Generaller ve karargâhlar"
     },
     "constructionHint": "Binalar sekmesinden veya bir ilin panelinden bir binayı yükseltin ya da yenisini inşa edin.",
     "provincesTitle": "İller",
@@ -3307,6 +3311,424 @@
     "machine": "Otomatik üretilmiş çeviriler, askerî terimler gözden geçirildi.",
     "fallback": "Bazı metinler Fransızca kalır."
   },
+  "command": {
+    "unavailable": "Komuta merkezi bu oyunda kullanılamıyor.",
+    "selection": {
+      "army": "Ordu",
+      "open": "Orduyu komuta merkezinde aç"
+    },
+    "armiesLink": {
+      "title": "Komuta merkezi",
+      "text": " — ordular kurun, onlara görev verin ve sizin yerinize komuta eden generaller işe alın.",
+      "open": "Aç"
+    },
+    "tabs": {
+      "armies": "Ordular",
+      "generals": "Generaller"
+    },
+    "kpi": {
+      "armies": "Ordular",
+      "active": "Görevde",
+      "generals": "Generaller",
+      "payroll": "Maaş / gün",
+      "requests": "Talepler"
+    },
+    "newArmy": "Yeni ordu",
+    "full": "{{max}} ordu sınırına ulaşıldı: yenisini kurmak için birini dağıtın.",
+    "emptyTitle": "Ordu yok",
+    "emptyText": "Yığınlarınızdan bir ordu kurun, ona bir görev verin ve bir general seçin: sizin yerinize komuta eder.",
+    "onboard": {
+      "title": "Nasıl çalışır",
+      "compose": "Kara, hava veya deniz yığınlarını adı olan bir orduda toplayın.",
+      "mission": "Ona bir görev verin: haritada belirlenen hedef, saldırganlık, angajman kuralları, geri çekilme eşiği.",
+      "general": "Ona komuta edecek generali seçin: yetenekleri kararlarını yönlendirir, maaşı her gün ödenir."
+    },
+    "pickTitle": "Bir ordu seçin",
+    "pickText": "Görevi, generali, bileşimi ve generalin günlüğü burada görünür.",
+    "back": "Ordular",
+    "noMission": "Görev yok",
+    "noGeneral": "General yok",
+    "zoneShort": "{{km}} km bölge",
+    "piles_one": "{{count}} yığın",
+    "piles_other": "{{count}} yığın",
+    "status": {
+      "idle": "Görev yok",
+      "passive": "Pasif",
+      "preparing": "Hazırlanıyor",
+      "active": "Sürüyor",
+      "awaiting": "Emir bekliyor",
+      "success": "Başarılı",
+      "failed": "Başarısız",
+      "suspended": "Askıya alındı"
+    },
+    "pills": {
+      "health": "Sağlık %{{pct}}",
+      "strength": "Güç: başlangıcın %{{pct}}'i",
+      "supply": {
+        "supplied": "Lojistik: ikmal var",
+        "limited": "Lojistik: sınırlı ikmal",
+        "cut": "Lojistik: bağlantı kesik"
+      }
+    },
+    "request": {
+      "badge": "Talep",
+      "refuse": "Reddet",
+      "accepted": "Yanıt generale iletildi.",
+      "refused": "Talep reddedildi.",
+      "declare_war": {
+        "title": "Savaş izni",
+        "text": "General sınırı geçmek için izin istiyor: bu, {{nation}} ile savaş demek.",
+        "accept": "Savaşa izin ver"
+      },
+      "strategic_strike": {
+        "title": "Stratejik saldırı izni",
+        "text": "General, {{nation}} gerisindeki tesisleri vurmak için izin istiyor.",
+        "accept": "Saldırılara izin ver"
+      },
+      "reinforce": {
+        "title": "Takviye talebi",
+        "text_one": "Güç düşüyor: general yakındaki {{count}} serbest yığını istiyor.",
+        "text_other": "Güç düşüyor: general yakındaki {{count}} serbest yığını istiyor.",
+        "accept": "Takviye gönder"
+      }
+    },
+    "detail": {
+      "mission": "Görev",
+      "since": "{{day}} {{time}} itibarıyla",
+      "noMissionText": "Görev yok: ordu emirlerinizi bekliyor, yığınları doğrudan komutanızda kalıyor.",
+      "objective": "Hedef",
+      "retreat": "%{{pct}} seviyesinde geri çekilme",
+      "general": "General",
+      "noGeneralText": "General olmadan ordu pasif kalır: hiçbir görev yürütülmez.",
+      "composition": "Bileşim",
+      "piles": "Yığınlar",
+      "doneEditing": "Tamam",
+      "empty": "Yığın yok.",
+      "manual": "Elle",
+      "manualHelp": "Yığın doğrudan emrinizde: emir bittiğinde general onu geri alır.",
+      "manualRule": "Bir yığına doğrudan emir: bitene kadar önceliklidir, sonra general yığını geri alır.",
+      "journal": "Generalin günlüğü",
+      "journalEmpty": "General henüz bir şey bildirmedi."
+    },
+    "objective": {
+      "conquer": "Alınan eyaletler",
+      "landing": "Köprübaşı",
+      "defend": "Tutulan şehirler",
+      "hold_front": "Tutulan cephe şehirleri",
+      "air_defense": "Korunan şehirler",
+      "reserve": "Tutulan şehirler",
+      "air_superiority": "Gökyüzü temiz",
+      "sea_control": "Deniz temiz",
+      "deep_strike": "Yok edilen tesisler"
+    },
+    "est": {
+      "ratio": "Kuvvet oranı",
+      "eta": "Tahmini süre",
+      "chance": "Şans",
+      "source": {
+        "seen": "gözlenen düşman kuvvetleri",
+        "estimate": "istihbarat tahmini",
+        "none": "bilinen düşman kuvveti yok"
+      }
+    },
+    "actions": {
+      "showMap": "Haritada göster",
+      "rename": "Yeniden adlandır",
+      "reinforce": "Takviye et",
+      "giveMission": "Görev ver",
+      "changeMission": "Görevi değiştir",
+      "suspend": "Askıya al",
+      "resume": "Sürdür",
+      "dissolve": "Dağıt",
+      "dissolveTitle": "Orduyu dağıt",
+      "dissolveText": "{{name}} dağıtılsın mı? Yığınlar yerinde, doğrudan komutanızda kalır; general yedeğe geçer (maaşı ödenmeye devam eder).",
+      "pickGeneral": "General seç",
+      "changeGeneral": "Değiştir",
+      "removeN_one": "{{count}} yığını çıkar",
+      "removeN_other": "{{count}} yığını çıkar"
+    },
+    "reinforce": {
+      "label": "Otomatik takviye",
+      "off": "Asla",
+      "ask": "Talep üzerine",
+      "auto": "Otomatik",
+      "offHelp": "General asla takviye istemez.",
+      "askHelp": "Güç düştüğünde general takviye ister; siz onaylarsınız.",
+      "autoHelp": "Güç düştüğünde general yakındaki serbest yığınları kendisi katar."
+    },
+    "domain": {
+      "all": "Tümü",
+      "land": "Kara",
+      "air": "Hava",
+      "sea": "Deniz"
+    },
+    "fit": {
+      "partial": "eksik bileşim",
+      "missing": "eksik kuvvet türü"
+    },
+    "aggr": {
+      "label": "Saldırganlık",
+      "cautious": "Temkinli",
+      "balanced": "Dengeli",
+      "bold": "Cüretkâr",
+      "cautiousHelp": "Yalnızca açık üstünlükle saldırır, erken çekilir, avcı uçaklarını yedekte tutar.",
+      "balancedHelp": "Makul kuvvet oranı, kayıplar yarıya ulaşınca geri çekilme.",
+      "boldHelp": "Daha erken ve aynı anda daha çok hedefe saldırır, geç çekilir, tüm avcılar havada."
+    },
+    "roe": {
+      "label": "Angajman kuralları",
+      "strict": {
+        "short": "Sıkı",
+        "help": "Sıkı: izniniz olmadan savaş ya da stratejik saldırı yok; takip bölgeyle sınırlı."
+      },
+      "standard": {
+        "short": "Standart",
+        "help": "Standart: general savaş açmadan veya düşman gerisini vurmadan önce izninizi ister."
+      },
+      "free": {
+        "short": "Serbest",
+        "help": "Serbest: general, görev hedefine karşı savaş dahil, tek başına karar verir."
+      }
+    },
+    "retreat": {
+      "label": "Yığın geri çekilme eşiği",
+      "never": "asla"
+    },
+    "radius": "Yarıçap",
+    "scope": {
+      "label": "Kapsam",
+      "province": "Bu eyalet",
+      "region": "Bölge",
+      "nation": "Tüm ülke"
+    },
+    "target": {
+      "province": "Hedef eyalet",
+      "nation": "Ülke",
+      "zone": "Bölge",
+      "none": "belirlenmedi",
+      "pick": "Haritada belirle",
+      "change": "Değiştir",
+      "nationAny": "— ülke —",
+      "own": "Bu eyalet zaten sizin: yabancı bir eyalet belirleyin.",
+      "needed": "Görevin hedefini haritada belirleyin."
+    },
+    "pick": {
+      "target": "Görevin hedefini belirlemek için haritaya dokunun.",
+      "units": "Haritada yığınları seçin, ardından onaylayın.",
+      "validate": "Onayla ({{count}})"
+    },
+    "missions": {
+      "conquer": {
+        "name": "Fethet",
+        "short": "Fetih",
+        "desc": "Bir eyaleti, bir bölgeyi ya da bütün bir ülkeyi alın."
+      },
+      "defend": {
+        "name": "Savun",
+        "short": "Savunma",
+        "desc": "Bir bölgenin şehirlerini tutun ve giren düşmanları püskürtün."
+      },
+      "hold_front": {
+        "name": "Cephe hattını tut",
+        "short": "Cephe",
+        "desc": "Kuvvetleri sınır boyunca yayın ve yarmalara karşı taarruz edin."
+      },
+      "air_superiority": {
+        "name": "Hava üstünlüğü",
+        "short": "Gökyüzü",
+        "desc": "Bir bölge üzerinde avcı devriyeleri, havadan radar ve savunmaların bastırılması."
+      },
+      "air_defense": {
+        "name": "Hava savunması",
+        "short": "HS",
+        "desc": "Bir bölgenin şehirlerini koruyun: karadan havaya savunmalar yayılmış, avcılar alarmda."
+      },
+      "deep_strike": {
+        "name": "Derin saldırılar",
+        "short": "Saldırılar",
+        "desc": "Bir ülkenin tespit edilmiş stratejik tesislerini yok edin."
+      },
+      "sea_control": {
+        "name": "Deniz kontrolü ve abluka",
+        "short": "Deniz",
+        "desc": "Bir deniz bölgesini tutun, düşman gemilerini batırın, limanları abluka altına alın."
+      },
+      "landing": {
+        "name": "Amfibi çıkarma",
+        "short": "Çıkarma",
+        "desc": "Limanda toplanın, gemiye binin, refakatle geçin ve bir kıyıyı ya da adayı alın."
+      },
+      "reserve": {
+        "name": "Yedek",
+        "short": "Yedek",
+        "desc": "Geride kalın ve belirli bir yarıçap içindeki yarmalara karşı taarruz edin."
+      }
+    },
+    "rank": {
+      "1": "Tuğgeneral",
+      "2": "Tümgeneral",
+      "3": "Korgeneral",
+      "4": "Orgeneral"
+    },
+    "skills": {
+      "offense": {
+        "label": "Taarruz",
+        "help": "Hedeflerin seçimi ve sayısı, hücum gruplarının büyüklüğü, saldırıda verilen hasar."
+      },
+      "defense": {
+        "label": "Savunma",
+        "help": "Garnizonlar, karşı taarruzlar, duran yığınların korunması."
+      },
+      "logistics": {
+        "label": "Lojistik",
+        "help": "Toplanma ve kademeli hareket, rota planlaması, dayanıklılık ve ikmal."
+      },
+      "air": {
+        "label": "Hava",
+        "help": "Hava sortileri, refakat, düşman hava savunmasının bastırılması."
+      },
+      "naval": {
+        "label": "Deniz",
+        "help": "Çıkarmalar, deniz refakati, deniz kontrolü."
+      },
+      "audacity": {
+        "label": "Cüret",
+        "help": "Cüretkâr bir general daha düşük kuvvet oranıyla saldırır; temkinli olan üstünlüğü bekler.",
+        "low": "temkinli",
+        "high": "cüretkâr"
+      },
+      "experience": {
+        "label": "Deneyim",
+        "help": "Daha az sürtünme (geciken emirler), daha güçlü bonuslar; zaferlerle artar."
+      }
+    },
+    "traits": {
+      "none": "Belirgin bir özellik yok",
+      "encircler": {
+        "label": "Kuşatma ustası",
+        "help": "Kuvvetlerince zaten çevrilmiş eyaletleri tercih eder; karar döngüsü başına bir hedef fazla."
+      },
+      "thrifty": {
+        "label": "Can kaybından kaçınır",
+        "help": "Daha belirgin üstünlük ister ve daha erken çekilir."
+      },
+      "reckless": {
+        "label": "Gözü kara",
+        "help": "Daha az kuvvetle saldırır, geç çekilir; daha fazla sürtünme."
+      },
+      "logistician": {
+        "label": "Üstün lojistikçi",
+        "help": "Hücumdan önce her zaman toplanır; daha iyi dayanıklılık ve ikmal."
+      },
+      "airman": {
+        "label": "Hava ası",
+        "help": "Karar döngüsü başına bir hava sortisi ve bir refakat fazla."
+      },
+      "sailor": {
+        "label": "Deniz kurdu",
+        "help": "Bir deniz refakati fazla."
+      },
+      "fortifier": {
+        "label": "Savunma inşacısı",
+        "help": "Duran yığınların korunması artar."
+      },
+      "methodical": {
+        "label": "Metodik",
+        "help": "Sürtünme yarıya iner; saldırmadan önce biraz daha talepkâr."
+      },
+      "blitz": {
+        "label": "Yıldırım savaşı",
+        "help": "Karar döngüsü başına bir hedef fazla; biraz daha erken saldırır."
+      },
+      "veteran": {
+        "label": "Kıdemli",
+        "help": "Hızlı öğrenir (deneyim ×1,5); maaşı biraz daha yüksek."
+      }
+    },
+    "general": {
+      "rating": "puan {{value}}",
+      "victories_one": "{{count}} zafer",
+      "victories_other": "{{count}} zafer",
+      "wounded": "Yaralı",
+      "unpaid_one": "{{count}} gün ödenmedi",
+      "unpaid_other": "{{count}} gün ödenmedi",
+      "perDay": "/ gün",
+      "signing": "prim {{value}}",
+      "reserve": "Yedekte",
+      "missionCost": "Tahmini görev maliyeti",
+      "assign": "Komuta et",
+      "hire": "İşe al ({{value}})",
+      "dismiss": "Görevden al",
+      "dismissTitle": "Generali görevden al",
+      "dismissText": "{{name}} görevden alınsın mı? {{value}} tazminat ödenir; ordusu pasif hâle gelir.",
+      "dismissConfirm": "Görevden al ({{value}})"
+    },
+    "generals": {
+      "hired": "Generalleriniz",
+      "yours": "Müsait generalleriniz",
+      "none": "İşe alınmış general yok.",
+      "payroll": "{{value}} / gün",
+      "pool": "Aday havuzu",
+      "poolHint": "Müsait subaylar: işe alımda 5 günlük maaş tutarında prim."
+    },
+    "wizard": {
+      "path": "yeni ordu",
+      "steps": "Adımlar",
+      "step": {
+        "compose": "Oluştur",
+        "mission": "Görev",
+        "general": "General"
+      },
+      "name": "Ordunun adı",
+      "namePlaceholder": "1. Ordu, Güney Hava Grubu, Akdeniz Filosu…",
+      "reinforceLead": "{{name}} için takviye: serbest yığınları seçin.",
+      "filter": "Kuvvet türü",
+      "useSelection": "Seçimi ekle ({{count}})",
+      "pickOnMap": "Haritada seç",
+      "clear": "Tümünü kaldır",
+      "noFree": "Serbest yığın yok: tüm yığınlarınız zaten bir orduda.",
+      "mixed_one": "{{count}} sistem",
+      "mixed_other": "{{count}} sistem",
+      "summary": "Ordu",
+      "piles": "Yığınlar",
+      "elements": "Unsurlar",
+      "value": "Değer",
+      "mission": "Görev",
+      "pickMission": "Bir görev seçin.",
+      "missing": "Tamamlanacak",
+      "generalLead": "Komuta edecek generali seçin: bu görev için kilit yetenek “{{skill}}”.",
+      "costHire": "Prim {{bonus}}, ardından {{day}} / gün",
+      "costDay": "{{day}} / gün",
+      "createOnly": "Görevsiz oluştur",
+      "addPiles_one": "{{count}} yığın ekle",
+      "addPiles_other": "{{count}} yığın ekle"
+    },
+    "defaultName": {
+      "landFirst": "1. Ordu",
+      "land": "{{n}}. Ordu",
+      "airFirst": "1. Hava Grubu",
+      "air": "{{n}}. Hava Grubu",
+      "seaFirst": "1. Filo",
+      "sea": "{{n}}. Filo"
+    },
+    "toast": {
+      "created": "{{name}} kuruldu.",
+      "reinforced_one": "{{count}} yığın orduya katılıyor.",
+      "reinforced_other": "{{count}} yığın orduya katılıyor.",
+      "removed_one": "{{count}} yığın ordudan çıkarıldı.",
+      "removed_other": "{{count}} yığın ordudan çıkarıldı.",
+      "renamed": "Ordu yeniden adlandırıldı.",
+      "mission": "Görev generale iletildi.",
+      "hired": "{{name}} karargâhınıza katılıyor.",
+      "hiredShort": "General işe alındı.",
+      "assigned": "Komuta verildi.",
+      "dismissed": "General görevden alındı.",
+      "dissolved": "Ordu dağıtıldı.",
+      "suspended": "Görev askıya alındı.",
+      "resumed": "Görev sürdürülüyor.",
+      "saved": "Ayar kaydedildi."
+    }
+  },
   "engine": {
     "place": {
       "sea": "denizde"
@@ -3579,6 +4001,119 @@
         "title": "Ele geçirme imkânsız",
         "noCapturer": "{{system}} {{place}} bölgesini ele geçiremez: piyade veya zırhlı gerekir.",
         "noWar": "{{place}} sahibiyle savaş yok: ele geçirme yok."
+      },
+      "cmd_generalResigned": {
+        "title": "İstifa",
+        "text": "{{general}} istifa ediyor: maaşı artık ödenmiyor."
+      },
+      "cmd_generalUnpaid": {
+        "title": "Ödenmeyen maaş",
+        "text": "{{general}} maaşını alamadı (istifaya {{days}}/{{max}} gün)."
+      },
+      "cmd_generalKilled": {
+        "title": "General öldü",
+        "text": "{{general}}, {{army}} karargâhına yapılan saldırıda öldü."
+      },
+      "cmd_generalWounded": {
+        "title": "General yaralandı",
+        "text": "{{general}} yaralandı: {{army}} dönüşünü bekliyor."
+      },
+      "cmd_missionSuccess": {
+        "title": "Görev tamamlandı",
+        "text": "{{army}}: görev tamamlandı."
+      },
+      "cmd_missionFailed": {
+        "title": "Görev başarısız",
+        "text": "{{army}}: görev başarısız oldu."
+      },
+      "cmd_askWar": {
+        "title": "İzin istendi",
+        "text": "{{army}}: {{general}}, {{nation}} ile savaşa girmek için izin istiyor."
+      },
+      "cmd_askStrike": {
+        "title": "İzin istendi",
+        "text": "{{army}}: {{general}}, {{nation}} gerisini vurmak için izin istiyor."
+      },
+      "cmd_askReinforce": {
+        "title": "Takviye istendi",
+        "text": "{{army}}: {{general}} takviye olarak {{count}} yığın istiyor."
+      }
+    },
+    "cmd": {
+      "zone": "belirlenen bölge",
+      "mission": {
+        "conquer": "Fethet",
+        "defend": "Savun",
+        "hold_front": "Cephe hattını tut",
+        "air_superiority": "Hava üstünlüğü",
+        "air_defense": "Hava savunması",
+        "deep_strike": "Derin saldırılar",
+        "sea_control": "Deniz kontrolü ve abluka",
+        "landing": "Amfibi çıkarma",
+        "reserve": "Yedek"
+      },
+      "reason": {
+        "losses": "kayıplar çok ağır",
+        "stuck": "ilerleme yok",
+        "tooWeak": "yetersiz kuvvet",
+        "zoneLost": "bölge kaybedildi"
+      },
+      "building": {
+        "air_defense_site": "hava savunma mevzisi",
+        "radar_station": "radar istasyonu",
+        "air_base": "hava üssü",
+        "military_base": "askerî üs",
+        "arms_factory": "silah fabrikası",
+        "refinery": "rafineri",
+        "power_plant": "elektrik santrali",
+        "naval_base": "deniz üssü",
+        "electronics_plant": "elektronik fabrikası",
+        "research_center": "araştırma merkezi"
+      },
+      "j": {
+        "created_one": "Ordu kuruldu: {{count}} yığın.",
+        "created_other": "Ordu kuruldu: {{count}} yığın.",
+        "command": "{{general}} komutayı devralıyor.",
+        "mission": "Görev alındı: {{mission}} — {{target}}.",
+        "missionCleared": "Görev kaldırıldı: yığınlar emirlerinizi bekliyor.",
+        "suspended": "Görev emirle askıya alındı.",
+        "resumed": "Görev sürdürülüyor.",
+        "warAuthorized": "İzin alındı: {{nation}} ile savaş.",
+        "warRefused": "{{nation}} ile savaş reddedildi: görev askıya alındı.",
+        "strikeAuthorized": "Stratejik saldırılara izin verildi.",
+        "strikeRefused": "Stratejik saldırılar reddedildi: görev askıya alındı.",
+        "reinforceRefused": "Takviye reddedildi: {{general}} eldeki kuvvetlerle idare edecek.",
+        "reinforced_one": "Takviye: {{count}} yığın orduya katılıyor.",
+        "reinforced_other": "Takviye: {{count}} yığın orduya katılıyor.",
+        "detached_one": "{{count}} yığın ordudan ayrıldı.",
+        "detached_other": "{{count}} yığın ordudan ayrıldı.",
+        "lost_one": "Kayıp: {{count}} {{system}} yok edildi.",
+        "lost_other": "Kayıplar: {{count}} {{system}} yok edildi.",
+        "captured": "{{province}} alındı.",
+        "declaredWar": "Sınır geçildi: {{nation}} ile savaştayız.",
+        "warBlocked": "{{nation}} ile savaşa girilemiyor: görev askıya alındı.",
+        "askWar": "İzin talebi: {{nation}} sınırını geçmek.",
+        "askStrike": "İzin talebi: {{nation}} gerisini vurmak.",
+        "retreat": "{{system}} çok yıprandı: {{province}} yönüne geri çekiliyor.",
+        "noReinforcements": "Bizi takviye edecek yakında serbest yığın yok.",
+        "askReinforce_one": "Takviye talebi: {{count}} yığın.",
+        "askReinforce_other": "Takviye talebi: {{count}} yığın.",
+        "tooWeak": "Saldırı için kuvvet yetersiz (gerekenin %{{pct}}'i): takviye istendi.",
+        "offensive": "{{province}} üzerine taarruz başlatıldı.",
+        "landing": "{{province}} üzerine çıkarma başlatıldı: limanda toplanma.",
+        "counter": "{{province}} üzerine karşı taarruz.",
+        "counterFront": "Cephede karşı taarruz.",
+        "blockade": "{{province}} limanına abluka.",
+        "noIntel": "{{nation}} ülkesine ait tespit edilmiş tesis yok: istihbarat (keşif) gerekli.",
+        "strike": "{{province}} bölgesindeki {{building}} vuruldu.",
+        "success": "Görev tamamlandı.",
+        "failed": "Görev başarısız: {{reason}}.",
+        "daily": "Günlük rapor: güç %{{strength}}, {{captures}} ele geçirme, {{losses}} unsur kaybı.",
+        "resigned": "{{general}} istifa ediyor: maaş ödenmedi.",
+        "dismissed": "{{general}} görevden alındı.",
+        "recovered": "{{general}} iyileştikten sonra komutayı yeniden üstleniyor.",
+        "wounded": "{{general}} karargâhta yaralandı: {{days}} gün nekahet.",
+        "killed": "{{general}} karargâhta öldü."
       }
     }
   }
