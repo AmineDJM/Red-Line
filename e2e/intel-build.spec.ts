@@ -286,12 +286,18 @@ test('construire et améliorer un bâtiment', async ({ page }, info) => {
   }, alger);
   expect(opt).not.toBeNull();
   const money0 = await page.evaluate(() => window.__rl.game.getState().view.economy.money);
-  // Hassi Messaoud (Ouargla Nord-Est, pétrole majeur) : le puits de pétrole est proposé.
+  // Hassi Messaoud (province fusionnée d'El Oued et Ouargla, pétrole majeur, sans métaux) : le puits
+  // de pétrole est proposé, pas la mine.
   const hassi = await page.evaluate(
     () =>
-      Object.values<any>(window.__rl.world.getState().provinces).find(
-        (p) => p.nationId === 'dza' && p.name === 'Ouargla Nord-Est',
-      ).id,
+      Object.values<any>(window.__rl.world.getState().provinces)
+        .filter(
+          (p) =>
+            p.nationId === 'dza' &&
+            p.resources?.some((r: any) => r.type === 'oil' && r.richness === 3) &&
+            !p.resources?.some((r: any) => r.type === 'metals'),
+        )
+        .sort((a, b) => a.id.localeCompare(b.id, 'en', { numeric: true }))[0].id,
   );
   await selectProvince(page, hassi, 7);
   await panel.getByTestId('build-toggle').click();
