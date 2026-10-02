@@ -1,4 +1,4 @@
-import { formatCountdown, formatMoney, type MoneyOptions } from '../format.js';
+import { formatCountdown, formatLocale, formatMoney, type MoneyOptions } from '../format.js';
 
 export interface MoneyProps extends MoneyOptions {
   /** Montant en dollars US. */
@@ -16,7 +16,7 @@ export function Money({ value, colored, suffix, className, ...opts }: MoneyProps
   return (
     <span
       className={`rl-money${tone}${className ? ` ${className}` : ''}`}
-      title={`${new Intl.NumberFormat(opts.locale ?? 'fr-FR').format(Math.round(value))} $`}
+      title={`${new Intl.NumberFormat(opts.locale ?? formatLocale()).format(Math.round(value))} $`}
     >
       {formatMoney(value, opts)}
       {suffix ? <span className="rl-money__suffix">{suffix}</span> : null}

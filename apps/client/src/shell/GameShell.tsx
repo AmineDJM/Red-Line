@@ -3,6 +3,7 @@ import type { LngLat } from '@redline/shared';
 import { AudioBridge } from '../audio/AudioBridge.js';
 import { MapView } from '../map/MapView.js';
 import { navigate } from '../router.js';
+import { isRtl } from '../i18n/index.js';
 import { useUi } from '../store/ui.js';
 import { CommandConsole } from './CommandConsole.js';
 import { MobileNav, SideNav } from './Nav.js';
@@ -65,7 +66,7 @@ export function GameShell({
   const sheetOpen = useUi((s) => mobile && (s.windows.length > 0 || s.moreOpen));
   const insets = mobile
     ? { top: 78, right: 0, bottom: 64, left: 0 }
-    : { top: 44, right: 0, bottom: 0, left: 52 };
+    : { top: 44, right: isRtl ? 52 : 0, bottom: 0, left: isRtl ? 0 : 52 };
   return (
     <div className={mobile ? 'game game--mobile' : 'game game--desktop'} data-mode={mode}>
       <MapView mode={mode} fog={fog} insets={insets} placing={placing} onPlace={onPlace} />

@@ -1,0 +1,34 @@
+/* Sélecteur de langue et ajustements des écritures (arabe en miroir, CJK, devanagari). */
+.langsel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--rl-text-dim);
+}
+.langsel .rl-select {
+  min-width: 0;
+}
+.langsel .rl-select select {
+  min-height: 26px;
+  font-size: var(--rl-fs-sm);
+}
+.langsel--compact .rl-select select {
+  min-height: 24px;
+  padding-block: 2px;
+  font-size: var(--rl-fs-xs);
+  max-width: 21ch;
+}
+
+/* Écriture de droite à gauche : les champs de saisie de valeurs techniques restent lisibles. */
+[dir='rtl'] input[type='email'],
+[dir='rtl'] input[type='password'],
+[dir='rtl'] input[type='number'] {
+  direction: ltr;
+  text-align: end;
+}
+/* La mini-carte, les relevés et le rejeu sont des représentations géographiques : jamais inversées. */
+[dir='rtl'] .minimap,
+[dir='rtl'] .replay,
+[dir='rtl'] .worldpicker {
+  direction: ltr;
+}

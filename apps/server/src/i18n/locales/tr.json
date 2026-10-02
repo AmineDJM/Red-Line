@@ -1,0 +1,15 @@
+{
+  "push": {
+    "title": "Red Line — {{game}}",
+    "war": "{{nation}} size savaş ilan etti.",
+    "attack": "{{nation}}, {{province}} bölgesine saldırıyor.",
+    "losses": "Kuvvetleriniz kayıp veriyor.",
+    "provinceLost": "{{province}}: {{nation}} tarafından ele geçirildi.",
+    "provinceTaken": "Birlikleriniz {{province}} bölgesini aldı.",
+    "flash": "İstihbarat flaşı: acil bir rapor sizi bekliyor.",
+    "council": "Güvenlik Konseyi: bir oturum oyunuzu bekliyor.",
+    "victory": "Zafer! Ülkeniz galip geldi.",
+    "victoryOf": "{{nation}} kazandı. Oyun sona erdi.",
+    "defeated": "Ülkeniz yenildi."
+  }
+}

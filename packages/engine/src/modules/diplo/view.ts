@@ -25,6 +25,7 @@ import {
 } from './state.js';
 import { relationOf } from './relations.js';
 import { stabilityView } from './stability.js';
+import { canonical } from '../../state/loc.js';
 import { domesticView } from './domestic.js';
 
 const RECENT_NEWS = 50;
@@ -164,6 +165,7 @@ function recentNews(state: EngineState) {
         body: n.body,
         at: n.at,
         nations: [...n.nations],
+        ...(n.loc ? { loc: canonical(n.loc) } : {}),
       }))
   );
 }

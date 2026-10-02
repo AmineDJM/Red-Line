@@ -4,6 +4,7 @@ import { Pictogram, Flag } from './Pictogram.js';
 import { pictogramFor } from '../pictograms.js';
 import { KeyValue } from './Panel.js';
 import { Icon } from '../icons.js';
+import { formatLocale } from '../format.js';
 
 /** Libellés de la fiche (fournis par l'application, via i18n). */
 export interface WeaponCardLabels {
@@ -36,7 +37,7 @@ export interface WeaponRow {
 export function weaponSheetRows(
   system: WeaponSystem,
   labels: WeaponCardLabels,
-  locale = 'fr-FR',
+  locale = formatLocale(),
 ): WeaponRow[] {
   const nf = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
   const num = (v: number, unit: string) => `${nf.format(v)} ${unit}`.replace(/ /g, ' ');

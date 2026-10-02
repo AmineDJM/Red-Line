@@ -10,6 +10,8 @@ import { publish } from './reports.js';
 import { addIncident, agentDetectFactor } from './interior.js';
 import { ist, nat, nextId, type Agent } from './state.js';
 import { codename, fmtTime, nationName, natAgree, natDe, natLe } from './text.js';
+import { noteLoc } from '../../state/loc.js';
+import { loc } from '@redline/shared';
 
 export function createAgent(
   state: EngineState,
@@ -84,6 +86,7 @@ export function catchQuietly(state: EngineState, a: Agent): void {
     source: 'humint',
     kind: 'counterintel',
     title: `Agent ${natDe(state, a.owner)} démasqué`,
+    titleLoc: loc('engine.intel.agentExposed', { nation: { nation: a.owner } }),
     lines: [
       `${a.kind === 'officer' ? 'Officier traitant' : 'Source recrutée'} au service ${natDe(state, a.owner)} identifié(e) et placé(e) sous surveillance.`,
       `Arrestation publique prévue ${fmtTime(until)}. Retournement possible d'ici là (ordre « retourner »).`,
@@ -106,6 +109,7 @@ export function burn(state: EngineState, a: Agent): void {
     source: 'humint',
     kind: 'flash',
     title: `Agent ${a.codename} compromis`,
+    titleLoc: loc('engine.intel.agentCompromised', { codename: a.codename }),
     lines: [
       `Signaux d'alerte sur ${a.codename} (${nationName(state, a.host)}) : contacts manqués, filature probable.`,
       'Exfiltration recommandée sans délai.',
@@ -142,6 +146,7 @@ export function publicArrest(state: EngineState, a: Agent): void {
       title: 'Agent démasqué',
       text: `${natLe(state, a.host, true)} ${natAgree(state, a.host, 'annonce', 'annoncent')} l'arrestation d'un agent ${natDe(state, a.owner)}.`,
       severity: 'warn',
+      loc: noteLoc('agentCaught', { host: { nation: a.host }, owner: { nation: a.owner } }),
     },
     [a.owner, a.host],
   );
@@ -150,6 +155,7 @@ export function publicArrest(state: EngineState, a: Agent): void {
     source: 'humint',
     kind: 'counterintel',
     title: `Arrestation d'un agent ${natDe(state, a.owner)}`,
+    titleLoc: loc('engine.intel.agentArrest', { nation: { nation: a.owner } }),
     lines: [
       `L'agent étranger placé sous surveillance a été interpellé.`,
       `Incident diplomatique ouvert avec ${natLe(state, a.owner)}.`,
@@ -164,6 +170,7 @@ export function publicArrest(state: EngineState, a: Agent): void {
     source: 'humint',
     kind: 'flash',
     title: `Agent ${a.codename} arrêté`,
+    titleLoc: loc('engine.intel.agentArrested', { codename: a.codename }),
     lines: [
       `${a.codename} a été arrêté par les services ${natDe(state, a.host)}.`,
       'Réseau local à considérer comme compromis. Perte de réputation attendue.',

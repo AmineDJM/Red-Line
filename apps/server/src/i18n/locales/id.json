@@ -1,0 +1,15 @@
+{
+  "push": {
+    "title": "Red Line — {{game}}",
+    "war": "{{nation}} menyatakan perang terhadap Anda.",
+    "attack": "{{nation}} menyerang {{province}}.",
+    "losses": "Pasukan Anda menderita kerugian.",
+    "provinceLost": "{{province}}: direbut oleh {{nation}}.",
+    "provinceTaken": "Pasukan Anda telah merebut {{province}}.",
+    "flash": "Flash intelijen: laporan mendesak menunggu Anda.",
+    "council": "Dewan Keamanan: sebuah sidang memerlukan suara Anda.",
+    "victory": "Kemenangan! Negara Anda unggul.",
+    "victoryOf": "Kemenangan {{nation}}. Permainan telah berakhir.",
+    "defeated": "Negara Anda telah dikalahkan."
+  }
+}

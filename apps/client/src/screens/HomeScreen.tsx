@@ -4,6 +4,7 @@ import type { PublicStats, PublicUser } from '@redline/shared';
 import { Badge, Button, Field, Icon, Input, Kbd, Prompt, type IconName } from '@redline/ui';
 import { IS_MOCK } from '../config.js';
 import { ApiError, getApi } from '../api/index.js';
+import { LanguageSelect, syncAccountLocale } from '../components/LanguageSelect.js';
 import { WorldBackdrop } from '../components/WorldBackdrop.js';
 import { fmtInt } from '../i18n/index.js';
 import { takeFlash } from '../lib/flash.js';
@@ -225,8 +226,11 @@ export function HomeScreen() {
 
   useEffect(() => {
     void getApi()
-      .then((api) => api.me())
-      .then(setUser)
+      .then(async (api) => {
+        const u = await api.me();
+        setUser(u);
+        void syncAccountLocale(api, u);
+      })
       .catch(() => setUser(null));
   }, []);
 
@@ -236,6 +240,7 @@ export function HomeScreen() {
     try {
       const u = await fn();
       setUser(u);
+      await syncAccountLocale(await getApi(), u);
       navigate(to);
     } catch (e) {
       setError(authError(e));
@@ -270,6 +275,7 @@ export function HomeScreen() {
               <i />
             </span>
             <Prompt path={[t('home.path')]} />
+            <LanguageSelect compact />
             <span className="home__version">v0.6</span>
           </header>
           <div className="home__cols">

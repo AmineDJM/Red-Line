@@ -1,4 +1,4 @@
-import { distanceKm, type LngLat, type NationId, type Order } from '@redline/shared';
+import { distanceKm, loc, type LngLat, type NationId, type Order } from '@redline/shared';
 import type { OrderResult } from '../../api.js';
 import { destroyUnit } from '../../combat/combat.js';
 import { sysOf } from '../../state/access.js';
@@ -10,7 +10,18 @@ import { battleFor, countermeasure, timeline, touch } from './battles.js';
 import { milBal, type MissileSt } from './state.js';
 import { countLoss } from './stats.js';
 import { damageUnit } from './strike.js';
-import { OK, atProvince, fail, generic, nationLe, posOf, provinceAt, unitsNear } from './util.js';
+import {
+  OK,
+  atProvince,
+  fail,
+  generic,
+  nationLe,
+  posOf,
+  provinceAt,
+  unitsNear,
+  noteLoc,
+  placeOf,
+} from './util.js';
 
 /**
  * Nucléaire. L'emploi exige une autorisation explicite (ordre `nuclearAuth`, board.nuclearAuth),
@@ -36,6 +47,8 @@ export function orderNuclearAuth(
       'Autorisation nucléaire levée',
       'Les forces nucléaires reviennent au contrôle normal.',
       'info',
+      null,
+      noteLoc('nuclearRevoked'),
     );
     return OK;
   }
@@ -56,6 +69,8 @@ export function orderNuclearAuth(
     'Emploi du nucléaire autorisé',
     'Les frappes nucléaires sont possibles tant que le niveau d’alerte le permet.',
     'critical',
+    null,
+    noteLoc('nuclearAuthorized'),
   );
   return OK;
 }
@@ -100,6 +115,10 @@ export function detonate(state: EngineState, M: Unit, at: LngLat, st: MissileSt)
     category: 'nuclear',
     headline: `Détonation nucléaire ${where}`,
     body: `Une arme nucléaire tirée par ${nationLe(state, M.owner)} a explosé ${where}.`,
+    loc: {
+      headline: loc('engine.news.nuclear.headline', { place: placeOf(pid) }),
+      body: loc('engine.news.nuclear.body', { nation: { nation: M.owner }, place: placeOf(pid) }),
+    },
     at,
     nations: victim ? [M.owner, victim] : [M.owner],
   });
@@ -118,5 +137,6 @@ export function detonate(state: EngineState, M: Unit, at: LngLat, st: MissileSt)
     `Frappe nucléaire ${where}.`,
     'critical',
     at,
+    noteLoc('nuclearDetonation', { place: placeOf(pid) }),
   );
 }

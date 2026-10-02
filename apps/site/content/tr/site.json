@@ -1,0 +1,460 @@
+{
+  "slugs": {
+    "howto": "nasil-oynanir",
+    "features": "ozellikler",
+    "nations": "uluslar",
+    "arsenal": "cephanelik",
+    "faq": "sik-sorulan-sorular",
+    "legal": {
+      "mentions": "yasal-uyari",
+      "privacy": "gizlilik",
+      "cookies": "cerezler",
+      "cgu": "kullanim-kosullari",
+      "cgv": "satis-kosullari",
+      "withdrawal": "cayma-hakki"
+    },
+    "families": {
+      "air": "hava-araclari",
+      "rotary": "helikopterler-ve-dronlar",
+      "land": "kara-kuvvetleri",
+      "airdef": "hava-savunma",
+      "naval": "donanma",
+      "strategic": "fuzeler-ve-stratejik"
+    }
+  },
+  "ui": {
+    "skip": "İçeriğe geç",
+    "nav": {
+      "home": "Ana sayfa",
+      "howto": "Nasıl oynanır",
+      "features": "Özellikler",
+      "nations": "Uluslar",
+      "arsenal": "Cephanelik",
+      "faq": "SSS",
+      "menu": "Menü",
+      "language": "Dil",
+      "main": "Ana gezinme"
+    },
+    "play": "Ücretsiz oyna",
+    "playShort": "Oyna",
+    "multiplayer": "Çok oyunculu",
+    "login": "Giriş yap",
+    "breadcrumb": "Gezinme yolu",
+    "updated": "Son güncelleme: {date}",
+    "version": "Sürüm {version}",
+    "toc": "İçindekiler",
+    "back": "Ana sayfaya dön",
+    "referenceLang": "Bu, kolaylık olması için sunulmuş bir çeviridir; bu belgenin yalnızca Fransızca sürümü hukuken bağlayıcıdır.",
+    "footer": {
+      "tagline": "Gerçek dünya haritası üzerinde gerçek zamanlı jeopolitik strateji oyunu. Ücretsiz, tarayıcınızda.",
+      "game": "Oyun",
+      "legal": "Yasal",
+      "languages": "Diller",
+      "publisher": "Yayımlayan: {name}",
+      "credits": "Teçhizat fotoğrafları: Wikimedia Commons, özgür lisanslar (yazarlar her kayıtta belirtilmiştir). Kurgu: gerçek dünyadan hiçbir hedef gösterilmez."
+    },
+    "legalNames": {
+      "mentions": "Yasal uyarı",
+      "privacy": "Gizlilik",
+      "cookies": "Çerezler",
+      "cgu": "Kullanım koşulları",
+      "cgv": "Satış koşulları",
+      "withdrawal": "Cayma"
+    }
+  },
+  "home": {
+    "title": "Red Line — ücretsiz gerçek zamanlı jeopolitik strateji oyunu",
+    "description": "Gerçek dünya haritasında {nations} ulustan birini yönetin: gerçek cephanelikler ve savunma bütçeleri, istihbarat, diplomasi; tek başına veya {players} oyuncuya kadar çok oyunculu. Ücretsiz, tarayıcınızda.",
+    "kicker": "Askerî strateji oyunu · tarayıcı · gerçek zamanlı",
+    "h1": "Dünya savaşı, gerçek dünya haritasında gerçek zamanlı.",
+    "lead": "2025'in {nations} ulusundan birini gerçek ordusu ve gerçek savunma bütçesiyle yönetin. Üretin, casusluk yapın, Güvenlik Konseyi'nde pazarlık edin ve askerî olarak galip gelin; yapay zekâya karşı tek başınıza ya da {players} oyuncuya kadar karşı karşıya.",
+    "ctaNote": "Ücretsiz · indirme yok · masaüstü, tablet ve mobil",
+    "figures": {
+      "nations": "oynanabilir ulus",
+      "provinces": "il",
+      "systems": "gerçek silah sistemi",
+      "players": "oyun başına oyuncu",
+      "scenarios": "senaryo"
+    },
+    "blocksTitle": "Sizi neler bekliyor",
+    "blocks": [
+      {
+        "title": "Gerçek haritada gerçek zaman",
+        "text": "Uydu görüntüleri, {provinces} il ve büyük daire rotaları: bir hava saldırısı gerçek uçuş kadar sürer, bir filo kıtaları dolanır. Siz çevrimdışıyken de oyun sürer.",
+        "link": "features"
+      },
+      {
+        "title": "Gerçek cephanelikler ve bütçeler",
+        "text": "Her ulus, tahmini 2025 savaş düzeni ve ABD doları cinsinden savunma bütçesiyle başlar. F-35'ten Leclerc tankına kadar {systems} gerçek silah sistemi, birim fiyatlarıyla.",
+        "link": "arsenal"
+      },
+      {
+        "title": "İstihbarat ve savaş sisi",
+        "text": "Yalnızca sensörlerinizin algıladığını görürsünüz. Casuslar, kaynaklar, uydular ve radarlar perdeyi aralar; sabotaj ve teknoloji hırsızlığı rakiplerinizi zayıflatır.",
+        "link": "features"
+      },
+      {
+        "title": "Diplomasi ve Güvenlik Konseyi",
+        "text": "İttifaklar, anlaşmalar, üretim lisansları ve veto haklı Güvenlik Konseyi oylamaları. Savaş, ilk saldırıyla ya da aşılan ilk sınırla ilan edilir.",
+        "link": "features"
+      },
+      {
+        "title": "Tek başına ya da {players} oyuncuya kadar",
+        "text": "İki yüzden fazla yapay zekâ ulusuna karşı tek başınıza oynayın ya da sahibi olmayan ulusların yapay zekâda kaldığı kalıcı bir oyuna katılın. Sezonluk sıralamalar.",
+        "link": "howto"
+      }
+    ],
+    "shot": {
+      "alt": "Red Line ekran görüntüsü: uydu dünya haritası, ulusal sınırlar ve hareket halindeki birlikler",
+      "caption": "Oyundan gerçek ekran görüntüsü: uydu haritası, sınırlar ve hareket halindeki birlikler."
+    },
+    "stepsTitle": "Başlamak için üç dakika",
+    "steps": [
+      {
+        "title": "Bir ulus seçin",
+        "text": "{nations} ulusun tamamı oynanabilir; süper güçlerden küçük adalara kadar. Her birinin kendi kuvvetleri, müttefikleri ve bütçesi var."
+      },
+      {
+        "title": "Emirlerinizi verin",
+        "text": "Birliklerinizi hareket ettirin, üretim ve araştırma başlatın, istihbarat servislerinizi ayarlayın. Bu sırada dünya dönmeye devam eder."
+      },
+      {
+        "title": "Galip gelin",
+        "text": "Zafer yalnızca askerîdir: dünya illerinin %60'ını ya da tüm düşman başkentlerini kontrol edin."
+      }
+    ],
+    "faqTitle": "Sık sorulan sorular",
+    "moreFaq": "Tüm sorular"
+  },
+  "howto": {
+    "title": "Red Line nasıl oynanır — yeni başlayanlar için rehber",
+    "description": "Gerçek zamanlı jeopolitik strateji oyunu Red Line rehberi: bir ulus seçin, ordularınızı hareket ettirin, üretin, araştırın, casusluk yapın, pazarlık edin ve kazanın.",
+    "h1": "Nasıl oynanır",
+    "lead": "Red Line gerçek zamanlı oynanır: dünya dönmeye devam ederken emirleriniz yerine getirilir. Komutadaki ilk saatleriniz için ihtiyacınız olanlar burada.",
+    "sections": [
+      {
+        "title": "1. Bir oyun başlatın",
+        "paragraphs": [
+          "**Ücretsiz oyna**'ya tıklayın: kayıt gerekmeden, misafir hesabıyla tek kişilik bir oyun hemen başlar. Oyunlarınızı her cihazda bulmak ve çok oyunculuya katılmak için bir hesap oluşturun.",
+          "Bir senaryo, ardından bir ulus seçin. Her ulus oynanabilir; büyük güçlerin imkânları daha fazladır, küçük uluslar daha zor bir meydan okuma sunar."
+        ]
+      },
+      {
+        "title": "2. Haritayı okuyun",
+        "paragraphs": [
+          "Harita, uydu görüntüleriyle gerçek dünya haritasıdır ve {provinces} ilden oluşur. Toprağınız mor renkle gösterilir. İşaretler algılanan birlikleri gösterir: sensörlerinizin yakınında kesin, daha uzakta yaklaşık.",
+          "Oyun zamanı, oyun oluşturulurken seçilen hızda kesintisiz akar. Bir saat oyun içi günü ve saati gösterir."
+        ],
+        "list": [
+          "Bir birlik, sonra bir hedef seçin: rota büyük daireyi izler ve geçilemez karalardan kaçınır.",
+          "Bir saldırı emri ya da yabancı bir ile girmek savaşı otomatik olarak ilan eder.",
+          "Çatışma düzenli turlarda çözülür; menzil, tespit, zırh ve gizlilik önemlidir, arazi önemli değildir."
+        ]
+      },
+      {
+        "title": "3. Üretin ve araştırın",
+        "paragraphs": [
+          "Savunma bütçeniz üretimi, bakımı ve araştırmayı karşılar. Her sistemin gerçek bir birim fiyatı, üretim süresi ve teknoloji önkoşulları vardır: ilgili Ar-Ge olmadan beşinci nesil savaş uçağı olmaz.",
+          "Üretim lisansları yabancı teçhizat üretmenizi sağlar; kara borsa yardımcı olabilir, ama ortaya çıkma riskiyle."
+        ]
+      },
+      {
+        "title": "4. İstihbarat",
+        "paragraphs": [
+          "Üç servis (iç güvenlik, dış istihbarat, askerî istihbarat) bütçe alır ve operasyon yürütür: casus yerleştirmek, kaynak devşirmek, ajan çevirmek, teknoloji çalmak, fabrika sabote etmek. Günlük bir rapor öğrendiklerinizi özetler."
+        ]
+      },
+      {
+        "title": "5. Diplomasi ve Güvenlik Konseyi",
+        "paragraphs": [
+          "İttifak ve anlaşma önerin, lisans satın alın, iç istikrarınızı yönetin. Oyunda her 30 günde bir Güvenlik Konseyi toplanır: veto haklı daimi üyeler ve dönüşümlü üyeler kararlar için oy kullanır."
+        ]
+      },
+      {
+        "title": "6. Kazanın",
+        "paragraphs": [
+          "Zafer yalnızca askerîdir: dünya illerinin %60'ını ya da tüm düşman başkentlerini kontrol edin. 48 saat boyunca girişi olmayan tek kişilik bir oyun terk edilmiş sayılarak kapatılır (çok oyunculuda hiç oyuncu olmadan 24 saat)."
+        ]
+      }
+    ],
+    "scenariosTitle": "Senaryolar",
+    "scenarios": {
+      "world-today": {
+        "name": "Bugünün dünyası (2025)",
+        "text": "Bugünün siyasi haritası, 2025 savunma bütçeleri ve tahmini cephanelikler. Her ulus oynanabilir."
+      },
+      "cold-war-1985": {
+        "name": "Soğuk Savaş (1985)",
+        "text": "Bugünün haritasında 1985 cephaneliği ve teknolojisi: operasyonel gizlilik yok, silahlı İHA yok."
+      },
+      "eastern-europe": {
+        "name": "Doğu Avrupa",
+        "text": "Baltık'tan Karadeniz'e: topçu, İHA'lar ve hava savunma kara savaşını belirler."
+      },
+      "middle-east": {
+        "name": "Orta Doğu",
+        "text": "Nil'den Basra Körfezi'ne: balistik füzeler, İHA'lar ve füze savunması cephe hattında."
+      },
+      "pacific": {
+        "name": "Pasifik",
+        "text": "Tayvan Boğazı, Güney Çin Denizi ve Batı Pasifik: uzun menzilli hava ve deniz savaşı."
+      }
+    },
+    "tipsTitle": "Komutan ipuçları",
+    "tips": [
+      "Başkentinizi koruyun: tüm düşman başkentlerini almak iki zafer koşulundan biridir.",
+      "Hava savunma ve radarlar karşılığını verir: düşürülen bir savaş uçağı on milyonlarca dolar eder.",
+      "Herkese aynı anda savaş ilan etmeyin: iyi seçilmiş bir ittifak bir zırhlı tümene bedeldir.",
+      "Düzenli olarak uğrayın: oyun siz olmadan da sürer ve uzun emirler yokluğunuzda yürütülür."
+    ]
+  },
+  "features": {
+    "title": "Red Line özellikleri — gerçek zamanlı askerî strateji",
+    "description": "Gerçek dünya haritası, {nations} ulus, {systems} gerçek askerî sistem, ABD doları cinsinden savunma bütçeleri, istihbarat, diplomasi, Güvenlik Konseyi, {players} oyuncuya kadar çok oyunculu.",
+    "h1": "Özellikler",
+    "lead": "Red Line, gerçekçi imkânlar ve net bir komuta etrafında kurulmuş çevrimiçi bir savaş oyunudur: gerçek dünya haritasının üzerinde sade bir taktik konsol.",
+    "items": [
+      {
+        "title": "Gerçek dünya haritası",
+        "text": "NASA uydu görüntüleri (Blue Marble), güncel sınırlar ve şehirleriyle {provinces} il. Hareketler büyük daireleri izler, filolar kıtaları dolanır, boğazlar önemlidir.",
+        "points": [
+          "{nations} oynanabilir ulus",
+          "Küresel altıgen ızgarada gezinme",
+          "Küreden şehirlere kadar yakınlaştırma"
+        ]
+      },
+      {
+        "title": "Gerçek cephanelikler, gerçek dolarlar",
+        "text": "Her ulus, tahmini savaş düzeni ve gerçek savunma bütçesiyle başlar. Katalogdaki {systems} sistemin gerçek özellikleri ve birim fiyatı vardır; her kaydı gerçek bir fotoğraf resmeder.",
+        "points": [
+          "Savaş uçakları, bombardıman uçakları, helikopterler, İHA'lar",
+          "Tanklar, topçu, hava savunma, radarlar",
+          "Gemiler, denizaltılar, füzeler, uydular, nükleer caydırıcılık"
+        ]
+      },
+      {
+        "title": "Ar-Ge'ye bağlı üretim",
+        "text": "Bir teknoloji ağacı üretimi yönetir: uçak nesilleri, gizlilik, silahlı İHA'lar, füze savunması. Üretim lisansları ve kara borsa başka yollar açar.",
+        "points": [
+          "Gerçekçi üretim süreleri",
+          "Kuvvetlerin günlük bakımı",
+          "Genel seferberlik, ekonominin pahasına"
+        ]
+      },
+      {
+        "title": "İstihbarat ve savaş sisi",
+        "text": "Yalnızca radarlarınızın, uydularınızın ve ajanlarınızın algıladığını görürsünüz. Sunucu, ulusunuzun bilmediğini tarayıcınıza asla göndermez: ağ trafiğini okumak avantaj sağlamaz.",
+        "points": [
+          "Üç istihbarat servisi",
+          "Casusluk, sabotaj, teknoloji hırsızlığı",
+          "Saat 07:00'de günlük rapor"
+        ]
+      },
+      {
+        "title": "Diplomasi ve Güvenlik Konseyi",
+        "text": "İttifaklar, anlaşmalar ve oylamalar: Güvenlik Konseyi, daimi üyeler, veto hakkı ve dönüşümlü üyelerle her 30 oyun gününde toplanır. İç istikrarsızlık isyana ya da darbeye yol açabilir.",
+        "points": ["Otomatik savaş ilanı", "Kararlar ve vetolar", "İç istikrar"]
+      },
+      {
+        "title": "Tek kişilik ve çok oyunculu",
+        "text": "İki yüzden fazla yapay zekâ ulusuna karşı tek başınıza ya da {players} oyuncuya kadar kalıcı bir oyunda: siz yokken oyun sürer, etkinsizseniz ulusunuzu bir yapay zekâ tutar. Sezonluk sıralamalar, izleyiciler, sınır zaman atlaması.",
+        "points": [
+          "{players} oyuncuya kadar",
+          "Kritik uyarılar için bildirimler",
+          "Sezonluk sıralamalar"
+        ]
+      },
+      {
+        "title": "Her ekranda terminal arayüzü",
+        "text": "Modern, yoğun ve okunaklı bir komuta arayüzü; masaüstü ve mobil için eşit ölçüde tasarlandı. İndirilecek bir şey yok: oyun tarayıcınızda çalışır.",
+        "points": ["Masaüstü, tablet, mobil", "Klavye kısayolları", "Uygulama olarak yüklenebilir"]
+      },
+      {
+        "title": "Tasarımı gereği adil",
+        "text": "Oynaması ücretsiz. Premium para birimi hızlandırır veya kişiselleştirir; rastgele satın alma yok (ganimet kutusu yok); rekabetçi oyunlar oyun içi satın alımları sınırlar veya kapatır.",
+        "points": [
+          "Ganimet kutusu yok",
+          "Askerî etkisi olmayan kozmetikler",
+          "Korumalı rekabetçi oyunlar"
+        ]
+      }
+    ]
+  },
+  "nations": {
+    "title": "Red Line'ın {nations} oynanabilir ulusu — 2025 savunma bütçeleri",
+    "description": "Red Line'daki {nations} oynanabilir ulusun tümü; ABD doları cinsinden 2025 savunma bütçeleri, muvazzaf asker sayıları ve il sayılarıyla.",
+    "h1": "Uluslar",
+    "lead": "Dünyadaki her ulus oynanabilir. Her biri tahmini 2025 savunma bütçesi ve personeliyle başlar: güç ile meydan okuma arasında seçim yapın.",
+    "tableCaption": "2025 savunma bütçesine göre uluslar (ABD doları)",
+    "cols": {
+      "rank": "Sıra",
+      "nation": "Ulus",
+      "budget": "Savunma bütçesi",
+      "personnel": "Muvazzaf personel",
+      "provinces": "İller"
+    },
+    "note": "Bütçeler ve personel: oyunun başlangıç noktası olarak kullanılan, yuvarlanmış kamuya açık tahminler."
+  },
+  "arsenal": {
+    "title": "Red Line cephaneliği — {systems} gerçek askerî sistem",
+    "description": "Red Line'ın {systems} gerçek askerî sistemi aileye göre: savaş uçakları, tanklar, topçu, hava savunma, savaş gemileri, denizaltılar, füzeler; ABD doları cinsinden birim fiyatlarıyla.",
+    "h1": "Cephanelik",
+    "lead": "Red Line kataloğu, her biri fotoğrafı, özellikleri ve ABD doları cinsinden birim fiyatıyla {systems} gerçek sistemi bir araya getirir. Bunları üretebilmek araştırmanıza bağlıdır.",
+    "familiesTitle": "Teçhizat aileleri",
+    "count": "{n} sistem",
+    "families": {
+      "air": {
+        "name": "Hava araçları",
+        "title": "Red Line'da muharip uçaklar — savaş uçakları, bombardıman uçakları, destek",
+        "description": "Red Line'da savaş uçakları, stratejik bombardıman uçakları, yakın hava desteği, havadan erken uyarı ve ikmal uçakları; özellikleri ve gerçek birim fiyatlarıyla.",
+        "lead": "Üçüncü nesil savaş uçaklarından gizli uçaklara, stratejik bombardıman uçaklarından ikmal uçaklarına: gökyüzüne hâkimiyet çoğu zaman savaşı belirler."
+      },
+      "rotary": {
+        "name": "Helikopterler ve İHA'lar",
+        "title": "Red Line'da askerî helikopterler ve İHA'lar",
+        "description": "Red Line'da taarruz ve nakliye helikopterleri, keşif ve silahlı İHA'lar; gerçek birim fiyatlarıyla.",
+        "lead": "Taarruz ve nakliye helikopterleri ile silahlı İHA'lar: ateş gücü doğrudan cephede."
+      },
+      "land": {
+        "name": "Kara kuvvetleri",
+        "title": "Red Line'da tanklar, zırhlı araçlar ve topçu",
+        "description": "Red Line'da ana muharebe tankları, piyade savaş araçları, piyade, topçu ve lojistik; gerçek özellikleri ve fiyatlarıyla.",
+        "lead": "Tanklar, zırhlı araçlar, piyade ve topçu: yalnızca kara kuvvetleri il ele geçirir."
+      },
+      "airdef": {
+        "name": "Hava savunma",
+        "title": "Red Line'da hava savunma ve radarlar",
+        "description": "Red Line'da yerden havaya sistemler, füze savunması ve radarlar: Patriot, S-400, Demir Kubbe ve çok daha fazlası, gerçek fiyatlarıyla.",
+        "lead": "Yerden havaya füzeler, füze savunması ve radarlar: şehirlerinizin ve kuvvetlerinizin üzerindeki kalkan."
+      },
+      "naval": {
+        "name": "Donanma",
+        "title": "Red Line'da savaş gemileri ve denizaltılar",
+        "description": "Red Line'da uçak gemileri, muhripler, firkateynler, taarruz ve balistik füzeli denizaltılar; özellikleri ve gerçek birim fiyatlarıyla.",
+        "lead": "Uçak gemileri, muhripler, firkateynler ve denizaltılar: denizlerin ve boğazların hâkimiyeti."
+      },
+      "strategic": {
+        "name": "Füzeler ve stratejik",
+        "title": "Red Line'da seyir ve balistik füzeler, nükleer ve uzay",
+        "description": "Red Line'da seyir ve balistik füzeler, nükleer caydırıcılık ve uydular; özellikleri ve gerçek birim fiyatlarıyla.",
+        "lead": "Vuruş füzeleri, nükleer caydırıcılık ve uydular: uzağa vur, yukarıdan gör."
+      }
+    },
+    "categories": {
+      "fighter": "Savaş uçakları",
+      "bomber": "Bombardıman uçakları",
+      "air_support": "Destek, erken uyarı ve ikmal uçakları",
+      "helicopter": "Helikopterler",
+      "drone": "İHA'lar",
+      "tank": "Ana muharebe tankları",
+      "ifv": "Piyade savaş araçları",
+      "infantry": "Piyade",
+      "artillery": "Topçu",
+      "logistics": "Lojistik",
+      "air_defense": "Yerden havaya savunma",
+      "radar": "Radarlar",
+      "surface_ship": "Yüzey gemileri",
+      "submarine": "Denizaltılar",
+      "strike_missile": "Vuruş füzeleri",
+      "nuclear": "Nükleer silahlar",
+      "space": "Uzay"
+    },
+    "labels": {
+      "origin": "Menşe",
+      "since": "{year} yılından beri hizmette",
+      "price": "Birim fiyat",
+      "speed": "Hız",
+      "range": "Menzil",
+      "generation": "{n}. nesil",
+      "fielded": "Kullanıcılar: {n} ulus",
+      "variants": "Sürümler: {list}",
+      "photo": "Fotoğraf: {credit} ({license})",
+      "generic": "Jenerik",
+      "kmh": "{n} km/sa",
+      "km": "{n} km"
+    },
+    "note": "Birim fiyatlar: güncel ABD doları cinsinden kamuya açık tahminler. Fotoğraflar: Wikimedia Commons, özgür lisanslar, kırpılmış ve renk düzeltmeli."
+  },
+  "faq": {
+    "title": "Red Line SSS — sık sorulan sorular",
+    "description": "Red Line hakkında sık sorulan sorulara yanıtlar: fiyat, çok oyunculu, mobil, orduların gerçekçiliği, oyun süresi, satın alımlar, kişisel veriler.",
+    "h1": "Sık sorulan sorular",
+    "lead": "Komutayı devralmadan önce bilmeniz gereken her şey.",
+    "items": [
+      {
+        "q": "Red Line ücretsiz mi?",
+        "a": "Evet. Oyun ücretsizdir ve tarayıcınızda çalışır, indirilecek bir şey yoktur. İsteğe bağlı bir premium para birimi bazı eylemleri hızlandırır veya kozmetik satın alır; hiçbir satın alma rastgele değildir."
+      },
+      {
+        "q": "Hesap gerekli mi?",
+        "a": "Hayır: «Ücretsiz oyna» cihazınızda saklanan bir misafir hesabı açar. Kayıtlı bir hesap (e-posta ve parola) oyunlarınızı her yerde bulmanızı, çok oyunculu oynamanızı ve sıralamalarda yer almanızı sağlar."
+      },
+      {
+        "q": "Mobilde oynanır mı?",
+        "a": "Evet. Arayüz masaüstü, tablet ve telefon için tasarlanmıştır. Oyun, tarayıcınızdan uygulama olarak da yüklenebilir."
+      },
+      {
+        "q": "Oyun başına kaç oyuncu var?",
+        "a": "Çok oyunculuda {players} insan oyuncuya kadar; diğer ulusları yapay zekâ yönetir. Tek kişilikte iki yüzden fazla yapay zekâ ulusuyla karşılaşırsınız."
+      },
+      {
+        "q": "Bir oyun ne kadar sürer?",
+        "a": "Bir oyun, oluşturulurken seçilen hızda, birkaç gün veya hafta boyunca gerçek zamanlı oynanır. Siz çevrimdışıyken de sürer: günde birkaç uğrama yeterlidir."
+      },
+      {
+        "q": "Ordular ve bütçeler gerçek mi?",
+        "a": "Kamuya açık tahminlere dayanır: ABD doları cinsinden 2025 savunma bütçeleri, tahmini savaş düzenleri ve birim fiyatlarıyla {systems} gerçek sistem. Oyun yine de kurgudur: gerçek dünyadan hiçbir hedef gösterilmez, stratejik hedefler jeneriktir."
+      },
+      {
+        "q": "Nasıl kazanılır?",
+        "a": "Yalnızca askerî olarak: dünya illerinin %60'ını ya da tüm düşman başkentlerini kontrol ederek."
+      },
+      {
+        "q": "Red Line, Conflict of Nations'a alternatif mi?",
+        "a": "Red Line ondan esinlenmiştir: aynı küresel ölçek ve gerçek zamanlı oynanış; buna ek olarak gerçek cephanelikler ve bütçeler, ayrıntılı istihbarat, bir Güvenlik Konseyi ve rastgele satın alma içermeyen sade bir komuta arayüzü."
+      },
+      {
+        "q": "Satın alımlar avantaj sağlar mı?",
+        "a": "Kozmetiklerin askerî etkisi yoktur. Hızlandırmalar her oyun tarafından belirlenir: açık, sınırlı veya rekabetçi oyunlarda kapalı."
+      },
+      {
+        "q": "Oyun hangi dillerde mevcut?",
+        "a": "Türkçe, İngilizce, Fransızca, İspanyolca, Arapça, Almanca, Portekizce, Rusça, İtalyanca, Çince, Japonca, Korece, Hintçe, Endonezce ve Lehçe dahil on beş dilde. Herkese açık sayfaların metinleri adım adım tamamlanıyor."
+      },
+      {
+        "q": "Hangi kişisel veriler toplanıyor?",
+        "a": "Yalnızca oyunun ihtiyaç duyduğu veriler: hesap, oyunlar, teknik güvenlik kayıtları. Reklam izleyicisi yok. Ayrıntılar [gizlilik politikasında](page:legal:privacy)."
+      },
+      {
+        "q": "Kaç yaşında olmak gerekir?",
+        "a": "En az 15 ya da bir ebeveynin veya vasinin onayıyla. Oyun, silahlı çatışmayı stratejik olarak, şiddet görüntüsü olmadan gösterir."
+      }
+    ]
+  },
+  "notFound": {
+    "title": "Sayfa bulunamadı — Red Line",
+    "h1": "Sayfa bulunamadı",
+    "text": "Bu adres hiçbir sayfayla eşleşmiyor. Koordinatlar hatalı olabilir."
+  },
+  "catalogNames": {
+    "Infanterie légère": "Hafif piyade",
+    "Infanterie mécanisée": "Mekanize piyade",
+    "Infanterie de marine": "Deniz piyadesi",
+    "Forces spéciales": "Özel kuvvetler",
+    "Troupes aéroportées": "Hava indirme birlikleri",
+    "Troupes aéroportées VDV": "VDV hava indirme birlikleri",
+    "Brouilleur de guerre électronique": "Elektronik harp karıştırıcısı",
+    "Dôme de fer": "Demir Kubbe",
+    "Fronde de David": "Davut'un Sapanı",
+    "Avion cargo affrété": "Kiralık kargo uçağı",
+    "Convoi logistique": "Lojistik konvoy",
+    "Cargo": "Kargo gemisi",
+    "Radar à grande antenne Type 7010": "Tip 7010 büyük antenli radar",
+    "Satellite de reconnaissance optique": "Optik keşif uydusu",
+    "Satellite de reconnaissance radar": "Radar keşif uydusu",
+    "Satellite d'écoute électronique": "Elektronik dinleme uydusu",
+    "Satellite d'alerte avancée": "Erken uyarı uydusu",
+    "Arme antisatellite": "Uydu savar silahı",
+    "Guépard (classe)": "Gepard sınıfı"
+  }
+}

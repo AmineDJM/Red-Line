@@ -1,3 +1,4 @@
+import type { LocText } from '@redline/shared';
 import {
   distanceKm,
   type IntelOpKind,
@@ -110,7 +111,7 @@ export function nationReconReport(
   n: NationId,
   op: StoredOp,
   outcome: 'success' | 'failed' | 'compromised',
-  meta: { title: string; source: IntelSource },
+  meta: { title: string; titleLoc?: LocText; source: IntelSource },
 ): void {
   const rn = op.rn!;
   const v = op.victim!;
@@ -180,6 +181,7 @@ export function nationReconReport(
     source: meta.source,
     kind: 'result',
     title: meta.title,
+    ...(meta.titleLoc ? { titleLoc: meta.titleLoc } : {}),
     lines,
     at,
     radiusKm: at ? clamp(r, 60, 900) : 0,
