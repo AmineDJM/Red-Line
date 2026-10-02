@@ -280,17 +280,28 @@ export interface ViewDiff {
   domestic?: DomesticView;
 }
 
-/** Horloge d'une partie : temps de jeu = anchorGame + (maintenant - anchorReal) × speed (0 si en pause). */
+/**
+ * Horloge d'une partie : temps de jeu = anchorGame + (maintenant - anchorReal) × speed × rate (figé si en
+ * pause). `speed` est le multiplicateur affiché (×1, ×2, ×4…) ; `rate` est le temps de jeu écoulé par
+ * unité de temps réel à ×1 (équilibrage `time.realtimeFactor`, ex. 10 : ×1 = 10 min de jeu par minute).
+ */
 export interface ClockState {
   anchorGame: GameTime;
   anchorReal: RealTime;
   speed: number;
   paused: boolean;
+  /** Facultatif (défaut 1, parties créées avant le réglage). */
+  rate?: number;
+}
+
+/** Temps de jeu écoulé par milliseconde réelle (vitesse × cadence de base). */
+export function clockRate(clock: ClockState): number {
+  return clock.speed * (clock.rate ?? 1);
 }
 
 export function gameTimeAt(clock: ClockState, now: RealTime): GameTime {
   if (clock.paused) return clock.anchorGame;
-  return clock.anchorGame + (now - clock.anchorReal) * clock.speed;
+  return clock.anchorGame + (now - clock.anchorReal) * clockRate(clock);
 }
 
 /** Notifications destinées au centre d'alertes et au bandeau titre. */

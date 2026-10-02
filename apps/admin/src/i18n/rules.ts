@@ -746,6 +746,11 @@ export const RULE_HELP: Record<string, HelpEntry> = {
     'Période entre deux décisions stratégiques des IA.',
     'min',
   ],
+  'time.realtimeFactor': [
+    'Cadence de base',
+    'Temps de jeu écoulé par unité de temps réel à la vitesse ×1 (10 : ×1 = 10 min de jeu par minute, ×2 = 20 min, ×4 = 40 min). S’applique aux nouvelles parties.',
+    'x',
+  ],
   'combat.variance': [
     'Variance des dégâts',
     'Multiplicateur tiré dans [1 − v, 1 + v] à chaque round.',

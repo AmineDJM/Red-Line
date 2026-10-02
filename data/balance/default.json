@@ -5,6 +5,7 @@
     "combatRoundMinutes": 20,
     "captureMinutes": 90,
     "aiThinkMinutes": 30,
+    "realtimeFactor": 10,
     "dormancyRadiusKm": 2000
   },
   "combat": {

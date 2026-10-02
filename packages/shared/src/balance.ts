@@ -924,6 +924,11 @@ export const BalanceSchema = z.object({
     /** Période de réflexion des IA, en minutes de jeu. */
     aiThinkMinutes: z.number().positive(),
     /**
+     * Cadence de base : temps de jeu écoulé par unité de temps réel à la vitesse ×1 (10 : ×1 = 10 min de
+     * jeu par minute réelle, ×2 = 20 min, ×4 = 40 min…). Absent : 1 (temps réel).
+     */
+    realtimeFactor: z.number().positive().optional(),
+    /**
      * Aucun joueur humain connecté : les IA dont le territoire est à plus de ce rayon (km) de celui de
      * tout joueur humain, et qui ne sont pas en guerre avec lui, suspendent leurs décisions jusqu'au
      * retour d'un joueur. La simulation continue (constructions, mouvements, combats en cours).

@@ -198,6 +198,21 @@ const yieldLoop = () => new Promise<void>((r) => setImmediate(r));
 const nowMs = () => performance.now();
 const MAX_PENDING_NOTES = 2000;
 export const DAY_MS = 86_400_000;
+
+/**
+ * Cadence de base de l'horloge (équilibrage figé de la partie) ; absente = temps réel × vitesse. Les
+ * vitesses d'essai (REDLINE_EXTRA_SPEEDS, hors équilibrage) restent absolues.
+ */
+function rateOf(balance: Balance | null | undefined, speed: number): { rate?: number } {
+  const r = balance?.time?.realtimeFactor;
+  if (!r || r === 1) return {};
+  return balance?.time.speeds.includes(speed) ? { rate: r } : {};
+}
+/** Horloge dont la cadence suit sa vitesse courante. */
+function withRate(clock: ClockState, balance: Balance | null | undefined): ClockState {
+  const { rate: _old, ...rest } = clock;
+  return { ...rest, ...rateOf(balance, clock.speed) };
+}
 /** Écriture de last_active_at au plus toutes les N ms par joueur. */
 const ACTIVE_WRITE_MS = 60_000;
 const INACTIVE_CHECK_MS = 60_000;
@@ -491,6 +506,7 @@ export class GameHost {
         anchorReal: row.anchorRealAt.getTime(),
         speed: row.speed,
         paused: row.status !== 'running',
+        ...rateOf(row.balance, row.speed),
       },
       pauseReason: row.pauseReason,
       players: players.map((p) => ({
@@ -947,7 +963,7 @@ export class GameHost {
     this.log.error({ err, gameId: g.id }, 'erreur de simulation : partie suspendue');
     g.errored = true;
     const now = Date.now();
-    g.clock = { anchorGame: g.state.time, anchorReal: now, speed: g.clock.speed, paused: true };
+    g.clock = { ...g.clock, anchorGame: g.state.time, anchorReal: now, paused: true };
     if (g.meta.status !== 'ended') g.meta.status = 'paused';
     g.pauseReason = 'error';
     g.flushDue = null;
@@ -1362,7 +1378,7 @@ export class GameHost {
         if (this.advance(g, now)) this.requestFlush(g, now);
       });
     }
-    g.clock = reanchor(g.clock, now, g.state.time, change);
+    g.clock = withRate(reanchor(g.clock, now, g.state.time, change), g.balance);
     if (change.paused !== undefined && g.meta.status !== 'ended') {
       g.meta.status = change.paused ? 'paused' : 'running';
       g.pauseReason = change.paused ? reason : null;
@@ -1610,7 +1626,8 @@ export class GameHost {
       aiLevel: opts.aiLevel,
       ...(opts.scenario.nationIds ? { nationIds: opts.scenario.nationIds } : {}),
       scenario: opts.scenario,
-      speed: opts.speed,
+      // Temps de jeu par temps réel (fenêtres de vote du Conseil en heures réelles) : cadence comprise.
+      speed: opts.speed * (rateOf(pin.balance, opts.speed).rate ?? 1),
       ...(opts.victory ? { victory: opts.victory } : {}),
     };
     const tCreate = nowMs();
@@ -1700,6 +1717,7 @@ export class GameHost {
       anchorReal: now,
       speed,
       paused: false,
+      ...rateOf(prepared.pin.balance, speed),
     };
     const row = await this.d.db.transaction(async (tx) => {
       const [r] = await tx
@@ -1795,6 +1813,7 @@ export class GameHost {
       anchorReal: now,
       speed: row0.speed,
       paused: false,
+      ...rateOf(prepared.pin.balance, row0.speed),
     };
     const [row] = await this.d.db
       .update(games)
@@ -2245,6 +2264,7 @@ export class GameHost {
           anchorReal: r.anchorRealAt.getTime(),
           speed: r.speed,
           paused: r.status !== 'running',
+          ...rateOf(r.balance, r.speed),
         },
         Date.now(),
       );
