@@ -55,6 +55,8 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
 - Fond vectoriel en GeoJSON statique (`data/basemap`) plutôt qu'en PMTiles vectoriel (petit volume, pas de tippecanoe).
 - Cibles stratégiques : bâtiments **génériques** par province, jamais de vrais sites nommés. De l'image de référence,
   on ne reprend que les codes visuels.
+- Armées de départ en **piles mixtes** (brigades, escadres ; `data/balance` `stacks`, désactivable) : une pile vaut
+  la somme de ses éléments (`Unit.mix`), ordres `split` / `merge` ; mesures dans `docs/charge.md`.
 - Couleurs de nations : jamais de violet (réservé au joueur), deux voisins jamais identiques.
 
 ## Conventions
