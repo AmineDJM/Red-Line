@@ -47,7 +47,7 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
   `packages/shared`) : les unités terrestres ne circulent que sur les routes (villes = points de capture, centres,
   ports, passages de frontière, carrefours) ; destination accrochée à moins de `movement.roadSnapKm`, sinon ordre
   refusé (`off_road`) ; traversées de port à port sur la grille navale. Air et mer : trajets libres inchangés.
-  Unité hors réseau (ancienne sauvegarde) : termine son trajet, puis rejoint la route la plus proche.
+  Unité hors réseau (ancienne sauvegarde) : termine son trajet, puis rejoint la route la plus proche. Désactivable : `movement.roadNetwork: false`.
 - Guerre déclarée automatiquement par un ordre d'attaque ou l'entrée dans une province étrangère.
 - Persistance : instantanés compressés + journal d'ordres ; reprise = instantané + rejeu. Bail de partie en base
   (colonnes `lease_owner`/`lease_until`) ; ne jamais fixer `INSTANCE_ID` à une constante sur Render.
