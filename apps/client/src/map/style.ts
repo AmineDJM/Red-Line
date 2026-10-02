@@ -1630,7 +1630,16 @@ function cityLayers(i: StyleInput): LayerSpecification[] {
           // Nom au-dessus du marqueur (une garnison posée sur la ville masquerait un nom à droite) ;
           // à gauche ou à droite seulement s'il entre en collision avec une autre étiquette.
           'text-variable-anchor': ['bottom', 'left', 'right'],
-          'text-radial-offset': cls === 0 ? 1.55 : 1.45,
+          // Au-dessus d'un pion posé sur la ville (demi-hauteur + onglet de pile), à toute échelle.
+          'text-radial-offset': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            ...PION_SCALE_STOPS.flatMap(([z, v]) => [
+              z,
+              Math.max(cls === 0 ? 1.55 : 1.45, ((PION_H / 2 + 8) * v) / size),
+            ]),
+          ],
           'text-justify': 'auto',
           'text-max-width': 9,
           'symbol-sort-key': ['get', 'rank'],
