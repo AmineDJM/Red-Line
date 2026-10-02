@@ -56,6 +56,7 @@ import {
   warGoalReached,
   warPlanOf,
   type Operation,
+  type TransportOp,
 } from './strategy.js';
 import { ds, pairKey } from '../modules/diplo/state.js';
 import { aiOrder } from './trace.js';
@@ -193,7 +194,7 @@ export function awakeNations(state: EngineState): Set<NationId> | null {
 const DEFAULT_DORMANCY_RADIUS_KM = 2000;
 
 /** Une de ses unités mobiles, avec sa position et sa valeur (prix × effectif × santé). */
-interface Mine {
+export interface Mine {
   u: Unit;
   s: WeaponSystem;
   pos: LngLat;
@@ -216,7 +217,29 @@ interface Seen {
   medium: string | null;
 }
 
-interface Ctx {
+/**
+ * Armée d'un joueur confiée à un général (centre de commandement, modules/command) : la réflexion est
+ * restreinte à ses piles, avec le profil du général (`L`) et une mémoire propre à l'armée (opérations,
+ * engagements, captures impossibles, transports), sérialisée dans l'état du module.
+ */
+export interface ArmyScope {
+  units: ReadonlySet<string>;
+  L: AiLevelBalance;
+  mem: ArmyMemory;
+  /** Zone confiée : les ennemis vus dedans sont attaqués comme s'ils étaient chez soi. */
+  zone?: { at: LngLat; r: number } | null;
+  /** Villes déjà visées par d'autres armées de la nation. */
+  aimed?: Iterable<ProvinceId>;
+}
+
+export interface ArmyMemory {
+  ops?: Record<ProvinceId, Operation>;
+  commit?: Record<string, [string, number]>;
+  capFail?: Record<string, number>;
+  tr?: Record<string, TransportOp>;
+}
+
+export interface Ctx {
   state: EngineState;
   n: NationId;
   L: AiLevelBalance;
@@ -248,6 +271,29 @@ interface Ctx {
   ops: Record<ProvinceId, Operation>;
   opUnits: Map<string, ProvinceId>;
   byId: Map<string, Mine>;
+  /** Armée commandée par un général (mémoire propre), absent pour l'IA d'une nation. */
+  mem?: ArmyMemory;
+  zone?: { at: LngLat; r: number } | null;
+}
+
+/** Transports de troupes en cours : mémoire de l'armée, sinon de la nation. */
+function trOps(ctx: Ctx, create: boolean): Record<string, TransportOp> | undefined {
+  if (!ctx.mem) return transportOps(ctx.state, ctx.n, create);
+  if (create) ctx.mem.tr ??= {};
+  else if (ctx.mem.tr && Object.keys(ctx.mem.tr).length === 0) delete ctx.mem.tr;
+  return ctx.mem.tr;
+}
+
+/** Retire les échéances passées (et les unités disparues) d'un registre de mémoire. */
+function pruneUntil<T>(
+  state: EngineState,
+  r: Record<string, T>,
+  until: (v: T) => number,
+  unit: boolean,
+): Record<string, T> {
+  for (const k of sortedKeys(r))
+    if (until(r[k]!) <= state.time || (unit && !state.units[k])) delete r[k];
+  return r;
 }
 
 function order(state: EngineState, n: NationId, o: Order): boolean {
@@ -258,7 +304,7 @@ function order(state: EngineState, n: NationId, o: Order): boolean {
  * Le trajet vers ce point traverserait-il une nation avec qui on n'est pas en guerre ? (l'IA évite
  * d'ouvrir un nouveau front par inadvertance ; même calcul que le moteur, à partir de sa propre unité).
  */
-function safeLegs(state: EngineState, n: NationId, u: Unit, to: LngLat): Leg[] | null {
+export function safeLegs(state: EngineState, n: NationId, u: Unit, to: LngLat): Leg[] | null {
   const plan = planUnitMove(state, u, to);
   if ('error' in plan) return null;
   const start = unitPosAt(state, u, state.time);
@@ -319,16 +365,22 @@ function think(state: EngineState, n: NationId): void {
   produce(state, n, false, ctx);
 }
 
+/** Contexte d'une armée commandée par un général (centre de commandement). */
+export function armyContext(state: EngineState, n: NationId, scope: ArmyScope): Ctx {
+  return context(state, n, scope);
+}
+
 /** Ce que la nation sait d'elle-même et de ses ennemis, calculé une fois par réflexion. */
-function context(state: EngineState, n: NationId): Ctx {
+function context(state: EngineState, n: NationId, scope?: ArmyScope): Ctx {
   const ns = state.nations[n]!;
-  const L = aiLevelCfg(state, ns.aiLevel);
+  const L = scope ? scope.L : aiLevelCfg(state, ns.aiLevel);
   const T = aiCfg(state.world).tactical;
   const mine = ownForce(state, n);
   const land: Mine[] = [];
   const sea: Mine[] = [];
   const idle = new Set<string>();
   for (const id of nationUnits(state, n)) {
+    if (scope && !scope.units.has(id)) continue;
     const u = state.units[id]!;
     if (u.off || u.role) continue;
     const s = sysOf(state, u);
@@ -352,7 +404,7 @@ function context(state: EngineState, n: NationId): Ctx {
   for (const m of land) byId.set(m.u.id, m);
   for (const m of sea) byId.set(m.u.id, m);
   // Unités des opérations en cours : ni libres ni réservées (seule la capitale peut les rappeler).
-  const ops = operations(state, n);
+  const ops = scope ? (scope.mem.ops ??= {}) : operations(state, n);
   const opUnits = new Map<string, ProvinceId>();
   for (const pid of sortedKeys(ops)) {
     const op = ops[pid]!;
@@ -374,8 +426,12 @@ function context(state: EngineState, n: NationId): Ctx {
     idle,
     reserved: new Set(),
     paths: L.pathBudget,
-    failed: captureFailures(state, n),
-    commit: commitments(state, n),
+    failed: scope
+      ? pruneUntil(state, (scope.mem.capFail ??= {}), (v) => v, false)
+      : captureFailures(state, n),
+    commit: scope
+      ? pruneUntil(state, (scope.mem.commit ??= {}), (v) => v[1], true)
+      : commitments(state, n),
     enemies: [],
     threat: new Map(),
     hold: new Map(),
@@ -385,10 +441,12 @@ function context(state: EngineState, n: NationId): Ctx {
     ops,
     opUnits,
     byId,
+    ...(scope ? { mem: scope.mem, zone: scope.zone ?? null } : {}),
   };
   for (const pid of sortedKeys(ops)) ctx.aimed.add(pid);
+  if (scope?.aimed) for (const pid of scope.aimed) ctx.aimed.add(pid);
   // Transports de troupes en cours : navire et troupes réservés, objectif visé.
-  const trs = transportOps(state, n, false);
+  const trs = trOps(ctx, false);
   if (trs) {
     for (const sid of sortedKeys(trs)) {
       const t = trs[sid]!;
@@ -462,7 +520,7 @@ function destOf(m: Mine): LngLat {
  * proches unités libres jusqu'à `count` unités et `value` de force. Renvoie le nombre d'unités
  * obtenues (présentes, en route ou envoyées).
  */
-function garrison(
+export function garrison(
   ctx: Ctx,
   pid: ProvinceId,
   count: number,
@@ -562,7 +620,7 @@ function holdKeyPoints(ctx: Ctx): void {
  * ou extrapolée d'une demi-heure sur sa trajectoire observée) n'est pas suivie, sinon la poursuite
  * ouvrirait une guerre que personne n'a décidée.
  */
-function stopNeutralChases(ctx: Ctx): void {
+export function stopNeutralChases(ctx: Ctx): void {
   const { state, n } = ctx;
   const nav = wi(state.world).nav;
   const ahead = state.world.balance.time.aiThinkMinutes * MINUTE;
@@ -598,7 +656,7 @@ function stopNeutralChases(ctx: Ctx): void {
 }
 
 /** 2. Défense : ennemis vus sur son territoire ou près de ses villes, attaqués par un groupe. */
-function defend(ctx: Ctx): void {
+export function defend(ctx: Ctx): void {
   const { state, n, L } = ctx;
   const provDet = state.world.balance.sensors.provinceDetectionKm;
   const targeted = new Set<string>();
@@ -608,7 +666,9 @@ function defend(ctx: Ctx): void {
     if (!th.seen || targeted.has(th.id) || th.medium === 'air') continue;
     const pid = nav.cellProv.get(nav.cellOfPos(th.pos));
     const inside =
-      (!!pid && state.provinces[pid]?.owner === n) || ownCityWithin(state, n, th.pos, provDet);
+      (!!pid && state.provinces[pid]?.owner === n) ||
+      ownCityWithin(state, n, th.pos, provDet) ||
+      (!!ctx.zone && distanceKm(th.pos, ctx.zone.at) <= ctx.zone.r);
     if (!inside) continue;
     // Milieu inconnu : sur terre si la position est dans une province, en mer sinon.
     const naval = th.medium === 'sea' || (th.medium === null && !pid);
@@ -651,7 +711,7 @@ function defend(ctx: Ctx): void {
  * d'arrivée sont trop étalées, ou si le trajet passe par la mer, le groupe se rassemble d'abord
  * (opération) puis part en bloc.
  */
-function launchGroup(
+export function launchGroup(
   ctx: Ctx,
   pid: ProvinceId,
   need: number,
@@ -898,7 +958,7 @@ function summonTransport(ctx: Ctx, pid: ProvinceId, at: LngLat, until: number): 
       !order(state, n, { kind: 'move', unitIds: [ship.u.id], to: spot }))
   )
     return;
-  transportOps(state, n, true)![ship.u.id] = {
+  trOps(ctx, true)![ship.u.id] = {
     pid,
     units: [],
     ph: 'come',
@@ -916,7 +976,7 @@ function summonTransport(ctx: Ctx, pid: ProvinceId, at: LngLat, until: number): 
 function loadTransport(ctx: Ctx, pid: ProvinceId, there: Mine[]): Set<string> {
   const { state, n } = ctx;
   const out = new Set<string>();
-  const trs = transportOps(state, n, false);
+  const trs = trOps(ctx, false);
   if (!trs) return out;
   const sid = sortedKeys(trs).find((k) => trs[k]!.pid === pid && trs[k]!.ph === 'come');
   if (!sid) return out;
@@ -1005,9 +1065,9 @@ function canLandAt(state: EngineState, ship: Unit, to: LngLat): boolean {
 }
 
 /** Suivi des transports : départ une fois chargé (avec escorte), puis marche sur la ville. */
-function runTransports(ctx: Ctx): void {
+export function runTransports(ctx: Ctx): void {
   const { state, n, L } = ctx;
-  const trs = transportOps(state, n, false);
+  const trs = trOps(ctx, false);
   if (!trs) return;
   for (const sid of sortedKeys(trs)) {
     const t = trs[sid]!;
@@ -1129,7 +1189,7 @@ function release(ctx: Ctx, pid: ProvinceId): void {
  * celles arrivées si elles suffisent), et pour un débarquement quand la zone est tenue, le groupe part
  * en bloc vers l'objectif. Objectif pris, perdu de vue ou force insuffisante : opération dissoute.
  */
-function runOps(ctx: Ctx): void {
+export function runOps(ctx: Ctx): void {
   const { state, n, T } = ctx;
   for (const pid of sortedKeys(ctx.ops)) {
     const op = ctx.ops[pid]!;
@@ -1295,7 +1355,7 @@ function stage(ctx: Ctx, t: NationId): void {
 }
 
 /** Force à engager contre une ville : force ennemie connue × attackRatio (capitale : au moins deux unités). */
-function needFor(ctx: Ctx, pid: ProvinceId, owner: NationId): number {
+export function needFor(ctx: Ctx, pid: ProvinceId, owner: NationId): number {
   const known = ctx.hold.get(pid) ?? 0;
   const capital = capitalOf(ctx.state, owner) === pid;
   const prior = capital ? 2 * ctx.mine.avgUnit : 0;
@@ -1303,7 +1363,7 @@ function needFor(ctx: Ctx, pid: ProvinceId, owner: NationId): number {
 }
 
 /** 3. Contre-attaque : provinces d'origine perdues, voisines d'une province possédée (capitale d'abord). */
-function counterattack(ctx: Ctx): void {
+export function counterattack(ctx: Ctx): void {
   const { state, n, L } = ctx;
   const w = wi(state.world);
   const cap = capitalOf(state, n);

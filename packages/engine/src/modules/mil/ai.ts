@@ -61,7 +61,7 @@ import {
  *  - Jamais de nucléaire (décision réservée aux joueurs humains).
  */
 
-interface Seen {
+export interface Seen {
   u: Unit;
   /** Système identifié (niveau 2 ou mieux), sinon null. */
   sys: WeaponSystem | null;
@@ -76,7 +76,7 @@ function order(state: EngineState, n: NationId, o: Order): boolean {
  * Vol possible vers ce point et retour (rayon d'action, carburant) sans survoler une nation avec qui
  * on n'est pas en guerre (le survol d'une province étrangère vaut entrée : il ouvrirait un front).
  */
-function canFly(state: EngineState, n: NationId, u: Unit, to: LngLat): boolean {
+export function canFly(state: EngineState, n: NationId, u: Unit, to: LngLat): boolean {
   if (airFeasible(state, u, to)) return false;
   const from = posOf(state, u);
   const plan = planAir(sysOf(state, u), from, to, state.time);
@@ -88,7 +88,7 @@ function canFly(state: EngineState, n: NationId, u: Unit, to: LngLat): boolean {
 }
 
 /** Appareil au sol, prêt à décoller. */
-function ready(state: EngineState, u: Unit): boolean {
+export function ready(state: EngineState, u: Unit): boolean {
   const m = msOf(state, u);
   return !!m && !m.up && m.ready <= state.time;
 }
@@ -251,24 +251,24 @@ export function combatAi(state: EngineState, n: NationId): void {
 const QUIET_EVERY = 4;
 
 /** Appareil d'attaque au sol (bombardier, appui, drone armé ; ni ravitailleur ni avion radar). */
-function isStriker(s: WeaponSystem): boolean {
+export function isStriker(s: WeaponSystem): boolean {
   if (!isFuelAir(s) || isTanker(s) || isAew(s)) return false;
   return s.category === 'bomber' || s.category === 'air_support' || s.category === 'drone';
 }
 
 /** Chasseur disponible pour l'escorte ou la patrouille (ni ravitailleur, ni radar, ni reconnaissance). */
-function isFighter(s: WeaponSystem): boolean {
+export function isFighter(s: WeaponSystem): boolean {
   if (!isFuelAir(s) || isTanker(s) || isAew(s) || isRecon(s)) return false;
   return s.category === 'fighter' && s.damage.aircraft > 0;
 }
 
 /** Défense antiaérienne (sol-air) d'après sa fiche identifiée. */
-function isSam(s: WeaponSystem | null): boolean {
+export function isSam(s: WeaponSystem | null): boolean {
   return !!s && s.category === 'air_defense' && s.damage.aircraft > 0 && s.movement !== 'air';
 }
 
 /** Rayon de couverture prudent d'une défense antiaérienne autour d'un point (km). */
-const SAM_COVER_KM = 150;
+export const SAM_COVER_KM = 150;
 
 function covers(x: Seen, p: LngLat): boolean {
   return distanceKm(x.pos, p) <= (x.sys?.weaponRangeKm.max ?? 0) + 10;
@@ -301,7 +301,13 @@ function patrolling(state: EngineState, units: Unit[], at: LngLat, km: number): 
 }
 
 /** Patrouille de chasse au-dessus d'un point (couverture d'un objectif ou d'un débarquement). */
-function cover(state: EngineState, n: NationId, units: Unit[], at: LngLat, want: number): void {
+export function cover(
+  state: EngineState,
+  n: NationId,
+  units: Unit[],
+  at: LngLat,
+  want: number,
+): void {
   let need = want - patrolling(state, units, at, COVER_KM);
   let tries = 4;
   for (const u of units) {
@@ -314,7 +320,7 @@ function cover(state: EngineState, n: NationId, units: Unit[], at: LngLat, want:
   }
 }
 
-const COVER_KM = 80;
+export const COVER_KM = 80;
 
 /**
  * Escorte d'une frappe hors de son territoire. Frappe profonde (`striker` donné) : des chasseurs prêts
@@ -322,7 +328,7 @@ const COVER_KM = 80;
  * ennemis qui le menacent). Sinon, ou à défaut de chasseurs disponibles, patrouille de chasse sur
  * l'objectif (plus rapides, ils arrivent avant les bombardiers).
  */
-function escortStrike(
+export function escortStrike(
   state: EngineState,
   n: NationId,
   units: Unit[],
@@ -346,7 +352,7 @@ function escortStrike(
 }
 
 /** Installations visées par les frappes profondes, par priorité décroissante. */
-const DEEP_PRIORITY: Partial<Record<BuildingType, number>> = {
+export const DEEP_PRIORITY: Partial<Record<BuildingType, number>> = {
   air_defense_site: 5,
   radar_station: 4,
   air_base: 3,
@@ -436,7 +442,7 @@ function deepStrikes(
 }
 
 /** La défense antiaérienne couvre-t-elle un point de la route (grand cercle échantillonné) ? */
-function onRoute(x: Seen, from: LngLat, to: LngLat): boolean {
+export function onRoute(x: Seen, from: LngLat, to: LngLat): boolean {
   const r = (x.sys?.weaponRangeKm.max ?? 0) + 10;
   const d = distanceKm(from, to);
   const steps = Math.max(1, Math.ceil(d / ROUTE_STEP_KM));
@@ -518,7 +524,7 @@ function navalAi(state: EngineState, n: NationId): void {
 const NAVAL_REACH_KM = 2500;
 
 /** Ennemis observés (hors missiles) et présence d'une menace aérienne (aéronef ou missile vu). */
-function visibleEnemies(
+export function visibleEnemies(
   state: EngineState,
   n: NationId,
 ): { threats: Seen[]; air: boolean; airAt: LngLat[] } {
@@ -572,7 +578,7 @@ function nearOwn(state: EngineState, n: NationId, p: LngLat): boolean {
   return ownerAt(state, p) === n;
 }
 
-function pickMissileTarget(
+export function pickMissileTarget(
   state: EngineState,
   n: NationId,
   launcher: Unit,
