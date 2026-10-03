@@ -4050,7 +4050,7 @@
       "chief": "군종 사령관",
       "hired": "고용됨",
       "forces": "전력",
-      "autoForces": "자동: 군종의 여유 스택",
+      "autoForces": "자동 배정 전력",
       "morePool": "후보 전체 보기(+{{count}})",
       "lessPool": "접기",
       "name": "작전명",

@@ -1611,7 +1611,7 @@ button.cmd-gcard:focus-visible {
 }
 .ops-metrics {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 6px 18px;
   margin: 0;
   padding: 0;
@@ -1663,6 +1663,9 @@ button.cmd-gcard:focus-visible {
 .ops-stats .is-bad {
   color: var(--rl-red);
 }
+.ops-staff-panel {
+  grid-column: 1 / -1;
+}
 .ops-staff {
   display: flex;
   flex-direction: column;
@@ -1688,8 +1691,11 @@ button.cmd-gcard:focus-visible {
   min-width: 0;
 }
 .ops-staff__id b {
+  overflow: hidden;
   color: var(--rl-text-strong);
   font-size: var(--rl-fs-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .ops-staff__id > span {
   display: flex;
@@ -1706,6 +1712,7 @@ button.cmd-gcard:focus-visible {
 }
 .ops-staff__status {
   color: var(--rl-text-dim);
+  white-space: nowrap;
   font-family: var(--rl-font-mono);
   font-size: var(--rl-fs-2xs);
   letter-spacing: var(--rl-track);
@@ -1725,6 +1732,9 @@ button.cmd-gcard:focus-visible {
   display: inline-flex;
   gap: 6px;
   align-items: center;
+}
+.ops-staff__actions > :first-child {
+  width: 200px;
 }
 
 /* Assistant : cibles */
@@ -1806,6 +1816,9 @@ button.cmd-gcard:focus-visible {
 }
 
 /* Assistant : objectifs */
+.ops-gcard .ops-goal-icon {
+  grid-row: 1 / span 2;
+}
 .ops-gcard.is-on {
   border-color: var(--rl-amber);
   box-shadow: inset 0 0 0 1px var(--rl-amber);
@@ -1813,6 +1826,7 @@ button.cmd-gcard:focus-visible {
 .ops-gcard__foot {
   grid-column: 1 / -1;
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
   align-items: center;
   justify-content: space-between;
@@ -1823,7 +1837,9 @@ button.cmd-gcard:focus-visible {
   gap: 4px;
 }
 .ops-gcard__est {
+  margin-inline-start: auto;
   color: var(--rl-text-dim);
+  white-space: nowrap;
   font-family: var(--rl-font-mono);
   font-size: var(--rl-fs-2xs);
   font-variant-numeric: tabular-nums;
@@ -2072,6 +2088,10 @@ button.cmd-gcard:focus-visible {
   .ops-staff__actions {
     grid-column: 1 / -1;
     justify-content: flex-end;
+  }
+  .ops-staff__actions > :first-child {
+    width: auto;
+    flex: 1;
   }
   .ops-grow__opts {
     grid-template-columns: minmax(0, 1fr);

@@ -4050,7 +4050,7 @@
       "chief": "军种司令",
       "hired": "已招募",
       "forces": "兵力",
-      "autoForces": "自动：本军种的空闲编组",
+      "autoForces": "自动分配兵力",
       "morePool": "查看全部候选人（+{{count}}）",
       "lessPool": "收起",
       "name": "作战名称",

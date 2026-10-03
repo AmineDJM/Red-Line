@@ -4104,7 +4104,7 @@
       "chief": "commander-in-chief",
       "hired": "hired",
       "forces": "Forces",
-      "autoForces": "Automatic: free stacks of the branch",
+      "autoForces": "Automatic forces",
       "morePool": "Show the whole pool (+{{count}})",
       "lessPool": "Collapse",
       "name": "Operation name",

@@ -224,6 +224,12 @@ describe('opérations : conduite', () => {
       done: op.targets.length,
       total: op.targets.length,
     });
+    // La capitale reste comptée après la chute du pays visé (1/1, pas 0/0).
+    expect(v.progress.find((p) => p.key === 'capital')).toEqual({
+      key: 'capital',
+      done: 1,
+      total: 1,
+    });
     expect(v.pct).toBe(1);
   });
 

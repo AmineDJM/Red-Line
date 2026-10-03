@@ -78,7 +78,10 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
   la somme de ses éléments (`Unit.mix`), ordres `split` / `merge` ; mesures dans `docs/charge.md`.
 - **Centre de commandement** (module moteur `cmd`, fenêtre QG) : armées nommées de piles, missions
   (`data/balance` `command`), généraux fictifs payés qui pilotent l'IA militaire sur leurs seules piles ; un ordre
-  direct sur une pile prime jusqu'à sa fin, puis le général la reprend. Voir `docs/centre-de-commandement.md`.
+  direct sur une pile prime jusqu'à sa fin, puis le général la reprend. **Opérations** (onglet par défaut) : pays
+  visés, objectif (affaiblir, contrôle aérien, conquête, décapitation, frappes stratégiques, SEAD, blocus, tenir la
+  frontière, occuper), plusieurs généraux des 4 **commandements** (terre, air, marine, DCA ; vivier et chef par
+  arme), rôles et secteurs ; planificateur `ops.ts`, conduite `opbrain.ts`. Voir `docs/centre-de-commandement.md`.
 - Capture : toutes les troupes terrestres (infanterie, chars, véhicules, artillerie) ; jamais DCA, missiles,
   radars, convois, air ni mer (`CAPTURE_CATEGORIES`). Efficacité par catégorie de cible affichée à l'interface :
   calcul unique `packages/shared/src/effectiveness.ts` (docs/arsenal.md § 3).

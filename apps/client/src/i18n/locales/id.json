@@ -4050,7 +4050,7 @@
       "chief": "panglima matra",
       "hired": "direkrut",
       "forces": "Kekuatan",
-      "autoForces": "Otomatis: tumpukan bebas matra",
+      "autoForces": "Kekuatan otomatis",
       "morePool": "Lihat semua kandidat (+{{count}})",
       "lessPool": "Ciutkan",
       "name": "Nama operasi",

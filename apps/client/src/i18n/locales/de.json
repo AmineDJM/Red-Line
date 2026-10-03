@@ -4104,7 +4104,7 @@
       "chief": "Oberbefehlshaber",
       "hired": "angeworben",
       "forces": "Kräfte",
-      "autoForces": "Automatisch: freie Stapel der Teilstreitkraft",
+      "autoForces": "Automatische Kräfte",
       "morePool": "Gesamten Pool zeigen (+{{count}})",
       "lessPool": "Einklappen",
       "name": "Name der Operation",

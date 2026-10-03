@@ -4104,7 +4104,7 @@
       "chief": "kuvvet komutanı",
       "hired": "işe alındı",
       "forces": "Kuvvetler",
-      "autoForces": "Otomatik: kuvvetin boş yığınları",
+      "autoForces": "Otomatik kuvvetler",
       "morePool": "Tüm havuzu göster (+{{count}})",
       "lessPool": "Daralt",
       "name": "Harekâtın adı",

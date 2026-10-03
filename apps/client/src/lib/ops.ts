@@ -99,7 +99,8 @@ export function freeGenerals(
 /**
  * État-major proposé : pour chaque commandement recommandé par l'objectif, le meilleur général
  * disponible (recruté d'abord, sinon candidat du vivier) dans la compétence maîtresse de l'arme ;
- * un second général de l'armée de terre pour une conquête quand les forces terrestres le justifient.
+ * un second général de l'armée de terre pour une conquête ou une occupation (deux secteurs) dès que
+ * les forces terrestres comptent au moins deux piles (brigades).
  * Seuls les commandements qui ont des forces sont proposés.
  */
 export function suggestStaff(
@@ -123,7 +124,7 @@ export function suggestStaff(
     out.push({ id: g.id, role: b, armyId: null });
   };
   for (const b of def.branches) if ((free[b] ?? 0) > 0) pick(b);
-  if ((goal === 'conquest' || goal === 'occupy') && (free.land ?? 0) >= 4) pick('land');
+  if ((goal === 'conquest' || goal === 'occupy') && (free.land ?? 0) >= 2) pick('land');
   return out;
 }
 

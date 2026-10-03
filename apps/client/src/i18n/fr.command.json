@@ -563,7 +563,7 @@
       "chief": "général en chef",
       "hired": "recruté",
       "forces": "Forces",
-      "autoForces": "D’office : piles libres de l’arme",
+      "autoForces": "Forces d’office",
       "morePool": "Voir tout le vivier (+{{count}})",
       "lessPool": "Réduire",
       "name": "Nom de l’opération",

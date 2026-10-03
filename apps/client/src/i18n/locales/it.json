@@ -4158,7 +4158,7 @@
       "chief": "comandante in capo",
       "hired": "reclutato",
       "forces": "Forze",
-      "autoForces": "D’ufficio: pile libere dell’arma",
+      "autoForces": "Forze d’ufficio",
       "morePool": "Mostra tutta la riserva (+{{count}})",
       "lessPool": "Riduci",
       "name": "Nome dell’operazione",

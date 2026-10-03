@@ -49,8 +49,10 @@ test('centre de commandement : armée, mission Conquérir, général, province p
   expect(plan).not.toBeNull();
   const { pid, at, ids } = plan!;
 
-  // 1. Centre de commandement (barre du haut), nouvelle armée.
+  // 1. Centre de commandement (barre du haut) : il s'ouvre sur les opérations ; onglet Armées,
+  // nouvelle armée.
   await page.getByTestId('command-button').click();
+  await page.getByRole('tab', { name: /Armées/ }).click();
   await page.getByTestId('army-new').click();
   await expect(page.getByTestId('army-wizard')).toBeVisible();
   await page.getByTestId('wizard-name').fill('1re Armée');

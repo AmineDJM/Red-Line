@@ -4212,7 +4212,7 @@
       "chief": "dowódca główny",
       "hired": "zatrudniony",
       "forces": "Siły",
-      "autoForces": "Automatycznie: wolne stosy rodzaju sił",
+      "autoForces": "Siły automatycznie",
       "morePool": "Pokaż całą pulę (+{{count}})",
       "lessPool": "Zwiń",
       "name": "Nazwa operacji",

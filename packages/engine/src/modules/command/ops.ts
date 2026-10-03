@@ -1012,7 +1012,9 @@ function measure(state: EngineState, op: OpSt, I: OpIntel): void {
   const samsTotal = op.seen.sams.length + (op.goal === 'strategic' ? 0 : op.seen.bld.length);
   const airDone = op.seen.air.filter(gone).length;
   const takenT = op.targets.filter((p) => state.provinces[p]?.owner === n).length;
-  const caps = opNations(state, op)
+  // Capitales des pays visés, y compris des pays déjà vaincus (la mesure reste « 1/1 » après la chute).
+  const caps = [...new Set([...op.nations, ...opNations(state, op)])]
+    .sort()
     .map((o) => capitalOf(state, o))
     .filter((p): p is ProvinceId => !!p);
   let main = 0;

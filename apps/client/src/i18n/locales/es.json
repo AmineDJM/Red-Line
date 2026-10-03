@@ -4158,7 +4158,7 @@
       "chief": "comandante en jefe",
       "hired": "contratado",
       "forces": "Fuerzas",
-      "autoForces": "Automático: pilas libres del arma",
+      "autoForces": "Fuerzas automáticas",
       "morePool": "Ver toda la reserva (+{{count}})",
       "lessPool": "Reducir",
       "name": "Nombre de la operación",

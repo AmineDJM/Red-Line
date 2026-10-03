@@ -306,7 +306,7 @@ function StaffPanel({ op, command }: { op: CampaignView; command: CommandView })
   const send = useSend();
   const closed = op.status === 'success' || op.status === 'failed';
   return (
-    <section className="cmd-panel" data-testid="op-staff">
+    <section className="cmd-panel ops-staff-panel" data-testid="op-staff">
       <h4 className="cmd-panel__title">
         {t('command.ops.staff')}
         <span>{t('command.ops.generals', { count: op.commanders.length })}</span>

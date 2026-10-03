@@ -4050,7 +4050,7 @@
       "chief": "軍種司令官",
       "hired": "採用済み",
       "forces": "戦力",
-      "autoForces": "自動：軍種の空きスタック",
+      "autoForces": "自動割当の戦力",
       "morePool": "候補をすべて表示（+{{count}}）",
       "lessPool": "折りたたむ",
       "name": "作戦名",
