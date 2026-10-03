@@ -58,6 +58,8 @@ const OP_REPEATABLE = new Set([
   'recon',
   'sectorDone',
   'tooWeak',
+  'hunt',
+  'salvo',
 ]);
 
 /** Journal d'une opération (clés `engine.cmd.op.<id>`), même règle de non-répétition. */
@@ -111,6 +113,7 @@ const FR: Record<string, [string, string]> = {
   opSuccess: ['Opération réussie', 'Opération {{op}} : objectif atteint.'],
   opFailed: ['Opération échouée', 'Opération {{op}} : échec.'],
   opAchieved: ['Objectif atteint', 'Opération {{op}} : objectif atteint, il est maintenu.'],
+  opPhase: ['Phase suivante', 'Opération {{op}} : phase {{n}}/{{total}}.'],
   opHeavyLosses: ['Pertes lourdes', 'Opération {{op}} : {{pct}} % des forces perdues en 24 h.'],
   opStuck: ['Opération enlisée', 'Opération {{op}} : aucun progrès depuis longtemps.'],
 };

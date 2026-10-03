@@ -33,6 +33,7 @@ import {
   opDamage,
   opOf,
   opUnitLost,
+  pruneSpare,
   orderCampaignAnswer,
   orderCampaignCancel,
   orderCampaignCreate,
@@ -42,6 +43,7 @@ import {
   planOp,
 } from './ops.js';
 import { journal } from './journal.js';
+import { goalKill } from './opgoals.js';
 import { cmd, cmdBal, cmdOpt } from './state.js';
 import { ensureTick } from './schedule.js';
 import { commandView } from './view.js';
@@ -64,6 +66,8 @@ function live(state: EngineState): boolean {
   for (const id of Object.keys(c.armies)) {
     const a = c.armies[id]!;
     if (a.mission && a.status !== 'success' && a.status !== 'failed') return true;
+    // Posture après la fin (tenir les gains, rentrer à la base) : le général réfléchit encore.
+    if (a.post && a.general) return true;
   }
   for (const id of Object.keys(c.ops ?? {})) {
     const op = c.ops![id]!;
@@ -89,6 +93,7 @@ function handleTick(state: EngineState): void {
     if (a) thinkArmy(state, a);
   }
   for (const id of Object.keys(c.ops ?? {}).sort()) afterThink(state, c.ops![id]!);
+  pruneSpare(state);
   if (live(state)) ensureTick(state);
 }
 
@@ -175,12 +180,13 @@ export const cmdModule: EngineModule = {
   view: commandView,
   hooks: {
     onDailyTick: daily,
-    onUnitDestroyed(state, u) {
+    onUnitDestroyed(state, u, killer) {
       const c = cmdOpt(state);
       const aid = c?.unitArmy[u.id];
       const a = aid ? c?.armies[aid] : undefined;
       if (a) opUnitLost(state, a, u);
       onUnitGone(state, u, true);
+      if (c?.ops) goalKill(state, u, killer);
     },
     onUnitRemoved(state, u) {
       onUnitGone(state, u, false);

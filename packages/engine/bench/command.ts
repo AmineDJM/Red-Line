@@ -67,6 +67,88 @@ function pickTarget(s: EngineState): { pid: string; piles: Unit[] } {
   return best!;
 }
 
+/**
+ * Mode opération (`CMD_OP=sead,conquest` ou `CMD_OP=blitz`) : opération du QG contre FOE, phases
+ * enchaînées, état-major proposé (meilleur candidat de chaque commandement de la chaîne), forces
+ * d'office. Mesure : phases franchies, issue, ordres, coût de calcul par jour de jeu.
+ */
+const OP = process.env.CMD_OP ? process.env.CMD_OP.split(',') : null;
+const SKILL: Record<string, 'offense' | 'air' | 'naval' | 'defense'> = {
+  land: 'offense',
+  air: 'air',
+  sea: 'naval',
+  ad: 'defense',
+};
+
+function opBench(
+  s: EngineState,
+  seed: number,
+  aggr: 'cautious' | 'balanced' | 'bold',
+  ok: (o: Order) => void,
+  log: { ok: boolean; kind: string; reason?: string }[],
+  refMs: number,
+): void {
+  const v = viewFor(s, ME).command!;
+  const goals = v.goals ?? {};
+  const branches: string[] = [];
+  for (const g of OP!)
+    for (const x of goals[g]?.chain ?? [g])
+      for (const b of goals[x]?.branches ?? []) if (!branches.includes(b)) branches.push(b);
+  if (OP!.some((g) => g === 'conquest' || goals[g]?.chain?.includes('conquest')))
+    branches.splice(1, 0, 'land');
+  const used = new Set<string>();
+  const commanders = branches.flatMap((b) => {
+    const c = v
+      .branches!.find((x) => x.id === b)
+      ?.candidates.filter((x) => !used.has(x.id))
+      .sort((x, y) => y.skills[SKILL[b]!] - x.skills[SKILL[b]!] || (x.id < y.id ? -1 : 1))[0];
+    if (!c) return [];
+    used.add(c.id);
+    return [{ candidateId: c.id }];
+  });
+  ok({
+    kind: 'campaignCreate',
+    name: 'Banc',
+    goal: OP![0]!,
+    nations: [FOE],
+    roe: 'free',
+    aggr,
+    commanders: commanders.slice(0, 6),
+    ...(OP!.length > 1 ? { phases: OP!.slice(1).map((goal) => ({ goal })) } : {}),
+  } as Order);
+  const op = Object.values(cmd(s).ops!)[0]!;
+  let ms = 0;
+  const steps: string[] = [];
+  for (let d = 1; d <= DAYS; d++) {
+    for (let h = 1; h <= 24; h += 1) {
+      const t0 = cpu();
+      advanceTo(s, (d - 1) * DAY + h * HOUR);
+      ms += cpu() - t0;
+      const closed = op.status === 'success' || op.status === 'failed';
+      const tag = closed ? op.status : `${op.goal}@${(op.step ?? 0) + 1}`;
+      if (steps[steps.length - 1]?.split(' ')[0] !== tag)
+        steps.push(`${tag} J+${(s.time / DAY).toFixed(2)}`);
+    }
+  }
+  setAiTracer(null);
+  const counts = new Map<string, [number, number]>();
+  for (const x of log) {
+    const c = counts.get(x.kind) ?? [0, 0];
+    c[x.ok ? 0 : 1]++;
+    counts.set(x.kind, c);
+  }
+  console.log(
+    `graine ${seed} · ${aggr} · opération ${OP!.join(' → ')} contre ${FOE} · ${commanders.length} généraux`,
+  );
+  console.log(`  phases (début) : ${steps.join(' · ')}`);
+  console.log(
+    `  ordres des généraux : ${[...counts].map(([k, [o, f]]) => `${k} ${o}${f ? ` (${f} refusés)` : ''}`).join(', ')}`,
+  );
+  console.log(
+    `  calcul : ${(ms / DAYS).toFixed(0)} ms/jour (référence sans opération : ${(refMs / DAYS).toFixed(0)} ms/jour)`,
+  );
+}
+
 function cpu(): number {
   const u = process.cpuUsage();
   return (u.user + u.system) / 1000;
@@ -83,7 +165,6 @@ for (const seed of SEEDS) {
   }
   for (const aggr of AGGRS) {
     const s = game(seed);
-    const { pid, piles } = pickTarget(s);
     const log: { ok: boolean; kind: string; reason?: string }[] = [];
     setAiTracer((_st, n, o, r) => {
       if (n === ME) log.push({ ok: r.ok, kind: (o as Order).kind, reason: r.reason ?? r.error });
@@ -92,6 +173,11 @@ for (const seed of SEEDS) {
       const r = applyOrder(s, ME, o);
       if (!r.ok) throw new Error(`${o.kind}: ${r.message}`);
     };
+    if (OP) {
+      opBench(s, seed, aggr, ok, log, refMs);
+      continue;
+    }
+    const { pid, piles } = pickTarget(s);
     ok({ kind: 'armyCreate', name: '1re Armée', unitIds: piles.map((u) => u.id) });
     const army = Object.keys(cmd(s).armies)[0]!;
     const cands = viewFor(s, ME).command!.candidates;

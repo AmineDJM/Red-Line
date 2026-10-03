@@ -13,10 +13,12 @@ import {
   type OpCommanderInput,
   type OpGoalDef,
   type OpMetric,
+  type OpPhaseInput,
   type OpSector,
   type LocParam,
   type Order,
   type ProvinceId,
+  type WaitView,
 } from '@redline/shared';
 import type { OrderResult } from '../../api.js';
 import {
@@ -31,6 +33,7 @@ import { atWar, provincesOf, sortedKeys, sysOf, unitPosAt } from '../../state/ac
 import type { EngineState, Unit } from '../../state/types.js';
 import { CAPTURE_RADIUS_KM, wi } from '../../state/world.js';
 import { scheduleMod } from '../kit.js';
+import { transferProvince } from '../../combat/capture.js';
 import { knowledge, revealed } from '../intel/provinces.js';
 import { isSam, visibleEnemies, type Seen } from '../mil/ai.js';
 import { mil } from '../mil/state.js';
@@ -47,8 +50,30 @@ import {
   salaryOf,
 } from './generals.js';
 import { journal as journalArmy, notifyOwner, opJournal } from './journal.js';
-import { cmd, cmdBal, cmdOpt, nextCmdId, type ArmySt, type GenSt, type OpSt } from './state.js';
+import {
+  cmd,
+  cmdBal,
+  cmdOpt,
+  nextCmdId,
+  type ArmySt,
+  type GenSt,
+  type OpPhaseSt,
+  type OpSt,
+} from './state.js';
 import { ensureTick } from './schedule.js';
+import {
+  CUSTOM,
+  TAKING,
+  WIDE,
+  alliesOf,
+  borderWith,
+  capitalOf as goalCapital,
+  holdingGoal,
+  isLogistics,
+  measureGoal,
+  setupGoal,
+  trackShips,
+} from './opgoals.js';
 
 /**
  * Opérations (ordre d'opération) : un ou plusieurs pays cibles (ou une région), un objectif (affaiblir
@@ -72,8 +97,12 @@ const fail = (error: OrderResult['error'], message: string): OrderResult => ({
   message,
 });
 
-/** Objectifs qui prennent des provinces. */
-export const TAKING = new Set(['conquest', 'occupy', 'decapitation']);
+export { TAKING };
+
+/** Opération close (réussie ou échouée). */
+export function closed(op: OpSt): boolean {
+  return op.status === 'success' || op.status === 'failed';
+}
 
 export function opsOf(state: EngineState): Record<string, OpSt> {
   return (cmd(state).ops ??= {});
@@ -121,7 +150,7 @@ export function middle(pts: LngLat[]): LngLat | null {
 
 // ——— Renseignement de l'opération ———
 
-export type BldKind = 'ad' | 'air' | 'mil' | 'naval' | 'ind';
+export type BldKind = 'ad' | 'air' | 'mil' | 'naval' | 'ind' | 'log' | 'res';
 
 const BLD_KIND: Partial<Record<BuildingType, BldKind>> = {
   air_defense_site: 'ad',
@@ -134,7 +163,33 @@ const BLD_KIND: Partial<Record<BuildingType, BldKind>> = {
   power_plant: 'ind',
   electronics_plant: 'ind',
   research_center: 'ind',
+  forward_base: 'log',
+  port: 'log',
+  recruiting_office: 'log',
+  oil_field: 'res',
+  mine: 'res',
+  local_industry: 'res',
 };
+
+/** Installations suivies par la mesure d'un objectif (frappes : bâtiments à détruire). */
+export function trackedBld(goal: string, b: { kind: BldKind; b: BuildingType }): boolean {
+  switch (goal) {
+    case 'strategic':
+      return b.kind === 'air' || b.kind === 'mil' || b.kind === 'naval' || b.kind === 'ind';
+    case 'strategic_bombing':
+      return b.kind !== 'ad' && b.kind !== 'log';
+    case 'interdiction':
+      return isLogistics(b.b);
+    case 'naval_strikes':
+      return b.kind === 'ad' || b.kind === 'air' || b.kind === 'mil' || b.kind === 'naval';
+    case 'missile_campaign':
+      return b.kind === 'ad' || b.kind === 'air' || b.kind === 'mil';
+    case 'raid':
+      return b.kind !== 'res';
+    default:
+      return b.kind === 'ad';
+  }
+}
 
 export interface OpIntel {
   /** Pays cibles en guerre avec la nation (les seuls qu'on frappe). */
@@ -155,24 +210,71 @@ const intelCache = new WeakMap<EngineState, { t: number; m: Map<string, OpIntel>
 
 /** Cibles des pays visés : provinces encore à eux (ou provinces désignées encore à prendre). */
 export function foeProvinces(state: EngineState, op: OpSt): ProvinceId[] {
+  const kind = goalDef(state, op.goal)?.target ?? 'nation';
+  if (CUSTOM.has(op.goal)) {
+    const allies = new Set(op.gd?.allies ?? []);
+    return op.targets.filter((p) => {
+      const o = state.provinces[p]?.owner;
+      return !!o && o !== op.owner && !allies.has(o);
+    });
+  }
   if (op.provinces?.length)
     return op.provinces.filter((p) => {
       const o = state.provinces[p]?.owner;
       return !!o && o !== op.owner;
     });
+  // Défense de son territoire, soutien d'un allié : aucune province ennemie visée.
+  if (kind === 'self' || kind === 'ally') return [];
   const out: ProvinceId[] = [];
   for (const o of op.nations) out.push(...provincesOf(state, o));
   return out.sort();
 }
 
-/** Nations visées : pays cibles, propriétaires des provinces désignées. */
+/**
+ * Nations visées : pays cibles, propriétaires des provinces désignées ou à prendre ; pour une
+ * opération sur son territoire sans pays désigné, les nations en guerre avec soi ; pour un allié,
+ * ses ennemis.
+ */
 export function opNations(state: EngineState, op: OpSt): NationId[] {
-  const out = new Set(op.nations);
+  const kind = goalDef(state, op.goal)?.target ?? 'nation';
+  const out = new Set<NationId>();
+  const allies = new Set<NationId>(kind === 'ally' ? op.nations : []);
+  if (kind === 'ally') {
+    for (const a of op.nations) for (const e of [...(state.rt.enemies.get(a) ?? [])]) out.add(e);
+  } else for (const o of op.nations) out.add(o);
   for (const p of op.provinces ?? []) {
     const o = state.provinces[p]?.owner;
     if (o && o !== op.owner) out.add(o);
   }
+  if (CUSTOM.has(op.goal))
+    for (const p of op.targets) {
+      const o = state.provinces[p]?.owner;
+      if (o && o !== op.owner) out.add(o);
+    }
+  if (kind === 'self' && !op.nations.length)
+    for (const e of [...(state.rt.enemies.get(op.owner) ?? [])]) out.add(e);
+  out.delete(op.owner);
+  for (const a of allies) out.delete(a);
   return [...out].filter((o) => state.nations[o]?.alive).sort();
+}
+
+/** Théâtre d'une opération défensive : ses provinces au contact des ennemis, sinon sa capitale. */
+function theater(state: EngineState, op: OpSt, foes: NationId[]): ProvinceId[] {
+  const kind = goalDef(state, op.goal)?.target ?? 'nation';
+  const set = new Set(foes);
+  if (kind === 'ally') {
+    const out: ProvinceId[] = [];
+    for (const a of op.nations) out.push(...borderWith(state, a, set));
+    if (out.length) return out.sort();
+    return op.nations.map((a) => goalCapital(state, a)).filter((p): p is ProvinceId => !!p);
+  }
+  if (op.gd?.sites?.length)
+    return op.gd.sites.filter((p) => state.provinces[p]?.owner === op.owner);
+  if (op.gd?.lines?.[0]?.length) return op.gd.lines[0];
+  const front = borderWith(state, op.owner, set);
+  if (front.length) return front;
+  const cap = goalCapital(state, op.owner);
+  return cap && state.provinces[cap]?.owner === op.owner ? [cap] : [];
 }
 
 /** Ce que la nation sait des pays visés (contacts identifiés, installations révélées), une fois par instant. */
@@ -220,6 +322,8 @@ export function opIntel(state: EngineState, op: OpSt): OpIntel {
       I.blds.push({ pid, b, at: cityAt(state, pid), kind });
     }
   }
+  // Opération défensive ou de soutien : le théâtre est son front (ou celui de l'allié).
+  if (!pts.length) for (const p of theater(state, op, foes)) pts.push(cityAt(state, p));
   I.center = middle(pts);
   if (I.center) {
     let bd = Infinity;
@@ -237,13 +341,32 @@ export function opIntel(state: EngineState, op: OpSt): OpIntel {
 
 // ——— Forces : piles d'un commandement prises d'office ———
 
-/** Piles libres (hors armée) d'une arme, utilisables par un général. */
-export function freeBranchPiles(state: EngineState, n: NationId, b: Branch): Unit[] {
+/**
+ * Armée qui rend ses piles disponibles : formée d'office pour une opération désormais close (elle
+ * tient les gains ou rentre en attendant un nouvel ordre).
+ */
+export function spareArmy(state: EngineState, aid: string | undefined): boolean {
+  const c = cmdOpt(state);
+  const a = aid ? c?.armies[aid] : undefined;
+  if (!a || !a.opAuto) return false;
+  const op = a.op ? c?.ops?.[a.op] : undefined;
+  return !op || closed(op);
+}
+
+/** Piles libres (hors armée, ou d'une armée d'opération close) d'une arme, utilisables par un général. */
+export function freeBranchPiles(
+  state: EngineState,
+  n: NationId,
+  b: Branch,
+  keep: ReadonlySet<string> = new Set(),
+): Unit[] {
   const c = cmdOpt(state);
   const out: Unit[] = [];
   for (const id of sortedKeys(state.units)) {
     const u = state.units[id]!;
-    if (u.owner !== n || u.role || u.off || c?.unitArmy[id]) continue;
+    if (u.owner !== n || u.role || u.off) continue;
+    const aid = c?.unitArmy[id];
+    if (aid && (keep.has(aid) || !spareArmy(state, aid))) continue;
     const s = sysOf(state, u);
     if (s.speedKmh <= 0 || branchOfSystem(s) !== b) continue;
     out.push(u);
@@ -262,11 +385,12 @@ function autoForces(
   share: number,
   aim: LngLat | null,
   taken: Set<string>,
+  keepArmies: ReadonlySet<string> = new Set(),
 ): Unit[] {
   const O = cmdBal(state).operations;
   const cap = capitalOf(state, n);
   const capAt = cap && state.provinces[cap]?.owner === n ? cityAt(state, cap) : null;
-  let free = freeBranchPiles(state, n, b).filter((u) => !taken.has(u.id));
+  let free = freeBranchPiles(state, n, b, keepArmies).filter((u) => !taken.has(u.id));
   // Une pile de l'armée de terre garde la capitale (la plus proche), sauf engagement total.
   if (share < 1 && b === 'land' && capAt && free.length > 1) {
     const keep = free
@@ -316,7 +440,16 @@ export function computeSectors(state: EngineState, op: OpSt): void {
   const center = middle(pts);
   const ats = land.map((id) => centroid(state, c.armies[id]!));
   const from = middle(ats.filter((x): x is LngLat => !!x));
-  if (!TAKING.has(op.goal) || land.length < 2 || targets.length < 2 || !center || !from) {
+  // Percée : concentration de tous les généraux sur l'axe (pas de secteurs).
+  const concentrate = op.goal === 'breakthrough';
+  if (
+    !TAKING.has(op.goal) ||
+    concentrate ||
+    land.length < 2 ||
+    targets.length < 2 ||
+    !center ||
+    !from
+  ) {
     for (const id of land) op.sectors[id] = { dir: 'all', pids: [...targets] };
     return;
   }
@@ -489,6 +622,7 @@ export function leaveOp(state: EngineState, a: ArmySt, dissolveAuto: boolean): v
   a.request = null;
   a.aims = [];
   a.status = 'idle';
+  a.post = null;
   a.v++;
   if (dissolveAuto && a.opAuto) {
     removeUnits(state, a, [...a.units]);
@@ -505,10 +639,15 @@ function enlist(state: EngineState, op: OpSt, rs: Resolved[]): void {
   const O = cmdBal(state).operations;
   const aim = opIntelCenter(state, op);
   const taken = new Set<string>();
+  // Armées reprises telles quelles (désignées, ou celle du général) : leurs piles ne sont pas « libres ».
+  const keepArmies = new Set<string>();
   // Généraux de même arme aux forces d'office : piles partagées par contiguïté géographique.
   const autoBy = new Map<Branch, number[]>();
   rs.forEach((r, i) => {
     const b = r.role ?? (r.gen ? branchOf(r.gen) : (r.hire?.branch ?? 'land'));
+    if (r.army) keepArmies.add(r.army.id);
+    else if (!r.units && r.gen?.army && c.armies[r.gen.army]?.units.length)
+      keepArmies.add(r.gen.army);
     if (!r.army && !r.units && !(r.gen?.army && c.armies[r.gen.army]?.units.length))
       autoBy.set(b, [...(autoBy.get(b) ?? []), i]);
   });
@@ -517,7 +656,7 @@ function enlist(state: EngineState, op: OpSt, rs: Resolved[]): void {
     const idx = autoBy.get(b);
     if (!idx) continue;
     const share = Math.max(...idx.map((i) => rs[i]!.share ?? O.forceShare[op.aggr]));
-    const pool = autoForces(state, n, b, share, aim, taken);
+    const pool = autoForces(state, n, b, share, aim, taken, keepArmies);
     for (const u of pool) taken.add(u.id);
     // Découpage le long de la perpendiculaire à l'axe (même règle que les secteurs).
     const center = aim;
@@ -560,10 +699,10 @@ function enlist(state: EngineState, op: OpSt, rs: Resolved[]): void {
       );
     }
     if (g && a.general !== g.id) assign(state, g, a);
-    // Une armée change d'opération : le général est réaffecté.
+    // Une armée change d'opération : le général est réaffecté (l'opération close n'en dit rien).
     if (a.op && a.op !== op.id) {
       const prev = c.ops?.[a.op];
-      if (prev) opJournal(state, prev, 'reassigned', { army: a.name }, 'warn');
+      if (prev && !closed(prev)) opJournal(state, prev, 'reassigned', { army: a.name }, 'warn');
       leaveOp(state, a, false);
     }
     a.op = op.id;
@@ -571,6 +710,11 @@ function enlist(state: EngineState, op: OpSt, rs: Resolved[]): void {
     a.mem = {};
     a.request = null;
     a.suspended = false;
+    // Nouvelle intention du joueur : le général reprend toutes ses piles (ordres directs levés).
+    a.manual = {};
+    a.post = null;
+    const home = centroid(state, a);
+    if (home) a.home = home;
     a.start = armyValue(state, a);
     a.now = a.start;
     a.status = a.general ? 'preparing' : 'passive';
@@ -582,6 +726,16 @@ function enlist(state: EngineState, op: OpSt, rs: Resolved[]): void {
       role: { key: `engine.cmd.role.${op.roles[a.id]}` },
     });
   });
+  pruneSpare(state);
+}
+
+/** Armées d'office d'opérations closes vidées de leurs piles (reprises par une autre) : dissoutes. */
+export function pruneSpare(state: EngineState): void {
+  const c = cmd(state);
+  for (const id of Object.keys(c.armies).sort()) {
+    const a = c.armies[id]!;
+    if (!a.units.length && spareArmy(state, id)) leaveOp(state, a, true);
+  }
 }
 
 /** Arme dominante (valeur) des piles d'une armée. */
@@ -603,12 +757,16 @@ function opIntelCenter(state: EngineState, op: OpSt): LngLat | null {
 }
 
 /** Provinces à prendre, front à tenir, références des mesures (au lancement ou au changement d'objectif). */
-function setGoal(state: EngineState, op: OpSt): void {
+function setGoal(state: EngineState, op: OpSt, stageHours?: number): void {
   const n = op.owner;
   const w = wi(state.world);
-  const foes = opNations(state, op);
   op.targets = [];
-  if (op.goal === 'conquest') op.targets = foeProvinces(state, op);
+  // Objectifs ajoutés : cibles et données propres (lignes, anneau, axe, sites…).
+  setupGoal(state, op, goalDef(state, op.goal));
+  const foes = opNations(state, op);
+  if (CUSTOM.has(op.goal)) {
+    // Cibles déjà calculées.
+  } else if (op.goal === 'conquest') op.targets = foeProvinces(state, op);
   else if (op.goal === 'occupy') op.targets = foeProvinces(state, op);
   else if (op.goal === 'decapitation')
     op.targets = foes
@@ -643,10 +801,17 @@ function setGoal(state: EngineState, op: OpSt): void {
   op.prog = [];
   op.doneAt = null;
   op.progressAt = state.time;
-  op.stageUntil = state.time + cmdBal(state).operations.stageHours * HOUR;
+  op.stageUntil = state.time + (stageHours ?? cmdBal(state).operations.stageHours) * HOUR;
   op.phase = 'stage';
   op.status = 'planning';
   op.focus = [];
+  op.ships = [];
+  op.phaseAt = state.time;
+}
+
+/** Objectif sans guerre (redéploiement…) : ses propres provinces peuvent être désignées. */
+function keepOwn(state: EngineState, goal: string): boolean {
+  return goalDef(state, goal)?.war === false;
 }
 
 function validTargets(
@@ -659,6 +824,8 @@ function validTargets(
   for (const o of nations) {
     if (o === n) return fail('invalid_target', 'Vous ne pouvez pas vous viser vous-même.');
     if (!state.nations[o]?.alive) return fail('invalid_target', 'Nation invalide.');
+    if (def.target === 'ally' && atWar(state, n, o))
+      return fail('invalid_target', 'Vous êtes en guerre contre ce pays.');
   }
   for (const p of provinces ?? []) {
     if (!state.provinces[p]) return fail('invalid_target', 'Province inconnue.');
@@ -667,7 +834,101 @@ function validTargets(
     return fail('invalid_target', 'Désignez les provinces à occuper.');
   if (def.target === 'nation' && !nations.length)
     return fail('invalid_target', 'Désignez au moins un pays cible.');
+  if (def.target === 'ally' && !nations.length)
+    return fail('invalid_target', 'Désignez le pays allié à soutenir.');
+  if (def.target === 'place' && !nations.length && !provinces?.length)
+    return fail('invalid_target', 'Désignez un pays ou des provinces.');
   return null;
+}
+
+/** Message d'un objectif sans cible (rien à prendre au lancement de la phase). */
+const NO_TARGET: Record<string, string> = {
+  counteroffensive: 'Aucune de vos provinces n’est occupée.',
+  liberation: 'Aucune province de ce pays n’est occupée.',
+  encircle: 'Aucune poche ennemie au contact.',
+  breakthrough: 'Aucun axe de percée vers la cible.',
+  siege: 'Aucune ville à assiéger.',
+  amphibious: 'Aucune côte à atteindre.',
+  raid: 'Aucune installation à l’arrière de la cible.',
+};
+
+/**
+ * Phases d'un ordre : objectif composé des données (guerre éclair…) développé, puis phases demandées
+ * (cibles de la phase précédente si absentes).
+ */
+function buildChain(
+  state: EngineState,
+  n: NationId,
+  goal: string,
+  nations: NationId[],
+  provinces: ProvinceId[] | undefined,
+  extra: OpPhaseInput[] | undefined,
+  firstHours?: number,
+): { ok: true; chain: OpPhaseSt[] } | { ok: false; res: OrderResult } {
+  const O = cmdBal(state).operations;
+  const chain: OpPhaseSt[] = [];
+  const push = (g: string, ns: NationId[], ps: ProvinceId[] | undefined, hours?: number) => {
+    const d = goalDef(state, g);
+    if (!d) return fail('invalid_target', 'Objectif inconnu.');
+    if (d.chain?.length) {
+      for (let i = 0; i < d.chain.length; i++) {
+        const sub = goalDef(state, d.chain[i]!);
+        if (!sub || sub.chain?.length) return fail('invalid_target', 'Objectif inconnu.');
+        const h = d.chain.length - 1 === i && hours ? hours : d.chainHours?.[i] || undefined;
+        chain.push({
+          goal: d.chain[i]!,
+          nations: [...ns],
+          ...(ps?.length ? { provinces: [...ps] } : {}),
+          ...(h ? { hours: h } : {}),
+        });
+      }
+      return null;
+    }
+    const bad = validTargets(state, n, d, ns, ps);
+    if (bad) return bad;
+    chain.push({
+      goal: g,
+      nations: [...ns],
+      ...(ps?.length ? { provinces: [...ps] } : {}),
+      ...(hours ? { hours } : {}),
+    });
+    return null;
+  };
+  const first = goalDef(state, goal);
+  if (!first) return { ok: false, res: fail('invalid_target', 'Objectif inconnu.') };
+  const bad0 = validTargets(state, n, first, nations, provinces);
+  if (bad0) return { ok: false, res: bad0 };
+  const e0 = push(goal, nations, provinces, firstHours);
+  if (e0) return { ok: false, res: e0 };
+  let pn = nations;
+  let pp = provinces;
+  for (const ph of extra ?? []) {
+    const ns = ph.nations ? [...new Set(ph.nations)].sort() : pn;
+    const ps = ph.provinces
+      ? [...new Set(ph.provinces)]
+          .filter((p) => keepOwn(state, ph.goal) || state.provinces[p]?.owner !== n)
+          .sort()
+      : ph.nations
+        ? undefined
+        : pp;
+    const e = push(ph.goal, ns, ps, ph.hours);
+    if (e) return { ok: false, res: e };
+    pn = ns;
+    pp = ps;
+  }
+  if (chain.length > O.maxPhases)
+    return { ok: false, res: fail('capacity', 'Trop de phases pour une opération.') };
+  return { ok: true, chain };
+}
+
+/** Applique la phase `i` de l'enchaînement à l'opération (objectif, cibles). */
+function applyPhase(op: OpSt, i: number): void {
+  const ph = op.chain![i]!;
+  op.step = i;
+  op.goal = ph.goal;
+  op.nations = [...ph.nations];
+  if (ph.provinces?.length) op.provinces = [...ph.provinces];
+  else delete op.provinces;
 }
 
 export function orderCampaignCreate(
@@ -680,29 +941,33 @@ export function orderCampaignCreate(
   const O = B.operations;
   const def = goalDef(state, o.goal);
   if (!def) return fail('invalid_target', 'Objectif inconnu.');
-  const mine = Object.values(cmdOpt(state)?.ops ?? {}).filter((x) => x.owner === n).length;
+  // Seules les opérations en cours comptent (les opérations closes restent consultables).
+  const mine = Object.values(cmdOpt(state)?.ops ?? {}).filter(
+    (x) => x.owner === n && !closed(x),
+  ).length;
   if (mine >= O.maxOps) return fail('capacity', 'Nombre maximal d’opérations atteint.');
   if (o.commanders.length > O.maxCommanders)
     return fail('capacity', 'Trop de généraux pour une opération.');
   const nations = [...new Set(o.nations)].sort();
   const provinces = o.provinces?.length
-    ? [...new Set(o.provinces)].filter((p) => state.provinces[p]?.owner !== n).sort()
+    ? [...new Set(o.provinces)]
+        .filter((p) => keepOwn(state, o.goal) || state.provinces[p]?.owner !== n)
+        .sort()
     : undefined;
-  const bad = validTargets(state, n, def, nations, provinces);
-  if (bad) return bad;
+  const ch = buildChain(state, n, o.goal, nations, provinces, o.phases, o.phaseHours);
+  if (!ch.ok) return ch.res;
   const armiesNow = Object.values(cmd(state).armies).filter((a) => a.owner === n).length;
   const fresh = o.commanders.filter((x) => !x.armyId).length;
   if (armiesNow + fresh > B.maxArmies) return fail('capacity', 'Nombre maximal d’armées atteint.');
   const r = resolveCommanders(state, n, o.commanders);
   if (!r.ok) return r.res;
-  const id = nextCmdId(state, 'o');
   const op: OpSt = {
-    id,
+    id: '',
     owner: n,
-    name: (o.name ?? '').trim().slice(0, 40) || `Op ${id.slice(1)}`,
-    goal: o.goal,
-    nations,
-    ...(provinces?.length ? { provinces } : {}),
+    name: '',
+    goal: ch.chain[0]!.goal,
+    nations: ch.chain[0]!.nations,
+    ...(ch.chain[0]!.provinces?.length ? { provinces: ch.chain[0]!.provinces } : {}),
     aggr: o.aggr ?? 'balanced',
     roe: o.roe ?? 'standard',
     ...(o.retreatAt !== undefined ? { retreatAt: o.retreatAt } : {}),
@@ -738,17 +1003,37 @@ export function orderCampaignCreate(
     est: null,
     v: 0,
   };
-  opsOf(state)[id] = op;
+  if (ch.chain.length > 1 || def.chain?.length) {
+    op.chain = ch.chain;
+    op.step = 0;
+    op.results = [];
+  }
+  if (def.chain?.length) op.preset = o.goal;
+  if (o.after) op.after = o.after;
   setGoal(state, op);
+  // Rien à prendre (contre-offensive sans province perdue…) : refus, rien n'est modifié.
+  if (TAKING.has(op.goal) || op.goal === 'raid')
+    if (!op.targets.length)
+      return fail('invalid_target', NO_TARGET[op.goal] ?? 'Aucune cible pour cet objectif.');
+  const id = nextCmdId(state, 'o');
+  op.id = id;
+  op.name = (o.name ?? '').trim().slice(0, 40) || `Op ${id.slice(1)}`;
+  opsOf(state)[id] = op;
   enlist(state, op, r.out);
   computeSectors(state, op);
   op.start = opValue(state, op);
   op.now = op.start;
   op.day = [state.time, op.start];
   opJournal(state, op, 'created', {
-    goal: { key: `engine.cmd.goal.${op.goal}` },
+    goal: { key: `engine.cmd.goal.${op.preset ?? op.goal}` },
     count: op.armies.length,
   });
+  if (op.chain && op.chain.length > 1)
+    opJournal(state, op, 'phaseStart', {
+      n: 1,
+      total: op.chain.length,
+      goal: { key: `engine.cmd.goal.${op.goal}` },
+    });
   scheduleOp(state, op);
   return { ok: true };
 }
@@ -763,6 +1048,82 @@ function myOp(state: EngineState, n: NationId, id: string): OpSt | null {
   return op && op.owner === n ? op : null;
 }
 
+/** Armées de l'opération remises en préparation (nouvel objectif, nouvelle phase, réouverture). */
+function rearm(state: EngineState, op: OpSt): void {
+  const c = cmd(state);
+  for (const id of op.armies) {
+    const a = c.armies[id];
+    if (!a) continue;
+    a.mem = {};
+    a.post = null;
+    a.status = a.general ? 'preparing' : 'passive';
+    a.v++;
+  }
+  op.post = null;
+  delete op.postUntil;
+}
+
+/**
+ * Phase suivante de l'enchaînement : nouvel objectif et nouvelles cibles, mêmes généraux et mêmes
+ * forces (rassemblement court). Les phases sans cible sont sautées. Faux : plus de phase.
+ */
+export function advancePhase(
+  state: EngineState,
+  op: OpSt,
+  result: 'success' | 'timeout' | 'skipped',
+): boolean {
+  const chain = op.chain;
+  const i = op.step ?? 0;
+  if (!chain || i + 1 >= chain.length) return false;
+  const O = cmdBal(state).operations;
+  const results = (op.results ??= []);
+  results[i] = result;
+  opJournal(
+    state,
+    op,
+    result === 'success' ? 'phaseDone' : result === 'timeout' ? 'phaseTimeout' : 'phaseSkipped',
+    { n: i + 1, goal: { key: `engine.cmd.goal.${op.goal}` } },
+    result === 'success' ? 'good' : 'warn',
+  );
+  let k = i + 1;
+  for (; k < chain.length; k++) {
+    applyPhase(op, k);
+    setGoal(state, op, O.phaseStageHours);
+    if ((TAKING.has(op.goal) || op.goal === 'raid') && !op.targets.length) {
+      results[k] = 'skipped';
+      opJournal(
+        state,
+        op,
+        'phaseSkipped',
+        { n: k + 1, goal: { key: `engine.cmd.goal.${op.goal}` } },
+        'warn',
+      );
+      continue;
+    }
+    break;
+  }
+  if (k >= chain.length) return false;
+  rearm(state, op);
+  computeSectors(state, op);
+  op.now = opValue(state, op);
+  op.day = [state.time, op.now];
+  op.v++;
+  opJournal(state, op, 'phaseStart', {
+    n: k + 1,
+    total: chain.length,
+    goal: { key: `engine.cmd.goal.${op.goal}` },
+  });
+  notifyOwner(
+    state,
+    op.owner,
+    'opPhase',
+    { op: op.name, n: k + 1, total: chain.length, goal: { key: `engine.cmd.goal.${op.goal}` } },
+    'info',
+  );
+  scheduleOp(state, op);
+  return true;
+}
+
 export function orderCampaignEdit(
   state: EngineState,
   n: NationId,
@@ -775,38 +1136,79 @@ export function orderCampaignEdit(
   if (!def) return fail('invalid_target', 'Objectif inconnu.');
   const nations = o.nations ? [...new Set(o.nations)].sort() : op.nations;
   const provinces = o.provinces
-    ? [...new Set(o.provinces)].filter((p) => state.provinces[p]?.owner !== n).sort()
+    ? [...new Set(o.provinces)]
+        .filter((p) => keepOwn(state, goal) || state.provinces[p]?.owner !== n)
+        .sort()
     : op.provinces;
-  const bad = validTargets(state, n, def, nations, provinces);
-  if (bad) return bad;
-  if (o.name !== undefined) op.name = o.name.trim().slice(0, 40) || op.name;
-  if (o.aggr) op.aggr = o.aggr;
-  if (o.roe) op.roe = o.roe;
-  if (o.deadlineHours !== undefined)
-    op.deadline = o.deadlineHours === null ? null : state.time + o.deadlineHours * HOUR;
   const retarget =
     goal !== op.goal ||
     JSON.stringify(nations) !== JSON.stringify(op.nations) ||
     JSON.stringify(provinces ?? []) !== JSON.stringify(op.provinces ?? []);
-  if (retarget) {
-    op.goal = goal;
-    op.nations = nations;
-    if (provinces?.length) op.provinces = provinces;
-    else delete op.provinces;
-    setGoal(state, op);
-    const c = cmd(state);
-    for (const id of op.armies) {
-      const a = c.armies[id];
-      if (!a) continue;
-      a.mem = {};
-      a.status = a.general ? 'preparing' : 'passive';
-      a.v++;
+  // Nouvel objectif (ou composé) : l'enchaînement repart de lui, suivi des phases demandées ;
+  // nouvelles phases seules : elles remplacent celles qui restent après la phase en cours.
+  let chain: OpPhaseSt[] | null = null;
+  if (retarget || o.phases) {
+    const ch = buildChain(state, n, retarget ? goal : op.goal, nations, provinces, o.phases ?? []);
+    if (!ch.ok) return ch.res;
+    chain = ch.chain;
+  }
+  if (closed(op) && (retarget || o.phases)) {
+    const live = Object.values(cmdOpt(state)?.ops ?? {}).filter(
+      (x) => x.owner === n && !closed(x),
+    ).length;
+    if (live >= cmdBal(state).operations.maxOps)
+      return fail('capacity', 'Nombre maximal d’opérations atteint.');
+  }
+  if (o.name !== undefined) op.name = o.name.trim().slice(0, 40) || op.name;
+  if (o.aggr) op.aggr = o.aggr;
+  if (o.roe) op.roe = o.roe;
+  if (o.after) op.after = o.after;
+  if (o.deadlineHours !== undefined)
+    op.deadline = o.deadlineHours === null ? null : state.time + o.deadlineHours * HOUR;
+  if (chain) {
+    const keep = retarget ? [] : (op.chain ?? []).slice(0, op.step ?? 0);
+    const full = [...keep, ...chain];
+    if (full.length > 1 || (retarget ? !!def.chain?.length : !!op.preset)) {
+      op.chain = full;
+      op.step = keep.length;
+      op.results = (op.results ?? []).slice(0, keep.length);
+    } else {
+      delete op.chain;
+      delete op.step;
+      delete op.results;
     }
+    if (retarget) {
+      if (def.chain?.length) op.preset = goal;
+      else delete op.preset;
+      if (op.chain) applyPhase(op, op.step!);
+      else {
+        op.goal = goal;
+        op.nations = nations;
+        if (provinces?.length) op.provinces = provinces;
+        else delete op.provinces;
+      }
+    }
+  }
+  if (retarget) {
+    setGoal(state, op);
+    rearm(state, op);
     computeSectors(state, op);
     op.start = opValue(state, op);
     op.now = op.start;
-    opJournal(state, op, 'goalChanged', { goal: { key: `engine.cmd.goal.${goal}` } }, 'warn');
+    opJournal(
+      state,
+      op,
+      'goalChanged',
+      { goal: { key: `engine.cmd.goal.${op.preset ?? op.goal}` } },
+      'warn',
+    );
   }
+  if (o.stageNow && !closed(op) && state.time < op.stageUntil) {
+    op.stageUntil = state.time;
+    opJournal(state, op, 'stageNow', {}, 'warn');
+  }
+  if (o.nextPhase && !closed(op) && !advancePhase(state, op, 'skipped'))
+    return fail('not_allowed', 'Aucune phase suivante.');
   op.v++;
   if (!op.suspended) scheduleOp(state, op);
   return { ok: true };
@@ -942,7 +1344,8 @@ export function opValue(state: EngineState, op: OpSt): number {
 
 /** Guerre contre les pays visés : déclarée (règles libres ou standard), sinon autorisation demandée. */
 function ensureWars(state: EngineState, op: OpSt): boolean {
-  if (op.goal === 'defend_border') return true;
+  // Opérations défensives, démonstration de force, redéploiement : jamais de guerre ouverte.
+  if (goalDef(state, op.goal)?.war === false) return true;
   const n = op.owner;
   for (const o of opNations(state, op)) {
     if (atWar(state, n, o)) continue;
@@ -987,11 +1390,16 @@ function measure(state: EngineState, op: OpSt, I: OpIntel): void {
     op.seen.air,
     [...I.airUp, ...I.airGround].map((x) => x.u.id),
   );
+  const rear = op.goal === 'raid' ? new Set(op.gd?.rear ?? []) : null;
   track(
     op.seen.bld,
     I.blds
-      .filter((x) => (op.goal === 'strategic' ? x.kind !== 'ad' : x.kind === 'ad'))
+      .filter((x) => trackedBld(op.goal, x) && (!rear || rear.has(x.pid)))
       .map((x) => `${x.pid}:${x.b}`),
+  );
+  trackShips(
+    op,
+    I.ships.map((x) => x.u.id),
   );
   if (I.airUp.length) op.airAt = state.time;
   const gone = (id: string) => {
@@ -1070,6 +1478,8 @@ function measure(state: EngineState, op: OpSt, I: OpIntel): void {
       main = op.base.front.length ? held / op.base.front.length : 1;
       break;
     }
+    default:
+      main = measureGoal(state, op, I, add) ?? 0;
   }
   op.prog = prog;
   op.pct = Math.max(0, Math.min(1, main));
@@ -1127,7 +1537,7 @@ function holdingNow(state: EngineState, op: OpSt, I: OpIntel): boolean {
     case 'defend_border':
       return op.pct >= (def?.success ?? 1) - 1e-9;
   }
-  return false;
+  return holdingGoal(state, op, def) ?? false;
 }
 
 function alert(
@@ -1153,8 +1563,16 @@ function alert(
     );
 }
 
+/**
+ * Fin de l'opération. Les forces ne restent jamais inertes : selon « quand c'est fini », elles
+ * tiennent les gains (exploitation : garnisons, couverture aérienne, DCA, contre-attaques), rentrent
+ * à la base puis sont rendues au joueur, ou passent tout de suite en réserve (piles rendues). Les
+ * généraux sont libres pour une nouvelle opération, qui reprend leurs armées et leurs piles.
+ */
 function closeOp(state: EngineState, op: OpSt, ok: boolean, reason?: string): void {
   const c = cmd(state);
+  const after = op.after ?? 'hold';
+  if (op.chain) (op.results ??= [])[op.step ?? 0] = ok ? 'success' : 'timeout';
   op.status = ok ? 'success' : 'failed';
   op.phase = 'done';
   op.v++;
@@ -1165,17 +1583,29 @@ function closeOp(state: EngineState, op: OpSt, ok: boolean, reason?: string): vo
     opJournal(state, op, 'failed', { reason: { key: `engine.cmd.reason.${reason}` } }, 'bad');
     notifyOwner(state, op.owner, 'opFailed', { op: op.name }, 'warn');
   }
-  for (const id of op.armies) {
+  for (const id of [...op.armies]) {
     const a = c.armies[id];
     if (!a) continue;
     a.status = ok ? 'success' : 'failed';
+    a.request = null;
     a.v++;
     const g = a.general ? c.gens[a.general] : null;
     if (ok && g) {
       g.victories++;
       gainXp(state, g, cmdBal(state).generals.xpSuccess, xpBrain(op.roles[id]));
     }
+    if (after === 'reserve') {
+      journalArmy(state, a, 'opClosed', { op: op.name });
+      leaveOp(state, a, true);
+      continue;
+    }
+    a.post = after;
+    if (after === 'home' || !ok) a.mem = {};
   }
+  op.post = after === 'reserve' ? null : after;
+  if (after === 'home') op.postUntil = state.time + cmdBal(state).operations.returnHours * HOUR;
+  opJournal(state, op, `after_${after}`, {}, 'info');
+  ensureTick(state);
 }
 
 function xpBrain(role: Branch | undefined): string {
@@ -1188,11 +1618,32 @@ function xpBrain(role: Branch | undefined): string {
         : 'conquer';
 }
 
+/** Phase réussie : phase suivante s'il y en a une, sinon fin de l'opération. */
+function phaseSucceeded(state: EngineState, op: OpSt): void {
+  if (!advancePhase(state, op, 'success')) closeOp(state, op, true);
+}
+
+/** Libération : les provinces reprises sont rendues à leur propriétaire d'origine (allié). */
+function handBack(state: EngineState, op: OpSt): void {
+  if (op.goal !== 'liberation') return;
+  const allies = new Set(op.gd?.allies ?? []);
+  for (const p of op.targets) {
+    if (state.provinces[p]?.owner !== op.owner) continue;
+    const o = wi(state.world).provById.get(p)?.nationId;
+    if (!o || !allies.has(o) || !state.nations[o]?.alive || atWar(state, op.owner, o)) continue;
+    transferProvince(state, p, o);
+    opJournal(state, op, 'liberated', { province: { province: p }, nation: { nation: o } }, 'good');
+  }
+}
+
 /** Réflexion du planificateur (avant celles des généraux). */
 export function planOp(state: EngineState, op: OpSt): void {
   const c = cmd(state);
   op.armies = op.armies.filter((id) => c.armies[id]?.op === op.id);
-  if (op.status === 'success' || op.status === 'failed') return;
+  if (closed(op)) {
+    if (op.post && !op.armies.length) op.post = null;
+    return;
+  }
   op.now = opValue(state, op);
   if (op.suspended) {
     op.status = 'suspended';
@@ -1203,6 +1654,7 @@ export function planOp(state: EngineState, op: OpSt): void {
     return;
   }
   if (!ensureWars(state, op)) return;
+  handBack(state, op);
   const I = opIntel(state, op);
   measure(state, op, I);
   const def = goalDef(state, op.goal);
@@ -1211,13 +1663,20 @@ export function planOp(state: EngineState, op: OpSt): void {
   // Fin : objectif atteint (missions ponctuelles), échéance, pertes, enlisement.
   if (def && !def.continuous) {
     const total = op.prog[0]?.total ?? 0;
-    if (total > 0 && op.pct >= def.success - 1e-9) return closeOp(state, op, true);
+    if (total > 0 && op.pct >= def.success - 1e-9) return phaseSucceeded(state, op);
     if (
       TAKING.has(op.goal) &&
       op.targets.length &&
       !foeProvinces(state, op).some((p) => op.targets.includes(p))
     )
-      return closeOp(state, op, true);
+      return phaseSucceeded(state, op);
+  }
+  // Échéance de la phase : phase suivante (ou fin, pour la dernière).
+  const ph = op.chain?.[op.step ?? 0];
+  if (ph?.hours && op.phaseAt !== undefined && state.time - op.phaseAt >= ph.hours * HOUR) {
+    const done = op.status === 'holding' || op.pct >= (def?.success ?? 1) - 1e-9;
+    if (advancePhase(state, op, done ? 'success' : 'timeout')) return;
+    return closeOp(state, op, done, 'deadline');
   }
   if (op.deadline !== null && state.time >= op.deadline) {
     if (def?.continuous && op.status === 'holding') return closeOp(state, op, true);
@@ -1229,6 +1688,8 @@ export function planOp(state: EngineState, op: OpSt): void {
   // Phase.
   const samsKnown = I.sams.length + I.blds.filter((b) => b.kind === 'ad').length;
   if (state.time < op.stageUntil && TAKING.has(op.goal)) op.phase = 'stage';
+  else if (op.goal === 'raid' && op.gd?.withdrawAt != null && state.time >= op.gd.withdrawAt)
+    op.phase = 'withdraw';
   else if (def?.continuous && holdingNow(state, op, I)) op.phase = 'hold';
   else if (
     (op.goal === 'sead' || op.goal === 'air_control' || op.goal === 'attrition') &&
@@ -1244,6 +1705,8 @@ export function planOp(state: EngineState, op: OpSt): void {
     if (was !== 'holding') {
       op.doneAt = state.time;
       alert(state, op, 'achieved', 0, 'opAchieved', {}, 'good');
+      // Objectif de durée atteint au milieu d'un enchaînement : phase suivante.
+      if (op.chain && (op.step ?? 0) + 1 < op.chain.length) return phaseSucceeded(state, op);
     }
   } else op.status = op.phase === 'stage' ? 'planning' : 'active';
   if (state.time - op.day[0] >= DAY) op.day = [state.time, op.now];
@@ -1272,6 +1735,19 @@ export function planOp(state: EngineState, op: OpSt): void {
   op.est = estimateOp(state, op);
 }
 
+/** Durée indicative d'un objectif sans rythme observé (heures). */
+const ETA: Record<string, number> = {
+  attrition: 72,
+  strategic: 48,
+  interdiction: 48,
+  armed_recon: 24,
+  naval_supremacy: 72,
+  naval_strikes: 36,
+  missile_campaign: 24,
+  air_redeploy: 12,
+  raid: 36,
+};
+
 /** Rapport de force, durée et chances de l'opération (vue du joueur : estimations publiques). */
 function estimateOp(
   state: EngineState,
@@ -1291,8 +1767,8 @@ function estimateOp(
   const need = cmdBal(state).aggressiveness[op.aggr].attackRatio;
   const x = Math.min(ratio, 10) * (0.85 + (0.3 * skill) / 100) * (0.9 + (0.2 * exp) / 100);
   const chance = Math.max(0.03, Math.min(0.97, (x * x) / (x * x + need * need * 0.64)));
-  // Durée : rythme observé depuis le lancement, sinon estimation par objectif.
-  const el = Math.max(HOUR, state.time - op.since);
+  // Durée : rythme observé depuis le début de la phase, sinon estimation par objectif.
+  const el = Math.max(HOUR, state.time - (op.phaseAt ?? op.since));
   let eta: number | null = null;
   const def = goalDef(state, op.goal);
   const goal = def?.success ?? 1;
@@ -1301,8 +1777,12 @@ function estimateOp(
     const left = TAKING.has(op.goal)
       ? op.targets.filter((p) => state.provinces[p]?.owner !== op.owner).length
       : 0;
-    eta = TAKING.has(op.goal) ? 12 + left * 10 : op.goal === 'attrition' ? 72 : 24;
+    eta = TAKING.has(op.goal) ? 12 + left * 10 : (ETA[op.goal] ?? 24);
   }
+  // Phases à venir : durée indicative ajoutée.
+  if (eta !== null && op.chain)
+    for (const ph of op.chain.slice((op.step ?? 0) + 1))
+      eta += ph.hours ?? (TAKING.has(ph.goal) ? 36 : (ETA[ph.goal] ?? 24));
   return {
     ratio: Math.round(ratio * 100) / 100,
     etaHours: eta === null ? null : Math.round(eta * 10) / 10,
@@ -1326,6 +1806,9 @@ export function afterThink(state: EngineState, op: OpSt): void {
 
 export function campaignView(state: EngineState, op: OpSt): CampaignView {
   const c = cmd(state);
+  const def = goalDef(state, op.preset ?? op.goal);
+  const step = op.step ?? 0;
+  const ph = op.chain?.[step];
   return {
     id: op.id,
     name: op.name,
@@ -1346,6 +1829,7 @@ export function campaignView(state: EngineState, op: OpSt): CampaignView {
         const left = sec
           ? sec.pids.filter((p) => state.provinces[p]?.owner !== op.owner).length
           : 0;
+        const wait = waitOf(state, a, op);
         return {
           armyId: id,
           generalId: a.general,
@@ -1357,6 +1841,8 @@ export function campaignView(state: EngineState, op: OpSt): CampaignView {
           piles: a.units.length,
           value: Math.round(armyValue(state, a)),
           status: a.status,
+          ...(wait ? { wait } : {}),
+          ...(a.post ? { posture: a.post } : {}),
         };
       }),
     progress: op.prog.map((x) => ({ ...x })),
@@ -1373,7 +1859,71 @@ export function campaignView(state: EngineState, op: OpSt): CampaignView {
       kills: Math.round(op.kills ?? 0),
     },
     value: { start: Math.round(op.start), now: Math.round(op.now) },
+    category: def?.category ?? 'land',
+    ...(op.preset ? { preset: op.preset } : {}),
+    ...(op.chain
+      ? {
+          phases: op.chain.map((p, i) => ({
+            goal: p.goal,
+            nations: [...p.nations],
+            ...(p.provinces ? { provinces: [...p.provinces] } : {}),
+            ...(p.hours ? { hours: p.hours } : {}),
+            state:
+              i < step || (i === step && closed(op))
+                ? ('done' as const)
+                : i === step
+                  ? ('current' as const)
+                  : ('next' as const),
+            ...(op.results?.[i] ? { result: op.results[i] } : {}),
+          })),
+          step,
+        }
+      : {}),
+    ...(op.phaseAt !== undefined ? { phaseSince: op.phaseAt } : {}),
+    ...(ph?.hours && op.phaseAt !== undefined ? { phaseUntil: op.phaseAt + ph.hours * HOUR } : {}),
+    after: op.after ?? 'hold',
+    ...(op.phase === 'stage' && !closed(op) ? { stageUntil: op.stageUntil } : {}),
   };
+}
+
+/**
+ * Ce qu'attend un général : autorisation, renforts, fin d'un ordre direct, rassemblement, carburant,
+ * repos des piles éprouvées, forces ou cibles manquantes (affiché avec un bouton d'action).
+ */
+export function waitOf(state: EngineState, a: ArmySt, op: OpSt | null): WaitView | null {
+  const c = cmd(state);
+  const g = a.general ? c.gens[a.general] : null;
+  if (!g) return { reason: 'noGeneral' };
+  if (op?.request) return { reason: 'war', nationId: op.request.nationId };
+  if (a.request?.kind === 'declare_war')
+    return { reason: 'war', ...(a.request.nationId ? { nationId: a.request.nationId } : {}) };
+  if (a.request?.kind === 'strategic_strike')
+    return { reason: 'strike', ...(a.request.nationId ? { nationId: a.request.nationId } : {}) };
+  if (a.request?.kind === 'reinforce')
+    return { reason: 'reinforce', count: a.request.unitIds?.length ?? 0 };
+  if (a.suspended || op?.suspended) return { reason: 'suspended' };
+  if (g.status === 'wounded' && !op) return { reason: 'wounded' };
+  const live = a.units.filter((id) => !!state.units[id] && !state.units[id]!.off);
+  if (!live.length) return { reason: 'noForces' };
+  const manual = live.filter((id) => a.manual[id]).length;
+  if (manual && manual === live.length) return { reason: 'manual', count: manual };
+  const rest = live.filter((id) => a.rest?.[id]).length;
+  if (rest && rest === live.length) return { reason: 'resting', count: rest };
+  if (op && !closed(op) && op.phase === 'stage' && state.time < op.stageUntil)
+    return { reason: 'staging', until: op.stageUntil };
+  // Aviation au sol (ravitaillement, réarmement) : toute l'armée attend.
+  const ms = mil(state).ms;
+  const air = live.filter((id) => sysOf(state, state.units[id]!).movement === 'air');
+  if (air.length && air.length === live.length) {
+    const waiting = air.filter((id) => {
+      const m = ms[id];
+      return !!m && !m.up && m.ready > state.time;
+    }).length;
+    if (waiting === air.length) return { reason: 'fuel', count: waiting };
+  }
+  if (a.why) return { reason: a.why };
+  if (manual) return { reason: 'manual', count: manual };
+  return null;
 }
 
 /**
@@ -1386,9 +1936,8 @@ export function opDamage(state: EngineState, att: Unit, tgt: Unit, dmg: number):
   let base = 0;
   for (const id of Object.keys(ops).sort()) {
     const op = ops[id]!;
-    if (op.owner !== att.owner || op.status === 'success' || op.status === 'failed') continue;
-    if (!op.nations.includes(tgt.owner) && !(op.provinces?.length && tgt.owner in op.base.killed))
-      continue;
+    if (op.owner !== att.owner || closed(op)) continue;
+    if (!op.nations.includes(tgt.owner) && !(tgt.owner in op.base.killed)) continue;
     if (!base) {
       if (tgt.mix) for (const p of tgt.mix) base += elementValue(state, p.sys) * p.c;
       else base = elementValue(state, tgt.sys) * tgt.count;
