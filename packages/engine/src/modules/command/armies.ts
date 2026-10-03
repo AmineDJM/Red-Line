@@ -161,6 +161,14 @@ export function orderEdit(
     return fail('capacity', 'Trop de piles pour une armée.');
   if (o.name !== undefined) a.name = o.name.trim().slice(0, 40) || a.name;
   if (o.reinforce) a.reinforce = o.reinforce;
+  // Reprendre la main : les piles sous ordre direct reviennent au général.
+  if (o.reclaim && Object.keys(a.manual).length) {
+    const k = Object.keys(a.manual).length;
+    a.manual = {};
+    a.v++;
+    journal(state, a, 'reclaimed', { count: k });
+    if (a.mission || a.op) scheduleArmy(state, a);
+  }
   if (add.length) {
     const ids = add.map((u) => u.id).filter((id) => c.unitArmy[id] !== a.id);
     addUnits(state, a, ids);
@@ -295,6 +303,7 @@ export function orderMission(
   if (o.mission === null) {
     if (a.mission) journal(state, a, 'missionCleared');
     a.mission = null;
+    a.post = null;
     a.request = null;
     a.mem = {};
     a.status = 'idle';
@@ -310,8 +319,37 @@ export function orderMission(
   return { ok: true };
 }
 
-/** Confie une mission validée à l'armée (effectifs de référence, mémoire remise à zéro). */
+/**
+ * Sort l'armée de son opération (en cours ou close) : elle redevient une armée du joueur, ses piles et
+ * son général restent avec elle.
+ */
+export function detachOp(state: EngineState, a: ArmySt): string | null {
+  const c = cmd(state);
+  const op = a.op ? c.ops?.[a.op] : undefined;
+  if (op) {
+    op.armies = op.armies.filter((x) => x !== a.id);
+    delete op.roles[a.id];
+    delete op.sectors[a.id];
+    op.v++;
+  }
+  delete a.op;
+  delete a.opAuto;
+  return op?.name ?? null;
+}
+
+/**
+ * Confie une mission validée à l'armée (effectifs de référence, mémoire remise à zéro). Une armée
+ * d'opération quitte l'opération (sinon la mission serait ignorée) ; les ordres directs en cours sont
+ * levés : la nouvelle mission est la dernière intention du joueur, le général reprend toutes ses piles.
+ */
 export function applyMission(state: EngineState, a: ArmySt, ms: MissionSt): void {
+  if (a.op) {
+    const name = detachOp(state, a);
+    if (name) journal(state, a, 'leftOp', { op: name }, 'warn');
+  }
+  a.manual = {};
+  a.post = null;
+  a.why = null;
   a.mission = ms;
   a.request = null;
   a.mem = {};

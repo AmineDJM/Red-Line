@@ -46,6 +46,7 @@ import { useSend } from './armyCommand.js';
 import { GeneralCard, GeneralsPane, MISSION_ICON, etaLabel } from './CommandGenerals.js';
 import { CommandWizard, openNewArmy } from './CommandWizard.js';
 import { OpWizard, OpsPane, pendingOpRequests } from './CommandOps.js';
+import { WaitLine } from './CommandPlan.js';
 import './command.css';
 
 /**
@@ -553,6 +554,80 @@ function ArmyDetail({ a, mobile, onBack }: { a: ArmyView; mobile: boolean; onBac
         </Button>
       </header>
       {a.request ? <RequestBanner a={a} /> : null}
+      {a.opId ? (
+        <div className="cmd-request cmd-request--info" role="status" data-testid="army-op">
+          <Icon name="link" size={16} />
+          <div className="cmd-request__text">
+            <b>
+              {t('command.armyOp.title', {
+                name: command.ops?.find((o) => o.id === a.opId)?.name ?? a.opId,
+              })}
+            </b>
+            <span>
+              {a.posture ? t(`command.posture.${a.posture}Help`) : t('command.armyOp.text')}
+            </span>
+          </div>
+          <div className="cmd-request__actions">
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => {
+                useCommandUi.getState().selectOp(a.opId!);
+                useCommandUi.getState().setTab('ops');
+              }}
+              data-testid="army-op-open"
+            >
+              {t('command.armyOp.open')}
+            </Button>
+          </div>
+        </div>
+      ) : a.posture ? (
+        <div className="cmd-request cmd-request--info" role="status" data-testid="army-posture">
+          <Icon name="shield" size={16} />
+          <div className="cmd-request__text">
+            <b>{t(`command.posture.${a.posture}`)}</b>
+            <span>{t(`command.posture.${a.posture}Help`)}</span>
+          </div>
+        </div>
+      ) : null}
+      {a.wait && !a.request ? (
+        <WaitLine
+          wait={a.wait}
+          actions={{
+            manual: {
+              label: t('command.wait.act.manual'),
+              run: () =>
+                void send(
+                  { kind: 'armyEdit', armyId: a.id, reclaim: true },
+                  t('command.toast.reclaimed'),
+                ),
+            },
+            suspended: {
+              label: t('command.actions.resume'),
+              run: () =>
+                void send(
+                  { kind: 'armySuspend', armyId: a.id, on: false },
+                  t('command.toast.resumed'),
+                ),
+            },
+            noGeneral: { label: t('command.actions.pickGeneral'), run: general },
+            noForces: { label: t('command.actions.reinforce'), run: reinforce },
+            noTargets: { label: t('command.actions.changeMission'), run: mission },
+            ...(a.opId
+              ? {
+                  staging: {
+                    label: t('command.wait.act.staging'),
+                    run: () =>
+                      void send(
+                        { kind: 'campaignEdit', opId: a.opId!, stageNow: true },
+                        t('command.ops.toast.stageNow'),
+                      ),
+                  },
+                }
+              : {}),
+          }}
+        />
+      ) : null}
       <div className="cmd-detail__grid">
         <MissionPanel a={a} command={command} />
         <section className="cmd-panel" data-testid="army-general">

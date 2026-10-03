@@ -298,8 +298,28 @@ export const COMMAND_HELP: Record<string, HelpEntry> = {
     'Part des compétences avec laquelle l’adjoint commande.',
     'frac',
   ],
+  'command.operations.maxPhases': [
+    'Phases par opération',
+    'Nombre maximal de phases enchaînées (objectif composé compris).',
+    'n',
+  ],
+  'command.operations.phaseStageHours': [
+    'Rassemblement entre deux phases',
+    'Durée bornée du rassemblement au début de chaque nouvelle phase.',
+    'h',
+  ],
+  'command.operations.returnHours': [
+    'Retour à la base',
+    'Délai maximal avant que les forces d’une opération terminée soient rendues au joueur.',
+    'h',
+  ],
+  'command.operations.holdAirKm': [
+    'Couverture des gains',
+    'Après l’opération : chasse en patrouille si l’aviation ennemie approche à moins de cette distance.',
+    'km',
+  ],
   'command.operations.goals': [
     'Objectifs',
-    'Par objectif : ordre d’affichage, commandements recommandés, type de cible, objectif continu, seuil de réussite.',
+    'Par objectif : ordre, catégorie du catalogue, commandements recommandés, type de cible (pays, provinces, lieu, son territoire, allié), objectif continu, seuil de réussite, guerre ou non, phases d’un objectif composé et leurs échéances, réglages propres.',
   ],
 };

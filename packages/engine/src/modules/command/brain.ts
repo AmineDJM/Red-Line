@@ -154,13 +154,31 @@ export function commanded(state: EngineState, a: ArmySt): string[] {
   });
 }
 
-/** Provinces déjà visées par les autres armées de la nation. */
+/**
+ * L'armée réfléchit-elle encore (mission ou opération en cours, ou posture « tenir les gains ») ? Une
+ * armée inerte (sans général, sans mission, mission ou opération close sans posture) ne réserve plus
+ * rien : sa mémoire tactique ne bloque pas les cibles des autres.
+ */
+export function thinking(state: EngineState, b: ArmySt): boolean {
+  if (!b.general) return false;
+  if (b.op) {
+    const op = cmd(state).ops?.[b.op];
+    if (!op) return false;
+    if (op.status === 'success' || op.status === 'failed') return b.post === 'hold';
+    return true;
+  }
+  if (!b.mission) return false;
+  if (b.status === 'success' || b.status === 'failed') return b.post === 'hold';
+  return b.status !== 'idle' && b.status !== 'passive';
+}
+
+/** Provinces déjà visées par les autres armées de la nation (armées qui réfléchissent encore). */
 export function otherAims(state: EngineState, a: ArmySt): ProvinceId[] {
   const c = cmd(state);
   const out = new Set<ProvinceId>();
   for (const id of Object.keys(c.armies).sort()) {
     const b = c.armies[id]!;
-    if (b.id === a.id || b.owner !== a.owner) continue;
+    if (b.id === a.id || b.owner !== a.owner || !thinking(state, b)) continue;
     for (const pid of Object.keys(b.mem.ops ?? {})) out.add(pid);
     for (const k of Object.keys(b.mem.commit ?? {})) out.add(b.mem.commit![k]![0]);
   }
@@ -516,7 +534,11 @@ function seadIn(t: Think, at: LngLat, r: number): void {
 // ——— Défense antiaérienne au sol ———
 
 /** Défenses sol-air de l'armée réparties sur les villes à couvrir (une par ville, par importance). */
-export function placeAirDefense(t: Think, holds: ProvinceId[]): void {
+export function placeAirDefense(
+  t: Think,
+  holds: ProvinceId[],
+  first?: (state: EngineState, ads: Unit[]) => Unit[],
+): void {
   const { state, a, n } = t;
   const gc = state.world.balance.combat.groundContactKm;
   const ads = commanded(state, a)
@@ -540,20 +562,23 @@ export function placeAirDefense(t: Think, holds: ProvinceId[]): void {
       covered.add(pid);
     }
   }
-  for (const pid of holds) {
-    if (covered.has(pid) || !free.size) continue;
+  holds.forEach((pid, i) => {
+    if (covered.has(pid) || !free.size) return;
     const c = cityOf(state, pid);
-    const u = ads
-      .filter((x) => free.has(x.id) && !x.move)
-      .sort(
-        (p, q) =>
-          distanceKm(unitPosAt(state, p, state.time), c) -
-            distanceKm(unitPosAt(state, q, state.time), c) || (p.id < q.id ? -1 : 1),
-      )[0];
-    if (!u) break;
+    const pool = ads.filter((x) => free.has(x.id) && !x.move);
+    // Premier site (capitale d'un bouclier) : le système choisi d'abord (antimissile).
+    const u =
+      i === 0 && first
+        ? first(state, pool)[0]
+        : pool.sort(
+            (p, q) =>
+              distanceKm(unitPosAt(state, p, state.time), c) -
+                distanceKm(unitPosAt(state, q, state.time), c) || (p.id < q.id ? -1 : 1),
+          )[0];
+    if (!u) return;
     free.delete(u.id);
     if (safeLegs(state, n, u, c)) order(state, n, { kind: 'move', unitIds: [u.id], to: c });
-  }
+  });
 }
 
 // ——— Missions ———
@@ -631,7 +656,7 @@ function brainConquer(t: Think): void {
   for (const c of cands) {
     if (launched >= L.maxOffensivePerThink || ctx.paths <= 0 || tries >= 4) break;
     tries++;
-    const need = needFor(ctx, c.pid, c.owner) * (c.from ? ctx.T.amphibiousRatio : 1);
+    const need = needAt(t, ctx, c.pid, c.owner, c.from);
     if (launchGroup(ctx, c.pid, need, c.from)) {
       launched++;
       m.progressAt = state.time;
@@ -645,7 +670,7 @@ function brainConquer(t: Think): void {
     !Object.keys(ctx.commit).length
   ) {
     const c0 = cands[0]!;
-    tooWeak(t, ctx, needFor(ctx, c0.pid, c0.owner) * (c0.from ? ctx.T.amphibiousRatio : 1));
+    tooWeak(t, ctx, needAt(t, ctx, c0.pid, c0.owner, c0.from));
   }
   const aims = aimsOf(ctx);
   a.aims = aims.map((p) => cityOf(state, p));
@@ -705,6 +730,28 @@ function brainLanding(t: Think): void {
   airSupport(t, [cityOf(state, pid)], false);
 }
 
+/**
+ * Force exigée par un général devant une province : celle du moteur (garnison vue × rapport de force),
+ * sauf pour une capitale non vue, où le plancher « deux piles moyennes » est borné par l'estimation
+ * du renseignement : avec des brigades (piles mixtes très lourdes), ce plancher dépassait toute armée
+ * d'un général et l'assaut ne partait jamais (« forces insuffisantes » indéfiniment).
+ */
+export function needAt(
+  t: Think,
+  ctx: Ctx,
+  pid: ProvinceId,
+  owner: NationId,
+  from: ProvinceId | null = null,
+): number {
+  const { state, n, L } = t;
+  const amph = from ? ctx.T.amphibiousRatio : 1;
+  if (wi(state.world).nationById.get(owner)?.capitalProvinceId !== pid)
+    return needFor(ctx, pid, owner) * amph;
+  const known = ctx.hold.get(pid) ?? 0;
+  const prior = Math.min(2 * ctx.mine.avgUnit, 2 * landingPrior(state, n, owner));
+  return Math.max(known, prior) * L.attackRatio * amph;
+}
+
 /** Part supposée des forces publiques de l'ennemi dans une province côtière qu'on ne voit pas. */
 export function landingPrior(state: EngineState, n: NationId, owner: NationId): number {
   const provs = Math.max(1, state.nations[owner]?.provinceCount ?? 1);
@@ -749,7 +796,7 @@ function brainZone(t: Think, kind: 'defend' | 'air_defense' | 'reserve'): void {
     let k = 0;
     for (const pid of lost) {
       if (k >= L.maxCounterPerThink || ctx.paths <= 0) break;
-      if (launchGroup(ctx, pid, needFor(ctx, pid, state.provinces[pid]!.owner))) {
+      if (launchGroup(ctx, pid, needAt(t, ctx, pid, state.provinces[pid]!.owner))) {
         k++;
         journal(state, a, 'counter', { province: { province: pid } });
       }
@@ -1083,7 +1130,13 @@ export function thinkArmy(state: EngineState, a: ArmySt): void {
   const B = cmdBal(state);
   const def = B.missions[m.type];
   if (!def) return;
-  if (a.status === 'success' || a.status === 'failed') return;
+  if (a.status === 'success' || a.status === 'failed') {
+    // Mission terminée : l'armée tient ses gains (ou ses positions) jusqu'au prochain ordre.
+    const g0 = a.general ? c.gens[a.general] : undefined;
+    if (a.post === 'hold' && g0?.status === 'active' && !a.suspended)
+      holdAfterMission(state, a, def, g0);
+    return;
+  }
   const g = a.general ? c.gens[a.general] : undefined;
   if (evaluate(state, a, def, g ?? null)) return;
   if (!g || g.status !== 'active') {
@@ -1128,6 +1181,26 @@ export function thinkArmy(state: EngineState, a: ArmySt): void {
 
 // ——— Évaluation de la mission ———
 
+/** Missions dont l'armée tient ensuite le terrain (troupes au sol). */
+const HOLDS_AFTER = new Set([
+  'conquer',
+  'landing',
+  'defend',
+  'hold_front',
+  'reserve',
+  'air_defense',
+]);
+
+/** Fin de mission : posture « tenir les gains » (troupes) ou repos (aviation, marine), mémoire purgée. */
+function endMission(state: EngineState, a: ArmySt, def: MissionDef): void {
+  a.post = HOLDS_AFTER.has(def.brain) ? 'hold' : null;
+  a.request = null;
+  if (a.post === 'hold')
+    journal(state, a, a.status === 'success' ? 'holdGains' : 'holdLines', {}, 'info');
+  // Échec, repos : les assauts en cours sont abandonnés (la mémoire ne réserve plus rien).
+  if (a.post !== 'hold' || a.status === 'failed') a.mem = {};
+}
+
 function succeed(state: EngineState, a: ArmySt, g: GenSt | null, def: MissionDef): void {
   a.status = 'success';
   a.v++;
@@ -1137,13 +1210,113 @@ function succeed(state: EngineState, a: ArmySt, g: GenSt | null, def: MissionDef
     g.victories++;
     gainXp(state, g, cmdBal(state).generals.xpSuccess, def.brain);
   }
+  endMission(state, a, def);
 }
 
-function failMission(state: EngineState, a: ArmySt, reason: string): void {
+function failMission(state: EngineState, a: ArmySt, reason: string, def?: MissionDef): void {
   a.status = 'failed';
   a.v++;
   journal(state, a, 'failed', { reason: { key: `engine.cmd.reason.${reason}` } }, 'bad');
   notifyOwner(state, a.owner, 'missionFailed', { army: a.name }, 'warn');
+  if (def) endMission(state, a, def);
+  else a.mem = {};
+}
+
+/**
+ * Tenir le terrain : contre-attaque des gains perdus, garnisons réparties sur les provinces tenues
+ * (les plus menacées d'abord), défense sol-air, couverture aérienne si l'aviation ennemie approche,
+ * piles éprouvées au repos (réorganisation). Commun aux missions et aux opérations terminées.
+ */
+export function holdGround(t: Think, holds: ProvinceId[], center: LngLat | null): void {
+  const { state, a, n, L } = t;
+  const w = wi(state.world);
+  const ctx = armyContext(state, n, scopeOf(t, null));
+  stopNeutralChases(ctx);
+  defend(ctx);
+  runOps(ctx);
+  if (L.counterattack) {
+    let k = 0;
+    for (const pid of holds) {
+      const o = state.provinces[pid]?.owner;
+      if (!o || o === n || !atWar(state, n, o)) continue;
+      if (k >= L.maxCounterPerThink || ctx.paths <= 0) break;
+      if (launchGroup(ctx, pid, needAt(t, ctx, pid, o))) {
+        k++;
+        journal(state, a, 'counter', { province: { province: pid } });
+      }
+    }
+  }
+  const ordered = holds
+    .filter((p) => state.provinces[p]?.owner === n)
+    .sort(
+      (x, y) =>
+        (ctx.threat.get(y) ?? 0) - (ctx.threat.get(x) ?? 0) ||
+        w.provById.get(y)!.income.money - w.provById.get(x)!.income.money ||
+        (x < y ? -1 : 1),
+    );
+  const ground = ctx.land.filter((m) => m.ground).length;
+  if (ordered.length && ground) {
+    const slots = Math.min(ordered.length, ground);
+    const per = Math.max(1, Math.floor(ground / slots));
+    const reach = cmdBal(state).tactics.reachKm;
+    for (const pid of ordered.slice(0, slots)) {
+      const threat = ctx.threat.get(pid) ?? 0;
+      garrison(ctx, pid, per, threat * L.attackRatio, 0.6, false, reach);
+    }
+  }
+  placeAirDefense(t, ordered);
+  if (center) {
+    const seen = visibleEnemies(state, n);
+    const km = cmdBal(state).operations.holdAirKm;
+    if (seen.airAt.some((p) => distanceKm(p, center) <= km)) airPatrol(t, center, 150, 0.5);
+  }
+  a.aims = ordered.slice(0, 4).map((p) => cityOf(state, p));
+}
+
+/** Provinces à tenir après une mission : gains, villes de la zone, sinon les villes amies proches. */
+function holdsAfterMission(state: EngineState, a: ArmySt): ProvinceId[] {
+  const m = a.mission!;
+  const n = a.owner;
+  // Réussite : les gains (repris s'ils sont perdus) ; échec : seulement ce qui est encore tenu.
+  const ok = a.status === 'success';
+  const gains = [...(m.targets ?? []), ...(m.holds ?? [])].filter((p) => {
+    const o = state.provinces[p]?.owner;
+    return o === n || (ok && !!o && atWar(state, n, o));
+  });
+  if (gains.length) return [...new Set(gains)].sort();
+  const at = centroid(state, a);
+  if (!at) return [];
+  return provincesOf(state, n)
+    .map((p) => ({ p, d: distanceKm(cityOf(state, p), at) }))
+    .sort((x, y) => x.d - y.d || (x.p < y.p ? -1 : 1))
+    .slice(0, 2)
+    .map((x) => x.p);
+}
+
+function holdAfterMission(state: EngineState, a: ArmySt, def: MissionDef, g: GenSt): void {
+  const m = a.mission!;
+  const B = cmdBal(state);
+  const T = traitSum(state, g.traits);
+  const t: Think = {
+    state,
+    a,
+    m,
+    def,
+    g,
+    n: a.owner,
+    L: levelFor(state, g, m, def),
+    A: B.aggressiveness[m.aggr],
+    T,
+  };
+  driving = true;
+  try {
+    retreat(t);
+    const holds = holdsAfterMission(state, a);
+    holdGround(t, holds, centroid(state, a));
+  } finally {
+    driving = false;
+  }
+  a.now = armyValue(state, a);
 }
 
 /** Ennemis vus (aériens, navals) dans une zone. */
@@ -1191,7 +1364,7 @@ function evaluate(state: EngineState, a: ArmySt, def: MissionDef, g: GenSt | nul
       const done = holds.filter((p) => state.provinces[p]?.owner === n).length;
       a.obj = holds.length ? { done, total: holds.length } : null;
       if (holds.length && done === 0 && state.time - m.since > B.tactics.zoneLostHours * HOUR) {
-        failMission(state, a, 'zoneLost');
+        failMission(state, a, 'zoneLost', def);
         return true;
       }
       break;
@@ -1220,7 +1393,7 @@ function evaluate(state: EngineState, a: ArmySt, def: MissionDef, g: GenSt | nul
     }
   }
   if (a.start > 0 && a.now < B.failShare * a.start) {
-    failMission(state, a, 'losses');
+    failMission(state, a, 'losses', def);
     return true;
   }
   const offensive =
@@ -1233,7 +1406,7 @@ function evaluate(state: EngineState, a: ArmySt, def: MissionDef, g: GenSt | nul
     state.time - m.progressAt > B.stuckHours * HOUR
   ) {
     const weak = a.weakAt !== undefined && state.time - a.weakAt <= B.stuckHours * HOUR;
-    failMission(state, a, weak ? 'tooWeak' : 'stuck');
+    failMission(state, a, weak ? 'tooWeak' : 'stuck', def);
     return true;
   }
   return false;

@@ -29,7 +29,7 @@ import {
   isChief,
   salaryOf,
 } from './generals.js';
-import { campaignView, opNations } from './ops.js';
+import { campaignView, opNations, waitOf } from './ops.js';
 import { cmdBal, cmdOpt, type ArmySt, type CmdState } from './state.js';
 
 /**
@@ -198,6 +198,14 @@ export function commandView(state: EngineState, n: NationId, view: PlayerView): 
         const role = c.ops?.[a.op]?.roles[a.id];
         if (role) v.role = role;
       }
+      if (a.opAuto) v.auto = true;
+      if (a.post) v.posture = a.post;
+      // Ce qu'attend le général (mission ou opération en cours seulement).
+      const live = a.op
+        ? !!c.ops?.[a.op]
+        : !!a.mission && a.status !== 'success' && a.status !== 'failed';
+      const wait = live ? waitOf(state, a, a.op ? (c.ops?.[a.op] ?? null) : null) : null;
+      if (wait) v.wait = wait;
       armies.push(v);
       if (a.mission?.nationId) targets.add(a.mission.nationId);
       for (const p of a.mission?.targets ?? []) {

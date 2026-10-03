@@ -1,6 +1,8 @@
 import {
   CommandBalanceSchema,
   type Aggressiveness,
+  type ArmyPosture,
+  type OpAfter,
   type ArmyJournalEntry,
   type ArmyStatus,
   type Branch,
@@ -102,6 +104,45 @@ export interface ArmySt {
   op?: string;
   /** Armée formée d'office pour une opération (dissoute quand elle la quitte). */
   opAuto?: boolean;
+  /**
+   * Mission ou opération terminée : posture de l'armée (tenir les gains, rentrer à la base) ; absent
+   * ou null : aucune (armée au repos).
+   */
+  post?: ArmyPosture | null;
+  /** Position de départ (barycentre à l'engagement) : « rentrer à la base ». */
+  home?: LngLat;
+  /** Dernière réflexion sans ordre possible : faute de forces ou de cibles connues. */
+  why?: 'noForces' | 'noTargets' | null;
+}
+
+/** Phase d'une opération (enchaînement). */
+export interface OpPhaseSt {
+  goal: string;
+  nations: NationId[];
+  provinces?: ProvinceId[];
+  /** Échéance de la phase (heures depuis son début). */
+  hours?: number;
+}
+
+/** Données propres à l'objectif, calculées au début de la phase. */
+export interface GoalData {
+  /** Défense en profondeur : lignes successives (provinces à soi). */
+  lines?: ProvinceId[][];
+  /** Siège : ville assiégée et anneau d'isolement ; encerclement : provinces du goulot. */
+  city?: ProvinceId;
+  ring?: ProvinceId[];
+  neck?: ProvinceId[];
+  /** Percée : axe (provinces dans l'ordre de l'avance). */
+  axis?: ProvinceId[];
+  /** Raid : provinces de l'arrière visées ; début du repli. */
+  rear?: ProvinceId[];
+  withdrawAt?: GameTime | null;
+  /** Sites protégés (bouclier), provinces tenues (pacification, démonstration, capitale). */
+  sites?: ProvinceId[];
+  /** Libération, soutien : alliés (propriétaires d'origine des provinces). */
+  allies?: NationId[];
+  /** Redéploiement aérien : terrains d'aviation de destination. */
+  fields?: ProvinceId[];
 }
 
 /** Ordre d'opération : pays cibles, objectif, généraux (armées), planificateur commun. */
@@ -162,6 +203,24 @@ export interface OpSt {
   /** Objectifs en cours des généraux de l'armée de terre (appui aérien, couverture). */
   focus?: LngLat[];
   v: number;
+  /** Objectif composé choisi (guerre éclair, opération combinée) : ses phases sont dans `chain`. */
+  preset?: string;
+  /** Phases (enchaînement) : liste complète, index de la phase en cours, début, issues des phases faites. */
+  chain?: OpPhaseSt[];
+  step?: number;
+  phaseAt?: GameTime;
+  results?: ('success' | 'timeout' | 'skipped')[];
+  /** Après la dernière phase (défaut : tenir les gains). */
+  after?: OpAfter;
+  /** Opération terminée : posture de ses forces, limite du retour à la base. */
+  post?: ArmyPosture | null;
+  postUntil?: GameTime;
+  /** Données propres à l'objectif de la phase en cours. */
+  gd?: GoalData;
+  /** Compteurs propres (interceptions, navires coulés, appareils redéployés…). */
+  cnt?: Record<string, number>;
+  /** Navires ennemis identifiés vus depuis le lancement (supériorité navale, guerre anti-navires). */
+  ships?: string[];
 }
 
 export interface GenSt {

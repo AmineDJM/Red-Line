@@ -1,5 +1,13 @@
 import { create } from 'zustand';
-import type { Aggressiveness, LngLat, MissionInput, Roe, UnitId } from '@redline/shared';
+import type {
+  Aggressiveness,
+  LngLat,
+  MissionInput,
+  OpAfter,
+  OpCategory,
+  Roe,
+  UnitId,
+} from '@redline/shared';
 import type { StaffPick } from '../lib/ops.js';
 
 /**
@@ -38,12 +46,23 @@ export interface WizardDraft {
 
 export type PickMode = 'target' | 'units' | 'nation' | null;
 
-/** Étapes de l'assistant d'opération : cibles, objectif, généraux, confirmation. */
-export type OpStep = 'targets' | 'goal' | 'staff' | 'confirm';
+/**
+ * Étapes de l'assistant d'opération : objectif (catalogue), cibles, plan (phases enchaînées, « quand
+ * c'est fini »), généraux, confirmation.
+ */
+export type OpStep = 'targets' | 'goal' | 'plan' | 'staff' | 'confirm';
+
+/** Phase suivante du brouillon : objectif, cibles (celles de la phase précédente si absentes), échéance. */
+export interface PhaseDraft {
+  goal: string;
+  nations?: string[];
+  provinces?: string[];
+  hours?: number;
+}
 
 export interface OpDraft {
-  /** Nouvelle opération, changement d'objectif, renforts (nouveaux généraux). */
-  mode: 'new' | 'edit' | 'reinforce';
+  /** Nouvelle opération, changement d'objectif, renforts (nouveaux généraux), phases seules. */
+  mode: 'new' | 'edit' | 'reinforce' | 'phases';
   opId: string | null;
   steps: OpStep[];
   step: OpStep;
@@ -57,6 +76,14 @@ export interface OpDraft {
   /** Échéance (heures), null : sans échéance. */
   deadlineHours: number | null;
   staff: StaffPick[];
+  /** Phases suivantes (enchaînement), échéance de la première phase, comportement final. */
+  phases: PhaseDraft[];
+  phaseHours: number | null;
+  after: OpAfter;
+  /** Catalogue : catégorie affichée. */
+  cat: OpCategory | 'all';
+  /** L'objectif se désigne aussi par provinces (sur la carte). */
+  pickProv?: boolean;
 }
 
 export type CommandTab = 'ops' | 'armies' | 'generals';
@@ -100,6 +127,10 @@ export const EMPTY_OP: Omit<OpDraft, 'steps' | 'step'> = {
   roe: 'standard',
   deadlineHours: null,
   staff: [],
+  phases: [],
+  phaseHours: null,
+  after: 'hold',
+  cat: 'all',
 };
 
 export const useCommandUi = create<CommandUiStore>((set, get) => ({
@@ -131,7 +162,7 @@ export const useCommandUi = create<CommandUiStore>((set, get) => ({
     const nations =
       nationId && !cur.nations.includes(nationId) ? [...cur.nations, nationId] : cur.nations;
     const provinces =
-      cur.goal === 'occupy' && provinceId
+      (cur.goal === 'occupy' || cur.pickProv) && provinceId
         ? cur.provinces.includes(provinceId)
           ? cur.provinces.filter((p) => p !== provinceId)
           : [...cur.provinces, provinceId]

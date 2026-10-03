@@ -3291,16 +3291,240 @@
       "chiefBonus": 0.2,
       "chiefSalary": 1.5,
       "deputySkill": 0.7,
+      "maxPhases": 6,
+      "phaseStageHours": 3,
+      "returnHours": 48,
+      "holdAirKm": 250,
       "goals": {
-        "attrition": { "order": 1, "branches": ["air", "land", "sea"], "success": 0.5 },
-        "air_control": { "order": 2, "branches": ["air", "ad"], "continuous": true },
-        "conquest": { "order": 3, "branches": ["land", "air", "ad", "sea"] },
-        "decapitation": { "order": 4, "branches": ["land", "air"] },
-        "strategic": { "order": 5, "branches": ["air", "land"], "success": 0.8 },
-        "sead": { "order": 6, "branches": ["air"] },
-        "blockade": { "order": 7, "branches": ["sea", "air"], "continuous": true },
-        "defend_border": { "order": 8, "branches": ["land", "ad", "air"], "continuous": true },
-        "occupy": { "order": 9, "branches": ["land", "air", "ad"], "target": "provinces" }
+        "attrition": {
+          "order": 1,
+          "category": "joint",
+          "branches": ["air", "land", "sea"],
+          "success": 0.5
+        },
+        "air_control": {
+          "order": 2,
+          "category": "air",
+          "branches": ["air", "ad"],
+          "continuous": true
+        },
+        "conquest": { "order": 3, "category": "land", "branches": ["land", "air", "ad", "sea"] },
+        "decapitation": { "order": 4, "category": "land", "branches": ["land", "air"] },
+        "strategic": { "order": 5, "category": "air", "branches": ["air", "land"], "success": 0.8 },
+        "sead": { "order": 6, "category": "air", "branches": ["air"] },
+        "blockade": {
+          "order": 7,
+          "category": "sea",
+          "branches": ["sea", "air"],
+          "continuous": true
+        },
+        "defend_border": {
+          "order": 8,
+          "category": "land",
+          "branches": ["land", "ad", "air"],
+          "continuous": true,
+          "war": false
+        },
+        "occupy": {
+          "order": 9,
+          "category": "land",
+          "branches": ["land", "air", "ad"],
+          "target": "provinces"
+        },
+        "counteroffensive": {
+          "order": 10,
+          "category": "land",
+          "branches": ["land", "air", "ad"],
+          "target": "self"
+        },
+        "liberation": {
+          "order": 11,
+          "category": "land",
+          "branches": ["land", "air", "ad"],
+          "target": "ally"
+        },
+        "encircle": {
+          "order": 12,
+          "category": "land",
+          "branches": ["land", "air"],
+          "target": "place",
+          "params": { "neckWeight": 4 }
+        },
+        "breakthrough": {
+          "order": 13,
+          "category": "land",
+          "branches": ["land", "air", "ad"],
+          "params": { "depth": 4 }
+        },
+        "raid": {
+          "order": 14,
+          "category": "land",
+          "branches": ["land", "air"],
+          "params": { "hours": 24, "targets": 4 }
+        },
+        "siege": {
+          "order": 15,
+          "category": "land",
+          "branches": ["land", "air", "ad"],
+          "target": "place"
+        },
+        "defense_depth": {
+          "order": 16,
+          "category": "land",
+          "branches": ["land", "ad", "air"],
+          "target": "self",
+          "continuous": true,
+          "war": false,
+          "params": { "lines": 3, "line1": 0.45, "line2": 0.35 }
+        },
+        "defend_capital": {
+          "order": 17,
+          "category": "land",
+          "branches": ["land", "ad", "air"],
+          "target": "self",
+          "continuous": true,
+          "war": false,
+          "params": { "capitalShare": 0.5 }
+        },
+        "pacify": {
+          "order": 18,
+          "category": "land",
+          "branches": ["land"],
+          "target": "self",
+          "continuous": true,
+          "war": false,
+          "params": { "huntKm": 120 }
+        },
+        "show_of_force": {
+          "order": 19,
+          "category": "land",
+          "branches": ["land", "air", "ad"],
+          "continuous": true,
+          "war": false,
+          "success": 0.6,
+          "params": { "borderKm": 120 }
+        },
+        "interdiction": { "order": 20, "category": "air", "branches": ["air"], "success": 0.7 },
+        "cas": {
+          "order": 21,
+          "category": "air",
+          "branches": ["air"],
+          "continuous": true,
+          "params": { "radiusKm": 120 }
+        },
+        "strategic_bombing": {
+          "order": 22,
+          "category": "air",
+          "branches": ["air"],
+          "continuous": true,
+          "success": 0.8
+        },
+        "air_defense_territory": {
+          "order": 23,
+          "category": "air",
+          "branches": ["air", "ad"],
+          "target": "self",
+          "continuous": true,
+          "war": false,
+          "params": { "patrolShare": 0.75 }
+        },
+        "air_redeploy": {
+          "order": 24,
+          "category": "air",
+          "branches": ["air"],
+          "target": "place",
+          "war": false,
+          "success": 0.9
+        },
+        "armed_recon": { "order": 25, "category": "air", "branches": ["air"], "success": 0.8 },
+        "naval_supremacy": {
+          "order": 26,
+          "category": "sea",
+          "branches": ["sea", "air"],
+          "success": 0.8,
+          "params": { "huntKm": 1500 }
+        },
+        "antiship": {
+          "order": 27,
+          "category": "sea",
+          "branches": ["sea", "air"],
+          "continuous": true,
+          "params": { "huntKm": 1200 }
+        },
+        "convoy_escort": {
+          "order": 28,
+          "category": "sea",
+          "branches": ["sea", "air"],
+          "target": "self",
+          "continuous": true,
+          "war": false
+        },
+        "amphibious": {
+          "order": 29,
+          "category": "sea",
+          "branches": ["land", "sea", "air"],
+          "target": "place"
+        },
+        "port_blockade": {
+          "order": 30,
+          "category": "sea",
+          "branches": ["sea", "air"],
+          "continuous": true,
+          "params": { "shipsPerPort": 2 }
+        },
+        "naval_strikes": {
+          "order": 31,
+          "category": "sea",
+          "branches": ["sea"],
+          "success": 0.6,
+          "params": { "salvos": 8 }
+        },
+        "missile_shield": {
+          "order": 32,
+          "category": "ad",
+          "branches": ["ad"],
+          "target": "self",
+          "continuous": true,
+          "war": false,
+          "params": { "sites": 6 }
+        },
+        "ad_umbrella": {
+          "order": 33,
+          "category": "ad",
+          "branches": ["ad"],
+          "target": "self",
+          "continuous": true,
+          "war": false
+        },
+        "missile_campaign": {
+          "order": 34,
+          "category": "ad",
+          "branches": ["air", "sea"],
+          "success": 0.7,
+          "params": { "salvos": 12, "readyShare": 0.5, "waitHours": 2 }
+        },
+        "blitz": {
+          "order": 35,
+          "category": "joint",
+          "branches": ["air", "land", "ad"],
+          "chain": ["sead", "air_control", "breakthrough", "decapitation"],
+          "chainHours": [36, 24, 0, 0]
+        },
+        "combined_landing": {
+          "order": 36,
+          "category": "joint",
+          "branches": ["land", "sea", "air"],
+          "target": "place",
+          "chain": ["sead", "amphibious"],
+          "chainHours": [24, 0]
+        },
+        "ally_support": {
+          "order": 37,
+          "category": "joint",
+          "branches": ["land", "air", "ad"],
+          "target": "ally",
+          "continuous": true
+        }
       }
     },
     "reinforce": {

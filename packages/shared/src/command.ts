@@ -79,9 +79,10 @@ export const BRANCH_SKILL: Record<Branch, GeneralSkill> = {
 };
 
 /**
- * Objectifs d'opération (ordre d'opération : pays cibles, objectif, généraux) : affaiblir les forces
- * (attrition), contrôle aérien total, conquête totale, décapitation (capitale), frappes stratégiques,
- * neutraliser la défense antiaérienne, blocus naval, tenir une frontière, occuper une région.
+ * Objectifs d'opération (ordre d'opération : pays cibles, objectif, généraux), regroupés par catégorie
+ * (terre, air, mer, DCA et missiles, interarmées). Les neuf premiers sont ceux d'origine ; chacun a sa
+ * conduite propre dans le moteur (packages/engine/src/modules/command/opgoals.ts) et son critère de
+ * réussite chiffré (data/balance → command.operations.goals).
  */
 export const OP_GOALS = [
   'attrition',
@@ -93,8 +94,57 @@ export const OP_GOALS = [
   'blockade',
   'defend_border',
   'occupy',
+  // Terre
+  'counteroffensive',
+  'liberation',
+  'encircle',
+  'breakthrough',
+  'raid',
+  'siege',
+  'defense_depth',
+  'defend_capital',
+  'pacify',
+  'show_of_force',
+  // Air
+  'interdiction',
+  'cas',
+  'strategic_bombing',
+  'air_defense_territory',
+  'air_redeploy',
+  'armed_recon',
+  // Mer
+  'naval_supremacy',
+  'antiship',
+  'convoy_escort',
+  'amphibious',
+  'port_blockade',
+  'naval_strikes',
+  // DCA et missiles
+  'missile_shield',
+  'ad_umbrella',
+  'missile_campaign',
+  // Interarmées
+  'blitz',
+  'combined_landing',
+  'ally_support',
 ] as const;
 export type OpGoal = (typeof OP_GOALS)[number];
+
+/** Catégories du catalogue d'opérations (interface du QG). */
+export const OP_CATEGORIES = ['land', 'air', 'sea', 'ad', 'joint'] as const;
+export type OpCategory = (typeof OP_CATEGORIES)[number];
+
+/**
+ * Cible d'un objectif : pays (`nation`), provinces désignées (`provinces`), l'un ou l'autre (`place` :
+ * une ville, une côte, une poche), son propre territoire (`self`, pays facultatifs : adversaires
+ * surveillés) ou un pays allié à soutenir ou libérer (`ally`).
+ */
+export const OP_TARGET_KINDS = ['nation', 'provinces', 'place', 'self', 'ally'] as const;
+export type OpTargetKind = (typeof OP_TARGET_KINDS)[number];
+
+/** Après la dernière phase : tenir les gains (exploitation), rentrer à la base, se mettre en réserve. */
+export const OP_AFTER = ['hold', 'home', 'reserve'] as const;
+export type OpAfter = (typeof OP_AFTER)[number];
 
 export type OpStatus =
   | 'planning'
@@ -105,12 +155,76 @@ export type OpStatus =
   | 'success'
   | 'failed';
 
-/** Phase du planificateur : rassemblement borné, suppression, maîtrise du ciel, offensive, maintien. */
-export type OpPhase = 'stage' | 'sead' | 'air' | 'offensive' | 'hold' | 'done';
+/**
+ * Phase du planificateur : rassemblement borné, suppression, maîtrise du ciel, offensive, maintien,
+ * repli ordonné (raid), terminée.
+ */
+export type OpPhase = 'stage' | 'sead' | 'air' | 'offensive' | 'hold' | 'withdraw' | 'done';
 
 /** Mesures de progression d'une opération. */
 export type OpMetric =
-  'forces' | 'provinces' | 'capital' | 'sams' | 'aircraft' | 'buildings' | 'ports' | 'front';
+  | 'forces'
+  | 'provinces'
+  | 'capital'
+  | 'sams'
+  | 'aircraft'
+  | 'buildings'
+  | 'ports'
+  | 'front'
+  | 'retaken'
+  | 'liberated'
+  | 'neck'
+  | 'depth'
+  | 'raids'
+  | 'withdrawn'
+  | 'ring'
+  | 'city'
+  | 'lines'
+  | 'secured'
+  | 'deployed'
+  | 'logistics'
+  | 'moving'
+  | 'intercepts'
+  | 'rebased'
+  | 'revealed'
+  | 'ships'
+  | 'escorted'
+  | 'sites'
+  | 'covered'
+  | 'targets';
+
+/**
+ * Raison pour laquelle un général (ou une armée) attend : l'interface l'affiche avec un bouton
+ * d'action (autoriser, renforcer, lancer maintenant, reprendre la main…).
+ */
+export const WAIT_REASONS = [
+  'war',
+  'strike',
+  'reinforce',
+  'staging',
+  'manual',
+  'suspended',
+  'noGeneral',
+  'wounded',
+  'fuel',
+  'noForces',
+  'noTargets',
+  'resting',
+] as const;
+export type WaitReason = (typeof WAIT_REASONS)[number];
+
+export interface WaitView {
+  reason: WaitReason;
+  /** Piles concernées (ordre direct, repos, carburant). */
+  count?: number;
+  /** Nation (autorisation de guerre). */
+  nationId?: NationId;
+  /** Échéance (rassemblement). */
+  until?: GameTime;
+}
+
+/** Posture après la fin d'une mission ou d'une opération : tenir les gains, rentrer à la base. */
+export type ArmyPosture = 'hold' | 'home';
 
 const num = (d: number) => z.number().default(d);
 const pos = (d: number) => z.number().min(0).default(d);
@@ -262,27 +376,123 @@ const RankSchema = z.object({
 const OpGoalDefSchema = z.object({
   /** Ordre d'affichage. */
   order: num(0),
+  /** Catégorie du catalogue (terre, air, mer, DCA et missiles, interarmées) ; absente : terre. */
+  category: z.enum(OP_CATEGORIES).optional(),
   /** Commandements recommandés (conseil affiché ; l'ordre n'est pas refusé sans eux). */
   branches: z.array(z.enum(BRANCHES)).default(['land']),
-  /** Cible : un ou plusieurs pays, ou une liste de provinces (région). */
-  target: z.enum(['nation', 'provinces']).default('nation'),
+  /** Cible : pays, provinces, l'un ou l'autre, son territoire, un allié. */
+  target: z.enum(OP_TARGET_KINDS).default('nation'),
   /** Objectif de durée : une fois atteint, il est maintenu (contrôle aérien, frontière, blocus). */
   continuous: z.boolean().default(false),
   /** Seuil de réussite (part de la mesure principale). */
   success: z.number().min(0).max(1).default(1),
+  /** Ouvre la guerre contre les pays visés (faux : opérations défensives, démonstration de force). */
+  war: z.boolean().optional(),
+  /** Opération composée : phases enchaînées (objectifs), échéance de chaque phase (heures, 0 = aucune). */
+  chain: z.array(z.string()).optional(),
+  chainHours: z.array(z.number().min(0)).optional(),
+  /** Réglages propres à l'objectif (profondeur, durée du raid, navires par port…). */
+  params: z.record(z.string(), z.number()).optional(),
 });
 export type OpGoalDef = z.infer<typeof OpGoalDefSchema>;
 
 const DEFAULT_GOALS: Record<OpGoal, z.input<typeof OpGoalDefSchema>> = {
-  attrition: { order: 1, branches: ['air', 'land', 'sea'], success: 0.5 },
-  air_control: { order: 2, branches: ['air', 'ad'], continuous: true },
+  attrition: { order: 1, category: 'joint', branches: ['air', 'land', 'sea'], success: 0.5 },
+  air_control: { order: 2, category: 'air', branches: ['air', 'ad'], continuous: true },
   conquest: { order: 3, branches: ['land', 'air', 'ad', 'sea'] },
   decapitation: { order: 4, branches: ['land', 'air'] },
-  strategic: { order: 5, branches: ['air', 'land'], success: 0.8 },
-  sead: { order: 6, branches: ['air'] },
-  blockade: { order: 7, branches: ['sea', 'air'], continuous: true },
-  defend_border: { order: 8, branches: ['land', 'ad', 'air'], continuous: true },
+  strategic: { order: 5, category: 'air', branches: ['air', 'land'], success: 0.8 },
+  sead: { order: 6, category: 'air', branches: ['air'] },
+  blockade: { order: 7, category: 'sea', branches: ['sea', 'air'], continuous: true },
+  defend_border: { order: 8, branches: ['land', 'ad', 'air'], continuous: true, war: false },
   occupy: { order: 9, branches: ['land', 'air', 'ad'], target: 'provinces' },
+  counteroffensive: { order: 10, branches: ['land', 'air', 'ad'], target: 'self' },
+  liberation: { order: 11, branches: ['land', 'air', 'ad'], target: 'ally' },
+  encircle: { order: 12, branches: ['land', 'air'], target: 'place' },
+  breakthrough: { order: 13, branches: ['land', 'air', 'ad'], params: { depth: 4 } },
+  raid: { order: 14, branches: ['land', 'air'], params: { hours: 24, targets: 4 } },
+  siege: { order: 15, branches: ['land', 'air', 'ad'], target: 'place' },
+  defense_depth: {
+    order: 16,
+    branches: ['land', 'ad', 'air'],
+    target: 'self',
+    continuous: true,
+    war: false,
+  },
+  defend_capital: {
+    order: 17,
+    branches: ['land', 'ad', 'air'],
+    target: 'self',
+    continuous: true,
+    war: false,
+  },
+  pacify: { order: 18, branches: ['land'], target: 'self', continuous: true, war: false },
+  show_of_force: { order: 19, branches: ['land', 'air', 'ad'], continuous: true, war: false },
+  interdiction: { order: 20, category: 'air', branches: ['air'], success: 0.7 },
+  cas: { order: 21, category: 'air', branches: ['air'], continuous: true },
+  strategic_bombing: { order: 22, category: 'air', branches: ['air'], continuous: true },
+  air_defense_territory: {
+    order: 23,
+    category: 'air',
+    branches: ['air', 'ad'],
+    target: 'self',
+    continuous: true,
+    war: false,
+  },
+  air_redeploy: { order: 24, category: 'air', branches: ['air'], target: 'place', war: false },
+  armed_recon: { order: 25, category: 'air', branches: ['air'], success: 0.8 },
+  naval_supremacy: { order: 26, category: 'sea', branches: ['sea', 'air'], success: 0.8 },
+  antiship: { order: 27, category: 'sea', branches: ['sea', 'air'], continuous: true },
+  convoy_escort: {
+    order: 28,
+    category: 'sea',
+    branches: ['sea', 'air'],
+    target: 'self',
+    continuous: true,
+    war: false,
+  },
+  amphibious: { order: 29, category: 'sea', branches: ['land', 'sea', 'air'], target: 'place' },
+  port_blockade: { order: 30, category: 'sea', branches: ['sea', 'air'], continuous: true },
+  naval_strikes: { order: 31, category: 'sea', branches: ['sea'], success: 0.6 },
+  missile_shield: {
+    order: 32,
+    category: 'ad',
+    branches: ['ad'],
+    target: 'self',
+    continuous: true,
+    war: false,
+  },
+  ad_umbrella: {
+    order: 33,
+    category: 'ad',
+    branches: ['ad'],
+    target: 'self',
+    continuous: true,
+    war: false,
+  },
+  missile_campaign: { order: 34, category: 'ad', branches: ['air', 'sea'], success: 0.7 },
+  blitz: {
+    order: 35,
+    category: 'joint',
+    branches: ['air', 'land', 'ad'],
+    chain: ['sead', 'air_control', 'breakthrough', 'decapitation'],
+    chainHours: [36, 24, 0, 0],
+  },
+  combined_landing: {
+    order: 36,
+    category: 'joint',
+    branches: ['land', 'sea', 'air'],
+    target: 'place',
+    chain: ['sead', 'amphibious'],
+    chainHours: [24, 0],
+  },
+  ally_support: {
+    order: 37,
+    category: 'joint',
+    branches: ['land', 'air', 'ad'],
+    target: 'ally',
+    continuous: true,
+  },
 };
 
 const OperationsBalanceSchema = z.object({
@@ -331,6 +541,13 @@ const OperationsBalanceSchema = z.object({
   chiefSalary: pos(1.5),
   /** Général blessé : son adjoint commande avec cette part des compétences. */
   deputySkill: z.number().min(0).max(1).default(0.7),
+  /** Phases enchaînées : au plus n phases par opération ; rassemblement entre deux phases (heures). */
+  maxPhases: z.number().int().min(1).max(12).default(6),
+  phaseStageHours: pos(3),
+  /** Rentrer à la base : délai maximal avant que les forces soient rendues au joueur (heures). */
+  returnHours: pos(48),
+  /** Tenir les gains : rayon de couverture aérienne autour des gains (km). */
+  holdAirKm: pos(250),
   goals: z.record(z.string(), OpGoalDefSchema).default(DEFAULT_GOALS),
 });
 export type OperationsBalance = z.infer<typeof OperationsBalanceSchema>;
@@ -488,6 +705,22 @@ export type OpCommanderInput = z.input<typeof OpCommanderSchema>;
 const nationList = z.array(id).max(8);
 const provinceList = z.array(id).max(300);
 
+/**
+ * Phase suivante d'une opération (enchaînement) : objectif, cibles (celles de la phase précédente si
+ * absentes), échéance de la phase (heures : passage à la phase suivante même sans réussite).
+ */
+export const OpPhaseSchema = z.object({
+  goal: z.string().min(1).max(32),
+  nations: nationList.optional(),
+  provinces: provinceList.optional(),
+  hours: z
+    .number()
+    .min(1)
+    .max(24 * 90)
+    .optional(),
+});
+export type OpPhaseInput = z.input<typeof OpPhaseSchema>;
+
 /** Ordres du centre de commandement (ajoutés à OrderSchema). */
 export const COMMAND_ORDERS = [
   /**
@@ -509,6 +742,8 @@ export const COMMAND_ORDERS = [
     add: unitIdList.optional(),
     remove: unitIdList.optional(),
     reinforce: z.enum(REINFORCE_MODES).optional(),
+    /** Rendre au général les piles sous ordre direct (la règle « l'ordre direct prime » est levée). */
+    reclaim: z.boolean().optional(),
   }),
   z.object({ kind: z.literal('armyMission'), armyId: id, mission: MissionInputSchema.nullable() }),
   z.object({ kind: z.literal('armySuspend'), armyId: id, on: z.boolean() }),
@@ -540,6 +775,16 @@ export const COMMAND_ORDERS = [
       .max(24 * 90)
       .optional(),
     commanders: z.array(OpCommanderSchema).min(1).max(12),
+    /** Phases suivantes (enchaînement automatique quand la précédente est réussie ou échue). */
+    phases: z.array(OpPhaseSchema).max(11).optional(),
+    /** Échéance de la première phase (heures) : passage à la suivante même sans réussite. */
+    phaseHours: z
+      .number()
+      .min(1)
+      .max(24 * 90)
+      .optional(),
+    /** Après la dernière phase (défaut : tenir les gains). */
+    after: z.enum(OP_AFTER).optional(),
   }),
   /** Changer d'objectif, de cibles ou de paramètres (l'opération repart en préparation). */
   z.object({
@@ -557,6 +802,13 @@ export const COMMAND_ORDERS = [
       .max(24 * 90)
       .nullable()
       .optional(),
+    /** Phases suivantes (remplacent celles qui restent), comportement après la dernière phase. */
+    phases: z.array(OpPhaseSchema).max(11).optional(),
+    after: z.enum(OP_AFTER).optional(),
+    /** Fin du rassemblement : l'offensive part tout de suite. */
+    stageNow: z.boolean().optional(),
+    /** Passer tout de suite à la phase suivante. */
+    nextPhase: z.boolean().optional(),
   }),
   /** Renforcer (nouveaux généraux, forces), retirer un général, changer les rôles. */
   z.object({
@@ -646,6 +898,12 @@ export interface ArmyView {
   /** Opération dont l'armée fait partie, et son rôle. */
   opId?: string;
   role?: Branch;
+  /** Armée formée d'office pour une opération (ses piles restent disponibles une fois l'opération close). */
+  auto?: boolean;
+  /** Ce qu'attend le général (autorisation, renforts, fin d'un ordre direct…), avec bouton d'action. */
+  wait?: WaitView;
+  /** Mission ou opération terminée : posture (tenir les gains, rentrer à la base). */
+  posture?: ArmyPosture;
 }
 
 export interface CommandGeneralView {
@@ -759,6 +1017,21 @@ export interface CampaignCommanderView {
   piles: number;
   value: number;
   status: ArmyStatus;
+  /** Ce qu'attend le général (bouton d'action dans le tableau de bord). */
+  wait?: WaitView;
+  /** Opération terminée : posture de ses forces. */
+  posture?: ArmyPosture;
+}
+
+/** Phase d'une opération (enchaînement) : faite, en cours, à venir. */
+export interface CampaignPhaseView {
+  goal: string;
+  nations: NationId[];
+  provinces?: ProvinceId[];
+  hours?: number;
+  state: 'done' | 'current' | 'next';
+  /** Issue d'une phase faite : réussie, ou close à son échéance. */
+  result?: 'success' | 'timeout' | 'skipped';
 }
 
 export interface CampaignView {
@@ -782,6 +1055,20 @@ export interface CampaignView {
   estimate: { ratio: number; etaHours: number | null; chance: number } | null;
   stats: { strikes: number; captures: number; losses: number; kills: number };
   value: { start: number; now: number };
+  /** Catégorie de l'objectif (catalogue). */
+  category?: OpCategory;
+  /** Objectif composé choisi au lancement (guerre éclair, opération combinée). */
+  preset?: string;
+  /** Phases (enchaînement) ; absent : une seule phase. */
+  phases?: CampaignPhaseView[];
+  /** Index de la phase en cours, début de la phase, échéance de la phase. */
+  step?: number;
+  phaseSince?: GameTime;
+  phaseUntil?: GameTime | null;
+  /** Après la dernière phase. */
+  after?: OpAfter;
+  /** Rassemblement : fin prévue. */
+  stageUntil?: GameTime;
 }
 
 /** Note globale d'un général (moyenne des compétences hors audace). */

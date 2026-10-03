@@ -67,7 +67,9 @@ import {
   centroid,
   cityOf,
   commanded,
+  landingPrior,
   levelFor,
+  needAt,
   order,
   otherAims,
   placeAirDefense,
@@ -79,7 +81,28 @@ import {
 } from './brain.js';
 import { effectiveSkills, traitSum } from './generals.js';
 import { opJournal } from './journal.js';
-import { TAKING, middle, opIntel, opOf, type OpIntel } from './ops.js';
+import { TAKING, closed, middle, opIntel, opOf, trackedBld, type OpIntel } from './ops.js';
+import { WIDE, goalParam, isLogistics, umbrellaAims } from './opgoals.js';
+import {
+  adHolds,
+  allyLand,
+  capitalLand,
+  depthLand,
+  engageShip,
+  escortConvoys,
+  fitTransports,
+  holdOp,
+  huntShips,
+  launchersOf,
+  pacifyLand,
+  raidWithdraw,
+  redeployAir,
+  returnHome,
+  salvoFired,
+  salvoReady,
+  shieldOrder,
+  showLand,
+} from './opconduct.js';
 import {
   cmd,
   cmdBal,
@@ -134,7 +157,7 @@ function levelForOp(
     rally: true,
     amphibious: true,
     counterattack: true,
-    sead: base.sead || op.goal === 'sead' || op.goal === 'air_control' || op.goal === 'attrition',
+    sead: base.sead || WIDE.has(op.goal),
     airEscorts: Math.max(1, base.airEscorts),
   };
 }
@@ -153,8 +176,38 @@ export function thinkOpArmy(state: EngineState, a: ArmySt): void {
     a.status = 'passive';
     return;
   }
-  if (op.status === 'success' || op.status === 'failed') {
-    a.status = op.status;
+  if (closed(op)) {
+    a.status = op.status === 'success' ? 'success' : 'failed';
+    // Opération terminée : les forces tiennent les gains ou rentrent à la base (jamais inertes).
+    if (!a.post || a.suspended || g.status !== 'active') return;
+    const A0 = cmdBal(state).aggressiveness[op.aggr];
+    const m0: MissionSt = {
+      type: 'op',
+      aggr: op.aggr,
+      roe: op.roe,
+      retreatAt: op.retreatAt ?? A0.retreatAt,
+      since: op.since,
+      progressAt: op.progressAt,
+      okWar: op.okWar,
+    };
+    const g0: GenSt = { ...g, skills: effectiveSkills(state, g) };
+    const t0: Think = {
+      state,
+      a,
+      m: m0,
+      def: MISSION_DEF,
+      g: g0,
+      n: a.owner,
+      L: levelForOp({ state, a, g: g0, m: m0 }, op),
+      A: A0,
+      T: traitSum(state, g.traits),
+    };
+    asGeneral(() => {
+      retreat(t0);
+      if (a.post === 'home') returnHome(t0, op);
+      else holdOp(t0, op);
+    });
+    a.now = armyValue(state, a);
     return;
   }
   if (op.suspended || op.status === 'suspended') {
@@ -189,6 +242,7 @@ export function thinkOpArmy(state: EngineState, a: ArmySt): void {
   const I = opIntel(state, op);
   const staging = op.phase === 'stage' && TAKING.has(op.goal) && role === 'land';
   a.status = staging ? 'preparing' : 'active';
+  a.why = null;
   const aims: LngLat[] = [];
   asGeneral(() => {
     retreat(t);
@@ -244,6 +298,10 @@ function landScope(t: Think, op: OpSt): ArmyScope {
       rallyMaxHours: Math.max(1, O.stageHours),
       rallySpreadHours: Math.min(tac.rallySpreadHours, 4),
       attackReachKm: Math.max(tac.attackReachKm, 4000),
+      // Assaut amphibie : les troupes viennent de tout le pays jusqu'au port d'embarquement.
+      ...(op.goal === 'amphibious'
+        ? { reinforceReachKm: Math.max(tac.reinforceReachKm, tac.attackReachKm, 4000) }
+        : {}),
     },
   };
 }
@@ -271,11 +329,34 @@ function landPart(t: Think, op: OpSt, I: OpIntel, aims: LngLat[]): void {
   defend(ctx);
   runOps(ctx);
   runTransports(ctx);
+  // Assaut amphibie : un groupement à la taille des transports est détaché des brigades.
+  if (op.goal === 'amphibious') fitTransports(t, opTransports(state, op, a));
   if (TAKING.has(op.goal)) advance(t, ctx, op, aims);
-  else {
-    if (op.goal === 'attrition') hunt(t, ctx, op);
-    for (const p of holdFront(t, ctx, op, I).slice(0, 3)) aims.push(cityOf(state, p));
-  }
+  else
+    switch (op.goal) {
+      case 'raid':
+        if (op.phase === 'withdraw') raidWithdraw(t, ctx, aims);
+        else advance(t, ctx, op, aims);
+        break;
+      case 'defense_depth':
+        depthLand(t, ctx, op, aims);
+        break;
+      case 'defend_capital':
+        capitalLand(t, ctx, op, aims);
+        break;
+      case 'pacify':
+        pacifyLand(t, ctx, op, aims);
+        break;
+      case 'show_of_force':
+        showLand(t, ctx, op, aims);
+        break;
+      case 'ally_support':
+        allyLand(t, ctx, op, aims);
+        break;
+      default:
+        if (op.goal === 'attrition') hunt(t, ctx, op);
+        for (const p of holdFront(t, ctx, op, I).slice(0, 3)) aims.push(cityOf(state, p));
+    }
   for (const p of aimsOf(ctx)) aims.push(cityOf(state, p));
 }
 
@@ -326,6 +407,10 @@ function advance(t: Think, ctx: Ctx, op: OpSt, aims: LngLat[]): void {
   };
   const sec = op.sectors[a.id];
   let pool = (sec?.pids ?? op.targets).filter(open);
+  // Siège : l'anneau d'abord (isoler la ville), puis l'assaut de la ville.
+  const city = op.goal === 'siege' ? op.gd?.city : undefined;
+  if (city && pool.some((p) => p !== city)) pool = pool.filter((p) => p !== city);
+  else if (city && !pool.includes(city) && open(city)) pool = [city];
   if (!pool.length && sec && sec.dir !== 'all') {
     pool = op.targets.filter(open);
     if (pool.length) {
@@ -378,7 +463,8 @@ function advance(t: Think, ctx: Ctx, op: OpSt, aims: LngLat[]): void {
       (Math.pow(worth, off) / (1 + (2 * hold) / ctx.mine.avgUnit)) *
       (1 / (1 + d / (300 + 6 * g.skills.offense))) *
       (own ? 1 : from ? 0.6 : 0.4) *
-      (1 + T.encircle * Math.max(0, own - 1));
+      (1 + T.encircle * Math.max(0, own - 1)) *
+      goalWeight(state, op, pid);
     cands.push({ pid, owner, score, from });
   }
   cands.sort((x, y) => y.score - x.score || (x.pid < y.pid ? -1 : 1));
@@ -387,7 +473,7 @@ function advance(t: Think, ctx: Ctx, op: OpSt, aims: LngLat[]): void {
   for (const c of cands) {
     if (launched >= L.maxOffensivePerThink || ctx.paths <= 0 || tries >= 6) break;
     tries++;
-    const need = needFor(ctx, c.pid, c.owner) * (c.from ? ctx.T.amphibiousRatio : 1);
+    const need = needOf(t, ctx, op, c);
     if (launchGroup(ctx, c.pid, need, c.from)) {
       launched++;
       op.progressAt = Math.max(op.progressAt, state.time - 0);
@@ -404,7 +490,8 @@ function advance(t: Think, ctx: Ctx, op: OpSt, aims: LngLat[]): void {
     // Objectif désigné à l'aviation (appui, suppression) même sans assaut possible.
     aims.push(cityOf(state, c0.pid));
     if (!jointAssault(t, op, cands)) {
-      tooWeak(t, ctx, needFor(ctx, c0.pid, c0.owner) * (c0.from ? ctx.T.amphibiousRatio : 1));
+      a.why = 'noForces';
+      tooWeak(t, ctx, needOf(t, ctx, op, c0));
       opAlert(state, op, `weak:${a.id}`, 12 * HOUR, 'tooWeak', {
         army: a.name,
         province: { province: c0.pid },
@@ -425,6 +512,37 @@ function advance(t: Think, ctx: Ctx, op: OpSt, aims: LngLat[]): void {
     .sort((x, y) => (ctx.threat.get(y) ?? 0) - (ctx.threat.get(x) ?? 0) || (x < y ? -1 : 1))
     .slice(0, 2);
   for (const p of held) garrison(ctx, p, 1, (ctx.threat.get(p) ?? 0) * L.attackRatio, 0.6);
+}
+
+/**
+ * Poids d'une province dans l'avance selon l'objectif : goulot d'abord (encerclement), ordre de l'axe
+ * (percée : la prochaine province de l'axe en premier).
+ */
+/** Force exigée (assaut amphibie : garnison vue, sinon l'estimation du renseignement). */
+function needOf(
+  t: Think,
+  ctx: Ctx,
+  op: OpSt,
+  c: { pid: ProvinceId; owner: NationId; from: ProvinceId | null },
+): number {
+  if (c.from && op.goal === 'amphibious')
+    return (
+      Math.max(ctx.hold.get(c.pid) ?? 0, landingPrior(t.state, t.n, c.owner)) *
+      t.L.attackRatio *
+      ctx.T.amphibiousRatio
+    );
+  return needAt(t, ctx, c.pid, c.owner, c.from);
+}
+
+function goalWeight(state: EngineState, op: OpSt, pid: ProvinceId): number {
+  if (op.goal === 'encircle' && op.gd?.neck?.includes(pid))
+    return goalParam(cmdBal(state).operations.goals[op.goal] ?? null, 'neckWeight', 4);
+  if (op.goal === 'breakthrough') {
+    const axis = op.gd?.axis ?? [];
+    const i = axis.indexOf(pid);
+    if (i >= 0) return 1 + (axis.length - i);
+  }
+  return 1;
 }
 
 /** Alerte du journal de l'opération, au plus une fois par période. */
@@ -460,7 +578,7 @@ function jointAssault(
   const scope = landScope(t, op);
   const ctx = armyContext(state, n, { ...scope, units, aimed: [] });
   for (const x of cands.slice(0, 3)) {
-    const need = needFor(ctx, x.pid, x.owner) * (x.from ? ctx.T.amphibiousRatio : 1);
+    const need = needOf(t, ctx, op, x);
     if (launchGroup(ctx, x.pid, need, x.from)) {
       opJournal(state, op, 'jointAssault', { army: a.name, province: { province: x.pid } });
       return true;
@@ -584,33 +702,108 @@ export function targetList(state: EngineState, op: OpSt, I: OpIntel): Tgt[] {
     tc: 'building',
     key: `${b.pid}:${b.b}`,
   });
-  const wide = g === 'sead' || g === 'air_control' || g === 'attrition';
-  // Frappes stratégiques : seules les défenses qui couvrent une installation visée passent avant.
-  const sites = g === 'strategic' ? I.blds.filter((b) => b.kind !== 'ad').map((b) => b.at) : [];
+  const wide = WIDE.has(g);
+  const rear = g === 'raid' ? new Set(op.gd?.rear ?? []) : null;
+  const deep =
+    g === 'strategic' ||
+    g === 'strategic_bombing' ||
+    g === 'interdiction' ||
+    g === 'naval_strikes' ||
+    g === 'raid';
+  // Frappes en profondeur : seules les défenses qui couvrent une installation visée passent avant.
+  const sites = deep
+    ? I.blds.filter((b) => trackedBld(g, b) && (!rear || rear.has(b.pid))).map((b) => b.at)
+    : [];
+  // Appui rapproché : objectifs des offensives de la nation (et front).
+  const cas = g === 'cas' ? [...umbrellaAims(state, op), ...focus] : [];
+  const casKm = goalParam(cmdBal(state).operations.goals[g] ?? null, 'radiusKm', 120);
+  const siege = g === 'siege' && op.gd?.city ? cityOf(state, op.gd.city) : null;
   for (const x of I.sams)
-    if (wide || near(x.pos, 400, focus) || near(x.pos, (x.sys?.weaponRangeKm.max ?? 0) + 10, sites))
+    if (
+      wide ||
+      near(x.pos, 400, focus) ||
+      near(x.pos, (x.sys?.weaponRangeKm.max ?? 0) + 10, sites) ||
+      (cas.length && near(x.pos, casKm + 100, cas))
+    )
       push(unit(x, 'sead'), 0);
   for (const b of I.blds) {
-    if (b.kind === 'ad' && (wide || g === 'strategic' || near(b.at, 300, focus)))
+    if (rear && !rear.has(b.pid)) {
+      if (b.kind === 'ad' && near(b.at, 300, focus)) push(bld(b, 'sead'), 1);
+      continue;
+    }
+    if (rear) {
+      if (trackedBld(g, b)) push(bld(b, b.kind === 'ad' ? 'sead' : 'bld'), b.kind === 'ad' ? 1 : 2);
+      continue;
+    }
+    if (
+      b.kind === 'ad' &&
+      (wide || g === 'strategic' || g === 'strategic_bombing' || near(b.at, 300, focus))
+    )
       push(bld(b, 'sead'), 1);
-    if (b.kind === 'air' && (g === 'air_control' || g === 'attrition' || g === 'strategic'))
-      push(bld(b, 'bld'), 3);
-    if (b.kind === 'mil' && (g === 'attrition' || g === 'strategic')) push(bld(b, 'bld'), 6);
-    if (b.kind === 'naval' && (g === 'blockade' || g === 'strategic' || g === 'attrition'))
-      push(bld(b, 'bld'), 6);
-    if (b.kind === 'ind' && g === 'strategic') push(bld(b, 'bld'), 5);
+    if (
+      b.kind === 'air' &&
+      (g === 'air_control' ||
+        g === 'attrition' ||
+        g === 'strategic' ||
+        g === 'strategic_bombing' ||
+        g === 'missile_campaign')
+    )
+      push(bld(b, 'bld'), g === 'missile_campaign' ? 2 : 3);
+    if (
+      b.kind === 'mil' &&
+      (g === 'attrition' ||
+        g === 'strategic' ||
+        g === 'strategic_bombing' ||
+        g === 'missile_campaign' ||
+        g === 'naval_strikes')
+    )
+      push(bld(b, 'bld'), g === 'missile_campaign' ? 2 : 6);
+    if (
+      b.kind === 'naval' &&
+      (g === 'blockade' ||
+        g === 'strategic' ||
+        g === 'attrition' ||
+        g === 'naval_supremacy' ||
+        g === 'port_blockade' ||
+        g === 'strategic_bombing' ||
+        g === 'naval_strikes')
+    )
+      push(bld(b, 'bld'), g === 'naval_strikes' ? 3 : 6);
+    if (b.kind === 'ind' && (g === 'strategic' || g === 'strategic_bombing'))
+      push(bld(b, 'bld'), 5);
+    if (b.kind === 'res' && g === 'strategic_bombing') push(bld(b, 'bld'), 5);
+    if (g === 'interdiction' && isLogistics(b.b)) push(bld(b, 'bld'), 2);
   }
   if (g === 'air_control' || g === 'attrition')
     for (const x of I.airGround) push(unit(x, 'air'), 2);
-  if (g === 'attrition') for (const x of I.ground) push(unit(x, 'ground'), 4);
+  if (g === 'attrition' || g === 'armed_recon')
+    for (const x of I.ground) push(unit(x, 'ground'), 4);
   if (TAKING.has(g))
     for (const x of I.ground)
-      if (near(x.pos, 80, focus)) push(unit(x, 'ground'), 2);
+      if (siege && distanceKm(x.pos, siege) <= 80) push(unit(x, 'ground'), 1);
+      else if (near(x.pos, 80, focus)) push(unit(x, 'ground'), 2);
       else if (ref && distanceKm(x.pos, ref) <= 300) push(unit(x, 'ground'), 4);
-  if (g === 'defend_border')
+  if (rear)
+    for (const x of I.ground)
+      if ([...rear].some((p) => distanceKm(cityOf(state, p), x.pos) <= 80))
+        push(unit(x, 'ground'), 3);
+  if (g === 'cas')
+    for (const x of I.ground) if (near(x.pos, casKm, cas)) push(unit(x, 'ground'), 1);
+  if (g === 'interdiction') for (const x of I.ground) if (x.u.move) push(unit(x, 'ground'), 3);
+  if (
+    g === 'defend_border' ||
+    g === 'defense_depth' ||
+    g === 'defend_capital' ||
+    g === 'pacify' ||
+    g === 'ally_support' ||
+    g === 'air_defense_territory' ||
+    g === 'show_of_force'
+  )
     for (const x of I.ground) if (ref && distanceKm(x.pos, ref) <= 300) push(unit(x, 'ground'), 2);
-  if (g === 'attrition' || g === 'blockade')
+  if (g === 'attrition' || g === 'blockade' || g === 'armed_recon')
     for (const x of I.ships) push(unit(x, 'ship'), g === 'blockade' ? 2 : 5);
+  if (g === 'naval_supremacy' || g === 'antiship' || g === 'port_blockade')
+    for (const x of I.ships) push(unit(x, 'ship'), 1);
   out.sort((x, y) => x.prio - y.prio || x.d - y.d || (x.t.key < y.t.key ? -1 : 1));
   return out.map((x) => x.t);
 }
@@ -638,8 +831,31 @@ function patrolPoints(state: EngineState, op: OpSt, I: OpIntel): LngLat[] {
     case 'sead':
     case 'attrition':
     case 'strategic':
+    case 'strategic_bombing':
+    case 'interdiction':
+    case 'armed_recon':
+    case 'raid':
+    case 'missile_campaign':
       if (closed) return I.front ? [I.front] : [];
       return [I.center, mid].filter((p): p is LngLat => !!p);
+    case 'air_defense_territory':
+    case 'missile_shield':
+    case 'defend_capital':
+      return (op.gd?.sites ?? []).slice(0, 3).map((p) => cityOf(state, p));
+    case 'defense_depth':
+    case 'show_of_force':
+    case 'pacify':
+      return I.front ? [I.front] : [];
+    case 'cas': {
+      const pts = umbrellaAims(state, op);
+      return pts.length ? dedupe(pts).slice(0, 2) : I.front ? [I.front] : [];
+    }
+    case 'ally_support':
+      return I.center ? [I.center] : I.front ? [I.front] : [];
+    case 'naval_supremacy':
+    case 'antiship':
+    case 'port_blockade':
+    case 'naval_strikes':
     case 'blockade': {
       const w = wi(state.world);
       const pts: LngLat[] = [];
@@ -746,6 +962,7 @@ function airPart(t: Think, op: OpSt, I: OpIntel, aims: LngLat[]): void {
   const air = airUnits(state, a);
   if (!air.length) return;
   const O = cmdBal(state).operations;
+  if (op.goal === 'air_redeploy') return redeployAir(t, op, aims);
   if (I.front) awacs(t, I.front);
   const list = targetList(state, op, I);
   // Cible prioritaire (ou cœur du pays visé) : les appareils qui ne l'atteignent pas se redéploient.
@@ -757,14 +974,17 @@ function airPart(t: Think, op: OpSt, I: OpIntel, aims: LngLat[]): void {
   const covered = (p: LngLat) =>
     I.sams.some((x) => distanceKm(x.pos, p) <= (x.sys?.weaponRangeKm.max ?? 0) + 30);
   const pts = dedupe(patrolPoints(state, op, I).map((p) => (covered(p) && I.front ? I.front : p)));
-  const share =
-    op.goal === 'air_control'
-      ? Math.max(A.airShare, 0.75)
-      : I.airUp.length
-        ? A.airShare
-        : Math.min(A.airShare, 0.34);
+  const patrolGoal = op.goal === 'air_control' || op.goal === 'air_defense_territory';
+  const share = patrolGoal
+    ? Math.max(
+        A.airShare,
+        goalParam(cmdBal(state).operations.goals[op.goal] ?? null, 'patrolShare', 0.75),
+      )
+    : I.airUp.length
+      ? A.airShare
+      : Math.min(A.airShare, 0.34);
   const want = Math.ceil(fighters.length * share);
-  const radius = op.goal === 'air_control' ? 150 : 90;
+  const radius = patrolGoal ? 150 : 90;
   const patrolling = patrolOver(t, fighters, pts, want, radius, I.front);
   for (const p of pts) aims.push(p);
   // Frappes par priorité (ciel d'abord), escortées.
@@ -816,6 +1036,8 @@ function airPart(t: Think, op: OpSt, I: OpIntel, aims: LngLat[]): void {
       busy.add(aim.key);
       counts[aim.cls]++;
       op.strikes++;
+      if (op.goal === 'interdiction' && aim.tg.type === 'unit' && state.units[aim.tg.unitId]?.move)
+        (op.cnt ??= {}).moving = (op.cnt.moving ?? 0) + 1;
       escortStrike(state, n, air, aim.pos, L.airEscorts, u);
       if (aims.length < 6) aims.push(aim.pos);
     }
@@ -830,7 +1052,10 @@ function airPart(t: Think, op: OpSt, I: OpIntel, aims: LngLat[]): void {
       ground: counts.ground + counts.ship,
       bld: counts.bld,
     });
-  else if (!list.length) recon(t, op, I, air);
+  else if (!list.length) {
+    recon(t, op, I, air);
+    if (!patrolling.size) a.why = 'noTargets';
+  }
 }
 
 /**
@@ -861,8 +1086,15 @@ function recon(t: Think, op: OpSt, I: OpIntel, air: Unit[]): void {
 function firesPart(t: Think, op: OpSt, I: OpIntel): void {
   const { state, a, n } = t;
   const O = cmdBal(state).operations;
-  let salvos = O.salvos;
+  const def = cmdBal(state).operations.goals[op.goal] ?? null;
+  // Campagne de missiles : salves coordonnées (les lanceurs attendent d'être assez nombreux).
+  const campaign = op.goal === 'missile_campaign';
+  if (campaign && !salvoReady(t, op, launchersOf(t))) return;
+  let salvos =
+    campaign || op.goal === 'naval_strikes' ? goalParam(def, 'salvos', O.salvos) : O.salvos;
   if (salvos <= 0) return;
+  const start = salvos;
+  const used = new Map<string, number>();
   let list: Tgt[] | null = null;
   const reload = mil(state).reload;
   for (const id of commanded(state, a)) {
@@ -879,7 +1111,11 @@ function firesPart(t: Think, op: OpSt, I: OpIntel): void {
     const here = unitPosAt(state, u, state.time);
     const kind = msys.missile?.kind ?? 'cruise';
     const tg = list.find((x) => {
-      if (distanceKm(x.pos, here) > strikeRangeKm(msys)) return false;
+      // Salves réparties : une cible par lanceur (deux pour une défense sol-air : saturation).
+      if (campaign && (used.get(x.key) ?? 0) >= (x.cls === 'sead' ? 2 : 1)) return false;
+      // Navire : sa position connue vieillit (il a pu s'éloigner), marge de portée.
+      if (distanceKm(x.pos, here) > strikeRangeKm(msys) * (x.cls === 'ship' ? 0.8 : 1))
+        return false;
       if (x.tg.type === 'unit') {
         const v = state.units[x.tg.unitId];
         if (!v) return false;
@@ -897,8 +1133,10 @@ function firesPart(t: Think, op: OpSt, I: OpIntel): void {
     if (order(state, n, o)) {
       salvos--;
       op.strikes++;
+      used.set(tg.key, (used.get(tg.key) ?? 0) + 1);
     }
   }
+  if (campaign) salvoFired(t, op, start - salvos);
 }
 
 // ——— Marine ———
@@ -945,15 +1183,36 @@ function seaPart(t: Think, op: OpSt, I: OpIntel, role: Branch, aims: LngLat[]): 
       }
     }
   }
-  // Blocus des ports des pays visés.
+  // Escorte des convois : ses transports chargés d'abord, puis ses routes maritimes.
+  if (op.goal === 'convoy_escort') return escortConvoys(t, free, aims);
+  // Supériorité navale, guerre anti-navires : chasse d'abord.
+  if (op.goal === 'naval_supremacy' || op.goal === 'antiship') huntShips(t, op, I, free);
+  // Blocus des ports des pays visés (renforcé : plusieurs navires par port).
   const share =
-    op.goal === 'blockade' ? 1 : TAKING.has(op.goal) || op.goal === 'attrition' ? 0.5 : 0.3;
+    op.goal === 'blockade' || op.goal === 'port_blockade'
+      ? 1
+      : TAKING.has(op.goal) || op.goal === 'attrition'
+        ? 0.5
+        : op.goal === 'naval_supremacy' || op.goal === 'antiship'
+          ? 0.2
+          : 0.3;
+  const perPort =
+    op.goal === 'port_blockade'
+      ? Math.max(
+          1,
+          Math.round(goalParam(cmdBal(state).operations.goals[op.goal] ?? null, 'shipsPerPort', 2)),
+        )
+      : 1;
   let left = Math.ceil(free.length * share);
   const blk = mil(state).blk;
   const blocked = new Set<string>();
+  const portShips = new Map<string, number>();
   for (const id of sortedKeys(blk)) {
     const b = blk[id]!;
-    if (b.by === n && 'provinceId' in b.target) blocked.add(b.target.provinceId);
+    if (b.by !== n || !('provinceId' in b.target)) continue;
+    const p = b.target.provinceId;
+    portShips.set(p, (portShips.get(p) ?? 0) + b.units.length);
+    if ((portShips.get(p) ?? 0) >= perPort) blocked.add(p);
   }
   const w = wi(state.world);
   for (const o of I.foes) {
@@ -965,17 +1224,21 @@ function seaPart(t: Think, op: OpSt, I: OpIntel, role: Branch, aims: LngLat[]): 
         continue;
       }
       if (left <= 0 || !free.length) break;
+      // Le navire libre le plus proche qui peut rejoindre le port (un navire enfermé n'y va pas).
       const ship = free
         .slice()
         .sort(
           (p, q) =>
             distanceKm(unitPosAt(state, p, state.time), sp) -
               distanceKm(unitPosAt(state, q, state.time), sp) || (p.id < q.id ? -1 : 1),
-        )[0]!;
-      if (!seaPath(t, ship, sp, pid)) continue;
+        )
+        .slice(0, 3)
+        .find((u) => seaPath(t, u, sp, pid));
+      if (!ship) continue;
       if (order(state, n, { kind: 'blockade', unitIds: [ship.id], target: { provinceId: pid } })) {
         free.splice(free.indexOf(ship), 1);
-        blocked.add(pid);
+        portShips.set(pid, (portShips.get(pid) ?? 0) + 1);
+        if ((portShips.get(pid) ?? 0) >= perPort) blocked.add(pid);
         left--;
         opJournal(state, op, 'blockade', { army: a.name, province: { province: pid } });
         if (aims.length < 6) aims.push(sp);
@@ -990,8 +1253,7 @@ function seaPart(t: Think, op: OpSt, I: OpIntel, role: Branch, aims: LngLat[]): 
         distanceKm(unitPosAt(state, u, state.time), e.pos) <= 800,
     );
     if (!hunter) continue;
-    if (order(state, n, { kind: 'attack', unitIds: [hunter.id], targetId: e.u.id }))
-      free.splice(free.indexOf(hunter), 1);
+    if (engageShip(t, hunter, e)) free.splice(free.indexOf(hunter), 1);
   }
   // Le reste patrouille au large des côtes visées.
   const pts: LngLat[] = [];
@@ -1026,6 +1288,11 @@ function adPart(t: Think, op: OpSt, I: OpIntel): void {
     );
   });
   if (!has) return;
+  const custom = adHolds(t, op);
+  if (custom) {
+    if (op.goal === 'missile_shield') return placeAirDefense(t, custom, shieldOrder);
+    return placeAirDefense(t, custom);
+  }
   const holds: ProvinceId[] = [];
   const add = (p: ProvinceId | null) => {
     if (p && !holds.includes(p) && state.provinces[p]?.owner === n) holds.push(p);

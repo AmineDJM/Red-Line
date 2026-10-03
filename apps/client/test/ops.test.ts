@@ -21,12 +21,20 @@ import type {
 import {
   branchFit,
   branchOfPile,
+  chainDef,
+  chainGoal,
+  chainOf,
   freeByBranch,
   freeGenerals,
+  goalByProvinces,
+  goalCatalog,
   goalList,
+  liveOps,
   opHeadline,
   previewOp,
+  sparePiles,
   suggestStaff,
+  targetsOk,
 } from '../src/lib/ops.js';
 import { commandsOf } from '../src/lib/government.js';
 import { useCommandUi } from '../src/store/command.js';
@@ -384,6 +392,121 @@ describe('opérations : tableau de bord, assistant et carte', () => {
     expect(String(label?.properties?.text)).toContain('Terre');
     expect(targetNations(v)).toEqual(['bel']);
     expect(targetNations(view([], { ops: [op({ status: 'success' })] }))).toEqual([]);
+  });
+});
+
+describe('opérations : catalogue, chaîne de phases, piles reprises', () => {
+  const GOALS2: Record<string, OpGoalDef> = {
+    ...GOALS,
+    sead: {
+      order: 5,
+      branches: ['air', 'sea'],
+      target: 'nation',
+      continuous: false,
+      success: 0.8,
+      category: 'air',
+    },
+    naval_supremacy: {
+      order: 20,
+      branches: ['sea', 'air'],
+      target: 'nation',
+      continuous: false,
+      success: 0.6,
+      category: 'sea',
+    },
+    defend_capital: {
+      order: 12,
+      branches: ['land', 'ad', 'air'],
+      target: 'self',
+      continuous: true,
+      success: 1,
+      category: 'land',
+      war: false,
+    },
+    siege: {
+      order: 9,
+      branches: ['land', 'air'],
+      target: 'place',
+      continuous: false,
+      success: 1,
+      category: 'land',
+    },
+    blitz: {
+      order: 30,
+      branches: ['air', 'land'],
+      target: 'nation',
+      continuous: false,
+      success: 1,
+      category: 'joint',
+      chain: ['sead', 'conquest'],
+      chainHours: [36, 0],
+    },
+  };
+  const cmd = () => view([], { goals: GOALS2 }).command!;
+
+  it('catalogue par catégorie, dans l’ordre des données ; catégories vides omises', () => {
+    const cat = goalCatalog(cmd());
+    expect(cat.map((c) => c.cat)).toEqual(['land', 'air', 'sea', 'joint']);
+    // Sans catégorie (anciennes données) : terre.
+    expect(cat[0]!.goals.map(([g]) => g)).toEqual([
+      'attrition',
+      'conquest',
+      'siege',
+      'defend_capital',
+    ]);
+    expect(cat[3]!.goals.map(([g]) => g)).toEqual(['blitz']);
+  });
+
+  it('chaîne : objectif composé déplié, phases ajoutées, échéances ; commandements de toute la chaîne', () => {
+    expect(chainOf(cmd(), 'blitz', [{ goal: 'naval_supremacy', hours: 12 }])).toEqual([
+      { goal: 'sead', hours: 36, preset: 'blitz' },
+      { goal: 'conquest', hours: undefined, preset: 'blitz' },
+      { goal: 'naval_supremacy', hours: 12 },
+    ]);
+    expect(chainOf(cmd(), null, [])).toEqual([]);
+    const d = chainDef(cmd(), GOALS2.sead!, 'sead', [{ goal: 'conquest' }]);
+    expect(d.branches).toEqual(['air', 'sea', 'land', 'ad']);
+    // Conquête dans la chaîne : l'état-major proposé suit la conquête (deux généraux de terre).
+    expect(chainGoal(cmd(), 'sead', [{ goal: 'conquest' }])).toBe('conquest');
+    expect(chainGoal(cmd(), 'sead', [])).toBe('sead');
+  });
+
+  it('cibles valides selon le genre de l’objectif (pays, lieu, son propre territoire)', () => {
+    expect(targetsOk(GOALS2.conquest, [], [])).toBe(false);
+    expect(targetsOk(GOALS2.conquest, ['bel'], [])).toBe(true);
+    expect(targetsOk(GOALS2.siege, [], ['bel-1'])).toBe(true);
+    expect(targetsOk(GOALS2.siege, [], [])).toBe(false);
+    expect(targetsOk(GOALS2.defend_capital, [], [])).toBe(true);
+    expect(targetsOk(null, ['bel'], [])).toBe(false);
+    expect(goalByProvinces(GOALS2.siege)).toBe(true);
+    expect(goalByProvinces(GOALS2.conquest)).toBe(false);
+  });
+
+  it('mesure principale des objectifs ajoutés : « libellé : fait/total »', () => {
+    expect(
+      opHeadline(op({ goal: 'naval_supremacy', progress: [{ key: 'ships', done: 2, total: 5 }] })),
+    ).toEqual({
+      key: 'command.ops.metric.ratio',
+      params: { done: 2, total: 5 },
+      label: 'command.ops.metrics.ships',
+    });
+    expect(opHeadline(op({ goal: 'interdiction', progress: [] }))).toEqual({
+      key: 'command.ops.metric.none',
+      params: {},
+    });
+  });
+
+  it('piles d’une opération close reprises d’office ; celles d’une opération en cours, non', () => {
+    const units = [unit('u1', 'tank'), unit('u2', 'tank'), unit('u3', 'jet')];
+    const army = (id: string, opId: string, unitIds: string[]) =>
+      ({ id, name: id, unitIds, auto: true, opId }) as unknown as ArmyView;
+    const v = view(units, {
+      armies: [army('a1', 'o1', ['u1']), army('a2', 'o2', ['u2', 'u3'])],
+      ops: [op({ id: 'o1', status: 'success' }), op({ id: 'o2' })],
+    });
+    expect(sparePiles(v).map((u) => u.id)).toEqual(['u1']);
+    expect(sparePiles(null)).toEqual([]);
+    expect(liveOps(v.command).map((o) => o.id)).toEqual(['o2']);
   });
 });
 
