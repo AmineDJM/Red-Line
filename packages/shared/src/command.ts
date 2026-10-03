@@ -698,6 +698,40 @@ export interface CommandView {
    * ministère de la Défense (commandements → chefs → généraux → opérations).
    */
   branches?: CommandBranchView[];
+  /**
+   * Les quatre commandements, résumés pour la vue Défense du Gouvernement (`commandsOf`,
+   * apps/client/src/lib/government.ts) : domaine, général en chef, généraux, opérations en cours.
+   */
+  commands?: DefenseCommandView[];
+}
+
+/** Domaine d'un commandement, tel que le lit le ministère de la Défense. */
+export type CommandDomain = 'land' | 'air' | 'sea' | 'air_defense';
+
+export const COMMAND_DOMAINS: readonly CommandDomain[] = ['land', 'air', 'sea', 'air_defense'];
+
+/** Domaine du commandement d'une arme (la défense antiaérienne `ad` devient `air_defense`). */
+export const BRANCH_DOMAIN: Record<Branch, CommandDomain> = {
+  land: 'land',
+  air: 'air',
+  sea: 'sea',
+  ad: 'air_defense',
+};
+
+/** Un commandement : chef, généraux, opérations en cours (structure du ministère de la Défense). */
+export interface DefenseCommandView {
+  /** Arme (`land`, `air`, `sea`, `ad`), identifiant des `branches`. */
+  id: Branch;
+  domain: CommandDomain;
+  /** Général en chef ; null : aucun. */
+  chief: { id: string; name: string } | null;
+  generalIds: string[];
+  generals: { id: string; name: string; status: CommandGeneralView['status']; opId?: string }[];
+  /** Opérations en cours (ni réussies ni échouées) où commande au moins un général du commandement. */
+  operationIds: string[];
+  operations: { id: string; name: string; goal: string; status: OpStatus; pct: number }[];
+  /** Piles de l'arme (comme `branches[].forces`). */
+  forces: CommandBranchView['forces'];
 }
 
 export interface CommandBranchView {

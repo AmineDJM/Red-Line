@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { isMobile, preparePage, setSpeed, startSoloGame } from './helpers';
+import { isMobile, openWindow, preparePage, setSpeed, startSoloGame } from './helpers';
 
 /**
  * Opérations du QG, de bout en bout (vrai serveur, vraies données) : le joueur ouvre le centre de
@@ -14,7 +14,10 @@ const SHOTS = process.env.E2E_SHOTS;
 async function shot(page: Page, name: string, mobile: boolean) {
   if (!SHOTS) return;
   await page.waitForTimeout(300);
-  await page.screenshot({ path: `${SHOTS}/ops-${mobile ? 'mobile' : 'desktop'}-${name}.png` });
+  await page.screenshot({
+    path: `${SHOTS}/ops-${mobile ? 'mobile' : 'desktop'}-${name}.png`,
+    animations: 'disabled',
+  });
 }
 
 test('opérations : conquête totale de la Belgique par plusieurs généraux', async ({
@@ -94,7 +97,40 @@ test('opérations : conquête totale de la Belgique par plusieurs généraux', a
   // 7. Carte : pays visés soulignés (couche dédiée), flèches des généraux.
   expect(await page.evaluate(() => !!window.__rlMap.map.getLayer('cmd-targets-line'))).toBe(true);
 
-  // 8. Vitesse d'essai : les généraux prennent les provinces au fil du temps, jusqu'au succès.
+  // 8. Général en chef de l'armée de terre (onglet Généraux), puis ministère de la Défense :
+  // les commandements y affichent chef et opération en cours (contrat `command.commands`).
+  await page.getByRole('tab', { name: /Généraux/ }).click();
+  await expect(page.getByTestId('branch-land')).toBeVisible();
+  await page.locator('[data-testid^="chief-"]:enabled').first().click();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => window.__rl.game.getState().view.command?.commands?.[0]?.chief?.name ?? null,
+      ),
+    )
+    .not.toBeNull();
+  const chief = (await page.evaluate(
+    () => window.__rl.game.getState().view.command.commands[0].chief.name,
+  )) as string;
+  await expect(page.getByTestId('branch-land')).toContainText(chief);
+  // Fenêtre Gouvernement (sur mobile, le QG plein écran recouvre la barre du haut).
+  await openWindow(page, 'government');
+  await expect(page.locator('#win-government')).toBeVisible();
+  await page.getByTestId('gov-section-commands').click();
+  const commands = page.getByTestId('gov-commands');
+  await expect(commands).toContainText(chief);
+  await expect(commands).toContainText('Opérations : 1');
+  await shot(page, '8-gov-commands', mobile);
+  // Retour au tableau de bord de l'opération.
+  await page.evaluate(() => window.__rl.ui.getState().closeWindow('government'));
+  await expect(page.locator('#win-government')).toBeHidden();
+  if (!(await page.locator('#win-command').isVisible())) await openWindow(page, 'command');
+  await page.getByRole('tab', { name: /Opérations/ }).click();
+  if (!(await page.getByTestId('op-detail').isVisible()))
+    await page.getByTestId(`op-row-${op.id}`).click();
+  await expect(page.getByTestId('op-detail')).toBeVisible();
+
+  // 9. Vitesse d'essai : les généraux prennent les provinces au fil du temps, jusqu'au succès.
   await setSpeed(page, 3600);
   await expect
     .poll(async () => (await readOp())?.done ?? 0, { timeout: 600_000, intervals: [2_000] })

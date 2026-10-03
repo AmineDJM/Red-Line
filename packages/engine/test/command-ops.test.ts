@@ -178,6 +178,15 @@ describe('opérations : ordre et généraux', () => {
     expect(chief.salaryPerDay).toBe(salaryOf(s, 'aaa', g1!.skills, g1!.traits, true));
     expect(chief.salaryPerDay).toBeGreaterThan(pay);
     expect(v.branches!.find((b) => b.id === 'land')!.chiefId).toBe(g1!.id);
+    // Contrat du ministère de la Défense : commandements → chef → généraux → opérations en cours.
+    expect(v.commands!.map((x) => x.domain)).toEqual(['land', 'air', 'sea', 'air_defense']);
+    const land = v.commands![0]!;
+    expect(land.chief).toEqual({ id: g1!.id, name: `${g1!.first} ${g1!.last}` });
+    expect(land.generalIds).toEqual(expect.arrayContaining([g1!.id, g2!.id]));
+    expect(land.generals.find((x) => x.id === g2!.id)).toMatchObject({ opId: op.id });
+    expect(land.operationIds).toEqual([op.id]);
+    expect(land.operations[0]).toMatchObject({ id: op.id, goal: 'conquest' });
+    expect(v.commands![3]!.chief).toBeNull();
     if (g1!.skills.offense > 50 || g1!.skills.defense > 50)
       expect(effectiveSkills(s, g2!).offense).toBeGreaterThanOrEqual(before);
     ok(s, 'aaa', { kind: 'commandChief', branch: 'land', generalId: null });

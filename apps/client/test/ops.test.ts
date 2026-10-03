@@ -11,6 +11,7 @@ import type {
   CommandBranchView,
   CommandGeneralView,
   CommandView,
+  DefenseCommandView,
   LngLat,
   OpGoalDef,
   PlayerView,
@@ -27,6 +28,7 @@ import {
   previewOp,
   suggestStaff,
 } from '../src/lib/ops.js';
+import { commandsOf } from '../src/lib/government.js';
 import { useCommandUi } from '../src/store/command.js';
 import { commandFeatures, targetNations } from '../src/map/commandLayer.js';
 
@@ -382,5 +384,53 @@ describe('opérations : tableau de bord, assistant et carte', () => {
     expect(String(label?.properties?.text)).toContain('Terre');
     expect(targetNations(v)).toEqual(['bel']);
     expect(targetNations(view([], { ops: [op({ status: 'success' })] }))).toEqual([]);
+  });
+});
+
+describe('ministère de la Défense : contrat des commandements', () => {
+  it('commandsOf lit la vue typée du moteur (chef, généraux, opérations en cours)', () => {
+    const forces = { piles: 3, free: 1, elements: 9, value: 1e9 };
+    const cmd = (b: DefenseCommandView['id'], d: DefenseCommandView['domain']) => ({
+      id: b,
+      domain: d,
+      chief: null,
+      generalIds: [],
+      generals: [],
+      operationIds: [],
+      operations: [],
+      forces,
+    });
+    const commands: DefenseCommandView[] = [
+      {
+        ...cmd('land', 'land'),
+        chief: { id: 'g1', name: 'Rémi Hamon' },
+        generalIds: ['g1', 'g2'],
+        generals: [
+          { id: 'g1', name: 'Rémi Hamon', status: 'active' },
+          { id: 'g2', name: 'Florent Abadie', status: 'active', opId: 'op1' },
+        ],
+        operationIds: ['op1'],
+        operations: [{ id: 'op1', name: 'Tempête', goal: 'conquest', status: 'active', pct: 0.5 }],
+      },
+      cmd('air', 'air'),
+      cmd('sea', 'sea'),
+      cmd('ad', 'air_defense'),
+    ];
+    const v = { command: { commands } } as unknown as PlayerView;
+    const list = commandsOf(v)!;
+    expect(list.map((c) => [c.id, c.domain])).toEqual([
+      ['land', 'land'],
+      ['air', 'air'],
+      ['sea', 'sea'],
+      ['ad', 'air_defense'],
+    ]);
+    expect(list[0]).toEqual({
+      id: 'land',
+      domain: 'land',
+      chief: 'Rémi Hamon',
+      generals: 2,
+      operations: 1,
+    });
+    expect(list[3]!.chief).toBeNull();
   });
 });

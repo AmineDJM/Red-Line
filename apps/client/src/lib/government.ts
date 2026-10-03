@@ -5,8 +5,11 @@
  * lecture des commandements du centre de commandement s'il les expose, rendu du journal.
  */
 import {
+  COMMAND_DOMAINS,
   distanceKm,
   type Balance,
+  type CommandDomain,
+  type DefenseCommandView,
   type GovBudget,
   type GovGroup,
   type GovMinistry,
@@ -521,13 +524,13 @@ export function envelopeUsd(b: BudgetDraft, unit: number): number | null {
 
 export interface CommandSummary {
   id: string;
-  domain: 'land' | 'air' | 'sea' | 'air_defense';
+  domain: CommandDomain;
   chief: string | null;
   generals: number;
   operations: number;
 }
 
-const DOMAINS: CommandSummary['domain'][] = ['land', 'air', 'sea', 'air_defense'];
+const DOMAINS = COMMAND_DOMAINS;
 
 function domainOf(x: Record<string, unknown>): CommandSummary['domain'] | null {
   const raw = String(x.domain ?? x.branch ?? x.kind ?? x.id ?? '');
@@ -552,7 +555,8 @@ function personName(p: unknown): string | null {
  * tolérante : seuls l'identifiant, le domaine, le chef, les généraux et les opérations sont lus.
  */
 export function commandsOf(view: PlayerView | null | undefined): CommandSummary[] | null {
-  const raw = (view?.command as unknown as { commands?: unknown } | undefined)?.commands;
+  // Contrat partagé `CommandView.commands` (DefenseCommandView[]) ; la forme objet par id reste lue.
+  const raw: DefenseCommandView[] | Record<string, unknown> | undefined = view?.command?.commands;
   const list: unknown[] = Array.isArray(raw)
     ? raw
     : raw && typeof raw === 'object'

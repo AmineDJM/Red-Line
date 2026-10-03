@@ -63,10 +63,13 @@ commandement, le reste ⇒ armée de terre). Chaque commandement a :
   (× `deputySkill`) au lieu de rendre son armée passive ;
 - ses **forces** : les piles de son arme.
 
-Structure exposée pour une future vue « Ministère de la Défense » : `PlayerView.command.branches`
-(`CommandBranchView` : `chiefId`, `generalIds`, `candidates`, forces `{piles, free, elements, value}`, `opIds`),
-puis `generals[].branch/chief/opId`, `ops[]` (`CampaignView`) et `armies[].opId/role`. Soit commandements → chefs →
-généraux → opérations, sans dépendance au module `eco`.
+Structure lue par le ministère de la Défense (fenêtre Gouvernement, section Commandements, `commandsOf` de
+`apps/client/src/lib/government.ts`) : `PlayerView.command.commands` (`DefenseCommandView[]`, contrat partagé) avec,
+par commandement, `id` (arme), `domain` (`land`, `air`, `sea`, `air_defense`), `chief` (`{id, name}` ou null),
+`generalIds` et `generals` (`{id, name, status, opId?}`), `operationIds` et `operations` en cours
+(`{id, name, goal, status, pct}`), `forces`. Le détail complet reste dans `command.branches` (`CommandBranchView` :
+vivier, forces `{piles, free, elements, value}`), `generals[].branch/chief/opId`, `ops[]` (`CampaignView`) et
+`armies[].opId/role`. Soit commandements → chefs → généraux → opérations, sans dépendance au module `eco`.
 
 ## Opérations
 
