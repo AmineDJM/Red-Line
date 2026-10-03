@@ -1,5 +1,7 @@
 import {
   CATEGORIES,
+  DAY,
+  HOUR,
   MINUTE,
   RESEARCH_BRANCHES,
   RESOURCES,
@@ -198,7 +200,10 @@ export function thinkNation(state: EngineState, n: NationId): void {
   for (const m of sortedMissions(gn)) {
     const def = missionDef(state, m.type);
     if (!def) continue;
+    const pend0 = m.pending.length;
+    const done0 = m.done;
     resolvePending(state, n, m, def);
+    if (m.pending.length !== pend0 || m.done !== done0) delete m.retryAt;
     if (m.suspended) {
       m.status = 'suspended';
       continue;
@@ -222,6 +227,9 @@ export function thinkNation(state: EngineState, n: NationId): void {
       setWhy(state, n, m, undefined, undefined, false);
       continue;
     }
+    // Mission bloquée récemment : rien n'a changé d'ici son prochain examen.
+    if (m.retryAt !== undefined && state.time < m.retryAt) continue;
+    delete m.retryAt;
     const ctx: Ctx = {
       state,
       n,
@@ -255,7 +263,37 @@ export function thinkNation(state: EngineState, n: NationId): void {
       m.status = 'blocked';
       setWhy(state, n, m, out.why ?? 'refused', out.params, true);
     }
+    if (out.acted === 0) {
+      const at = retryAt(state, m, out.why);
+      if (at !== null) m.retryAt = at;
+    }
     if (goalReached(def, m)) finish(state, n, gn, m);
+  }
+}
+
+/** Prochain examen d'une mission restée sans action (null : à la prochaine réflexion). */
+function retryAt(state: EngineState, m: MissionSt, why: string | undefined): number | null {
+  switch (why) {
+    case 'envelope':
+      // Part des revenus : nouveau crédit au tick journalier ; montant fixe : jusqu'à modification.
+      return m.budget.mode === 'share'
+        ? (Math.floor(state.time / DAY) + 1) * DAY + 1
+        : state.time + 30 * DAY;
+    case 'saving':
+    case 'reserveHeld':
+      return null;
+    case 'funds':
+    case 'reserve':
+    case 'resources':
+    case 'capacity':
+    case 'locked':
+    case 'inProgress':
+    case 'stocked':
+    case 'nothingDamaged':
+    case 'allProtected':
+      return state.time + 2 * HOUR;
+    default:
+      return state.time + 6 * HOUR;
   }
 }
 
@@ -413,6 +451,7 @@ export function orderMissionEdit(
   const m = ownMission(state, n, o.missionId);
   if (!m) return fail('invalid_target', 'Mission introuvable.');
   const def = missionDef(state, m.type);
+  delete m.retryAt;
   if (o.priority !== undefined) m.priority = o.priority;
   if (o.goal !== undefined) m.goal = Math.min(def?.goalMax ?? 1000, o.goal);
   if (o.budget) {
@@ -444,6 +483,7 @@ export function orderMissionSuspend(
   if (m.suspended === o.on) return fail('not_allowed', o.on ? 'Déjà suspendue.' : 'Déjà en cours.');
   m.suspended = o.on;
   m.status = o.on ? 'suspended' : 'active';
+  delete m.retryAt;
   delete m.why;
   journal(
     state,

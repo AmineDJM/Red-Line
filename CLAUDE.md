@@ -79,6 +79,10 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
 - **Centre de commandement** (module moteur `cmd`, fenêtre QG) : armées nommées de piles, missions
   (`data/balance` `command`), généraux fictifs payés qui pilotent l'IA militaire sur leurs seules piles ; un ordre
   direct sur une pile prime jusqu'à sa fin, puis le général la reprend. Voir `docs/centre-de-commandement.md`.
+- **Gouvernement** (module moteur `gov`, fenêtre Gouvernement, touche H) : ministères de la Défense (infrastructures,
+  directions de l'armement et du renseignement ; commandements lus dans le module cmd) et de l'Économie, seulement
+  ces deux ; titulaires fictifs payés ; missions dans une enveloppe, exécutées par les ordres existants avec la
+  logique de l'IA économique paramétrée. Voir `docs/gouvernement.md`.
 - Capture : toutes les troupes terrestres (infanterie, chars, véhicules, artillerie) ; jamais DCA, missiles,
   radars, convois, air ni mer (`CAPTURE_CATEGORIES`). Efficacité par catégorie de cible affichée à l'interface :
   calcul unique `packages/shared/src/effectiveness.ts` (docs/arsenal.md § 3).

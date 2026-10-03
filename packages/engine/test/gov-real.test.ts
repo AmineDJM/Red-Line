@@ -30,7 +30,8 @@ import {
 import type { EngineState } from '../src/state/types.js';
 import { wi } from '../src/state/world.js';
 import { eco, ecoNation } from '../src/modules/eco/state.js';
-import { levelOf } from '../src/modules/eco/buildings.js';
+import { levelOf, power } from '../src/modules/eco/buildings.js';
+import { cfg, effect } from '../src/modules/eco/config.js';
 import { nat } from '../src/modules/intel/state.js';
 import { gov } from '../src/modules/gov/state.js';
 import { nextGeneration, researchClosure } from '../src/modules/gov/exec.js';
@@ -155,7 +156,18 @@ describe('gouvernement : vraies données', { timeout: 600_000 }, () => {
     const v2 = missionOf(s, 'dza', m0.id);
     expect(v2.spent).toBeLessThanOrEqual(2.5e8);
     expect(['blocked', 'done']).toContain(v2.status);
-    if (v2.status === 'blocked') expect(v2.why?.key).toBe('engine.gov.why.envelope');
+    if (v2.status === 'blocked') {
+      expect(v2.why?.key).toBe('engine.gov.why.envelope');
+      // Enveloppe relevée par le joueur : la mission repart aussitôt (pas d'attente de réexamen).
+      ok(s, 'dza', {
+        kind: 'govMissionEdit',
+        missionId: m0.id,
+        budget: { mode: 'amount', amount: 2e9 },
+      });
+      advanceTo(s, s.time + HOUR);
+      expect(missionOf(s, 'dza', m0.id).spent).toBeGreaterThan(v2.spent);
+      expect(missionOf(s, 'dza', m0.id).spent).toBeLessThanOrEqual(2e9);
+    }
     // Aucun gisement de pétrole en Belgique : la mission le dit, rien n'est lancé.
     expect(
       data.map.provinces.some(
@@ -330,7 +342,18 @@ describe('gouvernement : vraies données', { timeout: 600_000 }, () => {
       advanceTo(s, s.time + HOUR);
       const js = jobs(s, 'dza');
       const paid = js.reduce((a, j) => a + j.paid, 0);
-      return { h, js, paid, spent: missionOf(s, 'dza', m.id).spent };
+      // Durée nominale d'un chantier (même calcul que l'ordre build), sans le titulaire.
+      const B = cfg(world).buildings;
+      const ratios = js.map((j) => {
+        const kind = j.kind;
+        const nominal =
+          ((B.buildHours[kind] ?? 24) * (1 + B.levelTimeGrowth * (j.lvl - 1)) * HOUR) /
+          (1 +
+            effect(world, 'local_industry', 'buildSpeedPerLevel', 0) *
+              power(s, j.pid, 'local_industry'));
+        return (j.completesAt - j.startedAt) / nominal;
+      });
+      return { h, js, paid, ratios, spent: missionOf(s, 'dza', m.id).spent };
     };
     const best = run(true);
     const worst = run(false);
@@ -339,6 +362,10 @@ describe('gouvernement : vraies données', { timeout: 600_000 }, () => {
     // Dépense nette = coût des chantiers moins le rabais négocié.
     expect(best.spent).toBeCloseTo(best.paid * (1 - best.h.effects.discount), -2);
     expect(worst.spent).toBeCloseTo(worst.paid * (1 - worst.h.effects.discount), -2);
+    // Gestion : les chantiers durent (1 − vitesse) fois la durée nominale.
+    for (const r of best.ratios) expect(r).toBeCloseTo(1 - best.h.effects.speed, 3);
+    for (const r of worst.ratios) expect(r).toBeCloseTo(1 - worst.h.effects.speed, 3);
+    expect(best.h.effects.speed).toBeGreaterThan(worst.h.effects.speed);
     // Effets modestes et réalistes.
     expect(best.h.effects.discount).toBeLessThanOrEqual(0.1);
     expect(best.h.effects.speed).toBeLessThanOrEqual(0.15);

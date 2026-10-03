@@ -82,6 +82,12 @@ export interface MissionSt {
   radiusKm?: number;
   /** Rotation des opérations (renseignement). */
   k?: number;
+  /**
+   * Mission bloquée : prochain examen (économie de calcul). Enveloppe épuisée : au prochain crédit
+   * journalier ; manque d'argent ou file pleine : 2 h ; aucun emplacement, aucune cible : 6 h.
+   * Effacé par une modification, une reprise, une nomination ou l'aboutissement d'une action.
+   */
+  retryAt?: GameTime;
 }
 
 export interface GovNation {

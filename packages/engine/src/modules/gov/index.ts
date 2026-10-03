@@ -31,8 +31,13 @@ const h = <K extends Order['kind']>(
 
 /** Nomination : les missions du poste reprennent aussitôt. */
 const appoint: Handler = (state, n, o) => {
-  const r = orderAppoint(state, n, o as Extract<Order, { kind: 'govAppoint' }>);
-  if (r.ok && anyLive(state)) scheduleNation(state, n);
+  const ap = o as Extract<Order, { kind: 'govAppoint' }>;
+  const r = orderAppoint(state, n, ap);
+  if (!r.ok) return r;
+  // Nouveau titulaire : ses missions sont réexaminées tout de suite (compétences, prudence).
+  const ms = govOpt(state)?.nations[n]?.missions ?? {};
+  for (const id of Object.keys(ms)) if (ms[id]!.office === ap.office) delete ms[id]!.retryAt;
+  if (anyLive(state)) scheduleNation(state, n);
   return r;
 };
 

@@ -17,8 +17,8 @@ function typing(target: EventTarget | null): boolean {
 
 /**
  * Raccourcis clavier (ordinateur) :
- *  Ctrl+K ou « : » console · Espace pause · 1-5 vitesses · lettres : fenêtres (A, G, P, R, E, I, D, C,
- *  N, B, M, O, « , ») ; avec une sélection d'unités, les lettres des actions (M, A, F, I, P, V, B,
+ *  Ctrl+K ou « : » console · Espace pause · 1-5 vitesses · lettres : fenêtres (A, G, Q, H, P, R, E, I, D,
+ *  C, N, B, M, O, « , ») ; avec une sélection d'unités, les lettres des actions (M, A, F, I, P, V, B,
  *  R, S) commandent d'abord · L légende · « ? » aide · Échap : annule l'ordre, ferme la fiche,
  *  désélectionne, ferme la fenêtre.
  */
