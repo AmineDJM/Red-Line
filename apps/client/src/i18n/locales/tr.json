@@ -65,7 +65,8 @@
       "chat": "Mesajlar",
       "shop": "Mağaza",
       "settings": "Ayarlar",
-      "command": "KK"
+      "command": "KK",
+      "government": "Hük."
     },
     "path": {
       "armies": "Ordularım",
@@ -81,9 +82,11 @@
       "chat": "Mesajlar",
       "shop": "Mağaza",
       "settings": "Ayarlar",
-      "command": "KK"
+      "command": "KK",
+      "government": "Hükümet"
     },
-    "command": "Komuta merkezi"
+    "command": "Komuta merkezi",
+    "government": "Hükümet"
   },
   "home": {
     "title": "Red Line",
@@ -2284,7 +2287,8 @@
       "transfersIn": "Alınan devirler",
       "transfersOut": "Yapılan devirler",
       "other": "Diğer (istihbarat, ittifak…)",
-      "command": "Generaller ve karargâhlar"
+      "command": "Generaller ve karargâhlar",
+      "government": "Bakanlar ve müdürlükler"
     },
     "constructionHint": "Binalar sekmesinden veya bir ilin panelinden bir binayı yükseltin ya da yenisini inşa edin.",
     "provincesTitle": "İller",
@@ -4577,6 +4581,14 @@
       "cmd_opStuck": {
         "title": "Harekât tıkandı",
         "text": "{{op}} harekâtı: {{hours}} saattir ilerleme yok."
+      },
+      "gov_resigned": {
+        "title": "İstifa",
+        "text": "{{name}} istifa ediyor: makam artık ödenmiyor."
+      },
+      "gov_missionDone": {
+        "title": "Görev tamamlandı",
+        "text": "{{mission}}: hedefe ulaşıldı."
       }
     },
     "cmd": {
@@ -4713,6 +4725,461 @@
       "executedB": "{{host}}, casuslukla suçlanan bir {{owner}} ajanının idam edildiğini duyurdu. Uluslararası kınama.",
       "swapH": "{{a}} ile {{b}} arasında ajan takası",
       "swapB": "{{a}} ve {{b}} esir takası yaptı: {{n}} ajan serbest bırakıldı."
+    },
+    "gov": {
+      "m": {
+        "air_bases": "Hava üsleri",
+        "military_bases": "Askerî üsler",
+        "upgrade_bases": "Üslerin modernizasyonu",
+        "logistics": "Askerî lojistik",
+        "fortify": "Sınırların tahkimi",
+        "air_defense": "Ülke hava savunması",
+        "coastal": "Kıyı savunması",
+        "research_next": "Sonraki nesil",
+        "research_branch": "Alana göre araştırma",
+        "research_labs": "Araştırma laboratuvarları",
+        "produce": "Teçhizat siparişi",
+        "stockpile": "Stratejik stoklar",
+        "arms_industry": "Savunma sanayii",
+        "counterintel": "Karşı casusluk",
+        "protect_sites": "Hassas tesislerin korunması",
+        "watch": "Bir ülkenin gözetimi",
+        "map_defenses": "Savunmaların haritalanması",
+        "economic_intel": "Ekonomik istihbarat",
+        "resource": "Kaynak üretimi",
+        "industry": "Sanayi kalkınması",
+        "revenue": "Gelir artışı",
+        "war_economy": "Savaş ekonomisi",
+        "reserves": "Hazine rezervleri",
+        "repair": "Yeniden inşa"
+      },
+      "focus": {
+        "counterintel": "karşı casusluk",
+        "protection": "tesis koruma"
+      },
+      "j": {
+        "appointed": "{{name}} göreve başlıyor.",
+        "replaced": "{{name}} görevden ayrılıyor (tazminat ödendi).",
+        "dismissed": "{{name}} görevden alındı (tazminat ödendi).",
+        "resigned": "{{name}} istifa ediyor: makam artık ödenmiyor.",
+        "unpaid": "{{name}} ödeme almadı ({{days}} g üst üste).",
+        "missionNew": "Görev alındı: {{mission}}.",
+        "missionEdit": "Görev değiştirildi: {{mission}}.",
+        "missionSuspended": "Görev askıya alındı: {{mission}}.",
+        "missionResumed": "Görev sürdürüldü: {{mission}}.",
+        "missionCancelled": "Görev geri çekildi: {{mission}} (başlatılanlar sürer).",
+        "missionDone": "Görev tamamlandı: {{mission}}.",
+        "built": "İnşaat başladı: {{building}} seviye {{level}}, {{place}} — {{cost}}.",
+        "jobDone": "İnşaat bitti: {{building}} seviye {{level}}, {{place}}.",
+        "repaired": "Onarım başladı: {{building}}, {{place}} — {{cost}}.",
+        "research": "Araştırma başladı: {{node}} — {{cost}}.",
+        "researched": "Araştırma tamamlandı: {{node}}.",
+        "produced": "Sipariş verildi: {{count}} × {{system}}, {{place}} — {{cost}}.",
+        "imported": "İthalat: {{count}} × {{system}}, teslim yeri {{place}} — {{cost}}.",
+        "intelOp": "Operasyon başlatıldı: {{op}} — {{cost}}.",
+        "intelOpAt": "Operasyon başlatıldı: {{op}}, hedef {{nation}} — {{cost}}.",
+        "opSuccess": "Operasyon başarılı: {{op}}.",
+        "opFailed": "Operasyon sonuçsuz: {{op}}.",
+        "focus": "İç istihbarat önceliği: {{focus}}.",
+        "protected": "Tesis koruma altına alındı: {{place}}.",
+        "blocked": "Engellendi — {{why}}"
+      },
+      "why": {
+        "noHead": "Makam boş: bir sorumlu atayın.",
+        "envelope": "Ödenek tükendi: {{left}} kullanılabilir, {{cost}} gerekli.",
+        "funds": "Yetersiz fon: {{cost}} gerekli.",
+        "reserve": "İhtiyat rezervi: hazine {{floor}} üzerinde kalmalı ({{cost}} gerekli).",
+        "resources": "Yetersiz kaynak.",
+        "noSite": "Bölgede izin verilen yer yok (kıyı, yatak veya azami seviye).",
+        "noDeposit": "Ülkede {{resource}} yatağı yok.",
+        "research": "Araştırma gerekli.",
+        "capacity": "Kapasite doldu (kuyruk veya servis).",
+        "locked": "Ambargo veya abluka nedeniyle engellendi.",
+        "noTarget": "Geçersiz veya kaybolmuş hedef.",
+        "noSystem": "Erişilebilir “{{category}}” teçhizatı yok (araştırma, lisans veya ithalat).",
+        "noResearch": "Bu hedef için uygun araştırma yok.",
+        "nothingDamaged": "Hasarlı bina yok.",
+        "saving": "Rezerv oluşturuluyor: % {{pct}}.",
+        "reserveHeld": "Rezerve ulaşıldı: diğer görevler buna uyar.",
+        "stocked": "Stoka ulaşıldı: azalır azalmaz yenilenir.",
+        "inProgress": "Eylemler sürüyor.",
+        "refused": "Emir reddedildi.",
+        "unlocked": "Sonraki nesil zaten erişilebilir.",
+        "allProtected": "Tesisler azami düzeyde korunuyor."
+      }
     }
+  },
+  "gov": {
+    "unavailable": "Bu oyunda hükümet kullanılamıyor.",
+    "perDay": " / g",
+    "newMission": "Yeni görev",
+    "missionsTitle": "Görevler",
+    "history": "Tamamlanan ve geri çekilen",
+    "ministries": {
+      "defense": "Savunma Bakanlığı",
+      "economy": "Ekonomi Bakanlığı"
+    },
+    "sections": {
+      "commands": "Komutanlıklar",
+      "infra": "Altyapı",
+      "armament": "Silahlanma",
+      "intel": "İstihbarat"
+    },
+    "offices": {
+      "defense": {
+        "name": "Savunma Bakanı",
+        "head": "Savunma Bakanı",
+        "scope": "Altyapı ve lojistik"
+      },
+      "research": {
+        "name": "Silah Araştırma Müdürlüğü",
+        "head": "Araştırma Müdürü",
+        "scope": "Askerî Ar-Ge"
+      },
+      "production": {
+        "name": "Silah Üretim Müdürlüğü",
+        "head": "Üretim Müdürü",
+        "scope": "Askerî üretim"
+      },
+      "intel_interior": {
+        "name": "İç istihbarat",
+        "head": "İç İstihbarat Müdürü",
+        "scope": "Karşı casusluk, iç güvenlik, tesis koruma"
+      },
+      "intel_exterior": {
+        "name": "Dış ve askerî istihbarat",
+        "head": "Dış İstihbarat Müdürü",
+        "scope": "HUMINT, SIGINT, keşif"
+      },
+      "economy": {
+        "name": "Ekonomi Bakanı",
+        "head": "Ekonomi Bakanı",
+        "scope": "Sanayi, kaynaklar, gelirler, rezervler"
+      }
+    },
+    "skills": {
+      "management": "Yönetim",
+      "industry": "Sanayi",
+      "logistics": "Lojistik",
+      "finance": "Bütçe ihtiyatı",
+      "science": "Bilim",
+      "intelligence": "İstihbarat"
+    },
+    "traits": {
+      "efficient": {
+        "name": "Verimli",
+        "tip": "Daha hızlı inşaat, sipariş ve araştırma."
+      },
+      "frugal": {
+        "name": "Tutumlu",
+        "tip": "Daha iyi pazarlık eder, daha ucuzdur."
+      },
+      "ambitious": {
+        "name": "Hırslı",
+        "tip": "Aynı anda bir eylem fazla yürütür, daha az rezerv tutar, daha pahalıdır."
+      },
+      "cautious": {
+        "name": "Temkinli",
+        "tip": "Daha geniş bir nakit rezervi tutar."
+      },
+      "technocrat": {
+        "name": "Teknokrat",
+        "tip": "Her zaman en iyi seçimi yapar; daha pahalıdır."
+      },
+      "reformer": {
+        "name": "Reformcu",
+        "tip": "Biraz daha hızlı ve biraz daha ucuz."
+      },
+      "bureaucrat": {
+        "name": "Bürokrat",
+        "tip": "Daha yavaş ama ucuz."
+      }
+    },
+    "effects": {
+      "speed": "Hız {{v}}",
+      "speedTip": "Yönetim: başlatılan inşaat, sipariş ve araştırmaların süresi.",
+      "discount": "Maliyet {{v}}",
+      "discountTip": "Uzmanlık: görevlerinin her harcamasında pazarlıkla alınan indirim.",
+      "slotsTip": "Yönetim: her görevin paralel yürüttüğü eylemler.",
+      "reserve": "Rezerv {{days}} g",
+      "reserveTip": "İhtiyat: görevlerinin hazinede her zaman bıraktığı bütçe günleri.",
+      "slots": "Paralel: {{count}}"
+    },
+    "head": {
+      "rating": "Puan",
+      "ratingTip": "Görev için önemli üç yeteneğin ortalaması.",
+      "cost": "Maliyet",
+      "appoint": "Ata · {{cost}}",
+      "appointTip": "Atama primi (ve değiştirilen kişinin tazminatı): {{cost}}",
+      "vacant": "Makam boş.",
+      "vacantText": "Bir sorumlu seçin: yetenekleri görevlerin hızını, maliyetini ve ihtiyatını belirler.",
+      "replace": "Değiştir",
+      "dismiss": "Görevden al",
+      "replaceTitle": "Değiştir — {{office}}",
+      "replaceText": "Mevcut sorumlu {{cost}} tazminatla ayrılır. Görevler yenisiyle devam eder.",
+      "dismissTitle": "Sorumluyu görevden al",
+      "dismissText": "{{name}} {{cost}} tazminatla ayrılır. Makamın görevleri bir halef bekleyecek.",
+      "unpaid": "Ödenmedi: {{count}} g"
+    },
+    "toast": {
+      "appointed": "{{name}} atandı.",
+      "dismissed": "Sorumlu görevden alındı.",
+      "edited": "Görev değiştirildi.",
+      "resumed": "Görev sürdürüldü.",
+      "suspended": "Görev askıya alındı.",
+      "cancelled": "Görev geri çekildi.",
+      "created": "Görev verildi: {{mission}}."
+    },
+    "status": {
+      "active": "Sürüyor",
+      "waiting": "Beklemede",
+      "blocked": "Engellendi",
+      "suspended": "Askıda",
+      "done": "Tamamlandı",
+      "cancelled": "Geri çekildi"
+    },
+    "mission": {
+      "progress": "İlerleme",
+      "goalAuto": "Hedef bakanlıkça belirlendi",
+      "budgetTip": "Ayrılan ödenekten harcanan (indirimler düşülmüş).",
+      "priority": "Öncelik",
+      "edit": "Değiştir",
+      "suspend": "Askıya al",
+      "resume": "Sürdür",
+      "cancel": "Geri çek",
+      "cancelTitle": "Görevi geri çek",
+      "cancelText": "“{{mission}}” durduruldu. Başlatılmış inşaat, sipariş ve operasyonlar sürer.",
+      "editTitle": "Değiştir — {{mission}}",
+      "save": "Kaydet",
+      "pending": "süren: {{count}}"
+    },
+    "units": {
+      "projects": "İnşaatlar: {{done}} / {{goal}}",
+      "nodes": "Araştırmalar: {{done}} / {{goal}}",
+      "lots": "Partiler: {{done}} / {{goal}}",
+      "ops": "Operasyonlar: {{done}} / {{goal}}",
+      "days": "Bütçe günleri: {{done}} / {{goal}}",
+      "sites": "Korunan tesisler: {{done}} / {{goal}}",
+      "repairs": "Onarımlar: {{done}} / {{goal}}"
+    },
+    "budget": {
+      "mode": "Ödenek",
+      "amount": "Tutar",
+      "share": "Gelir payı",
+      "shareShort": "Gelirin % {{pct}}'i",
+      "amountShort": "Sabit ödenek",
+      "left": "Kullanılabilir: {{v}}",
+      "perDayOf": "≈ günde {{v}} (gelir {{rev}} / g)",
+      "cap": "Harcama tavanı",
+      "noCap": "Tavansız: kredi her gün birikir.",
+      "daysOf": "{{count}} g savunma bütçesi",
+      "daysShort": "{{count}} g"
+    },
+    "priority": {
+      "1": "Düşük",
+      "2": "Normal",
+      "3": "Yüksek"
+    },
+    "journal": {
+      "title": "Kayıt",
+      "empty": "Henüz bir şey yok."
+    },
+    "hint": {
+      "vacantMissions": "Bu görevler bir sorumlu bekliyor: ilerlemeleri için birini atayın.",
+      "vacant": "Bir sorumlu atayın, sonra ona bir görev verin.",
+      "noMission": "Görev yok: “Yeni görev” ile bir tane verin."
+    },
+    "zone": {
+      "borderWith": "sınır: {{nation}}",
+      "aroundShort": "{{place}} çevresinde {{km}} km",
+      "all": "Tüm ülke",
+      "border": "Sınır",
+      "around": "Çevresi…",
+      "radius": "Yarıçap"
+    },
+    "commands": {
+      "title": "Dört komutanlık",
+      "scope": "Kara, Hava, Deniz, Hava savunma",
+      "open": "Karargâhı aç",
+      "land": "Kara Kuvvetleri",
+      "air": "Hava Kuvvetleri",
+      "sea": "Deniz Kuvvetleri",
+      "air_defense": "Hava savunma",
+      "noChief": "Komutansız",
+      "soon": "Komutanlar ve operasyonlar: karargâhta hazırlanıyor.",
+      "soonBadge": "Hazırlanıyor",
+      "now": "Bugün karargâhta: ordu {{armies}}, general {{generals}}.",
+      "ops": "Operasyonlar: {{count}}"
+    },
+    "kpi": {
+      "heads": "Sorumlular",
+      "missions": "Görevler",
+      "spent": "Harcanan",
+      "payroll": "Maliyet",
+      "floor": "Rezerv",
+      "floorTip": "Görevlerin hazinede her zaman bıraktığı nakit (ihtiyat, Rezervler görevi)."
+    },
+    "wizard": {
+      "path": "yeni görev",
+      "step": {
+        "type": "Görev",
+        "params": "Hedef ve amaç",
+        "budget": "Ödenek"
+      },
+      "back": "Geri",
+      "next": "İleri",
+      "confirm": "Görevi ver",
+      "resource": "Kaynak",
+      "branch": "Araştırma alanı",
+      "category": "Teçhizat",
+      "nation": "Hedef ülke",
+      "pick": "Seç…",
+      "zone": "Bölge",
+      "err": {
+        "type": "Bir görev seçin.",
+        "nation": "Hedef ülkeyi seçin.",
+        "border": "Komşu ülkeyi seçin.",
+        "around": "Merkez ili seçin.",
+        "budget": "Ödenek boş."
+      }
+    },
+    "goal": {
+      "projects": "Hedef: inşaatlar",
+      "nodes": "Hedef: araştırmalar",
+      "lots": "Hedef: teçhizat partileri",
+      "ops": "Hedef: operasyonlar",
+      "days": "Hedef: hazinedeki bütçe günleri",
+      "sites": "Hedef: korunan tesisler",
+      "repairs": "Hedef: onarımlar",
+      "auto": {
+        "research": "Onayda belirlenen hedef: sonraki nesli açan tüm araştırmalar.",
+        "protect": "Hedef: iç istihbaratın izin verdiği kadar korunan tesis, ardından güçlendirilmeleri."
+      }
+    },
+    "estimate": {
+      "title": "Öngörü",
+      "options": "Olası eylemler",
+      "first": "İlk eylem",
+      "total": "Tam hedef",
+      "hours": "Bir eylemin süresi",
+      "reserveTarget": "Hedef hazine",
+      "envelope": "Ödenek",
+      "open": "gelir payı, tavansız",
+      "covers": "Ödeneğin karşıladığı eylemler",
+      "head": "{{name}}: hız +{{speed}} %, indirim {{discount}} %, hazinede {{reserve}} tutar.",
+      "vacant": "Makam boş: görev bir sorumlu bekleyecek.",
+      "note": "İllerinize ve günün fiyatlarına göre tahmin; bakanlık ödeneğe ve kaynaklarınıza uyar.",
+      "noDeposit": "Bölgede bu kaynağın yatağı yok.",
+      "noSite": "Bölgede izin verilen yer yok.",
+      "noSystem": "Bu kategoride erişilebilir teçhizat yok.",
+      "unlocked": "Sonraki nesil zaten erişilebilir.",
+      "noResearch": "Bu hedef için kalan araştırma yok.",
+      "nothingDamaged": "Şimdilik hasarlı bina yok.",
+      "few": "Bölgedeki olası eylemler: {{count}}, hedeften az; hedef yapılabilir olana indirilecek.",
+      "coversN": "≈ {{count}}"
+    },
+    "missions": {
+      "air_bases": {
+        "name": "Hava üsleri",
+        "desc": "Yeni hava üsleri kurmak ve ülkenin kapsamını genişletmek."
+      },
+      "military_bases": {
+        "name": "Askerî üsler",
+        "desc": "Askerî üsler kurmak: kara üretimi ve ikmal yarıçapı."
+      },
+      "upgrade_bases": {
+        "name": "Üslerin modernizasyonu",
+        "desc": "Mevcut hava, askerî ve deniz üslerinin seviyesini yükseltmek."
+      },
+      "logistics": {
+        "name": "Askerî lojistik",
+        "desc": "Sınırlara yakın ileri depolar, üsler ve hastaneler: birliklerin ikmali."
+      },
+      "fortify": {
+        "name": "Sınırların tahkimi",
+        "desc": "Tehdit altındaki sınır illerinde tahkimat ve sığınaklar."
+      },
+      "air_defense": {
+        "name": "Ülke hava savunması",
+        "desc": "Kilit illerin çevresinde hava savunma mevzileri ve radar istasyonları."
+      },
+      "coastal": {
+        "name": "Kıyı savunması",
+        "desc": "Sahil boyunca kıyı bataryaları ve deniz üsleri."
+      },
+      "research_next": {
+        "name": "Sonraki nesil",
+        "desc": "Bir teçhizatın sonraki neslini üretmek için gerekenleri araştırmak."
+      },
+      "research_branch": {
+        "name": "Alana göre araştırma",
+        "desc": "Bir araştırma alanını düğüm düğüm ilerletmek."
+      },
+      "research_labs": {
+        "name": "Araştırma laboratuvarları",
+        "desc": "Araştırma merkezleri ve gizli laboratuvarlar kurmak ve geliştirmek."
+      },
+      "produce": {
+        "name": "Teçhizat siparişi",
+        "desc": "Bir kategoriden belirli miktarda teçhizat üretmek (yerli üretim veya ithalat)."
+      },
+      "stockpile": {
+        "name": "Stratejik stoklar",
+        "desc": "Bir kategorinin (füze, mühimmat…) stokunu korumak ve yenilemek."
+      },
+      "arms_industry": {
+        "name": "Savunma sanayii",
+        "desc": "Silah ve elektronik fabrikalarını geliştirmek."
+      },
+      "counterintel": {
+        "name": "Karşı casusluk",
+        "desc": "Yabancı ağları çökertmek: taramalar ve çökertmeler."
+      },
+      "protect_sites": {
+        "name": "Hassas tesislerin korunması",
+        "desc": "Kilit sanayi tesislerini koruma altına almak ve güçlendirmek."
+      },
+      "watch": {
+        "name": "Bir ülkenin gözetimi",
+        "desc": "Kuvvetlerini ve seferberliğini izlemek: keşif, dinleme, ajanlar."
+      },
+      "map_defenses": {
+        "name": "Savunmaların haritalanması",
+        "desc": "Savunmalarını bulmak: askerî keşif ve vericilerin konum tespiti."
+      },
+      "economic_intel": {
+        "name": "Ekonomik istihbarat",
+        "desc": "Sanayisini ve kaynaklarını tanımak: ekonomik keşif, ajanlar."
+      },
+      "resource": {
+        "name": "Kaynak üretimi",
+        "desc": "Yatakların bulunduğu yerlerde kuyular, madenler, çiftlikler veya elektronik fabrikaları."
+      },
+      "industry": {
+        "name": "Sanayi kalkınması",
+        "desc": "En verimli illerde yerel sanayi ve elektrik santralleri."
+      },
+      "revenue": {
+        "name": "Gelir artışı",
+        "desc": "Gelirin en yüksek olduğu yerlerde iş bölgeleri ve yerel sanayi."
+      },
+      "war_economy": {
+        "name": "Savaş ekonomisi",
+        "desc": "Savaş çabasını desteklemek için silah fabrikaları, santraller ve rafineriler."
+      },
+      "reserves": {
+        "name": "Hazine rezervleri",
+        "desc": "Diğer görevlerin dokunamayacağı bir rezerv tutmak."
+      },
+      "repair": {
+        "name": "Yeniden inşa",
+        "desc": "Hasarlı binaları onarmak, önce en pahalıları."
+      }
+    },
+    "ministriesShort": {
+      "defense": "Savunma",
+      "economy": "Ekonomi"
+    },
+    "suggest": "Olası görevler"
   }
 }

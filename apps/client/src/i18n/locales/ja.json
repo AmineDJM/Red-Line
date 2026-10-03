@@ -65,7 +65,8 @@
       "chat": "メッセージ",
       "shop": "ショップ",
       "settings": "設定",
-      "command": "司令部"
+      "command": "司令部",
+      "government": "政府"
     },
     "path": {
       "armies": "マイ軍",
@@ -81,9 +82,11 @@
       "chat": "メッセージ",
       "shop": "ショップ",
       "settings": "設定",
-      "command": "司令部"
+      "command": "司令部",
+      "government": "政府"
     },
-    "command": "司令センター"
+    "command": "司令センター",
+    "government": "政府"
   },
   "home": {
     "title": "Red Line",
@@ -2262,7 +2265,8 @@
       "transfersIn": "受領した譲渡",
       "transfersOut": "供与した譲渡",
       "other": "その他（情報、同盟…）",
-      "command": "将軍と幕僚"
+      "command": "将軍と幕僚",
+      "government": "大臣と局長"
     },
     "constructionHint": "建物タブまたは州パネルから建物を改良・新設してください。",
     "provincesTitle": "州",
@@ -4514,6 +4518,14 @@
       "cmd_opStuck": {
         "title": "作戦停滞",
         "text": "作戦{{op}}：{{hours}}時間進展なし。"
+      },
+      "gov_resigned": {
+        "title": "辞任",
+        "text": "{{name}} が辞任：この職はもう支払われていません。"
+      },
+      "gov_missionDone": {
+        "title": "任務達成",
+        "text": "{{mission}}：目標達成。"
       }
     },
     "cmd": {
@@ -4642,6 +4654,461 @@
       "executedB": "{{host}}はスパイ罪で有罪となった{{owner}}の工作員の処刑を発表。国際的な非難。",
       "swapH": "{{a}}と{{b}}が工作員を交換",
       "swapB": "{{a}}と{{b}}が捕虜交換を実施：工作員 {{n}} 名が釈放。"
+    },
+    "gov": {
+      "m": {
+        "air_bases": "空軍基地",
+        "military_bases": "軍事基地",
+        "upgrade_bases": "基地の近代化",
+        "logistics": "軍事兵站",
+        "fortify": "国境の要塞化",
+        "air_defense": "国土防空",
+        "coastal": "沿岸防衛",
+        "research_next": "次世代",
+        "research_branch": "分野別研究",
+        "research_labs": "研究所",
+        "produce": "装備の発注",
+        "stockpile": "戦略備蓄",
+        "arms_industry": "軍需産業",
+        "counterintel": "防諜",
+        "protect_sites": "重要施設の防護",
+        "watch": "他国の監視",
+        "map_defenses": "防衛網の把握",
+        "economic_intel": "経済情報",
+        "resource": "資源生産",
+        "industry": "産業開発",
+        "revenue": "歳入の増加",
+        "war_economy": "戦時経済",
+        "reserves": "国庫準備金",
+        "repair": "復興"
+      },
+      "focus": {
+        "counterintel": "防諜",
+        "protection": "施設防護"
+      },
+      "j": {
+        "appointed": "{{name}} が就任しました。",
+        "replaced": "{{name}} が退任しました（退職金支払済み）。",
+        "dismissed": "{{name}} を解任しました（退職金支払済み）。",
+        "resigned": "{{name}} が辞任：この職はもう支払われていません。",
+        "unpaid": "{{name}} は未払いです（{{days}} 日連続）。",
+        "missionNew": "任務受領：{{mission}}。",
+        "missionEdit": "任務変更：{{mission}}。",
+        "missionSuspended": "任務停止：{{mission}}。",
+        "missionResumed": "任務再開：{{mission}}。",
+        "missionCancelled": "任務撤回：{{mission}}（開始済みのものは継続）。",
+        "missionDone": "任務達成：{{mission}}。",
+        "built": "着工：{{building}} レベル {{level}}（{{place}}）— {{cost}}。",
+        "jobDone": "竣工：{{building}} レベル {{level}}（{{place}}）。",
+        "repaired": "修理開始：{{building}}（{{place}}）— {{cost}}。",
+        "research": "研究開始：{{node}} — {{cost}}。",
+        "researched": "研究完了：{{node}}。",
+        "produced": "発注：{{count}} × {{system}}（{{place}}）— {{cost}}。",
+        "imported": "輸入：{{count}} × {{system}}、{{place}} へ納入 — {{cost}}。",
+        "intelOp": "作戦開始：{{op}} — {{cost}}。",
+        "intelOpAt": "作戦開始：{{op}}、対象 {{nation}} — {{cost}}。",
+        "opSuccess": "作戦成功：{{op}}。",
+        "opFailed": "作戦は成果なし：{{op}}。",
+        "focus": "国内情報の優先事項：{{focus}}。",
+        "protected": "施設を防護下に置きました：{{place}}。",
+        "blocked": "停滞 — {{why}}"
+      },
+      "why": {
+        "noHead": "空席：担当者を任命してください。",
+        "envelope": "予算枠が尽きました：残り {{left}}、必要 {{cost}}。",
+        "funds": "資金不足：{{cost}} 必要です。",
+        "reserve": "慎重準備金：国庫は {{floor}} を上回る必要があります（必要 {{cost}}）。",
+        "resources": "資源が不足しています。",
+        "noSite": "区域に許可された場所がありません（海岸・鉱床・最大レベル）。",
+        "noDeposit": "領土に {{resource}} の鉱床がありません。",
+        "research": "研究が必要です。",
+        "capacity": "上限に達しました（待ち行列または部門）。",
+        "locked": "禁輸または封鎖により停止。",
+        "noTarget": "対象が無効か消滅しました。",
+        "noSystem": "「{{category}}」の装備が利用できません（研究・ライセンス・輸入）。",
+        "noResearch": "この目標に利用可能な研究はありません。",
+        "nothingDamaged": "損傷した建物はありません。",
+        "saving": "準備金を積み立て中：{{pct}} %。",
+        "reserveHeld": "準備金に到達：他の任務はこれを守ります。",
+        "stocked": "在庫に到達：減り次第補充します。",
+        "inProgress": "行動を実行中。",
+        "refused": "命令が拒否されました。",
+        "unlocked": "次世代はすでに利用可能です。",
+        "allProtected": "施設の防護は最大です。"
+      }
     }
+  },
+  "gov": {
+    "unavailable": "このゲームでは政府を利用できません。",
+    "perDay": " / 日",
+    "newMission": "新しい任務",
+    "missionsTitle": "任務",
+    "history": "完了・撤回済み",
+    "ministries": {
+      "defense": "国防省",
+      "economy": "経済省"
+    },
+    "sections": {
+      "commands": "司令部",
+      "infra": "インフラ",
+      "armament": "装備",
+      "intel": "情報"
+    },
+    "offices": {
+      "defense": {
+        "name": "国防大臣",
+        "head": "国防大臣",
+        "scope": "インフラと兵站"
+      },
+      "research": {
+        "name": "装備研究局",
+        "head": "研究局長",
+        "scope": "軍事研究開発"
+      },
+      "production": {
+        "name": "装備生産局",
+        "head": "生産局長",
+        "scope": "軍需生産"
+      },
+      "intel_interior": {
+        "name": "国内情報",
+        "head": "国内情報局長",
+        "scope": "防諜・国内治安・施設防護"
+      },
+      "intel_exterior": {
+        "name": "対外・軍事情報",
+        "head": "対外情報局長",
+        "scope": "HUMINT・SIGINT・偵察"
+      },
+      "economy": {
+        "name": "経済大臣",
+        "head": "経済大臣",
+        "scope": "産業・資源・歳入・準備金"
+      }
+    },
+    "skills": {
+      "management": "管理",
+      "industry": "産業",
+      "logistics": "兵站",
+      "finance": "財政の慎重さ",
+      "science": "科学",
+      "intelligence": "情報"
+    },
+    "traits": {
+      "efficient": {
+        "name": "有能",
+        "tip": "建設・発注・研究が速い。"
+      },
+      "frugal": {
+        "name": "倹約家",
+        "tip": "交渉上手で費用が安い。"
+      },
+      "ambitious": {
+        "name": "野心家",
+        "tip": "同時に1件多く進め、準備金は少なめ、費用は高め。"
+      },
+      "cautious": {
+        "name": "慎重",
+        "tip": "より多くの現金準備を残す。"
+      },
+      "technocrat": {
+        "name": "テクノクラート",
+        "tip": "常に最善の選択をする。費用は高め。"
+      },
+      "reformer": {
+        "name": "改革派",
+        "tip": "少し速く、少し安い。"
+      },
+      "bureaucrat": {
+        "name": "官僚",
+        "tip": "遅いが安い。"
+      }
+    },
+    "effects": {
+      "speed": "速度 {{v}}",
+      "speedTip": "管理：開始した建設・発注・研究の所要時間。",
+      "discount": "費用 {{v}}",
+      "discountTip": "専門性：任務の各支出で引き出す値引き。",
+      "slotsTip": "管理：各任務が並行して進める行動数。",
+      "reserve": "準備金 {{days}} 日",
+      "reserveTip": "慎重さ：任務が常に国庫に残す予算日数。",
+      "slots": "並行：{{count}}"
+    },
+    "head": {
+      "rating": "評価",
+      "ratingTip": "職務に重要な3つの能力の平均。",
+      "cost": "費用",
+      "appoint": "任命 · {{cost}}",
+      "appointTip": "任命手当（および交代者の退職金）：{{cost}}",
+      "vacant": "空席です。",
+      "vacantText": "担当者を選んでください。能力が任務の速度・費用・慎重さを決めます。",
+      "replace": "交代",
+      "dismiss": "解任",
+      "replaceTitle": "交代 — {{office}}",
+      "replaceText": "現担当者は退職金 {{cost}} で退任します。任務は後任が引き継ぎます。",
+      "dismissTitle": "担当者を解任",
+      "dismissText": "{{name}} は退職金 {{cost}} で退任します。この職の任務は後任を待ちます。",
+      "unpaid": "未払い：{{count}} 日"
+    },
+    "toast": {
+      "appointed": "{{name}} を任命しました。",
+      "dismissed": "担当者を解任しました。",
+      "edited": "任務を変更しました。",
+      "resumed": "任務を再開しました。",
+      "suspended": "任務を停止しました。",
+      "cancelled": "任務を撤回しました。",
+      "created": "任務を委任：{{mission}}。"
+    },
+    "status": {
+      "active": "実行中",
+      "waiting": "待機中",
+      "blocked": "停滞",
+      "suspended": "停止中",
+      "done": "完了",
+      "cancelled": "撤回済み"
+    },
+    "mission": {
+      "progress": "進捗",
+      "goalAuto": "目標は省が設定",
+      "budgetTip": "割当予算に対する支出（値引き後）。",
+      "priority": "優先度",
+      "edit": "変更",
+      "suspend": "停止",
+      "resume": "再開",
+      "cancel": "撤回",
+      "cancelTitle": "任務を撤回",
+      "cancelText": "「{{mission}}」を停止します。開始済みの建設・発注・作戦は継続します。",
+      "editTitle": "変更 — {{mission}}",
+      "save": "保存",
+      "pending": "実行中：{{count}}"
+    },
+    "units": {
+      "projects": "建設：{{done}} / {{goal}}",
+      "nodes": "研究：{{done}} / {{goal}}",
+      "lots": "ロット：{{done}} / {{goal}}",
+      "ops": "作戦：{{done}} / {{goal}}",
+      "days": "予算日数：{{done}} / {{goal}}",
+      "sites": "防護施設：{{done}} / {{goal}}",
+      "repairs": "修理：{{done}} / {{goal}}"
+    },
+    "budget": {
+      "mode": "予算枠",
+      "amount": "金額",
+      "share": "歳入の割合",
+      "shareShort": "歳入の {{pct}} %",
+      "amountShort": "固定予算枠",
+      "left": "利用可能：{{v}}",
+      "perDayOf": "≈ 1日 {{v}}（歳入 {{rev}} / 日）",
+      "cap": "支出上限",
+      "noCap": "上限なし：枠は毎日積み上がります。",
+      "daysOf": "国防予算 {{count}} 日分",
+      "daysShort": "{{count}} 日"
+    },
+    "priority": {
+      "1": "低",
+      "2": "通常",
+      "3": "高"
+    },
+    "journal": {
+      "title": "記録",
+      "empty": "まだ何もありません。"
+    },
+    "hint": {
+      "vacantMissions": "これらの任務は担当者を待っています。任命すると進みます。",
+      "vacant": "担当者を任命し、任務を委任してください。",
+      "noMission": "任務がありません。「新しい任務」で委任してください。"
+    },
+    "zone": {
+      "borderWith": "国境：{{nation}}",
+      "aroundShort": "{{place}} の周囲 {{km}} km",
+      "all": "全領土",
+      "border": "国境",
+      "around": "周辺…",
+      "radius": "半径"
+    },
+    "commands": {
+      "title": "4つの司令部",
+      "scope": "陸・空・海・防空",
+      "open": "司令部を開く",
+      "land": "陸軍",
+      "air": "空軍",
+      "sea": "海軍",
+      "air_defense": "防空",
+      "noChief": "司令官なし",
+      "soon": "司令官と作戦：司令部で準備中。",
+      "soonBadge": "準備中",
+      "now": "現在の司令部：軍 {{armies}}、将官 {{generals}}。",
+      "ops": "作戦：{{count}}"
+    },
+    "kpi": {
+      "heads": "担当者",
+      "missions": "任務",
+      "spent": "支出",
+      "payroll": "費用",
+      "floor": "準備金",
+      "floorTip": "任務が常に国庫に残す資金（慎重さ、準備金任務）。"
+    },
+    "wizard": {
+      "path": "新しい任務",
+      "step": {
+        "type": "任務",
+        "params": "対象と目標",
+        "budget": "予算枠"
+      },
+      "back": "戻る",
+      "next": "次へ",
+      "confirm": "任務を委任",
+      "resource": "資源",
+      "branch": "研究分野",
+      "category": "装備",
+      "nation": "対象国",
+      "pick": "選択…",
+      "zone": "区域",
+      "err": {
+        "type": "任務を選んでください。",
+        "nation": "対象国を選んでください。",
+        "border": "隣国を選んでください。",
+        "around": "中心の州を選んでください。",
+        "budget": "予算枠が空です。"
+      }
+    },
+    "goal": {
+      "projects": "目標：建設",
+      "nodes": "目標：研究",
+      "lots": "目標：装備ロット",
+      "ops": "目標：作戦",
+      "days": "目標：国庫の予算日数",
+      "sites": "目標：防護施設",
+      "repairs": "目標：修理",
+      "auto": {
+        "research": "確定時に設定：次世代を開放する研究すべて。",
+        "protect": "目標：国内情報が許す限り施設を防護し、その後強化する。"
+      }
+    },
+    "estimate": {
+      "title": "見通し",
+      "options": "可能な行動",
+      "first": "最初の行動",
+      "total": "目標全体",
+      "hours": "1行動の所要時間",
+      "reserveTarget": "目標の国庫額",
+      "envelope": "予算枠",
+      "open": "歳入の割合、上限なし",
+      "covers": "予算枠でまかなえる行動",
+      "head": "{{name}}：速度 +{{speed}} %、値引き {{discount}} %、国庫に {{reserve}} を残す。",
+      "vacant": "空席：任務は担当者を待ちます。",
+      "note": "州と当日の価格に基づく見積もり。省は予算枠と資源を守ります。",
+      "noDeposit": "区域にこの資源の鉱床はありません。",
+      "noSite": "区域に許可された場所がありません。",
+      "noSystem": "このカテゴリーに利用可能な装備はありません。",
+      "unlocked": "次世代はすでに利用可能です。",
+      "noResearch": "この目標に残る研究はありません。",
+      "nothingDamaged": "現在、損傷した建物はありません。",
+      "few": "区域内で可能な行動：{{count}}。目標未満のため、実現可能な範囲に縮小されます。",
+      "coversN": "≈ {{count}}"
+    },
+    "missions": {
+      "air_bases": {
+        "name": "空軍基地",
+        "desc": "新しい空軍基地を建設し、領土のカバー範囲を広げる。"
+      },
+      "military_bases": {
+        "name": "軍事基地",
+        "desc": "軍事基地を設置：陸上生産と補給半径。"
+      },
+      "upgrade_bases": {
+        "name": "基地の近代化",
+        "desc": "既存の空軍・陸軍・海軍基地のレベルを上げる。"
+      },
+      "logistics": {
+        "name": "軍事兵站",
+        "desc": "国境付近の前進補給所・基地・病院：部隊への補給。"
+      },
+      "fortify": {
+        "name": "国境の要塞化",
+        "desc": "脅威にさらされた国境州に要塞とバンカーを築く。"
+      },
+      "air_defense": {
+        "name": "国土防空",
+        "desc": "重要な州の周囲に防空陣地とレーダー基地を置く。"
+      },
+      "coastal": {
+        "name": "沿岸防衛",
+        "desc": "沿岸砲台と海軍基地を海岸に置く。"
+      },
+      "research_next": {
+        "name": "次世代",
+        "desc": "装備の次世代を生産するのに必要な研究を行う。"
+      },
+      "research_branch": {
+        "name": "分野別研究",
+        "desc": "研究分野をノードごとに進める。"
+      },
+      "research_labs": {
+        "name": "研究所",
+        "desc": "研究センターと秘密研究所を建設・強化する。"
+      },
+      "produce": {
+        "name": "装備の発注",
+        "desc": "1カテゴリーの装備を一定数生産する（国内製造または輸入）。"
+      },
+      "stockpile": {
+        "name": "戦略備蓄",
+        "desc": "1カテゴリー（ミサイル・弾薬など）の在庫を保ち、補充する。"
+      },
+      "arms_industry": {
+        "name": "軍需産業",
+        "desc": "兵器工場と電子機器工場を発展させる。"
+      },
+      "counterintel": {
+        "name": "防諜",
+        "desc": "外国の情報網を解体する：一斉捜索と摘発。"
+      },
+      "protect_sites": {
+        "name": "重要施設の防護",
+        "desc": "主要な産業施設を防護下に置き、強化する。"
+      },
+      "watch": {
+        "name": "他国の監視",
+        "desc": "その戦力と動員を追う：偵察・傍受・工作員。"
+      },
+      "map_defenses": {
+        "name": "防衛網の把握",
+        "desc": "その防衛を特定する：軍事偵察と発信源の位置特定。"
+      },
+      "economic_intel": {
+        "name": "経済情報",
+        "desc": "その産業と資源を知る：経済偵察・工作員。"
+      },
+      "resource": {
+        "name": "資源生産",
+        "desc": "鉱床のある場所に油井・鉱山・農場・電子機器工場を置く。"
+      },
+      "industry": {
+        "name": "産業開発",
+        "desc": "最も生産的な州で地場産業と発電所を整える。"
+      },
+      "revenue": {
+        "name": "歳入の増加",
+        "desc": "歳入が最も多い場所で商業地区と地場産業を整える。"
+      },
+      "war_economy": {
+        "name": "戦時経済",
+        "desc": "戦争遂行を支える兵器工場・発電所・製油所。"
+      },
+      "reserves": {
+        "name": "国庫準備金",
+        "desc": "他の任務が手を付けられない準備金を確保する。"
+      },
+      "repair": {
+        "name": "復興",
+        "desc": "損傷した建物を修理する。高価なものから。"
+      }
+    },
+    "ministriesShort": {
+      "defense": "国防",
+      "economy": "経済"
+    },
+    "suggest": "可能な任務"
   }
 }

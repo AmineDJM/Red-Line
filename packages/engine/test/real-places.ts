@@ -22,6 +22,9 @@ export const PLACES = {
   laValette: [14.5146, 35.8989],
   koursk: [36.1874, 51.7304],
   kiev: [30.5234, 50.4501],
+  alger: [3.0588, 36.7538],
+  oran: [-0.6417, 35.6971],
+  hassiMessaoud: [6.0703, 31.6804],
 } satisfies Record<string, LngLat>;
 
 /** Province qui contient un lieu (cellule H3 de la carte). */

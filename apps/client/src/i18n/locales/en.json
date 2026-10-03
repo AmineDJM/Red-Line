@@ -65,7 +65,8 @@
       "chat": "Messages",
       "shop": "Store",
       "settings": "Settings",
-      "command": "HQ"
+      "command": "HQ",
+      "government": "Gov."
     },
     "path": {
       "armies": "My armies",
@@ -81,9 +82,11 @@
       "chat": "Messages",
       "shop": "Store",
       "settings": "Settings",
-      "command": "HQ"
+      "command": "HQ",
+      "government": "Government"
     },
-    "command": "Command center"
+    "command": "Command center",
+    "government": "Government"
   },
   "home": {
     "title": "Red Line",
@@ -2284,7 +2287,8 @@
       "transfersIn": "Transfers received",
       "transfersOut": "Transfers granted",
       "other": "Other (intelligence, alliance…)",
-      "command": "Generals and staffs"
+      "command": "Generals and staffs",
+      "government": "Ministers and directorates"
     },
     "constructionHint": "Upgrade a building or build a new one from the Buildings tab or a province's panel.",
     "provincesTitle": "Provinces",
@@ -4577,6 +4581,14 @@
       "cmd_opStuck": {
         "title": "Operation bogged down",
         "text": "Operation {{op}}: no progress for {{hours}} h."
+      },
+      "gov_resigned": {
+        "title": "Resignation",
+        "text": "{{name}} resigns: the post is no longer paid."
+      },
+      "gov_missionDone": {
+        "title": "Mission accomplished",
+        "text": "{{mission}}: goal reached."
       }
     },
     "cmd": {
@@ -4713,6 +4725,461 @@
       "executedB": "{{host}} announces the execution of an agent of {{owner}} convicted of espionage. International condemnation.",
       "swapH": "Agent exchange between {{a}} and {{b}}",
       "swapB": "{{a}} and {{b}} carried out a prisoner exchange: {{n}} agent(s) released."
+    },
+    "gov": {
+      "m": {
+        "air_bases": "Air bases",
+        "military_bases": "Military bases",
+        "upgrade_bases": "Base modernisation",
+        "logistics": "Military logistics",
+        "fortify": "Border fortification",
+        "air_defense": "Territorial air defence",
+        "coastal": "Coastal defence",
+        "research_next": "Next generation",
+        "research_branch": "Research by field",
+        "research_labs": "Research laboratories",
+        "produce": "Equipment order",
+        "stockpile": "Strategic stockpiles",
+        "arms_industry": "Arms industry",
+        "counterintel": "Counter-intelligence",
+        "protect_sites": "Protection of sensitive sites",
+        "watch": "Country surveillance",
+        "map_defenses": "Defence mapping",
+        "economic_intel": "Economic intelligence",
+        "resource": "Resource production",
+        "industry": "Industrial development",
+        "revenue": "Revenue growth",
+        "war_economy": "War economy",
+        "reserves": "Treasury reserves",
+        "repair": "Reconstruction"
+      },
+      "focus": {
+        "counterintel": "counter-intelligence",
+        "protection": "site protection"
+      },
+      "j": {
+        "appointed": "{{name}} takes office.",
+        "replaced": "{{name}} leaves office (severance paid).",
+        "dismissed": "{{name}} is dismissed (severance paid).",
+        "resigned": "{{name}} resigns: the post is no longer paid.",
+        "unpaid": "{{name}} has not been paid ({{days}} consecutive d).",
+        "missionNew": "Mission received: {{mission}}.",
+        "missionEdit": "Mission updated: {{mission}}.",
+        "missionSuspended": "Mission suspended: {{mission}}.",
+        "missionResumed": "Mission resumed: {{mission}}.",
+        "missionCancelled": "Mission withdrawn: {{mission}} (what was launched continues).",
+        "missionDone": "Mission accomplished: {{mission}}.",
+        "built": "Construction started: {{building}} level {{level}} in {{place}} — {{cost}}.",
+        "jobDone": "Construction finished: {{building}} level {{level}} in {{place}}.",
+        "repaired": "Repair started: {{building}} in {{place}} — {{cost}}.",
+        "research": "Research started: {{node}} — {{cost}}.",
+        "researched": "Research acquired: {{node}}.",
+        "produced": "Order placed: {{count}} × {{system}} in {{place}} — {{cost}}.",
+        "imported": "Import: {{count}} × {{system}}, delivered to {{place}} — {{cost}}.",
+        "intelOp": "Operation launched: {{op}} — {{cost}}.",
+        "intelOpAt": "Operation launched: {{op}}, target {{nation}} — {{cost}}.",
+        "opSuccess": "Operation succeeded: {{op}}.",
+        "opFailed": "Operation without result: {{op}}.",
+        "focus": "Domestic intelligence priority: {{focus}}.",
+        "protected": "Site placed under protection: {{place}}.",
+        "blocked": "Blocked — {{why}}"
+      },
+      "why": {
+        "noHead": "Post vacant: appoint a holder.",
+        "envelope": "Envelope exhausted: {{left}} available, {{cost}} needed.",
+        "funds": "Insufficient funds: {{cost}} needed.",
+        "reserve": "Prudence reserve: the treasury must stay above {{floor}} ({{cost}} needed).",
+        "resources": "Insufficient resources.",
+        "noSite": "No permitted site in the zone (coast, deposit or maximum level).",
+        "noDeposit": "No {{resource}} deposit on the territory.",
+        "research": "Research required.",
+        "capacity": "Capacity reached (queue or service).",
+        "locked": "Blocked by an embargo or a blockade.",
+        "noTarget": "Invalid or vanished target.",
+        "noSystem": "No “{{category}}” equipment available (research, licence or import).",
+        "noResearch": "No research available for this goal.",
+        "nothingDamaged": "No damaged buildings.",
+        "saving": "Building up the reserve: {{pct}} %.",
+        "reserveHeld": "Reserve reached: other missions respect it.",
+        "stocked": "Stock reached: replenished as soon as it drops.",
+        "inProgress": "Actions in progress.",
+        "refused": "Order refused.",
+        "unlocked": "Next generation already available.",
+        "allProtected": "Sites protected to the maximum."
+      }
     }
+  },
+  "gov": {
+    "unavailable": "Government unavailable in this game.",
+    "perDay": " / d",
+    "newMission": "New mission",
+    "missionsTitle": "Missions",
+    "history": "Completed and withdrawn",
+    "ministries": {
+      "defense": "Ministry of Defence",
+      "economy": "Ministry of the Economy"
+    },
+    "sections": {
+      "commands": "Commands",
+      "infra": "Infrastructure",
+      "armament": "Armament",
+      "intel": "Intelligence"
+    },
+    "offices": {
+      "defense": {
+        "name": "Minister of Defence",
+        "head": "Minister of Defence",
+        "scope": "Infrastructure and logistics"
+      },
+      "research": {
+        "name": "Armament Research Directorate",
+        "head": "Director of Research",
+        "scope": "Military R&D"
+      },
+      "production": {
+        "name": "Armament Production Directorate",
+        "head": "Director of Production",
+        "scope": "Military production"
+      },
+      "intel_interior": {
+        "name": "Domestic Intelligence",
+        "head": "Director of Domestic Intelligence",
+        "scope": "Counter-intelligence, internal security, site protection"
+      },
+      "intel_exterior": {
+        "name": "Foreign and Military Intelligence",
+        "head": "Director of Foreign Intelligence",
+        "scope": "HUMINT, SIGINT, reconnaissance"
+      },
+      "economy": {
+        "name": "Minister of the Economy",
+        "head": "Minister of the Economy",
+        "scope": "Industry, resources, revenue, reserves"
+      }
+    },
+    "skills": {
+      "management": "Management",
+      "industry": "Industry",
+      "logistics": "Logistics",
+      "finance": "Fiscal prudence",
+      "science": "Science",
+      "intelligence": "Intelligence"
+    },
+    "traits": {
+      "efficient": {
+        "name": "Efficient",
+        "tip": "Faster construction, orders and research."
+      },
+      "frugal": {
+        "name": "Thrifty",
+        "tip": "Negotiates better and costs less."
+      },
+      "ambitious": {
+        "name": "Ambitious",
+        "tip": "Runs one more action at a time, keeps less in reserve, costs more."
+      },
+      "cautious": {
+        "name": "Cautious",
+        "tip": "Keeps a larger cash reserve."
+      },
+      "technocrat": {
+        "name": "Technocrat",
+        "tip": "Always makes the best choice; costs more."
+      },
+      "reformer": {
+        "name": "Reformer",
+        "tip": "A little faster and a little cheaper."
+      },
+      "bureaucrat": {
+        "name": "Bureaucrat",
+        "tip": "Slower, but inexpensive."
+      }
+    },
+    "effects": {
+      "speed": "Speed {{v}}",
+      "speedTip": "Management: duration of the construction, orders and research launched.",
+      "discount": "Costs {{v}}",
+      "discountTip": "Expertise: discount negotiated on every expense of their missions.",
+      "slotsTip": "Management: actions run in parallel by each mission.",
+      "reserve": "Reserve {{days}} d",
+      "reserveTip": "Prudence: days of budget their missions always leave in the treasury.",
+      "slots": "Parallel: {{count}}"
+    },
+    "head": {
+      "rating": "Rating",
+      "ratingTip": "Average of the three skills that matter for the post.",
+      "cost": "Cost",
+      "appoint": "Appoint · {{cost}}",
+      "appointTip": "Appointment bonus (and severance of the replaced holder): {{cost}}",
+      "vacant": "Post vacant.",
+      "vacantText": "Choose a holder: their skills set the speed, costs and prudence of their missions.",
+      "replace": "Replace",
+      "dismiss": "Dismiss",
+      "replaceTitle": "Replace — {{office}}",
+      "replaceText": "The current holder leaves with {{cost}} in severance. Missions continue with the new one.",
+      "dismissTitle": "Dismiss the holder",
+      "dismissText": "{{name}} leaves with {{cost}} in severance. The post's missions will wait for a successor.",
+      "unpaid": "Unpaid: {{count}} d"
+    },
+    "toast": {
+      "appointed": "{{name}} appointed.",
+      "dismissed": "Holder dismissed.",
+      "edited": "Mission updated.",
+      "resumed": "Mission resumed.",
+      "suspended": "Mission suspended.",
+      "cancelled": "Mission withdrawn.",
+      "created": "Mission assigned: {{mission}}."
+    },
+    "status": {
+      "active": "Active",
+      "waiting": "Waiting",
+      "blocked": "Blocked",
+      "suspended": "Suspended",
+      "done": "Completed",
+      "cancelled": "Withdrawn"
+    },
+    "mission": {
+      "progress": "Progress",
+      "goalAuto": "Goal set by the ministry",
+      "budgetTip": "Spent (discounts deducted) out of the allocated envelope.",
+      "priority": "Priority",
+      "edit": "Edit",
+      "suspend": "Suspend",
+      "resume": "Resume",
+      "cancel": "Withdraw",
+      "cancelTitle": "Withdraw the mission",
+      "cancelText": "“{{mission}}” is stopped. Construction, orders and operations already launched continue.",
+      "editTitle": "Edit — {{mission}}",
+      "save": "Save",
+      "pending": "in progress: {{count}}"
+    },
+    "units": {
+      "projects": "Construction: {{done}} / {{goal}}",
+      "nodes": "Research: {{done}} / {{goal}}",
+      "lots": "Batches: {{done}} / {{goal}}",
+      "ops": "Operations: {{done}} / {{goal}}",
+      "days": "Days of budget: {{done}} / {{goal}}",
+      "sites": "Protected sites: {{done}} / {{goal}}",
+      "repairs": "Repairs: {{done}} / {{goal}}"
+    },
+    "budget": {
+      "mode": "Envelope",
+      "amount": "Amount",
+      "share": "Share of revenue",
+      "shareShort": "{{pct}} % of revenue",
+      "amountShort": "Fixed envelope",
+      "left": "Available: {{v}}",
+      "perDayOf": "≈ {{v}} per day (revenue {{rev}} / d)",
+      "cap": "Spending cap",
+      "noCap": "No cap: credit builds up every day.",
+      "daysOf": "{{count}} d of defence budget",
+      "daysShort": "{{count}} d"
+    },
+    "priority": {
+      "1": "Low",
+      "2": "Normal",
+      "3": "High"
+    },
+    "journal": {
+      "title": "Log",
+      "empty": "Nothing yet."
+    },
+    "hint": {
+      "vacantMissions": "These missions are waiting for a holder: appoint one so they can move forward.",
+      "vacant": "Appoint a holder, then assign them a mission.",
+      "noMission": "No missions: assign one with “New mission”."
+    },
+    "zone": {
+      "borderWith": "border: {{nation}}",
+      "aroundShort": "{{km}} km around {{place}}",
+      "all": "Whole territory",
+      "border": "Border",
+      "around": "Around…",
+      "radius": "Radius"
+    },
+    "commands": {
+      "title": "The four commands",
+      "scope": "Land, Air, Navy, Air defence",
+      "open": "Open HQ",
+      "land": "Army",
+      "air": "Air Force",
+      "sea": "Navy",
+      "air_defense": "Air defence",
+      "noChief": "No chief",
+      "soon": "Chiefs and operations: being prepared at HQ.",
+      "soonBadge": "In preparation",
+      "now": "At HQ today: armies {{armies}}, generals {{generals}}.",
+      "ops": "Operations: {{count}}"
+    },
+    "kpi": {
+      "heads": "Holders",
+      "missions": "Missions",
+      "spent": "Spent",
+      "payroll": "Cost",
+      "floor": "Reserve",
+      "floorTip": "Cash the missions always leave in the treasury (prudence, Reserves mission)."
+    },
+    "wizard": {
+      "path": "new mission",
+      "step": {
+        "type": "Mission",
+        "params": "Target and goal",
+        "budget": "Envelope"
+      },
+      "back": "Back",
+      "next": "Next",
+      "confirm": "Assign the mission",
+      "resource": "Resource",
+      "branch": "Research field",
+      "category": "Equipment",
+      "nation": "Target country",
+      "pick": "Choose…",
+      "zone": "Zone",
+      "err": {
+        "type": "Choose a mission.",
+        "nation": "Choose the target country.",
+        "border": "Choose the neighbouring country.",
+        "around": "Choose the central province.",
+        "budget": "Empty envelope."
+      }
+    },
+    "goal": {
+      "projects": "Goal: construction projects",
+      "nodes": "Goal: research",
+      "lots": "Goal: equipment batches",
+      "ops": "Goal: operations",
+      "days": "Goal: days of budget in the treasury",
+      "sites": "Goal: protected sites",
+      "repairs": "Goal: repairs",
+      "auto": {
+        "research": "Goal set on confirmation: all the research that unlocks the next generation.",
+        "protect": "Goal: as many protected sites as domestic intelligence allows, then their hardening."
+      }
+    },
+    "estimate": {
+      "title": "Forecast",
+      "options": "Possible actions",
+      "first": "First action",
+      "total": "Full goal",
+      "hours": "Duration of one action",
+      "reserveTarget": "Target treasury",
+      "envelope": "Envelope",
+      "open": "share of revenue, no cap",
+      "covers": "Actions covered by the envelope",
+      "head": "{{name}}: speed +{{speed}} %, discount {{discount}} %, keeps {{reserve}} in the treasury.",
+      "vacant": "Post vacant: the mission will wait for a holder.",
+      "note": "Estimate based on your provinces and current prices; the ministry respects the envelope and your resources.",
+      "noDeposit": "No deposit of this resource in the zone.",
+      "noSite": "No permitted site in the zone.",
+      "noSystem": "No equipment available in this category.",
+      "unlocked": "The next generation is already available.",
+      "noResearch": "No research left for this goal.",
+      "nothingDamaged": "No damaged buildings for now.",
+      "few": "Possible actions in the zone: {{count}}, fewer than the goal; it will be reduced to what is feasible.",
+      "coversN": "≈ {{count}}"
+    },
+    "missions": {
+      "air_bases": {
+        "name": "Air bases",
+        "desc": "Build new air bases and extend coverage of the territory."
+      },
+      "military_bases": {
+        "name": "Military bases",
+        "desc": "Set up military bases: land production and supply radius."
+      },
+      "upgrade_bases": {
+        "name": "Base modernisation",
+        "desc": "Raise the level of existing air, military and naval bases."
+      },
+      "logistics": {
+        "name": "Military logistics",
+        "desc": "Forward depots, bases and hospitals near the borders: troop supply."
+      },
+      "fortify": {
+        "name": "Border fortification",
+        "desc": "Fortifications and bunkers in threatened border provinces."
+      },
+      "air_defense": {
+        "name": "Territorial air defence",
+        "desc": "Air defence sites and radar stations around key provinces."
+      },
+      "coastal": {
+        "name": "Coastal defence",
+        "desc": "Coastal batteries and naval bases along the coast."
+      },
+      "research_next": {
+        "name": "Next generation",
+        "desc": "Research what is needed to produce the next generation of an equipment type."
+      },
+      "research_branch": {
+        "name": "Research by field",
+        "desc": "Advance a research field, node after node."
+      },
+      "research_labs": {
+        "name": "Research laboratories",
+        "desc": "Build and upgrade research centres and secret laboratories."
+      },
+      "produce": {
+        "name": "Equipment order",
+        "desc": "Produce a quantity of equipment of one category (local manufacture or import)."
+      },
+      "stockpile": {
+        "name": "Strategic stockpiles",
+        "desc": "Keep a stock of one category (missiles, munitions…) and replenish it."
+      },
+      "arms_industry": {
+        "name": "Arms industry",
+        "desc": "Develop arms factories and electronics plants."
+      },
+      "counterintel": {
+        "name": "Counter-intelligence",
+        "desc": "Dismantle foreign networks: sweeps and dismantling."
+      },
+      "protect_sites": {
+        "name": "Protection of sensitive sites",
+        "desc": "Put key industrial sites under protection and harden them."
+      },
+      "watch": {
+        "name": "Country surveillance",
+        "desc": "Track its forces and mobilisation: reconnaissance, intercepts, agents."
+      },
+      "map_defenses": {
+        "name": "Defence mapping",
+        "desc": "Locate its defences: military reconnaissance and emitter geolocation."
+      },
+      "economic_intel": {
+        "name": "Economic intelligence",
+        "desc": "Learn its industry and resources: economic reconnaissance, agents."
+      },
+      "resource": {
+        "name": "Resource production",
+        "desc": "Wells, mines, farms or electronics plants where the deposits are."
+      },
+      "industry": {
+        "name": "Industrial development",
+        "desc": "Local industry and power plants in the most productive provinces."
+      },
+      "revenue": {
+        "name": "Revenue growth",
+        "desc": "Business districts and local industry where revenue is highest."
+      },
+      "war_economy": {
+        "name": "War economy",
+        "desc": "Arms factories, power plants and refineries to support the war effort."
+      },
+      "reserves": {
+        "name": "Treasury reserves",
+        "desc": "Keep a reserve that other missions cannot touch."
+      },
+      "repair": {
+        "name": "Reconstruction",
+        "desc": "Repair damaged buildings, the most expensive first."
+      }
+    },
+    "ministriesShort": {
+      "defense": "Defence",
+      "economy": "Economy"
+    },
+    "suggest": "Possible missions"
   }
 }

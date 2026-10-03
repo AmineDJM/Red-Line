@@ -398,6 +398,14 @@
       "cmd_opStuck": {
         "title": "Opération enlisée",
         "text": "Opération {{op}} : aucun progrès depuis {{hours}} h."
+      },
+      "gov_resigned": {
+        "title": "Démission",
+        "text": "{{name}} démissionne : le poste n’est plus payé."
+      },
+      "gov_missionDone": {
+        "title": "Mission accomplie",
+        "text": "{{mission}} : objectif atteint."
       }
     },
     "cmd": {
@@ -534,6 +542,88 @@
       "executedB": "{{host}} annonce l'exécution d'un agent de {{owner}} condamné pour espionnage. Réprobation internationale.",
       "swapH": "Échange d'agents entre {{a}} et {{b}}",
       "swapB": "{{a}} et {{b}} ont procédé à un échange de prisonniers : {{n}} agent(s) libéré(s)."
+    },
+    "gov": {
+      "m": {
+        "air_bases": "Bases aériennes",
+        "military_bases": "Bases militaires",
+        "upgrade_bases": "Modernisation des bases",
+        "logistics": "Logistique militaire",
+        "fortify": "Fortification des frontières",
+        "air_defense": "Défense antiaérienne du territoire",
+        "coastal": "Défense côtière",
+        "research_next": "Prochaine génération",
+        "research_branch": "Recherche par domaine",
+        "research_labs": "Laboratoires de recherche",
+        "produce": "Commande de matériel",
+        "stockpile": "Stocks stratégiques",
+        "arms_industry": "Industrie d’armement",
+        "counterintel": "Contre-espionnage",
+        "protect_sites": "Protection des sites sensibles",
+        "watch": "Surveillance d’un pays",
+        "map_defenses": "Cartographie des défenses",
+        "economic_intel": "Renseignement économique",
+        "resource": "Production de ressources",
+        "industry": "Développement industriel",
+        "revenue": "Hausse des revenus",
+        "war_economy": "Économie de guerre",
+        "reserves": "Réserves de trésorerie",
+        "repair": "Reconstruction"
+      },
+      "focus": {
+        "counterintel": "contre-espionnage",
+        "protection": "protection des sites"
+      },
+      "j": {
+        "appointed": "{{name}} prend ses fonctions.",
+        "replaced": "{{name}} quitte ses fonctions (indemnité versée).",
+        "dismissed": "{{name}} est remercié (indemnité versée).",
+        "resigned": "{{name}} démissionne : le poste n’est plus payé.",
+        "unpaid": "{{name}} n’a pas été payé ({{days}} j consécutifs).",
+        "missionNew": "Mission reçue : {{mission}}.",
+        "missionEdit": "Mission modifiée : {{mission}}.",
+        "missionSuspended": "Mission suspendue : {{mission}}.",
+        "missionResumed": "Mission reprise : {{mission}}.",
+        "missionCancelled": "Mission retirée : {{mission}} (ce qui est lancé continue).",
+        "missionDone": "Mission accomplie : {{mission}}.",
+        "built": "Chantier lancé : {{building}} niveau {{level}} à {{place}} — {{cost}}.",
+        "jobDone": "Chantier terminé : {{building}} niveau {{level}} à {{place}}.",
+        "repaired": "Réparation lancée : {{building}} à {{place}} — {{cost}}.",
+        "research": "Recherche lancée : {{node}} — {{cost}}.",
+        "researched": "Recherche acquise : {{node}}.",
+        "produced": "Commande passée : {{count}} × {{system}} à {{place}} — {{cost}}.",
+        "imported": "Importation : {{count}} × {{system}}, livrés à {{place}} — {{cost}}.",
+        "intelOp": "Opération lancée : {{op}} — {{cost}}.",
+        "intelOpAt": "Opération lancée : {{op}}, cible {{nation}} — {{cost}}.",
+        "opSuccess": "Opération réussie : {{op}}.",
+        "opFailed": "Opération sans résultat : {{op}}.",
+        "focus": "Priorité du renseignement intérieur : {{focus}}.",
+        "protected": "Site placé sous protection : {{place}}.",
+        "blocked": "Bloquée — {{why}}"
+      },
+      "why": {
+        "noHead": "Poste vacant : nommez un titulaire.",
+        "envelope": "Enveloppe épuisée : {{left}} disponibles, {{cost}} nécessaires.",
+        "funds": "Fonds insuffisants : {{cost}} nécessaires.",
+        "reserve": "Réserve de prudence : la trésorerie doit rester au-dessus de {{floor}} ({{cost}} nécessaires).",
+        "resources": "Ressources insuffisantes.",
+        "noSite": "Aucun emplacement permis dans la zone (côte, gisement ou niveau maximal).",
+        "noDeposit": "Aucun gisement de {{resource}} sur le territoire.",
+        "research": "Recherche requise.",
+        "capacity": "Capacité atteinte (file d’attente ou service).",
+        "locked": "Bloqué par un embargo ou un blocus.",
+        "noTarget": "Cible invalide ou disparue.",
+        "noSystem": "Aucun matériel « {{category}} » accessible (recherche, licence ou importation).",
+        "noResearch": "Aucune recherche disponible pour cet objectif.",
+        "nothingDamaged": "Aucun bâtiment endommagé.",
+        "saving": "Réserve en constitution : {{pct}} %.",
+        "reserveHeld": "Réserve atteinte : les autres missions la respectent.",
+        "stocked": "Stock atteint : réapprovisionnement dès qu’il baisse.",
+        "inProgress": "Actions en cours.",
+        "refused": "Ordre refusé.",
+        "unlocked": "Génération suivante déjà accessible.",
+        "allProtected": "Sites protégés au maximum."
+      }
     }
   }
 }
