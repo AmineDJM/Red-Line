@@ -11,6 +11,7 @@ import {
 } from '@redline/ui';
 import { fmtClock } from '../i18n/index.js';
 import { netPerDay, resourceFlows } from '../lib/economy.js';
+import { blockedCount } from '../lib/government.js';
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useGameTime } from './helpers.js';
@@ -255,6 +256,19 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
   const level = view?.alertLevel;
   // Centre de commandement : demandes des généraux en attente (autorisation, renforts).
   const requests = view?.command?.armies.filter((a) => !!a.request).length ?? 0;
+  // Gouvernement : missions bloquées des ministères (fonds, poste vacant, enveloppe épuisée…).
+  const blocked = blockedCount(view?.government);
+  const government = !view?.spectator ? (
+    <IconButton
+      label={t('sections.government')}
+      icon={<Icon name="building" size={mobile ? 18 : 17} />}
+      badge={blocked}
+      badgeTone="amber"
+      active={windows.some((w) => w.id === 'government')}
+      onClick={() => toggleWindow('government')}
+      data-testid="government-button"
+    />
+  ) : null;
   const command = !view?.spectator ? (
     <IconButton
       label={t('sections.command')}
@@ -290,6 +304,7 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
             {view?.spectator ? <span className="topbar__spect">{t('game.spectator')}</span> : null}
           </span>
           <ClockControl compact />
+          {government}
           {command}
           {bell}
         </div>
@@ -337,6 +352,7 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
         <span>{t('console.open')}</span>
         <Kbd keys={['Ctrl', 'K']} />
       </button>
+      {government}
       {command}
       <IconButton
         label={t('sections.chat')}
