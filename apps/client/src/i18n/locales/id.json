@@ -65,7 +65,8 @@
       "chat": "Pesan",
       "shop": "Toko",
       "settings": "Pengaturan",
-      "command": "Markas"
+      "command": "Markas",
+      "government": "Pemr."
     },
     "path": {
       "armies": "Pasukan saya",
@@ -81,9 +82,11 @@
       "chat": "Pesan",
       "shop": "Toko",
       "settings": "Pengaturan",
-      "command": "Markas"
+      "command": "Markas",
+      "government": "Pemerintah"
     },
-    "command": "Pusat komando"
+    "command": "Pusat komando",
+    "government": "Pemerintah"
   },
   "home": {
     "title": "Red Line",
@@ -2262,7 +2265,8 @@
       "transfersIn": "Penyerahan diterima",
       "transfersOut": "Penyerahan diberikan",
       "other": "Lainnya (intelijen, aliansi…)",
-      "command": "Jenderal dan staf"
+      "command": "Jenderal dan staf",
+      "government": "Menteri dan direktorat"
     },
     "constructionHint": "Tingkatkan bangunan atau bangun yang baru dari tab Bangunan atau panel provinsi.",
     "provincesTitle": "Provinsi",
@@ -3892,6 +3896,378 @@
       "saved": "Pengaturan disimpan."
     }
   },
+  "gov": {
+    "unavailable": "Pemerintah tidak tersedia di permainan ini.",
+    "perDay": " / h",
+    "newMission": "Misi baru",
+    "missionsTitle": "Misi",
+    "history": "Selesai dan ditarik",
+    "ministries": {
+      "defense": "Kementerian Pertahanan",
+      "economy": "Kementerian Ekonomi"
+    },
+    "sections": {
+      "commands": "Komando",
+      "infra": "Infrastruktur",
+      "armament": "Persenjataan",
+      "intel": "Intelijen"
+    },
+    "offices": {
+      "defense": {
+        "name": "Menteri Pertahanan",
+        "head": "Menteri Pertahanan",
+        "scope": "Infrastruktur dan logistik"
+      },
+      "research": {
+        "name": "Direktorat Riset Persenjataan",
+        "head": "Direktur Riset",
+        "scope": "Litbang militer"
+      },
+      "production": {
+        "name": "Direktorat Produksi Persenjataan",
+        "head": "Direktur Produksi",
+        "scope": "Produksi militer"
+      },
+      "intel_interior": {
+        "name": "Intelijen dalam negeri",
+        "head": "Direktur Intelijen Dalam Negeri",
+        "scope": "Kontraintelijen, keamanan dalam negeri, perlindungan situs"
+      },
+      "intel_exterior": {
+        "name": "Intelijen luar negeri dan militer",
+        "head": "Direktur Intelijen Luar Negeri",
+        "scope": "HUMINT, SIGINT, pengintaian"
+      },
+      "economy": {
+        "name": "Menteri Ekonomi",
+        "head": "Menteri Ekonomi",
+        "scope": "Industri, sumber daya, pendapatan, cadangan"
+      }
+    },
+    "skills": {
+      "management": "Manajemen",
+      "industry": "Industri",
+      "logistics": "Logistik",
+      "finance": "Kehati-hatian anggaran",
+      "science": "Sains",
+      "intelligence": "Intelijen"
+    },
+    "traits": {
+      "efficient": {
+        "name": "Efisien",
+        "tip": "Pembangunan, pesanan, dan riset lebih cepat."
+      },
+      "frugal": {
+        "name": "Hemat",
+        "tip": "Bernegosiasi lebih baik dan lebih murah."
+      },
+      "ambitious": {
+        "name": "Ambisius",
+        "tip": "Menjalankan satu aksi lebih sekaligus, menyimpan cadangan lebih kecil, lebih mahal."
+      },
+      "cautious": {
+        "name": "Hati-hati",
+        "tip": "Menyimpan cadangan kas lebih besar."
+      },
+      "technocrat": {
+        "name": "Teknokrat",
+        "tip": "Selalu memilih yang terbaik; lebih mahal."
+      },
+      "reformer": {
+        "name": "Reformis",
+        "tip": "Sedikit lebih cepat dan sedikit lebih murah."
+      },
+      "bureaucrat": {
+        "name": "Birokrat",
+        "tip": "Lebih lambat, tetapi murah."
+      }
+    },
+    "effects": {
+      "speed": "Kecepatan {{v}}",
+      "speedTip": "Manajemen: durasi pembangunan, pesanan, dan riset yang dimulai.",
+      "discount": "Biaya {{v}}",
+      "discountTip": "Keahlian: diskon yang dinegosiasikan pada setiap pengeluaran misinya.",
+      "slotsTip": "Manajemen: aksi yang dijalankan paralel oleh setiap misi.",
+      "reserve": "Cadangan {{days}} h",
+      "reserveTip": "Kehati-hatian: hari anggaran yang selalu disisakan misinya di kas.",
+      "slots": "Paralel: {{count}}"
+    },
+    "head": {
+      "rating": "Nilai",
+      "ratingTip": "Rata-rata tiga keahlian penting untuk jabatan ini.",
+      "cost": "Biaya",
+      "appoint": "Angkat · {{cost}}",
+      "appointTip": "Bonus pengangkatan (dan pesangon pejabat yang diganti): {{cost}}",
+      "vacant": "Jabatan kosong.",
+      "vacantText": "Pilih pejabat: keahliannya menentukan kecepatan, biaya, dan kehati-hatian misinya.",
+      "replace": "Ganti",
+      "dismiss": "Berhentikan",
+      "replaceTitle": "Ganti — {{office}}",
+      "replaceText": "Pejabat saat ini pergi dengan pesangon {{cost}}. Misi berlanjut dengan yang baru.",
+      "dismissTitle": "Berhentikan pejabat",
+      "dismissText": "{{name}} pergi dengan pesangon {{cost}}. Misi jabatan ini akan menunggu pengganti.",
+      "unpaid": "Belum dibayar: {{count}} h"
+    },
+    "toast": {
+      "appointed": "{{name}} diangkat.",
+      "dismissed": "Pejabat diberhentikan.",
+      "edited": "Misi diubah.",
+      "resumed": "Misi dilanjutkan.",
+      "suspended": "Misi ditangguhkan.",
+      "cancelled": "Misi ditarik.",
+      "created": "Misi diberikan: {{mission}}."
+    },
+    "status": {
+      "active": "Berjalan",
+      "waiting": "Menunggu",
+      "blocked": "Terhambat",
+      "suspended": "Ditangguhkan",
+      "done": "Selesai"
+    },
+    "mission": {
+      "progress": "Kemajuan",
+      "goalAuto": "Target ditetapkan kementerian",
+      "budgetTip": "Terpakai (setelah diskon) dari anggaran yang dialokasikan.",
+      "priority": "Prioritas",
+      "edit": "Ubah",
+      "suspend": "Tangguhkan",
+      "resume": "Lanjutkan",
+      "cancel": "Tarik",
+      "cancelTitle": "Tarik misi",
+      "cancelText": "“{{mission}}” dihentikan. Pembangunan, pesanan, dan operasi yang sudah dimulai tetap berjalan.",
+      "editTitle": "Ubah — {{mission}}",
+      "save": "Simpan",
+      "pending": "berjalan: {{count}}"
+    },
+    "units": {
+      "projects": "Pembangunan: {{done}} / {{goal}}",
+      "nodes": "Riset: {{done}} / {{goal}}",
+      "lots": "Lot: {{done}} / {{goal}}",
+      "ops": "Operasi: {{done}} / {{goal}}",
+      "days": "Hari anggaran: {{done}} / {{goal}}",
+      "sites": "Situs terlindungi: {{done}} / {{goal}}",
+      "repairs": "Perbaikan: {{done}} / {{goal}}"
+    },
+    "budget": {
+      "mode": "Anggaran",
+      "amount": "Jumlah",
+      "share": "Bagian pendapatan",
+      "shareShort": "{{pct}} % pendapatan",
+      "amountShort": "Anggaran tetap",
+      "left": "Tersedia: {{v}}",
+      "perDayOf": "≈ {{v}} per hari (pendapatan {{rev}} / h)",
+      "cap": "Batas belanja",
+      "noCap": "Tanpa batas: kredit bertambah setiap hari.",
+      "daysOf": "{{count}} h anggaran pertahanan",
+      "daysShort": "{{count}} h"
+    },
+    "priority": {
+      "1": "Rendah",
+      "2": "Normal",
+      "3": "Tinggi"
+    },
+    "journal": {
+      "title": "Jurnal",
+      "empty": "Belum ada apa-apa."
+    },
+    "hint": {
+      "vacantMissions": "Misi-misi ini menunggu pejabat: angkat satu agar berjalan.",
+      "vacant": "Angkat pejabat, lalu berikan misi kepadanya.",
+      "noMission": "Tidak ada misi: berikan satu lewat “Misi baru”."
+    },
+    "zone": {
+      "borderWith": "perbatasan: {{nation}}",
+      "aroundShort": "{{km}} km di sekitar {{place}}",
+      "all": "Seluruh wilayah",
+      "border": "Perbatasan",
+      "around": "Di sekitar…",
+      "radius": "Radius"
+    },
+    "commands": {
+      "title": "Empat komando",
+      "scope": "Darat, Udara, Laut, Pertahanan udara",
+      "open": "Buka markas",
+      "land": "Angkatan Darat",
+      "air": "Angkatan Udara",
+      "sea": "Angkatan Laut",
+      "air_defense": "Pertahanan udara",
+      "noChief": "Tanpa panglima",
+      "soon": "Panglima dan operasi: sedang disiapkan di markas.",
+      "soonBadge": "Dalam persiapan",
+      "now": "Hari ini di markas: tentara {{armies}}, jenderal {{generals}}.",
+      "ops": "Operasi: {{count}}"
+    },
+    "kpi": {
+      "heads": "Pejabat",
+      "missions": "Misi",
+      "spent": "Terpakai",
+      "payroll": "Biaya",
+      "floor": "Cadangan",
+      "floorTip": "Kas yang selalu disisakan misi di perbendaharaan (kehati-hatian, misi Cadangan)."
+    },
+    "wizard": {
+      "path": "misi baru",
+      "step": {
+        "type": "Misi",
+        "params": "Sasaran dan target",
+        "budget": "Anggaran"
+      },
+      "back": "Kembali",
+      "next": "Lanjut",
+      "confirm": "Berikan misi",
+      "resource": "Sumber daya",
+      "branch": "Bidang riset",
+      "category": "Peralatan",
+      "nation": "Negara sasaran",
+      "pick": "Pilih…",
+      "zone": "Zona",
+      "err": {
+        "type": "Pilih misi.",
+        "nation": "Pilih negara sasaran.",
+        "border": "Pilih negara tetangga.",
+        "around": "Pilih provinsi pusat.",
+        "budget": "Anggaran kosong."
+      }
+    },
+    "goal": {
+      "projects": "Target: pembangunan",
+      "nodes": "Target: riset",
+      "lots": "Target: lot peralatan",
+      "ops": "Target: operasi",
+      "days": "Target: hari anggaran di kas",
+      "sites": "Target: situs terlindungi",
+      "repairs": "Target: perbaikan",
+      "auto": {
+        "research": "Target ditetapkan saat konfirmasi: semua riset yang membuka generasi berikutnya.",
+        "protect": "Target: situs terlindungi sebanyak yang diizinkan intelijen dalam negeri, lalu penguatannya."
+      }
+    },
+    "estimate": {
+      "title": "Perkiraan",
+      "options": "Aksi yang mungkin",
+      "first": "Aksi pertama",
+      "total": "Target penuh",
+      "hours": "Durasi satu aksi",
+      "reserveTarget": "Kas sasaran",
+      "envelope": "Anggaran",
+      "open": "bagian pendapatan, tanpa batas",
+      "covers": "Aksi yang tercakup anggaran",
+      "head": "{{name}}: kecepatan +{{speed}} %, diskon {{discount}} %, menyimpan {{reserve}} di kas.",
+      "vacant": "Jabatan kosong: misi akan menunggu pejabat.",
+      "note": "Perkiraan berdasarkan provinsi Anda dan harga hari ini; kementerian mematuhi anggaran dan sumber daya Anda.",
+      "noDeposit": "Tidak ada cadangan sumber daya ini di zona.",
+      "noSite": "Tidak ada lokasi yang diizinkan di zona.",
+      "noSystem": "Tidak ada peralatan yang tersedia di kategori ini.",
+      "unlocked": "Generasi berikutnya sudah tersedia.",
+      "noResearch": "Tidak ada riset tersisa untuk target ini.",
+      "nothingDamaged": "Belum ada bangunan rusak.",
+      "few": "Aksi yang mungkin di zona: {{count}}, kurang dari target; target akan dikurangi ke yang dapat dicapai.",
+      "coversN": "≈ {{count}}"
+    },
+    "missions": {
+      "air_bases": {
+        "name": "Pangkalan udara",
+        "desc": "Membangun pangkalan udara baru dan memperluas jangkauan wilayah."
+      },
+      "military_bases": {
+        "name": "Pangkalan militer",
+        "desc": "Mendirikan pangkalan militer: produksi darat dan radius pasokan."
+      },
+      "upgrade_bases": {
+        "name": "Modernisasi pangkalan",
+        "desc": "Menaikkan level pangkalan udara, militer, dan laut yang ada."
+      },
+      "logistics": {
+        "name": "Logistik militer",
+        "desc": "Depot depan, pangkalan, dan rumah sakit dekat perbatasan: pasokan pasukan."
+      },
+      "fortify": {
+        "name": "Benteng perbatasan",
+        "desc": "Benteng dan bunker di provinsi perbatasan yang terancam."
+      },
+      "air_defense": {
+        "name": "Pertahanan udara wilayah",
+        "desc": "Situs pertahanan udara dan stasiun radar di sekitar provinsi kunci."
+      },
+      "coastal": {
+        "name": "Pertahanan pantai",
+        "desc": "Baterai pantai dan pangkalan laut di pesisir."
+      },
+      "research_next": {
+        "name": "Generasi berikutnya",
+        "desc": "Meriset yang diperlukan untuk memproduksi generasi berikutnya suatu peralatan."
+      },
+      "research_branch": {
+        "name": "Riset per bidang",
+        "desc": "Memajukan satu bidang riset, simpul demi simpul."
+      },
+      "research_labs": {
+        "name": "Laboratorium riset",
+        "desc": "Membangun dan meningkatkan pusat riset dan laboratorium rahasia."
+      },
+      "produce": {
+        "name": "Pesanan peralatan",
+        "desc": "Memproduksi sejumlah peralatan satu kategori (produksi lokal atau impor)."
+      },
+      "stockpile": {
+        "name": "Stok strategis",
+        "desc": "Menjaga stok satu kategori (rudal, amunisi…) dan mengisinya kembali."
+      },
+      "arms_industry": {
+        "name": "Industri persenjataan",
+        "desc": "Mengembangkan pabrik senjata dan pabrik elektronik."
+      },
+      "counterintel": {
+        "name": "Kontraintelijen",
+        "desc": "Membongkar jaringan asing: penyisiran dan pembongkaran."
+      },
+      "protect_sites": {
+        "name": "Perlindungan situs sensitif",
+        "desc": "Melindungi situs industri kunci dan memperkuatnya."
+      },
+      "watch": {
+        "name": "Pengawasan suatu negara",
+        "desc": "Memantau pasukan dan mobilisasinya: pengintaian, penyadapan, agen."
+      },
+      "map_defenses": {
+        "name": "Pemetaan pertahanan",
+        "desc": "Menemukan pertahanannya: pengintaian militer dan geolokasi pemancar."
+      },
+      "economic_intel": {
+        "name": "Intelijen ekonomi",
+        "desc": "Mengenal industri dan sumber dayanya: pengintaian ekonomi, agen."
+      },
+      "resource": {
+        "name": "Produksi sumber daya",
+        "desc": "Sumur, tambang, pertanian, atau pabrik elektronik di lokasi cadangan."
+      },
+      "industry": {
+        "name": "Pembangunan industri",
+        "desc": "Industri lokal dan pembangkit listrik di provinsi paling produktif."
+      },
+      "revenue": {
+        "name": "Peningkatan pendapatan",
+        "desc": "Kawasan bisnis dan industri lokal di tempat pendapatan tertinggi."
+      },
+      "war_economy": {
+        "name": "Ekonomi perang",
+        "desc": "Pabrik senjata, pembangkit, dan kilang untuk mendukung upaya perang."
+      },
+      "reserves": {
+        "name": "Cadangan kas",
+        "desc": "Menyimpan cadangan yang tidak boleh disentuh misi lain."
+      },
+      "repair": {
+        "name": "Rekonstruksi",
+        "desc": "Memperbaiki bangunan rusak, yang termahal lebih dulu."
+      }
+    },
+    "ministriesShort": {
+      "defense": "Pertahanan",
+      "economy": "Ekonomi"
+    },
+    "suggest": "Misi yang mungkin"
+  },
   "engine": {
     "place": {
       "sea": "di laut"
@@ -4262,6 +4638,14 @@
       "cmd_askReinforce": {
         "title": "Bala bantuan diminta",
         "text": "{{army}}: {{general}} meminta bala bantuan {{count}} tumpukan."
+      },
+      "gov_resigned": {
+        "title": "Pengunduran diri",
+        "text": "{{name}} mengundurkan diri: jabatan tidak lagi dibayar."
+      },
+      "gov_missionDone": {
+        "title": "Misi tercapai",
+        "text": "{{mission}}: target tercapai."
       }
     },
     "cmd": {
@@ -4341,6 +4725,88 @@
       "executedB": "{{host}} mengumumkan eksekusi seorang agen {{owner}} yang divonis atas spionase. Kecaman internasional.",
       "swapH": "Pertukaran agen antara {{a}} dan {{b}}",
       "swapB": "{{a}} dan {{b}} melakukan pertukaran tahanan: {{n}} agen dibebaskan."
+    },
+    "gov": {
+      "m": {
+        "air_bases": "Pangkalan udara",
+        "military_bases": "Pangkalan militer",
+        "upgrade_bases": "Modernisasi pangkalan",
+        "logistics": "Logistik militer",
+        "fortify": "Benteng perbatasan",
+        "air_defense": "Pertahanan udara wilayah",
+        "coastal": "Pertahanan pantai",
+        "research_next": "Generasi berikutnya",
+        "research_branch": "Riset per bidang",
+        "research_labs": "Laboratorium riset",
+        "produce": "Pesanan peralatan",
+        "stockpile": "Stok strategis",
+        "arms_industry": "Industri persenjataan",
+        "counterintel": "Kontraintelijen",
+        "protect_sites": "Perlindungan situs sensitif",
+        "watch": "Pengawasan suatu negara",
+        "map_defenses": "Pemetaan pertahanan",
+        "economic_intel": "Intelijen ekonomi",
+        "resource": "Produksi sumber daya",
+        "industry": "Pembangunan industri",
+        "revenue": "Peningkatan pendapatan",
+        "war_economy": "Ekonomi perang",
+        "reserves": "Cadangan kas",
+        "repair": "Rekonstruksi"
+      },
+      "focus": {
+        "counterintel": "kontraintelijen",
+        "protection": "perlindungan situs"
+      },
+      "j": {
+        "appointed": "{{name}} mulai menjabat.",
+        "replaced": "{{name}} meninggalkan jabatan (pesangon dibayar).",
+        "dismissed": "{{name}} diberhentikan (pesangon dibayar).",
+        "resigned": "{{name}} mengundurkan diri: jabatan tidak lagi dibayar.",
+        "unpaid": "{{name}} belum dibayar ({{days}} h berturut-turut).",
+        "missionNew": "Misi diterima: {{mission}}.",
+        "missionEdit": "Misi diubah: {{mission}}.",
+        "missionSuspended": "Misi ditangguhkan: {{mission}}.",
+        "missionResumed": "Misi dilanjutkan: {{mission}}.",
+        "missionCancelled": "Misi ditarik: {{mission}} (yang sudah dimulai tetap berjalan).",
+        "missionDone": "Misi tercapai: {{mission}}.",
+        "built": "Pembangunan dimulai: {{building}} level {{level}} di {{place}} — {{cost}}.",
+        "jobDone": "Pembangunan selesai: {{building}} level {{level}} di {{place}}.",
+        "repaired": "Perbaikan dimulai: {{building}} di {{place}} — {{cost}}.",
+        "research": "Riset dimulai: {{node}} — {{cost}}.",
+        "researched": "Riset diperoleh: {{node}}.",
+        "produced": "Pesanan dibuat: {{count}} × {{system}} di {{place}} — {{cost}}.",
+        "imported": "Impor: {{count}} × {{system}}, dikirim ke {{place}} — {{cost}}.",
+        "intelOp": "Operasi dimulai: {{op}} — {{cost}}.",
+        "intelOpAt": "Operasi dimulai: {{op}}, sasaran {{nation}} — {{cost}}.",
+        "opSuccess": "Operasi berhasil: {{op}}.",
+        "opFailed": "Operasi tanpa hasil: {{op}}.",
+        "focus": "Prioritas intelijen dalam negeri: {{focus}}.",
+        "protected": "Situs dilindungi: {{place}}.",
+        "blocked": "Terhambat — {{why}}"
+      },
+      "why": {
+        "noHead": "Jabatan kosong: angkat pejabat.",
+        "envelope": "Anggaran habis: tersedia {{left}}, dibutuhkan {{cost}}.",
+        "funds": "Dana tidak cukup: dibutuhkan {{cost}}.",
+        "reserve": "Cadangan kehati-hatian: kas harus tetap di atas {{floor}} (dibutuhkan {{cost}}).",
+        "resources": "Sumber daya tidak cukup.",
+        "noSite": "Tidak ada lokasi yang diizinkan di zona (pantai, cadangan, atau level maksimum).",
+        "noDeposit": "Tidak ada cadangan {{resource}} di wilayah.",
+        "research": "Riset diperlukan.",
+        "capacity": "Kapasitas penuh (antrean atau dinas).",
+        "locked": "Terhambat embargo atau blokade.",
+        "noTarget": "Sasaran tidak valid atau hilang.",
+        "noSystem": "Tidak ada peralatan “{{category}}” yang tersedia (riset, lisensi, atau impor).",
+        "noResearch": "Tidak ada riset yang tersedia untuk target ini.",
+        "nothingDamaged": "Tidak ada bangunan rusak.",
+        "saving": "Cadangan sedang dibentuk: {{pct}} %.",
+        "reserveHeld": "Cadangan tercapai: misi lain mematuhinya.",
+        "stocked": "Stok tercapai: diisi ulang begitu berkurang.",
+        "inProgress": "Aksi sedang berjalan.",
+        "refused": "Perintah ditolak.",
+        "unlocked": "Generasi berikutnya sudah tersedia.",
+        "allProtected": "Situs terlindungi maksimal."
+      }
     }
   }
 }

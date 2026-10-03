@@ -104,18 +104,15 @@
       "speedTip": "Gestion : durée des chantiers, commandes et recherches lancés.",
       "discount": "Coûts {{v}}",
       "discountTip": "Expertise : rabais négocié sur chaque dépense de ses missions.",
-      "slots_one": "{{count}} action à la fois",
-      "slots_other": "{{count}} actions à la fois",
       "slotsTip": "Gestion : actions menées en parallèle par chaque mission.",
       "reserve": "Réserve {{days}} j",
-      "reserveTip": "Prudence : jours de budget que ses missions laissent toujours en caisse."
+      "reserveTip": "Prudence : jours de budget que ses missions laissent toujours en caisse.",
+      "slots": "Parallèle : {{count}}"
     },
     "head": {
       "rating": "Note",
       "ratingTip": "Moyenne des trois compétences utiles au poste.",
       "cost": "Coût",
-      "unpaid_one": "{{count}} jour impayé",
-      "unpaid_other": "{{count}} jours impayés",
       "appoint": "Nommer · {{cost}}",
       "appointTip": "Prime de nomination (et indemnité du titulaire remplacé) : {{cost}}",
       "vacant": "Poste vacant.",
@@ -125,7 +122,8 @@
       "replaceTitle": "Remplacer — {{office}}",
       "replaceText": "Le titulaire actuel part avec une indemnité de {{cost}}. Les missions continuent avec le nouveau.",
       "dismissTitle": "Renvoyer le titulaire",
-      "dismissText": "{{name}} part avec une indemnité de {{cost}}. Les missions du poste attendront un successeur."
+      "dismissText": "{{name}} part avec une indemnité de {{cost}}. Les missions du poste attendront un successeur.",
+      "unpaid": "Impayé : {{count}} j"
     },
     "toast": {
       "appointed": "{{name}} nommé.",
@@ -146,8 +144,6 @@
     "mission": {
       "progress": "Avancement",
       "goalAuto": "Objectif fixé par le ministère",
-      "pending_one": "{{count}} en cours",
-      "pending_other": "{{count}} en cours",
       "budgetTip": "Dépensé (rabais déduits) sur l’enveloppe allouée.",
       "priority": "Priorité",
       "edit": "Modifier",
@@ -157,23 +153,17 @@
       "cancelTitle": "Retirer la mission",
       "cancelText": "« {{mission}} » est arrêtée. Les chantiers, commandes et opérations déjà lancés continuent.",
       "editTitle": "Modifier — {{mission}}",
-      "save": "Enregistrer"
+      "save": "Enregistrer",
+      "pending": "en cours : {{count}}"
     },
     "units": {
-      "projects_one": "{{done}} / {{goal}} chantier",
-      "projects_other": "{{done}} / {{goal}} chantiers",
-      "nodes_one": "{{done}} / {{goal}} recherche",
-      "nodes_other": "{{done}} / {{goal}} recherches",
-      "lots_one": "{{done}} / {{goal}} lot",
-      "lots_other": "{{done}} / {{goal}} lots",
-      "ops_one": "{{done}} / {{goal}} opération",
-      "ops_other": "{{done}} / {{goal}} opérations",
-      "days_one": "{{done}} / {{goal}} jour de budget",
-      "days_other": "{{done}} / {{goal}} jours de budget",
-      "sites_one": "{{done}} / {{goal}} site protégé",
-      "sites_other": "{{done}} / {{goal}} sites protégés",
-      "repairs_one": "{{done}} / {{goal}} réparation",
-      "repairs_other": "{{done}} / {{goal}} réparations"
+      "projects": "Chantiers : {{done}} / {{goal}}",
+      "nodes": "Recherches : {{done}} / {{goal}}",
+      "lots": "Lots : {{done}} / {{goal}}",
+      "ops": "Opérations : {{done}} / {{goal}}",
+      "days": "Jours de budget : {{done}} / {{goal}}",
+      "sites": "Sites protégés : {{done}} / {{goal}}",
+      "repairs": "Réparations : {{done}} / {{goal}}"
     },
     "budget": {
       "mode": "Enveloppe",
@@ -182,13 +172,11 @@
       "shareShort": "{{pct}} % des revenus",
       "amountShort": "Enveloppe fixe",
       "left": "Disponible : {{v}}",
-      "daysOf_one": "{{count}} jour de budget de défense",
-      "daysOf_other": "{{count}} jours de budget de défense",
-      "daysShort_one": "{{count}} jour",
-      "daysShort_other": "{{count}} jours",
       "perDayOf": "≈ {{v}} par jour (revenus {{rev}} / j)",
       "cap": "Plafond de dépenses",
-      "noCap": "Sans plafond : le crédit s’accumule chaque jour."
+      "noCap": "Sans plafond : le crédit s’accumule chaque jour.",
+      "daysOf": "{{count}} j de budget de défense",
+      "daysShort": "{{count}} j"
     },
     "priority": {
       "1": "Basse",
@@ -221,11 +209,10 @@
       "sea": "Marine",
       "air_defense": "Défense antiaérienne",
       "noChief": "Sans chef",
-      "ops_one": "{{count}} opération",
-      "ops_other": "{{count}} opérations",
       "soon": "Chefs et opérations : en préparation au QG.",
       "soonBadge": "En préparation",
-      "now": "Aujourd’hui au QG : {{armies}} armée(s), {{generals}} général(aux)."
+      "now": "Aujourd’hui au QG : armées {{armies}}, généraux {{generals}}.",
+      "ops": "Opérations : {{count}}"
     },
     "kpi": {
       "heads": "Titulaires",
@@ -281,9 +268,7 @@
       "reserveTarget": "Trésorerie visée",
       "envelope": "Enveloppe",
       "open": "part des revenus, sans plafond",
-      "covers": "L’enveloppe couvre",
-      "coversN_one": "≈ {{count}} action",
-      "coversN_other": "≈ {{count}} actions",
+      "covers": "Actions couvertes par l’enveloppe",
       "head": "{{name}} : vitesse +{{speed}} %, rabais {{discount}} %, garde {{reserve}} en caisse.",
       "vacant": "Poste vacant : la mission attendra un titulaire.",
       "note": "Estimation d’après vos provinces et les prix du jour ; le ministère respecte l’enveloppe et vos ressources.",
@@ -293,7 +278,8 @@
       "unlocked": "La génération suivante est déjà accessible.",
       "noResearch": "Aucune recherche restante pour cet objectif.",
       "nothingDamaged": "Aucun bâtiment endommagé pour l’instant.",
-      "few": "Seulement {{count}} actions possibles dans la zone : l’objectif sera ramené à ce qui est faisable."
+      "few": "Actions possibles dans la zone : {{count}}, moins que l’objectif ; il sera ramené à ce qui est faisable.",
+      "coversN": "≈ {{count}}"
     },
     "missions": {
       "air_bases": {

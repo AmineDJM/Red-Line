@@ -505,7 +505,6 @@ function MissionCard({ m, gv }: { m: GovMissionView; gv: GovernmentView }) {
                 ? t(`gov.units.${unit}`, {
                     done: formatInt(m.done),
                     goal: formatInt(m.goal),
-                    count: m.goal,
                   })
                 : t('gov.mission.goalAuto')}
               {m.pending ? <em> · {t('gov.mission.pending', { count: m.pending })}</em> : null}
