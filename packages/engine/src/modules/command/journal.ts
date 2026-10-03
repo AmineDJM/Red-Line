@@ -3,7 +3,7 @@ import { notify } from '../../state/access.js';
 import { noteLoc } from '../../state/loc.js';
 import type { EngineState } from '../../state/types.js';
 import { wi } from '../../state/world.js';
-import { cmdBal, type ArmySt } from './state.js';
+import { cmdBal, type ArmySt, type OpSt } from './state.js';
 
 /**
  * Comptes rendus du général : journal de l'armée (clés `engine.cmd.j.<id>` + paramètres, traduits par
@@ -50,6 +50,40 @@ export function journal(
   if (a.journal.length > max) a.journal.splice(0, a.journal.length - max);
 }
 
+/** Comptes rendus du planificateur qu'une relance identique ne duplique pas. */
+const OP_REPEATABLE = new Set([
+  'strikes',
+  'offensive',
+  'blockade',
+  'recon',
+  'sectorDone',
+  'tooWeak',
+]);
+
+/** Journal d'une opération (clés `engine.cmd.op.<id>`), même règle de non-répétition. */
+export function opJournal(
+  state: EngineState,
+  op: OpSt,
+  id: string,
+  params: Record<string, LocParam> = {},
+  tone: Tone = 'info',
+): void {
+  const text = loc(`engine.cmd.op.${id}`, params);
+  const last = op.journal[op.journal.length - 1];
+  if (
+    last &&
+    OP_REPEATABLE.has(id) &&
+    last.text.key === text.key &&
+    JSON.stringify(last.text.params ?? {}) === JSON.stringify(text.params ?? {})
+  ) {
+    last.t = state.time;
+    return;
+  }
+  op.journal.push({ t: state.time, text, tone });
+  const max = cmdBal(state).journalMax * 2;
+  if (op.journal.length > max) op.journal.splice(0, op.journal.length - max);
+}
+
 /** Textes français de repli des notifications (le client affiche la clé traduite). */
 const FR: Record<string, [string, string]> = {
   generalResigned: ['Démission', '{{general}} démissionne : sa solde n’est plus payée.'],
@@ -70,6 +104,15 @@ const FR: Record<string, [string, string]> = {
     '{{army}} : {{general}} demande l’autorisation de frapper l’arrière de {{nation}}.',
   ],
   askReinforce: ['Renforts demandés', '{{army}} : {{general}} demande {{count}} piles en renfort.'],
+  opAskWar: [
+    'Autorisation demandée',
+    'Opération {{op}} : l’état-major demande l’autorisation d’entrer en guerre contre {{nation}}.',
+  ],
+  opSuccess: ['Opération réussie', 'Opération {{op}} : objectif atteint.'],
+  opFailed: ['Opération échouée', 'Opération {{op}} : échec.'],
+  opAchieved: ['Objectif atteint', 'Opération {{op}} : objectif atteint, il est maintenu.'],
+  opHeavyLosses: ['Pertes lourdes', 'Opération {{op}} : {{pct}} % des forces perdues en 24 h.'],
+  opStuck: ['Opération enlisée', 'Opération {{op}} : aucun progrès depuis longtemps.'],
 };
 
 function frText(state: EngineState, s: string, params: Record<string, LocParam>): string {

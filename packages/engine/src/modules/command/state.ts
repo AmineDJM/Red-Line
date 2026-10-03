@@ -3,7 +3,12 @@ import {
   type Aggressiveness,
   type ArmyJournalEntry,
   type ArmyStatus,
+  type Branch,
   type CommandBalance,
+  type OpMetric,
+  type OpPhase,
+  type OpSector,
+  type OpStatus,
   type GameTime,
   type GeneralSkill,
   type LngLat,
@@ -93,6 +98,70 @@ export interface ArmySt {
   mem: ArmyMemory;
   /** Version : invalide les réflexions programmées. */
   v: number;
+  /** Opération dont l'armée fait partie (son général y tient le rôle `OpSt.roles[id]`). */
+  op?: string;
+  /** Armée formée d'office pour une opération (dissoute quand elle la quitte). */
+  opAuto?: boolean;
+}
+
+/** Ordre d'opération : pays cibles, objectif, généraux (armées), planificateur commun. */
+export interface OpSt {
+  id: string;
+  owner: NationId;
+  name: string;
+  goal: string;
+  nations: NationId[];
+  /** Région visée (Occuper) : provinces désignées. */
+  provinces?: ProvinceId[];
+  aggr: Aggressiveness;
+  roe: Roe;
+  retreatAt?: number;
+  deadline: GameTime | null;
+  since: GameTime;
+  status: OpStatus;
+  suspended: boolean;
+  /** Armées (une par général), dans l'ordre d'engagement. */
+  armies: string[];
+  roles: Record<string, Branch>;
+  /** Secteurs de l'armée de terre (orientation, provinces), recalculés quand les forces changent. */
+  sectors: Record<string, { dir: OpSector; pids: ProvinceId[] }>;
+  /** Provinces à prendre (conquête, décapitation, occupation), figées au lancement. */
+  targets: ProvinceId[];
+  /** Mesures de référence au lancement : forces estimées, détruites par nation, ports, front. */
+  base: { enemy: number; killed: Record<NationId, number>; ports: number; front: ProvinceId[] };
+  /** Contacts ennemis identifiés vus depuis le lancement (défense sol-air, aéronefs), bâtiments visés. */
+  seen: { sams: string[]; air: string[]; bld: string[] };
+  /** Dernier aéronef ennemi vu en vol au-dessus des cibles. */
+  airAt: GameTime | null;
+  strikes: number;
+  captures: number;
+  losses: number;
+  /** Valeur (dollars) des forces des pays visés détruite par la nation depuis le lancement. */
+  kills?: number;
+  phase: OpPhase;
+  /** Fin du rassemblement (borné). */
+  stageUntil: GameTime;
+  /** Dernier progrès de la mesure principale (enlisement) et meilleure valeur atteinte. */
+  progressAt: GameTime;
+  best: number;
+  doneAt: GameTime | null;
+  request: { id: string; kind: 'declare_war'; nationId: NationId; at: GameTime } | null;
+  okWar: NationId[];
+  journal: ArmyJournalEntry[];
+  prog: { key: OpMetric; done: number; total: number }[];
+  pct: number;
+  start: number;
+  now: number;
+  /** Valeur engagée au début de la fenêtre de 24 h (alerte « pertes lourdes »). */
+  day: [GameTime, number];
+  /** Dernières alertes émises (clé → date). */
+  alerts: Record<string, GameTime>;
+  /** Dernière reconnaissance lancée. */
+  reconAt: GameTime | null;
+  est: { ratio: number; etaHours: number | null; chance: number } | null;
+  /** Objectifs en cours des généraux de l'armée de terre (appui aérien, couverture). */
+  focus?: LngLat[];
+  v: number;
 }
 
 export interface GenSt {
@@ -115,6 +184,8 @@ export interface GenSt {
   /** Jours de salaire impayés consécutifs. */
   unpaid: number;
   victories: number;
+  /** Commandement (arme) ; absent dans les anciennes sauvegardes (déduit des compétences). */
+  branch?: Branch;
 }
 
 export interface PoolSt {
@@ -136,6 +207,12 @@ export interface CmdState {
   pools: Record<NationId, PoolSt>;
   /** Tick de réflexion programmé. */
   ticking: boolean;
+  /** Viviers des commandements air, mer et DCA (`<nation>:<arme>`) ; celui de l'armée de terre est `pools`. */
+  bpools?: Record<string, PoolSt>;
+  /** Généraux en chef : nation → arme → général. */
+  chiefs?: Record<NationId, Partial<Record<Branch, string>>>;
+  /** Opérations (absent des sauvegardes antérieures). */
+  ops?: Record<string, OpSt>;
 }
 
 export function emptyCmd(): CmdState {

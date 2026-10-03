@@ -1,7 +1,9 @@
 import {
+  BRANCHES,
   DAY,
   GENERAL_SKILLS,
   generalRating,
+  type Branch,
   type CommandGeneralView,
   type GeneralSkill,
   type GeneralTraitDef,
@@ -36,6 +38,7 @@ import {
 
 export interface Candidate {
   idx: number;
+  branch: Branch;
   first: string;
   last: string;
   culture: string;
@@ -70,6 +73,25 @@ function coprime(n: number, from: number): number {
 
 const SPECIALTIES: GeneralSkill[] = ['offense', 'defense', 'logistics', 'air', 'naval'];
 
+/**
+ * Spécialités tirées selon le commandement : armée de terre (offensive, défensive, logistique),
+ * aviation, marine, défense sol-air (défensive et aviation). Spécialité principale puis secondaire.
+ */
+const BRANCH_MAIN: Record<Branch, GeneralSkill[]> = {
+  land: ['offense', 'defense', 'logistics', 'offense', 'logistics'],
+  air: ['air', 'air', 'air', 'air', 'air'],
+  sea: ['naval', 'naval', 'naval', 'naval', 'naval'],
+  ad: ['defense', 'defense', 'air', 'defense', 'defense'],
+};
+const BRANCH_SECOND: Record<Branch, GeneralSkill[]> = {
+  land: SPECIALTIES.filter((k) => k !== 'naval'),
+  air: ['offense', 'logistics', 'defense', 'air', 'logistics'],
+  sea: ['offense', 'logistics', 'air', 'defense', 'naval'],
+  ad: ['air', 'air', 'logistics', 'defense', 'offense'],
+};
+/** Décalage des noms d'un vivier à l'autre (pas de candidats homonymes entre commandements). */
+const NAME_OFFSET: Record<Branch, number> = { land: 0, air: 101, sea: 211, ad: 307 };
+
 /** Conditions d'un trait (cohérence avec les compétences). */
 function traitFits(id: string, s: Record<GeneralSkill, number>): boolean {
   switch (id) {
@@ -96,21 +118,28 @@ function traitFits(id: string, s: Record<GeneralSkill, number>): boolean {
   }
 }
 
-/** Candidat n° `idx` du vivier d'une nation : fonction pure de la graine. */
-export function candidate(state: EngineState, n: NationId, idx: number): Candidate {
+/** Candidat n° `idx` du vivier d'un commandement d'une nation : fonction pure de la graine. */
+export function candidate(
+  state: EngineState,
+  n: NationId,
+  idx: number,
+  branch: Branch = 'land',
+): Candidate {
   const G = cmdBal(state).generals;
-  const r = seedRng(hashStr(`${n}:${idx}`, (state.setup.seed ^ 0x6e6e) >>> 0));
+  const key = branch === 'land' ? `${n}:${idx}` : `${n}:${branch}:${idx}`;
+  const r = seedRng(hashStr(key, (state.setup.seed ^ 0x6e6e) >>> 0));
   const culture = cultureOf(n);
   const names = CULTURES[culture] ?? CULTURES.en!;
   // Noms distincts d'un candidat à l'autre : pas premier avec la longueur de chaque liste.
   const base = seedRng(hashStr(n, (state.setup.seed ^ 0x6e6f) >>> 0));
   const o1 = Math.floor(nextFloat(base) * names.first.length);
   const o2 = Math.floor(nextFloat(base) * names.last.length);
-  const first = names.first[(o1 + idx * coprime(names.first.length, 7)) % names.first.length]!;
-  const last = names.last[(o2 + idx * coprime(names.last.length, 5)) % names.last.length]!;
+  const ni = idx + NAME_OFFSET[branch];
+  const first = names.first[(o1 + ni * coprime(names.first.length, 7)) % names.first.length]!;
+  const last = names.last[(o2 + ni * coprime(names.last.length, 5)) % names.last.length]!;
   const rating = clamp(G.skillMean + G.skillSpread * gauss(r), 18, 94);
-  const main = SPECIALTIES[Math.floor(nextFloat(r) * SPECIALTIES.length)]!;
-  const second = SPECIALTIES[Math.floor(nextFloat(r) * SPECIALTIES.length)]!;
+  const main = BRANCH_MAIN[branch][Math.floor(nextFloat(r) * 5)]!;
+  const second = BRANCH_SECOND[branch][Math.floor(nextFloat(r) * 5)]!;
   const skills = {} as Record<GeneralSkill, number>;
   for (const k of GENERAL_SKILLS) {
     if (k === 'audacity') skills[k] = Math.round(clamp(15 + 70 * nextFloat(r), 5, 95));
@@ -142,7 +171,43 @@ export function candidate(state: EngineState, n: NationId, idx: number): Candida
     }
   }
   traits.sort();
-  return { idx, first, last, culture, skills, traits };
+  return { idx, branch, first, last, culture, skills, traits };
+}
+
+/** Commandement d'un général (anciennes sauvegardes : d'après sa compétence dominante). */
+export function branchOf(g: { branch?: Branch; skills: Record<GeneralSkill, number> }): Branch {
+  if (g.branch) return g.branch;
+  const s = g.skills;
+  const ground = Math.max(s.offense, s.defense, s.logistics);
+  if (s.air > ground && s.air >= s.naval) return 'air';
+  if (s.naval > ground && s.naval > s.air) return 'sea';
+  return 'land';
+}
+
+/** Général en chef de son commandement ? */
+export function isChief(state: EngineState, g: GenSt): boolean {
+  return cmdOpt(state)?.chiefs?.[g.owner]?.[branchOf(g)] === g.id;
+}
+
+/**
+ * Compétences effectives d'un général en campagne : avance du général en chef de son arme (part
+ * `chiefBonus` de l'écart note − 50), adjoint aux commandes si le général est blessé.
+ */
+export function effectiveSkills(state: EngineState, g: GenSt): Record<GeneralSkill, number> {
+  const O = cmdBal(state).operations;
+  const c = cmdOpt(state);
+  const chiefId = c?.chiefs?.[g.owner]?.[branchOf(g)];
+  const chief = chiefId && chiefId !== g.id ? c?.gens[chiefId] : undefined;
+  const bonus =
+    chief && chief.status === 'active'
+      ? Math.max(0, (generalRating(chief.skills) - 50) * O.chiefBonus)
+      : 0;
+  const k = g.status === 'wounded' ? O.deputySkill : 1;
+  const out = {} as Record<GeneralSkill, number>;
+  for (const key of GENERAL_SKILLS)
+    out[key] =
+      key === 'audacity' ? g.skills[key] : Math.round(Math.min(99, (g.skills[key] + bonus) * k));
+  return out;
 }
 
 /** Effets cumulés des traits d'un général. */
@@ -199,6 +264,7 @@ export function salaryOf(
   n: NationId,
   skills: Record<GeneralSkill, number>,
   traits: string[],
+  chief = false,
 ): number {
   const G = cmdBal(state).generals;
   const ranks = G.ranks;
@@ -208,29 +274,47 @@ export function salaryOf(
   const hi = ranks[k + 1]?.minRating ?? 100;
   const frac = clamp((rating - lo) / Math.max(1, hi - lo), 0, 1);
   let s = ranks[k]!.salaryUsdPerDay * (1 + G.rankPremium * frac) * traitSum(state, traits).salary;
+  if (chief) s *= cmdBal(state).operations.chiefSalary;
   if (G.useCostIndex && state.world.balance.money) s *= costIndexOf(state, n);
   return Math.round(s / 1000) * 1000;
 }
 
 // ——— Vivier ———
 
-function poolOf(state: EngineState, n: NationId, create: boolean): PoolSt {
+/** Vivier d'un commandement (armée de terre : `pools[n]`, les autres : `bpools["n:arme"]`). */
+function poolOf(state: EngineState, n: NationId, create: boolean, branch: Branch = 'land'): PoolSt {
   const c = create ? cmd(state) : cmdOpt(state);
   const size = cmdBal(state).generals.poolSize;
-  const existing = c?.pools[n];
+  const key = `${n}:${branch}`;
+  const existing = branch === 'land' ? c?.pools[n] : c?.bpools?.[key];
   if (existing) return existing;
   const p: PoolSt = { ids: [...Array(size).keys()], next: size, at: state.time };
-  if (create) cmd(state).pools[n] = p;
+  if (create) {
+    const cc = cmd(state);
+    if (branch === 'land') cc.pools[n] = p;
+    else (cc.bpools ??= {})[key] = p;
+  }
   return p;
 }
 
-export function candidateId(idx: number): string {
-  return `cand${idx}`;
+export function candidateId(idx: number, branch: Branch = 'land'): string {
+  return branch === 'land' ? `cand${idx}` : `cand-${branch}-${idx}`;
 }
 
-/** Candidats proposés à une nation (sans modifier l'état). */
-export function candidatesOf(state: EngineState, n: NationId): Candidate[] {
-  return poolOf(state, n, false).ids.map((i) => candidate(state, n, i));
+/** Identifiant de candidat → commandement et rang (null si mal formé). */
+export function parseCandidate(id: string): { branch: Branch; idx: number } | null {
+  const m = /^cand(?:-(air|sea|ad)-)?(\d+)$/.exec(id);
+  if (!m) return null;
+  return { branch: (m[1] as Branch | undefined) ?? 'land', idx: Number(m[2]) };
+}
+
+/** Candidats proposés à une nation par un commandement (sans modifier l'état). */
+export function candidatesOf(
+  state: EngineState,
+  n: NationId,
+  branch: Branch = 'land',
+): Candidate[] {
+  return poolOf(state, n, false, branch).ids.map((i) => candidate(state, n, i, branch));
 }
 
 /** Renouvellement du vivier : le plus ancien candidat non recruté laisse sa place. */
@@ -239,8 +323,9 @@ export function refreshPools(state: EngineState): void {
   if (!c) return;
   const days = cmdBal(state).generals.poolRefreshDays;
   if (days <= 0) return;
-  for (const n of Object.keys(c.pools).sort()) {
-    const p = c.pools[n]!;
+  const all = [...Object.values(c.pools)];
+  for (const k of Object.keys(c.bpools ?? {}).sort()) all.push(c.bpools![k]!);
+  for (const p of all) {
     if (state.time - p.at < days * DAY) continue;
     p.ids.shift();
     p.ids.push(p.next++);
@@ -256,7 +341,9 @@ function status(g: GenSt): CommandGeneralView['status'] {
 
 export function generalView(state: EngineState, g: GenSt): CommandGeneralView {
   const G = cmdBal(state).generals;
-  const salary = salaryOf(state, g.owner, g.skills, g.traits);
+  const chief = isChief(state, g);
+  const salary = salaryOf(state, g.owner, g.skills, g.traits, chief);
+  const army = g.army ? cmdOpt(state)?.armies[g.army] : undefined;
   return {
     id: g.id,
     first: g.first,
@@ -274,6 +361,9 @@ export function generalView(state: EngineState, g: GenSt): CommandGeneralView {
     ...(g.woundedUntil !== null && g.status === 'wounded' ? { woundedUntil: g.woundedUntil } : {}),
     ...(g.unpaid > 0 ? { unpaidDays: g.unpaid } : {}),
     victories: g.victories,
+    branch: branchOf(g),
+    ...(chief ? { chief: true } : {}),
+    opId: army?.op ?? null,
   };
 }
 
@@ -281,7 +371,7 @@ export function candidateView(state: EngineState, n: NationId, c: Candidate): Co
   const G = cmdBal(state).generals;
   const salary = salaryOf(state, n, c.skills, c.traits);
   return {
-    id: candidateId(c.idx),
+    id: candidateId(c.idx, c.branch),
     first: c.first,
     last: c.last,
     culture: c.culture,
@@ -295,6 +385,7 @@ export function candidateView(state: EngineState, n: NationId, c: Candidate): Co
     status: 'candidate',
     armyId: null,
     victories: 0,
+    branch: c.branch,
   };
 }
 
@@ -320,7 +411,7 @@ export function payroll(state: EngineState): void {
     const g = c.gens[id]!;
     const ns = state.nations[g.owner];
     if (!ns?.alive) continue;
-    const salary = salaryOf(state, g.owner, g.skills, g.traits);
+    const salary = salaryOf(state, g.owner, g.skills, g.traits, isChief(state, g));
     if (ns.money >= salary) {
       charge(state, g.owner, salary);
       g.unpaid = 0;
@@ -352,6 +443,8 @@ export function removeGeneral(state: EngineState, g: GenSt): void {
     a.general = null;
     a.v++;
   }
+  const chiefs = c.chiefs?.[g.owner];
+  if (chiefs) for (const b of BRANCHES) if (chiefs[b] === g.id) delete chiefs[b];
   delete c.gens[g.id];
 }
 
@@ -368,31 +461,37 @@ export function checkHire(
   state: EngineState,
   n: NationId,
   candidateId: string,
-): { ok: true; idx: number } | { ok: false; res: OrderResult } {
+): { ok: true; idx: number; branch: Branch } | { ok: false; res: OrderResult } {
   const B = cmdBal(state);
   if (!B.enabled)
     return { ok: false, res: fail('not_allowed', 'Centre de commandement désactivé.') };
-  const m = /^cand(\d+)$/.exec(candidateId);
-  const idx = m ? Number(m[1]) : -1;
-  if (!m || !poolOf(state, n, false).ids.includes(idx))
+  const pc = parseCandidate(candidateId);
+  if (!pc || !poolOf(state, n, false, pc.branch).ids.includes(pc.idx))
     return { ok: false, res: fail('invalid_target', 'Candidat inconnu.') };
-  const cand = candidate(state, n, idx);
+  const { idx, branch } = pc;
+  const cand = candidate(state, n, idx, branch);
   const bonus = Math.round(
     salaryOf(state, n, cand.skills, cand.traits) * B.generals.signingBonusDays,
   );
   if (state.nations[n]!.money < bonus)
     return { ok: false, res: fail('insufficient_funds', 'Trésorerie insuffisante.') };
-  return { ok: true, idx };
+  return { ok: true, idx, branch };
 }
 
 /** Recrute le candidat (prime d'engagement), le remplace dans le vivier, lui confie l'armée. */
-export function doHire(state: EngineState, n: NationId, idx: number, army: ArmySt | null): GenSt {
+export function doHire(
+  state: EngineState,
+  n: NationId,
+  idx: number,
+  army: ArmySt | null,
+  branch: Branch = 'land',
+): GenSt {
   const B = cmdBal(state);
   const c = cmd(state);
-  const cand = candidate(state, n, idx);
+  const cand = candidate(state, n, idx, branch);
   const salary = salaryOf(state, n, cand.skills, cand.traits);
   charge(state, n, Math.round(salary * B.generals.signingBonusDays));
-  const p = poolOf(state, n, true);
+  const p = poolOf(state, n, true, branch);
   p.ids = p.ids.filter((x) => x !== idx);
   p.ids.push(p.next++);
   const id = nextCmdId(state, 'g');
@@ -413,6 +512,7 @@ export function doHire(state: EngineState, n: NationId, idx: number, army: ArmyS
     woundedUntil: null,
     unpaid: 0,
     victories: 0,
+    branch,
   };
   c.gens[id] = g;
   if (army) assign(state, g, army);
@@ -429,7 +529,7 @@ export function orderHire(
   if (o.armyId && (!army || army.owner !== n)) return fail('invalid_target', 'Armée inconnue.');
   const r = checkHire(state, n, o.candidateId);
   if (!r.ok) return r.res;
-  doHire(state, n, r.idx, army ?? null);
+  doHire(state, n, r.idx, army ?? null, r.branch);
   return { ok: true };
 }
 
@@ -461,7 +561,7 @@ export function orderDismiss(
   const c = cmd(state);
   const g = c.gens[o.generalId];
   if (!g || g.owner !== n) return fail('invalid_target', 'Général inconnu.');
-  const salary = salaryOf(state, n, g.skills, g.traits);
+  const salary = salaryOf(state, n, g.skills, g.traits, isChief(state, g));
   const sev = Math.round(salary * cmdBal(state).generals.severanceDays);
   if (state.nations[n]!.money < sev)
     return fail('insufficient_funds', 'Trésorerie insuffisante pour l’indemnité.');
@@ -469,6 +569,28 @@ export function orderDismiss(
   const a = g.army ? c.armies[g.army] : null;
   if (a) journal(state, a, 'dismissed', { general: fullName(g) }, 'warn');
   removeGeneral(state, g);
+  return { ok: true };
+}
+
+/** Nomme (ou retire) le général en chef d'un commandement. */
+export function orderChief(
+  state: EngineState,
+  n: NationId,
+  o: Extract<Order, { kind: 'commandChief' }>,
+): OrderResult {
+  const c = cmd(state);
+  if (o.generalId === null) {
+    const cur = c.chiefs?.[n]?.[o.branch];
+    if (cur) delete c.chiefs![n]![o.branch];
+    return { ok: true };
+  }
+  const g = c.gens[o.generalId];
+  if (!g || g.owner !== n) return fail('invalid_target', 'Général inconnu.');
+  if (g.status === 'dead' || g.status === 'resigned')
+    return fail('not_allowed', 'Ce général n’est plus en service.');
+  if (branchOf(g) !== o.branch)
+    return fail('not_allowed', 'Ce général n’appartient pas à ce commandement.');
+  ((c.chiefs ??= {})[n] ??= {})[o.branch] = g.id;
   return { ok: true };
 }
 

@@ -33,7 +33,7 @@ import { isLauncher } from '../../encounters/profile.js';
 import { atWar, provincesOf, sortedKeys, sysOf, unitPosAt } from '../../state/access.js';
 import type { EngineState, Unit } from '../../state/types.js';
 import { CAPTURE_RADIUS_KM, wi } from '../../state/world.js';
-import { board } from '../kit.js';
+import { health as bldHealth } from '../eco/buildings.js';
 import { knowledge, revealed } from '../intel/provinces.js';
 import {
   canFly,
@@ -53,6 +53,7 @@ import { cellsLeft, missileForShip } from '../mil/strike.js';
 import { strikeRangeKm } from '../mil/util.js';
 import { capacityOf } from '../mil/transport.js';
 import { addUnits, armyValue, targetParam } from './armies.js';
+import { thinkOpArmy } from './opbrain.js';
 import { fullName, gainXp, traitSum } from './generals.js';
 import { journal, notifyOwner } from './journal.js';
 import {
@@ -83,13 +84,24 @@ export function generalDriving(): boolean {
   return driving;
 }
 
-function order(state: EngineState, n: NationId, o: Order): boolean {
+/** Le général donne ses ordres pendant `fn` (ils ne passent pas les piles en ordre manuel). */
+export function asGeneral(fn: () => void): void {
+  const was = driving;
+  driving = true;
+  try {
+    fn();
+  } finally {
+    driving = was;
+  }
+}
+
+export function order(state: EngineState, n: NationId, o: Order): boolean {
   return aiOrder(state, n, o).ok;
 }
 
-type Aggr = CommandBalance['aggressiveness']['balanced'];
+export type Aggr = CommandBalance['aggressiveness']['balanced'];
 
-interface Think {
+export interface Think {
   state: EngineState;
   a: ArmySt;
   m: MissionSt;
@@ -135,7 +147,7 @@ export function levelFor(
 }
 
 /** Pile disponible pour le général : ni ordre manuel en cours, ni au repos. */
-function commanded(state: EngineState, a: ArmySt): string[] {
+export function commanded(state: EngineState, a: ArmySt): string[] {
   return a.units.filter((id) => {
     const u = state.units[id];
     return !!u && u.owner === a.owner && !a.manual[id] && !a.rest?.[id];
@@ -143,7 +155,7 @@ function commanded(state: EngineState, a: ArmySt): string[] {
 }
 
 /** Provinces déjà visées par les autres armées de la nation. */
-function otherAims(state: EngineState, a: ArmySt): ProvinceId[] {
+export function otherAims(state: EngineState, a: ArmySt): ProvinceId[] {
   const c = cmd(state);
   const out = new Set<ProvinceId>();
   for (const id of Object.keys(c.armies).sort()) {
@@ -169,18 +181,18 @@ function scopeOf(
   };
 }
 
-function cityOf(state: EngineState, pid: ProvinceId): LngLat {
+export function cityOf(state: EngineState, pid: ProvinceId): LngLat {
   return wi(state.world).provById.get(pid)!.cityPoint;
 }
 
 /** Piles aériennes commandées (aéronefs à carburant). */
-function airUnits(state: EngineState, a: ArmySt): Unit[] {
+export function airUnits(state: EngineState, a: ArmySt): Unit[] {
   return commanded(state, a)
     .map((id) => state.units[id]!)
     .filter((u) => sysOf(state, u).movement === 'air' && !u.role);
 }
 
-function seaUnits(state: EngineState, a: ArmySt): Unit[] {
+export function seaUnits(state: EngineState, a: ArmySt): Unit[] {
   return commanded(state, a)
     .map((id) => state.units[id]!)
     .filter((u) => !u.off && sysOf(state, u).movement === 'sea');
@@ -252,7 +264,7 @@ function ask(t: Think, kind: 'declare_war' | 'strategic_strike', o: NationId): v
 // ——— Repli et renforts ———
 
 /** Piles trop éprouvées : repli vers la ville amie la plus proche ; retour quand elles sont remises. */
-function retreat(t: Think): void {
+export function retreat(t: Think): void {
   const { state, a, m, n, T } = t;
   a.rest ??= {};
   const threshold = Math.max(0, Math.min(0.9, m.retreatAt + T.retreatAt));
@@ -298,7 +310,7 @@ function retreat(t: Think): void {
 }
 
 /** Effectifs sous le seuil : piles libres proches proposées (ou intégrées d'office). */
-function reinforcements(t: Think, shortfall = 0): void {
+export function reinforcements(t: Think, shortfall = 0): void {
   const { state, a, g, n } = t;
   const R = cmdBal(state).reinforce;
   if (a.reinforce === 'off' || a.request || state.time < a.askAfter || a.start <= 0) return;
@@ -363,7 +375,7 @@ function reinforcements(t: Think, shortfall = 0): void {
  * Aucune offensive possible faute de forces : le général le dit (journal espacé de 12 h) et demande
  * des renforts terrestres à la mesure du manque.
  */
-function tooWeak(t: Think, ctx: Ctx, need: number): void {
+export function tooWeak(t: Think, ctx: Ctx, need: number): void {
   const { state, a } = t;
   if (need <= 0) return;
   let have = 0;
@@ -437,7 +449,7 @@ function airSupport(t: Think, objectives: LngLat[], forceCover: boolean): void {
 }
 
 /** Avion radar en orbite au-dessus de la zone (un seul). */
-function awacs(t: Think, at: LngLat): void {
+export function awacs(t: Think, at: LngLat): void {
   const { state, a, n } = t;
   const ms = mil(state).ms;
   const air = airUnits(state, a).filter((u) => isAew(sysOf(state, u)));
@@ -449,7 +461,7 @@ function awacs(t: Think, at: LngLat): void {
 }
 
 /** Chasseurs en patrouille au-dessus de la zone (une part, le reste en alerte au sol). */
-function airPatrol(t: Think, at: LngLat, r: number, share: number): void {
+export function airPatrol(t: Think, at: LngLat, r: number, share: number): void {
   const { state, a, n, T } = t;
   const ms = mil(state).ms;
   const fighters = airUnits(state, a).filter((u) => isFighter(sysOf(state, u)));
@@ -504,7 +516,7 @@ function seadIn(t: Think, at: LngLat, r: number): void {
 // ——— Défense antiaérienne au sol ———
 
 /** Défenses sol-air de l'armée réparties sur les villes à couvrir (une par ville, par importance). */
-function placeAirDefense(t: Think, holds: ProvinceId[]): void {
+export function placeAirDefense(t: Think, holds: ProvinceId[]): void {
   const { state, a, n } = t;
   const gc = state.world.balance.combat.groundContactKm;
   const ads = commanded(state, a)
@@ -546,7 +558,7 @@ function placeAirDefense(t: Think, holds: ProvinceId[]): void {
 
 // ——— Missions ———
 
-const STRATEGIC: Partial<Record<BuildingType, number>> = {
+export const STRATEGIC: Partial<Record<BuildingType, number>> = {
   air_defense_site: 5,
   radar_station: 4,
   air_base: 3,
@@ -559,7 +571,7 @@ const STRATEGIC: Partial<Record<BuildingType, number>> = {
   research_center: 1,
 };
 
-function bordersOwned(state: EngineState, n: NationId, pid: ProvinceId): number {
+export function bordersOwned(state: EngineState, n: NationId, pid: ProvinceId): number {
   const def = wi(state.world).provById.get(pid);
   let k = 0;
   for (const x of def?.neighbors ?? []) if (state.provinces[x]?.owner === n) k++;
@@ -641,7 +653,7 @@ function brainConquer(t: Think): void {
   if (ctx.ops && Object.keys(ctx.ops).length && !launched) a.status = 'preparing';
 }
 
-function aimsOf(ctx: Ctx): ProvinceId[] {
+export function aimsOf(ctx: Ctx): ProvinceId[] {
   const out = new Set<ProvinceId>(Object.keys(ctx.ops));
   for (const k of Object.keys(ctx.commit)) out.add(ctx.commit[k]![0]);
   for (const k of Object.keys(ctx.mem?.tr ?? {})) out.add(ctx.mem!.tr![k]!.pid);
@@ -694,7 +706,7 @@ function brainLanding(t: Think): void {
 }
 
 /** Part supposée des forces publiques de l'ennemi dans une province côtière qu'on ne voit pas. */
-function landingPrior(state: EngineState, n: NationId, owner: NationId): number {
+export function landingPrior(state: EngineState, n: NationId, owner: NationId): number {
   const provs = Math.max(1, state.nations[owner]?.provinceCount ?? 1);
   return (
     (estimateForce(state, n, owner, ownForce(state, n), 1) / provs) *
@@ -1001,7 +1013,6 @@ export function strategicTargets(
   o: NationId,
 ): { pid: ProvinceId; b: BuildingType; at: LngLat; score: number }[] {
   const out: { pid: ProvinceId; b: BuildingType; at: LngLat; score: number }[] = [];
-  const health = board(state).buildingHealth ?? {};
   for (const pid of provincesOf(state, o).sort()) {
     const k = knowledge(state, n, pid);
     if (!k || (k.m <= 0 && k.e <= 0)) continue;
@@ -1009,7 +1020,7 @@ export function strategicTargets(
     for (const b of revealed(pid, buildingsOf(state, pid), k)) {
       const pr = STRATEGIC[b];
       if (!pr) continue;
-      if ((health[pid]?.[b] ?? 1) <= 0) continue;
+      if (bldHealth(state, pid, b) <= 0) continue;
       out.push({ pid, b, at, score: pr });
     }
   }
@@ -1032,7 +1043,7 @@ const BRAINS: Record<string, (t: Think) => void> = {
 };
 
 /** Une pile a-t-elle fini l'ordre manuel du joueur (immobile, sans cible, aéronef posé) ? */
-function manualDone(state: EngineState, u: Unit): boolean {
+export function manualDone(state: EngineState, u: Unit): boolean {
   if (u.move || u.target) return false;
   const M = mil(state);
   const ms = M.ms[u.id];
@@ -1059,6 +1070,11 @@ export function thinkArmy(state: EngineState, a: ArmySt): void {
     if (!u || c.unitArmy[id] !== a.id || manualDone(state, u)) delete a.manual[id];
   }
   a.now = armyValue(state, a);
+  // Armée engagée dans une opération : le planificateur commun et le rôle du général décident.
+  if (a.op) {
+    thinkOpArmy(state, a);
+    return;
+  }
   const m = a.mission;
   if (!m) {
     a.status = 'idle';

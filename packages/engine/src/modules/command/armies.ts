@@ -139,7 +139,7 @@ export function orderCreate(
   );
   a.now = armyValue(state, a);
   journal(state, a, 'created', { count: a.units.length });
-  if (hire?.ok) doHire(state, n, hire.idx, a);
+  if (hire?.ok) doHire(state, n, hire.idx, a, hire.branch);
   else if (gen) assign(state, gen, a);
   if (mis?.ok) applyMission(state, a, mis.ms);
   return { ok: true };
@@ -166,12 +166,13 @@ export function orderEdit(
     addUnits(state, a, ids);
     if (ids.length) {
       // Renforts : ils comptent dans les effectifs de référence de la mission.
-      if (a.mission) a.start += ids.reduce((s, id) => s + unitValue(state, state.units[id]!), 0);
+      if (a.mission || a.op)
+        a.start += ids.reduce((s, id) => s + unitValue(state, state.units[id]!), 0);
       journal(state, a, 'reinforced', { count: ids.length }, 'good');
     }
   }
   if (remove.length) {
-    if (a.mission)
+    if (a.mission || a.op)
       a.start = Math.max(
         0,
         a.start - remove.reduce((s, id) => s + unitValue(state, state.units[id]!), 0),
@@ -501,7 +502,7 @@ export function onUnitGone(state: EngineState, u: Unit, destroyed: boolean): voi
   }
   if (destroyed) {
     a.losses += u.count;
-    if (a.mission)
+    if (a.mission || a.op)
       journal(state, a, 'lost', { system: { system: sysOf(state, u).id }, count: u.count }, 'bad');
   }
   removeUnits(state, a, [u.id]);
