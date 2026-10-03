@@ -3935,22 +3935,25 @@
       "emptyTitle": "Keine Operation",
       "emptyText": "Bestimmen Sie ein oder mehrere Länder, ein Ziel und die führenden Generäle: Sie handeln für Sie.",
       "onboard": {
-        "title": "Eine Operation in drei Entscheidungen",
+        "title": "Eine Operation in vier Entscheidungen",
         "targets": "Die Zielländer: auf der Karte oder per Suche, eines oder mehrere.",
-        "goal": "Das Ziel: Kräfte schwächen, totale Luftherrschaft, totale Eroberung, strategische Schläge, Blockade…",
+        "goal": "Das Ziel: über dreißig Operationen nach Kategorie — Land, Luft, See, Flugabwehr und Raketen, teilstreitkraftübergreifend.",
         "staff": "Die Generäle, nach Teilstreitkraft: Jeder erhält eine Rolle und Kräfte, sie stimmen sich ab.",
-        "rule": "Generäle schlagen zu, rücken vor, patrouillieren und blockieren selbstständig; ein direkter Befehl an einen Stapel hat Vorrang, bis er endet."
+        "rule": "Generäle schlagen zu, rücken vor, patrouillieren und blockieren selbstständig; ein direkter Befehl an einen Stapel hat Vorrang, bis er endet.",
+        "plan": "Der Plan: Phasen verketten (SEAD, dann Luftkontrolle, dann Eroberung) und wählen, was danach kommt."
       },
       "path": {
         "new": "neue Operation",
         "edit": "Ziel ändern",
-        "reinforce": "verstärken"
+        "reinforce": "verstärken",
+        "phases": "Phasen"
       },
       "step": {
         "targets": "Ziele",
         "goal": "Auftrag",
         "staff": "Generäle",
-        "confirm": "Bestätigen"
+        "confirm": "Bestätigen",
+        "plan": "Plan"
       },
       "status": {
         "planning": "Vorbereitung",
@@ -3967,7 +3970,8 @@
         "air": "Luftherrschaft",
         "offensive": "Offensive",
         "hold": "Halten",
-        "done": "beendet"
+        "done": "beendet",
+        "withdraw": "Rückzug"
       },
       "goals": {
         "attrition": {
@@ -4014,6 +4018,146 @@
           "name": "Region besetzen",
           "short": "Besetzung",
           "desc": "Die auf der Karte bestimmten Provinzen nehmen und halten."
+        },
+        "counteroffensive": {
+          "name": "Gegenoffensive",
+          "short": "Gegenoffensive",
+          "desc": "Verlorene Provinzen zurückerobern, die wertvollsten zuerst, mit Luftunterstützung."
+        },
+        "liberation": {
+          "name": "Befreiung",
+          "short": "Befreiung",
+          "desc": "Den Besatzer aus den Provinzen eines Verbündeten vertreiben und sie ihm zurückgeben."
+        },
+        "encircle": {
+          "name": "Einkesselung",
+          "short": "Kessel",
+          "desc": "Den Hals eines feindlichen Kessels abschneiden, dann ihn Provinz für Provinz zerschlagen."
+        },
+        "breakthrough": {
+          "name": "Durchbruch",
+          "short": "Durchbruch",
+          "desc": "Kräfte auf einer schmalen Achse bündeln und tief in Richtung Hauptstadt vorstoßen."
+        },
+        "raid": {
+          "name": "Tiefer Vorstoß",
+          "short": "Vorstoß",
+          "desc": "Basen und Depots im feindlichen Hinterland treffen, dann geordnet zurückziehen."
+        },
+        "siege": {
+          "name": "Belagerung einer Stadt",
+          "short": "Belagerung",
+          "desc": "Die Stadt durch Einnahme ihrer Zugänge abschneiden, dann stürmen."
+        },
+        "defense_depth": {
+          "name": "Tiefengestaffelte Verteidigung",
+          "short": "Tiefe",
+          "desc": "Aufeinanderfolgende Linien anteilig gehalten, Gegenangriffe, geordneter Rückzug auf die hintere Linie."
+        },
+        "defend_capital": {
+          "name": "Verteidigung der Hauptstadt",
+          "short": "Hauptstadt",
+          "desc": "Verstärkte Garnison, gehaltener Ring, Flugabwehr und Jäger über der Hauptstadt."
+        },
+        "pacify": {
+          "name": "Befriedung",
+          "short": "Befriedung",
+          "desc": "Jede eroberte oder unruhige Provinz halten, Rebellen und Infiltranten jagen."
+        },
+        "show_of_force": {
+          "name": "Machtdemonstration",
+          "short": "Abschreckung",
+          "desc": "Kräfte an der Grenze massieren, ohne sie zu überschreiten: keine Kriegserklärung."
+        },
+        "interdiction": {
+          "name": "Abriegelung",
+          "short": "Abriegelung",
+          "desc": "Die Logistik kappen: vorgeschobene Basen, Häfen, Treibstofflager, Kolonnen in Bewegung."
+        },
+        "cas": {
+          "name": "Luftnahunterstützung",
+          "short": "CAS",
+          "desc": "Feindliche Kräfte im Kontakt mit Ihren laufenden Offensiven angreifen."
+        },
+        "strategic_bombing": {
+          "name": "Fortgesetzte strategische Bombardierung",
+          "short": "Bombardierung",
+          "desc": "Industrie, Energie und Rohstoffe unablässig getroffen, Reparaturen inbegriffen."
+        },
+        "air_defense_territory": {
+          "name": "Luftverteidigung des Territoriums",
+          "short": "Luftverteidigung",
+          "desc": "Jägerpatrouillen über Hauptstadt und Basen, Abfangeinsätze, Flugabwehr."
+        },
+        "air_redeploy": {
+          "name": "Luftverlegung",
+          "short": "Verlegung",
+          "desc": "Die Luftwaffe auf die Flugplätze nahe einem bestimmten Gebiet überführen."
+        },
+        "armed_recon": {
+          "name": "Bewaffnete Aufklärung",
+          "short": "Aufklärung",
+          "desc": "Das Zielland überfliegen und aufklären, Gelegenheitsziele bekämpfen."
+        },
+        "naval_supremacy": {
+          "name": "Seeherrschaft",
+          "short": "Seeherrschaft",
+          "desc": "Die feindliche Flotte jagen und versenken, dann das Meer halten."
+        },
+        "antiship": {
+          "name": "Seezielbekämpfung",
+          "short": "Seeziele",
+          "desc": "U-Boote, Seezielflugkörper und Patrouillen gegen jedes feindliche Schiff."
+        },
+        "convoy_escort": {
+          "name": "Geleitschutz",
+          "short": "Geleitzüge",
+          "desc": "Ihre beladenen Transporter eskortieren und Ihre Seewege überwachen."
+        },
+        "amphibious": {
+          "name": "Amphibischer Angriff",
+          "short": "Amphibisch",
+          "desc": "An einer Küste oder auf einer Insel landen: Einschiffung, Geleit, Unterstützung, Brückenkopf."
+        },
+        "port_blockade": {
+          "name": "Verschärfte Hafenblockade",
+          "short": "Harte Blockade",
+          "desc": "Mehrere Schiffe je Hafen, auslaufende Schiffe angegriffen, Marinebasen getroffen."
+        },
+        "naval_strikes": {
+          "name": "Schläge von See",
+          "short": "Seeschläge",
+          "desc": "Seegestützte Marschflugkörper auf Abwehr, Basen und Küstenanlagen."
+        },
+        "missile_shield": {
+          "name": "Raketenschild",
+          "short": "Schild",
+          "desc": "Raketenabwehr über Hauptstadt und Basen gegen ballistische Raketen und Marschflugkörper."
+        },
+        "ad_umbrella": {
+          "name": "Flugabwehrschirm",
+          "short": "Schirm",
+          "desc": "Die Flugabwehr folgt Ihren Offensiven und deckt die Truppen dicht hinter der Front."
+        },
+        "missile_campaign": {
+          "name": "Raketenschlagkampagne",
+          "short": "Raketen",
+          "desc": "Koordinierte Salven auf Flugabwehr, Luftwaffen- und Militärbasen."
+        },
+        "blitz": {
+          "name": "Blitzkrieg",
+          "short": "Blitz",
+          "desc": "Flugabwehr, dann der Himmel, der Durchbruch und die Hauptstadt, automatisch verkettet."
+        },
+        "combined_landing": {
+          "name": "Kombinierte Operation",
+          "short": "Kombiniert",
+          "desc": "Die Küstenflugabwehr ausschalten, dann ein unterstützter amphibischer Angriff."
+        },
+        "ally_support": {
+          "name": "Unterstützung eines Verbündeten",
+          "short": "Unterstützung",
+          "desc": "Kräfte an der Front eines Verbündeten verlegen, ihn decken und verteidigen."
         }
       },
       "metric": {
@@ -4024,7 +4168,9 @@
         "sams": "Noch {{left}} von {{total}} Flugabwehrstellungen",
         "buildings": "{{done}}/{{total}} Anlagen zerstört",
         "ports": "{{done}}/{{total}} Häfen blockiert",
-        "front": "{{done}}/{{total}} Frontstädte gehalten"
+        "front": "{{done}}/{{total}} Frontstädte gehalten",
+        "ratio": "{{label}}: {{done}}/{{total}}",
+        "none": "Messung wartet auf Aufklärung"
       },
       "metrics": {
         "forces": "Zerstörte feindliche Kräfte (geschätzter Wert)",
@@ -4034,7 +4180,28 @@
         "aircraft": "Zerstörte feindliche Flugzeuge",
         "buildings": "Zerstörte Anlagen",
         "ports": "Blockierte Häfen",
-        "front": "Gehaltene Frontstädte"
+        "front": "Gehaltene Frontstädte",
+        "retaken": "Zurückeroberte Provinzen",
+        "liberated": "Befreite Provinzen",
+        "neck": "Hals abgeschnitten (Provinzen)",
+        "depth": "Erreichte Tiefe auf der Achse",
+        "raids": "Hinterland getroffen (Anlagen, Provinzen)",
+        "withdrawn": "Zurückgekehrte Stapel",
+        "ring": "Zugänge der Stadt genommen",
+        "city": "Stadt genommen",
+        "lines": "Gehaltene Provinzen der Linien",
+        "secured": "Gesicherte Provinzen",
+        "deployed": "An der Grenze massierte Stapel",
+        "logistics": "Zerstörte Logistikanlagen",
+        "moving": "Getroffene Kolonnen in Bewegung",
+        "intercepts": "Abgefangene Raketen",
+        "rebased": "Verlegte Luftfahrzeuge",
+        "revealed": "Aufgeklärte Provinzen",
+        "ships": "Versenkte feindliche Schiffe",
+        "escorted": "Eskortierte Transporter",
+        "sites": "Von der Flugabwehr gedeckte Standorte",
+        "covered": "Von der Flugabwehr gedeckte Offensiven",
+        "targets": "Zerstörte Ziele"
       },
       "stats": {
         "strikes": "Schläge",
@@ -4121,8 +4288,86 @@
         "released": "General aus der Operation abgezogen.",
         "suspended": "Operation ausgesetzt.",
         "resumed": "Operation fortgesetzt.",
-        "cancelled": "Operation abgeschlossen."
-      }
+        "cancelled": "Operation abgeschlossen.",
+        "nextPhase": "Nächste Phase gestartet.",
+        "stageNow": "Sammlung verkürzt: die Offensive beginnt.",
+        "phases": "Phasen aktualisiert."
+      },
+      "cat": {
+        "label": "Operationskategorien",
+        "all": "Alle",
+        "land": "Land",
+        "air": "Luft",
+        "sea": "See",
+        "ad": "Flugabwehr & Raketen",
+        "joint": "Streitkräfteübergreifend"
+      },
+      "targetsLeadBy": {
+        "nation": "Wählen Sie das oder die Zielländer: tippen Sie sie auf der Karte an oder suchen Sie sie.",
+        "provinces": "Bestimmen Sie die Zielprovinzen auf der Karte.",
+        "place": "Bestimmen Sie einen Ort: Provinzen auf der Karte (Stadt, Küste, Kessel, Flugplätze) oder ein Land.",
+        "self": "Operation auf Ihrem Territorium: nichts zu bestimmen. Sie können die beobachteten Gegner angeben.",
+        "ally": "Wählen Sie das verbündete oder befreundete Land, das unterstützt oder befreit werden soll."
+      },
+      "selfTarget": "Ihr Territorium: Hauptstadt, Front, Basen und eroberte Provinzen werden automatisch ermittelt.",
+      "clearProvinces": "Provinzen löschen",
+      "noWar": "Operation ohne Krieg: keine Erklärung, die Generäle überschreiten die Grenze nicht.",
+      "plan": {
+        "title": "Phasen",
+        "lead": "Verketten Sie die Phasen: jede beginnt, wenn die vorige erfolgreich ist, oder bei ihrer Frist.",
+        "pickPhase": "Nächste Phase",
+        "add": "Phase hinzufügen",
+        "remove": "Phase entfernen",
+        "up": "Nach oben",
+        "down": "Nach unten",
+        "drag": "Zum Umsortieren ziehen",
+        "targets": "Ziele der Phase",
+        "sameTargets": "Gleiche Ziele",
+        "timebox": "Frist der Phase",
+        "untilDone": "Bis zum Erfolg",
+        "firstTargets": "Im vorigen Schritt gewählte Ziele",
+        "presetPart": "Phase von „{{name}}“",
+        "rule": "Gleiche Generäle und gleiche Kräfte von Phase zu Phase, mit kurzer Sammlung dazwischen.",
+        "total": "Geschätzte Gesamtdauer: {{eta}}.",
+        "phaseOf": "Phase {{n}}/{{total}}",
+        "single": "Einzelne Phase",
+        "within": "Frist {{eta}}",
+        "now": "läuft",
+        "until": "Frist der Phase: {{day}} {{time}}.",
+        "next": "Danach",
+        "skip": "Nächste Phase",
+        "edit": "Phasen bearbeiten",
+        "result": {
+          "success": "erfolgreich",
+          "timeout": "Frist",
+          "skipped": "übersprungen"
+        }
+      },
+      "after": {
+        "label": "Wenn es vorbei ist",
+        "hold": "Gewinne halten",
+        "home": "Zur Basis zurück",
+        "reserve": "Reserve",
+        "holdHelp": "Ausnutzung: Garnisonen auf den Gewinnen, Flugabwehr, Jäger bei feindlichen Flügen, Gegenangriffe, bis zu Ihrem nächsten Befehl.",
+        "homeHelp": "Die Kräfte kehren zurück (Truppen, Flugzeuge, Schiffe), dann werden Ihnen die Stapel zurückgegeben.",
+        "reserveHelp": "Die Stapel werden Ihnen sofort zurückgegeben; die Generäle warten auf eine neue Operation."
+      },
+      "staging": {
+        "title": "Sammlung läuft",
+        "text": "Die Offensive beginnt spätestens am {{day}} um {{time}}."
+      },
+      "closedTitle": {
+        "success": "Operation erfolgreich",
+        "failed": "Operation gescheitert"
+      },
+      "closedText": {
+        "hold": "Die Kräfte halten die Gewinne. Geben Sie ihnen eine neue Operation: dieselben Generäle und ihre Stapel werden übernommen.",
+        "home": "Die Kräfte kehren zur Basis zurück und werden Ihnen dann zurückgegeben.",
+        "reserve": "Die Stapel wurden Ihnen zurückgegeben; die Generäle warten auf einen neuen Befehl.",
+        "released": "Alle Kräfte wurden zurückgegeben; die Generäle warten auf einen neuen Befehl."
+      },
+      "newSameStaff": "Neue Operation, gleicher Stab",
+      "reopen": "Neues Ziel"
     },
     "wizard": {
       "path": "neue Armee",
@@ -4179,8 +4424,413 @@
       "dissolved": "Armee aufgelöst.",
       "suspended": "Auftrag ausgesetzt.",
       "resumed": "Auftrag fortgesetzt.",
-      "saved": "Einstellung gespeichert."
+      "saved": "Einstellung gespeichert.",
+      "reclaimed": "Stapel an den General zurückgegeben."
+    },
+    "wait": {
+      "badge": "Wartet",
+      "war": "Auf eine Genehmigung: Krieg gegen {{nation}} beginnen.",
+      "strike": "Auf eine Genehmigung: das Hinterland von {{nation}} angreifen.",
+      "reinforce": "Auf eine Antwort zu den vorgeschlagenen Verstärkungen (Stapel: {{count}}).",
+      "staging": "Auf das Ende der Sammlung (spätestens am {{day}} um {{time}}).",
+      "manual": "Stapel unter Ihrem direkten Befehl: {{count}} — der General übernimmt sie nach Ende des Befehls.",
+      "suspended": "Auf die Wiederaufnahme: Operation oder Mission ausgesetzt.",
+      "noGeneral": "Auf einen General: ohne ihn tut die Armee nichts.",
+      "wounded": "Auf die Rückkehr des verwundeten Generals.",
+      "fuel": "Auf Betankung und Neubewaffnung der Luftfahrzeuge (Luftfahrzeuge: {{count}}).",
+      "noForces": "Auf Kräfte: nichts ist stark genug, um zu handeln.",
+      "noTargets": "Auf Ziele: nichts Bekanntes zum Angreifen, Aufklärung läuft.",
+      "resting": "Auf die Ruhe erschöpfter Stapel (Stapel: {{count}}).",
+      "act": {
+        "war": "Genehmigen",
+        "staging": "Jetzt starten",
+        "manual": "An den General zurückgeben"
+      }
+    },
+    "posture": {
+      "hold": "Hält die Gewinne",
+      "home": "Kehrt zur Basis zurück",
+      "holdHelp": "Mission oder Operation beendet: der General hält das Gelände bis zum nächsten Befehl.",
+      "homeHelp": "Operation beendet: die Kräfte kehren zurück und werden Ihnen dann zurückgegeben."
+    },
+    "armyOp": {
+      "title": "Armee der Operation {{name}}",
+      "text": "Der General handelt für die Operation. Eine Mission zu erteilen nimmt sie aus der Operation.",
+      "open": "Operation anzeigen"
     }
+  },
+  "gov": {
+    "unavailable": "Regierung in dieser Partie nicht verfügbar.",
+    "perDay": " / T",
+    "newMission": "Neuer Auftrag",
+    "missionsTitle": "Aufträge",
+    "history": "Abgeschlossen und zurückgezogen",
+    "ministries": {
+      "defense": "Verteidigungsministerium",
+      "economy": "Wirtschaftsministerium"
+    },
+    "sections": {
+      "commands": "Kommandos",
+      "infra": "Infrastruktur",
+      "armament": "Rüstung",
+      "intel": "Nachrichtendienst"
+    },
+    "offices": {
+      "defense": {
+        "name": "Verteidigungsminister",
+        "head": "Verteidigungsminister",
+        "scope": "Infrastruktur und Logistik"
+      },
+      "research": {
+        "name": "Direktion Rüstungsforschung",
+        "head": "Forschungsdirektor",
+        "scope": "Militärische F&E"
+      },
+      "production": {
+        "name": "Direktion Rüstungsproduktion",
+        "head": "Produktionsdirektor",
+        "scope": "Militärische Produktion"
+      },
+      "intel_interior": {
+        "name": "Inlandsnachrichtendienst",
+        "head": "Direktor des Inlandsnachrichtendienstes",
+        "scope": "Spionageabwehr, innere Sicherheit, Objektschutz"
+      },
+      "intel_exterior": {
+        "name": "Auslands- und Militärnachrichtendienst",
+        "head": "Direktor des Auslandsnachrichtendienstes",
+        "scope": "HUMINT, SIGINT, Aufklärung"
+      },
+      "economy": {
+        "name": "Wirtschaftsminister",
+        "head": "Wirtschaftsminister",
+        "scope": "Industrie, Rohstoffe, Einnahmen, Reserven"
+      }
+    },
+    "skills": {
+      "management": "Führung",
+      "industry": "Industrie",
+      "logistics": "Logistik",
+      "finance": "Haushaltsdisziplin",
+      "science": "Wissenschaft",
+      "intelligence": "Nachrichtendienst"
+    },
+    "traits": {
+      "efficient": {
+        "name": "Effizient",
+        "tip": "Schnellere Bauten, Aufträge und Forschung."
+      },
+      "frugal": {
+        "name": "Sparsam",
+        "tip": "Verhandelt besser und kostet weniger."
+      },
+      "ambitious": {
+        "name": "Ehrgeizig",
+        "tip": "Führt eine Aktion mehr gleichzeitig, hält weniger Reserve, kostet mehr."
+      },
+      "cautious": {
+        "name": "Vorsichtig",
+        "tip": "Hält eine größere Kassenreserve."
+      },
+      "technocrat": {
+        "name": "Technokrat",
+        "tip": "Trifft immer die beste Wahl; kostet mehr."
+      },
+      "reformer": {
+        "name": "Reformer",
+        "tip": "Etwas schneller und etwas günstiger."
+      },
+      "bureaucrat": {
+        "name": "Bürokrat",
+        "tip": "Langsamer, aber günstig."
+      }
+    },
+    "effects": {
+      "speed": "Tempo {{v}}",
+      "speedTip": "Führung: Dauer der gestarteten Bauten, Aufträge und Forschungen.",
+      "discount": "Kosten {{v}}",
+      "discountTip": "Fachwissen: ausgehandelter Rabatt auf jede Ausgabe seiner Aufträge.",
+      "slotsTip": "Führung: parallel geführte Aktionen je Auftrag.",
+      "reserve": "Reserve {{days}} T",
+      "reserveTip": "Vorsicht: Budgettage, die seine Aufträge stets in der Kasse lassen.",
+      "slots": "Parallel: {{count}}"
+    },
+    "head": {
+      "rating": "Note",
+      "ratingTip": "Durchschnitt der drei für den Posten wichtigen Fähigkeiten.",
+      "cost": "Kosten",
+      "appoint": "Ernennen · {{cost}}",
+      "appointTip": "Ernennungsprämie (und Abfindung des ersetzten Amtsinhabers): {{cost}}",
+      "vacant": "Posten unbesetzt.",
+      "vacantText": "Wählen Sie einen Amtsinhaber: Seine Fähigkeiten bestimmen Tempo, Kosten und Vorsicht seiner Aufträge.",
+      "replace": "Ersetzen",
+      "dismiss": "Entlassen",
+      "replaceTitle": "Ersetzen — {{office}}",
+      "replaceText": "Der jetzige Amtsinhaber geht mit {{cost}} Abfindung. Die Aufträge laufen mit dem neuen weiter.",
+      "dismissTitle": "Amtsinhaber entlassen",
+      "dismissText": "{{name}} geht mit {{cost}} Abfindung. Die Aufträge des Postens warten auf einen Nachfolger.",
+      "unpaid": "Unbezahlt: {{count}} T"
+    },
+    "toast": {
+      "appointed": "{{name}} ernannt.",
+      "dismissed": "Amtsinhaber entlassen.",
+      "edited": "Auftrag geändert.",
+      "resumed": "Auftrag fortgesetzt.",
+      "suspended": "Auftrag ausgesetzt.",
+      "cancelled": "Auftrag zurückgezogen.",
+      "created": "Auftrag erteilt: {{mission}}."
+    },
+    "status": {
+      "active": "Läuft",
+      "waiting": "Wartet",
+      "blocked": "Blockiert",
+      "suspended": "Ausgesetzt",
+      "done": "Abgeschlossen",
+      "cancelled": "Zurückgezogen"
+    },
+    "mission": {
+      "progress": "Fortschritt",
+      "goalAuto": "Ziel vom Ministerium festgelegt",
+      "budgetTip": "Ausgegeben (Rabatte abgezogen) vom zugewiesenen Budget.",
+      "priority": "Priorität",
+      "edit": "Ändern",
+      "suspend": "Aussetzen",
+      "resume": "Fortsetzen",
+      "cancel": "Zurückziehen",
+      "cancelTitle": "Auftrag zurückziehen",
+      "cancelText": "„{{mission}}“ wird beendet. Bereits gestartete Bauten, Aufträge und Operationen laufen weiter.",
+      "editTitle": "Ändern — {{mission}}",
+      "save": "Speichern",
+      "pending": "läuft: {{count}}"
+    },
+    "units": {
+      "projects": "Bauten: {{done}} / {{goal}}",
+      "nodes": "Forschungen: {{done}} / {{goal}}",
+      "lots": "Lose: {{done}} / {{goal}}",
+      "ops": "Operationen: {{done}} / {{goal}}",
+      "days": "Budgettage: {{done}} / {{goal}}",
+      "sites": "Geschützte Objekte: {{done}} / {{goal}}",
+      "repairs": "Reparaturen: {{done}} / {{goal}}"
+    },
+    "budget": {
+      "mode": "Budget",
+      "amount": "Betrag",
+      "share": "Anteil der Einnahmen",
+      "shareShort": "{{pct}} % der Einnahmen",
+      "amountShort": "Festes Budget",
+      "left": "Verfügbar: {{v}}",
+      "perDayOf": "≈ {{v}} pro Tag (Einnahmen {{rev}} / T)",
+      "cap": "Ausgabenobergrenze",
+      "noCap": "Ohne Obergrenze: Das Guthaben wächst täglich.",
+      "daysOf": "{{count}} T Verteidigungsbudget",
+      "daysShort": "{{count}} T"
+    },
+    "priority": {
+      "1": "Niedrig",
+      "2": "Normal",
+      "3": "Hoch"
+    },
+    "journal": {
+      "title": "Protokoll",
+      "empty": "Noch nichts."
+    },
+    "hint": {
+      "vacantMissions": "Diese Aufträge warten auf einen Amtsinhaber: Ernennen Sie einen, damit sie vorankommen.",
+      "vacant": "Ernennen Sie einen Amtsinhaber und erteilen Sie ihm dann einen Auftrag.",
+      "noMission": "Keine Aufträge: Erteilen Sie einen mit „Neuer Auftrag“."
+    },
+    "zone": {
+      "borderWith": "Grenze: {{nation}}",
+      "aroundShort": "{{km}} km um {{place}}",
+      "all": "Gesamtes Gebiet",
+      "border": "Grenze",
+      "around": "Um …",
+      "radius": "Radius"
+    },
+    "commands": {
+      "title": "Die vier Kommandos",
+      "scope": "Heer, Luftwaffe, Marine, Luftverteidigung",
+      "open": "HQ öffnen",
+      "land": "Heer",
+      "air": "Luftwaffe",
+      "sea": "Marine",
+      "air_defense": "Luftverteidigung",
+      "noChief": "Ohne Befehlshaber",
+      "soon": "Befehlshaber und Operationen: im HQ in Vorbereitung.",
+      "soonBadge": "In Vorbereitung",
+      "now": "Heute im HQ: Armeen {{armies}}, Generäle {{generals}}.",
+      "ops": "Operationen: {{count}}"
+    },
+    "kpi": {
+      "heads": "Amtsinhaber",
+      "missions": "Aufträge",
+      "spent": "Ausgegeben",
+      "payroll": "Kosten",
+      "floor": "Reserve",
+      "floorTip": "Kassenbestand, den die Aufträge stets übrig lassen (Vorsicht, Auftrag Reserven)."
+    },
+    "wizard": {
+      "path": "neuer Auftrag",
+      "step": {
+        "type": "Auftrag",
+        "params": "Ziel und Vorgabe",
+        "budget": "Budget"
+      },
+      "back": "Zurück",
+      "next": "Weiter",
+      "confirm": "Auftrag erteilen",
+      "resource": "Rohstoff",
+      "branch": "Forschungsgebiet",
+      "category": "Gerät",
+      "nation": "Zielland",
+      "pick": "Wählen …",
+      "zone": "Gebiet",
+      "err": {
+        "type": "Wählen Sie einen Auftrag.",
+        "nation": "Wählen Sie das Zielland.",
+        "border": "Wählen Sie das Nachbarland.",
+        "around": "Wählen Sie die zentrale Provinz.",
+        "budget": "Leeres Budget."
+      }
+    },
+    "goal": {
+      "projects": "Vorgabe: Bauten",
+      "nodes": "Vorgabe: Forschungen",
+      "lots": "Vorgabe: Gerätelose",
+      "ops": "Vorgabe: Operationen",
+      "days": "Vorgabe: Budgettage in der Kasse",
+      "sites": "Vorgabe: geschützte Objekte",
+      "repairs": "Vorgabe: Reparaturen",
+      "auto": {
+        "research": "Vorgabe bei Bestätigung festgelegt: alle Forschungen, die die nächste Generation freischalten.",
+        "protect": "Vorgabe: so viele geschützte Objekte wie der Inlandsnachrichtendienst erlaubt, dann ihre Härtung."
+      }
+    },
+    "estimate": {
+      "title": "Prognose",
+      "options": "Mögliche Aktionen",
+      "first": "Erste Aktion",
+      "total": "Vollständiges Ziel",
+      "hours": "Dauer einer Aktion",
+      "reserveTarget": "Angestrebter Kassenbestand",
+      "envelope": "Budget",
+      "open": "Anteil der Einnahmen, ohne Obergrenze",
+      "covers": "Vom Budget gedeckte Aktionen",
+      "head": "{{name}}: Tempo +{{speed}} %, Rabatt {{discount}} %, hält {{reserve}} in der Kasse.",
+      "vacant": "Posten unbesetzt: Der Auftrag wartet auf einen Amtsinhaber.",
+      "note": "Schätzung nach Ihren Provinzen und Tagespreisen; das Ministerium hält Budget und Ressourcen ein.",
+      "noDeposit": "Kein Vorkommen dieses Rohstoffs im Gebiet.",
+      "noSite": "Kein zulässiger Standort im Gebiet.",
+      "noSystem": "Kein verfügbares Gerät in dieser Kategorie.",
+      "unlocked": "Die nächste Generation ist bereits verfügbar.",
+      "noResearch": "Keine Forschung mehr für dieses Ziel.",
+      "nothingDamaged": "Derzeit keine beschädigten Gebäude.",
+      "few": "Mögliche Aktionen im Gebiet: {{count}}, weniger als das Ziel; es wird auf das Machbare reduziert.",
+      "coversN": "≈ {{count}}"
+    },
+    "missions": {
+      "air_bases": {
+        "name": "Luftwaffenstützpunkte",
+        "desc": "Neue Luftwaffenstützpunkte bauen und die Abdeckung des Gebiets ausweiten."
+      },
+      "military_bases": {
+        "name": "Militärstützpunkte",
+        "desc": "Militärstützpunkte errichten: Landproduktion und Versorgungsradius."
+      },
+      "upgrade_bases": {
+        "name": "Modernisierung der Stützpunkte",
+        "desc": "Bestehende Luftwaffen-, Militär- und Marinestützpunkte ausbauen."
+      },
+      "logistics": {
+        "name": "Militärlogistik",
+        "desc": "Vorgeschobene Depots, Stützpunkte und Lazarette nahe der Grenzen: Truppenversorgung."
+      },
+      "fortify": {
+        "name": "Grenzbefestigung",
+        "desc": "Befestigungen und Bunker in bedrohten Grenzprovinzen."
+      },
+      "air_defense": {
+        "name": "Luftverteidigung des Gebiets",
+        "desc": "Flugabwehrstellungen und Radarstationen um Schlüsselprovinzen."
+      },
+      "coastal": {
+        "name": "Küstenverteidigung",
+        "desc": "Küstenbatterien und Marinestützpunkte an der Küste."
+      },
+      "research_next": {
+        "name": "Nächste Generation",
+        "desc": "Erforschen, was für die nächste Generation eines Geräts nötig ist."
+      },
+      "research_branch": {
+        "name": "Forschung nach Gebiet",
+        "desc": "Ein Forschungsgebiet Knoten für Knoten voranbringen."
+      },
+      "research_labs": {
+        "name": "Forschungslabore",
+        "desc": "Forschungszentren und Geheimlabore bauen und ausbauen."
+      },
+      "produce": {
+        "name": "Gerätebestellung",
+        "desc": "Eine Menge Gerät einer Kategorie produzieren (Eigenfertigung oder Import)."
+      },
+      "stockpile": {
+        "name": "Strategische Vorräte",
+        "desc": "Einen Vorrat einer Kategorie (Raketen, Munition …) halten und auffüllen."
+      },
+      "arms_industry": {
+        "name": "Rüstungsindustrie",
+        "desc": "Rüstungsfabriken und Elektronikwerke ausbauen."
+      },
+      "counterintel": {
+        "name": "Spionageabwehr",
+        "desc": "Fremde Netzwerke zerschlagen: Durchsuchungen und Zerschlagungen."
+      },
+      "protect_sites": {
+        "name": "Schutz sensibler Objekte",
+        "desc": "Wichtige Industrieanlagen unter Schutz stellen und härten."
+      },
+      "watch": {
+        "name": "Überwachung eines Landes",
+        "desc": "Seine Streitkräfte und Mobilmachung verfolgen: Aufklärung, Abhören, Agenten."
+      },
+      "map_defenses": {
+        "name": "Kartierung der Verteidigung",
+        "desc": "Seine Verteidigung orten: militärische Aufklärung und Ortung von Sendern."
+      },
+      "economic_intel": {
+        "name": "Wirtschaftsaufklärung",
+        "desc": "Seine Industrie und Rohstoffe kennen: Wirtschaftsaufklärung, Agenten."
+      },
+      "resource": {
+        "name": "Rohstoffproduktion",
+        "desc": "Bohrlöcher, Minen, Farmen oder Elektronikwerke dort, wo die Vorkommen sind."
+      },
+      "industry": {
+        "name": "Industrielle Entwicklung",
+        "desc": "Lokale Industrie und Kraftwerke in den produktivsten Provinzen."
+      },
+      "revenue": {
+        "name": "Höhere Einnahmen",
+        "desc": "Geschäftsviertel und lokale Industrie dort, wo die Einnahmen am höchsten sind."
+      },
+      "war_economy": {
+        "name": "Kriegswirtschaft",
+        "desc": "Rüstungsfabriken, Kraftwerke und Raffinerien für die Kriegsanstrengung."
+      },
+      "reserves": {
+        "name": "Kassenreserven",
+        "desc": "Eine Reserve halten, die andere Aufträge nicht antasten können."
+      },
+      "repair": {
+        "name": "Wiederaufbau",
+        "desc": "Beschädigte Gebäude reparieren, die teuersten zuerst."
+      }
+    },
+    "ministriesShort": {
+      "defense": "Verteidigung",
+      "economy": "Wirtschaft"
+    },
+    "suggest": "Mögliche Aufträge"
   },
   "engine": {
     "place": {
@@ -4589,6 +5239,10 @@
       "gov_missionDone": {
         "title": "Auftrag erfüllt",
         "text": "{{mission}}: Ziel erreicht."
+      },
+      "cmd_opPhase": {
+        "title": "Nächste Phase",
+        "text": "Operation {{op}}: Phase {{n}}/{{total}}, {{goal}}."
       }
     },
     "cmd": {
@@ -4668,7 +5322,12 @@
         "wounded": "{{general}} ist im HQ verwundet: {{days}} Tage Genesung.",
         "killed": "{{general}} ist im HQ gefallen.",
         "joinedOp": "In Operation {{op}} eingesetzt: {{role}}.",
-        "opClosed": "Operation {{op}} abgeschlossen: Die Armee wartet auf Ihre Befehle."
+        "opClosed": "Operation {{op}} abgeschlossen: Die Armee wartet auf Ihre Befehle.",
+        "leftOp": "Verlässt die Operation {{op}} für ihre neue Mission.",
+        "reclaimed": "Stapel an den General zurückgegeben: {{count}}.",
+        "holdGains": "Mission erfüllt: die Armee hält ihre Gewinne und reorganisiert sich.",
+        "holdLines": "Mission abgeschlossen: die Armee hält ihre Stellungen und wartet auf Ihre Befehle.",
+        "returned": "Nach der Operation {{op}} zur Basis zurückgekehrt: Kräfte zurückgegeben."
       },
       "goal": {
         "attrition": "Kräfte schwächen",
@@ -4679,7 +5338,35 @@
         "sead": "Flugabwehr ausschalten",
         "blockade": "Seeblockade",
         "defend_border": "Grenze halten",
-        "occupy": "Region besetzen"
+        "occupy": "Region besetzen",
+        "counteroffensive": "Gegenoffensive",
+        "liberation": "Befreiung",
+        "encircle": "Einkesselung",
+        "breakthrough": "Durchbruch",
+        "raid": "Tiefer Vorstoß",
+        "siege": "Belagerung einer Stadt",
+        "defense_depth": "Tiefengestaffelte Verteidigung",
+        "defend_capital": "Verteidigung der Hauptstadt",
+        "pacify": "Befriedung",
+        "show_of_force": "Machtdemonstration",
+        "interdiction": "Abriegelung",
+        "cas": "Luftnahunterstützung",
+        "strategic_bombing": "Fortgesetzte strategische Bombardierung",
+        "air_defense_territory": "Luftverteidigung des Territoriums",
+        "air_redeploy": "Luftverlegung",
+        "armed_recon": "Bewaffnete Aufklärung",
+        "naval_supremacy": "Seeherrschaft",
+        "antiship": "Seezielbekämpfung",
+        "convoy_escort": "Geleitschutz",
+        "amphibious": "Amphibischer Angriff",
+        "port_blockade": "Verschärfte Hafenblockade",
+        "naval_strikes": "Schläge von See",
+        "missile_shield": "Raketenschild",
+        "ad_umbrella": "Flugabwehrschirm",
+        "missile_campaign": "Raketenschlagkampagne",
+        "blitz": "Blitzkrieg",
+        "combined_landing": "Kombinierte Operation",
+        "ally_support": "Unterstützung eines Verbündeten"
       },
       "role": {
         "land": "Heer",
@@ -4717,7 +5404,19 @@
         "role": "{{army}}: neue Rolle — {{role}}.",
         "reassigned": "{{army}} wird einer anderen Operation zugeteilt.",
         "suspended": "Operation auf Befehl ausgesetzt.",
-        "resumed": "Operation fortgesetzt."
+        "resumed": "Operation fortgesetzt.",
+        "phaseStart": "Phase {{n}}/{{total}}: {{goal}}.",
+        "phaseDone": "Phase {{n}} erfolgreich: {{goal}}.",
+        "phaseTimeout": "Phase {{n}} bei ihrer Frist beendet: {{goal}}.",
+        "phaseSkipped": "Phase {{n}} übersprungen: {{goal}}.",
+        "stageNow": "Sammlung auf Befehl verkürzt: die Offensive beginnt.",
+        "liberated": "{{province}} befreit und an {{nation}} zurückgegeben.",
+        "hunt": "{{army}}: Jagd auf Rebellen und Eindringlinge.",
+        "salvo": "{{army}}: koordinierte Salve — Werfer: {{count}}.",
+        "returned": "{{army}} ist zur Basis zurückgekehrt: Kräfte zurückgegeben.",
+        "after_hold": "Die Kräfte halten die Gewinne und warten auf neue Befehle.",
+        "after_home": "Die Kräfte kehren zur Basis zurück.",
+        "after_reserve": "Die Kräfte gehen in die Reserve: Stapel zurückgegeben."
       }
     },
     "spyNews": {
@@ -4808,378 +5507,5 @@
         "allProtected": "Objekte maximal geschützt."
       }
     }
-  },
-  "gov": {
-    "unavailable": "Regierung in dieser Partie nicht verfügbar.",
-    "perDay": " / T",
-    "newMission": "Neuer Auftrag",
-    "missionsTitle": "Aufträge",
-    "history": "Abgeschlossen und zurückgezogen",
-    "ministries": {
-      "defense": "Verteidigungsministerium",
-      "economy": "Wirtschaftsministerium"
-    },
-    "sections": {
-      "commands": "Kommandos",
-      "infra": "Infrastruktur",
-      "armament": "Rüstung",
-      "intel": "Nachrichtendienst"
-    },
-    "offices": {
-      "defense": {
-        "name": "Verteidigungsminister",
-        "head": "Verteidigungsminister",
-        "scope": "Infrastruktur und Logistik"
-      },
-      "research": {
-        "name": "Direktion Rüstungsforschung",
-        "head": "Forschungsdirektor",
-        "scope": "Militärische F&E"
-      },
-      "production": {
-        "name": "Direktion Rüstungsproduktion",
-        "head": "Produktionsdirektor",
-        "scope": "Militärische Produktion"
-      },
-      "intel_interior": {
-        "name": "Inlandsnachrichtendienst",
-        "head": "Direktor des Inlandsnachrichtendienstes",
-        "scope": "Spionageabwehr, innere Sicherheit, Objektschutz"
-      },
-      "intel_exterior": {
-        "name": "Auslands- und Militärnachrichtendienst",
-        "head": "Direktor des Auslandsnachrichtendienstes",
-        "scope": "HUMINT, SIGINT, Aufklärung"
-      },
-      "economy": {
-        "name": "Wirtschaftsminister",
-        "head": "Wirtschaftsminister",
-        "scope": "Industrie, Rohstoffe, Einnahmen, Reserven"
-      }
-    },
-    "skills": {
-      "management": "Führung",
-      "industry": "Industrie",
-      "logistics": "Logistik",
-      "finance": "Haushaltsdisziplin",
-      "science": "Wissenschaft",
-      "intelligence": "Nachrichtendienst"
-    },
-    "traits": {
-      "efficient": {
-        "name": "Effizient",
-        "tip": "Schnellere Bauten, Aufträge und Forschung."
-      },
-      "frugal": {
-        "name": "Sparsam",
-        "tip": "Verhandelt besser und kostet weniger."
-      },
-      "ambitious": {
-        "name": "Ehrgeizig",
-        "tip": "Führt eine Aktion mehr gleichzeitig, hält weniger Reserve, kostet mehr."
-      },
-      "cautious": {
-        "name": "Vorsichtig",
-        "tip": "Hält eine größere Kassenreserve."
-      },
-      "technocrat": {
-        "name": "Technokrat",
-        "tip": "Trifft immer die beste Wahl; kostet mehr."
-      },
-      "reformer": {
-        "name": "Reformer",
-        "tip": "Etwas schneller und etwas günstiger."
-      },
-      "bureaucrat": {
-        "name": "Bürokrat",
-        "tip": "Langsamer, aber günstig."
-      }
-    },
-    "effects": {
-      "speed": "Tempo {{v}}",
-      "speedTip": "Führung: Dauer der gestarteten Bauten, Aufträge und Forschungen.",
-      "discount": "Kosten {{v}}",
-      "discountTip": "Fachwissen: ausgehandelter Rabatt auf jede Ausgabe seiner Aufträge.",
-      "slotsTip": "Führung: parallel geführte Aktionen je Auftrag.",
-      "reserve": "Reserve {{days}} T",
-      "reserveTip": "Vorsicht: Budgettage, die seine Aufträge stets in der Kasse lassen.",
-      "slots": "Parallel: {{count}}"
-    },
-    "head": {
-      "rating": "Note",
-      "ratingTip": "Durchschnitt der drei für den Posten wichtigen Fähigkeiten.",
-      "cost": "Kosten",
-      "appoint": "Ernennen · {{cost}}",
-      "appointTip": "Ernennungsprämie (und Abfindung des ersetzten Amtsinhabers): {{cost}}",
-      "vacant": "Posten unbesetzt.",
-      "vacantText": "Wählen Sie einen Amtsinhaber: Seine Fähigkeiten bestimmen Tempo, Kosten und Vorsicht seiner Aufträge.",
-      "replace": "Ersetzen",
-      "dismiss": "Entlassen",
-      "replaceTitle": "Ersetzen — {{office}}",
-      "replaceText": "Der jetzige Amtsinhaber geht mit {{cost}} Abfindung. Die Aufträge laufen mit dem neuen weiter.",
-      "dismissTitle": "Amtsinhaber entlassen",
-      "dismissText": "{{name}} geht mit {{cost}} Abfindung. Die Aufträge des Postens warten auf einen Nachfolger.",
-      "unpaid": "Unbezahlt: {{count}} T"
-    },
-    "toast": {
-      "appointed": "{{name}} ernannt.",
-      "dismissed": "Amtsinhaber entlassen.",
-      "edited": "Auftrag geändert.",
-      "resumed": "Auftrag fortgesetzt.",
-      "suspended": "Auftrag ausgesetzt.",
-      "cancelled": "Auftrag zurückgezogen.",
-      "created": "Auftrag erteilt: {{mission}}."
-    },
-    "status": {
-      "active": "Läuft",
-      "waiting": "Wartet",
-      "blocked": "Blockiert",
-      "suspended": "Ausgesetzt",
-      "done": "Abgeschlossen",
-      "cancelled": "Zurückgezogen"
-    },
-    "mission": {
-      "progress": "Fortschritt",
-      "goalAuto": "Ziel vom Ministerium festgelegt",
-      "budgetTip": "Ausgegeben (Rabatte abgezogen) vom zugewiesenen Budget.",
-      "priority": "Priorität",
-      "edit": "Ändern",
-      "suspend": "Aussetzen",
-      "resume": "Fortsetzen",
-      "cancel": "Zurückziehen",
-      "cancelTitle": "Auftrag zurückziehen",
-      "cancelText": "„{{mission}}“ wird beendet. Bereits gestartete Bauten, Aufträge und Operationen laufen weiter.",
-      "editTitle": "Ändern — {{mission}}",
-      "save": "Speichern",
-      "pending": "läuft: {{count}}"
-    },
-    "units": {
-      "projects": "Bauten: {{done}} / {{goal}}",
-      "nodes": "Forschungen: {{done}} / {{goal}}",
-      "lots": "Lose: {{done}} / {{goal}}",
-      "ops": "Operationen: {{done}} / {{goal}}",
-      "days": "Budgettage: {{done}} / {{goal}}",
-      "sites": "Geschützte Objekte: {{done}} / {{goal}}",
-      "repairs": "Reparaturen: {{done}} / {{goal}}"
-    },
-    "budget": {
-      "mode": "Budget",
-      "amount": "Betrag",
-      "share": "Anteil der Einnahmen",
-      "shareShort": "{{pct}} % der Einnahmen",
-      "amountShort": "Festes Budget",
-      "left": "Verfügbar: {{v}}",
-      "perDayOf": "≈ {{v}} pro Tag (Einnahmen {{rev}} / T)",
-      "cap": "Ausgabenobergrenze",
-      "noCap": "Ohne Obergrenze: Das Guthaben wächst täglich.",
-      "daysOf": "{{count}} T Verteidigungsbudget",
-      "daysShort": "{{count}} T"
-    },
-    "priority": {
-      "1": "Niedrig",
-      "2": "Normal",
-      "3": "Hoch"
-    },
-    "journal": {
-      "title": "Protokoll",
-      "empty": "Noch nichts."
-    },
-    "hint": {
-      "vacantMissions": "Diese Aufträge warten auf einen Amtsinhaber: Ernennen Sie einen, damit sie vorankommen.",
-      "vacant": "Ernennen Sie einen Amtsinhaber und erteilen Sie ihm dann einen Auftrag.",
-      "noMission": "Keine Aufträge: Erteilen Sie einen mit „Neuer Auftrag“."
-    },
-    "zone": {
-      "borderWith": "Grenze: {{nation}}",
-      "aroundShort": "{{km}} km um {{place}}",
-      "all": "Gesamtes Gebiet",
-      "border": "Grenze",
-      "around": "Um …",
-      "radius": "Radius"
-    },
-    "commands": {
-      "title": "Die vier Kommandos",
-      "scope": "Heer, Luftwaffe, Marine, Luftverteidigung",
-      "open": "HQ öffnen",
-      "land": "Heer",
-      "air": "Luftwaffe",
-      "sea": "Marine",
-      "air_defense": "Luftverteidigung",
-      "noChief": "Ohne Befehlshaber",
-      "soon": "Befehlshaber und Operationen: im HQ in Vorbereitung.",
-      "soonBadge": "In Vorbereitung",
-      "now": "Heute im HQ: Armeen {{armies}}, Generäle {{generals}}.",
-      "ops": "Operationen: {{count}}"
-    },
-    "kpi": {
-      "heads": "Amtsinhaber",
-      "missions": "Aufträge",
-      "spent": "Ausgegeben",
-      "payroll": "Kosten",
-      "floor": "Reserve",
-      "floorTip": "Kassenbestand, den die Aufträge stets übrig lassen (Vorsicht, Auftrag Reserven)."
-    },
-    "wizard": {
-      "path": "neuer Auftrag",
-      "step": {
-        "type": "Auftrag",
-        "params": "Ziel und Vorgabe",
-        "budget": "Budget"
-      },
-      "back": "Zurück",
-      "next": "Weiter",
-      "confirm": "Auftrag erteilen",
-      "resource": "Rohstoff",
-      "branch": "Forschungsgebiet",
-      "category": "Gerät",
-      "nation": "Zielland",
-      "pick": "Wählen …",
-      "zone": "Gebiet",
-      "err": {
-        "type": "Wählen Sie einen Auftrag.",
-        "nation": "Wählen Sie das Zielland.",
-        "border": "Wählen Sie das Nachbarland.",
-        "around": "Wählen Sie die zentrale Provinz.",
-        "budget": "Leeres Budget."
-      }
-    },
-    "goal": {
-      "projects": "Vorgabe: Bauten",
-      "nodes": "Vorgabe: Forschungen",
-      "lots": "Vorgabe: Gerätelose",
-      "ops": "Vorgabe: Operationen",
-      "days": "Vorgabe: Budgettage in der Kasse",
-      "sites": "Vorgabe: geschützte Objekte",
-      "repairs": "Vorgabe: Reparaturen",
-      "auto": {
-        "research": "Vorgabe bei Bestätigung festgelegt: alle Forschungen, die die nächste Generation freischalten.",
-        "protect": "Vorgabe: so viele geschützte Objekte wie der Inlandsnachrichtendienst erlaubt, dann ihre Härtung."
-      }
-    },
-    "estimate": {
-      "title": "Prognose",
-      "options": "Mögliche Aktionen",
-      "first": "Erste Aktion",
-      "total": "Vollständiges Ziel",
-      "hours": "Dauer einer Aktion",
-      "reserveTarget": "Angestrebter Kassenbestand",
-      "envelope": "Budget",
-      "open": "Anteil der Einnahmen, ohne Obergrenze",
-      "covers": "Vom Budget gedeckte Aktionen",
-      "head": "{{name}}: Tempo +{{speed}} %, Rabatt {{discount}} %, hält {{reserve}} in der Kasse.",
-      "vacant": "Posten unbesetzt: Der Auftrag wartet auf einen Amtsinhaber.",
-      "note": "Schätzung nach Ihren Provinzen und Tagespreisen; das Ministerium hält Budget und Ressourcen ein.",
-      "noDeposit": "Kein Vorkommen dieses Rohstoffs im Gebiet.",
-      "noSite": "Kein zulässiger Standort im Gebiet.",
-      "noSystem": "Kein verfügbares Gerät in dieser Kategorie.",
-      "unlocked": "Die nächste Generation ist bereits verfügbar.",
-      "noResearch": "Keine Forschung mehr für dieses Ziel.",
-      "nothingDamaged": "Derzeit keine beschädigten Gebäude.",
-      "few": "Mögliche Aktionen im Gebiet: {{count}}, weniger als das Ziel; es wird auf das Machbare reduziert.",
-      "coversN": "≈ {{count}}"
-    },
-    "missions": {
-      "air_bases": {
-        "name": "Luftwaffenstützpunkte",
-        "desc": "Neue Luftwaffenstützpunkte bauen und die Abdeckung des Gebiets ausweiten."
-      },
-      "military_bases": {
-        "name": "Militärstützpunkte",
-        "desc": "Militärstützpunkte errichten: Landproduktion und Versorgungsradius."
-      },
-      "upgrade_bases": {
-        "name": "Modernisierung der Stützpunkte",
-        "desc": "Bestehende Luftwaffen-, Militär- und Marinestützpunkte ausbauen."
-      },
-      "logistics": {
-        "name": "Militärlogistik",
-        "desc": "Vorgeschobene Depots, Stützpunkte und Lazarette nahe der Grenzen: Truppenversorgung."
-      },
-      "fortify": {
-        "name": "Grenzbefestigung",
-        "desc": "Befestigungen und Bunker in bedrohten Grenzprovinzen."
-      },
-      "air_defense": {
-        "name": "Luftverteidigung des Gebiets",
-        "desc": "Flugabwehrstellungen und Radarstationen um Schlüsselprovinzen."
-      },
-      "coastal": {
-        "name": "Küstenverteidigung",
-        "desc": "Küstenbatterien und Marinestützpunkte an der Küste."
-      },
-      "research_next": {
-        "name": "Nächste Generation",
-        "desc": "Erforschen, was für die nächste Generation eines Geräts nötig ist."
-      },
-      "research_branch": {
-        "name": "Forschung nach Gebiet",
-        "desc": "Ein Forschungsgebiet Knoten für Knoten voranbringen."
-      },
-      "research_labs": {
-        "name": "Forschungslabore",
-        "desc": "Forschungszentren und Geheimlabore bauen und ausbauen."
-      },
-      "produce": {
-        "name": "Gerätebestellung",
-        "desc": "Eine Menge Gerät einer Kategorie produzieren (Eigenfertigung oder Import)."
-      },
-      "stockpile": {
-        "name": "Strategische Vorräte",
-        "desc": "Einen Vorrat einer Kategorie (Raketen, Munition …) halten und auffüllen."
-      },
-      "arms_industry": {
-        "name": "Rüstungsindustrie",
-        "desc": "Rüstungsfabriken und Elektronikwerke ausbauen."
-      },
-      "counterintel": {
-        "name": "Spionageabwehr",
-        "desc": "Fremde Netzwerke zerschlagen: Durchsuchungen und Zerschlagungen."
-      },
-      "protect_sites": {
-        "name": "Schutz sensibler Objekte",
-        "desc": "Wichtige Industrieanlagen unter Schutz stellen und härten."
-      },
-      "watch": {
-        "name": "Überwachung eines Landes",
-        "desc": "Seine Streitkräfte und Mobilmachung verfolgen: Aufklärung, Abhören, Agenten."
-      },
-      "map_defenses": {
-        "name": "Kartierung der Verteidigung",
-        "desc": "Seine Verteidigung orten: militärische Aufklärung und Ortung von Sendern."
-      },
-      "economic_intel": {
-        "name": "Wirtschaftsaufklärung",
-        "desc": "Seine Industrie und Rohstoffe kennen: Wirtschaftsaufklärung, Agenten."
-      },
-      "resource": {
-        "name": "Rohstoffproduktion",
-        "desc": "Bohrlöcher, Minen, Farmen oder Elektronikwerke dort, wo die Vorkommen sind."
-      },
-      "industry": {
-        "name": "Industrielle Entwicklung",
-        "desc": "Lokale Industrie und Kraftwerke in den produktivsten Provinzen."
-      },
-      "revenue": {
-        "name": "Höhere Einnahmen",
-        "desc": "Geschäftsviertel und lokale Industrie dort, wo die Einnahmen am höchsten sind."
-      },
-      "war_economy": {
-        "name": "Kriegswirtschaft",
-        "desc": "Rüstungsfabriken, Kraftwerke und Raffinerien für die Kriegsanstrengung."
-      },
-      "reserves": {
-        "name": "Kassenreserven",
-        "desc": "Eine Reserve halten, die andere Aufträge nicht antasten können."
-      },
-      "repair": {
-        "name": "Wiederaufbau",
-        "desc": "Beschädigte Gebäude reparieren, die teuersten zuerst."
-      }
-    },
-    "ministriesShort": {
-      "defense": "Verteidigung",
-      "economy": "Wirtschaft"
-    },
-    "suggest": "Mögliche Aufträge"
   }
 }
