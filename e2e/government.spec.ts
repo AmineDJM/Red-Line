@@ -13,7 +13,8 @@ const SHOTS = process.env.GOV_SHOTS;
 
 async function shot(page: Page, name: string, mobile: boolean) {
   if (!SHOTS) return;
-  await page.waitForTimeout(400);
+  // La carte occupe le fil principal : laisser la fenêtre se peindre avant la capture.
+  await page.waitForTimeout(1200);
   await page.screenshot({ path: `${SHOTS}/gov-${mobile ? 'mobile' : 'desktop'}-${name}.png` });
 }
 

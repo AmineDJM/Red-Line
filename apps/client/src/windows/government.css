@@ -114,10 +114,11 @@
     background: var(--rl-panel-2);
   }
 }
-.gov-sec--on {
-  border-color: var(--rl-cyan-line);
+.gov-sec--on,
+.gov-sec--on:hover {
+  border-color: var(--rl-cyan);
   background: var(--rl-cyan-dim);
-  color: var(--rl-text-strong);
+  color: var(--rl-cyan);
 }
 .gov-sec:focus-visible {
   outline: none;
