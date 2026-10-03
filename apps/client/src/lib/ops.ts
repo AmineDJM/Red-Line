@@ -7,11 +7,13 @@
 import {
   BRANCHES,
   BRANCH_SKILL,
+  OP_CATEGORIES,
   branchOfSystem,
   generalRating,
   type Aggressiveness,
   type Branch,
   type CampaignView,
+  type OpCategory,
   type CommandGeneralView,
   type CommandView,
   type NationId,
@@ -28,14 +30,37 @@ export function branchOfPile(u: UnitView, catalog: Record<string, WeaponSystem>)
   return s ? branchOfSystem(s) : 'land';
 }
 
-/** Piles libres (hors armée) par commandement. */
+/**
+ * Piles d'armées formées d'office pour une opération désormais close (elles tiennent les gains ou
+ * rentrent) : le moteur les reprend d'office pour une nouvelle opération.
+ */
+export function sparePiles(view: PlayerView | null): UnitView[] {
+  const command = view?.command;
+  if (!command) return [];
+  const closed = new Set(
+    (command.ops ?? [])
+      .filter((o) => o.status === 'success' || o.status === 'failed')
+      .map((o) => o.id),
+  );
+  const out: UnitView[] = [];
+  for (const a of command.armies) {
+    if (!a.auto || (a.opId && !closed.has(a.opId))) continue;
+    for (const id of a.unitIds) {
+      const u = view?.units[id];
+      if (u) out.push(u);
+    }
+  }
+  return out;
+}
+
+/** Piles libres (hors armée, ou d'une opération close) par commandement. */
 export function freeByBranch(
   view: PlayerView | null,
   me: NationId | null,
   catalog: Record<string, WeaponSystem>,
 ): Record<Branch, UnitView[]> {
   const out: Record<Branch, UnitView[]> = { land: [], air: [], sea: [], ad: [] };
-  for (const u of freePiles(view, me, catalog)) {
+  for (const u of [...freePiles(view, me, catalog), ...sparePiles(view)]) {
     const b = branchOfPile(u, catalog);
     if (b) out[b].push(u);
   }
@@ -124,9 +149,19 @@ export function suggestStaff(
     out.push({ id: g.id, role: b, armyId: null });
   };
   for (const b of def.branches) if ((free[b] ?? 0) > 0) pick(b);
-  if ((goal === 'conquest' || goal === 'occupy') && (free.land ?? 0) >= 2) pick('land');
+  if (TWO_LAND.has(goal) && (free.land ?? 0) >= 2) pick('land');
   return out;
 }
+
+/** Objectifs menés par secteurs : deux généraux de l'armée de terre proposés. */
+const TWO_LAND = new Set([
+  'conquest',
+  'occupy',
+  'counteroffensive',
+  'liberation',
+  'encircle',
+  'blitz',
+]);
 
 export interface OpPreview {
   /** Valeur (dollars) des forces engagées et des forces ennemies estimées. */
@@ -142,26 +177,34 @@ export interface OpPreview {
 }
 
 /** Durée indicative par objectif (heures), au rythme d'une opération bien dotée. */
-function etaFor(goal: string, provinces: number): number | null {
-  switch (goal) {
-    case 'conquest':
-    case 'occupy':
-      return 12 + 10 * Math.max(1, provinces);
-    case 'decapitation':
-      return 18;
-    case 'attrition':
-      return 72;
-    case 'air_control':
-      return 36;
-    case 'sead':
-      return 24;
-    case 'strategic':
-      return 48;
-    case 'blockade':
-      return 12;
-    default:
-      return null;
-  }
+const ETA: Record<string, number> = {
+  decapitation: 18,
+  attrition: 72,
+  air_control: 36,
+  sead: 24,
+  strategic: 48,
+  blockade: 12,
+  counteroffensive: 36,
+  liberation: 48,
+  encircle: 48,
+  breakthrough: 36,
+  raid: 36,
+  siege: 48,
+  interdiction: 48,
+  armed_recon: 24,
+  naval_supremacy: 72,
+  naval_strikes: 36,
+  amphibious: 48,
+  missile_campaign: 24,
+  air_redeploy: 12,
+  port_blockade: 12,
+  blitz: 96,
+  combined_landing: 72,
+};
+
+export function etaFor(goal: string, provinces: number): number | null {
+  if (goal === 'conquest' || goal === 'occupy') return 12 + 10 * Math.max(1, provinces);
+  return ETA[goal] ?? null;
 }
 
 /**
@@ -245,6 +288,8 @@ export function previewOp(o: {
 export function opHeadline(op: CampaignView): {
   key: string;
   params: Record<string, number>;
+  /** Clé du libellé de la mesure (objectifs ajoutés). */
+  label?: string;
 } {
   const m = (k: string) => op.progress.find((p) => p.key === k);
   const pct = (p?: { done: number; total: number }) =>
@@ -299,11 +344,22 @@ export function opHeadline(op: CampaignView): {
         params: { done: p?.done ?? 0, total: p?.total ?? 0 },
       };
     }
-    default: {
+    case 'defend_border': {
       const p = m('front');
       return {
         key: 'command.ops.metric.front',
         params: { done: p?.done ?? 0, total: p?.total ?? 0 },
+      };
+    }
+    default: {
+      // Objectifs ajoutés : mesure principale (la première), « libellé : fait/total ».
+      const p = op.progress[0];
+      if (!p) return { key: 'command.ops.metric.none', params: {} };
+      if (p.key === 'forces') return { key: 'command.ops.metric.forces', params: { pct: pct(p) } };
+      return {
+        key: 'command.ops.metric.ratio',
+        params: { done: p.done, total: p.total },
+        label: `command.ops.metrics.${p.key}`,
       };
     }
   }
@@ -319,6 +375,88 @@ export function goalList(command: CommandView | undefined): [string, OpGoalDef][
   return Object.entries(command?.goals ?? {}).sort(
     (a, b) => a[1].order - b[1].order || (a[0] < b[0] ? -1 : 1),
   );
+}
+
+/** Catalogue par catégorie (terre, air, mer, DCA et missiles, interarmées), ordre des données. */
+export function goalCatalog(
+  command: CommandView | undefined,
+): { cat: OpCategory; goals: [string, OpGoalDef][] }[] {
+  const all = goalList(command);
+  return OP_CATEGORIES.map((cat) => ({
+    cat,
+    goals: all.filter(([, d]) => (d.category ?? 'land') === cat),
+  })).filter((x) => x.goals.length);
+}
+
+/** Commandements recommandés pour toute la chaîne de phases (union, ordre d'apparition). */
+export function chainDef(
+  command: CommandView | undefined,
+  def: OpGoalDef,
+  goal: string,
+  phases: { goal: string }[],
+): OpGoalDef {
+  const branches: Branch[] = [];
+  for (const p of chainOf(command, goal, phases))
+    for (const b of command?.goals?.[p.goal]?.branches ?? [])
+      if (!branches.includes(b)) branches.push(b);
+  return { ...def, branches: branches.length ? branches : def.branches };
+}
+
+/** Objectif de la chaîne qui demande un second général de l'armée de terre (conquête…), sinon le premier. */
+export function chainGoal(
+  command: CommandView | undefined,
+  goal: string,
+  phases: { goal: string }[],
+): string {
+  return chainOf(command, goal, phases).find((p) => TWO_LAND.has(p.goal))?.goal ?? goal;
+}
+
+/** L'objectif se désigne-t-il par provinces (carte) ? */
+export function goalByProvinces(def: OpGoalDef | null | undefined): boolean {
+  return def?.target === 'provinces' || def?.target === 'place';
+}
+
+/** Cibles valides pour l'objectif (même règle que le moteur). */
+export function targetsOk(
+  def: OpGoalDef | null | undefined,
+  nations: string[],
+  provinces: string[],
+): boolean {
+  if (!def) return false;
+  switch (def.target) {
+    case 'provinces':
+      return provinces.length > 0;
+    case 'place':
+      return nations.length > 0 || provinces.length > 0;
+    case 'self':
+      return true;
+    default:
+      return nations.length > 0;
+  }
+}
+
+/**
+ * Phases de l'opération telles que le moteur les développera : objectif composé (guerre éclair…)
+ * déplié, puis phases ajoutées (cibles de la précédente si absentes).
+ */
+export function chainOf(
+  command: CommandView | undefined,
+  goal: string | null,
+  phases: { goal: string; nations?: string[]; provinces?: string[]; hours?: number }[],
+): { goal: string; hours?: number; preset?: string }[] {
+  if (!goal) return [];
+  const out: { goal: string; hours?: number; preset?: string }[] = [];
+  const push = (g: string, hours?: number) => {
+    const d = command?.goals?.[g];
+    if (d?.chain?.length)
+      d.chain.forEach((x, i) =>
+        out.push({ goal: x, hours: d.chainHours?.[i] || undefined, preset: g }),
+      );
+    else out.push({ goal: g, ...(hours ? { hours } : {}) });
+  };
+  push(goal);
+  for (const p of phases) push(p.goal, p.hours);
+  return out;
 }
 
 /** Commandements recommandés pour un objectif, et ceux couverts par l'état-major choisi. */

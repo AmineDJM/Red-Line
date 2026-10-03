@@ -1,21 +1,34 @@
 {
   "sections": {
     "command": "Centre de commandement",
-    "short": { "command": "QG" },
-    "path": { "command": "QG" }
+    "short": {
+      "command": "QG"
+    },
+    "path": {
+      "command": "QG"
+    }
   },
   "economy": {
-    "ledger": { "command": "Généraux et états-majors" }
+    "ledger": {
+      "command": "Généraux et états-majors"
+    }
   },
   "command": {
     "unavailable": "Centre de commandement indisponible dans cette partie.",
-    "selection": { "army": "Armée", "open": "Ouvrir l’armée au centre de commandement" },
+    "selection": {
+      "army": "Armée",
+      "open": "Ouvrir l’armée au centre de commandement"
+    },
     "armiesLink": {
       "title": "Centre de commandement",
       "text": " — formez des armées, confiez-leur une mission et recrutez des généraux qui les commandent pour vous.",
       "open": "Ouvrir"
     },
-    "tabs": { "ops": "Opérations", "armies": "Armées", "generals": "Généraux" },
+    "tabs": {
+      "ops": "Opérations",
+      "armies": "Armées",
+      "generals": "Généraux"
+    },
     "kpi": {
       "ops": "Opérations",
       "armies": "Armées",
@@ -147,8 +160,16 @@
       "askHelp": "Le général demande des renforts quand ses effectifs baissent ; vous validez.",
       "autoHelp": "Le général intègre lui-même des piles libres proches quand ses effectifs baissent."
     },
-    "domain": { "all": "Tout", "land": "Terre", "air": "Air", "sea": "Mer" },
-    "fit": { "partial": "composition incomplète", "missing": "milieu manquant" },
+    "domain": {
+      "all": "Tout",
+      "land": "Terre",
+      "air": "Air",
+      "sea": "Mer"
+    },
+    "fit": {
+      "partial": "composition incomplète",
+      "missing": "milieu manquant"
+    },
     "aggr": {
       "label": "Agressivité",
       "cautious": "Prudente",
@@ -173,7 +194,10 @@
         "help": "Libres : le général décide seul, y compris la guerre contre la cible de sa mission."
       }
     },
-    "retreat": { "label": "Seuil de repli d’une pile", "never": "jamais" },
+    "retreat": {
+      "label": "Seuil de repli d’une pile",
+      "never": "jamais"
+    },
     "radius": "Rayon",
     "scope": {
       "label": "Portée",
@@ -183,12 +207,11 @@
     },
     "target": {
       "province": "Province visée",
-      "nation": "Nation visée",
+      "nation": "Nation",
       "zone": "Zone",
       "none": "non désignée",
       "pick": "Désigner sur la carte",
       "change": "Changer",
-      "nation": "Nation",
       "nationAny": "— nation —",
       "own": "Cette province vous appartient déjà : désignez une province étrangère.",
       "needed": "Désignez la cible de la mission sur la carte."
@@ -305,7 +328,10 @@
         "label": "As de l’aviation",
         "help": "Une sortie et une escorte aériennes de plus par réflexion."
       },
-      "sailor": { "label": "Loup de mer", "help": "Une escorte navale de plus." },
+      "sailor": {
+        "label": "Loup de mer",
+        "help": "Une escorte navale de plus."
+      },
       "fortifier": {
         "label": "Bâtisseur de défenses",
         "help": "Protection accrue des piles à l’arrêt."
@@ -390,22 +416,25 @@
       "emptyTitle": "Aucune opération",
       "emptyText": "Désignez un ou plusieurs pays, un objectif et les généraux qui le mènent : ils agissent pour vous.",
       "onboard": {
-        "title": "Une opération en trois choix",
+        "title": "Une opération en quatre choix",
         "targets": "Les pays visés : sur la carte ou par recherche, un ou plusieurs.",
-        "goal": "L’objectif : affaiblir les forces, contrôle aérien total, conquête totale, frappes stratégiques, blocus…",
+        "goal": "L’objectif : plus de trente opérations par catégorie — terre, air, mer, DCA et missiles, interarmées.",
         "staff": "Les généraux, par commandement : chacun reçoit un rôle et ses forces, ils se coordonnent.",
-        "rule": "Les généraux frappent, avancent, patrouillent et bloquent d’eux-mêmes ; un ordre direct sur une pile prime jusqu’à sa fin."
+        "rule": "Les généraux frappent, avancent, patrouillent et bloquent d’eux-mêmes ; un ordre direct sur une pile prime jusqu’à sa fin.",
+        "plan": "Le plan : enchaînez des phases (SEAD, puis contrôle aérien, puis conquête) et choisissez la suite."
       },
       "path": {
         "new": "nouvelle opération",
         "edit": "changer d’objectif",
-        "reinforce": "renforcer"
+        "reinforce": "renforcer",
+        "phases": "phases"
       },
       "step": {
         "targets": "Cibles",
         "goal": "Objectif",
         "staff": "Généraux",
-        "confirm": "Confirmer"
+        "confirm": "Confirmer",
+        "plan": "Plan"
       },
       "status": {
         "planning": "Préparation",
@@ -422,7 +451,8 @@
         "air": "maîtrise du ciel",
         "offensive": "offensive",
         "hold": "maintien",
-        "done": "terminée"
+        "done": "terminée",
+        "withdraw": "repli"
       },
       "goals": {
         "attrition": {
@@ -469,6 +499,146 @@
           "name": "Occuper une région",
           "short": "Occupation",
           "desc": "Prendre et tenir les provinces désignées sur la carte."
+        },
+        "counteroffensive": {
+          "name": "Contre-offensive",
+          "short": "Contre-offensive",
+          "desc": "Reprendre les provinces perdues, les plus précieuses d’abord, avec appui aérien."
+        },
+        "liberation": {
+          "name": "Libération",
+          "short": "Libération",
+          "desc": "Chasser l’occupant des provinces d’un allié et les lui rendre."
+        },
+        "encircle": {
+          "name": "Encerclement",
+          "short": "Chaudron",
+          "desc": "Couper le goulot d’une poche ennemie, puis la réduire province par province."
+        },
+        "breakthrough": {
+          "name": "Percée",
+          "short": "Percée",
+          "desc": "Concentrer les forces sur un axe étroit et s’enfoncer en profondeur vers la capitale."
+        },
+        "raid": {
+          "name": "Raid en profondeur",
+          "short": "Raid",
+          "desc": "Frapper bases et dépôts de l’arrière ennemi, puis se replier en bon ordre."
+        },
+        "siege": {
+          "name": "Siège d’une ville",
+          "short": "Siège",
+          "desc": "Isoler la ville en prenant ses abords, puis la prendre d’assaut."
+        },
+        "defense_depth": {
+          "name": "Défense en profondeur",
+          "short": "Profondeur",
+          "desc": "Lignes successives tenues par parts, contre-attaques, repli ordonné sur la ligne arrière."
+        },
+        "defend_capital": {
+          "name": "Défense de la capitale",
+          "short": "Capitale",
+          "desc": "Garnison renforcée, couronne tenue, DCA et chasse au-dessus de la capitale."
+        },
+        "pacify": {
+          "name": "Pacification",
+          "short": "Pacification",
+          "desc": "Tenir chaque province conquise ou agitée, traquer rebelles et infiltrés."
+        },
+        "show_of_force": {
+          "name": "Démonstration de force",
+          "short": "Dissuasion",
+          "desc": "Masser les forces à la frontière sans la franchir : aucune guerre déclarée."
+        },
+        "interdiction": {
+          "name": "Interdiction",
+          "short": "Interdiction",
+          "desc": "Couper la logistique : bases avancées, ports, dépôts de carburant, colonnes en mouvement."
+        },
+        "cas": {
+          "name": "Appui aérien rapproché",
+          "short": "Appui",
+          "desc": "Frapper les forces ennemies au contact de vos offensives en cours."
+        },
+        "strategic_bombing": {
+          "name": "Bombardement stratégique continu",
+          "short": "Bombardement",
+          "desc": "Industrie, énergie et ressources frappées sans relâche, réparations comprises."
+        },
+        "air_defense_territory": {
+          "name": "Défense aérienne du territoire",
+          "short": "Défense aérienne",
+          "desc": "Patrouilles de chasse sur la capitale et les bases, interceptions, DCA."
+        },
+        "air_redeploy": {
+          "name": "Redéploiement aérien",
+          "short": "Redéploiement",
+          "desc": "Convoyer l’aviation vers les terrains les plus proches d’une zone désignée."
+        },
+        "armed_recon": {
+          "name": "Reconnaissance armée",
+          "short": "Reconnaissance",
+          "desc": "Survoler et révéler le pays visé, frapper les cibles d’opportunité."
+        },
+        "naval_supremacy": {
+          "name": "Supériorité navale",
+          "short": "Supériorité navale",
+          "desc": "Traquer et couler la flotte ennemie, puis tenir la mer."
+        },
+        "antiship": {
+          "name": "Guerre anti-navires",
+          "short": "Anti-navires",
+          "desc": "Sous-marins, missiles antinavires et patrouilles contre tout navire ennemi."
+        },
+        "convoy_escort": {
+          "name": "Escorte des convois",
+          "short": "Convois",
+          "desc": "Escorter vos transports chargés et patrouiller vos routes maritimes."
+        },
+        "amphibious": {
+          "name": "Assaut amphibie",
+          "short": "Amphibie",
+          "desc": "Débarquer sur une côte ou une île : embarquement, escorte, appui, tête de pont."
+        },
+        "port_blockade": {
+          "name": "Blocus renforcé des ports",
+          "short": "Blocus renforcé",
+          "desc": "Plusieurs navires par port, navires qui sortent attaqués, bases navales frappées."
+        },
+        "naval_strikes": {
+          "name": "Frappes depuis la mer",
+          "short": "Frappes navales",
+          "desc": "Missiles de croisière navals sur les défenses, bases et installations côtières."
+        },
+        "missile_shield": {
+          "name": "Bouclier antimissile",
+          "short": "Bouclier",
+          "desc": "Défenses antimissiles sur la capitale et les bases, contre balistiques et croisière."
+        },
+        "ad_umbrella": {
+          "name": "Parapluie de DCA",
+          "short": "Parapluie",
+          "desc": "La DCA suit vos offensives et couvre les troupes au plus près du front."
+        },
+        "missile_campaign": {
+          "name": "Campagne de frappes de missiles",
+          "short": "Missiles",
+          "desc": "Salves coordonnées sur les défenses, les bases aériennes et militaires."
+        },
+        "blitz": {
+          "name": "Guerre éclair",
+          "short": "Blitz",
+          "desc": "Défense antiaérienne, puis ciel, percée et capitale, enchaînés automatiquement."
+        },
+        "combined_landing": {
+          "name": "Opération combinée",
+          "short": "Combinée",
+          "desc": "Neutraliser la défense antiaérienne de la côte, puis assaut amphibie appuyé."
+        },
+        "ally_support": {
+          "name": "Soutien à un allié",
+          "short": "Soutien",
+          "desc": "Déployer des forces sur le front d’un allié, le couvrir et le défendre."
         }
       },
       "metric": {
@@ -479,7 +649,9 @@
         "sams": "{{left}} défenses antiaériennes restantes sur {{total}}",
         "buildings": "{{done}}/{{total}} installations détruites",
         "ports": "{{done}}/{{total}} ports bloqués",
-        "front": "{{done}}/{{total}} villes du front tenues"
+        "front": "{{done}}/{{total}} villes du front tenues",
+        "ratio": "{{label}} : {{done}}/{{total}}",
+        "none": "Mesure en attente du renseignement"
       },
       "metrics": {
         "forces": "Forces ennemies détruites (valeur estimée)",
@@ -489,7 +661,28 @@
         "aircraft": "Appareils ennemis détruits",
         "buildings": "Installations détruites",
         "ports": "Ports bloqués",
-        "front": "Villes du front tenues"
+        "front": "Villes du front tenues",
+        "retaken": "Provinces reprises",
+        "liberated": "Provinces libérées",
+        "neck": "Goulot coupé (provinces)",
+        "depth": "Profondeur atteinte sur l’axe",
+        "raids": "Arrière frappé (installations, provinces)",
+        "withdrawn": "Piles rentrées",
+        "ring": "Abords de la ville pris",
+        "city": "Ville prise",
+        "lines": "Provinces des lignes tenues",
+        "secured": "Provinces sécurisées",
+        "deployed": "Piles massées à la frontière",
+        "logistics": "Installations logistiques détruites",
+        "moving": "Colonnes en mouvement frappées",
+        "intercepts": "Missiles interceptés",
+        "rebased": "Appareils redéployés",
+        "revealed": "Provinces révélées",
+        "ships": "Navires ennemis coulés",
+        "escorted": "Transports escortés",
+        "sites": "Sites couverts par la DCA",
+        "covered": "Offensives couvertes par la DCA",
+        "targets": "Cibles détruites"
       },
       "stats": {
         "strikes": "Frappes",
@@ -576,13 +769,95 @@
         "released": "Général retiré de l’opération.",
         "suspended": "Opération suspendue.",
         "resumed": "Opération reprise.",
-        "cancelled": "Opération close."
-      }
+        "cancelled": "Opération close.",
+        "nextPhase": "Phase suivante lancée.",
+        "stageNow": "Rassemblement écourté : l’offensive part.",
+        "phases": "Phases mises à jour."
+      },
+      "cat": {
+        "label": "Catégories d’opérations",
+        "all": "Toutes",
+        "land": "Terre",
+        "air": "Air",
+        "sea": "Mer",
+        "ad": "DCA et missiles",
+        "joint": "Interarmées"
+      },
+      "targetsLeadBy": {
+        "nation": "Choisissez le ou les pays visés : touchez-les sur la carte ou cherchez-les.",
+        "provinces": "Désignez sur la carte les provinces visées.",
+        "place": "Désignez un lieu : des provinces sur la carte (ville, côte, poche, terrains) ou un pays.",
+        "self": "Opération sur votre territoire : rien à désigner. Vous pouvez préciser les adversaires surveillés.",
+        "ally": "Choisissez le pays allié ou ami à soutenir ou à libérer."
+      },
+      "selfTarget": "Votre territoire : capitale, front, bases et provinces conquises sont calculés d’office.",
+      "clearProvinces": "Effacer les provinces",
+      "noWar": "Opération sans guerre : aucune déclaration, les généraux ne franchissent pas la frontière.",
+      "plan": {
+        "title": "Phases",
+        "lead": "Enchaînez les phases : chacune démarre quand la précédente est réussie, ou à son échéance.",
+        "pickPhase": "Phase suivante",
+        "add": "Ajouter une phase",
+        "remove": "Retirer la phase",
+        "up": "Monter",
+        "down": "Descendre",
+        "drag": "Glisser pour réordonner",
+        "targets": "Cibles de la phase",
+        "sameTargets": "Mêmes cibles",
+        "timebox": "Échéance de la phase",
+        "untilDone": "Jusqu’à la réussite",
+        "firstTargets": "Cibles choisies à l’étape précédente",
+        "presetPart": "Phase de « {{name}} »",
+        "rule": "Mêmes généraux et mêmes forces d’une phase à l’autre, court rassemblement entre deux.",
+        "total": "Durée indicative totale : {{eta}}.",
+        "phaseOf": "Phase {{n}}/{{total}}",
+        "single": "Phase unique",
+        "within": "échéance {{eta}}",
+        "now": "en cours",
+        "until": "Échéance de la phase : {{day}} {{time}}.",
+        "next": "Ensuite",
+        "skip": "Phase suivante",
+        "edit": "Modifier les phases",
+        "result": {
+          "success": "réussie",
+          "timeout": "échéance",
+          "skipped": "sautée"
+        }
+      },
+      "after": {
+        "label": "Quand c’est fini",
+        "hold": "Tenir les gains",
+        "home": "Rentrer à la base",
+        "reserve": "Réserve",
+        "holdHelp": "Exploitation : garnisons sur les gains, DCA, chasse si l’ennemi vole, contre-attaques, jusqu’à votre prochain ordre.",
+        "homeHelp": "Les forces rentrent (troupes, aviation, navires), puis les piles vous sont rendues.",
+        "reserveHelp": "Les piles vous sont rendues aussitôt ; les généraux attendent une nouvelle opération."
+      },
+      "staging": {
+        "title": "Rassemblement en cours",
+        "text": "L’offensive part au plus tard le {{day}} à {{time}}."
+      },
+      "closedTitle": {
+        "success": "Opération réussie",
+        "failed": "Opération échouée"
+      },
+      "closedText": {
+        "hold": "Les forces tiennent les gains. Donnez-leur une nouvelle opération : les mêmes généraux et leurs piles sont repris.",
+        "home": "Les forces rentrent à la base, puis vous sont rendues.",
+        "reserve": "Les piles vous ont été rendues ; les généraux attendent un nouvel ordre.",
+        "released": "Toutes les forces ont été rendues ; les généraux attendent un nouvel ordre."
+      },
+      "newSameStaff": "Nouvelle opération, même état-major",
+      "reopen": "Nouvel objectif"
     },
     "wizard": {
       "path": "nouvelle armée",
       "steps": "Étapes",
-      "step": { "compose": "Composer", "mission": "Mission", "general": "Général" },
+      "step": {
+        "compose": "Composer",
+        "mission": "Mission",
+        "general": "Général"
+      },
       "name": "Nom de l’armée",
       "namePlaceholder": "1re Armée, Groupe aérien Sud, Flotte de Méditerranée…",
       "reinforceLead": "Renforts pour {{name}} : choisissez des piles libres.",
@@ -630,7 +905,39 @@
       "dissolved": "Armée dissoute.",
       "suspended": "Mission suspendue.",
       "resumed": "Mission reprise.",
-      "saved": "Réglage enregistré."
+      "saved": "Réglage enregistré.",
+      "reclaimed": "Piles rendues au général."
+    },
+    "wait": {
+      "badge": "En attente",
+      "war": "D’une autorisation : entrer en guerre contre {{nation}}.",
+      "strike": "D’une autorisation : frapper l’arrière de {{nation}}.",
+      "reinforce": "D’une réponse sur les renforts proposés (piles : {{count}}).",
+      "staging": "De la fin du rassemblement (au plus tard le {{day}} à {{time}}).",
+      "manual": "Piles sous votre ordre direct : {{count}} — le général les reprend à la fin de l’ordre.",
+      "suspended": "De la reprise : opération ou mission suspendue.",
+      "noGeneral": "D’un général : sans lui, l’armée ne fait rien.",
+      "wounded": "Du retour du général blessé.",
+      "fuel": "Du ravitaillement et du réarmement de l’aviation (appareils : {{count}}).",
+      "noForces": "De forces : rien d’assez fort pour agir.",
+      "noTargets": "De cibles : rien de connu à frapper, reconnaissance en cours.",
+      "resting": "Du repos des piles éprouvées (piles : {{count}}).",
+      "act": {
+        "war": "Autoriser",
+        "staging": "Lancer maintenant",
+        "manual": "Rendre au général"
+      }
+    },
+    "posture": {
+      "hold": "Tient les gains",
+      "home": "Rentre à la base",
+      "holdHelp": "Mission ou opération terminée : le général tient le terrain jusqu’au prochain ordre.",
+      "homeHelp": "Opération terminée : les forces rentrent, puis elles vous sont rendues."
+    },
+    "armyOp": {
+      "title": "Armée de l’opération {{name}}",
+      "text": "Le général agit pour l’opération. Lui donner une mission la retire de l’opération.",
+      "open": "Voir l’opération"
     }
   }
 }

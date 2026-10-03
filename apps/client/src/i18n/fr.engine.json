@@ -406,6 +406,10 @@
       "gov_missionDone": {
         "title": "Mission accomplie",
         "text": "{{mission}} : objectif atteint."
+      },
+      "cmd_opPhase": {
+        "title": "Phase suivante",
+        "text": "Opération {{op}} : phase {{n}}/{{total}}, {{goal}}."
       }
     },
     "cmd": {
@@ -485,7 +489,12 @@
         "wounded": "{{general}} est blessé au QG : {{days}} jours de convalescence.",
         "killed": "{{general}} est tué au QG.",
         "joinedOp": "Engagée dans l’opération {{op}} : {{role}}.",
-        "opClosed": "Opération {{op}} close : l’armée attend vos ordres."
+        "opClosed": "Opération {{op}} close : l’armée attend vos ordres.",
+        "leftOp": "Quitte l’opération {{op}} pour sa nouvelle mission.",
+        "reclaimed": "Piles rendues au général : {{count}}.",
+        "holdGains": "Mission accomplie : l’armée tient ses gains et se réorganise.",
+        "holdLines": "Mission close : l’armée tient ses positions en attendant vos ordres.",
+        "returned": "Rentrée à la base après l’opération {{op}} : forces rendues."
       },
       "goal": {
         "attrition": "Affaiblir les forces",
@@ -496,7 +505,35 @@
         "sead": "Neutraliser la défense antiaérienne",
         "blockade": "Blocus naval",
         "defend_border": "Tenir la frontière",
-        "occupy": "Occuper une région"
+        "occupy": "Occuper une région",
+        "counteroffensive": "Contre-offensive",
+        "liberation": "Libération",
+        "encircle": "Encerclement",
+        "breakthrough": "Percée",
+        "raid": "Raid en profondeur",
+        "siege": "Siège d’une ville",
+        "defense_depth": "Défense en profondeur",
+        "defend_capital": "Défense de la capitale",
+        "pacify": "Pacification",
+        "show_of_force": "Démonstration de force",
+        "interdiction": "Interdiction",
+        "cas": "Appui aérien rapproché",
+        "strategic_bombing": "Bombardement stratégique continu",
+        "air_defense_territory": "Défense aérienne du territoire",
+        "air_redeploy": "Redéploiement aérien",
+        "armed_recon": "Reconnaissance armée",
+        "naval_supremacy": "Supériorité navale",
+        "antiship": "Guerre anti-navires",
+        "convoy_escort": "Escorte des convois",
+        "amphibious": "Assaut amphibie",
+        "port_blockade": "Blocus renforcé des ports",
+        "naval_strikes": "Frappes depuis la mer",
+        "missile_shield": "Bouclier antimissile",
+        "ad_umbrella": "Parapluie de DCA",
+        "missile_campaign": "Campagne de frappes de missiles",
+        "blitz": "Guerre éclair",
+        "combined_landing": "Opération combinée",
+        "ally_support": "Soutien à un allié"
       },
       "role": {
         "land": "armée de terre",
@@ -534,7 +571,19 @@
         "role": "{{army}} : nouveau rôle — {{role}}.",
         "reassigned": "{{army}} est réaffectée à une autre opération.",
         "suspended": "Opération suspendue sur ordre.",
-        "resumed": "Opération reprise."
+        "resumed": "Opération reprise.",
+        "phaseStart": "Phase {{n}}/{{total}} : {{goal}}.",
+        "phaseDone": "Phase {{n}} réussie : {{goal}}.",
+        "phaseTimeout": "Phase {{n}} close à son échéance : {{goal}}.",
+        "phaseSkipped": "Phase {{n}} sautée : {{goal}}.",
+        "stageNow": "Rassemblement écourté sur ordre : l’offensive part.",
+        "liberated": "{{province}} libérée et rendue à {{nation}}.",
+        "hunt": "{{army}} : chasse aux rebelles et aux intrus.",
+        "salvo": "{{army}} : salve coordonnée — lanceurs : {{count}}.",
+        "returned": "{{army}} est rentrée à la base : forces rendues.",
+        "after_hold": "Les forces tiennent les gains en attendant de nouveaux ordres.",
+        "after_home": "Les forces rentrent à la base.",
+        "after_reserve": "Les forces passent en réserve : piles rendues."
       }
     },
     "spyNews": {

@@ -3,11 +3,13 @@ import { useTranslation } from 'react-i18next';
 import {
   BRANCHES,
   BRANCH_SKILL,
+  OP_CATEGORIES,
   type Aggressiveness,
   type Branch,
   type CampaignView,
   type CommandGeneralView,
   type CommandView,
+  type OpCategory,
   type OpCommanderInput,
   type Order,
   type Roe,
@@ -35,13 +37,19 @@ import {
   allCandidates,
   branchFit,
   branchOfGeneral,
+  chainDef,
+  chainGoal,
+  chainOf,
   freeByBranch,
   freeGenerals,
-  goalList,
+  goalByProvinces,
+  goalCatalog,
+  liveOps,
   opHeadline,
   previewOp,
   staffGeneral,
   suggestStaff,
+  targetsOk,
   type OpPreview,
   type StaffPick,
 } from '../lib/ops.js';
@@ -51,32 +59,19 @@ import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { useSend } from './armyCommand.js';
 import { GeneralAvatar, Stars, etaLabel } from './CommandGenerals.js';
+import { AfterChoice, PhasesPanel, PlanStep, WaitLine } from './CommandPlan.js';
+import { BRANCH_ICON, CAT_ICON, GOAL_ICON } from './opsIcons.js';
+
+export { BRANCH_ICON, GOAL_ICON };
 
 /**
  * Opérations (fenêtre QG) : liste des opérations et tableau de bord (progression chiffrée par
- * objectif, généraux et leurs rôles, journal, Renforcer / Suspendre / Changer d'objectif / Annuler),
- * assistant « Nouvelle opération » en quatre étapes : pays cibles (carte ou recherche), objectif
- * (cartes avec estimation), généraux par commandement (vivier, rôles, forces), confirmation.
+ * objectif, phases enchaînées, généraux et ce qu'ils attendent, journal, Renforcer / Suspendre /
+ * Changer d'objectif / Annuler ; opération close : nouvelle opération avec le même état-major),
+ * assistant « Nouvelle opération » en cinq étapes : objectif (catalogue par catégorie, estimation),
+ * cibles (pays, provinces, son territoire ou un allié selon l'objectif), plan (phases, « quand c'est
+ * fini »), généraux par commandement (vivier, rôles, forces), confirmation.
  */
-
-export const GOAL_ICON: Record<string, IconName> = {
-  attrition: 'bolt',
-  air_control: 'radio',
-  conquest: 'flag',
-  decapitation: 'crown',
-  strategic: 'factory',
-  sead: 'missile',
-  blockade: 'anchor',
-  defend_border: 'shield',
-  occupy: 'mapPin',
-};
-
-export const BRANCH_ICON: Record<Branch, IconName> = {
-  land: 'army',
-  air: 'radio',
-  sea: 'anchor',
-  ad: 'shield',
-};
 
 const STATUS_TONE: Record<CampaignView['status'], Tone> = {
   planning: 'cyan',
@@ -119,7 +114,12 @@ function Targets({ op, size = 11 }: { op: CampaignView; size?: number }) {
 
 function headline(op: CampaignView, t: (k: string, o?: Record<string, unknown>) => string) {
   const h = opHeadline(op);
-  return t(h.key, h.params);
+  return t(h.key, { ...h.params, ...(h.label ? { label: t(h.label) } : {}) });
+}
+
+/** Catégorie d'un objectif (classe de couleur de son icône). */
+function catOf(command: CommandView | undefined, goal: string): OpCategory {
+  return command?.goals?.[goal]?.category ?? 'land';
 }
 
 function OpRow({ op, sel, onClick }: { op: CampaignView; sel: boolean; onClick: () => void }) {
@@ -134,8 +134,8 @@ function OpRow({ op, sel, onClick }: { op: CampaignView; sel: boolean; onClick: 
         data-testid={`op-row-${op.id}`}
       >
         <span className="cmd-row__top">
-          <span className={`ops-goal-icon ops-goal-icon--${op.goal}`}>
-            <Icon name={GOAL_ICON[op.goal] ?? 'target'} size={13} />
+          <span className={`ops-goal-icon ops-goal-icon--cat-${op.category ?? 'land'}`}>
+            <Icon name={GOAL_ICON[op.preset ?? op.goal] ?? 'target'} size={13} />
           </span>
           <b className="cmd-row__name">{op.name}</b>
           {op.request ? (
@@ -147,8 +147,16 @@ function OpRow({ op, sel, onClick }: { op: CampaignView; sel: boolean; onClick: 
           )}
         </span>
         <span className="cmd-row__mission">
-          {t(`command.ops.goals.${op.goal}.name`, { defaultValue: op.goal })} ·{' '}
-          <Targets op={op} size={10} />
+          {t(`command.ops.goals.${op.goal}.name`, { defaultValue: op.goal })}
+          {op.phases && op.phases.length > 1 ? (
+            <span className="cmd-chip">
+              {t('command.ops.plan.phaseOf', {
+                n: Math.min((op.step ?? 0) + 1, op.phases.length),
+                total: op.phases.length,
+              })}
+            </span>
+          ) : null}{' '}
+          · <Targets op={op} size={10} />
         </span>
         <span className="ops-row__progress">
           <ProgressBar
@@ -301,10 +309,70 @@ function ProgressPanel({ op }: { op: CampaignView }) {
   );
 }
 
+/** Boutons qui lèvent l'attente d'un général d'opération. */
+function waitActions(
+  op: CampaignView,
+  armyId: string,
+  send: ReturnType<typeof useSend>,
+  reinforce: () => void,
+  t: (k: string, o?: Record<string, unknown>) => string,
+): Parameters<typeof WaitLine>[0]['actions'] {
+  return {
+    ...(op.request
+      ? {
+          war: {
+            label: t('command.wait.act.war'),
+            run: () =>
+              void send(
+                { kind: 'campaignAnswer', opId: op.id, requestId: op.request!.id, accept: true },
+                t('command.request.accepted'),
+              ),
+          },
+        }
+      : {}),
+    staging: {
+      label: t('command.wait.act.staging'),
+      testId: 'wait-staging',
+      run: () =>
+        void send(
+          { kind: 'campaignEdit', opId: op.id, stageNow: true },
+          t('command.ops.toast.stageNow'),
+        ),
+    },
+    manual: {
+      label: t('command.wait.act.manual'),
+      run: () =>
+        void send({ kind: 'armyEdit', armyId, reclaim: true }, t('command.toast.reclaimed')),
+    },
+    suspended: {
+      label: t('command.actions.resume'),
+      run: () =>
+        void send(
+          { kind: 'campaignSuspend', opId: op.id, on: false },
+          t('command.ops.toast.resumed'),
+        ),
+    },
+    noForces: { label: t('command.ops.reinforce'), run: reinforce },
+  };
+}
+
 function StaffPanel({ op, command }: { op: CampaignView; command: CommandView }) {
   const { t } = useTranslation();
   const send = useSend();
+  const startOp = useCommandUi((s) => s.startOp);
   const closed = op.status === 'success' || op.status === 'failed';
+  const startReinforce = () =>
+    startOp({
+      mode: 'reinforce',
+      opId: op.id,
+      steps: ['staff', 'confirm'],
+      goal: op.goal,
+      nations: op.nations,
+      provinces: op.provinces ?? [],
+      aggr: op.aggr,
+      roe: op.roe,
+      name: op.name,
+    });
   return (
     <section className="cmd-panel ops-staff-panel" data-testid="op-staff">
       <h4 className="cmd-panel__title">
@@ -338,8 +406,19 @@ function StaffPanel({ op, command }: { op: CampaignView; command: CommandView })
                 </small>
               </div>
               <span className={`ops-staff__status ops-staff__status--${c.status}`}>
-                {t(`command.status.${c.status}`)}
+                {c.posture && closed
+                  ? t(`command.posture.${c.posture}`)
+                  : t(`command.status.${c.status}`)}
               </span>
+              {c.wait && !closed ? (
+                <span className="ops-staff__wait">
+                  <WaitLine
+                    compact
+                    wait={c.wait}
+                    actions={waitActions(op, c.armyId, send, startReinforce, t)}
+                  />
+                </span>
+              ) : null}
               {closed ? null : (
                 <span className="ops-staff__actions">
                   <Select
@@ -445,6 +524,21 @@ function OpDetail({
     closeWindow('command');
   };
   const btn = mobile ? 'lg' : 'md';
+  const changeGoal = () =>
+    startOp({
+      mode: 'edit',
+      opId: op.id,
+      steps: ['goal', 'targets', 'plan', 'confirm'],
+      step: 'goal',
+      goal: op.preset ?? op.goal,
+      nations: op.nations,
+      provinces: op.provinces ?? [],
+      aggr: op.aggr,
+      roe: op.roe,
+      name: op.name,
+      deadlineHours: null,
+      after: op.after ?? 'hold',
+    });
   return (
     <div className="cmd-detail" data-testid="op-detail">
       <header className="cmd-detail__head">
@@ -459,8 +553,8 @@ function OpDetail({
             {t('command.ops.back')}
           </Button>
         ) : null}
-        <span className={`ops-goal-icon ops-goal-icon--${op.goal}`}>
-          <Icon name={GOAL_ICON[op.goal] ?? 'target'} size={16} />
+        <span className={`ops-goal-icon ops-goal-icon--cat-${op.category ?? 'land'}`}>
+          <Icon name={GOAL_ICON[op.preset ?? op.goal] ?? 'target'} size={16} />
         </span>
         <h3 className="cmd-detail__name">{op.name}</h3>
         <OpStatus op={op} />
@@ -476,6 +570,11 @@ function OpDetail({
         </Button>
       </header>
       <div className="ops-sub">
+        {op.preset ? (
+          <span className="cmd-chip is-on">
+            {t(`command.ops.goals.${op.preset}.name`, { defaultValue: op.preset })}
+          </span>
+        ) : null}
         <b>{t(`command.ops.goals.${op.goal}.name`, { defaultValue: op.goal })}</b>
         <Targets op={op} />
         <span className="cmd-chip">{t(`command.aggr.${op.aggr}`)}</span>
@@ -486,8 +585,70 @@ function OpDetail({
         ) : null}
       </div>
       {op.request ? <OpRequest op={op} /> : null}
+      {!closed && op.stageUntil !== undefined ? (
+        <div className="cmd-request cmd-request--info" role="status" data-testid="op-staging">
+          <Icon name="clock" size={16} />
+          <div className="cmd-request__text">
+            <b>{t('command.ops.staging.title')}</b>
+            <span>{t('command.ops.staging.text', { ...fmtClock(op.stageUntil) })}</span>
+          </div>
+          <div className="cmd-request__actions">
+            <Button
+              size="sm"
+              variant="primary"
+              icon={<Icon name="forward" size={11} />}
+              onClick={() =>
+                void send(
+                  { kind: 'campaignEdit', opId: op.id, stageNow: true },
+                  t('command.ops.toast.stageNow'),
+                )
+              }
+              data-testid="op-stage-now"
+            >
+              {t('command.wait.act.staging')}
+            </Button>
+          </div>
+        </div>
+      ) : null}
+      {closed ? (
+        <div className="cmd-request cmd-request--info" role="status" data-testid="op-closed">
+          <Icon name={op.status === 'success' ? 'check' : 'warning'} size={16} />
+          <div className="cmd-request__text">
+            <b>{t(`command.ops.closedTitle.${op.status}`)}</b>
+            <span>
+              {op.commanders.length
+                ? t(`command.ops.closedText.${op.after ?? 'hold'}`)
+                : t('command.ops.closedText.released')}
+            </span>
+          </div>
+          <div className="cmd-request__actions">
+            <Button
+              size="sm"
+              variant="primary"
+              icon={<Icon name="plus" size={11} />}
+              onClick={() =>
+                startOp({
+                  mode: 'new',
+                  steps: ['goal', 'targets', 'plan', 'staff', 'confirm'],
+                  // Pays rayés de la carte (conquis par l'opération) : retirés des cibles proposées.
+                  nations: op.nations.filter((n) => view?.nations[n]?.alive !== false),
+                  aggr: op.aggr,
+                  roe: op.roe,
+                  staff: op.commanders
+                    .filter((c) => c.generalId)
+                    .map((c) => ({ id: c.generalId!, role: c.role, armyId: c.armyId })),
+                })
+              }
+              data-testid="op-new-same-staff"
+            >
+              {t('command.ops.newSameStaff')}
+            </Button>
+          </div>
+        </div>
+      ) : null}
       <div className="cmd-detail__grid">
         <ProgressPanel op={op} />
+        <PhasesPanel op={op} closed={closed} />
         <StaffPanel op={op} command={command} />
         <OpJournal op={op} />
       </div>
@@ -518,21 +679,7 @@ function OpDetail({
               size={btn}
               variant="primary"
               icon={<Icon name="target" size={13} />}
-              onClick={() =>
-                startOp({
-                  mode: 'edit',
-                  opId: op.id,
-                  steps: ['targets', 'goal', 'confirm'],
-                  step: 'goal',
-                  goal: op.goal,
-                  nations: op.nations,
-                  provinces: op.provinces ?? [],
-                  aggr: op.aggr,
-                  roe: op.roe,
-                  name: op.name,
-                  deadlineHours: null,
-                })
-              }
+              onClick={changeGoal}
               data-testid="op-change-goal"
             >
               {t('command.ops.changeGoal')}
@@ -557,6 +704,17 @@ function OpDetail({
             </Button>
           </>
         )}
+        {closed ? (
+          <Button
+            size={btn}
+            variant="primary"
+            icon={<Icon name="target" size={13} />}
+            onClick={changeGoal}
+            data-testid="op-change-goal"
+          >
+            {t('command.ops.reopen')}
+          </Button>
+        ) : null}
         <span className="cmd-detail__spacer" />
         <Button size={btn} variant="danger" onClick={() => setCancel(true)} data-testid="op-cancel">
           {closed ? t('command.ops.close') : t('command.ops.cancel')}
@@ -624,7 +782,7 @@ function Stepper({ steps, step }: { steps: OpStep[]; step: OpStep }) {
 }
 
 /** Nations proposées : en guerre, voisines, estimées par le renseignement, puis toutes. */
-function useNationChoices(query: string): string[] {
+function useNationChoices(query: string, friendly = false): string[] {
   const view = useGame((s) => s.view);
   const me = useGame((s) => s.me);
   const nations = useWorld((s) => s.nations);
@@ -632,10 +790,14 @@ function useNationChoices(query: string): string[] {
     const q = query.trim().toLowerCase();
     const hot = new Set<string>(Object.keys(view?.command?.estimates ?? {}));
     for (const [id, n] of Object.entries(view?.nations ?? {}))
-      if (n.relation === 'war') hot.add(id);
+      if (friendly ? n.relation !== 'war' && n.relation !== undefined : n.relation === 'war')
+        hot.add(id);
     const all = new Set<string>([...Object.keys(view?.nations ?? {}), ...Object.keys(nations)]);
     all.delete(me ?? '');
-    const list = [...all].filter((id) => view?.nations[id]?.alive !== false);
+    const list = [...all].filter(
+      (id) =>
+        view?.nations[id]?.alive !== false && (!friendly || view?.nations[id]?.relation !== 'war'),
+    );
     const match = (id: string) =>
       !q || nationName(id).toLowerCase().includes(q) || id.toLowerCase().startsWith(q);
     const score = (id: string) => (view?.nations[id]?.relation === 'war' ? 0 : hot.has(id) ? 1 : 2);
@@ -645,7 +807,7 @@ function useNationChoices(query: string): string[] {
         (a, b) => score(a) - score(b) || nationName(a).localeCompare(nationName(b), i18n.language),
       )
       .slice(0, q ? 30 : 16);
-  }, [query, view, me, nations]);
+  }, [query, view, me, nations, friendly]);
 }
 
 function TargetsStep({ mobile }: { mobile: boolean }) {
@@ -656,14 +818,52 @@ function TargetsStep({ mobile }: { mobile: boolean }) {
   const closeWindow = useUi((s) => s.closeWindow);
   const view = useGame((s) => s.view);
   const [q, setQ] = useState('');
-  const choices = useNationChoices(q);
+  const def = d.goal ? view?.command?.goals?.[d.goal] : null;
+  const kind = def?.target ?? 'nation';
+  const choices = useNationChoices(q, kind === 'ally');
   const toggle = (id: string) =>
     patchOp({
       nations: d.nations.includes(id) ? d.nations.filter((x) => x !== id) : [...d.nations, id],
     });
+  const byProv = goalByProvinces(def);
   return (
     <div className={mobile ? 'cmd-step cmd-step--mobile' : 'cmd-step'}>
-      <p className="cmd-lead">{t('command.ops.targetsLead')}</p>
+      <p className="cmd-lead">{t(`command.ops.targetsLeadBy.${kind}`)}</p>
+      {kind === 'self' ? (
+        <p className="cmd-hint ops-self" data-testid="op-self">
+          <Icon name="home" size={12} /> {t('command.ops.selfTarget')}
+        </p>
+      ) : null}
+      {byProv ? (
+        <div className="cmd-target">
+          <span className="cmd-target__label">{t('command.ops.region')}</span>
+          <b>
+            {d.provinces.length
+              ? d.provinces
+                  .slice(0, 4)
+                  .map((p) => provinceName(p))
+                  .join(', ') + (d.provinces.length > 4 ? ` +${d.provinces.length - 4}` : '')
+              : t('command.target.none')}
+          </b>
+          <Button
+            size={mobile ? 'md' : 'sm'}
+            variant={d.provinces.length || kind === 'place' ? 'ghost' : 'primary'}
+            icon={<Icon name="target" size={12} />}
+            onClick={() => {
+              setPicking('nation');
+              closeWindow('command');
+            }}
+            data-testid="op-pick-provinces"
+          >
+            {t('command.ops.pickProvinces')}
+          </Button>
+          {d.provinces.length ? (
+            <button type="button" className="cmd-link" onClick={() => patchOp({ provinces: [] })}>
+              {t('command.ops.clearProvinces')}
+            </button>
+          ) : null}
+        </div>
+      ) : null}
       <div className="ops-picked" data-testid="op-targets">
         {d.nations.length ? (
           d.nations.map((n) => (
@@ -827,7 +1027,7 @@ function GoalCard({ id, on, onPick }: { id: string; on: boolean; onPick: () => v
       onClick={onPick}
       data-testid={`op-goal-${id}`}
     >
-      <span className={`ops-goal-icon ops-goal-icon--${id}`}>
+      <span className={`ops-goal-icon ops-goal-icon--cat-${def.category ?? 'land'}`}>
         <Icon name={GOAL_ICON[id] ?? 'target'} size={16} />
       </span>
       <b>{t(`command.ops.goals.${id}.name`, { defaultValue: id })}</b>
@@ -845,6 +1045,11 @@ function GoalCard({ id, on, onPick }: { id: string; on: boolean; onPick: () => v
               <Icon name={BRANCH_ICON[b]} size={10} />
             </span>
           ))}
+          {def.chain?.length ? (
+            <span className="cmd-chip" title={t('command.ops.plan.title')}>
+              <Icon name="link" size={10} /> {def.chain.length}
+            </span>
+          ) : null}
         </span>
         <span className="ops-gcard__est">
           {etaLabel(est.etaHours)} · {Math.round(est.chance * 100)} %
@@ -868,39 +1073,52 @@ function GoalStep({ mobile }: { mobile: boolean }) {
   const free = freeCounts(freeByBranch(view, me, catalog));
   const staff = d.staff.length || !def ? d.staff : suggestStaff(command, def, d.goal!, free);
   const est = usePreview(d, staff);
+  const cats = goalCatalog(command);
+  const shown = d.cat === 'all' ? cats : cats.filter((c) => c.cat === d.cat);
+  const pick = (id: string) => {
+    const g = command.goals?.[id];
+    patchOp({ goal: id, pickProv: goalByProvinces(g) });
+  };
   return (
     <div className={mobile ? 'cmd-step cmd-step--mobile' : 'cmd-step'}>
-      <div className="cmd-missions" role="radiogroup" aria-label={t('command.ops.step.goal')}>
-        {goalList(command).map(([id]) => (
-          <GoalCard key={id} id={id} on={d.goal === id} onPick={() => patchOp({ goal: id })} />
-        ))}
+      <div className="ops-cats" role="tablist" aria-label={t('command.ops.cat.label')}>
+        {(['all', ...OP_CATEGORIES] as const).map((c) => {
+          const n =
+            c === 'all'
+              ? Object.keys(command.goals ?? {}).length
+              : (cats.find((x) => x.cat === c)?.goals.length ?? 0);
+          if (c !== 'all' && !n) return null;
+          return (
+            <button
+              key={c}
+              type="button"
+              role="tab"
+              aria-selected={d.cat === c}
+              className={d.cat === c ? 'ops-cat is-on' : 'ops-cat'}
+              onClick={() => patchOp({ cat: c })}
+              data-testid={`op-cat-${c}`}
+            >
+              {c === 'all' ? <Icon name="grid" size={12} /> : <Icon name={CAT_ICON[c]} size={12} />}
+              <span>{t(`command.ops.cat.${c}`)}</span>
+              <small>{n}</small>
+            </button>
+          );
+        })}
       </div>
+      {shown.map(({ cat, goals }) => (
+        <section key={cat} className="ops-catsec">
+          <h5 className="ops-catsec__title">
+            <Icon name={CAT_ICON[cat]} size={12} /> {t(`command.ops.cat.${cat}`)}
+          </h5>
+          <div className="cmd-missions" role="radiogroup" aria-label={t(`command.ops.cat.${cat}`)}>
+            {goals.map(([id]) => (
+              <GoalCard key={id} id={id} on={d.goal === id} onPick={() => pick(id)} />
+            ))}
+          </div>
+        </section>
+      ))}
       {def ? (
         <div className="cmd-params" data-testid="op-params">
-          {def.target === 'provinces' ? (
-            <div className="cmd-target">
-              <span className="cmd-target__label">{t('command.ops.region')}</span>
-              <b>
-                {d.provinces.length
-                  ? d.provinces
-                      .slice(0, 4)
-                      .map((p) => provinceName(p))
-                      .join(', ')
-                  : t('command.target.none')}
-              </b>
-              <Button
-                size={mobile ? 'md' : 'sm'}
-                variant={d.provinces.length ? 'ghost' : 'primary'}
-                icon={<Icon name="target" size={12} />}
-                onClick={() => {
-                  setPicking('nation');
-                  closeWindow('command');
-                }}
-              >
-                {t('command.ops.pickProvinces')}
-              </Button>
-            </div>
-          ) : null}
           <div className="cmd-params__row">
             <div>
               <span className="cmd-param__label">{t('command.aggr.label')}</span>
@@ -946,7 +1164,9 @@ function GoalStep({ mobile }: { mobile: boolean }) {
               />
             </div>
           </div>
-          <p className="cmd-hint">{t(`command.ops.roe.${d.roe}`)}</p>
+          <p className="cmd-hint">
+            {def.war === false ? t('command.ops.noWar') : t(`command.ops.roe.${d.roe}`)}
+          </p>
           <EstimateBox est={est} />
           {!d.staff.length && staff.length ? (
             <p className="cmd-hint">
@@ -1081,7 +1301,15 @@ function StaffStep({ mobile }: { mobile: boolean }) {
   };
   const suggest = () =>
     def && d.goal
-      ? set(suggestStaff(command, def, d.goal, free, new Set(inOp as Set<string>)))
+      ? set(
+          suggestStaff(
+            command,
+            chainDef(command, def, d.goal, d.phases),
+            chainGoal(command, d.goal, d.phases),
+            free,
+            new Set(inOp as Set<string>),
+          ),
+        )
       : undefined;
   const fit = def ? branchFit(def, d.staff) : [];
   return (
@@ -1187,6 +1415,7 @@ function ConfirmStep({ mobile, defaultName }: { mobile: boolean; defaultName: st
   const d = useCommandUi((s) => s.opDraft)!;
   const patchOp = useCommandUi((s) => s.patchOp);
   const est = usePreview(d, d.staff);
+  const chain = chainOf(command, d.goal, d.phases);
   return (
     <div className={mobile ? 'cmd-step cmd-step--mobile' : 'cmd-step'}>
       {d.mode === 'new' ? (
@@ -1229,7 +1458,24 @@ function ConfirmStep({ mobile, defaultName }: { mobile: boolean; defaultName: st
             {d.deadlineHours ? <span className="cmd-chip">{etaLabel(d.deadlineHours)}</span> : null}
           </dd>
         </div>
-        {d.mode !== 'edit' ? (
+        {chain.length > 1 || d.mode === 'phases' ? (
+          <div>
+            <dt>{t('command.ops.plan.title')}</dt>
+            <dd className="ops-summary__chain" data-testid="op-summary-chain">
+              {chain.map((p, i) => (
+                <span key={i} className="cmd-chip">
+                  {i + 1}. <Icon name={GOAL_ICON[p.goal] ?? 'target'} size={10} />{' '}
+                  {t(`command.ops.goals.${p.goal}.name`, { defaultValue: p.goal })}
+                </span>
+              ))}
+            </dd>
+          </div>
+        ) : null}
+        <div>
+          <dt>{t('command.ops.after.label')}</dt>
+          <dd>{t(`command.ops.after.${d.after}`)}</dd>
+        </div>
+        {d.mode !== 'edit' && d.mode !== 'phases' ? (
           <div>
             <dt>{t('command.ops.step.staff')}</dt>
             <dd className="ops-summary__staff">
@@ -1271,11 +1517,18 @@ export function OpWizard({ mobile }: { mobile: boolean }) {
   const last = i === d.steps.length - 1;
   const def = d.goal ? command.goals?.[d.goal] : null;
   const can: Record<OpStep, boolean> = {
-    targets: d.nations.length > 0 || d.provinces.length > 0,
-    goal: !!def && (def.target !== 'provinces' || d.provinces.length > 0),
+    targets: targetsOk(def, d.nations, d.provinces),
+    goal: !!def,
+    plan: true,
     staff: d.staff.length > 0,
     confirm: true,
   };
+  const phases = d.phases.map((p) => ({
+    goal: p.goal,
+    ...(p.nations?.length ? { nations: p.nations } : {}),
+    ...(p.provinces?.length ? { provinces: p.provinces } : {}),
+    ...(p.hours ? { hours: p.hours } : {}),
+  }));
   const defaultName = d.goal
     ? t('command.ops.defaultName', {
         goal: t(`command.ops.goals.${d.goal}.name`, { defaultValue: d.goal }),
@@ -1311,6 +1564,9 @@ export function OpWizard({ mobile }: { mobile: boolean }) {
           roe: d.roe,
           ...(d.deadlineHours ? { deadlineHours: d.deadlineHours } : {}),
           commanders: commanders(),
+          ...(phases.length ? { phases } : {}),
+          ...(phases.length && d.phaseHours ? { phaseHours: d.phaseHours } : {}),
+          ...(d.after !== 'hold' ? { after: d.after } : {}),
         };
         if (await send(order, t('command.ops.toast.created', { name }))) {
           closeOp();
@@ -1336,8 +1592,20 @@ export function OpWizard({ mobile }: { mobile: boolean }) {
               aggr: d.aggr,
               roe: d.roe,
               ...(d.deadlineHours ? { deadlineHours: d.deadlineHours } : {}),
+              phases,
+              after: d.after,
             },
             t('command.ops.toast.edited'),
+          )
+        )
+          closeOp();
+        return;
+      }
+      if (d.mode === 'phases') {
+        if (
+          await send(
+            { kind: 'campaignEdit', opId: d.opId!, phases, after: d.after },
+            t('command.ops.toast.phases'),
           )
         )
           closeOp();
@@ -1371,6 +1639,8 @@ export function OpWizard({ mobile }: { mobile: boolean }) {
           <TargetsStep mobile={mobile} />
         ) : d.step === 'goal' ? (
           <GoalStep mobile={mobile} />
+        ) : d.step === 'plan' ? (
+          <PlanStep mobile={mobile} />
         ) : d.step === 'staff' ? (
           <StaffStep mobile={mobile} />
         ) : (
@@ -1408,12 +1678,21 @@ export function OpWizard({ mobile }: { mobile: boolean }) {
               const next = d.steps[i + 1]!;
               // Étape des généraux : état-major proposé d'office (modifiable).
               if (next === 'staff' && !d.staff.length && def && d.goal) {
+                // État-major proposé pour l'objectif et les phases suivantes (commandements recommandés).
                 const free = freeCounts(
                   freeByBranch(view, useGame.getState().me, useWorld.getState().catalog),
                 );
                 patchOp({
                   step: next,
-                  staff: d.mode === 'reinforce' ? [] : suggestStaff(command, def, d.goal, free),
+                  staff:
+                    d.mode === 'reinforce'
+                      ? []
+                      : suggestStaff(
+                          command,
+                          chainDef(command, def, d.goal, d.phases),
+                          chainGoal(command, d.goal, d.phases),
+                          free,
+                        ),
                 });
               } else patchOp({ step: next });
             }}
@@ -1429,7 +1708,9 @@ export function OpWizard({ mobile }: { mobile: boolean }) {
 
 /** Ouvre l'assistant « Nouvelle opération » (pays de la sélection proposé d'office). */
 export function openNewOp(nations: string[] = []): void {
-  useCommandUi.getState().startOp({ steps: ['targets', 'goal', 'staff', 'confirm'], nations });
+  useCommandUi
+    .getState()
+    .startOp({ steps: ['goal', 'targets', 'plan', 'staff', 'confirm'], nations });
   useCommandUi.getState().setTab('ops');
   useUi.getState().openWindow('command');
 }
@@ -1438,8 +1719,9 @@ export function openNewOp(nations: string[] = []): void {
 function OpsOnboarding({ mobile }: { mobile?: boolean }) {
   const { t } = useTranslation();
   const steps: { key: OpStep; icon: IconName }[] = [
-    { key: 'targets', icon: 'globe' },
     { key: 'goal', icon: 'target' },
+    { key: 'targets', icon: 'globe' },
+    { key: 'plan', icon: 'link' },
     { key: 'staff', icon: 'star' },
   ];
   return (
@@ -1490,7 +1772,8 @@ export function OpsPane({ mobile }: { mobile: boolean }) {
   }, [selected]);
   const ops = command.ops ?? [];
   const cur = ops.find((o) => o.id === selected) ?? (mobile ? null : (ops[0] ?? null));
-  const full = ops.length >= (command.maxOps ?? 8);
+  // Seules les opérations en cours comptent : une opération close reste consultable.
+  const full = liveOps(command).length >= (command.maxOps ?? 8);
   const list = (
     <div className="cmd-list">
       <Button
