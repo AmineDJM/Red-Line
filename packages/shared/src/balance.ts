@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { CommandBalanceSchema } from './command.js';
+import { GovernmentBalanceSchema } from './government.js';
 import { CATEGORIES, RESOURCES } from './catalog.js';
 import { BUILDING_TYPES } from './map.js';
 import { StacksBalanceSchema } from './stacks.js';
@@ -1895,6 +1896,8 @@ export const BalanceSchema = z.object({
   ai: AiBalanceSchema.optional(),
   /** Centre de commandement : armées, missions, généraux (section optionnelle, défauts documentés). */
   command: CommandBalanceSchema.optional(),
+  /** Gouvernement : ministères, directions, titulaires, missions (section optionnelle, défauts). */
+  government: GovernmentBalanceSchema.optional(),
   /** Armée de départ par nation jouable, posée autour de la capitale (repli si pas d'ORBAT). */
   startingArmy: z.array(z.object({ systemId: z.string(), count: z.number().int().min(1) })),
   /** Armée de départ réduite pour les nations non jouées (IA neutres). */

@@ -18,11 +18,12 @@ import type { EngineState, Unit } from '../state/types.js';
  *  - mil   : air, mer, missiles, nucléaire, opérations combinées, rapports de bataille, capteurs, généraux ;
  *  - intel : renseignement (HUMINT, SIGINT, départements, rapports cotés, opérations, intoxication) ;
  *  - diplo : diplomatie, alliances, Conseil de sécurité, stabilité, territoires disputés, actualité, IA avancée ;
- *  - cmd   : centre de commandement (armées, missions, généraux recrutés qui commandent comme l'IA).
+ *  - cmd   : centre de commandement (armées, missions, généraux recrutés qui commandent comme l'IA) ;
+ *  - gov   : gouvernement (ministères, directions, titulaires payés, missions exécutées par les ordres).
  * Règles : pur et déterministe (PRNG de l'état), itérations triées, état du module dans state.mods[id]
  * (données sérialisables uniquement), index dérivés reconstruits par `rebuild`.
  */
-export type ModuleId = 'eco' | 'mil' | 'intel' | 'diplo' | 'cmd';
+export type ModuleId = 'eco' | 'mil' | 'intel' | 'diplo' | 'cmd' | 'gov';
 
 /** Événement propre à un module (programmé avec scheduleMod). */
 export interface ModEvent {

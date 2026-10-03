@@ -121,23 +121,45 @@ function thinkResearch(state: EngineState, n: NationId, atWar: boolean): void {
   // Réserve (grand livre) lue seulement quand une recherche est envisageable.
   const budget = Math.min(share, money - aiReserve(state, n, atWar));
   if (!(budget > 0)) return;
-  const done = new Set(en.done);
   const ranks = branchRanks(state, n, atWar);
+  const best = researchPick(
+    state,
+    n,
+    budget,
+    (raw) => raw.tier + (ranks.get(raw.branch) ?? BRANCHES.length) * ec.researchFocus,
+  );
+  if (best) aiOrder(state, n, { kind: 'research', nodeId: best.id });
+}
+
+/**
+ * Meilleur nœud de recherche selon un score (le plus bas l'emporte ; null = exclu) : acquis exclus,
+ * prérequis acquis, coût dans le budget, ressources disponibles. Partagé par l'IA économique et la
+ * direction de la recherche du gouvernement (modules/gov), qui en change le score.
+ */
+export function researchPick(
+  state: EngineState,
+  n: NationId,
+  budget: number,
+  score: (raw: ResearchNode) => number | null,
+): ResearchNode | null {
+  const tree = state.world.research;
+  if (!tree) return null;
+  const done = new Set(ecoNation(state, n).done);
   let best: ResearchNode | null = null;
   let bestScore = Infinity;
   for (const id of researchIds(tree)) {
     const raw = tree.get(id)!;
     if (raw.cost.money > budget || done.has(id)) continue;
-    const score = raw.tier + (ranks.get(raw.branch) ?? BRANCHES.length) * ec.researchFocus;
-    if (score >= bestScore) continue;
+    const sc = score(raw);
+    if (sc === null || sc >= bestScore) continue;
     const node = nodeOf(state, id);
     if (!node || !node.requires.every((r) => hasGate(state, n, r))) continue;
     if (canPay(state, n, { money: node.cost.money, res: scaledRes(node.cost.resources, 1) }))
       continue;
     best = node;
-    bestScore = score;
+    bestScore = sc;
   }
-  if (best) aiOrder(state, n, { kind: 'research', nodeId: best.id });
+  return best;
 }
 
 /** Coût du nœud de recherche le moins cher (par arbre). */
@@ -162,23 +184,43 @@ function researchIds(tree: ReadonlyMap<string, ResearchNode>): string[] {
   return ids;
 }
 
-/** Réparations des bâtiments endommagés, si la trésorerie le permet. */
-function thinkRepairs(state: EngineState, n: NationId): void {
-  const es = eco(state);
+/** Coût de réparation d'un bâtiment endommagé (même calcul que l'ordre `repair`). */
+export function repairCost(state: EngineState, pid: string, b: string): number {
   const c = cfg(state.world);
+  return (
+    (c.buildings.buildCostUsd[b] ?? 0) *
+    Math.pow(c.buildings.levelCostGrowth, levelOf(state, pid, b) - 1) *
+    (1 - health(state, pid, b)) *
+    c.industry.repairCostFactor
+  );
+}
+
+/**
+ * Bâtiments endommagés d'une nation sans réparation en cours (ordre stable). Partagé par l'IA
+ * économique et le gouvernement (mission Reconstruction).
+ */
+export function repairCandidates(
+  state: EngineState,
+  n: NationId,
+): { pid: string; b: BuildingType; cost: number }[] {
+  const es = eco(state);
+  const out: { pid: string; b: BuildingType; cost: number }[] = [];
   for (const pid of sortedIds(es.bld)) {
     if (state.provinces[pid]?.owner !== n) continue;
     for (const b of buildingsOf(state, pid)) {
       const h = health(state, pid, b);
       if (h >= 1 || es.bld[pid]?.[b]?.rep != null) continue;
-      const cost =
-        (c.buildings.buildCostUsd[b] ?? 0) *
-        Math.pow(c.buildings.levelCostGrowth, levelOf(state, pid, b) - 1) *
-        (1 - h) *
-        c.industry.repairCostFactor;
-      if (state.nations[n]!.money < cost * AI(state).repairFactor) continue;
-      aiOrder(state, n, { kind: 'repair', provinceId: pid, building: b });
+      out.push({ pid, b, cost: repairCost(state, pid, b) });
     }
+  }
+  return out;
+}
+
+/** Réparations des bâtiments endommagés, si la trésorerie le permet. */
+function thinkRepairs(state: EngineState, n: NationId): void {
+  for (const { pid, b, cost } of repairCandidates(state, n)) {
+    if (state.nations[n]!.money < cost * AI(state).repairFactor) continue;
+    aiOrder(state, n, { kind: 'repair', provinceId: pid, building: b });
   }
 }
 
@@ -194,29 +236,61 @@ function thinkInvest(state: EngineState, n: NationId): void {
   if (bd <= 0 || state.nations[n]!.money < bd * AI(state).investDays) return;
   const es = eco(state);
   for (const id of sortedIds(es.jobs)) if (es.jobs[id]!.n === n) return;
-  const max = cfg(state.world).buildings.maxLevel;
-  let best: { pid: string; b: BuildingType; lvl: number; y: number } | null = null;
-  for (const pid of provincesOf(state, n)) {
-    const ds = depositsOf(state.world, pid);
-    for (const b of AI(state).investIn) {
-      const lvl = levelOf(state, pid, b);
-      if (lvl >= max) continue;
-      const r = RESOURCE_BUILDINGS[b];
-      if (lvl <= 0) {
-        // Bâtiment neuf : seulement sur une carte à ressources, là où la province s'y prête.
-        if (!ds || buildRestriction(state.world, pid, b)) continue;
-        if (r ? !ds.some((d) => d.type === r) : !(b === 'local_industry' && ds.length === 0))
-          continue;
-      } else if (health(state, pid, b) < 1) continue;
-      const y = r ? depositYield(state.world, pid, r) : 1;
-      if (!best || lvl < best.lvl || (lvl === best.lvl && y > best.y)) best = { pid, b, lvl, y };
-    }
-  }
+  let best: InvestCandidate | null = null;
+  for (const x of investCandidates(state, n, AI(state).investIn))
+    if (!best || x.lvl < best.lvl || (x.lvl === best.lvl && x.y > best.y)) best = x;
   if (!best) return;
   const c = cfg(state.world).buildings;
   const cost = (c.buildCostUsd[best.b] ?? 0) * Math.pow(c.levelCostGrowth, best.lvl);
   if (state.nations[n]!.money - cost < aiReserve(state, n, false)) return;
   aiOrder(state, n, { kind: 'build', provinceId: best.pid, building: best.b });
+}
+
+export interface InvestCandidate {
+  pid: string;
+  b: BuildingType;
+  /** Niveau actuel (0 : bâtiment neuf). */
+  lvl: number;
+  /** Rendement de la ressource produite (1 hors ressources). */
+  y: number;
+}
+
+/**
+ * Chantiers d'investissement possibles d'une nation (province × bâtiment, ordre stable) : amélioration
+ * d'un bâtiment intact sous le niveau maximal ou construction neuve selon `fresh` — règle de l'IA
+ * (`ai`, défaut : sur une carte à ressources, extraction seulement sur gisement, industrie locale dans
+ * les provinces « argent seulement »), tout bâtiment que `buildRestriction` permet (`allowed`), ou
+ * aucun (`none`). Partagé par l'IA économique et le gouvernement (modules/gov).
+ */
+export function investCandidates(
+  state: EngineState,
+  n: NationId,
+  buildings: readonly BuildingType[],
+  opts: { provinces?: readonly string[]; fresh?: 'ai' | 'allowed' | 'none' } = {},
+): InvestCandidate[] {
+  const max = cfg(state.world).buildings.maxLevel;
+  const fresh = opts.fresh ?? 'ai';
+  const out: InvestCandidate[] = [];
+  for (const pid of opts.provinces ?? provincesOf(state, n)) {
+    const ds = depositsOf(state.world, pid);
+    for (const b of buildings) {
+      const lvl = levelOf(state, pid, b);
+      if (lvl >= max) continue;
+      const r = RESOURCE_BUILDINGS[b];
+      if (lvl <= 0) {
+        if (fresh === 'none') continue;
+        if (fresh === 'ai') {
+          // Bâtiment neuf : seulement sur une carte à ressources, là où la province s'y prête.
+          if (!ds || buildRestriction(state.world, pid, b)) continue;
+          if (r ? !ds.some((d) => d.type === r) : !(b === 'local_industry' && ds.length === 0))
+            continue;
+        } else if (buildRestriction(state.world, pid, b)) continue;
+      } else if (health(state, pid, b) < 1) continue;
+      const y = r ? depositYield(state.world, pid, r) : 1;
+      out.push({ pid, b, lvl, y });
+    }
+  }
+  return out;
 }
 
 /** En guerre : production locale ou importation de défenses selon le budget. */
@@ -225,27 +299,8 @@ function thinkWarProduction(state: EngineState, n: NationId): void {
   if (ns.production.length >= AI(state).warMaxQueue) return;
   const spare = ns.money - reserve(state, n);
   if (spare <= 0) return;
-  const w = wi(state.world);
-  const provs = provincesOf(state, n);
   for (const cat of AI(state).warCategories) {
-    const options: { sys: WeaponSystem; pid: string; local: boolean }[] = [];
-    for (const id of w.systemIds) {
-      const sys = state.world.catalog.get(id)!;
-      if (sys.category !== cat || !sys.enabled || sys.movement === 'sea') continue;
-      const need = requiredBuildings(sys);
-      const pid = provs.find((p) => provinceProductionSpeed(state, p, need) > 0);
-      if (pid && !localCheck(state, n, sys, pid)) options.push({ sys, pid, local: true });
-      else if (provs[0] && !importCheck(state, n, sys))
-        options.push({ sys, pid: pid ?? provs[0], local: false });
-    }
-    options.sort(
-      (a, b) =>
-        Number(b.local) - Number(a.local) ||
-        b.sys.generation - a.sys.generation ||
-        a.sys.cost.money - b.sys.cost.money ||
-        (a.sys.id < b.sys.id ? -1 : 1),
-    );
-    for (const o of options) {
+    for (const o of productionOptions(state, n, cat)) {
       const unit = o.sys.cost.money * (o.local ? 1 : cfg(state.world).industry.importPriceFactor);
       const count = Math.min(AI(state).warBatch, Math.floor(spare / Math.max(1, unit)));
       if (count < 1) continue;
@@ -253,6 +308,51 @@ function thinkWarProduction(state: EngineState, n: NationId): void {
         return;
     }
   }
+}
+
+export interface ProductionOption {
+  sys: WeaponSystem;
+  pid: string;
+  local: boolean;
+}
+
+/**
+ * Façons de se procurer un matériel d'une catégorie : fabrication locale (recherche ou licence,
+ * bâtiment requis) dans la première province équipée, sinon importation ; triées : local d'abord,
+ * génération la plus récente, coût le plus bas. Navires exclus, sauf `sea` (province avec accès à la
+ * mer). Partagé par l'IA économique et la direction de la production du gouvernement.
+ */
+export function productionOptions(
+  state: EngineState,
+  n: NationId,
+  cat: string,
+  opts: { sea?: boolean } = {},
+): ProductionOption[] {
+  const w = wi(state.world);
+  const provs = provincesOf(state, n);
+  const options: ProductionOption[] = [];
+  for (const id of w.systemIds) {
+    const sys = state.world.catalog.get(id)!;
+    if (sys.category !== cat || !sys.enabled) continue;
+    const sea = sys.movement === 'sea';
+    if (sea && !opts.sea) continue;
+    const need = requiredBuildings(sys);
+    const pid = provs.find(
+      (p) => provinceProductionSpeed(state, p, need) > 0 && (!sea || !!w.seaSpawn.get(p)),
+    );
+    const fallback = sea ? provs.find((p) => !!w.seaSpawn.get(p)) : provs[0];
+    if (pid && !localCheck(state, n, sys, pid)) options.push({ sys, pid, local: true });
+    else if (fallback && !importCheck(state, n, sys))
+      options.push({ sys, pid: pid ?? fallback, local: false });
+  }
+  options.sort(
+    (a, b) =>
+      Number(b.local) - Number(a.local) ||
+      b.sys.generation - a.sys.generation ||
+      a.sys.cost.money - b.sys.cost.money ||
+      (a.sys.id < b.sys.id ? -1 : 1),
+  );
+  return options;
 }
 
 /**
