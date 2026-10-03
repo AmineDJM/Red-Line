@@ -725,9 +725,20 @@ export class GameMap {
       const w = useWorld.getState();
       const provs = Object.values(view.provinces);
       this.detectReveals(view.provinces, me);
-      this.syncs.buildings.push(
-        buildingFeatures(provs, { me, nations: view.nations, defs: w.provinces, t: tNow }).features,
-      );
+      // Bâtiments en cours de révélation : propriété `rv` (et non un feature-state, qui, appliqué au
+      // rendu sur une tuile dont les données viennent d'être remplacées, fait lever à MapLibre
+      // « feature index out of bounds »).
+      const revealing = new Set(this.revealIds);
+      const bld = buildingFeatures(provs, {
+        me,
+        nations: view.nations,
+        defs: w.provinces,
+        t: tNow,
+      }).features;
+      if (revealing.size)
+        for (const f of bld)
+          if (revealing.has(String(f.properties?.id))) f.properties = { ...f.properties, rv: 1 };
+      this.syncs.buildings.push(bld);
       this.set('prov-markers', provinceMarkerFeatures(provs, w.provinces));
       this.refreshIntelLayer();
     }
@@ -757,7 +768,7 @@ export class GameMap {
 
   /**
    * Bâtiments nouvellement révélés par le renseignement (province étrangère) : fondu et anneau
-   * animés pendant ~1,6 s (feature-state `reveal`).
+   * animés pendant ~1,6 s (propriété `rv` des entités de la source `buildings`).
    */
   private detectReveals(provinces: Record<string, ProvinceView>, me: NationId | null) {
     const fresh: string[] = [];
@@ -770,12 +781,8 @@ export class GameMap {
       this.knownBuildings.set(p.id, now);
     }
     if (first || !fresh.length) return;
-    this.revealIds.forEach((id) =>
-      this.map.setFeatureState({ source: 'buildings', id }, { reveal: false }),
-    );
     this.revealIds = fresh;
     this.revealStart = performance.now();
-    fresh.forEach((id) => this.map.setFeatureState({ source: 'buildings', id }, { reveal: true }));
   }
 
   private applyProvinces(provinces: Record<string, ProvinceView>, me: NationId | null) {
@@ -1732,9 +1739,6 @@ export class GameMap {
     if (reveal) {
       const f = (performance.now() - this.revealStart) / 1600;
       if (f >= 1) {
-        this.revealIds.forEach((id) =>
-          this.map.setFeatureState({ source: 'buildings', id }, { reveal: false }),
-        );
         this.revealIds = [];
         set('bld', 'icon-opacity', revealOpacity(1));
         set('bld-reveal', 'icon-opacity', revealRingOpacity(0));

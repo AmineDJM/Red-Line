@@ -29,10 +29,21 @@ test('mission de renseignement et révélation des bâtiments', async ({ page },
   await selectProvince(page, madrid);
   const panel = page.getByTestId('province-panel');
   await expect(panel).toContainText('Madrid');
+  // La pile de notifications ne garde que les 4 dernières : on journalise chaque message affiché
+  // (une notification du début de partie peut chasser la confirmation avant qu'on la lise).
+  await page.evaluate(() => {
+    const ui = window.__rl.ui as any;
+    const log: string[] = ((window as any).__toastLog = []);
+    ui.subscribe((st: any) => st.toasts.forEach((x: any) => log.push(String(x.text))));
+  });
   await panel.getByTestId('recon-button').click();
-  await expect(
-    page.locator('.rl-toast').filter({ hasText: /Reconnaissance militaire/ }),
-  ).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        ((window as any).__toastLog as string[]).some((x) => /Reconnaissance militaire/.test(x)),
+      ),
+    )
+    .toBe(true);
   await expect
     .poll(() =>
       page.evaluate(

@@ -1127,7 +1127,7 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         },
         paint: {
           'icon-color': C.cyan,
-          'icon-opacity': ['case', ['boolean', ['feature-state', 'reveal'], false], 0, 0],
+          'icon-opacity': ['case', ['==', ['coalesce', ['get', 'rv'], 0], 1], 0, 0],
         },
       },
       {
@@ -1523,13 +1523,13 @@ export function revealOpacity(phase: number): ExpressionSpecification {
   return [
     '*',
     ['coalesce', ['get', 'op'], 1],
-    ['case', ['boolean', ['feature-state', 'reveal'], false], phase, 1],
+    ['case', ['==', ['coalesce', ['get', 'rv'], 0], 1], phase, 1],
   ];
 }
 
 /** Anneau de révélation : visible pendant l'animation, puis éteint. */
 export function revealRingOpacity(phase: number): ExpressionSpecification {
-  return ['case', ['boolean', ['feature-state', 'reveal'], false], phase, 0];
+  return ['case', ['==', ['coalesce', ['get', 'rv'], 0], 1], phase, 0];
 }
 
 /** Couleur de relation (vert, violet, gris, rouge) lue dans la propriété `rel`. */
