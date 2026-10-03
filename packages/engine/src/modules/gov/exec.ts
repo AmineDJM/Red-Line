@@ -556,6 +556,16 @@ export function inventoryLots(state: EngineState, n: NationId, cat: string): num
   return Math.floor(lots + 1e-9);
 }
 
+/** Matériels en service dans les forces de la nation (piles mixtes comprises). */
+function fieldedSystems(state: EngineState, n: NationId): Set<string> {
+  const out = new Set<string>();
+  for (const uid of sortedSet(state.rt.byNation.get(n))) {
+    const u = state.units[uid];
+    if (u) for (const p of partsOf(state, u)) out.add(p.sys.id);
+  }
+  return out;
+}
+
 function lotPrice(state: EngineState, n: NationId, o: ProductionOption): number {
   if (!o.local) return o.sys.cost.money * cfg(state.world).industry.importPriceFactor;
   const licensed = ecoNation(state, n).licences[o.sys.id] !== undefined;
@@ -575,7 +585,18 @@ function execProduce(ctx: Ctx, slots: number, batch: number): Outcome {
   const have = def.exec === 'stock' ? inventoryLots(state, n, cat) : m.done;
   let left = m.goal - have - pendingLots(m);
   if (left <= 0) return nothing(def.exec === 'stock' ? 'stocked' : 'inProgress', undefined, true);
-  const opts = productionOptions(state, n, cat, { sea: true });
+  // Options de l'IA économique (local d'abord, génération, coût), puis le matériel déjà en service
+  // dans les forces de la nation en tête à égalité de source : on commande ce qu'on sait employer.
+  const fielded = fieldedSystems(state, n);
+  const opts = productionOptions(state, n, cat, { sea: true })
+    .map((o, i) => ({ o, i }))
+    .sort(
+      (a, b) =>
+        Number(b.o.local) - Number(a.o.local) ||
+        Number(fielded.has(b.o.sys.id)) - Number(fielded.has(a.o.sys.id)) ||
+        a.i - b.i,
+    )
+    .map((x) => x.o);
   if (!opts.length) return nothing('noSystem', { category: { key: `categories.${cat}` } });
   let acted = 0;
   let last: Outcome | null = null;
