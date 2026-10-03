@@ -10,7 +10,8 @@ import { closeWindows, openWindow, preparePage, setSpeed, startSoloGame } from '
  * l'on accepte sa contre-proposition) : l'agent rentre au pays.
  */
 test('nos agents détenus à l’étranger : négociation de leur libération', async ({ page }, info) => {
-  test.setTimeout(600_000);
+  // Arrestation aléatoire : le temps réel nécessaire dépend de la vitesse de la machine.
+  test.setTimeout(900_000);
   const errors = await preparePage(page);
   await startSoloGame(page, 'Algérie');
   const send = (order: unknown) =>
@@ -38,7 +39,7 @@ test('nos agents détenus à l’étranger : négociation de leur libération', 
           const running = (s.view.intel?.operations ?? []).filter(
             (o: any) => o.status === 'running' && o.dept === 'exterior',
           ).length;
-          if (running >= 2) return;
+          if (running >= 4) return;
           await c.sendOrder({
             kind: 'intelOp',
             op: 'infiltrate_spy',
@@ -52,7 +53,7 @@ test('nos agents détenus à l’étranger : négociation de leur libération', 
         });
         return null;
       },
-      { timeout: 480_000, intervals: [3000] },
+      { timeout: 720_000, intervals: [3000] },
     )
     .not.toBeNull();
   await setSpeed(page, 1);
@@ -66,21 +67,37 @@ test('nos agents détenus à l’étranger : négociation de leur libération', 
   await row.getByTestId(`negotiate-${id}`).click();
   const dialog = page.getByRole('dialog', { name: /^Négociation/ });
   await expect(dialog).toContainText('Négociation');
-  await expect(dialog.getByRole('checkbox').first()).toBeChecked();
+  // Notre agent est pré-coché dans « Nous obtenons » (la colonne « Nous libérons » peut lister des
+  // agents marocains arrêtés entre-temps par notre contre-espionnage).
+  const codename = await page.evaluate(
+    (aid) =>
+      (window.__rl.game.getState().view.intel?.agents ?? []).find((a: any) => a.id === aid)
+        ?.codename as string,
+    id,
+  );
+  await expect(
+    dialog.getByRole('checkbox', {
+      name: new RegExp(`^${codename.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} ·`),
+    }),
+  ).toBeChecked();
   await dialog.getByRole('radio', { name: 'Nous payons' }).click();
   await dialog.locator('select').nth(1).selectOption({ index: 5 });
   await page.screenshot({ path: info.outputPath('1-negociation.png') });
   await dialog.getByTestId('swap-send').click();
+  // Seules les propositions qui portent sur notre agent comptent (l'IA marocaine propose aussi ses
+  // propres échanges et rançons pour d'autres agents).
   const swap = () =>
-    page.evaluate(() => {
+    page.evaluate((aid) => {
       const v = window.__rl.game.getState().view;
-      return (v.intel?.swaps ?? []).map((s: any) => ({
-        id: s.id,
-        from: s.from,
-        status: s.status,
-        counter: !!s.counter,
-      }));
-    });
+      return (v.intel?.swaps ?? [])
+        .filter((s: any) => [...s.give, ...s.get].some((x: any) => x.id === aid))
+        .map((s: any) => ({
+          id: s.id,
+          from: s.from,
+          status: s.status,
+          counter: !!s.counter,
+        }));
+    }, id);
   await expect.poll(async () => (await swap()).length).toBeGreaterThan(0);
   // Réponse de l'IA (quelques heures de jeu) : acceptation, ou contre-proposition à accepter.
   await setSpeed(page, 3600);

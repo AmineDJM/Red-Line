@@ -246,7 +246,7 @@ describe('réseau de routes : trajets terrestres', () => {
   });
 
   it('capture à la ville : Lyon → Genève, guerre déclarée en entrant, province prise', () => {
-    const geneve = data.map.provinces.find((p) => p.id === 'che-1')!;
+    const geneve = byCity('Genève');
     const s = game([{ owner: 'fra', systemId: INF, pos: byCity('Lyon').cityPoint, count: 3 }]);
     expect(applyOrder(s, 'fra', { kind: 'move', unitIds: ['u1'], to: geneve.cityPoint }).ok).toBe(
       true,
@@ -254,7 +254,36 @@ describe('réseau de routes : trajets terrestres', () => {
     const arrival = movementEnd(s.units.u1!.move!);
     advanceTo(s, arrival + (data.balance.time.captureMinutes + 5) * MINUTE);
     expect(s.wars).not.toEqual({});
-    expect(s.provinces['che-1']!.owner).toBe('fra');
+    expect(s.provinces[geneve.id]!.owner).toBe('fra');
+  });
+
+  it('provinces fusionnées : une pile d’infanterie marocaine prend la province algérienne voisine', () => {
+    // Ville d'une province marocaine frontalière → ville principale (point de capture) de la
+    // province algérienne voisine.
+    const isDza = (id: string) => id.startsWith('dza-');
+    const from = data.map.provinces.find((p) => p.nationId === 'mar' && p.neighbors.some(isDza))!;
+    const target = data.map.provinces.find(
+      (p) => p.nationId === 'dza' && p.neighbors.includes(from.id) && !p.isCapital,
+    )!;
+    expect(target, 'province algérienne frontalière du Maroc').toBeDefined();
+    const s = createGame(world, {
+      seed: 11,
+      players: [
+        { nationId: 'mar', isAi: false },
+        { nationId: 'dza', isAi: false },
+      ],
+      nationIds: ['mar', 'dza'],
+      units: [{ owner: 'mar', systemId: INF, pos: from.cityPoint, count: 3 }],
+    }) as EngineState;
+    expect(s.provinces[target.id]!.owner).toBe('dza');
+    const r = applyOrder(s, 'mar', { kind: 'move', unitIds: ['u1'], to: target.cityPoint });
+    expect(r.ok, r.error).toBe(true);
+    advanceTo(s, movementEnd(s.units.u1!.move!) + (data.balance.time.captureMinutes + 5) * MINUTE);
+    expect(s.provinces[target.id]!.owner).toBe('mar');
+    // la province prise est entière : ses voisines algériennes restent algériennes
+    for (const q of target.neighbors)
+      if (data.map.provinces.find((p) => p.id === q)!.nationId === 'dza')
+        expect(s.provinces[q]!.owner, q).toBe('dza');
   });
 });
 

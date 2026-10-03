@@ -102,7 +102,12 @@ describe('ressources des provinces (client)', () => {
     const alger = provs.find((p) => p.nationId === 'dza' && p.isCapital)!;
     expect(alger.cityName).toBe('Alger');
     expect(alger.resources).toEqual([]);
-    const ouargla = provs.find((p) => p.name === 'Ouargla Nord-Est')!;
+    // Hassi Messaoud : ancienne province « Ouargla Nord-Est », fusionnée (data/map/aliases.json).
+    const aliases = JSON.parse(readFileSync(join(file, '..', 'aliases.json'), 'utf8')) as Record<
+      string,
+      string
+    >;
+    const ouargla = provs.find((p) => p.id === aliases['dza:Ouargla Nord-Est'])!;
     expect(ouargla.resources![0]).toMatchObject({ type: 'oil', richness: 3 });
   });
 });

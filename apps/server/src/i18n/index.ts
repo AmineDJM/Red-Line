@@ -53,15 +53,19 @@ export function serverT(locale: Locale, key: string, params: Record<string, stri
   return (text ?? key).replace(/\{\{\s*(\w+)\s*\}\}/g, (_m, k: string) => params[k] ?? '');
 }
 
-/** Nom localisé d'une nation ou d'une province (sinon le nom français fourni). */
+/**
+ * Nom localisé d'une nation ou d'une province (sinon le nom français fourni). `namesDir` : noms d'une
+ * carte archivée (partie créée avant un changement d'identifiants de province).
+ */
 export function placeName(
   locale: Locale,
   kind: 'nations' | 'provinces' | 'cities',
   id: string,
   frName: string,
+  namesDir: string = NAMES_DIR,
 ): string {
   if (locale === 'fr') return frName;
-  const names = readTree(join(NAMES_DIR, `${locale}.json`));
+  const names = readTree(join(namesDir, `${locale}.json`));
   const v = (names?.[kind] as Tree | undefined)?.[id];
   return typeof v === 'string' ? v : frName;
 }

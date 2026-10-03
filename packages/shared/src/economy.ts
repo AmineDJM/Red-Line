@@ -231,6 +231,10 @@ export type LedgerKey =
   | 'marketSales'
   | 'transfersIn'
   | 'transfersOut'
+  /** Centre de commandement : solde et état-major des généraux, primes et indemnités. */
+  | 'command'
+  /** Gouvernement : coût des ministres et directeurs, primes de nomination et indemnités. */
+  | 'government'
   /** Tout le reste (renseignement, trésorerie d'alliance, dons…), déduit de la variation de trésorerie. */
   | 'other';
 

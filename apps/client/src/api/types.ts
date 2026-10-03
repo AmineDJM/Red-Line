@@ -70,11 +70,20 @@ export interface Api {
   /** Langue de l'interface mémorisée dans le compte (notifications push dans cette langue). */
   setLocale?(locale: Locale): Promise<void>;
   catalog(): Promise<WeaponSystem[]>;
-  nations(): Promise<NationDef[]>;
-  provinces(): Promise<ProvinceDef[]>;
-  provincesGeoJSON(): Promise<FeatureCollection>;
+  /**
+   * Nations de la carte courante, ou de la carte `map` (version épinglée par une partie ancienne :
+   * GET /api/map/nations?map=<version>). `mapVersion` : version servie (null si inconnue).
+   */
+  nations(map?: number): Promise<{ nations: NationDef[]; mapVersion: number | null }>;
+  provinces(map?: number): Promise<ProvinceDef[]>;
+  provincesGeoJSON(map?: number): Promise<FeatureCollection>;
   /** Réseau de routes des unités terrestres (GET /api/map/routes), null si indisponible. */
-  routes?(): Promise<RoutesFile | null>;
+  routes?(map?: number): Promise<RoutesFile | null>;
+  /** Noms localisés des provinces et villes d'une carte archivée (GET /api/map/names/<langue>). */
+  mapNames?(
+    map: number,
+    lang: string,
+  ): Promise<{ provinces: Record<string, string>; cities: Record<string, string> }>;
   tiles(): Promise<TilesInfo | null>;
   basemap(): Promise<BasemapData>;
   /** Vrai si les glyphes MapLibre sont servis. */

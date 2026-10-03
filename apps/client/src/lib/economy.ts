@@ -110,6 +110,8 @@ export const LEDGER_ORDER: LedgerKey[] = [
   'research',
   'buildings',
   'licences',
+  'command',
+  'government',
   'blackMarket',
   'marketPurchases',
   'transfersOut',

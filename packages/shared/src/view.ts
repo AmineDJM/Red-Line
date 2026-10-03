@@ -24,6 +24,8 @@ import type {
 import type { IntelView } from './intel.js';
 import type { LocText } from './i18n.js';
 import type { DomesticView } from './domestic.js';
+import type { CommandView } from './command.js';
+import type { GovernmentView } from './government.js';
 import type { CouncilView, DiplomacyView, NewsItem, Relation, StabilityView } from './diplomacy.js';
 
 /** Un segment de trajet en grand cercle, parcouru à vitesse constante entre t0 et t1. */
@@ -250,6 +252,10 @@ export interface PlayerView {
   news?: NewsItem[];
   /** Gestion intérieure : politiques, indicateurs, troubles (onglet Intérieur). */
   domestic?: DomesticView;
+  /** Centre de commandement : armées, missions et généraux du joueur (jamais ceux des autres). */
+  command?: CommandView;
+  /** Gouvernement : ministères, titulaires et missions du joueur (jamais ceux des autres). */
+  government?: GovernmentView;
   /** Mode spectateur : vue publique sans brouillard ni secrets. */
   spectator?: boolean;
 }
@@ -276,6 +282,8 @@ export const VIEW_SECTIONS = [
   'stability',
   'news',
   'domestic',
+  'command',
+  'government',
 ] as const;
 
 /** Différence entre deux vues successives. Les champs absents n'ont pas changé. */
@@ -302,6 +310,8 @@ export interface ViewDiff {
   stability?: StabilityView;
   news?: NewsItem[];
   domestic?: DomesticView;
+  command?: CommandView;
+  government?: GovernmentView;
 }
 
 /**

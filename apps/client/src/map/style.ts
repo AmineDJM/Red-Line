@@ -1109,7 +1109,7 @@ export function buildStyle(i: StyleInput): StyleSpecification {
           'icon-ignore-placement': true,
         },
         paint: {
-          // Révélation par le renseignement : fondu animé (feature-state `reveal`, voir GameMap).
+          // Révélation par le renseignement : fondu animé (propriété `rv`, voir GameMap).
           'icon-opacity': revealOpacity(1),
         },
       },
@@ -1127,7 +1127,7 @@ export function buildStyle(i: StyleInput): StyleSpecification {
         },
         paint: {
           'icon-color': C.cyan,
-          'icon-opacity': ['case', ['boolean', ['feature-state', 'reveal'], false], 0, 0],
+          'icon-opacity': ['case', ['==', ['coalesce', ['get', 'rv'], 0], 1], 0, 0],
         },
       },
       {
@@ -1517,19 +1517,19 @@ function pionPartLayers(prefix: string, source: string, glyphs: boolean): LayerS
 
 /**
  * Opacité des bâtiments : ancienneté du renseignement (`op`) × phase de révélation (0 → 1) pour
- * ceux qui viennent d'être découverts (feature-state `reveal`).
+ * ceux qui viennent d'être découverts (propriété `rv` des entités).
  */
 export function revealOpacity(phase: number): ExpressionSpecification {
   return [
     '*',
     ['coalesce', ['get', 'op'], 1],
-    ['case', ['boolean', ['feature-state', 'reveal'], false], phase, 1],
+    ['case', ['==', ['coalesce', ['get', 'rv'], 0], 1], phase, 1],
   ];
 }
 
 /** Anneau de révélation : visible pendant l'animation, puis éteint. */
 export function revealRingOpacity(phase: number): ExpressionSpecification {
-  return ['case', ['boolean', ['feature-state', 'reveal'], false], phase, 0];
+  return ['case', ['==', ['coalesce', ['get', 'rv'], 0], 1], phase, 0];
 }
 
 /** Couleur de relation (vert, violet, gris, rouge) lue dans la propriété `rel`. */

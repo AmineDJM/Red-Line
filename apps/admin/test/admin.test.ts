@@ -107,7 +107,7 @@ describe('routes', () => {
       '#/rules/combat',
       '#/research/research.aero.gen5',
       '#/orbat/2025/dza',
-      '#/map/provinces/dza-26',
+      '#/map/provinces/dza-13',
       '#/shop/purchases',
       '#/games/abc',
       '#/chat/abc',
@@ -147,7 +147,7 @@ describe('règles : libellés et fusion', () => {
       keys.push(k);
       if (n.t === 'object') for (const [c, v] of Object.entries(n.shape)) walk(v, `${k}.${c}`);
     };
-    for (const sec of ['money', 'upkeep', 'ai', 'domestic']) walk(root.shape[sec]!, sec);
+    for (const sec of ['money', 'upkeep', 'ai', 'domestic', 'command']) walk(root.shape[sec]!, sec);
     expect(keys.length).toBeGreaterThan(150);
     expect(keys.filter((k) => k.includes('.') && !RULE_HELP[k])).toEqual([]);
     expect(RULE_SECTIONS.ai![0]).toBe('Intelligence artificielle');

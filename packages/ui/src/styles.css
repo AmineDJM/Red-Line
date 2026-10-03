@@ -1089,13 +1089,12 @@
     background: var(--rl-panel-2);
   }
 }
-@media (hover: hover) {
-  .rl-seg__btn--on,
-  .rl-seg__btn--on:hover {
-    background: var(--rl-cyan-dim);
-    color: var(--rl-cyan);
-    box-shadow: inset 0 0 0 1px var(--rl-cyan-line);
-  }
+/* État choisi : visible aussi au toucher (seul le survol est réservé aux pointeurs). */
+.rl-seg__btn--on,
+.rl-seg__btn--on:hover {
+  background: var(--rl-cyan-dim);
+  color: var(--rl-cyan);
+  box-shadow: inset 0 0 0 1px var(--rl-cyan-line);
 }
 .rl-seg--sm .rl-seg__btn {
   height: 24px;

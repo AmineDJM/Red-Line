@@ -32,6 +32,7 @@ import {
   seaPath,
 } from './cells.js';
 import { DISPUTED, H3_RES, NE_FILES, SEA_LINKS, SIMPLIFY, STRAITS } from './config.js';
+import { applyMerges, planMerges, regionOf, unknownHints, type ShapeMeta } from './consolidate.js';
 import { buildings, colorNations, income, type EcoInput } from './economy.js';
 import {
   areaKm2,
@@ -120,6 +121,14 @@ async function main() {
     byNation.set(s.nation, l);
   }
   const provs: Prov[] = [];
+  const shapeMeta = new Map<string, ShapeMeta>();
+  for (const s of shapes)
+    shapeMeta.set(s.key, {
+      domain: s.domain,
+      region: s.region,
+      rawName: s.rawName,
+      ...(s.baseName ? { baseName: s.baseName } : {}),
+    });
   for (const [nation, list] of [...byNation].sort((a, b) => a[0].localeCompare(b[0]))) {
     list.sort((a, b) => a.sortKey.localeCompare(b.sortKey));
     list.forEach((s, i) => {
@@ -332,6 +341,58 @@ async function main() {
     });
   }
 
+  // ---- Fusion des provinces voisines (consolidate.ts, réglages consolidate-config.ts) ----
+  const before = provs.length;
+  const badHints = unknownHints(
+    provs.map((p) => ({ nation: p.nation, meta: shapeMeta.get(p.key)! })),
+  );
+  if (badHints.length > 0) throw new Error(`REGION_HINTS inconnus : ${badHints.join(', ')}`);
+  const items = provs.map((p) => {
+    const m = shapeMeta.get(p.key)!;
+    return {
+      id: p.id,
+      nation: p.nation,
+      domain: m.domain,
+      ...(p.disputed ? { disputed: p.disputed } : {}),
+      region: regionOf(p.nation, m),
+      unit: p.key.split('#')[0]!,
+      rawName: m.rawName,
+      ...(m.baseName ? { baseName: m.baseName } : {}),
+      area: p.area,
+      pop: p.pop,
+      center: p.center,
+      city: p.cityPoint,
+      cityPop: p.cityPlace?.pop ?? 0,
+      isCapital: p.isCapital,
+    };
+  });
+  // Réglage rapide de la fusion : REDLINE_MERGE_DUMP=<fichier> écrit ses entrées (voir consolidate.ts).
+  if (process.env.REDLINE_MERGE_DUMP)
+    writeFileSync(
+      process.env.REDLINE_MERGE_DUMP,
+      JSON.stringify({
+        items,
+        shared: [...adj.shared].map(([k, m]) => [k, [...m]]),
+        exterior: [...adj.exterior],
+      }),
+    );
+  const plan = planMerges(items, adj);
+  const merged = await applyMerges(provs, provDefs, plan);
+  provs.splice(0, provs.length, ...merged.provs);
+  provDefs.splice(0, provDefs.length, ...merged.defs);
+  provById.clear();
+  for (const p of provs) provById.set(p.id, p);
+  provsOf.clear();
+  for (const p of provs) provsOf.set(p.nation, [...(provsOf.get(p.nation) ?? []), p]);
+  for (const p of provs) if (p.isCapital) capitalOf.set(p.nation, p);
+  for (const [c, id] of cellProv) cellProv.set(c, merged.idMap.get(id)!);
+  provFc.features = provs.map((p) => ({
+    type: 'Feature',
+    properties: { id: p.id },
+    geometry: multiGeom(p.geom),
+  }));
+  log(`Fusion des provinces : ${before} → ${provs.length}`);
+
   // ---- Nations et couleurs ----
   const nationNb = new Map<string, Set<string>>();
   for (const n of nt.nations.keys()) nationNb.set(n, new Set());
@@ -396,6 +457,7 @@ async function main() {
   await w(MAP_DIR, 'cells.json', cellsOut, false);
   await w(MAP_DIR, 'straits.json', straitsOut, true);
   await w(MAP_DIR, 'disputed.json', disputedOut, true);
+  await w(MAP_DIR, 'aliases.json', merged.aliases, true);
   const simplified = await simplify(provFc, SIMPLIFY.percentage, SIMPLIFY.precision);
   writeFileSync(join(MAP_DIR, 'provinces.geojson'), simplified);
   sizes.push(['provinces.geojson', Buffer.byteLength(simplified)]);

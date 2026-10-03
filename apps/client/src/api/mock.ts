@@ -211,7 +211,7 @@ export class MockApi implements Api {
     return (await loadFixtures()).catalog;
   }
   async nations() {
-    return (await loadFixtures()).nations;
+    return { nations: (await loadFixtures()).nations, mapVersion: null };
   }
   async provinces() {
     // Démo : revenus affichés en dollars (≈ budget de défense réel réparti sur les provinces).

@@ -9,7 +9,8 @@
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json",
     "cities": "node scripts/cities.mjs",
-    "resources": "tsx src/resources-cli.ts"
+    "resources": "tsx src/resources-cli.ts",
+    "map-version": "tsx src/map-version.ts"
   },
   "dependencies": {
     "@redline/shared": "workspace:*",

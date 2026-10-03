@@ -24,6 +24,7 @@ import { mil, milBal } from '../src/modules/mil/state.js';
 import { capacityOf, placesOf } from '../src/modules/mil/transport.js';
 import { unitModifier } from '../src/modules/registry.js';
 import { loadRealData, type RealData } from '../bench/load.js';
+import { PLACES, provinceAt } from './real-places.js';
 
 const SHIP = 'eu.mistral-class';
 const INF = 'eu.infantry-light';
@@ -55,8 +56,15 @@ function run(s: EngineState, ms: number): void {
   while (s.time < end) advanceTo(s, Math.min(end, s.time + 30 * MINUTE));
 }
 
-const TOULON = 'fra-9';
-const CAGLIARI = 'ita-3';
+// Provinces désignées par leur ville (identifiants propres à chaque version de la carte).
+let TOULON = '';
+let CAGLIARI = '';
+let LYON = '';
+beforeAll(() => {
+  TOULON = provinceAt(data.map, PLACES.toulon).id;
+  CAGLIARI = provinceAt(data.map, PLACES.cagliari).id;
+  LYON = provinceAt(data.map, PLACES.lyon).id;
+});
 
 describe('transport naval : embarquer, traverser, débarquer', () => {
   it('Toulon → Cagliari : embarquement au port, traversée, débarquement, capture de l’île', () => {
@@ -115,7 +123,7 @@ describe('transport naval : embarquer, traverser, débarquer', () => {
     const s = game([
       { owner: 'fra', systemId: SHIP, pos: sea(TOULON), count: 1 },
       { owner: 'fra', systemId: INF, pos: prov(TOULON).cityPoint, count: 5 },
-      { owner: 'fra', systemId: INF, pos: prov('fra-6').cityPoint, count: 1 },
+      { owner: 'fra', systemId: INF, pos: prov(LYON).cityPoint, count: 1 },
       { owner: 'fra', systemId: 'eu.fremm', pos: sea(TOULON), count: 1 },
       { owner: 'ita', systemId: INF, pos: prov(CAGLIARI).cityPoint, count: 1 },
     ]);

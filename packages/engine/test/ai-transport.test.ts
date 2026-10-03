@@ -10,6 +10,7 @@ import type { EngineState } from '../src/state/types.js';
 import { wi } from '../src/state/world.js';
 import { setAiTracer } from '../src/ai/trace.js';
 import { loadRealData, type RealData } from '../bench/load.js';
+import { PLACES, provinceAt } from './real-places.js';
 
 let data: RealData;
 let world: World;
@@ -36,6 +37,9 @@ describe('IA : débarquement par navire de transport', () => {
     () => {
       const city = (id: string) => data.map.provinces.find((p) => p.id === id)!.cityPoint;
       const sea = (id: string) => wi(world).seaSpawn.get(id)!;
+      // Provinces de Syracuse (Sicile) et de La Valette, désignées par leur ville.
+      const SICILE = provinceAt(data.map, PLACES.syracuse).id;
+      const MALTE = provinceAt(data.map, PLACES.laValette).id;
       const rome = data.map.provinces.find((p) => p.nationId === 'ita' && p.isCapital)!.cityPoint;
       const s = createGame(world, {
         seed: 4,
@@ -45,8 +49,8 @@ describe('IA : débarquement par navire de transport', () => {
         ],
         nationIds: ['ita', 'mlt'],
         units: [
-          { owner: 'ita', systemId: 'eu.mistral-class', pos: sea('ita-10'), count: 1 },
-          { owner: 'ita', systemId: 'eu.fremm', pos: sea('ita-10'), count: 1 },
+          { owner: 'ita', systemId: 'eu.mistral-class', pos: sea(SICILE), count: 1 },
+          { owner: 'ita', systemId: 'eu.fremm', pos: sea(SICILE), count: 1 },
           // Garnison de la capitale, et troupes de l'offensive en Sicile.
           ...[1, 2, 3].map(() => ({
             owner: 'ita',
@@ -58,10 +62,10 @@ describe('IA : débarquement par navire de transport', () => {
           ...[1, 2, 3, 4, 5, 6].map(() => ({
             owner: 'ita',
             systemId: 'eu.infantry-light',
-            pos: city('ita-10'),
+            pos: city(SICILE),
             count: 12,
           })),
-          { owner: 'mlt', systemId: 'eu.infantry-light', pos: city('mlt-1'), count: 1 },
+          { owner: 'mlt', systemId: 'eu.infantry-light', pos: city(MALTE), count: 1 },
         ],
       }) as EngineState;
       const log = record('ita');
@@ -69,7 +73,7 @@ describe('IA : débarquement par navire de transport', () => {
       let took = -1;
       for (let t = 2 * HOUR; t <= 8 * DAY && took < 0; t += 2 * HOUR) {
         advanceTo(s, t);
-        if (s.provinces['mlt-1']!.owner === 'ita') took = t;
+        if (s.provinces[MALTE]!.owner === 'ita') took = t;
       }
       const kinds = log.filter((x) => x.ok).map((x) => x.o.kind);
       expect(kinds).toContain('embark');

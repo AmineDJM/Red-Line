@@ -49,8 +49,8 @@ describe('réseau de routes', () => {
       expect(c!.pos).toEqual(p.cityPoint);
       expect(c!.province).toBe(p.id);
     }
-    // Densité lisible : quelques milliers de nœuds pour le monde.
-    expect(routes.nodes.length).toBeGreaterThan(3000);
+    // Densité lisible : quelques milliers de nœuds pour le monde (~1 300 provinces).
+    expect(routes.nodes.length).toBeGreaterThan(2500);
     expect(routes.nodes.length).toBeLessThan(9000);
     for (const n of routes.nodes) expect(land.has(cellOf(n.pos, res)), n.id).toBe(true);
   });
@@ -100,7 +100,8 @@ describe('réseau de routes', () => {
 
   it('ports : au bord d’une mer navigable', () => {
     const ports = routes.nodes.filter((n) => n.port);
-    expect(ports.length).toBeGreaterThan(800);
+    // Un port au plus par province côtière (~1 300 provinces après fusion).
+    expect(ports.length).toBeGreaterThan(500);
     for (const p of ports) {
       const c = cellOf(p.pos, res);
       const sea = gridDisk(c, 1).some((x) => strait.has(x) || (!land.has(x) && !impassable.has(x)));
@@ -180,8 +181,10 @@ describe('réseau de routes', () => {
   });
 
   it('graphe partagé : plus court chemin Paris → Lyon le long des routes', () => {
-    const paris = net.nodePoint(net.nodeIndex('c:fra-24')!);
-    const lyon = net.nodePoint(net.nodeIndex('c:fra-6')!);
+    const city = (name: string) =>
+      provinces.find((p) => p.nationId === 'fra' && p.cityName === name)!.id;
+    const paris = net.nodePoint(net.nodeIndex(`c:${city('Paris')}`)!);
+    const lyon = net.nodePoint(net.nodeIndex(`c:${city('Lyon')}`)!);
     const r = net.route(paris, lyon)!;
     expect(r).not.toBeNull();
     const gc = distanceKm(paris.pos, lyon.pos);

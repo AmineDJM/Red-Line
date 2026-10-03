@@ -64,7 +64,9 @@
       "battles": "战斗",
       "chat": "消息",
       "shop": "商店",
-      "settings": "设置"
+      "settings": "设置",
+      "command": "指挥部",
+      "government": "政府"
     },
     "path": {
       "armies": "我的军队",
@@ -79,8 +81,12 @@
       "battles": "战斗",
       "chat": "消息",
       "shop": "商店",
-      "settings": "设置"
-    }
+      "settings": "设置",
+      "command": "指挥部",
+      "government": "政府"
+    },
+    "command": "指挥中心",
+    "government": "政府"
   },
   "home": {
     "title": "Red Line",
@@ -2258,7 +2264,9 @@
       "marketSales": "市场销售",
       "transfersIn": "接收的转让",
       "transfersOut": "给予的转让",
-      "other": "其他（情报、联盟…）"
+      "other": "其他（情报、联盟…）",
+      "command": "将领与参谋部",
+      "government": "部长与局长"
     },
     "constructionHint": "在建筑标签页或省份面板中升级或新建建筑。",
     "provincesTitle": "省份",
@@ -3479,6 +3487,643 @@
     "machine": "译文由机器生成，军事术语经过审校。",
     "fallback": "部分文本仍为法语。"
   },
+  "command": {
+    "unavailable": "本局游戏未开放指挥中心。",
+    "selection": {
+      "army": "集团军",
+      "open": "在指挥中心打开该集团军"
+    },
+    "armiesLink": {
+      "title": "指挥中心",
+      "text": " — 组建集团军、下达任务，并雇用将领替你指挥。",
+      "open": "打开"
+    },
+    "tabs": {
+      "ops": "作战行动",
+      "armies": "集团军",
+      "generals": "将领"
+    },
+    "kpi": {
+      "ops": "作战行动",
+      "armies": "集团军",
+      "active": "执行任务",
+      "generals": "将领",
+      "payroll": "薪饷 / 日",
+      "requests": "请求"
+    },
+    "newArmy": "新建集团军",
+    "full": "已达 {{max}} 支集团军上限：解散一支后才能再组建。",
+    "emptyTitle": "暂无集团军",
+    "emptyText": "用你的编组组建一支集团军，下达任务并挑选将领：他会替你指挥。",
+    "onboard": {
+      "title": "使用方法",
+      "compose": "将陆、空或海上编组合编为一支有名称的集团军。",
+      "mission": "为其下达任务：在地图上指定目标，设置进攻性、交战规则和撤退阈值。",
+      "general": "选择指挥它的将领：其能力左右他的决策，薪饷每日发放。"
+    },
+    "pickTitle": "选择一支集团军",
+    "pickText": "此处显示其任务、将领、编成和将领日志。",
+    "back": "集团军",
+    "noMission": "无任务",
+    "noGeneral": "无将领",
+    "zoneShort": "{{km}} 公里区域",
+    "piles_other": "{{count}} 个编组",
+    "status": {
+      "idle": "无任务",
+      "passive": "待命",
+      "preparing": "准备中",
+      "active": "进行中",
+      "awaiting": "等待命令",
+      "success": "成功",
+      "failed": "失败",
+      "suspended": "已暂停"
+    },
+    "pills": {
+      "health": "状态 {{pct}}%",
+      "strength": "兵力为出发时的 {{pct}}%",
+      "supply": {
+        "supplied": "后勤：补给正常",
+        "limited": "后勤：补给受限",
+        "cut": "后勤：补给中断"
+      }
+    },
+    "request": {
+      "badge": "请求",
+      "refuse": "拒绝",
+      "accepted": "答复已发送给将领。",
+      "refused": "请求已拒绝。",
+      "declare_war": {
+        "title": "开战授权",
+        "text": "将领请求授权越过边境：这意味着与{{nation}}开战。",
+        "accept": "批准开战"
+      },
+      "strategic_strike": {
+        "title": "战略打击授权",
+        "text": "将领请求授权打击{{nation}}的后方设施。",
+        "accept": "批准打击"
+      },
+      "reinforce": {
+        "title": "增援请求",
+        "text_other": "兵力下降：将领请求附近 {{count}} 个空闲编组。",
+        "accept": "派出增援"
+      }
+    },
+    "detail": {
+      "mission": "任务",
+      "since": "自 {{day}} {{time}} 起",
+      "noMissionText": "无任务：集团军等待你的命令，其编组仍由你直接指挥。",
+      "objective": "目标",
+      "retreat": "{{pct}}% 时撤退",
+      "general": "将领",
+      "noGeneralText": "没有将领，集团军将保持待命：不会执行任何任务。",
+      "composition": "编成",
+      "piles": "编组",
+      "doneEditing": "完成",
+      "empty": "没有编组。",
+      "manual": "手动",
+      "manualHelp": "该编组正在执行你的直接命令：命令结束后将领会重新接管。",
+      "manualRule": "对编组的直接命令：在完成前优先执行，之后由将领重新接管该编组。",
+      "journal": "将领日志",
+      "journalEmpty": "将领尚未汇报任何情况。"
+    },
+    "objective": {
+      "conquer": "已占领省份",
+      "landing": "滩头阵地",
+      "defend": "守住的城市",
+      "hold_front": "守住的前线城市",
+      "air_defense": "受掩护城市",
+      "reserve": "守住的城市",
+      "air_superiority": "空域肃清",
+      "sea_control": "海域肃清",
+      "deep_strike": "已摧毁设施"
+    },
+    "est": {
+      "ratio": "兵力对比",
+      "eta": "预计用时",
+      "chance": "成功率",
+      "source": {
+        "seen": "已观察到的敌军",
+        "estimate": "情报估算",
+        "none": "未发现敌军"
+      }
+    },
+    "actions": {
+      "showMap": "在地图上显示",
+      "rename": "重命名",
+      "reinforce": "增援",
+      "giveMission": "下达任务",
+      "changeMission": "更改任务",
+      "suspend": "暂停",
+      "resume": "恢复",
+      "dissolve": "解散",
+      "dissolveTitle": "解散集团军",
+      "dissolveText": "解散{{name}}？编组原地保留，由你直接指挥；将领转入预备役（薪饷照发）。",
+      "pickGeneral": "选择将领",
+      "changeGeneral": "更换",
+      "removeN_other": "移除 {{count}} 个编组"
+    },
+    "reinforce": {
+      "label": "自动增援",
+      "off": "从不",
+      "ask": "按请求",
+      "auto": "自动",
+      "offHelp": "将领从不请求增援。",
+      "askHelp": "兵力下降时将领请求增援，由你批准。",
+      "autoHelp": "兵力下降时将领自行编入附近的空闲编组。"
+    },
+    "domain": {
+      "all": "全部",
+      "land": "陆",
+      "air": "空",
+      "sea": "海"
+    },
+    "fit": {
+      "partial": "编成不完整",
+      "missing": "缺少所需军种"
+    },
+    "aggr": {
+      "label": "进攻性",
+      "cautious": "谨慎",
+      "balanced": "均衡",
+      "bold": "大胆",
+      "cautiousHelp": "仅在明显优势时进攻，尽早撤退，战斗机留作预备。",
+      "balancedHelp": "合理的兵力对比，损失过半时撤退。",
+      "boldHelp": "更早进攻并同时攻击更多目标，较晚撤退，全部战斗机升空。"
+    },
+    "roe": {
+      "label": "交战规则",
+      "strict": {
+        "short": "严格",
+        "help": "严格：未经你授权不开战、不进行战略打击；追击限于区域内。"
+      },
+      "standard": {
+        "short": "标准",
+        "help": "标准：将领在开战或打击敌方后方前须征得你的授权。"
+      },
+      "free": {
+        "short": "自由",
+        "help": "自由：将领独自决定，包括对任务目标开战。"
+      }
+    },
+    "retreat": {
+      "label": "编组撤退阈值",
+      "never": "从不"
+    },
+    "radius": "半径",
+    "scope": {
+      "label": "范围",
+      "province": "本省",
+      "region": "该地区",
+      "nation": "整个国家"
+    },
+    "target": {
+      "province": "目标省份",
+      "nation": "国家",
+      "zone": "区域",
+      "none": "未指定",
+      "pick": "在地图上指定",
+      "change": "更改",
+      "nationAny": "— 国家 —",
+      "own": "该省份已属于你：请指定外国省份。",
+      "needed": "请在地图上指定任务目标。"
+    },
+    "pick": {
+      "target": "点击地图以指定任务目标。",
+      "units": "在地图上选择编组，然后确认。",
+      "validate": "确认（{{count}}）"
+    },
+    "missions": {
+      "conquer": {
+        "name": "征服",
+        "short": "征服",
+        "desc": "夺取一个省份、一个地区或整个国家。"
+      },
+      "defend": {
+        "name": "防御",
+        "short": "防御",
+        "desc": "守住区域内的城市，击退进入的敌人。"
+      },
+      "hold_front": {
+        "name": "坚守战线",
+        "short": "前线",
+        "desc": "沿边境部署兵力，并对突破进行反击。"
+      },
+      "air_superiority": {
+        "name": "制空权",
+        "short": "空域",
+        "desc": "在区域上空实施战斗机巡逻、空中预警和防空压制。"
+      },
+      "air_defense": {
+        "name": "防空",
+        "short": "防空",
+        "desc": "掩护区域内城市：地空防御分散部署，战斗机待命。"
+      },
+      "deep_strike": {
+        "name": "纵深打击",
+        "short": "打击",
+        "desc": "摧毁一个国家已暴露的战略设施。"
+      },
+      "sea_control": {
+        "name": "制海与封锁",
+        "short": "海上",
+        "desc": "控制一片海域，击沉敌舰，封锁港口。"
+      },
+      "landing": {
+        "name": "两栖登陆",
+        "short": "登陆",
+        "desc": "在港口集结、登船、在护航下渡海，夺取海岸或岛屿。"
+      },
+      "reserve": {
+        "name": "预备队",
+        "short": "预备",
+        "desc": "留在后方，对一定半径内的突破进行反击。"
+      }
+    },
+    "rank": {
+      "1": "准将",
+      "2": "少将",
+      "3": "中将",
+      "4": "上将"
+    },
+    "skills": {
+      "offense": {
+        "label": "进攻",
+        "help": "目标的选择与数量、突击群规模、进攻伤害。"
+      },
+      "defense": {
+        "label": "防御",
+        "help": "守备部队、反击、静止编组的防护。"
+      },
+      "logistics": {
+        "label": "后勤",
+        "help": "集结与分批出发、路线规划、续航与补给。"
+      },
+      "air": {
+        "label": "空军",
+        "help": "空中出击、护航、压制敌方防空。"
+      },
+      "naval": {
+        "label": "海军",
+        "help": "登陆、海上护航、制海。"
+      },
+      "audacity": {
+        "label": "胆略",
+        "help": "大胆的将领在较低兵力对比下进攻；谨慎的将领等待优势。",
+        "low": "谨慎",
+        "high": "大胆"
+      },
+      "experience": {
+        "label": "经验",
+        "help": "摩擦更少（命令延误），加成更强；随胜利增长。"
+      }
+    },
+    "traits": {
+      "none": "无显著特质",
+      "encircler": {
+        "label": "包围大师",
+        "help": "偏好已被己方包围的省份；每个决策周期多一个目标。"
+      },
+      "thrifty": {
+        "label": "爱惜兵力",
+        "help": "要求更明显的优势，更早撤退。"
+      },
+      "reckless": {
+        "label": "鲁莽",
+        "help": "以较少兵力进攻，较晚撤退；摩擦更多。"
+      },
+      "logistician": {
+        "label": "卓越的后勤专家",
+        "help": "突击前总是先集结；续航与补给更好。"
+      },
+      "airman": {
+        "label": "空战王牌",
+        "help": "每个决策周期多一次空中出击和一次护航。"
+      },
+      "sailor": {
+        "label": "老水手",
+        "help": "多一次海上护航。"
+      },
+      "fortifier": {
+        "label": "防御建设者",
+        "help": "静止编组的防护增强。"
+      },
+      "methodical": {
+        "label": "有条不紊",
+        "help": "摩擦减半；进攻前要求稍高。"
+      },
+      "blitz": {
+        "label": "闪电战",
+        "help": "每个决策周期多一个目标；进攻稍早。"
+      },
+      "veteran": {
+        "label": "老兵",
+        "help": "学得快（经验 ×1.5）；薪饷略高。"
+      }
+    },
+    "general": {
+      "rating": "评分 {{value}}",
+      "victories_other": "{{count}} 场胜利",
+      "wounded": "负伤",
+      "unpaid_other": "欠薪 {{count}} 天",
+      "perDay": "/ 日",
+      "signing": "签约金 {{value}}",
+      "reserve": "预备役",
+      "missionCost": "任务预估费用",
+      "assign": "指挥",
+      "hire": "雇用（{{value}}）",
+      "dismiss": "解职",
+      "dismissTitle": "解职将领",
+      "dismissText": "解职{{name}}？需支付遣散费 {{value}}；其集团军将转为待命。",
+      "dismissConfirm": "解职（{{value}}）"
+    },
+    "generals": {
+      "hired": "你的将领",
+      "yours": "你的可用将领",
+      "none": "尚未雇用将领。",
+      "payroll": "{{value}} / 日",
+      "pool": "人才库",
+      "poolHint": "可用军官：雇用时支付相当于 5 天薪饷的签约金。",
+      "branch": "军种",
+      "chief": "军种司令",
+      "noChief": "空缺",
+      "forces": "军种兵力",
+      "freeForces": "未编入集团军",
+      "isChief": "军种司令",
+      "makeChief": "任命为司令",
+      "chiefHelp": "军种司令提升本军种将领的能力；其薪饷更高。",
+      "chiefNamed": "{{name}} 被任命为军种司令。"
+    },
+    "branch": {
+      "land": {
+        "name": "陆军",
+        "short": "陆",
+        "role": "陆上指挥官",
+        "desc": "步兵、装甲、炮兵和地对地导弹：夺取并守住地域。"
+      },
+      "air": {
+        "name": "空军",
+        "short": "空",
+        "role": "空中指挥官",
+        "desc": "战斗机、轰炸机、无人机、预警机：打开天空，纵深打击，支援部队。"
+      },
+      "sea": {
+        "name": "海军",
+        "short": "海",
+        "role": "海上指挥官",
+        "desc": "水面舰艇、潜艇、运输舰：封锁、护航登陆、从海上打击。"
+      },
+      "ad": {
+        "name": "防空",
+        "short": "防空",
+        "role": "防空指挥官",
+        "desc": "地对空导弹连与雷达：保护领土、基地和推进中的部队。"
+      }
+    },
+    "ops": {
+      "new": "新建作战",
+      "full": "已达 {{max}} 项作战上限：请结束一项。",
+      "emptyTitle": "暂无作战",
+      "emptyText": "指定一个或多个国家、一个目标和指挥它的将领：他们会替你行动。",
+      "onboard": {
+        "title": "三步建立作战",
+        "targets": "目标国家：在地图上或通过搜索，一个或多个。",
+        "goal": "目标：削弱兵力、全面制空、全面征服、战略打击、封锁……",
+        "staff": "按军种选择将领：每人获得角色和兵力，彼此协同。",
+        "rule": "将领会自主打击、推进、巡逻和封锁；对编组的直接命令在完成前优先。"
+      },
+      "path": {
+        "new": "新建作战",
+        "edit": "更改目标",
+        "reinforce": "增援"
+      },
+      "step": {
+        "targets": "目标国",
+        "goal": "目标",
+        "staff": "将领",
+        "confirm": "确认"
+      },
+      "status": {
+        "planning": "准备中",
+        "active": "进行中",
+        "holding": "目标保持中",
+        "awaiting": "等待命令",
+        "suspended": "已暂停",
+        "success": "成功",
+        "failed": "失败"
+      },
+      "phase": {
+        "stage": "集结",
+        "sead": "压制防空",
+        "air": "夺取制空权",
+        "offensive": "进攻",
+        "hold": "保持",
+        "done": "已结束"
+      },
+      "goals": {
+        "attrition": {
+          "name": "削弱兵力",
+          "short": "消耗",
+          "desc": "打击发现的一切：防空、航空兵、地面部队、舰艇、基地。"
+        },
+        "air_control": {
+          "name": "全面制空",
+          "short": "天空",
+          "desc": "摧毁防空和航空兵，然后以巡逻控制天空。"
+        },
+        "conquest": {
+          "name": "全面征服",
+          "short": "征服",
+          "desc": "分区推进，在空中支援下夺取包括首都在内的所有省份。"
+        },
+        "decapitation": {
+          "name": "斩首行动",
+          "short": "首都",
+          "desc": "直扑首都，尽快将其夺取。"
+        },
+        "strategic": {
+          "name": "战略打击",
+          "short": "打击",
+          "desc": "工业、能源、基地：摧毁已查明的设施。"
+        },
+        "sead": {
+          "name": "瘫痪防空",
+          "short": "防空",
+          "desc": "摧毁已知的地对空导弹连、雷达和防空阵地。"
+        },
+        "blockade": {
+          "name": "海上封锁",
+          "short": "封锁",
+          "desc": "封锁港口，击沉舰船，切断海上航线。"
+        },
+        "defend_border": {
+          "name": "守住边境",
+          "short": "边境",
+          "desc": "针对指定国家守卫边境，并实施反击。"
+        },
+        "occupy": {
+          "name": "占领地区",
+          "short": "占领",
+          "desc": "夺取并守住地图上指定的省份。"
+        }
+      },
+      "metric": {
+        "forces": "已摧毁估计敌军兵力的 {{pct}} %",
+        "provinces": "已夺取省份 {{done}}/{{total}}",
+        "capital": "首都：已夺取 {{done}}/{{total}}",
+        "sky": "天空：剩余敌导弹连 {{sams}} 个，飞机 {{air}} 架",
+        "sams": "防空剩余 {{left}}/{{total}}",
+        "buildings": "已摧毁设施 {{done}}/{{total}}",
+        "ports": "已封锁港口 {{done}}/{{total}}",
+        "front": "守住的前线城市 {{done}}/{{total}}"
+      },
+      "metrics": {
+        "forces": "摧毁的敌方兵力（估计价值）",
+        "provinces": "已夺取省份",
+        "capital": "首都",
+        "sams": "摧毁的防空",
+        "aircraft": "击落的敌机",
+        "buildings": "摧毁的设施",
+        "ports": "封锁的港口",
+        "front": "守住的前线城市"
+      },
+      "stats": {
+        "strikes": "打击",
+        "captures": "夺取",
+        "kills": "摧毁价值",
+        "losses": "损失单位",
+        "strength": "兵力"
+      },
+      "sector": {
+        "north": "北部扇区",
+        "south": "南部扇区",
+        "east": "东部扇区",
+        "west": "西部扇区",
+        "center": "中部扇区",
+        "all": "整个战区"
+      },
+      "sectorLeft": "待夺取 {{left}}/{{total}}",
+      "roe": {
+        "strict": "严格：参战前总参谋部都会征求你的批准。",
+        "standard": "标准：发起作战即授权对目标国开战。",
+        "free": "自由：将领自行决定，包括追击。"
+      },
+      "progress": "进展",
+      "staff": "总参谋部",
+      "journal": "作战日志",
+      "generals_other": "{{count}} 名将领",
+      "provinces_other": "{{count}} 个省份",
+      "role": "角色",
+      "release": "撤出作战",
+      "back": "作战行动",
+      "reinforce": "增援",
+      "changeGoal": "更改目标",
+      "cancel": "取消作战",
+      "cancelTitle": "取消作战",
+      "close": "结束",
+      "closeTitle": "结束作战",
+      "cancelText": "{{name}}：将领转入预备役（薪饷照发），为作战组建的集团军解散，其编组回到你的直接指挥下。",
+      "deadline": "期限",
+      "noDeadline": "无",
+      "deadlineAt": "期限 {{day}} {{time}}",
+      "askWar": "总参谋部请求批准对 {{nation}} 开战。",
+      "atWar": "交战中",
+      "targetsLead": "选择目标国家：在地图上点选或搜索。",
+      "noTarget": "尚未指定国家。",
+      "removeTarget": "移除该国",
+      "search": "搜索国家…",
+      "pickOnMap": "在地图上指定",
+      "pick": {
+        "nation": "在地图上点选一个国家作为目标。",
+        "province": "点选要占领的省份（逐个）。"
+      },
+      "region": "地区",
+      "pickProvinces": "指定省份",
+      "pickGoal": "选择作战目标。",
+      "estWithSuggestion": "按建议的总参谋部估算；将领将在下一步选择。",
+      "est": {
+        "forces": "投入兵力",
+        "enemy": "估计敌军 {{value}}",
+        "cost": "费用",
+        "hire": "+ 签约金 {{value}}"
+      },
+      "staffLead_other": "已选 {{count}} 名将领。",
+      "suggest": "推荐总参谋部",
+      "recommended": "推荐",
+      "freeForces_other": "{{count}} 个空闲编组 · {{value}}",
+      "chiefIs": "军种司令：{{name}}",
+      "chief": "军种司令",
+      "hired": "已招募",
+      "forces": "兵力",
+      "autoForces": "自动分配兵力",
+      "morePool": "查看全部候选人（+{{count}}）",
+      "lessPool": "收起",
+      "name": "作战名称",
+      "defaultName": "{{goal}} — {{target}}",
+      "launch": "发起作战",
+      "toast": {
+        "created": "作战 {{name}} 已发起。",
+        "edited": "新目标已传达总参谋部。",
+        "reinforced": "增援已投入作战。",
+        "released": "将领已撤出作战。",
+        "suspended": "作战已暂停。",
+        "resumed": "作战已恢复。",
+        "cancelled": "作战已结束。"
+      }
+    },
+    "wizard": {
+      "path": "新集团军",
+      "steps": "步骤",
+      "step": {
+        "compose": "编成",
+        "mission": "任务",
+        "general": "将领"
+      },
+      "name": "集团军名称",
+      "namePlaceholder": "第1集团军、南方航空队、地中海舰队…",
+      "reinforceLead": "为{{name}}增援：选择空闲编组。",
+      "filter": "军种",
+      "useSelection": "添加所选（{{count}}）",
+      "pickOnMap": "在地图上选择",
+      "clear": "全部移除",
+      "noFree": "没有空闲编组：你的所有编组都已编入集团军。",
+      "mixed_other": "{{count}} 种装备",
+      "summary": "集团军",
+      "piles": "编组",
+      "elements": "单元",
+      "value": "价值",
+      "mission": "任务",
+      "pickMission": "选择一项任务。",
+      "missing": "待完成",
+      "generalLead": "选择指挥的将领：本任务的关键能力是“{{skill}}”。",
+      "costHire": "签约金 {{bonus}}，此后 {{day}} / 日",
+      "costDay": "{{day}} / 日",
+      "createOnly": "不带任务创建",
+      "addPiles_other": "添加 {{count}} 个编组"
+    },
+    "defaultName": {
+      "landFirst": "第1集团军",
+      "land": "第{{n}}集团军",
+      "airFirst": "第1航空队",
+      "air": "第{{n}}航空队",
+      "seaFirst": "第1舰队",
+      "sea": "第{{n}}舰队"
+    },
+    "toast": {
+      "created": "{{name}}已组建。",
+      "reinforced_other": "{{count}} 个编组加入集团军。",
+      "removed_other": "已从集团军移除 {{count}} 个编组。",
+      "renamed": "集团军已重命名。",
+      "mission": "任务已下达给将领。",
+      "hired": "{{name}}加入你的参谋部。",
+      "hiredShort": "将领已雇用。",
+      "assigned": "指挥权已分配。",
+      "dismissed": "将领已解职。",
+      "dissolved": "集团军已解散。",
+      "suspended": "任务已暂停。",
+      "resumed": "任务已恢复。",
+      "saved": "设置已保存。"
+    }
+  },
   "engine": {
     "place": {
       "sea": "海上"
@@ -3813,6 +4458,195 @@
         "title": "无法占领",
         "noCapturer": "{{system}} 无法占领 {{place}}：需要步兵、装甲部队或炮兵。",
         "noWar": "未与 {{place}} 的所有者交战：无法占领。"
+      },
+      "cmd_generalResigned": {
+        "title": "辞职",
+        "text": "{{general}}辞职：其薪饷已不再发放。"
+      },
+      "cmd_generalUnpaid": {
+        "title": "欠薪",
+        "text": "{{general}}未领到薪饷（距辞职 {{days}}/{{max}} 天）。"
+      },
+      "cmd_generalKilled": {
+        "title": "将领阵亡",
+        "text": "{{general}}在{{army}}指挥部遭打击时阵亡。"
+      },
+      "cmd_generalWounded": {
+        "title": "将领负伤",
+        "text": "{{general}}负伤：{{army}}等待其归来。"
+      },
+      "cmd_missionSuccess": {
+        "title": "任务完成",
+        "text": "{{army}}：任务完成。"
+      },
+      "cmd_missionFailed": {
+        "title": "任务失败",
+        "text": "{{army}}：任务失败。"
+      },
+      "cmd_askWar": {
+        "title": "请求授权",
+        "text": "{{army}}：{{general}}请求授权与{{nation}}开战。"
+      },
+      "cmd_askStrike": {
+        "title": "请求授权",
+        "text": "{{army}}：{{general}}请求授权打击{{nation}}后方。"
+      },
+      "cmd_askReinforce": {
+        "title": "请求增援",
+        "text": "{{army}}：{{general}}请求增援 {{count}} 个编组。"
+      },
+      "cmd_opAskWar": {
+        "title": "请求批准",
+        "text": "作战 {{op}}：总参谋部请求批准对 {{nation}} 开战。"
+      },
+      "cmd_opSuccess": {
+        "title": "作战成功",
+        "text": "作战 {{op}}：目标已达成。"
+      },
+      "cmd_opFailed": {
+        "title": "作战失败",
+        "text": "作战 {{op}}：失败。"
+      },
+      "cmd_opAchieved": {
+        "title": "目标达成",
+        "text": "作战 {{op}}：目标已达成并保持中。"
+      },
+      "cmd_opHeavyLosses": {
+        "title": "损失惨重",
+        "text": "作战 {{op}}：24 小时内损失 {{pct}} % 的兵力。"
+      },
+      "cmd_opStuck": {
+        "title": "作战停滞",
+        "text": "作战 {{op}}：{{hours}} 小时无进展。"
+      },
+      "gov_resigned": {
+        "title": "辞职",
+        "text": "{{name}} 辞职：该职位不再支薪。"
+      },
+      "gov_missionDone": {
+        "title": "任务完成",
+        "text": "{{mission}}：目标达成。"
+      }
+    },
+    "cmd": {
+      "zone": "指定区域",
+      "mission": {
+        "conquer": "征服",
+        "defend": "防御",
+        "hold_front": "坚守战线",
+        "air_superiority": "制空权",
+        "air_defense": "防空",
+        "deep_strike": "纵深打击",
+        "sea_control": "制海与封锁",
+        "landing": "两栖登陆",
+        "reserve": "预备队"
+      },
+      "reason": {
+        "losses": "损失过重",
+        "stuck": "毫无进展",
+        "tooWeak": "兵力不足",
+        "zoneLost": "区域失守",
+        "deadline": "期限已过"
+      },
+      "building": {
+        "air_defense_site": "防空阵地",
+        "radar_station": "雷达站",
+        "air_base": "空军基地",
+        "military_base": "军事基地",
+        "arms_factory": "兵工厂",
+        "refinery": "炼油厂",
+        "power_plant": "发电厂",
+        "naval_base": "海军基地",
+        "electronics_plant": "电子工厂",
+        "research_center": "研究中心"
+      },
+      "j": {
+        "created_other": "集团军组建完成：{{count}} 个编组。",
+        "command": "{{general}}接掌指挥。",
+        "mission": "收到任务：{{mission}} — {{target}}。",
+        "missionCleared": "任务已撤销：编组等待你的命令。",
+        "suspended": "奉命暂停任务。",
+        "resumed": "任务已恢复。",
+        "warAuthorized": "已获授权：与{{nation}}开战。",
+        "warRefused": "与{{nation}}开战未获批准：任务暂停。",
+        "strikeAuthorized": "战略打击已获批准。",
+        "strikeRefused": "战略打击未获批准：任务暂停。",
+        "reinforceRefused": "增援被拒：{{general}}将以现有兵力应对。",
+        "reinforced_other": "增援：{{count}} 个编组加入集团军。",
+        "detached_other": "{{count}} 个编组脱离集团军。",
+        "lost_other": "损失：{{system}} 被摧毁 {{count}} 个。",
+        "captured": "{{province}}已被攻占。",
+        "declaredWar": "越过边境：我们已与{{nation}}交战。",
+        "warBlocked": "无法与{{nation}}开战：任务暂停。",
+        "askWar": "请求授权：越过{{nation}}边境。",
+        "askStrike": "请求授权：打击{{nation}}后方。",
+        "retreat": "{{system}}损耗过大：向{{province}}后撤。",
+        "noReinforcements": "附近没有可用于增援的空闲编组。",
+        "askReinforce_other": "请求增援：{{count}} 个编组。",
+        "tooWeak": "兵力不足以进攻（所需的 {{pct}}%）：已请求增援。",
+        "offensive": "对{{province}}发起进攻。",
+        "landing": "对{{province}}发起登陆：在港口集结。",
+        "counter": "对{{province}}发起反击。",
+        "counterFront": "在前线发起反击。",
+        "blockade": "封锁{{province}}港口。",
+        "noIntel": "未发现{{nation}}的任何设施：需要情报（侦察）。",
+        "strike": "打击{{province}}的{{building}}。",
+        "success": "任务完成。",
+        "failed": "任务失败：{{reason}}。",
+        "daily": "每日报告：兵力 {{strength}}%，攻占 {{captures}} 处，损失 {{losses}} 个单元。",
+        "resigned": "{{general}}辞职：欠发薪饷。",
+        "dismissed": "{{general}}被解职。",
+        "recovered": "{{general}}康复后重新接掌指挥。",
+        "wounded": "{{general}}在指挥部负伤：需休养 {{days}} 天。",
+        "killed": "{{general}}在指挥部阵亡。",
+        "joinedOp": "投入作战 {{op}}：{{role}}。",
+        "opClosed": "作战 {{op}} 已结束：集团军等待你的命令。"
+      },
+      "goal": {
+        "attrition": "削弱兵力",
+        "air_control": "全面制空",
+        "conquest": "全面征服",
+        "decapitation": "斩首行动",
+        "strategic": "战略打击",
+        "sead": "瘫痪防空",
+        "blockade": "海上封锁",
+        "defend_border": "守住边境",
+        "occupy": "占领地区"
+      },
+      "role": {
+        "land": "陆军",
+        "air": "空军",
+        "sea": "海军",
+        "ad": "防空"
+      },
+      "op": {
+        "created_other": "作战发起：{{goal}}，{{count}} 名将领。",
+        "declaredWar": "已对 {{nation}} 宣战。",
+        "warBlocked": "无法对 {{nation}} 开战：作战暂停。",
+        "askWar": "请求批准：对 {{nation}} 开战。",
+        "warAuthorized": "已获批准：对 {{nation}} 开战。",
+        "warRefused": "对 {{nation}} 开战被拒：作战暂停。",
+        "strikes_other": "{{army}}：{{count}} 次打击 — 防空 {{sead}}，飞机 {{air}}，部队 {{ground}}，设施 {{bld}}。",
+        "offensive": "{{army}}：向 {{province}} 发起进攻。",
+        "jointAssault": "将领们对 {{province}} 联合突击，由 {{army}} 指挥。",
+        "tooWeak": "{{army}}：在 {{province}} 前兵力不足 — 已请求空中支援和增援。",
+        "sectorDone": "{{army}}：扇区已夺取，转而支援战区其余部分。",
+        "captured": "{{province}} 已被夺取。",
+        "lostProvince": "{{province}} 已失守。",
+        "recon": "无已知目标：对 {{nation}} 展开侦察。",
+        "blockade": "{{army}}：封锁 {{province}} 港。",
+        "achieved": "目标达成：保持中。",
+        "heavyLosses": "损失惨重：24 小时内损失投入兵力的 {{pct}} %。",
+        "stuck": "作战停滞：{{hours}} 小时无进展。",
+        "success": "目标达成：作战成功。",
+        "failed": "作战失败：{{reason}}。",
+        "goalChanged": "新目标：{{goal}}。",
+        "released": "{{army}} 退出作战。",
+        "reinforced_other": "增援：{{count}} 名将领加入作战。",
+        "role": "{{army}}：新角色 — {{role}}。",
+        "reassigned": "{{army}} 被调往另一项作战。",
+        "suspended": "奉命暂停作战。",
+        "resumed": "作战已恢复。"
       }
     },
     "spyNews": {
@@ -3820,6 +4654,461 @@
       "executedB": "{{host}} 宣布处决一名因间谍罪被定罪的 {{owner}} 特工。国际社会予以谴责。",
       "swapH": "{{a}} 与 {{b}} 交换特工",
       "swapB": "{{a}} 与 {{b}} 进行了囚犯交换：{{n}} 名特工获释。"
+    },
+    "gov": {
+      "m": {
+        "air_bases": "空军基地",
+        "military_bases": "军事基地",
+        "upgrade_bases": "基地现代化",
+        "logistics": "军事后勤",
+        "fortify": "边境筑垒",
+        "air_defense": "国土防空",
+        "coastal": "海岸防御",
+        "research_next": "下一代",
+        "research_branch": "按领域研究",
+        "research_labs": "研究实验室",
+        "produce": "装备订单",
+        "stockpile": "战略储备",
+        "arms_industry": "军工产业",
+        "counterintel": "反间谍",
+        "protect_sites": "敏感设施保护",
+        "watch": "监视某国",
+        "map_defenses": "防御测绘",
+        "economic_intel": "经济情报",
+        "resource": "资源生产",
+        "industry": "工业发展",
+        "revenue": "增加收入",
+        "war_economy": "战时经济",
+        "reserves": "国库储备",
+        "repair": "重建"
+      },
+      "focus": {
+        "counterintel": "反间谍",
+        "protection": "设施保护"
+      },
+      "j": {
+        "appointed": "{{name}} 就任。",
+        "replaced": "{{name}} 离任（已付遣散费）。",
+        "dismissed": "{{name}} 被免职（已付遣散费）。",
+        "resigned": "{{name}} 辞职：该职位不再支薪。",
+        "unpaid": "{{name}} 未获报酬（连续 {{days}} 天）。",
+        "missionNew": "收到任务：{{mission}}。",
+        "missionEdit": "任务已修改：{{mission}}。",
+        "missionSuspended": "任务已暂停：{{mission}}。",
+        "missionResumed": "任务已恢复：{{mission}}。",
+        "missionCancelled": "任务已撤回：{{mission}}（已启动的继续）。",
+        "missionDone": "任务完成：{{mission}}。",
+        "built": "开工：{{building}} {{level}} 级，位于 {{place}} — {{cost}}。",
+        "jobDone": "竣工：{{building}} {{level}} 级，位于 {{place}}。",
+        "repaired": "开始维修：{{building}}，位于 {{place}} — {{cost}}。",
+        "research": "开始研究：{{node}} — {{cost}}。",
+        "researched": "研究完成：{{node}}。",
+        "produced": "已下订单：{{count}} × {{system}}，位于 {{place}} — {{cost}}。",
+        "imported": "进口：{{count}} × {{system}}，交付至 {{place}} — {{cost}}。",
+        "intelOp": "已启动行动：{{op}} — {{cost}}。",
+        "intelOpAt": "已启动行动：{{op}}，目标 {{nation}} — {{cost}}。",
+        "opSuccess": "行动成功：{{op}}。",
+        "opFailed": "行动无果：{{op}}。",
+        "focus": "国内情报优先级：{{focus}}。",
+        "protected": "设施已受保护：{{place}}。",
+        "blocked": "受阻 — {{why}}"
+      },
+      "why": {
+        "noHead": "职位空缺：请任命人选。",
+        "envelope": "预算耗尽：可用 {{left}}，需要 {{cost}}。",
+        "funds": "资金不足：需要 {{cost}}。",
+        "reserve": "审慎储备：国库必须保持在 {{floor}} 以上（需要 {{cost}}）。",
+        "resources": "资源不足。",
+        "noSite": "该区域没有允许的地点（海岸、矿藏或最高等级）。",
+        "noDeposit": "领土内没有 {{resource}} 矿藏。",
+        "research": "需要研究。",
+        "capacity": "已达上限（队列或部门）。",
+        "locked": "因禁运或封锁受阻。",
+        "noTarget": "目标无效或已消失。",
+        "noSystem": "没有可用的“{{category}}”装备（研究、许可或进口）。",
+        "noResearch": "此目标没有可用研究。",
+        "nothingDamaged": "没有受损建筑。",
+        "saving": "储备积累中：{{pct}} %。",
+        "reserveHeld": "储备已达标：其他任务会遵守。",
+        "stocked": "库存已达标：一旦下降即补充。",
+        "inProgress": "行动进行中。",
+        "refused": "命令被拒绝。",
+        "unlocked": "下一代已可使用。",
+        "allProtected": "设施已达最大保护。"
+      }
     }
+  },
+  "gov": {
+    "unavailable": "本局游戏无法使用政府。",
+    "perDay": " / 天",
+    "newMission": "新任务",
+    "missionsTitle": "任务",
+    "history": "已完成和已撤回",
+    "ministries": {
+      "defense": "国防部",
+      "economy": "经济部"
+    },
+    "sections": {
+      "commands": "司令部",
+      "infra": "基础设施",
+      "armament": "军备",
+      "intel": "情报"
+    },
+    "offices": {
+      "defense": {
+        "name": "国防部长",
+        "head": "国防部长",
+        "scope": "基础设施与后勤"
+      },
+      "research": {
+        "name": "武器研究局",
+        "head": "研究局长",
+        "scope": "军事研发"
+      },
+      "production": {
+        "name": "武器生产局",
+        "head": "生产局长",
+        "scope": "军工生产"
+      },
+      "intel_interior": {
+        "name": "国内情报",
+        "head": "国内情报局长",
+        "scope": "反间谍、国内安全、设施保护"
+      },
+      "intel_exterior": {
+        "name": "对外与军事情报",
+        "head": "对外情报局长",
+        "scope": "人力情报、信号情报、侦察"
+      },
+      "economy": {
+        "name": "经济部长",
+        "head": "经济部长",
+        "scope": "工业、资源、收入、储备"
+      }
+    },
+    "skills": {
+      "management": "管理",
+      "industry": "工业",
+      "logistics": "后勤",
+      "finance": "预算审慎",
+      "science": "科学",
+      "intelligence": "情报"
+    },
+    "traits": {
+      "efficient": {
+        "name": "高效",
+        "tip": "建设、订单和研究更快。"
+      },
+      "frugal": {
+        "name": "节俭",
+        "tip": "更会谈判，花费更少。"
+      },
+      "ambitious": {
+        "name": "雄心勃勃",
+        "tip": "同时多执行一项行动，储备更少，费用更高。"
+      },
+      "cautious": {
+        "name": "谨慎",
+        "tip": "保留更多现金储备。"
+      },
+      "technocrat": {
+        "name": "技术官僚",
+        "tip": "总是做出最佳选择；费用更高。"
+      },
+      "reformer": {
+        "name": "改革派",
+        "tip": "稍快一些，也稍便宜一些。"
+      },
+      "bureaucrat": {
+        "name": "官僚",
+        "tip": "更慢，但便宜。"
+      }
+    },
+    "effects": {
+      "speed": "速度 {{v}}",
+      "speedTip": "管理：已启动的建设、订单和研究的耗时。",
+      "discount": "成本 {{v}}",
+      "discountTip": "专长：其任务每笔支出谈下的折扣。",
+      "slotsTip": "管理：每项任务可并行的行动数。",
+      "reserve": "储备 {{days}} 天",
+      "reserveTip": "审慎：其任务始终留在国库中的预算天数。",
+      "slots": "并行：{{count}}"
+    },
+    "head": {
+      "rating": "评分",
+      "ratingTip": "该职位三项相关能力的平均值。",
+      "cost": "费用",
+      "appoint": "任命 · {{cost}}",
+      "appointTip": "任命奖金（及被替换者的遣散费）：{{cost}}",
+      "vacant": "职位空缺。",
+      "vacantText": "请选择人选：其能力决定任务的速度、成本和审慎程度。",
+      "replace": "更换",
+      "dismiss": "免职",
+      "replaceTitle": "更换 — {{office}}",
+      "replaceText": "现任者领取 {{cost}} 遣散费离任。任务由新任者继续。",
+      "dismissTitle": "免去现任者",
+      "dismissText": "{{name}} 领取 {{cost}} 遣散费离任。该职位的任务将等待继任者。",
+      "unpaid": "欠薪：{{count}} 天"
+    },
+    "toast": {
+      "appointed": "已任命 {{name}}。",
+      "dismissed": "已免职。",
+      "edited": "任务已修改。",
+      "resumed": "任务已恢复。",
+      "suspended": "任务已暂停。",
+      "cancelled": "任务已撤回。",
+      "created": "已下达任务：{{mission}}。"
+    },
+    "status": {
+      "active": "进行中",
+      "waiting": "等待中",
+      "blocked": "受阻",
+      "suspended": "已暂停",
+      "done": "已完成",
+      "cancelled": "已撤回"
+    },
+    "mission": {
+      "progress": "进度",
+      "goalAuto": "目标由部门设定",
+      "budgetTip": "已用（扣除折扣）／已拨预算。",
+      "priority": "优先级",
+      "edit": "修改",
+      "suspend": "暂停",
+      "resume": "恢复",
+      "cancel": "撤回",
+      "cancelTitle": "撤回任务",
+      "cancelText": "“{{mission}}”已停止。已启动的建设、订单和行动将继续。",
+      "editTitle": "修改 — {{mission}}",
+      "save": "保存",
+      "pending": "进行中：{{count}}"
+    },
+    "units": {
+      "projects": "建设：{{done}} / {{goal}}",
+      "nodes": "研究：{{done}} / {{goal}}",
+      "lots": "批次：{{done}} / {{goal}}",
+      "ops": "行动：{{done}} / {{goal}}",
+      "days": "预算天数：{{done}} / {{goal}}",
+      "sites": "受保护设施：{{done}} / {{goal}}",
+      "repairs": "维修：{{done}} / {{goal}}"
+    },
+    "budget": {
+      "mode": "预算",
+      "amount": "金额",
+      "share": "收入占比",
+      "shareShort": "收入的 {{pct}} %",
+      "amountShort": "固定预算",
+      "left": "可用：{{v}}",
+      "perDayOf": "≈ 每天 {{v}}（收入 {{rev}} / 天）",
+      "cap": "支出上限",
+      "noCap": "无上限：额度每天累积。",
+      "daysOf": "{{count}} 天国防预算",
+      "daysShort": "{{count}} 天"
+    },
+    "priority": {
+      "1": "低",
+      "2": "普通",
+      "3": "高"
+    },
+    "journal": {
+      "title": "日志",
+      "empty": "暂无内容。"
+    },
+    "hint": {
+      "vacantMissions": "这些任务正在等待人选：任命后才能推进。",
+      "vacant": "先任命人选，再交给其任务。",
+      "noMission": "暂无任务：点击“新任务”下达。"
+    },
+    "zone": {
+      "borderWith": "边境：{{nation}}",
+      "aroundShort": "{{place}} 周围 {{km}} 公里",
+      "all": "全部领土",
+      "border": "边境",
+      "around": "周边…",
+      "radius": "半径"
+    },
+    "commands": {
+      "title": "四大司令部",
+      "scope": "陆军、空军、海军、防空",
+      "open": "打开指挥部",
+      "land": "陆军",
+      "air": "空军",
+      "sea": "海军",
+      "air_defense": "防空",
+      "noChief": "无司令",
+      "soon": "司令与作战：正在指挥部筹备。",
+      "soonBadge": "筹备中",
+      "now": "今日指挥部：集团军 {{armies}}，将领 {{generals}}。",
+      "ops": "作战：{{count}}"
+    },
+    "kpi": {
+      "heads": "在任者",
+      "missions": "任务",
+      "spent": "已用",
+      "payroll": "费用",
+      "floor": "储备",
+      "floorTip": "任务始终留在国库中的资金（审慎、储备任务）。"
+    },
+    "wizard": {
+      "path": "新任务",
+      "step": {
+        "type": "任务",
+        "params": "目标与指标",
+        "budget": "预算"
+      },
+      "back": "返回",
+      "next": "下一步",
+      "confirm": "下达任务",
+      "resource": "资源",
+      "branch": "研究领域",
+      "category": "装备",
+      "nation": "目标国家",
+      "pick": "选择…",
+      "zone": "区域",
+      "err": {
+        "type": "请选择任务。",
+        "nation": "请选择目标国家。",
+        "border": "请选择邻国。",
+        "around": "请选择中心省份。",
+        "budget": "预算为空。"
+      }
+    },
+    "goal": {
+      "projects": "指标：建设",
+      "nodes": "指标：研究",
+      "lots": "指标：装备批次",
+      "ops": "指标：行动",
+      "days": "指标：国库预算天数",
+      "sites": "指标：受保护设施",
+      "repairs": "指标：维修",
+      "auto": {
+        "research": "确认时设定指标：解锁下一代所需的全部研究。",
+        "protect": "指标：在国内情报允许范围内尽量保护设施，然后加固。"
+      }
+    },
+    "estimate": {
+      "title": "预测",
+      "options": "可行行动",
+      "first": "首个行动",
+      "total": "完整指标",
+      "hours": "单个行动耗时",
+      "reserveTarget": "目标国库",
+      "envelope": "预算",
+      "open": "收入占比，无上限",
+      "covers": "预算可覆盖的行动",
+      "head": "{{name}}：速度 +{{speed}} %，折扣 {{discount}} %，国库保留 {{reserve}}。",
+      "vacant": "职位空缺：任务将等待人选。",
+      "note": "根据您的省份和当日价格估算；部门遵守预算并顾及您的资源。",
+      "noDeposit": "该区域没有此资源的矿藏。",
+      "noSite": "该区域没有允许的地点。",
+      "noSystem": "该类别没有可用装备。",
+      "unlocked": "下一代已可使用。",
+      "noResearch": "此目标已无剩余研究。",
+      "nothingDamaged": "暂无受损建筑。",
+      "few": "区域内可行行动：{{count}}，少于指标；指标将缩减至可行范围。",
+      "coversN": "≈ {{count}}"
+    },
+    "missions": {
+      "air_bases": {
+        "name": "空军基地",
+        "desc": "新建空军基地，扩大领土覆盖。"
+      },
+      "military_bases": {
+        "name": "军事基地",
+        "desc": "设立军事基地：陆军生产与补给半径。"
+      },
+      "upgrade_bases": {
+        "name": "基地现代化",
+        "desc": "提升现有空军、陆军和海军基地的等级。"
+      },
+      "logistics": {
+        "name": "军事后勤",
+        "desc": "边境附近的前进仓库、基地和医院：部队补给。"
+      },
+      "fortify": {
+        "name": "边境筑垒",
+        "desc": "在受威胁的边境省份修筑工事和掩体。"
+      },
+      "air_defense": {
+        "name": "国土防空",
+        "desc": "在关键省份周围部署防空阵地和雷达站。"
+      },
+      "coastal": {
+        "name": "海岸防御",
+        "desc": "沿海岸部署岸防炮台和海军基地。"
+      },
+      "research_next": {
+        "name": "下一代",
+        "desc": "研究生产某类装备下一代所需的一切。"
+      },
+      "research_branch": {
+        "name": "按领域研究",
+        "desc": "逐个节点推进某一研究领域。"
+      },
+      "research_labs": {
+        "name": "研究实验室",
+        "desc": "建设并升级研究中心和秘密实验室。"
+      },
+      "produce": {
+        "name": "装备订单",
+        "desc": "生产某一类别的一定数量装备（本国制造或进口）。"
+      },
+      "stockpile": {
+        "name": "战略储备",
+        "desc": "保持某一类别（导弹、弹药…）的库存并补充。"
+      },
+      "arms_industry": {
+        "name": "军工产业",
+        "desc": "发展兵工厂和电子厂。"
+      },
+      "counterintel": {
+        "name": "反间谍",
+        "desc": "瓦解外国网络：排查与摧毁。"
+      },
+      "protect_sites": {
+        "name": "敏感设施保护",
+        "desc": "将关键工业设施置于保护之下并加固。"
+      },
+      "watch": {
+        "name": "监视某国",
+        "desc": "跟踪其兵力和动员：侦察、监听、特工。"
+      },
+      "map_defenses": {
+        "name": "防御测绘",
+        "desc": "查明其防御：军事侦察和辐射源定位。"
+      },
+      "economic_intel": {
+        "name": "经济情报",
+        "desc": "了解其工业和资源：经济侦察、特工。"
+      },
+      "resource": {
+        "name": "资源生产",
+        "desc": "在有矿藏的地方建油井、矿场、农场或电子厂。"
+      },
+      "industry": {
+        "name": "工业发展",
+        "desc": "在产出最高的省份发展地方工业和电厂。"
+      },
+      "revenue": {
+        "name": "增加收入",
+        "desc": "在收入最高的地方发展商业区和地方工业。"
+      },
+      "war_economy": {
+        "name": "战时经济",
+        "desc": "兵工厂、电厂和炼油厂，支撑战争努力。"
+      },
+      "reserves": {
+        "name": "国库储备",
+        "desc": "保留一笔其他任务不能动用的储备。"
+      },
+      "repair": {
+        "name": "重建",
+        "desc": "修复受损建筑，先修最昂贵的。"
+      }
+    },
+    "ministriesShort": {
+      "defense": "国防",
+      "economy": "经济"
+    },
+    "suggest": "可选任务"
   }
 }

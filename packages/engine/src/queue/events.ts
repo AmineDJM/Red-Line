@@ -35,7 +35,12 @@ export type GameEvent =
   /** Réflexion des IA. */
   | (Base & { k: 'ai' })
   /** Événement d'un module (phases 2+) : voir modules/types.ts. */
-  | (Base & { k: 'mod'; m: 'eco' | 'mil' | 'intel' | 'diplo'; e: string; d?: unknown });
+  | (Base & {
+      k: 'mod';
+      m: 'eco' | 'mil' | 'intel' | 'diplo' | 'cmd' | 'gov';
+      e: string;
+      d?: unknown;
+    });
 
 export type EventKind = GameEvent['k'];
 

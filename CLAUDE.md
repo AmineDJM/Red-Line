@@ -69,8 +69,23 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
 - Fond vectoriel en GeoJSON statique (`data/basemap`) plutôt qu'en PMTiles vectoriel (petit volume, pas de tippecanoe).
 - Cibles stratégiques : bâtiments **génériques** par province, jamais de vrais sites nommés. De l'image de référence,
   on ne reprend que les codes visuels.
+- **Provinces fusionnées** (demande d'Amine, « divise par deux ») : étape `tools/map/src/consolidate.ts`
+  (réglages `consolidate-config.ts`), 2 567 → ~1 300 provinces ; capitales et petites nations inchangées.
+  **Carte versionnée** : `data/map/version.json`, chaque partie épingle sa version (`games.map_version`), les
+  cartes précédentes restent dans `data/map/archive/<version>/` (jamais modifiées). Changer les identifiants
+  de province = archiver l'ancienne carte et incrémenter la version (test `map.test.ts`).
 - Armées de départ en **piles mixtes** (brigades, escadres ; `data/balance` `stacks`, désactivable) : une pile vaut
   la somme de ses éléments (`Unit.mix`), ordres `split` / `merge` ; mesures dans `docs/charge.md`.
+- **Centre de commandement** (module moteur `cmd`, fenêtre QG) : armées nommées de piles, missions
+  (`data/balance` `command`), généraux fictifs payés qui pilotent l'IA militaire sur leurs seules piles ; un ordre
+  direct sur une pile prime jusqu'à sa fin, puis le général la reprend. **Opérations** (onglet par défaut) : pays
+  visés, objectif (affaiblir, contrôle aérien, conquête, décapitation, frappes stratégiques, SEAD, blocus, tenir la
+  frontière, occuper), plusieurs généraux des 4 **commandements** (terre, air, marine, DCA ; vivier et chef par
+  arme), rôles et secteurs ; planificateur `ops.ts`, conduite `opbrain.ts`. Voir `docs/centre-de-commandement.md`.
+- **Gouvernement** (module moteur `gov`, fenêtre Gouvernement, touche H) : ministères de la Défense (infrastructures,
+  directions de l'armement et du renseignement ; commandements lus dans le module cmd) et de l'Économie, seulement
+  ces deux ; titulaires fictifs payés ; missions dans une enveloppe, exécutées par les ordres existants avec la
+  logique de l'IA économique paramétrée. Voir `docs/gouvernement.md`.
 - Capture : toutes les troupes terrestres (infanterie, chars, véhicules, artillerie) ; jamais DCA, missiles,
   radars, convois, air ni mer (`CAPTURE_CATEGORIES`). Efficacité par catégorie de cible affichée à l'interface :
   calcul unique `packages/shared/src/effectiveness.ts` (docs/arsenal.md § 3).

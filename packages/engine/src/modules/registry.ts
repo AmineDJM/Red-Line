@@ -6,9 +6,18 @@ import { ecoModule } from './eco/index.js';
 import { milModule } from './mil/index.js';
 import { intelModule } from './intel/index.js';
 import { diploModule } from './diplo/index.js';
+import { cmdModule } from './command/index.js';
+import { govModule } from './gov/index.js';
 
 /** Ordre fixe (déterminisme) : les crochets sont appelés dans cet ordre. */
-export const MODULES: readonly EngineModule[] = [ecoModule, milModule, intelModule, diploModule];
+export const MODULES: readonly EngineModule[] = [
+  ecoModule,
+  milModule,
+  intelModule,
+  diploModule,
+  cmdModule,
+  govModule,
+];
 
 export function moduleById(id: ModuleId): EngineModule | undefined {
   return MODULES.find((m) => m.id === id);

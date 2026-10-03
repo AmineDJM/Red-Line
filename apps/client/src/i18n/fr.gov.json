@@ -1,0 +1,389 @@
+{
+  "sections": {
+    "government": "Gouvernement",
+    "short": {
+      "government": "Gouv."
+    },
+    "path": {
+      "government": "Gouvernement"
+    }
+  },
+  "economy": {
+    "ledger": {
+      "government": "Ministres et directions"
+    }
+  },
+  "gov": {
+    "unavailable": "Gouvernement indisponible dans cette partie.",
+    "perDay": " / j",
+    "newMission": "Nouvelle mission",
+    "missionsTitle": "Missions",
+    "history": "Terminées et retirées",
+    "ministries": {
+      "defense": "Ministère de la Défense",
+      "economy": "Ministère de l’Économie"
+    },
+    "sections": {
+      "commands": "Commandements",
+      "infra": "Infrastructures",
+      "armament": "Armement",
+      "intel": "Renseignement"
+    },
+    "offices": {
+      "defense": {
+        "name": "Ministre de la Défense",
+        "head": "Ministre de la Défense",
+        "scope": "Infrastructures et logistique"
+      },
+      "research": {
+        "name": "Direction de la recherche d’armement",
+        "head": "Directeur de la recherche",
+        "scope": "R&D militaire"
+      },
+      "production": {
+        "name": "Direction de la production d’armement",
+        "head": "Directeur de la production",
+        "scope": "Production militaire"
+      },
+      "intel_interior": {
+        "name": "Renseignement intérieur",
+        "head": "Directeur du renseignement intérieur",
+        "scope": "Contre-espionnage, sécurité intérieure, protection des sites"
+      },
+      "intel_exterior": {
+        "name": "Renseignement extérieur et militaire",
+        "head": "Directeur du renseignement extérieur",
+        "scope": "HUMINT, SIGINT, reconnaissance"
+      },
+      "economy": {
+        "name": "Ministre de l’Économie",
+        "head": "Ministre de l’Économie",
+        "scope": "Industrie, ressources, revenus, réserves"
+      }
+    },
+    "skills": {
+      "management": "Gestion",
+      "industry": "Industrie",
+      "logistics": "Logistique",
+      "finance": "Prudence budgétaire",
+      "science": "Science",
+      "intelligence": "Renseignement"
+    },
+    "traits": {
+      "efficient": {
+        "name": "Efficace",
+        "tip": "Chantiers, commandes et recherches plus rapides."
+      },
+      "frugal": {
+        "name": "Économe",
+        "tip": "Négocie mieux et coûte moins cher."
+      },
+      "ambitious": {
+        "name": "Ambitieux",
+        "tip": "Mène une action de plus à la fois, garde moins de réserve, coûte plus cher."
+      },
+      "cautious": {
+        "name": "Prudent",
+        "tip": "Garde une réserve de trésorerie plus large."
+      },
+      "technocrat": {
+        "name": "Technocrate",
+        "tip": "Fait toujours le meilleur choix ; coûte plus cher."
+      },
+      "reformer": {
+        "name": "Réformateur",
+        "tip": "Un peu plus rapide et un peu moins cher."
+      },
+      "bureaucrat": {
+        "name": "Bureaucrate",
+        "tip": "Plus lent, mais peu coûteux."
+      }
+    },
+    "effects": {
+      "speed": "Vitesse {{v}}",
+      "speedTip": "Gestion : durée des chantiers, commandes et recherches lancés.",
+      "discount": "Coûts {{v}}",
+      "discountTip": "Expertise : rabais négocié sur chaque dépense de ses missions.",
+      "slotsTip": "Gestion : actions menées en parallèle par chaque mission.",
+      "reserve": "Réserve {{days}} j",
+      "reserveTip": "Prudence : jours de budget que ses missions laissent toujours en caisse.",
+      "slots": "Parallèle : {{count}}"
+    },
+    "head": {
+      "rating": "Note",
+      "ratingTip": "Moyenne des trois compétences utiles au poste.",
+      "cost": "Coût",
+      "appoint": "Nommer · {{cost}}",
+      "appointTip": "Prime de nomination (et indemnité du titulaire remplacé) : {{cost}}",
+      "vacant": "Poste vacant.",
+      "vacantText": "Choisissez un titulaire : ses compétences règlent la vitesse, les coûts et la prudence de ses missions.",
+      "replace": "Remplacer",
+      "dismiss": "Renvoyer",
+      "replaceTitle": "Remplacer — {{office}}",
+      "replaceText": "Le titulaire actuel part avec une indemnité de {{cost}}. Les missions continuent avec le nouveau.",
+      "dismissTitle": "Renvoyer le titulaire",
+      "dismissText": "{{name}} part avec une indemnité de {{cost}}. Les missions du poste attendront un successeur.",
+      "unpaid": "Impayé : {{count}} j"
+    },
+    "toast": {
+      "appointed": "{{name}} nommé.",
+      "dismissed": "Titulaire renvoyé.",
+      "edited": "Mission modifiée.",
+      "resumed": "Mission reprise.",
+      "suspended": "Mission suspendue.",
+      "cancelled": "Mission retirée.",
+      "created": "Mission confiée : {{mission}}."
+    },
+    "status": {
+      "active": "En cours",
+      "waiting": "En attente",
+      "blocked": "Bloquée",
+      "suspended": "Suspendue",
+      "done": "Terminée",
+      "cancelled": "Retirée"
+    },
+    "mission": {
+      "progress": "Avancement",
+      "goalAuto": "Objectif fixé par le ministère",
+      "budgetTip": "Dépensé (rabais déduits) sur l’enveloppe allouée.",
+      "priority": "Priorité",
+      "edit": "Modifier",
+      "suspend": "Suspendre",
+      "resume": "Reprendre",
+      "cancel": "Retirer",
+      "cancelTitle": "Retirer la mission",
+      "cancelText": "« {{mission}} » est arrêtée. Les chantiers, commandes et opérations déjà lancés continuent.",
+      "editTitle": "Modifier — {{mission}}",
+      "save": "Enregistrer",
+      "pending": "en cours : {{count}}"
+    },
+    "units": {
+      "projects": "Chantiers : {{done}} / {{goal}}",
+      "nodes": "Recherches : {{done}} / {{goal}}",
+      "lots": "Lots : {{done}} / {{goal}}",
+      "ops": "Opérations : {{done}} / {{goal}}",
+      "days": "Jours de budget : {{done}} / {{goal}}",
+      "sites": "Sites protégés : {{done}} / {{goal}}",
+      "repairs": "Réparations : {{done}} / {{goal}}"
+    },
+    "budget": {
+      "mode": "Enveloppe",
+      "amount": "Montant",
+      "share": "Part des revenus",
+      "shareShort": "{{pct}} % des revenus",
+      "amountShort": "Enveloppe fixe",
+      "left": "Disponible : {{v}}",
+      "perDayOf": "≈ {{v}} par jour (revenus {{rev}} / j)",
+      "cap": "Plafond de dépenses",
+      "noCap": "Sans plafond : le crédit s’accumule chaque jour.",
+      "daysOf": "{{count}} j de budget de défense",
+      "daysShort": "{{count}} j"
+    },
+    "priority": {
+      "1": "Basse",
+      "2": "Normale",
+      "3": "Haute"
+    },
+    "journal": {
+      "title": "Journal",
+      "empty": "Rien pour l’instant."
+    },
+    "hint": {
+      "vacantMissions": "Ces missions attendent un titulaire : nommez-en un pour qu’elles avancent.",
+      "vacant": "Nommez un titulaire, puis confiez-lui une mission.",
+      "noMission": "Aucune mission : confiez-en une avec « Nouvelle mission »."
+    },
+    "zone": {
+      "borderWith": "frontière : {{nation}}",
+      "aroundShort": "{{km}} km autour de {{place}}",
+      "all": "Tout le territoire",
+      "border": "Frontière",
+      "around": "Autour de…",
+      "radius": "Rayon"
+    },
+    "commands": {
+      "title": "Les quatre commandements",
+      "scope": "Terre, Air, Marine, Défense antiaérienne",
+      "open": "Ouvrir le QG",
+      "land": "Armée de terre",
+      "air": "Armée de l’air",
+      "sea": "Marine",
+      "air_defense": "Défense antiaérienne",
+      "noChief": "Sans chef",
+      "soon": "Chefs et opérations : en préparation au QG.",
+      "soonBadge": "En préparation",
+      "now": "Aujourd’hui au QG : armées {{armies}}, généraux {{generals}}.",
+      "ops": "Opérations : {{count}}"
+    },
+    "kpi": {
+      "heads": "Titulaires",
+      "missions": "Missions",
+      "spent": "Dépensé",
+      "payroll": "Coût",
+      "floor": "Réserve",
+      "floorTip": "Trésorerie que les missions laissent toujours en caisse (prudence, mission Réserves)."
+    },
+    "wizard": {
+      "path": "nouvelle mission",
+      "step": {
+        "type": "Mission",
+        "params": "Cible et objectif",
+        "budget": "Enveloppe"
+      },
+      "back": "Retour",
+      "next": "Suivant",
+      "confirm": "Confier la mission",
+      "resource": "Ressource",
+      "branch": "Domaine de recherche",
+      "category": "Matériel",
+      "nation": "Pays visé",
+      "pick": "Choisir…",
+      "zone": "Zone",
+      "err": {
+        "type": "Choisissez une mission.",
+        "nation": "Choisissez le pays visé.",
+        "border": "Choisissez le pays voisin.",
+        "around": "Choisissez la province centrale.",
+        "budget": "Enveloppe vide."
+      }
+    },
+    "goal": {
+      "projects": "Objectif : chantiers",
+      "nodes": "Objectif : recherches",
+      "lots": "Objectif : lots de matériel",
+      "ops": "Objectif : opérations",
+      "days": "Objectif : jours de budget en caisse",
+      "sites": "Objectif : sites protégés",
+      "repairs": "Objectif : réparations",
+      "auto": {
+        "research": "Objectif fixé à la validation : toutes les recherches qui ouvrent la génération suivante.",
+        "protect": "Objectif : autant de sites protégés que le renseignement intérieur le permet, puis leur durcissement."
+      }
+    },
+    "estimate": {
+      "title": "Prévisions",
+      "options": "Actions possibles",
+      "first": "Première action",
+      "total": "Objectif complet",
+      "hours": "Durée d’une action",
+      "reserveTarget": "Trésorerie visée",
+      "envelope": "Enveloppe",
+      "open": "part des revenus, sans plafond",
+      "covers": "Actions couvertes par l’enveloppe",
+      "head": "{{name}} : vitesse +{{speed}} %, rabais {{discount}} %, garde {{reserve}} en caisse.",
+      "vacant": "Poste vacant : la mission attendra un titulaire.",
+      "note": "Estimation d’après vos provinces et les prix du jour ; le ministère respecte l’enveloppe et vos ressources.",
+      "noDeposit": "Aucun gisement de cette ressource dans la zone.",
+      "noSite": "Aucun emplacement permis dans la zone.",
+      "noSystem": "Aucun matériel accessible dans cette catégorie.",
+      "unlocked": "La génération suivante est déjà accessible.",
+      "noResearch": "Aucune recherche restante pour cet objectif.",
+      "nothingDamaged": "Aucun bâtiment endommagé pour l’instant.",
+      "few": "Actions possibles dans la zone : {{count}}, moins que l’objectif ; il sera ramené à ce qui est faisable.",
+      "coversN": "≈ {{count}}"
+    },
+    "missions": {
+      "air_bases": {
+        "name": "Bases aériennes",
+        "desc": "Construire de nouvelles bases aériennes et étendre la couverture du territoire."
+      },
+      "military_bases": {
+        "name": "Bases militaires",
+        "desc": "Implanter des bases militaires : production terrestre et rayon de ravitaillement."
+      },
+      "upgrade_bases": {
+        "name": "Modernisation des bases",
+        "desc": "Monter de niveau les bases aériennes, militaires et navales existantes."
+      },
+      "logistics": {
+        "name": "Logistique militaire",
+        "desc": "Dépôts avancés, bases et hôpitaux près des frontières : ravitaillement des troupes."
+      },
+      "fortify": {
+        "name": "Fortification des frontières",
+        "desc": "Fortifications et bunkers dans les provinces frontalières menacées."
+      },
+      "air_defense": {
+        "name": "Défense antiaérienne du territoire",
+        "desc": "Sites de défense antiaérienne et stations radar autour des provinces clés."
+      },
+      "coastal": {
+        "name": "Défense côtière",
+        "desc": "Batteries côtières et bases navales sur le littoral."
+      },
+      "research_next": {
+        "name": "Prochaine génération",
+        "desc": "Rechercher ce qu’il faut pour produire la génération suivante d’un matériel."
+      },
+      "research_branch": {
+        "name": "Recherche par domaine",
+        "desc": "Faire avancer un domaine de recherche, nœud après nœud."
+      },
+      "research_labs": {
+        "name": "Laboratoires de recherche",
+        "desc": "Construire et améliorer centres de recherche et laboratoires secrets."
+      },
+      "produce": {
+        "name": "Commande de matériel",
+        "desc": "Produire une quantité de matériel d’une catégorie (fabrication locale ou importation)."
+      },
+      "stockpile": {
+        "name": "Stocks stratégiques",
+        "desc": "Maintenir un stock d’une catégorie (missiles, munitions…) et le reconstituer."
+      },
+      "arms_industry": {
+        "name": "Industrie d’armement",
+        "desc": "Développer usines d’armement et usines d’électronique."
+      },
+      "counterintel": {
+        "name": "Contre-espionnage",
+        "desc": "Démanteler les réseaux étrangers : balayages et démantèlements."
+      },
+      "protect_sites": {
+        "name": "Protection des sites sensibles",
+        "desc": "Placer sous protection les sites industriels clés et les durcir."
+      },
+      "watch": {
+        "name": "Surveillance d’un pays",
+        "desc": "Suivre ses forces et sa mobilisation : reconnaissance, écoutes, agents."
+      },
+      "map_defenses": {
+        "name": "Cartographie des défenses",
+        "desc": "Repérer ses défenses : reconnaissance militaire et géolocalisation des émetteurs."
+      },
+      "economic_intel": {
+        "name": "Renseignement économique",
+        "desc": "Connaître son industrie et ses ressources : reconnaissance économique, agents."
+      },
+      "resource": {
+        "name": "Production de ressources",
+        "desc": "Puits, mines, fermes ou usines d’électronique là où sont les gisements."
+      },
+      "industry": {
+        "name": "Développement industriel",
+        "desc": "Industrie locale et centrales électriques dans les provinces les plus productives."
+      },
+      "revenue": {
+        "name": "Hausse des revenus",
+        "desc": "Quartiers d’affaires et industrie locale là où les revenus sont les plus élevés."
+      },
+      "war_economy": {
+        "name": "Économie de guerre",
+        "desc": "Usines d’armement, centrales et raffineries pour soutenir l’effort de guerre."
+      },
+      "reserves": {
+        "name": "Réserves de trésorerie",
+        "desc": "Garder une réserve que les autres missions ne peuvent pas entamer."
+      },
+      "repair": {
+        "name": "Reconstruction",
+        "desc": "Réparer les bâtiments endommagés, les plus coûteux d’abord."
+      }
+    },
+    "ministriesShort": {
+      "defense": "Défense",
+      "economy": "Économie"
+    },
+    "suggest": "Missions possibles"
+  }
+}

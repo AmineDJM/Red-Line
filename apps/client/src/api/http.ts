@@ -77,6 +77,9 @@ async function optionalGeoJSON(url: string): Promise<FeatureCollection | null> {
   }
 }
 
+/** Paramètre de version de carte (partie créée sur une carte antérieure). */
+const mapQuery = (map?: number) => (map === undefined ? '' : `?map=${map}`);
+
 export async function loadBasemap(): Promise<BasemapData> {
   // Pas de couche « land » : les terres viennent de l'imagerie et des provinces (data/basemap n'en
   // fournit pas ; la demander produisait un 404 à chaque chargement).
@@ -138,21 +141,33 @@ export class HttpApi implements Api {
   async catalog(): Promise<WeaponSystem[]> {
     return (await request<{ systems: WeaponSystem[] }>('GET', '/api/catalog')).systems;
   }
-  async nations(): Promise<NationDef[]> {
-    return (await request<{ nations: NationDef[] }>('GET', '/api/map/nations')).nations;
+  async nations(map?: number) {
+    const r = await request<{ nations: NationDef[]; mapVersion?: number }>(
+      'GET',
+      `/api/map/nations${mapQuery(map)}`,
+    );
+    return { nations: r.nations, mapVersion: r.mapVersion ?? null };
   }
-  async provinces(): Promise<ProvinceDef[]> {
-    return (await request<{ provinces: ProvinceDef[] }>('GET', '/api/map/provinces')).provinces;
+  async provinces(map?: number): Promise<ProvinceDef[]> {
+    return (
+      await request<{ provinces: ProvinceDef[] }>('GET', `/api/map/provinces${mapQuery(map)}`)
+    ).provinces;
   }
-  async provincesGeoJSON(): Promise<FeatureCollection> {
-    return request<FeatureCollection>('GET', '/api/map/provinces.geojson');
+  async provincesGeoJSON(map?: number): Promise<FeatureCollection> {
+    return request<FeatureCollection>('GET', `/api/map/provinces.geojson${mapQuery(map)}`);
   }
-  async routes(): Promise<RoutesFile | null> {
+  async routes(map?: number): Promise<RoutesFile | null> {
     try {
-      return await request<RoutesFile>('GET', '/api/map/routes');
+      return await request<RoutesFile>('GET', `/api/map/routes${mapQuery(map)}`);
     } catch {
       return null;
     }
+  }
+  async mapNames(map: number, lang: string) {
+    return request<{ provinces: Record<string, string>; cities: Record<string, string> }>(
+      'GET',
+      `/api/map/names/${encodeURIComponent(lang)}${mapQuery(map)}`,
+    );
   }
   async tiles(): Promise<TilesInfo | null> {
     try {

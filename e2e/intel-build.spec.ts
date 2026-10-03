@@ -29,10 +29,21 @@ test('mission de renseignement et révélation des bâtiments', async ({ page },
   await selectProvince(page, madrid);
   const panel = page.getByTestId('province-panel');
   await expect(panel).toContainText('Madrid');
+  // La pile de notifications ne garde que les 4 dernières : on journalise chaque message affiché
+  // (une notification du début de partie peut chasser la confirmation avant qu'on la lise).
+  await page.evaluate(() => {
+    const ui = window.__rl.ui as any;
+    const log: string[] = ((window as any).__toastLog = []);
+    ui.subscribe((st: any) => st.toasts.forEach((x: any) => log.push(String(x.text))));
+  });
   await panel.getByTestId('recon-button').click();
-  await expect(
-    page.locator('.rl-toast').filter({ hasText: /Reconnaissance militaire/ }),
-  ).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        ((window as any).__toastLog as string[]).some((x) => /Reconnaissance militaire/.test(x)),
+      ),
+    )
+    .toBe(true);
   await expect
     .poll(() =>
       page.evaluate(
@@ -123,10 +134,10 @@ test('reconnaissance militaire de tout un pays depuis un clic sur la carte', asy
     }, spain);
   expect(await revealed()).toEqual([]);
 
-  // Toucher sur la carte, loin de la capitale (centre de l'Estrémadure).
+  // Toucher sur la carte, loin de la capitale (centre de la Castille-et-León).
   const target = await page.evaluate(() => {
     const p = Object.values<any>(window.__rl.world.getState().provinces).find(
-      (x) => x.id === 'esp-7',
+      (x) => x.nationId === 'esp' && x.name === 'Castille-et-León',
     );
     return p.centroid as [number, number];
   });
@@ -286,12 +297,18 @@ test('construire et améliorer un bâtiment', async ({ page }, info) => {
   }, alger);
   expect(opt).not.toBeNull();
   const money0 = await page.evaluate(() => window.__rl.game.getState().view.economy.money);
-  // Hassi Messaoud (Ouargla Nord-Est, pétrole majeur) : le puits de pétrole est proposé.
+  // Hassi Messaoud (province fusionnée d'El Oued et Ouargla, pétrole majeur, sans métaux) : le puits
+  // de pétrole est proposé, pas la mine.
   const hassi = await page.evaluate(
     () =>
-      Object.values<any>(window.__rl.world.getState().provinces).find(
-        (p) => p.nationId === 'dza' && p.name === 'Ouargla Nord-Est',
-      ).id,
+      Object.values<any>(window.__rl.world.getState().provinces)
+        .filter(
+          (p) =>
+            p.nationId === 'dza' &&
+            p.resources?.some((r: any) => r.type === 'oil' && r.richness === 3) &&
+            !p.resources?.some((r: any) => r.type === 'metals'),
+        )
+        .sort((a, b) => a.id.localeCompare(b.id, 'en', { numeric: true }))[0].id,
   );
   await selectProvince(page, hassi, 7);
   await panel.getByTestId('build-toggle').click();

@@ -5,6 +5,8 @@ export * from './effectiveness.js';
 export * from './map.js';
 export * from './balance.js';
 export * from './stacks.js';
+export * from './command.js';
+export * from './government.js';
 export * from './view.js';
 export * from './protocol.js';
 export * from './api.js';

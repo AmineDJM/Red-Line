@@ -33,6 +33,8 @@ import frMap from './fr.map.json';
 import frFeatures from './fr.features.json';
 import frLocale from './fr.locale.json';
 import frAudio from './fr.audio.json';
+import frCommand from './fr.command.json';
+import frGov from './fr.gov.json';
 
 type Tree = { [k: string]: string | Tree };
 function merge(a: Tree, b: Tree): Tree {
@@ -43,7 +45,7 @@ function merge(a: Tree, b: Tree): Tree {
   }
   return out;
 }
-const fr = [frMap, frFeatures, frAudio, frLocale].reduce<Tree>(
+const fr = [frMap, frFeatures, frAudio, frLocale, frCommand, frGov].reduce<Tree>(
   (a, b) => merge(a, b as Tree),
   frCore as Tree,
 );
@@ -281,10 +283,21 @@ export function localNationName(id: string, frName: string): string {
   return names.nations?.[id] ?? frName;
 }
 export function localProvinceName(id: string, frName: string): string {
-  return names.provinces?.[id] ?? frName;
+  return (mapNames ?? names).provinces?.[id] ?? frName;
 }
 export function localCityName(provinceId: string, frName: string): string {
-  return names.cities?.[provinceId] ?? frName;
+  return (mapNames ?? names).cities?.[provinceId] ?? frName;
+}
+
+/** Noms des provinces et villes d'une carte archivée (identifiants différents de la carte courante). */
+let mapNames: Pick<PlaceNames, 'provinces' | 'cities'> | null = null;
+
+/**
+ * Carte d'une partie ancienne : ses noms remplacent ceux de la carte courante (embarqués), même
+ * vides (repli sur le français, jamais sur le nom d'une autre province). null : carte courante.
+ */
+export function setMapNames(n: Pick<PlaceNames, 'provinces' | 'cities'> | null): void {
+  mapNames = n;
 }
 /** Étiquette du fond de carte (ville, mer) par son nom français. */
 export function localPlaceName(frName: string): string {

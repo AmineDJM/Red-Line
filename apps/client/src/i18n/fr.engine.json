@@ -338,6 +338,203 @@
         "title": "Capture impossible",
         "noCapturer": "{{system}} ne peut pas capturer {{place}} : il faut de l'infanterie, des blindés ou de l'artillerie.",
         "noWar": "Pas de guerre avec le propriétaire de {{place}} : pas de capture."
+      },
+      "cmd_generalResigned": {
+        "title": "Démission",
+        "text": "{{general}} démissionne : sa solde n’est plus payée."
+      },
+      "cmd_generalUnpaid": {
+        "title": "Solde impayée",
+        "text": "{{general}} n’a pas été payé ({{days}}/{{max}} jours avant démission)."
+      },
+      "cmd_generalKilled": {
+        "title": "Général tué",
+        "text": "{{general}} a été tué lors d’une frappe sur le QG de {{army}}."
+      },
+      "cmd_generalWounded": {
+        "title": "Général blessé",
+        "text": "{{general}} est blessé : {{army}} attend son retour."
+      },
+      "cmd_missionSuccess": {
+        "title": "Mission accomplie",
+        "text": "{{army}} : mission accomplie."
+      },
+      "cmd_missionFailed": {
+        "title": "Mission échouée",
+        "text": "{{army}} : la mission a échoué."
+      },
+      "cmd_askWar": {
+        "title": "Autorisation demandée",
+        "text": "{{army}} : {{general}} demande l’autorisation d’entrer en guerre contre {{nation}}."
+      },
+      "cmd_askStrike": {
+        "title": "Autorisation demandée",
+        "text": "{{army}} : {{general}} demande l’autorisation de frapper l’arrière de {{nation}}."
+      },
+      "cmd_askReinforce": {
+        "title": "Renforts demandés",
+        "text": "{{army}} : {{general}} demande {{count}} piles en renfort."
+      },
+      "cmd_opAskWar": {
+        "title": "Autorisation demandée",
+        "text": "Opération {{op}} : l’état-major demande l’autorisation d’entrer en guerre contre {{nation}}."
+      },
+      "cmd_opSuccess": {
+        "title": "Opération réussie",
+        "text": "Opération {{op}} : objectif atteint."
+      },
+      "cmd_opFailed": {
+        "title": "Opération échouée",
+        "text": "Opération {{op}} : échec."
+      },
+      "cmd_opAchieved": {
+        "title": "Objectif atteint",
+        "text": "Opération {{op}} : objectif atteint, il est maintenu."
+      },
+      "cmd_opHeavyLosses": {
+        "title": "Pertes lourdes",
+        "text": "Opération {{op}} : {{pct}} % des forces perdues en 24 h."
+      },
+      "cmd_opStuck": {
+        "title": "Opération enlisée",
+        "text": "Opération {{op}} : aucun progrès depuis {{hours}} h."
+      },
+      "gov_resigned": {
+        "title": "Démission",
+        "text": "{{name}} démissionne : le poste n’est plus payé."
+      },
+      "gov_missionDone": {
+        "title": "Mission accomplie",
+        "text": "{{mission}} : objectif atteint."
+      }
+    },
+    "cmd": {
+      "zone": "la zone désignée",
+      "mission": {
+        "conquer": "Conquérir",
+        "defend": "Défendre",
+        "hold_front": "Tenir la ligne de front",
+        "air_superiority": "Supériorité aérienne",
+        "air_defense": "Défense antiaérienne",
+        "deep_strike": "Frappes en profondeur",
+        "sea_control": "Contrôle maritime et blocus",
+        "landing": "Débarquement",
+        "reserve": "Réserve"
+      },
+      "reason": {
+        "losses": "pertes trop lourdes",
+        "stuck": "aucune progression",
+        "tooWeak": "forces insuffisantes",
+        "zoneLost": "zone perdue",
+        "deadline": "échéance dépassée"
+      },
+      "building": {
+        "air_defense_site": "le site antiaérien",
+        "radar_station": "la station radar",
+        "air_base": "la base aérienne",
+        "military_base": "la base militaire",
+        "arms_factory": "l'usine d'armement",
+        "refinery": "la raffinerie",
+        "power_plant": "la centrale électrique",
+        "naval_base": "la base navale",
+        "electronics_plant": "l'usine d'électronique",
+        "research_center": "le centre de recherche"
+      },
+      "j": {
+        "created_one": "Armée formée : {{count}} pile.",
+        "created_other": "Armée formée : {{count}} piles.",
+        "command": "{{general}} prend le commandement.",
+        "mission": "Mission reçue : {{mission}} — {{target}}.",
+        "missionCleared": "Mission levée : les piles attendent vos ordres.",
+        "suspended": "Mission suspendue sur ordre.",
+        "resumed": "Mission reprise.",
+        "warAuthorized": "Autorisation reçue : guerre contre {{nation}}.",
+        "warRefused": "Guerre contre {{nation}} refusée : mission suspendue.",
+        "strikeAuthorized": "Frappes stratégiques autorisées.",
+        "strikeRefused": "Frappes stratégiques refusées : mission suspendue.",
+        "reinforceRefused": "Renforts refusés : {{general}} fera avec ses forces.",
+        "reinforced_one": "Renfort : {{count}} pile rejoint l’armée.",
+        "reinforced_other": "Renforts : {{count}} piles rejoignent l’armée.",
+        "detached_one": "{{count}} pile détachée de l’armée.",
+        "detached_other": "{{count}} piles détachées de l’armée.",
+        "lost_one": "Perte : {{count}} {{system}} détruit.",
+        "lost_other": "Pertes : {{count}} {{system}} détruits.",
+        "captured": "{{province}} est prise.",
+        "declaredWar": "Frontière franchie : nous sommes en guerre contre {{nation}}.",
+        "warBlocked": "Impossible d’entrer en guerre contre {{nation}} : mission suspendue.",
+        "askWar": "Demande d’autorisation : franchir la frontière de {{nation}}.",
+        "askStrike": "Demande d’autorisation : frapper l’arrière de {{nation}}.",
+        "retreat": "{{system}} trop éprouvé : repli sur {{province}}.",
+        "noReinforcements": "Aucune pile libre à proximité pour nous renforcer.",
+        "askReinforce_one": "Demande de renforts : {{count}} pile.",
+        "askReinforce_other": "Demande de renforts : {{count}} piles.",
+        "tooWeak": "Forces insuffisantes pour attaquer ({{pct}} % du nécessaire) : renforts demandés.",
+        "offensive": "Offensive lancée sur {{province}}.",
+        "landing": "Débarquement lancé sur {{province}} : rassemblement au port.",
+        "counter": "Contre-attaque sur {{province}}.",
+        "counterFront": "Contre-attaque sur le front.",
+        "blockade": "Blocus du port de {{province}}.",
+        "noIntel": "Aucune installation de {{nation}} révélée : il faut du renseignement (reconnaissance).",
+        "strike": "Frappe sur {{building}} de {{province}}.",
+        "success": "Mission accomplie.",
+        "failed": "Mission échouée : {{reason}}.",
+        "daily": "Rapport du jour : effectifs {{strength}} %, {{captures}} prise(s), {{losses}} élément(s) perdu(s).",
+        "resigned": "{{general}} démissionne : solde impayée.",
+        "dismissed": "{{general}} est limogé.",
+        "recovered": "{{general}} reprend son commandement après sa convalescence.",
+        "wounded": "{{general}} est blessé au QG : {{days}} jours de convalescence.",
+        "killed": "{{general}} est tué au QG.",
+        "joinedOp": "Engagée dans l’opération {{op}} : {{role}}.",
+        "opClosed": "Opération {{op}} close : l’armée attend vos ordres."
+      },
+      "goal": {
+        "attrition": "Affaiblir les forces",
+        "air_control": "Contrôle aérien total",
+        "conquest": "Conquête totale",
+        "decapitation": "Décapitation",
+        "strategic": "Frappes stratégiques",
+        "sead": "Neutraliser la défense antiaérienne",
+        "blockade": "Blocus naval",
+        "defend_border": "Tenir la frontière",
+        "occupy": "Occuper une région"
+      },
+      "role": {
+        "land": "armée de terre",
+        "air": "armée de l’air",
+        "sea": "marine",
+        "ad": "défense antiaérienne"
+      },
+      "op": {
+        "created_one": "Opération lancée : {{goal}}, {{count}} général.",
+        "created_other": "Opération lancée : {{goal}}, {{count}} généraux.",
+        "declaredWar": "Guerre déclarée à {{nation}}.",
+        "warBlocked": "Impossible d’entrer en guerre contre {{nation}} : opération suspendue.",
+        "askWar": "Demande d’autorisation : entrer en guerre contre {{nation}}.",
+        "warAuthorized": "Autorisation reçue : guerre contre {{nation}}.",
+        "warRefused": "Guerre contre {{nation}} refusée : opération suspendue.",
+        "strikes_one": "{{army}} : {{count}} frappe — défenses {{sead}}, aviation {{air}}, forces {{ground}}, installations {{bld}}.",
+        "strikes_other": "{{army}} : {{count}} frappes — défenses {{sead}}, aviation {{air}}, forces {{ground}}, installations {{bld}}.",
+        "offensive": "{{army}} : offensive sur {{province}}.",
+        "jointAssault": "Assaut conjoint des généraux sur {{province}}, mené par {{army}}.",
+        "tooWeak": "{{army}} : forces insuffisantes devant {{province}} — appui aérien et renforts demandés.",
+        "sectorDone": "{{army}} : secteur pris, il appuie le reste du théâtre.",
+        "captured": "{{province}} est prise.",
+        "lostProvince": "{{province}} est perdue.",
+        "recon": "Aucune cible connue : reconnaissance lancée sur {{nation}}.",
+        "blockade": "{{army}} : blocus du port de {{province}}.",
+        "achieved": "Objectif atteint : il est maintenu.",
+        "heavyLosses": "Pertes lourdes : {{pct}} % des forces engagées perdues en 24 h.",
+        "stuck": "Opération enlisée : aucun progrès depuis {{hours}} h.",
+        "success": "Objectif atteint : opération réussie.",
+        "failed": "Opération échouée : {{reason}}.",
+        "goalChanged": "Nouvel objectif : {{goal}}.",
+        "released": "{{army}} quitte l’opération.",
+        "reinforced_one": "Renfort : {{count}} général rejoint l’opération.",
+        "reinforced_other": "Renforts : {{count}} généraux rejoignent l’opération.",
+        "role": "{{army}} : nouveau rôle — {{role}}.",
+        "reassigned": "{{army}} est réaffectée à une autre opération.",
+        "suspended": "Opération suspendue sur ordre.",
+        "resumed": "Opération reprise."
       }
     },
     "spyNews": {
@@ -345,6 +542,88 @@
       "executedB": "{{host}} annonce l'exécution d'un agent de {{owner}} condamné pour espionnage. Réprobation internationale.",
       "swapH": "Échange d'agents entre {{a}} et {{b}}",
       "swapB": "{{a}} et {{b}} ont procédé à un échange de prisonniers : {{n}} agent(s) libéré(s)."
+    },
+    "gov": {
+      "m": {
+        "air_bases": "Bases aériennes",
+        "military_bases": "Bases militaires",
+        "upgrade_bases": "Modernisation des bases",
+        "logistics": "Logistique militaire",
+        "fortify": "Fortification des frontières",
+        "air_defense": "Défense antiaérienne du territoire",
+        "coastal": "Défense côtière",
+        "research_next": "Prochaine génération",
+        "research_branch": "Recherche par domaine",
+        "research_labs": "Laboratoires de recherche",
+        "produce": "Commande de matériel",
+        "stockpile": "Stocks stratégiques",
+        "arms_industry": "Industrie d’armement",
+        "counterintel": "Contre-espionnage",
+        "protect_sites": "Protection des sites sensibles",
+        "watch": "Surveillance d’un pays",
+        "map_defenses": "Cartographie des défenses",
+        "economic_intel": "Renseignement économique",
+        "resource": "Production de ressources",
+        "industry": "Développement industriel",
+        "revenue": "Hausse des revenus",
+        "war_economy": "Économie de guerre",
+        "reserves": "Réserves de trésorerie",
+        "repair": "Reconstruction"
+      },
+      "focus": {
+        "counterintel": "contre-espionnage",
+        "protection": "protection des sites"
+      },
+      "j": {
+        "appointed": "{{name}} prend ses fonctions.",
+        "replaced": "{{name}} quitte ses fonctions (indemnité versée).",
+        "dismissed": "{{name}} est remercié (indemnité versée).",
+        "resigned": "{{name}} démissionne : le poste n’est plus payé.",
+        "unpaid": "{{name}} n’a pas été payé ({{days}} j consécutifs).",
+        "missionNew": "Mission reçue : {{mission}}.",
+        "missionEdit": "Mission modifiée : {{mission}}.",
+        "missionSuspended": "Mission suspendue : {{mission}}.",
+        "missionResumed": "Mission reprise : {{mission}}.",
+        "missionCancelled": "Mission retirée : {{mission}} (ce qui est lancé continue).",
+        "missionDone": "Mission accomplie : {{mission}}.",
+        "built": "Chantier lancé : {{building}} niveau {{level}} à {{place}} — {{cost}}.",
+        "jobDone": "Chantier terminé : {{building}} niveau {{level}} à {{place}}.",
+        "repaired": "Réparation lancée : {{building}} à {{place}} — {{cost}}.",
+        "research": "Recherche lancée : {{node}} — {{cost}}.",
+        "researched": "Recherche acquise : {{node}}.",
+        "produced": "Commande passée : {{count}} × {{system}} à {{place}} — {{cost}}.",
+        "imported": "Importation : {{count}} × {{system}}, livrés à {{place}} — {{cost}}.",
+        "intelOp": "Opération lancée : {{op}} — {{cost}}.",
+        "intelOpAt": "Opération lancée : {{op}}, cible {{nation}} — {{cost}}.",
+        "opSuccess": "Opération réussie : {{op}}.",
+        "opFailed": "Opération sans résultat : {{op}}.",
+        "focus": "Priorité du renseignement intérieur : {{focus}}.",
+        "protected": "Site placé sous protection : {{place}}.",
+        "blocked": "Bloquée — {{why}}"
+      },
+      "why": {
+        "noHead": "Poste vacant : nommez un titulaire.",
+        "envelope": "Enveloppe épuisée : {{left}} disponibles, {{cost}} nécessaires.",
+        "funds": "Fonds insuffisants : {{cost}} nécessaires.",
+        "reserve": "Réserve de prudence : la trésorerie doit rester au-dessus de {{floor}} ({{cost}} nécessaires).",
+        "resources": "Ressources insuffisantes.",
+        "noSite": "Aucun emplacement permis dans la zone (côte, gisement ou niveau maximal).",
+        "noDeposit": "Aucun gisement de {{resource}} sur le territoire.",
+        "research": "Recherche requise.",
+        "capacity": "Capacité atteinte (file d’attente ou service).",
+        "locked": "Bloqué par un embargo ou un blocus.",
+        "noTarget": "Cible invalide ou disparue.",
+        "noSystem": "Aucun matériel « {{category}} » accessible (recherche, licence ou importation).",
+        "noResearch": "Aucune recherche disponible pour cet objectif.",
+        "nothingDamaged": "Aucun bâtiment endommagé.",
+        "saving": "Réserve en constitution : {{pct}} %.",
+        "reserveHeld": "Réserve atteinte : les autres missions la respectent.",
+        "stocked": "Stock atteint : réapprovisionnement dès qu’il baisse.",
+        "inProgress": "Actions en cours.",
+        "refused": "Ordre refusé.",
+        "unlocked": "Génération suivante déjà accessible.",
+        "allProtected": "Sites protégés au maximum."
+      }
     }
   }
 }

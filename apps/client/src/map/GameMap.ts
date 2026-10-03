@@ -40,6 +40,8 @@ import {
 import { emitMapEvent } from './events.js';
 import { FxRenderer, FxSystem, queueBlast, queueIntercept, queueLaunch, queueShot } from './fx.js';
 import { useMapSel } from './mapSel.js';
+import { CommandLayer } from './commandLayer.js';
+import { useCommandUi } from '../store/command.js';
 import { useMapPrefs } from './prefs.js';
 import { useStackMenu } from './stackMenu.js';
 import { CityIndex } from './unitCat.js';
@@ -265,6 +267,8 @@ export class GameMap {
   private cityText = false;
   /** Couche « routes » (réseau des unités terrestres). */
   private roadLayer: RoadLayer | null = null;
+  /** Armées du centre de commandement (étiquettes, zones, flèches d'offensive). */
+  private commandLayer: CommandLayer | null = null;
   /** Diagnostic : nombre de résolutions demandées par image. */
   readonly resolveCount = new Map<string, number>();
   private perf = { ticks: 0, total: 0, max: 0, group: 0, groups: 0, pions: 0, skipped: 0 };
@@ -522,6 +526,8 @@ export class GameMap {
     if (this.opts.fog) this.startFog();
     this.roadLayer = new RoadLayer(this.map, 'radar-foreign');
     this.roadLayer.attach(useWorld.getState().roads);
+    this.commandLayer = new CommandLayer(this.map, 'paths-casing');
+    this.unsubs.push(() => this.commandLayer?.destroy());
     this.unsubs.push(
       useWorld.subscribe((s, prev) => {
         if (s.roads === prev.roads) return;
@@ -719,9 +725,20 @@ export class GameMap {
       const w = useWorld.getState();
       const provs = Object.values(view.provinces);
       this.detectReveals(view.provinces, me);
-      this.syncs.buildings.push(
-        buildingFeatures(provs, { me, nations: view.nations, defs: w.provinces, t: tNow }).features,
-      );
+      // Bâtiments en cours de révélation : propriété `rv` (et non un feature-state, qui, appliqué au
+      // rendu sur une tuile dont les données viennent d'être remplacées, fait lever à MapLibre
+      // « feature index out of bounds »).
+      const revealing = new Set(this.revealIds);
+      const bld = buildingFeatures(provs, {
+        me,
+        nations: view.nations,
+        defs: w.provinces,
+        t: tNow,
+      }).features;
+      if (revealing.size)
+        for (const f of bld)
+          if (revealing.has(String(f.properties?.id))) f.properties = { ...f.properties, rv: 1 };
+      this.syncs.buildings.push(bld);
       this.set('prov-markers', provinceMarkerFeatures(provs, w.provinces));
       this.refreshIntelLayer();
     }
@@ -751,7 +768,7 @@ export class GameMap {
 
   /**
    * Bâtiments nouvellement révélés par le renseignement (province étrangère) : fondu et anneau
-   * animés pendant ~1,6 s (feature-state `reveal`).
+   * animés pendant ~1,6 s (propriété `rv` des entités de la source `buildings`).
    */
   private detectReveals(provinces: Record<string, ProvinceView>, me: NationId | null) {
     const fresh: string[] = [];
@@ -764,12 +781,8 @@ export class GameMap {
       this.knownBuildings.set(p.id, now);
     }
     if (first || !fresh.length) return;
-    this.revealIds.forEach((id) =>
-      this.map.setFeatureState({ source: 'buildings', id }, { reveal: false }),
-    );
     this.revealIds = fresh;
     this.revealStart = performance.now();
-    fresh.forEach((id) => this.map.setFeatureState({ source: 'buildings', id }, { reveal: true }));
   }
 
   private applyProvinces(provinces: Record<string, ProvinceView>, me: NationId | null) {
@@ -1726,9 +1739,6 @@ export class GameMap {
     if (reveal) {
       const f = (performance.now() - this.revealStart) / 1600;
       if (f >= 1) {
-        this.revealIds.forEach((id) =>
-          this.map.setFeatureState({ source: 'buildings', id }, { reveal: false }),
-        );
         this.revealIds = [];
         set('bld', 'icon-opacity', revealOpacity(1));
         set('bld-reveal', 'icon-opacity', revealRingOpacity(0));
@@ -2330,6 +2340,30 @@ export class GameMap {
     }
     if (this.opts.placing?.()) {
       this.opts.onPlace?.(at);
+      return;
+    }
+    // Centre de commandement : pays (et province) visés par une opération.
+    if (useCommandUi.getState().picking === 'nation') {
+      const pf = this.queryRendered(e.point, { layers: ['prov-fill'] })[0];
+      const pid = pf ? String(pf.properties?.id ?? pf.id ?? '') : '';
+      const owner = pid
+        ? (useGame.getState().view?.provinces[pid]?.owner ??
+          useWorld.getState().provinces[pid]?.nationId ??
+          null)
+        : null;
+      const me = useGame.getState().me;
+      useCommandUi
+        .getState()
+        .pickNation({ provinceId: pid || null, nationId: owner && owner !== me ? owner : null });
+      useUi.getState().openWindow('command');
+      return;
+    }
+    // Centre de commandement : désignation de la cible d'une mission (province ou point de zone).
+    if (useCommandUi.getState().picking === 'target') {
+      const pf = this.queryRendered(e.point, { layers: ['prov-fill'] })[0];
+      const pid = pf ? String(pf.properties?.id ?? pf.id ?? '') : '';
+      useCommandUi.getState().pickTarget({ provinceId: pid || null, at });
+      useUi.getState().openWindow('command');
       return;
     }
     const ui = useUi.getState();

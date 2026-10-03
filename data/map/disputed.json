@@ -2,7 +2,7 @@
   {
     "id": "crimee",
     "name": "Crimée",
-    "provinceIds": ["rus-128", "rus-134"],
+    "provinceIds": ["rus-57"],
     "claimants": ["ukr", "rus"],
     "tension": 70,
     "revoltRate": 0.03
@@ -10,7 +10,7 @@
   {
     "id": "taiwan",
     "name": "Taïwan",
-    "provinceIds": ["twn-1", "twn-2", "twn-3", "twn-4", "twn-5", "twn-6", "twn-7", "twn-8"],
+    "provinceIds": ["twn-1", "twn-2", "twn-3", "twn-4"],
     "claimants": ["twn", "chn"],
     "tension": 60,
     "revoltRate": 0.01
@@ -18,7 +18,7 @@
   {
     "id": "cachemire",
     "name": "Cachemire",
-    "provinceIds": ["ind-5", "ind-11", "pak-5", "pak-7"],
+    "provinceIds": ["ind-2", "pak-3"],
     "claimants": ["ind", "pak"],
     "tension": 75,
     "revoltRate": 0.03

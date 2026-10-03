@@ -25,6 +25,7 @@ import { useShortcuts } from './shortcuts.js';
 import { TopBar } from './TopBar.js';
 import { Tutorial } from './Tutorial.js';
 import { TargetingBanner } from './UnitOrders.js';
+import { CommandPickBanner } from './CommandPick.js';
 import { useIsMobile } from './useMedia.js';
 import { WeaponSheet } from './WeaponSheet.js';
 import { WindowHost } from './WindowHost.js';
@@ -88,6 +89,7 @@ export function GameShell({
       ) : null}
       {!sheetOpen ? <OrderBar /> : null}
       {!sheetOpen ? <TargetingBanner /> : null}
+      {!sheetOpen ? <CommandPickBanner /> : null}
       {!sheetOpen ? <StackMenu /> : null}
       <WindowHost />
       <WeaponSheet />

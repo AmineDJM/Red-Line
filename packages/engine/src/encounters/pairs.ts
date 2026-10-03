@@ -14,6 +14,7 @@ import type { EngineState, PairState, Unit } from '../state/types.js';
 import { CAPTURE_RADIUS_KM, wi } from '../state/world.js';
 import { adBand } from '../modules/mil/ad-profile.js';
 import { changeSight, detectionLevel, detectionRadii } from './sight.js';
+import { fullRangeKm } from '../state/stack.js';
 import {
   inRange,
   provSightRangeKm,
@@ -273,6 +274,12 @@ function evalUnitPair(state: EngineState, key: string): void {
   const eb = adBand(state, B, A);
   if (ea) radii.push(ea.max, ea.min);
   if (eb) radii.push(eb.max, eb.min);
+  // Pile mixte : portée de TOUS ses matériels armés (arrêt de poursuite, combat.ts) — sans ce seuil,
+  // la pile qui poursuit dépassait ce point et allait jusqu'au contact, distance figée au dernier seuil.
+  const fa = A.mix ? fullRangeKm(state, A) : 0;
+  const fb = B.mix ? fullRangeKm(state, B) : 0;
+  if (fa > 0) radii.push(fa);
+  if (fb > 0) radii.push(fb);
   const pa = unitPieces(state, A);
   const pb = unitPieces(state, B);
   // Paire candidate de l'index spatial mais hors de portée pour toujours : rien à faire (cas le plus
@@ -311,7 +318,9 @@ function evalUnitPair(state: EngineState, key: string): void {
     inRange(wa, oldD) !== inRange(wa, d) ||
     inRange(wb, oldD) !== inRange(wb, d) ||
     (ea && inRange(ea, oldD) !== inRange(ea, d)) ||
-    (eb && inRange(eb, oldD) !== inRange(eb, d))
+    (eb && inRange(eb, oldD) !== inRange(eb, d)) ||
+    (fa > 0 && oldD <= fa !== d <= fa) ||
+    (fb > 0 && oldD <= fb !== d <= fb)
   ) {
     state.rt.dirtyCombat.add(ia);
     state.rt.dirtyCombat.add(ib);

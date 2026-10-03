@@ -155,16 +155,40 @@ function GeneralCard({ g }: { g: GeneralView }) {
   );
 }
 
+/** Renvoi vers le centre de commandement (armées, missions, généraux recrutés). */
+function CommandCenterLink() {
+  const { t } = useTranslation();
+  const openWindow = useUi((s) => s.openWindow);
+  return (
+    <div className="cmd-link-banner">
+      <Icon name="star" size={16} />
+      <span>
+        <b>{t('command.armiesLink.title')}</b>
+        {t('command.armiesLink.text')}
+      </span>
+      <Button size="sm" variant="primary" onClick={() => openWindow('command')}>
+        {t('command.armiesLink.open')}
+      </Button>
+    </div>
+  );
+}
+
 export function Generals() {
   const { t } = useTranslation();
   const generals = useGame((s) => s.view?.generals ?? []);
-  if (!generals.length) return <EmptyState icon="user" title={t('army.noGenerals')} />;
   return (
-    <div className="generals">
-      {generals.map((g) => (
-        <GeneralCard key={g.id} g={g} />
-      ))}
-    </div>
+    <>
+      <CommandCenterLink />
+      {generals.length ? (
+        <div className="generals">
+          {generals.map((g) => (
+            <GeneralCard key={g.id} g={g} />
+          ))}
+        </div>
+      ) : (
+        <EmptyState icon="user" title={t('army.noGenerals')} />
+      )}
+    </>
   );
 }
 

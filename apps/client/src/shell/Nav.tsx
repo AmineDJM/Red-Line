@@ -3,6 +3,7 @@ import { Icon, IconButton, Kbd } from '@redline/ui';
 import { useGame } from '../store/game.js';
 import { useUi, type WindowId } from '../store/ui.js';
 import { SECTIONS, visibleSections } from './sections.js';
+import { blockedCount } from '../lib/government.js';
 
 /** Compteurs d'attention par domaine (nouveaux rapports, votes, messages…). */
 function useBadges(): Partial<Record<WindowId, number>> {
@@ -26,6 +27,8 @@ function useBadges(): Partial<Record<WindowId, number>> {
     diplomacy: pendingPeace + (view?.diplomacy?.invitations.length ?? 0),
     battles: ongoing,
     chat: unreadChat,
+    command: view?.command?.armies.filter((a) => !!a.request).length ?? 0,
+    government: blockedCount(view?.government),
   };
 }
 

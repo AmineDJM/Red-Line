@@ -64,7 +64,9 @@
       "battles": "Batalhas",
       "chat": "Mensagens",
       "shop": "Loja",
-      "settings": "Config."
+      "settings": "Config.",
+      "command": "QG",
+      "government": "Gov."
     },
     "path": {
       "armies": "Meus exércitos",
@@ -79,8 +81,12 @@
       "battles": "Batalhas",
       "chat": "Mensagens",
       "shop": "Loja",
-      "settings": "Configurações"
-    }
+      "settings": "Configurações",
+      "command": "QG",
+      "government": "Governo"
+    },
+    "command": "Centro de comando",
+    "government": "Governo"
   },
   "home": {
     "title": "Red Line",
@@ -2302,7 +2308,9 @@
       "marketSales": "Vendas no mercado",
       "transfersIn": "Cessões recebidas",
       "transfersOut": "Cessões concedidas",
-      "other": "Outros (inteligência, aliança…)"
+      "other": "Outros (inteligência, aliança…)",
+      "command": "Generais e estados-maiores",
+      "government": "Ministros e diretorias"
     },
     "constructionHint": "Melhore um edifício ou construa um novo pela aba Edifícios ou pelo painel de uma província.",
     "provincesTitle": "Províncias",
@@ -3569,6 +3577,669 @@
     "machine": "Traduções geradas automaticamente, revisadas nos termos militares.",
     "fallback": "Alguns textos continuam em francês."
   },
+  "command": {
+    "unavailable": "O centro de comando não está disponível nesta partida.",
+    "selection": {
+      "army": "Exército",
+      "open": "Abrir o exército no centro de comando"
+    },
+    "armiesLink": {
+      "title": "Centro de comando",
+      "text": " — forme exércitos, dê-lhes uma missão e contrate generais que os comandem por você.",
+      "open": "Abrir"
+    },
+    "tabs": {
+      "ops": "Operações",
+      "armies": "Exércitos",
+      "generals": "Generais"
+    },
+    "kpi": {
+      "ops": "Operações",
+      "armies": "Exércitos",
+      "active": "Em missão",
+      "generals": "Generais",
+      "payroll": "Soldos / dia",
+      "requests": "Pedidos"
+    },
+    "newArmy": "Novo exército",
+    "full": "Limite de {{max}} exércitos atingido: dissolva um para criar outro.",
+    "emptyTitle": "Nenhum exército",
+    "emptyText": "Forme um exército com suas pilhas, dê-lhe uma missão e escolha um general: ele o comanda por você.",
+    "onboard": {
+      "title": "Como funciona",
+      "compose": "Reúna pilhas terrestres, aéreas ou navais num exército com nome.",
+      "mission": "Atribua-lhe uma missão: alvo designado no mapa, agressividade, regras de empenhamento, limiar de retirada.",
+      "general": "Escolha o general que o comanda: as suas competências guiam as suas decisões e ele é pago todos os dias."
+    },
+    "pickTitle": "Escolha um exército",
+    "pickText": "A missão, o general, a composição e o diário do general aparecem aqui.",
+    "back": "Exércitos",
+    "noMission": "Sem missão",
+    "noGeneral": "Sem general",
+    "zoneShort": "zona de {{km}} km",
+    "piles_one": "{{count}} pilha",
+    "piles_many": "{{count}} pilhas",
+    "piles_other": "{{count}} pilhas",
+    "status": {
+      "idle": "Sem missão",
+      "passive": "Passivo",
+      "preparing": "Preparativos",
+      "active": "Em andamento",
+      "awaiting": "Aguarda suas ordens",
+      "success": "Cumprida",
+      "failed": "Fracassada",
+      "suspended": "Suspensa"
+    },
+    "pills": {
+      "health": "Estado {{pct}} %",
+      "strength": "Efetivos {{pct}} % do início",
+      "supply": {
+        "supplied": "Logística: abastecido",
+        "limited": "Logística: abastecimento limitado",
+        "cut": "Logística: cortada"
+      }
+    },
+    "request": {
+      "badge": "Pedido",
+      "refuse": "Recusar",
+      "accepted": "Resposta enviada ao general.",
+      "refused": "Pedido recusado.",
+      "declare_war": {
+        "title": "Autorização para entrar em guerra",
+        "text": "O general pede autorização para cruzar a fronteira: isso significa guerra contra {{nation}}.",
+        "accept": "Autorizar a guerra"
+      },
+      "strategic_strike": {
+        "title": "Autorização de ataques estratégicos",
+        "text": "O general pede autorização para atacar as instalações da retaguarda de {{nation}}.",
+        "accept": "Autorizar os ataques"
+      },
+      "reinforce": {
+        "title": "Pedido de reforços",
+        "text_one": "Efetivos em queda: o general pede {{count}} pilha livre próxima.",
+        "text_many": "Efetivos em queda: o general pede {{count}} pilhas livres próximas.",
+        "text_other": "Efetivos em queda: o general pede {{count}} pilhas livres próximas.",
+        "accept": "Enviar reforços"
+      }
+    },
+    "detail": {
+      "mission": "Missão",
+      "since": "desde {{day}} {{time}}",
+      "noMissionText": "Sem missão: o exército aguarda suas ordens, suas pilhas continuam sob seu comando direto.",
+      "objective": "Objetivo",
+      "retreat": "recuo a {{pct}} %",
+      "general": "General",
+      "noGeneralText": "Sem general, o exército fica passivo: nenhuma missão é executada.",
+      "composition": "Composição",
+      "piles": "Pilhas",
+      "doneEditing": "Concluído",
+      "empty": "Nenhuma pilha.",
+      "manual": "Manual",
+      "manualHelp": "Pilha sob sua ordem direta: o general a retomará ao fim da ordem.",
+      "manualRule": "Ordem direta a uma pilha: ela prevalece até o fim; depois o general retoma a pilha.",
+      "journal": "Diário do general",
+      "journalEmpty": "O general ainda não relatou nada."
+    },
+    "objective": {
+      "conquer": "Províncias tomadas",
+      "landing": "Cabeça de praia",
+      "defend": "Cidades mantidas",
+      "hold_front": "Cidades da frente mantidas",
+      "air_defense": "Cidades cobertas",
+      "reserve": "Cidades mantidas",
+      "air_superiority": "Céu livre",
+      "sea_control": "Mar livre",
+      "deep_strike": "Instalações destruídas"
+    },
+    "est": {
+      "ratio": "Relação de forças",
+      "eta": "Duração estimada",
+      "chance": "Chances",
+      "source": {
+        "seen": "forças inimigas observadas",
+        "estimate": "estimativa da inteligência",
+        "none": "nenhuma força inimiga conhecida"
+      }
+    },
+    "actions": {
+      "showMap": "Ver no mapa",
+      "rename": "Renomear",
+      "reinforce": "Reforçar",
+      "giveMission": "Dar uma missão",
+      "changeMission": "Mudar de missão",
+      "suspend": "Suspender",
+      "resume": "Retomar",
+      "dissolve": "Dissolver",
+      "dissolveTitle": "Dissolver o exército",
+      "dissolveText": "Dissolver {{name}}? As pilhas ficam onde estão, sob seu comando direto; o general vai para a reserva (continua sendo pago).",
+      "pickGeneral": "Escolher um general",
+      "changeGeneral": "Mudar",
+      "removeN_one": "Retirar {{count}} pilha",
+      "removeN_many": "Retirar {{count}} pilhas",
+      "removeN_other": "Retirar {{count}} pilhas"
+    },
+    "reinforce": {
+      "label": "Reforços automáticos",
+      "off": "Nunca",
+      "ask": "Sob pedido",
+      "auto": "Automático",
+      "offHelp": "O general nunca pede reforços.",
+      "askHelp": "O general pede reforços quando os efetivos caem; você aprova.",
+      "autoHelp": "O general integra ele mesmo pilhas livres próximas quando os efetivos caem."
+    },
+    "domain": {
+      "all": "Tudo",
+      "land": "Terra",
+      "air": "Ar",
+      "sea": "Mar"
+    },
+    "fit": {
+      "partial": "composição incompleta",
+      "missing": "domínio ausente"
+    },
+    "aggr": {
+      "label": "Agressividade",
+      "cautious": "Prudente",
+      "balanced": "Equilibrada",
+      "bold": "Audaciosa",
+      "cautiousHelp": "Só ataca com clara superioridade, recua cedo, mantém caças na reserva.",
+      "balancedHelp": "Relação de forças razoável, recuo com metade das perdas.",
+      "boldHelp": "Ataca mais cedo e mais objetivos ao mesmo tempo, recua tarde, todos os caças no ar."
+    },
+    "roe": {
+      "label": "Regras de engajamento",
+      "strict": {
+        "short": "Estritas",
+        "help": "Estritas: nenhuma guerra nem ataque estratégico sem sua autorização; perseguição limitada à zona."
+      },
+      "standard": {
+        "short": "Padrão",
+        "help": "Padrão: o general pede sua autorização antes de abrir uma guerra ou atacar a retaguarda inimiga."
+      },
+      "free": {
+        "short": "Livres",
+        "help": "Livres: o general decide sozinho, inclusive a guerra contra o alvo da missão."
+      }
+    },
+    "retreat": {
+      "label": "Limite de recuo de uma pilha",
+      "never": "nunca"
+    },
+    "radius": "Raio",
+    "scope": {
+      "label": "Alcance",
+      "province": "Esta província",
+      "region": "A região",
+      "nation": "O país inteiro"
+    },
+    "target": {
+      "province": "Província alvo",
+      "nation": "Nação",
+      "zone": "Zona",
+      "none": "não designado",
+      "pick": "Designar no mapa",
+      "change": "Mudar",
+      "nationAny": "— nação —",
+      "own": "Esta província já é sua: designe uma província estrangeira.",
+      "needed": "Designe o alvo da missão no mapa."
+    },
+    "pick": {
+      "target": "Toque no mapa para designar o alvo da missão.",
+      "units": "Selecione as pilhas no mapa e depois confirme.",
+      "validate": "Confirmar ({{count}})"
+    },
+    "missions": {
+      "conquer": {
+        "name": "Conquistar",
+        "short": "Conquista",
+        "desc": "Tomar uma província, uma região ou um país inteiro."
+      },
+      "defend": {
+        "name": "Defender",
+        "short": "Defesa",
+        "desc": "Manter as cidades de uma zona e repelir o inimigo que entrar nela."
+      },
+      "hold_front": {
+        "name": "Manter a linha de frente",
+        "short": "Frente",
+        "desc": "Distribuir as forças ao longo da fronteira e contra-atacar as rupturas."
+      },
+      "air_superiority": {
+        "name": "Superioridade aérea",
+        "short": "Céu",
+        "desc": "Patrulhas de caça, avião radar e supressão de defesas sobre uma zona."
+      },
+      "air_defense": {
+        "name": "Defesa antiaérea",
+        "short": "AAA",
+        "desc": "Cobrir as cidades de uma zona: defesas terra-ar distribuídas, caças em alerta."
+      },
+      "deep_strike": {
+        "name": "Ataques em profundidade",
+        "short": "Ataques",
+        "desc": "Destruir as instalações estratégicas reveladas de um país."
+      },
+      "sea_control": {
+        "name": "Controle marítimo e bloqueio",
+        "short": "Mar",
+        "desc": "Manter uma zona marítima, afundar navios inimigos, bloquear os portos."
+      },
+      "landing": {
+        "name": "Desembarque",
+        "short": "Desembarque",
+        "desc": "Reunir no porto, embarcar, atravessar escoltado e tomar uma costa ou uma ilha."
+      },
+      "reserve": {
+        "name": "Reserva",
+        "short": "Reserva",
+        "desc": "Ficar na retaguarda e contra-atacar as rupturas dentro de um raio."
+      }
+    },
+    "rank": {
+      "1": "General de brigada",
+      "2": "General de divisão",
+      "3": "General de corpo de exército",
+      "4": "General de exército"
+    },
+    "skills": {
+      "offense": {
+        "label": "Ofensiva",
+        "help": "Escolha e número de objetivos, tamanho dos grupos de assalto, dano no ataque."
+      },
+      "defense": {
+        "label": "Defensiva",
+        "help": "Guarnições, contra-ataques, proteção das pilhas paradas."
+      },
+      "logistics": {
+        "label": "Logística",
+        "help": "Reagrupamento e partidas escalonadas, cálculo de rotas, autonomia e abastecimento."
+      },
+      "air": {
+        "label": "Aviação",
+        "help": "Saídas aéreas, escoltas, supressão das defesas antiaéreas."
+      },
+      "naval": {
+        "label": "Marinha",
+        "help": "Desembarques, escoltas navais, controle marítimo."
+      },
+      "audacity": {
+        "label": "Audácia",
+        "help": "Um general audacioso ataca com relação de forças menor; um prudente espera a superioridade.",
+        "low": "prudente",
+        "high": "audacioso"
+      },
+      "experience": {
+        "label": "Experiência",
+        "help": "Menos atritos (ordens atrasadas), bônus maiores; cresce com as vitórias."
+      }
+    },
+    "traits": {
+      "none": "Nenhum traço marcante",
+      "encircler": {
+        "label": "Mestre do cerco",
+        "help": "Prefere províncias já cercadas por suas forças; um objetivo a mais por ciclo de decisão."
+      },
+      "thrifty": {
+        "label": "Poupa vidas",
+        "help": "Exige superioridade mais nítida e recua mais cedo."
+      },
+      "reckless": {
+        "label": "Temerário",
+        "help": "Ataca com menos forças, recua tarde; mais atritos."
+      },
+      "logistician": {
+        "label": "Logístico excepcional",
+        "help": "Sempre se reagrupa antes do assalto; melhor autonomia e abastecimento."
+      },
+      "airman": {
+        "label": "Ás da aviação",
+        "help": "Uma saída e uma escolta aéreas a mais por ciclo de decisão."
+      },
+      "sailor": {
+        "label": "Lobo do mar",
+        "help": "Uma escolta naval a mais."
+      },
+      "fortifier": {
+        "label": "Construtor de defesas",
+        "help": "Maior proteção das pilhas paradas."
+      },
+      "methodical": {
+        "label": "Metódico",
+        "help": "Metade dos atritos; um pouco mais exigente antes de atacar."
+      },
+      "blitz": {
+        "label": "Guerra relâmpago",
+        "help": "Um objetivo a mais por ciclo de decisão; ataca um pouco mais cedo."
+      },
+      "veteran": {
+        "label": "Veterano",
+        "help": "Aprende rápido (experiência ×1,5); soldo um pouco maior."
+      }
+    },
+    "general": {
+      "rating": "nota {{value}}",
+      "victories_one": "{{count}} vitória",
+      "victories_many": "{{count}} vitórias",
+      "victories_other": "{{count}} vitórias",
+      "wounded": "Ferido",
+      "unpaid_one": "{{count}} dia sem pagamento",
+      "unpaid_many": "{{count}} dias sem pagamento",
+      "unpaid_other": "{{count}} dias sem pagamento",
+      "perDay": "/ dia",
+      "signing": "bônus {{value}}",
+      "reserve": "Na reserva",
+      "missionCost": "Custo estimado da missão",
+      "assign": "Comando",
+      "hire": "Contratar ({{value}})",
+      "dismiss": "Destituir",
+      "dismissTitle": "Destituir o general",
+      "dismissText": "Destituir {{name}}? Uma indenização de {{value}} é paga; seu exército fica passivo.",
+      "dismissConfirm": "Destituir ({{value}})"
+    },
+    "generals": {
+      "hired": "Seus generais",
+      "yours": "Seus generais disponíveis",
+      "none": "Nenhum general contratado.",
+      "payroll": "{{value}} / dia",
+      "pool": "Candidatos",
+      "poolHint": "Oficiais disponíveis: bônus de contratação de 5 dias de soldo.",
+      "branch": "Comando",
+      "chief": "Comandante-chefe",
+      "noChief": "vago",
+      "forces": "Forças da arma",
+      "freeForces": "Fora de exércitos",
+      "isChief": "Comandante-chefe",
+      "makeChief": "Nomear chefe",
+      "chiefHelp": "O comandante-chefe eleva as competências dos generais da sua arma; seu soldo é maior.",
+      "chiefNamed": "{{name}} nomeado comandante-chefe."
+    },
+    "branch": {
+      "land": {
+        "name": "Exército",
+        "short": "Terra",
+        "role": "Comandante terrestre",
+        "desc": "Infantaria, blindados, artilharia e mísseis superfície-superfície: toma e mantém o terreno."
+      },
+      "air": {
+        "name": "Força Aérea",
+        "short": "Ar",
+        "role": "Comandante aéreo",
+        "desc": "Caças, bombardeiros, drones, aviões radar: abre o céu, ataca em profundidade, apoia as tropas."
+      },
+      "sea": {
+        "name": "Marinha",
+        "short": "Mar",
+        "role": "Comandante naval",
+        "desc": "Navios de superfície, submarinos, transportes: bloqueio, escolta de desembarques, ataques a partir do mar."
+      },
+      "ad": {
+        "name": "Defesa antiaérea",
+        "short": "DAA",
+        "role": "Comandante da defesa antiaérea",
+        "desc": "Baterias terra-ar e radares: protegem o território, as bases e as tropas que avançam."
+      }
+    },
+    "ops": {
+      "new": "Nova operação",
+      "full": "Máximo de {{max}} operações atingido: encerre uma.",
+      "emptyTitle": "Nenhuma operação",
+      "emptyText": "Designe um ou mais países, um objetivo e os generais que o conduzem: eles agem por você.",
+      "onboard": {
+        "title": "Uma operação em três escolhas",
+        "targets": "Os países-alvo: no mapa ou por busca, um ou vários.",
+        "goal": "O objetivo: enfraquecer forças, controle aéreo total, conquista total, ataques estratégicos, bloqueio…",
+        "staff": "Os generais, por comando: cada um recebe um papel e suas forças, e eles se coordenam.",
+        "rule": "Os generais atacam, avançam, patrulham e bloqueiam por conta própria; uma ordem direta a uma pilha prevalece até terminar."
+      },
+      "path": {
+        "new": "nova operação",
+        "edit": "mudar objetivo",
+        "reinforce": "reforçar"
+      },
+      "step": {
+        "targets": "Alvos",
+        "goal": "Objetivo",
+        "staff": "Generais",
+        "confirm": "Confirmar"
+      },
+      "status": {
+        "planning": "Preparação",
+        "active": "Em andamento",
+        "holding": "Objetivo mantido",
+        "awaiting": "Aguarda suas ordens",
+        "suspended": "Suspensa",
+        "success": "Cumprida",
+        "failed": "Fracassada"
+      },
+      "phase": {
+        "stage": "concentração",
+        "sead": "supressão de defesas",
+        "air": "domínio do céu",
+        "offensive": "ofensiva",
+        "hold": "manutenção",
+        "done": "encerrada"
+      },
+      "goals": {
+        "attrition": {
+          "name": "Enfraquecer forças",
+          "short": "Desgaste",
+          "desc": "Atacar tudo o que for encontrado: defesas, aviação, forças terrestres, navios, bases."
+        },
+        "air_control": {
+          "name": "Controle aéreo total",
+          "short": "Céu",
+          "desc": "Destruir a defesa antiaérea e a aviação, depois manter o céu com patrulhas."
+        },
+        "conquest": {
+          "name": "Conquista total",
+          "short": "Conquista",
+          "desc": "Tomar todas as províncias, capital incluída, por setores, com apoio aéreo."
+        },
+        "decapitation": {
+          "name": "Decapitação",
+          "short": "Capital",
+          "desc": "Avançar sobre a capital e tomá-la o mais rápido possível."
+        },
+        "strategic": {
+          "name": "Ataques estratégicos",
+          "short": "Ataques",
+          "desc": "Indústria, energia, bases: destruir as instalações reveladas."
+        },
+        "sead": {
+          "name": "Neutralizar a defesa antiaérea",
+          "short": "DAA",
+          "desc": "Destruir baterias terra-ar, radares e sítios antiaéreos conhecidos."
+        },
+        "blockade": {
+          "name": "Bloqueio naval",
+          "short": "Bloqueio",
+          "desc": "Bloquear os portos, afundar os navios, cortar as rotas marítimas."
+        },
+        "defend_border": {
+          "name": "Manter a fronteira",
+          "short": "Fronteira",
+          "desc": "Defender a fronteira contra o país ou os países designados, contra-atacar."
+        },
+        "occupy": {
+          "name": "Ocupar uma região",
+          "short": "Ocupação",
+          "desc": "Tomar e manter as províncias designadas no mapa."
+        }
+      },
+      "metric": {
+        "forces": "{{pct}} % das forças inimigas estimadas destruídas",
+        "provinces": "{{done}}/{{total}} províncias tomadas",
+        "capital": "Capital: {{done}}/{{total}} tomada",
+        "sky": "Céu: restam {{sams}} baterias inimigas, {{air}} aeronaves",
+        "sams": "Restam {{left}} defesas antiaéreas de {{total}}",
+        "buildings": "{{done}}/{{total}} instalações destruídas",
+        "ports": "{{done}}/{{total}} portos bloqueados",
+        "front": "{{done}}/{{total}} cidades da frente mantidas"
+      },
+      "metrics": {
+        "forces": "Forças inimigas destruídas (valor estimado)",
+        "provinces": "Províncias tomadas",
+        "capital": "Capital",
+        "sams": "Defesas antiaéreas destruídas",
+        "aircraft": "Aeronaves inimigas destruídas",
+        "buildings": "Instalações destruídas",
+        "ports": "Portos bloqueados",
+        "front": "Cidades da frente mantidas"
+      },
+      "stats": {
+        "strikes": "Ataques",
+        "captures": "Capturas",
+        "kills": "Valor destruído",
+        "losses": "Elementos perdidos",
+        "strength": "Efetivos"
+      },
+      "sector": {
+        "north": "Setor norte",
+        "south": "Setor sul",
+        "east": "Setor leste",
+        "west": "Setor oeste",
+        "center": "Setor central",
+        "all": "Todo o teatro"
+      },
+      "sectorLeft": "{{left}}/{{total}} a tomar",
+      "roe": {
+        "strict": "Estritas: o estado-maior pede sua autorização antes de qualquer entrada em guerra.",
+        "standard": "Padrão: lançar a operação autoriza a guerra contra os países-alvo.",
+        "free": "Livres: os generais decidem sozinhos, perseguições incluídas."
+      },
+      "progress": "Progresso",
+      "staff": "Estado-maior",
+      "journal": "Diário da operação",
+      "generals_one": "{{count}} general",
+      "generals_many": "{{count}} generais",
+      "generals_other": "{{count}} generais",
+      "provinces_one": "{{count}} província",
+      "provinces_many": "{{count}} províncias",
+      "provinces_other": "{{count}} províncias",
+      "role": "Papel",
+      "release": "Retirar da operação",
+      "back": "Operações",
+      "reinforce": "Reforçar",
+      "changeGoal": "Mudar objetivo",
+      "cancel": "Cancelar a operação",
+      "cancelTitle": "Cancelar a operação",
+      "close": "Encerrar",
+      "closeTitle": "Encerrar a operação",
+      "cancelText": "{{name}}: os generais passam à reserva (ainda pagos), os exércitos formados para a operação são dissolvidos e suas pilhas voltam ao seu comando direto.",
+      "deadline": "Prazo",
+      "noDeadline": "Nenhum",
+      "deadlineAt": "prazo {{day}} {{time}}",
+      "askWar": "O estado-maior pede autorização para entrar em guerra contra {{nation}}.",
+      "atWar": "em guerra",
+      "targetsLead": "Escolha o país ou os países-alvo: toque neles no mapa ou procure-os.",
+      "noTarget": "Nenhum país designado.",
+      "removeTarget": "Remover este país",
+      "search": "Procurar um país…",
+      "pickOnMap": "Designar no mapa",
+      "pick": {
+        "nation": "Toque em um país no mapa para mirá-lo.",
+        "province": "Toque nas províncias a ocupar (uma de cada vez)."
+      },
+      "region": "Região",
+      "pickProvinces": "Designar as províncias",
+      "pickGoal": "Escolha o objetivo da operação.",
+      "estWithSuggestion": "Estimativa com o estado-maior proposto; você escolherá os generais na próxima etapa.",
+      "est": {
+        "forces": "Forças engajadas",
+        "enemy": "inimigo estimado {{value}}",
+        "cost": "Custo",
+        "hire": "+ bônus {{value}}"
+      },
+      "staffLead_one": "{{count}} general selecionado.",
+      "staffLead_many": "{{count}} generais selecionados.",
+      "staffLead_other": "{{count}} generais selecionados.",
+      "suggest": "Propor um estado-maior",
+      "recommended": "recomendado",
+      "freeForces_one": "{{count}} pilha livre · {{value}}",
+      "freeForces_many": "{{count}} pilhas livres · {{value}}",
+      "freeForces_other": "{{count}} pilhas livres · {{value}}",
+      "chiefIs": "Comandante-chefe: {{name}}",
+      "chief": "comandante-chefe",
+      "hired": "contratado",
+      "forces": "Forças",
+      "autoForces": "Forças automáticas",
+      "morePool": "Ver toda a reserva (+{{count}})",
+      "lessPool": "Recolher",
+      "name": "Nome da operação",
+      "defaultName": "{{goal}} — {{target}}",
+      "launch": "Lançar a operação",
+      "toast": {
+        "created": "Operação {{name}} lançada.",
+        "edited": "Novo objetivo transmitido ao estado-maior.",
+        "reinforced": "Reforços engajados na operação.",
+        "released": "General retirado da operação.",
+        "suspended": "Operação suspensa.",
+        "resumed": "Operação retomada.",
+        "cancelled": "Operação encerrada."
+      }
+    },
+    "wizard": {
+      "path": "novo exército",
+      "steps": "Etapas",
+      "step": {
+        "compose": "Compor",
+        "mission": "Missão",
+        "general": "General"
+      },
+      "name": "Nome do exército",
+      "namePlaceholder": "1º Exército, Grupo Aéreo Sul, Frota do Mediterrâneo…",
+      "reinforceLead": "Reforços para {{name}}: escolha pilhas livres.",
+      "filter": "Domínio",
+      "useSelection": "Adicionar a seleção ({{count}})",
+      "pickOnMap": "Escolher no mapa",
+      "clear": "Remover tudo",
+      "noFree": "Nenhuma pilha livre: todas as suas pilhas já estão em um exército.",
+      "mixed_one": "{{count}} sistema",
+      "mixed_many": "{{count}} sistemas",
+      "mixed_other": "{{count}} sistemas",
+      "summary": "Exército",
+      "piles": "Pilhas",
+      "elements": "Elementos",
+      "value": "Valor",
+      "mission": "Missão",
+      "pickMission": "Escolha uma missão.",
+      "missing": "A completar",
+      "generalLead": "Escolha o general que comandará: para esta missão, a competência-chave é “{{skill}}”.",
+      "costHire": "Bônus {{bonus}} e depois {{day}} / dia",
+      "costDay": "{{day}} / dia",
+      "createOnly": "Criar sem missão",
+      "addPiles_one": "Adicionar {{count}} pilha",
+      "addPiles_many": "Adicionar {{count}} pilhas",
+      "addPiles_other": "Adicionar {{count}} pilhas"
+    },
+    "defaultName": {
+      "landFirst": "1º Exército",
+      "land": "{{n}}º Exército",
+      "airFirst": "Grupo Aéreo 1",
+      "air": "Grupo Aéreo {{n}}",
+      "seaFirst": "1ª Frota",
+      "sea": "{{n}}ª Frota"
+    },
+    "toast": {
+      "created": "{{name}} está formado.",
+      "reinforced_one": "{{count}} pilha se junta ao exército.",
+      "reinforced_many": "{{count}} pilhas se juntam ao exército.",
+      "reinforced_other": "{{count}} pilhas se juntam ao exército.",
+      "removed_one": "{{count}} pilha retirada do exército.",
+      "removed_many": "{{count}} pilhas retiradas do exército.",
+      "removed_other": "{{count}} pilhas retiradas do exército.",
+      "renamed": "Exército renomeado.",
+      "mission": "Missão transmitida ao general.",
+      "hired": "{{name}} junta-se ao seu estado-maior.",
+      "hiredShort": "General contratado.",
+      "assigned": "Comando atribuído.",
+      "dismissed": "General destituído.",
+      "dissolved": "Exército dissolvido.",
+      "suspended": "Missão suspensa.",
+      "resumed": "Missão retomada.",
+      "saved": "Ajuste salvo."
+    }
+  },
   "engine": {
     "place": {
       "sea": "no mar"
@@ -3913,6 +4584,211 @@
         "title": "Captura impossível",
         "noCapturer": "{{system}} não pode capturar {{place}}: é preciso infantaria, blindados ou artilharia.",
         "noWar": "Sem guerra com o proprietário de {{place}}: sem captura."
+      },
+      "cmd_generalResigned": {
+        "title": "Demissão",
+        "text": "{{general}} pede demissão: seu soldo não é mais pago."
+      },
+      "cmd_generalUnpaid": {
+        "title": "Soldo não pago",
+        "text": "{{general}} não foi pago ({{days}}/{{max}} dias antes da demissão)."
+      },
+      "cmd_generalKilled": {
+        "title": "General morto",
+        "text": "{{general}} morreu em um ataque ao QG de {{army}}."
+      },
+      "cmd_generalWounded": {
+        "title": "General ferido",
+        "text": "{{general}} está ferido: {{army}} aguarda seu retorno."
+      },
+      "cmd_missionSuccess": {
+        "title": "Missão cumprida",
+        "text": "{{army}}: missão cumprida."
+      },
+      "cmd_missionFailed": {
+        "title": "Missão fracassada",
+        "text": "{{army}}: a missão fracassou."
+      },
+      "cmd_askWar": {
+        "title": "Autorização pedida",
+        "text": "{{army}}: {{general}} pede autorização para entrar em guerra contra {{nation}}."
+      },
+      "cmd_askStrike": {
+        "title": "Autorização pedida",
+        "text": "{{army}}: {{general}} pede autorização para atacar a retaguarda de {{nation}}."
+      },
+      "cmd_askReinforce": {
+        "title": "Reforços pedidos",
+        "text": "{{army}}: {{general}} pede {{count}} pilhas de reforço."
+      },
+      "cmd_opAskWar": {
+        "title": "Autorização solicitada",
+        "text": "Operação {{op}}: o estado-maior pede autorização para entrar em guerra contra {{nation}}."
+      },
+      "cmd_opSuccess": {
+        "title": "Operação cumprida",
+        "text": "Operação {{op}}: objetivo alcançado."
+      },
+      "cmd_opFailed": {
+        "title": "Operação fracassada",
+        "text": "Operação {{op}}: fracasso."
+      },
+      "cmd_opAchieved": {
+        "title": "Objetivo alcançado",
+        "text": "Operação {{op}}: objetivo alcançado e mantido."
+      },
+      "cmd_opHeavyLosses": {
+        "title": "Perdas pesadas",
+        "text": "Operação {{op}}: {{pct}} % das forças perdidas em 24 h."
+      },
+      "cmd_opStuck": {
+        "title": "Operação atolada",
+        "text": "Operação {{op}}: nenhum progresso há {{hours}} h."
+      },
+      "gov_resigned": {
+        "title": "Renúncia",
+        "text": "{{name}} renuncia: o cargo não é mais pago."
+      },
+      "gov_missionDone": {
+        "title": "Missão cumprida",
+        "text": "{{mission}}: meta atingida."
+      }
+    },
+    "cmd": {
+      "zone": "a zona designada",
+      "mission": {
+        "conquer": "Conquistar",
+        "defend": "Defender",
+        "hold_front": "Manter a linha de frente",
+        "air_superiority": "Superioridade aérea",
+        "air_defense": "Defesa antiaérea",
+        "deep_strike": "Ataques em profundidade",
+        "sea_control": "Controle marítimo e bloqueio",
+        "landing": "Desembarque",
+        "reserve": "Reserva"
+      },
+      "reason": {
+        "losses": "perdas pesadas demais",
+        "stuck": "nenhum avanço",
+        "tooWeak": "forças insuficientes",
+        "zoneLost": "zona perdida",
+        "deadline": "prazo vencido"
+      },
+      "building": {
+        "air_defense_site": "o sítio antiaéreo",
+        "radar_station": "a estação de radar",
+        "air_base": "a base aérea",
+        "military_base": "a base militar",
+        "arms_factory": "a fábrica de armamentos",
+        "refinery": "a refinaria",
+        "power_plant": "a usina elétrica",
+        "naval_base": "a base naval",
+        "electronics_plant": "a fábrica de eletrônicos",
+        "research_center": "o centro de pesquisa"
+      },
+      "j": {
+        "created_one": "Exército formado: {{count}} pilha.",
+        "created_many": "Exército formado: {{count}} pilhas.",
+        "created_other": "Exército formado: {{count}} pilhas.",
+        "command": "{{general}} assume o comando.",
+        "mission": "Missão recebida: {{mission}} — {{target}}.",
+        "missionCleared": "Missão encerrada: as pilhas aguardam suas ordens.",
+        "suspended": "Missão suspensa por ordem.",
+        "resumed": "Missão retomada.",
+        "warAuthorized": "Autorização recebida: guerra contra {{nation}}.",
+        "warRefused": "Guerra contra {{nation}} recusada: missão suspensa.",
+        "strikeAuthorized": "Ataques estratégicos autorizados.",
+        "strikeRefused": "Ataques estratégicos recusados: missão suspensa.",
+        "reinforceRefused": "Reforços recusados: {{general}} se virará com suas forças.",
+        "reinforced_one": "Reforço: {{count}} pilha se junta ao exército.",
+        "reinforced_many": "Reforços: {{count}} pilhas se juntam ao exército.",
+        "reinforced_other": "Reforços: {{count}} pilhas se juntam ao exército.",
+        "detached_one": "{{count}} pilha destacada do exército.",
+        "detached_many": "{{count}} pilhas destacadas do exército.",
+        "detached_other": "{{count}} pilhas destacadas do exército.",
+        "lost_one": "Perda: {{count}} {{system}} destruído.",
+        "lost_many": "Perdas: {{count}} {{system}} destruídos.",
+        "lost_other": "Perdas: {{count}} {{system}} destruídos.",
+        "captured": "{{province}} foi tomada.",
+        "declaredWar": "Fronteira cruzada: estamos em guerra com {{nation}}.",
+        "warBlocked": "Impossível entrar em guerra contra {{nation}}: missão suspensa.",
+        "askWar": "Pedido de autorização: cruzar a fronteira de {{nation}}.",
+        "askStrike": "Pedido de autorização: atacar a retaguarda de {{nation}}.",
+        "retreat": "{{system}} desgastado demais: recuo para {{province}}.",
+        "noReinforcements": "Nenhuma pilha livre por perto para nos reforçar.",
+        "askReinforce_one": "Pedido de reforços: {{count}} pilha.",
+        "askReinforce_many": "Pedido de reforços: {{count}} pilhas.",
+        "askReinforce_other": "Pedido de reforços: {{count}} pilhas.",
+        "tooWeak": "Forças insuficientes para atacar ({{pct}} % do necessário): reforços pedidos.",
+        "offensive": "Ofensiva lançada sobre {{province}}.",
+        "landing": "Desembarque lançado sobre {{province}}: reunião no porto.",
+        "counter": "Contra-ataque sobre {{province}}.",
+        "counterFront": "Contra-ataque na frente.",
+        "blockade": "Bloqueio do porto de {{province}}.",
+        "noIntel": "Nenhuma instalação de {{nation}} revelada: é preciso inteligência (reconhecimento).",
+        "strike": "Ataque contra {{building}} de {{province}}.",
+        "success": "Missão cumprida.",
+        "failed": "Missão fracassada: {{reason}}.",
+        "daily": "Relatório do dia: efetivos {{strength}} %, {{captures}} tomada(s), {{losses}} elemento(s) perdido(s).",
+        "resigned": "{{general}} pede demissão: soldo não pago.",
+        "dismissed": "{{general}} foi destituído.",
+        "recovered": "{{general}} retoma o comando após a convalescença.",
+        "wounded": "{{general}} ferido no QG: {{days}} dias de convalescença.",
+        "killed": "{{general}} morreu no QG.",
+        "joinedOp": "Engajado na operação {{op}}: {{role}}.",
+        "opClosed": "Operação {{op}} encerrada: o exército aguarda suas ordens."
+      },
+      "goal": {
+        "attrition": "Enfraquecer forças",
+        "air_control": "Controle aéreo total",
+        "conquest": "Conquista total",
+        "decapitation": "Decapitação",
+        "strategic": "Ataques estratégicos",
+        "sead": "Neutralizar a defesa antiaérea",
+        "blockade": "Bloqueio naval",
+        "defend_border": "Manter a fronteira",
+        "occupy": "Ocupar uma região"
+      },
+      "role": {
+        "land": "exército",
+        "air": "força aérea",
+        "sea": "marinha",
+        "ad": "defesa antiaérea"
+      },
+      "op": {
+        "created_one": "Operação lançada: {{goal}}, {{count}} general.",
+        "created_many": "Operação lançada: {{goal}}, {{count}} generais.",
+        "created_other": "Operação lançada: {{goal}}, {{count}} generais.",
+        "declaredWar": "Guerra declarada a {{nation}}.",
+        "warBlocked": "Impossível entrar em guerra contra {{nation}}: operação suspensa.",
+        "askWar": "Pedido de autorização: entrar em guerra contra {{nation}}.",
+        "warAuthorized": "Autorização recebida: guerra contra {{nation}}.",
+        "warRefused": "Guerra contra {{nation}} recusada: operação suspensa.",
+        "strikes_one": "{{army}}: {{count}} ataque — defesas {{sead}}, aviação {{air}}, forças {{ground}}, instalações {{bld}}.",
+        "strikes_many": "{{army}}: {{count}} ataques — defesas {{sead}}, aviação {{air}}, forças {{ground}}, instalações {{bld}}.",
+        "strikes_other": "{{army}}: {{count}} ataques — defesas {{sead}}, aviação {{air}}, forças {{ground}}, instalações {{bld}}.",
+        "offensive": "{{army}}: ofensiva sobre {{province}}.",
+        "jointAssault": "Assalto conjunto dos generais sobre {{province}}, liderado por {{army}}.",
+        "tooWeak": "{{army}}: forças insuficientes diante de {{province}} — apoio aéreo e reforços solicitados.",
+        "sectorDone": "{{army}}: setor tomado, agora apoia o resto do teatro.",
+        "captured": "{{province}} foi tomada.",
+        "lostProvince": "{{province}} foi perdida.",
+        "recon": "Nenhum alvo conhecido: reconhecimento lançado sobre {{nation}}.",
+        "blockade": "{{army}}: bloqueio do porto de {{province}}.",
+        "achieved": "Objetivo alcançado: está sendo mantido.",
+        "heavyLosses": "Perdas pesadas: {{pct}} % das forças engajadas perdidas em 24 h.",
+        "stuck": "Operação atolada: nenhum progresso há {{hours}} h.",
+        "success": "Objetivo alcançado: operação cumprida.",
+        "failed": "Operação fracassada: {{reason}}.",
+        "goalChanged": "Novo objetivo: {{goal}}.",
+        "released": "{{army}} deixa a operação.",
+        "reinforced_one": "Reforço: {{count}} general junta-se à operação.",
+        "reinforced_many": "Reforços: {{count}} generais juntam-se à operação.",
+        "reinforced_other": "Reforços: {{count}} generais juntam-se à operação.",
+        "role": "{{army}}: novo papel — {{role}}.",
+        "reassigned": "{{army}} é reatribuído a outra operação.",
+        "suspended": "Operação suspensa por ordem.",
+        "resumed": "Operação retomada."
       }
     },
     "spyNews": {
@@ -3920,6 +4796,461 @@
       "executedB": "{{host}} anuncia a execução de um agente de {{owner}} condenado por espionagem. Condenação internacional.",
       "swapH": "Troca de agentes entre {{a}} e {{b}}",
       "swapB": "{{a}} e {{b}} realizaram uma troca de prisioneiros: {{n}} agente(s) libertado(s)."
+    },
+    "gov": {
+      "m": {
+        "air_bases": "Bases aéreas",
+        "military_bases": "Bases militares",
+        "upgrade_bases": "Modernização das bases",
+        "logistics": "Logística militar",
+        "fortify": "Fortificação das fronteiras",
+        "air_defense": "Defesa antiaérea do território",
+        "coastal": "Defesa costeira",
+        "research_next": "Próxima geração",
+        "research_branch": "Pesquisa por área",
+        "research_labs": "Laboratórios de pesquisa",
+        "produce": "Encomenda de equipamento",
+        "stockpile": "Estoques estratégicos",
+        "arms_industry": "Indústria de armamento",
+        "counterintel": "Contraespionagem",
+        "protect_sites": "Proteção de locais sensíveis",
+        "watch": "Vigilância de um país",
+        "map_defenses": "Mapeamento das defesas",
+        "economic_intel": "Inteligência econômica",
+        "resource": "Produção de recursos",
+        "industry": "Desenvolvimento industrial",
+        "revenue": "Aumento da receita",
+        "war_economy": "Economia de guerra",
+        "reserves": "Reservas de caixa",
+        "repair": "Reconstrução"
+      },
+      "focus": {
+        "counterintel": "contraespionagem",
+        "protection": "proteção dos locais"
+      },
+      "j": {
+        "appointed": "{{name}} assume o cargo.",
+        "replaced": "{{name}} deixa o cargo (indenização paga).",
+        "dismissed": "{{name}} é demitido (indenização paga).",
+        "resigned": "{{name}} renuncia: o cargo não é mais pago.",
+        "unpaid": "{{name}} não foi pago ({{days}} d seguidos).",
+        "missionNew": "Missão recebida: {{mission}}.",
+        "missionEdit": "Missão alterada: {{mission}}.",
+        "missionSuspended": "Missão suspensa: {{mission}}.",
+        "missionResumed": "Missão retomada: {{mission}}.",
+        "missionCancelled": "Missão retirada: {{mission}} (o que foi lançado continua).",
+        "missionDone": "Missão cumprida: {{mission}}.",
+        "built": "Obra iniciada: {{building}} nível {{level}} em {{place}} — {{cost}}.",
+        "jobDone": "Obra concluída: {{building}} nível {{level}} em {{place}}.",
+        "repaired": "Reparo iniciado: {{building}} em {{place}} — {{cost}}.",
+        "research": "Pesquisa iniciada: {{node}} — {{cost}}.",
+        "researched": "Pesquisa adquirida: {{node}}.",
+        "produced": "Encomenda feita: {{count}} × {{system}} em {{place}} — {{cost}}.",
+        "imported": "Importação: {{count}} × {{system}}, entregues em {{place}} — {{cost}}.",
+        "intelOp": "Operação lançada: {{op}} — {{cost}}.",
+        "intelOpAt": "Operação lançada: {{op}}, alvo {{nation}} — {{cost}}.",
+        "opSuccess": "Operação bem-sucedida: {{op}}.",
+        "opFailed": "Operação sem resultado: {{op}}.",
+        "focus": "Prioridade da inteligência interna: {{focus}}.",
+        "protected": "Local colocado sob proteção: {{place}}.",
+        "blocked": "Bloqueada — {{why}}"
+      },
+      "why": {
+        "noHead": "Cargo vago: nomeie um titular.",
+        "envelope": "Verba esgotada: {{left}} disponíveis, {{cost}} necessários.",
+        "funds": "Fundos insuficientes: {{cost}} necessários.",
+        "reserve": "Reserva de prudência: o caixa deve ficar acima de {{floor}} ({{cost}} necessários).",
+        "resources": "Recursos insuficientes.",
+        "noSite": "Nenhum local permitido na zona (costa, jazida ou nível máximo).",
+        "noDeposit": "Nenhuma jazida de {{resource}} no território.",
+        "research": "Pesquisa necessária.",
+        "capacity": "Capacidade atingida (fila ou serviço).",
+        "locked": "Bloqueado por embargo ou bloqueio.",
+        "noTarget": "Alvo inválido ou desaparecido.",
+        "noSystem": "Nenhum equipamento “{{category}}” acessível (pesquisa, licença ou importação).",
+        "noResearch": "Nenhuma pesquisa disponível para esta meta.",
+        "nothingDamaged": "Nenhum edifício danificado.",
+        "saving": "Reserva em formação: {{pct}} %.",
+        "reserveHeld": "Reserva atingida: as outras missões a respeitam.",
+        "stocked": "Estoque atingido: reposição assim que baixar.",
+        "inProgress": "Ações em andamento.",
+        "refused": "Ordem recusada.",
+        "unlocked": "Próxima geração já acessível.",
+        "allProtected": "Locais protegidos ao máximo."
+      }
     }
+  },
+  "gov": {
+    "unavailable": "Governo indisponível nesta partida.",
+    "perDay": " / d",
+    "newMission": "Nova missão",
+    "missionsTitle": "Missões",
+    "history": "Concluídas e retiradas",
+    "ministries": {
+      "defense": "Ministério da Defesa",
+      "economy": "Ministério da Economia"
+    },
+    "sections": {
+      "commands": "Comandos",
+      "infra": "Infraestrutura",
+      "armament": "Armamento",
+      "intel": "Inteligência"
+    },
+    "offices": {
+      "defense": {
+        "name": "Ministro da Defesa",
+        "head": "Ministro da Defesa",
+        "scope": "Infraestrutura e logística"
+      },
+      "research": {
+        "name": "Diretoria de Pesquisa de Armamento",
+        "head": "Diretor de Pesquisa",
+        "scope": "P&D militar"
+      },
+      "production": {
+        "name": "Diretoria de Produção de Armamento",
+        "head": "Diretor de Produção",
+        "scope": "Produção militar"
+      },
+      "intel_interior": {
+        "name": "Inteligência interna",
+        "head": "Diretor de Inteligência Interna",
+        "scope": "Contraespionagem, segurança interna, proteção de instalações"
+      },
+      "intel_exterior": {
+        "name": "Inteligência externa e militar",
+        "head": "Diretor de Inteligência Externa",
+        "scope": "HUMINT, SIGINT, reconhecimento"
+      },
+      "economy": {
+        "name": "Ministro da Economia",
+        "head": "Ministro da Economia",
+        "scope": "Indústria, recursos, receitas, reservas"
+      }
+    },
+    "skills": {
+      "management": "Gestão",
+      "industry": "Indústria",
+      "logistics": "Logística",
+      "finance": "Prudência fiscal",
+      "science": "Ciência",
+      "intelligence": "Inteligência"
+    },
+    "traits": {
+      "efficient": {
+        "name": "Eficiente",
+        "tip": "Obras, encomendas e pesquisas mais rápidas."
+      },
+      "frugal": {
+        "name": "Econômico",
+        "tip": "Negocia melhor e custa menos."
+      },
+      "ambitious": {
+        "name": "Ambicioso",
+        "tip": "Conduz uma ação a mais por vez, guarda menos reserva, custa mais."
+      },
+      "cautious": {
+        "name": "Prudente",
+        "tip": "Guarda uma reserva de caixa maior."
+      },
+      "technocrat": {
+        "name": "Tecnocrata",
+        "tip": "Sempre faz a melhor escolha; custa mais."
+      },
+      "reformer": {
+        "name": "Reformista",
+        "tip": "Um pouco mais rápido e um pouco mais barato."
+      },
+      "bureaucrat": {
+        "name": "Burocrata",
+        "tip": "Mais lento, mas barato."
+      }
+    },
+    "effects": {
+      "speed": "Velocidade {{v}}",
+      "speedTip": "Gestão: duração das obras, encomendas e pesquisas lançadas.",
+      "discount": "Custos {{v}}",
+      "discountTip": "Especialidade: desconto negociado em cada gasto de suas missões.",
+      "slotsTip": "Gestão: ações conduzidas em paralelo por missão.",
+      "reserve": "Reserva {{days}} d",
+      "reserveTip": "Prudência: dias de orçamento que suas missões sempre deixam em caixa.",
+      "slots": "Paralelo: {{count}}"
+    },
+    "head": {
+      "rating": "Nota",
+      "ratingTip": "Média das três competências úteis ao cargo.",
+      "cost": "Custo",
+      "appoint": "Nomear · {{cost}}",
+      "appointTip": "Bônus de nomeação (e indenização do titular substituído): {{cost}}",
+      "vacant": "Cargo vago.",
+      "vacantText": "Escolha um titular: suas competências definem a velocidade, os custos e a prudência das missões.",
+      "replace": "Substituir",
+      "dismiss": "Demitir",
+      "replaceTitle": "Substituir — {{office}}",
+      "replaceText": "O titular atual sai com indenização de {{cost}}. As missões continuam com o novo.",
+      "dismissTitle": "Demitir o titular",
+      "dismissText": "{{name}} sai com indenização de {{cost}}. As missões do cargo aguardarão um sucessor.",
+      "unpaid": "Sem pagamento: {{count}} d"
+    },
+    "toast": {
+      "appointed": "{{name}} nomeado.",
+      "dismissed": "Titular demitido.",
+      "edited": "Missão alterada.",
+      "resumed": "Missão retomada.",
+      "suspended": "Missão suspensa.",
+      "cancelled": "Missão retirada.",
+      "created": "Missão confiada: {{mission}}."
+    },
+    "status": {
+      "active": "Em andamento",
+      "waiting": "Em espera",
+      "blocked": "Bloqueada",
+      "suspended": "Suspensa",
+      "done": "Concluída",
+      "cancelled": "Retirada"
+    },
+    "mission": {
+      "progress": "Progresso",
+      "goalAuto": "Meta definida pelo ministério",
+      "budgetTip": "Gasto (descontos deduzidos) sobre a verba alocada.",
+      "priority": "Prioridade",
+      "edit": "Alterar",
+      "suspend": "Suspender",
+      "resume": "Retomar",
+      "cancel": "Retirar",
+      "cancelTitle": "Retirar a missão",
+      "cancelText": "“{{mission}}” foi interrompida. Obras, encomendas e operações já lançadas continuam.",
+      "editTitle": "Alterar — {{mission}}",
+      "save": "Salvar",
+      "pending": "em andamento: {{count}}"
+    },
+    "units": {
+      "projects": "Obras: {{done}} / {{goal}}",
+      "nodes": "Pesquisas: {{done}} / {{goal}}",
+      "lots": "Lotes: {{done}} / {{goal}}",
+      "ops": "Operações: {{done}} / {{goal}}",
+      "days": "Dias de orçamento: {{done}} / {{goal}}",
+      "sites": "Locais protegidos: {{done}} / {{goal}}",
+      "repairs": "Reparos: {{done}} / {{goal}}"
+    },
+    "budget": {
+      "mode": "Verba",
+      "amount": "Valor",
+      "share": "Parte da receita",
+      "shareShort": "{{pct}} % da receita",
+      "amountShort": "Verba fixa",
+      "left": "Disponível: {{v}}",
+      "perDayOf": "≈ {{v}} por dia (receita {{rev}} / d)",
+      "cap": "Teto de gastos",
+      "noCap": "Sem teto: o crédito se acumula a cada dia.",
+      "daysOf": "{{count}} d de orçamento de defesa",
+      "daysShort": "{{count}} d"
+    },
+    "priority": {
+      "1": "Baixa",
+      "2": "Normal",
+      "3": "Alta"
+    },
+    "journal": {
+      "title": "Registro",
+      "empty": "Nada por enquanto."
+    },
+    "hint": {
+      "vacantMissions": "Estas missões aguardam um titular: nomeie um para que avancem.",
+      "vacant": "Nomeie um titular e depois confie-lhe uma missão.",
+      "noMission": "Nenhuma missão: confie uma com “Nova missão”."
+    },
+    "zone": {
+      "borderWith": "fronteira: {{nation}}",
+      "aroundShort": "{{km}} km ao redor de {{place}}",
+      "all": "Todo o território",
+      "border": "Fronteira",
+      "around": "Ao redor de…",
+      "radius": "Raio"
+    },
+    "commands": {
+      "title": "Os quatro comandos",
+      "scope": "Terra, Ar, Marinha, Defesa antiaérea",
+      "open": "Abrir o QG",
+      "land": "Exército",
+      "air": "Força Aérea",
+      "sea": "Marinha",
+      "air_defense": "Defesa antiaérea",
+      "noChief": "Sem chefe",
+      "soon": "Chefes e operações: em preparação no QG.",
+      "soonBadge": "Em preparação",
+      "now": "Hoje no QG: exércitos {{armies}}, generais {{generals}}.",
+      "ops": "Operações: {{count}}"
+    },
+    "kpi": {
+      "heads": "Titulares",
+      "missions": "Missões",
+      "spent": "Gasto",
+      "payroll": "Custo",
+      "floor": "Reserva",
+      "floorTip": "Caixa que as missões sempre deixam no tesouro (prudência, missão Reservas)."
+    },
+    "wizard": {
+      "path": "nova missão",
+      "step": {
+        "type": "Missão",
+        "params": "Alvo e meta",
+        "budget": "Verba"
+      },
+      "back": "Voltar",
+      "next": "Avançar",
+      "confirm": "Confiar a missão",
+      "resource": "Recurso",
+      "branch": "Área de pesquisa",
+      "category": "Equipamento",
+      "nation": "País-alvo",
+      "pick": "Escolher…",
+      "zone": "Zona",
+      "err": {
+        "type": "Escolha uma missão.",
+        "nation": "Escolha o país-alvo.",
+        "border": "Escolha o país vizinho.",
+        "around": "Escolha a província central.",
+        "budget": "Verba vazia."
+      }
+    },
+    "goal": {
+      "projects": "Meta: obras",
+      "nodes": "Meta: pesquisas",
+      "lots": "Meta: lotes de equipamento",
+      "ops": "Meta: operações",
+      "days": "Meta: dias de orçamento em caixa",
+      "sites": "Meta: locais protegidos",
+      "repairs": "Meta: reparos",
+      "auto": {
+        "research": "Meta definida na validação: todas as pesquisas que liberam a próxima geração.",
+        "protect": "Meta: tantos locais protegidos quanto a inteligência interna permitir, depois seu reforço."
+      }
+    },
+    "estimate": {
+      "title": "Previsões",
+      "options": "Ações possíveis",
+      "first": "Primeira ação",
+      "total": "Meta completa",
+      "hours": "Duração de uma ação",
+      "reserveTarget": "Caixa visado",
+      "envelope": "Verba",
+      "open": "parte da receita, sem teto",
+      "covers": "Ações cobertas pela verba",
+      "head": "{{name}}: velocidade +{{speed}} %, desconto {{discount}} %, mantém {{reserve}} em caixa.",
+      "vacant": "Cargo vago: a missão aguardará um titular.",
+      "note": "Estimativa com base em suas províncias e nos preços do dia; o ministério respeita a verba e seus recursos.",
+      "noDeposit": "Nenhuma jazida deste recurso na zona.",
+      "noSite": "Nenhum local permitido na zona.",
+      "noSystem": "Nenhum equipamento acessível nesta categoria.",
+      "unlocked": "A próxima geração já está acessível.",
+      "noResearch": "Nenhuma pesquisa restante para esta meta.",
+      "nothingDamaged": "Nenhum edifício danificado por enquanto.",
+      "few": "Ações possíveis na zona: {{count}}, menos que a meta; ela será reduzida ao que for viável.",
+      "coversN": "≈ {{count}}"
+    },
+    "missions": {
+      "air_bases": {
+        "name": "Bases aéreas",
+        "desc": "Construir novas bases aéreas e ampliar a cobertura do território."
+      },
+      "military_bases": {
+        "name": "Bases militares",
+        "desc": "Implantar bases militares: produção terrestre e raio de abastecimento."
+      },
+      "upgrade_bases": {
+        "name": "Modernização das bases",
+        "desc": "Elevar o nível das bases aéreas, militares e navais existentes."
+      },
+      "logistics": {
+        "name": "Logística militar",
+        "desc": "Depósitos avançados, bases e hospitais perto das fronteiras: abastecimento das tropas."
+      },
+      "fortify": {
+        "name": "Fortificação das fronteiras",
+        "desc": "Fortificações e bunkers nas províncias fronteiriças ameaçadas."
+      },
+      "air_defense": {
+        "name": "Defesa antiaérea do território",
+        "desc": "Locais antiaéreos e estações de radar em torno das províncias-chave."
+      },
+      "coastal": {
+        "name": "Defesa costeira",
+        "desc": "Baterias costeiras e bases navais no litoral."
+      },
+      "research_next": {
+        "name": "Próxima geração",
+        "desc": "Pesquisar o necessário para produzir a próxima geração de um equipamento."
+      },
+      "research_branch": {
+        "name": "Pesquisa por área",
+        "desc": "Avançar uma área de pesquisa, nó após nó."
+      },
+      "research_labs": {
+        "name": "Laboratórios de pesquisa",
+        "desc": "Construir e melhorar centros de pesquisa e laboratórios secretos."
+      },
+      "produce": {
+        "name": "Encomenda de equipamento",
+        "desc": "Produzir uma quantidade de equipamento de uma categoria (fabricação local ou importação)."
+      },
+      "stockpile": {
+        "name": "Estoques estratégicos",
+        "desc": "Manter um estoque de uma categoria (mísseis, munição…) e repô-lo."
+      },
+      "arms_industry": {
+        "name": "Indústria de armamento",
+        "desc": "Desenvolver fábricas de armamento e de eletrônicos."
+      },
+      "counterintel": {
+        "name": "Contraespionagem",
+        "desc": "Desmantelar redes estrangeiras: varreduras e desmantelamentos."
+      },
+      "protect_sites": {
+        "name": "Proteção de locais sensíveis",
+        "desc": "Colocar sob proteção os locais industriais-chave e reforçá-los."
+      },
+      "watch": {
+        "name": "Vigilância de um país",
+        "desc": "Acompanhar suas forças e mobilização: reconhecimento, escutas, agentes."
+      },
+      "map_defenses": {
+        "name": "Mapeamento das defesas",
+        "desc": "Localizar suas defesas: reconhecimento militar e geolocalização de emissores."
+      },
+      "economic_intel": {
+        "name": "Inteligência econômica",
+        "desc": "Conhecer sua indústria e recursos: reconhecimento econômico, agentes."
+      },
+      "resource": {
+        "name": "Produção de recursos",
+        "desc": "Poços, minas, fazendas ou fábricas de eletrônicos onde estão as jazidas."
+      },
+      "industry": {
+        "name": "Desenvolvimento industrial",
+        "desc": "Indústria local e usinas elétricas nas províncias mais produtivas."
+      },
+      "revenue": {
+        "name": "Aumento da receita",
+        "desc": "Distritos comerciais e indústria local onde a receita é maior."
+      },
+      "war_economy": {
+        "name": "Economia de guerra",
+        "desc": "Fábricas de armamento, usinas e refinarias para sustentar o esforço de guerra."
+      },
+      "reserves": {
+        "name": "Reservas de caixa",
+        "desc": "Manter uma reserva que as outras missões não podem tocar."
+      },
+      "repair": {
+        "name": "Reconstrução",
+        "desc": "Reparar os edifícios danificados, os mais caros primeiro."
+      }
+    },
+    "ministriesShort": {
+      "defense": "Defesa",
+      "economy": "Economia"
+    },
+    "suggest": "Missões possíveis"
   }
 }

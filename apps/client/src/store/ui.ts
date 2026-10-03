@@ -79,6 +79,8 @@ export function pendingTargetId(p: PendingOrder | null): UnitId | null {
 export const WINDOW_IDS = [
   'armies',
   'army',
+  'command',
+  'government',
   'production',
   'research',
   'economy',
@@ -221,6 +223,8 @@ function readBool(key: string, fallback: boolean): boolean {
 const WINDOW_SIZE: Record<WindowId, { w: number; h: number }> = {
   armies: { w: 1320, h: 740 },
   army: { w: 1280, h: 760 },
+  command: { w: 1300, h: 790 },
+  government: { w: 1240, h: 800 },
   production: { w: 1280, h: 760 },
   research: { w: 1120, h: 700 },
   economy: { w: 980, h: 680 },

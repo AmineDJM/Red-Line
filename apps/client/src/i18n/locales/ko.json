@@ -64,7 +64,9 @@
       "battles": "전투",
       "chat": "메시지",
       "shop": "상점",
-      "settings": "설정"
+      "settings": "설정",
+      "command": "사령부",
+      "government": "정부"
     },
     "path": {
       "armies": "내 군대",
@@ -79,8 +81,12 @@
       "battles": "전투",
       "chat": "메시지",
       "shop": "상점",
-      "settings": "설정"
-    }
+      "settings": "설정",
+      "command": "사령부",
+      "government": "정부"
+    },
+    "command": "지휘 센터",
+    "government": "정부"
   },
   "home": {
     "title": "Red Line",
@@ -2258,7 +2264,9 @@
       "marketSales": "시장 판매",
       "transfersIn": "받은 양도",
       "transfersOut": "준 양도",
-      "other": "기타(정보, 동맹…)"
+      "other": "기타(정보, 동맹…)",
+      "command": "장군 및 참모부",
+      "government": "장관 및 국장"
     },
     "constructionHint": "건물 탭이나 주 패널에서 건물을 개량하거나 새로 지으세요.",
     "provincesTitle": "주",
@@ -3479,6 +3487,643 @@
     "machine": "자동 생성된 번역이며 군사 용어는 검수되었습니다.",
     "fallback": "일부 텍스트는 프랑스어로 남아 있습니다."
   },
+  "command": {
+    "unavailable": "이 게임에서는 지휘 센터를 사용할 수 없습니다.",
+    "selection": {
+      "army": "군",
+      "open": "지휘 센터에서 이 군 열기"
+    },
+    "armiesLink": {
+      "title": "지휘 센터",
+      "text": " — 군을 편성하고 임무를 부여한 뒤, 대신 지휘할 장군을 고용하세요.",
+      "open": "열기"
+    },
+    "tabs": {
+      "ops": "작전",
+      "armies": "군",
+      "generals": "장군"
+    },
+    "kpi": {
+      "ops": "작전",
+      "armies": "군",
+      "active": "임무 중",
+      "generals": "장군",
+      "payroll": "급여 / 일",
+      "requests": "요청"
+    },
+    "newArmy": "새 군",
+    "full": "군 한도({{max}})에 도달했습니다: 새로 편성하려면 하나를 해체하세요.",
+    "emptyTitle": "군 없음",
+    "emptyText": "스택으로 군을 편성하고 임무를 부여한 뒤 장군을 선택하세요. 장군이 대신 지휘합니다.",
+    "onboard": {
+      "title": "사용 방법",
+      "compose": "지상, 공중, 해상 스택을 모아 이름 붙은 군으로 편성합니다.",
+      "mission": "임무를 부여합니다: 지도에서 목표 지정, 공격성, 교전 규칙, 후퇴 기준.",
+      "general": "지휘할 장군을 선택합니다: 능력이 결정을 이끌고, 급여는 매일 지급됩니다."
+    },
+    "pickTitle": "군 선택",
+    "pickText": "임무, 장군, 편성, 장군의 일지가 여기에 표시됩니다.",
+    "back": "군",
+    "noMission": "임무 없음",
+    "noGeneral": "장군 없음",
+    "zoneShort": "{{km}}km 구역",
+    "piles_other": "스택 {{count}}개",
+    "status": {
+      "idle": "임무 없음",
+      "passive": "대기",
+      "preparing": "준비 중",
+      "active": "진행 중",
+      "awaiting": "명령 대기",
+      "success": "성공",
+      "failed": "실패",
+      "suspended": "중단됨"
+    },
+    "pills": {
+      "health": "상태 {{pct}}%",
+      "strength": "전력: 출발 시의 {{pct}}%",
+      "supply": {
+        "supplied": "병참: 보급 원활",
+        "limited": "병참: 보급 제한",
+        "cut": "병참: 보급 차단"
+      }
+    },
+    "request": {
+      "badge": "요청",
+      "refuse": "거부",
+      "accepted": "장군에게 답변을 보냈습니다.",
+      "refused": "요청을 거부했습니다.",
+      "declare_war": {
+        "title": "개전 승인",
+        "text": "장군이 국경을 넘을 승인을 요청합니다: {{nation}}와(과)의 전쟁을 뜻합니다.",
+        "accept": "개전 승인"
+      },
+      "strategic_strike": {
+        "title": "전략 타격 승인",
+        "text": "장군이 {{nation}} 후방 시설 타격 승인을 요청합니다.",
+        "accept": "타격 승인"
+      },
+      "reinforce": {
+        "title": "증원 요청",
+        "text_other": "전력 감소: 장군이 인근의 비어 있는 스택 {{count}}개를 요청합니다.",
+        "accept": "증원 보내기"
+      }
+    },
+    "detail": {
+      "mission": "임무",
+      "since": "{{day}} {{time}}부터",
+      "noMissionText": "임무 없음: 군은 명령을 기다리며, 스택은 직접 지휘 아래 남아 있습니다.",
+      "objective": "목표",
+      "retreat": "{{pct}}%에서 후퇴",
+      "general": "장군",
+      "noGeneralText": "장군이 없으면 군은 대기 상태로 남으며 임무를 수행하지 않습니다.",
+      "composition": "편성",
+      "piles": "스택",
+      "doneEditing": "완료",
+      "empty": "스택이 없습니다.",
+      "manual": "수동",
+      "manualHelp": "직접 명령을 받은 스택: 명령이 끝나면 장군이 다시 지휘합니다.",
+      "manualRule": "스택에 대한 직접 명령: 끝날 때까지 우선하며, 이후 장군이 스택을 다시 지휘합니다.",
+      "journal": "장군의 일지",
+      "journalEmpty": "장군이 아직 아무것도 보고하지 않았습니다."
+    },
+    "objective": {
+      "conquer": "점령한 주",
+      "landing": "교두보",
+      "defend": "보유 중인 도시",
+      "hold_front": "보유 중인 전선 도시",
+      "air_defense": "엄호 중인 도시",
+      "reserve": "보유 중인 도시",
+      "air_superiority": "제공권 확보",
+      "sea_control": "제해권 확보",
+      "deep_strike": "파괴한 시설"
+    },
+    "est": {
+      "ratio": "전력비",
+      "eta": "예상 소요 시간",
+      "chance": "성공 확률",
+      "source": {
+        "seen": "관측된 적 전력",
+        "estimate": "정보 추정",
+        "none": "알려진 적 전력 없음"
+      }
+    },
+    "actions": {
+      "showMap": "지도에 표시",
+      "rename": "이름 변경",
+      "reinforce": "증원",
+      "giveMission": "임무 부여",
+      "changeMission": "임무 변경",
+      "suspend": "중단",
+      "resume": "재개",
+      "dissolve": "해체",
+      "dissolveTitle": "군 해체",
+      "dissolveText": "{{name}}을(를) 해체하시겠습니까? 스택은 그 자리에 남아 직접 지휘를 받고, 장군은 예비역이 됩니다(급여는 계속 지급).",
+      "pickGeneral": "장군 선택",
+      "changeGeneral": "변경",
+      "removeN_other": "스택 {{count}}개 제외"
+    },
+    "reinforce": {
+      "label": "자동 증원",
+      "off": "안 함",
+      "ask": "요청 시",
+      "auto": "자동",
+      "offHelp": "장군이 증원을 요청하지 않습니다.",
+      "askHelp": "전력이 줄면 장군이 증원을 요청하고, 당신이 승인합니다.",
+      "autoHelp": "전력이 줄면 장군이 인근의 비어 있는 스택을 직접 편입합니다."
+    },
+    "domain": {
+      "all": "전체",
+      "land": "지상",
+      "air": "공중",
+      "sea": "해상"
+    },
+    "fit": {
+      "partial": "편성 불완전",
+      "missing": "필요한 군종 부족"
+    },
+    "aggr": {
+      "label": "공격성",
+      "cautious": "신중",
+      "balanced": "균형",
+      "bold": "대담",
+      "cautiousHelp": "확실한 우위에서만 공격하고, 일찍 후퇴하며, 전투기를 예비로 둡니다.",
+      "balancedHelp": "합리적인 전력비, 손실이 절반에 이르면 후퇴.",
+      "boldHelp": "더 일찍, 더 많은 목표를 동시에 공격하고 늦게 후퇴하며 모든 전투기를 띄웁니다."
+    },
+    "roe": {
+      "label": "교전 규칙",
+      "strict": {
+        "short": "엄격",
+        "help": "엄격: 승인 없이 전쟁이나 전략 타격을 하지 않으며, 추격은 구역 내로 제한됩니다."
+      },
+      "standard": {
+        "short": "표준",
+        "help": "표준: 전쟁을 시작하거나 적 후방을 타격하기 전에 장군이 승인을 요청합니다."
+      },
+      "free": {
+        "short": "자유",
+        "help": "자유: 임무 목표에 대한 개전을 포함해 장군이 단독으로 결정합니다."
+      }
+    },
+    "retreat": {
+      "label": "스택 후퇴 기준",
+      "never": "안 함"
+    },
+    "radius": "반경",
+    "scope": {
+      "label": "범위",
+      "province": "이 주",
+      "region": "지역",
+      "nation": "국가 전체"
+    },
+    "target": {
+      "province": "목표 주",
+      "nation": "국가",
+      "zone": "구역",
+      "none": "미지정",
+      "pick": "지도에서 지정",
+      "change": "변경",
+      "nationAny": "— 국가 —",
+      "own": "이 주는 이미 당신의 것입니다: 외국 주를 지정하세요.",
+      "needed": "지도에서 임무 목표를 지정하세요."
+    },
+    "pick": {
+      "target": "지도를 눌러 임무 목표를 지정하세요.",
+      "units": "지도에서 스택을 선택한 뒤 확인하세요.",
+      "validate": "확인 ({{count}})"
+    },
+    "missions": {
+      "conquer": {
+        "name": "정복",
+        "short": "정복",
+        "desc": "주, 지역 또는 국가 전체를 점령합니다."
+      },
+      "defend": {
+        "name": "방어",
+        "short": "방어",
+        "desc": "구역의 도시를 지키고 진입한 적을 격퇴합니다."
+      },
+      "hold_front": {
+        "name": "전선 유지",
+        "short": "전선",
+        "desc": "국경을 따라 전력을 배치하고 돌파에 반격합니다."
+      },
+      "air_superiority": {
+        "name": "제공권",
+        "short": "하늘",
+        "desc": "구역 상공에서 전투기 초계, 공중 레이더, 방공망 제압."
+      },
+      "air_defense": {
+        "name": "방공",
+        "short": "방공",
+        "desc": "구역의 도시를 엄호: 지대공 방어를 분산 배치하고 전투기를 대기시킵니다."
+      },
+      "deep_strike": {
+        "name": "종심 타격",
+        "short": "타격",
+        "desc": "한 국가의 드러난 전략 시설을 파괴합니다."
+      },
+      "sea_control": {
+        "name": "제해 및 봉쇄",
+        "short": "해상",
+        "desc": "해역을 장악하고 적 함정을 격침하며 항구를 봉쇄합니다."
+      },
+      "landing": {
+        "name": "상륙 작전",
+        "short": "상륙",
+        "desc": "항구에 집결해 승선하고, 호위 아래 건너가 해안이나 섬을 점령합니다."
+      },
+      "reserve": {
+        "name": "예비대",
+        "short": "예비",
+        "desc": "후방에 머물며 반경 내의 돌파에 반격합니다."
+      }
+    },
+    "rank": {
+      "1": "준장",
+      "2": "소장",
+      "3": "중장",
+      "4": "대장"
+    },
+    "skills": {
+      "offense": {
+        "label": "공격",
+        "help": "목표 선택과 수, 돌격 집단 규모, 공격 시 피해."
+      },
+      "defense": {
+        "label": "방어",
+        "help": "수비대, 반격, 정지한 스택의 보호."
+      },
+      "logistics": {
+        "label": "병참",
+        "help": "집결과 단계적 출발, 경로 계획, 지속력과 보급."
+      },
+      "air": {
+        "label": "항공",
+        "help": "항공 출격, 호위, 적 방공망 제압."
+      },
+      "naval": {
+        "label": "해군",
+        "help": "상륙, 해상 호위, 제해."
+      },
+      "audacity": {
+        "label": "대담성",
+        "help": "대담한 장군은 낮은 전력비에서도 공격하고, 신중한 장군은 우위를 기다립니다.",
+        "low": "신중",
+        "high": "대담"
+      },
+      "experience": {
+        "label": "경험",
+        "help": "마찰(명령 지연) 감소, 보너스 강화. 승리할수록 늘어납니다."
+      }
+    },
+    "traits": {
+      "none": "두드러진 특성 없음",
+      "encircler": {
+        "label": "포위의 달인",
+        "help": "이미 아군이 포위한 주를 선호합니다. 결정 주기마다 목표 하나 추가."
+      },
+      "thrifty": {
+        "label": "병력 절약가",
+        "help": "더 확실한 우위를 요구하고 더 일찍 후퇴합니다."
+      },
+      "reckless": {
+        "label": "무모함",
+        "help": "적은 전력으로 공격하고 늦게 후퇴합니다. 마찰 증가."
+      },
+      "logistician": {
+        "label": "뛰어난 병참가",
+        "help": "돌격 전에 항상 집결합니다. 지속력과 보급 향상."
+      },
+      "airman": {
+        "label": "항공 에이스",
+        "help": "결정 주기마다 항공 출격과 호위가 하나씩 추가됩니다."
+      },
+      "sailor": {
+        "label": "노련한 뱃사람",
+        "help": "해상 호위 하나 추가."
+      },
+      "fortifier": {
+        "label": "방어 건설가",
+        "help": "정지한 스택의 보호 강화."
+      },
+      "methodical": {
+        "label": "체계적",
+        "help": "마찰 절반. 공격 전 요구 조건이 조금 더 까다롭습니다."
+      },
+      "blitz": {
+        "label": "전격전",
+        "help": "결정 주기마다 목표 하나 추가. 조금 더 일찍 공격합니다."
+      },
+      "veteran": {
+        "label": "베테랑",
+        "help": "빨리 배웁니다(경험 ×1.5). 급여가 약간 높습니다."
+      }
+    },
+    "general": {
+      "rating": "평점 {{value}}",
+      "victories_other": "{{count}}승",
+      "wounded": "부상",
+      "unpaid_other": "급여 미지급 {{count}}일",
+      "perDay": "/ 일",
+      "signing": "계약금 {{value}}",
+      "reserve": "예비역",
+      "missionCost": "임무 예상 비용",
+      "assign": "지휘 맡기기",
+      "hire": "고용 ({{value}})",
+      "dismiss": "해임",
+      "dismissTitle": "장군 해임",
+      "dismissText": "{{name}}을(를) 해임하시겠습니까? 퇴직금 {{value}}이(가) 지급되고, 그의 군은 대기 상태가 됩니다.",
+      "dismissConfirm": "해임 ({{value}})"
+    },
+    "generals": {
+      "hired": "내 장군",
+      "yours": "지휘 가능한 장군",
+      "none": "고용한 장군이 없습니다.",
+      "payroll": "{{value}} / 일",
+      "pool": "후보군",
+      "poolHint": "채용 가능한 장교: 고용 시 5일치 급여의 계약금.",
+      "branch": "군종",
+      "chief": "군종 사령관",
+      "noChief": "공석",
+      "forces": "군종 전력",
+      "freeForces": "군 미배속",
+      "isChief": "군종 사령관",
+      "makeChief": "사령관 임명",
+      "chiefHelp": "군종 사령관은 같은 군종 장군들의 역량을 높입니다. 급여가 더 높습니다.",
+      "chiefNamed": "{{name}}, 군종 사령관 임명."
+    },
+    "branch": {
+      "land": {
+        "name": "육군",
+        "short": "육",
+        "role": "지상 사령관",
+        "desc": "보병, 기갑, 포병, 지대지 미사일: 지역을 점령하고 확보합니다."
+      },
+      "air": {
+        "name": "공군",
+        "short": "공",
+        "role": "항공 사령관",
+        "desc": "전투기, 폭격기, 드론, 조기경보기: 하늘을 열고 종심을 타격하며 부대를 지원합니다."
+      },
+      "sea": {
+        "name": "해군",
+        "short": "해",
+        "role": "해상 사령관",
+        "desc": "수상함, 잠수함, 수송함: 봉쇄, 상륙 호위, 해상 타격."
+      },
+      "ad": {
+        "name": "방공",
+        "short": "방공",
+        "role": "방공 사령관",
+        "desc": "지대공 포대와 레이더: 영토, 기지, 전진하는 부대를 보호합니다."
+      }
+    },
+    "ops": {
+      "new": "새 작전",
+      "full": "작전은 최대 {{max}}개입니다. 하나를 종료하세요.",
+      "emptyTitle": "작전 없음",
+      "emptyText": "하나 이상의 국가, 목표, 이를 지휘할 장군을 지정하면 그들이 대신 행동합니다.",
+      "onboard": {
+        "title": "세 가지 선택으로 작전 수립",
+        "targets": "목표 국가: 지도에서 또는 검색으로, 하나 또는 여러 개.",
+        "goal": "목표: 전력 약화, 완전한 제공권, 완전 정복, 전략 타격, 봉쇄…",
+        "staff": "군종별 장군: 각자 역할과 전력을 받고 서로 협조합니다.",
+        "rule": "장군들은 스스로 타격, 전진, 초계, 봉쇄합니다. 스택에 대한 직접 명령은 끝날 때까지 우선합니다."
+      },
+      "path": {
+        "new": "새 작전",
+        "edit": "목표 변경",
+        "reinforce": "증원"
+      },
+      "step": {
+        "targets": "목표 국가",
+        "goal": "목표",
+        "staff": "장군",
+        "confirm": "확인"
+      },
+      "status": {
+        "planning": "준비 중",
+        "active": "진행 중",
+        "holding": "목표 유지",
+        "awaiting": "명령 대기",
+        "suspended": "중단됨",
+        "success": "성공",
+        "failed": "실패"
+      },
+      "phase": {
+        "stage": "집결",
+        "sead": "방공 제압",
+        "air": "제공권 확보",
+        "offensive": "공세",
+        "hold": "유지",
+        "done": "종료"
+      },
+      "goals": {
+        "attrition": {
+          "name": "전력 약화",
+          "short": "소모전",
+          "desc": "발견되는 모든 것을 타격: 방공, 항공기, 지상군, 함정, 기지."
+        },
+        "air_control": {
+          "name": "완전한 제공권",
+          "short": "하늘",
+          "desc": "방공망과 공군을 파괴한 뒤 초계로 하늘을 장악합니다."
+        },
+        "conquest": {
+          "name": "완전 정복",
+          "short": "정복",
+          "desc": "수도를 포함한 모든 주를 구역별로 항공 지원과 함께 점령합니다."
+        },
+        "decapitation": {
+          "name": "참수 작전",
+          "short": "수도",
+          "desc": "수도로 돌진해 최대한 빨리 점령합니다."
+        },
+        "strategic": {
+          "name": "전략 타격",
+          "short": "타격",
+          "desc": "산업, 에너지, 기지: 확인된 시설을 파괴합니다."
+        },
+        "sead": {
+          "name": "방공망 무력화",
+          "short": "방공",
+          "desc": "알려진 지대공 포대, 레이더, 방공 진지를 파괴합니다."
+        },
+        "blockade": {
+          "name": "해상 봉쇄",
+          "short": "봉쇄",
+          "desc": "항구를 봉쇄하고 함정을 격침하며 해상 교통로를 끊습니다."
+        },
+        "defend_border": {
+          "name": "국경 사수",
+          "short": "국경",
+          "desc": "지정한 국가에 맞서 국경을 방어하고 반격합니다."
+        },
+        "occupy": {
+          "name": "지역 점령",
+          "short": "점령",
+          "desc": "지도에서 지정한 주를 점령하고 확보합니다."
+        }
+      },
+      "metric": {
+        "forces": "추정 적 전력의 {{pct}} % 파괴",
+        "provinces": "점령한 주 {{done}}/{{total}}",
+        "capital": "수도: {{done}}/{{total}} 점령",
+        "sky": "하늘: 적 포대 {{sams}}개, 항공기 {{air}}대 남음",
+        "sams": "방공 {{total}}개 중 {{left}}개 남음",
+        "buildings": "파괴한 시설 {{done}}/{{total}}",
+        "ports": "봉쇄한 항구 {{done}}/{{total}}",
+        "front": "유지 중인 전선 도시 {{done}}/{{total}}"
+      },
+      "metrics": {
+        "forces": "파괴한 적 전력(추정 가치)",
+        "provinces": "점령한 주",
+        "capital": "수도",
+        "sams": "파괴한 방공",
+        "aircraft": "격추한 적 항공기",
+        "buildings": "파괴한 시설",
+        "ports": "봉쇄한 항구",
+        "front": "유지 중인 전선 도시"
+      },
+      "stats": {
+        "strikes": "타격",
+        "captures": "점령",
+        "kills": "파괴 가치",
+        "losses": "손실 요소",
+        "strength": "전력"
+      },
+      "sector": {
+        "north": "북부 구역",
+        "south": "남부 구역",
+        "east": "동부 구역",
+        "west": "서부 구역",
+        "center": "중부 구역",
+        "all": "전역 전체"
+      },
+      "sectorLeft": "남은 점령 {{left}}/{{total}}",
+      "roe": {
+        "strict": "엄격: 참모본부가 모든 참전 전에 승인을 요청합니다.",
+        "standard": "표준: 작전을 시작하면 목표 국가와의 전쟁이 승인됩니다.",
+        "free": "자유: 추격을 포함해 장군들이 스스로 결정합니다."
+      },
+      "progress": "진행 상황",
+      "staff": "참모본부",
+      "journal": "작전 일지",
+      "generals_other": "장군 {{count}}명",
+      "provinces_other": "{{count}}개 주",
+      "role": "역할",
+      "release": "작전에서 제외",
+      "back": "작전",
+      "reinforce": "증원",
+      "changeGoal": "목표 변경",
+      "cancel": "작전 취소",
+      "cancelTitle": "작전 취소",
+      "close": "종료",
+      "closeTitle": "작전 종료",
+      "cancelText": "{{name}}: 장군들은 예비로 전환되고(급여 유지), 작전용으로 편성된 군은 해체되며 그 스택은 직접 지휘로 돌아옵니다.",
+      "deadline": "기한",
+      "noDeadline": "없음",
+      "deadlineAt": "기한 {{day}} {{time}}",
+      "askWar": "참모본부가 {{nation}}과의 참전 승인을 요청합니다.",
+      "atWar": "교전 중",
+      "targetsLead": "목표 국가를 선택하세요: 지도에서 탭하거나 검색하세요.",
+      "noTarget": "지정된 국가가 없습니다.",
+      "removeTarget": "이 국가 제외",
+      "search": "국가 검색…",
+      "pickOnMap": "지도에서 지정",
+      "pick": {
+        "nation": "지도에서 국가를 탭해 목표로 지정합니다.",
+        "province": "점령할 주를 탭합니다(하나씩)."
+      },
+      "region": "지역",
+      "pickProvinces": "주 지정",
+      "pickGoal": "작전 목표를 선택하세요.",
+      "estWithSuggestion": "제안된 참모본부 기준 추정치입니다. 장군은 다음 단계에서 선택합니다.",
+      "est": {
+        "forces": "투입 전력",
+        "enemy": "추정 적 전력 {{value}}",
+        "cost": "비용",
+        "hire": "+ 계약금 {{value}}"
+      },
+      "staffLead_other": "장군 {{count}}명 선택됨.",
+      "suggest": "참모본부 제안",
+      "recommended": "권장",
+      "freeForces_other": "여유 스택 {{count}}개 · {{value}}",
+      "chiefIs": "군종 사령관: {{name}}",
+      "chief": "군종 사령관",
+      "hired": "고용됨",
+      "forces": "전력",
+      "autoForces": "자동 배정 전력",
+      "morePool": "후보 전체 보기(+{{count}})",
+      "lessPool": "접기",
+      "name": "작전명",
+      "defaultName": "{{goal}} — {{target}}",
+      "launch": "작전 개시",
+      "toast": {
+        "created": "작전 {{name}} 개시.",
+        "edited": "새 목표를 참모본부에 전달했습니다.",
+        "reinforced": "증원 전력을 작전에 투입했습니다.",
+        "released": "장군을 작전에서 제외했습니다.",
+        "suspended": "작전을 중단했습니다.",
+        "resumed": "작전을 재개했습니다.",
+        "cancelled": "작전을 종료했습니다."
+      }
+    },
+    "wizard": {
+      "path": "새 군",
+      "steps": "단계",
+      "step": {
+        "compose": "편성",
+        "mission": "임무",
+        "general": "장군"
+      },
+      "name": "군 이름",
+      "namePlaceholder": "제1군, 남부 항공단, 지중해 함대…",
+      "reinforceLead": "{{name}} 증원: 비어 있는 스택을 선택하세요.",
+      "filter": "군종",
+      "useSelection": "선택 항목 추가 ({{count}})",
+      "pickOnMap": "지도에서 선택",
+      "clear": "모두 제외",
+      "noFree": "비어 있는 스택이 없습니다: 모든 스택이 이미 군에 속해 있습니다.",
+      "mixed_other": "시스템 {{count}}종",
+      "summary": "군",
+      "piles": "스택",
+      "elements": "구성 요소",
+      "value": "가치",
+      "mission": "임무",
+      "pickMission": "임무를 선택하세요.",
+      "missing": "미완료",
+      "generalLead": "지휘할 장군을 선택하세요: 이 임무의 핵심 능력은 “{{skill}}”입니다.",
+      "costHire": "계약금 {{bonus}}, 이후 {{day}} / 일",
+      "costDay": "{{day}} / 일",
+      "createOnly": "임무 없이 생성",
+      "addPiles_other": "스택 {{count}}개 추가"
+    },
+    "defaultName": {
+      "landFirst": "제1군",
+      "land": "제{{n}}군",
+      "airFirst": "제1항공단",
+      "air": "제{{n}}항공단",
+      "seaFirst": "제1함대",
+      "sea": "제{{n}}함대"
+    },
+    "toast": {
+      "created": "{{name}} 편성 완료.",
+      "reinforced_other": "스택 {{count}}개가 군에 합류합니다.",
+      "removed_other": "스택 {{count}}개를 군에서 제외했습니다.",
+      "renamed": "군 이름을 변경했습니다.",
+      "mission": "임무를 장군에게 전달했습니다.",
+      "hired": "{{name}}이(가) 참모부에 합류합니다.",
+      "hiredShort": "장군을 고용했습니다.",
+      "assigned": "지휘권을 부여했습니다.",
+      "dismissed": "장군을 해임했습니다.",
+      "dissolved": "군을 해체했습니다.",
+      "suspended": "임무를 중단했습니다.",
+      "resumed": "임무를 재개했습니다.",
+      "saved": "설정을 저장했습니다."
+    }
+  },
   "engine": {
     "place": {
       "sea": "해상"
@@ -3813,6 +4458,195 @@
         "title": "점령 불가",
         "noCapturer": "{{system}}은(는) {{place}}을(를) 점령할 수 없습니다: 보병, 기갑 또는 포병이 필요합니다.",
         "noWar": "{{place}} 소유국과 전쟁 중이 아니므로 점령할 수 없습니다."
+      },
+      "cmd_generalResigned": {
+        "title": "사임",
+        "text": "{{general}}이(가) 사임합니다: 급여가 더 이상 지급되지 않습니다."
+      },
+      "cmd_generalUnpaid": {
+        "title": "급여 미지급",
+        "text": "{{general}}이(가) 급여를 받지 못했습니다(사임까지 {{days}}/{{max}}일)."
+      },
+      "cmd_generalKilled": {
+        "title": "장군 전사",
+        "text": "{{general}}이(가) {{army}} 사령부 피격으로 전사했습니다."
+      },
+      "cmd_generalWounded": {
+        "title": "장군 부상",
+        "text": "{{general}}이(가) 부상당했습니다: {{army}}이(가) 복귀를 기다립니다."
+      },
+      "cmd_missionSuccess": {
+        "title": "임무 완수",
+        "text": "{{army}}: 임무 완수."
+      },
+      "cmd_missionFailed": {
+        "title": "임무 실패",
+        "text": "{{army}}: 임무에 실패했습니다."
+      },
+      "cmd_askWar": {
+        "title": "승인 요청",
+        "text": "{{army}}: {{general}}이(가) {{nation}}와(과)의 개전 승인을 요청합니다."
+      },
+      "cmd_askStrike": {
+        "title": "승인 요청",
+        "text": "{{army}}: {{general}}이(가) {{nation}} 후방 타격 승인을 요청합니다."
+      },
+      "cmd_askReinforce": {
+        "title": "증원 요청",
+        "text": "{{army}}: {{general}}이(가) 스택 {{count}}개의 증원을 요청합니다."
+      },
+      "cmd_opAskWar": {
+        "title": "승인 요청",
+        "text": "작전 {{op}}: 참모본부가 {{nation}}과의 참전 승인을 요청합니다."
+      },
+      "cmd_opSuccess": {
+        "title": "작전 성공",
+        "text": "작전 {{op}}: 목표 달성."
+      },
+      "cmd_opFailed": {
+        "title": "작전 실패",
+        "text": "작전 {{op}}: 실패."
+      },
+      "cmd_opAchieved": {
+        "title": "목표 달성",
+        "text": "작전 {{op}}: 목표를 달성했고 유지 중입니다."
+      },
+      "cmd_opHeavyLosses": {
+        "title": "막대한 손실",
+        "text": "작전 {{op}}: 24시간 동안 전력의 {{pct}} % 손실."
+      },
+      "cmd_opStuck": {
+        "title": "작전 교착",
+        "text": "작전 {{op}}: {{hours}}시간째 진전 없음."
+      },
+      "gov_resigned": {
+        "title": "사임",
+        "text": "{{name}} 사임: 직책 보수가 더 이상 지급되지 않습니다."
+      },
+      "gov_missionDone": {
+        "title": "임무 완수",
+        "text": "{{mission}}: 목표 달성."
+      }
+    },
+    "cmd": {
+      "zone": "지정된 구역",
+      "mission": {
+        "conquer": "정복",
+        "defend": "방어",
+        "hold_front": "전선 유지",
+        "air_superiority": "제공권",
+        "air_defense": "방공",
+        "deep_strike": "종심 타격",
+        "sea_control": "제해 및 봉쇄",
+        "landing": "상륙 작전",
+        "reserve": "예비대"
+      },
+      "reason": {
+        "losses": "손실 과다",
+        "stuck": "진전 없음",
+        "tooWeak": "전력 부족",
+        "zoneLost": "구역 상실",
+        "deadline": "기한 초과"
+      },
+      "building": {
+        "air_defense_site": "방공 진지",
+        "radar_station": "레이더 기지",
+        "air_base": "공군 기지",
+        "military_base": "군사 기지",
+        "arms_factory": "무기 공장",
+        "refinery": "정유소",
+        "power_plant": "발전소",
+        "naval_base": "해군 기지",
+        "electronics_plant": "전자 공장",
+        "research_center": "연구소"
+      },
+      "j": {
+        "created_other": "군 편성: 스택 {{count}}개.",
+        "command": "{{general}}이(가) 지휘를 맡습니다.",
+        "mission": "임무 수령: {{mission}} — {{target}}.",
+        "missionCleared": "임무 해제: 스택이 명령을 기다립니다.",
+        "suspended": "명령에 따라 임무 중단.",
+        "resumed": "임무 재개.",
+        "warAuthorized": "승인 수령: {{nation}}와(과)의 전쟁.",
+        "warRefused": "{{nation}}와(과)의 전쟁 거부: 임무 중단.",
+        "strikeAuthorized": "전략 타격 승인됨.",
+        "strikeRefused": "전략 타격 거부: 임무 중단.",
+        "reinforceRefused": "증원 거부: {{general}}은(는) 보유 전력으로 대응합니다.",
+        "reinforced_other": "증원: 스택 {{count}}개가 군에 합류합니다.",
+        "detached_other": "스택 {{count}}개가 군에서 분리되었습니다.",
+        "lost_other": "손실: {{system}} {{count}}기 파괴.",
+        "captured": "{{province}} 점령.",
+        "declaredWar": "국경 통과: {{nation}}와(과) 전쟁 중입니다.",
+        "warBlocked": "{{nation}}와(과) 개전할 수 없습니다: 임무 중단.",
+        "askWar": "승인 요청: {{nation}} 국경 통과.",
+        "askStrike": "승인 요청: {{nation}} 후방 타격.",
+        "retreat": "{{system}} 소모가 심함: {{province}}(으)로 후퇴.",
+        "noReinforcements": "인근에 증원할 비어 있는 스택이 없습니다.",
+        "askReinforce_other": "증원 요청: 스택 {{count}}개.",
+        "tooWeak": "공격하기에 전력 부족(필요량의 {{pct}}%): 증원 요청.",
+        "offensive": "{{province}}에 공세 개시.",
+        "landing": "{{province}}에 상륙 개시: 항구에 집결 중.",
+        "counter": "{{province}}에 반격.",
+        "counterFront": "전선에서 반격.",
+        "blockade": "{{province}} 항구 봉쇄.",
+        "noIntel": "드러난 {{nation}} 시설이 없습니다: 정보(정찰)가 필요합니다.",
+        "strike": "{{province}}의 {{building}} 타격.",
+        "success": "임무 완수.",
+        "failed": "임무 실패: {{reason}}.",
+        "daily": "일일 보고: 전력 {{strength}}%, 점령 {{captures}}, 손실 {{losses}}.",
+        "resigned": "{{general}} 사임: 급여 미지급.",
+        "dismissed": "{{general}} 해임.",
+        "recovered": "{{general}}이(가) 회복 후 지휘에 복귀합니다.",
+        "wounded": "{{general}}이(가) 사령부에서 부상: 요양 {{days}}일.",
+        "killed": "{{general}}이(가) 사령부에서 전사.",
+        "joinedOp": "작전 {{op}}에 투입: {{role}}.",
+        "opClosed": "작전 {{op}} 종료: 군이 명령을 기다립니다."
+      },
+      "goal": {
+        "attrition": "전력 약화",
+        "air_control": "완전한 제공권",
+        "conquest": "완전 정복",
+        "decapitation": "참수 작전",
+        "strategic": "전략 타격",
+        "sead": "방공망 무력화",
+        "blockade": "해상 봉쇄",
+        "defend_border": "국경 사수",
+        "occupy": "지역 점령"
+      },
+      "role": {
+        "land": "육군",
+        "air": "공군",
+        "sea": "해군",
+        "ad": "방공"
+      },
+      "op": {
+        "created_other": "작전 개시: {{goal}}, 장군 {{count}}명.",
+        "declaredWar": "{{nation}}에 선전포고.",
+        "warBlocked": "{{nation}}과 참전할 수 없음: 작전 중단.",
+        "askWar": "승인 요청: {{nation}}과의 참전.",
+        "warAuthorized": "승인 수령: {{nation}}과의 전쟁.",
+        "warRefused": "{{nation}}과의 전쟁 거부: 작전 중단.",
+        "strikes_other": "{{army}}: 타격 {{count}}회 — 방공 {{sead}}, 항공기 {{air}}, 부대 {{ground}}, 시설 {{bld}}.",
+        "offensive": "{{army}}: {{province}}에 공세.",
+        "jointAssault": "장군들의 {{province}} 합동 공격, 지휘 {{army}}.",
+        "tooWeak": "{{army}}: {{province}} 앞에서 전력 부족 — 항공 지원과 증원 요청.",
+        "sectorDone": "{{army}}: 구역 점령, 이제 전역의 나머지를 지원.",
+        "captured": "{{province}} 점령.",
+        "lostProvince": "{{province}} 상실.",
+        "recon": "알려진 목표 없음: {{nation}} 상공 정찰 개시.",
+        "blockade": "{{army}}: {{province}} 항구 봉쇄.",
+        "achieved": "목표 달성: 유지 중.",
+        "heavyLosses": "막대한 손실: 24시간 동안 투입 전력의 {{pct}} % 손실.",
+        "stuck": "작전 교착: {{hours}}시간째 진전 없음.",
+        "success": "목표 달성: 작전 성공.",
+        "failed": "작전 실패: {{reason}}.",
+        "goalChanged": "새 목표: {{goal}}.",
+        "released": "{{army}}, 작전에서 이탈.",
+        "reinforced_other": "증원: 장군 {{count}}명이 작전에 합류.",
+        "role": "{{army}}: 새 역할 — {{role}}.",
+        "reassigned": "{{army}}, 다른 작전에 재배치.",
+        "suspended": "명령에 따라 작전 중단.",
+        "resumed": "작전 재개."
       }
     },
     "spyNews": {
@@ -3820,6 +4654,461 @@
       "executedB": "{{host}}가 간첩죄로 유죄 판결을 받은 {{owner}} 요원의 처형을 발표했습니다. 국제사회의 규탄.",
       "swapH": "{{a}}와 {{b}} 간 요원 교환",
       "swapB": "{{a}}와 {{b}}가 포로 교환을 실시했습니다: 요원 {{n}}명 석방."
+    },
+    "gov": {
+      "m": {
+        "air_bases": "공군 기지",
+        "military_bases": "군사 기지",
+        "upgrade_bases": "기지 현대화",
+        "logistics": "군수 지원",
+        "fortify": "국경 요새화",
+        "air_defense": "국토 방공",
+        "coastal": "해안 방어",
+        "research_next": "다음 세대",
+        "research_branch": "분야별 연구",
+        "research_labs": "연구소",
+        "produce": "장비 발주",
+        "stockpile": "전략 비축",
+        "arms_industry": "방위 산업",
+        "counterintel": "방첩",
+        "protect_sites": "민감 시설 보호",
+        "watch": "국가 감시",
+        "map_defenses": "방어망 파악",
+        "economic_intel": "경제 정보",
+        "resource": "자원 생산",
+        "industry": "산업 개발",
+        "revenue": "세입 증대",
+        "war_economy": "전시 경제",
+        "reserves": "국고 예비금",
+        "repair": "재건"
+      },
+      "focus": {
+        "counterintel": "방첩",
+        "protection": "시설 보호"
+      },
+      "j": {
+        "appointed": "{{name}} 취임.",
+        "replaced": "{{name}} 퇴임(퇴직금 지급).",
+        "dismissed": "{{name}} 해임(퇴직금 지급).",
+        "resigned": "{{name}} 사임: 직책 보수가 더 이상 지급되지 않습니다.",
+        "unpaid": "{{name}} 보수 미지급({{days}}일 연속).",
+        "missionNew": "임무 수령: {{mission}}.",
+        "missionEdit": "임무 수정: {{mission}}.",
+        "missionSuspended": "임무 중지: {{mission}}.",
+        "missionResumed": "임무 재개: {{mission}}.",
+        "missionCancelled": "임무 철회: {{mission}}(시작된 것은 계속).",
+        "missionDone": "임무 완수: {{mission}}.",
+        "built": "착공: {{building}} {{level}}레벨, {{place}} — {{cost}}.",
+        "jobDone": "완공: {{building}} {{level}}레벨, {{place}}.",
+        "repaired": "수리 시작: {{building}}, {{place}} — {{cost}}.",
+        "research": "연구 시작: {{node}} — {{cost}}.",
+        "researched": "연구 완료: {{node}}.",
+        "produced": "발주 완료: {{count}} × {{system}}, {{place}} — {{cost}}.",
+        "imported": "수입: {{count}} × {{system}}, {{place}}에 인도 — {{cost}}.",
+        "intelOp": "작전 개시: {{op}} — {{cost}}.",
+        "intelOpAt": "작전 개시: {{op}}, 대상 {{nation}} — {{cost}}.",
+        "opSuccess": "작전 성공: {{op}}.",
+        "opFailed": "작전 성과 없음: {{op}}.",
+        "focus": "국내 정보 우선순위: {{focus}}.",
+        "protected": "시설 보호 시작: {{place}}.",
+        "blocked": "막힘 — {{why}}"
+      },
+      "why": {
+        "noHead": "공석: 책임자를 임명하세요.",
+        "envelope": "예산 소진: 사용 가능 {{left}}, 필요 {{cost}}.",
+        "funds": "자금 부족: {{cost}} 필요.",
+        "reserve": "신중 예비금: 국고는 {{floor}} 이상이어야 합니다(필요 {{cost}}).",
+        "resources": "자원 부족.",
+        "noSite": "구역에 허용된 위치가 없습니다(해안, 매장지 또는 최대 레벨).",
+        "noDeposit": "영토에 {{resource}} 매장지가 없습니다.",
+        "research": "연구가 필요합니다.",
+        "capacity": "용량 초과(대기열 또는 부서).",
+        "locked": "금수 조치나 봉쇄로 막혔습니다.",
+        "noTarget": "대상이 잘못되었거나 사라졌습니다.",
+        "noSystem": "사용 가능한 “{{category}}” 장비가 없습니다(연구, 라이선스 또는 수입).",
+        "noResearch": "이 목표에 사용 가능한 연구가 없습니다.",
+        "nothingDamaged": "손상된 건물이 없습니다.",
+        "saving": "예비금 적립 중: {{pct}} %.",
+        "reserveHeld": "예비금 도달: 다른 임무가 이를 지킵니다.",
+        "stocked": "재고 도달: 줄어드는 즉시 보충합니다.",
+        "inProgress": "행동 진행 중.",
+        "refused": "명령이 거부되었습니다.",
+        "unlocked": "다음 세대는 이미 사용 가능합니다.",
+        "allProtected": "시설 보호가 최대입니다."
+      }
     }
+  },
+  "gov": {
+    "unavailable": "이 게임에서는 정부를 사용할 수 없습니다.",
+    "perDay": " / 일",
+    "newMission": "새 임무",
+    "missionsTitle": "임무",
+    "history": "완료 및 철회",
+    "ministries": {
+      "defense": "국방부",
+      "economy": "경제부"
+    },
+    "sections": {
+      "commands": "사령부",
+      "infra": "기반 시설",
+      "armament": "무기",
+      "intel": "정보"
+    },
+    "offices": {
+      "defense": {
+        "name": "국방부 장관",
+        "head": "국방부 장관",
+        "scope": "기반 시설 및 군수"
+      },
+      "research": {
+        "name": "무기연구국",
+        "head": "연구국장",
+        "scope": "군사 연구개발"
+      },
+      "production": {
+        "name": "무기생산국",
+        "head": "생산국장",
+        "scope": "군수 생산"
+      },
+      "intel_interior": {
+        "name": "국내 정보",
+        "head": "국내정보국장",
+        "scope": "방첩, 국내 보안, 시설 보호"
+      },
+      "intel_exterior": {
+        "name": "해외 및 군사 정보",
+        "head": "해외정보국장",
+        "scope": "HUMINT, SIGINT, 정찰"
+      },
+      "economy": {
+        "name": "경제부 장관",
+        "head": "경제부 장관",
+        "scope": "산업, 자원, 세입, 예비금"
+      }
+    },
+    "skills": {
+      "management": "관리",
+      "industry": "산업",
+      "logistics": "군수",
+      "finance": "재정 신중성",
+      "science": "과학",
+      "intelligence": "정보"
+    },
+    "traits": {
+      "efficient": {
+        "name": "유능함",
+        "tip": "건설, 발주, 연구가 더 빠릅니다."
+      },
+      "frugal": {
+        "name": "검소함",
+        "tip": "협상을 더 잘하고 비용이 적습니다."
+      },
+      "ambitious": {
+        "name": "야심가",
+        "tip": "동시에 한 가지 행동을 더 하고, 예비금을 적게 두며, 비용이 더 듭니다."
+      },
+      "cautious": {
+        "name": "신중함",
+        "tip": "더 많은 현금 예비금을 둡니다."
+      },
+      "technocrat": {
+        "name": "기술관료",
+        "tip": "항상 최선의 선택을 합니다. 비용이 더 듭니다."
+      },
+      "reformer": {
+        "name": "개혁가",
+        "tip": "조금 더 빠르고 조금 더 저렴합니다."
+      },
+      "bureaucrat": {
+        "name": "관료",
+        "tip": "느리지만 저렴합니다."
+      }
+    },
+    "effects": {
+      "speed": "속도 {{v}}",
+      "speedTip": "관리: 시작한 건설, 발주, 연구의 소요 시간.",
+      "discount": "비용 {{v}}",
+      "discountTip": "전문성: 임무의 모든 지출에서 얻어내는 할인.",
+      "slotsTip": "관리: 각 임무가 병행하는 행동 수.",
+      "reserve": "예비금 {{days}}일",
+      "reserveTip": "신중성: 임무가 항상 국고에 남기는 예산 일수.",
+      "slots": "병행: {{count}}"
+    },
+    "head": {
+      "rating": "평점",
+      "ratingTip": "해당 직책에 중요한 세 가지 능력의 평균.",
+      "cost": "비용",
+      "appoint": "임명 · {{cost}}",
+      "appointTip": "임명 보너스(및 교체되는 사람의 퇴직금): {{cost}}",
+      "vacant": "공석입니다.",
+      "vacantText": "책임자를 고르세요. 능력이 임무의 속도, 비용, 신중성을 정합니다.",
+      "replace": "교체",
+      "dismiss": "해임",
+      "replaceTitle": "교체 — {{office}}",
+      "replaceText": "현 책임자는 퇴직금 {{cost}}를 받고 떠납니다. 임무는 후임자가 이어갑니다.",
+      "dismissTitle": "책임자 해임",
+      "dismissText": "{{name}}은(는) 퇴직금 {{cost}}를 받고 떠납니다. 이 직책의 임무는 후임자를 기다립니다.",
+      "unpaid": "미지급: {{count}}일"
+    },
+    "toast": {
+      "appointed": "{{name}} 임명.",
+      "dismissed": "책임자를 해임했습니다.",
+      "edited": "임무를 수정했습니다.",
+      "resumed": "임무를 재개했습니다.",
+      "suspended": "임무를 중지했습니다.",
+      "cancelled": "임무를 철회했습니다.",
+      "created": "임무 부여: {{mission}}."
+    },
+    "status": {
+      "active": "진행 중",
+      "waiting": "대기 중",
+      "blocked": "막힘",
+      "suspended": "중지됨",
+      "done": "완료",
+      "cancelled": "철회됨"
+    },
+    "mission": {
+      "progress": "진행률",
+      "goalAuto": "목표는 부처가 설정",
+      "budgetTip": "배정된 예산 대비 지출(할인 차감).",
+      "priority": "우선순위",
+      "edit": "수정",
+      "suspend": "중지",
+      "resume": "재개",
+      "cancel": "철회",
+      "cancelTitle": "임무 철회",
+      "cancelText": "“{{mission}}” 임무를 멈춥니다. 이미 시작된 건설, 발주, 작전은 계속됩니다.",
+      "editTitle": "수정 — {{mission}}",
+      "save": "저장",
+      "pending": "진행 중: {{count}}"
+    },
+    "units": {
+      "projects": "건설: {{done}} / {{goal}}",
+      "nodes": "연구: {{done}} / {{goal}}",
+      "lots": "로트: {{done}} / {{goal}}",
+      "ops": "작전: {{done}} / {{goal}}",
+      "days": "예산 일수: {{done}} / {{goal}}",
+      "sites": "보호 시설: {{done}} / {{goal}}",
+      "repairs": "수리: {{done}} / {{goal}}"
+    },
+    "budget": {
+      "mode": "예산",
+      "amount": "금액",
+      "share": "세입 비율",
+      "shareShort": "세입의 {{pct}} %",
+      "amountShort": "고정 예산",
+      "left": "사용 가능: {{v}}",
+      "perDayOf": "≈ 하루 {{v}} (세입 {{rev}} / 일)",
+      "cap": "지출 상한",
+      "noCap": "상한 없음: 한도가 매일 쌓입니다.",
+      "daysOf": "국방 예산 {{count}}일분",
+      "daysShort": "{{count}}일"
+    },
+    "priority": {
+      "1": "낮음",
+      "2": "보통",
+      "3": "높음"
+    },
+    "journal": {
+      "title": "기록",
+      "empty": "아직 없습니다."
+    },
+    "hint": {
+      "vacantMissions": "이 임무들은 책임자를 기다리고 있습니다. 임명하면 진행됩니다.",
+      "vacant": "책임자를 임명한 뒤 임무를 맡기세요.",
+      "noMission": "임무가 없습니다. “새 임무”로 맡기세요."
+    },
+    "zone": {
+      "borderWith": "국경: {{nation}}",
+      "aroundShort": "{{place}} 주변 {{km}} km",
+      "all": "전 영토",
+      "border": "국경",
+      "around": "주변…",
+      "radius": "반경"
+    },
+    "commands": {
+      "title": "4개 사령부",
+      "scope": "육군, 공군, 해군, 방공",
+      "open": "사령부 열기",
+      "land": "육군",
+      "air": "공군",
+      "sea": "해군",
+      "air_defense": "방공",
+      "noChief": "사령관 없음",
+      "soon": "사령관과 작전: 사령부에서 준비 중.",
+      "soonBadge": "준비 중",
+      "now": "현재 사령부: 군 {{armies}}, 장군 {{generals}}.",
+      "ops": "작전: {{count}}"
+    },
+    "kpi": {
+      "heads": "책임자",
+      "missions": "임무",
+      "spent": "지출",
+      "payroll": "비용",
+      "floor": "예비금",
+      "floorTip": "임무가 항상 국고에 남기는 자금(신중성, 예비금 임무)."
+    },
+    "wizard": {
+      "path": "새 임무",
+      "step": {
+        "type": "임무",
+        "params": "대상과 목표",
+        "budget": "예산"
+      },
+      "back": "뒤로",
+      "next": "다음",
+      "confirm": "임무 맡기기",
+      "resource": "자원",
+      "branch": "연구 분야",
+      "category": "장비",
+      "nation": "대상 국가",
+      "pick": "선택…",
+      "zone": "구역",
+      "err": {
+        "type": "임무를 고르세요.",
+        "nation": "대상 국가를 고르세요.",
+        "border": "이웃 국가를 고르세요.",
+        "around": "중심 주를 고르세요.",
+        "budget": "예산이 비어 있습니다."
+      }
+    },
+    "goal": {
+      "projects": "목표: 건설",
+      "nodes": "목표: 연구",
+      "lots": "목표: 장비 로트",
+      "ops": "목표: 작전",
+      "days": "목표: 국고의 예산 일수",
+      "sites": "목표: 보호 시설",
+      "repairs": "목표: 수리",
+      "auto": {
+        "research": "확정 시 목표 설정: 다음 세대를 여는 모든 연구.",
+        "protect": "목표: 국내 정보가 허용하는 만큼 시설을 보호한 뒤 강화합니다."
+      }
+    },
+    "estimate": {
+      "title": "예측",
+      "options": "가능한 행동",
+      "first": "첫 행동",
+      "total": "전체 목표",
+      "hours": "행동 1회 소요 시간",
+      "reserveTarget": "목표 국고",
+      "envelope": "예산",
+      "open": "세입 비율, 상한 없음",
+      "covers": "예산으로 가능한 행동",
+      "head": "{{name}}: 속도 +{{speed}} %, 할인 {{discount}} %, 국고에 {{reserve}} 유지.",
+      "vacant": "공석: 임무가 책임자를 기다립니다.",
+      "note": "보유한 주와 오늘의 가격 기준 추정. 부처는 예산과 자원을 지킵니다.",
+      "noDeposit": "구역에 이 자원의 매장지가 없습니다.",
+      "noSite": "구역에 허용된 위치가 없습니다.",
+      "noSystem": "이 범주에 사용 가능한 장비가 없습니다.",
+      "unlocked": "다음 세대는 이미 사용 가능합니다.",
+      "noResearch": "이 목표에 남은 연구가 없습니다.",
+      "nothingDamaged": "현재 손상된 건물이 없습니다.",
+      "few": "구역 내 가능한 행동: {{count}}, 목표보다 적어 가능한 수준으로 줄어듭니다.",
+      "coversN": "≈ {{count}}"
+    },
+    "missions": {
+      "air_bases": {
+        "name": "공군 기지",
+        "desc": "새 공군 기지를 짓고 영토 범위를 넓힙니다."
+      },
+      "military_bases": {
+        "name": "군사 기지",
+        "desc": "군사 기지 설치: 지상 생산과 보급 반경."
+      },
+      "upgrade_bases": {
+        "name": "기지 현대화",
+        "desc": "기존 공군·육군·해군 기지의 레벨을 올립니다."
+      },
+      "logistics": {
+        "name": "군수 지원",
+        "desc": "국경 근처 전진 보급소, 기지, 병원: 부대 보급."
+      },
+      "fortify": {
+        "name": "국경 요새화",
+        "desc": "위협받는 국경 주에 요새와 벙커를 짓습니다."
+      },
+      "air_defense": {
+        "name": "국토 방공",
+        "desc": "핵심 주 주변에 방공 진지와 레이더 기지를 둡니다."
+      },
+      "coastal": {
+        "name": "해안 방어",
+        "desc": "해안을 따라 해안포대와 해군 기지를 둡니다."
+      },
+      "research_next": {
+        "name": "다음 세대",
+        "desc": "장비의 다음 세대를 생산하는 데 필요한 연구를 합니다."
+      },
+      "research_branch": {
+        "name": "분야별 연구",
+        "desc": "연구 분야를 노드별로 진척시킵니다."
+      },
+      "research_labs": {
+        "name": "연구소",
+        "desc": "연구 센터와 비밀 연구소를 짓고 개선합니다."
+      },
+      "produce": {
+        "name": "장비 발주",
+        "desc": "한 범주의 장비를 일정량 생산합니다(국내 제조 또는 수입)."
+      },
+      "stockpile": {
+        "name": "전략 비축",
+        "desc": "한 범주(미사일, 탄약…)의 재고를 유지하고 보충합니다."
+      },
+      "arms_industry": {
+        "name": "방위 산업",
+        "desc": "무기 공장과 전자 공장을 발전시킵니다."
+      },
+      "counterintel": {
+        "name": "방첩",
+        "desc": "외국 정보망 해체: 일제 수색과 해체."
+      },
+      "protect_sites": {
+        "name": "민감 시설 보호",
+        "desc": "핵심 산업 시설을 보호하고 강화합니다."
+      },
+      "watch": {
+        "name": "국가 감시",
+        "desc": "병력과 동원을 추적: 정찰, 감청, 요원."
+      },
+      "map_defenses": {
+        "name": "방어망 파악",
+        "desc": "방어 위치 파악: 군사 정찰과 발신원 위치 추적."
+      },
+      "economic_intel": {
+        "name": "경제 정보",
+        "desc": "산업과 자원 파악: 경제 정찰, 요원."
+      },
+      "resource": {
+        "name": "자원 생산",
+        "desc": "매장지가 있는 곳에 유정, 광산, 농장, 전자 공장을 둡니다."
+      },
+      "industry": {
+        "name": "산업 개발",
+        "desc": "가장 생산적인 주에 지역 산업과 발전소를 둡니다."
+      },
+      "revenue": {
+        "name": "세입 증대",
+        "desc": "세입이 가장 높은 곳에 업무 지구와 지역 산업을 둡니다."
+      },
+      "war_economy": {
+        "name": "전시 경제",
+        "desc": "전쟁 수행을 위한 무기 공장, 발전소, 정유소."
+      },
+      "reserves": {
+        "name": "국고 예비금",
+        "desc": "다른 임무가 손댈 수 없는 예비금을 둡니다."
+      },
+      "repair": {
+        "name": "재건",
+        "desc": "손상된 건물을 수리합니다. 비싼 것부터."
+      }
+    },
+    "ministriesShort": {
+      "defense": "국방",
+      "economy": "경제"
+    },
+    "suggest": "가능한 임무"
   }
 }

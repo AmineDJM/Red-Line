@@ -139,7 +139,7 @@ function orbatValue(state: EngineState, o: Orbat): number {
 }
 
 /** Valeur des forces de `t` que `n` a détruites (statistiques de combat de `n`). */
-function destroyedBy(state: EngineState, n: NationId, t: NationId): number {
+export function destroyedBy(state: EngineState, n: NationId, t: NationId): number {
   const m = (
     state.mods as Record<string, { stats?: Record<NationId, { vs?: Record<NationId, number> }> }>
   ).mil;

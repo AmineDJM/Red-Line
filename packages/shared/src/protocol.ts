@@ -7,6 +7,8 @@ import { BUILDING_TYPES } from './map.js';
 import { DEPARTMENTS, DETAINEE_ACTIONS } from './intel.js';
 import { RESOLUTION_TYPES } from './diplomacy.js';
 import { DOMESTIC_POLICIES, INTERIOR_FOCUS } from './domestic.js';
+import { COMMAND_ORDERS } from './command.js';
+import { GOVERNMENT_ORDERS } from './government.js';
 
 /** Opérations de renseignement (voir IntelOpKind). */
 export const INTEL_OPS = [
@@ -307,6 +309,10 @@ export const OrderSchema = z.discriminatedUnion('kind', [
     steps: z.array(OperationStepSchema).min(1).max(30),
   }),
   z.object({ kind: z.literal('cancelOperation'), operationId: id }),
+  // Centre de commandement (armées, missions, généraux).
+  ...COMMAND_ORDERS,
+  // Gouvernement (ministères, directions, missions).
+  ...GOVERNMENT_ORDERS,
 ]);
 export type Order = z.infer<typeof OrderSchema>;
 
@@ -356,6 +362,11 @@ export interface GameMeta {
   endReason?: 'victory' | 'abandoned' | 'admin';
   /** Partie multijoueur non classée : un joueur en mode illimité y joue (aucun point de classement). */
   unranked?: boolean;
+  /**
+   * Version de la carte épinglée par la partie (identifiants de province). Une partie créée avant un
+   * changement de carte garde la sienne : le client charge alors `/api/map/*?map=<version>`.
+   */
+  mapVersion?: number;
 }
 
 export interface ShopPolicy {

@@ -11,6 +11,7 @@ import {
 } from '@redline/ui';
 import { fmtClock } from '../i18n/index.js';
 import { netPerDay, resourceFlows } from '../lib/economy.js';
+import { blockedCount } from '../lib/government.js';
 import { useGame } from '../store/game.js';
 import { useUi } from '../store/ui.js';
 import { useGameTime } from './helpers.js';
@@ -242,6 +243,7 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
   const setAlertsOpen = useUi((s) => s.setAlertsOpen);
   const setPaletteOpen = useUi((s) => s.setPaletteOpen);
   const toggleWindow = useUi((s) => s.toggleWindow);
+  const windows = useUi((s) => s.windows);
   const unread = notifications.filter((n) => !n.read).length;
   const critical = notifications.some(
     (n) => !n.read && n.item.kind === 'generic' && n.item.severity === 'critical',
@@ -252,6 +254,32 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
   const nation = me ? view?.nations[me] : null;
   const alliance = view?.diplomacy?.alliances.find((a) => a.id === view.diplomacy?.myAllianceId);
   const level = view?.alertLevel;
+  // Centre de commandement : demandes des généraux en attente (autorisation, renforts).
+  const requests = view?.command?.armies.filter((a) => !!a.request).length ?? 0;
+  // Gouvernement : missions bloquées des ministères (fonds, poste vacant, enveloppe épuisée…).
+  const blocked = blockedCount(view?.government);
+  const government = !view?.spectator ? (
+    <IconButton
+      label={t('sections.government')}
+      icon={<Icon name="building" size={mobile ? 18 : 17} />}
+      badge={blocked}
+      badgeTone="amber"
+      active={windows.some((w) => w.id === 'government')}
+      onClick={() => toggleWindow('government')}
+      data-testid="government-button"
+    />
+  ) : null;
+  const command = !view?.spectator ? (
+    <IconButton
+      label={t('sections.command')}
+      icon={<Icon name="star" size={mobile ? 18 : 17} />}
+      badge={requests}
+      badgeTone="amber"
+      active={windows.some((w) => w.id === 'command')}
+      onClick={() => toggleWindow('command')}
+      data-testid="command-button"
+    />
+  ) : null;
 
   const bell = (
     <IconButton
@@ -276,6 +304,8 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
             {view?.spectator ? <span className="topbar__spect">{t('game.spectator')}</span> : null}
           </span>
           <ClockControl compact />
+          {government}
+          {command}
           {bell}
         </div>
         <div className="topbar__row topbar__row--sub">
@@ -322,6 +352,8 @@ export function TopBar({ mobile, onExit }: { mobile: boolean; onExit: () => void
         <span>{t('console.open')}</span>
         <Kbd keys={['Ctrl', 'K']} />
       </button>
+      {government}
+      {command}
       <IconButton
         label={t('sections.chat')}
         icon={<Icon name="chat" size={18} />}
