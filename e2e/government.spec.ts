@@ -30,7 +30,6 @@ test('gouvernement : nommer un ministre de l’Économie, mission pétrole, chan
   await page.getByTestId('government-button').click();
   await expect(page.locator('#win-government')).toBeVisible();
   await expect(page.getByTestId('gov-ministry-defense')).toBeVisible();
-  await shot(page, '1-defense', mobile);
   await page.getByRole('tab', { name: /Économie/ }).click();
   await expect(page.getByTestId('gov-ministry-economy')).toBeVisible();
 
@@ -117,5 +116,9 @@ test('gouvernement : nommer un ministre de l’Économie, mission pétrole, chan
   await page.getByTestId('gov-section-commands').click();
   await expect(page.getByTestId('gov-commands')).toBeVisible();
   await shot(page, '7-commands', mobile);
+  await page.getByTestId('gov-section-armament').click();
+  await expect(page.getByTestId('gov-office-research')).toBeVisible();
+  await expect(page.getByTestId('gov-office-production')).toBeVisible();
+  await shot(page, '8-armament', mobile);
   expect(errors).toEqual([]);
 });
