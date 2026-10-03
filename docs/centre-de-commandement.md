@@ -96,6 +96,93 @@ continu, seuil de réussite) :
 | `defend_border`         | front tenu, contre-attaques, DCA ; ne déclare pas la guerre                                                                                                        | continu                                                             |
 | `occupy`                | comme la conquête, sur les provinces désignées                                                                                                                     | provinces prises et tenues                                          |
 
+Objectifs ajoutés (37 au total, par **catégorie** `land` / `air` / `sea` / `ad` / `joint`, champ `category` ;
+`war: false` = aucune déclaration de guerre ; paramètres numériques dans `params`, tous dans
+`data/balance/default.json`). Préparation des cibles : `opgoals.ts` (`setupGoal`), mesure : `measureGoal`,
+conduite spécifique : `opconduct.ts`, branchée dans `opbrain.ts`.
+
+| Objectif                | Cat.  | Conduite                                                                                                              | Réussite (mesure principale)                                    |
+| ----------------------- | ----- | --------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| `counteroffensive`      | terre | reprendre ses provinces occupées, les plus précieuses d'abord, appui aérien                                           | provinces reprises / occupées                                   |
+| `liberation`            | terre | chasser l'occupant des provinces d'un allié (cible `ally`) ; chaque prise est **rendue** à l'allié                    | provinces libérées                                              |
+| `encircle`              | terre | couper le goulet (provinces de la poche au contact, poids `neckWeight`), puis réduire la poche                        | toutes les provinces de la poche                                |
+| `breakthrough`          | terre | axe étroit vers la capitale (chemin BFS), toutes les piles sur l'axe (secteur `all`)                                  | profondeur `depth` atteinte sur l'axe                           |
+| `raid`                  | terre | frapper `targets` installations de l'arrière, puis phase `withdraw` (repli ordonné) après `hours`                     | arrière frappé (installations, provinces) puis piles rentrées   |
+| `siege`                 | terre | prendre l'anneau (voisines de la ville) d'abord, puis la ville                                                        | ville prise                                                     |
+| `defense_depth`         | terre | lignes successives tenues par parts (`line1`, `line2`), contre-attaques, repli ordonné                                | provinces des lignes tenues (continu)                           |
+| `defend_capital`        | terre | garnison `capitalShare`, anneau tenu, DCA et chasse au-dessus de la capitale                                          | capitale et anneau tenus (continu)                              |
+| `pacify`                | terre | une garnison par province conquise ou agitée, chasse aux infiltrés à `huntKm`                                         | provinces sécurisées (continu)                                  |
+| `show_of_force`         | terre | masser à la frontière sans la franchir (`war: false`)                                                                 | `success` (60 %) des piles massées à `borderKm`                 |
+| `ally_support`          | int.  | déployer sur le front d'un allié, couvrir et défendre                                                                 | provinces du front allié couvertes (continu)                    |
+| `interdiction`          | air   | bases avancées, ports, dépôts de carburant, convois en mouvement                                                      | installations logistiques détruites ; convois frappés en second |
+| `cas`                   | air   | frapper les forces au contact de ses offensives en cours (`radiusKm`)                                                 | forces adverses au contact détruites                            |
+| `strategic_bombing`     | air   | industrie, énergie, ressources, y compris les réparations (cibles reprises)                                           | sites détruits                                                  |
+| `air_defense_territory` | air   | patrouilles (`patrolShare`) au-dessus de la capitale et des bases, interceptions, DCA (`war: false`)                  | appareils ennemis abattus (continu)                             |
+| `air_redeploy`          | air   | convoyage vers les terrains les plus proches de la zone (portée de convoyage, `war: false`)                           | appareils rebasés                                               |
+| `armed_recon`           | air   | survol et révélation du pays, frappes d'opportunité                                                                   | provinces révélées                                              |
+| `naval_supremacy`       | mer   | traque (`huntKm`) et attaque des flottes connues, puis patrouille                                                     | navires ennemis coulés                                          |
+| `antiship`              | mer   | sous-marins, missiles antinavires et patrouilles contre tout navire                                                   | navires coulés                                                  |
+| `convoy_escort`         | mer   | escorte des transports chargés, patrouille des routes (`war: false`)                                                  | transports escortés (continu)                                   |
+| `amphibious`            | mer   | transports ajustés à la capacité (`fitTransports`), escorte, appui, tête de pont                                      | provinces côtières visées prises                                |
+| `port_blockade`         | mer   | `shipsPerPort` navires par port, navires sortants attaqués, bases navales frappées                                    | ports bloqués (continu)                                         |
+| `naval_strikes`         | mer   | salves de croisière navales (`salvos`) sur défenses, bases, sites côtiers                                             | cibles détruites                                                |
+| `missile_shield`        | DCA   | antimissiles (enveloppe `ballistic_missile`) et DCA sur la capitale et `sites` bases (`war: false`)                   | sites couverts ; interceptions comptées                         |
+| `ad_umbrella`           | DCA   | la DCA suit les offensives, juste derrière le front                                                                   | offensives couvertes (continu)                                  |
+| `missile_campaign`      | DCA   | salves coordonnées (`salvos`, `readyShare` des lanceurs prêts ou `waitHours`) sur DCA, bases aériennes et militaires  | cibles détruites                                                |
+| `blitz`                 | int.  | **objectif composé** : `chain` [sead, air_control, breakthrough, decapitation], échéances `chainHours` [36, 24, 0, 0] | chaque phase selon son critère                                  |
+| `combined_landing`      | int.  | objectif composé : [sead, amphibious], [24, 0]                                                                        | chaque phase selon son critère                                  |
+
+Cibles par genre (`target`) : `nation`, `provinces`, `place` (provinces ou pays), `self` (son propre territoire,
+rien à désigner) et `ally` (pays allié ou ami, refusé en guerre). Un objectif sans cible au lancement
+(contre-offensive sans province occupée…) est refusé avant toute embauche.
+
+### Enchaînement des phases et « quand c'est fini »
+
+Une opération porte une **chaîne** de phases (`OpSt.chain`, ordre `campaignCreate.phases`, au plus `maxPhases`),
+objectif composé développé (`blitz`, `combined_landing`), chaque phase avec ses cibles (celles de la précédente
+par défaut) et une **échéance** facultative (`hours`, ou `phaseHours` pour la première). Une phase se termine sur
+réussite (ou maintien acquis pour un objectif continu) ou à son échéance ; la suivante démarre aussitôt avec les
+**mêmes généraux et les mêmes armées** (`advancePhase` → `setGoal`), rassemblement court (`phaseStageHours`),
+journal `phaseDone` / `phaseTimeout` / `phaseSkipped` (phase sans cible sautée), notification `cmd_opPhase`.
+`campaignEdit` : `phases` (remplace les phases à venir), `after`, `nextPhase` (passer), `stageNow` (écourter le
+rassemblement).
+
+**Quand c'est fini** (`after`) : `hold` (défaut) — l'opération close, les armées gardent leurs généraux et
+**exploitent** : garnisons sur les gains, DCA, chasse si l'ennemi vole, contre-attaques (`holdOp` /
+`holdGround`) ; `home` — retour vers les villes, bases et ports d'origine (`returnHome`, au plus `returnHours`),
+puis remise des piles ; `reserve` — remise immédiate. Dans tous les cas, une nouvelle opération ou mission
+reprend **les mêmes généraux et leurs piles** sur-le-champ (`enlist` avec `keepArmies`, piles des armées
+d'office d'une opération close comptées comme libres).
+
+**Jamais inerte sans raison** : vue `wait` (`WaitView`) sur chaque armée et chaque général d'opération :
+autorisation de guerre, renforts proposés, fin du rassemblement (échéance), piles sous ordre direct (bouton
+« Rendre au général », ordre `armyEdit.reclaim`), suspension, général manquant ou blessé, ravitaillement,
+forces insuffisantes, aucune cible connue, repos ; posture `hold` / `home` après une mission ou une opération.
+
+### Pourquoi « les armées ne font que la première mission » (corrigé)
+
+Causes mesurées sur les vraies données (répro : France, opération Luxembourg puis mission Charleroi → 0 ordre,
+Charleroi reste belge ; après correction : 5 ordres, Charleroi prise) :
+
+1. `brain.ts` `thinkArmy` : `if (a.op) { thinkOpArmy(); return }` — une armée restée attachée à une opération
+   close ignorait sa nouvelle mission (`armies.ts` `applyMission` ne la détachait pas). Désormais
+   `applyMission` détache l'opération (`detachOp`, journal `leftOp`).
+2. `ops.ts` `closeOp` laissait les armées captives de l'opération close (statut réussite / échec, inertes,
+   `opbrain.ts` sortait aussitôt), leurs piles hors des forces libres (`freeBranchPiles`), et l'assistant les
+   masquait (filtre `!a.opId`). Désormais : posture `after`, armées d'office reprises par la suivante.
+3. `orderCampaignCreate` comptait les opérations closes dans `maxOps` (et le client, `full`).
+4. `brain.ts` `otherAims` comptait la mémoire (`mem.ops`, `commit`) des armées inertes : cibles « déjà visées ».
+5. Réussite ou échec d'une mission laissaient l'armée inerte : `endMission` passe en posture `hold` (missions
+   de prise) et efface la mémoire d'échec.
+6. Un ordre direct sans fin (patrouille, blocus) gardait les piles « manuelles » après une nouvelle mission :
+   `applyMission` remet `manual` à zéro.
+7. `ai.ts` `needFor` : besoin plancher d'une capitale à 2 × l'unité moyenne — avec les piles mixtes
+   (brigades), une capitale n'était jamais attaquée (« forces insuffisantes » jusqu'à l'échec). `needAt`
+   (brain.ts) le borne par `min(2 × unité moyenne, 2 × landingPrior)` pour les missions et opérations.
+
+Tests : `command-chain.test.ts` (synthétique : 4 échecs avant correction), `command-chain-real.test.ts` et
+`command-goals-real.test.ts` (vraies données).
+
 **Planificateur** (`planOp`, à chaque réflexion, avant les armées) : guerre (automatique en ROE standard ou libres,
 demande au joueur en ROE strictes), mesure (`measure` : métriques par objectif), phases (rassemblement, SEAD,
 air, offensive, maintien, terminée), cibles du focus partagées entre armées, fin (réussite, échéance, pertes
@@ -131,9 +218,15 @@ Ordres (`COMMAND_ORDERS`) : `armyCreate` (atomique : piles + embauche + mission)
 
 ## Interface (`apps/client`)
 
-`windows/CommandCenter.tsx` (onglets Opérations, Armées, Généraux ; indicateurs), `CommandOps.tsx` (assistant
-cibles → objectif avec estimation → généraux par commandement → confirmation ; tableau de bord : progression,
-état-major, journal, Renforcer, Changer d'objectif, Suspendre, Annuler), `CommandWizard.tsx` (composer → mission avec cible
+`windows/CommandCenter.tsx` (onglets Opérations, Armées, Généraux ; indicateurs ; bandeau « armée
+d'opération », posture et attente de chaque armée), `CommandOps.tsx` (assistant objectif — catalogue par
+catégorie avec icône, ligne de description et généraux recommandés — → cibles selon le genre → plan → généraux
+par commandement → confirmation ; tableau de bord : progression, phases, état-major avec l'attente de chaque
+général et son bouton d'action, journal, Renforcer, Changer d'objectif, Suspendre, Annuler ; bandeau de
+rassemblement « Lancer maintenant » ; opération close : « Nouvelle opération, même état-major », rouvrir),
+`CommandPlan.tsx` (constructeur de chaîne : phases glissées ou montées / descendues, échéance par phase,
+choix « Quand c'est fini » ; frise des phases ; ligne d'attente), `opsIcons.ts` (icônes d'objectif et de
+catégorie), `CommandWizard.tsx` (composer → mission avec cible
 désignée sur la carte → général), `CommandGenerals.tsx` (généraux par commandement, chef, viviers), `map/commandLayer.ts` (étiquette,
 zone, flèches d'offensive colorées par rôle, contour rouge des pays visés), `shell/CommandPick.tsx` (désignation sur la carte, lien depuis la sélection).
 Logique pure testée dans `lib/command.ts` et `lib/ops.ts` (état-major proposé, estimation).
@@ -152,3 +245,10 @@ Opérations (données réelles, `command-ops-real.test.ts`, monde entier simulé
 frappes et 26 % des forces estimées détruites en 2 jours ; réflexion des généraux ≈ 410 ms par jour de jeu
 en Russie → Ukraine (le reste de l'écart, 1,1 à 2,1 s par jour contre 222 ms sans guerre, est la guerre
 elle-même : combats, interceptions, IA ukrainienne).
+
+Chaînes de phases (banc `CMD_OP=…`, ex. `CMD_DAYS=3 CMD_OP=sead,conquest node --expose-gc bench/run.mjs command`,
+`CMD_OP=blitz CMD_NATION=tur CMD_FOE=syr`) : SEAD → conquête France → Belgique, phase 2 lancée à H+2, réussite
+à J+1,04, 737 ms par jour (référence sans opération 354 ms) ; conquête seule, même partie : 880 ms par jour
+(réussite à J+1,04) ; guerre éclair Turquie → Syrie : SEAD, puis ciel à J+0,83, percée à J+0,96, réussite
+(capitale prise) à J+2,21, 918 ms par jour (référence 343 ms). L'enchaînement ne coûte rien de plus qu'une
+opération simple : l'écart reste celui de la guerre elle-même.

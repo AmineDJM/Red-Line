@@ -3,10 +3,11 @@ import { isMobile, openWindow, preparePage, setSpeed, startSoloGame } from './he
 
 /**
  * Opérations du QG, de bout en bout (vrai serveur, vraies données) : le joueur ouvre le centre de
- * commandement, lance « Nouvelle opération », vise la Belgique (recherche), choisit « Conquête
- * totale », garde l'état-major proposé (plusieurs généraux, un par commandement recommandé, deux de
- * l'armée de terre), confirme, puis suit le tableau de bord jusqu'à la conquête — sur ordinateur et
- * sur mobile. Aucune position ni unité figée : tout est lu dans la partie.
+ * commandement, lance « Nouvelle opération », choisit « Conquête totale » dans le catalogue, vise la
+ * Belgique (recherche), garde le plan (une phase, tenir les gains) et l'état-major proposé (plusieurs
+ * généraux, un par commandement recommandé, deux de l'armée de terre), confirme, puis suit le tableau
+ * de bord jusqu'à la conquête — sur ordinateur et sur mobile. Aucune position ni unité figée : tout
+ * est lu dans la partie.
  */
 
 const SHOTS = process.env.E2E_SHOTS;
@@ -35,20 +36,26 @@ test('opérations : conquête totale de la Belgique par plusieurs généraux', a
   await page.getByTestId('op-new').click();
   await expect(page.getByTestId('op-wizard')).toBeVisible();
 
-  // 2. Cibles : recherche, puis sélection de la Belgique.
-  await page.getByTestId('op-search').fill('Belg');
-  await page.getByTestId('op-nation-bel').click();
-  await expect(page.getByTestId('op-targets')).toContainText('Belgique');
-  await shot(page, '1-targets', mobile);
-  await page.getByTestId('op-next').click();
-
-  // 3. Objectif : conquête totale, audacieuse ; estimation affichée.
+  // 2. Objectif (catalogue par catégorie) : conquête totale, audacieuse ; estimation affichée.
+  await expect(page.getByTestId('op-cat-land')).toBeVisible();
   await page.getByTestId('op-goal-conquest').click();
   const bold = page.getByTestId('op-params').getByRole('radio', { name: 'Audacieuse' });
   await bold.click();
   await expect(bold).toHaveAttribute('aria-checked', 'true');
   await expect(page.getByTestId('op-estimate')).toBeVisible();
-  await shot(page, '2-goal', mobile);
+  await shot(page, '1-goal', mobile);
+  await page.getByTestId('op-next').click();
+
+  // 3. Cibles : recherche, puis sélection de la Belgique.
+  await page.getByTestId('op-search').fill('Belg');
+  await page.getByTestId('op-nation-bel').click();
+  await expect(page.getByTestId('op-targets')).toContainText('Belgique');
+  await shot(page, '2-targets', mobile);
+  await page.getByTestId('op-next').click();
+
+  // 3 bis. Plan : une seule phase, les forces tiennent les gains après la conquête.
+  await expect(page.getByTestId('op-plan')).toBeVisible();
+  await expect(page.getByTestId('op-after')).toBeVisible();
   await page.getByTestId('op-next').click();
 
   // 4. Généraux : état-major proposé d'office (plusieurs généraux, deux de l'armée de terre).

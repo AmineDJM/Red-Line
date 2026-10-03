@@ -79,9 +79,13 @@ Nations). Victoire uniquement militaire. Cahier des charges : PDF « Prompt Clau
 - **Centre de commandement** (module moteur `cmd`, fenêtre QG) : armées nommées de piles, missions
   (`data/balance` `command`), généraux fictifs payés qui pilotent l'IA militaire sur leurs seules piles ; un ordre
   direct sur une pile prime jusqu'à sa fin, puis le général la reprend. **Opérations** (onglet par défaut) : pays
-  visés, objectif (affaiblir, contrôle aérien, conquête, décapitation, frappes stratégiques, SEAD, blocus, tenir la
-  frontière, occuper), plusieurs généraux des 4 **commandements** (terre, air, marine, DCA ; vivier et chef par
-  arme), rôles et secteurs ; planificateur `ops.ts`, conduite `opbrain.ts`. Voir `docs/centre-de-commandement.md`.
+  visés, 37 objectifs en 5 catégories (terre, air, mer, DCA et missiles, interarmées ; données
+  `command.operations.goals`, cibles pays / provinces / lieu / soi / allié), plusieurs généraux des 4
+  **commandements** (terre, air, marine, DCA ; vivier et chef par arme), rôles et secteurs ; **chaîne de phases**
+  (objectifs composés `blitz`, `combined_landing`, phases ajoutées, échéances) avec les mêmes généraux, et
+  « quand c'est fini » (`after` : tenir les gains, rentrer, réserve) ; une opération ou mission close n'immobilise
+  jamais ses armées (reprises par la suivante) ; attente visible (`wait`) avec bouton d'action. Planificateur
+  `ops.ts`, cibles et mesures `opgoals.ts`, conduite `opbrain.ts` + `opconduct.ts`. Voir `docs/centre-de-commandement.md`.
 - **Gouvernement** (module moteur `gov`, fenêtre Gouvernement, touche H) : ministères de la Défense (infrastructures,
   directions de l'armement et du renseignement ; commandements lus dans le module cmd) et de l'Économie, seulement
   ces deux ; titulaires fictifs payés ; missions dans une enveloppe, exécutées par les ordres existants avec la
