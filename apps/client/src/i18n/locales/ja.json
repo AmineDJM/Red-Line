@@ -3495,10 +3495,12 @@
       "open": "開く"
     },
     "tabs": {
+      "ops": "作戦",
       "armies": "軍",
       "generals": "将軍"
     },
     "kpi": {
+      "ops": "作戦",
       "armies": "軍",
       "active": "任務中",
       "generals": "将軍",
@@ -3836,7 +3838,233 @@
       "none": "雇用中の将軍はいません。",
       "payroll": "{{value}} / 日",
       "pool": "候補者",
-      "poolHint": "採用可能な士官：雇用時に給与 5 日分の契約金。"
+      "poolHint": "採用可能な士官：雇用時に給与 5 日分の契約金。",
+      "branch": "軍種",
+      "chief": "軍種司令官",
+      "noChief": "空席",
+      "forces": "軍種の戦力",
+      "freeForces": "軍団外",
+      "isChief": "軍種司令官",
+      "makeChief": "司令官に任命",
+      "chiefHelp": "軍種司令官は同じ軍種の将軍たちの能力を高める。給与は割増。",
+      "chiefNamed": "{{name}}を軍種司令官に任命しました。"
+    },
+    "branch": {
+      "land": {
+        "name": "陸軍",
+        "short": "陸",
+        "role": "陸上司令官",
+        "desc": "歩兵、機甲、砲兵、地対地ミサイル：地域を奪取し確保する。"
+      },
+      "air": {
+        "name": "空軍",
+        "short": "空",
+        "role": "航空司令官",
+        "desc": "戦闘機、爆撃機、無人機、早期警戒機：制空権を開き、縦深を打撃し、部隊を支援する。"
+      },
+      "sea": {
+        "name": "海軍",
+        "short": "海",
+        "role": "海上司令官",
+        "desc": "水上艦、潜水艦、輸送艦：封鎖、上陸の護衛、海からの打撃。"
+      },
+      "ad": {
+        "name": "防空",
+        "short": "防空",
+        "role": "防空司令官",
+        "desc": "地対空砲台とレーダー：領土、基地、前進する部隊を守る。"
+      }
+    },
+    "ops": {
+      "new": "新規作戦",
+      "full": "作戦は最大{{max}}件です。いずれかを終了してください。",
+      "emptyTitle": "作戦なし",
+      "emptyText": "1か国以上の目標国、目的、それを指揮する将軍を指定すると、彼らが代わりに行動します。",
+      "onboard": {
+        "title": "3つの選択で作戦",
+        "targets": "目標国：地図上または検索で、1か国または複数。",
+        "goal": "目的：戦力の弱体化、完全な航空支配、完全征服、戦略爆撃、封鎖…",
+        "staff": "軍種ごとの将軍：各自が役割と戦力を受け持ち、連携する。",
+        "rule": "将軍たちは自ら打撃、前進、哨戒、封鎖を行う。スタックへの直接命令は完了まで優先される。"
+      },
+      "path": {
+        "new": "新規作戦",
+        "edit": "目的の変更",
+        "reinforce": "増援"
+      },
+      "step": {
+        "targets": "目標国",
+        "goal": "目的",
+        "staff": "将軍",
+        "confirm": "確認"
+      },
+      "status": {
+        "planning": "準備中",
+        "active": "遂行中",
+        "holding": "目的を維持",
+        "awaiting": "命令待ち",
+        "suspended": "中断",
+        "success": "成功",
+        "failed": "失敗"
+      },
+      "phase": {
+        "stage": "集結",
+        "sead": "防空制圧",
+        "air": "制空",
+        "offensive": "攻勢",
+        "hold": "維持",
+        "done": "終了"
+      },
+      "goals": {
+        "attrition": {
+          "name": "戦力の弱体化",
+          "short": "消耗",
+          "desc": "発見したものすべてを攻撃：防空、航空機、地上部隊、艦艇、基地。"
+        },
+        "air_control": {
+          "name": "完全な航空支配",
+          "short": "制空",
+          "desc": "防空と航空戦力を撃破し、哨戒で空を確保する。"
+        },
+        "conquest": {
+          "name": "完全征服",
+          "short": "征服",
+          "desc": "首都を含む全州を、セクターごとに航空支援を受けて奪取する。"
+        },
+        "decapitation": {
+          "name": "斬首作戦",
+          "short": "首都",
+          "desc": "首都へ突進し、できるだけ早く奪取する。"
+        },
+        "strategic": {
+          "name": "戦略爆撃",
+          "short": "打撃",
+          "desc": "工業、エネルギー、基地：判明した施設を破壊する。"
+        },
+        "sead": {
+          "name": "防空の無力化",
+          "short": "防空",
+          "desc": "判明している地対空砲台、レーダー、防空陣地を破壊する。"
+        },
+        "blockade": {
+          "name": "海上封鎖",
+          "short": "封鎖",
+          "desc": "港を封鎖し、艦艇を撃沈し、海上交通路を断つ。"
+        },
+        "defend_border": {
+          "name": "国境の防衛",
+          "short": "国境",
+          "desc": "指定した国に対して国境を守り、反撃する。"
+        },
+        "occupy": {
+          "name": "地域の占領",
+          "short": "占領",
+          "desc": "地図で指定した州を奪取し確保する。"
+        }
+      },
+      "metric": {
+        "forces": "推定敵戦力の{{pct}} %を撃破",
+        "provinces": "州の奪取 {{done}}/{{total}}",
+        "capital": "首都：{{done}}/{{total}} 奪取",
+        "sky": "空：敵砲台 残り{{sams}}、航空機 {{air}}",
+        "sams": "防空 残り{{left}}／{{total}}",
+        "buildings": "施設の破壊 {{done}}/{{total}}",
+        "ports": "港の封鎖 {{done}}/{{total}}",
+        "front": "前線都市の維持 {{done}}/{{total}}"
+      },
+      "metrics": {
+        "forces": "撃破した敵戦力（推定価値）",
+        "provinces": "奪取した州",
+        "capital": "首都",
+        "sams": "撃破した防空",
+        "aircraft": "撃墜した敵航空機",
+        "buildings": "破壊した施設",
+        "ports": "封鎖した港",
+        "front": "維持した前線都市"
+      },
+      "stats": {
+        "strikes": "打撃",
+        "captures": "奪取",
+        "kills": "撃破価値",
+        "losses": "損失要素",
+        "strength": "戦力"
+      },
+      "sector": {
+        "north": "北部セクター",
+        "south": "南部セクター",
+        "east": "東部セクター",
+        "west": "西部セクター",
+        "center": "中央セクター",
+        "all": "戦域全体"
+      },
+      "sectorLeft": "残り{{left}}/{{total}}",
+      "roe": {
+        "strict": "厳格：参戦の前に必ず参謀本部があなたの許可を求めます。",
+        "standard": "標準：作戦の開始で目標国との戦争が許可されます。",
+        "free": "自由：追撃を含め、将軍が単独で判断します。"
+      },
+      "progress": "進捗",
+      "staff": "参謀本部",
+      "journal": "作戦記録",
+      "generals_other": "将軍{{count}}名",
+      "provinces_other": "{{count}}州",
+      "role": "役割",
+      "release": "作戦から外す",
+      "back": "作戦",
+      "reinforce": "増援",
+      "changeGoal": "目的の変更",
+      "cancel": "作戦を中止",
+      "cancelTitle": "作戦を中止",
+      "close": "終了",
+      "closeTitle": "作戦を終了",
+      "cancelText": "{{name}}：将軍は予備に回り（給与は継続）、作戦用に編成された軍団は解散し、そのスタックはあなたの直接指揮に戻ります。",
+      "deadline": "期限",
+      "noDeadline": "なし",
+      "deadlineAt": "期限 {{day}} {{time}}",
+      "askWar": "参謀本部が{{nation}}との開戦の許可を求めています。",
+      "atWar": "交戦中",
+      "targetsLead": "目標国を選んでください：地図上でタップするか、検索します。",
+      "noTarget": "目標国が未指定です。",
+      "removeTarget": "この国を外す",
+      "search": "国を検索…",
+      "pickOnMap": "地図で指定",
+      "pick": {
+        "nation": "地図上の国をタップして目標にします。",
+        "province": "占領する州をタップします（1つずつ）。"
+      },
+      "region": "地域",
+      "pickProvinces": "州を指定",
+      "pickGoal": "作戦の目的を選んでください。",
+      "estWithSuggestion": "提案された参謀本部での見積もりです。将軍は次のステップで選びます。",
+      "est": {
+        "forces": "投入戦力",
+        "enemy": "推定敵戦力 {{value}}",
+        "cost": "コスト",
+        "hire": "+ 契約金 {{value}}"
+      },
+      "staffLead_other": "将軍{{count}}名を選択。",
+      "suggest": "参謀本部を提案",
+      "recommended": "推奨",
+      "freeForces_other": "空きスタック{{count}} · {{value}}",
+      "chiefIs": "軍種司令官：{{name}}",
+      "chief": "軍種司令官",
+      "hired": "採用済み",
+      "forces": "戦力",
+      "autoForces": "自動：軍種の空きスタック",
+      "morePool": "候補をすべて表示（+{{count}}）",
+      "lessPool": "折りたたむ",
+      "name": "作戦名",
+      "defaultName": "{{goal}} — {{target}}",
+      "launch": "作戦を開始",
+      "toast": {
+        "created": "作戦{{name}}を開始しました。",
+        "edited": "新しい目的を参謀本部に伝えました。",
+        "reinforced": "増援を作戦に投入しました。",
+        "released": "将軍を作戦から外しました。",
+        "suspended": "作戦を中断しました。",
+        "resumed": "作戦を再開しました。",
+        "cancelled": "作戦を終了しました。"
+      }
     },
     "wizard": {
       "path": "新しい軍",
@@ -4262,6 +4490,30 @@
       "cmd_askReinforce": {
         "title": "増援要請",
         "text": "{{army}}：{{general}}が {{count}} スタックの増援を求めています。"
+      },
+      "cmd_opAskWar": {
+        "title": "許可の要請",
+        "text": "作戦{{op}}：参謀本部が{{nation}}との開戦の許可を求めています。"
+      },
+      "cmd_opSuccess": {
+        "title": "作戦成功",
+        "text": "作戦{{op}}：目的を達成。"
+      },
+      "cmd_opFailed": {
+        "title": "作戦失敗",
+        "text": "作戦{{op}}：失敗。"
+      },
+      "cmd_opAchieved": {
+        "title": "目的達成",
+        "text": "作戦{{op}}：目的を達成し、維持しています。"
+      },
+      "cmd_opHeavyLosses": {
+        "title": "甚大な損害",
+        "text": "作戦{{op}}：24時間で戦力の{{pct}} %を喪失。"
+      },
+      "cmd_opStuck": {
+        "title": "作戦停滞",
+        "text": "作戦{{op}}：{{hours}}時間進展なし。"
       }
     },
     "cmd": {
@@ -4281,7 +4533,8 @@
         "losses": "損害が大きすぎる",
         "stuck": "進展なし",
         "tooWeak": "戦力不足",
-        "zoneLost": "圏の喪失"
+        "zoneLost": "圏の喪失",
+        "deadline": "期限切れ"
       },
       "building": {
         "air_defense_site": "防空陣地",
@@ -4333,7 +4586,55 @@
         "dismissed": "{{general}}を解任。",
         "recovered": "{{general}}が療養を終えて指揮に復帰。",
         "wounded": "{{general}}が司令部で負傷：療養 {{days}} 日。",
-        "killed": "{{general}}が司令部で戦死。"
+        "killed": "{{general}}が司令部で戦死。",
+        "joinedOp": "作戦{{op}}に投入：{{role}}。",
+        "opClosed": "作戦{{op}}終了：軍団はあなたの命令を待っています。"
+      },
+      "goal": {
+        "attrition": "戦力の弱体化",
+        "air_control": "完全な航空支配",
+        "conquest": "完全征服",
+        "decapitation": "斬首作戦",
+        "strategic": "戦略爆撃",
+        "sead": "防空の無力化",
+        "blockade": "海上封鎖",
+        "defend_border": "国境の防衛",
+        "occupy": "地域の占領"
+      },
+      "role": {
+        "land": "陸軍",
+        "air": "空軍",
+        "sea": "海軍",
+        "ad": "防空"
+      },
+      "op": {
+        "created_other": "作戦開始：{{goal}}、将軍{{count}}名。",
+        "declaredWar": "{{nation}}に宣戦布告。",
+        "warBlocked": "{{nation}}と開戦できません：作戦を中断。",
+        "askWar": "許可の要請：{{nation}}との開戦。",
+        "warAuthorized": "許可を受領：{{nation}}との戦争。",
+        "warRefused": "{{nation}}との戦争は却下：作戦を中断。",
+        "strikes_other": "{{army}}：打撃{{count}}回 — 防空{{sead}}、航空機{{air}}、部隊{{ground}}、施設{{bld}}。",
+        "offensive": "{{army}}：{{province}}へ攻勢。",
+        "jointAssault": "将軍たちによる{{province}}への共同攻撃、指揮は{{army}}。",
+        "tooWeak": "{{army}}：{{province}}の前で戦力不足 — 航空支援と増援を要請。",
+        "sectorDone": "{{army}}：セクターを奪取、戦域の残りを支援中。",
+        "captured": "{{province}}を奪取。",
+        "lostProvince": "{{province}}を喪失。",
+        "recon": "既知の目標なし：{{nation}}上空の偵察を開始。",
+        "blockade": "{{army}}：{{province}}港を封鎖。",
+        "achieved": "目的達成：維持しています。",
+        "heavyLosses": "甚大な損害：24時間で投入戦力の{{pct}} %を喪失。",
+        "stuck": "作戦停滞：{{hours}}時間進展なし。",
+        "success": "目的達成：作戦成功。",
+        "failed": "作戦失敗：{{reason}}。",
+        "goalChanged": "新しい目的：{{goal}}。",
+        "released": "{{army}}が作戦を離脱。",
+        "reinforced_other": "増援：将軍{{count}}名が作戦に合流。",
+        "role": "{{army}}：新しい役割 — {{role}}。",
+        "reassigned": "{{army}}は別の作戦に再配置。",
+        "suspended": "命令により作戦を中断。",
+        "resumed": "作戦を再開。"
       }
     },
     "spyNews": {

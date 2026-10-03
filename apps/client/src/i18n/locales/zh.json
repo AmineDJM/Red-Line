@@ -3495,10 +3495,12 @@
       "open": "打开"
     },
     "tabs": {
+      "ops": "作战行动",
       "armies": "集团军",
       "generals": "将领"
     },
     "kpi": {
+      "ops": "作战行动",
       "armies": "集团军",
       "active": "执行任务",
       "generals": "将领",
@@ -3836,7 +3838,233 @@
       "none": "尚未雇用将领。",
       "payroll": "{{value}} / 日",
       "pool": "人才库",
-      "poolHint": "可用军官：雇用时支付相当于 5 天薪饷的签约金。"
+      "poolHint": "可用军官：雇用时支付相当于 5 天薪饷的签约金。",
+      "branch": "军种",
+      "chief": "军种司令",
+      "noChief": "空缺",
+      "forces": "军种兵力",
+      "freeForces": "未编入集团军",
+      "isChief": "军种司令",
+      "makeChief": "任命为司令",
+      "chiefHelp": "军种司令提升本军种将领的能力；其薪饷更高。",
+      "chiefNamed": "{{name}} 被任命为军种司令。"
+    },
+    "branch": {
+      "land": {
+        "name": "陆军",
+        "short": "陆",
+        "role": "陆上指挥官",
+        "desc": "步兵、装甲、炮兵和地对地导弹：夺取并守住地域。"
+      },
+      "air": {
+        "name": "空军",
+        "short": "空",
+        "role": "空中指挥官",
+        "desc": "战斗机、轰炸机、无人机、预警机：打开天空，纵深打击，支援部队。"
+      },
+      "sea": {
+        "name": "海军",
+        "short": "海",
+        "role": "海上指挥官",
+        "desc": "水面舰艇、潜艇、运输舰：封锁、护航登陆、从海上打击。"
+      },
+      "ad": {
+        "name": "防空",
+        "short": "防空",
+        "role": "防空指挥官",
+        "desc": "地对空导弹连与雷达：保护领土、基地和推进中的部队。"
+      }
+    },
+    "ops": {
+      "new": "新建作战",
+      "full": "已达 {{max}} 项作战上限：请结束一项。",
+      "emptyTitle": "暂无作战",
+      "emptyText": "指定一个或多个国家、一个目标和指挥它的将领：他们会替你行动。",
+      "onboard": {
+        "title": "三步建立作战",
+        "targets": "目标国家：在地图上或通过搜索，一个或多个。",
+        "goal": "目标：削弱兵力、全面制空、全面征服、战略打击、封锁……",
+        "staff": "按军种选择将领：每人获得角色和兵力，彼此协同。",
+        "rule": "将领会自主打击、推进、巡逻和封锁；对编组的直接命令在完成前优先。"
+      },
+      "path": {
+        "new": "新建作战",
+        "edit": "更改目标",
+        "reinforce": "增援"
+      },
+      "step": {
+        "targets": "目标国",
+        "goal": "目标",
+        "staff": "将领",
+        "confirm": "确认"
+      },
+      "status": {
+        "planning": "准备中",
+        "active": "进行中",
+        "holding": "目标保持中",
+        "awaiting": "等待命令",
+        "suspended": "已暂停",
+        "success": "成功",
+        "failed": "失败"
+      },
+      "phase": {
+        "stage": "集结",
+        "sead": "压制防空",
+        "air": "夺取制空权",
+        "offensive": "进攻",
+        "hold": "保持",
+        "done": "已结束"
+      },
+      "goals": {
+        "attrition": {
+          "name": "削弱兵力",
+          "short": "消耗",
+          "desc": "打击发现的一切：防空、航空兵、地面部队、舰艇、基地。"
+        },
+        "air_control": {
+          "name": "全面制空",
+          "short": "天空",
+          "desc": "摧毁防空和航空兵，然后以巡逻控制天空。"
+        },
+        "conquest": {
+          "name": "全面征服",
+          "short": "征服",
+          "desc": "分区推进，在空中支援下夺取包括首都在内的所有省份。"
+        },
+        "decapitation": {
+          "name": "斩首行动",
+          "short": "首都",
+          "desc": "直扑首都，尽快将其夺取。"
+        },
+        "strategic": {
+          "name": "战略打击",
+          "short": "打击",
+          "desc": "工业、能源、基地：摧毁已查明的设施。"
+        },
+        "sead": {
+          "name": "瘫痪防空",
+          "short": "防空",
+          "desc": "摧毁已知的地对空导弹连、雷达和防空阵地。"
+        },
+        "blockade": {
+          "name": "海上封锁",
+          "short": "封锁",
+          "desc": "封锁港口，击沉舰船，切断海上航线。"
+        },
+        "defend_border": {
+          "name": "守住边境",
+          "short": "边境",
+          "desc": "针对指定国家守卫边境，并实施反击。"
+        },
+        "occupy": {
+          "name": "占领地区",
+          "short": "占领",
+          "desc": "夺取并守住地图上指定的省份。"
+        }
+      },
+      "metric": {
+        "forces": "已摧毁估计敌军兵力的 {{pct}} %",
+        "provinces": "已夺取省份 {{done}}/{{total}}",
+        "capital": "首都：已夺取 {{done}}/{{total}}",
+        "sky": "天空：剩余敌导弹连 {{sams}} 个，飞机 {{air}} 架",
+        "sams": "防空剩余 {{left}}/{{total}}",
+        "buildings": "已摧毁设施 {{done}}/{{total}}",
+        "ports": "已封锁港口 {{done}}/{{total}}",
+        "front": "守住的前线城市 {{done}}/{{total}}"
+      },
+      "metrics": {
+        "forces": "摧毁的敌方兵力（估计价值）",
+        "provinces": "已夺取省份",
+        "capital": "首都",
+        "sams": "摧毁的防空",
+        "aircraft": "击落的敌机",
+        "buildings": "摧毁的设施",
+        "ports": "封锁的港口",
+        "front": "守住的前线城市"
+      },
+      "stats": {
+        "strikes": "打击",
+        "captures": "夺取",
+        "kills": "摧毁价值",
+        "losses": "损失单位",
+        "strength": "兵力"
+      },
+      "sector": {
+        "north": "北部扇区",
+        "south": "南部扇区",
+        "east": "东部扇区",
+        "west": "西部扇区",
+        "center": "中部扇区",
+        "all": "整个战区"
+      },
+      "sectorLeft": "待夺取 {{left}}/{{total}}",
+      "roe": {
+        "strict": "严格：参战前总参谋部都会征求你的批准。",
+        "standard": "标准：发起作战即授权对目标国开战。",
+        "free": "自由：将领自行决定，包括追击。"
+      },
+      "progress": "进展",
+      "staff": "总参谋部",
+      "journal": "作战日志",
+      "generals_other": "{{count}} 名将领",
+      "provinces_other": "{{count}} 个省份",
+      "role": "角色",
+      "release": "撤出作战",
+      "back": "作战行动",
+      "reinforce": "增援",
+      "changeGoal": "更改目标",
+      "cancel": "取消作战",
+      "cancelTitle": "取消作战",
+      "close": "结束",
+      "closeTitle": "结束作战",
+      "cancelText": "{{name}}：将领转入预备役（薪饷照发），为作战组建的集团军解散，其编组回到你的直接指挥下。",
+      "deadline": "期限",
+      "noDeadline": "无",
+      "deadlineAt": "期限 {{day}} {{time}}",
+      "askWar": "总参谋部请求批准对 {{nation}} 开战。",
+      "atWar": "交战中",
+      "targetsLead": "选择目标国家：在地图上点选或搜索。",
+      "noTarget": "尚未指定国家。",
+      "removeTarget": "移除该国",
+      "search": "搜索国家…",
+      "pickOnMap": "在地图上指定",
+      "pick": {
+        "nation": "在地图上点选一个国家作为目标。",
+        "province": "点选要占领的省份（逐个）。"
+      },
+      "region": "地区",
+      "pickProvinces": "指定省份",
+      "pickGoal": "选择作战目标。",
+      "estWithSuggestion": "按建议的总参谋部估算；将领将在下一步选择。",
+      "est": {
+        "forces": "投入兵力",
+        "enemy": "估计敌军 {{value}}",
+        "cost": "费用",
+        "hire": "+ 签约金 {{value}}"
+      },
+      "staffLead_other": "已选 {{count}} 名将领。",
+      "suggest": "推荐总参谋部",
+      "recommended": "推荐",
+      "freeForces_other": "{{count}} 个空闲编组 · {{value}}",
+      "chiefIs": "军种司令：{{name}}",
+      "chief": "军种司令",
+      "hired": "已招募",
+      "forces": "兵力",
+      "autoForces": "自动：本军种的空闲编组",
+      "morePool": "查看全部候选人（+{{count}}）",
+      "lessPool": "收起",
+      "name": "作战名称",
+      "defaultName": "{{goal}} — {{target}}",
+      "launch": "发起作战",
+      "toast": {
+        "created": "作战 {{name}} 已发起。",
+        "edited": "新目标已传达总参谋部。",
+        "reinforced": "增援已投入作战。",
+        "released": "将领已撤出作战。",
+        "suspended": "作战已暂停。",
+        "resumed": "作战已恢复。",
+        "cancelled": "作战已结束。"
+      }
     },
     "wizard": {
       "path": "新集团军",
@@ -4262,6 +4490,30 @@
       "cmd_askReinforce": {
         "title": "请求增援",
         "text": "{{army}}：{{general}}请求增援 {{count}} 个编组。"
+      },
+      "cmd_opAskWar": {
+        "title": "请求批准",
+        "text": "作战 {{op}}：总参谋部请求批准对 {{nation}} 开战。"
+      },
+      "cmd_opSuccess": {
+        "title": "作战成功",
+        "text": "作战 {{op}}：目标已达成。"
+      },
+      "cmd_opFailed": {
+        "title": "作战失败",
+        "text": "作战 {{op}}：失败。"
+      },
+      "cmd_opAchieved": {
+        "title": "目标达成",
+        "text": "作战 {{op}}：目标已达成并保持中。"
+      },
+      "cmd_opHeavyLosses": {
+        "title": "损失惨重",
+        "text": "作战 {{op}}：24 小时内损失 {{pct}} % 的兵力。"
+      },
+      "cmd_opStuck": {
+        "title": "作战停滞",
+        "text": "作战 {{op}}：{{hours}} 小时无进展。"
       }
     },
     "cmd": {
@@ -4281,7 +4533,8 @@
         "losses": "损失过重",
         "stuck": "毫无进展",
         "tooWeak": "兵力不足",
-        "zoneLost": "区域失守"
+        "zoneLost": "区域失守",
+        "deadline": "期限已过"
       },
       "building": {
         "air_defense_site": "防空阵地",
@@ -4333,7 +4586,55 @@
         "dismissed": "{{general}}被解职。",
         "recovered": "{{general}}康复后重新接掌指挥。",
         "wounded": "{{general}}在指挥部负伤：需休养 {{days}} 天。",
-        "killed": "{{general}}在指挥部阵亡。"
+        "killed": "{{general}}在指挥部阵亡。",
+        "joinedOp": "投入作战 {{op}}：{{role}}。",
+        "opClosed": "作战 {{op}} 已结束：集团军等待你的命令。"
+      },
+      "goal": {
+        "attrition": "削弱兵力",
+        "air_control": "全面制空",
+        "conquest": "全面征服",
+        "decapitation": "斩首行动",
+        "strategic": "战略打击",
+        "sead": "瘫痪防空",
+        "blockade": "海上封锁",
+        "defend_border": "守住边境",
+        "occupy": "占领地区"
+      },
+      "role": {
+        "land": "陆军",
+        "air": "空军",
+        "sea": "海军",
+        "ad": "防空"
+      },
+      "op": {
+        "created_other": "作战发起：{{goal}}，{{count}} 名将领。",
+        "declaredWar": "已对 {{nation}} 宣战。",
+        "warBlocked": "无法对 {{nation}} 开战：作战暂停。",
+        "askWar": "请求批准：对 {{nation}} 开战。",
+        "warAuthorized": "已获批准：对 {{nation}} 开战。",
+        "warRefused": "对 {{nation}} 开战被拒：作战暂停。",
+        "strikes_other": "{{army}}：{{count}} 次打击 — 防空 {{sead}}，飞机 {{air}}，部队 {{ground}}，设施 {{bld}}。",
+        "offensive": "{{army}}：向 {{province}} 发起进攻。",
+        "jointAssault": "将领们对 {{province}} 联合突击，由 {{army}} 指挥。",
+        "tooWeak": "{{army}}：在 {{province}} 前兵力不足 — 已请求空中支援和增援。",
+        "sectorDone": "{{army}}：扇区已夺取，转而支援战区其余部分。",
+        "captured": "{{province}} 已被夺取。",
+        "lostProvince": "{{province}} 已失守。",
+        "recon": "无已知目标：对 {{nation}} 展开侦察。",
+        "blockade": "{{army}}：封锁 {{province}} 港。",
+        "achieved": "目标达成：保持中。",
+        "heavyLosses": "损失惨重：24 小时内损失投入兵力的 {{pct}} %。",
+        "stuck": "作战停滞：{{hours}} 小时无进展。",
+        "success": "目标达成：作战成功。",
+        "failed": "作战失败：{{reason}}。",
+        "goalChanged": "新目标：{{goal}}。",
+        "released": "{{army}} 退出作战。",
+        "reinforced_other": "增援：{{count}} 名将领加入作战。",
+        "role": "{{army}}：新角色 — {{role}}。",
+        "reassigned": "{{army}} 被调往另一项作战。",
+        "suspended": "奉命暂停作战。",
+        "resumed": "作战已恢复。"
       }
     },
     "spyNews": {

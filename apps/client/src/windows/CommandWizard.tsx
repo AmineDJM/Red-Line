@@ -36,6 +36,7 @@ import { useUi } from '../store/ui.js';
 import { useWorld } from '../store/world.js';
 import { useSend } from './armyCommand.js';
 import { GeneralCard, MISSION_ICON, etaLabel } from './CommandGenerals.js';
+import { allCandidates } from '../lib/ops.js';
 
 /**
  * Assistant du centre de commandement, en trois étapes : 1) composer l'armée (piles libres groupées
@@ -341,7 +342,7 @@ function MissionStep({ mobile }: { mobile: boolean }) {
   const def: MissionDef | null = m.type ? (command.missions[m.type] ?? null) : null;
   const general =
     command.generals.find((g) => g.id === draft.generalId) ??
-    command.candidates.find((g) => g.id === draft.generalId) ??
+    allCandidates(command).find((g) => g.id === draft.generalId) ??
     null;
   const est =
     def && view && targetReady(def, m)
@@ -629,7 +630,7 @@ function GeneralStep({ mobile }: { mobile: boolean }) {
         <small>{t('command.generals.poolHint')}</small>
       </h4>
       <div className="cmd-grid">
-        {[...command.candidates]
+        {[...allCandidates(command)]
           .sort((a, b) => (def ? b.skills[keySkill(def)] - a.skills[keySkill(def)] : 0))
           .map(card)}
       </div>
@@ -656,7 +657,7 @@ export function CommandWizard({ mobile }: { mobile: boolean }) {
   const nationOf = (pid: string) => view?.provinces[pid]?.owner;
   const generalSel =
     command.generals.find((g) => g.id === draft.generalId) ??
-    command.candidates.find((g) => g.id === draft.generalId) ??
+    allCandidates(command).find((g) => g.id === draft.generalId) ??
     null;
   const ownTarget =
     def?.target === 'province' &&

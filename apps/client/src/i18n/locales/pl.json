@@ -3630,10 +3630,12 @@
       "open": "Otwórz"
     },
     "tabs": {
+      "ops": "Operacje",
       "armies": "Armie",
       "generals": "Generałowie"
     },
     "kpi": {
+      "ops": "Operacje",
       "armies": "Armie",
       "active": "Na misji",
       "generals": "Generałowie",
@@ -3986,7 +3988,245 @@
       "none": "Brak zatrudnionych generałów.",
       "payroll": "{{value}} / dzień",
       "pool": "Kadra",
-      "poolHint": "Dostępni oficerowie: przy zatrudnieniu premia w wysokości 5 dni żołdu."
+      "poolHint": "Dostępni oficerowie: przy zatrudnieniu premia w wysokości 5 dni żołdu.",
+      "branch": "Rodzaj sił",
+      "chief": "Dowódca główny",
+      "noChief": "nieobsadzone",
+      "forces": "Siły rodzaju",
+      "freeForces": "Poza armiami",
+      "isChief": "Dowódca główny",
+      "makeChief": "Mianuj dowódcą",
+      "chiefHelp": "Dowódca główny podnosi umiejętności generałów swojego rodzaju sił; jego żołd jest wyższy.",
+      "chiefNamed": "{{name}} mianowany dowódcą głównym."
+    },
+    "branch": {
+      "land": {
+        "name": "Wojska Lądowe",
+        "short": "Ląd",
+        "role": "Dowódca lądowy",
+        "desc": "Piechota, pancerni, artyleria i pociski ziemia-ziemia: zdobywają i utrzymują teren."
+      },
+      "air": {
+        "name": "Siły Powietrzne",
+        "short": "Powietrze",
+        "role": "Dowódca lotnictwa",
+        "desc": "Myśliwce, bombowce, drony, samoloty radarowe: otwierają niebo, uderzają w głąb, wspierają wojska."
+      },
+      "sea": {
+        "name": "Marynarka Wojenna",
+        "short": "Morze",
+        "role": "Dowódca morski",
+        "desc": "Okręty nawodne, okręty podwodne, transportowce: blokada, osłona desantów, uderzenia z morza."
+      },
+      "ad": {
+        "name": "Obrona przeciwlotnicza",
+        "short": "OPL",
+        "role": "Dowódca obrony przeciwlotniczej",
+        "desc": "Baterie ziemia-powietrze i radary: chronią terytorium, bazy i nacierające wojska."
+      }
+    },
+    "ops": {
+      "new": "Nowa operacja",
+      "full": "Osiągnięto limit {{max}} operacji: zakończ jedną.",
+      "emptyTitle": "Brak operacji",
+      "emptyText": "Wskaż jeden lub kilka krajów, cel i generałów, którzy go zrealizują: działają za ciebie.",
+      "onboard": {
+        "title": "Operacja w trzech wyborach",
+        "targets": "Kraje-cele: na mapie lub przez wyszukiwanie, jeden lub kilka.",
+        "goal": "Cel: osłabić siły, pełna kontrola nieba, całkowity podbój, uderzenia strategiczne, blokada…",
+        "staff": "Generałowie według rodzaju sił: każdy dostaje rolę i siły, działają wspólnie.",
+        "rule": "Generałowie sami uderzają, nacierają, patrolują i blokują; bezpośredni rozkaz dla stosu ma pierwszeństwo do jego zakończenia."
+      },
+      "path": {
+        "new": "nowa operacja",
+        "edit": "zmień cel",
+        "reinforce": "wzmocnij"
+      },
+      "step": {
+        "targets": "Cele",
+        "goal": "Zadanie",
+        "staff": "Generałowie",
+        "confirm": "Potwierdź"
+      },
+      "status": {
+        "planning": "Przygotowanie",
+        "active": "W toku",
+        "holding": "Cel utrzymany",
+        "awaiting": "Czeka na rozkazy",
+        "suspended": "Wstrzymana",
+        "success": "Udana",
+        "failed": "Nieudana"
+      },
+      "phase": {
+        "stage": "koncentracja",
+        "sead": "tłumienie obrony",
+        "air": "panowanie w powietrzu",
+        "offensive": "ofensywa",
+        "hold": "utrzymanie",
+        "done": "zakończona"
+      },
+      "goals": {
+        "attrition": {
+          "name": "Osłabić siły",
+          "short": "Wyniszczenie",
+          "desc": "Uderzać we wszystko, co wykryto: obronę, lotnictwo, siły lądowe, okręty, bazy."
+        },
+        "air_control": {
+          "name": "Pełna kontrola nieba",
+          "short": "Niebo",
+          "desc": "Zniszczyć obronę przeciwlotniczą i lotnictwo, potem utrzymać niebo patrolami."
+        },
+        "conquest": {
+          "name": "Całkowity podbój",
+          "short": "Podbój",
+          "desc": "Zdobyć wszystkie prowincje wraz ze stolicą, sektorami, ze wsparciem lotnictwa."
+        },
+        "decapitation": {
+          "name": "Odcięcie głowy",
+          "short": "Stolica",
+          "desc": "Uderzyć na stolicę i zdobyć ją jak najszybciej."
+        },
+        "strategic": {
+          "name": "Uderzenia strategiczne",
+          "short": "Uderzenia",
+          "desc": "Przemysł, energetyka, bazy: zniszczyć wykryte obiekty."
+        },
+        "sead": {
+          "name": "Zneutralizować obronę przeciwlotniczą",
+          "short": "OPL",
+          "desc": "Zniszczyć znane baterie ziemia-powietrze, radary i stanowiska przeciwlotnicze."
+        },
+        "blockade": {
+          "name": "Blokada morska",
+          "short": "Blokada",
+          "desc": "Zablokować porty, zatapiać okręty, przeciąć szlaki morskie."
+        },
+        "defend_border": {
+          "name": "Utrzymać granicę",
+          "short": "Granica",
+          "desc": "Bronić granicy przed wskazanym krajem lub krajami, kontratakować."
+        },
+        "occupy": {
+          "name": "Okupować region",
+          "short": "Okupacja",
+          "desc": "Zdobyć i utrzymać prowincje wskazane na mapie."
+        }
+      },
+      "metric": {
+        "forces": "Zniszczono {{pct}} % szacowanych sił wroga",
+        "provinces": "Zdobyte prowincje: {{done}}/{{total}}",
+        "capital": "Stolica: zdobyto {{done}}/{{total}}",
+        "sky": "Niebo: pozostało baterii wroga {{sams}}, samolotów {{air}}",
+        "sams": "Pozostało {{left}} z {{total}} środków OPL",
+        "buildings": "Zniszczone obiekty: {{done}}/{{total}}",
+        "ports": "Zablokowane porty: {{done}}/{{total}}",
+        "front": "Utrzymane miasta frontowe: {{done}}/{{total}}"
+      },
+      "metrics": {
+        "forces": "Zniszczone siły wroga (szacowana wartość)",
+        "provinces": "Zdobyte prowincje",
+        "capital": "Stolica",
+        "sams": "Zniszczona obrona przeciwlotnicza",
+        "aircraft": "Zniszczone samoloty wroga",
+        "buildings": "Zniszczone obiekty",
+        "ports": "Zablokowane porty",
+        "front": "Utrzymane miasta frontowe"
+      },
+      "stats": {
+        "strikes": "Uderzenia",
+        "captures": "Zdobycze",
+        "kills": "Zniszczona wartość",
+        "losses": "Utracone jednostki",
+        "strength": "Stan"
+      },
+      "sector": {
+        "north": "Sektor północny",
+        "south": "Sektor południowy",
+        "east": "Sektor wschodni",
+        "west": "Sektor zachodni",
+        "center": "Sektor centralny",
+        "all": "Cały teatr działań"
+      },
+      "sectorLeft": "do zdobycia {{left}}/{{total}}",
+      "roe": {
+        "strict": "Ścisłe: sztab prosi o twoją zgodę przed każdym przystąpieniem do wojny.",
+        "standard": "Standardowe: rozpoczęcie operacji zezwala na wojnę z krajami-celami.",
+        "free": "Swobodne: generałowie decydują sami, łącznie z pościgami."
+      },
+      "progress": "Postęp",
+      "staff": "Sztab",
+      "journal": "Dziennik operacji",
+      "generals_one": "{{count}} generał",
+      "generals_few": "{{count}} generałów",
+      "generals_many": "{{count}} generałów",
+      "generals_other": "{{count}} generała",
+      "provinces_one": "{{count}} prowincja",
+      "provinces_few": "{{count}} prowincje",
+      "provinces_many": "{{count}} prowincji",
+      "provinces_other": "{{count}} prowincji",
+      "role": "Rola",
+      "release": "Wycofaj z operacji",
+      "back": "Operacje",
+      "reinforce": "Wzmocnij",
+      "changeGoal": "Zmień cel",
+      "cancel": "Anuluj operację",
+      "cancelTitle": "Anuluj operację",
+      "close": "Zamknij",
+      "closeTitle": "Zamknij operację",
+      "cancelText": "{{name}}: generałowie przechodzą do rezerwy (nadal opłacani), armie utworzone dla operacji są rozwiązywane, a ich stosy wracają pod twoje bezpośrednie dowództwo.",
+      "deadline": "Termin",
+      "noDeadline": "Brak",
+      "deadlineAt": "termin {{day}} {{time}}",
+      "askWar": "Sztab prosi o zgodę na przystąpienie do wojny z {{nation}}.",
+      "atWar": "w wojnie",
+      "targetsLead": "Wybierz kraj lub kraje-cele: dotknij ich na mapie albo wyszukaj.",
+      "noTarget": "Nie wskazano kraju.",
+      "removeTarget": "Usuń ten kraj",
+      "search": "Szukaj kraju…",
+      "pickOnMap": "Wskaż na mapie",
+      "pick": {
+        "nation": "Dotknij kraju na mapie, aby uczynić go celem.",
+        "province": "Dotknij prowincji do okupacji (po jednej)."
+      },
+      "region": "Region",
+      "pickProvinces": "Wskaż prowincje",
+      "pickGoal": "Wybierz cel operacji.",
+      "estWithSuggestion": "Szacunek z proponowanym sztabem; generałów wybierzesz w następnym kroku.",
+      "est": {
+        "forces": "Zaangażowane siły",
+        "enemy": "szacunek wroga {{value}}",
+        "cost": "Koszt",
+        "hire": "+ premie {{value}}"
+      },
+      "staffLead_one": "Wybrano {{count}} generała.",
+      "staffLead_few": "Wybrano {{count}} generałów.",
+      "staffLead_many": "Wybrano {{count}} generałów.",
+      "staffLead_other": "Wybrano {{count}} generała.",
+      "suggest": "Zaproponuj sztab",
+      "recommended": "zalecane",
+      "freeForces_one": "{{count}} wolny stos · {{value}}",
+      "freeForces_few": "{{count}} wolne stosy · {{value}}",
+      "freeForces_many": "{{count}} wolnych stosów · {{value}}",
+      "freeForces_other": "{{count}} wolnego stosu · {{value}}",
+      "chiefIs": "Dowódca główny: {{name}}",
+      "chief": "dowódca główny",
+      "hired": "zatrudniony",
+      "forces": "Siły",
+      "autoForces": "Automatycznie: wolne stosy rodzaju sił",
+      "morePool": "Pokaż całą pulę (+{{count}})",
+      "lessPool": "Zwiń",
+      "name": "Nazwa operacji",
+      "defaultName": "{{goal}} — {{target}}",
+      "launch": "Rozpocznij operację",
+      "toast": {
+        "created": "Operacja {{name}} rozpoczęta.",
+        "edited": "Nowy cel przekazany sztabowi.",
+        "reinforced": "Posiłki skierowane do operacji.",
+        "released": "Generał wycofany z operacji.",
+        "suspended": "Operacja wstrzymana.",
+        "resumed": "Operacja wznowiona.",
+        "cancelled": "Operacja zamknięta."
+      }
     },
     "wizard": {
       "path": "nowa armia",
@@ -4439,6 +4679,30 @@
       "cmd_askReinforce": {
         "title": "Prośba o posiłki",
         "text": "{{army}}: {{general}} prosi o posiłki (stosy: {{count}})."
+      },
+      "cmd_opAskWar": {
+        "title": "Prośba o zgodę",
+        "text": "Operacja {{op}}: sztab prosi o zgodę na przystąpienie do wojny z {{nation}}."
+      },
+      "cmd_opSuccess": {
+        "title": "Operacja udana",
+        "text": "Operacja {{op}}: cel osiągnięty."
+      },
+      "cmd_opFailed": {
+        "title": "Operacja nieudana",
+        "text": "Operacja {{op}}: porażka."
+      },
+      "cmd_opAchieved": {
+        "title": "Cel osiągnięty",
+        "text": "Operacja {{op}}: cel osiągnięty i utrzymywany."
+      },
+      "cmd_opHeavyLosses": {
+        "title": "Ciężkie straty",
+        "text": "Operacja {{op}}: w 24 h utracono {{pct}} % sił."
+      },
+      "cmd_opStuck": {
+        "title": "Operacja utknęła",
+        "text": "Operacja {{op}}: brak postępów od {{hours}} h."
       }
     },
     "cmd": {
@@ -4458,7 +4722,8 @@
         "losses": "zbyt ciężkie straty",
         "stuck": "brak postępów",
         "tooWeak": "niewystarczające siły",
-        "zoneLost": "strefa utracona"
+        "zoneLost": "strefa utracona",
+        "deadline": "termin minął"
       },
       "building": {
         "air_defense_site": "stanowisko obrony przeciwlotniczej",
@@ -4525,7 +4790,64 @@
         "dismissed": "{{general}} zostaje zwolniony.",
         "recovered": "{{general}} wraca do dowodzenia po rekonwalescencji.",
         "wounded": "{{general}} ranny w sztabie: {{days}} dni rekonwalescencji.",
-        "killed": "{{general}} ginie w sztabie."
+        "killed": "{{general}} ginie w sztabie.",
+        "joinedOp": "Skierowana do operacji {{op}}: {{role}}.",
+        "opClosed": "Operacja {{op}} zamknięta: armia czeka na twoje rozkazy."
+      },
+      "goal": {
+        "attrition": "Osłabić siły",
+        "air_control": "Pełna kontrola nieba",
+        "conquest": "Całkowity podbój",
+        "decapitation": "Odcięcie głowy",
+        "strategic": "Uderzenia strategiczne",
+        "sead": "Zneutralizować obronę przeciwlotniczą",
+        "blockade": "Blokada morska",
+        "defend_border": "Utrzymać granicę",
+        "occupy": "Okupować region"
+      },
+      "role": {
+        "land": "wojska lądowe",
+        "air": "siły powietrzne",
+        "sea": "marynarka wojenna",
+        "ad": "obrona przeciwlotnicza"
+      },
+      "op": {
+        "created_one": "Operacja rozpoczęta: {{goal}}, {{count}} generał.",
+        "created_few": "Operacja rozpoczęta: {{goal}}, {{count}} generałów.",
+        "created_many": "Operacja rozpoczęta: {{goal}}, {{count}} generałów.",
+        "created_other": "Operacja rozpoczęta: {{goal}}, {{count}} generała.",
+        "declaredWar": "Wypowiedziano wojnę: {{nation}}.",
+        "warBlocked": "Nie można przystąpić do wojny z {{nation}}: operacja wstrzymana.",
+        "askWar": "Prośba o zgodę: wojna z {{nation}}.",
+        "warAuthorized": "Zgoda otrzymana: wojna z {{nation}}.",
+        "warRefused": "Wojna z {{nation}} odrzucona: operacja wstrzymana.",
+        "strikes_one": "{{army}}: {{count}} uderzenie — obrona {{sead}}, lotnictwo {{air}}, wojska {{ground}}, obiekty {{bld}}.",
+        "strikes_few": "{{army}}: {{count}} uderzenia — obrona {{sead}}, lotnictwo {{air}}, wojska {{ground}}, obiekty {{bld}}.",
+        "strikes_many": "{{army}}: {{count}} uderzeń — obrona {{sead}}, lotnictwo {{air}}, wojska {{ground}}, obiekty {{bld}}.",
+        "strikes_other": "{{army}}: {{count}} uderzenia — obrona {{sead}}, lotnictwo {{air}}, wojska {{ground}}, obiekty {{bld}}.",
+        "offensive": "{{army}}: ofensywa na {{province}}.",
+        "jointAssault": "Wspólny szturm generałów na {{province}}, prowadzi: {{army}}.",
+        "tooWeak": "{{army}}: za mało sił przed {{province}} — wezwano wsparcie lotnicze i posiłki.",
+        "sectorDone": "{{army}}: sektor zdobyty, wspiera teraz resztę teatru.",
+        "captured": "{{province}} zdobyta.",
+        "lostProvince": "{{province}} utracona.",
+        "recon": "Brak znanych celów: rozpoczęto rozpoznanie nad {{nation}}.",
+        "blockade": "{{army}}: blokada portu {{province}}.",
+        "achieved": "Cel osiągnięty: jest utrzymywany.",
+        "heavyLosses": "Ciężkie straty: w 24 h utracono {{pct}} % zaangażowanych sił.",
+        "stuck": "Operacja utknęła: brak postępów od {{hours}} h.",
+        "success": "Cel osiągnięty: operacja udana.",
+        "failed": "Operacja nieudana: {{reason}}.",
+        "goalChanged": "Nowy cel: {{goal}}.",
+        "released": "{{army}} opuszcza operację.",
+        "reinforced_one": "Posiłki: {{count}} generał dołącza do operacji.",
+        "reinforced_few": "Posiłki: {{count}} generałów dołącza do operacji.",
+        "reinforced_many": "Posiłki: {{count}} generałów dołącza do operacji.",
+        "reinforced_other": "Posiłki: {{count}} generała dołącza do operacji.",
+        "role": "{{army}}: nowa rola — {{role}}.",
+        "reassigned": "{{army}}: przeniesiona do innej operacji.",
+        "suspended": "Operacja wstrzymana rozkazem.",
+        "resumed": "Operacja wznowiona."
       }
     },
     "spyNews": {

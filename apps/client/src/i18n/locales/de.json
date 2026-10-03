@@ -3540,10 +3540,12 @@
       "open": "Öffnen"
     },
     "tabs": {
+      "ops": "Operationen",
       "armies": "Armeen",
       "generals": "Generäle"
     },
     "kpi": {
+      "ops": "Operationen",
       "armies": "Armeen",
       "active": "Im Einsatz",
       "generals": "Generäle",
@@ -3886,7 +3888,237 @@
       "none": "Kein General eingestellt.",
       "payroll": "{{value}} / Tag",
       "pool": "Kandidaten",
-      "poolHint": "Verfügbare Offiziere: Einstellungsprämie von 5 Tagessolden."
+      "poolHint": "Verfügbare Offiziere: Einstellungsprämie von 5 Tagessolden.",
+      "branch": "Teilstreitkraft",
+      "chief": "Oberbefehlshaber",
+      "noChief": "unbesetzt",
+      "forces": "Kräfte der Teilstreitkraft",
+      "freeForces": "Außerhalb von Armeen",
+      "isChief": "Oberbefehlshaber",
+      "makeChief": "Zum Chef ernennen",
+      "chiefHelp": "Der Oberbefehlshaber hebt die Fähigkeiten der Generäle seiner Teilstreitkraft; sein Sold ist höher.",
+      "chiefNamed": "{{name}} zum Oberbefehlshaber ernannt."
+    },
+    "branch": {
+      "land": {
+        "name": "Heer",
+        "short": "Heer",
+        "role": "Landbefehlshaber",
+        "desc": "Infanterie, Panzer, Artillerie und Boden-Boden-Raketen: nimmt und hält Gelände."
+      },
+      "air": {
+        "name": "Luftwaffe",
+        "short": "Luft",
+        "role": "Luftbefehlshaber",
+        "desc": "Jäger, Bomber, Drohnen, Radarflugzeuge: öffnet den Himmel, schlägt in der Tiefe zu, unterstützt die Truppen."
+      },
+      "sea": {
+        "name": "Marine",
+        "short": "See",
+        "role": "Marinebefehlshaber",
+        "desc": "Überwasserschiffe, U-Boote, Transporter: Blockade, Geleit von Landungen, Schläge von See."
+      },
+      "ad": {
+        "name": "Flugabwehr",
+        "short": "Flak",
+        "role": "Befehlshaber der Flugabwehr",
+        "desc": "Boden-Luft-Batterien und Radare: schützen das Gebiet, die Stützpunkte und die vorrückenden Truppen."
+      }
+    },
+    "ops": {
+      "new": "Neue Operation",
+      "full": "Höchstzahl von {{max}} Operationen erreicht: schließen Sie eine ab.",
+      "emptyTitle": "Keine Operation",
+      "emptyText": "Bestimmen Sie ein oder mehrere Länder, ein Ziel und die führenden Generäle: Sie handeln für Sie.",
+      "onboard": {
+        "title": "Eine Operation in drei Entscheidungen",
+        "targets": "Die Zielländer: auf der Karte oder per Suche, eines oder mehrere.",
+        "goal": "Das Ziel: Kräfte schwächen, totale Luftherrschaft, totale Eroberung, strategische Schläge, Blockade…",
+        "staff": "Die Generäle, nach Teilstreitkraft: Jeder erhält eine Rolle und Kräfte, sie stimmen sich ab.",
+        "rule": "Generäle schlagen zu, rücken vor, patrouillieren und blockieren selbstständig; ein direkter Befehl an einen Stapel hat Vorrang, bis er endet."
+      },
+      "path": {
+        "new": "neue Operation",
+        "edit": "Ziel ändern",
+        "reinforce": "verstärken"
+      },
+      "step": {
+        "targets": "Ziele",
+        "goal": "Auftrag",
+        "staff": "Generäle",
+        "confirm": "Bestätigen"
+      },
+      "status": {
+        "planning": "Vorbereitung",
+        "active": "Läuft",
+        "holding": "Ziel gehalten",
+        "awaiting": "Wartet auf Befehl",
+        "suspended": "Ausgesetzt",
+        "success": "Erfolgreich",
+        "failed": "Gescheitert"
+      },
+      "phase": {
+        "stage": "Sammlung",
+        "sead": "Unterdrückung der Luftabwehr",
+        "air": "Luftherrschaft",
+        "offensive": "Offensive",
+        "hold": "Halten",
+        "done": "beendet"
+      },
+      "goals": {
+        "attrition": {
+          "name": "Kräfte schwächen",
+          "short": "Abnutzung",
+          "desc": "Alles angreifen, was sich findet: Abwehr, Luftwaffe, Bodentruppen, Schiffe, Stützpunkte."
+        },
+        "air_control": {
+          "name": "Totale Luftherrschaft",
+          "short": "Himmel",
+          "desc": "Flugabwehr und Luftwaffe zerstören, dann den Himmel mit Patrouillen halten."
+        },
+        "conquest": {
+          "name": "Totale Eroberung",
+          "short": "Eroberung",
+          "desc": "Alle Provinzen samt Hauptstadt nehmen, sektorweise, mit Luftunterstützung."
+        },
+        "decapitation": {
+          "name": "Enthauptungsschlag",
+          "short": "Hauptstadt",
+          "desc": "Auf die Hauptstadt vorstoßen und sie so schnell wie möglich nehmen."
+        },
+        "strategic": {
+          "name": "Strategische Schläge",
+          "short": "Schläge",
+          "desc": "Industrie, Energie, Stützpunkte: die aufgeklärten Anlagen zerstören."
+        },
+        "sead": {
+          "name": "Flugabwehr ausschalten",
+          "short": "Flak",
+          "desc": "Bekannte Boden-Luft-Batterien, Radare und Flugabwehrstellungen zerstören."
+        },
+        "blockade": {
+          "name": "Seeblockade",
+          "short": "Blockade",
+          "desc": "Häfen blockieren, Schiffe versenken, Seewege abschneiden."
+        },
+        "defend_border": {
+          "name": "Grenze halten",
+          "short": "Grenze",
+          "desc": "Die Grenze gegen das oder die bestimmten Länder verteidigen, Gegenangriffe führen."
+        },
+        "occupy": {
+          "name": "Region besetzen",
+          "short": "Besetzung",
+          "desc": "Die auf der Karte bestimmten Provinzen nehmen und halten."
+        }
+      },
+      "metric": {
+        "forces": "{{pct}} % der geschätzten feindlichen Kräfte zerstört",
+        "provinces": "{{done}}/{{total}} Provinzen genommen",
+        "capital": "Hauptstadt: {{done}}/{{total}} genommen",
+        "sky": "Himmel: noch {{sams}} feindliche Batterien, {{air}} Flugzeuge",
+        "sams": "Noch {{left}} von {{total}} Flugabwehrstellungen",
+        "buildings": "{{done}}/{{total}} Anlagen zerstört",
+        "ports": "{{done}}/{{total}} Häfen blockiert",
+        "front": "{{done}}/{{total}} Frontstädte gehalten"
+      },
+      "metrics": {
+        "forces": "Zerstörte feindliche Kräfte (geschätzter Wert)",
+        "provinces": "Genommene Provinzen",
+        "capital": "Hauptstadt",
+        "sams": "Zerstörte Flugabwehr",
+        "aircraft": "Zerstörte feindliche Flugzeuge",
+        "buildings": "Zerstörte Anlagen",
+        "ports": "Blockierte Häfen",
+        "front": "Gehaltene Frontstädte"
+      },
+      "stats": {
+        "strikes": "Schläge",
+        "captures": "Eroberungen",
+        "kills": "Zerstörter Wert",
+        "losses": "Verlorene Einheiten",
+        "strength": "Stärke"
+      },
+      "sector": {
+        "north": "Nordsektor",
+        "south": "Südsektor",
+        "east": "Ostsektor",
+        "west": "Westsektor",
+        "center": "Zentralsektor",
+        "all": "Gesamter Schauplatz"
+      },
+      "sectorLeft": "{{left}}/{{total}} zu nehmen",
+      "roe": {
+        "strict": "Streng: Der Stab bittet vor jedem Kriegseintritt um Ihre Genehmigung.",
+        "standard": "Standard: Der Start der Operation genehmigt den Krieg gegen die Zielländer.",
+        "free": "Frei: Die Generäle entscheiden allein, Verfolgungen inbegriffen."
+      },
+      "progress": "Fortschritt",
+      "staff": "Stab",
+      "journal": "Operationsprotokoll",
+      "generals_one": "{{count}} General",
+      "generals_other": "{{count}} Generäle",
+      "provinces_one": "{{count}} Provinz",
+      "provinces_other": "{{count}} Provinzen",
+      "role": "Rolle",
+      "release": "Aus der Operation abziehen",
+      "back": "Operationen",
+      "reinforce": "Verstärken",
+      "changeGoal": "Ziel ändern",
+      "cancel": "Operation abbrechen",
+      "cancelTitle": "Operation abbrechen",
+      "close": "Abschließen",
+      "closeTitle": "Operation abschließen",
+      "cancelText": "{{name}}: Die Generäle gehen in die Reserve (weiter bezahlt), die für die Operation gebildeten Armeen werden aufgelöst und ihre Stapel kehren unter Ihren direkten Befehl zurück.",
+      "deadline": "Frist",
+      "noDeadline": "Keine",
+      "deadlineAt": "Frist {{day}} {{time}}",
+      "askWar": "Der Stab bittet um Genehmigung, gegen {{nation}} in den Krieg zu ziehen.",
+      "atWar": "im Krieg",
+      "targetsLead": "Wählen Sie das oder die Zielländer: auf der Karte antippen oder suchen.",
+      "noTarget": "Kein Land bestimmt.",
+      "removeTarget": "Dieses Land entfernen",
+      "search": "Land suchen…",
+      "pickOnMap": "Auf der Karte bestimmen",
+      "pick": {
+        "nation": "Tippen Sie ein Land auf der Karte an, um es ins Visier zu nehmen.",
+        "province": "Tippen Sie die zu besetzenden Provinzen an (einzeln)."
+      },
+      "region": "Region",
+      "pickProvinces": "Provinzen bestimmen",
+      "pickGoal": "Wählen Sie das Ziel der Operation.",
+      "estWithSuggestion": "Schätzung mit dem vorgeschlagenen Stab; die Generäle wählen Sie im nächsten Schritt.",
+      "est": {
+        "forces": "Eingesetzte Kräfte",
+        "enemy": "Feind geschätzt {{value}}",
+        "cost": "Kosten",
+        "hire": "+ Prämien {{value}}"
+      },
+      "staffLead_one": "{{count}} General ausgewählt.",
+      "staffLead_other": "{{count}} Generäle ausgewählt.",
+      "suggest": "Stab vorschlagen",
+      "recommended": "empfohlen",
+      "freeForces_one": "{{count}} freier Stapel · {{value}}",
+      "freeForces_other": "{{count}} freie Stapel · {{value}}",
+      "chiefIs": "Oberbefehlshaber: {{name}}",
+      "chief": "Oberbefehlshaber",
+      "hired": "angeworben",
+      "forces": "Kräfte",
+      "autoForces": "Automatisch: freie Stapel der Teilstreitkraft",
+      "morePool": "Gesamten Pool zeigen (+{{count}})",
+      "lessPool": "Einklappen",
+      "name": "Name der Operation",
+      "defaultName": "{{goal}} — {{target}}",
+      "launch": "Operation starten",
+      "toast": {
+        "created": "Operation {{name}} gestartet.",
+        "edited": "Neues Ziel an den Stab übermittelt.",
+        "reinforced": "Verstärkungen in die Operation eingebracht.",
+        "released": "General aus der Operation abgezogen.",
+        "suspended": "Operation ausgesetzt.",
+        "resumed": "Operation fortgesetzt.",
+        "cancelled": "Operation abgeschlossen."
+      }
     },
     "wizard": {
       "path": "neue Armee",
@@ -4321,6 +4553,30 @@
       "cmd_askReinforce": {
         "title": "Verstärkung angefordert",
         "text": "{{army}}: {{general}} fordert {{count}} Stapel als Verstärkung an."
+      },
+      "cmd_opAskWar": {
+        "title": "Genehmigung angefragt",
+        "text": "Operation {{op}}: Der Stab bittet um Genehmigung, gegen {{nation}} in den Krieg zu ziehen."
+      },
+      "cmd_opSuccess": {
+        "title": "Operation erfolgreich",
+        "text": "Operation {{op}}: Ziel erreicht."
+      },
+      "cmd_opFailed": {
+        "title": "Operation gescheitert",
+        "text": "Operation {{op}}: gescheitert."
+      },
+      "cmd_opAchieved": {
+        "title": "Ziel erreicht",
+        "text": "Operation {{op}}: Ziel erreicht, es wird gehalten."
+      },
+      "cmd_opHeavyLosses": {
+        "title": "Schwere Verluste",
+        "text": "Operation {{op}}: {{pct}} % der Kräfte in 24 h verloren."
+      },
+      "cmd_opStuck": {
+        "title": "Operation festgefahren",
+        "text": "Operation {{op}}: kein Fortschritt seit {{hours}} h."
       }
     },
     "cmd": {
@@ -4340,7 +4596,8 @@
         "losses": "zu schwere Verluste",
         "stuck": "kein Fortschritt",
         "tooWeak": "unzureichende Kräfte",
-        "zoneLost": "Zone verloren"
+        "zoneLost": "Zone verloren",
+        "deadline": "Frist überschritten"
       },
       "building": {
         "air_defense_site": "die Flugabwehrstellung",
@@ -4397,7 +4654,58 @@
         "dismissed": "{{general}} ist entlassen.",
         "recovered": "{{general}} übernimmt nach seiner Genesung wieder das Kommando.",
         "wounded": "{{general}} ist im HQ verwundet: {{days}} Tage Genesung.",
-        "killed": "{{general}} ist im HQ gefallen."
+        "killed": "{{general}} ist im HQ gefallen.",
+        "joinedOp": "In Operation {{op}} eingesetzt: {{role}}.",
+        "opClosed": "Operation {{op}} abgeschlossen: Die Armee wartet auf Ihre Befehle."
+      },
+      "goal": {
+        "attrition": "Kräfte schwächen",
+        "air_control": "Totale Luftherrschaft",
+        "conquest": "Totale Eroberung",
+        "decapitation": "Enthauptungsschlag",
+        "strategic": "Strategische Schläge",
+        "sead": "Flugabwehr ausschalten",
+        "blockade": "Seeblockade",
+        "defend_border": "Grenze halten",
+        "occupy": "Region besetzen"
+      },
+      "role": {
+        "land": "Heer",
+        "air": "Luftwaffe",
+        "sea": "Marine",
+        "ad": "Flugabwehr"
+      },
+      "op": {
+        "created_one": "Operation gestartet: {{goal}}, {{count}} General.",
+        "created_other": "Operation gestartet: {{goal}}, {{count}} Generäle.",
+        "declaredWar": "Krieg an {{nation}} erklärt.",
+        "warBlocked": "Krieg gegen {{nation}} nicht möglich: Operation ausgesetzt.",
+        "askWar": "Genehmigungsanfrage: Krieg gegen {{nation}}.",
+        "warAuthorized": "Genehmigung erhalten: Krieg gegen {{nation}}.",
+        "warRefused": "Krieg gegen {{nation}} abgelehnt: Operation ausgesetzt.",
+        "strikes_one": "{{army}}: {{count}} Schlag — Abwehr {{sead}}, Luftwaffe {{air}}, Kräfte {{ground}}, Anlagen {{bld}}.",
+        "strikes_other": "{{army}}: {{count}} Schläge — Abwehr {{sead}}, Luftwaffe {{air}}, Kräfte {{ground}}, Anlagen {{bld}}.",
+        "offensive": "{{army}}: Offensive auf {{province}}.",
+        "jointAssault": "Gemeinsamer Angriff der Generäle auf {{province}}, geführt von {{army}}.",
+        "tooWeak": "{{army}}: zu schwach vor {{province}} — Luftunterstützung und Verstärkung angefordert.",
+        "sectorDone": "{{army}}: Sektor genommen, unterstützt nun den übrigen Schauplatz.",
+        "captured": "{{province}} ist genommen.",
+        "lostProvince": "{{province}} ist verloren.",
+        "recon": "Kein bekanntes Ziel: Aufklärung über {{nation}} gestartet.",
+        "blockade": "{{army}}: Blockade des Hafens von {{province}}.",
+        "achieved": "Ziel erreicht: Es wird gehalten.",
+        "heavyLosses": "Schwere Verluste: {{pct}} % der eingesetzten Kräfte in 24 h verloren.",
+        "stuck": "Operation festgefahren: kein Fortschritt seit {{hours}} h.",
+        "success": "Ziel erreicht: Operation erfolgreich.",
+        "failed": "Operation gescheitert: {{reason}}.",
+        "goalChanged": "Neues Ziel: {{goal}}.",
+        "released": "{{army}} verlässt die Operation.",
+        "reinforced_one": "Verstärkung: {{count}} General schließt sich der Operation an.",
+        "reinforced_other": "Verstärkungen: {{count}} Generäle schließen sich der Operation an.",
+        "role": "{{army}}: neue Rolle — {{role}}.",
+        "reassigned": "{{army}} wird einer anderen Operation zugeteilt.",
+        "suspended": "Operation auf Befehl ausgesetzt.",
+        "resumed": "Operation fortgesetzt."
       }
     },
     "spyNews": {

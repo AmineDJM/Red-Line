@@ -3540,10 +3540,12 @@
       "open": "Open"
     },
     "tabs": {
+      "ops": "Operations",
       "armies": "Armies",
       "generals": "Generals"
     },
     "kpi": {
+      "ops": "Operations",
       "armies": "Armies",
       "active": "On mission",
       "generals": "Generals",
@@ -3886,7 +3888,237 @@
       "none": "No general hired.",
       "payroll": "{{value}} / day",
       "pool": "Pool",
-      "poolHint": "Available officers: signing bonus of 5 days' pay on hiring."
+      "poolHint": "Available officers: signing bonus of 5 days' pay on hiring.",
+      "branch": "Command",
+      "chief": "Commander-in-chief",
+      "noChief": "vacant",
+      "forces": "Branch forces",
+      "freeForces": "Outside armies",
+      "isChief": "Commander-in-chief",
+      "makeChief": "Appoint chief",
+      "chiefHelp": "The commander-in-chief raises the skills of the generals of his branch; his pay is higher.",
+      "chiefNamed": "{{name}} appointed commander-in-chief."
+    },
+    "branch": {
+      "land": {
+        "name": "Army",
+        "short": "Land",
+        "role": "Land commander",
+        "desc": "Infantry, armour, artillery and surface-to-surface missiles: takes and holds ground."
+      },
+      "air": {
+        "name": "Air Force",
+        "short": "Air",
+        "role": "Air commander",
+        "desc": "Fighters, bombers, drones, AEW aircraft: opens the sky, strikes deep, supports the troops."
+      },
+      "sea": {
+        "name": "Navy",
+        "short": "Sea",
+        "role": "Naval commander",
+        "desc": "Surface ships, submarines, transports: blockade, landing escort, strikes from the sea."
+      },
+      "ad": {
+        "name": "Air Defence",
+        "short": "AD",
+        "role": "Air defence commander",
+        "desc": "SAM batteries and radars: protect the territory, the bases and the advancing troops."
+      }
+    },
+    "ops": {
+      "new": "New operation",
+      "full": "Maximum of {{max}} operations reached: close one.",
+      "emptyTitle": "No operation",
+      "emptyText": "Pick one or more countries, an objective and the generals who will lead it: they act for you.",
+      "onboard": {
+        "title": "An operation in three choices",
+        "targets": "The target countries: on the map or by search, one or several.",
+        "goal": "The objective: weaken forces, total air control, total conquest, strategic strikes, blockade…",
+        "staff": "The generals, by command: each gets a role and forces, and they coordinate.",
+        "rule": "Generals strike, advance, patrol and blockade on their own; a direct order on a stack takes priority until it ends."
+      },
+      "path": {
+        "new": "new operation",
+        "edit": "change objective",
+        "reinforce": "reinforce"
+      },
+      "step": {
+        "targets": "Targets",
+        "goal": "Objective",
+        "staff": "Generals",
+        "confirm": "Confirm"
+      },
+      "status": {
+        "planning": "Preparing",
+        "active": "In progress",
+        "holding": "Objective held",
+        "awaiting": "Awaiting orders",
+        "suspended": "Suspended",
+        "success": "Succeeded",
+        "failed": "Failed"
+      },
+      "phase": {
+        "stage": "assembly",
+        "sead": "defence suppression",
+        "air": "air control",
+        "offensive": "offensive",
+        "hold": "holding",
+        "done": "over"
+      },
+      "goals": {
+        "attrition": {
+          "name": "Weaken forces",
+          "short": "Attrition",
+          "desc": "Strike everything found: defences, aircraft, ground forces, ships, bases."
+        },
+        "air_control": {
+          "name": "Total air control",
+          "short": "Sky",
+          "desc": "Destroy the air defence and the air force, then hold the sky with patrols."
+        },
+        "conquest": {
+          "name": "Total conquest",
+          "short": "Conquest",
+          "desc": "Take every province, capital included, sector by sector, with air support."
+        },
+        "decapitation": {
+          "name": "Decapitation",
+          "short": "Capital",
+          "desc": "Drive on the capital and take it as fast as possible."
+        },
+        "strategic": {
+          "name": "Strategic strikes",
+          "short": "Strikes",
+          "desc": "Industry, energy, bases: destroy the facilities revealed by intelligence."
+        },
+        "sead": {
+          "name": "Neutralise air defence",
+          "short": "AD",
+          "desc": "Destroy known SAM batteries, radars and air defence sites."
+        },
+        "blockade": {
+          "name": "Naval blockade",
+          "short": "Blockade",
+          "desc": "Blockade the ports, sink the ships, cut the sea lanes."
+        },
+        "defend_border": {
+          "name": "Hold the border",
+          "short": "Border",
+          "desc": "Defend the border against the designated country or countries, counter-attack."
+        },
+        "occupy": {
+          "name": "Occupy a region",
+          "short": "Occupation",
+          "desc": "Take and hold the provinces designated on the map."
+        }
+      },
+      "metric": {
+        "forces": "{{pct}} % of estimated enemy forces destroyed",
+        "provinces": "{{done}}/{{total}} provinces taken",
+        "capital": "Capital: {{done}}/{{total}} taken",
+        "sky": "Sky: {{sams}} enemy batteries left, {{air}} aircraft",
+        "sams": "{{left}} air defences left out of {{total}}",
+        "buildings": "{{done}}/{{total}} facilities destroyed",
+        "ports": "{{done}}/{{total}} ports blockaded",
+        "front": "{{done}}/{{total}} front-line cities held"
+      },
+      "metrics": {
+        "forces": "Enemy forces destroyed (estimated value)",
+        "provinces": "Provinces taken",
+        "capital": "Capital",
+        "sams": "Air defences destroyed",
+        "aircraft": "Enemy aircraft destroyed",
+        "buildings": "Facilities destroyed",
+        "ports": "Ports blockaded",
+        "front": "Front-line cities held"
+      },
+      "stats": {
+        "strikes": "Strikes",
+        "captures": "Captures",
+        "kills": "Value destroyed",
+        "losses": "Elements lost",
+        "strength": "Strength"
+      },
+      "sector": {
+        "north": "Northern sector",
+        "south": "Southern sector",
+        "east": "Eastern sector",
+        "west": "Western sector",
+        "center": "Central sector",
+        "all": "Whole theatre"
+      },
+      "sectorLeft": "{{left}}/{{total}} to take",
+      "roe": {
+        "strict": "Strict: the staff asks your permission before any entry into war.",
+        "standard": "Standard: launching the operation authorises war against the target countries.",
+        "free": "Free: the generals decide alone, pursuits included."
+      },
+      "progress": "Progress",
+      "staff": "Staff",
+      "journal": "Operation log",
+      "generals_one": "{{count}} general",
+      "generals_other": "{{count}} generals",
+      "provinces_one": "{{count}} province",
+      "provinces_other": "{{count}} provinces",
+      "role": "Role",
+      "release": "Remove from the operation",
+      "back": "Operations",
+      "reinforce": "Reinforce",
+      "changeGoal": "Change objective",
+      "cancel": "Cancel operation",
+      "cancelTitle": "Cancel operation",
+      "close": "Close",
+      "closeTitle": "Close operation",
+      "cancelText": "{{name}}: the generals go into reserve (still paid), the armies formed for the operation are dissolved and their stacks return to your direct command.",
+      "deadline": "Deadline",
+      "noDeadline": "None",
+      "deadlineAt": "deadline {{day}} {{time}}",
+      "askWar": "The staff asks for permission to go to war against {{nation}}.",
+      "atWar": "at war",
+      "targetsLead": "Choose the target country or countries: tap them on the map or search for them.",
+      "noTarget": "No country designated.",
+      "removeTarget": "Remove this country",
+      "search": "Search for a country…",
+      "pickOnMap": "Designate on the map",
+      "pick": {
+        "nation": "Tap a country on the map to target it.",
+        "province": "Tap the provinces to occupy (one at a time)."
+      },
+      "region": "Region",
+      "pickProvinces": "Designate the provinces",
+      "pickGoal": "Choose the objective of the operation.",
+      "estWithSuggestion": "Estimate with the proposed staff; you will choose the generals at the next step.",
+      "est": {
+        "forces": "Forces committed",
+        "enemy": "estimated enemy {{value}}",
+        "cost": "Cost",
+        "hire": "+ bonuses {{value}}"
+      },
+      "staffLead_one": "{{count}} general selected.",
+      "staffLead_other": "{{count}} generals selected.",
+      "suggest": "Propose a staff",
+      "recommended": "recommended",
+      "freeForces_one": "{{count}} free stack · {{value}}",
+      "freeForces_other": "{{count}} free stacks · {{value}}",
+      "chiefIs": "Commander-in-chief: {{name}}",
+      "chief": "commander-in-chief",
+      "hired": "hired",
+      "forces": "Forces",
+      "autoForces": "Automatic: free stacks of the branch",
+      "morePool": "Show the whole pool (+{{count}})",
+      "lessPool": "Collapse",
+      "name": "Operation name",
+      "defaultName": "{{goal}} — {{target}}",
+      "launch": "Launch operation",
+      "toast": {
+        "created": "Operation {{name}} launched.",
+        "edited": "New objective sent to the staff.",
+        "reinforced": "Reinforcements committed to the operation.",
+        "released": "General removed from the operation.",
+        "suspended": "Operation suspended.",
+        "resumed": "Operation resumed.",
+        "cancelled": "Operation closed."
+      }
     },
     "wizard": {
       "path": "new army",
@@ -4321,6 +4553,30 @@
       "cmd_askReinforce": {
         "title": "Reinforcements requested",
         "text": "{{army}}: {{general}} requests {{count}} stacks as reinforcements."
+      },
+      "cmd_opAskWar": {
+        "title": "Permission requested",
+        "text": "Operation {{op}}: the staff asks for permission to go to war against {{nation}}."
+      },
+      "cmd_opSuccess": {
+        "title": "Operation successful",
+        "text": "Operation {{op}}: objective achieved."
+      },
+      "cmd_opFailed": {
+        "title": "Operation failed",
+        "text": "Operation {{op}}: failure."
+      },
+      "cmd_opAchieved": {
+        "title": "Objective achieved",
+        "text": "Operation {{op}}: objective achieved and being held."
+      },
+      "cmd_opHeavyLosses": {
+        "title": "Heavy losses",
+        "text": "Operation {{op}}: {{pct}} % of forces lost in 24 h."
+      },
+      "cmd_opStuck": {
+        "title": "Operation bogged down",
+        "text": "Operation {{op}}: no progress for {{hours}} h."
       }
     },
     "cmd": {
@@ -4340,7 +4596,8 @@
         "losses": "losses too heavy",
         "stuck": "no progress",
         "tooWeak": "insufficient forces",
-        "zoneLost": "zone lost"
+        "zoneLost": "zone lost",
+        "deadline": "deadline passed"
       },
       "building": {
         "air_defense_site": "the air defense site",
@@ -4397,7 +4654,58 @@
         "dismissed": "{{general}} is dismissed.",
         "recovered": "{{general}} resumes command after convalescence.",
         "wounded": "{{general}} is wounded at the HQ: {{days}} days of convalescence.",
-        "killed": "{{general}} is killed at the HQ."
+        "killed": "{{general}} is killed at the HQ.",
+        "joinedOp": "Committed to operation {{op}}: {{role}}.",
+        "opClosed": "Operation {{op}} closed: the army awaits your orders."
+      },
+      "goal": {
+        "attrition": "Weaken forces",
+        "air_control": "Total air control",
+        "conquest": "Total conquest",
+        "decapitation": "Decapitation",
+        "strategic": "Strategic strikes",
+        "sead": "Neutralise air defence",
+        "blockade": "Naval blockade",
+        "defend_border": "Hold the border",
+        "occupy": "Occupy a region"
+      },
+      "role": {
+        "land": "army",
+        "air": "air force",
+        "sea": "navy",
+        "ad": "air defence"
+      },
+      "op": {
+        "created_one": "Operation launched: {{goal}}, {{count}} general.",
+        "created_other": "Operation launched: {{goal}}, {{count}} generals.",
+        "declaredWar": "War declared on {{nation}}.",
+        "warBlocked": "Unable to go to war against {{nation}}: operation suspended.",
+        "askWar": "Permission requested: go to war against {{nation}}.",
+        "warAuthorized": "Permission received: war against {{nation}}.",
+        "warRefused": "War against {{nation}} refused: operation suspended.",
+        "strikes_one": "{{army}}: {{count}} strike — defences {{sead}}, aircraft {{air}}, forces {{ground}}, facilities {{bld}}.",
+        "strikes_other": "{{army}}: {{count}} strikes — defences {{sead}}, aircraft {{air}}, forces {{ground}}, facilities {{bld}}.",
+        "offensive": "{{army}}: offensive on {{province}}.",
+        "jointAssault": "Joint assault by the generals on {{province}}, led by {{army}}.",
+        "tooWeak": "{{army}}: insufficient forces before {{province}} — air support and reinforcements requested.",
+        "sectorDone": "{{army}}: sector taken, now supporting the rest of the theatre.",
+        "captured": "{{province}} is taken.",
+        "lostProvince": "{{province}} is lost.",
+        "recon": "No known target: reconnaissance launched over {{nation}}.",
+        "blockade": "{{army}}: blockade of the port of {{province}}.",
+        "achieved": "Objective achieved: it is being held.",
+        "heavyLosses": "Heavy losses: {{pct}} % of committed forces lost in 24 h.",
+        "stuck": "Operation bogged down: no progress for {{hours}} h.",
+        "success": "Objective achieved: operation successful.",
+        "failed": "Operation failed: {{reason}}.",
+        "goalChanged": "New objective: {{goal}}.",
+        "released": "{{army}} leaves the operation.",
+        "reinforced_one": "Reinforcement: {{count}} general joins the operation.",
+        "reinforced_other": "Reinforcements: {{count}} generals join the operation.",
+        "role": "{{army}}: new role — {{role}}.",
+        "reassigned": "{{army}} is reassigned to another operation.",
+        "suspended": "Operation suspended by order.",
+        "resumed": "Operation resumed."
       }
     },
     "spyNews": {

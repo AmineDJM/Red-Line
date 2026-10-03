@@ -3495,10 +3495,12 @@
       "open": "열기"
     },
     "tabs": {
+      "ops": "작전",
       "armies": "군",
       "generals": "장군"
     },
     "kpi": {
+      "ops": "작전",
       "armies": "군",
       "active": "임무 중",
       "generals": "장군",
@@ -3836,7 +3838,233 @@
       "none": "고용한 장군이 없습니다.",
       "payroll": "{{value}} / 일",
       "pool": "후보군",
-      "poolHint": "채용 가능한 장교: 고용 시 5일치 급여의 계약금."
+      "poolHint": "채용 가능한 장교: 고용 시 5일치 급여의 계약금.",
+      "branch": "군종",
+      "chief": "군종 사령관",
+      "noChief": "공석",
+      "forces": "군종 전력",
+      "freeForces": "군 미배속",
+      "isChief": "군종 사령관",
+      "makeChief": "사령관 임명",
+      "chiefHelp": "군종 사령관은 같은 군종 장군들의 역량을 높입니다. 급여가 더 높습니다.",
+      "chiefNamed": "{{name}}, 군종 사령관 임명."
+    },
+    "branch": {
+      "land": {
+        "name": "육군",
+        "short": "육",
+        "role": "지상 사령관",
+        "desc": "보병, 기갑, 포병, 지대지 미사일: 지역을 점령하고 확보합니다."
+      },
+      "air": {
+        "name": "공군",
+        "short": "공",
+        "role": "항공 사령관",
+        "desc": "전투기, 폭격기, 드론, 조기경보기: 하늘을 열고 종심을 타격하며 부대를 지원합니다."
+      },
+      "sea": {
+        "name": "해군",
+        "short": "해",
+        "role": "해상 사령관",
+        "desc": "수상함, 잠수함, 수송함: 봉쇄, 상륙 호위, 해상 타격."
+      },
+      "ad": {
+        "name": "방공",
+        "short": "방공",
+        "role": "방공 사령관",
+        "desc": "지대공 포대와 레이더: 영토, 기지, 전진하는 부대를 보호합니다."
+      }
+    },
+    "ops": {
+      "new": "새 작전",
+      "full": "작전은 최대 {{max}}개입니다. 하나를 종료하세요.",
+      "emptyTitle": "작전 없음",
+      "emptyText": "하나 이상의 국가, 목표, 이를 지휘할 장군을 지정하면 그들이 대신 행동합니다.",
+      "onboard": {
+        "title": "세 가지 선택으로 작전 수립",
+        "targets": "목표 국가: 지도에서 또는 검색으로, 하나 또는 여러 개.",
+        "goal": "목표: 전력 약화, 완전한 제공권, 완전 정복, 전략 타격, 봉쇄…",
+        "staff": "군종별 장군: 각자 역할과 전력을 받고 서로 협조합니다.",
+        "rule": "장군들은 스스로 타격, 전진, 초계, 봉쇄합니다. 스택에 대한 직접 명령은 끝날 때까지 우선합니다."
+      },
+      "path": {
+        "new": "새 작전",
+        "edit": "목표 변경",
+        "reinforce": "증원"
+      },
+      "step": {
+        "targets": "목표 국가",
+        "goal": "목표",
+        "staff": "장군",
+        "confirm": "확인"
+      },
+      "status": {
+        "planning": "준비 중",
+        "active": "진행 중",
+        "holding": "목표 유지",
+        "awaiting": "명령 대기",
+        "suspended": "중단됨",
+        "success": "성공",
+        "failed": "실패"
+      },
+      "phase": {
+        "stage": "집결",
+        "sead": "방공 제압",
+        "air": "제공권 확보",
+        "offensive": "공세",
+        "hold": "유지",
+        "done": "종료"
+      },
+      "goals": {
+        "attrition": {
+          "name": "전력 약화",
+          "short": "소모전",
+          "desc": "발견되는 모든 것을 타격: 방공, 항공기, 지상군, 함정, 기지."
+        },
+        "air_control": {
+          "name": "완전한 제공권",
+          "short": "하늘",
+          "desc": "방공망과 공군을 파괴한 뒤 초계로 하늘을 장악합니다."
+        },
+        "conquest": {
+          "name": "완전 정복",
+          "short": "정복",
+          "desc": "수도를 포함한 모든 주를 구역별로 항공 지원과 함께 점령합니다."
+        },
+        "decapitation": {
+          "name": "참수 작전",
+          "short": "수도",
+          "desc": "수도로 돌진해 최대한 빨리 점령합니다."
+        },
+        "strategic": {
+          "name": "전략 타격",
+          "short": "타격",
+          "desc": "산업, 에너지, 기지: 확인된 시설을 파괴합니다."
+        },
+        "sead": {
+          "name": "방공망 무력화",
+          "short": "방공",
+          "desc": "알려진 지대공 포대, 레이더, 방공 진지를 파괴합니다."
+        },
+        "blockade": {
+          "name": "해상 봉쇄",
+          "short": "봉쇄",
+          "desc": "항구를 봉쇄하고 함정을 격침하며 해상 교통로를 끊습니다."
+        },
+        "defend_border": {
+          "name": "국경 사수",
+          "short": "국경",
+          "desc": "지정한 국가에 맞서 국경을 방어하고 반격합니다."
+        },
+        "occupy": {
+          "name": "지역 점령",
+          "short": "점령",
+          "desc": "지도에서 지정한 주를 점령하고 확보합니다."
+        }
+      },
+      "metric": {
+        "forces": "추정 적 전력의 {{pct}} % 파괴",
+        "provinces": "점령한 주 {{done}}/{{total}}",
+        "capital": "수도: {{done}}/{{total}} 점령",
+        "sky": "하늘: 적 포대 {{sams}}개, 항공기 {{air}}대 남음",
+        "sams": "방공 {{total}}개 중 {{left}}개 남음",
+        "buildings": "파괴한 시설 {{done}}/{{total}}",
+        "ports": "봉쇄한 항구 {{done}}/{{total}}",
+        "front": "유지 중인 전선 도시 {{done}}/{{total}}"
+      },
+      "metrics": {
+        "forces": "파괴한 적 전력(추정 가치)",
+        "provinces": "점령한 주",
+        "capital": "수도",
+        "sams": "파괴한 방공",
+        "aircraft": "격추한 적 항공기",
+        "buildings": "파괴한 시설",
+        "ports": "봉쇄한 항구",
+        "front": "유지 중인 전선 도시"
+      },
+      "stats": {
+        "strikes": "타격",
+        "captures": "점령",
+        "kills": "파괴 가치",
+        "losses": "손실 요소",
+        "strength": "전력"
+      },
+      "sector": {
+        "north": "북부 구역",
+        "south": "남부 구역",
+        "east": "동부 구역",
+        "west": "서부 구역",
+        "center": "중부 구역",
+        "all": "전역 전체"
+      },
+      "sectorLeft": "남은 점령 {{left}}/{{total}}",
+      "roe": {
+        "strict": "엄격: 참모본부가 모든 참전 전에 승인을 요청합니다.",
+        "standard": "표준: 작전을 시작하면 목표 국가와의 전쟁이 승인됩니다.",
+        "free": "자유: 추격을 포함해 장군들이 스스로 결정합니다."
+      },
+      "progress": "진행 상황",
+      "staff": "참모본부",
+      "journal": "작전 일지",
+      "generals_other": "장군 {{count}}명",
+      "provinces_other": "{{count}}개 주",
+      "role": "역할",
+      "release": "작전에서 제외",
+      "back": "작전",
+      "reinforce": "증원",
+      "changeGoal": "목표 변경",
+      "cancel": "작전 취소",
+      "cancelTitle": "작전 취소",
+      "close": "종료",
+      "closeTitle": "작전 종료",
+      "cancelText": "{{name}}: 장군들은 예비로 전환되고(급여 유지), 작전용으로 편성된 군은 해체되며 그 스택은 직접 지휘로 돌아옵니다.",
+      "deadline": "기한",
+      "noDeadline": "없음",
+      "deadlineAt": "기한 {{day}} {{time}}",
+      "askWar": "참모본부가 {{nation}}과의 참전 승인을 요청합니다.",
+      "atWar": "교전 중",
+      "targetsLead": "목표 국가를 선택하세요: 지도에서 탭하거나 검색하세요.",
+      "noTarget": "지정된 국가가 없습니다.",
+      "removeTarget": "이 국가 제외",
+      "search": "국가 검색…",
+      "pickOnMap": "지도에서 지정",
+      "pick": {
+        "nation": "지도에서 국가를 탭해 목표로 지정합니다.",
+        "province": "점령할 주를 탭합니다(하나씩)."
+      },
+      "region": "지역",
+      "pickProvinces": "주 지정",
+      "pickGoal": "작전 목표를 선택하세요.",
+      "estWithSuggestion": "제안된 참모본부 기준 추정치입니다. 장군은 다음 단계에서 선택합니다.",
+      "est": {
+        "forces": "투입 전력",
+        "enemy": "추정 적 전력 {{value}}",
+        "cost": "비용",
+        "hire": "+ 계약금 {{value}}"
+      },
+      "staffLead_other": "장군 {{count}}명 선택됨.",
+      "suggest": "참모본부 제안",
+      "recommended": "권장",
+      "freeForces_other": "여유 스택 {{count}}개 · {{value}}",
+      "chiefIs": "군종 사령관: {{name}}",
+      "chief": "군종 사령관",
+      "hired": "고용됨",
+      "forces": "전력",
+      "autoForces": "자동: 군종의 여유 스택",
+      "morePool": "후보 전체 보기(+{{count}})",
+      "lessPool": "접기",
+      "name": "작전명",
+      "defaultName": "{{goal}} — {{target}}",
+      "launch": "작전 개시",
+      "toast": {
+        "created": "작전 {{name}} 개시.",
+        "edited": "새 목표를 참모본부에 전달했습니다.",
+        "reinforced": "증원 전력을 작전에 투입했습니다.",
+        "released": "장군을 작전에서 제외했습니다.",
+        "suspended": "작전을 중단했습니다.",
+        "resumed": "작전을 재개했습니다.",
+        "cancelled": "작전을 종료했습니다."
+      }
     },
     "wizard": {
       "path": "새 군",
@@ -4262,6 +4490,30 @@
       "cmd_askReinforce": {
         "title": "증원 요청",
         "text": "{{army}}: {{general}}이(가) 스택 {{count}}개의 증원을 요청합니다."
+      },
+      "cmd_opAskWar": {
+        "title": "승인 요청",
+        "text": "작전 {{op}}: 참모본부가 {{nation}}과의 참전 승인을 요청합니다."
+      },
+      "cmd_opSuccess": {
+        "title": "작전 성공",
+        "text": "작전 {{op}}: 목표 달성."
+      },
+      "cmd_opFailed": {
+        "title": "작전 실패",
+        "text": "작전 {{op}}: 실패."
+      },
+      "cmd_opAchieved": {
+        "title": "목표 달성",
+        "text": "작전 {{op}}: 목표를 달성했고 유지 중입니다."
+      },
+      "cmd_opHeavyLosses": {
+        "title": "막대한 손실",
+        "text": "작전 {{op}}: 24시간 동안 전력의 {{pct}} % 손실."
+      },
+      "cmd_opStuck": {
+        "title": "작전 교착",
+        "text": "작전 {{op}}: {{hours}}시간째 진전 없음."
       }
     },
     "cmd": {
@@ -4281,7 +4533,8 @@
         "losses": "손실 과다",
         "stuck": "진전 없음",
         "tooWeak": "전력 부족",
-        "zoneLost": "구역 상실"
+        "zoneLost": "구역 상실",
+        "deadline": "기한 초과"
       },
       "building": {
         "air_defense_site": "방공 진지",
@@ -4333,7 +4586,55 @@
         "dismissed": "{{general}} 해임.",
         "recovered": "{{general}}이(가) 회복 후 지휘에 복귀합니다.",
         "wounded": "{{general}}이(가) 사령부에서 부상: 요양 {{days}}일.",
-        "killed": "{{general}}이(가) 사령부에서 전사."
+        "killed": "{{general}}이(가) 사령부에서 전사.",
+        "joinedOp": "작전 {{op}}에 투입: {{role}}.",
+        "opClosed": "작전 {{op}} 종료: 군이 명령을 기다립니다."
+      },
+      "goal": {
+        "attrition": "전력 약화",
+        "air_control": "완전한 제공권",
+        "conquest": "완전 정복",
+        "decapitation": "참수 작전",
+        "strategic": "전략 타격",
+        "sead": "방공망 무력화",
+        "blockade": "해상 봉쇄",
+        "defend_border": "국경 사수",
+        "occupy": "지역 점령"
+      },
+      "role": {
+        "land": "육군",
+        "air": "공군",
+        "sea": "해군",
+        "ad": "방공"
+      },
+      "op": {
+        "created_other": "작전 개시: {{goal}}, 장군 {{count}}명.",
+        "declaredWar": "{{nation}}에 선전포고.",
+        "warBlocked": "{{nation}}과 참전할 수 없음: 작전 중단.",
+        "askWar": "승인 요청: {{nation}}과의 참전.",
+        "warAuthorized": "승인 수령: {{nation}}과의 전쟁.",
+        "warRefused": "{{nation}}과의 전쟁 거부: 작전 중단.",
+        "strikes_other": "{{army}}: 타격 {{count}}회 — 방공 {{sead}}, 항공기 {{air}}, 부대 {{ground}}, 시설 {{bld}}.",
+        "offensive": "{{army}}: {{province}}에 공세.",
+        "jointAssault": "장군들의 {{province}} 합동 공격, 지휘 {{army}}.",
+        "tooWeak": "{{army}}: {{province}} 앞에서 전력 부족 — 항공 지원과 증원 요청.",
+        "sectorDone": "{{army}}: 구역 점령, 이제 전역의 나머지를 지원.",
+        "captured": "{{province}} 점령.",
+        "lostProvince": "{{province}} 상실.",
+        "recon": "알려진 목표 없음: {{nation}} 상공 정찰 개시.",
+        "blockade": "{{army}}: {{province}} 항구 봉쇄.",
+        "achieved": "목표 달성: 유지 중.",
+        "heavyLosses": "막대한 손실: 24시간 동안 투입 전력의 {{pct}} % 손실.",
+        "stuck": "작전 교착: {{hours}}시간째 진전 없음.",
+        "success": "목표 달성: 작전 성공.",
+        "failed": "작전 실패: {{reason}}.",
+        "goalChanged": "새 목표: {{goal}}.",
+        "released": "{{army}}, 작전에서 이탈.",
+        "reinforced_other": "증원: 장군 {{count}}명이 작전에 합류.",
+        "role": "{{army}}: 새 역할 — {{role}}.",
+        "reassigned": "{{army}}, 다른 작전에 재배치.",
+        "suspended": "명령에 따라 작전 중단.",
+        "resumed": "작전 재개."
       }
     },
     "spyNews": {

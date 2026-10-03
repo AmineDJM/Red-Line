@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { Aggressiveness, LngLat, MissionInput, Roe, UnitId } from '@redline/shared';
+import type { StaffPick } from '../lib/ops.js';
 
 /**
  * Centre de commandement : armée affichée, brouillon de l'assistant (composer → mission → général)
@@ -35,16 +36,48 @@ export interface WizardDraft {
   generalId: string | null;
 }
 
-export type PickMode = 'target' | 'units' | null;
+export type PickMode = 'target' | 'units' | 'nation' | null;
+
+/** Étapes de l'assistant d'opération : cibles, objectif, généraux, confirmation. */
+export type OpStep = 'targets' | 'goal' | 'staff' | 'confirm';
+
+export interface OpDraft {
+  /** Nouvelle opération, changement d'objectif, renforts (nouveaux généraux). */
+  mode: 'new' | 'edit' | 'reinforce';
+  opId: string | null;
+  steps: OpStep[];
+  step: OpStep;
+  name: string;
+  nations: string[];
+  /** Région (Occuper) : provinces désignées sur la carte. */
+  provinces: string[];
+  goal: string | null;
+  aggr: Aggressiveness;
+  roe: Roe;
+  /** Échéance (heures), null : sans échéance. */
+  deadlineHours: number | null;
+  staff: StaffPick[];
+}
+
+export type CommandTab = 'ops' | 'armies' | 'generals';
 
 export interface CommandUiStore {
   /** Armée affichée dans la fenêtre. */
   selected: string | null;
-  tab: 'armies' | 'generals';
+  tab: CommandTab;
   draft: WizardDraft | null;
   picking: PickMode;
+  /** Opération affichée, brouillon de l'assistant d'opération. */
+  selectedOp: string | null;
+  opDraft: OpDraft | null;
   select(id: string | null): void;
-  setTab(tab: 'armies' | 'generals'): void;
+  setTab(tab: CommandTab): void;
+  selectOp(id: string | null): void;
+  startOp(d: Partial<OpDraft> & { steps: OpStep[] }): void;
+  patchOp(d: Partial<OpDraft>): void;
+  closeOp(): void;
+  /** Pays (et province, pour Occuper) désignés sur la carte. */
+  pickNation(t: { provinceId: string | null; nationId: string | null }): void;
   startWizard(d: Partial<WizardDraft> & { steps: WizardStep[] }): void;
   patch(d: Partial<WizardDraft>): void;
   patchMission(m: Partial<MissionDraft>): void;
@@ -56,13 +89,54 @@ export interface CommandUiStore {
 
 export const EMPTY_MISSION: MissionDraft = { type: null, aggr: 'balanced', roe: 'standard' };
 
+export const EMPTY_OP: Omit<OpDraft, 'steps' | 'step'> = {
+  mode: 'new',
+  opId: null,
+  name: '',
+  nations: [],
+  provinces: [],
+  goal: null,
+  aggr: 'balanced',
+  roe: 'standard',
+  deadlineHours: null,
+  staff: [],
+};
+
 export const useCommandUi = create<CommandUiStore>((set, get) => ({
   selected: null,
-  tab: 'armies',
+  tab: 'ops',
   draft: null,
   picking: null,
+  selectedOp: null,
+  opDraft: null,
   select(id) {
     set({ selected: id });
+  },
+  selectOp(id) {
+    set({ selectedOp: id });
+  },
+  startOp(d) {
+    set({ opDraft: { ...EMPTY_OP, step: d.steps[0]!, ...d }, draft: null, picking: null });
+  },
+  patchOp(d) {
+    const cur = get().opDraft;
+    if (cur) set({ opDraft: { ...cur, ...d } });
+  },
+  closeOp() {
+    set({ opDraft: null, picking: null });
+  },
+  pickNation({ provinceId, nationId }) {
+    const cur = get().opDraft;
+    if (!cur) return set({ picking: null });
+    const nations =
+      nationId && !cur.nations.includes(nationId) ? [...cur.nations, nationId] : cur.nations;
+    const provinces =
+      cur.goal === 'occupy' && provinceId
+        ? cur.provinces.includes(provinceId)
+          ? cur.provinces.filter((p) => p !== provinceId)
+          : [...cur.provinces, provinceId]
+        : cur.provinces;
+    set({ picking: null, opDraft: { ...cur, nations, provinces } });
   },
   setTab(tab) {
     set({ tab });

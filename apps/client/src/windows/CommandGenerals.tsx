@@ -1,18 +1,28 @@
 import { useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GENERAL_SKILLS, type CommandGeneralView, type GeneralSkill } from '@redline/shared';
+import {
+  BRANCHES,
+  BRANCH_SKILL,
+  GENERAL_SKILLS,
+  type Branch,
+  type CommandGeneralView,
+  type GeneralSkill,
+} from '@redline/shared';
 import {
   Badge,
   Button,
   Dialog,
   EmptyState,
   Icon,
+  Segmented,
   Select,
+  formatInt,
   formatMoney,
   type IconName,
 } from '@redline/ui';
 import { fmtDuration } from '../i18n/index.js';
 import { ratingOf } from '../lib/command.js';
+import { branchOfGeneral } from '../lib/ops.js';
 import { useGame } from '../store/game.js';
 import { useSend } from './armyCommand.js';
 
@@ -249,32 +259,111 @@ export function GeneralCard({
   );
 }
 
-/** Onglet « Généraux » : généraux recrutés (affectation, limogeage) et vivier (recrutement). */
+const BRANCH_ICON: Record<Branch, IconName> = {
+  land: 'army',
+  air: 'radio',
+  sea: 'anchor',
+  ad: 'shield',
+};
+
+/**
+ * Onglet « Généraux », par commandement (armée de terre, armée de l'air, marine, défense
+ * antiaérienne) : général en chef, généraux recrutés (affectation, limogeage), forces de l'arme et
+ * vivier propre au commandement (recrutement).
+ */
 export function GeneralsPane({ mobile }: { mobile: boolean }) {
   const { t } = useTranslation();
   const command = useGame((s) => s.view?.command);
   const send = useSend();
   const [dismiss, setDismiss] = useState<CommandGeneralView | null>(null);
+  const [branch, setBranch] = useState<Branch>('land');
   if (!command) return null;
   const armies = command.armies;
+  const info = command.branches?.find((b) => b.id === branch);
+  const hired = command.generals.filter((g) => branchOfGeneral(g) === branch);
+  const pool = info?.candidates ?? (branch === 'land' ? command.candidates : []);
+  const chief = info?.chiefId ? command.generals.find((g) => g.id === info.chiefId) : null;
+  const key = BRANCH_SKILL[branch];
   return (
     <div className={mobile ? 'cmd-roster cmd-roster--mobile' : 'cmd-roster'}>
+      <div className="ops-branchbar">
+        <Segmented<Branch>
+          size={mobile ? 'md' : 'sm'}
+          label={t('command.generals.branch')}
+          value={branch}
+          onChange={setBranch}
+          options={BRANCHES.map((b) => ({
+            value: b,
+            label: t(`command.branch.${b}.short`),
+            title: t(`command.branch.${b}.name`),
+          }))}
+        />
+        <span className="cmd-detail__spacer" />
+        <small className="cmd-muted">
+          {t('command.generals.payroll', { value: formatMoney(command.salaryPerDay) })}
+        </small>
+      </div>
+      <section className="ops-branchinfo" data-testid={`branch-${branch}`}>
+        <Icon name={BRANCH_ICON[branch]} size={18} />
+        <div>
+          <b>{t(`command.branch.${branch}.name`)}</b>
+          <p>{t(`command.branch.${branch}.desc`)}</p>
+        </div>
+        <dl>
+          <div>
+            <dt>{t('command.generals.chief')}</dt>
+            <dd>{chief ? `${chief.first} ${chief.last}` : t('command.generals.noChief')}</dd>
+          </div>
+          <div>
+            <dt>{t('command.generals.forces')}</dt>
+            <dd>
+              {info
+                ? `${t('command.piles', { count: info.forces.piles })} · ${formatInt(info.forces.elements)} · ${formatMoney(info.forces.value)}`
+                : '—'}
+            </dd>
+          </div>
+          <div>
+            <dt>{t('command.generals.freeForces')}</dt>
+            <dd>{info ? t('command.piles', { count: info.forces.free }) : '—'}</dd>
+          </div>
+        </dl>
+      </section>
       <section>
         <h3 className="cmd-h">
-          {t('command.generals.hired')} <span>{command.generals.length}</span>
-          <small>
-            {t('command.generals.payroll', { value: formatMoney(command.salaryPerDay) })}
-          </small>
+          {t('command.generals.hired')} <span>{hired.length}</span>
         </h3>
-        {command.generals.length ? (
+        {hired.length ? (
           <div className="cmd-grid">
-            {command.generals.map((g) => (
+            {hired.map((g) => (
               <GeneralCard
                 key={g.id}
                 g={g}
+                highlight={key}
                 testId={`general-${g.id}`}
                 footer={
                   <div className="cmd-gcard__actions">
+                    {g.chief ? (
+                      <Badge tone="amber" variant="solid">
+                        <Icon name="crown" size={10} /> {t('command.generals.isChief')}
+                      </Badge>
+                    ) : (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        icon={<Icon name="crown" size={12} />}
+                        title={t('command.generals.chiefHelp')}
+                        disabled={g.status !== 'active'}
+                        onClick={() =>
+                          void send(
+                            { kind: 'commandChief', branch, generalId: g.id },
+                            t('command.generals.chiefNamed', { name: `${g.first} ${g.last}` }),
+                          )
+                        }
+                        data-testid={`chief-${g.id}`}
+                      >
+                        {t('command.generals.makeChief')}
+                      </Button>
+                    )}
                     <Select
                       label={t('command.general.assign')}
                       value={g.armyId ?? ''}
@@ -303,14 +392,15 @@ export function GeneralsPane({ mobile }: { mobile: boolean }) {
       </section>
       <section>
         <h3 className="cmd-h">
-          {t('command.generals.pool')} <span>{command.candidates.length}</span>
+          {t('command.generals.pool')} <span>{pool.length}</span>
           <small>{t('command.generals.poolHint')}</small>
         </h3>
         <div className="cmd-grid">
-          {command.candidates.map((g) => (
+          {pool.map((g) => (
             <GeneralCard
               key={g.id}
               g={g}
+              highlight={key}
               testId={`candidate-${g.id}`}
               footer={
                 <div className="cmd-gcard__actions">

@@ -3495,10 +3495,12 @@
       "open": "Buka"
     },
     "tabs": {
+      "ops": "Operasi",
       "armies": "Angkatan",
       "generals": "Jenderal"
     },
     "kpi": {
+      "ops": "Operasi",
       "armies": "Angkatan",
       "active": "Dalam misi",
       "generals": "Jenderal",
@@ -3836,7 +3838,233 @@
       "none": "Belum ada jenderal yang direkrut.",
       "payroll": "{{value}} / hari",
       "pool": "Kandidat",
-      "poolHint": "Perwira tersedia: bonus perekrutan setara gaji 5 hari."
+      "poolHint": "Perwira tersedia: bonus perekrutan setara gaji 5 hari.",
+      "branch": "Matra",
+      "chief": "Panglima matra",
+      "noChief": "kosong",
+      "forces": "Kekuatan matra",
+      "freeForces": "Di luar angkatan",
+      "isChief": "Panglima matra",
+      "makeChief": "Angkat jadi panglima",
+      "chiefHelp": "Panglima matra meningkatkan kemampuan para jenderal di matranya; gajinya lebih tinggi.",
+      "chiefNamed": "{{name}} diangkat menjadi panglima matra."
+    },
+    "branch": {
+      "land": {
+        "name": "Angkatan Darat",
+        "short": "Darat",
+        "role": "Komandan darat",
+        "desc": "Infanteri, lapis baja, artileri, dan rudal darat-ke-darat: merebut dan menguasai wilayah."
+      },
+      "air": {
+        "name": "Angkatan Udara",
+        "short": "Udara",
+        "role": "Komandan udara",
+        "desc": "Pesawat tempur, pengebom, drone, pesawat radar: membuka langit, menyerang jauh ke dalam, mendukung pasukan."
+      },
+      "sea": {
+        "name": "Angkatan Laut",
+        "short": "Laut",
+        "role": "Komandan laut",
+        "desc": "Kapal permukaan, kapal selam, kapal angkut: blokade, pengawalan pendaratan, serangan dari laut."
+      },
+      "ad": {
+        "name": "Pertahanan Udara",
+        "short": "Hanud",
+        "role": "Komandan pertahanan udara",
+        "desc": "Baterai darat-ke-udara dan radar: melindungi wilayah, pangkalan, dan pasukan yang maju."
+      }
+    },
+    "ops": {
+      "new": "Operasi baru",
+      "full": "Batas {{max}} operasi tercapai: tutup salah satunya.",
+      "emptyTitle": "Tidak ada operasi",
+      "emptyText": "Tentukan satu atau beberapa negara, sebuah sasaran, dan jenderal yang memimpinnya: mereka bertindak untuk Anda.",
+      "onboard": {
+        "title": "Operasi dalam tiga pilihan",
+        "targets": "Negara sasaran: di peta atau lewat pencarian, satu atau beberapa.",
+        "goal": "Sasaran: melemahkan kekuatan, kendali udara total, penaklukan total, serangan strategis, blokade…",
+        "staff": "Para jenderal per matra: masing-masing mendapat peran dan kekuatan, dan mereka berkoordinasi.",
+        "rule": "Para jenderal menyerang, maju, berpatroli, dan memblokade sendiri; perintah langsung pada satu tumpukan diutamakan sampai selesai."
+      },
+      "path": {
+        "new": "operasi baru",
+        "edit": "ubah sasaran",
+        "reinforce": "perkuat"
+      },
+      "step": {
+        "targets": "Negara sasaran",
+        "goal": "Sasaran",
+        "staff": "Jenderal",
+        "confirm": "Konfirmasi"
+      },
+      "status": {
+        "planning": "Persiapan",
+        "active": "Berjalan",
+        "holding": "Sasaran dipertahankan",
+        "awaiting": "Menunggu perintah",
+        "suspended": "Ditangguhkan",
+        "success": "Berhasil",
+        "failed": "Gagal"
+      },
+      "phase": {
+        "stage": "pengumpulan",
+        "sead": "penekanan pertahanan",
+        "air": "penguasaan udara",
+        "offensive": "ofensif",
+        "hold": "mempertahankan",
+        "done": "selesai"
+      },
+      "goals": {
+        "attrition": {
+          "name": "Lemahkan kekuatan",
+          "short": "Atrisi",
+          "desc": "Serang semua yang ditemukan: pertahanan, pesawat, pasukan darat, kapal, pangkalan."
+        },
+        "air_control": {
+          "name": "Kendali udara total",
+          "short": "Langit",
+          "desc": "Hancurkan pertahanan udara dan angkatan udara, lalu kuasai langit dengan patroli."
+        },
+        "conquest": {
+          "name": "Penaklukan total",
+          "short": "Penaklukan",
+          "desc": "Rebut semua provinsi termasuk ibu kota, per sektor, dengan dukungan udara."
+        },
+        "decapitation": {
+          "name": "Pemenggalan",
+          "short": "Ibu kota",
+          "desc": "Menerjang ke ibu kota dan merebutnya secepat mungkin."
+        },
+        "strategic": {
+          "name": "Serangan strategis",
+          "short": "Serangan",
+          "desc": "Industri, energi, pangkalan: hancurkan fasilitas yang terungkap."
+        },
+        "sead": {
+          "name": "Lumpuhkan pertahanan udara",
+          "short": "Hanud",
+          "desc": "Hancurkan baterai darat-ke-udara, radar, dan situs pertahanan udara yang diketahui."
+        },
+        "blockade": {
+          "name": "Blokade laut",
+          "short": "Blokade",
+          "desc": "Blokade pelabuhan, tenggelamkan kapal, putus jalur laut."
+        },
+        "defend_border": {
+          "name": "Pertahankan perbatasan",
+          "short": "Perbatasan",
+          "desc": "Pertahankan perbatasan terhadap negara yang ditentukan, lakukan serangan balik."
+        },
+        "occupy": {
+          "name": "Duduki wilayah",
+          "short": "Pendudukan",
+          "desc": "Rebut dan kuasai provinsi yang ditandai di peta."
+        }
+      },
+      "metric": {
+        "forces": "{{pct}} % perkiraan kekuatan musuh dihancurkan",
+        "provinces": "{{done}}/{{total}} provinsi direbut",
+        "capital": "Ibu kota: {{done}}/{{total}} direbut",
+        "sky": "Langit: tersisa {{sams}} baterai musuh, {{air}} pesawat",
+        "sams": "Tersisa {{left}} dari {{total}} pertahanan udara",
+        "buildings": "{{done}}/{{total}} fasilitas dihancurkan",
+        "ports": "{{done}}/{{total}} pelabuhan diblokade",
+        "front": "{{done}}/{{total}} kota garis depan dipertahankan"
+      },
+      "metrics": {
+        "forces": "Kekuatan musuh yang dihancurkan (perkiraan nilai)",
+        "provinces": "Provinsi direbut",
+        "capital": "Ibu kota",
+        "sams": "Pertahanan udara dihancurkan",
+        "aircraft": "Pesawat musuh dihancurkan",
+        "buildings": "Fasilitas dihancurkan",
+        "ports": "Pelabuhan diblokade",
+        "front": "Kota garis depan dipertahankan"
+      },
+      "stats": {
+        "strikes": "Serangan",
+        "captures": "Rebutan",
+        "kills": "Nilai dihancurkan",
+        "losses": "Unsur hilang",
+        "strength": "Kekuatan"
+      },
+      "sector": {
+        "north": "Sektor utara",
+        "south": "Sektor selatan",
+        "east": "Sektor timur",
+        "west": "Sektor barat",
+        "center": "Sektor tengah",
+        "all": "Seluruh mandala"
+      },
+      "sectorLeft": "{{left}}/{{total}} belum direbut",
+      "roe": {
+        "strict": "Ketat: staf meminta izin Anda sebelum setiap masuk perang.",
+        "standard": "Standar: meluncurkan operasi mengizinkan perang melawan negara sasaran.",
+        "free": "Bebas: para jenderal memutuskan sendiri, termasuk pengejaran."
+      },
+      "progress": "Kemajuan",
+      "staff": "Staf",
+      "journal": "Catatan operasi",
+      "generals_other": "{{count}} jenderal",
+      "provinces_other": "{{count}} provinsi",
+      "role": "Peran",
+      "release": "Tarik dari operasi",
+      "back": "Operasi",
+      "reinforce": "Perkuat",
+      "changeGoal": "Ubah sasaran",
+      "cancel": "Batalkan operasi",
+      "cancelTitle": "Batalkan operasi",
+      "close": "Tutup",
+      "closeTitle": "Tutup operasi",
+      "cancelText": "{{name}}: para jenderal masuk cadangan (tetap digaji), angkatan yang dibentuk untuk operasi dibubarkan dan tumpukannya kembali ke komando langsung Anda.",
+      "deadline": "Tenggat",
+      "noDeadline": "Tidak ada",
+      "deadlineAt": "tenggat {{day}} {{time}}",
+      "askWar": "Staf meminta izin untuk berperang melawan {{nation}}.",
+      "atWar": "berperang",
+      "targetsLead": "Pilih negara sasaran: ketuk di peta atau cari.",
+      "noTarget": "Belum ada negara yang ditentukan.",
+      "removeTarget": "Hapus negara ini",
+      "search": "Cari negara…",
+      "pickOnMap": "Tandai di peta",
+      "pick": {
+        "nation": "Ketuk sebuah negara di peta untuk menjadikannya sasaran.",
+        "province": "Ketuk provinsi yang akan diduduki (satu per satu)."
+      },
+      "region": "Wilayah",
+      "pickProvinces": "Tandai provinsi",
+      "pickGoal": "Pilih sasaran operasi.",
+      "estWithSuggestion": "Perkiraan dengan staf yang diusulkan; Anda memilih jenderal di langkah berikutnya.",
+      "est": {
+        "forces": "Kekuatan dikerahkan",
+        "enemy": "perkiraan musuh {{value}}",
+        "cost": "Biaya",
+        "hire": "+ bonus {{value}}"
+      },
+      "staffLead_other": "{{count}} jenderal dipilih.",
+      "suggest": "Usulkan staf",
+      "recommended": "disarankan",
+      "freeForces_other": "{{count}} tumpukan bebas · {{value}}",
+      "chiefIs": "Panglima matra: {{name}}",
+      "chief": "panglima matra",
+      "hired": "direkrut",
+      "forces": "Kekuatan",
+      "autoForces": "Otomatis: tumpukan bebas matra",
+      "morePool": "Lihat semua kandidat (+{{count}})",
+      "lessPool": "Ciutkan",
+      "name": "Nama operasi",
+      "defaultName": "{{goal}} — {{target}}",
+      "launch": "Luncurkan operasi",
+      "toast": {
+        "created": "Operasi {{name}} diluncurkan.",
+        "edited": "Sasaran baru diteruskan ke staf.",
+        "reinforced": "Bala bantuan dikerahkan ke operasi.",
+        "released": "Jenderal ditarik dari operasi.",
+        "suspended": "Operasi ditangguhkan.",
+        "resumed": "Operasi dilanjutkan.",
+        "cancelled": "Operasi ditutup."
+      }
     },
     "wizard": {
       "path": "angkatan baru",
@@ -4262,6 +4490,30 @@
       "cmd_askReinforce": {
         "title": "Bala bantuan diminta",
         "text": "{{army}}: {{general}} meminta bala bantuan {{count}} tumpukan."
+      },
+      "cmd_opAskWar": {
+        "title": "Izin diminta",
+        "text": "Operasi {{op}}: staf meminta izin untuk berperang melawan {{nation}}."
+      },
+      "cmd_opSuccess": {
+        "title": "Operasi berhasil",
+        "text": "Operasi {{op}}: sasaran tercapai."
+      },
+      "cmd_opFailed": {
+        "title": "Operasi gagal",
+        "text": "Operasi {{op}}: gagal."
+      },
+      "cmd_opAchieved": {
+        "title": "Sasaran tercapai",
+        "text": "Operasi {{op}}: sasaran tercapai dan dipertahankan."
+      },
+      "cmd_opHeavyLosses": {
+        "title": "Kerugian berat",
+        "text": "Operasi {{op}}: {{pct}} % kekuatan hilang dalam 24 jam."
+      },
+      "cmd_opStuck": {
+        "title": "Operasi macet",
+        "text": "Operasi {{op}}: tak ada kemajuan selama {{hours}} jam."
       }
     },
     "cmd": {
@@ -4281,7 +4533,8 @@
         "losses": "kerugian terlalu berat",
         "stuck": "tidak ada kemajuan",
         "tooWeak": "pasukan tidak memadai",
-        "zoneLost": "zona hilang"
+        "zoneLost": "zona hilang",
+        "deadline": "tenggat terlewati"
       },
       "building": {
         "air_defense_site": "situs pertahanan udara",
@@ -4333,7 +4586,55 @@
         "dismissed": "{{general}} diberhentikan.",
         "recovered": "{{general}} kembali memimpin setelah masa pemulihan.",
         "wounded": "{{general}} terluka di markas: {{days}} hari pemulihan.",
-        "killed": "{{general}} gugur di markas."
+        "killed": "{{general}} gugur di markas.",
+        "joinedOp": "Dikerahkan dalam operasi {{op}}: {{role}}.",
+        "opClosed": "Operasi {{op}} ditutup: angkatan menunggu perintah Anda."
+      },
+      "goal": {
+        "attrition": "Lemahkan kekuatan",
+        "air_control": "Kendali udara total",
+        "conquest": "Penaklukan total",
+        "decapitation": "Pemenggalan",
+        "strategic": "Serangan strategis",
+        "sead": "Lumpuhkan pertahanan udara",
+        "blockade": "Blokade laut",
+        "defend_border": "Pertahankan perbatasan",
+        "occupy": "Duduki wilayah"
+      },
+      "role": {
+        "land": "angkatan darat",
+        "air": "angkatan udara",
+        "sea": "angkatan laut",
+        "ad": "pertahanan udara"
+      },
+      "op": {
+        "created_other": "Operasi diluncurkan: {{goal}}, {{count}} jenderal.",
+        "declaredWar": "Perang dinyatakan terhadap {{nation}}.",
+        "warBlocked": "Tidak bisa berperang melawan {{nation}}: operasi ditangguhkan.",
+        "askWar": "Permintaan izin: berperang melawan {{nation}}.",
+        "warAuthorized": "Izin diterima: perang melawan {{nation}}.",
+        "warRefused": "Perang melawan {{nation}} ditolak: operasi ditangguhkan.",
+        "strikes_other": "{{army}}: {{count}} serangan — pertahanan {{sead}}, pesawat {{air}}, pasukan {{ground}}, fasilitas {{bld}}.",
+        "offensive": "{{army}}: ofensif ke {{province}}.",
+        "jointAssault": "Serbuan gabungan para jenderal ke {{province}}, dipimpin {{army}}.",
+        "tooWeak": "{{army}}: kekuatan tidak cukup di depan {{province}} — dukungan udara dan bala bantuan diminta.",
+        "sectorDone": "{{army}}: sektor direbut, kini mendukung sisa mandala.",
+        "captured": "{{province}} direbut.",
+        "lostProvince": "{{province}} lepas.",
+        "recon": "Tak ada sasaran diketahui: pengintaian diluncurkan atas {{nation}}.",
+        "blockade": "{{army}}: blokade pelabuhan {{province}}.",
+        "achieved": "Sasaran tercapai: sedang dipertahankan.",
+        "heavyLosses": "Kerugian berat: {{pct}} % kekuatan yang dikerahkan hilang dalam 24 jam.",
+        "stuck": "Operasi macet: tak ada kemajuan selama {{hours}} jam.",
+        "success": "Sasaran tercapai: operasi berhasil.",
+        "failed": "Operasi gagal: {{reason}}.",
+        "goalChanged": "Sasaran baru: {{goal}}.",
+        "released": "{{army}} meninggalkan operasi.",
+        "reinforced_other": "Bala bantuan: {{count}} jenderal bergabung dalam operasi.",
+        "role": "{{army}}: peran baru — {{role}}.",
+        "reassigned": "{{army}} dipindahkan ke operasi lain.",
+        "suspended": "Operasi ditangguhkan atas perintah.",
+        "resumed": "Operasi dilanjutkan."
       }
     },
     "spyNews": {
