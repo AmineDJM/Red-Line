@@ -215,4 +215,91 @@ export const COMMAND_HELP: Record<string, HelpEntry> = {
   'command.reinforce.maxPiles': ['Piles par demande', undefined, 'n'],
   'command.reinforce.reachKm': ['Rayon de recherche', 'Piles libres proches de l’armée.', 'km'],
   'command.reinforce.cooldownHours': ['Délai entre deux demandes', undefined, 'h'],
+  'command.operations': [
+    'Opérations',
+    'Opérations du QG : pays visés, objectif, plusieurs généraux des quatre commandements (terre, air, marine, défense antiaérienne).',
+  ],
+  'command.operations.maxOps': ['Opérations simultanées', 'Par nation.', 'n'],
+  'command.operations.maxCommanders': ['Généraux par opération', undefined, 'n'],
+  'command.operations.stageHours': [
+    'Rassemblement',
+    'Durée maximale du rassemblement avant l’offensive, lancée quoi qu’il arrive ensuite.',
+    'h',
+  ],
+  'command.operations.forceShare': [
+    'Forces engagées d’office',
+    'Part des piles libres de l’arme d’un général confiées à l’opération, selon l’agressivité.',
+  ],
+  'command.operations.forceShare.cautious': ['Prudente', undefined, 'frac'],
+  'command.operations.forceShare.balanced': ['Équilibrée', undefined, 'frac'],
+  'command.operations.forceShare.bold': ['Audacieuse', undefined, 'frac'],
+  'command.operations.autoReachKm': [
+    'Rayon des forces d’office',
+    'Piles libres prises d’office jusqu’à cette distance des cibles.',
+    'km',
+  ],
+  'command.operations.sectors': [
+    'Secteurs terrestres',
+    'Au plus, un par général de l’armée de terre.',
+    'n',
+  ],
+  'command.operations.groupShare': [
+    'Taille des groupes d’assaut',
+    'Part des piles terrestres du général engagées dans un même groupe.',
+    'frac',
+  ],
+  'command.operations.pilesPerObjective': [
+    'Piles par objectif simultané',
+    'Un objectif de plus par tranche de piles terrestres.',
+    'n',
+  ],
+  'command.operations.sorties': [
+    'Sorties de frappe',
+    'Par réflexion : base + compétence aviation / tranche, au plus une part des appareils.',
+  ],
+  'command.operations.sorties.base': ['Sorties de base', undefined, 'n'],
+  'command.operations.sorties.perSkill': ['Points d’aviation par sortie de plus', undefined, 'pts'],
+  'command.operations.sorties.share': ['Part maximale des appareils', undefined, 'frac'],
+  'command.operations.salvos': ['Salves de missiles', 'Par réflexion et par général.', 'n'],
+  'command.operations.reconHours': [
+    'Relance de la reconnaissance',
+    'Faute de cibles connues, patrouille au-dessus des pays visés.',
+    'h',
+  ],
+  'command.operations.huntKm': [
+    'Chasse terrestre (Affaiblir)',
+    'Forces ennemies vues poursuivies jusqu’à cette distance du territoire.',
+    'km',
+  ],
+  'command.operations.frontKm': [
+    'Ramener au front',
+    'Piles sans objectif ramenées vers la ville amie la plus avancée de leur secteur au-delà de cette distance.',
+    'km',
+  ],
+  'command.operations.heavyLossShare': [
+    'Alerte pertes lourdes',
+    'Part de la valeur engagée perdue en 24 h.',
+    'frac',
+  ],
+  'command.operations.stuckHours': ['Alerte enlisement', 'Sans progrès pendant ce délai.', 'h'],
+  'command.operations.failStuckHours': [
+    'Échec par enlisement',
+    'Opération offensive sans aucun progrès pendant ce délai.',
+    'h',
+  ],
+  'command.operations.chiefBonus': [
+    'Bonus du général en chef',
+    'Part de son avance (note − 50) ajoutée aux compétences des généraux de son commandement.',
+    'frac',
+  ],
+  'command.operations.chiefSalary': ['Solde du général en chef', 'Multiplicateur.', 'x'],
+  'command.operations.deputySkill': [
+    'Adjoint d’un général blessé',
+    'Part des compétences avec laquelle l’adjoint commande.',
+    'frac',
+  ],
+  'command.operations.goals': [
+    'Objectifs',
+    'Par objectif : ordre d’affichage, commandements recommandés, type de cible, objectif continu, seuil de réussite.',
+  ],
 };

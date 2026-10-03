@@ -1,9 +1,36 @@
-import type { ArmyView, CommandView, NationId, PlayerView } from '@redline/shared';
-import { estimateForce, neighborNations, ownForce, withForceMemo } from '../../ai/estimate.js';
-import { warsOf } from '../../state/access.js';
+import {
+  BRANCHES,
+  BRANCH_DOMAIN,
+  branchOfSystem,
+  type ArmyView,
+  type Branch,
+  type CampaignView,
+  type CommandBranchView,
+  type CommandGeneralView,
+  type CommandView,
+  type DefenseCommandView,
+  type NationId,
+  type PlayerView,
+} from '@redline/shared';
+import {
+  estimateForce,
+  neighborNations,
+  ownForce,
+  unitValue,
+  withForceMemo,
+} from '../../ai/estimate.js';
+import { nationUnits, sysOf, warsOf } from '../../state/access.js';
 import type { EngineState } from '../../state/types.js';
-import { candidateView, candidatesOf, generalView, salaryOf } from './generals.js';
-import { cmdBal, cmdOpt, type ArmySt } from './state.js';
+import {
+  branchOf,
+  candidateView,
+  candidatesOf,
+  generalView,
+  isChief,
+  salaryOf,
+} from './generals.js';
+import { campaignView, opNations } from './ops.js';
+import { cmdBal, cmdOpt, type ArmySt, type CmdState } from './state.js';
 
 /**
  * Vue du centre de commandement : armées, généraux recrutés et candidats de la nation seulement
@@ -60,7 +87,97 @@ function armyView(a: ArmySt): ArmyView {
     captures: a.captures,
     losses: a.losses,
     createdAt: a.createdAt,
+    ...(a.op ? { opId: a.op } : {}),
   };
+}
+
+/** Commandements : chef, généraux, vivier, forces (piles de l'arme), opérations. */
+function branchesView(
+  state: EngineState,
+  n: NationId,
+  c: CmdState | undefined,
+): CommandBranchView[] {
+  const forces: Record<Branch, CommandBranchView['forces']> = {
+    land: { piles: 0, free: 0, elements: 0, value: 0 },
+    air: { piles: 0, free: 0, elements: 0, value: 0 },
+    sea: { piles: 0, free: 0, elements: 0, value: 0 },
+    ad: { piles: 0, free: 0, elements: 0, value: 0 },
+  };
+  for (const id of nationUnits(state, n)) {
+    const u = state.units[id]!;
+    if (u.role) continue;
+    const b = branchOfSystem(sysOf(state, u));
+    if (!b) continue;
+    const f = forces[b];
+    f.piles++;
+    if (!c?.unitArmy[id]) f.free++;
+    f.elements += u.count;
+    f.value += unitValue(state, u);
+  }
+  return BRANCHES.map((b) => {
+    const gens = c
+      ? Object.keys(c.gens)
+          .sort()
+          .filter((id) => c.gens[id]!.owner === n && branchOf(c.gens[id]!) === b)
+      : [];
+    const ops = new Set<string>();
+    for (const gid of gens) {
+      const a = c!.gens[gid]!.army ? c!.armies[c!.gens[gid]!.army!] : undefined;
+      if (a?.op) ops.add(a.op);
+    }
+    return {
+      id: b,
+      chiefId: c?.chiefs?.[n]?.[b] ?? null,
+      generalIds: gens,
+      candidates: candidatesOf(state, n, b).map((x) => candidateView(state, n, x)),
+      forces: { ...forces[b], value: Math.round(forces[b].value) },
+      opIds: [...ops].sort(),
+    };
+  });
+}
+
+/**
+ * Commandements résumés pour le ministère de la Défense : chef, généraux, opérations en cours
+ * (commandements → chefs → généraux → opérations), d'après les vues déjà calculées.
+ */
+export function commandsView(
+  branches: CommandBranchView[],
+  generals: CommandGeneralView[],
+  ops: CampaignView[],
+): DefenseCommandView[] {
+  const gen = new Map(generals.map((g) => [g.id, g]));
+  const live = new Map(
+    ops.filter((o) => o.status !== 'success' && o.status !== 'failed').map((o) => [o.id, o]),
+  );
+  const name = (g: CommandGeneralView) => `${g.first} ${g.last}`;
+  return branches.map((b) => {
+    const chief = b.chiefId ? gen.get(b.chiefId) : undefined;
+    const opIds = b.opIds.filter((id) => live.has(id));
+    return {
+      id: b.id,
+      domain: BRANCH_DOMAIN[b.id],
+      chief: chief ? { id: chief.id, name: name(chief) } : null,
+      generalIds: b.generalIds,
+      generals: b.generalIds.flatMap((id) => {
+        const g = gen.get(id);
+        if (!g) return [];
+        return [
+          {
+            id,
+            name: name(g),
+            status: g.status,
+            ...(g.opId && live.has(g.opId) ? { opId: g.opId } : {}),
+          },
+        ];
+      }),
+      operationIds: opIds,
+      operations: opIds.map((id) => {
+        const o = live.get(id)!;
+        return { id, name: o.name, goal: o.goal, status: o.status, pct: o.pct };
+      }),
+      forces: b.forces,
+    };
+  });
 }
 
 export function commandView(state: EngineState, n: NationId, view: PlayerView): void {
@@ -68,7 +185,7 @@ export function commandView(state: EngineState, n: NationId, view: PlayerView): 
   if (!B.enabled || !state.nations[n]) return;
   const c = cmdOpt(state);
   const armies: ArmyView[] = [];
-  const generals = [];
+  const generals: CommandGeneralView[] = [];
   let salary = 0;
   const targets = new Set<NationId>();
   if (c) {
@@ -77,6 +194,10 @@ export function commandView(state: EngineState, n: NationId, view: PlayerView): 
       if (a.owner !== n) continue;
       const v = armyView(a);
       if (v.mission) v.mission.brain = B.missions[v.mission.type]?.brain ?? 'conquer';
+      if (a.op) {
+        const role = c.ops?.[a.op]?.roles[a.id];
+        if (role) v.role = role;
+      }
       armies.push(v);
       if (a.mission?.nationId) targets.add(a.mission.nationId);
       for (const p of a.mission?.targets ?? []) {
@@ -88,7 +209,12 @@ export function commandView(state: EngineState, n: NationId, view: PlayerView): 
       const g = c.gens[id]!;
       if (g.owner !== n) continue;
       generals.push(generalView(state, g));
-      salary += salaryOf(state, n, g.skills, g.traits);
+      salary += salaryOf(state, n, g.skills, g.traits, isChief(state, g));
+    }
+    for (const id of Object.keys(c.ops ?? {}).sort()) {
+      const op = c.ops![id]!;
+      if (op.owner !== n) continue;
+      for (const t of opNations(state, op)) targets.add(t);
     }
   }
   const candidates = candidatesOf(state, n).map((x) => candidateView(state, n, x));
@@ -104,6 +230,13 @@ export function commandView(state: EngineState, n: NationId, view: PlayerView): 
       estimates[t] = sig2(estimateForce(state, n, t, mine, 1));
     }
   });
+  const ops = c
+    ? Object.keys(c.ops ?? {})
+        .sort()
+        .filter((id) => c.ops![id]!.owner === n)
+        .map((id) => campaignView(state, c.ops![id]!))
+    : [];
+  const branches = branchesView(state, n, c);
   const out: CommandView = {
     armies,
     generals,
@@ -113,6 +246,11 @@ export function commandView(state: EngineState, n: NationId, view: PlayerView): 
     maxPiles: B.maxPiles,
     missions: B.missions,
     estimates,
+    ops,
+    maxOps: B.operations.maxOps,
+    goals: B.operations.goals,
+    branches,
+    commands: commandsView(branches, generals, ops),
   };
   view.command = out;
   // Solde prévu : les généraux sont une dépense récurrente (absente du calcul du module économique).

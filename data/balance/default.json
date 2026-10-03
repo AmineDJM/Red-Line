@@ -3271,6 +3271,38 @@
       "noIntelNoticeHours": 24,
       "zoneLostHours": 6
     },
+    "operations": {
+      "maxOps": 8,
+      "maxCommanders": 6,
+      "stageHours": 6,
+      "forceShare": { "cautious": 0.5, "balanced": 0.75, "bold": 1 },
+      "autoReachKm": 4000,
+      "sectors": 4,
+      "groupShare": 0.5,
+      "pilesPerObjective": 4,
+      "sorties": { "base": 2, "perSkill": 25, "share": 0.6 },
+      "salvos": 3,
+      "reconHours": 12,
+      "huntKm": 150,
+      "frontKm": 60,
+      "heavyLossShare": 0.2,
+      "stuckHours": 36,
+      "failStuckHours": 120,
+      "chiefBonus": 0.2,
+      "chiefSalary": 1.5,
+      "deputySkill": 0.7,
+      "goals": {
+        "attrition": { "order": 1, "branches": ["air", "land", "sea"], "success": 0.5 },
+        "air_control": { "order": 2, "branches": ["air", "ad"], "continuous": true },
+        "conquest": { "order": 3, "branches": ["land", "air", "ad", "sea"] },
+        "decapitation": { "order": 4, "branches": ["land", "air"] },
+        "strategic": { "order": 5, "branches": ["air", "land"], "success": 0.8 },
+        "sead": { "order": 6, "branches": ["air"] },
+        "blockade": { "order": 7, "branches": ["sea", "air"], "continuous": true },
+        "defend_border": { "order": 8, "branches": ["land", "ad", "air"], "continuous": true },
+        "occupy": { "order": 9, "branches": ["land", "air", "ad"], "target": "provinces" }
+      }
+    },
     "reinforce": {
       "triggerShare": 0.7,
       "maxPiles": 3,

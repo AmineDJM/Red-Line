@@ -3499,10 +3499,12 @@
       "open": "打开"
     },
     "tabs": {
+      "ops": "作战行动",
       "armies": "集团军",
       "generals": "将领"
     },
     "kpi": {
+      "ops": "作战行动",
       "armies": "集团军",
       "active": "执行任务",
       "generals": "将领",
@@ -3840,7 +3842,233 @@
       "none": "尚未雇用将领。",
       "payroll": "{{value}} / 日",
       "pool": "人才库",
-      "poolHint": "可用军官：雇用时支付相当于 5 天薪饷的签约金。"
+      "poolHint": "可用军官：雇用时支付相当于 5 天薪饷的签约金。",
+      "branch": "军种",
+      "chief": "军种司令",
+      "noChief": "空缺",
+      "forces": "军种兵力",
+      "freeForces": "未编入集团军",
+      "isChief": "军种司令",
+      "makeChief": "任命为司令",
+      "chiefHelp": "军种司令提升本军种将领的能力；其薪饷更高。",
+      "chiefNamed": "{{name}} 被任命为军种司令。"
+    },
+    "branch": {
+      "land": {
+        "name": "陆军",
+        "short": "陆",
+        "role": "陆上指挥官",
+        "desc": "步兵、装甲、炮兵和地对地导弹：夺取并守住地域。"
+      },
+      "air": {
+        "name": "空军",
+        "short": "空",
+        "role": "空中指挥官",
+        "desc": "战斗机、轰炸机、无人机、预警机：打开天空，纵深打击，支援部队。"
+      },
+      "sea": {
+        "name": "海军",
+        "short": "海",
+        "role": "海上指挥官",
+        "desc": "水面舰艇、潜艇、运输舰：封锁、护航登陆、从海上打击。"
+      },
+      "ad": {
+        "name": "防空",
+        "short": "防空",
+        "role": "防空指挥官",
+        "desc": "地对空导弹连与雷达：保护领土、基地和推进中的部队。"
+      }
+    },
+    "ops": {
+      "new": "新建作战",
+      "full": "已达 {{max}} 项作战上限：请结束一项。",
+      "emptyTitle": "暂无作战",
+      "emptyText": "指定一个或多个国家、一个目标和指挥它的将领：他们会替你行动。",
+      "onboard": {
+        "title": "三步建立作战",
+        "targets": "目标国家：在地图上或通过搜索，一个或多个。",
+        "goal": "目标：削弱兵力、全面制空、全面征服、战略打击、封锁……",
+        "staff": "按军种选择将领：每人获得角色和兵力，彼此协同。",
+        "rule": "将领会自主打击、推进、巡逻和封锁；对编组的直接命令在完成前优先。"
+      },
+      "path": {
+        "new": "新建作战",
+        "edit": "更改目标",
+        "reinforce": "增援"
+      },
+      "step": {
+        "targets": "目标国",
+        "goal": "目标",
+        "staff": "将领",
+        "confirm": "确认"
+      },
+      "status": {
+        "planning": "准备中",
+        "active": "进行中",
+        "holding": "目标保持中",
+        "awaiting": "等待命令",
+        "suspended": "已暂停",
+        "success": "成功",
+        "failed": "失败"
+      },
+      "phase": {
+        "stage": "集结",
+        "sead": "压制防空",
+        "air": "夺取制空权",
+        "offensive": "进攻",
+        "hold": "保持",
+        "done": "已结束"
+      },
+      "goals": {
+        "attrition": {
+          "name": "削弱兵力",
+          "short": "消耗",
+          "desc": "打击发现的一切：防空、航空兵、地面部队、舰艇、基地。"
+        },
+        "air_control": {
+          "name": "全面制空",
+          "short": "天空",
+          "desc": "摧毁防空和航空兵，然后以巡逻控制天空。"
+        },
+        "conquest": {
+          "name": "全面征服",
+          "short": "征服",
+          "desc": "分区推进，在空中支援下夺取包括首都在内的所有省份。"
+        },
+        "decapitation": {
+          "name": "斩首行动",
+          "short": "首都",
+          "desc": "直扑首都，尽快将其夺取。"
+        },
+        "strategic": {
+          "name": "战略打击",
+          "short": "打击",
+          "desc": "工业、能源、基地：摧毁已查明的设施。"
+        },
+        "sead": {
+          "name": "瘫痪防空",
+          "short": "防空",
+          "desc": "摧毁已知的地对空导弹连、雷达和防空阵地。"
+        },
+        "blockade": {
+          "name": "海上封锁",
+          "short": "封锁",
+          "desc": "封锁港口，击沉舰船，切断海上航线。"
+        },
+        "defend_border": {
+          "name": "守住边境",
+          "short": "边境",
+          "desc": "针对指定国家守卫边境，并实施反击。"
+        },
+        "occupy": {
+          "name": "占领地区",
+          "short": "占领",
+          "desc": "夺取并守住地图上指定的省份。"
+        }
+      },
+      "metric": {
+        "forces": "已摧毁估计敌军兵力的 {{pct}} %",
+        "provinces": "已夺取省份 {{done}}/{{total}}",
+        "capital": "首都：已夺取 {{done}}/{{total}}",
+        "sky": "天空：剩余敌导弹连 {{sams}} 个，飞机 {{air}} 架",
+        "sams": "防空剩余 {{left}}/{{total}}",
+        "buildings": "已摧毁设施 {{done}}/{{total}}",
+        "ports": "已封锁港口 {{done}}/{{total}}",
+        "front": "守住的前线城市 {{done}}/{{total}}"
+      },
+      "metrics": {
+        "forces": "摧毁的敌方兵力（估计价值）",
+        "provinces": "已夺取省份",
+        "capital": "首都",
+        "sams": "摧毁的防空",
+        "aircraft": "击落的敌机",
+        "buildings": "摧毁的设施",
+        "ports": "封锁的港口",
+        "front": "守住的前线城市"
+      },
+      "stats": {
+        "strikes": "打击",
+        "captures": "夺取",
+        "kills": "摧毁价值",
+        "losses": "损失单位",
+        "strength": "兵力"
+      },
+      "sector": {
+        "north": "北部扇区",
+        "south": "南部扇区",
+        "east": "东部扇区",
+        "west": "西部扇区",
+        "center": "中部扇区",
+        "all": "整个战区"
+      },
+      "sectorLeft": "待夺取 {{left}}/{{total}}",
+      "roe": {
+        "strict": "严格：参战前总参谋部都会征求你的批准。",
+        "standard": "标准：发起作战即授权对目标国开战。",
+        "free": "自由：将领自行决定，包括追击。"
+      },
+      "progress": "进展",
+      "staff": "总参谋部",
+      "journal": "作战日志",
+      "generals_other": "{{count}} 名将领",
+      "provinces_other": "{{count}} 个省份",
+      "role": "角色",
+      "release": "撤出作战",
+      "back": "作战行动",
+      "reinforce": "增援",
+      "changeGoal": "更改目标",
+      "cancel": "取消作战",
+      "cancelTitle": "取消作战",
+      "close": "结束",
+      "closeTitle": "结束作战",
+      "cancelText": "{{name}}：将领转入预备役（薪饷照发），为作战组建的集团军解散，其编组回到你的直接指挥下。",
+      "deadline": "期限",
+      "noDeadline": "无",
+      "deadlineAt": "期限 {{day}} {{time}}",
+      "askWar": "总参谋部请求批准对 {{nation}} 开战。",
+      "atWar": "交战中",
+      "targetsLead": "选择目标国家：在地图上点选或搜索。",
+      "noTarget": "尚未指定国家。",
+      "removeTarget": "移除该国",
+      "search": "搜索国家…",
+      "pickOnMap": "在地图上指定",
+      "pick": {
+        "nation": "在地图上点选一个国家作为目标。",
+        "province": "点选要占领的省份（逐个）。"
+      },
+      "region": "地区",
+      "pickProvinces": "指定省份",
+      "pickGoal": "选择作战目标。",
+      "estWithSuggestion": "按建议的总参谋部估算；将领将在下一步选择。",
+      "est": {
+        "forces": "投入兵力",
+        "enemy": "估计敌军 {{value}}",
+        "cost": "费用",
+        "hire": "+ 签约金 {{value}}"
+      },
+      "staffLead_other": "已选 {{count}} 名将领。",
+      "suggest": "推荐总参谋部",
+      "recommended": "推荐",
+      "freeForces_other": "{{count}} 个空闲编组 · {{value}}",
+      "chiefIs": "军种司令：{{name}}",
+      "chief": "军种司令",
+      "hired": "已招募",
+      "forces": "兵力",
+      "autoForces": "自动分配兵力",
+      "morePool": "查看全部候选人（+{{count}}）",
+      "lessPool": "收起",
+      "name": "作战名称",
+      "defaultName": "{{goal}} — {{target}}",
+      "launch": "发起作战",
+      "toast": {
+        "created": "作战 {{name}} 已发起。",
+        "edited": "新目标已传达总参谋部。",
+        "reinforced": "增援已投入作战。",
+        "released": "将领已撤出作战。",
+        "suspended": "作战已暂停。",
+        "resumed": "作战已恢复。",
+        "cancelled": "作战已结束。"
+      }
     },
     "wizard": {
       "path": "新集团军",
@@ -3894,6 +4122,620 @@
       "suspended": "任务已暂停。",
       "resumed": "任务已恢复。",
       "saved": "设置已保存。"
+    }
+  },
+  "engine": {
+    "place": {
+      "sea": "海上"
+    },
+    "sector": {
+      "at": "{{province}} 区域",
+      "near": "距 {{province}} {{km}} km",
+      "unknown": "未识别区域"
+    },
+    "strikeKind": {
+      "missile": "导弹",
+      "air": "空中",
+      "artillery": "炮兵"
+    },
+    "resolution": {
+      "arms_embargo": "武器禁运",
+      "economic_sanctions": "经济制裁",
+      "ceasefire": "停火",
+      "no_fly_zone": "禁飞区",
+      "peacekeeping": "维和部队",
+      "condemnation": "谴责"
+    },
+    "vote": {
+      "yes": "{{nation}} 赞成",
+      "no": "{{nation}} 反对",
+      "abstain": "{{nation}} 弃权"
+    },
+    "charter": {
+      "mutualDefense": "共同防御",
+      "intelSharing": "情报共享",
+      "passage": "通行权",
+      "simple": "简单合作"
+    },
+    "mission": {
+      "raid": "突袭",
+      "sabotage": "破坏",
+      "rescue": "营救"
+    },
+    "intelOp": {
+      "infiltrate_spy": "特工渗透",
+      "recruit_source": "招募线人",
+      "turn_agent": "策反特工",
+      "exfiltrate": "撤离",
+      "steal_research": "窃取研究",
+      "sabotage_factory": "工业破坏",
+      "fund_rebels": "资助叛军",
+      "listen_area": "区域监听",
+      "intercept_army": "通信截获",
+      "jam_area": "区域干扰",
+      "cyber_radar": "网络攻击（雷达）",
+      "cyber_production": "网络攻击（工业）",
+      "cyber_orders": "网络攻击（指挥）",
+      "disinformation": "虚假信息宣传",
+      "leak_plans": "有组织泄密",
+      "plant_fake_report": "欺骗（虚假报告）",
+      "deploy_decoys": "部署诱饵",
+      "fake_radio_traffic": "虚假无线电通信",
+      "counterintel_sweep": "反间谍行动",
+      "recon_economic": "经济侦察",
+      "recon_military": "军事侦察",
+      "cryptanalysis": "密码分析",
+      "intercept_comms": "通信截获",
+      "geolocate_emitters": "辐射源定位",
+      "cultivate_source": "发展线人",
+      "vet_agents": "审查特工",
+      "designate_targets": "目标指示",
+      "dismantle_network": "摧毁情报网",
+      "deception_plan": "欺骗行动",
+      "harden_sites": "敏感设施加固"
+    },
+    "council": {
+      "open_other": "安全理事会会议开幕：{{count}} 项决议待表决。",
+      "closed": "会议结束：{{count}} 项决议中通过 {{passed}} 项。"
+    },
+    "news": {
+      "nuclear": {
+        "headline": "核爆：{{place}}",
+        "body": "{{nation}} 发射的核武器已爆炸：{{place}}。"
+      }
+    },
+    "intel": {
+      "failed": "失败",
+      "compromised": "已暴露",
+      "agentExposed": "{{nation}} 特工身份暴露",
+      "agentCompromised": "特工 {{codename}} 已暴露",
+      "agentArrest": "逮捕一名 {{nation}} 特工",
+      "agentArrested": "特工 {{codename}} 被捕",
+      "listening": "监听 — {{sector}}",
+      "interception": "截获 — {{nation}}",
+      "decoysIdentified": "已识破诱饵",
+      "flashMovement": "FLASH — {{nation}} 部队调动",
+      "flashMassive": "FLASH — {{nation}} 大规模部队调动",
+      "dailyInterior": "每日简报 — 国内安全",
+      "dailyForeign": "每日简报 — 对外情报",
+      "dailyMilitary": "每日简报 — 军事情报",
+      "opCompromised": "{{op}} — 已暴露",
+      "opOutcome": "{{op}} — {{outcome}}",
+      "opAttributed": "{{op}} 被归咎于 {{nation}}",
+      "opSuccess": "{{op}} — 成功",
+      "sweepReport": "反间谍行动 — 总结",
+      "radioSuspect": "可疑无线电通信",
+      "intoxFoiled": "挫败一次欺骗企图",
+      "intentions": "{{nation}} 的意图",
+      "strikeSuffered": {
+        "missile": "FLASH — 遭受导弹打击",
+        "air": "FLASH — 遭受空中打击",
+        "artillery": "FLASH — 遭受炮击",
+        "other": "FLASH — 遭受打击"
+      },
+      "flashNuclear": "FLASH — 核爆",
+      "sabotage": "破坏",
+      "cyber": "网络攻击",
+      "rebelsFunded": "武装团体获得资助",
+      "programDone": "项目完成 — {{nation}}",
+      "blackMarket": "黑市 — {{nation}}",
+      "imagery": "图像 — {{nation}}",
+      "crypto": "密码分析 — {{nation}}",
+      "comint": "通信截获 — {{nation}}",
+      "emitters": "辐射源已定位 — {{nation}}",
+      "targets": "目标指示 — {{province}}",
+      "bda": "毁伤评估 — {{sector}}",
+      "sourceAccess": "线人 {{codename}} — 接触层级提升",
+      "vet": "审查特工 — {{nation}}",
+      "highLevel": "高层线人 — {{nation}}",
+      "dismantle": "摧毁 {{nation}} 的情报网",
+      "deception": "欺骗行动 — {{nation}}",
+      "hardened": "敏感设施已加固",
+      "strategicAlert": "战略警报 — {{nation}}",
+      "interrogation": "审讯 — 被拘留者 {{ref}}（{{nation}}）",
+      "turnRefused": "策反被拒 — 被拘留者 {{ref}}",
+      "detaineeTurned": "被拘留者 {{ref}} 已被策反"
+    },
+    "note": {
+      "allianceInvite": {
+        "title": "联盟邀请",
+        "text": "{{alliance}} 联盟邀请您加入。"
+      },
+      "inviteDeclined": {
+        "title": "邀请被拒",
+        "text": "{{nation}} 拒绝了邀请。"
+      },
+      "allianceVote": {
+        "title": "联盟投票",
+        "replace_leader": "{{alliance}}：由 {{nation}} 取代领袖。",
+        "expel": "{{alliance}}：开除 {{nation}}。",
+        "skip_mutual_defense": "{{alliance}}：免除对 {{nation}} 的共同防御。"
+      },
+      "strikeNoEffect": {
+        "title": "打击无效",
+        "text": "{{system}}：未命中目标。"
+      },
+      "strikeAborted": {
+        "title": "打击取消",
+        "gone": "{{system}}：目标消失（已摧毁或无法到达）。返回基地。",
+        "moved": "{{system}}：目标无法到达（已移动）。返回基地。",
+        "lost": "{{system}}：目标丢失。返回基地。"
+      },
+      "asatHit": {
+        "title": "卫星被摧毁",
+        "text": "{{system}}（{{owner}}）"
+      },
+      "asatMiss": {
+        "title": "反卫星射击未命中",
+        "text": "{{system}}（{{owner}}）"
+      },
+      "radarsBlinded": {
+        "title": "雷达致盲",
+        "text": "一次网络攻击干扰了我方雷达。"
+      },
+      "satPass": {
+        "title": "卫星过境",
+        "text_other": "{{system}}：扫描带下发现 {{count}} 个目标。"
+      },
+      "nuclearRevoked": {
+        "title": "核授权解除",
+        "text": "核力量恢复常规管控。"
+      },
+      "nuclearAuthorized": {
+        "title": "授权使用核武器",
+        "text": "只要警戒等级允许，即可进行核打击。"
+      },
+      "nuclearDetonation": {
+        "title": "核爆",
+        "text": "核打击：{{place}}。"
+      },
+      "fuelLost": {
+        "title": "飞机损失",
+        "text": "{{system}}：返回基地前燃料耗尽。"
+      },
+      "specialOk": {
+        "title": "特种行动成功",
+        "text": "{{mission}}：{{place}}。"
+      },
+      "specialEnemy": {
+        "title": "特种部队行动",
+        "text": "敌方{{mission}}：{{place}}。"
+      },
+      "specialFailed": {
+        "title": "特种行动失败",
+        "text": "{{mission}}：{{place}}。"
+      },
+      "blockadeOn": {
+        "title": "封锁生效",
+        "text": "{{place}}（{{nation}}）"
+      },
+      "blockadeOff": {
+        "title": "封锁解除",
+        "text": "{{place}}（{{nation}}）"
+      },
+      "captured": {
+        "title": "缴获装备",
+        "text": "{{place}}：{{items}}。",
+        "item": "{{count}} {{system}}"
+      },
+      "generalReleased": {
+        "title": "收回指挥",
+        "text": "{{general}} 交还其编组的直接指挥权。"
+      },
+      "coup": {
+        "title": "政变",
+        "text": "{{nation}}：军方夺取了政权。"
+      },
+      "ceasefire": {
+        "title": "停火",
+        "text": "停火生效：{{a}} / {{b}}。"
+      },
+      "peaceProposal": {
+        "title": "和平提议",
+        "text": "{{nation}} 提议和平。"
+      },
+      "ceasefireProposal": {
+        "title": "停火提议",
+        "text": "{{nation}} 提议停火。"
+      },
+      "proposalRefused": {
+        "title": "提议被拒",
+        "text": "{{nation}} 拒绝了您的提议。"
+      },
+      "agentCaught": {
+        "title": "特工暴露",
+        "text": "{{host}} 宣布逮捕一名 {{owner}} 特工。"
+      },
+      "agentExpelled": {
+        "title": "外交官被驱逐",
+        "text": "{{host}} 以间谍罪驱逐 {{owner}} 的外交官。"
+      },
+      "detaineeNew": {
+        "title": "外国特工被拘",
+        "text": "{{owner}} 的一名特工在我方手中：须在 {{days}} 天内作出决定。"
+      },
+      "detaineeHeld": {
+        "title": "先行羁押",
+        "text": "因未作决定，{{owner}} 的特工被先行羁押。"
+      },
+      "spyInterrogated": {
+        "title": "特工受审",
+        "text": "{{codename}} 正在接受{{host}}情报机构的审讯。"
+      },
+      "spyReturned": {
+        "title": "特工被遣返",
+        "text": "{{codename}} 已被{{host}}遣返回国。"
+      },
+      "spyJailed": {
+        "title": "特工被判刑",
+        "text": "{{codename}} 被{{host}}判处 {{days}} 天监禁。"
+      },
+      "spyExecuted": {
+        "title": "特工被处决",
+        "text": "{{codename}} 已被{{host}}处决。"
+      },
+      "spyReleased": {
+        "title": "特工获释",
+        "text": "{{host}} 已释放 {{codename}}。"
+      },
+      "spyServed": {
+        "title": "刑满",
+        "text": "{{codename}} 已刑满（{{host}}），正在回国。"
+      },
+      "swapProposal": {
+        "title": "交换提议",
+        "text": "{{nation}} 提议交换特工。"
+      },
+      "swapCounter": {
+        "title": "反提议",
+        "text": "{{nation}} 提出反提议。"
+      },
+      "swapAccepted": {
+        "title": "交换达成",
+        "text": "{{a}} 与 {{b}} 就被拘特工达成协议。"
+      },
+      "swapRefused": {
+        "title": "交换被拒",
+        "text": "{{nation}} 拒绝了您的交换提议。"
+      },
+      "reprisalExecute": {
+        "title": "报复",
+        "text": "{{nation}} 处决我方一名被拘特工以示报复。"
+      },
+      "reprisalJail": {
+        "title": "报复",
+        "text": "{{nation}} 加重对我方特工的拘押（顶格刑期）。"
+      },
+      "reprisalArrest": {
+        "title": "报复",
+        "text": "{{nation}} 逮捕我方一名特工以示报复。"
+      },
+      "reprisalExpel": {
+        "title": "报复",
+        "text": "{{nation}} 驱逐我方外交官以示报复。"
+      },
+      "troopsEmbarked": {
+        "title": "部队已登船",
+        "text": "{{system}} 已登上 {{ship}}。"
+      },
+      "troopsLanded": {
+        "title": "部队已登陆",
+        "text_other": "已有 {{count}} 支部队登陆：{{place}}。"
+      },
+      "troopsLandedContested": {
+        "title": "在火力下登陆",
+        "text_other": "已有 {{count}} 支部队在火力下登陆：{{place}}。"
+      },
+      "transportSunk": {
+        "title": "运输舰被击沉",
+        "text_other": "{{system}} 连同船上 {{count}} 支部队一起损失。"
+      },
+      "escortEnded": {
+        "title": "护航结束",
+        "text": "{{system}}：被护航的部队已不在。"
+      },
+      "captureBlocked": {
+        "title": "无法占领",
+        "noCapturer": "{{system}} 无法占领 {{place}}：需要步兵、装甲部队或炮兵。",
+        "noWar": "未与 {{place}} 的所有者交战：无法占领。"
+      },
+      "cmd_generalResigned": {
+        "title": "辞职",
+        "text": "{{general}}辞职：其薪饷已不再发放。"
+      },
+      "cmd_generalUnpaid": {
+        "title": "欠薪",
+        "text": "{{general}}未领到薪饷（距辞职 {{days}}/{{max}} 天）。"
+      },
+      "cmd_generalKilled": {
+        "title": "将领阵亡",
+        "text": "{{general}}在{{army}}指挥部遭打击时阵亡。"
+      },
+      "cmd_generalWounded": {
+        "title": "将领负伤",
+        "text": "{{general}}负伤：{{army}}等待其归来。"
+      },
+      "cmd_missionSuccess": {
+        "title": "任务完成",
+        "text": "{{army}}：任务完成。"
+      },
+      "cmd_missionFailed": {
+        "title": "任务失败",
+        "text": "{{army}}：任务失败。"
+      },
+      "cmd_askWar": {
+        "title": "请求授权",
+        "text": "{{army}}：{{general}}请求授权与{{nation}}开战。"
+      },
+      "cmd_askStrike": {
+        "title": "请求授权",
+        "text": "{{army}}：{{general}}请求授权打击{{nation}}后方。"
+      },
+      "cmd_askReinforce": {
+        "title": "请求增援",
+        "text": "{{army}}：{{general}}请求增援 {{count}} 个编组。"
+      },
+      "cmd_opAskWar": {
+        "title": "请求批准",
+        "text": "作战 {{op}}：总参谋部请求批准对 {{nation}} 开战。"
+      },
+      "cmd_opSuccess": {
+        "title": "作战成功",
+        "text": "作战 {{op}}：目标已达成。"
+      },
+      "cmd_opFailed": {
+        "title": "作战失败",
+        "text": "作战 {{op}}：失败。"
+      },
+      "cmd_opAchieved": {
+        "title": "目标达成",
+        "text": "作战 {{op}}：目标已达成并保持中。"
+      },
+      "cmd_opHeavyLosses": {
+        "title": "损失惨重",
+        "text": "作战 {{op}}：24 小时内损失 {{pct}} % 的兵力。"
+      },
+      "cmd_opStuck": {
+        "title": "作战停滞",
+        "text": "作战 {{op}}：{{hours}} 小时无进展。"
+      },
+      "gov_resigned": {
+        "title": "辞职",
+        "text": "{{name}} 辞职：该职位不再支薪。"
+      },
+      "gov_missionDone": {
+        "title": "任务完成",
+        "text": "{{mission}}：目标达成。"
+      }
+    },
+    "cmd": {
+      "zone": "指定区域",
+      "mission": {
+        "conquer": "征服",
+        "defend": "防御",
+        "hold_front": "坚守战线",
+        "air_superiority": "制空权",
+        "air_defense": "防空",
+        "deep_strike": "纵深打击",
+        "sea_control": "制海与封锁",
+        "landing": "两栖登陆",
+        "reserve": "预备队"
+      },
+      "reason": {
+        "losses": "损失过重",
+        "stuck": "毫无进展",
+        "tooWeak": "兵力不足",
+        "zoneLost": "区域失守",
+        "deadline": "期限已过"
+      },
+      "building": {
+        "air_defense_site": "防空阵地",
+        "radar_station": "雷达站",
+        "air_base": "空军基地",
+        "military_base": "军事基地",
+        "arms_factory": "兵工厂",
+        "refinery": "炼油厂",
+        "power_plant": "发电厂",
+        "naval_base": "海军基地",
+        "electronics_plant": "电子工厂",
+        "research_center": "研究中心"
+      },
+      "j": {
+        "created_other": "集团军组建完成：{{count}} 个编组。",
+        "command": "{{general}}接掌指挥。",
+        "mission": "收到任务：{{mission}} — {{target}}。",
+        "missionCleared": "任务已撤销：编组等待你的命令。",
+        "suspended": "奉命暂停任务。",
+        "resumed": "任务已恢复。",
+        "warAuthorized": "已获授权：与{{nation}}开战。",
+        "warRefused": "与{{nation}}开战未获批准：任务暂停。",
+        "strikeAuthorized": "战略打击已获批准。",
+        "strikeRefused": "战略打击未获批准：任务暂停。",
+        "reinforceRefused": "增援被拒：{{general}}将以现有兵力应对。",
+        "reinforced_other": "增援：{{count}} 个编组加入集团军。",
+        "detached_other": "{{count}} 个编组脱离集团军。",
+        "lost_other": "损失：{{system}} 被摧毁 {{count}} 个。",
+        "captured": "{{province}}已被攻占。",
+        "declaredWar": "越过边境：我们已与{{nation}}交战。",
+        "warBlocked": "无法与{{nation}}开战：任务暂停。",
+        "askWar": "请求授权：越过{{nation}}边境。",
+        "askStrike": "请求授权：打击{{nation}}后方。",
+        "retreat": "{{system}}损耗过大：向{{province}}后撤。",
+        "noReinforcements": "附近没有可用于增援的空闲编组。",
+        "askReinforce_other": "请求增援：{{count}} 个编组。",
+        "tooWeak": "兵力不足以进攻（所需的 {{pct}}%）：已请求增援。",
+        "offensive": "对{{province}}发起进攻。",
+        "landing": "对{{province}}发起登陆：在港口集结。",
+        "counter": "对{{province}}发起反击。",
+        "counterFront": "在前线发起反击。",
+        "blockade": "封锁{{province}}港口。",
+        "noIntel": "未发现{{nation}}的任何设施：需要情报（侦察）。",
+        "strike": "打击{{province}}的{{building}}。",
+        "success": "任务完成。",
+        "failed": "任务失败：{{reason}}。",
+        "daily": "每日报告：兵力 {{strength}}%，攻占 {{captures}} 处，损失 {{losses}} 个单元。",
+        "resigned": "{{general}}辞职：欠发薪饷。",
+        "dismissed": "{{general}}被解职。",
+        "recovered": "{{general}}康复后重新接掌指挥。",
+        "wounded": "{{general}}在指挥部负伤：需休养 {{days}} 天。",
+        "killed": "{{general}}在指挥部阵亡。",
+        "joinedOp": "投入作战 {{op}}：{{role}}。",
+        "opClosed": "作战 {{op}} 已结束：集团军等待你的命令。"
+      },
+      "goal": {
+        "attrition": "削弱兵力",
+        "air_control": "全面制空",
+        "conquest": "全面征服",
+        "decapitation": "斩首行动",
+        "strategic": "战略打击",
+        "sead": "瘫痪防空",
+        "blockade": "海上封锁",
+        "defend_border": "守住边境",
+        "occupy": "占领地区"
+      },
+      "role": {
+        "land": "陆军",
+        "air": "空军",
+        "sea": "海军",
+        "ad": "防空"
+      },
+      "op": {
+        "created_other": "作战发起：{{goal}}，{{count}} 名将领。",
+        "declaredWar": "已对 {{nation}} 宣战。",
+        "warBlocked": "无法对 {{nation}} 开战：作战暂停。",
+        "askWar": "请求批准：对 {{nation}} 开战。",
+        "warAuthorized": "已获批准：对 {{nation}} 开战。",
+        "warRefused": "对 {{nation}} 开战被拒：作战暂停。",
+        "strikes_other": "{{army}}：{{count}} 次打击 — 防空 {{sead}}，飞机 {{air}}，部队 {{ground}}，设施 {{bld}}。",
+        "offensive": "{{army}}：向 {{province}} 发起进攻。",
+        "jointAssault": "将领们对 {{province}} 联合突击，由 {{army}} 指挥。",
+        "tooWeak": "{{army}}：在 {{province}} 前兵力不足 — 已请求空中支援和增援。",
+        "sectorDone": "{{army}}：扇区已夺取，转而支援战区其余部分。",
+        "captured": "{{province}} 已被夺取。",
+        "lostProvince": "{{province}} 已失守。",
+        "recon": "无已知目标：对 {{nation}} 展开侦察。",
+        "blockade": "{{army}}：封锁 {{province}} 港。",
+        "achieved": "目标达成：保持中。",
+        "heavyLosses": "损失惨重：24 小时内损失投入兵力的 {{pct}} %。",
+        "stuck": "作战停滞：{{hours}} 小时无进展。",
+        "success": "目标达成：作战成功。",
+        "failed": "作战失败：{{reason}}。",
+        "goalChanged": "新目标：{{goal}}。",
+        "released": "{{army}} 退出作战。",
+        "reinforced_other": "增援：{{count}} 名将领加入作战。",
+        "role": "{{army}}：新角色 — {{role}}。",
+        "reassigned": "{{army}} 被调往另一项作战。",
+        "suspended": "奉命暂停作战。",
+        "resumed": "作战已恢复。"
+      }
+    },
+    "spyNews": {
+      "executedH": "{{host}}：{{owner}} 的一名特工被处决",
+      "executedB": "{{host}} 宣布处决一名因间谍罪被定罪的 {{owner}} 特工。国际社会予以谴责。",
+      "swapH": "{{a}} 与 {{b}} 交换特工",
+      "swapB": "{{a}} 与 {{b}} 进行了囚犯交换：{{n}} 名特工获释。"
+    },
+    "gov": {
+      "m": {
+        "air_bases": "空军基地",
+        "military_bases": "军事基地",
+        "upgrade_bases": "基地现代化",
+        "logistics": "军事后勤",
+        "fortify": "边境筑垒",
+        "air_defense": "国土防空",
+        "coastal": "海岸防御",
+        "research_next": "下一代",
+        "research_branch": "按领域研究",
+        "research_labs": "研究实验室",
+        "produce": "装备订单",
+        "stockpile": "战略储备",
+        "arms_industry": "军工产业",
+        "counterintel": "反间谍",
+        "protect_sites": "敏感设施保护",
+        "watch": "监视某国",
+        "map_defenses": "防御测绘",
+        "economic_intel": "经济情报",
+        "resource": "资源生产",
+        "industry": "工业发展",
+        "revenue": "增加收入",
+        "war_economy": "战时经济",
+        "reserves": "国库储备",
+        "repair": "重建"
+      },
+      "focus": {
+        "counterintel": "反间谍",
+        "protection": "设施保护"
+      },
+      "j": {
+        "appointed": "{{name}} 就任。",
+        "replaced": "{{name}} 离任（已付遣散费）。",
+        "dismissed": "{{name}} 被免职（已付遣散费）。",
+        "resigned": "{{name}} 辞职：该职位不再支薪。",
+        "unpaid": "{{name}} 未获报酬（连续 {{days}} 天）。",
+        "missionNew": "收到任务：{{mission}}。",
+        "missionEdit": "任务已修改：{{mission}}。",
+        "missionSuspended": "任务已暂停：{{mission}}。",
+        "missionResumed": "任务已恢复：{{mission}}。",
+        "missionCancelled": "任务已撤回：{{mission}}（已启动的继续）。",
+        "missionDone": "任务完成：{{mission}}。",
+        "built": "开工：{{building}} {{level}} 级，位于 {{place}} — {{cost}}。",
+        "jobDone": "竣工：{{building}} {{level}} 级，位于 {{place}}。",
+        "repaired": "开始维修：{{building}}，位于 {{place}} — {{cost}}。",
+        "research": "开始研究：{{node}} — {{cost}}。",
+        "researched": "研究完成：{{node}}。",
+        "produced": "已下订单：{{count}} × {{system}}，位于 {{place}} — {{cost}}。",
+        "imported": "进口：{{count}} × {{system}}，交付至 {{place}} — {{cost}}。",
+        "intelOp": "已启动行动：{{op}} — {{cost}}。",
+        "intelOpAt": "已启动行动：{{op}}，目标 {{nation}} — {{cost}}。",
+        "opSuccess": "行动成功：{{op}}。",
+        "opFailed": "行动无果：{{op}}。",
+        "focus": "国内情报优先级：{{focus}}。",
+        "protected": "设施已受保护：{{place}}。",
+        "blocked": "受阻 — {{why}}"
+      },
+      "why": {
+        "noHead": "职位空缺：请任命人选。",
+        "envelope": "预算耗尽：可用 {{left}}，需要 {{cost}}。",
+        "funds": "资金不足：需要 {{cost}}。",
+        "reserve": "审慎储备：国库必须保持在 {{floor}} 以上（需要 {{cost}}）。",
+        "resources": "资源不足。",
+        "noSite": "该区域没有允许的地点（海岸、矿藏或最高等级）。",
+        "noDeposit": "领土内没有 {{resource}} 矿藏。",
+        "research": "需要研究。",
+        "capacity": "已达上限（队列或部门）。",
+        "locked": "因禁运或封锁受阻。",
+        "noTarget": "目标无效或已消失。",
+        "noSystem": "没有可用的“{{category}}”装备（研究、许可或进口）。",
+        "noResearch": "此目标没有可用研究。",
+        "nothingDamaged": "没有受损建筑。",
+        "saving": "储备积累中：{{pct}} %。",
+        "reserveHeld": "储备已达标：其他任务会遵守。",
+        "stocked": "库存已达标：一旦下降即补充。",
+        "inProgress": "行动进行中。",
+        "refused": "命令被拒绝。",
+        "unlocked": "下一代已可使用。",
+        "allProtected": "设施已达最大保护。"
+      }
     }
   },
   "gov": {
@@ -4268,546 +5110,5 @@
       "economy": "经济"
     },
     "suggest": "可选任务"
-  },
-  "engine": {
-    "place": {
-      "sea": "海上"
-    },
-    "sector": {
-      "at": "{{province}} 区域",
-      "near": "距 {{province}} {{km}} km",
-      "unknown": "未识别区域"
-    },
-    "strikeKind": {
-      "missile": "导弹",
-      "air": "空中",
-      "artillery": "炮兵"
-    },
-    "resolution": {
-      "arms_embargo": "武器禁运",
-      "economic_sanctions": "经济制裁",
-      "ceasefire": "停火",
-      "no_fly_zone": "禁飞区",
-      "peacekeeping": "维和部队",
-      "condemnation": "谴责"
-    },
-    "vote": {
-      "yes": "{{nation}} 赞成",
-      "no": "{{nation}} 反对",
-      "abstain": "{{nation}} 弃权"
-    },
-    "charter": {
-      "mutualDefense": "共同防御",
-      "intelSharing": "情报共享",
-      "passage": "通行权",
-      "simple": "简单合作"
-    },
-    "mission": {
-      "raid": "突袭",
-      "sabotage": "破坏",
-      "rescue": "营救"
-    },
-    "intelOp": {
-      "infiltrate_spy": "特工渗透",
-      "recruit_source": "招募线人",
-      "turn_agent": "策反特工",
-      "exfiltrate": "撤离",
-      "steal_research": "窃取研究",
-      "sabotage_factory": "工业破坏",
-      "fund_rebels": "资助叛军",
-      "listen_area": "区域监听",
-      "intercept_army": "通信截获",
-      "jam_area": "区域干扰",
-      "cyber_radar": "网络攻击（雷达）",
-      "cyber_production": "网络攻击（工业）",
-      "cyber_orders": "网络攻击（指挥）",
-      "disinformation": "虚假信息宣传",
-      "leak_plans": "有组织泄密",
-      "plant_fake_report": "欺骗（虚假报告）",
-      "deploy_decoys": "部署诱饵",
-      "fake_radio_traffic": "虚假无线电通信",
-      "counterintel_sweep": "反间谍行动",
-      "recon_economic": "经济侦察",
-      "recon_military": "军事侦察",
-      "cryptanalysis": "密码分析",
-      "intercept_comms": "通信截获",
-      "geolocate_emitters": "辐射源定位",
-      "cultivate_source": "发展线人",
-      "vet_agents": "审查特工",
-      "designate_targets": "目标指示",
-      "dismantle_network": "摧毁情报网",
-      "deception_plan": "欺骗行动",
-      "harden_sites": "敏感设施加固"
-    },
-    "council": {
-      "open_other": "安全理事会会议开幕：{{count}} 项决议待表决。",
-      "closed": "会议结束：{{count}} 项决议中通过 {{passed}} 项。"
-    },
-    "news": {
-      "nuclear": {
-        "headline": "核爆：{{place}}",
-        "body": "{{nation}} 发射的核武器已爆炸：{{place}}。"
-      }
-    },
-    "intel": {
-      "failed": "失败",
-      "compromised": "已暴露",
-      "agentExposed": "{{nation}} 特工身份暴露",
-      "agentCompromised": "特工 {{codename}} 已暴露",
-      "agentArrest": "逮捕一名 {{nation}} 特工",
-      "agentArrested": "特工 {{codename}} 被捕",
-      "listening": "监听 — {{sector}}",
-      "interception": "截获 — {{nation}}",
-      "decoysIdentified": "已识破诱饵",
-      "flashMovement": "FLASH — {{nation}} 部队调动",
-      "flashMassive": "FLASH — {{nation}} 大规模部队调动",
-      "dailyInterior": "每日简报 — 国内安全",
-      "dailyForeign": "每日简报 — 对外情报",
-      "dailyMilitary": "每日简报 — 军事情报",
-      "opCompromised": "{{op}} — 已暴露",
-      "opOutcome": "{{op}} — {{outcome}}",
-      "opAttributed": "{{op}} 被归咎于 {{nation}}",
-      "opSuccess": "{{op}} — 成功",
-      "sweepReport": "反间谍行动 — 总结",
-      "radioSuspect": "可疑无线电通信",
-      "intoxFoiled": "挫败一次欺骗企图",
-      "intentions": "{{nation}} 的意图",
-      "strikeSuffered": {
-        "missile": "FLASH — 遭受导弹打击",
-        "air": "FLASH — 遭受空中打击",
-        "artillery": "FLASH — 遭受炮击",
-        "other": "FLASH — 遭受打击"
-      },
-      "flashNuclear": "FLASH — 核爆",
-      "sabotage": "破坏",
-      "cyber": "网络攻击",
-      "rebelsFunded": "武装团体获得资助",
-      "programDone": "项目完成 — {{nation}}",
-      "blackMarket": "黑市 — {{nation}}",
-      "imagery": "图像 — {{nation}}",
-      "crypto": "密码分析 — {{nation}}",
-      "comint": "通信截获 — {{nation}}",
-      "emitters": "辐射源已定位 — {{nation}}",
-      "targets": "目标指示 — {{province}}",
-      "bda": "毁伤评估 — {{sector}}",
-      "sourceAccess": "线人 {{codename}} — 接触层级提升",
-      "vet": "审查特工 — {{nation}}",
-      "highLevel": "高层线人 — {{nation}}",
-      "dismantle": "摧毁 {{nation}} 的情报网",
-      "deception": "欺骗行动 — {{nation}}",
-      "hardened": "敏感设施已加固",
-      "strategicAlert": "战略警报 — {{nation}}",
-      "interrogation": "审讯 — 被拘留者 {{ref}}（{{nation}}）",
-      "turnRefused": "策反被拒 — 被拘留者 {{ref}}",
-      "detaineeTurned": "被拘留者 {{ref}} 已被策反"
-    },
-    "note": {
-      "allianceInvite": {
-        "title": "联盟邀请",
-        "text": "{{alliance}} 联盟邀请您加入。"
-      },
-      "inviteDeclined": {
-        "title": "邀请被拒",
-        "text": "{{nation}} 拒绝了邀请。"
-      },
-      "allianceVote": {
-        "title": "联盟投票",
-        "replace_leader": "{{alliance}}：由 {{nation}} 取代领袖。",
-        "expel": "{{alliance}}：开除 {{nation}}。",
-        "skip_mutual_defense": "{{alliance}}：免除对 {{nation}} 的共同防御。"
-      },
-      "strikeNoEffect": {
-        "title": "打击无效",
-        "text": "{{system}}：未命中目标。"
-      },
-      "strikeAborted": {
-        "title": "打击取消",
-        "gone": "{{system}}：目标消失（已摧毁或无法到达）。返回基地。",
-        "moved": "{{system}}：目标无法到达（已移动）。返回基地。",
-        "lost": "{{system}}：目标丢失。返回基地。"
-      },
-      "asatHit": {
-        "title": "卫星被摧毁",
-        "text": "{{system}}（{{owner}}）"
-      },
-      "asatMiss": {
-        "title": "反卫星射击未命中",
-        "text": "{{system}}（{{owner}}）"
-      },
-      "radarsBlinded": {
-        "title": "雷达致盲",
-        "text": "一次网络攻击干扰了我方雷达。"
-      },
-      "satPass": {
-        "title": "卫星过境",
-        "text_other": "{{system}}：扫描带下发现 {{count}} 个目标。"
-      },
-      "nuclearRevoked": {
-        "title": "核授权解除",
-        "text": "核力量恢复常规管控。"
-      },
-      "nuclearAuthorized": {
-        "title": "授权使用核武器",
-        "text": "只要警戒等级允许，即可进行核打击。"
-      },
-      "nuclearDetonation": {
-        "title": "核爆",
-        "text": "核打击：{{place}}。"
-      },
-      "fuelLost": {
-        "title": "飞机损失",
-        "text": "{{system}}：返回基地前燃料耗尽。"
-      },
-      "specialOk": {
-        "title": "特种行动成功",
-        "text": "{{mission}}：{{place}}。"
-      },
-      "specialEnemy": {
-        "title": "特种部队行动",
-        "text": "敌方{{mission}}：{{place}}。"
-      },
-      "specialFailed": {
-        "title": "特种行动失败",
-        "text": "{{mission}}：{{place}}。"
-      },
-      "blockadeOn": {
-        "title": "封锁生效",
-        "text": "{{place}}（{{nation}}）"
-      },
-      "blockadeOff": {
-        "title": "封锁解除",
-        "text": "{{place}}（{{nation}}）"
-      },
-      "captured": {
-        "title": "缴获装备",
-        "text": "{{place}}：{{items}}。",
-        "item": "{{count}} {{system}}"
-      },
-      "generalReleased": {
-        "title": "收回指挥",
-        "text": "{{general}} 交还其编组的直接指挥权。"
-      },
-      "coup": {
-        "title": "政变",
-        "text": "{{nation}}：军方夺取了政权。"
-      },
-      "ceasefire": {
-        "title": "停火",
-        "text": "停火生效：{{a}} / {{b}}。"
-      },
-      "peaceProposal": {
-        "title": "和平提议",
-        "text": "{{nation}} 提议和平。"
-      },
-      "ceasefireProposal": {
-        "title": "停火提议",
-        "text": "{{nation}} 提议停火。"
-      },
-      "proposalRefused": {
-        "title": "提议被拒",
-        "text": "{{nation}} 拒绝了您的提议。"
-      },
-      "agentCaught": {
-        "title": "特工暴露",
-        "text": "{{host}} 宣布逮捕一名 {{owner}} 特工。"
-      },
-      "agentExpelled": {
-        "title": "外交官被驱逐",
-        "text": "{{host}} 以间谍罪驱逐 {{owner}} 的外交官。"
-      },
-      "detaineeNew": {
-        "title": "外国特工被拘",
-        "text": "{{owner}} 的一名特工在我方手中：须在 {{days}} 天内作出决定。"
-      },
-      "detaineeHeld": {
-        "title": "先行羁押",
-        "text": "因未作决定，{{owner}} 的特工被先行羁押。"
-      },
-      "spyInterrogated": {
-        "title": "特工受审",
-        "text": "{{codename}} 正在接受{{host}}情报机构的审讯。"
-      },
-      "spyReturned": {
-        "title": "特工被遣返",
-        "text": "{{codename}} 已被{{host}}遣返回国。"
-      },
-      "spyJailed": {
-        "title": "特工被判刑",
-        "text": "{{codename}} 被{{host}}判处 {{days}} 天监禁。"
-      },
-      "spyExecuted": {
-        "title": "特工被处决",
-        "text": "{{codename}} 已被{{host}}处决。"
-      },
-      "spyReleased": {
-        "title": "特工获释",
-        "text": "{{host}} 已释放 {{codename}}。"
-      },
-      "spyServed": {
-        "title": "刑满",
-        "text": "{{codename}} 已刑满（{{host}}），正在回国。"
-      },
-      "swapProposal": {
-        "title": "交换提议",
-        "text": "{{nation}} 提议交换特工。"
-      },
-      "swapCounter": {
-        "title": "反提议",
-        "text": "{{nation}} 提出反提议。"
-      },
-      "swapAccepted": {
-        "title": "交换达成",
-        "text": "{{a}} 与 {{b}} 就被拘特工达成协议。"
-      },
-      "swapRefused": {
-        "title": "交换被拒",
-        "text": "{{nation}} 拒绝了您的交换提议。"
-      },
-      "reprisalExecute": {
-        "title": "报复",
-        "text": "{{nation}} 处决我方一名被拘特工以示报复。"
-      },
-      "reprisalJail": {
-        "title": "报复",
-        "text": "{{nation}} 加重对我方特工的拘押（顶格刑期）。"
-      },
-      "reprisalArrest": {
-        "title": "报复",
-        "text": "{{nation}} 逮捕我方一名特工以示报复。"
-      },
-      "reprisalExpel": {
-        "title": "报复",
-        "text": "{{nation}} 驱逐我方外交官以示报复。"
-      },
-      "troopsEmbarked": {
-        "title": "部队已登船",
-        "text": "{{system}} 已登上 {{ship}}。"
-      },
-      "troopsLanded": {
-        "title": "部队已登陆",
-        "text_other": "已有 {{count}} 支部队登陆：{{place}}。"
-      },
-      "troopsLandedContested": {
-        "title": "在火力下登陆",
-        "text_other": "已有 {{count}} 支部队在火力下登陆：{{place}}。"
-      },
-      "transportSunk": {
-        "title": "运输舰被击沉",
-        "text_other": "{{system}} 连同船上 {{count}} 支部队一起损失。"
-      },
-      "escortEnded": {
-        "title": "护航结束",
-        "text": "{{system}}：被护航的部队已不在。"
-      },
-      "captureBlocked": {
-        "title": "无法占领",
-        "noCapturer": "{{system}} 无法占领 {{place}}：需要步兵、装甲部队或炮兵。",
-        "noWar": "未与 {{place}} 的所有者交战：无法占领。"
-      },
-      "cmd_generalResigned": {
-        "title": "辞职",
-        "text": "{{general}}辞职：其薪饷已不再发放。"
-      },
-      "cmd_generalUnpaid": {
-        "title": "欠薪",
-        "text": "{{general}}未领到薪饷（距辞职 {{days}}/{{max}} 天）。"
-      },
-      "cmd_generalKilled": {
-        "title": "将领阵亡",
-        "text": "{{general}}在{{army}}指挥部遭打击时阵亡。"
-      },
-      "cmd_generalWounded": {
-        "title": "将领负伤",
-        "text": "{{general}}负伤：{{army}}等待其归来。"
-      },
-      "cmd_missionSuccess": {
-        "title": "任务完成",
-        "text": "{{army}}：任务完成。"
-      },
-      "cmd_missionFailed": {
-        "title": "任务失败",
-        "text": "{{army}}：任务失败。"
-      },
-      "cmd_askWar": {
-        "title": "请求授权",
-        "text": "{{army}}：{{general}}请求授权与{{nation}}开战。"
-      },
-      "cmd_askStrike": {
-        "title": "请求授权",
-        "text": "{{army}}：{{general}}请求授权打击{{nation}}后方。"
-      },
-      "cmd_askReinforce": {
-        "title": "请求增援",
-        "text": "{{army}}：{{general}}请求增援 {{count}} 个编组。"
-      },
-      "gov_resigned": {
-        "title": "辞职",
-        "text": "{{name}} 辞职：该职位不再支薪。"
-      },
-      "gov_missionDone": {
-        "title": "任务完成",
-        "text": "{{mission}}：目标达成。"
-      }
-    },
-    "cmd": {
-      "zone": "指定区域",
-      "mission": {
-        "conquer": "征服",
-        "defend": "防御",
-        "hold_front": "坚守战线",
-        "air_superiority": "制空权",
-        "air_defense": "防空",
-        "deep_strike": "纵深打击",
-        "sea_control": "制海与封锁",
-        "landing": "两栖登陆",
-        "reserve": "预备队"
-      },
-      "reason": {
-        "losses": "损失过重",
-        "stuck": "毫无进展",
-        "tooWeak": "兵力不足",
-        "zoneLost": "区域失守"
-      },
-      "building": {
-        "air_defense_site": "防空阵地",
-        "radar_station": "雷达站",
-        "air_base": "空军基地",
-        "military_base": "军事基地",
-        "arms_factory": "兵工厂",
-        "refinery": "炼油厂",
-        "power_plant": "发电厂",
-        "naval_base": "海军基地",
-        "electronics_plant": "电子工厂",
-        "research_center": "研究中心"
-      },
-      "j": {
-        "created_other": "集团军组建完成：{{count}} 个编组。",
-        "command": "{{general}}接掌指挥。",
-        "mission": "收到任务：{{mission}} — {{target}}。",
-        "missionCleared": "任务已撤销：编组等待你的命令。",
-        "suspended": "奉命暂停任务。",
-        "resumed": "任务已恢复。",
-        "warAuthorized": "已获授权：与{{nation}}开战。",
-        "warRefused": "与{{nation}}开战未获批准：任务暂停。",
-        "strikeAuthorized": "战略打击已获批准。",
-        "strikeRefused": "战略打击未获批准：任务暂停。",
-        "reinforceRefused": "增援被拒：{{general}}将以现有兵力应对。",
-        "reinforced_other": "增援：{{count}} 个编组加入集团军。",
-        "detached_other": "{{count}} 个编组脱离集团军。",
-        "lost_other": "损失：{{system}} 被摧毁 {{count}} 个。",
-        "captured": "{{province}}已被攻占。",
-        "declaredWar": "越过边境：我们已与{{nation}}交战。",
-        "warBlocked": "无法与{{nation}}开战：任务暂停。",
-        "askWar": "请求授权：越过{{nation}}边境。",
-        "askStrike": "请求授权：打击{{nation}}后方。",
-        "retreat": "{{system}}损耗过大：向{{province}}后撤。",
-        "noReinforcements": "附近没有可用于增援的空闲编组。",
-        "askReinforce_other": "请求增援：{{count}} 个编组。",
-        "tooWeak": "兵力不足以进攻（所需的 {{pct}}%）：已请求增援。",
-        "offensive": "对{{province}}发起进攻。",
-        "landing": "对{{province}}发起登陆：在港口集结。",
-        "counter": "对{{province}}发起反击。",
-        "counterFront": "在前线发起反击。",
-        "blockade": "封锁{{province}}港口。",
-        "noIntel": "未发现{{nation}}的任何设施：需要情报（侦察）。",
-        "strike": "打击{{province}}的{{building}}。",
-        "success": "任务完成。",
-        "failed": "任务失败：{{reason}}。",
-        "daily": "每日报告：兵力 {{strength}}%，攻占 {{captures}} 处，损失 {{losses}} 个单元。",
-        "resigned": "{{general}}辞职：欠发薪饷。",
-        "dismissed": "{{general}}被解职。",
-        "recovered": "{{general}}康复后重新接掌指挥。",
-        "wounded": "{{general}}在指挥部负伤：需休养 {{days}} 天。",
-        "killed": "{{general}}在指挥部阵亡。"
-      }
-    },
-    "spyNews": {
-      "executedH": "{{host}}：{{owner}} 的一名特工被处决",
-      "executedB": "{{host}} 宣布处决一名因间谍罪被定罪的 {{owner}} 特工。国际社会予以谴责。",
-      "swapH": "{{a}} 与 {{b}} 交换特工",
-      "swapB": "{{a}} 与 {{b}} 进行了囚犯交换：{{n}} 名特工获释。"
-    },
-    "gov": {
-      "m": {
-        "air_bases": "空军基地",
-        "military_bases": "军事基地",
-        "upgrade_bases": "基地现代化",
-        "logistics": "军事后勤",
-        "fortify": "边境筑垒",
-        "air_defense": "国土防空",
-        "coastal": "海岸防御",
-        "research_next": "下一代",
-        "research_branch": "按领域研究",
-        "research_labs": "研究实验室",
-        "produce": "装备订单",
-        "stockpile": "战略储备",
-        "arms_industry": "军工产业",
-        "counterintel": "反间谍",
-        "protect_sites": "敏感设施保护",
-        "watch": "监视某国",
-        "map_defenses": "防御测绘",
-        "economic_intel": "经济情报",
-        "resource": "资源生产",
-        "industry": "工业发展",
-        "revenue": "增加收入",
-        "war_economy": "战时经济",
-        "reserves": "国库储备",
-        "repair": "重建"
-      },
-      "focus": {
-        "counterintel": "反间谍",
-        "protection": "设施保护"
-      },
-      "j": {
-        "appointed": "{{name}} 就任。",
-        "replaced": "{{name}} 离任（已付遣散费）。",
-        "dismissed": "{{name}} 被免职（已付遣散费）。",
-        "resigned": "{{name}} 辞职：该职位不再支薪。",
-        "unpaid": "{{name}} 未获报酬（连续 {{days}} 天）。",
-        "missionNew": "收到任务：{{mission}}。",
-        "missionEdit": "任务已修改：{{mission}}。",
-        "missionSuspended": "任务已暂停：{{mission}}。",
-        "missionResumed": "任务已恢复：{{mission}}。",
-        "missionCancelled": "任务已撤回：{{mission}}（已启动的继续）。",
-        "missionDone": "任务完成：{{mission}}。",
-        "built": "开工：{{building}} {{level}} 级，位于 {{place}} — {{cost}}。",
-        "jobDone": "竣工：{{building}} {{level}} 级，位于 {{place}}。",
-        "repaired": "开始维修：{{building}}，位于 {{place}} — {{cost}}。",
-        "research": "开始研究：{{node}} — {{cost}}。",
-        "researched": "研究完成：{{node}}。",
-        "produced": "已下订单：{{count}} × {{system}}，位于 {{place}} — {{cost}}。",
-        "imported": "进口：{{count}} × {{system}}，交付至 {{place}} — {{cost}}。",
-        "intelOp": "已启动行动：{{op}} — {{cost}}。",
-        "intelOpAt": "已启动行动：{{op}}，目标 {{nation}} — {{cost}}。",
-        "opSuccess": "行动成功：{{op}}。",
-        "opFailed": "行动无果：{{op}}。",
-        "focus": "国内情报优先级：{{focus}}。",
-        "protected": "设施已受保护：{{place}}。",
-        "blocked": "受阻 — {{why}}"
-      },
-      "why": {
-        "noHead": "职位空缺：请任命人选。",
-        "envelope": "预算耗尽：可用 {{left}}，需要 {{cost}}。",
-        "funds": "资金不足：需要 {{cost}}。",
-        "reserve": "审慎储备：国库必须保持在 {{floor}} 以上（需要 {{cost}}）。",
-        "resources": "资源不足。",
-        "noSite": "该区域没有允许的地点（海岸、矿藏或最高等级）。",
-        "noDeposit": "领土内没有 {{resource}} 矿藏。",
-        "research": "需要研究。",
-        "capacity": "已达上限（队列或部门）。",
-        "locked": "因禁运或封锁受阻。",
-        "noTarget": "目标无效或已消失。",
-        "noSystem": "没有可用的“{{category}}”装备（研究、许可或进口）。",
-        "noResearch": "此目标没有可用研究。",
-        "nothingDamaged": "没有受损建筑。",
-        "saving": "储备积累中：{{pct}} %。",
-        "reserveHeld": "储备已达标：其他任务会遵守。",
-        "stocked": "库存已达标：一旦下降即补充。",
-        "inProgress": "行动进行中。",
-        "refused": "命令被拒绝。",
-        "unlocked": "下一代已可使用。",
-        "allProtected": "设施已达最大保护。"
-      }
-    }
   }
 }

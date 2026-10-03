@@ -15,8 +15,9 @@
       "text": " — formez des armées, confiez-leur une mission et recrutez des généraux qui les commandent pour vous.",
       "open": "Ouvrir"
     },
-    "tabs": { "armies": "Armées", "generals": "Généraux" },
+    "tabs": { "ops": "Opérations", "armies": "Armées", "generals": "Généraux" },
     "kpi": {
+      "ops": "Opérations",
       "armies": "Armées",
       "active": "En mission",
       "generals": "Généraux",
@@ -346,7 +347,237 @@
       "none": "Aucun général recruté.",
       "payroll": "{{value}} / jour",
       "pool": "Vivier",
-      "poolHint": "Officiers disponibles : prime d’engagement de 5 jours de solde au recrutement."
+      "poolHint": "Officiers disponibles : prime d’engagement de 5 jours de solde au recrutement.",
+      "branch": "Commandement",
+      "chief": "Général en chef",
+      "noChief": "poste vacant",
+      "forces": "Forces de l’arme",
+      "freeForces": "Hors armée",
+      "isChief": "Général en chef",
+      "makeChief": "Nommer chef",
+      "chiefHelp": "Le général en chef relève les compétences des généraux de son arme ; sa solde est majorée.",
+      "chiefNamed": "{{name}} nommé général en chef."
+    },
+    "branch": {
+      "land": {
+        "name": "Armée de terre",
+        "short": "Terre",
+        "role": "Commandant terrestre",
+        "desc": "Infanterie, blindés, artillerie et missiles sol-sol : prend et tient le terrain."
+      },
+      "air": {
+        "name": "Armée de l’air",
+        "short": "Air",
+        "role": "Commandant aérien",
+        "desc": "Chasse, bombardement, drones, avions radar : ouvre le ciel, frappe en profondeur, appuie les troupes."
+      },
+      "sea": {
+        "name": "Marine",
+        "short": "Mer",
+        "role": "Commandant naval",
+        "desc": "Navires de surface, sous-marins, transports : blocus, escorte des débarquements, frappes depuis la mer."
+      },
+      "ad": {
+        "name": "Défense antiaérienne",
+        "short": "DCA",
+        "role": "Commandant de la défense sol-air",
+        "desc": "Batteries sol-air et radars : protègent le territoire, les bases et les troupes qui avancent."
+      }
+    },
+    "ops": {
+      "new": "Nouvelle opération",
+      "full": "Maximum de {{max}} opérations atteint : clôturez-en une.",
+      "emptyTitle": "Aucune opération",
+      "emptyText": "Désignez un ou plusieurs pays, un objectif et les généraux qui le mènent : ils agissent pour vous.",
+      "onboard": {
+        "title": "Une opération en trois choix",
+        "targets": "Les pays visés : sur la carte ou par recherche, un ou plusieurs.",
+        "goal": "L’objectif : affaiblir les forces, contrôle aérien total, conquête totale, frappes stratégiques, blocus…",
+        "staff": "Les généraux, par commandement : chacun reçoit un rôle et ses forces, ils se coordonnent.",
+        "rule": "Les généraux frappent, avancent, patrouillent et bloquent d’eux-mêmes ; un ordre direct sur une pile prime jusqu’à sa fin."
+      },
+      "path": {
+        "new": "nouvelle opération",
+        "edit": "changer d’objectif",
+        "reinforce": "renforcer"
+      },
+      "step": {
+        "targets": "Cibles",
+        "goal": "Objectif",
+        "staff": "Généraux",
+        "confirm": "Confirmer"
+      },
+      "status": {
+        "planning": "Préparation",
+        "active": "En cours",
+        "holding": "Objectif tenu",
+        "awaiting": "Attend vos ordres",
+        "suspended": "Suspendue",
+        "success": "Réussie",
+        "failed": "Échouée"
+      },
+      "phase": {
+        "stage": "rassemblement",
+        "sead": "suppression des défenses",
+        "air": "maîtrise du ciel",
+        "offensive": "offensive",
+        "hold": "maintien",
+        "done": "terminée"
+      },
+      "goals": {
+        "attrition": {
+          "name": "Affaiblir les forces",
+          "short": "Attrition",
+          "desc": "Frapper tout ce qu’on trouve : défenses, aviation, forces terrestres, navires, bases."
+        },
+        "air_control": {
+          "name": "Contrôle aérien total",
+          "short": "Ciel",
+          "desc": "Détruire la défense antiaérienne et l’aviation, puis tenir le ciel par des patrouilles."
+        },
+        "conquest": {
+          "name": "Conquête totale",
+          "short": "Conquête",
+          "desc": "Prendre toutes les provinces, capitale comprise, par secteurs, avec appui aérien."
+        },
+        "decapitation": {
+          "name": "Décapitation",
+          "short": "Capitale",
+          "desc": "Foncer sur la capitale et la prendre au plus vite."
+        },
+        "strategic": {
+          "name": "Frappes stratégiques",
+          "short": "Frappes",
+          "desc": "Industrie, énergie, bases : détruire les installations révélées."
+        },
+        "sead": {
+          "name": "Neutraliser la défense antiaérienne",
+          "short": "DCA",
+          "desc": "Détruire batteries sol-air, radars et sites antiaériens connus."
+        },
+        "blockade": {
+          "name": "Blocus naval",
+          "short": "Blocus",
+          "desc": "Bloquer les ports, couler les navires, couper les routes maritimes."
+        },
+        "defend_border": {
+          "name": "Tenir la frontière",
+          "short": "Frontière",
+          "desc": "Défendre la frontière face au ou aux pays désignés, contre-attaquer."
+        },
+        "occupy": {
+          "name": "Occuper une région",
+          "short": "Occupation",
+          "desc": "Prendre et tenir les provinces désignées sur la carte."
+        }
+      },
+      "metric": {
+        "forces": "{{pct}} % des forces ennemies estimées détruites",
+        "provinces": "{{done}}/{{total}} provinces prises",
+        "capital": "Capitale : {{done}}/{{total}} prise",
+        "sky": "Ciel : {{sams}} batteries ennemies restantes, {{air}} appareils",
+        "sams": "{{left}} défenses antiaériennes restantes sur {{total}}",
+        "buildings": "{{done}}/{{total}} installations détruites",
+        "ports": "{{done}}/{{total}} ports bloqués",
+        "front": "{{done}}/{{total}} villes du front tenues"
+      },
+      "metrics": {
+        "forces": "Forces ennemies détruites (valeur estimée)",
+        "provinces": "Provinces prises",
+        "capital": "Capitale",
+        "sams": "Défenses antiaériennes détruites",
+        "aircraft": "Appareils ennemis détruits",
+        "buildings": "Installations détruites",
+        "ports": "Ports bloqués",
+        "front": "Villes du front tenues"
+      },
+      "stats": {
+        "strikes": "Frappes",
+        "captures": "Prises",
+        "kills": "Valeur détruite",
+        "losses": "Éléments perdus",
+        "strength": "Effectifs"
+      },
+      "sector": {
+        "north": "Secteur nord",
+        "south": "Secteur sud",
+        "east": "Secteur est",
+        "west": "Secteur ouest",
+        "center": "Secteur centre",
+        "all": "Tout le théâtre"
+      },
+      "sectorLeft": "{{left}}/{{total}} à prendre",
+      "roe": {
+        "strict": "Strictes : l’état-major vous demande l’autorisation avant toute entrée en guerre.",
+        "standard": "Standard : lancer l’opération autorise la guerre contre les pays visés.",
+        "free": "Libres : les généraux décident seuls, poursuites comprises."
+      },
+      "progress": "Progression",
+      "staff": "État-major",
+      "journal": "Journal de l’opération",
+      "generals_one": "{{count}} général",
+      "generals_other": "{{count}} généraux",
+      "provinces_one": "{{count}} province",
+      "provinces_other": "{{count}} provinces",
+      "role": "Rôle",
+      "release": "Retirer de l’opération",
+      "back": "Opérations",
+      "reinforce": "Renforcer",
+      "changeGoal": "Changer d’objectif",
+      "cancel": "Annuler l’opération",
+      "cancelTitle": "Annuler l’opération",
+      "close": "Clore",
+      "closeTitle": "Clore l’opération",
+      "cancelText": "{{name}} : les généraux passent en réserve (toujours payés), les armées formées pour l’opération sont dissoutes et leurs piles reviennent sous votre commandement direct.",
+      "deadline": "Échéance",
+      "noDeadline": "Aucune",
+      "deadlineAt": "échéance {{day}} {{time}}",
+      "askWar": "L’état-major demande l’autorisation d’entrer en guerre contre {{nation}}.",
+      "atWar": "en guerre",
+      "targetsLead": "Choisissez le ou les pays visés : touchez-les sur la carte ou cherchez-les.",
+      "noTarget": "Aucun pays désigné.",
+      "removeTarget": "Retirer ce pays",
+      "search": "Rechercher un pays…",
+      "pickOnMap": "Désigner sur la carte",
+      "pick": {
+        "nation": "Touchez un pays sur la carte pour le viser.",
+        "province": "Touchez les provinces à occuper (une par une)."
+      },
+      "region": "Région",
+      "pickProvinces": "Désigner les provinces",
+      "pickGoal": "Choisissez l’objectif de l’opération.",
+      "estWithSuggestion": "Estimation avec l’état-major proposé ; vous choisirez les généraux à l’étape suivante.",
+      "est": {
+        "forces": "Forces engagées",
+        "enemy": "ennemi estimé {{value}}",
+        "cost": "Coût",
+        "hire": "+ primes {{value}}"
+      },
+      "staffLead_one": "{{count}} général retenu.",
+      "staffLead_other": "{{count}} généraux retenus.",
+      "suggest": "Proposer un état-major",
+      "recommended": "recommandé",
+      "freeForces_one": "{{count}} pile libre · {{value}}",
+      "freeForces_other": "{{count}} piles libres · {{value}}",
+      "chiefIs": "Général en chef : {{name}}",
+      "chief": "général en chef",
+      "hired": "recruté",
+      "forces": "Forces",
+      "autoForces": "Forces d’office",
+      "morePool": "Voir tout le vivier (+{{count}})",
+      "lessPool": "Réduire",
+      "name": "Nom de l’opération",
+      "defaultName": "{{goal}} — {{target}}",
+      "launch": "Lancer l’opération",
+      "toast": {
+        "created": "Opération {{name}} lancée.",
+        "edited": "Nouvel objectif transmis à l’état-major.",
+        "reinforced": "Renforts engagés dans l’opération.",
+        "released": "Général retiré de l’opération.",
+        "suspended": "Opération suspendue.",
+        "resumed": "Opération reprise.",
+        "cancelled": "Opération close."
+      }
     },
     "wizard": {
       "path": "nouvelle armée",

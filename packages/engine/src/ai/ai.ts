@@ -230,6 +230,16 @@ export interface ArmyScope {
   zone?: { at: LngLat; r: number } | null;
   /** Villes déjà visées par d'autres armées de la nation. */
   aimed?: Iterable<ProvinceId>;
+  /**
+   * Réglages tactiques propres à l'armée (opération : rassemblement borné, rayon d'assaut…), par-dessus
+   * ceux des IA.
+   */
+  T?: Partial<AiBalance['tactical']>;
+  /**
+   * Piles minimales d'un groupe d'assaut (défaut 2). Une armée de grosses piles mixtes (brigades) peut
+   * attaquer avec une seule pile.
+   */
+  minGroup?: number;
 }
 
 export interface ArmyMemory {
@@ -274,6 +284,8 @@ export interface Ctx {
   /** Armée commandée par un général (mémoire propre), absent pour l'IA d'une nation. */
   mem?: ArmyMemory;
   zone?: { at: LngLat; r: number } | null;
+  /** Piles minimales d'un groupe d'assaut (défaut 2). */
+  minGroup?: number;
 }
 
 /** Transports de troupes en cours : mémoire de l'armée, sinon de la nation. */
@@ -374,7 +386,7 @@ export function armyContext(state: EngineState, n: NationId, scope: ArmyScope): 
 function context(state: EngineState, n: NationId, scope?: ArmyScope): Ctx {
   const ns = state.nations[n]!;
   const L = scope ? scope.L : aiLevelCfg(state, ns.aiLevel);
-  const T = aiCfg(state.world).tactical;
+  const T = scope?.T ? { ...aiCfg(state.world).tactical, ...scope.T } : aiCfg(state.world).tactical;
   const mine = ownForce(state, n);
   const land: Mine[] = [];
   const sea: Mine[] = [];
@@ -442,6 +454,7 @@ function context(state: EngineState, n: NationId, scope?: ArmyScope): Ctx {
     opUnits,
     byId,
     ...(scope ? { mem: scope.mem, zone: scope.zone ?? null } : {}),
+    ...(scope?.minGroup !== undefined ? { minGroup: scope.minGroup } : {}),
   };
   for (const pid of sortedKeys(ops)) ctx.aimed.add(pid);
   if (scope?.aimed) for (const pid of scope.aimed) ctx.aimed.add(pid);
@@ -736,7 +749,7 @@ export function launchGroup(
   // Débarquement : groupe double (une tête de pont doit tenir seule jusqu'aux renforts).
   const max = Math.max(1, L.groupMax) * (from ? 2 : 1);
   // Jamais seule : même une ville qui paraît vide peut cacher des défenseurs (brouillard de guerre).
-  const minUnits = Math.min(2, max);
+  const minUnits = Math.min(ctx.minGroup ?? 2, max);
   // Faisabilité sans calcul de trajet : les `max` plus proches suffisent-elles ?
   if (cands.slice(0, max).reduce((a, x) => a + x.m.value, 0) < need) return false;
   const group: Mine[] = [];
@@ -781,7 +794,9 @@ export function launchGroup(
   // échelonnés sur place, les plus lents d'abord, pour que le groupe arrive ensemble.
   if (L.rally && T.staggerDepartures && group.length >= 2 && last - first > HOUR) {
     const go: Record<string, number> = {};
-    for (const m of group) go[m.u.id] = state.time + last - etas.get(m.u.id)!;
+    // Armée d'un général : attente bornée (pas de pile plantée des heures en attendant les autres).
+    const cap = ctx.mem ? T.rallyMaxHours * HOUR : Infinity;
+    for (const m of group) go[m.u.id] = state.time + Math.min(cap, last - etas.get(m.u.id)!);
     const op: Operation = {
       at: city,
       units: group.map((m) => m.u.id),
@@ -865,7 +880,12 @@ function startOp(ctx: Ctx, pid: ProvinceId, group: Mine[], need: number, bySea: 
     units.push(m);
     force += m.value;
   }
-  if (units.length < 2 || force < need || !units.some((m) => m.s.canCapture)) return false;
+  if (
+    units.length < Math.min(2, ctx.minGroup ?? 2) ||
+    force < need ||
+    !units.some((m) => m.s.canCapture)
+  )
+    return false;
   if (
     moving.length > 0 &&
     !order(state, n, { kind: 'move', unitIds: moving.map((m) => m.u.id), to: at })
@@ -1200,8 +1220,9 @@ export function runOps(ctx: Ctx): void {
       release(ctx, pid);
       continue;
     }
-    // But de guerre atteint entre-temps (guerre limitée) : l'opération est annulée.
-    if (warGoalReached(state, n, P.owner)) {
+    // But de guerre atteint entre-temps (guerre limitée) : l'opération est annulée. Pas pour l'armée
+    // d'un général : sa mission (le joueur) fixe le but, pas le profil de l'IA.
+    if (!ctx.mem && warGoalReached(state, n, P.owner)) {
       release(ctx, pid);
       continue;
     }
@@ -1216,7 +1237,11 @@ export function runOps(ctx: Ctx): void {
     const force = there.reduce((a, m) => a + m.value, 0);
     // Force exigée revue au départ : l'ennemi a pu renforcer la ville entre-temps.
     const need = Math.max(op.need, needFor(ctx, pid, P.owner) * (op.sea ? T.amphibiousRatio : 1));
-    if (force < need || there.length < 2 || !there.some((m) => m.s.canCapture)) {
+    if (
+      force < need ||
+      there.length < Math.min(2, ctx.minGroup ?? 2) ||
+      !there.some((m) => m.s.canCapture)
+    ) {
       if (late || there.length === all.length) release(ctx, pid);
       continue;
     }
@@ -1257,8 +1282,11 @@ export function runOps(ctx: Ctx): void {
       );
     const slowest = Math.max(...eta.values());
     op.go = {};
+    const cap = ctx.mem ? T.rallyMaxHours * HOUR : Infinity;
     for (const m of there)
-      op.go[m.u.id] = T.staggerDepartures ? state.time + slowest - eta.get(m.u.id)! : state.time;
+      op.go[m.u.id] = T.staggerDepartures
+        ? state.time + Math.min(cap, slowest - eta.get(m.u.id)!)
+        : state.time;
     // Les unités arrivées en retard (hors du point) sont libérées.
     for (const m of all) {
       if (op.go[m.u.id] !== undefined) continue;

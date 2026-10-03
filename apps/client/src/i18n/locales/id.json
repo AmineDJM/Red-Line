@@ -3499,10 +3499,12 @@
       "open": "Buka"
     },
     "tabs": {
+      "ops": "Operasi",
       "armies": "Angkatan",
       "generals": "Jenderal"
     },
     "kpi": {
+      "ops": "Operasi",
       "armies": "Angkatan",
       "active": "Dalam misi",
       "generals": "Jenderal",
@@ -3840,7 +3842,233 @@
       "none": "Belum ada jenderal yang direkrut.",
       "payroll": "{{value}} / hari",
       "pool": "Kandidat",
-      "poolHint": "Perwira tersedia: bonus perekrutan setara gaji 5 hari."
+      "poolHint": "Perwira tersedia: bonus perekrutan setara gaji 5 hari.",
+      "branch": "Matra",
+      "chief": "Panglima matra",
+      "noChief": "kosong",
+      "forces": "Kekuatan matra",
+      "freeForces": "Di luar angkatan",
+      "isChief": "Panglima matra",
+      "makeChief": "Angkat jadi panglima",
+      "chiefHelp": "Panglima matra meningkatkan kemampuan para jenderal di matranya; gajinya lebih tinggi.",
+      "chiefNamed": "{{name}} diangkat menjadi panglima matra."
+    },
+    "branch": {
+      "land": {
+        "name": "Angkatan Darat",
+        "short": "Darat",
+        "role": "Komandan darat",
+        "desc": "Infanteri, lapis baja, artileri, dan rudal darat-ke-darat: merebut dan menguasai wilayah."
+      },
+      "air": {
+        "name": "Angkatan Udara",
+        "short": "Udara",
+        "role": "Komandan udara",
+        "desc": "Pesawat tempur, pengebom, drone, pesawat radar: membuka langit, menyerang jauh ke dalam, mendukung pasukan."
+      },
+      "sea": {
+        "name": "Angkatan Laut",
+        "short": "Laut",
+        "role": "Komandan laut",
+        "desc": "Kapal permukaan, kapal selam, kapal angkut: blokade, pengawalan pendaratan, serangan dari laut."
+      },
+      "ad": {
+        "name": "Pertahanan Udara",
+        "short": "Hanud",
+        "role": "Komandan pertahanan udara",
+        "desc": "Baterai darat-ke-udara dan radar: melindungi wilayah, pangkalan, dan pasukan yang maju."
+      }
+    },
+    "ops": {
+      "new": "Operasi baru",
+      "full": "Batas {{max}} operasi tercapai: tutup salah satunya.",
+      "emptyTitle": "Tidak ada operasi",
+      "emptyText": "Tentukan satu atau beberapa negara, sebuah sasaran, dan jenderal yang memimpinnya: mereka bertindak untuk Anda.",
+      "onboard": {
+        "title": "Operasi dalam tiga pilihan",
+        "targets": "Negara sasaran: di peta atau lewat pencarian, satu atau beberapa.",
+        "goal": "Sasaran: melemahkan kekuatan, kendali udara total, penaklukan total, serangan strategis, blokade…",
+        "staff": "Para jenderal per matra: masing-masing mendapat peran dan kekuatan, dan mereka berkoordinasi.",
+        "rule": "Para jenderal menyerang, maju, berpatroli, dan memblokade sendiri; perintah langsung pada satu tumpukan diutamakan sampai selesai."
+      },
+      "path": {
+        "new": "operasi baru",
+        "edit": "ubah sasaran",
+        "reinforce": "perkuat"
+      },
+      "step": {
+        "targets": "Negara sasaran",
+        "goal": "Sasaran",
+        "staff": "Jenderal",
+        "confirm": "Konfirmasi"
+      },
+      "status": {
+        "planning": "Persiapan",
+        "active": "Berjalan",
+        "holding": "Sasaran dipertahankan",
+        "awaiting": "Menunggu perintah",
+        "suspended": "Ditangguhkan",
+        "success": "Berhasil",
+        "failed": "Gagal"
+      },
+      "phase": {
+        "stage": "pengumpulan",
+        "sead": "penekanan pertahanan",
+        "air": "penguasaan udara",
+        "offensive": "ofensif",
+        "hold": "mempertahankan",
+        "done": "selesai"
+      },
+      "goals": {
+        "attrition": {
+          "name": "Lemahkan kekuatan",
+          "short": "Atrisi",
+          "desc": "Serang semua yang ditemukan: pertahanan, pesawat, pasukan darat, kapal, pangkalan."
+        },
+        "air_control": {
+          "name": "Kendali udara total",
+          "short": "Langit",
+          "desc": "Hancurkan pertahanan udara dan angkatan udara, lalu kuasai langit dengan patroli."
+        },
+        "conquest": {
+          "name": "Penaklukan total",
+          "short": "Penaklukan",
+          "desc": "Rebut semua provinsi termasuk ibu kota, per sektor, dengan dukungan udara."
+        },
+        "decapitation": {
+          "name": "Pemenggalan",
+          "short": "Ibu kota",
+          "desc": "Menerjang ke ibu kota dan merebutnya secepat mungkin."
+        },
+        "strategic": {
+          "name": "Serangan strategis",
+          "short": "Serangan",
+          "desc": "Industri, energi, pangkalan: hancurkan fasilitas yang terungkap."
+        },
+        "sead": {
+          "name": "Lumpuhkan pertahanan udara",
+          "short": "Hanud",
+          "desc": "Hancurkan baterai darat-ke-udara, radar, dan situs pertahanan udara yang diketahui."
+        },
+        "blockade": {
+          "name": "Blokade laut",
+          "short": "Blokade",
+          "desc": "Blokade pelabuhan, tenggelamkan kapal, putus jalur laut."
+        },
+        "defend_border": {
+          "name": "Pertahankan perbatasan",
+          "short": "Perbatasan",
+          "desc": "Pertahankan perbatasan terhadap negara yang ditentukan, lakukan serangan balik."
+        },
+        "occupy": {
+          "name": "Duduki wilayah",
+          "short": "Pendudukan",
+          "desc": "Rebut dan kuasai provinsi yang ditandai di peta."
+        }
+      },
+      "metric": {
+        "forces": "{{pct}} % perkiraan kekuatan musuh dihancurkan",
+        "provinces": "{{done}}/{{total}} provinsi direbut",
+        "capital": "Ibu kota: {{done}}/{{total}} direbut",
+        "sky": "Langit: tersisa {{sams}} baterai musuh, {{air}} pesawat",
+        "sams": "Tersisa {{left}} dari {{total}} pertahanan udara",
+        "buildings": "{{done}}/{{total}} fasilitas dihancurkan",
+        "ports": "{{done}}/{{total}} pelabuhan diblokade",
+        "front": "{{done}}/{{total}} kota garis depan dipertahankan"
+      },
+      "metrics": {
+        "forces": "Kekuatan musuh yang dihancurkan (perkiraan nilai)",
+        "provinces": "Provinsi direbut",
+        "capital": "Ibu kota",
+        "sams": "Pertahanan udara dihancurkan",
+        "aircraft": "Pesawat musuh dihancurkan",
+        "buildings": "Fasilitas dihancurkan",
+        "ports": "Pelabuhan diblokade",
+        "front": "Kota garis depan dipertahankan"
+      },
+      "stats": {
+        "strikes": "Serangan",
+        "captures": "Rebutan",
+        "kills": "Nilai dihancurkan",
+        "losses": "Unsur hilang",
+        "strength": "Kekuatan"
+      },
+      "sector": {
+        "north": "Sektor utara",
+        "south": "Sektor selatan",
+        "east": "Sektor timur",
+        "west": "Sektor barat",
+        "center": "Sektor tengah",
+        "all": "Seluruh mandala"
+      },
+      "sectorLeft": "{{left}}/{{total}} belum direbut",
+      "roe": {
+        "strict": "Ketat: staf meminta izin Anda sebelum setiap masuk perang.",
+        "standard": "Standar: meluncurkan operasi mengizinkan perang melawan negara sasaran.",
+        "free": "Bebas: para jenderal memutuskan sendiri, termasuk pengejaran."
+      },
+      "progress": "Kemajuan",
+      "staff": "Staf",
+      "journal": "Catatan operasi",
+      "generals_other": "{{count}} jenderal",
+      "provinces_other": "{{count}} provinsi",
+      "role": "Peran",
+      "release": "Tarik dari operasi",
+      "back": "Operasi",
+      "reinforce": "Perkuat",
+      "changeGoal": "Ubah sasaran",
+      "cancel": "Batalkan operasi",
+      "cancelTitle": "Batalkan operasi",
+      "close": "Tutup",
+      "closeTitle": "Tutup operasi",
+      "cancelText": "{{name}}: para jenderal masuk cadangan (tetap digaji), angkatan yang dibentuk untuk operasi dibubarkan dan tumpukannya kembali ke komando langsung Anda.",
+      "deadline": "Tenggat",
+      "noDeadline": "Tidak ada",
+      "deadlineAt": "tenggat {{day}} {{time}}",
+      "askWar": "Staf meminta izin untuk berperang melawan {{nation}}.",
+      "atWar": "berperang",
+      "targetsLead": "Pilih negara sasaran: ketuk di peta atau cari.",
+      "noTarget": "Belum ada negara yang ditentukan.",
+      "removeTarget": "Hapus negara ini",
+      "search": "Cari negara…",
+      "pickOnMap": "Tandai di peta",
+      "pick": {
+        "nation": "Ketuk sebuah negara di peta untuk menjadikannya sasaran.",
+        "province": "Ketuk provinsi yang akan diduduki (satu per satu)."
+      },
+      "region": "Wilayah",
+      "pickProvinces": "Tandai provinsi",
+      "pickGoal": "Pilih sasaran operasi.",
+      "estWithSuggestion": "Perkiraan dengan staf yang diusulkan; Anda memilih jenderal di langkah berikutnya.",
+      "est": {
+        "forces": "Kekuatan dikerahkan",
+        "enemy": "perkiraan musuh {{value}}",
+        "cost": "Biaya",
+        "hire": "+ bonus {{value}}"
+      },
+      "staffLead_other": "{{count}} jenderal dipilih.",
+      "suggest": "Usulkan staf",
+      "recommended": "disarankan",
+      "freeForces_other": "{{count}} tumpukan bebas · {{value}}",
+      "chiefIs": "Panglima matra: {{name}}",
+      "chief": "panglima matra",
+      "hired": "direkrut",
+      "forces": "Kekuatan",
+      "autoForces": "Kekuatan otomatis",
+      "morePool": "Lihat semua kandidat (+{{count}})",
+      "lessPool": "Ciutkan",
+      "name": "Nama operasi",
+      "defaultName": "{{goal}} — {{target}}",
+      "launch": "Luncurkan operasi",
+      "toast": {
+        "created": "Operasi {{name}} diluncurkan.",
+        "edited": "Sasaran baru diteruskan ke staf.",
+        "reinforced": "Bala bantuan dikerahkan ke operasi.",
+        "released": "Jenderal ditarik dari operasi.",
+        "suspended": "Operasi ditangguhkan.",
+        "resumed": "Operasi dilanjutkan.",
+        "cancelled": "Operasi ditutup."
+      }
     },
     "wizard": {
       "path": "angkatan baru",
@@ -3894,6 +4122,620 @@
       "suspended": "Misi ditangguhkan.",
       "resumed": "Misi dilanjutkan.",
       "saved": "Pengaturan disimpan."
+    }
+  },
+  "engine": {
+    "place": {
+      "sea": "di laut"
+    },
+    "sector": {
+      "at": "sektor {{province}}",
+      "near": "{{km}} km dari {{province}}",
+      "unknown": "sektor tak teridentifikasi"
+    },
+    "strikeKind": {
+      "missile": "rudal",
+      "air": "udara",
+      "artillery": "artileri"
+    },
+    "resolution": {
+      "arms_embargo": "embargo senjata",
+      "economic_sanctions": "sanksi ekonomi",
+      "ceasefire": "gencatan senjata",
+      "no_fly_zone": "zona larangan terbang",
+      "peacekeeping": "pasukan penjaga perdamaian",
+      "condemnation": "kecaman"
+    },
+    "vote": {
+      "yes": "{{nation}} setuju",
+      "no": "{{nation}} menolak",
+      "abstain": "{{nation}} abstain"
+    },
+    "charter": {
+      "mutualDefense": "pertahanan bersama",
+      "intelSharing": "berbagi intelijen",
+      "passage": "hak lintas",
+      "simple": "kerja sama sederhana"
+    },
+    "mission": {
+      "raid": "Serbuan",
+      "sabotage": "Sabotase",
+      "rescue": "Penyelamatan"
+    },
+    "intelOp": {
+      "infiltrate_spy": "Penyusupan agen",
+      "recruit_source": "Perekrutan sumber",
+      "turn_agent": "Pembelokan agen",
+      "exfiltrate": "Evakuasi",
+      "steal_research": "Pencurian riset",
+      "sabotage_factory": "Sabotase industri",
+      "fund_rebels": "Pendanaan pemberontak",
+      "listen_area": "Penyadapan zona",
+      "intercept_army": "Penyadapan komunikasi",
+      "jam_area": "Pengacauan zona",
+      "cyber_radar": "Serangan siber (radar)",
+      "cyber_production": "Serangan siber (industri)",
+      "cyber_orders": "Serangan siber (komando)",
+      "disinformation": "Kampanye disinformasi",
+      "leak_plans": "Bocoran terencana",
+      "plant_fake_report": "Penyesatan (laporan palsu)",
+      "deploy_decoys": "Pengerahan umpan",
+      "fake_radio_traffic": "Lalu lintas radio palsu",
+      "counterintel_sweep": "Operasi kontra-intelijen",
+      "recon_economic": "Pengintaian ekonomi",
+      "recon_military": "Pengintaian militer",
+      "cryptanalysis": "Kriptanalisis",
+      "intercept_comms": "Penyadapan komunikasi",
+      "geolocate_emitters": "Geolokasi pemancar",
+      "cultivate_source": "Pengembangan sumber",
+      "vet_agents": "Verifikasi agen",
+      "designate_targets": "Penetapan sasaran",
+      "dismantle_network": "Pembongkaran jaringan",
+      "deception_plan": "Operasi penyesatan",
+      "harden_sites": "Pengamanan fasilitas sensitif"
+    },
+    "council": {
+      "open_other": "Sidang Dewan Keamanan dibuka: {{count}} resolusi untuk dipilih.",
+      "closed": "Sidang ditutup: {{passed}} dari {{count}} resolusi diadopsi."
+    },
+    "news": {
+      "nuclear": {
+        "headline": "Ledakan nuklir: {{place}}",
+        "body": "Senjata nuklir yang ditembakkan {{nation}} meledak: {{place}}."
+      }
+    },
+    "intel": {
+      "failed": "gagal",
+      "compromised": "terbongkar",
+      "agentExposed": "Agen {{nation}} terbongkar",
+      "agentCompromised": "Agen {{codename}} terbongkar",
+      "agentArrest": "Penangkapan agen {{nation}}",
+      "agentArrested": "Agen {{codename}} ditangkap",
+      "listening": "Penyadapan — {{sector}}",
+      "interception": "Penyadapan — {{nation}}",
+      "decoysIdentified": "Umpan teridentifikasi",
+      "flashMovement": "FLASH — Pergerakan pasukan {{nation}}",
+      "flashMassive": "FLASH — Pergerakan besar pasukan {{nation}}",
+      "dailyInterior": "Catatan harian — Keamanan dalam negeri",
+      "dailyForeign": "Catatan harian — Intelijen luar negeri",
+      "dailyMilitary": "Catatan harian — Intelijen militer",
+      "opCompromised": "{{op}} — terbongkar",
+      "opOutcome": "{{op}} — {{outcome}}",
+      "opAttributed": "{{op}} dikaitkan dengan {{nation}}",
+      "opSuccess": "{{op}} — berhasil",
+      "sweepReport": "Operasi kontra-intelijen — ringkasan",
+      "radioSuspect": "Lalu lintas radio mencurigakan",
+      "intoxFoiled": "Upaya penyesatan digagalkan",
+      "intentions": "Niat {{nation}}",
+      "strikeSuffered": {
+        "missile": "FLASH — Terkena serangan rudal",
+        "air": "FLASH — Terkena serangan udara",
+        "artillery": "FLASH — Terkena tembakan artileri",
+        "other": "FLASH — Terkena serangan"
+      },
+      "flashNuclear": "FLASH — Ledakan nuklir",
+      "sabotage": "Sabotase",
+      "cyber": "Serangan siber",
+      "rebelsFunded": "Kelompok bersenjata didanai",
+      "programDone": "Program selesai — {{nation}}",
+      "blackMarket": "Pasar gelap — {{nation}}",
+      "imagery": "Citra — {{nation}}",
+      "crypto": "Kriptanalisis — {{nation}}",
+      "comint": "Penyadapan komunikasi — {{nation}}",
+      "emitters": "Pemancar ditemukan — {{nation}}",
+      "targets": "Penetapan sasaran — {{province}}",
+      "bda": "Penilaian kerusakan — {{sector}}",
+      "sourceAccess": "Sumber {{codename}} — akses diperluas",
+      "vet": "Verifikasi agen — {{nation}}",
+      "highLevel": "Sumber tingkat tinggi — {{nation}}",
+      "dismantle": "Pembongkaran jaringan {{nation}}",
+      "deception": "Operasi penyesatan — {{nation}}",
+      "hardened": "Fasilitas sensitif diperkuat",
+      "strategicAlert": "SIAGA STRATEGIS — {{nation}}",
+      "interrogation": "Interogasi — tahanan {{ref}} ({{nation}})",
+      "turnRefused": "Pembelotan ditolak — tahanan {{ref}}",
+      "detaineeTurned": "Tahanan {{ref}} dibelotkan"
+    },
+    "note": {
+      "allianceInvite": {
+        "title": "Undangan aliansi",
+        "text": "Aliansi {{alliance}} mengundang Anda untuk bergabung."
+      },
+      "inviteDeclined": {
+        "title": "Undangan ditolak",
+        "text": "{{nation}} menolak undangan."
+      },
+      "allianceVote": {
+        "title": "Pemungutan suara aliansi",
+        "replace_leader": "{{alliance}}: pemimpin diganti oleh {{nation}}.",
+        "expel": "{{alliance}}: {{nation}} dikeluarkan.",
+        "skip_mutual_defense": "{{alliance}}: pengecualian pertahanan bersama terhadap {{nation}}."
+      },
+      "strikeNoEffect": {
+        "title": "Serangan tanpa efek",
+        "text": "{{system}}: sasaran tidak tercapai."
+      },
+      "strikeAborted": {
+        "title": "Serangan dibatalkan",
+        "gone": "{{system}}: sasaran hilang (hancur atau tak terjangkau). Kembali ke pangkalan.",
+        "moved": "{{system}}: sasaran tak terjangkau (telah berpindah). Kembali ke pangkalan.",
+        "lost": "{{system}}: sasaran hilang dari pandangan. Kembali ke pangkalan."
+      },
+      "asatHit": {
+        "title": "Satelit dihancurkan",
+        "text": "{{system}} ({{owner}})"
+      },
+      "asatMiss": {
+        "title": "Tembakan antisatelit meleset",
+        "text": "{{system}} ({{owner}})"
+      },
+      "radarsBlinded": {
+        "title": "Radar dibutakan",
+        "text": "Sebuah serangan siber mengganggu radar kita."
+      },
+      "satPass": {
+        "title": "Lintasan satelit",
+        "text_other": "{{system}}: {{count}} kontak di bawah sapuan."
+      },
+      "nuclearRevoked": {
+        "title": "Otorisasi nuklir dicabut",
+        "text": "Kekuatan nuklir kembali ke kendali normal."
+      },
+      "nuclearAuthorized": {
+        "title": "Penggunaan nuklir diizinkan",
+        "text": "Serangan nuklir dimungkinkan selama tingkat siaga mengizinkan."
+      },
+      "nuclearDetonation": {
+        "title": "Ledakan nuklir",
+        "text": "Serangan nuklir: {{place}}."
+      },
+      "fuelLost": {
+        "title": "Pesawat hilang",
+        "text": "{{system}}: bahan bakar habis sebelum kembali ke pangkalan."
+      },
+      "specialOk": {
+        "title": "Operasi khusus berhasil",
+        "text": "{{mission}}: {{place}}."
+      },
+      "specialEnemy": {
+        "title": "Aksi pasukan khusus",
+        "text": "{{mission}} musuh: {{place}}."
+      },
+      "specialFailed": {
+        "title": "Operasi khusus gagal",
+        "text": "{{mission}}: {{place}}."
+      },
+      "blockadeOn": {
+        "title": "Blokade efektif",
+        "text": "{{place}} ({{nation}})"
+      },
+      "blockadeOff": {
+        "title": "Blokade dicabut",
+        "text": "{{place}} ({{nation}})"
+      },
+      "captured": {
+        "title": "Peralatan direbut",
+        "text": "{{place}}: {{items}}.",
+        "item": "{{count}} {{system}}"
+      },
+      "generalReleased": {
+        "title": "Kendali diambil kembali",
+        "text": "{{general}} menyerahkan kembali komando langsung kelompoknya."
+      },
+      "coup": {
+        "title": "Kudeta",
+        "text": "{{nation}}: militer telah merebut kekuasaan."
+      },
+      "ceasefire": {
+        "title": "Gencatan senjata",
+        "text": "Gencatan senjata berlaku: {{a}} / {{b}}."
+      },
+      "peaceProposal": {
+        "title": "Usulan perdamaian",
+        "text": "{{nation}} mengusulkan perdamaian."
+      },
+      "ceasefireProposal": {
+        "title": "Usulan gencatan senjata",
+        "text": "{{nation}} mengusulkan gencatan senjata."
+      },
+      "proposalRefused": {
+        "title": "Usulan ditolak",
+        "text": "{{nation}} menolak usulan Anda."
+      },
+      "agentCaught": {
+        "title": "Agen terbongkar",
+        "text": "{{host}} mengumumkan penangkapan agen {{owner}}."
+      },
+      "agentExpelled": {
+        "title": "Diplomat diusir",
+        "text": "{{host}} mengusir diplomat {{owner}} karena spionase."
+      },
+      "detaineeNew": {
+        "title": "Agen asing ditahan",
+        "text": "Seorang agen {{owner}} ada di tangan kita: keputusan diharapkan dalam {{days}} hari."
+      },
+      "detaineeHeld": {
+        "title": "Penahanan sementara",
+        "text": "Tanpa keputusan, agen {{owner}} ditempatkan dalam penahanan sementara."
+      },
+      "spyInterrogated": {
+        "title": "Agen diinterogasi",
+        "text": "{{codename}} sedang diinterogasi oleh dinas {{host}}."
+      },
+      "spyReturned": {
+        "title": "Agen dipulangkan",
+        "text": "{{codename}} telah dipulangkan oleh {{host}}."
+      },
+      "spyJailed": {
+        "title": "Agen divonis",
+        "text": "{{codename}} divonis {{days}} hari penjara oleh {{host}}."
+      },
+      "spyExecuted": {
+        "title": "Agen dieksekusi",
+        "text": "{{codename}} telah dieksekusi oleh {{host}}."
+      },
+      "spyReleased": {
+        "title": "Agen dibebaskan",
+        "text": "{{host}} telah membebaskan {{codename}}."
+      },
+      "spyServed": {
+        "title": "Hukuman berakhir",
+        "text": "{{codename}} telah menjalani hukuman ({{host}}) dan pulang."
+      },
+      "swapProposal": {
+        "title": "Usulan pertukaran",
+        "text": "{{nation}} mengusulkan pertukaran agen."
+      },
+      "swapCounter": {
+        "title": "Tawaran balik",
+        "text": "{{nation}} mengajukan tawaran balik."
+      },
+      "swapAccepted": {
+        "title": "Pertukaran disepakati",
+        "text": "Kesepakatan tentang agen yang ditahan antara {{a}} dan {{b}}."
+      },
+      "swapRefused": {
+        "title": "Pertukaran ditolak",
+        "text": "{{nation}} menolak usulan pertukaran Anda."
+      },
+      "reprisalExecute": {
+        "title": "Pembalasan",
+        "text": "{{nation}} mengeksekusi salah satu agen kita yang ditahan sebagai pembalasan."
+      },
+      "reprisalJail": {
+        "title": "Pembalasan",
+        "text": "{{nation}} memperketat penahanan agen kita (hukuman maksimum)."
+      },
+      "reprisalArrest": {
+        "title": "Pembalasan",
+        "text": "{{nation}} menangkap salah satu agen kita sebagai pembalasan."
+      },
+      "reprisalExpel": {
+        "title": "Pembalasan",
+        "text": "{{nation}} mengusir diplomat kita sebagai pembalasan."
+      },
+      "troopsEmbarked": {
+        "title": "Pasukan naik kapal",
+        "text": "{{system}} di atas {{ship}}."
+      },
+      "troopsLanded": {
+        "title": "Pasukan mendarat",
+        "text_other": "{{count}} pasukan didaratkan: {{place}}."
+      },
+      "troopsLandedContested": {
+        "title": "Pendaratan di bawah tembakan",
+        "text_other": "{{count}} pasukan didaratkan di bawah tembakan: {{place}}."
+      },
+      "transportSunk": {
+        "title": "Kapal angkut tenggelam",
+        "text_other": "{{system}} hilang bersama {{count}} pasukan di atasnya."
+      },
+      "escortEnded": {
+        "title": "Pengawalan berakhir",
+        "text": "{{system}}: pasukan yang dikawal sudah tidak ada."
+      },
+      "captureBlocked": {
+        "title": "Perebutan mustahil",
+        "noCapturer": "{{system}} tidak dapat merebut {{place}}: perlu infanteri, lapis baja, atau artileri.",
+        "noWar": "Tidak berperang dengan pemilik {{place}}: tidak ada perebutan."
+      },
+      "cmd_generalResigned": {
+        "title": "Pengunduran diri",
+        "text": "{{general}} mengundurkan diri: gajinya tidak lagi dibayar."
+      },
+      "cmd_generalUnpaid": {
+        "title": "Gaji belum dibayar",
+        "text": "{{general}} belum menerima gaji ({{days}}/{{max}} hari sebelum mengundurkan diri)."
+      },
+      "cmd_generalKilled": {
+        "title": "Jenderal gugur",
+        "text": "{{general}} gugur dalam serangan ke markas {{army}}."
+      },
+      "cmd_generalWounded": {
+        "title": "Jenderal terluka",
+        "text": "{{general}} terluka: {{army}} menunggu kepulangannya."
+      },
+      "cmd_missionSuccess": {
+        "title": "Misi tercapai",
+        "text": "{{army}}: misi tercapai."
+      },
+      "cmd_missionFailed": {
+        "title": "Misi gagal",
+        "text": "{{army}}: misi gagal."
+      },
+      "cmd_askWar": {
+        "title": "Izin diminta",
+        "text": "{{army}}: {{general}} meminta izin berperang dengan {{nation}}."
+      },
+      "cmd_askStrike": {
+        "title": "Izin diminta",
+        "text": "{{army}}: {{general}} meminta izin menyerang garis belakang {{nation}}."
+      },
+      "cmd_askReinforce": {
+        "title": "Bala bantuan diminta",
+        "text": "{{army}}: {{general}} meminta bala bantuan {{count}} tumpukan."
+      },
+      "cmd_opAskWar": {
+        "title": "Izin diminta",
+        "text": "Operasi {{op}}: staf meminta izin untuk berperang melawan {{nation}}."
+      },
+      "cmd_opSuccess": {
+        "title": "Operasi berhasil",
+        "text": "Operasi {{op}}: sasaran tercapai."
+      },
+      "cmd_opFailed": {
+        "title": "Operasi gagal",
+        "text": "Operasi {{op}}: gagal."
+      },
+      "cmd_opAchieved": {
+        "title": "Sasaran tercapai",
+        "text": "Operasi {{op}}: sasaran tercapai dan dipertahankan."
+      },
+      "cmd_opHeavyLosses": {
+        "title": "Kerugian berat",
+        "text": "Operasi {{op}}: {{pct}} % kekuatan hilang dalam 24 jam."
+      },
+      "cmd_opStuck": {
+        "title": "Operasi macet",
+        "text": "Operasi {{op}}: tak ada kemajuan selama {{hours}} jam."
+      },
+      "gov_resigned": {
+        "title": "Pengunduran diri",
+        "text": "{{name}} mengundurkan diri: jabatan tidak lagi dibayar."
+      },
+      "gov_missionDone": {
+        "title": "Misi tercapai",
+        "text": "{{mission}}: target tercapai."
+      }
+    },
+    "cmd": {
+      "zone": "zona yang ditentukan",
+      "mission": {
+        "conquer": "Taklukkan",
+        "defend": "Bertahan",
+        "hold_front": "Tahan garis depan",
+        "air_superiority": "Superioritas udara",
+        "air_defense": "Pertahanan udara",
+        "deep_strike": "Serangan mendalam",
+        "sea_control": "Kendali laut dan blokade",
+        "landing": "Pendaratan amfibi",
+        "reserve": "Cadangan"
+      },
+      "reason": {
+        "losses": "kerugian terlalu berat",
+        "stuck": "tidak ada kemajuan",
+        "tooWeak": "pasukan tidak memadai",
+        "zoneLost": "zona hilang",
+        "deadline": "tenggat terlewati"
+      },
+      "building": {
+        "air_defense_site": "situs pertahanan udara",
+        "radar_station": "stasiun radar",
+        "air_base": "pangkalan udara",
+        "military_base": "pangkalan militer",
+        "arms_factory": "pabrik senjata",
+        "refinery": "kilang",
+        "power_plant": "pembangkit listrik",
+        "naval_base": "pangkalan laut",
+        "electronics_plant": "pabrik elektronik",
+        "research_center": "pusat riset"
+      },
+      "j": {
+        "created_other": "Angkatan dibentuk: {{count}} tumpukan.",
+        "command": "{{general}} mengambil alih komando.",
+        "mission": "Misi diterima: {{mission}} — {{target}}.",
+        "missionCleared": "Misi dicabut: tumpukan menunggu perintah Anda.",
+        "suspended": "Misi ditangguhkan atas perintah.",
+        "resumed": "Misi dilanjutkan.",
+        "warAuthorized": "Izin diterima: perang dengan {{nation}}.",
+        "warRefused": "Perang dengan {{nation}} ditolak: misi ditangguhkan.",
+        "strikeAuthorized": "Serangan strategis diizinkan.",
+        "strikeRefused": "Serangan strategis ditolak: misi ditangguhkan.",
+        "reinforceRefused": "Bala bantuan ditolak: {{general}} akan bertahan dengan pasukannya sendiri.",
+        "reinforced_other": "Bala bantuan: {{count}} tumpukan bergabung dengan angkatan.",
+        "detached_other": "{{count}} tumpukan dilepas dari angkatan.",
+        "lost_other": "Kerugian: {{count}} {{system}} hancur.",
+        "captured": "{{province}} telah direbut.",
+        "declaredWar": "Perbatasan dilintasi: kita berperang dengan {{nation}}.",
+        "warBlocked": "Tidak dapat berperang dengan {{nation}}: misi ditangguhkan.",
+        "askWar": "Permintaan izin: melintasi perbatasan {{nation}}.",
+        "askStrike": "Permintaan izin: menyerang garis belakang {{nation}}.",
+        "retreat": "{{system}} terlalu lemah: mundur ke {{province}}.",
+        "noReinforcements": "Tidak ada tumpukan bebas di dekat sini untuk memperkuat kita.",
+        "askReinforce_other": "Permintaan bala bantuan: {{count}} tumpukan.",
+        "tooWeak": "Pasukan tidak cukup untuk menyerang ({{pct}}% dari yang dibutuhkan): bala bantuan diminta.",
+        "offensive": "Ofensif dilancarkan ke {{province}}.",
+        "landing": "Pendaratan dilancarkan ke {{province}}: berkumpul di pelabuhan.",
+        "counter": "Serangan balik ke {{province}}.",
+        "counterFront": "Serangan balik di garis depan.",
+        "blockade": "Blokade pelabuhan {{province}}.",
+        "noIntel": "Belum ada instalasi {{nation}} yang terungkap: butuh intelijen (pengintaian).",
+        "strike": "Serangan ke {{building}} di {{province}}.",
+        "success": "Misi tercapai.",
+        "failed": "Misi gagal: {{reason}}.",
+        "daily": "Laporan harian: kekuatan {{strength}}%, {{captures}} perebutan, {{losses}} elemen hilang.",
+        "resigned": "{{general}} mengundurkan diri: gaji belum dibayar.",
+        "dismissed": "{{general}} diberhentikan.",
+        "recovered": "{{general}} kembali memimpin setelah masa pemulihan.",
+        "wounded": "{{general}} terluka di markas: {{days}} hari pemulihan.",
+        "killed": "{{general}} gugur di markas.",
+        "joinedOp": "Dikerahkan dalam operasi {{op}}: {{role}}.",
+        "opClosed": "Operasi {{op}} ditutup: angkatan menunggu perintah Anda."
+      },
+      "goal": {
+        "attrition": "Lemahkan kekuatan",
+        "air_control": "Kendali udara total",
+        "conquest": "Penaklukan total",
+        "decapitation": "Pemenggalan",
+        "strategic": "Serangan strategis",
+        "sead": "Lumpuhkan pertahanan udara",
+        "blockade": "Blokade laut",
+        "defend_border": "Pertahankan perbatasan",
+        "occupy": "Duduki wilayah"
+      },
+      "role": {
+        "land": "angkatan darat",
+        "air": "angkatan udara",
+        "sea": "angkatan laut",
+        "ad": "pertahanan udara"
+      },
+      "op": {
+        "created_other": "Operasi diluncurkan: {{goal}}, {{count}} jenderal.",
+        "declaredWar": "Perang dinyatakan terhadap {{nation}}.",
+        "warBlocked": "Tidak bisa berperang melawan {{nation}}: operasi ditangguhkan.",
+        "askWar": "Permintaan izin: berperang melawan {{nation}}.",
+        "warAuthorized": "Izin diterima: perang melawan {{nation}}.",
+        "warRefused": "Perang melawan {{nation}} ditolak: operasi ditangguhkan.",
+        "strikes_other": "{{army}}: {{count}} serangan — pertahanan {{sead}}, pesawat {{air}}, pasukan {{ground}}, fasilitas {{bld}}.",
+        "offensive": "{{army}}: ofensif ke {{province}}.",
+        "jointAssault": "Serbuan gabungan para jenderal ke {{province}}, dipimpin {{army}}.",
+        "tooWeak": "{{army}}: kekuatan tidak cukup di depan {{province}} — dukungan udara dan bala bantuan diminta.",
+        "sectorDone": "{{army}}: sektor direbut, kini mendukung sisa mandala.",
+        "captured": "{{province}} direbut.",
+        "lostProvince": "{{province}} lepas.",
+        "recon": "Tak ada sasaran diketahui: pengintaian diluncurkan atas {{nation}}.",
+        "blockade": "{{army}}: blokade pelabuhan {{province}}.",
+        "achieved": "Sasaran tercapai: sedang dipertahankan.",
+        "heavyLosses": "Kerugian berat: {{pct}} % kekuatan yang dikerahkan hilang dalam 24 jam.",
+        "stuck": "Operasi macet: tak ada kemajuan selama {{hours}} jam.",
+        "success": "Sasaran tercapai: operasi berhasil.",
+        "failed": "Operasi gagal: {{reason}}.",
+        "goalChanged": "Sasaran baru: {{goal}}.",
+        "released": "{{army}} meninggalkan operasi.",
+        "reinforced_other": "Bala bantuan: {{count}} jenderal bergabung dalam operasi.",
+        "role": "{{army}}: peran baru — {{role}}.",
+        "reassigned": "{{army}} dipindahkan ke operasi lain.",
+        "suspended": "Operasi ditangguhkan atas perintah.",
+        "resumed": "Operasi dilanjutkan."
+      }
+    },
+    "spyNews": {
+      "executedH": "{{host}}: agen {{owner}} dieksekusi",
+      "executedB": "{{host}} mengumumkan eksekusi seorang agen {{owner}} yang divonis atas spionase. Kecaman internasional.",
+      "swapH": "Pertukaran agen antara {{a}} dan {{b}}",
+      "swapB": "{{a}} dan {{b}} melakukan pertukaran tahanan: {{n}} agen dibebaskan."
+    },
+    "gov": {
+      "m": {
+        "air_bases": "Pangkalan udara",
+        "military_bases": "Pangkalan militer",
+        "upgrade_bases": "Modernisasi pangkalan",
+        "logistics": "Logistik militer",
+        "fortify": "Benteng perbatasan",
+        "air_defense": "Pertahanan udara wilayah",
+        "coastal": "Pertahanan pantai",
+        "research_next": "Generasi berikutnya",
+        "research_branch": "Riset per bidang",
+        "research_labs": "Laboratorium riset",
+        "produce": "Pesanan peralatan",
+        "stockpile": "Stok strategis",
+        "arms_industry": "Industri persenjataan",
+        "counterintel": "Kontraintelijen",
+        "protect_sites": "Perlindungan situs sensitif",
+        "watch": "Pengawasan suatu negara",
+        "map_defenses": "Pemetaan pertahanan",
+        "economic_intel": "Intelijen ekonomi",
+        "resource": "Produksi sumber daya",
+        "industry": "Pembangunan industri",
+        "revenue": "Peningkatan pendapatan",
+        "war_economy": "Ekonomi perang",
+        "reserves": "Cadangan kas",
+        "repair": "Rekonstruksi"
+      },
+      "focus": {
+        "counterintel": "kontraintelijen",
+        "protection": "perlindungan situs"
+      },
+      "j": {
+        "appointed": "{{name}} mulai menjabat.",
+        "replaced": "{{name}} meninggalkan jabatan (pesangon dibayar).",
+        "dismissed": "{{name}} diberhentikan (pesangon dibayar).",
+        "resigned": "{{name}} mengundurkan diri: jabatan tidak lagi dibayar.",
+        "unpaid": "{{name}} belum dibayar ({{days}} h berturut-turut).",
+        "missionNew": "Misi diterima: {{mission}}.",
+        "missionEdit": "Misi diubah: {{mission}}.",
+        "missionSuspended": "Misi ditangguhkan: {{mission}}.",
+        "missionResumed": "Misi dilanjutkan: {{mission}}.",
+        "missionCancelled": "Misi ditarik: {{mission}} (yang sudah dimulai tetap berjalan).",
+        "missionDone": "Misi tercapai: {{mission}}.",
+        "built": "Pembangunan dimulai: {{building}} level {{level}} di {{place}} — {{cost}}.",
+        "jobDone": "Pembangunan selesai: {{building}} level {{level}} di {{place}}.",
+        "repaired": "Perbaikan dimulai: {{building}} di {{place}} — {{cost}}.",
+        "research": "Riset dimulai: {{node}} — {{cost}}.",
+        "researched": "Riset diperoleh: {{node}}.",
+        "produced": "Pesanan dibuat: {{count}} × {{system}} di {{place}} — {{cost}}.",
+        "imported": "Impor: {{count}} × {{system}}, dikirim ke {{place}} — {{cost}}.",
+        "intelOp": "Operasi dimulai: {{op}} — {{cost}}.",
+        "intelOpAt": "Operasi dimulai: {{op}}, sasaran {{nation}} — {{cost}}.",
+        "opSuccess": "Operasi berhasil: {{op}}.",
+        "opFailed": "Operasi tanpa hasil: {{op}}.",
+        "focus": "Prioritas intelijen dalam negeri: {{focus}}.",
+        "protected": "Situs dilindungi: {{place}}.",
+        "blocked": "Terhambat — {{why}}"
+      },
+      "why": {
+        "noHead": "Jabatan kosong: angkat pejabat.",
+        "envelope": "Anggaran habis: tersedia {{left}}, dibutuhkan {{cost}}.",
+        "funds": "Dana tidak cukup: dibutuhkan {{cost}}.",
+        "reserve": "Cadangan kehati-hatian: kas harus tetap di atas {{floor}} (dibutuhkan {{cost}}).",
+        "resources": "Sumber daya tidak cukup.",
+        "noSite": "Tidak ada lokasi yang diizinkan di zona (pantai, cadangan, atau level maksimum).",
+        "noDeposit": "Tidak ada cadangan {{resource}} di wilayah.",
+        "research": "Riset diperlukan.",
+        "capacity": "Kapasitas penuh (antrean atau dinas).",
+        "locked": "Terhambat embargo atau blokade.",
+        "noTarget": "Sasaran tidak valid atau hilang.",
+        "noSystem": "Tidak ada peralatan “{{category}}” yang tersedia (riset, lisensi, atau impor).",
+        "noResearch": "Tidak ada riset yang tersedia untuk target ini.",
+        "nothingDamaged": "Tidak ada bangunan rusak.",
+        "saving": "Cadangan sedang dibentuk: {{pct}} %.",
+        "reserveHeld": "Cadangan tercapai: misi lain mematuhinya.",
+        "stocked": "Stok tercapai: diisi ulang begitu berkurang.",
+        "inProgress": "Aksi sedang berjalan.",
+        "refused": "Perintah ditolak.",
+        "unlocked": "Generasi berikutnya sudah tersedia.",
+        "allProtected": "Situs terlindungi maksimal."
+      }
     }
   },
   "gov": {
@@ -4268,546 +5110,5 @@
       "economy": "Ekonomi"
     },
     "suggest": "Misi yang mungkin"
-  },
-  "engine": {
-    "place": {
-      "sea": "di laut"
-    },
-    "sector": {
-      "at": "sektor {{province}}",
-      "near": "{{km}} km dari {{province}}",
-      "unknown": "sektor tak teridentifikasi"
-    },
-    "strikeKind": {
-      "missile": "rudal",
-      "air": "udara",
-      "artillery": "artileri"
-    },
-    "resolution": {
-      "arms_embargo": "embargo senjata",
-      "economic_sanctions": "sanksi ekonomi",
-      "ceasefire": "gencatan senjata",
-      "no_fly_zone": "zona larangan terbang",
-      "peacekeeping": "pasukan penjaga perdamaian",
-      "condemnation": "kecaman"
-    },
-    "vote": {
-      "yes": "{{nation}} setuju",
-      "no": "{{nation}} menolak",
-      "abstain": "{{nation}} abstain"
-    },
-    "charter": {
-      "mutualDefense": "pertahanan bersama",
-      "intelSharing": "berbagi intelijen",
-      "passage": "hak lintas",
-      "simple": "kerja sama sederhana"
-    },
-    "mission": {
-      "raid": "Serbuan",
-      "sabotage": "Sabotase",
-      "rescue": "Penyelamatan"
-    },
-    "intelOp": {
-      "infiltrate_spy": "Penyusupan agen",
-      "recruit_source": "Perekrutan sumber",
-      "turn_agent": "Pembelokan agen",
-      "exfiltrate": "Evakuasi",
-      "steal_research": "Pencurian riset",
-      "sabotage_factory": "Sabotase industri",
-      "fund_rebels": "Pendanaan pemberontak",
-      "listen_area": "Penyadapan zona",
-      "intercept_army": "Penyadapan komunikasi",
-      "jam_area": "Pengacauan zona",
-      "cyber_radar": "Serangan siber (radar)",
-      "cyber_production": "Serangan siber (industri)",
-      "cyber_orders": "Serangan siber (komando)",
-      "disinformation": "Kampanye disinformasi",
-      "leak_plans": "Bocoran terencana",
-      "plant_fake_report": "Penyesatan (laporan palsu)",
-      "deploy_decoys": "Pengerahan umpan",
-      "fake_radio_traffic": "Lalu lintas radio palsu",
-      "counterintel_sweep": "Operasi kontra-intelijen",
-      "recon_economic": "Pengintaian ekonomi",
-      "recon_military": "Pengintaian militer",
-      "cryptanalysis": "Kriptanalisis",
-      "intercept_comms": "Penyadapan komunikasi",
-      "geolocate_emitters": "Geolokasi pemancar",
-      "cultivate_source": "Pengembangan sumber",
-      "vet_agents": "Verifikasi agen",
-      "designate_targets": "Penetapan sasaran",
-      "dismantle_network": "Pembongkaran jaringan",
-      "deception_plan": "Operasi penyesatan",
-      "harden_sites": "Pengamanan fasilitas sensitif"
-    },
-    "council": {
-      "open_other": "Sidang Dewan Keamanan dibuka: {{count}} resolusi untuk dipilih.",
-      "closed": "Sidang ditutup: {{passed}} dari {{count}} resolusi diadopsi."
-    },
-    "news": {
-      "nuclear": {
-        "headline": "Ledakan nuklir: {{place}}",
-        "body": "Senjata nuklir yang ditembakkan {{nation}} meledak: {{place}}."
-      }
-    },
-    "intel": {
-      "failed": "gagal",
-      "compromised": "terbongkar",
-      "agentExposed": "Agen {{nation}} terbongkar",
-      "agentCompromised": "Agen {{codename}} terbongkar",
-      "agentArrest": "Penangkapan agen {{nation}}",
-      "agentArrested": "Agen {{codename}} ditangkap",
-      "listening": "Penyadapan — {{sector}}",
-      "interception": "Penyadapan — {{nation}}",
-      "decoysIdentified": "Umpan teridentifikasi",
-      "flashMovement": "FLASH — Pergerakan pasukan {{nation}}",
-      "flashMassive": "FLASH — Pergerakan besar pasukan {{nation}}",
-      "dailyInterior": "Catatan harian — Keamanan dalam negeri",
-      "dailyForeign": "Catatan harian — Intelijen luar negeri",
-      "dailyMilitary": "Catatan harian — Intelijen militer",
-      "opCompromised": "{{op}} — terbongkar",
-      "opOutcome": "{{op}} — {{outcome}}",
-      "opAttributed": "{{op}} dikaitkan dengan {{nation}}",
-      "opSuccess": "{{op}} — berhasil",
-      "sweepReport": "Operasi kontra-intelijen — ringkasan",
-      "radioSuspect": "Lalu lintas radio mencurigakan",
-      "intoxFoiled": "Upaya penyesatan digagalkan",
-      "intentions": "Niat {{nation}}",
-      "strikeSuffered": {
-        "missile": "FLASH — Terkena serangan rudal",
-        "air": "FLASH — Terkena serangan udara",
-        "artillery": "FLASH — Terkena tembakan artileri",
-        "other": "FLASH — Terkena serangan"
-      },
-      "flashNuclear": "FLASH — Ledakan nuklir",
-      "sabotage": "Sabotase",
-      "cyber": "Serangan siber",
-      "rebelsFunded": "Kelompok bersenjata didanai",
-      "programDone": "Program selesai — {{nation}}",
-      "blackMarket": "Pasar gelap — {{nation}}",
-      "imagery": "Citra — {{nation}}",
-      "crypto": "Kriptanalisis — {{nation}}",
-      "comint": "Penyadapan komunikasi — {{nation}}",
-      "emitters": "Pemancar ditemukan — {{nation}}",
-      "targets": "Penetapan sasaran — {{province}}",
-      "bda": "Penilaian kerusakan — {{sector}}",
-      "sourceAccess": "Sumber {{codename}} — akses diperluas",
-      "vet": "Verifikasi agen — {{nation}}",
-      "highLevel": "Sumber tingkat tinggi — {{nation}}",
-      "dismantle": "Pembongkaran jaringan {{nation}}",
-      "deception": "Operasi penyesatan — {{nation}}",
-      "hardened": "Fasilitas sensitif diperkuat",
-      "strategicAlert": "SIAGA STRATEGIS — {{nation}}",
-      "interrogation": "Interogasi — tahanan {{ref}} ({{nation}})",
-      "turnRefused": "Pembelotan ditolak — tahanan {{ref}}",
-      "detaineeTurned": "Tahanan {{ref}} dibelotkan"
-    },
-    "note": {
-      "allianceInvite": {
-        "title": "Undangan aliansi",
-        "text": "Aliansi {{alliance}} mengundang Anda untuk bergabung."
-      },
-      "inviteDeclined": {
-        "title": "Undangan ditolak",
-        "text": "{{nation}} menolak undangan."
-      },
-      "allianceVote": {
-        "title": "Pemungutan suara aliansi",
-        "replace_leader": "{{alliance}}: pemimpin diganti oleh {{nation}}.",
-        "expel": "{{alliance}}: {{nation}} dikeluarkan.",
-        "skip_mutual_defense": "{{alliance}}: pengecualian pertahanan bersama terhadap {{nation}}."
-      },
-      "strikeNoEffect": {
-        "title": "Serangan tanpa efek",
-        "text": "{{system}}: sasaran tidak tercapai."
-      },
-      "strikeAborted": {
-        "title": "Serangan dibatalkan",
-        "gone": "{{system}}: sasaran hilang (hancur atau tak terjangkau). Kembali ke pangkalan.",
-        "moved": "{{system}}: sasaran tak terjangkau (telah berpindah). Kembali ke pangkalan.",
-        "lost": "{{system}}: sasaran hilang dari pandangan. Kembali ke pangkalan."
-      },
-      "asatHit": {
-        "title": "Satelit dihancurkan",
-        "text": "{{system}} ({{owner}})"
-      },
-      "asatMiss": {
-        "title": "Tembakan antisatelit meleset",
-        "text": "{{system}} ({{owner}})"
-      },
-      "radarsBlinded": {
-        "title": "Radar dibutakan",
-        "text": "Sebuah serangan siber mengganggu radar kita."
-      },
-      "satPass": {
-        "title": "Lintasan satelit",
-        "text_other": "{{system}}: {{count}} kontak di bawah sapuan."
-      },
-      "nuclearRevoked": {
-        "title": "Otorisasi nuklir dicabut",
-        "text": "Kekuatan nuklir kembali ke kendali normal."
-      },
-      "nuclearAuthorized": {
-        "title": "Penggunaan nuklir diizinkan",
-        "text": "Serangan nuklir dimungkinkan selama tingkat siaga mengizinkan."
-      },
-      "nuclearDetonation": {
-        "title": "Ledakan nuklir",
-        "text": "Serangan nuklir: {{place}}."
-      },
-      "fuelLost": {
-        "title": "Pesawat hilang",
-        "text": "{{system}}: bahan bakar habis sebelum kembali ke pangkalan."
-      },
-      "specialOk": {
-        "title": "Operasi khusus berhasil",
-        "text": "{{mission}}: {{place}}."
-      },
-      "specialEnemy": {
-        "title": "Aksi pasukan khusus",
-        "text": "{{mission}} musuh: {{place}}."
-      },
-      "specialFailed": {
-        "title": "Operasi khusus gagal",
-        "text": "{{mission}}: {{place}}."
-      },
-      "blockadeOn": {
-        "title": "Blokade efektif",
-        "text": "{{place}} ({{nation}})"
-      },
-      "blockadeOff": {
-        "title": "Blokade dicabut",
-        "text": "{{place}} ({{nation}})"
-      },
-      "captured": {
-        "title": "Peralatan direbut",
-        "text": "{{place}}: {{items}}.",
-        "item": "{{count}} {{system}}"
-      },
-      "generalReleased": {
-        "title": "Kendali diambil kembali",
-        "text": "{{general}} menyerahkan kembali komando langsung kelompoknya."
-      },
-      "coup": {
-        "title": "Kudeta",
-        "text": "{{nation}}: militer telah merebut kekuasaan."
-      },
-      "ceasefire": {
-        "title": "Gencatan senjata",
-        "text": "Gencatan senjata berlaku: {{a}} / {{b}}."
-      },
-      "peaceProposal": {
-        "title": "Usulan perdamaian",
-        "text": "{{nation}} mengusulkan perdamaian."
-      },
-      "ceasefireProposal": {
-        "title": "Usulan gencatan senjata",
-        "text": "{{nation}} mengusulkan gencatan senjata."
-      },
-      "proposalRefused": {
-        "title": "Usulan ditolak",
-        "text": "{{nation}} menolak usulan Anda."
-      },
-      "agentCaught": {
-        "title": "Agen terbongkar",
-        "text": "{{host}} mengumumkan penangkapan agen {{owner}}."
-      },
-      "agentExpelled": {
-        "title": "Diplomat diusir",
-        "text": "{{host}} mengusir diplomat {{owner}} karena spionase."
-      },
-      "detaineeNew": {
-        "title": "Agen asing ditahan",
-        "text": "Seorang agen {{owner}} ada di tangan kita: keputusan diharapkan dalam {{days}} hari."
-      },
-      "detaineeHeld": {
-        "title": "Penahanan sementara",
-        "text": "Tanpa keputusan, agen {{owner}} ditempatkan dalam penahanan sementara."
-      },
-      "spyInterrogated": {
-        "title": "Agen diinterogasi",
-        "text": "{{codename}} sedang diinterogasi oleh dinas {{host}}."
-      },
-      "spyReturned": {
-        "title": "Agen dipulangkan",
-        "text": "{{codename}} telah dipulangkan oleh {{host}}."
-      },
-      "spyJailed": {
-        "title": "Agen divonis",
-        "text": "{{codename}} divonis {{days}} hari penjara oleh {{host}}."
-      },
-      "spyExecuted": {
-        "title": "Agen dieksekusi",
-        "text": "{{codename}} telah dieksekusi oleh {{host}}."
-      },
-      "spyReleased": {
-        "title": "Agen dibebaskan",
-        "text": "{{host}} telah membebaskan {{codename}}."
-      },
-      "spyServed": {
-        "title": "Hukuman berakhir",
-        "text": "{{codename}} telah menjalani hukuman ({{host}}) dan pulang."
-      },
-      "swapProposal": {
-        "title": "Usulan pertukaran",
-        "text": "{{nation}} mengusulkan pertukaran agen."
-      },
-      "swapCounter": {
-        "title": "Tawaran balik",
-        "text": "{{nation}} mengajukan tawaran balik."
-      },
-      "swapAccepted": {
-        "title": "Pertukaran disepakati",
-        "text": "Kesepakatan tentang agen yang ditahan antara {{a}} dan {{b}}."
-      },
-      "swapRefused": {
-        "title": "Pertukaran ditolak",
-        "text": "{{nation}} menolak usulan pertukaran Anda."
-      },
-      "reprisalExecute": {
-        "title": "Pembalasan",
-        "text": "{{nation}} mengeksekusi salah satu agen kita yang ditahan sebagai pembalasan."
-      },
-      "reprisalJail": {
-        "title": "Pembalasan",
-        "text": "{{nation}} memperketat penahanan agen kita (hukuman maksimum)."
-      },
-      "reprisalArrest": {
-        "title": "Pembalasan",
-        "text": "{{nation}} menangkap salah satu agen kita sebagai pembalasan."
-      },
-      "reprisalExpel": {
-        "title": "Pembalasan",
-        "text": "{{nation}} mengusir diplomat kita sebagai pembalasan."
-      },
-      "troopsEmbarked": {
-        "title": "Pasukan naik kapal",
-        "text": "{{system}} di atas {{ship}}."
-      },
-      "troopsLanded": {
-        "title": "Pasukan mendarat",
-        "text_other": "{{count}} pasukan didaratkan: {{place}}."
-      },
-      "troopsLandedContested": {
-        "title": "Pendaratan di bawah tembakan",
-        "text_other": "{{count}} pasukan didaratkan di bawah tembakan: {{place}}."
-      },
-      "transportSunk": {
-        "title": "Kapal angkut tenggelam",
-        "text_other": "{{system}} hilang bersama {{count}} pasukan di atasnya."
-      },
-      "escortEnded": {
-        "title": "Pengawalan berakhir",
-        "text": "{{system}}: pasukan yang dikawal sudah tidak ada."
-      },
-      "captureBlocked": {
-        "title": "Perebutan mustahil",
-        "noCapturer": "{{system}} tidak dapat merebut {{place}}: perlu infanteri, lapis baja, atau artileri.",
-        "noWar": "Tidak berperang dengan pemilik {{place}}: tidak ada perebutan."
-      },
-      "cmd_generalResigned": {
-        "title": "Pengunduran diri",
-        "text": "{{general}} mengundurkan diri: gajinya tidak lagi dibayar."
-      },
-      "cmd_generalUnpaid": {
-        "title": "Gaji belum dibayar",
-        "text": "{{general}} belum menerima gaji ({{days}}/{{max}} hari sebelum mengundurkan diri)."
-      },
-      "cmd_generalKilled": {
-        "title": "Jenderal gugur",
-        "text": "{{general}} gugur dalam serangan ke markas {{army}}."
-      },
-      "cmd_generalWounded": {
-        "title": "Jenderal terluka",
-        "text": "{{general}} terluka: {{army}} menunggu kepulangannya."
-      },
-      "cmd_missionSuccess": {
-        "title": "Misi tercapai",
-        "text": "{{army}}: misi tercapai."
-      },
-      "cmd_missionFailed": {
-        "title": "Misi gagal",
-        "text": "{{army}}: misi gagal."
-      },
-      "cmd_askWar": {
-        "title": "Izin diminta",
-        "text": "{{army}}: {{general}} meminta izin berperang dengan {{nation}}."
-      },
-      "cmd_askStrike": {
-        "title": "Izin diminta",
-        "text": "{{army}}: {{general}} meminta izin menyerang garis belakang {{nation}}."
-      },
-      "cmd_askReinforce": {
-        "title": "Bala bantuan diminta",
-        "text": "{{army}}: {{general}} meminta bala bantuan {{count}} tumpukan."
-      },
-      "gov_resigned": {
-        "title": "Pengunduran diri",
-        "text": "{{name}} mengundurkan diri: jabatan tidak lagi dibayar."
-      },
-      "gov_missionDone": {
-        "title": "Misi tercapai",
-        "text": "{{mission}}: target tercapai."
-      }
-    },
-    "cmd": {
-      "zone": "zona yang ditentukan",
-      "mission": {
-        "conquer": "Taklukkan",
-        "defend": "Bertahan",
-        "hold_front": "Tahan garis depan",
-        "air_superiority": "Superioritas udara",
-        "air_defense": "Pertahanan udara",
-        "deep_strike": "Serangan mendalam",
-        "sea_control": "Kendali laut dan blokade",
-        "landing": "Pendaratan amfibi",
-        "reserve": "Cadangan"
-      },
-      "reason": {
-        "losses": "kerugian terlalu berat",
-        "stuck": "tidak ada kemajuan",
-        "tooWeak": "pasukan tidak memadai",
-        "zoneLost": "zona hilang"
-      },
-      "building": {
-        "air_defense_site": "situs pertahanan udara",
-        "radar_station": "stasiun radar",
-        "air_base": "pangkalan udara",
-        "military_base": "pangkalan militer",
-        "arms_factory": "pabrik senjata",
-        "refinery": "kilang",
-        "power_plant": "pembangkit listrik",
-        "naval_base": "pangkalan laut",
-        "electronics_plant": "pabrik elektronik",
-        "research_center": "pusat riset"
-      },
-      "j": {
-        "created_other": "Angkatan dibentuk: {{count}} tumpukan.",
-        "command": "{{general}} mengambil alih komando.",
-        "mission": "Misi diterima: {{mission}} — {{target}}.",
-        "missionCleared": "Misi dicabut: tumpukan menunggu perintah Anda.",
-        "suspended": "Misi ditangguhkan atas perintah.",
-        "resumed": "Misi dilanjutkan.",
-        "warAuthorized": "Izin diterima: perang dengan {{nation}}.",
-        "warRefused": "Perang dengan {{nation}} ditolak: misi ditangguhkan.",
-        "strikeAuthorized": "Serangan strategis diizinkan.",
-        "strikeRefused": "Serangan strategis ditolak: misi ditangguhkan.",
-        "reinforceRefused": "Bala bantuan ditolak: {{general}} akan bertahan dengan pasukannya sendiri.",
-        "reinforced_other": "Bala bantuan: {{count}} tumpukan bergabung dengan angkatan.",
-        "detached_other": "{{count}} tumpukan dilepas dari angkatan.",
-        "lost_other": "Kerugian: {{count}} {{system}} hancur.",
-        "captured": "{{province}} telah direbut.",
-        "declaredWar": "Perbatasan dilintasi: kita berperang dengan {{nation}}.",
-        "warBlocked": "Tidak dapat berperang dengan {{nation}}: misi ditangguhkan.",
-        "askWar": "Permintaan izin: melintasi perbatasan {{nation}}.",
-        "askStrike": "Permintaan izin: menyerang garis belakang {{nation}}.",
-        "retreat": "{{system}} terlalu lemah: mundur ke {{province}}.",
-        "noReinforcements": "Tidak ada tumpukan bebas di dekat sini untuk memperkuat kita.",
-        "askReinforce_other": "Permintaan bala bantuan: {{count}} tumpukan.",
-        "tooWeak": "Pasukan tidak cukup untuk menyerang ({{pct}}% dari yang dibutuhkan): bala bantuan diminta.",
-        "offensive": "Ofensif dilancarkan ke {{province}}.",
-        "landing": "Pendaratan dilancarkan ke {{province}}: berkumpul di pelabuhan.",
-        "counter": "Serangan balik ke {{province}}.",
-        "counterFront": "Serangan balik di garis depan.",
-        "blockade": "Blokade pelabuhan {{province}}.",
-        "noIntel": "Belum ada instalasi {{nation}} yang terungkap: butuh intelijen (pengintaian).",
-        "strike": "Serangan ke {{building}} di {{province}}.",
-        "success": "Misi tercapai.",
-        "failed": "Misi gagal: {{reason}}.",
-        "daily": "Laporan harian: kekuatan {{strength}}%, {{captures}} perebutan, {{losses}} elemen hilang.",
-        "resigned": "{{general}} mengundurkan diri: gaji belum dibayar.",
-        "dismissed": "{{general}} diberhentikan.",
-        "recovered": "{{general}} kembali memimpin setelah masa pemulihan.",
-        "wounded": "{{general}} terluka di markas: {{days}} hari pemulihan.",
-        "killed": "{{general}} gugur di markas."
-      }
-    },
-    "spyNews": {
-      "executedH": "{{host}}: agen {{owner}} dieksekusi",
-      "executedB": "{{host}} mengumumkan eksekusi seorang agen {{owner}} yang divonis atas spionase. Kecaman internasional.",
-      "swapH": "Pertukaran agen antara {{a}} dan {{b}}",
-      "swapB": "{{a}} dan {{b}} melakukan pertukaran tahanan: {{n}} agen dibebaskan."
-    },
-    "gov": {
-      "m": {
-        "air_bases": "Pangkalan udara",
-        "military_bases": "Pangkalan militer",
-        "upgrade_bases": "Modernisasi pangkalan",
-        "logistics": "Logistik militer",
-        "fortify": "Benteng perbatasan",
-        "air_defense": "Pertahanan udara wilayah",
-        "coastal": "Pertahanan pantai",
-        "research_next": "Generasi berikutnya",
-        "research_branch": "Riset per bidang",
-        "research_labs": "Laboratorium riset",
-        "produce": "Pesanan peralatan",
-        "stockpile": "Stok strategis",
-        "arms_industry": "Industri persenjataan",
-        "counterintel": "Kontraintelijen",
-        "protect_sites": "Perlindungan situs sensitif",
-        "watch": "Pengawasan suatu negara",
-        "map_defenses": "Pemetaan pertahanan",
-        "economic_intel": "Intelijen ekonomi",
-        "resource": "Produksi sumber daya",
-        "industry": "Pembangunan industri",
-        "revenue": "Peningkatan pendapatan",
-        "war_economy": "Ekonomi perang",
-        "reserves": "Cadangan kas",
-        "repair": "Rekonstruksi"
-      },
-      "focus": {
-        "counterintel": "kontraintelijen",
-        "protection": "perlindungan situs"
-      },
-      "j": {
-        "appointed": "{{name}} mulai menjabat.",
-        "replaced": "{{name}} meninggalkan jabatan (pesangon dibayar).",
-        "dismissed": "{{name}} diberhentikan (pesangon dibayar).",
-        "resigned": "{{name}} mengundurkan diri: jabatan tidak lagi dibayar.",
-        "unpaid": "{{name}} belum dibayar ({{days}} h berturut-turut).",
-        "missionNew": "Misi diterima: {{mission}}.",
-        "missionEdit": "Misi diubah: {{mission}}.",
-        "missionSuspended": "Misi ditangguhkan: {{mission}}.",
-        "missionResumed": "Misi dilanjutkan: {{mission}}.",
-        "missionCancelled": "Misi ditarik: {{mission}} (yang sudah dimulai tetap berjalan).",
-        "missionDone": "Misi tercapai: {{mission}}.",
-        "built": "Pembangunan dimulai: {{building}} level {{level}} di {{place}} — {{cost}}.",
-        "jobDone": "Pembangunan selesai: {{building}} level {{level}} di {{place}}.",
-        "repaired": "Perbaikan dimulai: {{building}} di {{place}} — {{cost}}.",
-        "research": "Riset dimulai: {{node}} — {{cost}}.",
-        "researched": "Riset diperoleh: {{node}}.",
-        "produced": "Pesanan dibuat: {{count}} × {{system}} di {{place}} — {{cost}}.",
-        "imported": "Impor: {{count}} × {{system}}, dikirim ke {{place}} — {{cost}}.",
-        "intelOp": "Operasi dimulai: {{op}} — {{cost}}.",
-        "intelOpAt": "Operasi dimulai: {{op}}, sasaran {{nation}} — {{cost}}.",
-        "opSuccess": "Operasi berhasil: {{op}}.",
-        "opFailed": "Operasi tanpa hasil: {{op}}.",
-        "focus": "Prioritas intelijen dalam negeri: {{focus}}.",
-        "protected": "Situs dilindungi: {{place}}.",
-        "blocked": "Terhambat — {{why}}"
-      },
-      "why": {
-        "noHead": "Jabatan kosong: angkat pejabat.",
-        "envelope": "Anggaran habis: tersedia {{left}}, dibutuhkan {{cost}}.",
-        "funds": "Dana tidak cukup: dibutuhkan {{cost}}.",
-        "reserve": "Cadangan kehati-hatian: kas harus tetap di atas {{floor}} (dibutuhkan {{cost}}).",
-        "resources": "Sumber daya tidak cukup.",
-        "noSite": "Tidak ada lokasi yang diizinkan di zona (pantai, cadangan, atau level maksimum).",
-        "noDeposit": "Tidak ada cadangan {{resource}} di wilayah.",
-        "research": "Riset diperlukan.",
-        "capacity": "Kapasitas penuh (antrean atau dinas).",
-        "locked": "Terhambat embargo atau blokade.",
-        "noTarget": "Sasaran tidak valid atau hilang.",
-        "noSystem": "Tidak ada peralatan “{{category}}” yang tersedia (riset, lisensi, atau impor).",
-        "noResearch": "Tidak ada riset yang tersedia untuk target ini.",
-        "nothingDamaged": "Tidak ada bangunan rusak.",
-        "saving": "Cadangan sedang dibentuk: {{pct}} %.",
-        "reserveHeld": "Cadangan tercapai: misi lain mematuhinya.",
-        "stocked": "Stok tercapai: diisi ulang begitu berkurang.",
-        "inProgress": "Aksi sedang berjalan.",
-        "refused": "Perintah ditolak.",
-        "unlocked": "Generasi berikutnya sudah tersedia.",
-        "allProtected": "Situs terlindungi maksimal."
-      }
-    }
   }
 }

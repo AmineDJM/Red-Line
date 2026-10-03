@@ -19,6 +19,7 @@ export function CommandPickBanner() {
   const setPicking = useCommandUi((s) => s.setPicking);
   const patch = useCommandUi((s) => s.patch);
   const draft = useCommandUi((s) => s.draft);
+  const opDraft = useCommandUi((s) => s.opDraft);
   const selection = useUi((s) => s.selection);
   const openWindow = useUi((s) => s.openWindow);
   const view = useGame((s) => s.view);
@@ -26,7 +27,7 @@ export function CommandPickBanner() {
   const catalog = useWorld((s) => s.catalog);
   useEffect(() => {
     if (!picking) return;
-    document.body.classList.toggle('rl-targeting', picking === 'target');
+    document.body.classList.toggle('rl-targeting', picking === 'target' || picking === 'nation');
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
       e.preventDefault();
@@ -39,7 +40,7 @@ export function CommandPickBanner() {
       document.body.classList.remove('rl-targeting');
     };
   }, [picking, setPicking, openWindow]);
-  if (!picking || !draft) return null;
+  if (!picking || (picking === 'nation' ? !opDraft : !draft)) return null;
   const free = new Set(freePiles(view, me, catalog).map((u) => u.id));
   const usable = selection.filter((id) => free.has(id));
   const cancel = () => {
@@ -48,12 +49,18 @@ export function CommandPickBanner() {
   };
   return (
     <div className="targeting cmd-pickbar" data-map-avoid role="status" data-testid="command-pick">
-      <Icon name={picking === 'target' ? 'target' : 'army'} size={14} />
+      <Icon name={picking === 'units' ? 'army' : 'target'} size={14} />
       <span className="targeting__text">
         <b>{t('sections.command')}</b> ·{' '}
-        {picking === 'target' ? t('command.pick.target') : t('command.pick.units')}
+        {picking === 'target'
+          ? t('command.pick.target')
+          : picking === 'nation'
+            ? opDraft?.goal === 'occupy'
+              ? t('command.ops.pick.province')
+              : t('command.ops.pick.nation')
+            : t('command.pick.units')}
       </span>
-      {picking === 'units' ? (
+      {picking === 'units' && draft ? (
         <button
           type="button"
           className="targeting__cancel cmd-pickbar__ok"

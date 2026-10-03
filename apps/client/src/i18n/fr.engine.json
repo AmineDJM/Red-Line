@@ -375,6 +375,30 @@
         "title": "Renforts demandés",
         "text": "{{army}} : {{general}} demande {{count}} piles en renfort."
       },
+      "cmd_opAskWar": {
+        "title": "Autorisation demandée",
+        "text": "Opération {{op}} : l’état-major demande l’autorisation d’entrer en guerre contre {{nation}}."
+      },
+      "cmd_opSuccess": {
+        "title": "Opération réussie",
+        "text": "Opération {{op}} : objectif atteint."
+      },
+      "cmd_opFailed": {
+        "title": "Opération échouée",
+        "text": "Opération {{op}} : échec."
+      },
+      "cmd_opAchieved": {
+        "title": "Objectif atteint",
+        "text": "Opération {{op}} : objectif atteint, il est maintenu."
+      },
+      "cmd_opHeavyLosses": {
+        "title": "Pertes lourdes",
+        "text": "Opération {{op}} : {{pct}} % des forces perdues en 24 h."
+      },
+      "cmd_opStuck": {
+        "title": "Opération enlisée",
+        "text": "Opération {{op}} : aucun progrès depuis {{hours}} h."
+      },
       "gov_resigned": {
         "title": "Démission",
         "text": "{{name}} démissionne : le poste n’est plus payé."
@@ -401,7 +425,8 @@
         "losses": "pertes trop lourdes",
         "stuck": "aucune progression",
         "tooWeak": "forces insuffisantes",
-        "zoneLost": "zone perdue"
+        "zoneLost": "zone perdue",
+        "deadline": "échéance dépassée"
       },
       "building": {
         "air_defense_site": "le site antiaérien",
@@ -458,7 +483,58 @@
         "dismissed": "{{general}} est limogé.",
         "recovered": "{{general}} reprend son commandement après sa convalescence.",
         "wounded": "{{general}} est blessé au QG : {{days}} jours de convalescence.",
-        "killed": "{{general}} est tué au QG."
+        "killed": "{{general}} est tué au QG.",
+        "joinedOp": "Engagée dans l’opération {{op}} : {{role}}.",
+        "opClosed": "Opération {{op}} close : l’armée attend vos ordres."
+      },
+      "goal": {
+        "attrition": "Affaiblir les forces",
+        "air_control": "Contrôle aérien total",
+        "conquest": "Conquête totale",
+        "decapitation": "Décapitation",
+        "strategic": "Frappes stratégiques",
+        "sead": "Neutraliser la défense antiaérienne",
+        "blockade": "Blocus naval",
+        "defend_border": "Tenir la frontière",
+        "occupy": "Occuper une région"
+      },
+      "role": {
+        "land": "armée de terre",
+        "air": "armée de l’air",
+        "sea": "marine",
+        "ad": "défense antiaérienne"
+      },
+      "op": {
+        "created_one": "Opération lancée : {{goal}}, {{count}} général.",
+        "created_other": "Opération lancée : {{goal}}, {{count}} généraux.",
+        "declaredWar": "Guerre déclarée à {{nation}}.",
+        "warBlocked": "Impossible d’entrer en guerre contre {{nation}} : opération suspendue.",
+        "askWar": "Demande d’autorisation : entrer en guerre contre {{nation}}.",
+        "warAuthorized": "Autorisation reçue : guerre contre {{nation}}.",
+        "warRefused": "Guerre contre {{nation}} refusée : opération suspendue.",
+        "strikes_one": "{{army}} : {{count}} frappe — défenses {{sead}}, aviation {{air}}, forces {{ground}}, installations {{bld}}.",
+        "strikes_other": "{{army}} : {{count}} frappes — défenses {{sead}}, aviation {{air}}, forces {{ground}}, installations {{bld}}.",
+        "offensive": "{{army}} : offensive sur {{province}}.",
+        "jointAssault": "Assaut conjoint des généraux sur {{province}}, mené par {{army}}.",
+        "tooWeak": "{{army}} : forces insuffisantes devant {{province}} — appui aérien et renforts demandés.",
+        "sectorDone": "{{army}} : secteur pris, il appuie le reste du théâtre.",
+        "captured": "{{province}} est prise.",
+        "lostProvince": "{{province}} est perdue.",
+        "recon": "Aucune cible connue : reconnaissance lancée sur {{nation}}.",
+        "blockade": "{{army}} : blocus du port de {{province}}.",
+        "achieved": "Objectif atteint : il est maintenu.",
+        "heavyLosses": "Pertes lourdes : {{pct}} % des forces engagées perdues en 24 h.",
+        "stuck": "Opération enlisée : aucun progrès depuis {{hours}} h.",
+        "success": "Objectif atteint : opération réussie.",
+        "failed": "Opération échouée : {{reason}}.",
+        "goalChanged": "Nouvel objectif : {{goal}}.",
+        "released": "{{army}} quitte l’opération.",
+        "reinforced_one": "Renfort : {{count}} général rejoint l’opération.",
+        "reinforced_other": "Renforts : {{count}} généraux rejoignent l’opération.",
+        "role": "{{army}} : nouveau rôle — {{role}}.",
+        "reassigned": "{{army}} est réaffectée à une autre opération.",
+        "suspended": "Opération suspendue sur ordre.",
+        "resumed": "Opération reprise."
       }
     },
     "spyNews": {

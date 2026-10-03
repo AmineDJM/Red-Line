@@ -2342,6 +2342,22 @@ export class GameMap {
       this.opts.onPlace?.(at);
       return;
     }
+    // Centre de commandement : pays (et province) visés par une opération.
+    if (useCommandUi.getState().picking === 'nation') {
+      const pf = this.queryRendered(e.point, { layers: ['prov-fill'] })[0];
+      const pid = pf ? String(pf.properties?.id ?? pf.id ?? '') : '';
+      const owner = pid
+        ? (useGame.getState().view?.provinces[pid]?.owner ??
+          useWorld.getState().provinces[pid]?.nationId ??
+          null)
+        : null;
+      const me = useGame.getState().me;
+      useCommandUi
+        .getState()
+        .pickNation({ provinceId: pid || null, nationId: owner && owner !== me ? owner : null });
+      useUi.getState().openWindow('command');
+      return;
+    }
     // Centre de commandement : désignation de la cible d'une mission (province ou point de zone).
     if (useCommandUi.getState().picking === 'target') {
       const pf = this.queryRendered(e.point, { layers: ['prov-fill'] })[0];

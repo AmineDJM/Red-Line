@@ -45,6 +45,7 @@ import { useWorld } from '../store/world.js';
 import { useSend } from './armyCommand.js';
 import { GeneralCard, GeneralsPane, MISSION_ICON, etaLabel } from './CommandGenerals.js';
 import { CommandWizard, openNewArmy } from './CommandWizard.js';
+import { OpWizard, OpsPane, pendingOpRequests } from './CommandOps.js';
 import './command.css';
 
 /**
@@ -793,12 +794,17 @@ function Onboarding({ disabled, mobile }: { disabled: boolean; mobile?: boolean 
 
 function Kpis({ command }: { command: CommandView }) {
   const { t } = useTranslation();
-  const req = pendingRequests(command);
+  const req = pendingRequests(command) + pendingOpRequests(command);
+  const ops = (command.ops ?? []).filter((o) => o.status !== 'success' && o.status !== 'failed');
   const active = command.armies.filter(
     (a) => a.status === 'active' || a.status === 'preparing' || a.status === 'awaiting',
   );
   return (
     <div className="cmd-kpis" data-testid="command-kpis">
+      <span>
+        <small>{t('command.kpi.ops')}</small>
+        <b>{ops.length}</b>
+      </span>
       <span>
         <small>{t('command.kpi.armies')}</small>
         <b>
@@ -830,17 +836,23 @@ export function CommandCenter({ frame, mobile, win }: WindowContentProps) {
   const { t } = useTranslation();
   const command = useGame((s) => s.view?.command);
   const draft = useCommandUi((s) => s.draft);
+  const opDraft = useCommandUi((s) => s.opDraft);
   const tab = useCommandUi((s) => s.tab);
   const setTab = useCommandUi((s) => s.setTab);
   ensureEngineTexts();
   useEffect(() => {
-    if (win.params.tab === 'generals' || win.params.tab === 'armies')
-      setTab(win.params.tab as 'armies' | 'generals');
+    const p = win.params.tab;
+    if (p === 'generals' || p === 'armies' || p === 'ops') setTab(p);
   }, [win.seq, win.params.tab, setTab]);
   const counts = useMemo(
-    () => ({ armies: command?.armies.length ?? 0, generals: command?.generals.length ?? 0 }),
+    () => ({
+      ops: command?.ops?.length ?? 0,
+      armies: command?.armies.length ?? 0,
+      generals: command?.generals.length ?? 0,
+    }),
     [command],
   );
+  const wizard = draft ? 'army' : opDraft ? 'op' : null;
   if (!command)
     return (
       <Window {...frame}>
@@ -853,16 +865,27 @@ export function CommandCenter({ frame, mobile, win }: WindowContentProps) {
       className="cmd-window"
       path={[
         t('sections.path.command'),
-        draft ? t('command.wizard.path') : t(`command.tabs.${tab}`),
+        draft
+          ? t('command.wizard.path')
+          : opDraft
+            ? t(`command.ops.path.${opDraft.mode}`)
+            : t(`command.tabs.${tab}`),
       ]}
       flush
       tabs={
-        draft ? undefined : (
+        wizard ? undefined : (
           <Tabs
             label={t('sections.command')}
             value={tab}
             onChange={setTab}
             tabs={[
+              {
+                id: 'ops',
+                label: t('command.tabs.ops'),
+                count: counts.ops,
+                icon: <Icon name="target" size={13} />,
+                dot: pendingOpRequests(command) > 0,
+              },
               {
                 id: 'armies',
                 label: t('command.tabs.armies'),
@@ -880,10 +903,14 @@ export function CommandCenter({ frame, mobile, win }: WindowContentProps) {
           />
         )
       }
-      toolbar={draft || mobile ? undefined : <Kpis command={command} />}
+      toolbar={wizard || mobile ? undefined : <Kpis command={command} />}
     >
       {draft ? (
         <CommandWizard mobile={mobile} />
+      ) : opDraft ? (
+        <OpWizard mobile={mobile} />
+      ) : tab === 'ops' ? (
+        <OpsPane mobile={mobile} />
       ) : tab === 'armies' ? (
         <ArmiesPane mobile={mobile} />
       ) : (

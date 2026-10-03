@@ -3499,10 +3499,12 @@
       "open": "開く"
     },
     "tabs": {
+      "ops": "作戦",
       "armies": "軍",
       "generals": "将軍"
     },
     "kpi": {
+      "ops": "作戦",
       "armies": "軍",
       "active": "任務中",
       "generals": "将軍",
@@ -3840,7 +3842,233 @@
       "none": "雇用中の将軍はいません。",
       "payroll": "{{value}} / 日",
       "pool": "候補者",
-      "poolHint": "採用可能な士官：雇用時に給与 5 日分の契約金。"
+      "poolHint": "採用可能な士官：雇用時に給与 5 日分の契約金。",
+      "branch": "軍種",
+      "chief": "軍種司令官",
+      "noChief": "空席",
+      "forces": "軍種の戦力",
+      "freeForces": "軍団外",
+      "isChief": "軍種司令官",
+      "makeChief": "司令官に任命",
+      "chiefHelp": "軍種司令官は同じ軍種の将軍たちの能力を高める。給与は割増。",
+      "chiefNamed": "{{name}}を軍種司令官に任命しました。"
+    },
+    "branch": {
+      "land": {
+        "name": "陸軍",
+        "short": "陸",
+        "role": "陸上司令官",
+        "desc": "歩兵、機甲、砲兵、地対地ミサイル：地域を奪取し確保する。"
+      },
+      "air": {
+        "name": "空軍",
+        "short": "空",
+        "role": "航空司令官",
+        "desc": "戦闘機、爆撃機、無人機、早期警戒機：制空権を開き、縦深を打撃し、部隊を支援する。"
+      },
+      "sea": {
+        "name": "海軍",
+        "short": "海",
+        "role": "海上司令官",
+        "desc": "水上艦、潜水艦、輸送艦：封鎖、上陸の護衛、海からの打撃。"
+      },
+      "ad": {
+        "name": "防空",
+        "short": "防空",
+        "role": "防空司令官",
+        "desc": "地対空砲台とレーダー：領土、基地、前進する部隊を守る。"
+      }
+    },
+    "ops": {
+      "new": "新規作戦",
+      "full": "作戦は最大{{max}}件です。いずれかを終了してください。",
+      "emptyTitle": "作戦なし",
+      "emptyText": "1か国以上の目標国、目的、それを指揮する将軍を指定すると、彼らが代わりに行動します。",
+      "onboard": {
+        "title": "3つの選択で作戦",
+        "targets": "目標国：地図上または検索で、1か国または複数。",
+        "goal": "目的：戦力の弱体化、完全な航空支配、完全征服、戦略爆撃、封鎖…",
+        "staff": "軍種ごとの将軍：各自が役割と戦力を受け持ち、連携する。",
+        "rule": "将軍たちは自ら打撃、前進、哨戒、封鎖を行う。スタックへの直接命令は完了まで優先される。"
+      },
+      "path": {
+        "new": "新規作戦",
+        "edit": "目的の変更",
+        "reinforce": "増援"
+      },
+      "step": {
+        "targets": "目標国",
+        "goal": "目的",
+        "staff": "将軍",
+        "confirm": "確認"
+      },
+      "status": {
+        "planning": "準備中",
+        "active": "遂行中",
+        "holding": "目的を維持",
+        "awaiting": "命令待ち",
+        "suspended": "中断",
+        "success": "成功",
+        "failed": "失敗"
+      },
+      "phase": {
+        "stage": "集結",
+        "sead": "防空制圧",
+        "air": "制空",
+        "offensive": "攻勢",
+        "hold": "維持",
+        "done": "終了"
+      },
+      "goals": {
+        "attrition": {
+          "name": "戦力の弱体化",
+          "short": "消耗",
+          "desc": "発見したものすべてを攻撃：防空、航空機、地上部隊、艦艇、基地。"
+        },
+        "air_control": {
+          "name": "完全な航空支配",
+          "short": "制空",
+          "desc": "防空と航空戦力を撃破し、哨戒で空を確保する。"
+        },
+        "conquest": {
+          "name": "完全征服",
+          "short": "征服",
+          "desc": "首都を含む全州を、セクターごとに航空支援を受けて奪取する。"
+        },
+        "decapitation": {
+          "name": "斬首作戦",
+          "short": "首都",
+          "desc": "首都へ突進し、できるだけ早く奪取する。"
+        },
+        "strategic": {
+          "name": "戦略爆撃",
+          "short": "打撃",
+          "desc": "工業、エネルギー、基地：判明した施設を破壊する。"
+        },
+        "sead": {
+          "name": "防空の無力化",
+          "short": "防空",
+          "desc": "判明している地対空砲台、レーダー、防空陣地を破壊する。"
+        },
+        "blockade": {
+          "name": "海上封鎖",
+          "short": "封鎖",
+          "desc": "港を封鎖し、艦艇を撃沈し、海上交通路を断つ。"
+        },
+        "defend_border": {
+          "name": "国境の防衛",
+          "short": "国境",
+          "desc": "指定した国に対して国境を守り、反撃する。"
+        },
+        "occupy": {
+          "name": "地域の占領",
+          "short": "占領",
+          "desc": "地図で指定した州を奪取し確保する。"
+        }
+      },
+      "metric": {
+        "forces": "推定敵戦力の{{pct}} %を撃破",
+        "provinces": "州の奪取 {{done}}/{{total}}",
+        "capital": "首都：{{done}}/{{total}} 奪取",
+        "sky": "空：敵砲台 残り{{sams}}、航空機 {{air}}",
+        "sams": "防空 残り{{left}}／{{total}}",
+        "buildings": "施設の破壊 {{done}}/{{total}}",
+        "ports": "港の封鎖 {{done}}/{{total}}",
+        "front": "前線都市の維持 {{done}}/{{total}}"
+      },
+      "metrics": {
+        "forces": "撃破した敵戦力（推定価値）",
+        "provinces": "奪取した州",
+        "capital": "首都",
+        "sams": "撃破した防空",
+        "aircraft": "撃墜した敵航空機",
+        "buildings": "破壊した施設",
+        "ports": "封鎖した港",
+        "front": "維持した前線都市"
+      },
+      "stats": {
+        "strikes": "打撃",
+        "captures": "奪取",
+        "kills": "撃破価値",
+        "losses": "損失要素",
+        "strength": "戦力"
+      },
+      "sector": {
+        "north": "北部セクター",
+        "south": "南部セクター",
+        "east": "東部セクター",
+        "west": "西部セクター",
+        "center": "中央セクター",
+        "all": "戦域全体"
+      },
+      "sectorLeft": "残り{{left}}/{{total}}",
+      "roe": {
+        "strict": "厳格：参戦の前に必ず参謀本部があなたの許可を求めます。",
+        "standard": "標準：作戦の開始で目標国との戦争が許可されます。",
+        "free": "自由：追撃を含め、将軍が単独で判断します。"
+      },
+      "progress": "進捗",
+      "staff": "参謀本部",
+      "journal": "作戦記録",
+      "generals_other": "将軍{{count}}名",
+      "provinces_other": "{{count}}州",
+      "role": "役割",
+      "release": "作戦から外す",
+      "back": "作戦",
+      "reinforce": "増援",
+      "changeGoal": "目的の変更",
+      "cancel": "作戦を中止",
+      "cancelTitle": "作戦を中止",
+      "close": "終了",
+      "closeTitle": "作戦を終了",
+      "cancelText": "{{name}}：将軍は予備に回り（給与は継続）、作戦用に編成された軍団は解散し、そのスタックはあなたの直接指揮に戻ります。",
+      "deadline": "期限",
+      "noDeadline": "なし",
+      "deadlineAt": "期限 {{day}} {{time}}",
+      "askWar": "参謀本部が{{nation}}との開戦の許可を求めています。",
+      "atWar": "交戦中",
+      "targetsLead": "目標国を選んでください：地図上でタップするか、検索します。",
+      "noTarget": "目標国が未指定です。",
+      "removeTarget": "この国を外す",
+      "search": "国を検索…",
+      "pickOnMap": "地図で指定",
+      "pick": {
+        "nation": "地図上の国をタップして目標にします。",
+        "province": "占領する州をタップします（1つずつ）。"
+      },
+      "region": "地域",
+      "pickProvinces": "州を指定",
+      "pickGoal": "作戦の目的を選んでください。",
+      "estWithSuggestion": "提案された参謀本部での見積もりです。将軍は次のステップで選びます。",
+      "est": {
+        "forces": "投入戦力",
+        "enemy": "推定敵戦力 {{value}}",
+        "cost": "コスト",
+        "hire": "+ 契約金 {{value}}"
+      },
+      "staffLead_other": "将軍{{count}}名を選択。",
+      "suggest": "参謀本部を提案",
+      "recommended": "推奨",
+      "freeForces_other": "空きスタック{{count}} · {{value}}",
+      "chiefIs": "軍種司令官：{{name}}",
+      "chief": "軍種司令官",
+      "hired": "採用済み",
+      "forces": "戦力",
+      "autoForces": "自動割当の戦力",
+      "morePool": "候補をすべて表示（+{{count}}）",
+      "lessPool": "折りたたむ",
+      "name": "作戦名",
+      "defaultName": "{{goal}} — {{target}}",
+      "launch": "作戦を開始",
+      "toast": {
+        "created": "作戦{{name}}を開始しました。",
+        "edited": "新しい目的を参謀本部に伝えました。",
+        "reinforced": "増援を作戦に投入しました。",
+        "released": "将軍を作戦から外しました。",
+        "suspended": "作戦を中断しました。",
+        "resumed": "作戦を再開しました。",
+        "cancelled": "作戦を終了しました。"
+      }
     },
     "wizard": {
       "path": "新しい軍",
@@ -3894,6 +4122,620 @@
       "suspended": "任務を中断しました。",
       "resumed": "任務を再開しました。",
       "saved": "設定を保存しました。"
+    }
+  },
+  "engine": {
+    "place": {
+      "sea": "洋上"
+    },
+    "sector": {
+      "at": "{{province}} 区域",
+      "near": "{{province}} から {{km}} km",
+      "unknown": "未特定の区域"
+    },
+    "strikeKind": {
+      "missile": "ミサイル",
+      "air": "航空",
+      "artillery": "砲兵"
+    },
+    "resolution": {
+      "arms_embargo": "武器禁輸",
+      "economic_sanctions": "経済制裁",
+      "ceasefire": "停戦",
+      "no_fly_zone": "飛行禁止区域",
+      "peacekeeping": "平和維持部隊",
+      "condemnation": "非難"
+    },
+    "vote": {
+      "yes": "{{nation}} 賛成",
+      "no": "{{nation}} 反対",
+      "abstain": "{{nation}} 棄権"
+    },
+    "charter": {
+      "mutualDefense": "相互防衛",
+      "intelSharing": "情報共有",
+      "passage": "通行権",
+      "simple": "単純協力"
+    },
+    "mission": {
+      "raid": "襲撃",
+      "sabotage": "破壊工作",
+      "rescue": "救出"
+    },
+    "intelOp": {
+      "infiltrate_spy": "工作員の潜入",
+      "recruit_source": "情報源の獲得",
+      "turn_agent": "工作員の寝返り",
+      "exfiltrate": "脱出",
+      "steal_research": "研究の窃取",
+      "sabotage_factory": "産業破壊工作",
+      "fund_rebels": "反乱勢力への資金提供",
+      "listen_area": "地域傍受",
+      "intercept_army": "通信傍受",
+      "jam_area": "地域妨害",
+      "cyber_radar": "サイバー攻撃（レーダー）",
+      "cyber_production": "サイバー攻撃（産業）",
+      "cyber_orders": "サイバー攻撃（指揮）",
+      "disinformation": "偽情報キャンペーン",
+      "leak_plans": "組織的リーク",
+      "plant_fake_report": "欺瞞（偽の報告）",
+      "deploy_decoys": "デコイ展開",
+      "fake_radio_traffic": "偽の無線通信",
+      "counterintel_sweep": "防諜作戦",
+      "recon_economic": "経済偵察",
+      "recon_military": "軍事偵察",
+      "cryptanalysis": "暗号解読",
+      "intercept_comms": "通信傍受",
+      "geolocate_emitters": "電波発信源の特定",
+      "cultivate_source": "情報源の育成",
+      "vet_agents": "工作員の審査",
+      "designate_targets": "目標指定",
+      "dismantle_network": "ネットワークの摘発",
+      "deception_plan": "欺瞞作戦",
+      "harden_sites": "重要施設の防護強化"
+    },
+    "council": {
+      "open_other": "安全保障理事会の会合開始：決議 {{count}} 件を採決。",
+      "closed": "会合終了：{{count}} 件中 {{passed}} 件の決議を採択。"
+    },
+    "news": {
+      "nuclear": {
+        "headline": "核爆発：{{place}}",
+        "body": "{{nation}} が発射した核兵器が爆発：{{place}}。"
+      }
+    },
+    "intel": {
+      "failed": "失敗",
+      "compromised": "露見",
+      "agentExposed": "{{nation}} の工作員が摘発",
+      "agentCompromised": "工作員 {{codename}} の身元が露見",
+      "agentArrest": "{{nation}} の工作員を逮捕",
+      "agentArrested": "工作員 {{codename}} が逮捕",
+      "listening": "傍受 — {{sector}}",
+      "interception": "傍受 — {{nation}}",
+      "decoysIdentified": "デコイを識別",
+      "flashMovement": "FLASH — {{nation}} 軍の移動",
+      "flashMassive": "FLASH — {{nation}} 軍の大規模移動",
+      "dailyInterior": "日次報告 — 国内保安",
+      "dailyForeign": "日次報告 — 対外情報",
+      "dailyMilitary": "日次報告 — 軍事情報",
+      "opCompromised": "{{op}} — 露見",
+      "opOutcome": "{{op}} — {{outcome}}",
+      "opAttributed": "{{op}} は {{nation}} によるものと判明",
+      "opSuccess": "{{op}} — 成功",
+      "sweepReport": "防諜作戦 — 総括",
+      "radioSuspect": "不審な無線通信",
+      "intoxFoiled": "欺瞞工作を阻止",
+      "intentions": "{{nation}} の意図",
+      "strikeSuffered": {
+        "missile": "FLASH — ミサイル攻撃を受けた",
+        "air": "FLASH — 空爆を受けた",
+        "artillery": "FLASH — 砲撃を受けた",
+        "other": "FLASH — 攻撃を受けた"
+      },
+      "flashNuclear": "FLASH — 核爆発",
+      "sabotage": "破壊工作",
+      "cyber": "サイバー攻撃",
+      "rebelsFunded": "武装集団に資金提供",
+      "programDone": "計画完了 — {{nation}}",
+      "blackMarket": "闇市場 — {{nation}}",
+      "imagery": "画像情報 — {{nation}}",
+      "crypto": "暗号解読 — {{nation}}",
+      "comint": "通信傍受 — {{nation}}",
+      "emitters": "発信源特定 — {{nation}}",
+      "targets": "目標指定 — {{province}}",
+      "bda": "損害評価 — {{sector}}",
+      "sourceAccess": "情報源 {{codename}} — 接触範囲拡大",
+      "vet": "工作員の審査 — {{nation}}",
+      "highLevel": "高位の情報源 — {{nation}}",
+      "dismantle": "{{nation}} のネットワーク摘発",
+      "deception": "欺瞞作戦 — {{nation}}",
+      "hardened": "重要施設の防護を強化",
+      "strategicAlert": "戦略警報 — {{nation}}",
+      "interrogation": "尋問 — 拘束者 {{ref}}（{{nation}}）",
+      "turnRefused": "寝返り拒否 — 拘束者 {{ref}}",
+      "detaineeTurned": "拘束者 {{ref}} が寝返り"
+    },
+    "note": {
+      "allianceInvite": {
+        "title": "同盟への招待",
+        "text": "{{alliance}} 同盟があなたを招待しています。"
+      },
+      "inviteDeclined": {
+        "title": "招待が辞退されました",
+        "text": "{{nation}} が招待を辞退。"
+      },
+      "allianceVote": {
+        "title": "同盟の投票",
+        "replace_leader": "{{alliance}}：盟主を {{nation}} に交代。",
+        "expel": "{{alliance}}：{{nation}} を除名。",
+        "skip_mutual_defense": "{{alliance}}：{{nation}} に対する相互防衛を免除。"
+      },
+      "strikeNoEffect": {
+        "title": "攻撃は効果なし",
+        "text": "{{system}}：目標に命中せず。"
+      },
+      "strikeAborted": {
+        "title": "打撃中止",
+        "gone": "{{system}}：目標が消失（撃破または到達不能）。基地へ帰還します。",
+        "moved": "{{system}}：目標に到達できません（移動しました）。基地へ帰還します。",
+        "lost": "{{system}}：目標を見失いました。基地へ帰還します。"
+      },
+      "asatHit": {
+        "title": "衛星を撃破",
+        "text": "{{system}}（{{owner}}）"
+      },
+      "asatMiss": {
+        "title": "対衛星攻撃は失敗",
+        "text": "{{system}}（{{owner}}）"
+      },
+      "radarsBlinded": {
+        "title": "レーダー無力化",
+        "text": "サイバー攻撃で自軍のレーダーが妨害されています。"
+      },
+      "satPass": {
+        "title": "衛星通過",
+        "text_other": "{{system}}：観測帯に {{count}} 件の接触。"
+      },
+      "nuclearRevoked": {
+        "title": "核使用許可を解除",
+        "text": "核戦力は通常の統制下に戻ります。"
+      },
+      "nuclearAuthorized": {
+        "title": "核使用を許可",
+        "text": "警戒レベルが許す限り核攻撃が可能です。"
+      },
+      "nuclearDetonation": {
+        "title": "核爆発",
+        "text": "核攻撃：{{place}}。"
+      },
+      "fuelLost": {
+        "title": "機体喪失",
+        "text": "{{system}}：帰投前に燃料切れ。"
+      },
+      "specialOk": {
+        "title": "特殊作戦成功",
+        "text": "{{mission}}：{{place}}。"
+      },
+      "specialEnemy": {
+        "title": "特殊部隊の行動",
+        "text": "敵の{{mission}}：{{place}}。"
+      },
+      "specialFailed": {
+        "title": "特殊作戦失敗",
+        "text": "{{mission}}：{{place}}。"
+      },
+      "blockadeOn": {
+        "title": "封鎖が有効",
+        "text": "{{place}}（{{nation}}）"
+      },
+      "blockadeOff": {
+        "title": "封鎖解除",
+        "text": "{{place}}（{{nation}}）"
+      },
+      "captured": {
+        "title": "装備を鹵獲",
+        "text": "{{place}}：{{items}}。",
+        "item": "{{count}} {{system}}"
+      },
+      "generalReleased": {
+        "title": "直接指揮に復帰",
+        "text": "{{general}} は部隊の直接指揮を返上。"
+      },
+      "coup": {
+        "title": "クーデター",
+        "text": "{{nation}}：軍が権力を掌握。"
+      },
+      "ceasefire": {
+        "title": "停戦",
+        "text": "停戦発効：{{a}} / {{b}}。"
+      },
+      "peaceProposal": {
+        "title": "講和の提案",
+        "text": "{{nation}} が講和を提案。"
+      },
+      "ceasefireProposal": {
+        "title": "停戦の提案",
+        "text": "{{nation}} が停戦を提案。"
+      },
+      "proposalRefused": {
+        "title": "提案が拒否されました",
+        "text": "{{nation}} があなたの提案を拒否。"
+      },
+      "agentCaught": {
+        "title": "工作員が摘発",
+        "text": "{{host}} が {{owner}} の工作員の逮捕を発表。"
+      },
+      "agentExpelled": {
+        "title": "外交官追放",
+        "text": "{{host}} がスパイ行為を理由に {{owner}} の外交官を追放。"
+      },
+      "detaineeNew": {
+        "title": "外国工作員を拘束",
+        "text": "{{owner}}の工作員を拘束中：{{days}} 日以内に決定が必要です。"
+      },
+      "detaineeHeld": {
+        "title": "未決勾留",
+        "text": "決定がないため、{{owner}}の工作員は未決勾留となりました。"
+      },
+      "spyInterrogated": {
+        "title": "工作員が尋問中",
+        "text": "{{codename}}は{{host}}の情報機関に尋問されています。"
+      },
+      "spyReturned": {
+        "title": "工作員が送還",
+        "text": "{{codename}}は{{host}}により本国へ送還されました。"
+      },
+      "spyJailed": {
+        "title": "工作員に有罪判決",
+        "text": "{{codename}}は{{host}}により禁錮 {{days}} 日の判決を受けました。"
+      },
+      "spyExecuted": {
+        "title": "工作員が処刑",
+        "text": "{{codename}}は{{host}}により処刑されました。"
+      },
+      "spyReleased": {
+        "title": "工作員が釈放",
+        "text": "{{host}}が{{codename}}を釈放しました。"
+      },
+      "spyServed": {
+        "title": "刑期満了",
+        "text": "{{codename}}は刑期を終え（{{host}}）、帰国します。"
+      },
+      "swapProposal": {
+        "title": "交換の提案",
+        "text": "{{nation}}が工作員の交換を提案しています。"
+      },
+      "swapCounter": {
+        "title": "対案",
+        "text": "{{nation}}が対案を示しました。"
+      },
+      "swapAccepted": {
+        "title": "交換成立",
+        "text": "{{a}}と{{b}}の間で拘束工作員に関する合意が成立。"
+      },
+      "swapRefused": {
+        "title": "交換拒否",
+        "text": "{{nation}}があなたの交換提案を拒否しました。"
+      },
+      "reprisalExecute": {
+        "title": "報復",
+        "text": "{{nation}}が報復として拘束中の自国工作員1名を処刑。"
+      },
+      "reprisalJail": {
+        "title": "報復",
+        "text": "{{nation}}が自国工作員の拘束を強化（最長刑期）。"
+      },
+      "reprisalArrest": {
+        "title": "報復",
+        "text": "{{nation}}が報復として自国工作員1名を逮捕。"
+      },
+      "reprisalExpel": {
+        "title": "報復",
+        "text": "{{nation}}が報復として自国外交官を追放。"
+      },
+      "troopsEmbarked": {
+        "title": "部隊が乗艦",
+        "text": "{{system}} が {{ship}} に乗艦。"
+      },
+      "troopsLanded": {
+        "title": "部隊が揚陸",
+        "text_other": "{{count}} 個部隊が揚陸：{{place}}。"
+      },
+      "troopsLandedContested": {
+        "title": "砲火下の上陸",
+        "text_other": "{{count}} 個部隊が砲火下で揚陸：{{place}}。"
+      },
+      "transportSunk": {
+        "title": "輸送艦撃沈",
+        "text_other": "{{system}} が乗艦中の {{count}} 個部隊とともに失われました。"
+      },
+      "escortEnded": {
+        "title": "護衛終了",
+        "text": "{{system}}：護衛対象の部隊がいなくなりました。"
+      },
+      "captureBlocked": {
+        "title": "占領不可",
+        "noCapturer": "{{system}} は {{place}} を占領できません：歩兵・機甲・砲兵のいずれかが必要です。",
+        "noWar": "{{place}} の所有国と戦争状態にないため占領できません。"
+      },
+      "cmd_generalResigned": {
+        "title": "辞任",
+        "text": "{{general}}が辞任しました：給与が支払われていません。"
+      },
+      "cmd_generalUnpaid": {
+        "title": "給与未払い",
+        "text": "{{general}}に給与が支払われていません（辞任まで {{days}}/{{max}} 日）。"
+      },
+      "cmd_generalKilled": {
+        "title": "将軍戦死",
+        "text": "{{general}}が{{army}}司令部への攻撃で戦死しました。"
+      },
+      "cmd_generalWounded": {
+        "title": "将軍負傷",
+        "text": "{{general}}が負傷しました：{{army}}は復帰を待っています。"
+      },
+      "cmd_missionSuccess": {
+        "title": "任務達成",
+        "text": "{{army}}：任務達成。"
+      },
+      "cmd_missionFailed": {
+        "title": "任務失敗",
+        "text": "{{army}}：任務に失敗しました。"
+      },
+      "cmd_askWar": {
+        "title": "許可の要請",
+        "text": "{{army}}：{{general}}が{{nation}}との開戦許可を求めています。"
+      },
+      "cmd_askStrike": {
+        "title": "許可の要請",
+        "text": "{{army}}：{{general}}が{{nation}}後方への攻撃許可を求めています。"
+      },
+      "cmd_askReinforce": {
+        "title": "増援要請",
+        "text": "{{army}}：{{general}}が {{count}} スタックの増援を求めています。"
+      },
+      "cmd_opAskWar": {
+        "title": "許可の要請",
+        "text": "作戦{{op}}：参謀本部が{{nation}}との開戦の許可を求めています。"
+      },
+      "cmd_opSuccess": {
+        "title": "作戦成功",
+        "text": "作戦{{op}}：目的を達成。"
+      },
+      "cmd_opFailed": {
+        "title": "作戦失敗",
+        "text": "作戦{{op}}：失敗。"
+      },
+      "cmd_opAchieved": {
+        "title": "目的達成",
+        "text": "作戦{{op}}：目的を達成し、維持しています。"
+      },
+      "cmd_opHeavyLosses": {
+        "title": "甚大な損害",
+        "text": "作戦{{op}}：24時間で戦力の{{pct}} %を喪失。"
+      },
+      "cmd_opStuck": {
+        "title": "作戦停滞",
+        "text": "作戦{{op}}：{{hours}}時間進展なし。"
+      },
+      "gov_resigned": {
+        "title": "辞任",
+        "text": "{{name}} が辞任：この職はもう支払われていません。"
+      },
+      "gov_missionDone": {
+        "title": "任務達成",
+        "text": "{{mission}}：目標達成。"
+      }
+    },
+    "cmd": {
+      "zone": "指定された圏",
+      "mission": {
+        "conquer": "征服",
+        "defend": "防衛",
+        "hold_front": "前線の維持",
+        "air_superiority": "航空優勢",
+        "air_defense": "防空",
+        "deep_strike": "縦深攻撃",
+        "sea_control": "制海と封鎖",
+        "landing": "上陸作戦",
+        "reserve": "予備"
+      },
+      "reason": {
+        "losses": "損害が大きすぎる",
+        "stuck": "進展なし",
+        "tooWeak": "戦力不足",
+        "zoneLost": "圏の喪失",
+        "deadline": "期限切れ"
+      },
+      "building": {
+        "air_defense_site": "防空陣地",
+        "radar_station": "レーダー基地",
+        "air_base": "航空基地",
+        "military_base": "軍事基地",
+        "arms_factory": "兵器工場",
+        "refinery": "製油所",
+        "power_plant": "発電所",
+        "naval_base": "海軍基地",
+        "electronics_plant": "電子機器工場",
+        "research_center": "研究センター"
+      },
+      "j": {
+        "created_other": "軍を編成：{{count}} スタック。",
+        "command": "{{general}}が指揮を執ります。",
+        "mission": "任務受領：{{mission}} — {{target}}。",
+        "missionCleared": "任務解除：スタックはあなたの命令を待っています。",
+        "suspended": "命令により任務を中断。",
+        "resumed": "任務を再開。",
+        "warAuthorized": "許可受領：{{nation}}との開戦。",
+        "warRefused": "{{nation}}との開戦は拒否されました：任務中断。",
+        "strikeAuthorized": "戦略攻撃が許可されました。",
+        "strikeRefused": "戦略攻撃は拒否されました：任務中断。",
+        "reinforceRefused": "増援拒否：{{general}}は手持ちの戦力で対処します。",
+        "reinforced_other": "増援：{{count}} スタックが軍に加わりました。",
+        "detached_other": "{{count}} スタックが軍から離脱しました。",
+        "lost_other": "損害：{{system}} {{count}} 基が破壊されました。",
+        "captured": "{{province}}を占領。",
+        "declaredWar": "国境を越えました：{{nation}}と交戦状態です。",
+        "warBlocked": "{{nation}}と開戦できません：任務中断。",
+        "askWar": "許可要請：{{nation}}の国境を越える。",
+        "askStrike": "許可要請：{{nation}}の後方を攻撃する。",
+        "retreat": "{{system}}の消耗が激しい：{{province}}へ後退。",
+        "noReinforcements": "近くに増援に使える空きスタックがありません。",
+        "askReinforce_other": "増援要請：{{count}} スタック。",
+        "tooWeak": "攻撃には戦力不足（必要量の {{pct}}%）：増援を要請しました。",
+        "offensive": "{{province}}への攻勢を開始。",
+        "landing": "{{province}}への上陸を開始：港に集結中。",
+        "counter": "{{province}}へ反撃。",
+        "counterFront": "前線で反撃。",
+        "blockade": "{{province}}の港を封鎖。",
+        "noIntel": "{{nation}}の施設は判明していません：情報（偵察）が必要です。",
+        "strike": "{{province}}の{{building}}を攻撃。",
+        "success": "任務達成。",
+        "failed": "任務失敗：{{reason}}。",
+        "daily": "日報：戦力 {{strength}}%、占領 {{captures}}、喪失 {{losses}}。",
+        "resigned": "{{general}}が辞任：給与未払い。",
+        "dismissed": "{{general}}を解任。",
+        "recovered": "{{general}}が療養を終えて指揮に復帰。",
+        "wounded": "{{general}}が司令部で負傷：療養 {{days}} 日。",
+        "killed": "{{general}}が司令部で戦死。",
+        "joinedOp": "作戦{{op}}に投入：{{role}}。",
+        "opClosed": "作戦{{op}}終了：軍団はあなたの命令を待っています。"
+      },
+      "goal": {
+        "attrition": "戦力の弱体化",
+        "air_control": "完全な航空支配",
+        "conquest": "完全征服",
+        "decapitation": "斬首作戦",
+        "strategic": "戦略爆撃",
+        "sead": "防空の無力化",
+        "blockade": "海上封鎖",
+        "defend_border": "国境の防衛",
+        "occupy": "地域の占領"
+      },
+      "role": {
+        "land": "陸軍",
+        "air": "空軍",
+        "sea": "海軍",
+        "ad": "防空"
+      },
+      "op": {
+        "created_other": "作戦開始：{{goal}}、将軍{{count}}名。",
+        "declaredWar": "{{nation}}に宣戦布告。",
+        "warBlocked": "{{nation}}と開戦できません：作戦を中断。",
+        "askWar": "許可の要請：{{nation}}との開戦。",
+        "warAuthorized": "許可を受領：{{nation}}との戦争。",
+        "warRefused": "{{nation}}との戦争は却下：作戦を中断。",
+        "strikes_other": "{{army}}：打撃{{count}}回 — 防空{{sead}}、航空機{{air}}、部隊{{ground}}、施設{{bld}}。",
+        "offensive": "{{army}}：{{province}}へ攻勢。",
+        "jointAssault": "将軍たちによる{{province}}への共同攻撃、指揮は{{army}}。",
+        "tooWeak": "{{army}}：{{province}}の前で戦力不足 — 航空支援と増援を要請。",
+        "sectorDone": "{{army}}：セクターを奪取、戦域の残りを支援中。",
+        "captured": "{{province}}を奪取。",
+        "lostProvince": "{{province}}を喪失。",
+        "recon": "既知の目標なし：{{nation}}上空の偵察を開始。",
+        "blockade": "{{army}}：{{province}}港を封鎖。",
+        "achieved": "目的達成：維持しています。",
+        "heavyLosses": "甚大な損害：24時間で投入戦力の{{pct}} %を喪失。",
+        "stuck": "作戦停滞：{{hours}}時間進展なし。",
+        "success": "目的達成：作戦成功。",
+        "failed": "作戦失敗：{{reason}}。",
+        "goalChanged": "新しい目的：{{goal}}。",
+        "released": "{{army}}が作戦を離脱。",
+        "reinforced_other": "増援：将軍{{count}}名が作戦に合流。",
+        "role": "{{army}}：新しい役割 — {{role}}。",
+        "reassigned": "{{army}}は別の作戦に再配置。",
+        "suspended": "命令により作戦を中断。",
+        "resumed": "作戦を再開。"
+      }
+    },
+    "spyNews": {
+      "executedH": "{{host}}：{{owner}}の工作員を処刑",
+      "executedB": "{{host}}はスパイ罪で有罪となった{{owner}}の工作員の処刑を発表。国際的な非難。",
+      "swapH": "{{a}}と{{b}}が工作員を交換",
+      "swapB": "{{a}}と{{b}}が捕虜交換を実施：工作員 {{n}} 名が釈放。"
+    },
+    "gov": {
+      "m": {
+        "air_bases": "空軍基地",
+        "military_bases": "軍事基地",
+        "upgrade_bases": "基地の近代化",
+        "logistics": "軍事兵站",
+        "fortify": "国境の要塞化",
+        "air_defense": "国土防空",
+        "coastal": "沿岸防衛",
+        "research_next": "次世代",
+        "research_branch": "分野別研究",
+        "research_labs": "研究所",
+        "produce": "装備の発注",
+        "stockpile": "戦略備蓄",
+        "arms_industry": "軍需産業",
+        "counterintel": "防諜",
+        "protect_sites": "重要施設の防護",
+        "watch": "他国の監視",
+        "map_defenses": "防衛網の把握",
+        "economic_intel": "経済情報",
+        "resource": "資源生産",
+        "industry": "産業開発",
+        "revenue": "歳入の増加",
+        "war_economy": "戦時経済",
+        "reserves": "国庫準備金",
+        "repair": "復興"
+      },
+      "focus": {
+        "counterintel": "防諜",
+        "protection": "施設防護"
+      },
+      "j": {
+        "appointed": "{{name}} が就任しました。",
+        "replaced": "{{name}} が退任しました（退職金支払済み）。",
+        "dismissed": "{{name}} を解任しました（退職金支払済み）。",
+        "resigned": "{{name}} が辞任：この職はもう支払われていません。",
+        "unpaid": "{{name}} は未払いです（{{days}} 日連続）。",
+        "missionNew": "任務受領：{{mission}}。",
+        "missionEdit": "任務変更：{{mission}}。",
+        "missionSuspended": "任務停止：{{mission}}。",
+        "missionResumed": "任務再開：{{mission}}。",
+        "missionCancelled": "任務撤回：{{mission}}（開始済みのものは継続）。",
+        "missionDone": "任務達成：{{mission}}。",
+        "built": "着工：{{building}} レベル {{level}}（{{place}}）— {{cost}}。",
+        "jobDone": "竣工：{{building}} レベル {{level}}（{{place}}）。",
+        "repaired": "修理開始：{{building}}（{{place}}）— {{cost}}。",
+        "research": "研究開始：{{node}} — {{cost}}。",
+        "researched": "研究完了：{{node}}。",
+        "produced": "発注：{{count}} × {{system}}（{{place}}）— {{cost}}。",
+        "imported": "輸入：{{count}} × {{system}}、{{place}} へ納入 — {{cost}}。",
+        "intelOp": "作戦開始：{{op}} — {{cost}}。",
+        "intelOpAt": "作戦開始：{{op}}、対象 {{nation}} — {{cost}}。",
+        "opSuccess": "作戦成功：{{op}}。",
+        "opFailed": "作戦は成果なし：{{op}}。",
+        "focus": "国内情報の優先事項：{{focus}}。",
+        "protected": "施設を防護下に置きました：{{place}}。",
+        "blocked": "停滞 — {{why}}"
+      },
+      "why": {
+        "noHead": "空席：担当者を任命してください。",
+        "envelope": "予算枠が尽きました：残り {{left}}、必要 {{cost}}。",
+        "funds": "資金不足：{{cost}} 必要です。",
+        "reserve": "慎重準備金：国庫は {{floor}} を上回る必要があります（必要 {{cost}}）。",
+        "resources": "資源が不足しています。",
+        "noSite": "区域に許可された場所がありません（海岸・鉱床・最大レベル）。",
+        "noDeposit": "領土に {{resource}} の鉱床がありません。",
+        "research": "研究が必要です。",
+        "capacity": "上限に達しました（待ち行列または部門）。",
+        "locked": "禁輸または封鎖により停止。",
+        "noTarget": "対象が無効か消滅しました。",
+        "noSystem": "「{{category}}」の装備が利用できません（研究・ライセンス・輸入）。",
+        "noResearch": "この目標に利用可能な研究はありません。",
+        "nothingDamaged": "損傷した建物はありません。",
+        "saving": "準備金を積み立て中：{{pct}} %。",
+        "reserveHeld": "準備金に到達：他の任務はこれを守ります。",
+        "stocked": "在庫に到達：減り次第補充します。",
+        "inProgress": "行動を実行中。",
+        "refused": "命令が拒否されました。",
+        "unlocked": "次世代はすでに利用可能です。",
+        "allProtected": "施設の防護は最大です。"
+      }
     }
   },
   "gov": {
@@ -4268,546 +5110,5 @@
       "economy": "経済"
     },
     "suggest": "可能な任務"
-  },
-  "engine": {
-    "place": {
-      "sea": "洋上"
-    },
-    "sector": {
-      "at": "{{province}} 区域",
-      "near": "{{province}} から {{km}} km",
-      "unknown": "未特定の区域"
-    },
-    "strikeKind": {
-      "missile": "ミサイル",
-      "air": "航空",
-      "artillery": "砲兵"
-    },
-    "resolution": {
-      "arms_embargo": "武器禁輸",
-      "economic_sanctions": "経済制裁",
-      "ceasefire": "停戦",
-      "no_fly_zone": "飛行禁止区域",
-      "peacekeeping": "平和維持部隊",
-      "condemnation": "非難"
-    },
-    "vote": {
-      "yes": "{{nation}} 賛成",
-      "no": "{{nation}} 反対",
-      "abstain": "{{nation}} 棄権"
-    },
-    "charter": {
-      "mutualDefense": "相互防衛",
-      "intelSharing": "情報共有",
-      "passage": "通行権",
-      "simple": "単純協力"
-    },
-    "mission": {
-      "raid": "襲撃",
-      "sabotage": "破壊工作",
-      "rescue": "救出"
-    },
-    "intelOp": {
-      "infiltrate_spy": "工作員の潜入",
-      "recruit_source": "情報源の獲得",
-      "turn_agent": "工作員の寝返り",
-      "exfiltrate": "脱出",
-      "steal_research": "研究の窃取",
-      "sabotage_factory": "産業破壊工作",
-      "fund_rebels": "反乱勢力への資金提供",
-      "listen_area": "地域傍受",
-      "intercept_army": "通信傍受",
-      "jam_area": "地域妨害",
-      "cyber_radar": "サイバー攻撃（レーダー）",
-      "cyber_production": "サイバー攻撃（産業）",
-      "cyber_orders": "サイバー攻撃（指揮）",
-      "disinformation": "偽情報キャンペーン",
-      "leak_plans": "組織的リーク",
-      "plant_fake_report": "欺瞞（偽の報告）",
-      "deploy_decoys": "デコイ展開",
-      "fake_radio_traffic": "偽の無線通信",
-      "counterintel_sweep": "防諜作戦",
-      "recon_economic": "経済偵察",
-      "recon_military": "軍事偵察",
-      "cryptanalysis": "暗号解読",
-      "intercept_comms": "通信傍受",
-      "geolocate_emitters": "電波発信源の特定",
-      "cultivate_source": "情報源の育成",
-      "vet_agents": "工作員の審査",
-      "designate_targets": "目標指定",
-      "dismantle_network": "ネットワークの摘発",
-      "deception_plan": "欺瞞作戦",
-      "harden_sites": "重要施設の防護強化"
-    },
-    "council": {
-      "open_other": "安全保障理事会の会合開始：決議 {{count}} 件を採決。",
-      "closed": "会合終了：{{count}} 件中 {{passed}} 件の決議を採択。"
-    },
-    "news": {
-      "nuclear": {
-        "headline": "核爆発：{{place}}",
-        "body": "{{nation}} が発射した核兵器が爆発：{{place}}。"
-      }
-    },
-    "intel": {
-      "failed": "失敗",
-      "compromised": "露見",
-      "agentExposed": "{{nation}} の工作員が摘発",
-      "agentCompromised": "工作員 {{codename}} の身元が露見",
-      "agentArrest": "{{nation}} の工作員を逮捕",
-      "agentArrested": "工作員 {{codename}} が逮捕",
-      "listening": "傍受 — {{sector}}",
-      "interception": "傍受 — {{nation}}",
-      "decoysIdentified": "デコイを識別",
-      "flashMovement": "FLASH — {{nation}} 軍の移動",
-      "flashMassive": "FLASH — {{nation}} 軍の大規模移動",
-      "dailyInterior": "日次報告 — 国内保安",
-      "dailyForeign": "日次報告 — 対外情報",
-      "dailyMilitary": "日次報告 — 軍事情報",
-      "opCompromised": "{{op}} — 露見",
-      "opOutcome": "{{op}} — {{outcome}}",
-      "opAttributed": "{{op}} は {{nation}} によるものと判明",
-      "opSuccess": "{{op}} — 成功",
-      "sweepReport": "防諜作戦 — 総括",
-      "radioSuspect": "不審な無線通信",
-      "intoxFoiled": "欺瞞工作を阻止",
-      "intentions": "{{nation}} の意図",
-      "strikeSuffered": {
-        "missile": "FLASH — ミサイル攻撃を受けた",
-        "air": "FLASH — 空爆を受けた",
-        "artillery": "FLASH — 砲撃を受けた",
-        "other": "FLASH — 攻撃を受けた"
-      },
-      "flashNuclear": "FLASH — 核爆発",
-      "sabotage": "破壊工作",
-      "cyber": "サイバー攻撃",
-      "rebelsFunded": "武装集団に資金提供",
-      "programDone": "計画完了 — {{nation}}",
-      "blackMarket": "闇市場 — {{nation}}",
-      "imagery": "画像情報 — {{nation}}",
-      "crypto": "暗号解読 — {{nation}}",
-      "comint": "通信傍受 — {{nation}}",
-      "emitters": "発信源特定 — {{nation}}",
-      "targets": "目標指定 — {{province}}",
-      "bda": "損害評価 — {{sector}}",
-      "sourceAccess": "情報源 {{codename}} — 接触範囲拡大",
-      "vet": "工作員の審査 — {{nation}}",
-      "highLevel": "高位の情報源 — {{nation}}",
-      "dismantle": "{{nation}} のネットワーク摘発",
-      "deception": "欺瞞作戦 — {{nation}}",
-      "hardened": "重要施設の防護を強化",
-      "strategicAlert": "戦略警報 — {{nation}}",
-      "interrogation": "尋問 — 拘束者 {{ref}}（{{nation}}）",
-      "turnRefused": "寝返り拒否 — 拘束者 {{ref}}",
-      "detaineeTurned": "拘束者 {{ref}} が寝返り"
-    },
-    "note": {
-      "allianceInvite": {
-        "title": "同盟への招待",
-        "text": "{{alliance}} 同盟があなたを招待しています。"
-      },
-      "inviteDeclined": {
-        "title": "招待が辞退されました",
-        "text": "{{nation}} が招待を辞退。"
-      },
-      "allianceVote": {
-        "title": "同盟の投票",
-        "replace_leader": "{{alliance}}：盟主を {{nation}} に交代。",
-        "expel": "{{alliance}}：{{nation}} を除名。",
-        "skip_mutual_defense": "{{alliance}}：{{nation}} に対する相互防衛を免除。"
-      },
-      "strikeNoEffect": {
-        "title": "攻撃は効果なし",
-        "text": "{{system}}：目標に命中せず。"
-      },
-      "strikeAborted": {
-        "title": "打撃中止",
-        "gone": "{{system}}：目標が消失（撃破または到達不能）。基地へ帰還します。",
-        "moved": "{{system}}：目標に到達できません（移動しました）。基地へ帰還します。",
-        "lost": "{{system}}：目標を見失いました。基地へ帰還します。"
-      },
-      "asatHit": {
-        "title": "衛星を撃破",
-        "text": "{{system}}（{{owner}}）"
-      },
-      "asatMiss": {
-        "title": "対衛星攻撃は失敗",
-        "text": "{{system}}（{{owner}}）"
-      },
-      "radarsBlinded": {
-        "title": "レーダー無力化",
-        "text": "サイバー攻撃で自軍のレーダーが妨害されています。"
-      },
-      "satPass": {
-        "title": "衛星通過",
-        "text_other": "{{system}}：観測帯に {{count}} 件の接触。"
-      },
-      "nuclearRevoked": {
-        "title": "核使用許可を解除",
-        "text": "核戦力は通常の統制下に戻ります。"
-      },
-      "nuclearAuthorized": {
-        "title": "核使用を許可",
-        "text": "警戒レベルが許す限り核攻撃が可能です。"
-      },
-      "nuclearDetonation": {
-        "title": "核爆発",
-        "text": "核攻撃：{{place}}。"
-      },
-      "fuelLost": {
-        "title": "機体喪失",
-        "text": "{{system}}：帰投前に燃料切れ。"
-      },
-      "specialOk": {
-        "title": "特殊作戦成功",
-        "text": "{{mission}}：{{place}}。"
-      },
-      "specialEnemy": {
-        "title": "特殊部隊の行動",
-        "text": "敵の{{mission}}：{{place}}。"
-      },
-      "specialFailed": {
-        "title": "特殊作戦失敗",
-        "text": "{{mission}}：{{place}}。"
-      },
-      "blockadeOn": {
-        "title": "封鎖が有効",
-        "text": "{{place}}（{{nation}}）"
-      },
-      "blockadeOff": {
-        "title": "封鎖解除",
-        "text": "{{place}}（{{nation}}）"
-      },
-      "captured": {
-        "title": "装備を鹵獲",
-        "text": "{{place}}：{{items}}。",
-        "item": "{{count}} {{system}}"
-      },
-      "generalReleased": {
-        "title": "直接指揮に復帰",
-        "text": "{{general}} は部隊の直接指揮を返上。"
-      },
-      "coup": {
-        "title": "クーデター",
-        "text": "{{nation}}：軍が権力を掌握。"
-      },
-      "ceasefire": {
-        "title": "停戦",
-        "text": "停戦発効：{{a}} / {{b}}。"
-      },
-      "peaceProposal": {
-        "title": "講和の提案",
-        "text": "{{nation}} が講和を提案。"
-      },
-      "ceasefireProposal": {
-        "title": "停戦の提案",
-        "text": "{{nation}} が停戦を提案。"
-      },
-      "proposalRefused": {
-        "title": "提案が拒否されました",
-        "text": "{{nation}} があなたの提案を拒否。"
-      },
-      "agentCaught": {
-        "title": "工作員が摘発",
-        "text": "{{host}} が {{owner}} の工作員の逮捕を発表。"
-      },
-      "agentExpelled": {
-        "title": "外交官追放",
-        "text": "{{host}} がスパイ行為を理由に {{owner}} の外交官を追放。"
-      },
-      "detaineeNew": {
-        "title": "外国工作員を拘束",
-        "text": "{{owner}}の工作員を拘束中：{{days}} 日以内に決定が必要です。"
-      },
-      "detaineeHeld": {
-        "title": "未決勾留",
-        "text": "決定がないため、{{owner}}の工作員は未決勾留となりました。"
-      },
-      "spyInterrogated": {
-        "title": "工作員が尋問中",
-        "text": "{{codename}}は{{host}}の情報機関に尋問されています。"
-      },
-      "spyReturned": {
-        "title": "工作員が送還",
-        "text": "{{codename}}は{{host}}により本国へ送還されました。"
-      },
-      "spyJailed": {
-        "title": "工作員に有罪判決",
-        "text": "{{codename}}は{{host}}により禁錮 {{days}} 日の判決を受けました。"
-      },
-      "spyExecuted": {
-        "title": "工作員が処刑",
-        "text": "{{codename}}は{{host}}により処刑されました。"
-      },
-      "spyReleased": {
-        "title": "工作員が釈放",
-        "text": "{{host}}が{{codename}}を釈放しました。"
-      },
-      "spyServed": {
-        "title": "刑期満了",
-        "text": "{{codename}}は刑期を終え（{{host}}）、帰国します。"
-      },
-      "swapProposal": {
-        "title": "交換の提案",
-        "text": "{{nation}}が工作員の交換を提案しています。"
-      },
-      "swapCounter": {
-        "title": "対案",
-        "text": "{{nation}}が対案を示しました。"
-      },
-      "swapAccepted": {
-        "title": "交換成立",
-        "text": "{{a}}と{{b}}の間で拘束工作員に関する合意が成立。"
-      },
-      "swapRefused": {
-        "title": "交換拒否",
-        "text": "{{nation}}があなたの交換提案を拒否しました。"
-      },
-      "reprisalExecute": {
-        "title": "報復",
-        "text": "{{nation}}が報復として拘束中の自国工作員1名を処刑。"
-      },
-      "reprisalJail": {
-        "title": "報復",
-        "text": "{{nation}}が自国工作員の拘束を強化（最長刑期）。"
-      },
-      "reprisalArrest": {
-        "title": "報復",
-        "text": "{{nation}}が報復として自国工作員1名を逮捕。"
-      },
-      "reprisalExpel": {
-        "title": "報復",
-        "text": "{{nation}}が報復として自国外交官を追放。"
-      },
-      "troopsEmbarked": {
-        "title": "部隊が乗艦",
-        "text": "{{system}} が {{ship}} に乗艦。"
-      },
-      "troopsLanded": {
-        "title": "部隊が揚陸",
-        "text_other": "{{count}} 個部隊が揚陸：{{place}}。"
-      },
-      "troopsLandedContested": {
-        "title": "砲火下の上陸",
-        "text_other": "{{count}} 個部隊が砲火下で揚陸：{{place}}。"
-      },
-      "transportSunk": {
-        "title": "輸送艦撃沈",
-        "text_other": "{{system}} が乗艦中の {{count}} 個部隊とともに失われました。"
-      },
-      "escortEnded": {
-        "title": "護衛終了",
-        "text": "{{system}}：護衛対象の部隊がいなくなりました。"
-      },
-      "captureBlocked": {
-        "title": "占領不可",
-        "noCapturer": "{{system}} は {{place}} を占領できません：歩兵・機甲・砲兵のいずれかが必要です。",
-        "noWar": "{{place}} の所有国と戦争状態にないため占領できません。"
-      },
-      "cmd_generalResigned": {
-        "title": "辞任",
-        "text": "{{general}}が辞任しました：給与が支払われていません。"
-      },
-      "cmd_generalUnpaid": {
-        "title": "給与未払い",
-        "text": "{{general}}に給与が支払われていません（辞任まで {{days}}/{{max}} 日）。"
-      },
-      "cmd_generalKilled": {
-        "title": "将軍戦死",
-        "text": "{{general}}が{{army}}司令部への攻撃で戦死しました。"
-      },
-      "cmd_generalWounded": {
-        "title": "将軍負傷",
-        "text": "{{general}}が負傷しました：{{army}}は復帰を待っています。"
-      },
-      "cmd_missionSuccess": {
-        "title": "任務達成",
-        "text": "{{army}}：任務達成。"
-      },
-      "cmd_missionFailed": {
-        "title": "任務失敗",
-        "text": "{{army}}：任務に失敗しました。"
-      },
-      "cmd_askWar": {
-        "title": "許可の要請",
-        "text": "{{army}}：{{general}}が{{nation}}との開戦許可を求めています。"
-      },
-      "cmd_askStrike": {
-        "title": "許可の要請",
-        "text": "{{army}}：{{general}}が{{nation}}後方への攻撃許可を求めています。"
-      },
-      "cmd_askReinforce": {
-        "title": "増援要請",
-        "text": "{{army}}：{{general}}が {{count}} スタックの増援を求めています。"
-      },
-      "gov_resigned": {
-        "title": "辞任",
-        "text": "{{name}} が辞任：この職はもう支払われていません。"
-      },
-      "gov_missionDone": {
-        "title": "任務達成",
-        "text": "{{mission}}：目標達成。"
-      }
-    },
-    "cmd": {
-      "zone": "指定された圏",
-      "mission": {
-        "conquer": "征服",
-        "defend": "防衛",
-        "hold_front": "前線の維持",
-        "air_superiority": "航空優勢",
-        "air_defense": "防空",
-        "deep_strike": "縦深攻撃",
-        "sea_control": "制海と封鎖",
-        "landing": "上陸作戦",
-        "reserve": "予備"
-      },
-      "reason": {
-        "losses": "損害が大きすぎる",
-        "stuck": "進展なし",
-        "tooWeak": "戦力不足",
-        "zoneLost": "圏の喪失"
-      },
-      "building": {
-        "air_defense_site": "防空陣地",
-        "radar_station": "レーダー基地",
-        "air_base": "航空基地",
-        "military_base": "軍事基地",
-        "arms_factory": "兵器工場",
-        "refinery": "製油所",
-        "power_plant": "発電所",
-        "naval_base": "海軍基地",
-        "electronics_plant": "電子機器工場",
-        "research_center": "研究センター"
-      },
-      "j": {
-        "created_other": "軍を編成：{{count}} スタック。",
-        "command": "{{general}}が指揮を執ります。",
-        "mission": "任務受領：{{mission}} — {{target}}。",
-        "missionCleared": "任務解除：スタックはあなたの命令を待っています。",
-        "suspended": "命令により任務を中断。",
-        "resumed": "任務を再開。",
-        "warAuthorized": "許可受領：{{nation}}との開戦。",
-        "warRefused": "{{nation}}との開戦は拒否されました：任務中断。",
-        "strikeAuthorized": "戦略攻撃が許可されました。",
-        "strikeRefused": "戦略攻撃は拒否されました：任務中断。",
-        "reinforceRefused": "増援拒否：{{general}}は手持ちの戦力で対処します。",
-        "reinforced_other": "増援：{{count}} スタックが軍に加わりました。",
-        "detached_other": "{{count}} スタックが軍から離脱しました。",
-        "lost_other": "損害：{{system}} {{count}} 基が破壊されました。",
-        "captured": "{{province}}を占領。",
-        "declaredWar": "国境を越えました：{{nation}}と交戦状態です。",
-        "warBlocked": "{{nation}}と開戦できません：任務中断。",
-        "askWar": "許可要請：{{nation}}の国境を越える。",
-        "askStrike": "許可要請：{{nation}}の後方を攻撃する。",
-        "retreat": "{{system}}の消耗が激しい：{{province}}へ後退。",
-        "noReinforcements": "近くに増援に使える空きスタックがありません。",
-        "askReinforce_other": "増援要請：{{count}} スタック。",
-        "tooWeak": "攻撃には戦力不足（必要量の {{pct}}%）：増援を要請しました。",
-        "offensive": "{{province}}への攻勢を開始。",
-        "landing": "{{province}}への上陸を開始：港に集結中。",
-        "counter": "{{province}}へ反撃。",
-        "counterFront": "前線で反撃。",
-        "blockade": "{{province}}の港を封鎖。",
-        "noIntel": "{{nation}}の施設は判明していません：情報（偵察）が必要です。",
-        "strike": "{{province}}の{{building}}を攻撃。",
-        "success": "任務達成。",
-        "failed": "任務失敗：{{reason}}。",
-        "daily": "日報：戦力 {{strength}}%、占領 {{captures}}、喪失 {{losses}}。",
-        "resigned": "{{general}}が辞任：給与未払い。",
-        "dismissed": "{{general}}を解任。",
-        "recovered": "{{general}}が療養を終えて指揮に復帰。",
-        "wounded": "{{general}}が司令部で負傷：療養 {{days}} 日。",
-        "killed": "{{general}}が司令部で戦死。"
-      }
-    },
-    "spyNews": {
-      "executedH": "{{host}}：{{owner}}の工作員を処刑",
-      "executedB": "{{host}}はスパイ罪で有罪となった{{owner}}の工作員の処刑を発表。国際的な非難。",
-      "swapH": "{{a}}と{{b}}が工作員を交換",
-      "swapB": "{{a}}と{{b}}が捕虜交換を実施：工作員 {{n}} 名が釈放。"
-    },
-    "gov": {
-      "m": {
-        "air_bases": "空軍基地",
-        "military_bases": "軍事基地",
-        "upgrade_bases": "基地の近代化",
-        "logistics": "軍事兵站",
-        "fortify": "国境の要塞化",
-        "air_defense": "国土防空",
-        "coastal": "沿岸防衛",
-        "research_next": "次世代",
-        "research_branch": "分野別研究",
-        "research_labs": "研究所",
-        "produce": "装備の発注",
-        "stockpile": "戦略備蓄",
-        "arms_industry": "軍需産業",
-        "counterintel": "防諜",
-        "protect_sites": "重要施設の防護",
-        "watch": "他国の監視",
-        "map_defenses": "防衛網の把握",
-        "economic_intel": "経済情報",
-        "resource": "資源生産",
-        "industry": "産業開発",
-        "revenue": "歳入の増加",
-        "war_economy": "戦時経済",
-        "reserves": "国庫準備金",
-        "repair": "復興"
-      },
-      "focus": {
-        "counterintel": "防諜",
-        "protection": "施設防護"
-      },
-      "j": {
-        "appointed": "{{name}} が就任しました。",
-        "replaced": "{{name}} が退任しました（退職金支払済み）。",
-        "dismissed": "{{name}} を解任しました（退職金支払済み）。",
-        "resigned": "{{name}} が辞任：この職はもう支払われていません。",
-        "unpaid": "{{name}} は未払いです（{{days}} 日連続）。",
-        "missionNew": "任務受領：{{mission}}。",
-        "missionEdit": "任務変更：{{mission}}。",
-        "missionSuspended": "任務停止：{{mission}}。",
-        "missionResumed": "任務再開：{{mission}}。",
-        "missionCancelled": "任務撤回：{{mission}}（開始済みのものは継続）。",
-        "missionDone": "任務達成：{{mission}}。",
-        "built": "着工：{{building}} レベル {{level}}（{{place}}）— {{cost}}。",
-        "jobDone": "竣工：{{building}} レベル {{level}}（{{place}}）。",
-        "repaired": "修理開始：{{building}}（{{place}}）— {{cost}}。",
-        "research": "研究開始：{{node}} — {{cost}}。",
-        "researched": "研究完了：{{node}}。",
-        "produced": "発注：{{count}} × {{system}}（{{place}}）— {{cost}}。",
-        "imported": "輸入：{{count}} × {{system}}、{{place}} へ納入 — {{cost}}。",
-        "intelOp": "作戦開始：{{op}} — {{cost}}。",
-        "intelOpAt": "作戦開始：{{op}}、対象 {{nation}} — {{cost}}。",
-        "opSuccess": "作戦成功：{{op}}。",
-        "opFailed": "作戦は成果なし：{{op}}。",
-        "focus": "国内情報の優先事項：{{focus}}。",
-        "protected": "施設を防護下に置きました：{{place}}。",
-        "blocked": "停滞 — {{why}}"
-      },
-      "why": {
-        "noHead": "空席：担当者を任命してください。",
-        "envelope": "予算枠が尽きました：残り {{left}}、必要 {{cost}}。",
-        "funds": "資金不足：{{cost}} 必要です。",
-        "reserve": "慎重準備金：国庫は {{floor}} を上回る必要があります（必要 {{cost}}）。",
-        "resources": "資源が不足しています。",
-        "noSite": "区域に許可された場所がありません（海岸・鉱床・最大レベル）。",
-        "noDeposit": "領土に {{resource}} の鉱床がありません。",
-        "research": "研究が必要です。",
-        "capacity": "上限に達しました（待ち行列または部門）。",
-        "locked": "禁輸または封鎖により停止。",
-        "noTarget": "対象が無効か消滅しました。",
-        "noSystem": "「{{category}}」の装備が利用できません（研究・ライセンス・輸入）。",
-        "noResearch": "この目標に利用可能な研究はありません。",
-        "nothingDamaged": "損傷した建物はありません。",
-        "saving": "準備金を積み立て中：{{pct}} %。",
-        "reserveHeld": "準備金に到達：他の任務はこれを守ります。",
-        "stocked": "在庫に到達：減り次第補充します。",
-        "inProgress": "行動を実行中。",
-        "refused": "命令が拒否されました。",
-        "unlocked": "次世代はすでに利用可能です。",
-        "allProtected": "施設の防護は最大です。"
-      }
-    }
   }
 }
