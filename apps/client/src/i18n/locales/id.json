@@ -4022,7 +4022,8 @@
       "waiting": "Menunggu",
       "blocked": "Terhambat",
       "suspended": "Ditangguhkan",
-      "done": "Selesai"
+      "done": "Selesai",
+      "cancelled": "Ditarik"
     },
     "mission": {
       "progress": "Kemajuan",

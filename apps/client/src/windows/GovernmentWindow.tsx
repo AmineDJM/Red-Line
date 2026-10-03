@@ -492,7 +492,7 @@ function MissionCard({ m, gv }: { m: GovMissionView; gv: GovernmentView }) {
         </div>
         <Badge tone={STATUS_TONE[m.status]} dot pulse={m.status === 'active'}>
           <span data-testid="gov-mission-status" data-status={m.status}>
-            {t(`gov.status.${m.status}`)}
+            {m.cancelled ? t('gov.status.cancelled') : t(`gov.status.${m.status}`)}
           </span>
         </Badge>
       </div>

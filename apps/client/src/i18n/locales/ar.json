@@ -4292,7 +4292,8 @@
       "waiting": "في الانتظار",
       "blocked": "متعثرة",
       "suspended": "معلّقة",
-      "done": "منجزة"
+      "done": "منجزة",
+      "cancelled": "مسحوبة"
     },
     "mission": {
       "progress": "التقدم",

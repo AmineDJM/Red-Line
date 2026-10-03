@@ -4022,7 +4022,8 @@
       "waiting": "대기 중",
       "blocked": "막힘",
       "suspended": "중지됨",
-      "done": "완료"
+      "done": "완료",
+      "cancelled": "철회됨"
     },
     "mission": {
       "progress": "진행률",

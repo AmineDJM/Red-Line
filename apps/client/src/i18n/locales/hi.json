@@ -4076,7 +4076,8 @@
       "waiting": "प्रतीक्षा में",
       "blocked": "अवरुद्ध",
       "suspended": "स्थगित",
-      "done": "पूर्ण"
+      "done": "पूर्ण",
+      "cancelled": "वापस ली गई"
     },
     "mission": {
       "progress": "प्रगति",

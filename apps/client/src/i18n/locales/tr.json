@@ -4076,7 +4076,8 @@
       "waiting": "Beklemede",
       "blocked": "Engellendi",
       "suspended": "Askıda",
-      "done": "Tamamlandı"
+      "done": "Tamamlandı",
+      "cancelled": "Geri çekildi"
     },
     "mission": {
       "progress": "İlerleme",

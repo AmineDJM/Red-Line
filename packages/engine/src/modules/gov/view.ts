@@ -58,6 +58,7 @@ function missionView(state: EngineState, n: NationId, m: MissionSt): GovMissionV
     ...(m.provinceId ? { provinceId: m.provinceId, radiusKm: m.radiusKm ?? 400 } : {}),
     ...(at.length ? { at } : {}),
     since: m.since,
+    ...(m.cancelled ? { cancelled: true } : {}),
     ...(m.last ? { last: m.last } : {}),
   };
 }

@@ -4076,7 +4076,8 @@
       "waiting": "Wartet",
       "blocked": "Blockiert",
       "suspended": "Ausgesetzt",
-      "done": "Abgeschlossen"
+      "done": "Abgeschlossen",
+      "cancelled": "Zurückgezogen"
     },
     "mission": {
       "progress": "Fortschritt",

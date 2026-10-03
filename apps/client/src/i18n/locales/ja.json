@@ -4022,7 +4022,8 @@
       "waiting": "待機中",
       "blocked": "停滞",
       "suspended": "停止中",
-      "done": "完了"
+      "done": "完了",
+      "cancelled": "撤回済み"
     },
     "mission": {
       "progress": "進捗",

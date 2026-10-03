@@ -3183,6 +3183,7 @@
   "gov.status.blocked": "5238333a8afb",
   "gov.status.suspended": "b6126c8fbee9",
   "gov.status.done": "459368920256",
+  "gov.status.cancelled": "780e8974ac63",
   "gov.mission.progress": "e1963fc48524",
   "gov.mission.goalAuto": "32b129bd168d",
   "gov.mission.budgetTip": "ec56a7c7f33a",

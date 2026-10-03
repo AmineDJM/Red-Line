@@ -585,6 +585,8 @@ export interface GovMissionView {
   since: GameTime;
   /** Dernière action. */
   last?: LocText;
+  /** Mission retirée par le joueur (historique). */
+  cancelled?: boolean;
 }
 
 export interface GovOfficeView {
